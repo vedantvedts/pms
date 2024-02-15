@@ -432,7 +432,7 @@ for(Object[]obj:AppendixList){
 		</div>
 		</div>
 		
-	         	    <div class="row" id="inputDiv" style="">  
+<%-- 	         	    <div class="row" id="inputDiv" style="">  
    					<div class="col-md-11 mt-1"  align="left"  style="margin-left: 10px;">
 					<div class="panel panel-info">
 					<div class="panel-heading">
@@ -450,7 +450,7 @@ for(Object[]obj:AppendixList){
 	        		</div>
 	        		</div>
 	        		</div>
-	        		</div>
+	        		</div> --%>
 </div>
 </div>
 <div class="col-md-6 mt-2 bg-light" <%if(AcronymsList.size()==0 && PerformanceList.size()==0) {%> style="display:none;"<%}else{ %> style="display:block;" <%} %>>
@@ -585,24 +585,25 @@ int row=0;
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
    <div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
-        <h5 class="modal-title" >Upload Test Verification Matrices</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" class="text-light">&times;</span>
-        </button>
+       <h5 class="modal-title" >Upload Test Verification Matrices</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true" class="text-light">&times;</span>
+       </button>
       </div>
-      <div class="modal-body">
-      <form action="TestVerificationUpload.htm" method="post" enctype="multipart/form-data">
-      <div class="row">
-      <div class="col-md-12">
-      <input class="form-control" type="file" id="excel_fileC" name="filenameC" required="required" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-      </div>
-    <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
+     <div class="modal-body">
+     <form action="TestVerificationUpload.htm" method="post" enctype="multipart/form-data">
+     <div class="row">
+     <div class="col-md-12">
+     <input class="form-control" type="file" id="excel_fileC" name="filenameC" required="required" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required="required">
+    </div>
+  
     <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
 	<input type="hidden" name="project" value="<%=project%>">
 	<input type="hidden" name="initiationid" value="<%=initiationid%>"> 					
 	
-      </div>
-      <div align="center" class="mt-2" id="uploadDivC" >
+     </div>
+     <div align="center" class="mt-2" id="uploadDivC" >
+	  <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
 	<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
       </div>
       </form>

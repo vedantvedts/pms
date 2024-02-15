@@ -69,8 +69,11 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.ReqTestExcelFile;
 import com.vts.pfms.project.model.RequirementAcronyms;
+import com.vts.pfms.project.model.RequirementMembers;
 import com.vts.pfms.project.model.RequirementPerformanceParameters;
+import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 
@@ -165,7 +168,7 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final String INTEMPID="select empid from pfms_initiation where initiationid=:id";
    // private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId  ,aas.actionassignid FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode AND am.projectid=:projectid  END"; 
     private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId,aas.actionassignid,aas.actionno,aas.enddate,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,am.actionlinkid,aas.assignee,aas.assignor,am.actionlevel FROM action_main am,action_assign aas,employee b ,employee_desig c WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND c.desigid=b.desigid AND aas.assignee=b.empid AND CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode AND am.projectid=:projectid END"; 
-	private static final String PROJECTRISKDATA ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,aas.pdcorg,aas.enddate FROM action_main am ,action_assign aas WHERE aas.actionmainid=am.actionmainid AND  am.type='K' AND am.actionmainid=:actionmainid";
+	private static final String PROJECTRISKDATA ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,aas.pdcorg,aas.enddate,aas.actionno FROM action_main am ,action_assign aas WHERE aas.actionmainid=am.actionmainid AND  am.type='K' AND am.actionmainid=:actionmainid";
 	private static final String AUTHORITYATTACHMENT="SELECT a.authorityid,a.initiationid,a.authorityname,a.letterdate,a.letterno,c.attachmentname,b.empname,c.initiationauthorityfileid FROM pfms_initiation_authority a,employee b,pfms_initiation_authority_file c WHERE a.initiationid=:initiationid AND a.authorityname=b.empid AND a.authorityid=c.authorityid";
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
 	private static final String AUTHORITYFILEUPDATE="UPDATE pfms_initiation_authority_file SET attachmentname=:attachmentname,file=:file WHERE initiationauthorityfileid=:initiationauthorityfileid ";
@@ -3633,6 +3636,94 @@ private static final String ABBREVIATIONS="SELECT AbbreviationsId,Abbreviations,
 			query.setParameter("InitiationId", initiationid);
 			
 			return (List<Object[]>)query.getResultList();
+		}
+		
+		@Override
+		public long insertTestVerificationFile(ReqTestExcelFile re) throws Exception {
+			manager.persist(re);
+			manager.flush();
+			return re.getTestVerificationId();
+		}
+		
+		private static final String EXCELDATA="SELECT TestVerificationId,FilePath,FileName,InitiationId FROM pfms_initiation_req_testverification WHERE InitiationId =:InitiationId AND isactive=1";
+		@Override
+		public Object[] getVerificationExcelData(String initiationid) throws Exception {
+			Query query = manager.createNativeQuery(EXCELDATA);
+			query.setParameter("InitiationId", initiationid);	
+			 Object[] result= (Object[])query.getSingleResult();
+			return result;
+		}
+		
+		private static final String EMPLISTS=" SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_initiation_req_members WHERE InitiationId =:InitiationId AND isactive = 1)ORDER BY a.srno=0,a.srno";
+		
+		@Override
+		public List<Object[]> EmployeeList(String labCode, String initiationid) throws Exception {
+			Query query = manager.createNativeQuery(EMPLISTS);
+			
+			query.setParameter("LabCode", labCode);
+			query.setParameter("InitiationId", initiationid);
+			
+			
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		@Override
+		public long AddreqMembers(RequirementMembers r) throws Exception {
+			
+			manager.persist(r);
+			manager.flush();
+			
+			return r.getReqMemeberId();
+		}
+		
+	private static final String REQMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.initiationid =:initiationid AND c.isactive =1 ORDER BY b.desigid ASC";
+		
+		@Override
+		public List<Object[]> reqMemberList(String initiationid) throws Exception {
+
+			Query query = manager.createNativeQuery(REQMEMLIST);
+			
+			query.setParameter("initiationid", initiationid);
+			
+			return (List<Object[]>)query.getResultList();
+		}
+		@Override
+		public long addReqSummary(RequirementSummary rs) throws Exception {
+			manager.persist(rs);
+			return rs.getSummaryId();
+		}
+		
+		private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid FROM pfms_initiation_req_summary a WHERE a.InitiationId =:InitiationId AND a.isactive='1'";
+		@Override
+		public List<Object[]> getDocumentSummary(String initiationid) throws Exception {
+
+			Query query = manager.createNativeQuery(DOCSUM);
+			query.setParameter("InitiationId", initiationid);
+			
+			List<Object[]>DocumentSummary=(List<Object[]>)query.getResultList();
+			
+			return DocumentSummary;
+		}
+		
+		
+		private static final String DOCSUMUPD="UPDATE pfms_initiation_req_summary SET AdditionalInformation=:AdditionalInformation,Abstract=:Abstract,Keywords=:Keywords,Distribution=:Distribution , reviewer=:reviewer,approver=:approver,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE SummaryId=:SummaryId AND isactive='1'";
+
+		
+		@Override
+		public long editreqSummary(RequirementSummary rs) throws Exception {
+			Query query = manager.createNativeQuery(DOCSUMUPD);
+			query.setParameter("AdditionalInformation", rs.getAdditionalInformation());			
+			query.setParameter("Abstract", rs.getAbstract());			
+			query.setParameter("Keywords", rs.getKeywords());			
+			query.setParameter("Distribution", rs.getDistribution());			
+			query.setParameter("reviewer", rs.getReviewer());			
+			query.setParameter("approver", rs.getApprover());			
+			query.setParameter("ModifiedBy", rs.getModifiedBy());			
+			query.setParameter("ModifiedDate", rs.getModifiedDate());			
+			query.setParameter("SummaryId", rs.getSummaryId());	
+			
+			
+			return query.executeUpdate();
 		}
 }
 

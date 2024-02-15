@@ -32,6 +32,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -111,8 +113,11 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.ReqTestExcelFile;
 import com.vts.pfms.project.model.RequirementAcronyms;
+import com.vts.pfms.project.model.RequirementMembers;
 import com.vts.pfms.project.model.RequirementPerformanceParameters;
+import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.project.service.ProjectService;
@@ -266,6 +271,11 @@ public class ProjectController
 			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
 			req.setAttribute("project", Project);
 			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
+			req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid));
+	
+			req.setAttribute("MemberList", service.reqMemberList(initiationid));
+			req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
+			
 			}else {
 				if(service.ProjectIntiationList(EmpId,LoginType,LabCode).size()>0) {
 					String projectshortName=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[4].toString();
@@ -280,11 +290,15 @@ public class ProjectController
 					req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
 					req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
 					req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
+					req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid));
+					req.setAttribute("MemberList", service.reqMemberList(initiationid));
+					req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
 				}
 			}
+			req.setAttribute("TotalEmployeeList", service.EmployeeList(LabCode));
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
-			req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
+		
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside ProjectOverAllRequirement.htm "+UserId, e);
@@ -1247,6 +1261,9 @@ public class ProjectController
 		 }
 			
 	}
+	
+	
+	
 	@RequestMapping(value="ProjectSqrSubmit.htm",method= {RequestMethod.POST,RequestMethod.GET})
 	public String ProjectSqrSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestParam("Attachments") MultipartFile FileAttach)throws Exception {
 		String UserId=(String)ses.getAttribute("Username");
@@ -4801,7 +4818,7 @@ public class ProjectController
 			req.setAttribute("riskdatalist", riskdatalist);
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("projectlist", projectlist);
-			
+			req.setAttribute("EmpId", EmpId);
 			return "project/ProjectRisk";
 		}
 		catch (Exception e) {
@@ -6086,10 +6103,24 @@ public class ProjectController
 		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
 		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
 		  	req.setAttribute("Verifications", service.getVerificationList(initiationid));
+		  	req.setAttribute("MemberList", service.reqMemberList(initiationid));
+		 	req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			//req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
-
+		  	List<Object[]>AcronymsList= service.AcronymsList(initiationid);
+			req.setAttribute("AcronymsList", AcronymsList);
+			req.setAttribute("PerformanceList", service.getPerformanceList(initiationid));;
+		  	req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(initiationid));
+			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid);
+			File my_file=null;
+			my_file=new File(uploadpath+VerificationExcelData[1]+File.separator+VerificationExcelData[2]);
+			
+			if(my_file!=null) {
+				String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
+		        req.setAttribute("htmlContent", htmlContent);
+			}
+			
 //			ConverterProperties converterProperties = new ConverterProperties();
 //	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
 //	    	converterProperties.setFontProvider(dfp);
@@ -6127,6 +6158,40 @@ public class ProjectController
 		return "print/RequirementDownload";
 
 	}
+	
+	 public static String convertExcelToHtml(InputStream inputStream) throws Exception {
+	        Workbook workbook = new XSSFWorkbook(inputStream);
+	        Sheet sheet = workbook.getSheetAt(0); // Assuming you are working with the first sheet
+
+	        StringBuilder htmlContent = new StringBuilder("<table border='1' style='border-collapse: collapse;'>");
+
+	        for (Row row : sheet) {
+	            // Skip rows with all cells blank
+	            if (isRowEmpty(row)) {
+	                continue;
+	            }
+
+	            htmlContent.append("<tr style='border:1px solid black;'>");
+	            for (Cell cell : row) {
+	                htmlContent.append("<td style='border:1px solid black;'>").append(cell.toString()).append("</td>");
+	            }
+	            htmlContent.append("</tr>");
+	        }
+
+	        htmlContent.append("</table>");
+
+	        workbook.close();
+
+	        return htmlContent.toString();
+	    }
+	    private static boolean isRowEmpty(Row row) {
+	    	  for (Cell cell : row) {
+	    	        if (cell.getCellTypeEnum() != CellType.BLANK) {
+	    	            return false;
+	    	        }
+	    	    }
+	    	    return true;
+	    }
 	@RequestMapping(value = "RequirementParaDownload.htm" )
 	public void RequirementParaDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
 	{
@@ -8093,7 +8158,153 @@ public class ProjectController
 			
 		return null;	
 	 }		 
+	
 	 
+	 @RequestMapping(value="TestVerificationUpload.htm",method=RequestMethod.POST)
+		public String TestVerificationUpload(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestParam("filenameC") MultipartFile FileAttach)throws Exception {
+			
+			String UserId=(String)ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			String Logintype= (String)ses.getAttribute("LoginType");
+			
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			logger.info(new Date() +"Inside TestVerificationUpload.htm "+UserId);
+			try {
+				
+				String initiationid  = req.getParameter("initiationid");
+				String project = req.getParameter("project");
+
+				ReqTestExcelFile re = new ReqTestExcelFile();
+				
+				re.setInitiationId(Long.parseLong(initiationid));
+				re.setFile(FileAttach);
+				re.setCreatedBy(UserId);
+				re.setCreatedDate(sdf1.format(new Date()));
+				
+				long count = service.insertTestVerificationFile(re,LabCode);
+				
+				if(count>0) {
+					redir.addAttribute("result","Document Uploaded Successfully");
+					redir.addAttribute("initiationid", initiationid);
+					redir.addAttribute("project", project);
+					 return "redirect:/RequirementAppendix.htm";
+				}else {
+					redir.addAttribute("resultfail","Document Upload Unsuccessful");
+					redir.addAttribute("initiationid", initiationid);
+					redir.addAttribute("project", project);
+					 return "redirect:/RequirementAppendix.htm";
+				}
+				
+				
+				
+			} catch (Exception e) {
+
+				 logger.info(new Date() +"Inside TestVerificationUpload.htm "+UserId);
+				 return "static/Error";
+			}
+			
+		
+		}
+		
+	 @RequestMapping(value="RequirementMemberSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	 public String RequirementMemberSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	 {
+			
+			String UserId=(String)ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			String Logintype= (String)ses.getAttribute("LoginType");
+			
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			logger.info(new Date() +"Inside RequirementMemberSubmit.htm "+UserId);
+			try {
+				String initiationid  = req.getParameter("initiationid");
+				String project = req.getParameter("project");
+				
+				String [] Assignee = req.getParameterValues("Assignee");
+				
+				
+				RequirementMembers rm = new RequirementMembers();
+				
+				rm.setInitiationId(Long.parseLong(initiationid));
+				rm.setCreatedBy(UserId);
+				rm.setCreatedDate(sdf1.format(new Date()));
+				rm.setEmps(Assignee);
+				
+				long count = service.AddreqMembers(rm);
+				  if(count>0) {
+				    	redir.addAttribute("project",project);
+				    	redir.addAttribute("result","Members Added Successfully for Document Distribution");
+				    }else{
+				    	redir.addAttribute("project",project);
+				    	redir.addAttribute("resultfail","Members Add unsuccessful for Document Distribution");
+				    };
+				
+			}catch (Exception e) {
+			e.printStackTrace();
+			
+			 logger.info(new Date() +"Inside RequirementMemberSubmit.htm "+UserId);
+			}
+		 
+			return "redirect:/ProjectOverAllRequirement.htm";
+	 }
+	 
+	 
+	 @RequestMapping(value="RequirementSummaryAdd.htm",method=RequestMethod.POST)
+		public String RequirementSummaryAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+			
+			String UserId=(String)ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			String Logintype= (String)ses.getAttribute("LoginType");
+			
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			logger.info(new Date() +"Inside RequirementSummaryAdd.htm "+UserId);
+			try {
+				
+				String initiationid  = req.getParameter("initiationid");
+				String project = req.getParameter("project");
+				
+				System.out.println(project+"---");
+				
+				RequirementSummary rs = new RequirementSummary();
+				
+				rs.setInitiationId(Long.parseLong(initiationid));
+				rs.setAbstract(req.getParameter("abstract"));
+				rs.setAdditionalInformation(req.getParameter("information"));
+				rs.setKeywords(req.getParameter("keywords"));
+				rs.setDistribution(req.getParameter("distribution"));
+				rs.setApprover(Long.parseLong(req.getParameter("Approver")));;
+				rs.setReviewer(Long.parseLong(req.getParameter("Reviewer")));
+				rs.setCreatedBy(UserId);
+				rs.setCreatedDate(sdf1.format(new Date()));
+			
+				rs.setIsActive(1);				
+				String action = req.getParameter("btn");
+				long count=0l;
+				if(action.equalsIgnoreCase("submit")) {
+					count=service.addReqSummary(rs);
+				}else if(action.equalsIgnoreCase("edit")) {
+					rs.setSummaryId(Long.parseLong(req.getParameter("summaryid")));
+					rs.setModifiedBy(UserId);
+					rs.setModifiedDate(sdf1.format(new Date()));
+					count=service.editreqSummary(rs);
+				}
+				
+				
+				 if(count>0){
+				    	redir.addAttribute("project",project);
+				    	redir.addAttribute("result","Document Summary given successfully");
+				    }else{
+				    	redir.addFlashAttribute("project",project);
+				    	redir.addAttribute("resultfail","Document Summary adding unsuccessful ");
+				    };
+				;
+			} catch (Exception e) {
+
+				 logger.info(new Date() +"Inside RequirementSummaryAdd.htm "+UserId);
+				 return "static/Error";
+			}
+			return "redirect:/ProjectOverAllRequirement.htm";
+	 }
 //package com.vts.pfms.project.controller;
 
 //import java.io.ByteArrayInputStream;

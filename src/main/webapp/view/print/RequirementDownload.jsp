@@ -1,14 +1,12 @@
-<%@page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+pageEncoding="ISO-8859-1"%>
 <%@page import="java.util.*"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.Month"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.text.SimpleDateFormat"%>
-
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.Format"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -39,19 +37,26 @@
 	 fileDownload.click();
 	 document.body.removeChild(fileDownload);
 	 } */
-	jQuery(document).ready(function($) {
+/* 	jQuery(document).ready(function($) {
 		$("#btn-export").click(function(event) {
 			$("#source-html").wordExport("System-Requirement");
-			 window.close();
 		});
-	});
+	}); */
+	
+	
+/* 	 $( document ).ready(function() {
+		 download();
+		}); */
+	
+	 function download(){
+			$("#source-html").wordExport("System-Requirement");
+			window.close();
+	 }
 </script>
 <spring:url value="/resources/js/FileSaver.min.js" var="FileSaver" />
 <script src="${FileSaver}"></script>
-
 <spring:url value="/resources/js/jquery.wordexport.js" var="wordexport" />
 <script src="${wordexport}"></script>
-
 <meta charset="ISO-8859-1">
 <title>Requirement Document</title>
 <%
@@ -74,8 +79,11 @@ String projectshortName=PfmsInitiationList[6].toString();
 List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");
 List<Object[]>ParaDetails=(List<Object[]>)request.getAttribute("ParaDetails");
 String labImg=(String)request.getAttribute("LabImage");
-
-
+List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
+List<Object[]>AcronymsList=(List<Object[]>)request.getAttribute("AcronymsList");
+List<Object[]>PerformanceList=(List<Object[]>)request.getAttribute("PerformanceList");
+List<Object[]>MemberList=(List<Object[]>)request.getAttribute("MemberList");
+List<Object[]> DocumentSummary=(List<Object[]>)request.getAttribute("DocumentSummary");
 int maincount=0;
 int port=new URL( request.getRequestURL().toString()).getPort();
 String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
@@ -86,10 +94,34 @@ Month month= d.getMonth();
 int year=d.getYear();
 %>
 <style>
+    /* Define header and footer styles */
+ .static-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+    }
+.static-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+    }
+    .logo-container {
+        width: 33.33%;
+    }
+
+    .logo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 5px;
+    }
+    /* Your existing styles... */
+</style>
+<style>
 td {
 	padding: -13px 5px;
 }
-
 #pageborder {
 	position: fixed;
 	left: 0;
@@ -98,7 +130,6 @@ td {
 	bottom: 0;
 	border: 2px solid black;
 }
-
 @page {
 	size: 790px 1050px;
 	margin-top: 49px;
@@ -110,14 +141,12 @@ td {
 	margin-bottom: 30px;
 	margin-right: 10px;
 }
-
 @
 top-right {
 	content: "Project : <%=PfmsInitiationList[6].toString() %>";
 	margin-top: 30px;
 	margin-right: 10px;
 }
-
 @
 top-left {
 	margin-top: 30px;
@@ -125,7 +154,6 @@ top-left {
 	content:
 		"<%if(reqStatus!=null && reqStatus[3]!=null){%><%=reqStatus[3].toString()%><%}else{%><%}%>";
 }
-
 @
 top-left {
 	margin-top: 30px;
@@ -133,36 +161,30 @@ top-left {
 	content: "<%=Labcode%>";
 	--%>
 }
-
 @
 top-center {
 	font-size: 13px;
 	margin-top: 30px;
 	content: "<%=PfmsInitiationList[5].toString()%>";
 }
-
 @
 bottom-center {
 	font-size: 13px;
 	margin-bottom: 30px;
 	content: "<%=PfmsInitiationList[5].toString()%>";
 }
-
 .border-black {
 	border: 1px solid black !important;
 	border-collapse: collapse !important;
 }
-
 .border-black td th {
 	padding: 0px !important;
 	margin: 0px !important;
 }
-
 p {
 	text-align: justify !important;
 	padding: 5px;
 }
-
 span {
 	background: white !important;
 	color: black;
@@ -172,30 +194,34 @@ span {
 	border: 1px solid black;
 	border-collapse: collapse;
 }
-
-@page {
-    @top-center {
-        content: "Header content";
-    }
-    @bottom-center {
-        content: "Footer content";
-    }
-}
-
-
 </style>
 </head>
 <body>
-	<div class="content-footer" align="center">
-		<button id="btn-export" class="btn btn-lg bg-transparent"
+	<div class="content-footer" align="center"> 
+		<button id="btn-export" class="btn btn-lg bg-transparent" onclick="download()"
 			style="padding: 10px;">
 			<i class="fa fa-lg fa-download" aria-hidden="true"
 				style="color: green;"></i>
 		</button>
 	</div>
-	<div class="source-html-outer"></div>
+	<div class="source-html-outer">
+<%-- <div class="static-header">
+    <div class="logo-container">
+        <img class="logo" 
+            <%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration" <%} else {%> alt="File Not Found" <%}%>>
+    </div>
+    <div class="logo-container">
+        <img class="logo" 
+            <%if (labImg != null) {%> src="data:image/png;base64,<%=labImg%>" alt="Configuration" <%} else {%> alt="File Not Found" <%}%>>
+    </div>
+</div> --%>
 		<div id="source-html">
-<table style="width: 98%;border-collapse: collapse;margin-left: 5px;">
+    <!-- Your existing HTML content goes here -->
+    <!-- ... -->
+    <div class="heading-container" style="text-align: center; position: relative;">
+  <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+</div>
+  <table style="width: 98%;border-collapse: collapse;margin-left: 5px;">
 	<tr>
 		<td style="text-align: left;">
 			<table style="width: 85%; border: 1px solid black; border-collapse: collapse;">
@@ -205,7 +231,7 @@ span {
 	                </td>
 	            </tr>
 	            <tr>
-	                <td style="padding: 5px;">
+	                <td style="padding: 5px;text-align: justify;">
 	                    <p>The information given in this document is not to be published or communicated, either directly or indirectly, to the press or to any personnel not authorized to receive it.</p>
 	                </td>
 	            </tr>
@@ -216,8 +242,7 @@ span {
             	<tr>
           			<td style="padding: 10px;">
     					<h4 style="margin: 0; padding: 0;">
-    					
-    				<%
+    				    				<%
 				if(LabList[0] != null) {
 				%>
 				<%=LabList[0].toString()%>:SyRD:....................</h4>
@@ -236,20 +261,19 @@ span {
 </table>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
-				<h1 style="font-size: 30px !important;" class="heading-color">SYSTEM
-					REQUIREMENTS</h1>
-				<h2 style="font-size: 20px;">For</h2>
-				<h2 style="">
+				<h4 style="font-size: 18pt; !important;" class="heading-color">SYSTEM REQUIREMENTS</h4>
+				<h4 style="font-size: 15pt;">For</h4>
+				<h4 style="font-size: 18pt;">
 					Project:
 					<%=PfmsInitiationList[7].toString()%><br> <br>
-					<%="( " + PfmsInitiationList[6].toString() + " )"%>
-				</h2>
-				<h3 style="font-size: 18px; text-decoration: underline">Requirement
-					No.</h3>
-				<h3>
+					<%="(" + PfmsInitiationList[6].toString() + ")"%>
+				</h4>
+				<h4 style="font-size: 18px; text-decoration: underline">Requirement
+					No.</h4>
+				<h4>
 					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
 					<%} else {%>-<%}%>
-				</h3>
+				</h4>
 					<div align="center" >
 						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
 							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
@@ -257,7 +281,7 @@ span {
 				</div>
 				<br> <br>
 				<div align="center">
-					<h3 style="font-size: 20px;">
+					<h4 style="font-size: 20px;">
 				<%
 				if(LabList[1] != null) {
 				%>
@@ -267,14 +291,12 @@ span {
 				%>-<%
 				}
 				%>
-					</h3>
+					</h4>
 					<h4>
 						Government of India, Ministry of Defence<br>Defence Research
 						& Development Organization
 					</h4>
-
 				</div>
-
 				<h4>
 					<%if(LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
 					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
@@ -282,22 +304,16 @@ span {
 					-
 					<%} %>
 				</h4>
-
+<div style="text-align: right;">
+    <span style="font-weight: bold;"><%= month.toString().substring(0,3) %> <%= year %></span>
+   </div>
 			</div>
-			<br> <br>
 			<br>
-			<br>
-				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
-					
-	<!------------------------ page 2 -------Starts----------------------->
-
- <div class="heading-container" style="text-align: center; position: relative;">
-    <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%);">RESTRICTED</h6>
-  </div>
-	
-
-	
-					<table style="width: 98%;border-collapse: collapse;margin-left: 10px;">
+		<!------------------------ page 2 -------Starts----------------------->
+  <div class="heading-container" style="text-align: center; position: relative;">
+    <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+</div>
+  					<table style="width: 98%;border-collapse: collapse;margin-left: 10px;">
 	<tr>
 		<td style="text-align: left;">
 			<table style="width: 85%; border: 1px solid black; border-collapse: collapse;">
@@ -307,7 +323,7 @@ span {
 	                </td>
 	            </tr>
 	            <tr>
-	                <td style="padding: 5px;">
+	                <td style="padding: 5px;text-align: justify;">
 	                    <p>The information given in this document is not to be published or communicated, either directly or indirectly, to the press or to any personnel not authorized to receive it.</p>
 	                </td>
 	            </tr>
@@ -327,8 +343,7 @@ span {
 				%>-<%
 				}
 				%>
-  						
-					</td>
+  							</td>
             	</tr>
         	</table>
         	<br> <br> <br> 
@@ -336,35 +351,38 @@ span {
 	</tr>
 </table>
 <br>
+
+<!-- 2nd page Starts --><br><br><br><br>
 		<div align="center" >
-						<img class="logo" style="width: 50px; height: 50px; margin-bottom: 5px"
+						<img class="logo" style="width: 50px; height: 50px; margin-bottom: 5px margin-right: 10px;"
 							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
 							<%} else {%> alt="File Not Found" <%}%>>
 				</div>
-				<br><br><br><br>
-					<div align="center" >
-						<img class="logo" style="width: 100px; height: 100px; margin-bottom: 10px"
+				<br><br><br><br><br><br>
+			<%-- 		<div align="center" >
+						<img class="logo" style="width: 100px; height: 100px; margin-bottom: 5px"
 							<%if (labImg != null) {%> src="data:image/png;base64,<%=labImg%>" alt="Configuration"
 							<%} else {%> alt="File Not Found" <%}%>>
+				</div> --%>
+				<div>
 				</div>
-			<div align="center"></div>
+					<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
-				<h4 style="font-size: 14px !important;" class="heading-color">SYSTEM
-					REQUIREMENTS</h4>
-				<h4 style="font-size: 14px;">For</h4>
+				<h4 style="font-size: 18pt; !important;" class="heading-color">SYSTEM
+					REQUIREMENTS DOCUMENT</h4>
+				<%-- <h4 style="font-size: 14px;">For</h4>
 				<h4 style="">
 					Project:
 					<%=PfmsInitiationList[7].toString()%>
-					<%="( " + PfmsInitiationList[6].toString() + " )"%>
+					<%="("+ PfmsInitiationList[6].toString() +")"%>
 				</h4>
-				<h4 style="font-size: 14px; text-decoration: underline">Requirement
-					No.</h4>
-				<h3>
-					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
+				<h4 style="font-size: 14px; ">
+				<span style="text-decoration: underline;">Requirement No.:</span>
+				<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
 					<%} else {%>-<%}%>
-				</h3>
+				</h4> --%>
 				<div align="center">
-					<h4 style="font-size: 14px;">
+					<h5  style="font-size: 20px;">
 				<%
 				if(LabList[1] != null) {
 				%>
@@ -374,11 +392,11 @@ span {
 				%>-<%
 				}
 				%>
-					</h4>
-					<h4>
+					</h5>
+					<h5>
 						Government of India, Ministry of Defence<br>Defence Research
 						& Development Organization
-					</h4>
+					</h5>
 
 				</div>
 
@@ -388,16 +406,25 @@ span {
 					<%}else{ %>
 					-
 					<%} %>
+									<div style="text-align: right;">
+    <span style="font-weight: bold;"><%= month.toString().substring(0,3) %> <%= year %></span>
+   </div>
 				</h4>
 
 			</div>
-			<p style="page-break-after: always;">&nbsp;</p>
+			<br>
+			 <div class="heading-container" style="text-align: center; position: relative;">
+    <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%);">RESTRICTED</h6>
+  </div>
+			<!-- Page to ends -->
+	<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
+	<div class="heading-container" style="text-align: center; position: relative;">
+  <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+</div>
 				
-					<!-- Page to ends -->
-					
 					<div style="text-align: center;">
-				<h4  class="heading-color">AMENDMENT / REVISION HISTORY PAGE
-				</h4>
+				<h5  class="heading-color">AMENDMENT / REVISION HISTORY PAGE
+				</h5>
 				
 			</div>
 			<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
@@ -416,9 +443,20 @@ span {
 
 					</tr>
 								
-		<tbody id="blankRowsBody"></tbody>
+		<tbody id="blankRowsBody">
+		    <tr>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark">&nbsp;</span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black; width: 100px;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black; width: 100px;"><span class="text-dark"></span></td>
+        </tr>
+		
+		</tbody>
 
-  <script>
+<!--   <script>
     // JavaScript loop to generate 10 blank rows
     for (let i = 0; i < 15; i++) {
       document.getElementById('blankRowsBody').innerHTML += `
@@ -433,18 +471,20 @@ span {
         </tr>
       `;
     }
-  </script>
+  </script> -->
 					</table>
 						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						<div class="heading-container" style="text-align: center; position: relative;">
+  <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+</div>
+						
 			<div align="center">
 			
 			<div style="text-align: center;">
-				<h4  class="heading-color">DISTRIBUTION LIST
-				</h4>
-				
-			</div>
+				<h5  class="heading-color">DISTRIBUTION LIST
+				</h5>
+						</div>
 						<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
-				
 					<tr >
 					<td class="text-dark"  style="border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
 					<td class="text-dark"   style="border:1px solid black; width: 150px;text-align: center;"><span class="text-dark">NAME</span></td>
@@ -452,55 +492,32 @@ span {
 					<td class="text-dark"   style="border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
 					<td class="text-dark"  style="border:1px solid black; text-align: center;width: 80px;"><span class="text-dark">Remarks</span></td>
 					</tr>
-					
-								
-		<tbody id="blankRowsBody1"></tbody>
-
-  <script>
-    // JavaScript loop to generate 10 blank rows
-    for (let i = 0; i < 15; i++) {
-      document.getElementById('blankRowsBody1').innerHTML += `
-        <tr>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-            </tr>
-      `;
-    }
-  </script>
+				<tbody id="blankRowsBody1"></tbody>
+            <% 
+    if (MemberList != null) {
+        int i = 1;
+        for (Object[] mlist : MemberList) {
+%>
+ <tr>
+                <td style="border: 1px solid black;padding-left: 10px;"><%=  i+++"."%></td>
+                <td style="border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
+                <td style="border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
+                  <td style="border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
+                  <td style="border: 1px solid black; padding-left: 10px;">copy for Record</td>
+                             </tr>
+ <% 
+   }} 
+%>
 					</table>
 				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
-			
-			
-				<h4>CONTENTS</h4>
-			</div>
-			<%if(ReqIntro!=null) {%>
-			<h5 style="margin-left: 10px"><%=++contentCount %>. &nbsp;SCOPE</h5>
-			<h6 style="margin-left: 20px"><%=contentCount %>.1 Introduction</h6>
-			<h6 style="margin-left: 20px"><%=contentCount %>.2 System Block Diagram</h6>
-			<h6 style="margin-left: 20px"><%=contentCount %>.3 System Overview</h6>
-			<h6 style="margin-left: 20px"><%=contentCount %>.4 Document Overview</h6>
-			<h6 style="margin-left: 20px"><%=contentCount %>.5 Applicable Standards</h6>
-			<%} %>
-			<%if(!RequirementList.isEmpty()) {%>
-				<h5 style="margin-left: 10px"><%=++contentCount %>. &nbsp;System Requirements</h5>
-			<%for(Object[]obj:RequirementList) {%>
-			<%-- <h6 style="margin-left: 20px"><%=obj[1].toString() %></h6> --%>
-			<%}} %>
-			<%if(!OtherRequirements.isEmpty()) {%>
-			<h5 style="margin-left: 10px"><%=++contentCount %>. &nbsp;Additional Requirements</h5>
-			<%
-			for(Object[]obj:OtherRequirements){%>
-				<h6 style="margin-left: 20px"><%if(obj[2].toString().equalsIgnoreCase("0")) {%> <%=obj[3].toString() %><%} %></h6>
-			<%}}%>
-				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
-			<div style="text-align: center;">
-				<h1 style="font-size: 20px !important;" class="heading-color">DOCUMENT SUMMARY
-				</h1>
-				<hr style="width: 80%;">
-			</div>
+				<div class="heading-container" style="text-align: center; position: relative;">
+  <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 0px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+</div>
+				
+				<div style="text-align: center;">
+				<h4 style="font-size: 20px !important;" class="heading-color">DOCUMENT SUMMARY
+				</h4>
+							</div>
 	<!-- 	<table class="border-black"
 					style="width: 650px; margin-top: 10px; margin-bottom: 5px;">
 			<tr>
@@ -508,7 +525,9 @@ span {
 			</tr>
 			</table> -->
 			
+		
 					<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+				
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;">1.&nbsp; Title: <span class="text-dark">System Requirements Document Template</span></td>
 					</tr>
@@ -524,20 +543,22 @@ span {
 					<td class="text-dark" style="border:1px solid black;">6.&nbsp; Number of Pages:</td>
 					<td class="text-dark" style="border:1px solid black;">7.&nbsp; Related Document:</td>
 					</tr>
+				
+					
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">8.&nbsp; Additional Information:
+					<td  class="text-dark" colspan="2" style="border:1px solid black;">8.&nbsp; Additional Information:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
 								
 					</td>
 					</tr>
 				     <tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">9.&nbsp; Project Number and Project Name: <span class="text-dark"><%=projectName %> ( &nbsp;<%= projectshortName %> &nbsp;) </span></td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;">9.&nbsp; Project Number and Project Name: <span class="text-dark"><%=projectName %> (<%= projectshortName %>) </span></td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">10.&nbsp; Abstract:
+					<td  class="text-dark" colspan="2" style="border:1px solid black;">10.&nbsp; Abstract:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
 						
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">11.&nbsp; Keywords:</td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;">11.&nbsp; Keywords:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
 					</tr>
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;">12.&nbsp; Organization and address:
@@ -551,7 +572,6 @@ span {
 										}
 										%>
 								
-									
 										Government of India, Ministry of Defence,Defence
 										Research & Development Organization
 										<%
@@ -565,38 +585,127 @@ span {
 							</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">13.&nbsp; Distribution:</td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;">13.&nbsp; Distribution:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span>
+						</td>
 					</tr>
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;">14.&nbsp; Revision:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">15.&nbsp; Prepared by: <span class="text-dark">-</span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;">15.&nbsp; Prepared by:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">16.&nbsp; Reviewed by: <span class="text-dark">-</span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;">16.&nbsp; Reviewed by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">17.&nbsp; Approved by: <span class="text-dark">-</span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;">17.&nbsp; Approved by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
 					</tr>
+					
 					</table>
+					
+			<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
+			<h4 style="margin-left: 20px"> Abbreviations used in the Manual to be listed and arranged in alphabetical order</h4>
+		<%  if (AbbreviationDetails != null && !AbbreviationDetails.isEmpty()) { %>	
+    <table style="width: 650px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+        <thead>
+            <tr>
+                <th class="text-dark" style="border: 1px solid black; width: 20px; text-align: center;"><span class="text-dark">S.No</span></th>
+                <th class="text-dark" style="border: 1px solid black; width: 150px; text-align: center;"><span class="text-dark">Abbreviations</span></th>
+                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 100px;"><span class="text-dark">Full Forms</span></th>
+           </tr>
+        </thead>
+        <tbody>
+        
+        <% 
+  
+        int i = 1;
+        for (Object[] alist : AbbreviationDetails) {
+%>
+      
+        
+            <tr>
+                <td style="text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
+                <td style="text-align: center;border: 1px solid black;"><%= alist[1] %></td>
+                <td style="border: 1px solid black; padding-left: 10px;"><%= alist[2] %></td>
+            </tr>
+            <% 
+   }} 
+%>
+        </tbody>
+    </table>
+				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
+							<h4 class="heading-color">CONTENTS</h4>
+						</div>
+						<p>1.Click on the "References" Menu located at the top of the MS document.<br>
+2.From the dropdown menu, choose "Table of Contents."<br>
+3.Select "Automatic Table 1" from the options provided.<br>
+4.After adding Contents remove this lines
+</p>
+									<%-- <%if(ReqIntro!=null) {%>
+			<h4 style="margin-left: 10px"><%=++contentCount %>. &nbsp;SCOPE</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.1 Introduction</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.2 System Block Diagram</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.3 System Overview</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.4 Document Overview</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.5 Applicable Standards</h4>
+			<%} %>
+		
+		<h4 style="margin-left: 10px"><%=++contentCount %>. &nbsp;APPLICABLE DOCUMENTS</h4>
+		<h4 style="margin-left: 20px"><%=contentCount %>.1 General</h4>
+		<h4 style="margin-left: 10px"><%=++contentCount %>. &nbsp;REQUIREMENTS</h4>
+				<% 
+	int i1=0;
+	for(Object[]obj:OtherRequirements){ %>
+				<div>
+					<%if(obj[2].toString().equalsIgnoreCase("0")) { %><h3
+						style="margin-left: 10px;"><%=contentCount+"."+(++i1)+" "+obj[3].toString()%></h3>
+					<div>
+					<%}
+	int j=0;%>
+					</div>
+					<%for(Object[]obj1:OtherRequirements){ 
+	if(obj[0].toString().equalsIgnoreCase(obj1[2].toString())) { %>
+					<h4 style="margin-left: 20px;"><%="3."+i1+"."+ ++j +". "+obj1[3].toString() %></h4>
+				
+					<%} %>
+					<%}}%>
+				</div>
+								
+							<div><h4 style="margin-left: 10px;">
+						<br><%=++contentCount %>. Verification Provisions
+			</h4>
+				</div>
+				<%if(!Verifications.isEmpty()) {
+				int verificationCount=0;
+				for(Object[]obj:Verifications){
+				%>
+			<div ><h4  style="margin-left: 20px;">
+		   <span><%=contentCount+"."+(++verificationCount)%>&nbsp;&nbsp;.
+			<%=obj[1].toString() %></span></h4>
+			</div>
+								<%}} %>
+			<h4 style="margin-left: 10px"><%=++contentCount %>. &nbsp;REQUIREMENTS TRACEABILITY</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.1 Traceability to Capability Document or System Specification</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.2 Traceability to Subsystems Requirements</h4>	
+			<h4 style="margin-left: 10px"><%=++contentCount %>. &nbsp;APPENDIX SECTION</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.1 Appendix A - Acronyms and Definitions</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix B - Key Performance Parameters/Key System Attributes</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix C - Requirements Traceablity Matrices</h4>
+			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix B - Test Verification Matrices</h4> --%>
+			<p style="text-align: center; page-break-before: always;">&nbsp;</p>
 			
-			
-			
-			
+					
+						
 			<%if(ReqIntro!=null) {%>
 			<div style="page-break-before: always"></div>
-			<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
-			<div style="text-align: center;">
-				<h1 style="font-size: 20px !important;" class="heading-color"><%=++maincount %>.&nbsp;Introduction
+						<h1 style="font-size: 16pt; !important;" class="heading-color"><%=++maincount %>.&nbsp;SCOPE
 				</h1>
-				<hr style="width: 80%;">
-			</div>
-			<%if(ReqIntro!=null){ %>
+				<hr style="width: 100%;">
+					<%if(ReqIntro!=null){ %>
 			<div>
-				<h4 style="margin-left: 10px;"><%=maincount+"." %>1
-					&nbsp;Introduction
-				</h4>
+				<h2 style="margin-left: 10px; font-size:14pt"><%=maincount+"." %>1
+					&nbsp;System Identification
+				</h2>
 				<div>
 					<%if(ReqIntro[1]!=null) {%><%=ReqIntro[1]%>
 					<%}else {%><div style="text-align: center;">No Details Added!</div>
@@ -604,9 +713,9 @@ span {
 				</div>
 			</div>
 			<div>
-				<h4 style="margin-left: 10px;"><%=maincount+"." %>2
+				<h3 style="margin-left: 10px;font-size:14pt"><%=maincount+"." %>2
 					&nbsp;System Block Diagram
-				</h4>
+				</h3>
 				<div>
 					<%if(ReqIntro[2]!=null) {%><%=ReqIntro[2]%>
 					<%}else {%><div style="text-align: center;">No Details Added!</div>
@@ -614,9 +723,9 @@ span {
 				</div>
 			</div>
 			<div>
-				<h4 style="margin-left: 10px;"><%=maincount+"." %>3
+				<h3 style="margin-left: 10px;font-size:14pt"><%=maincount+"." %>3
 					&nbsp;System Overview
-				</h4>
+				</h3>
 				<div>
 					<%if(ReqIntro[3]!=null) {%><%=ReqIntro[3]%>
 					<%}else {%><div style="text-align: center;">No Details Added!</div>
@@ -624,9 +733,9 @@ span {
 				</div>
 			</div>
 			<div>
-				<h4 style="margin-left: 10px;"><%=maincount+"." %>4
+				<h3 style="margin-left: 10px;font-size:14pt"><%=maincount+"." %>4
 					&nbsp;Document Overview
-				</h4>
+				</h3>
 				<div>
 					<%if(ReqIntro[4]!=null) {%><%=ReqIntro[4]%>
 					<%}else {%><div style="text-align: center;">No Details Added!</div>
@@ -634,9 +743,9 @@ span {
 				</div>
 			</div>
 			<div>
-				<h4 style="margin-left: 10px;"><%=maincount+"." %>5
+				<h3 style="margin-left: 10px;font-size:14pt"><%=maincount+"." %>5
 					&nbsp;Applicable Standards
-				</h4>
+				</h3>
 				<div>
 					<%if(ReqIntro[5]!=null) {%><%=ReqIntro[5]%>
 					<%}else {%><div style="text-align: center;">No Details Added!</div>
@@ -649,14 +758,14 @@ span {
 			</div>
 			<%}} %>
 
-			<%if(!RequirementList.isEmpty()){ %>
+			<%-- <%if(!RequirementList.isEmpty()){ %>
 			<div style="page-break-before: always;"></div>
 			<div>
 				<div align="center">
-					<h1 style="font-size: 20px !important; color:;"
+					<h2 style="font-size: 20px !important; color:;"
 						class="heading-color">
 						<br><%=++maincount %>.&nbsp;&nbsp;System Requirements
-					</h1>
+					</h2>
 					<hr style="width: 80%;">
 				</div>
 				<%
@@ -822,23 +931,38 @@ span {
 				<div align="center" style="margin-top: 350px">
 					<h2>No Data Available !</h2>
 				</div>
-				<%} }%>
+				<%} }%> --%>
+				
+				
+				<h1 style="margin-left: 10px;font-size:16pt">
+<br><%=++maincount %>.&nbsp;
+APPLICABLE DOCUMENTS</h1>
+	<hr style="width: 100%;">
+	<h5 style="margin-left: 10px;"> This section provides a list of reference documents upon which this document is either based, or to which this document refers.</h5>
+										<h2 style="margin-left: 20px ;font-size:14pt"><%=maincount %>.1 General</h2>
+							<div style="margin-left: 30px">No Document linked</div>
+				
 				<%if(!OtherRequirements.isEmpty()){ %>
 				<div style="page-break-before: always"></div>
-				<div align="center">
-					<h1 style="font-size: 20px !important; color:;"
+				<%-- <div >
+					<h2 style="font-size: 20px !important; color:;"
 						class="heading-color">
+						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 						<br><%=++maincount %>.&nbsp;		
-						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>Other System Requirements
-					</h1>
-					<hr style="width: 80%;">
-				</div>
-				<%int i=0;
+						Other System Requirements
+					</h2>
+				</div> --%>
+				
+
+					
+				<h1 style="margin-left: 10px;font-size:16pt"><%=++maincount %>. &nbsp;REQUIREMENTS</h1>
+				<hr style="width: 100%;">
+						<%int i=0;
 	if(!OtherRequirements.isEmpty()){
-	for(Object[]obj:OtherRequirements){%>
+	for(Object[]obj:OtherRequirements){ %>
 				<div>
-					<%if(obj[2].toString().equalsIgnoreCase("0")) {%><h4
-						style="margin-left: 10px;"><%=maincount+"."+(++i)+". "+obj[3].toString()%></h4>
+					<%if(obj[2].toString().equalsIgnoreCase("0")) {%><h2
+						style="margin-left: 10px;font-size:14pt"><%=maincount+"."+(++i)+". "+obj[3].toString()%></h2>
 					<div>
 						<%if(obj[4]!=null){ %><%=obj[4].toString()%>
 						<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No
@@ -848,7 +972,7 @@ span {
 					</div>
 					<%for(Object[]obj1:OtherRequirements){ 
 	if(obj[0].toString().equalsIgnoreCase(obj1[2].toString())){%>
-					<h5 style="margin-left: 20px;"><%="3."+i+"."+ ++j +". "+obj1[3].toString() %></h5>
+					<h3 style="margin-left: 20px;font-size:13pt"><%="3."+i+"."+ ++j +". "+obj1[3].toString() %></h3>
 					<%if(obj1[4]!=null){ %><div id="tablediv"><%=obj1[4].toString()%></div>
 					<%}else{ %>
 					<p style="text-align: center;">-&nbsp;&nbsp;No details
@@ -862,7 +986,8 @@ span {
 					<h2>No Data Available !</h2>
 				</div>
 				<%}} %>
-				<%if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) {%>
+				
+			<%--	<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
 				<div style="page-break-before: always"></div>
 				<div align="center">
 					<h1 style="font-size: 16px !important; margin-left: 50px;"
@@ -971,32 +1096,40 @@ span {
 						<%}%>
 					</tbody>
 				</table>
-				<%}%>
-				<div align="center">
-					<h1 style="font-size: 16px !important; margin-left: 50px;"
+				<%}%> --%>
+				<div >
+					<h1 style="font-size: 16pt !important; margin-left: 50px;"
 						class="heading-color">
 						<br><%=++maincount %>. Verification Provisions
 					</h1>
+					<h2 style="font-size:14pt"><%=maincount %>.1	Verification Methods</h2>
 				</div>
 				<%if(!Verifications.isEmpty()) {
-				int verificationCount=0;
+				int verificationCount=1;
+				int j=0;
 				for(Object[]obj:Verifications){
 				%>
-			<div style="margin-left: 20px; margin-top: 15px; font-weight: 600">
-		   <span><%=maincount+"."+(++verificationCount)%>&nbsp;&nbsp;.
+			<h3 style="margin-left: 20px; margin-top: 15px; font-size:13pt;">
+		   <span><%=maincount+"."+(verificationCount)%>.<%=++j %>
 			<%=obj[1].toString() %></span>
-			</div>
-				<div>
+				</h3>
+				<h4 style="font-weight: normal;">
 				<%if(obj[3]!=null){ %><%=obj[3].toString()%>
 				<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No
 					details filled&nbsp;&nbsp;-</p>
 						<%}%>
-					</div>
-			
-				<%}} %>
+					</h4>
+				<br>
+				<% if(obj[1].toString().equalsIgnoreCase("Test")){%>
 				
-				<table class="border-black"
-					style="width: 650px; margin-top: 10px; margin-bottom: 5px;">
+			<div style="text-align: center; padding-bottom: 30px;">
+    <span style="font-size: 14px; font-weight: bold; text-decoration: underline;">Table A</span>
+</div>
+
+									
+									
+									<table class="border-black"
+					style="width: 650px; margin-top: 20px; margin-bottom: 5px;">
 					<thead>
 						<tr>
 							<th class="border-black"
@@ -1117,8 +1250,210 @@ span {
 						</tr>
 					</tbody>
 				</table>
+							<%} %>
+									<%}} %>
+		
+			
+		<h2 style="margin-left: 20px;font-size:16pt"><%=++maincount %>.	REQUIREMENTS TRACEABILITY</h2>	
+		<!-- traceability -->			
+					
+			<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
+				<div style="page-break-before: always"></div>
+				<%-- <div align="center">
+					<h3 style="font-size: 16px !important; margin-left: 50px;"
+						class="heading-color">
+						<br><%=++maincount %>. Traceability
+					</h3>
+				</div --%>
+				<div align="left">
+					<h3
+						style="font-size: 15px !important; font-weight: 400; margin-left: 50px;"
+						class="heading-color">
+						<br><%=maincount %>.1 Forward Traceability Matrix
+					</h3>
+				</div>
+				<table class="border-black"
+					style="width: 550px; margin-left: 50px; margin-top: 10px; margin-bottom: 5px;">
+					<thead>
+						<tr>
+							<th class="border-black"
+								style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black"
+								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">ReqID</th>
+							<th class="border-black"
+								style="width: 180px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">QR
+								Para No</th>
+							<th class="border-black"
+								style="width: 150px; border: 1px solid black; border-collapse: collapse;">Remarks</th>
+							<!-- <th class="border-black"style="padding:5px;">Remarks</th> -->
+						</tr>
+					</thead>
+					<tbody>
+						<%int count=0;
+		for(Object[]obj:RequirementList){%>
+						<tr>
+							<td class="border-black"
+								style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++count %></td>
+							<td class="border-black"
+								style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %></td>
+							<td class=""
+								style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj[12]!=null && !ParaDetails.isEmpty()&&obj[12].toString().length()>0) {
+		int coutPara=0;
+		String linkedPara[]=obj[12].toString().split(",");
+		List<String>paralist=Arrays.asList(linkedPara);
+		for(Object[]para:ParaDetails){
+		if(paralist.contains(para[0].toString())){
+		%>
+								<div align="left">
+									<span><%=++coutPara +". "%></span><span style="padding: 3px;"><%=para[3].toString() %></span>
+								</div> <%}}} else{%>
+								<div align="center">-</div> <%} %>
+							</td>
+							<td class="border-black"
+								style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"><div
+									align="center">-</div></td>
+						</tr>
+						<%} %>
+					</tbody>
+				</table>
+				<div align="left">
+					<h3
+						style="font-size: 15px !important; font-weight: 400; margin-left: 50px;"
+						class="heading-color">
+						<br><%=maincount %>.2 Reverse Traceability Matrix
+					</h3>
+				</div>
+				<table class="border-black"
+					style="width: 550px; margin-left: 50px; margin-top: 10px; margin-bottom: 5px;">
+					<thead>
+						<tr>
+							<th class="border-black"
+								style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black"
+								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">QR
+								Para No</th>
+							<th class="border-black"
+								style="width: 180px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">ReqID</th>
+							<th class="border-black"
+								style="width: 150px; border: 1px solid black; border-collapse: collapse;">Remarks</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%int count1=0;
+	if(!ParaDetails.isEmpty()) 
+	for(Object[]obj:ParaDetails){
+		int reqCount=0;%>
+						<tr>
+							<td class="border-black"
+								style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++count1 %></td>
+							<td class="border-black"
+								style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"><%=obj[3].toString() %></td>
+							<td class="border-black"
+								style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">
+								<%
+		for(Object[]obj1:RequirementList) {
+		if(obj1[12]!=null){
+		String linkedPara[]=obj1[12].toString().split(",");
+		List<String>paralist=Arrays.asList(linkedPara);
+		if(paralist.contains(obj[0].toString())){
+		%>
+								<div><%=(++reqCount)+". "+obj1[1].toString() %></div> <%}}}%> <%if(reqCount==0) {%>-<%} %>
+							</td>
+							<td class="border-black"
+								style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">-</td>
+						</tr>
+						<%}%>
+					</tbody>
+				</table>
+				<%}%>		
+					
+					
+									
+									
+				<h2 style="margin-left: 20px;font-size:16pt"><%=++maincount %>. APPEDNDIX SECTION</h2>
+						<h3 style="margin-left: 20px;font-size:14pt"> <%=maincount %>.1	Appendix A - Acronyms and Definitions</h3>
 
+			
+    <table style="width: 650px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+        <thead>
+            <tr>
+                <th class="text-dark" style="border: 1px solid black; width: 20px; text-align: center;"><span class="text-dark">S.No</span></th>
+                <th class="text-dark" style="border: 1px solid black; width: 150px;"><span class="text-dark">Acronyms</span></th>
+                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 100px;"><span class="text-dark">Definitions</span></th>
+           </tr>
+        </thead>
+        <tbody>
+        
+        <% 
+    if (AcronymsList != null) {
+        int i = 1;
+        for (Object[] alist : AcronymsList) {
+%>
+      
+        
+            <tr>
+                <td style="text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
+                <td style="border: 1px solid black;padding-left: 10px;"><%= alist[1] %></td>
+                <td style="border: 1px solid black; padding-left: 10px;"><%= alist[2] %></td>
+            </tr>
+            <% 
+   }} 
+%>
+        </tbody>
+    </table>
+  <h4 style="margin-left: 20px;font-weight:normal">Guidance:
+This appendix contains acronyms and provides standard definitions for terminology used herein
+</h4>
+	<h3 style="margin-left: 20px;font-size:14pt"> <%=maincount %>.2 Appendix B -Key Performance Parameters / Key System Attributes</h3>
+		<h4 style="margin-left: 20px;font-weight:normal"> The key Measures of Effectiveness (MOE) are given below :</h4>
+    <table style="width: 650px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+        <thead>
+            <tr>
+                <th class="text-dark" style="border: 1px solid black; width: 20px; text-align: center;"><span class="text-dark">S.No</span></th>
+                <th class="text-dark" style="border: 1px solid black; width: 150px;padding: 5px; "><span class="text-dark">Key MOEs</span></th>
+                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 100px;"><span class="text-dark">Values</span></th>
+           </tr>
+        </thead>
+        <tbody>
+        
+        <% 
+    if (PerformanceList != null) {
+        int i = 1;
+        for (Object[] plist : PerformanceList) {
+%>
+      
+        
+            <tr>
+                <td style="text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
+                <td style="border: 1px solid black;padding-left: 10px;"><%= plist[1] %></td>
+                <td style="border: 1px solid black; padding-left: 10px;text-align:center"><%= "-"+plist[2] +"-"%></td>
+            </tr>
+            <% 
+   }} 
+%>
+        </tbody>
+    </table>
+			<h4 style="margin-left: 20px; font-weight:normal"> Guidance:
+This appendix contains tabularized KPPs, and KSAs, if applicable, listed in prioritized order.<br>
+Sample Key performance Parameters / Key System Attributes are shown above. Modify the Key performance Parameters / Key System Atributes based on your specific project constraints. 
+</h4>	
+			<h3 style="margin-left: 20px;font-size:14pt"><%=maincount %>.3	Appendix C - Requirements Traceability Matrices
+</h3>	
+			<h4 style="margin-left: 20px ;font-weight:normal">  The Traceability to next level should be provided in - SSS Type A. Traceability to OR already provided in Sec 5.1</h4>
+
+			
+		
+	<h3 style="margin-left: 20px;font-size:14pt"><%=maincount %>.4	Appendix D - Test Verification Matrices</h3>			
+			${htmlContent}
+		
+	<h4 style="margin-left: 20px ;font-weight:normal"> 	Guidance:
+This appendix contains tabularized verification method for every system or subsystem requirement.  If not known, pre contract award, the verification method is to be included in the resultant system or subsystem specification.
+Sample Test verification Matrix are shown above. Modify the Verification matrix based on your specific project constraints. 
+			</h4>
 			</div>
+		</div>
+	
 		</div>
 </body>
 </html>

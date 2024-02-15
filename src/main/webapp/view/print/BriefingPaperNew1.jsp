@@ -778,7 +778,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										
 					<tr>
 						<th  style="width: 15px !important;text-align: center;">SN</th>
-						<th  style="width: 4155px !important;">Recommendation Point</th>
+						<th  style="width: 100px !important;"> ID</th>
+						<th  style="width: 415px !important;">Recommendation Point</th>
 						<th  style="width: 100px !important;"> PDC</th>
 						<th  style="width: 250px !important;"> Responsibility</th>
 				<!-- 		<th  style="width: 80px !important;">Status</th> -->
@@ -790,17 +791,57 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
 					<%}
 						else if(lastpmrcminsactlist.get(z).size()>0)
-							{int i=1;
+							{int i=1;String key2="";
 								for(Object[] obj:lastpmrcminsactlist.get(z)){
 									if(obj[3].toString().equalsIgnoreCase("R") && (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && obj[14]!=null && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      ){ %>
 						<tr>
 							<td  style="text-align: center;"><%=i %></td>
+							<td>
+							
+									<%if(obj[21]!=null && Long.parseLong(obj[21].toString())>0){ %>
+								
+									
+									<span>	<!-- <i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i> -->
+								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
+								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+									Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
+									 String formattedDate = outputFormat.format(date);
+									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+										 key2=entry.getKey().toString();
+									 } }}else{%>
+									 <%
+									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+											Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key2=entry.getKey().toString();
+											 }
+									 }
+									 %>
+									 <%} %>
+								
+								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key2+"/"+obj[5].toString().split("/")[4] %>
+								
+								
+								</span>	
+									
+									
+								<%}%>
+							
+							
+							
+							</td>
 							<td  style="text-align: justify; "><%=obj[2] %></td>
-							<td   style=" text-align: center;">
+							<%-- <td   style=" text-align: center;">
 								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br><%} %>		
 								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><span <%if(obj[8]==null){ %>style="color:black;font-weight: bold;"<%} %>><%=sdf.format(sdf1.parse(obj[7].toString()))%></span><br><%} %>
 								<%if(obj[6]!= null){ %><span <%if(obj[8]==null && obj[7]==null){ %>style="color:black;font-weight: bold;"<%} %>><%=sdf.format(sdf1.parse(obj[6].toString()))%></span><%} %>
-							</td>
+							</td> --%>
+							<td style="text-align: center;">
+								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br><%} %>	
+								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[7].toString()))%></span><br><%} %>
+								<%if(obj[6]!= null){ %><span><%=sdf.format(sdf1.parse(obj[6].toString()))%></span><br><%} %>
+								</td>
 							<td>
 								<%if(obj[4]!= null){ %>  
 									<%=obj[12] %><%-- , <%=obj[13] %> --%>
@@ -948,10 +989,15 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												-									
 										<%} %>
 									<br>
-									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:green;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
-									<%=endPdc %>
+									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<%= sdf.format(sdf1.parse(obj[4].toString()))%>
 									</span>
-									
+										<%if(!pdcorg.equals(endPdc)) { %>
+									<br>
+									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<%= sdf.format(sdf1.parse(obj[3].toString()))%> 
+									</span>	
+									<%} %>
 								</td>
 								<!-- 	<td   style="text-align: center;"> 
 		
@@ -2553,6 +2599,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 							</tr>
 							<tr>
 								<th  style="width: 20px !important;text-align: center;">SN</th>
+								<th  style="width: 20px !important;text-align: center;">ID</th>
 								<th  style="width: 370px;">Issue Point</th>
 								<th  style="width: 100px; "> ADC<br>PDC</th>
 <!-- 								<th  style="width: 80px; "> ADC</th> -->
@@ -2572,6 +2619,16 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										%>
 											<tr>
 												<td  style="text-align: center;"><%=i %></td>
+							<td style="text-align: center;" >
+									<%if(obj[18]!=null && Long.parseLong(obj[18].toString())>0){
+										String []temp=obj[1].toString().split("/");
+										String tempString=temp[temp.length-1];
+										%>
+									<span style="font-weight: bold">
+										<%=tempString %>
+										</span>
+									<%}%>
+								</td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
 												<td   style="text-align: center;" >
 												<%	String actionstatus = obj[9].toString();

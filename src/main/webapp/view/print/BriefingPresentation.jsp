@@ -148,7 +148,7 @@ System.out.println(todayDate+"---");
 	for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
 		System.out.println(entry.getValue()+"--"+entry.getKey());
 	}
-
+	
 		List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envisagedDemandlist");
 	%>
 
@@ -1070,13 +1070,13 @@ System.out.println(todayDate+"---");
 												-									
 										<%} %>
 									<br>
-									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:green;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
-									<%=endPdc %>
+									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
+									<%= sdf.format(sdf1.parse(obj[4].toString()))%> 
 									</span>
-									<%if(!pdcorg.equals(endPdc)) {%>
+									<%if(!pdcorg.equals(endPdc)) { %>
 									<br>
-									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:green;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
-									<%=pdcorg %>
+									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
+									<%= sdf.format(sdf1.parse(obj[3].toString()))%> 
 									</span>	
 									<%} %>
 								</td>
@@ -3165,14 +3165,12 @@ System.out.println(todayDate+"---");
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
 									<td style="text-align: center;" >
-									<%if(obj[18]!=null && Long.parseLong(obj[18].toString())>0){ %>
+									<%if(obj[18]!=null && Long.parseLong(obj[18].toString())>0){
+										String []temp=obj[1].toString().split("/");
+										String tempString=temp[temp.length-1];
+										%>
 										<button type="button" class="btn btn-sm font-weight-bold"  onclick="ActionDetails( <%=obj[18] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" >
-										<%if(obj[1].toString().contains("PMRC")||obj[1].toString().contains("EB")) {%>
-											<%=obj[1].toString().split("/")[4] %>
-										<%}else{ %>
-										<%=obj[1].toString().split("/")[3] %>
-										
-										<%} %>
+										<%=tempString %>
 										</button>
 									<%}%>
 								</td>

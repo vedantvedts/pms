@@ -5853,7 +5853,7 @@ public class CommitteeController {
 								}
 						} 
 						
-						 	req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
+						 	req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid));
 //							req.setAttribute("actionlist",actionsdata);
 						 	req.setAttribute("procurementOnDemand", procurementOnDemand);
 						 	req.setAttribute("procurementOnSanction", procurementOnSanction);
@@ -7637,7 +7637,8 @@ public class CommitteeController {
 							}
 					} 
 					
-					 	req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
+					 	//req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
+					 	req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid));
 //						req.setAttribute("actionlist",actionsdata);
 					 	req.setAttribute("procurementOnDemand", procurementOnDemand);
 					 	req.setAttribute("procurementOnSanction", procurementOnSanction);

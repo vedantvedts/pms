@@ -33,14 +33,22 @@
 	List<Object[]> statuslist = (List<Object[]>)request.getAttribute("TrackingList");
 	String pdf=(String)request.getAttribute("pdf");
 	List<Object[]>EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
+	List<Object[]>TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
 	String projectName="";
 	String classification="";
 	List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
 	LocalDate d = LocalDate.now();
-
+	List<Object[]>MemberList = (List<Object[]>)request.getAttribute("MemberList");
 	Month months= d.getMonth();
 	int years=d.getYear();
 	Object[]LabList=(Object[])request.getAttribute("LabList");
+	List<Object[]>DocumentSummaryList=(List<Object[]>)request.getAttribute("DocumentSummary");
+	Object[]DocumentSummary=null;
+	
+	if(DocumentSummaryList.size()>0){
+		DocumentSummary=DocumentSummaryList.get(0);
+	}
+	
 	%>
 <style type="text/css">
   <%if(statuslist!=null&&!statuslist.isEmpty()){%>
@@ -142,15 +150,16 @@
 			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
 			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" >&nbsp;System Requirements</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Additional Requirements</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showVerification()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirement Traceability</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
+<!-- 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirement Traceability</span>
+ -->							
+ 		<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAppendices()"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
-				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
-		<!-- 			    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img alt="" src="view/images/status.png" >&nbsp;Status</span>  -->
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/pdf.png" >&nbsp;Requirement Document</span> 
+		<!-- 			 <span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img alt="" src="view/images/status.png" >&nbsp;Status</span>  -->
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Requirement Document</span> 
 				<!-- 	<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirement.png">&nbsp;System Requirements</span>  -->
 					 
 					</div>
@@ -196,10 +205,7 @@
 					</tr>
 					<tr>
 					<td  class="text-primary" colspan="2">8.&nbsp; Additional Information:
-									<textarea required="required" name="" class="form-control"
-									id="additionalReq" maxlength="4000" rows="2" cols="53"
-									placeholder="Maximum 4000 Chararcters" style="width:90%"></textarea>
-					<button class="btn btn-sm btn-success" style="float:right;margin-right: 2%;margin-top:-4%;">SUBMIT</button>
+								<%if(DocumentSummary!=null && DocumentSummary[0]!=null) {%><span class="text-dark"><%=DocumentSummary[0]%></span> <%} %>
 					</td>
 					</tr>
 				     <tr>
@@ -207,14 +213,13 @@
 					</tr>
 					<tr>
 					<td  class="text-primary" colspan="2">10.&nbsp; Abstract:
-						<textarea required="required" name="" class="form-control"
-									id="Abstract" maxlength="4000" rows="2" cols="53"
-									placeholder="Maximum 4000 Chararcters" style="width:90%"></textarea>
-					<button class="btn btn-sm btn-success" style="float:right;margin-right: 2%;margin-top:-4%;">SUBMIT</button>
+						<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%> <span class="text-dark"><%=DocumentSummary[1]%></span><%} %>
 					</td>
 					</tr>
 					<tr>
-					<td  class="text-primary" colspan="2">11.&nbsp; Keywords:</td>
+					<td  class="text-primary" colspan="2">11.&nbsp; Keywords:
+											<%if(DocumentSummary!=null && DocumentSummary[2]!=null) {%> <span class="text-dark"><%=DocumentSummary[2]%></span><%} %>
+					</td>
 					</tr>
 					<tr>
 					<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
@@ -242,19 +247,21 @@
 							</td>
 					</tr>
 					<tr>
-					<td  class="text-primary" colspan="2">13.&nbsp; Distribution:</td>
+					<td  class="text-primary" colspan="2">13.&nbsp; Distribution:
+									<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=DocumentSummary[3]%></span><%} %>
+					</td>
 					</tr>
 					<tr>
 					<td  class="text-primary" colspan="2">14.&nbsp; Revision:</td>
 					</tr>
 					<tr>
-					<td  class="text-primary" colspan="2">15.&nbsp; Prepared by: <span class="text-dark">-</span> </td>
+					<td  class="text-primary" colspan="2">15.&nbsp; Prepared by: <span class="text-dark"></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: <span class="text-dark">-</span> </td>
+					<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: <%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=DocumentSummary[7]%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
 					</tr>
 					<tr>
-					<td  class="text-primary" colspan="2">17.&nbsp; Approved by: <span class="text-dark">-</span> </td>
+					<td  class="text-primary" colspan="2">17.&nbsp; Approved by: <%if(DocumentSummary!=null && DocumentSummary[6]!=null) {%> <span class="text-dark"><%=DocumentSummary[6]%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
 					</tr>
 					</table>
 					</div>
@@ -455,7 +462,7 @@
 	<%} %>
 	<!-- Modal for Document summary  -->
 	
-  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="">
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="SummaryModal">
   <div class="modal-dialog modal-dialog-jump modal-lg ">
     <div class="modal-content" style="width:137%;margin-left:-21%;">
          <div class="modal-header" id="ModalHeader">
@@ -464,54 +471,158 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      
+      
    		<div class="modal-body">
+   			<form action="RequirementSummaryAdd.htm" method="post">
    			<div class="row">
    			<div class="col-md-4">
-   			<label class="text-primary" style="font-size: 1rem;font-weight: bold;">Additional Information:</label>
+   			<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Additional Information:</label>
    			</div>
    			<div class="col-md-8">
-   				<textarea required="required" name=""
+   				<textarea required="required" name="information"
 				class="form-control" id="additionalReq" maxlength="4000"
-				rows="3" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=DocumentSummary[0]%><%}else{%><%}%></textarea>
    			</div>
    			</div>
    			<div class="row mt-2">
    			<div class="col-md-4">
-   			<label class="text-primary" style="font-size: 1rem;font-weight: bold;">Abstract:</label>
+   			<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Abstract:</label>
    			</div>
    			<div class="col-md-8">
-   				<textarea required="required" name=""
-				class="form-control" id="Abstract" maxlength="4000"
-				rows="3" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+   				<textarea required="required" name="abstract"
+				class="form-control" id="" maxlength="4000"
+				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=DocumentSummary[1]%><%}else{%><%}%></textarea>
    			</div>
    			</div>
+   			
+   				<div class="row mt-2">
+   			<div class="col-md-4">
+   			<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Keywords:</label>
+   			</div>
+   			<div class="col-md-8">
+   				<textarea required="required" name="keywords"
+				class="form-control" id="" maxlength="4000"
+				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=DocumentSummary[2]%><%}else{%><%}%></textarea>
+   			</div>
+   			</div>
+   			
+   		    <div class="row mt-2">
+   			<div class="col-md-4">
+   			<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Distribution:</label>
+   			</div>
+   			<div class="col-md-8">
+   				<input required="required" name="distribution"
+				class="form-control" id="" maxlength="255"
+				 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=DocumentSummary[3]%><%}else{%><%}%>">
+   			</div>
+   			</div>
+   			
+   			<div class="row mt-2">
+			   	<div class="col-md-2">
+			   	 <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
+			   	</div>	
+   				<div class="col-md-4">
+	   		<select class="form-control selectdee"name="Reviewer" id=""data-width="100%" data-live-search="true"  required>
+	          <option value="" selected>--SELECT--</option>
+	        <%for(Object[]obj:TotalEmployeeList){ %>
+	        <option value="<%=obj[0].toString()%>"
+	        <%if(DocumentSummary!=null && DocumentSummary[4]!=null && DocumentSummary[4].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
+	        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+	        <%} %>
+	        </select>
+   				
+   				</div>
+   				
+   				<div class="col-md-2">
+			   	<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Approver:</label>
+			   	</div>	
+   				<div class="col-md-4">
+		   				<select class="form-control selectdee"name="Approver" id=""data-width="100%" data-live-search="true"  required>
+		       <option value="" selected>--SELECT--</option>
+		        <%for(Object[]obj:TotalEmployeeList){ %>
+		        <option value="<%=obj[0].toString()%>"
+		        <%if(DocumentSummary!=null && DocumentSummary[5]!=null && DocumentSummary[5].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
+		        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+		        <%} %>
+		        </select>
+   				
+   				</div>
+   			</div>
+   			
+   	<div class="mt-2" align="center">
+   <%if(DocumentSummaryList.size()>0) {%>
+   <button class="btn btn-sm edit" value="edit" name="btn" onclick="return confirm ('Are you sure to submit?')">UPDATE</button>
+   	<input type="hidden" name="summaryid" value="<%=DocumentSummary[8]%>"> 
+   <%}else{ %>
+   	<button class="btn btn-sm submit" name="btn" value="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+   
+   	<%} %>
+   	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	<input type="hidden" name="project" value="<%=project%>">
+	<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+   			
+   			</div>
+   			</form>
   	 	</div>
     </div>
   </div>
-</div>
+</div> 
 	<!-- modal for Document Distribution -->
 	<div class="modal fade" id="DistributionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
     <div class="modal-content">
-      <div class="modal-header" id="ModalHeader">
+      <div class="modal-header" id="ModalHeader" style="background: #055C9D ;color:white;">
         <h5 class="modal-title" >Document Sent to</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true" class="text-light">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+      <%if(!MemberList.isEmpty()) {%>
+      <div class="row mb-2">
+		<div class="col-md-12">
+		<table class="table table-bordered" id="myTables">
+		<thead>
+		<tr>
+		<th  style="text-align: center;">SN</th>
+		<th  style="text-align: center;">Name</th>
+		<th  style="text-align: center;">Designation</th>
+		</tr>
+		</thead>
+		<tbody>
+		<%int rowCount=0;
+		for(Object[]obj:MemberList) {%>
+		<tr>
+		<td style="text-align: center;width:10%;"><%=++rowCount %></td>
+		<td style="width:50%;margin-left: 10px;"><%=obj[1].toString() %></td>
+		<td style="width:40%;margin-left: 10px;"><%=obj[2].toString() %></td>
+		</tr>
+		<%} %>
+		</tbody>
+		</table>
+		</div>      
+      </div>
+      <%} %>
+       <form action="RequirementMemberSubmit.htm" method="post">
       <div class="row">
 	<div class="col-md-10">
-	<select class="form-control selectdee"name="Assignee" id="Assignee"data-width="100%" data-live-search="true" multiple>
+	<select class="form-control selectdee"name="Assignee" id="Assignee"data-width="100%" data-live-search="true" multiple required>
         <%for(Object[]obj:EmployeeList){ %>
         <option value="<%=obj[0].toString()%>"> <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
         <%} %>
         </select>
         </div>
       <div class="col-md-2" align="center">
-      	<button class="btn btn-sm submit">SUBMIT</button>
+      	<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" /> <input id="submit" type="submit"
+								name="submit" value="Submit" hidden="hidden">
+	<input type="hidden" name="project" value="<%=project%>">
+	<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+    <button type="submit" class="btn btn-sm submit" onclick="return confirm ('Are you sure to submit?')"> SUBMIT</button>
       </div>
       </div>
+      </form>
       </div>
     </div>
   </div>
@@ -762,6 +873,20 @@
 		});
 		$(document).ready(function(){
 			 $("#myTable1").DataTable({
+			 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+			 "pagingType": "simple",
+			 "pageLength": 5
+		});
+		});
+		$(document).ready(function(){
+			 $("#myTables").DataTable({
+			 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+			 "pagingType": "simple",
+			 "pageLength": 5
+		});
+		});
+		$(document).ready(function(){
+			 $("#myTables1").DataTable({
 			 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
 			 "pagingType": "simple",
 			 "pageLength": 5

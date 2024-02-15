@@ -1,5 +1,7 @@
 package com.vts.pfms.project.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,25 +9,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Data;
-
 
 @Data
 @Entity
-@Table(name = "pfms_initiation_req_testverification")
-public class ReqTestExcelFile {
+@Table(name="pfms_initiation_req_members")
+public class RequirementMembers {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long TestVerificationId;
+	private Long ReqMemeberId;
+	private Long EmpId;
 	private Long InitiationId;
-	private String FileName;
-	private String FilePath;
-	private String CreatedDate;
 	private String CreatedBy;
+	private String CreatedDate;
 	private int IsActive;
 	
 	@Transient
-	private MultipartFile file;
+	private String[] emps;
 }

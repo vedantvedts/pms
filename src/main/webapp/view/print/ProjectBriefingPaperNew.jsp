@@ -900,6 +900,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 										
 					<tr>
 						<th  style="width: 15px !important;text-align: center;">SN</th>
+						<th  style="width: 100px !important;"> ID</th>
 						<th  style="width: 315px !important;">Recommendation Point</th>
 						<th  style="width: 100px !important;"> PDC</th>
 						<th  style="width: 210px !important;"> Responsibility</th>
@@ -912,18 +913,59 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 						<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
 					<%}
 						else if(lastpmrcminsactlist.get(z).size()>0)
-							{int i=1;
+							{int i=1;String key2="";
 								for(Object[] obj:lastpmrcminsactlist.get(z)){
 									// only recommendations and the if recommendation is completed or closed then only those actions which are completed after last meeting
 									if( obj[3].toString().equalsIgnoreCase("R") && (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && obj[14]!=null && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) )) ){ %>
 						<tr>
 							<td style="text-align: center;"><%=i %></td>
+							
+							<td>
+							
+							
+									<%if(obj[21]!=null && Long.parseLong(obj[21].toString())>0){ %>
+								
+									
+			 						<span style="font-weight: bold;">	
+								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
+								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+									Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
+									 String formattedDate = outputFormat.format(date);
+									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+										 key2=entry.getKey().toString();
+									 } }}else{%>
+									 <%
+									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+											Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key2=entry.getKey().toString();
+											 }
+									 }
+									 %>
+									 <%} %>
+								
+								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key2+"/"+obj[5].toString().split("/")[4] %>
+								
+								
+								</span>	
+									
+									
+								<%}%>
+							</td>
+							
+							
 							<td style="text-align: justify; "><%=obj[2] %></td>
-							<td style=" text-align: center;">
+							<%-- <td style=" text-align: center;">
 								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>		
 								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
 								<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>
-							</td>
+							</td> --%>
+							<td style="text-align: center;">
+								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br><%} %>	
+								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[7].toString()))%></span><br><%} %>
+								<%if(obj[6]!= null){ %><span><%=sdf.format(sdf1.parse(obj[6].toString()))%></span><br><%} %>
+								</td>
 							<td>
 								<%if(obj[4]!= null){ %>  
 									<%=obj[12] %>, <%=obj[13] %>
@@ -1001,7 +1043,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 										
 							<tr>
 								<th  style="width: 15px !important;text-align: center;  ">SN</th>
-								<th  style="width: 110px !important;text-align: center;  ">ID</th>
+								<th  style="width: 120px !important;text-align: center;  ">ID</th>
 								<th  style="width: 320px; ">Action Point</th>
 								<th  style="width: 150px; ">ADC<br>PDC</th>
 								<!-- <th  style="width: 100px; "> ADC</th> -->
@@ -1022,7 +1064,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									<td  style="text-align: center;"><%=i %></td>
 									<td>
 										<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
-								<button type="button" class="btn btn-sm" style="border-radius: 50px;font-weight: bold" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
+								<span style="font-weight: bold">
 								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
 								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
 									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
@@ -1042,7 +1084,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									 <%} %>
 								
 								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"/"+obj[1].toString().split("/")[4] %>
-								</button>
+								</span> 
 								<%}%>
 									</td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
@@ -1064,12 +1106,12 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 												-									
 										<%} %>
 									<br>
-									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:green;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
 									<%=sdf.format(sdf1.parse(endPdc.toString())) %>
 									</span>	
 									<%if(!pdcorg.equals(endPdc)) {%>
 									<br>
-									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:green;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
 									<%=sdf.format(sdf1.parse(pdcorg.toString())) %>
 									</span>	
 									<%} %>
@@ -2710,6 +2752,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 							</tr>
 							<tr>
 								<th  style="width: 20px !important;text-align: center;">SN</th>
+								<th  style="width: 50px !important;text-align: center;">ID</th>
 								<th  style="width: 300px;">Issue Point</th>
 								<th  style="width: 120px; "> ADC <br> PDC</th>
 								<!-- <th  style="width: 100px; "> ADC</th> -->
@@ -2730,6 +2773,16 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 											%>
 											<tr>
 												<td  style="text-align: center;"><%=i %></td>
+																<td style="text-align: center;" >
+									<%if(obj[18]!=null && Long.parseLong(obj[18].toString())>0){
+										String []temp=obj[1].toString().split("/");
+										String tempString=temp[temp.length-1];
+										%>
+										<span style="font-weight: bold">
+										<%=tempString %>
+										</span>
+									<%}%>
+								</td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
 												<td   style="text-align: center;" >
 													<span style="color:green;">		<%	String actionstatus = obj[9].toString();

@@ -46,8 +46,11 @@ import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.ReqTestExcelFile;
 import com.vts.pfms.project.model.RequirementAcronyms;
+import com.vts.pfms.project.model.RequirementMembers;
 import com.vts.pfms.project.model.RequirementPerformanceParameters;
+import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 
@@ -313,4 +316,12 @@ public interface ProjectService {
 	public List<Object[]> AcronymsList(String initiationid) throws Exception;
 	public long addReqPerformanceParameters(List<RequirementPerformanceParameters> raList)throws Exception;
 	public List<Object[]> getPerformanceList(String initiationid)throws Exception;
+	public long insertTestVerificationFile(ReqTestExcelFile re,String LabCode) throws Exception;
+	public Object[] getVerificationExcelData(String initiationid) throws Exception;
+	public List<Object[]> EmployeeList(String labCode, String initiationid) throws Exception;
+	public long AddreqMembers(RequirementMembers rm) throws Exception;
+	public List<Object[]> reqMemberList(String initiationid) throws Exception;
+	public long addReqSummary(RequirementSummary rs)throws Exception;
+	public List<Object[]> getDocumentSummary(String initiationid)throws Exception;
+	public long editreqSummary(RequirementSummary rs) throws Exception;
 }

@@ -707,7 +707,7 @@ for(Object[] temp : invitedlist){
 								</tr>
 							</table>	
    				
-							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+					<%-- 		<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 								<thead >
 									
 									<tr>
@@ -764,7 +764,7 @@ for(Object[] temp : invitedlist){
 											</td>
 											<td class="std"  style=" border: 1px solid black;">
 												<%if(obj[4]!= null){ %>  
-													<%=obj[12] %>  <%-- (<%=obj[13] %>) --%>
+													<%=obj[12] %>  (<%=obj[13] %>)
 												<%}else { %><span class="notassign">NA</span><%} %> 
 											</td>
 								
@@ -772,8 +772,95 @@ for(Object[] temp : invitedlist){
 									<%i++;
 									}} %>
 								</tbody>
-							</table>
-				
+							</table> --%>
+						<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+								<thead >
+									<tr>
+										<th   style="width: 30px;border:1px solid black;"  >SN</th>
+										<th   style="width: 80px;border:1px solid black;" > ID</th>
+										<th   style="width: 300px;border:1px solid black;" >Action Point</th>
+										<th   style="width: 200px;border:1px solid black; " > ADC<br>PDC</th>
+										
+										<th class="std"  style="width: 155px;" >Responsibility</th>
+										<!-- <th class="std"  style="width: 40px;"  >Status(DD)</th>			 -->
+									</tr>
+								</thead>
+								
+								
+								<tbody>
+											<%if(lastpmrcactions.size()==0){ %>
+								<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
+								<%}
+								else if(lastpmrcactions.size()>0)
+								{int i=1;String key="";
+								for(Object[] obj:lastpmrcactions ){ %>
+								<tr>
+									<td  style="border:1px solid black;" align="center"><%=i %></td>
+									<td style="border:1px solid black;"  align="center">	
+								<!--newly added on 13th sept  -->	
+								<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
+								<%if(committeescheduleeditdata[8].toString().equalsIgnoreCase("pmrc")){ %>
+								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
+									 String formattedDate = outputFormat.format(date);
+									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+										 key=entry.getKey().toString();
+									 } }}else{%>
+									 <%
+									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+											Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key=entry.getKey().toString();
+											 }
+									 }
+									 %>
+									 <%} %>
+							<span style="font-size: 14px;">	<%=committeescheduleeditdata[8].toString().toUpperCase()+key+"/"+obj[1].toString().split("/")[4] %></span>
+								<%}%> 
+								</td>
+									<td style="border:1px solid black;text-align: justify ;"   ><%=obj[2] %></td>
+													<td style="border:1px solid black;" >
+									<%	String actionstatus = obj[9].toString();
+										int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
+										LocalDate pdcorg = LocalDate.parse(obj[3].toString());
+										LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
+										LocalDate today = LocalDate.now();
+										LocalDate endPdc=LocalDate.parse(obj[4].toString());
+									%> 
+					 				<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+											<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+											<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											<%} %>	
+										<%}else{ %>
+												-									
+										<%} %>
+									<br>
+									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:black ;font-weight:bold;" <%} %>>
+									<%= sdf.format(sdf1.parse(obj[4].toString()))%>
+									</span>
+										<%if(!pdcorg.equals(endPdc)) { %>
+									<br>
+									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:black ;font-weight:bold;" <%} %>>
+									<%= sdf.format(sdf1.parse(obj[3].toString()))%> 
+									</span>	
+									<%} %>
+								</td>
+												
+												
+									<td style="border:1px solid black;"> <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
+	
+								</tr>			
+							<%i++;
+							}} %>
+							</tbody>
+								
+								</tbody>
+								
+								
+								</table>
 			<%}else if(committeemin[0].toString().equals("4") ) { %>
 				<br>  
 					<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
