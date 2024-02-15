@@ -94,13 +94,31 @@ import com.ibm.icu.text.DecimalFormat;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.geom.Rectangle;
+//import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
+//import com.itextpdf.kernel.pdf.PdfWriter;
+//import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.kernel.utils.PdfMerger;
+//import com.itextpdf.layout.Document;
+import com.itextpdf.kernel.pdf.EncryptionConstants;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.WriterProperties;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
+import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+
 import com.itextpdf.layout.font.FontProvider;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.VerticalAlignment;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
@@ -130,6 +148,7 @@ import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.controller.PrintController;
 import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.utils.PMSFileUtils;
 import com.vts.pfms.utils.PMSLogoUtil;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 
@@ -176,6 +195,9 @@ public class CommitteeController {
 	
 	@Autowired
 	PrintController pt;
+	
+	@Autowired
+	PMSFileUtils PMSFileUtils ;
 	
 	@Autowired
 	PMSLogoUtil LogoUtil;
@@ -5588,11 +5610,15 @@ public class CommitteeController {
 			public void CommitteeMinutesNewDownload(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 			{
 				String UserId=(String)ses.getAttribute("Username");
+				String EmpNo=(String)ses.getAttribute("EmpNo");
+				String EmpName=(String)ses.getAttribute("EmpName");
 				String LabCode =(String) ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId);
 				try
 				{		
 					String committeescheduleid = req.getParameter("committeescheduleid");			
+					String PROTECTED_MINUTES = req.getParameter("PROTECTED MINUTES");
+					
 					Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
 					String projectid= committeescheduleeditdata[9].toString();
 					String committeeid=committeescheduleeditdata[0].toString();
@@ -5816,7 +5842,7 @@ public class CommitteeController {
 									 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
 									 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
 									 	 // new code end
-					//code on 06-10-2023				 	 
+									 	 //code on 06-10-2023				 	 
 									 	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
 								    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
 								    	ReviewMeetingList.add(printservice.ReviewMeetingList(projectid, "EB"));
@@ -5848,45 +5874,86 @@ public class CommitteeController {
 									 	 req.setAttribute("tableactionlist",  actionsdata);
 									 	 CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
 									 	 req.getRequestDispatcher("/view/committee/ActionDetailsTable.jsp").forward(req, customResponse1);
-									 	 String html1 = customResponse1.getOutput();        
+									 	 String html1 = customResponse1.getOutput();  
 									 	 HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
-									 	 PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-									 	 PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-									 	 PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+									 	 
+//									 	PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+//									 	PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+//							            PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
 								        
-									     PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
-									     PdfDocument pdfDocument2 = new PdfDocument(pdf2);
-									     PdfMerger merger = new PdfMerger(pdfDocument);
-						        
-								        merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+									 	PdfWriter pdfw = null;
+									 	PdfReader pdf1 = null;
+									 	PdfReader pdf2 = null;
+									 	
+									 	PdfDocument pdfDocument = null;
+									    PdfDocument pdfDocument2 = null;
+									    PdfMerger merger = null;
+									 	 
+									 	 if(PROTECTED_MINUTES == null) {
+									 		 
+											 pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+											 pdf1=new PdfReader(path+File.separator+filename+".pdf");
+									         pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+									         
+									         pdfDocument = new PdfDocument(pdf1, pdfw);
+											 pdfDocument2 = new PdfDocument(pdf2);
+											 merger = new PdfMerger(pdfDocument);
+											 
+											 merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+									 		 
+									 	 } else {
+
+										 	String password = "lrde123";
+								            pdfw = new PdfWriter(path +File.separator+ "merged.pdf",
+								                    new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
+								                            EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
+	
+								            pdf1=new PdfReader(path+File.separator+filename+".pdf");
+								            pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
 								            
+										 	 
+										    pdfDocument = new PdfDocument(pdf1, pdfw);
+										    pdfDocument2 = new PdfDocument(pdf2);
+										    merger = new PdfMerger(pdfDocument);
+										    
+										    merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+							        
+										    PMSFileUtils.addWatermarktoPdf(pdfDocument, EmpName , EmpNo );
+									    
+									 	}
+								        
+								        
 							            pdfDocument2.close();
 								        pdfDocument.close();
 								        merger.close();
 								        pdf2.close();
 								        pdf1.close();	       
 								        pdfw.close();
+//								        writer.close();
+								        
 									    
 								        res.setContentType("application/pdf");
 										res.setHeader("Content-Disposition", "inline; name="+ filename+".pdf; filename"+ filename+".pdf");
-								        File f=new File(path +File.separator+ "merged.pdf");
+								        File f =new File(path +File.separator+ "merged.pdf");
 						         
 			
 								        OutputStream out = res.getOutputStream();
 										FileInputStream in = new FileInputStream(f);
 										byte[] buffer = new byte[4096];
 										int length;
+										
 									while ((length = in.read(buffer)) > 0) {
 										out.write(buffer, 0, length);
 									}
+									
 									in.close();
 									out.close();
 									
-							        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
+							        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf");
 							        Files.delete(pathOfFile2);		
-							        pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+							        pathOfFile2= Paths.get( path+File.separator+filename+".pdf");
 							        Files.delete(pathOfFile2);	
-							        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
+							        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf");
 							        Files.delete(pathOfFile2);
 						        
 					}
