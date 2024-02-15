@@ -29,7 +29,7 @@
     overflow-y: hidden;
     padding: 50px;
     min-height: 500px;
-    padding-top: 10px;
+    padding-top: 0px;
     text-align: center;
 }
 .genealogy-tree{
@@ -46,7 +46,7 @@
     float: left; text-align: center;
     list-style-type: none;
     position: relative;
-    padding: 20px 26px 0 12px;
+    padding: 17px 0px 0 0px;
 }
 .genealogy-tree li::before, .genealogy-tree li::after{
     content: '';
@@ -138,9 +138,10 @@
   
     border: 1px solid black;
     
+    max-width:100px;
+    /* max-height:110px; */
+/*     display: block; */
     
-    display: block;
-    flex-wrap: wrap;
    
     /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%); */
     
@@ -152,23 +153,15 @@
 
 
 /*  max-width:120px; */
-	padding:3px;
+	padding:2px;
  	text-align: center;
- 	
+ 	 
    
  	/* color: #3468C0; */
 	 /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%);  */
 }
 
 
-/* .action-box span {
-    max-width: 100px; /* Adjust the maximum width as needed */
-    display: inline-block; /* Ensures the span respects width */
-    overflow: hidden; /* Hides content that exceeds the width */
-    white-space: nowrap; /* Prevents wrapping */
-    word-wrap: break-word;
-    word-break: break-all;
-} */
 
 
 .action-box-body
@@ -232,7 +225,7 @@ table,td{
 			                         	
 			                         	<div  class="action-box-header" >
 			                         	
-			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;">
+			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;">
 	                          			        <%if(ProjectId!=null){	
 				                                       Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");%>  
 			                                              <%=ProjectDetail[1] %>
@@ -277,13 +270,13 @@ table,td{
 												 
 												 );" >  
 												
-										             <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-										           <%=level1[3] %>
+										             <span  style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;"> 
+										                  <%=level1[3] %>
 										                
-										             </span> 
+										             </span>  
 										            
 													          
-											 <div style=""><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+											 <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													      
 			                          		    </div> 
 			                          	 </div> 
@@ -322,17 +315,13 @@ table,td{
 																 
 																 );" >
 														
-															       <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															       <span style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;"> 
 			                          			                              <%=level2[3] %>
 			                          			                   </span>
 			                          			                   
-			                          			                   
-			                          			                   <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
+			                          			                  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													      
-													                           <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
-													
-													              <!--   </div>  -->
+													             
 												             
 			                          			             </div>
 													     </div>
@@ -373,18 +362,15 @@ table,td{
 																			 
 																			 );" >
 																		
-																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
 			                          			                             
 			                          			                                <%=level3[3] %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                       <!--     <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
+			                          			                      <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													      
-													                             <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
-													
-													                       <!--  </div>  -->
+													                   
 			                          			                          
 												                                              			
 													                 </div>
@@ -429,17 +415,15 @@ table,td{
 																			 );" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
 			                          			                             
 			                          			                                <%=level4[3] %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          
-			                          			                         <!--   <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
-													                              <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													                     <!--   </div>  -->
+													                     
 												                                              			
 													                    </div>
 													                                            
@@ -482,19 +466,17 @@ table,td{
 																			 );" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
 			                          			                             
 			                          			                                <%=level5[3] %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
 			                          			                          
-			                          			                          <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
+			                          			                          
+			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													      
-													                               <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
-													
-													                      <!--  </div>  -->
+													                   
 												                                              			
 													                        </div>
 													                        
