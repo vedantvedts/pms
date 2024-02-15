@@ -131,11 +131,17 @@
 <style type="text/css">
 .action-box
 {
-     width: fit-content ; 
-     height: fit-content;
+    /*  width: fit-content ; 
+     height: fit-content; */
      /* min-width:190px; */
    /*   min-width:190px; */
+  
     border: 1px solid black;
+    
+    
+    display: block;
+    flex-wrap: wrap;
+   
     /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%); */
     
 }
@@ -143,12 +149,26 @@
 
 .action-box-header
 {
+
+
+/*  max-width:120px; */
 	padding:3px;
  	text-align: center;
+ 	
+   
  	/* color: #3468C0; */
 	 /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%);  */
 }
 
+
+/* .action-box span {
+    max-width: 100px; /* Adjust the maximum width as needed */
+    display: inline-block; /* Ensures the span respects width */
+    overflow: hidden; /* Hides content that exceeds the width */
+    white-space: nowrap; /* Prevents wrapping */
+    word-wrap: break-word;
+    word-break: break-all;
+} */
 
 
 .action-box-body
@@ -235,7 +255,7 @@ table,td{
 									    <div class="member-view-box action-view-box">
 											 <div class="action-box" > 
 												
-												<div  class="action-box-header" 
+												 <div  class="action-box-header" 
 												
 												style="background: linear-gradient(to bottom right, 
 												<%if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
@@ -255,27 +275,17 @@ table,td{
 												<%}else { %> white 5%, white 10% 
 												<%} %>
 												 
-												 );"
-												
-												
-												> 
+												 );" >  
 												
 										             <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 										           <%=level1[3] %>
 										                
 										             </span> 
 										            
-										             
-										             
-										             <!--   <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
-													
+													          
+											 <div style=""><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													      
-													          <div style="margin-top:-5px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
-													
-													<!-- </div> -->  
-										             
-										                
-			                          		   </div>
+			                          		    </div> 
 			                          	 </div> 
 									</div> 
 											<% List<Object[]> Level1 =ProductTreeList.stream().filter(e-> level1[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
