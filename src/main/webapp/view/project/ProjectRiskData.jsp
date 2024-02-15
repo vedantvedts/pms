@@ -136,9 +136,9 @@ if(ses1!=null){
 					<div class="row card-header" style="margin-left: -13px;width: 102%;">
 			   			<div class="col-md-6">
 			   			<%if(riskmatrixdata==null){ %>
-							<h4>Add Risk Data</h4>
+							<h4>Add Risk Data (<%=riskdata[7] %>)</h4>
 						<%}else{ %>
-							<h4>Risk Data </h4>
+							<h4>Risk Data (<%=riskdata[7] %>)</h4>
 						<%} %>
 						</div>
 						<div class="col-md-6 justify-content-end" >

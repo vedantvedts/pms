@@ -91,6 +91,7 @@ SimpleDateFormat sdf=fc.getRegularDateFormat();
 SimpleDateFormat sdf1=fc.getSqlDateFormat(); int addcount=0; 
 NFormatConvertion nfc=new NFormatConvertion();
 
+String EmpId=(String)request.getAttribute("EmpId");
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectlist");
 String projectid=(String)request.getAttribute("projectid");
 List<Object[]> riskdatalist=(List<Object[]>)request.getAttribute("riskdatalist");
@@ -179,13 +180,15 @@ if(ses1!=null){
 								<td class="center"><%=riskdatalist.get(i)[1] %></td>
 								<td class="center"><%=sdf.format(riskdatalist.get(i)[8])%></td>
 								<td class="center">
-									<%if(riskdatalist.get(i)[3].toString().equals("I")){ %>
+									<%if(riskdatalist.get(i)[3].toString().equals("I") || riskdatalist.get(i)[3].toString().equals("B")){ %>
 										In Progress
 									<%}else if(riskdatalist.get(i)[3].toString().equals("A")){  %>
 										Assigned
 									<%}else if(riskdatalist.get(i)[3].toString().equals("C")){  %>
 										Closed
-										<%} %>
+									<%}else if(riskdatalist.get(i)[3].toString().equals("F")){ %>
+								        	Forwarded
+									<%}%>
 								</td>
 								<td> 
 								<div  style="display:flex;">
@@ -200,10 +203,10 @@ if(ses1!=null){
 										<input type="hidden" name="projectid" value="<%=projectid%>">
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									</form>
-									
-								<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
-																	>
-
+							
+								<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST">
+                                    <%if(riskdatalist.get(i)[12].toString().equalsIgnoreCase(EmpId) && !riskdatalist.get(i)[3].toString().equalsIgnoreCase("C") 
+                                    		&& !riskdatalist.get(i)[3].toString().equalsIgnoreCase("F")){ %>
 											<button class="btn btn-sm editable-click" name="sub">
 													<div class="cc-rockmenu">
 															<div class="rolling">
@@ -220,13 +223,15 @@ if(ses1!=null){
 											 <input type="hidden" name="ActionAssignid" value="<%=riskdatalist.get(i)[6]%>"/>
 											 <input type="hidden" name="ProjectId" value="<%=riskdatalist.get(i)[2]%>"/>
 											 <input type="hidden" name="flag" value="risk">
+											 <input type="hidden" name="projectid" value="<%=projectid%>">
  											 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-								   </form> 		
+								      <%} %>
+								   </form>
+								   	
 									</div>
 								</td>	
 							</tr>														
-						<%}
-					}%>
+						<%}}%>
 						</tbody>
 					</table>
 											

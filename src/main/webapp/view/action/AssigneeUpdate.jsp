@@ -134,15 +134,18 @@ h6{
 				            	<%}else{%>
 				            	<a type="button" class="btn  btn-sm back"   <%if(ActionPath==null ) { %> href="AssigneeList.htm" <%}else{ %>href="ActionIssue.htm" <%} %>>BACK</a>
 				            	<%}%>
-				            	<%}else{ %>
-	                           	<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=empId %>" >BACK</a>
+				            	<%}else if(flag.equalsIgnoreCase("risk")){ %>
+	                           	<a type="button" class="btn  btn-sm back" href="ProjectRisk.htm?projectid=<%=projectid %>" >BACK</a>
+	                           	<input type="hidden" name="flag" value="risk">
+	                          	 <input type="hidden" name="projectid" value="<%=projectid!=null?projectid:"0" %>" /> 
+	          					<%}else{ %>
+	          					<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=empId %>" >BACK</a>
 	          					<%} %>
 				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
 	                           	<% if(SubList.size()>0 && (!Empid.equalsIgnoreCase(Assignee[22].toString())||Assignee[22].toString().equalsIgnoreCase(Assignee[23].toString()))){ %>  
 	                      		<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>
-	                           	
-	          					</div>
+	       					</div>
 	        			</div>
 			        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 			     		<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
@@ -155,6 +158,7 @@ h6{
 	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      				<input type="hidden" name="Type" value="NB" /> 
+	      				<input type="hidden" name="flag" value="risk" /> 
 	      				<input type="hidden" name="projectid" value="<%=projectid!=null?projectid:"0" %>" /> 
 	      				<input type="hidden" name="committeeid" value="<%= (committeeid!=null?committeeid:"0")%>" /> 
 	      				<input type="hidden" name="meettingid" value="<%=(meettingid!=null?meettingid:"0") %>" />  

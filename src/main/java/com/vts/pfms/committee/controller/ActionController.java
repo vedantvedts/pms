@@ -462,7 +462,8 @@ public class ActionController {
 			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
 			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
 			redir.addFlashAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
-		
+			redir.addFlashAttribute("flag", req.getParameter("flag"));
+			redir.addFlashAttribute("projectid", req.getParameter("projectid"));
 		}
 		catch (Exception e) {
 				e.printStackTrace();
@@ -479,12 +480,15 @@ public class ActionController {
 		try {
 			  String MainId=null;
 			  String AssignId=null;
+			  String flag=null;
+			  String projectid=null;
 				 Map md = model.asMap();
 				   
 				    	
 				    	MainId = (String) md.get("ActionMainId");
 				    	AssignId = (String)md.get("ActionAssignId");
-
+				    	flag = (String)md.get("flag");
+				    	projectid = (String)md.get("projectid");
 				    if(MainId==null|| AssignId==null) {
 				    	 redir.addAttribute("resultfail", "Refresh Not Allowed");
 				    	return "redirect:/AssigneeList.htm";
@@ -501,6 +505,8 @@ public class ActionController {
 		     req.setAttribute("AssignerName", AssignerName);
 			 req.setAttribute("actiono",data[9].toString());
 			 req.setAttribute("filesize",file_size);
+			 req.setAttribute("flag", flag);
+			 req.setAttribute("projectid", projectid);
 			 List<Object[]> AssigneeDetails=service.AssigneeDetails(data[18].toString());
 			 
 			 if(AssigneeDetails.size()>0) 
@@ -631,22 +637,23 @@ public class ActionController {
 				}
 				redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
 				redir.addFlashAttribute("Type", req.getParameter("Type"));
-				req.setAttribute("flag", req.getParameter("flag"));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionForward.htm "+UserId, e);
 			}
 			
-			System.out.println();
-			if(!req.getParameter("projectid").equalsIgnoreCase("0")) {
+			if(!req.getParameter("projectid").equalsIgnoreCase("0") && !flag.equalsIgnoreCase("risk")) {
 				redir.addAttribute("projectid", req.getParameter("projectid"));
 				redir.addAttribute("committeeid", req.getParameter("committeeid"));
 				redir.addAttribute("meettingid", req.getParameter("meettingid"));
 				redir.addAttribute("EmpId", EmpId);
 				return "redirect:/MeettingAction.htm";
+			}else if(flag.equalsIgnoreCase("risk")){
+				redir.addAttribute("projectid", req.getParameter("projectid"));
+			     return "redirect:/ProjectRisk.htm";
 			}else {
-			     return "redirect:/AssigneeList.htm";
+				 return "redirect:/AssigneeList.htm";
 			}
 		
 		}
