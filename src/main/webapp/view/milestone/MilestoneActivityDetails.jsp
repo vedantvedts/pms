@@ -1289,22 +1289,21 @@ $('#DateCompletionA'+'<%=obj[0]%>').on('change', function() {
 $( document ).ready(function() {
     mindate2=$('#DateCompletionA'+'<%=obj[0]%>').val();
     $('#DateCompletionA2'+'<%=obj[0]%>').prop("disabled",false);
-    $('#DateCompletionA2'+'<%=obj[0]%>
-																')
-																							.daterangepicker(
-																									{
-																										"singleDatePicker" : true,
-																										"linkedCalendars" : false,
-																										"showCustomRangeLabel" : true,
-																										"minDate" : mindate2,
-																										"maxDate" : dt2,
-																										"cancelClass" : "btn-default",
-																										showDropdowns : true,
-																										locale : {
-																											format : 'DD-MM-YYYY'
-																										}
-																									});
-																				});
+    $('#DateCompletionA2'+'<%=obj[0]%>').daterangepicker(
+			{
+				"singleDatePicker" : true,
+				"linkedCalendars" : false,
+				"showCustomRangeLabel" : true,
+				"minDate" : mindate2,
+				"maxDate" : dt2,
+				"cancelClass" : "btn-default",
+				showDropdowns : true,
+				locale : {
+					format : 'DD-MM-YYYY'
+				}
+			});
+});
+																							
 															</script>
 
 														</div>
