@@ -3,6 +3,7 @@ package com.vts.pfms.producttree.dao;
 import java.util.List;
 
 import com.vts.pfms.producttree.model.ProductTree;
+import com.vts.pfms.producttree.model.ProductTreeRev;
 
 public interface ProductTreeDao {
 
@@ -15,5 +16,7 @@ public interface ProductTreeDao {
 	public long LevelNameEdit(ProductTree pt) throws Exception;
 
 	public long LevelNameDelete(ProductTree pt) throws Exception;
+
+	public long LevelRevise(ProductTreeRev rev) throws Exception;
 
 }

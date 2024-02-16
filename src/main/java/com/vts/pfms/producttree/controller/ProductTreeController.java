@@ -265,8 +265,7 @@ public class ProductTreeController {
 					 redir.addAttribute("ProjectId", ProjectId);
 					 return "redirect:/ProductTree.htm";
 				 }
-	    	  
-	    	  
+	    		  
 	      }
 			
 		}
@@ -280,6 +279,62 @@ public class ProductTreeController {
 	}
 	
 	
+	@RequestMapping(value = "ProductTreeRevise.htm")
+	public String ProductTreeRevise(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProductTree.htm "+UserId);		
+		try {
+			
+			
+	        String ProjectId=req.getParameter("ProjectId");
+	      
+			req.setAttribute("ProjectId", ProjectId);
+	        req.setAttribute("ProductTreeList",service.getProductTreeList(ProjectId) );
+	        req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
+	        
+	        
+             String Action=req.getParameter("Action");
+			
+			
+			if(Action!=null && Action.equalsIgnoreCase("R")) {
+	        ProductTreeDto dto=new ProductTreeDto();
+			 dto.setLevelName(req.getParameter("LevelName"));
+			 dto.setMainId(Long.parseLong(req.getParameter("Mainid")));
+			 dto.setStage(req.getParameter("Stage"));
+			 dto.setModule(req.getParameter("Module"));
+			 dto.setCreatedBy(UserId);
+	        
+			 long update = service.ProductTreeRevise(dto,Action);
+			 if(update!=0) {
+				 
+				 redir.addAttribute("result", "Level Name Revised Successfully");
+				 redir.addAttribute("ProjectId", ProjectId);
+				 return "redirect:/ProductTreeRevise.htm";
+				 
+			 }else {
+				 
+				 redir.addAttribute("resultfail", "Level Name Revised Unsuccessfull");
+				 redir.addAttribute("ProjectId", ProjectId);
+				 return "redirect:/ProductTreeRevise.htm";
+			 }
+		}	
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ProductTreeRevise.htm "+UserId, e); 
+			return "static/Error";
+			
+		}
+		return "producttree/ProductTreeRevise";
+	}
+
+	
 	@RequestMapping(value = {"ProductTreeDownload.htm"})
 	public void ProjectDataSystemSpecsFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
 	{
@@ -292,10 +347,7 @@ public class ProductTreeController {
 			
 			req.setAttribute("ProductTreeList",service.getProductTreeList(ProjectId) );
 			req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
-		
-		
-		
-			String filename="ProuctTree";	
+		    String filename="ProuctTree";	
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
@@ -330,12 +382,10 @@ public class ProductTreeController {
 
 		}
 	    catch(Exception e) {	    		
-    		logger.error(new Date() +" Inside CARSRSQRDownloadBeforeFreeze.htm "+UserId, e);
+    		logger.error(new Date() +" Inside ProductTreeDownload.htm "+UserId, e);
     		e.printStackTrace();
     	}
 		
 	}
-	
-	
 	
 }

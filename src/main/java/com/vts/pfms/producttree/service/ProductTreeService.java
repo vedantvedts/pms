@@ -12,4 +12,6 @@ public interface ProductTreeService {
 
 	public long LevelNameEdit(ProductTreeDto dto,String Action) throws Exception;
 
+	public long ProductTreeRevise(ProductTreeDto dto,String Action) throws Exception;
+
 }

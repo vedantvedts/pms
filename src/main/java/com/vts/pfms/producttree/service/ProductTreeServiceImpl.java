@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.producttree.dao.ProductTreeDao;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
 import com.vts.pfms.producttree.model.ProductTree;
+import com.vts.pfms.producttree.model.ProductTreeRev;
 
 @Service
 public class ProductTreeServiceImpl implements ProductTreeService {
@@ -74,8 +77,42 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		
 		
 	}
+
+	@Override
+	public long ProductTreeRevise(ProductTreeDto dto,String Action) throws Exception {
+		
+    ProductTree pt=dao.getLevelNameById(dto.getMainId());
+		
+    
+    ProductTreeRev rev =new ProductTreeRev();
+   
+    rev.setMainId(dto.getMainId());
+    rev.setProjectId(pt.getProjectId());
+    rev.setParentLevelId(pt.getParentLevelId());
+    rev.setLevelId(pt.getLevelId());
+    rev.setLevelName(dto.getLevelName());
+    rev.setStage(dto.getStage());
+    rev.setModule(dto.getModule());
+    rev.setCreatedBy(dto.getCreatedBy());
+    rev.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+    rev.setRevisionNo(String.valueOf(Integer.parseInt(pt.getRevisionNo())+1));
+    rev.setIsActive(1);
+		
+		
+    dao.LevelRevise(rev);
+    
+    
+			pt.setMainId(dto.getMainId());
+			pt.setLevelName(dto.getLevelName());
+			pt.setStage(dto.getStage());
+			pt.setModule(dto.getModule());
+			pt.setRevisionNo(rev.getRevisionNo());
+			pt.setModifiedBy(dto.getCreatedBy());
+			pt.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		
+			return dao.LevelNameEdit(pt);
 	
 	
-	
+	}
 
 }

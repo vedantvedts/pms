@@ -16,6 +16,7 @@ public class ProductTreeDto {
 		private String LevelName;
 		private String Stage;
 		private String Module;
+		private String RevisionNo;
 		private String CreatedBy;
 		private String CreatedDate;
 		private String ModifiedBy;

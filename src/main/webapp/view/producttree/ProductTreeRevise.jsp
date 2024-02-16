@@ -228,11 +228,11 @@ height:18px;
 
   <%
   
-  List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+
   List<Object[]> ProductTreeList=(List<Object[]>)request.getAttribute("ProductTreeList");
-  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-  SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+ 
   String ProjectId=(String)request.getAttribute("ProjectId");
+  List<Object[]> ProjectName=( List<Object[]>)request.getAttribute("ProjectDetails"); 
 
   
   
@@ -240,46 +240,20 @@ height:18px;
 
 <body>
 
- <form class="form-inline"  method="POST" action="ProductTree.htm">
-  <div class="row W-100" style="width: 100%;">
+ <form>
+  <div class="row" style="width: 100%;">
 
-  
+  <div class="card-header" style="width:94%;"><h4>Project Revision For <%=ProjectName.get(0)[1] %></h4></div>
+       
+   <input type="submit" class="btn btn-primary btn-sm back "  value="Back"  onclick="SubmitBack()"  formaction="ProductTree.htm"> 
 	
-                                    <div class="col-md-2">
-                            		<label class="control-label">Project Name :</label>
-                            		</div>
-                            		<div class="col-md-2" style="margin-top: -7px;">
-                              		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
-    									<option disabled selected value="">Choose...</option>
-    										<% for (Object[] obj : ProjectList) {
-    										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
-    										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
-											<%} %>
-  									</select>
-  									</div>
-  									<div class="col-md-2" style="margin-left: 75px;margin-top:-7px;">
-  										
-  										
-  										<% if(ProductTreeList!=null && ProductTreeList.size()>0){ %>
-  										
-		  										<button type="submit" class="btn btn-sm btn-link" name="view_mode" value="Y" formtarget="blank" title="Product Tree View" data-toggle="tooltip" data-placement="top"  >
-												            <img src="view/images/tree.png">
-												</button> 
-		                                       
-		                                       <button name="action" class="btn btn-sm  back" name ="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevise.htm" style="background-color: #FF7800;color: black; border: 0" type="submit" value="revise" >REVISE</button>
-                                       
-                                       <%} %>
-                                       
-                                       <%-- <button  type="submit" class="btn btn-sm "  style="margin-left: 1rem;" name="ProjectId" value="<%=ProjectId %>"  formaction="ProductTreeDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button> --%>
-                                       
-                                   </div>
+          	
   									
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
- <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+ <input  type="hidden" name="ProjectId" value="<%=ProjectId%>" >
  </div>
- 
-</form>
+ </form>
+
 
 
 	
@@ -309,36 +283,23 @@ if(ses1!=null){	%>
 	
 	
 	    <div class="genealogy-tree">
-	    
-	    
-	<%--    <% if(ProductTreeList!=null && ProductTreeList.size()>0){ %> 
-	     <form action="ProductTreeEditDelete.htm" method="get">
-	     
-	                <button class="btn btn-sm add" type="submit" name="ProjectId" value="<%=ProjectId%>" >Update / Delete</button> 
-		     </form>
-		     
-		     <%} %> --%>
-	        
-	  		<ul>
+          <ul>
 				<li>      
-	
-						 <div class="member-view-box action-view-box">
+	                    <div class="member-view-box action-view-box">
 			                    
 			                         <div class=" action-box" style="border:-1px;" > 
 			                         	
 			                         	<div  class="action-box-header" >
 			                         	
 			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;">
-	                          			        <%if(ProjectId!=null){	
-				                                       Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");%>  
-			                                              <%=ProjectDetail[1] %>
-	                          			               <%} %>
+	                          			        <%if(ProjectId!=null){%>
+	                          			        	     <%=ProjectName.get(0)[1] %>
+			                                     <%} %>
+			                                     
 			                          		 </span>
 			                         			 
 										</div>
-										
-			                           
-			                </div>
+							 </div>
 			          </div>
 			               
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
@@ -386,12 +347,8 @@ if(ses1!=null){	%>
 										</div> 
 									 
 												<div class="actions">
-												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')" ><img src="view/images/edit.png" ></button>
-												    <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-												         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-													     <input type="hidden" name="Action" value="D">
-												            <button class="delet" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
-												      </form> 
+												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')" ><img src="view/images/repeat.png" ></button>
+												   
 												   </div>
 									</div>
 									
@@ -441,12 +398,8 @@ if(ses1!=null){	%>
 													     
 													      
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-																			     <input type="hidden" name="Action" value="D">
-																		            <button class="delet" name="Mainid" value="<%=level2[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
-																	        </form> 
+																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')" ><img src="view/images/repeat.png" ></button>
+																	          
 												                     </div>
 												   </div> 
 												   
@@ -499,12 +452,8 @@ if(ses1!=null){	%>
 													              </div>
 													              
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-																			     <input type="hidden" name="Action" value="D">
-																		            <button class="delet" name="Mainid" value="<%=level3[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
-																	        </form> 
+																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>')" ><img src="view/images/repeat.png" ></button>
+																	      
 												                     </div>
 													              
 													              
@@ -563,12 +512,8 @@ if(ses1!=null){	%>
 																
 																 
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-																			     <input type="hidden" name="Action" value="D">
-																		            <button class="delet" name="Mainid" value="<%=level4[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
-																	        </form> 
+																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>')" ><img src="view/images/repeat.png" ></button>
+																	        
 												                     </div>
 																
 														</div> 
@@ -624,12 +569,8 @@ if(ses1!=null){	%>
 													                       
 													                        
 																              <div class="actions">
-																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')" ><img src="view/images/edit.png" ></button>
-																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-																						     <input type="hidden" name="Action" value="D">
-																					            <button class="delet" name="Mainid" value="<%=level5[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
-																				        </form> 
+																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')" ><img src="view/images/repeat.png" ></button>
+																				        
 															                     </div>
 													                       
 													                       
@@ -644,25 +585,7 @@ if(ses1!=null){	%>
 														<% } %>
 														
 														
-														 <%---------------------------------------Level 5 Add---------------------------------------------------------%>
 														
-												   <li>
-				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-															
-															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
-													         </form>    
-													             
-													                
-													        </span> 	
-													    </div> 
-				                
-				                               </li>
-														
-												 <%---------------------------------------Level 5 Add---------------------------------------------------------%>		
 														
 													</ul>      
 																	
@@ -673,26 +596,7 @@ if(ses1!=null){	%>
 												    <% } %>
 												<% } %>
 														
-														
-														 <%---------------------------------------Level 4 Add---------------------------------------------------------%>
-														
-														  <li>
-				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-															
-															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
-													         </form>    
-													                  
-													        </span> 	
-													    </div> 
-				                
-				                               </li>
-														
-												 <%---------------------------------------Level 4 Add---------------------------------------------------------%>		
-										                </ul>     
+										 </ul>     
 																    
 																    
 																    
@@ -704,27 +608,6 @@ if(ses1!=null){	%>
 													    <% } %>
 													<% } %>
 											
-											
-											 <%---------------------------------------Level 3 Add---------------------------------------------------------%>
-                	        
-				                	            <li>
-				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-															
-															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#3#<%=level2[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
-													         </form>    
-													          
-													                
-													        </span> 	
-													    </div> 
-				                
-				                               </li>
-                	        
-                	          <%---------------------------------------Level 3 Add---------------------------------------------------------%>
-											
 							                </ul>    
 										                
 										                   
@@ -734,25 +617,7 @@ if(ses1!=null){	%>
 								 <% } %>
                 	        <% } %>
                 	        
-                	        <%---------------------------------------Level 2 Add---------------------------------------------------------%>
-                	        
-                	            <li>
-                                       <div class="member-view-box action-view-box">
-											<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-											
-											<form action="LevelNameAdd.htm" method="get">
-									            <input type="text" name="LevelName" required >
-									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#2#<%=level1[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-									             
-									         </form>    
-									          
-									                
-									        </span> 	
-									    </div> 
-                
-                               </li>
-                	        
-                	          <%---------------------------------------Level 2 Add---------------------------------------------------------%>
+                	       
 			                </ul>  
 						                  
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
@@ -761,24 +626,7 @@ if(ses1!=null){	%>
                 	   <% } %>
                 	<% } %>
 					
-			<%----------------------------------------------------------------------Level 1 Add---------------------------------------------------------%>
-                    <li>
-                
-                         <div class="member-view-box action-view-box">
-							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-					            <form action="LevelNameAdd.htm" method="get">
-						            <input type="text" name="LevelName" required>
-						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-									             
-							   </form>    
-					             
-					               
-					                
-					        </span> 	
-					    </div> 
-                
-                    </li>
-                	<%---------------------------------------Level 1 Add------------------------------------------------------------%>
+			
 				 </ul> 
                 
                          
@@ -790,42 +638,7 @@ if(ses1!=null){	%>
 		        </ul>
 	    
         </div>	
-        
-        
-      
-        
-       
-	    
-	<!--  <div class="bottom-div">  
-	    <div align="right">
-    
-     
-         <table style="">
-
-                  <tr>
-						<td style="font-weight:bold;">Stage (Upper corner)</td>
-						<td style="background-color:#D24545;color:#FFFFFF">Design</td>
-						<td style="background-color:#E9B824;color:black">Realisation</td>
-						<td style="background-color:#0B60B0;color:#FFFFFF">Testing & Evaluation</td>
-						<td style="background-color:green;color:#FFFFFF">Ready for Closure</td>
-                  </tr>
-
-
-
-                 <tr>
-						<td style="font-weight:bold;">Module (Lower corner)</td>
-						<td style="background-color:#FF8911;color:black">In-House Development</td>
-						<td style="background-color:#FDE767;color:black">BTP</td>
-						<td style="background-color:#B67352;color:black">BTS</td>
-						<td style="background-color:#492E87;color:#FFFFFF">COTS</td>
-                 </tr>
-
-       </table>     
-           
-      </div> 
-  
-	  </div>        -->
-	    
+         
 	</div>   
 	 	        
 	
@@ -836,13 +649,13 @@ if(ses1!=null){	%>
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Edit Level Name</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Revise Level Name</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" align="center">
-        <form action="ProductTreeEditDelete.htm" method="get">
+        <form action="ProductTreeRevise.htm" method="get">
         	<table style="width: 100%;">
         		<tr>
         			<th>Level Name : &nbsp; </th>
@@ -891,13 +704,13 @@ if(ses1!=null){	%>
         			<td colspan="2" style="text-align: center;">
         				<br>
         				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
-        				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>
+        				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Revise?');">REVISE</button>
         			</td>
         		</tr>
         	</table>
         	
         	<input type="hidden" id="Mainid" name="Mainid" value="" >
-        	<input type="hidden" id="" name="Action" value="E" >
+        	<input type="hidden" id="" name="Action" value="R" >
         	<input type="hidden" id="" name="ProjectId" value="<%=ProjectId %>" >
         	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
         </form>
@@ -907,15 +720,7 @@ if(ses1!=null){	%>
   </div>
 </div>
 	
-	
-	
 
-	
-	
-	
-	
-	  
-<!-- 	</form> -->
 
 
 <!-- ------------------------------- tree script ------------------------------- -->

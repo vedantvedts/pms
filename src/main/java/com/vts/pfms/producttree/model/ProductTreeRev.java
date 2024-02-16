@@ -6,17 +6,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name="pfms_product_tree")
-public class ProductTree {
+@Table(name="pfms_product_tree_rev")
+public class ProductTreeRev {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long RevId;
 	private long MainId;
 	private long ProjectId;
 	private long ParentLevelId;
@@ -27,7 +26,7 @@ public class ProductTree {
 	private String RevisionNo;
 	private String CreatedBy;
 	private String CreatedDate;
-	private String ModifiedBy;
-	private String ModifiedDate;
 	private int isActive;
+	
+
 }

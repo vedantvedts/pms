@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 
 import com.vts.pfms.producttree.model.ProductTree;
+import com.vts.pfms.producttree.model.ProductTreeRev;
 
 @Transactional
 @Repository
@@ -31,11 +32,18 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 
 	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module FROM pfms_product_tree a,project_master b WHERE MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";
 	private static final String LEVELNAMEDELETE="UPDATE pfms_product_tree AS t1\r\n"
-			+ "LEFT JOIN pfms_product_tree AS t2 ON t1.mainid = t2.parentlevelid\r\n"
-			+ "LEFT JOIN pfms_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
-			+ "LEFT JOIN pfms_product_tree AS t4 ON t3.mainid = t4.parentlevelid\r\n"
-			+ "SET t1.isActive = 0,t2.isActive = 0,t3.isActive = 0,t4.isActive = 0\r\n"
-			+ "WHERE t1.mainid = :mainid  OR t2.mainid = :mainid OR t3.mainid = :mainid OR t4.mainid = :mainid";
+			+ "	LEFT JOIN pfms_product_tree AS t2 ON t1.mainid = t2.parentlevelid\r\n"
+			+ "	LEFT JOIN pfms_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
+			+ "	LEFT JOIN pfms_product_tree AS t4 ON t3.mainid = t4.parentlevelid\r\n"
+			+ "	LEFT JOIN pfms_product_tree AS t5 ON t4.parentlevelid = t5.mainid\r\n"
+			+ "	SET\r\n"
+			+ "	    t1.isActive = CASE WHEN t1.mainid = :mainid OR t1.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
+			+ "	    t2.isActive = CASE WHEN t2.mainid = :mainid OR t2.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
+			+ "	    t3.isActive = CASE WHEN t3.mainid = :mainid OR t3.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
+			+ "	    t4.isActive = CASE WHEN t4.mainid = :mainid OR t4.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
+			+ "	    t5.isActive = CASE WHEN t5.mainid = :mainid OR t5.parentlevelid = :mainid THEN 0 ELSE 1 END \r\n"
+			+ "    \r\n"
+			+ "	WHERE t1.mainid = :mainid  OR t2.mainid = :mainid OR t3.mainid = :mainid OR t4.mainid = :mainid OR t5.mainid=:mainid";
 	
 	@Override
 	public long AddLevelName(ProductTree prod) throws Exception {
@@ -93,6 +101,15 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 		return count;
 	
 		
+	}
+
+
+	@Override
+	public long LevelRevise(ProductTreeRev rev) throws Exception {
+		
+		manager.persist(rev);
+		manager.flush();
+		return rev.getRevId();
 	}
 
 }
