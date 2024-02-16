@@ -1454,7 +1454,7 @@ if(formname!=null){
 					<%} %>
 				<form method="post" action="MinutesAttachment.htm" enctype="multipart/form-data" id="attachmentfrm" name="attachmentfrm" >					
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
+					<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>"> 
 					<table>
 						<tr>
 							<td>
