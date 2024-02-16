@@ -1458,7 +1458,7 @@ if(formname!=null){
 					<table>
 						<tr>
 							<td>
-								<input type="file" name="FileAttach" id="FileAttach" required  class="form-control" aria-describedby="inputGroup-sizing-sm" maxlength="255" form="attachmentfrm"  onchange="Filevalidation('FileAttach');" />
+								<input type="file" name="FileAttach" id="FileAttach" required  class="form-control" aria-describedby="inputGroup-sizing-sm" maxlength="255" form="attachmentfrm" accept=".pdf"  onchange="Filevalidation('FileAttach');" />
 							</td>
 							<td>&nbsp;</td>
 							<td>		
