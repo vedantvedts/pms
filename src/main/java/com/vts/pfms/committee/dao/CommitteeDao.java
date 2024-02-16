@@ -283,6 +283,7 @@ public interface CommitteeDao {
 	public int MomFreezingUpdate(String committeescheduleid)throws Exception;
 	public List<Object[]> getTodaysMeetings(String date)throws Exception;
 	public List<Object[]> actionDetailsForNonProject(String committeeId)throws Exception;
+	public List<Object[]> CommitteeOthersList(String projectid, String divisionid, String initiationid, String projectstatus)throws Exception;
 	
 	
 

@@ -3256,5 +3256,11 @@ public List<Object[]> actionDetailsForNonProject(String committeeId, String sche
 	List<Object[]>actionDetails=dao.actionDetailsForNonProject(committeeId);
 	return actionDetails;
 }
+
+@Override
+public List<Object[]> CommitteeOthersList(String projectid, String divisionid, String initiationid,String projectstatus) throws Exception {
+	
+	return dao.CommitteeOthersList(projectid,divisionid,initiationid,projectstatus);
+}
 	
 }

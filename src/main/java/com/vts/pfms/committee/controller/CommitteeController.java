@@ -3006,6 +3006,10 @@ public class CommitteeController {
 					committeeid="all";
 					CommitteeAutoScheduleList= service.CommitteeAutoScheduleList(projectid,divisionid,initiationid,projectstatus);	
 				}
+				else if(committeeid.equals("others")) {
+					
+					CommitteeAutoScheduleList=service.CommitteeOthersList(projectid,divisionid,initiationid,projectstatus);
+				}
 				else
 				{
 					CommitteeAutoScheduleList= service.CommitteeAutoScheduleList(projectid, committeeid,divisionid,initiationid,projectstatus);

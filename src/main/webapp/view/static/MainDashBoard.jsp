@@ -2191,7 +2191,7 @@ if(ses!=null){ %>
 										    	<table class="table meeting" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
 													<tr>
 														<td style="padding : 5px 15px 5px 15px;"></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">To Be Held</span></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">Total</span></td>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Held</span></td>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Rem</span></td>
 													</tr>
@@ -2201,24 +2201,25 @@ if(ses!=null){ %>
 													<%for(Object[] obj2 : ProjectMeetingCount){ %>
 				
 														<%if(obj[0].toString().equalsIgnoreCase(obj2[9].toString())) { %>
-																						
+														
+														  <!-- (project status) ==> all = All, B = held and C = remaining -->
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">EB</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2);" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[0] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2);" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[1] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2);" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[2] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[0] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[1] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[2] %></button></td>
 													</tr>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">PMRC</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1);" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[3] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1);" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[4] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1);" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[5] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[3] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[4] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[5] %></button></td>
 													<tr>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Others</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[6] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','all');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[7] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','all');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[8] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[6] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[7] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[8] %></button></td>
 													</tr>
 													
 													<%}%>
@@ -4280,8 +4281,9 @@ function submitForm(type,id)
    document.getElementById('dateform').submit(); 
 } 
 
-function CommitteeForm(id,comid)
+function CommitteeForm(id,comid,status)
 { 
+	
 	if(id==0){
 		
 		document.getElementById('committeegeneralform').submit();
@@ -4290,6 +4292,7 @@ function CommitteeForm(id,comid)
 	else{
 	$("#projectidauto").val(id);
 	$("#committeeid").val(comid);
+	$("#projectstatus").val(status);
 	document.getElementById('committeeform').submit(); 
 	}
 } 

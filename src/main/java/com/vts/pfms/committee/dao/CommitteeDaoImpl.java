@@ -2898,5 +2898,20 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("committeeId", committeeId);
 		return (List<Object[]>)query.getResultList();
 	}
+
+	
+	private static final String COMMITTEEOTHERSLIST="SELECT a.scheduledate,a.schedulestarttime,b.committeename,b.committeeshortname,a.scheduleid,a.scheduleflag,c.statusdetail,c.meetingstatusid FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.projectid=:projectid AND a.divisionid=:divisionid AND a.initiationid=:initiationid AND a.scheduleflag=c.meetingstatus AND a.isactive=1 AND (CASE WHEN 'B'=:projectstatus THEN c.meetingstatusid >= 6 WHEN 'C'=:projectstatus THEN c.meetingstatusid<=5 ELSE 1=1 END) AND b.CommitteeId NOT IN (1,2) ORDER BY a.scheduledate DESC";
+	@Override
+	public List<Object[]> CommitteeOthersList(String projectid, String divisionid, String initiationid, String projectstatus) throws Exception {
+		
+		Query query =manager.createNativeQuery(COMMITTEEOTHERSLIST);
+		query.setParameter("projectid", projectid );
+		query.setParameter("divisionid", divisionid );
+		query.setParameter("initiationid", initiationid );
+		query.setParameter("projectstatus", projectstatus  );
+		List<Object[]> CommitteeOthersList=(List<Object[]>)query.getResultList();
+		return CommitteeOthersList;
+
+	}
 }
 
