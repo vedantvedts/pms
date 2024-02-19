@@ -1308,7 +1308,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         						</div>
                         						<div class="column b" style="width: 14%;">
 				                            		<label class="control-label">Amount (In Lakhs, &#8377;)</label><span class="mandatory">*</span>
-				                              		<input  class="form-control form-control" type="number" name="socAmount" id="socAmount" maxlength="6" style="font-size: 15px;" step=".1"
+				                              		<input  class="form-control form-control" type="number" name="socAmount" id="socAmount" maxlength="6" style="font-size: 15px;" step="0.01"
 				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=Double.parseDouble(carsSoC.getSoCAmount())/100000%><%} %>" required> 
 			                        			</div>
                         						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
@@ -1362,7 +1362,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                     		 					<div class="column b" style="width: 10%;">
                             					 	<label class="control-label">RSP's Offer Date:</label><span class="mandatory">*</span>
                               		      			<input class="form-control form-control" type="text" name="rspOfferDate" id="rspOfferDate"
-                              		 					value="<%if(carsContract!=null && carsContract.getRSPOfferDate()!=null){ %><%=carsContract.getRSPOfferDate()%><%} %>" required>
+                              		 					value="<%if(carsContract!=null && carsContract.getRSPOfferDate()!=null){ %><%=fc.SqlToRegularDate(carsContract.getRSPOfferDate())%><%} %>" required>
                         						</div>
                     		 					 
                     		 				</div>
@@ -3547,7 +3547,8 @@ $('#rspOfferDate').daterangepicker({
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
 	/* "minDate" :datearray,   */
-	 "startDate" : new Date(),
+	 /* "startDate" : new Date(), */
+	 "maxDate" : new Date(), 
 	"cancelClass" : "btn-default",
 	showDropdowns : true,
 	locale : {

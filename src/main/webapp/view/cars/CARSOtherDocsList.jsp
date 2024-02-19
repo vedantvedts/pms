@@ -1012,19 +1012,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 
 <script type="text/javascript">
 
-$('#ptcOtherDocDate').daterangepicker({
-	"singleDatePicker" : true,
-	"linkedCalendars" : false,
-	"showCustomRangeLabel" : true,
-	/* "minDate" :datearray,   */
-	 "startDate" : new Date(),
-	 "maxDate" : new Date(),
-	"cancelClass" : "btn-default",
-	showDropdowns : true,
-	locale : {
-		format : 'DD-MM-YYYY'
-	}
-});	 
+
 
 
 function openCalendar(carsIniId, otherdocdetailsid, milestoneno, otherdocdate){
@@ -1032,7 +1020,23 @@ function openCalendar(carsIniId, otherdocdetailsid, milestoneno, otherdocdate){
 	$('#carsInitiationId').val(carsIniId);
 	$('#otherDocDetailsId').val(otherdocdetailsid);
 	$('#MilestoneNo').val(milestoneno);
-	$('#ptcOtherDocDate').val(otherdocdate);
+	
+	// Parse the otherdocdate string using moment.js
+    var parsedDate = moment(otherdocdate, 'DD-MM-YYYY').toDate();
+
+    // Initialize daterangepicker with custom startDate
+    $('#ptcOtherDocDate').daterangepicker({
+        "singleDatePicker" : true,
+        "linkedCalendars" : false,
+        "showCustomRangeLabel" : true,
+        "maxDate" : new Date(),
+        "cancelClass" : "btn-default",
+        showDropdowns : true,
+        locale : {
+            format : 'DD-MM-YYYY'
+        },
+        startDate: parsedDate // Set custom startDate
+    });		 
 }
 
 $(function () {
