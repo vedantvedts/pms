@@ -23,8 +23,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
@@ -336,7 +338,7 @@ public class ProductTreeController {
 
 	
 	@RequestMapping(value = {"ProductTreeDownload.htm"})
-	public void ProjectDataSystemSpecsFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
+	public void ProductTreeDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProductTreeDownload.htm "+UserId);
@@ -347,7 +349,7 @@ public class ProductTreeController {
 			
 			req.setAttribute("ProductTreeList",service.getProductTreeList(ProjectId) );
 			req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
-		    String filename="ProuctTree";	
+		    String filename="ProductTree";	
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
@@ -387,5 +389,21 @@ public class ProductTreeController {
     	}
 		
 	}
+	
+	
+	/*
+	 * @RequestMapping(value = "ProductTreeDownload.htm", method =
+	 * RequestMethod.GET) public @ResponseBody String
+	 * ProductTreeDownload(HttpServletRequest req,HttpSession ses) throws Exception
+	 * {
+	 * 
+	 * String UserId = (String)ses.getAttribute("Username"); logger.info(new Date()
+	 * +" Inside ProductTreeDownload.htm "+ UserId); String
+	 * ProjectId=req.getParameter("ProjectId");
+	 * System.out.println("ProjectId---"+ProjectId);
+	 * 
+	 * List<Object[]> ProductTreeList = service.getProductTreeList(ProjectId); Gson
+	 * json = new Gson(); return json.toJson(ProductTreeList); }
+	 */
 	
 }

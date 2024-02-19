@@ -8,6 +8,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
  <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+ 
 
 
 <!DOCTYPE html>
@@ -16,7 +17,10 @@
 <meta charset="ISO-8859-1">
 <title>Product Tree</title>
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
- 
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
 
 <!-- ------------------------------- tree css ------------------------------- -->
 <style type="text/css">
@@ -181,7 +185,7 @@ table,td{
 
       border: 1px solid black;
       border-collapse:collapse;
-      padding: 3px;
+      padding:2px;
       /* width:50%; */
 
 }
@@ -217,15 +221,16 @@ table,td{
 		<h3>PRODUCT TREE</h3>
 	</div> -->	
 
+     <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;"   ><i class="fa fa-download fa-lg" ></i></button> 
 
 		
-	    <div class="genealogy-tree">
+	    <div class="genealogy-tree"  id="tree">
 	  
 	        
 	  		<ul>
 				<li>      
 	
-						 <div class="member-view-box action-view-box">
+						 <div class="member-view-box action-view-box" style=" padding:0px 15px;">
 			                    
 			                         <div class=" action-box" style="border:-1px;" > 
 			                         	
@@ -564,7 +569,7 @@ table,td{
 	    <div align="right">
     
      
-         <table >
+         <table>
 
                   <tr>
 						<td style="font-weight:bold;">Stage (Upper corner)</td>
@@ -624,6 +629,30 @@ table,td{
 	        e.stopPropagation(); 
 	    });
 	});
+ 
+</script> 
+
+
+<script>
+
+$(document).ready(function() {
+    $('#generatePdfBtn').on('click', function() {
+        fetchJspContent();
+    });
+
+    function fetchJspContent() {
+        $.get("/view/producttree/ProductTreeView.jsp", function(data) {
+            generatePdf(data);
+        });
+    }
+
+    function generatePdf(content) {
+        var doc = new jsPDF();
+        doc.text(content, 10, 10); // Insert fetched content into PDF
+        doc.save("generated_pdf.pdf");
+    }
+});
+
 
 </script> 
 
