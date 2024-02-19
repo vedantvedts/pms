@@ -3,8 +3,10 @@ package com.vts.pfms.login;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -45,6 +47,8 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.admin.service.AdminService;
+import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.master.dto.ProjectSanctionDetailsMaster;
@@ -62,6 +66,12 @@ public class LoginController {
 	private static final Logger logger=LogManager.getLogger(LoginController.class);
 	@Autowired
 	RfpMainService rfpmainservice;
+	
+	@Autowired
+	ActionService Actservice;
+	
+	@Autowired
+	AdminService service;
 	
 	@Autowired
 	LoginRepository Repository;
@@ -225,6 +235,186 @@ public class LoginController {
     }
     
     
+    
+    @RequestMapping(value = "weeklyupdate.htm")
+	public String weeklyupdate(HttpServletRequest req, HttpSession ses) {
+		String procurement = req.getParameter("Procurement");
+		String actionpoints = req.getParameter("actionpoints");
+		String riskdetails = req.getParameter("riskdetails");
+		String Meeting = req.getParameter("Meeting");
+		String Mile = req.getParameter("Mile");
+		int projectid = Integer.parseInt(req.getParameter("USubmit").toString());
+		System.out.println("input submit value is "+projectid);
+		System.out.println("Procurement "+procurement);
+		System.out.println("actionpoints "+actionpoints);
+		System.out.println("riskdetails "+riskdetails);
+		System.out.println("Meeting "+Meeting);
+		System.out.println("Mile "+Mile);
+		System.out.println(ses.getAttribute("empNo"));
+		LocalDate currentDate = LocalDate.now();
+		service.weeklyupdate(Integer.parseInt(ses.getAttribute("EmpId").toString()), ses.getAttribute("empNo").toString(),currentDate.toString(), procurement, actionpoints, riskdetails, Meeting, Mile, projectid);
+		LocalDate today = LocalDate.now();
+
+		return "redirect:/MainDashBoard.htm";
+	}
+	
+	
+	
+	@RequestMapping(value = "GetUpdateDates.htm", method = RequestMethod.GET)
+	public @ResponseBody String GetUpdateDates(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String empno = ((String) ses.getAttribute("empNo")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
+		List<List<Object[]>> projectwiseaction = new ArrayList<>();
+
+		List<Object[]> projects = new ArrayList<>();
+		projects = Actservice.getProjectByDirectorID(EmpId);
+
+		int pid = Integer.parseInt(req.getParameter("ProjectId").toString());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		String iD = "";
+
+		List<Object[]> riskdatalist = Actservice.getRiskDetails(LabCode, pid);
+		List<Object[]> milestone = Actservice.getMilestoneDate(pid);
+		List<Object[]> Meetingdate = Actservice.getMeetingDate(pid);
+		List<Object[]> Procurementdate = Actservice.getProdurementDate(pid);
+		projectwiseaction.add(Actservice.getmodifieddate(UserId, pid));
+
+		List<Object[]> weeklyupdatedate = new ArrayList<>();
+		weeklyupdatedate = Actservice.getRecentWeeklyUpdateDate(req.getParameter("ProjectId"));
+
+		if (projectwiseaction.get(0).get(0)[0] != null) {
+
+			LocalDate inputDate = LocalDate.parse(projectwiseaction.get(0).get(0)[0].toString().subSequence(0, 10),
+					DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			iD = inputDate.format(formatter);
+			projectwiseaction.get(0).get(0)[0] = iD;
+		}
+
+		if (weeklyupdatedate.size() > 0) {
+			System.out.println("weekly update date is " + weeklyupdatedate.get(0)[0]);
+			LocalDate inputDate = LocalDate.parse(weeklyupdatedate.get(0)[0].toString().subSequence(0, 10),
+					DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			iD = inputDate.format(formatter);
+			weeklyupdatedate.get(0)[0] = iD;
+		}
+
+		if (riskdatalist.size() > 0)
+			if (riskdatalist.get(0)[0] != null) {
+				LocalDate inputDate = LocalDate.parse(riskdatalist.get(0)[0].toString().subSequence(0, 10),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				iD = inputDate.format(formatter);
+				riskdatalist.get(0)[0] = iD;
+			}
+
+		if (milestone.size() > 0)
+			if (milestone.get(0)[0] != null) {
+				LocalDate inputDate = LocalDate.parse(milestone.get(0)[0].toString().subSequence(0, 10),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				iD = inputDate.format(formatter);
+				milestone.get(0)[0] = iD;
+			}
+
+		if (Meetingdate.size() > 0 && Meetingdate.get(0)[0]!=null) {
+			LocalDate inputDate = LocalDate.parse(Meetingdate.get(0)[0].toString().subSequence(0, 10),
+					DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			iD = inputDate.format(formatter);
+			Meetingdate.get(0)[0] = iD;
+		}
+		if (Procurementdate.size() > 0)
+			if (Procurementdate.get(0)[0] != null) {
+				LocalDate inputDate = LocalDate.parse(Procurementdate.get(0)[0].toString().subSequence(0, 10),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				iD = inputDate.format(formatter);
+				System.out.println("procurement status date " + iD);
+				Procurementdate.get(0)[0] = iD;
+			}
+
+		projectwiseaction.add(weeklyupdatedate);
+		projectwiseaction.add(riskdatalist);
+		projectwiseaction.add(milestone);
+		projectwiseaction.add(Meetingdate);
+		projectwiseaction.add(Procurementdate);
+		System.out.println(Procurementdate.get(0)[0]);
+		Gson convertedgson = new Gson();
+		return convertedgson.toJson(projectwiseaction);
+	}
+	
+	@RequestMapping(value = "WeeklyUpdateReport.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String WeeklyUpdateReport(HttpServletRequest req, HttpSession ses) throws Exception {
+		String LoginType = (String) ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
+		
+		
+		
+		List<Object[]> projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
+		
+		req.setAttribute("projects", projects);
+		req.setAttribute("tableshow", "no");
+		System.out.println(req.getMethod());
+		if(req.getMethod().equals("POST")) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			System.out.println("in post");
+			String pid = String.valueOf(req.getParameter("getprojects").toString());
+			List<Object[]> updatedProjectsList = Actservice.getAllRecentUpdateList(pid);
+			if(updatedProjectsList.size()>0)
+			req.setAttribute("tableshow", "yes");
+			System.out.println(updatedProjectsList.size()>0);
+			for(int i=0;i<updatedProjectsList.size();i++)
+			{
+				System.out.println(updatedProjectsList.get(i)[1]);
+				updatedProjectsList.get(i)[1] = Actservice.getEmpnameById(Integer.parseInt((String.valueOf(updatedProjectsList.get(i)[1]))));
+				String strNew = String.valueOf(updatedProjectsList.get(i)[1]).replace("[", "");
+				strNew = String.valueOf(strNew).replace("]", "");
+				updatedProjectsList.get(i)[1] = strNew;
+				System.out.println(updatedProjectsList.get(i)[1]);
+				strNew =String.valueOf(Actservice.getProjectCodeById(Integer.parseInt(pid))).replace("[", "");
+				strNew = String.valueOf(strNew).replace("]", "");
+				req.setAttribute("projectname", strNew );
+				
+				
+				
+				
+				
+				strNew =String.valueOf(Actservice.getProjectShortNameById(Integer.parseInt(pid))).replace("[", "");
+				strNew = String.valueOf(strNew).replace("]", "");
+				req.setAttribute("shortname", strNew );
+				
+				LocalDate iD = LocalDate.parse(updatedProjectsList.get(i)[3].toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				String inputDate = iD.format(formatter);
+				updatedProjectsList.get(i)[3] = inputDate;
+				
+				
+				iD = LocalDate.parse(updatedProjectsList.get(i)[10].toString().substring(0,10 ), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				inputDate = iD.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				updatedProjectsList.get(i)[10] = updatedProjectsList.get(i)[10].toString()
+						.replace(updatedProjectsList.get(i)[10].toString().substring(0,10), inputDate.toString());
+				
+				
+			}
+		
+			req.setAttribute("tabledata", updatedProjectsList);
+			System.out.println(Actservice.getAllRecentUpdateList(pid));
+		}
+		return "master/WeeklyUpdateReport";
+	}
+	
+	@RequestMapping(value = "GetUpdateReport.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String GetUpdateReport(HttpServletRequest req, HttpSession ses) throws Exception {
+		List<Object[]> projectwiseaction = new ArrayList<>();
+		String pid = String.valueOf(req.getParameter("ProjectId").toString());
+		System.out.println(pid);
+		projectwiseaction.addAll(Actservice.getAllRecentUpdateList(pid));
+		Gson convertedgson = new Gson();
+		return convertedgson.toJson(projectwiseaction);
+	}
+	
+    
+    
+    
+    
     @RequestMapping(value = "MainDashBoard.htm", method = RequestMethod.GET)
     public String MainDashBoard(HttpServletRequest req,HttpSession ses) throws Exception {
    
@@ -236,6 +426,91 @@ public class LoginController {
     	String LabCode  = (String)ses.getAttribute("labcode");
     	String ClusterId =(String)ses.getAttribute("clusterid");
 
+    	if ( LoginType.equals("Q")|| LoginType.equals("P") ) {
+
+			// if userid PD or IOC last update is NOT on recent last Monday or IS Monday
+			// if lastupdate>7days || present day == Monday
+			LocalDate currentDate = LocalDate.now();
+			List<Object[]> projects = new ArrayList<>();
+			List<Integer> project = new ArrayList<>();
+			List<Object[]> p = new ArrayList<>();
+			
+			LocalDate inputDate = null;
+			projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode); //project master
+			
+			List<Object[]> l = service.lastUpdate();
+			System.out.println(projects);
+			if(l.size()>0)
+			System.out.println(l.get(0));
+			if(l.size()!=0) {
+				req.setAttribute("lastupdatedate", l);
+				req.setAttribute("showmodal", "yes");
+			}
+			else if(l.size()==0 && projects.size()>0) {
+				
+				req.setAttribute("projectsOfEmp", projects);
+				req.setAttribute("showmodal", "yes");
+			}
+			else {
+				
+				req.setAttribute("showmodal", "no");
+			}
+			
+			try {
+				// Parse the input date string into a LocalDate object
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				// Get the current date
+				// to Calculate the difference in days
+				long daysDifference = 0L;
+				
+				//checking date for every recent update, weather the date is more then some specific days old
+				// cannot execute this loop if the person has no projects or updates done
+				
+				if(l.size()>0) {
+					for(int i=0;i<l.size();i++)
+					{
+						inputDate = LocalDate.parse(l.get(i)[0].toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+						inputDate = LocalDate.parse(inputDate.format(formatter), formatter);
+						// Get the current date
+						// Calculate the difference in days
+						daysDifference = Duration.between(inputDate.atStartOfDay(), currentDate.atStartOfDay()).toDays();
+						if(daysDifference>6) project.add((int) daysDifference);
+						else project.add(0);
+					}
+					
+					for (int i = 0; i < l.size(); i++) {
+						for (int j = 0; j < projects.size(); j++) 
+							if (l.get(i)[1].toString().equals(projects.get(j)[0].toString())) 
+								if (project.get(i) < 6)
+									projects.remove(j);
+							
+						
+					}
+					if(projects.size()>0) {
+						req.setAttribute("showmodal", "yes");
+						req.setAttribute("lastupdatedate", l);
+						req.setAttribute("projectsOfEmp", projects);
+					}
+					else {
+						req.setAttribute("showmodal", "no");
+					}
+					System.out.println(" is greater than 0");
+				}
+				
+				
+				
+			} catch (DateTimeParseException e) {
+				e.printStackTrace();
+			}
+		}
+			
+		else {
+			req.setAttribute("showmodal", "no");
+		}
+
+    	
+    	
+    	
     	String ProjectId="A";
 		if(req.getParameter("projectid")!=null) {
 			ProjectId=req.getParameter("projectid");

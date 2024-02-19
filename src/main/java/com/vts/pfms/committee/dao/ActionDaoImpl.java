@@ -1602,4 +1602,97 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("tdate", tdate);
 		return (List<Object[]>)query.getResultList();
 	}
+	
+	@Override
+	public List<Object[]> getmodifieddate(String userId, int pid) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT max(a.modifieddate),max(m.projectid) FROM action_assign a JOIN action_main m ON m.actionmainid=a.actionmainid WHERE a.createdby=:person AND m.projectid=:pid");
+		// SELECT dateofupdate, projectId  FROM pfms_weekly_update WHERE pfms_weekly_update.role=:roal Limit :limitcount
+		query.setParameter("person", userId);
+		query.setParameter("pid", pid );
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Object[]> getProjectByDirectorID(String empId) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT projectmainid, projectcode FROM project_main WHERE projectdirector=:id");
+		query.setParameter("id", empId);
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Object[]> getRecentWeeklyUpdateDate(String string) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT UpdatedDate, projectId FROM pfms_weekly_update WHERE projectid=:id order by UpdatedDate desc");
+		query.setParameter("id", string);
+		return query.getResultList();
+	}
+	
+	
+
+	@Override
+	public List<Object[]> getRiskDetails(String LabCode, int pid) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT MAX(aas.progressdate), MAX(am.projectid) FROM action_assign aas, action_main am WHERE aas.actionmainid = am.actionmainid AND am.type='K' AND am.projectid=:projectid");
+		query.setParameter("projectid", pid );
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Object[]> getMilestoneDate( int pid) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT MAX(modifieddate), max(projectid) FROM milestone_activity WHERE projectid=:projectid");
+		query.setParameter("projectid", pid );
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Object[]> getMeetingDate(int pid) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT MAX(modifieddate), max(projectid) FROM committee_schedule WHERE projectid=:projectid");
+		query.setParameter("projectid", pid );
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Object[]> getProdurementDate(int pid) {
+		// TODO Auto-generated method stub
+		 String ProcurementLastUpdateDate = "SELECT MAX(modifieddate), max(projectid) FROM pfts_file WHERE projectid=:projectid";
+		Query query = manager.createNativeQuery(ProcurementLastUpdateDate);
+		query.setParameter("projectid", pid );
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Object[]> getAllRecentUpdateList(String projectId) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("select * from pfms_weekly_update where projectid=:projectid order by UpdatedDate desc");
+		query.setParameter("projectid", projectId );
+		return query.getResultList();
+	}
+
+	@Override
+	public Object getEmpnameById(int empId) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("select EmpName from employee where empid=:empId");
+		query.setParameter("empId", empId );
+		return query.getResultList();
+	}
+
+	@Override
+	public Object getProjectCodeById(int projectId) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT projectcode FROM project_master WHERE projectid=:projectId");
+		query.setParameter("projectId", projectId );
+		return query.getResultList();
+	}
+
+	@Override
+	public Object getProjectShortNameById(int projectId) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT projectshortname FROM project_master WHERE projectid=:projectId");
+		query.setParameter("projectId", projectId );
+		return query.getResultList();
+	}
 }

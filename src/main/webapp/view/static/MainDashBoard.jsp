@@ -607,6 +607,230 @@
 </head>
 
 <body>
+<!-- Mahesh code  -->
+<%  if(request.getAttribute("showmodal").equals("yes")){ List<Object[]> projectdet=(List<Object[]>)request.getAttribute("lastupdatedate");%>
+	<!-- Button trigger modal -->
+	<button type="button" style="display: none;" id="showmodal"
+		class="btn btn-primary" data-toggle="modal"
+		data-target=".bd-example-modal-lg"></button>
+	<!-- Modal -->	
+	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered" >
+			<div class="modal-content" style="border: 15px solid #0C2B89;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Weekly Update</h5>
+					<p  style="display:flex;" class="modal-title mx-auto"> 
+					<select  class="form-control" name="UProjects" id="UProjects" 
+					onclick="getElementById('Usubmit').value=getElementById('UProjects').value;"
+					onchange="changedates(getElementById('UProjects').value)">
+					<% List<Object[]> projectEmp = (List<Object[]>)request.getAttribute("projectsOfEmp"); %>
+						<%  for (int i=0;i< projectEmp.size();i++){ %>
+						
+							<option class="form-control" value="<%= projectEmp.get(i)[0] %>"><%= projectEmp.get(i)[4] %> (<%= projectEmp.get(i)[17] %>)</option>
+						
+						<%} %>
+					</select></p>
+					
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="weeklyupdate.htm" id="weeklyupdate" onsubmit="getElementById('weeklyupdate').disable=true;">
+					<div class="container" >
+						<div class="row"style="text-align: left">
+							<div class="col-3" style="margin-top: 20px; margin-bottom: 20px;" >
+							<p id="actionmodifieddate"></p>
+							</div>
+							<div class="col-sm"
+								style="margin-top: 20px; margin-bottom: 20px;">
+								<lable for="actionpoints">Have you updated action
+								Items?</lable>
+							</div>
+							<div class="col-3"
+								style="margin-top: 20px; margin-bottom: 20px;">
+								
+								<select required="required" class="form-control" name="actionpoints" id="actionpoints" required="required">
+									<option value="" selected disabled hidden>Update Here</option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+									<option value="NA">NA</option>
+								</select> <br />
+							</div>
+						</div>
+						<div class="row"style="text-align: left">
+							<div class="col-3">
+							<p id="meetingdate"></p>
+							</div>
+							<div class="col-sm">
+								<lable for="Meeting">Have you updated Meeting details?</lable>
+							</div>
+							<div class="col-3">
+								<select required="required" class="form-control" name="Meeting" id="Meeting" required="required"><option
+										value="" selected disabled hidden>Update Here</option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+									<option value="NA">NA</option>
+								</select> <br /> <br />
+							</div>
+						</div>
+						<div class="row"style="text-align: left">
+							<div class="col-3">
+							<p id="Milestones"></p>
+							</div>
+							<div class="col-sm">
+								<lable for="Mile">Have you updated Milestones?</lable>
+							</div>
+							<div class="col-3">
+								<select required="required" class="form-control" name="Mile" id="Mile" required="required">
+								<option value="" selected disabled hidden>Update Here</option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+									<option value="NA">NA</option>
+								</select> <br /> <br />
+							</div>
+						</div>
+						<div class="row"style="text-align: left">
+							<div class="col-3">
+							<p id="ProcurementDate"></p>
+							</div>
+							<div class="col-sm">
+								<lable for="Procurement">Have you updated Procurement
+								Status?</lable>
+							</div>
+							<div class="col-3">
+								<select required="required" class="form-control" name="Procurement" id="Procurement" required="required"><option
+										value="" selected disabled hidden>Update Here</option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+									<option value="NA">NA</option>
+								</select> <br /> <br />
+							</div>
+						</div>
+						<div class="row"style="text-align: left">
+							<div class="col-3">
+							<p id="riskdetailsdate"></p>
+							</div>
+							<div class="col-sm">
+								<lable for="riskdetails">Have you updated Risk details?
+								</lable>
+							</div>
+							<div class="col-3">
+								<select required="required" class="form-control" name="riskdetails" id="riskdetails" required="required"><option
+										value="" selected disabled hidden=true;>Update Here</option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+									<option value="NA">NA</option>
+								</select> <br /> <br />
+							</div>
+						</div>
+						<button type="submit" name="USubmit" class="btn btn-primary" style="width: 300px" id="Usubmit">Update</button>
+					</div>
+				</form>
+				<div class="modal-header">
+					<p id='lastupdatedate' style="float: left;">last update date: ---- </p> </div>
+				</div>
+			</div>
+			</div>
+	<script type="text/javascript">
+	document.getElementById("showmodal").click();
+	document.getElementById('Usubmit').innerHTML="Update "+document.getElementById('UProjects').options[document.getElementById('UProjects').selectedIndex].text;
+	<% if(projectdet!=null)for (int i=0;i<projectdet.size();i++){ %>
+	if(document.getElementById('UProjects').value== <%=projectdet.get(i)[1]%> ){document.getElementById('lastupdatedate').innerHTML='last update date: '+'<%=projectdet.get(i)[0] %>';<%i++;%>}
+	else {document.getElementById('lastupdatedate').innerHTML='last update date: '+'----';}<%}%>
+	document.getElementById('Usubmit').value=document.getElementById('UProjects').value;
+	
+	$.ajax({
+		
+		type:"GET",
+		url:"GetUpdateDates.htm",
+		data :{
+			
+			ProjectId : document.getElementById('UProjects').value
+			
+		},
+		datatype : 'json',
+		success : function(result){
+			
+			var result = JSON.parse(result);
+			var modifieddate=result[0];
+			if (modifieddate[0]==',' || modifieddate[0][0]==null){document.getElementById('actionmodifieddate').innerHTML='----';}else{
+			document.getElementById('actionmodifieddate').innerHTML=modifieddate[0][0].toString().substring(0,10);}
+			var updateddate=result[1];
+			if(updateddate.length>0){ 
+			if ( result[1]==null  ){document.getElementById('lastupdatedate').innerHTML='last update date: '+'----';}else{
+			document.getElementById('lastupdatedate').innerHTML='last update date: '+updateddate[0][0];}}
+			else{
+				document.getElementById('lastupdatedate').innerHTML='last update date: '+'----';
+			}
+			if (result[2][0][0]==null	){document.getElementById('riskdetailsdate').innerHTML='----';}else{
+				document.getElementById('riskdetailsdate').innerHTML=result[2][0][0].toString().substring(0,10);}	
+			if (result[3]==',' || result[3][0][0]==null	){document.getElementById('Milestones').innerHTML='----';}else{
+				document.getElementById('Milestones').innerHTML=result[3][0][0].toString().substring(0,10);}
+			if (result[4]==',' || result[4][0]==null	){document.getElementById('meetingdate').innerHTML='----';}else{
+				document.getElementById('meetingdate').innerHTML=result[4][0].toString().substring(0,10);}
+			if (result[5][0].length==0 || result[5][0][0]==null	){document.getElementById('ProcurementDate').innerHTML='----';}else{
+				document.getElementById('ProcurementDate').innerHTML=result[5][0][0].toString().substring(0,10);}
+
+		}
+
+	});
+	
+	function changeit(val)
+	{
+		document.getElementById('weeklyupdate').reset();
+		var name = document.getElementById('UProjects').innerHTML;
+		var value = document.getElementById('UProjects').value;
+		document.getElementById('Usubmit').innerHTML='Update '+document.getElementById('UProjects').options[document.getElementById('UProjects').selectedIndex].text;
+	}
+	
+	function changedates(val)
+	{
+		document.getElementById('Usubmit').innerHTML="Update "+document.getElementById('UProjects').options[document.getElementById('UProjects').selectedIndex].text;
+		document.getElementById('Usubmit').value=document.getElementById('UProjects').value;
+		$pid=val;
+		$.ajax({
+			
+			type:"GET",
+			url:"GetUpdateDates.htm",
+			data :{
+				
+				ProjectId : $pid
+				
+			},
+			datatype : 'json',
+			success : function(result){
+				
+				var result = JSON.parse(result);
+				var modifieddate=result[0];
+				if (modifieddate[0]==',' || modifieddate[0][0]==null){document.getElementById('actionmodifieddate').innerHTML='----';}else{
+				document.getElementById('actionmodifieddate').innerHTML=modifieddate[0][0].toString().substring(0,10);}
+				var updateddate=result[1];
+				if(updateddate.length>0){ 
+				if ( result[1]==null  ){document.getElementById('lastupdatedate').innerHTML='last update date: '+'----';}else{
+				document.getElementById('lastupdatedate').innerHTML='last update date: '+updateddate[0][0];}}
+				else{
+					document.getElementById('lastupdatedate').innerHTML='last update date: '+'----';
+				}
+				if (result[2][0][0]==null	){document.getElementById('riskdetailsdate').innerHTML='----';}else{
+					document.getElementById('riskdetailsdate').innerHTML=result[2][0][0].toString().substring(0,10);}	
+				if (result[3]==',' || result[3][0][0]==null	){document.getElementById('Milestones').innerHTML='----';}else{
+					document.getElementById('Milestones').innerHTML=result[3][0][0].toString().substring(0,10);}
+				if (result[4]==',' || result[4][0]==null	){document.getElementById('meetingdate').innerHTML='----';}else{
+					document.getElementById('meetingdate').innerHTML=result[4][0].toString().substring(0,10);}
+				if (result[5][0]=='' || result[5][0][0]==null	){document.getElementById('ProcurementDate').innerHTML='----';}else{
+					document.getElementById('ProcurementDate').innerHTML=result[5][0][0].toString().substring(0,10);}
+
+			}
+
+		});
+	}
+	
+	
+	</script>
+<%} %>
+<!-- end -->
+
 <%
 
 String Username =(String)session.getAttribute("Username");  

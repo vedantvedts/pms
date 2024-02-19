@@ -158,5 +158,15 @@ public interface ActionDao {
 	public Long updateRfaTransaction(RfaTransaction tr)throws Exception;
 	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate)throws Exception;
 	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate)throws Exception;
-
+	public List getmodifieddate(String userId, int pid);
+	public List<Object[]> getProjectByDirectorID(String empId);
+	public List<Object[]> getRecentWeeklyUpdateDate(String string);
+	public List<Object[]> getRiskDetails(String userId, int pid);
+	public List<Object[]> getMilestoneDate( int pid);
+	public List<Object[]> getMeetingDate(int pid);
+	public List<Object[]> getProdurementDate(int pid);
+	public List<Object[]> getAllRecentUpdateList(String projectId);
+	public Object getEmpnameById(int empId);
+	public Object getProjectCodeById(int projectId);
+	public Object getProjectShortNameById(int projectId);
 }

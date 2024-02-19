@@ -1970,5 +1970,71 @@ public List<Object[]> RfaProjectwiseList(String empId, String Project, String fd
 	
 	return dao.RfaProjectwiseList(empId,Project,fdate,tdate);
 }
+@Override
+public List<Object[]> getmodifieddate(String userId, int pid) {
+	// TODO Auto-generated method stub
+	return dao.getmodifieddate(userId,pid);
+}
+
+@Override
+public List<Object[]> getProjectByDirectorID(String empId) {
+	// TODO Auto-generated method stub
+	return dao.getProjectByDirectorID(empId);
+}
+
+@Override
+public List<Object[]> getRecentWeeklyUpdateDate(String string) {
+	// TODO Auto-generated method stub
+	return dao.getRecentWeeklyUpdateDate(string);
+	
+}
+
+@Override
+public List<Object[]> getRiskDetails(String LabCode, int pid) {
+	// TODO Auto-generated method stub
+	return dao.getRiskDetails(LabCode,pid);
+}
+
+@Override
+public List<Object[]> getMilestoneDate( int pid) {
+	// TODO Auto-generated method stub
+	return dao.getMilestoneDate(pid);
+}
+
+@Override
+public List<Object[]> getMeetingDate(int pid) {
+	// TODO Auto-generated method stub
+	return dao.getMeetingDate(pid);
+}
+
+@Override
+public List<Object[]> getProdurementDate(int pid) {
+	// TODO Auto-generated method stub
+	return dao.getProdurementDate(pid);
+}
+
+@Override
+public List<Object[]> getAllRecentUpdateList(String projectId) {
+	// TODO Auto-generated method stub
+	return dao.getAllRecentUpdateList(projectId);
+}
+
+@Override
+public Object getEmpnameById(int EmpId) {
+	// TODO Auto-generated method stub
+	return dao.getEmpnameById(EmpId);
+}
+
+@Override
+public Object getProjectCodeById(int ProjectId) {
+	// TODO Auto-generated method stub
+	return dao.getProjectCodeById(ProjectId);
+}
+
+@Override
+public Object getProjectShortNameById(int ProjectId) {
+	// TODO Auto-generated method stub
+	return dao.getProjectShortNameById(ProjectId);
+}
 
 }

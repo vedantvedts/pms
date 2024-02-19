@@ -801,7 +801,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<%if(obj[21]!=null && Long.parseLong(obj[21].toString())>0){ %>
 								
 									
-									<span>	<!-- <i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i> -->
+									<span style="font-size: 0.85rem;;">	<!-- <i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i> -->
 								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
 								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
 									Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
@@ -927,7 +927,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<td  style="text-align: center;"><%=i %></td>
 									<td <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="font-weight: bold;"<%} %>>	
 								<!--newly added on 13th sept  -->	
-								<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
+								<span style="font-size: 12px;"><%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
 								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
 								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
 									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
@@ -946,7 +946,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									 %>
 									 <%} %>
 								<%=committee.getCommitteeShortName().trim().toUpperCase()+key+"/"+obj[1].toString().split("/")[4] %>
-								<%}%> 
+								<%}%> </span>
 								</td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
 									<%-- <td  style="text-align: center;" >
@@ -1600,23 +1600,24 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 				   				</td>									
 							</tr>
 							<tr>
-								<td colspan="9" style="border:0;text-align: right; "><b>RPN :</b> Risk Priority Number</td>
+								<td colspan="10" style="border:0;text-align: right; "><b>RPN :</b> Risk Priority Number</td>
 							</tr>
 							<tr>
 								<th style="width: 15px;text-align: center " rowspan="2">SN</th>
+								<th style="width: 20px;" rowspan="2">ID</th>
 								<th style="width: 430px; " colspan="3">Risk</th>
-								<th style="width: 150px; " rowspan="1" > ADC<br>PDC</th>
+								<th style="width: 240px; " rowspan="1" > ADC<br>PDC</th>
 							<!-- 	<th style="width: 100px; " rowspan="1"> ADC</th> -->
 								<th style="width: 160px; " rowspan="1"> Responsibility</th>
-								<th style="width: 50px; "  rowspan="1">Status</th>
-								<th style="width: 215px; " rowspan="1">Remarks</th>	
+							<!-- 	<th style="width: 50px; "  rowspan="1">Status</th> -->
+								<th style="width: 200px; " colspan="2" rowspan="1">Remarks</th>	
 							</tr>
 							<tr>
 								<th  style="text-align: center;width: 110px; " > Severity<br>(1-10)</th>
 								<th  style="text-align: center;width: 110px;"> Probability<br>(1-10)</th>
 								<th  style="text-align: center;width: 110px;"> RPN<br>(1-100)</th>
-								<th  style="width:360px" colspan="3" > Mitigation Plans</th>
-								<th  style="width:315px" colspan="1"> Impact</th>		
+								<th  style="width:360px" colspan="2" > Mitigation Plans</th>
+								<th  style="width:315px" colspan="2"> Impact</th>		
 							</tr>
 										
 					</thead>
@@ -1628,6 +1629,18 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								i++;%>
 									<tr>
 										<td style="text-align: center" rowspan="2"><%=i %></td>
+																		<td style="text-align: center;" rowspan="2">
+									<%if(obj[25]!=null && Long.parseLong(obj[25].toString())>0){
+										String []tempArray=obj[13].toString().split("/");
+										String tempRisk=tempArray[tempArray.length-1];
+										%>
+										<span>
+										<%=tempRisk %>
+										</span>
+									<%}%>
+								</td>
+										
+										
 										<td style="text-align: justify;color: red; " colspan="3" >
 											<%=obj[0] %> <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
 										</td>
@@ -1658,13 +1671,13 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										</td> -->
 													
 										<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
-										<td style="text-align: center" rowspan="1">
+								<%-- 		<td style="text-align: center" rowspan="1">
 												
 											<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
 												<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 													<span class="completed">CO</span>
 												<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-													<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) --%> </span>
+													<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
 												<%} %>	
 											<%}else{ %>
 												<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -1673,19 +1686,19 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 													<span class="delay">FD</span>
 												<%}else if(actionstatus.equals("A") && progress==0){  %>
 													<span class="assigned">
-														AA <%if(pdcorg.isBefore(today)){ %> <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%> <%} %>
+														AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
 													</span>
 												<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 													<span class="ongoing">OG</span>
 												<%}else if(pdcorg.isBefore(today)){  %>
-													<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
+													<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
 												<%} %>					
 																							
 											<%} %>
 											
 														
-										</td>
-										<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+										</td> --%>
+										<td style="text-align: justify" colspan="2" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19]%><%} %></td>
 											
 									</tr>	
 									
@@ -1702,8 +1715,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 											<%} %>
 											
 										</td>
-										<td style="text-align: justify;" colspan="3" ><%=obj[3] %></td>
-										<td style="text-align: justify;" colspan="1" ><%=obj[21] %></td>
+										<td style="text-align: justify;" colspan="2" ><%=obj[3] %></td>
+										<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
 									</tr>
 												
 									<%if(riskmatirxdata.get(z).size() > i){ %>

@@ -103,4 +103,9 @@ public interface AdminDao {
 	public long AddMailConfiguration( MailConfiguration mailConfigAdd)throws Exception;
 	public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception;
 	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception;
+	public List<Object[]> lastUpdate();
+
+	public Object weeklyupdate(int empid, String username, String dateofupdate, String procurement,
+			String actionpoints, String riskdetails, String meeting, String mile, int projectid);
+
   }

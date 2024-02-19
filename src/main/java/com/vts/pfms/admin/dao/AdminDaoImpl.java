@@ -24,6 +24,7 @@ import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.admin.model.PfmsStatistics;
+import com.vts.pfms.admin.model.WeekUpdate;
 import com.vts.pfms.login.Login;
 import com.vts.pfms.login.PfmsLoginRole;
 import com.vts.pfms.mail.MailConfiguration;
@@ -1024,4 +1025,28 @@ public class AdminDaoImpl implements AdminDao{
 		
 	}
 	
+	private static final String LastUpdate = "SELECT UpdatedDate, projectId  FROM pfms_weekly_update WHERE projectId IN ( SELECT projectid FROM project_main) ORDER BY UpdatedDate DESC ";
+
+	@Override
+	public List<Object[]> lastUpdate() {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery(LastUpdate);
+		try {
+		return query.getResultList();}
+		catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+	}
+	
+	
+	@Override
+	public Object weeklyupdate(int empid, String username, String dateofupdate, String procurement,
+			String actionpoints, String riskdetails, String meeting, String mile,int projectid) {
+		// TODO Auto-generated method stub
+		WeekUpdate w = new  WeekUpdate(procurement, username, dateofupdate, empid, actionpoints, riskdetails, meeting, mile, projectid);
+		manager.persist(w);
+		manager.flush();
+		return null;
+	}
 }

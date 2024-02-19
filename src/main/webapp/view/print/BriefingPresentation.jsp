@@ -2018,10 +2018,13 @@ System.out.println(todayDate+"---");
 								<td style="text-align: center" rowspan="2"><%=i%></td>
 								
 																<td style="text-align: center;" rowspan="2">
-									<%if(obj[25]!=null && Long.parseLong(obj[25].toString())>0){ %>
+									<%if(obj[25]!=null && Long.parseLong(obj[25].toString())>0){
+										String []tempArray=obj[13].toString().split("/");
+										String tempRisk=tempArray[tempArray.length-1];
+										%>
 										<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[25] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" style="font-weight: bold" >
 											<!-- <i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i> -->
-										<%=obj[13].toString().split("/")[3] %>
+										<%=tempRisk %>
 										</button>
 									<%}%>
 								</td>

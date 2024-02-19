@@ -1102,10 +1102,8 @@ public class ProjectController
 				String requirementId="";
 				if(a<90L) {
 				 requirementId=reqtype[2]+reqtype[1]+("000"+(a+10));
-				 System.out.println("requirementId"+requirementId);
 				}else if(a<990L) {
 					requirementId=reqtype[2]+reqtype[1]+("00"+(a+10));
-					System.out.println("requirementId"+requirementId);
 				}else {
 					requirementId=reqtype[2]+reqtype[1]+("0"+(a+10));
 				}

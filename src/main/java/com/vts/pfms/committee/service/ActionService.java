@@ -132,4 +132,17 @@ public interface ActionService {
 	public List<String> CCAssignorList(String rfaid)throws Exception;
 	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate)throws Exception;
 	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate)throws Exception;
+	
+	
+	public List<Object[]> getmodifieddate(String userId, int pid);
+	public List<Object[]> getProjectByDirectorID(String empId);
+	public List<Object[]> getRecentWeeklyUpdateDate(String string);
+	public List<Object[]> getRiskDetails(String userId, int pid);
+	List<Object[]> getMilestoneDate( int pid);
+	public List<Object[]> getMeetingDate(int pid);
+	public List<Object[]> getProdurementDate(int pid);
+	public List<Object[]> getAllRecentUpdateList(String projectId);
+	public Object getEmpnameById(int int1);
+	public Object getProjectCodeById(int ProjectId);
+	public Object getProjectShortNameById(int ProjectId);
 }

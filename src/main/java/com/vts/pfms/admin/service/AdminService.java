@@ -81,5 +81,8 @@ public interface AdminService {
 	public long DeleteMailConfiguration(long MailConfigurationId, String ModifiedBy)throws Exception;
 	public long AddMailConfiguration(String userName, String password, String hostType, String createdBy)throws Exception;
 	public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception;
-	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception; 
+	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception;
+		public List<Object[]> lastUpdate();
+		public Object weeklyupdate(int object, String object2, String dateofupdate, String procurement, String actionpoints, String riskdetails, String meeting, String mile, int projectid);
+
 }

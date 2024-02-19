@@ -792,6 +792,18 @@ public class AdminServiceImpl implements AdminService{
 			     }
 			return finalResult;
 		}
-		
-		
+
+		@Override
+		public List<Object[]> lastUpdate() {
+			// TODO Auto-generated method stub
+			return dao.lastUpdate();
+		}
+
+		@Override
+		public Object weeklyupdate(int empid, String username, String dateofupdate, String procurement,
+				String actionpoints, String riskdetails, String meeting, String mile,int projectid) {
+			// TODO Auto-generated method stub
+			return dao.weeklyupdate( empid, username, dateofupdate, procurement,   
+					 actionpoints,  riskdetails,  meeting,  mile, projectid);
+		}
 }

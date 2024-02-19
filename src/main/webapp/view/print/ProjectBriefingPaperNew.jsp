@@ -3054,7 +3054,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
 									</form>									
 									</td>
-									<td style="border:0;"> 
+								<%-- 	<td style="border:0;"> 
 									<%if(i==0){  %>
 									<button class="btn btn-sm">
 									<i class="fa fa-arrow-down"  style="color:green" aria-hidden="true"></i>
@@ -3063,7 +3063,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									<button class="btn btn-sm">
 									<i class="fa fa-arrow-up"  style="color:green" aria-hidden="true"></i>
 									</button> 
-									<%}else{%>
+									<%}else{ %>
 									<button class="btn btn-sm">
 									<i class="fa fa-arrow-up"  style="color:green" aria-hidden="true"></i>
 									</button> 
@@ -3071,7 +3071,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									<i class="fa fa-arrow-down"  style="color:green" aria-hidden="true"></i>
 									</button> 
 									<%} %>
-									</td>
+									</td> --%>
 									</tr>
 								</table>
 							</div>

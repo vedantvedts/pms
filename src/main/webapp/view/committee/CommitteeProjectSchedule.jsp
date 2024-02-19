@@ -123,15 +123,17 @@ Object[] committeedetails=(Object[])request.getAttribute("committeedetails");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
 
+List<String>status= Arrays.asList("MKV","MMR","MMF","MMA","MMS");
+
 String today=LocalDate.now().toString();
 List<Object[]>PreviousmeetingList= new ArrayList<>();
 
 if(!Projectschedulelist.isEmpty()){
 	if(committeeid.equalsIgnoreCase("all")){
-		PreviousmeetingList=Projectschedulelist.stream().filter(i -> LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())).collect(Collectors.toList());
+		PreviousmeetingList=Projectschedulelist.stream().filter(i -> LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())  && status.contains(i[7].toString())).collect(Collectors.toList());
 		
 	}else{
-		PreviousmeetingList=Projectschedulelist.stream().filter(i -> i[1].toString().equalsIgnoreCase(committeeid) &&  LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())    ).collect(Collectors.toList());
+		PreviousmeetingList=Projectschedulelist.stream().filter(i -> i[1].toString().equalsIgnoreCase(committeeid) &&  LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())&& status.contains(i[7].toString())   ).collect(Collectors.toList());
 	
 	}
 }
@@ -259,10 +261,11 @@ if(ses1!=null){
 						</div>
 						<div class="mt-2" id="scrollclass" style="height:520px;overflow: auto">
 						<%if(!PreviousmeetingList.isEmpty()){
+							int i=0;
 							for(Object[]obj:PreviousmeetingList){
 							%>
 						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
-						&nbsp;&nbsp; Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
+						&nbsp;&nbsp;Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
 							</a>
 						<%}}else{ %>
 						<p class="meetingsp ml-3 mr-3"> No Previous Meetings held !</p>
