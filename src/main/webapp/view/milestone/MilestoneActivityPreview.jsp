@@ -165,7 +165,7 @@ var s = '';
                              
                         	</div>
                        		</div>
-                       		<%if(RevisionCount==0) {%>
+                       		<%if(RevisionCount==0) { %>
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
@@ -1122,7 +1122,7 @@ $('#DateCompletion').on('change', function() {
     	"singleDatePicker" : true,
     	"linkedCalendars" : false,
     	"showCustomRangeLabel" : true,
-    	"minDate" :mindate,
+    	
     	"cancelClass" : "btn-default",
     	showDropdowns : true,
     	locale : {
@@ -1134,7 +1134,7 @@ $('#DateCompletion').daterangepicker({
 	"singleDatePicker" : true,
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
-	"minDate" :dt,
+	
 	"cancelClass" : "btn-default",
 	showDropdowns : true,
 	locale : {
@@ -1150,7 +1150,7 @@ $( document ).ready(function() {
     	"singleDatePicker" : true,
     	"linkedCalendars" : false,
     	"showCustomRangeLabel" : true,
-    	"minDate" :mindate,
+    	
     	"cancelClass" : "btn-default",
     	showDropdowns : true,
     	locale : {
