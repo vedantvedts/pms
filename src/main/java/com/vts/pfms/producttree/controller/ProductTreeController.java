@@ -345,15 +345,15 @@ public class ProductTreeController {
 		try
 		{
 			
-			String ProjectId=req.getParameter("ProjectId");
+			//String ProjectId=req.getParameter("ProjectId");
 			
-			req.setAttribute("ProductTreeList",service.getProductTreeList(ProjectId) );
-			req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
+			req.setAttribute("ProductTreeList",service.getProductTreeList("65") );
+			req.setAttribute("ProjectDetails", milservice.ProjectDetails("65"));
 		    String filename="ProductTree";	
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-			req.getRequestDispatcher("/view/print/ProductTreeDownload.jsp").forward(req, customResponse);
+			req.getRequestDispatcher("/view/print/ProductTreeView.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
 
 			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
@@ -365,7 +365,8 @@ public class ProductTreeController {
 			pdfw.close();
 
 			res.setContentType("application/pdf");
-			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			res.setHeader("Content-Disposition", "attachment; filename=\"ProductTreeView.jsp\"");
+
 			File f=new File(path+"/"+filename+".pdf");
 
 			OutputStream out = res.getOutputStream();

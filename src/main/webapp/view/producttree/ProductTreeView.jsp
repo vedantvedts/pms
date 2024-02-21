@@ -18,9 +18,11 @@
 <title>Product Tree</title>
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+   
 
 <!-- ------------------------------- tree css ------------------------------- -->
 <style type="text/css">
@@ -62,7 +64,8 @@
     height: 18px;
 }
 .genealogy-tree li::after{
-    right: auto; left: 50%;
+    right: auto; 
+    left: 50%;
     border-left: 2px solid #ccc;
 }
 .genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
@@ -87,9 +90,12 @@
 }
 .genealogy-tree ul ul::before{
     content: '';
-    position: absolute; top: 0; left: 50%;
+    position: absolute;
+     top: 0; 
+     left: 50%;
     border-left: 2px solid #ccc;
-    width: 0; height: 20px;
+    width: 0;
+     height: 20px;
 }
 .genealogy-tree li .action-view-box{
      text-decoration: none;
@@ -101,12 +107,13 @@
     -moz-border-radius: 5px;
 }
 
-.genealogy-tree li a:hover+ul li::after, 
+
+ .genealogy-tree li a:hover+ul li::after, 
 .genealogy-tree li a:hover+ul li::before, 
 .genealogy-tree li a:hover+ul::before, 
 .genealogy-tree li a:hover+ul ul::before{
     border-color:  #fbba00;
-}
+} 
 
 /*--------------memeber-card-design----------*/
 .member-view-box{
@@ -115,17 +122,8 @@
     border-radius: 4px;
     position: relative;
 }
-.member-image{
-    width: 60px;
-    position: relative;
-}
-.member-image img{
-    width: 60px;
-    height: 60px;
-    border-radius: 6px;
-    background-color :#000;
-    z-index: 1;
-}
+
+
 
 
 </style>
@@ -186,13 +184,14 @@ table,td{
       border: 1px solid black;
       border-collapse:collapse;
       padding:2px;
-      /* width:50%; */
+       width:43%;
+       font-size:12px;
 
 }
 
 .bottom-div {
     position: fixed;
-    bottom: 0;
+    bottom: 50px;
     left: -20px;
     width: 100%; /* Ensures the div stretches across the entire width of the page */
 }
@@ -215,18 +214,16 @@ table,td{
 
  %>
 
-<body style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
+<body id="mybody" style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
 
-	<!-- <div style="margin-left:-19rem;">
-		<h3>PRODUCT TREE</h3>
-	</div> -->	
+	
 
-     <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;"   ><i class="fa fa-download fa-lg" ></i></button> 
+     <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;"  onclick="downloadPDF()" ><i class="fa fa-download fa-lg" ></i></button> 
 
 		
-	    <div class="genealogy-tree"  id="tree">
+	    <div class="genealogy-tree line-top line-bottom"  id="tree">
 	  
-	        
+	 
 	  		<ul>
 				<li>      
 	
@@ -234,7 +231,7 @@ table,td{
 			                    
 			                         <div class=" action-box" style="border:-1px;" > 
 			                         	
-			                         	<div  class="action-box-header" >
+			                         	<div  class="action-box-header" id="aaaa">
 			                         	
 			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;">
 	                          			        <%if(ProjectId!=null){	
@@ -569,7 +566,7 @@ table,td{
 	    <div align="right">
     
      
-         <table>
+         <table >
 
                   <tr>
 						<td style="font-weight:bold;">Stage (Upper corner)</td>
@@ -619,10 +616,12 @@ table,td{
 	     var children = $(this).parent().parent().parent().find('> ul');
 	        if (children.is(":visible")) {
 	        	children.hide('fast').removeClass('active');
+	        	
 	        	$(this).find('i').removeClass('fa fa-caret-down');
 	        	$(this).find('i').addClass('fa fa-caret-up');
 	        } else {
 	        	children.show('fast').addClass('active');
+	        	
 	        	$(this).find('i').removeClass('fa fa-caret-up');
 	        	$(this).find('i').addClass('fa fa-caret-down');
 	    	}
@@ -633,28 +632,75 @@ table,td{
 </script> 
 
 
-<script>
+<!-- <script>
 
-$(document).ready(function() {
-    $('#generatePdfBtn').on('click', function() {
-        fetchJspContent();
-    });
 
-    function fetchJspContent() {
-        $.get("/view/producttree/ProductTreeView.jsp", function(data) {
-            generatePdf(data);
-        });
-    }
-
-    function generatePdf(content) {
-        var doc = new jsPDF();
-        doc.text(content, 10, 10); // Insert fetched content into PDF
-        doc.save("generated_pdf.pdf");
-    }
+document.getElementById('generatePdfBtn').addEventListener('click', function() {
+    downloadJspPage();
 });
 
+    function downloadJspPage() {
+    	
+    	
+    	var jspFilePath = "/producttree/ProductTreeView.jsp";
 
-</script> 
+
+        var link = document.createElement('a');
+        link.href = "producttree/ProductTreeView.jsp";
+        link.download = 'ProductTreeView.jsp'; // Specify the filename for download
+
+        // Append the link to the body and simulate a click
+        document.body.appendChild(link);
+        link.click();
+
+        // Remove the link from the DOM
+        document.body.removeChild(link);
+   }
+    
+
+
+</script>  -->
+
+
+
+<!-- <script>
+function downloadPDF() {
+    // Create a new jsPDF instance
+    var doc = new jsPDF();
+
+    // Add content from your JSP page to the PDF
+    var content = document.getElementById("mybody").innerHTML; // Replace 'your-content-id' with the ID of the element containing your JSP content
+    doc.text(content, 10, 10);
+
+    // Save the PDF
+    doc.save("download.pdf");
+}
+</script> -->
+
+
+<script>
+function downloadPDF() {
+	
+	//document.getElementById("generatePdfBtn").style.display = "none";
+	 var body = document.body; 
+
+	 
+	    // Use html2canvas to capture the body content
+	    html2canvas(body, {
+	        onrendered: function(canvas) {
+	            // Convert canvas to base64 image data
+	            var imageData = canvas.toDataURL('image/jpeg');
+
+	            // Create a download link for the image
+	            var link = document.createElement('a');
+	            link.href = imageData;
+	            link.download = 'ProductTree.jpg'; // Set the filename for the downloaded image
+	            link.click();
+	        }
+	    });
+		
+}
+</script>
 
 
 
