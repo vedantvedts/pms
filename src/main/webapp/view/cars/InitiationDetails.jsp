@@ -456,9 +456,9 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 									</select>
                         		</div>
                         		<div class="column b" style="width: 14%;">
-                            		<label class="control-label">Amount (In Lakhs, &#8377;)</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="number" name="amount" id="amount" maxlength="6" style="font-size: 15px;"  step=".1"
-                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())/100000%><%} %>" required> 
+                            		<label class="control-label">Amount (&#8377;)</label><span class="mandatory">*</span>
+                              		<input  class="form-control form-control" type="number" name="amount" id="amount" min="0" max="15" style="font-size: 15px;"  step=".1"
+                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
                             		<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
@@ -1307,9 +1307,9 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                               						<input type="file" class="form-control modals" name="ExecutionPlan" <%if(carsSoC==null) {%>required<%} %> accept=".pdf">
                         						</div>
                         						<div class="column b" style="width: 14%;">
-				                            		<label class="control-label">Amount (In Lakhs, &#8377;)</label><span class="mandatory">*</span>
-				                              		<input  class="form-control form-control" type="number" name="socAmount" id="socAmount" maxlength="6" style="font-size: 15px;" step="0.01"
-				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=Double.parseDouble(carsSoC.getSoCAmount())/100000%><%} %>" required> 
+				                            		<label class="control-label">Amount ( &#8377;)</label><span class="mandatory">*</span>
+				                              		<input  class="form-control form-control" type="number" name="socAmount" id="socAmount" min="0" max="15" style="font-size: 15px;" step="0.01"
+				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=Double.parseDouble(carsSoC.getSoCAmount())%><%} %>" required> 
 			                        			</div>
                         						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
                             						<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
@@ -1477,23 +1477,23 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                     				 	    <!-- Eighth row of SoC  -->
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 10%;border-bottom-left-radius: 5px;border-top-left-radius: 5px;">
-                            					 	<label class="control-label">(a) Personnel:</label><span class="mandatory">*</span>
+                            					 	<label class="control-label">(a) Personnel (&#8377;):</label><span class="mandatory">*</span>
                               		      			<input class="form-control form-control" type="number" name="expndPersonnelCost" id="expndPersonnelCost" placeholder="Personnel Cost"
                               		      			  <%if(carsContract!=null && carsContract.getExpndPersonnelCost()!=null) {%> value="<%=carsContract.getExpndPersonnelCost()%>"<%} %> required>
                         						</div>
                     		 					<div class="column b" style="width: 10%;">
-                            					 	<label class="control-label">(b) Equipment:</label><span class="mandatory">*</span>
+                            					 	<label class="control-label">(b) Equipment (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndEquipmentCost" id="expndEquipmentCost" placeholder="Equipment Cost"
                               		      			  <%if(carsContract!=null && carsContract.getExpndEquipmentCost()!=null) {%> value="<%=carsContract.getExpndEquipmentCost()%>"<%} %> required>
                         						</div>
                     		 					<div class="column b" id="othersdiv" style="width: 12%;text-align: left;">
-                            					 	<label class="control-label">(c) Others: <button type="button" id="othersInfo" value="0" class="btn btn-info btn-sm" style="padding: 0px 5px 0px 5px;background: blueviolet;"><i class="fa fa-info-circle" aria-hidden="true"></i></button></label>
+                            					 	<label class="control-label">(c) Others (&#8377;): <button type="button" id="othersInfo" value="0" class="btn btn-info btn-sm" style="padding: 0px 5px 0px 5px;background: blueviolet;"><i class="fa fa-info-circle" aria-hidden="true"></i></button></label>
                             					 	&nbsp;<span id="othersInfoContent" style="color: darkblue;"> (Travel, Contingency, Consultancy, Institution Head) </span>
                             					 	<input class="form-control form-control" type="number" name="expndOthersCost" id="expndOthersCost" placeholder="Others Cost"
                               		      			  <%if(carsContract!=null && carsContract.getExpndOthersCost()!=null) {%> value="<%=carsContract.getExpndOthersCost()%>"<%} %> >
                         						</div>
                     		 					<div class="column b" style="width: 10%;">
-                            					 	<label class="control-label">Sub-Total:</label><span class="mandatory">*</span>
+                            					 	<label class="control-label">Sub-Total (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndSubTotalCost" id="expndSubTotalCost"
                             					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null && carsContract.getExpndGST()!=null) {%> 
                             					 		value="<%= String.format("%.2f" ,( Double.parseDouble(carsContract.getExpndTotalCost())-Double.parseDouble(carsContract.getExpndGST()) ) )%>"
@@ -1502,12 +1502,12 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                             					 		readonly required style="background: #fff;">
                         						</div>
                     		 					<div class="column b" style="width: 10%;">
-                            					 	<label class="control-label">GST:</label><span class="mandatory">*</span>
+                            					 	<label class="control-label">GST (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndGST" id="expndGST" placeholder="Enter GST"
                               		      				<%if(carsContract!=null && carsContract.getExpndGST()!=null) {%> value="<%=carsContract.getExpndGST()%>"<%} %> required>
                         						</div> 
                         						<div class="column b" style="width: 10%;border-bottom-right-radius: 5px;border-top-right-radius: 5px;">
-                            					 	<label class="control-label">Total :</label><span class="mandatory">*</span>
+                            					 	<label class="control-label">Total (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndTotalCost" id="expndTotalCost"
                             					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null) {%> value="<%=carsContract.getExpndTotalCost()%>"<%} %> readonly required style="background: #fff;">
                         						</div>
@@ -1898,7 +1898,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
 												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Amount</th>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Amount (&#8377;)</th>
 												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Remarks</th>
 														<td style="width: 5%;">
 															<button type="button" class=" btn btn_add_milestones2"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
@@ -3528,7 +3528,7 @@ function showEditor2(a){
 			amount = <%=carsSoC.getSoCAmount() %>
 		<%} %>
 		if(actualAmount>Number(amount)){
-			alert('Amount should not exceed more than '+amount/100000+' Lakhs');
+			alert('Amount should not exceed more than '+amount);
 			
 			// Set the value of the specific input in the same row to 0
 	        $(inputElement).val('0');
@@ -3662,9 +3662,8 @@ $(document).ready(function(){
         var total = subtotal + expndGST;
         $('#expndTotalCost').val(total);
         var socAmount = parseFloat($('#socAmount').val()) || 0;
-        var amount = socAmount*100000;
-        if(Math.floor(total)>amount){
-        	alert('Expenditure should not exceed the actual amount '+socAmount+" Lakhs");
+        if(Math.floor(total)>socAmount){
+        	alert('Expenditure should not exceed the actual amount '+socAmount);
         	$('#expndPersonnelCost').val('0');
         	$('#expndEquipmentCost').val('0');
         	$('#expndOthersCost').val('0');

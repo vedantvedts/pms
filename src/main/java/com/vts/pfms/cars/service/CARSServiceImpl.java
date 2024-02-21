@@ -89,8 +89,8 @@ public class CARSServiceImpl implements CARSService{
 		String CARSNo = labcode+"/CARS-"+(maxCARSInitiationId+1)+"/RTMD/"+now.getYear();
 		initiation.setCARSNo(CARSNo);
 		
-		double amount = Double.parseDouble(initiation.getAmount())*100000;
-		initiation.setAmount(String.valueOf(amount));
+//		double amount = Double.parseDouble(initiation.getAmount())*100000;
+//		initiation.setAmount(String.valueOf(amount));
 		long carsinitiationid = dao.addCARSInitiation(initiation);
 		
 		// Transaction
@@ -107,8 +107,8 @@ public class CARSServiceImpl implements CARSService{
 
 	@Override
 	public long editCARSInitiation(CARSInitiation initiation) throws Exception {
-		double amount = Double.parseDouble(initiation.getAmount())*100000;
-		initiation.setAmount(String.valueOf(amount));
+//		double amount = Double.parseDouble(initiation.getAmount())*100000;
+//		initiation.setAmount(String.valueOf(amount));
 		
 		return dao.editCARSInitiation(initiation);
 	}
@@ -508,8 +508,8 @@ public class CARSServiceImpl implements CARSService{
 		}
 		
 		// Converting amount from lakhs to rupees
-		double amount = Double.parseDouble(soc.getSoCAmount())*100000;
-		soc.setSoCAmount(String.valueOf(amount));
+//		double amount = Double.parseDouble(soc.getSoCAmount())*100000;
+//		soc.setSoCAmount(String.valueOf(amount));
 		
 		long carsSoCId = dao.addCARSSoC(soc);
 	
@@ -546,8 +546,8 @@ public class CARSServiceImpl implements CARSService{
 		}
 	
 		// Converting amount from lakhs to rupees
-		double amount = Double.parseDouble(soc.getSoCAmount())*100000;
-		soc.setSoCAmount(String.valueOf(amount));
+//		double amount = Double.parseDouble(soc.getSoCAmount())*100000;
+//		soc.setSoCAmount(String.valueOf(amount));
 		
 		return dao.editCARSSoC(soc);
 	}

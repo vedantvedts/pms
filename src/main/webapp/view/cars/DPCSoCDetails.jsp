@@ -572,7 +572,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 						               		   						</tr>
 						               		   						<tr>
 						               		   							<td>5.</td>
-						               		   							<td>Estimated cost of service</td>
+						               		   							<td>Estimated cost of service (&#8377;)</td>
 						               		   							<td><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %></td>
 						               		   						</tr>
 						               		   						<tr>
@@ -613,7 +613,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 				               		   								  <th style="width: 5%;">Months</th>
 				               		   								  <th style="width: 25%;">Deliverables</th>
 				               		   								  <th style="width: 5%;">Payment <br>( In % )</th>
-				               		   								  <th style="width: 10%;">Amount</th>
+				               		   								  <th style="width: 10%;">Amount (&#8377;)</th>
 				               		   								  <th style="width: 15%;">Remarks</th>
 				               		   								</tr>
 				               		   								<%if(milestones!=null && milestones.size()>0) {

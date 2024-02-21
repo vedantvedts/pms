@@ -328,7 +328,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		<tr>
 			    			<td colspan="2" style="border-top: 0;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> 10.2. Schedule of payments</td>
 			    			<td colspan="1" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Date / Duration  </td>
-			    			<td colspan="2" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Payment </td>
+			    			<td colspan="2" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Payment (&#8377;) </td>
 			    		</tr>
 			    		<%if(milestones!=null && milestones.size()>0) { char a='a';%>
 			    		<tr>

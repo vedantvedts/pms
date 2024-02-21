@@ -223,9 +223,9 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="border-top: 0;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> 9.2. Required Schedule of payments (Rs. in Lakhs) </td>
+			    			<td colspan="2" style="border-top: 0;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> 9.2. Required Schedule of payments (&#8377;) </td>
 			    			<td colspan="1" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Date / Duration  </td>
-			    			<td colspan="2" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Payment </td>
+			    			<td colspan="2" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Payment (&#8377;) </td>
 			    		</tr>
 			    		<tr>
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Initial Advance &nbsp;&nbsp;<span style="text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>% </td>

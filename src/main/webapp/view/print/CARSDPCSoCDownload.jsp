@@ -255,7 +255,7 @@ String amount = carsSoC.getSoCAmount();
 					</tr>
 					<tr>
 						<td>4.</td>
-						<td>Estimated cost of service</td>
+						<td>Estimated cost of service (&#8377;)</td>
 						<td><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %></td>
 					</tr>
 					<tr>
@@ -299,7 +299,7 @@ String amount = carsSoC.getSoCAmount();
 					  <th style="width: 10%;">Months</th>
 					  <th style="">Deliverables</th>
 					  <th style="width: 5%;">Payment <br>( In % )</th>
-					  <th style="width: 10%;">Amount</th>
+					  <th style="width: 10%;">Amount (&#8377;)</th>
 					  <th style="width: 10%;">Remarks</th>
 					</tr>
 				</thead>

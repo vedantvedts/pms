@@ -199,7 +199,7 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
    						<th >Deliverables</th>
    						<%if(carsSoC!=null) {%>
    						<th style="width: 5%;">Payment <br> ( In %)</th>
-   						<th style="width: 10%;">Amount <!-- (In Lakhs, &#8377;) --></th>
+   						<th style="width: 10%;">Amount (&#8377;)</th>
    						<th style="width: 10%;">Remarks</th>
    						<%} %>
    					</tr>
