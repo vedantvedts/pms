@@ -684,7 +684,6 @@ function downloadPDF() {
 	//document.getElementById("generatePdfBtn").style.display = "none";
 	 var body = document.body; 
 
-	 
 	    // Use html2canvas to capture the body content
 	    html2canvas(body, {
 	        onrendered: function(canvas) {
