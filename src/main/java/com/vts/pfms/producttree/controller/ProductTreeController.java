@@ -193,6 +193,7 @@ public class ProductTreeController {
 		logger.info(new Date() +"Inside ProductTreeEditDelete.htm "+UserId);		
 		try {
 	        String ProjectId=req.getParameter("ProjectId");
+	       
 	        if(ProjectId==null)  {
 				Map md=model.asMap();
 				ProjectId=(String)md.get("ProjectId");
@@ -243,12 +244,12 @@ public class ProductTreeController {
 			 if(update!=0) {
 				 redir.addAttribute("result", "Level Name Updated Successfully");
 				 redir.addAttribute("ProjectId", ProjectId);
-				 return "redirect:/ProductTree.htm";
+				 return "redirect:/ProductTreeEditDelete.htm";
 				 
 			 }else {
 				 redir.addAttribute("resultfail", "Level Name Update Unsuccessful");
 				 redir.addAttribute("ProjectId", ProjectId);
-				 return "redirect:/ProductTree.htm";
+				 return "redirect:/ProductTreeEditDelete.htm";
 			 }
 			
 	      } else if(Action!=null && Action.equalsIgnoreCase("D")) {
@@ -260,12 +261,12 @@ public class ProductTreeController {
 	    	  if(delete!=0) {
 					 redir.addAttribute("result", "Level Deleted Successfully");
 					 redir.addAttribute("ProjectId", ProjectId);
-					 return "redirect:/ProductTree.htm";
+					 return "redirect:/ProductTreeEditDelete.htm";
 					 
 				 }else {
 					 redir.addAttribute("resultfail", "Level Delete  Unsuccessful");
 					 redir.addAttribute("ProjectId", ProjectId);
-					 return "redirect:/ProductTree.htm";
+					 return "redirect:/ProductTreeEditDelete.htm";
 				 }
 	    		  
 	      }
@@ -277,7 +278,7 @@ public class ProductTreeController {
 			return "static/Error";
 			
 		}
-		return "redirect:/ProductTree.htm";
+		return "producttree/ProductTreeEditDelete";
 	}
 	
 	

@@ -157,9 +157,10 @@ if(ses1!=null){	%>
 															<th>Expand</th>
 															
 															<th style="text-align: left;">Level </th> 
-															<th style="text-align: left;max-width: 200px;">Level Name</th>
+															 <th style="text-align: left;max-width: 200px;">Level Name</th> 
 															
-																											
+															<th style="max-width: 200px;" >Stage</th>	
+															<th style="max-width: 200px;" >Module</th>											
 														 	<th style="max-width: 200px;" >Action</th>
 														 		
 														 	
@@ -175,10 +176,12 @@ if(ses1!=null){	%>
 														<tr>
 															<td style="width:2% !important;" class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td>
 															
-															<td style="">Level-1</td>
+															 <td style="">Level-1</td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level1[3] %></td>
 															
+															<td><% if(level1[6]!=null){%><%=level1[6] %><%}else { %> -- <%} %></td>
+															<td><% if(level1[7]!=null){%><%=level1[7] %><%}else { %> -- <%} %></td>
 															
 															<td  style="width:20% !important; text-align: center;">		
 																	
@@ -216,6 +219,8 @@ if(ses1!=null){	%>
                                                          <td></td>
                                                          <td>Sub</td>
                                                          <td>Level Name</td>
+                                                         <td >Stage</td>	
+														 <td >Module</td>	
                                                          <td>Action</td>
                                                          
                                                          </tr>
@@ -232,6 +237,8 @@ if(ses1!=null){	%>
 															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level2[3] %></td>
+															<td><% if(level2[6]!=null){%><%=level2[6] %><%}else { %> -- <%} %></td>
+															<td><% if(level2[7]!=null){%><%=level2[7] %><%}else { %> -- <%} %></td>
 														 	<td class="width-30px" style="text-align: center;">
 														 	
 														 	
@@ -274,6 +281,8 @@ if(ses1!=null){	%>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level3[3] %></td>
+															<td><% if(level3[6]!=null){%><%=level3[6] %><%} else { %> -- <%} %></td>
+															<td><% if(level3[7]!=null){%><%=level3[7] %><%} else { %> -- <%} %></td>
 															
 															<td class="width-30px"  style="text-align: center;">
 															
@@ -316,6 +325,8 @@ if(ses1!=null){	%>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level4[3] %></td>
+															<td><% if(level4[6]!=null){%><%=level4[6] %><%} else { %> -- <%} %></td>
+															<td><% if(level4[7]!=null){%><%=level4[7] %><%} else { %> -- <%} %></td>
 															
 															<td class="width-30px"  style="text-align: center;">
 															
@@ -358,10 +369,13 @@ if(ses1!=null){	%>
 															<td style="width:2% !important; " class="center"> </td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
 														
+														
+														  
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level5[3] %></td>
+															 <td><% if(level5[6]!=null){%><%=level5[6] %><%} else { %> -- <%} %></td>
+															<td><% if(level5[7]!=null){%><%=level5[7] %><%} else { %> -- <%} %></td>
 															
-															
-																<td class="width-30px">
+																<td class="width-30px" style="text-align: center;">
 															
 															
 																 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')">  
@@ -406,7 +420,9 @@ if(ses1!=null){	%>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level6[3] %></td>
-															
+															<td><% if(level6[6]!=null){%><%=level6[6] %><%} else { %> -- <%} %></td>
+															<td><% if(level6[7]!=null){%><%=level6[7] %><%} else { %> -- <%} %></td>
+															 
 														    <td class="width-30px">
 															
 															

@@ -38,6 +38,8 @@
     padding-top: 0px;
     text-align: center;
 }
+
+
 .genealogy-tree{
   display: inline-block;
 } 
@@ -54,6 +56,7 @@
     position: relative;
     padding: 17px 0px 0 0px;
 }
+
 .genealogy-tree li::before, .genealogy-tree li::after{
     content: '';
     position: absolute; 
@@ -68,7 +71,7 @@
     left: 50%;
     border-left: 2px solid #ccc;
 }
-.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
+ .genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
     display: none;
 }
 .genealogy-tree li:only-child{ 
@@ -76,7 +79,7 @@
 }
 .genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
     border: 0 none;
-}
+} 
 .genealogy-tree li:last-child::before{
      border-right: 2px solid #ccc;
      border-radius: 0 5px 0 0;
@@ -107,13 +110,6 @@
     -moz-border-radius: 5px;
 }
 
-
- .genealogy-tree li a:hover+ul li::after, 
-.genealogy-tree li a:hover+ul li::before, 
-.genealogy-tree li a:hover+ul::before, 
-.genealogy-tree li a:hover+ul ul::before{
-    border-color:  #fbba00;
-} 
 
 /*--------------memeber-card-design----------*/
 .member-view-box{
@@ -225,7 +221,7 @@ table,td{
 	  
 	 
 	  		<ul>
-				<li>      
+				<li >      
 	
 						 <div class="member-view-box action-view-box" style=" padding:0px 15px;">
 			                    
@@ -245,6 +241,7 @@ table,td{
 			                           
 			                </div>
 			          </div>
+			          
 			               
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
 			           <ul class="active">
@@ -252,7 +249,8 @@ table,td{
 			                <% for(Object[] level1 : ProductTreeList){
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
 			              
-			                	<li>	 		    
+			                	<li >	 
+			                	
 									    <div class="member-view-box action-view-box">
 											 <div class="action-box" > 
 												
@@ -288,7 +286,8 @@ table,td{
 													      
 			                          		    </div> 
 			                          	 </div> 
-									</div> 
+									</div>
+									
 											<% List<Object[]> Level1 =ProductTreeList.stream().filter(e-> level1[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 											
 											
@@ -298,7 +297,8 @@ table,td{
 						                  if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString()))
 							                { %>
 							             
-												<li>	
+												<li>
+												
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
 															  <div class="action-box-header" 
@@ -344,7 +344,8 @@ table,td{
 										                 if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) )
 										                
 										                  { %>
-																  <li>      
+																  <li>  
+																   <div class="line-top"></div>    
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
@@ -395,7 +396,8 @@ table,td{
 															                 
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
 										                     { %>    
-																  <li>      
+																  <li> 
+																   <div class="line-top"></div>     
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
@@ -447,7 +449,8 @@ table,td{
 										                	<%for(Object[] level5 : ProductTreeList){%>
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
 								                             {%> 
-																  <li>      
+																  <li> 
+																   <div class="line-top"></div>     
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
@@ -681,12 +684,14 @@ function downloadPDF() {
 <script>
 function downloadPDF() {
 	
-	//document.getElementById("generatePdfBtn").style.display = "none";
-	 var body = document.body; 
+	
+	    var body = document.body;
 
-	    // Use html2canvas to capture the body content
 	    html2canvas(body, {
 	        onrendered: function(canvas) {
+	            
+	         
+
 	            // Convert canvas to base64 image data
 	            var imageData = canvas.toDataURL('image/jpeg');
 
@@ -697,6 +702,8 @@ function downloadPDF() {
 	            link.click();
 	        }
 	    });
+	
+
 		
 }
 </script>
