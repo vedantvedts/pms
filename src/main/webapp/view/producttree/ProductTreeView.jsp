@@ -62,14 +62,14 @@
     position: absolute; 
     top: 0; 
     right: 50%;
-    border-top: 2px solid #ccc;
+    border-top: 2px solid black;
     width: 50%; 
     height: 18px;
 }
 .genealogy-tree li::after{
     right: auto; 
     left: 50%;
-    border-left: 2px solid #ccc;
+    border-left: 2px solid black;
 }
  .genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
     display: none;
@@ -81,7 +81,7 @@
     border: 0 none;
 } 
 .genealogy-tree li:last-child::before{
-     border-right: 2px solid #ccc;
+     border-right: 2px solid black;
      border-radius: 0 5px 0 0;
     -webkit-border-radius: 0 5px 0 0;
     -moz-border-radius: 0 5px 0 0;
@@ -96,7 +96,7 @@
     position: absolute;
      top: 0; 
      left: 50%;
-    border-left: 2px solid #ccc;
+    border-left: 2px solid black;
     width: 0;
      height: 20px;
 }
@@ -210,14 +210,14 @@ table,td{
 
  %>
 
-<body id="mybody" style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
+<body style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
 
 	
 
      <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;"  onclick="downloadPDF()" ><i class="fa fa-download fa-lg" ></i></button> 
 
 		
-	    <div class="genealogy-tree line-top line-bottom"  id="tree">
+	    <div class="genealogy-tree"  >
 	  
 	 
 	  		<ul>

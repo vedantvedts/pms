@@ -10,7 +10,7 @@
 
  
 
-<title>Milestone List</title>
+<title>Product Tree Edit & Delete</title>
 <style type="text/css">
 label{
 font-weight: bold;
@@ -100,7 +100,7 @@ input[type=checkbox] {
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
-  
+  String id=(String)request.getAttribute("id");
   
  %>
 
@@ -174,9 +174,9 @@ if(ses1!=null){	%>
 																 if(level1[2].toString().equalsIgnoreCase("1")) { %>	
 																
 														<tr>
-															<td style="width:2% !important;" class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td>
+															<td style="width:2% !important;" class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td> 
 															
-															 <td style="">Level-1</td>
+															 <td style=""><%=count %></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level1[3] %></td>
 															
@@ -200,6 +200,7 @@ if(ses1!=null){	%>
 													           <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 													               <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
+																    <input type="hidden" name="buttonid" value="<%=count %>">
 													                  <button  class="editable-click" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')">
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
@@ -215,9 +216,9 @@ if(ses1!=null){	%>
 															</td>
 														</tr>
 														
-														  <tr class="collapse row<%=count %>" style="font-weight: bold;">
+														  <tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>" style="font-weight: bold;">
                                                          <td></td>
-                                                         <td>Sub</td>
+                                                         <td>Sub -Level</td>
                                                          <td>Level Name</td>
                                                          <td >Stage</td>	
 														 <td >Module</td>	
@@ -232,9 +233,9 @@ if(ses1!=null){	%>
 																 if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString())){%>
 	
 																
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" id="rowcollapse<%=count%>" >
 															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
+															<td style="text-align: left;width: 5%;"> <%=count %>.<%=countA%></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level2[3] %></td>
 															<td><% if(level2[6]!=null){%><%=level2[6] %><%}else { %> -- <%} %></td>
@@ -254,6 +255,7 @@ if(ses1!=null){	%>
 													            <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
+																      <input type="hidden" name="buttonid" value="<%=count %>">
 													                  <button class="editable-click" name="Mainid" value="<%=level2[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
@@ -276,9 +278,9 @@ if(ses1!=null){	%>
 																  if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) ){
 	
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" id="rowcollapse<%=count%>">
 															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
+															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level3[3] %></td>
 															<td><% if(level3[6]!=null){%><%=level3[6] %><%} else { %> -- <%} %></td>
@@ -320,9 +322,9 @@ if(ses1!=null){	%>
 															for(Object[] level4: ProductTreeList){
 																  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) {
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>" >
 															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
+															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level4[3] %></td>
 															<td><% if(level4[6]!=null){%><%=level4[6] %><%} else { %> -- <%} %></td>
@@ -365,9 +367,9 @@ if(ses1!=null){	%>
 															if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) ){%>
 	
 																
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>" >
 															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
+															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%></td>
 														
 														
 														  
@@ -415,9 +417,9 @@ if(ses1!=null){	%>
 																	
 																%>
 															
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
 															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
+															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%></td>
 															
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level6[3] %></td>
 															<td><% if(level6[6]!=null){%><%=level6[6] %><%} else { %> -- <%} %></td>
@@ -700,9 +702,10 @@ $('#Module').html("");
 }
 
 
-	
-function ChangeButton(id) {
-	console.log($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString());
+
+  function ChangeButton(id) {
+	  
+	//console.log($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString());
 	if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
 	$( "#btn"+id ).removeClass( "btn btn-sm btn-success" ).addClass( "btn btn-sm btn-danger" );
 	$( "#fa"+id ).removeClass( "fa fa-plus" ).addClass( "fa fa-minus" );
@@ -711,9 +714,33 @@ function ChangeButton(id) {
 	$( "#fa"+id ).removeClass( "fa fa-minus" ).addClass( "fa fa-plus" );
     }
 }
+  
 
 
+   
 
+ var id= <%=id%>;
+ 
+ console.log("id--"+id);
+ if(id!=null){
+ 
+ if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
+		 $( "#btn"+id ).removeClass( "btn btn-sm btn-success" ).addClass( "btn btn-sm btn-danger" );
+		$( "#fa"+id ).removeClass( "fa fa-plus" ).addClass( "fa fa-minus" ); 
+		$( ".row"+id).show();
+	    }else{
+		 $( "#btn"+id ).removeClass( "btn btn-sm btn-danger" ).addClass( "btn btn-sm btn-success" );
+		$( "#fa"+id ).removeClass( "fa fa-minus" ).addClass( "fa fa-plus" ); 
+		$( ".row"+id).hide();
+	    }
+ 
+ 
+ }
+
+
+ 
+ 
+ 
 
 </script>  
 

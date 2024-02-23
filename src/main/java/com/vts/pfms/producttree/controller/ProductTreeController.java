@@ -220,6 +220,13 @@ public class ProductTreeController {
 			req.setAttribute("ProductTreeList",main );
 			req.setAttribute("ProjectList",projlist);
 			req.setAttribute("ProjectId", ProjectId);
+			String id=req.getParameter("id");
+			if(id!=null) {
+				
+			     req.setAttribute("id", id);
+			}
+			
+			
 			if(ProjectId!=null) {
 				req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId).get(0));
 			}else {
@@ -255,17 +262,20 @@ public class ProductTreeController {
 	      } else if(Action!=null && Action.equalsIgnoreCase("D")) {
 	    	  
 	    	  
+	    	 
 	    	  ProductTreeDto dto=new ProductTreeDto();
 	    	  dto.setMainId(Long.parseLong(req.getParameter("Mainid")));
 	    	  long delete = service.LevelNameEdit(dto,Action);
 	    	  if(delete!=0) {
 					 redir.addAttribute("result", "Level Deleted Successfully");
 					 redir.addAttribute("ProjectId", ProjectId);
+					 redir.addAttribute("id",req.getParameter("buttonid"));
 					 return "redirect:/ProductTreeEditDelete.htm";
 					 
 				 }else {
-					 redir.addAttribute("resultfail", "Level Delete  Unsuccessful");
+					 redir.addAttribute("resultfail", "Level Delete Unsuccessful");
 					 redir.addAttribute("ProjectId", ProjectId);
+					 redir.addAttribute("id",req.getParameter("buttonid"));
 					 return "redirect:/ProductTreeEditDelete.htm";
 				 }
 	    		  
