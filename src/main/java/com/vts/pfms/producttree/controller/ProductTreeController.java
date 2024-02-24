@@ -245,7 +245,7 @@ public class ProductTreeController {
 			String Action=req.getParameter("Action");
 			
 			
-			if(Action!=null && Action.equalsIgnoreCase("E")) {
+			if(Action!=null && (Action.equalsIgnoreCase("E")|| Action.equalsIgnoreCase("TE"))) {
 
 			
 			 ProductTreeDto dto=new ProductTreeDto();
@@ -258,17 +258,33 @@ public class ProductTreeController {
 			 
 			 long update = service.LevelNameEdit(dto,Action);
 			 if(update!=0) {
+			 
 				 redir.addAttribute("result", "Level Name Updated Successfully");
-				 redir.addAttribute("ProjectId", ProjectId);
+			     redir.addAttribute("ProjectId", ProjectId);
+			 
+				 if(Action.equalsIgnoreCase("E")) {
+				 
 				 return "redirect:/ProductTreeEditDelete.htm";
+				 }
+				 else {
+					 return "redirect:/ProductTree.htm";
+					 
+				 }
 				 
 			 }else {
 				 redir.addAttribute("resultfail", "Level Name Update Unsuccessful");
 				 redir.addAttribute("ProjectId", ProjectId);
+				 
+				 if(Action.equalsIgnoreCase("E")) {
 				 return "redirect:/ProductTreeEditDelete.htm";
+				 }
+				 else {
+					 return "redirect:/ProductTree.htm";
+					 
+				 }
 			 }
 			
-	      } else if(Action!=null && Action.equalsIgnoreCase("D")) {
+	      } else if(Action!=null && (Action.equalsIgnoreCase("D")|| Action.equalsIgnoreCase("TD")) ) {
 	    	  
 	    	  
 	    	 
@@ -279,13 +295,31 @@ public class ProductTreeController {
 					 redir.addAttribute("result", "Level Deleted Successfully");
 					 redir.addAttribute("ProjectId", ProjectId);
 					 redir.addAttribute("id",req.getParameter("buttonid"));
-					 return "redirect:/ProductTreeEditDelete.htm";
+					 
+					 if(Action.equalsIgnoreCase("D")) {
+						 return "redirect:/ProductTreeEditDelete.htm";
+						 }
+						 else {
+							 return "redirect:/ProductTree.htm";
+							 
+						 }
+					 
+					 
 					 
 				 }else {
 					 redir.addAttribute("resultfail", "Level Delete Unsuccessful");
 					 redir.addAttribute("ProjectId", ProjectId);
 					 redir.addAttribute("id",req.getParameter("buttonid"));
-					 return "redirect:/ProductTreeEditDelete.htm";
+					 
+					 
+					 if(Action.equalsIgnoreCase("D")) {
+						 return "redirect:/ProductTreeEditDelete.htm";
+						 }
+						 else {
+							 return "redirect:/ProductTree.htm";
+							 
+						 }
+					 
 				 }
 	    		  
 	      }
@@ -306,9 +340,7 @@ public class ProductTreeController {
 	{
 		
 		String UserId = (String) ses.getAttribute("Username");
-		String Logintype= (String)ses.getAttribute("LoginType");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		String LabCode = (String)ses.getAttribute("labcode");
+		
 		logger.info(new Date() +"Inside ProductTreeRevise.htm "+UserId);		
 		try {
 			
@@ -379,17 +411,14 @@ public class ProductTreeController {
 	{
 		
 		String UserId = (String) ses.getAttribute("Username");
-		String Logintype= (String)ses.getAttribute("LoginType");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		String LabCode = (String)ses.getAttribute("labcode");
+		
 		logger.info(new Date() +"Inside ProductTreeRevisionData.htm "+UserId);		
 		try {
 			
 			
 	        String ProjectId=req.getParameter("ProjectId");
 	        String RevisionCount=req.getParameter("revCount");
-	        System.out.println("ProjectId---"+ProjectId);
-	        System.out.println("RevisionCount---"+RevisionCount);
+	      
 	      
 			req.setAttribute("projectid", ProjectId);
 			List<Object[]> getProductRevTreeList=service.getProductRevTreeList(ProjectId,RevisionCount);

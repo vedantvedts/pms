@@ -400,7 +400,7 @@ if(ses1!=null){	%>
 												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')" ><img src="view/images/edit.png" ></button>
 												    <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 												         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-													     <input type="hidden" name="Action" value="D">
+													     <input type="hidden" name="Action" value="TD">
 												            <button class="delet" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 												      </form> 
 												   </div>
@@ -455,7 +455,7 @@ if(ses1!=null){	%>
 																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')" ><img src="view/images/edit.png" ></button>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-																			     <input type="hidden" name="Action" value="D">
+																			     <input type="hidden" name="Action" value="TD">
 																		            <button class="delet" name="Mainid" value="<%=level2[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																	        </form> 
 												                     </div>
@@ -513,7 +513,7 @@ if(ses1!=null){	%>
 																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>')" ><img src="view/images/edit.png" ></button>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-																			     <input type="hidden" name="Action" value="D">
+																			     <input type="hidden" name="Action" value="TD">
 																		            <button class="delet" name="Mainid" value="<%=level3[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																	        </form> 
 												                     </div>
@@ -577,7 +577,7 @@ if(ses1!=null){	%>
 																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>')" ><img src="view/images/edit.png" ></button>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-																			     <input type="hidden" name="Action" value="D">
+																			     <input type="hidden" name="Action" value="TD">
 																		            <button class="delet" name="Mainid" value="<%=level4[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																	        </form> 
 												                     </div>
@@ -638,7 +638,7 @@ if(ses1!=null){	%>
 																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')" ><img src="view/images/edit.png" ></button>
 																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
-																						     <input type="hidden" name="Action" value="D">
+																						     <input type="hidden" name="Action" value="TD">
 																					            <button class="delet" name="Mainid" value="<%=level5[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																				        </form> 
 															                     </div>
@@ -908,7 +908,7 @@ if(ses1!=null){	%>
         	</table>
         	
         	<input type="hidden" id="Mainid" name="Mainid" value="" >
-        	<input type="hidden" id="" name="Action" value="E" >
+        	 <input type="hidden" id="" name="Action" value="TE" > 
         	<input type="hidden" id="" name="ProjectId" value="<%=ProjectId %>" >
         	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
         </form>

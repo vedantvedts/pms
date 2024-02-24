@@ -214,7 +214,7 @@ table,td{
 
 	
 
-     <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;"  onclick="downloadPDF()" ><i class="fa fa-download fa-lg" ></i></button> 
+     <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;" > <!-- onclick="downloadPDF()" --> <i class="fa fa-download fa-lg" ></i></button> 
 
 		
 	    <div class="genealogy-tree"  >
@@ -681,7 +681,7 @@ function downloadPDF() {
 </script> -->
 
 
-<script>
+<!-- <script>
 function downloadPDF() {
 	
 	
@@ -706,7 +706,9 @@ function downloadPDF() {
 
 		
 }
-</script>
+</script> -->
+
+
 
 
 

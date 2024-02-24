@@ -250,7 +250,7 @@ if(ses1!=null){
                             		
                             		<div class="col-md-3" style="margin-top: -7px;">
                             		
-                              		   <select class="form-control items" name="revCount"   style="width:220px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
+                              		   <select class="form-control selectdee" name="revCount"   style="width:220px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
 										
 										<%for(Object[] obj : projectdatarevlist){ %>
 											    <option  value="<%=obj[0] %>"  <% if(RevCount.toString().equals(obj[0].toString())) {%> selected <%} %> >REV - <%=obj[0] %> (<%=sdf.format(sdf1.parse(obj[1].toString()) )%>)</option>

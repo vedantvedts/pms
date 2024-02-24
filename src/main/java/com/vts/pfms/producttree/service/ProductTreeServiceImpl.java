@@ -56,7 +56,7 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		ProductTree pt=dao.getLevelNameById(dto.getMainId());
 		
 		
-		if(Action.equalsIgnoreCase("E")) {
+		if(Action.equalsIgnoreCase("E") || Action.equalsIgnoreCase("TE")) {
 		pt.setMainId(dto.getMainId());
 		pt.setLevelName(dto.getLevelName());
 		pt.setStage(dto.getStage());
@@ -67,7 +67,7 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		return dao.LevelNameEdit(pt);
 		
 		}
-		else if(Action.equalsIgnoreCase("D")) {
+		else if(Action.equalsIgnoreCase("D") || Action.equalsIgnoreCase("TD")) {
 			
 			pt.setMainId(dto.getMainId());
 			return dao.LevelNameDelete(pt);
