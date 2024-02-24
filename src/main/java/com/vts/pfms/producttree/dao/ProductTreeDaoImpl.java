@@ -45,6 +45,13 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 			+ "    \r\n"
 			+ "	WHERE t1.mainid = :mainid  OR t2.mainid = :mainid OR t3.mainid = :mainid OR t4.mainid = :mainid OR t5.mainid=:mainid";
 	
+	private static final String REVISIONCOUNT="SELECT DISTINCT RevisionNo,DATE(CreatedDate),projectid FROM pfms_product_tree_rev WHERE projectid=:projectId ORDER BY RevisionNo DESC ";
+	private static final String PRODUCTTREEREVISIONLIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.RevisionNo FROM pfms_product_tree_rev a,project_master b WHERE MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId AND a.isActive='1' AND a.RevisionNo=:revisionCount ORDER BY parentlevelid";
+	
+	
+	
+	
+	
 	@Override
 	public long AddLevelName(ProductTree prod) throws Exception {
 		manager.persist(prod);
@@ -105,11 +112,34 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 
 
 	@Override
-	public long LevelRevise(ProductTreeRev rev) throws Exception {
+	public long ProductTreeRevise(ProductTreeRev rev) throws Exception{
 		
 		manager.persist(rev);
 		manager.flush();
 		return rev.getRevId();
+	}
+
+
+	@Override
+	public List<Object[]> getRevisionCount(String projectId) throws Exception{
+		
+		    Query query=manager.createNativeQuery(REVISIONCOUNT);
+			query.setParameter("projectId", projectId);
+			List<Object[]> RevisionCount=(List<Object[]>)query.getResultList();		
+
+			return RevisionCount;
+	}
+
+
+	@Override
+	public List<Object[]> getProductRevTreeList(String projectId, String revisionCount) throws Exception {
+		
+		 Query query=manager.createNativeQuery(PRODUCTTREEREVISIONLIST);
+			query.setParameter("projectId", projectId);
+			query.setParameter("revisionCount", revisionCount);
+			List<Object[]> getProductRevTreeList=(List<Object[]>)query.getResultList();		
+
+			return getProductRevTreeList;
 	}
 
 }

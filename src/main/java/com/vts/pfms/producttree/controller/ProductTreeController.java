@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +33,10 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
+import com.vts.pfms.FormatConverter;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
+import com.vts.pfms.producttree.model.ProductTreeRev;
 import com.vts.pfms.producttree.service.ProductTreeService;
 
 
@@ -51,6 +54,11 @@ public class ProductTreeController {
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
+	FormatConverter fc=new FormatConverter();
+	private  SimpleDateFormat rdf=fc.getRegularDateFormat();
+	private  SimpleDateFormat sdf=fc.getSqlDateFormat();
+	private  SimpleDateFormat sdtf=fc.getSqlDateAndTimeFormat();
+	private  SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	
 	private static final Logger logger=LogManager.getLogger(ProductTreeController.class);
 	
@@ -94,6 +102,7 @@ public class ProductTreeController {
 	       
 	        req.setAttribute("ProjectList",projlist);
 			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("RevisionCount", service.getRevisionCount(ProjectId));
 	        
 			
 			if(ProjectId!=null) {
@@ -300,43 +309,59 @@ public class ProductTreeController {
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProductTree.htm "+UserId);		
+		logger.info(new Date() +"Inside ProductTreeRevise.htm "+UserId);		
 		try {
 			
 			
 	        String ProjectId=req.getParameter("ProjectId");
+	       String RevisionCount=req.getParameter("REVCount");
 	      
 			req.setAttribute("ProjectId", ProjectId);
-	        req.setAttribute("ProductTreeList",service.getProductTreeList(ProjectId) );
+			List<Object[]> ProductTreeList=service.getProductTreeList(ProjectId);
+	        req.setAttribute("ProductTreeList",ProductTreeList );
 	        req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
+	        req.setAttribute("RevisionCount", service.getRevisionCount(ProjectId));
 	        
+	      
 	        
-             String Action=req.getParameter("Action");
-			
-			
-			if(Action!=null && Action.equalsIgnoreCase("R")) {
-	        ProductTreeDto dto=new ProductTreeDto();
-			 dto.setLevelName(req.getParameter("LevelName"));
-			 dto.setMainId(Long.parseLong(req.getParameter("Mainid")));
-			 dto.setStage(req.getParameter("Stage"));
-			 dto.setModule(req.getParameter("Module"));
-			 dto.setCreatedBy(UserId);
-	        
-			 long update = service.ProductTreeRevise(dto,Action);
-			 if(update!=0) {
+	        long save=0;
+	        if(ProductTreeList.size()>0) {
+	        	
+	        	for(Object[] obj :ProductTreeList) {
+	        		
+	        		ProductTreeRev rev=new ProductTreeRev();
+	        		
+	        		rev.setMainId(Long.parseLong(obj[0].toString()));
+	        		rev.setProjectId(Long.parseLong(obj[4].toString()));
+	        		rev.setParentLevelId(Long.parseLong(obj[1].toString()));
+	        		rev.setLevelId(obj[2].toString());
+	        		rev.setLevelName(obj[3].toString());
+	        		rev.setStage(obj[6]!=null?obj[6].toString():null);
+	        		rev.setModule(obj[7]!=null?obj[7].toString():null);
+	        		rev.setRevisionNo(RevisionCount);
+	        		rev.setCreatedBy(UserId);
+	        		rev.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+	        		rev.setIsActive(1);
+	        		
+	        	     save = service.ProductTreeRevise(rev);
+	        	     
+	        	  }
+	        	}
+	         
+			 if(save!=0) {
 				 
-				 redir.addAttribute("result", "Level Name Revised Successfully");
+				 redir.addAttribute("result", "Product Tree Revision " +RevisionCount+ " Successful");
 				 redir.addAttribute("ProjectId", ProjectId);
-				 return "redirect:/ProductTreeRevise.htm";
+				 return "redirect:/ProductTree.htm";
 				 
 			 }else {
 				 
-				 redir.addAttribute("resultfail", "Level Name Revised Unsuccessfull");
+				 redir.addAttribute("resultfail", "Product Tree Revision " +RevisionCount+ " Unsuccessfull");
 				 redir.addAttribute("ProjectId", ProjectId);
-				 return "redirect:/ProductTreeRevise.htm";
-			 }
-		}	
-			
+				 return "redirect:/ProductTree.htm";
+			 
+	         	
+	        }
 		}
 		catch (Exception e) {
 			e.printStackTrace(); 
@@ -344,9 +369,49 @@ public class ProductTreeController {
 			return "static/Error";
 			
 		}
-		return "producttree/ProductTreeRevise";
+		
 	}
 
+	
+	
+	@RequestMapping(value = "ProductTreeRevisionData.htm")
+	public String ProductTreeRevisionData(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProductTreeRevisionData.htm "+UserId);		
+		try {
+			
+			
+	        String ProjectId=req.getParameter("ProjectId");
+	        String RevisionCount=req.getParameter("revCount");
+	        System.out.println("ProjectId---"+ProjectId);
+	        System.out.println("RevisionCount---"+RevisionCount);
+	      
+			req.setAttribute("projectid", ProjectId);
+			List<Object[]> getProductRevTreeList=service.getProductRevTreeList(ProjectId,RevisionCount);
+	        req.setAttribute("ProductRevTreeList",getProductRevTreeList );
+	        req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
+	        req.setAttribute("RevisionCount", service.getRevisionCount(ProjectId));
+	        req.setAttribute("RevCount", RevisionCount);
+	        
+	       return "producttree/ProductTreeRevision";
+	      
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ProductTreeRevisionData.htm "+UserId, e); 
+			return "static/Error";
+			
+		}
+		
+		
+	}
+	
+	
 	
 	@RequestMapping(value = {"ProductTreeDownload.htm"})
 	public void ProductTreeDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 

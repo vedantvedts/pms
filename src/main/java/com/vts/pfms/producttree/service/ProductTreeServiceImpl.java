@@ -79,9 +79,28 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 	}
 
 	@Override
-	public long ProductTreeRevise(ProductTreeDto dto,String Action) throws Exception {
+	public long ProductTreeRevise(ProductTreeRev rev ) throws Exception {
 		
-    ProductTree pt=dao.getLevelNameById(dto.getMainId());
+		
+		return dao.ProductTreeRevise(rev);
+		
+	}
+
+	@Override
+	public List<Object[]> getRevisionCount(String projectId) throws Exception {
+		
+		return dao.getRevisionCount(projectId);
+		
+	}
+
+	@Override
+	public List<Object[]> getProductRevTreeList(String projectId,String RevisionCount) throws Exception {
+		
+		return dao.getProductRevTreeList(projectId,RevisionCount);
+	}	
+}
+		
+/*    ProductTree pt=dao.getLevelNameById(dto.getMainId());
 		
     
     ProductTreeRev rev =new ProductTreeRev();
@@ -113,6 +132,6 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 			return dao.LevelNameEdit(pt);
 	
 	
-	}
+	}*/
 
-}
+

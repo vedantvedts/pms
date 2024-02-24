@@ -233,8 +233,9 @@ height:18px;
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
+  List<Object[]> RevisionCount =(List<Object[]>)request.getAttribute("RevisionCount");
 
-  
+ 
   
  %>
 
@@ -258,7 +259,7 @@ height:18px;
 											<%} %>
   									</select>
   									</div>
-  									<div class="col-md-3" style="margin-left: 75px;margin-top:-7px;">
+  									<div class="col-md-4" style="margin-left: 75px;margin-top:-7px;">
   										
   										
   										<% if(ProductTreeList!=null && ProductTreeList.size()>0){ %>
@@ -267,11 +268,17 @@ height:18px;
 												            <img src="view/images/tree.png">
 												</button> 
 		                                       
-		                                       <button name="action" class="btn btn-sm  back" name ="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevise.htm" style="background-color: #FF7800;color: black; border: 0" type="submit" value="revise" >REVISE</button>
-                                       
+		                                       <button name="action" class="btn btn-sm back" name ="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevise.htm" style="background-color: green;color: white; border: 0" type="submit" value="revise"  onclick="return confirm('Are You Sure To Submit')">SET BASE LINE  ( <%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1) %> )</button>
+                                                   <input type="hidden" name="REVCount" value="<%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1)%>" >
                                               
                                            <button type="submit" name="ProjectId" value="<%=ProjectId %>" class="btn btn-sm add" formaction="ProductTreeEditDelete.htm" formmethod="get">LIST</button>
-                                               
+                                           
+                                           <% if(RevisionCount.size()!=0){ %>
+                                         <button type="submit" class="btn btn-sm edit" name="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevisionData.htm" formmethod="get">Revision Data</button> 
+                                           <input type="hidden" name="revCount" value="<%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString()))%>" >
+                                          <%} %>  
+                                          
+                                          
                                        <%} %>
                                        
                                        <%-- <button  type="submit" class="btn btn-sm "  style="margin-left: 1rem;" name="ProjectId" value="<%=ProjectId %>"  formaction="ProductTreeDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>  --%>

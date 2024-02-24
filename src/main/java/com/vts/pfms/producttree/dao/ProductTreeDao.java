@@ -17,6 +17,12 @@ public interface ProductTreeDao {
 
 	public long LevelNameDelete(ProductTree pt) throws Exception;
 
-	public long LevelRevise(ProductTreeRev rev) throws Exception;
+	public List<Object[]> getRevisionCount(String projectId)throws Exception;
+
+	public long ProductTreeRevise(ProductTreeRev rev)throws Exception;
+
+	public List<Object[]> getProductRevTreeList(String projectId, String revisionCount) throws Exception;
+
+	
 
 }
