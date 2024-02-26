@@ -176,8 +176,8 @@ if(ses1!=null){
 					%>
 							<tr>
 								<td class="center"><%=i+1 %></td>
-								<td class="center"><%=riskdatalist.get(i)[7]%></td>
-								<td class="center"><%=riskdatalist.get(i)[1] %></td>
+								<td class="left"><%=riskdatalist.get(i)[7]%></td>
+								<td class="left"><%=riskdatalist.get(i)[1] %></td>
 								<td class="center"><%=sdf.format(riskdatalist.get(i)[8])%></td>
 								<td class="center">
 									<%if(riskdatalist.get(i)[3].toString().equals("I") || riskdatalist.get(i)[3].toString().equals("B")){ %>
