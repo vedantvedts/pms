@@ -34,15 +34,34 @@ public class DownloadServiceImpl implements DownloadService
 		// TODO Auto-generated method stub
 		return dao.reqAttachDownload( attachmentid);
 	}
-	@Override
-	public Long TemplateAttributesAdd(TemplateAttributes ta) throws Exception {
-		// TODO Auto-generated method stub
-		return dao.TemplateAttributesAdd(ta);
-	}
+	
 	@Override
 	public Object[] getLabDetails(String labCode) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.getLabDetails(labCode);
 	}
 	
+	@Override
+	public Long TemplateAttributesAdd(TemplateAttributes ta) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.TemplateAttributesAdd(ta);
+	}
+	
+	@Override
+	public TemplateAttributes TemplateAttributesEditById(long Attributid) throws Exception {
+		
+		return dao.TemplateAttributesEditById(Attributid);
+	}
+	
+	@Override
+	public long TemplateAttributesEdit(TemplateAttributes AttributId) throws Exception {
+		
+		
+		return dao.TemplateAttributesEdit(AttributId);
+	}
+	@Override
+	public Object[] ProjectDataTempAttr() throws Exception {
+		
+		return dao.ProjectDataTempAttr();
+	}
 }

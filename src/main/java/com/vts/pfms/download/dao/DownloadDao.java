@@ -14,4 +14,10 @@ public interface DownloadDao {
 
 	public Object[] getLabDetails(String labCode) throws Exception;
 
+	public TemplateAttributes TemplateAttributesEditById(long Attributid) throws Exception;
+
+	public long TemplateAttributesEdit(TemplateAttributes AttributId) throws Exception;
+
+	public Object[] ProjectDataTempAttr() throws Exception;
+
 }

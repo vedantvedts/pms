@@ -9,5 +9,7 @@ public interface DownloadService {
 	public Object[] reqAttachDownload(String attachmentid) throws Exception;
 	public Long TemplateAttributesAdd(TemplateAttributes ta)throws Exception;
 	public Object[] getLabDetails(String labCode) throws Exception;
-
+	public TemplateAttributes TemplateAttributesEditById(long Attributid) throws Exception;
+	public long TemplateAttributesEdit(TemplateAttributes AttributId) throws Exception;
+	public Object[] ProjectDataTempAttr() throws Exception;
 }

@@ -471,11 +471,20 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                						<div class="row">
                			    			<div class="col-md-12" style="margin-left: 60px;margin-right: 60px;">
                			    				<!-- First row of SoC Details  -->
-               			     				<div class="row details">
-                       							<div class="column b" style="width: 94.5%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
-                           							<label class="control-label">Introduction</label><span class="mandatory">*</span>
-                             						<textarea  class="form-control form-control" name="dpcIntroduction" id="dpcIntroduction" rows="4" cols="65" style="font-size: 15px;"
-                             		 				 placeholder="Enter SoC Introduction" required><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %></textarea>
+               			    				<div class="row details">
+               			    					<div class="column b" style="width: 94.5%;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+               			    						<label class="control-label">Introduction</label><span class="mandatory">*</span>
+               			    					</div>
+               			    				</div>
+               			     				<div class="row details" style="margin-top: -1%;">
+                       							
+                             						<%-- <textarea  class="form-control form-control" name="dpcIntroduction" id="dpcIntroduction" rows="4" cols="65" style="font-size: 15px;"
+                             		 				 placeholder="Enter SoC Introduction" required><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %></textarea> --%>
+                       								<div class="column b" style="width: 94.5%;">
+														<div id="dpcIntroductionnote" class="center"> </div>
+														<input type="hidden" id="dpcIntroductionhidden" value="<%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %>">
+													
+													<textarea name="dpcIntroduction" style="display:none;"></textarea>
                        							</div>
                         					</div>
                			    				<!-- Second row of SoC Details  -->
@@ -1383,6 +1392,153 @@ $('#approvalDate').daterangepicker({
 	}
 });
 
+</script>
+
+<script type="text/javascript">
+
+/* ----------------- CKEDITOR Configuration ------------------------------------ */
+var editor_config = {
+		toolbar : [
+				{
+					name : 'clipboard',
+					items : [ 'PasteFromWord', '-', 'Undo', 'Redo' ]
+				},
+				{
+					name : 'basicstyles',
+					items : [ 'Bold', 'Italic', 'Underline', 'Strike',
+							'RemoveFormat', 'Subscript', 'Superscript' ]
+				},
+				{
+					name : 'links',
+					items : [ 'Link', 'Unlink' ]
+				},
+				{
+					name : 'paragraph',
+					items : [ 'NumberedList', 'BulletedList', '-',
+							'Outdent', 'Indent', '-', 'Blockquote' ]
+				},
+				{
+					name : 'insert',
+					items : [ 'Image', 'Table' ]
+				},
+				{
+					name : 'editing',
+					items : [ 'Scayt' ]
+				},
+				'/',
+
+				{
+					name : 'styles',
+					items : [ 'Format', 'Font', 'FontSize' ]
+				},
+				{
+					name : 'colors',
+					items : [ 'TextColor', 'BGColor', 'CopyFormatting' ]
+				},
+				{
+					name : 'align',
+					items : [ 'JustifyLeft', 'JustifyCenter',
+							'JustifyRight', 'JustifyBlock' ]
+				}, {
+					name : 'document',
+					items : [ 'Print', 'PageBreak', 'Source' ]
+				} ],
+
+		removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+
+		customConfig : '',
+
+		disallowedContent : 'img{width,height,float}',
+		extraAllowedContent : 'img[width,height,align]',
+
+		height : 300,
+
+		contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
+
+		bodyClass : 'document-editor',
+
+		format_tags : 'p;h1;h2;h3;pre',
+
+		removeDialogTabs : 'image:advanced;link:advanced',
+
+		stylesSet : [
+
+		{
+			name : 'Marker',
+			element : 'span',
+			attributes : {
+				'class' : 'marker'
+			}
+		}, {
+			name : 'Cited Work',
+			element : 'cite'
+		}, {
+			name : 'Inline Quotation',
+			element : 'q'
+		},
+
+		{
+			name : 'Special Container',
+			element : 'div',
+			styles : {
+				padding : '5px 10px',
+				background : '#eee',
+				border : '1px solid #ccc'
+			}
+		}, {
+			name : 'Compact table',
+			element : 'table',
+			attributes : {
+				cellpadding : '6',
+				cellspacing : '0',
+				border : '1',
+				bordercolor : '#ccc'
+			},
+			styles : {
+				'border-collapse' : 'collapse'
+			}
+		}, {
+			name : 'Borderless Table',
+			element : 'table',
+			styles : {
+				'border-style' : 'hidden',
+				'background-color' : '#E6E6FA'
+			}
+		}, {
+			name : 'Square Bulleted List',
+			element : 'ul',
+			styles : {
+				'list-style-type' : 'square'
+			}
+		}, {
+			filebrowserUploadUrl : '/path/to/upload-handler'
+		}, ]
+	};
+	
+
+/* -------------------------- Form Submission with CKEDITOR Data -------------------------------------------- */
+
+$('#inieditform').submit(function() {
+
+	  var data =CKEDITOR.instances['dpcIntroductionnote'].getData();
+	  $('textarea[name=dpcIntroduction]').val(data);
+
+});
+
+/* ------------------------ Using CKEDITOR Configuration ------------------------ */
+CKEDITOR.replace('dpcIntroductionnote', editor_config);
+
+
+$( document ).ready(function() {
+	
+	/* ----------------------- Aim & Objectives ------------------------ */ 
+	<%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null) {%>
+
+		 var html=$('#dpcIntroductionhidden').val();
+		
+		CKEDITOR.instances['dpcIntroductionnote'].setData(html);
+	<%} %>
+});	
 </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.vts.pfms.download.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -68,13 +69,6 @@ public class DownloadDaoImpl implements DownloadDao{
 		return reqAttachDownload;
 	}
 	
-	@Override
-	public Long TemplateAttributesAdd(TemplateAttributes ta) throws Exception {
-		manager.persist(ta);
-		manager.flush();
-		return ta.getAttributId();
-	}
-	
 	private static final String LABDETAILS=" SELECT LabMasterId,LabName,LabUnitCode,LabAddress,LabCity,LabPin,LabTelNo,LabFaxNo FROM lab_master WHERE labcode=:labCode";
 	
 	@Override
@@ -86,5 +80,57 @@ public class DownloadDaoImpl implements DownloadDao{
 		Object[]labDetails=null;
 		labDetails=(Object[])query.getSingleResult();
 		return labDetails;
+	}
+	
+	@Override
+	public Long TemplateAttributesAdd(TemplateAttributes ta) throws Exception {
+		manager.persist(ta);
+		manager.flush();
+		return ta.getAttributId();
+	}
+	
+	
+	@Override
+	public TemplateAttributes TemplateAttributesEditById(long Attributid) throws Exception{
+		try {
+			return manager.find(TemplateAttributes.class, Attributid);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getCARSInitiationById "+e);
+			return new TemplateAttributes();
+		}
+	}
+	@Override
+	public long TemplateAttributesEdit(TemplateAttributes AttributId) throws Exception{
+		try {
+			manager.merge(AttributId);
+			manager.flush();
+			return AttributId.getAttributId();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO TemplateAttributesEdit "+e);
+			return 0;
+		}
+	}
+	
+	private static final String PROJECTTEMPATRR="SELECT a.HeaderFontSize,a.HeaderFontWeight,a.SubHeaderFontsize, a.SubHeaderFontweight,a.ParaFontSize,a.ParaFontWeight,a.MainTableWidth, a.subTableWidth,a.AttributId,a.SuperHeaderFontsize,a.SuperHeaderFontWeight,a.FontFamily FROM  pfms_doc_template_attributes a";
+
+	@Override
+	public Object[] ProjectDataTempAttr() throws Exception {
+		
+		try {
+			Query query=manager.createNativeQuery(PROJECTTEMPATRR);
+			List<Object[]> list =(List<Object[]>)query.getResultList();	
+			if(list!=null && list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 }

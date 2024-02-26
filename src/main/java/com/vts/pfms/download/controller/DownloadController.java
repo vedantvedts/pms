@@ -181,23 +181,24 @@ public class DownloadController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String LabCode = (String)ses.getAttribute("labcode");
-		String ProjectId=null; 
+				
   		try {
-  			List<Object[]> ProjectList = proservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-  			if(req.getParameter("projectid")!=null) {
-
-  				ProjectId=(String)req.getParameter("projectid");
-  			}else {
-  				ProjectId=ProjectList.get(0)[0].toString();
-  			}
-  			req.setAttribute("ProjectId", ProjectId);
-  			req.setAttribute("ProjectList", ProjectList);
+  			//List<Object[]> ProjectList = proservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+  			//List<Object[]> projectIntiationList = proservice.ProjectIntiationList(EmpId,Logintype,LabCode);
+  			  		
+			  req.setAttribute("EditData", service.ProjectDataTempAttr());
+  			//req.setAttribute("ProjectList", ProjectList);
+  			//req.setAttribute("ProjectIntiationList", projectIntiationList);
+  			//req.setAttribute("ProjectId", ProjectId);
+  			//req.setAttribute("InitiationId", InitiationId);
+  			//req.setAttribute("ismain", ismain);
+  			
+  			 return "documents/DocumentTemplate";
   		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			return "Static/Error";
 		}
-  		
-  	 return "documents/DocumentTemplate";
-  	}
+  		  	}
   	
   	
   	@RequestMapping(value="TemplateAttributesAdd.htm", method = {RequestMethod.POST})
@@ -211,40 +212,91 @@ public class DownloadController {
   		try {
   			
   			TemplateAttributes ta= new TemplateAttributes();
-  			
+  			//String Projectid =req.getParameter("projectid");
+  			//String initiationid=req.getParameter("initiationid");
+  			// ismain =req.getParameter("ismain");
+  		
+  		//System.out.println("@@@@@@@@@@projectid@@@@@projectid"+Projectid);
+  		//System.out.println("@@@@@@@@initiationid"+initiationid);
+  		//System.out.println("@@@@@@@@ismain"+ismain);
+		
+
+  	
   			String HeaderFontSize= req.getParameter("HeaderFontSize");
   			String HeaderFontWeight = req.getParameter("HeaderFontWeight");
   			
   			String subHeaderFontSize= req.getParameter("subHeaderFontSize");
   			String subHeaderFontWeight = req.getParameter("subHeaderFontWeight");
   			
+  			
+  			String SuperHeaderFontSize=req.getParameter("SuperHeaderFontSize");
+  		
   			String ParaFontSize = req.getParameter("ParaFontSize");
   			String paraFontWeight = req.getParameter("paraFontWeight");
   			
-  			String mainTableWidth = req.getParameter("mainTableWidth");
-  			String subTableWidth = req.getParameter("subTableWidth");
+  			String SuperHeaderFontWeight=req.getParameter("SuperHeaderFontWeight");
+  			
+  			String FontFamily=req.getParameter("FontFamily");
+  			
+  			//String mainTableWidth = req.getParameter("mainTableWidth");
+  			//String subTableWidth = req.getParameter("subTableWidth");
+  			
+  			//if(ismain != null && ismain.equalsIgnoreCase("N")) {
+  			//	ta.setProjectId(Long.parseLong(Projectid));	
+  			
+  		//	}
+  			
+  		//	else
+  			//{
+  				//ta.setInitiationId(0);
+  			//}
+  			
+  			
+  			//if(ismain != null && ismain.equalsIgnoreCase("Y")) {
+  			//	ta.setInitiationId(Long.parseLong(initiationid));
+  			
+  			//}
+  			
+  		//	else
+  		//	{
+  				//ta.setProjectId(0);
+  		//	}
+  			
   			
   			
   			ta.setHeaderFontSize(Integer.parseInt(HeaderFontSize));
-  			ta.setHeaderFontWeight(Integer.parseInt(HeaderFontWeight));
+  			ta.setHeaderFontWeight(HeaderFontWeight);
   			ta.setSubHeaderFontsize(Integer.parseInt(subHeaderFontSize));
-  			ta.setHeaderFontWeight(Integer.parseInt(subHeaderFontWeight));
+  			ta.setSubHeaderFontweight(subHeaderFontWeight);
   			ta.setParaFontSize(Integer.parseInt(ParaFontSize));
-  			ta.setParaFontWeight(Integer.parseInt(paraFontWeight));
-  			ta.setMainTableWidth(Integer.parseInt(mainTableWidth));
-  			ta.setSubTableWidth(Integer.parseInt(subTableWidth));
+  			ta.setParaFontWeight(paraFontWeight);
+  			//ta.setMainTableWidth(Integer.parseInt(mainTableWidth));
+  		//	ta.setSubTableWidth(Integer.parseInt(subTableWidth));
+  			ta.setSuperHeaderFontsize(Integer.parseInt(SuperHeaderFontSize));
+  			ta.setSuperHeaderFontWeight(SuperHeaderFontWeight);
+  			ta.setFontFamily(FontFamily);
   			ta.setCreatedBy(Username);
   			ta.setCreatedDate(LocalDate.now().toString());
-  			
+  			ta.setIsActive(1);
   			Long result= service.TemplateAttributesAdd(ta);
-  			System.out.println("result"+result);
+  			System.out.println("result@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+result);
   			if(result>0) {
   				redir.addFlashAttribute("result", "Template Attributes set successfully.");
   			}else {
   				redir.addFlashAttribute("resultfail", "Template Attributes set successfully.");
   			}
-  			redir.addFlashAttribute("projectid",req.getParameter("projectid"));
-  			List<Object[]> ProjectList = proservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+  			
+  			//redir.addFlashAttribute("ismain",req.getParameter("ismain"));
+  			//String ismain1 = req.getParameter("ismain");
+
+  		// Add 'ismain' as a flash attribute
+  		//redir.addFlashAttribute("ismain", ismain);
+  		//	if(ismain1!= null && ismain1.equalsIgnoreCase("N")) {
+  			//	redir.addFlashAttribute("projectid",req.getParameter("projectid"));
+  		//	}else if(ismain1!= null && ismain1.equalsIgnoreCase("Y")){
+  		//		redir.addFlashAttribute("initiationid",req.getParameter("initiationid"));
+  			//}
+  			  List<Object[]> ProjectList = proservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
   			redir.addFlashAttribute("ProjectList", ProjectList);
   		}
   		catch (Exception e) {
@@ -256,8 +308,65 @@ public class DownloadController {
   		
   	}
   	
-	
-	
+  	@RequestMapping(value="TemplateAttributesEdit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsInitiationEditSubmit(HttpServletRequest req, HttpSession ses,RedirectAttributes redir) throws Exception {
+		
+		String Username = (String) ses .getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date()+ " Inside TemplateAttributesEdit "+Username);
+		try {
+			TemplateAttributes AttributId =null;
+			String Attributid  =req.getParameter("AttributId");
+  			System.out.println("!!!!!###Attributid####!!!!!!"+Attributid);
+  			if(Attributid!=null)
+  				{
+  					AttributId = service.TemplateAttributesEditById(Long.parseLong(Attributid));
+  				}
+  			
+  			AttributId.setHeaderFontSize(Integer.parseInt(req.getParameter("HeaderFontSize")));
+  			AttributId.setHeaderFontWeight(req.getParameter("HeaderFontWeight"));
+  		  
+  			AttributId.setSubHeaderFontsize(Integer.parseInt(req.getParameter("subHeaderFontSize")));
+  			AttributId.setSubHeaderFontweight(req.getParameter("subHeaderFontWeight"));
+  		  	
+  			AttributId.setParaFontSize(Integer.parseInt(req.getParameter("ParaFontSize")));
+  			AttributId.setParaFontWeight(req.getParameter("paraFontWeight"));
+  			
+  			//AttributId.setMainTableWidth(Integer.parseInt(req.getParameter("mainTableWidth")));
+  			//AttributId.setSubTableWidth(Integer.parseInt(req.getParameter("subTableWidth")));
+  		  	
+  			AttributId.setSuperHeaderFontsize(Integer.parseInt(req.getParameter("SuperHeaderFontSize")));
+  			AttributId.setSuperHeaderFontWeight(req.getParameter("SuperHeaderFontWeight"));
+  			
+  			AttributId.setFontFamily(req.getParameter("FontFamily"));
+  			
+  		
+  			AttributId.setModifiedBy(Username);
+  			AttributId.setModifiedDate(LocalDate.now().toString());
+  			AttributId.setIsActive(0);
+  		
+  			
+  			
+  			
+  			
+			long result = service.TemplateAttributesEdit(AttributId);
+			if(result!=0) {
+				redir.addAttribute("result", " Edited Successfully");
+			}else {
+				redir.addAttribute("resultfail", " Edit UnSuccessful");
+			}
+			redir.addAttribute("carsInitiationId", result);
+			redir.addAttribute("TabId","1");
+			
+			return "redirect:/DocumentTemplate.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TemplateAttributesEdit.htm "+Username,e);
+			return "static/Error";
+		}
+	}
 	
 	private static void createParagraph(XWPFDocument doc, String[] texts, String alignment, boolean[] bolds, int[] fontSizes, int spacingAfter) {
 		XWPFParagraph paragraph = doc.createParagraph();

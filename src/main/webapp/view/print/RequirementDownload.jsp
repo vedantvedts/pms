@@ -42,13 +42,10 @@ pageEncoding="ISO-8859-1"%>
 			$("#source-html").wordExport("System-Requirement");
 		});
 	}); */
-	
-	
-/* 	 $( document ).ready(function() {
+ 	 $( document ).ready(function() {
 		 download();
-		}); */
-	
-	 function download(){
+		}); 
+		 function download(){
 			$("#source-html").wordExport("System-Requirement");
 			window.close();
 	 }
@@ -84,6 +81,7 @@ List<Object[]>AcronymsList=(List<Object[]>)request.getAttribute("AcronymsList");
 List<Object[]>PerformanceList=(List<Object[]>)request.getAttribute("PerformanceList");
 List<Object[]>MemberList=(List<Object[]>)request.getAttribute("MemberList");
 List<Object[]> DocumentSummary=(List<Object[]>)request.getAttribute("DocumentSummary");
+Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
 int maincount=0;
 int port=new URL( request.getRequestURL().toString()).getPort();
 String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
@@ -92,6 +90,15 @@ LocalDate d = LocalDate.now();
 int contentCount=0;
 Month month= d.getMonth();
 int year=d.getYear();
+String fontSize = "16";
+String SubHeaderFontsize ="14";
+String SuperHeaderFontsize="13";
+String ParaFontSize ="12" ;
+String ParaFontWeight="normal";
+String HeaderFontWeight="Bold";
+String SubHeaderFontweight="Bold";
+String SuperHeaderFontWeight="Bold";
+String FontFamily="Times New Roman";
 %>
 <style>
     /* Define header and footer styles */
@@ -195,8 +202,11 @@ span {
 	border-collapse: collapse;
 }
 </style>
+
 </head>
-<body>
+<body >
+
+
 	<div class="content-footer" align="center"> 
 		<button id="btn-export" class="btn btn-lg bg-transparent" onclick="download()"
 			style="padding: 10px;">
@@ -218,8 +228,40 @@ span {
 		<div id="source-html">
     <!-- Your existing HTML content goes here -->
     <!-- ... -->
+     <%
+   // Default font size
+        if (DocTempAtrr != null && DocTempAtrr[0] != null) {
+        	fontSize=DocTempAtrr[0].toString();
+       }
+  //  SubHeader font size
+        if (DocTempAtrr != null && DocTempAtrr[2] != null) {
+              SubHeaderFontsize = DocTempAtrr[2].toString(); 
+        }
+     //  Super Header font size
+      	if(DocTempAtrr!=null && DocTempAtrr[9]!=null){
+        		SuperHeaderFontsize=DocTempAtrr[9].toString();
+    	    	}
+    	 if(DocTempAtrr!=null && DocTempAtrr[4]!=null){
+        		ParaFontSize= DocTempAtrr[4].toString();
+    	    	}
+    	 if(DocTempAtrr!=null && DocTempAtrr[5]!=null){
+    	    	ParaFontWeight=DocTempAtrr[5].toString();
+    	    	}
+    	  if(DocTempAtrr!=null && DocTempAtrr[1]!=null){
+    	    		HeaderFontWeight= DocTempAtrr[1].toString();
+    	    	}
+        if(DocTempAtrr!=null && DocTempAtrr[3]!=null){
+        		SubHeaderFontweight= DocTempAtrr[3].toString();
+    	    	}
+                if(DocTempAtrr!=null && DocTempAtrr[10]!=null){
+        	SuperHeaderFontWeight= DocTempAtrr[10].toString();
+        }
+                if(DocTempAtrr!=null && DocTempAtrr[11]!=null){
+                	FontFamily= DocTempAtrr[11].toString();
+                }
+    	        %>
     <div class="heading-container" style="text-align: center; position: relative;">
-  <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+  <h6 class="heading-color top-center" style="font-family: <%= FontFamily %>;font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
 </div>
   <table style="width: 98%;border-collapse: collapse;margin-left: 5px;">
 	<tr>
@@ -227,11 +269,11 @@ span {
 			<table style="width: 85%; border: 1px solid black; border-collapse: collapse;">
 	            <tr>
 	                <td style="text-align: center; padding: 5px;">
-	                    <span style="text-decoration: underline;">RESTRICTED</span>
+	                    <span style="text-decoration: underline;font-family: <%= FontFamily %>;">RESTRICTED</span>
 	                </td>
 	            </tr>
 	            <tr>
-	                <td style="padding: 5px;text-align: justify;">
+	                <td style="padding: 5px;text-align: justify;font-family: <%= FontFamily %>;">
 	                    <p>The information given in this document is not to be published or communicated, either directly or indirectly, to the press or to any personnel not authorized to receive it.</p>
 	                </td>
 	            </tr>
@@ -241,12 +283,12 @@ span {
 			<table style="width: 23%; border: none; border-collapse: collapse;">
             	<tr>
           			<td style="padding: 10px;">
-    					<h4 style="margin: 0; padding: 0;">
+    					<h4 style="margin: 0; padding: 0;font-family: <%= FontFamily %>;">
     				    				<%
 				if(LabList[0] != null) {
 				%>
 				<%=LabList[0].toString()%>:SyRD:....................</h4>
-  						<h6 style="margin: 0; padding: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6>
+  						<h6 style="margin: 0; padding: 0;font-family: <%= FontFamily %>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6>
 						<%
 				}else {
 				%>-<%
@@ -261,16 +303,16 @@ span {
 </table>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
-				<h4 style="font-size: 18pt; !important;" class="heading-color">SYSTEM REQUIREMENTS</h4>
-				<h4 style="font-size: 15pt;">For</h4>
-				<h4 style="font-size: 18pt;">
+				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM REQUIREMENTS</h4>
+				<h4 style="font-size: 15pt;font-family: <%= FontFamily %>;">For</h4>
+				<h4 style="font-size: 18pt;font-family: <%= FontFamily %>;">
 					Project:
 					<%=PfmsInitiationList[7].toString()%><br> <br>
 					<%="(" + PfmsInitiationList[6].toString() + ")"%>
 				</h4>
-				<h4 style="font-size: 18px; text-decoration: underline">Requirement
+				<h4 style="font-size: 18px; text-decoration: underline;font-family: <%= FontFamily %>;">Requirement
 					No.</h4>
-				<h4>
+				<h4 style="font-family: <%= FontFamily %>;">
 					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
 					<%} else {%>-<%}%>
 				</h4>
@@ -281,7 +323,7 @@ span {
 				</div>
 				<br> <br>
 				<div align="center">
-					<h4 style="font-size: 20px;">
+					<h4 style="font-size: 20px;font-family: <%= FontFamily %>;">
 				<%
 				if(LabList[1] != null) {
 				%>
@@ -292,12 +334,12 @@ span {
 				}
 				%>
 					</h4>
-					<h4>
+					<h4 style="font-family: <%= FontFamily %>;">
 						Government of India, Ministry of Defence<br>Defence Research
 						& Development Organization
 					</h4>
 				</div>
-				<h4>
+				<h4 style="font-family: <%= FontFamily %>;">
 					<%if(LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
 					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
 					<%}else{ %>
@@ -305,13 +347,13 @@ span {
 					<%} %>
 				</h4>
 <div style="text-align: right;">
-    <span style="font-weight: bold;"><%= month.toString().substring(0,3) %> <%= year %></span>
+    <span style="font-weight: bold;font-family: <%= FontFamily %>;"><%= month.toString().substring(0,3) %> <%= year %></span>
    </div>
 			</div>
 			<br>
 		<!------------------------ page 2 -------Starts----------------------->
   <div class="heading-container" style="text-align: center; position: relative;">
-    <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+    <h6 class="heading-color top-center" style="font-family: <%= FontFamily %>;font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
 </div>
   					<table style="width: 98%;border-collapse: collapse;margin-left: 10px;">
 	<tr>
@@ -319,11 +361,11 @@ span {
 			<table style="width: 85%; border: 1px solid black; border-collapse: collapse;">
 	            <tr>
 	                <td style="text-align: center; padding: 5px;">
-	                    <span style="text-decoration: underline;">RESTRICTED</span>
+	                    <span style="text-decoration: underline;font-family: <%= FontFamily %>;">RESTRICTED</span>
 	                </td>
 	            </tr>
 	            <tr>
-	                <td style="padding: 5px;text-align: justify;">
+	                <td style="padding: 5px;text-align: justify;font-family: <%= FontFamily %>;">
 	                    <p>The information given in this document is not to be published or communicated, either directly or indirectly, to the press or to any personnel not authorized to receive it.</p>
 	                </td>
 	            </tr>
@@ -333,7 +375,7 @@ span {
 			<table style="width: 23%; border: none; border-collapse: collapse;">
             	<tr>
           			<td style="padding: 10px;">
-    					<h4 style="margin: 0; padding: 0;">	<%
+    					<h4 style="margin: 0; padding: 0;font-family: <%= FontFamily %>;">	<%
 				if(LabList[0] != null) {
 				%>
 				<%=LabList[0].toString()%>:SyRD:....................</h4>
@@ -367,8 +409,8 @@ span {
 				<div>
 				</div>
 					<div align="center"></div>
-			<div style="text-align: center; margin-top: 75px;">
-				<h4 style="font-size: 18pt; !important;" class="heading-color">SYSTEM
+			<div style="text-align: center; margin-top: 75px;font-family: <%= FontFamily %>;">
+				<h4 style="font-size: 18pt; !important;font-family: <%= FontFamily %>;" class="heading-color">SYSTEM
 					REQUIREMENTS DOCUMENT</h4>
 				<%-- <h4 style="font-size: 14px;">For</h4>
 				<h4 style="">
@@ -382,7 +424,7 @@ span {
 					<%} else {%>-<%}%>
 				</h4> --%>
 				<div align="center">
-					<h5  style="font-size: 20px;">
+					<h5  style="font-size: 20px;font-family: <%= FontFamily %>;">
 				<%
 				if(LabList[1] != null) {
 				%>
@@ -393,36 +435,36 @@ span {
 				}
 				%>
 					</h5>
-					<h5>
+					<h5 style="font-family: <%= FontFamily %>;">
 						Government of India, Ministry of Defence<br>Defence Research
 						& Development Organization
 					</h5>
 
 				</div>
 
-				<h4>
+				<h4 style="font-family: <%= FontFamily %>;">
 					<%if(LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
 					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
 					<%}else{ %>
 					-
 					<%} %>
 									<div style="text-align: right;">
-    <span style="font-weight: bold;"><%= month.toString().substring(0,3) %> <%= year %></span>
+    <span style="font-weight: bold;font-family: <%= FontFamily %>;"><%= month.toString().substring(0,3) %> <%= year %></span>
    </div>
 				</h4>
 
 			</div>
 			<br>
 			 <div class="heading-container" style="text-align: center; position: relative;">
-    <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%);">RESTRICTED</h6>
+    <h6 class="heading-color top-center" style="font-family: <%= FontFamily %>;font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%);">RESTRICTED</h6>
   </div>
 			<!-- Page to ends -->
 	<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
 	<div class="heading-container" style="text-align: center; position: relative;">
-  <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+  <h6 class="heading-color top-center" style="font-family: <%= FontFamily %>;font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
 </div>
 				
-					<div style="text-align: center;">
+					<div style="text-align: center;font-family: <%= FontFamily %>;">
 				<h5  class="heading-color">AMENDMENT / REVISION HISTORY PAGE
 				</h5>
 				
@@ -430,32 +472,28 @@ span {
 			<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 				
 					<tr >
-					<td class="text-dark"  rowspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Amendment No.</span></td>
-					<td class="text-dark"  rowspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Particulars of Amendment.</span></td>
-					<td class="text-dark" rowspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Page No.</span></td>
-					<td class="text-dark"  rowspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Para No.</span></td>
-					<td class="text-dark"  rowspan="2"style="border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Issue Date</span></td>
-					<td class="text-dark"  colspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Incorporated by</span></td>
+					<td class="text-dark"  rowspan="2" style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Amendment No.</span></td>
+					<td class="text-dark"  rowspan="2" style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Particulars of Amendment.</span></td>
+					<td class="text-dark" rowspan="2" style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Page No.</span></td>
+					<td class="text-dark"  rowspan="2" style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Para No.</span></td>
+					<td class="text-dark"  rowspan="2"style="font-family: <%= FontFamily %>;border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Issue Date</span></td>
+					<td class="text-dark"  colspan="2" style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Incorporated by</span></td>
 					</tr>
 					<tr >
-					<td class="text-dark" style="border:1px solid black; width: 100px; text-align: center;">Name</td>
-					<td class="text-dark" style="border:1px solid black; width: 80px; text-align: center;">Date</td>
-
+					<td class="text-dark" style="border:1px solid black; width: 100px; text-align: center;font-family: <%= FontFamily %>;">Name</td>
+					<td class="text-dark" style="border:1px solid black; width: 80px; text-align: center;font-family: <%= FontFamily %>;">Date</td>
 					</tr>
-								
-		<tbody id="blankRowsBody">
+						<tbody id="blankRowsBody">
 		    <tr>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark">&nbsp;</span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black; width: 100px;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black; width: 100px;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark">&nbsp;</span></td>
+          <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>; width: 100px;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>; width: 100px;"><span class="text-dark"></span></td>
         </tr>
-		
-		</tbody>
-
+				</tbody>
 <!--   <script>
     // JavaScript loop to generate 10 blank rows
     for (let i = 0; i < 15; i++) {
@@ -475,22 +513,20 @@ span {
 					</table>
 						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 						<div class="heading-container" style="text-align: center; position: relative;">
-  <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+  <h6 class="heading-color top-center" style="font-family: <%= FontFamily %>;font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
 </div>
-						
-			<div align="center">
-			
-			<div style="text-align: center;">
-				<h5  class="heading-color">DISTRIBUTION LIST
+				<div align="center">
+					<div style="text-align: center;">
+				<h5  class="heading-color; "style="font-family: <%= FontFamily %>;">DISTRIBUTION LIST
 				</h5>
 						</div>
 						<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 					<tr >
-					<td class="text-dark"  style="border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
-					<td class="text-dark"   style="border:1px solid black; width: 150px;text-align: center;"><span class="text-dark">NAME</span></td>
-					<td class="text-dark"  style="border:1px solid black; text-align: center;width: 100px;"><span class="text-dark">Designation</span></td>
-					<td class="text-dark"   style="border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
-					<td class="text-dark"  style="border:1px solid black; text-align: center;width: 80px;"><span class="text-dark">Remarks</span></td>
+					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
+					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 150px;text-align: center;"><span class="text-dark">NAME</span></td>
+					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 100px;"><span class="text-dark">Designation</span></td>
+					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
+					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 80px;"><span class="text-dark">Remarks</span></td>
 					</tr>
 				<tbody id="blankRowsBody1"></tbody>
             <% 
@@ -499,23 +535,22 @@ span {
         for (Object[] mlist : MemberList) {
 %>
  <tr>
-                <td style="border: 1px solid black;padding-left: 10px;"><%=  i+++"."%></td>
-                <td style="border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
-                <td style="border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
-                  <td style="border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
-                  <td style="border: 1px solid black; padding-left: 10px;">copy for Record</td>
+                <td style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%=  i+++"."%></td>
+                <td style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
+                <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
+                 <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
+                 <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;">copy for Record</td>
                              </tr>
  <% 
    }} 
 %>
 					</table>
-				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+				<p style="font-family: <%= FontFamily %>;text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 				<div class="heading-container" style="text-align: center; position: relative;">
-  <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 0px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
+  <h6 class="heading-color top-center" style="font-family: <%= FontFamily %>;font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 0px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
 </div>
-				
 				<div style="text-align: center;">
-				<h4 style="font-size: 20px !important;" class="heading-color">DOCUMENT SUMMARY
+				<h4 style="font-size: 20px !important;font-family: <%= FontFamily %>;" class="heading-color">DOCUMENT SUMMARY
 				</h4>
 							</div>
 	<!-- 	<table class="border-black"
@@ -524,55 +559,46 @@ span {
 			<td>1.Title: System Requirement Document Template</td>
 			</tr>
 			</table> -->
-			
-		
-					<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
-				
+				<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">1.&nbsp; Title: <span class="text-dark">System Requirements Document Template</span></td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">1.&nbsp; Title: <span class="text-dark">System Requirements Document Template</span></td>
 					</tr>
 					<tr >
-					<td class="text-dark" style="border:1px solid black;">2.&nbsp; Type of Document:<span class="text-dark">System Requirements Document</span></td>
-					<td class="text-dark" style="border:1px solid black;">3.&nbsp; Classification: <span class="text-dark"><%=classification %></span></td>
+					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-dark">System Requirements Document</span></td>
+					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-dark"><%=classification %></span></td>
 					</tr>
 				    <tr >
-					<td class="text-dark" style="border:1px solid black;">4.&nbsp; Document Number:</td>
-					<td class="text-dark" style="border:1px solid black;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
+					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:</td>
+					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
 					</tr>
 					<tr>
-					<td class="text-dark" style="border:1px solid black;">6.&nbsp; Number of Pages:</td>
-					<td class="text-dark" style="border:1px solid black;">7.&nbsp; Related Document:</td>
+					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages:</td>
+					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
 					</tr>
-				
-					
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">8.&nbsp; Additional Information:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
-								
-					</td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
+				</td>
 					</tr>
 				     <tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">9.&nbsp; Project Number and Project Name: <span class="text-dark"><%=projectName %> (<%= projectshortName %>) </span></td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project Number and Project Name: <span class="text-dark"><%=projectName %> (<%= projectshortName %>) </span></td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">10.&nbsp; Abstract:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
-						
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">11.&nbsp; Keywords:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">12.&nbsp; Organization and address:
-								<span class="text-dark">		<%
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">12.&nbsp; Organization and address:
+						<span class="text-dark" style="font-family: <%= FontFamily %>;">		<%
 										if (LabList[1] != null) {
 										%><%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
-
 										<%
 										} else {
 										%>-<%
 										}
 										%>
-								
-										Government of India, Ministry of Defence,Defence
+																	Government of India, Ministry of Defence,Defence
 										Research & Development Organization
 										<%
 									if (LabList[2] != null && LabList[3] != null && LabList[5] != null) {
@@ -585,48 +611,42 @@ span {
 							</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">13.&nbsp; Distribution:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span>
-						</td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span>
+					</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">14.&nbsp; Revision:</td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">15.&nbsp; Prepared by:</td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">16.&nbsp; Reviewed by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;">17.&nbsp; Approved by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
 					</tr>
-					
-					</table>
-					
-			<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
-			<h4 style="margin-left: 20px"> Abbreviations used in the Manual to be listed and arranged in alphabetical order</h4>
+										</table>
+							<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
+			<h4 style="margin-left: 20px;font-family: <%= FontFamily %>;"> Abbreviations used in the Manual to be listed and arranged in alphabetical order</h4>
 		<%  if (AbbreviationDetails != null && !AbbreviationDetails.isEmpty()) { %>	
-    <table style="width: 650px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+    <table style="width: 550px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;">
         <thead>
             <tr>
-                <th class="text-dark" style="border: 1px solid black; width: 20px; text-align: center;"><span class="text-dark">S.No</span></th>
-                <th class="text-dark" style="border: 1px solid black; width: 150px; text-align: center;"><span class="text-dark">Abbreviations</span></th>
-                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 100px;"><span class="text-dark">Full Forms</span></th>
+                 <th style="width: 10%; border: 1px solid black; text-align: center;font-family: <%= FontFamily %>;"><span class="text-dark">S.No</span></th>
+        <th style="width: 20%; border: 1px solid black; text-align: center;font-family: <%= FontFamily %>;"><span class="text-dark">Abbreviations</span></th>
+        <th style="width: 50%; border: 1px solid black; text-align: center;font-family: <%= FontFamily %>;"><span class="text-dark">Full Forms</span></th>
            </tr>
         </thead>
         <tbody>
-        
-        <% 
-  
-        int i = 1;
+                <% 
+          int i = 1;
         for (Object[] alist : AbbreviationDetails) {
 %>
-      
-        
-            <tr>
-                <td style="text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
-                <td style="text-align: center;border: 1px solid black;"><%= alist[1] %></td>
-                <td style="border: 1px solid black; padding-left: 10px;"><%= alist[2] %></td>
+              <tr>
+                <td style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;"><%=  i+++"."%></td>
+                <td style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1] %></td>
+                <td style="border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2] %></td>
             </tr>
             <% 
    }} 
@@ -634,9 +654,9 @@ span {
         </tbody>
     </table>
 				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
-							<h4 class="heading-color">CONTENTS</h4>
+							<h4 style="font-size: 16pt;font-family: <%= FontFamily %>; !important; class="heading-color">CONTENTS</h4>
 						</div>
-						<p>1.Click on the "References" Menu located at the top of the MS document.<br>
+						<p style="font-family: <%= FontFamily %>;">1.Click on the "References" Menu located at the top of the MS document.<br>
 2.From the dropdown menu, choose "Table of Contents."<br>
 3.Select "Automatic Table 1" from the options provided.<br>
 4.After adding Contents remove this lines
@@ -692,92 +712,92 @@ span {
 			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix B - Key Performance Parameters/Key System Attributes</h4>
 			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix C - Requirements Traceablity Matrices</h4>
 			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix B - Test Verification Matrices</h4> --%>
-			<p style="text-align: center; page-break-before: always;">&nbsp;</p>
-			
-					
-						
-			<%if(ReqIntro!=null) {%>
+			<p style="text-align: center; page-break-before: always;font-family: <%= FontFamily %>;">&nbsp;</p>
+						<%if(ReqIntro!=null) {%>
 			<div style="page-break-before: always"></div>
-						<h1 style="font-size: 16pt; !important;" class="heading-color"><%=++maincount %>.&nbsp;SCOPE
-				</h1>
+						<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-color">
+    <%= ++maincount %>.&nbsp;SCOPE
+</h1>
+
 				<hr style="width: 100%;">
 					<%if(ReqIntro!=null){ %>
 			<div>
-				<h2 style="margin-left: 10px; font-size:14pt"><%=maincount+"." %>1
+				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>; font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>1
 					&nbsp;System Identification
 				</h2>
-				<div>
+				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
+				 
 					<%if(ReqIntro[1]!=null) {%><%=ReqIntro[1]%>
-					<%}else {%><div style="text-align: center;">No Details Added!</div>
+					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
 					<%} %>
+					
 				</div>
 			</div>
 			<div>
-				<h3 style="margin-left: 10px;font-size:14pt"><%=maincount+"." %>2
+				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>2
 					&nbsp;System Block Diagram
-				</h3>
-				<div>
+				</h2>
+				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>">
 					<%if(ReqIntro[2]!=null) {%><%=ReqIntro[2]%>
-					<%}else {%><div style="text-align: center;">No Details Added!</div>
+					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
 			</div>
 			<div>
-				<h3 style="margin-left: 10px;font-size:14pt"><%=maincount+"." %>3
+				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>3
 					&nbsp;System Overview
-				</h3>
-				<div>
+				</h2>
+				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>">
 					<%if(ReqIntro[3]!=null) {%><%=ReqIntro[3]%>
-					<%}else {%><div style="text-align: center;">No Details Added!</div>
+					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
 					<%} %>
 				</div>
 			</div>
 			<div>
-				<h3 style="margin-left: 10px;font-size:14pt"><%=maincount+"." %>4
+				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>4
 					&nbsp;Document Overview
-				</h3>
-				<div>
+				</h2>
+				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify;  font-weight:<%=ParaFontWeight%>">
 					<%if(ReqIntro[4]!=null) {%><%=ReqIntro[4]%>
-					<%}else {%><div style="text-align: center;">No Details Added!</div>
+					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
 			</div>
 			<div>
-				<h3 style="margin-left: 10px;font-size:14pt"><%=maincount+"." %>5
+				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>5
 					&nbsp;Applicable Standards
-				</h3>
-				<div>
+				</h2>
+				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify;  font-weight:<%=ParaFontWeight%>">
 					<%if(ReqIntro[5]!=null) {%><%=ReqIntro[5]%>
-					<%}else {%><div style="text-align: center;">No Details Added!</div>
+					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
 			</div>
 			<%}else{ %>
 			<div align="center" style="margin-top: 350px">
-				<h2>No Data Available !</h2>
+				<h4 style="font-family: <%= FontFamily %>;">No Data Available !</h4>
 			</div>
 			<%}} %>
 
-			<%-- <%if(!RequirementList.isEmpty()){ %>
+			 <%if(!RequirementList.isEmpty()){ %>
 			<div style="page-break-before: always;"></div>
 			<div>
-				<div align="center">
-					<h2 style="font-size: 20px !important; color:;"
-						class="heading-color">
-						<br><%=++maincount %>.&nbsp;&nbsp;System Requirements
-					</h2>
-					<hr style="width: 80%;">
-				</div>
+				<!-- <div align="center"> -->
+			<h1 style="font-family: <%= FontFamily %>;font-size: <%= fontSize%>pt; font-weight:<%=HeaderFontWeight%>;color: black;" class="heading-color">
+    <br><%=++maincount %>.&nbsp;&nbsp;System Requirements
+</h1>
+					<hr style="width: 100%;">
+				<!-- </div> -->
 				<%
 	if(!RequirementList.isEmpty()){
 		int reqcount=0;
 	for(Object[]obj:RequirementList){ %>
-				<div style="margin-left: 20px; margin-top: 15px; font-weight: 600">
-					<span><%=maincount+"."+(++reqcount)%>&nbsp;&nbsp;Req ID
-						&nbsp;::&nbsp;<%=obj[1].toString() %></span>
+				<div style="margin-left: 20px; margin-top: 15px; font-weight: 600;font-family: <%= FontFamily %>;">
+					<h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++reqcount)%>&nbsp;&nbsp;Req ID
+						&nbsp;::&nbsp;<%=obj[1].toString() %></h2>
 				</div>
 				<table class="border-black"
-					style="width: 650px; margin-top: 10px; margin-bottom: 5px;">
+					style="margin-left: 20px;;width: 650px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
 					<thead>
 						<tr>
 							<th class="border-black"
@@ -929,21 +949,19 @@ span {
 				</table>
 				<%}}else {%>
 				<div align="center" style="margin-top: 350px">
-					<h2>No Data Available !</h2>
+					<h4 style="font-family: <%= FontFamily %>;">No Data Available !</h4>
 				</div>
-				<%} }%> --%>
-				
-				
-				<h1 style="margin-left: 10px;font-size:16pt">
+				<%} }%> 
+						<h1 style="font-family: <%= FontFamily %>;margin-left: 10px; font-size: <%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>">
 <br><%=++maincount %>.&nbsp;
 APPLICABLE DOCUMENTS</h1>
 	<hr style="width: 100%;">
-	<h5 style="margin-left: 10px;"> This section provides a list of reference documents upon which this document is either based, or to which this document refers.</h5>
-										<h2 style="margin-left: 20px ;font-size:14pt"><%=maincount %>.1 General</h2>
-							<div style="margin-left: 30px">No Document linked</div>
+	<h5 style="font-family: <%= FontFamily %>;margin-left: 10px; font-size: <%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>"> This section provides a list of reference documents upon which this document is either based, or to which this document refers.</h5>
+										<h2 style="font-family: <%= FontFamily %>;margin-left: 20px ;font-weight:<%=SubHeaderFontweight%>;font-size:<%= SubHeaderFontsize%>pt"><%=maincount %>.1 General</h2>
+							<div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">No Document linked</div>
 				
 				<%if(!OtherRequirements.isEmpty()){ %>
-				<div style="page-break-before: always"></div>
+				<div style="page-break-before: always;font-family: <%= FontFamily %>;"></div>
 				<%-- <div >
 					<h2 style="font-size: 20px !important; color:;"
 						class="heading-color">
@@ -952,28 +970,25 @@ APPLICABLE DOCUMENTS</h1>
 						Other System Requirements
 					</h2>
 				</div> --%>
-				
-
-					
-				<h1 style="margin-left: 10px;font-size:16pt"><%=++maincount %>. &nbsp;REQUIREMENTS</h1>
+				<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>"><%=++maincount %>. &nbsp;REQUIREMENTS</h1>
 				<hr style="width: 100%;">
 						<%int i=0;
 	if(!OtherRequirements.isEmpty()){
 	for(Object[]obj:OtherRequirements){ %>
-				<div>
+				<div  style="font-size: <%= ParaFontSize%>pt;font-family: <%= FontFamily %>;">
 					<%if(obj[2].toString().equalsIgnoreCase("0")) {%><h2
-						style="margin-left: 10px;font-size:14pt"><%=maincount+"."+(++i)+". "+obj[3].toString()%></h2>
-					<div>
+						style="font-family: <%= FontFamily %>;margin-left: 20px;font-weight:<%=SubHeaderFontweight%>;font-size:<%= SubHeaderFontsize%>pt"><%=maincount+"."+(++i)+". "+obj[3].toString()%></h2>
+					<div style="margin-left: 20px;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>" >
 						<%if(obj[4]!=null){ %><%=obj[4].toString()%>
 						<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No
-							details filled&nbsp;&nbsp;-</p>
+							details filled &nbsp;&nbsp;-</p>
 						<%} 
 	int j=0;%>
 					</div>
 					<%for(Object[]obj1:OtherRequirements){ 
 	if(obj[0].toString().equalsIgnoreCase(obj1[2].toString())){%>
-					<h3 style="margin-left: 20px;font-size:13pt"><%="3."+i+"."+ ++j +". "+obj1[3].toString() %></h3>
-					<%if(obj1[4]!=null){ %><div id="tablediv"><%=obj1[4].toString()%></div>
+					<h3 style="margin-left: 20px; font-weight:<%=SuperHeaderFontWeight%>; font-size:<%= SuperHeaderFontsize%>pt;"><%=maincount+"."+i+"."+ ++j +". "+obj1[3].toString() %></h3>
+					<div style="font-size: <%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%> "><%if(obj1[4]!=null){ %> <%=obj1[4].toString()%></div>
 					<%}else{ %>
 					<p style="text-align: center;">-&nbsp;&nbsp;No details
 						filled&nbsp;&nbsp;-</p>
@@ -983,7 +998,7 @@ APPLICABLE DOCUMENTS</h1>
 				</div>
 				<%}}else{ %>
 				<div style="margin-top: 300px" align="center">
-					<h2>No Data Available !</h2>
+					<h4>No Data Available !</h4>
 				</div>
 				<%}} %>
 				
@@ -1098,38 +1113,33 @@ APPLICABLE DOCUMENTS</h1>
 				</table>
 				<%}%> --%>
 				<div >
-					<h1 style="font-size: 16pt !important; margin-left: 50px;"
-						class="heading-color">
-						<br><%=++maincount %>. Verification Provisions
-					</h1>
-					<h2 style="font-size:14pt"><%=maincount %>.1	Verification Methods</h2>
+				<h1 style="font-family: <%= FontFamily %>;font-size: <%= fontSize%>pt; font-weight:<%=HeaderFontWeight%>;color: black !important;" class="heading-color">
+    <br><%=++maincount %>. Verification Provisions
+			</h1>
+				<h2 style="font-family: <%= FontFamily %>;font-size:<%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>;margin-left: 20px;"><%=maincount %>.1	Verification Methods</h2>
 				</div>
 				<%if(!Verifications.isEmpty()) {
 				int verificationCount=1;
 				int j=0;
 				for(Object[]obj:Verifications){
 				%>
-			<h3 style="margin-left: 20px; margin-top: 15px; font-size:13pt;">
+			<h3 style="font-family: <%= FontFamily %>;margin-left: 20px; font-weight:<%=SuperHeaderFontWeight%>;margin-top: 20px; font-size: <%= SuperHeaderFontsize%>pt;">
 		   <span><%=maincount+"."+(verificationCount)%>.<%=++j %>
 			<%=obj[1].toString() %></span>
 				</h3>
-				<h4 style="font-weight: normal;">
+				<div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
 				<%if(obj[3]!=null){ %><%=obj[3].toString()%>
 				<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No
 					details filled&nbsp;&nbsp;-</p>
 						<%}%>
-					</h4>
+					</div>
 				<br>
 				<% if(obj[1].toString().equalsIgnoreCase("Test")){%>
-				
-			<div style="text-align: center; padding-bottom: 30px;">
-    <span style="font-size: 14px; font-weight: bold; text-decoration: underline;">Table A</span>
+						<div style="text-align: center; padding-bottom: 30px;">
+    <span style="font-size: 14px; font-weight: bold; text-decoration: underline;font-family: <%= FontFamily %>">Table A</span>
 </div>
-
-									
-									
-									<table class="border-black"
-					style="width: 650px; margin-top: 20px; margin-bottom: 5px;">
+					<table class="border-black"
+					style="width: 650px; margin-top: 20px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
 					<thead>
 						<tr>
 							<th class="border-black"
@@ -1252,12 +1262,9 @@ APPLICABLE DOCUMENTS</h1>
 				</table>
 							<%} %>
 									<%}} %>
-		
-			
-		<h2 style="margin-left: 20px;font-size:16pt"><%=++maincount %>.	REQUIREMENTS TRACEABILITY</h2>	
+				<h1 style="font-family: <%= FontFamily %>;font-size:<%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>;margin-left: 5px;"><%=++maincount %>.	REQUIREMENTS TRACEABILITY</h1>	
 		<!-- traceability -->			
-					
-			<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
+						<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
 				<div style="page-break-before: always"></div>
 				<%-- <div align="center">
 					<h3 style="font-size: 16px !important; margin-left: 50px;"
@@ -1266,14 +1273,12 @@ APPLICABLE DOCUMENTS</h1>
 					</h3>
 				</div --%>
 				<div align="left">
-					<h3
-						style="font-size: 15px !important; font-weight: 400; margin-left: 50px;"
-						class="heading-color">
-						<br><%=maincount %>.1 Forward Traceability Matrix
-					</h3>
+					<h2 style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black !important;margin-left: 20px" class="heading-color">
+    <br><%= maincount %>.1 Forward Traceability Matrix
+</h2>
 				</div>
 				<table class="border-black"
-					style="width: 550px; margin-left: 50px; margin-top: 10px; margin-bottom: 5px;">
+					style="width: 650px; margin-left: 20px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
 					<thead>
 						<tr>
 							<th class="border-black"
@@ -1318,14 +1323,14 @@ APPLICABLE DOCUMENTS</h1>
 					</tbody>
 				</table>
 				<div align="left">
-					<h3
-						style="font-size: 15px !important; font-weight: 400; margin-left: 50px;"
+					<h2
+						style="font-family: <%= FontFamily %>;font-size:  <%= SubHeaderFontsize %>pt;font-weight:<%=SubHeaderFontweight%>; margin-left: 20px;"
 						class="heading-color">
 						<br><%=maincount %>.2 Reverse Traceability Matrix
-					</h3>
+					</h2>
 				</div>
 				<table class="border-black"
-					style="width: 550px; margin-left: 50px; margin-top: 10px; margin-bottom: 5px;">
+					style="width: 550px; margin-left: 20px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;">
 					<thead>
 						<tr>
 							<th class="border-black"
@@ -1371,16 +1376,16 @@ APPLICABLE DOCUMENTS</h1>
 					
 									
 									
-				<h2 style="margin-left: 20px;font-size:16pt"><%=++maincount %>. APPEDNDIX SECTION</h2>
-						<h3 style="margin-left: 20px;font-size:14pt"> <%=maincount %>.1	Appendix A - Acronyms and Definitions</h3>
+				<h1 style="font-family: <%= FontFamily %>;font-weight:<%=HeaderFontWeight%>;font-size:<%= fontSize%>pt"><%=++maincount %>. APPEDNDIX SECTION</h1>
+						<h2 style="font-family: <%= FontFamily %>;margin-left: 20px;font-weight:<%=SubHeaderFontweight%>;font-size:<%= SubHeaderFontsize%>pt"> <%=maincount %>.1	Appendix A - Acronyms and Definitions</h2>
 
 			
-    <table style="width: 650px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+    <table style="margin-left: 20px; font-family: <%= FontFamily %>;width: 550px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;font-size: <%= ParaFontSize%>pt">
         <thead>
             <tr>
                 <th class="text-dark" style="border: 1px solid black; width: 20px; text-align: center;"><span class="text-dark">S.No</span></th>
-                <th class="text-dark" style="border: 1px solid black; width: 150px;"><span class="text-dark">Acronyms</span></th>
-                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 100px;"><span class="text-dark">Definitions</span></th>
+                <th class="text-dark" style="border: 1px solid black; width: 60px;"><span class="text-dark">Acronyms</span></th>
+                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 90px;"><span class="text-dark">Definitions</span></th>
            </tr>
         </thead>
         <tbody>
@@ -1390,9 +1395,7 @@ APPLICABLE DOCUMENTS</h1>
         int i = 1;
         for (Object[] alist : AcronymsList) {
 %>
-      
-        
-            <tr>
+      <tr>
                 <td style="text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
                 <td style="border: 1px solid black;padding-left: 10px;"><%= alist[1] %></td>
                 <td style="border: 1px solid black; padding-left: 10px;"><%= alist[2] %></td>
@@ -1402,29 +1405,26 @@ APPLICABLE DOCUMENTS</h1>
 %>
         </tbody>
     </table>
-  <h4 style="margin-left: 20px;font-weight:normal">Guidance:
+  <h4 style="font-family: <%= FontFamily %>;margin-left: 20px;font-weight:normal;font-size: <%= ParaFontSize%>pt">Guidance:
 This appendix contains acronyms and provides standard definitions for terminology used herein
 </h4>
-	<h3 style="margin-left: 20px;font-size:14pt"> <%=maincount %>.2 Appendix B -Key Performance Parameters / Key System Attributes</h3>
-		<h4 style="margin-left: 20px;font-weight:normal"> The key Measures of Effectiveness (MOE) are given below :</h4>
-    <table style="width: 650px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+	<h2 style="font-family:<%= FontFamily %>;margin-left: 20px;font-size: <%= SubHeaderFontsize %>pt;font-weight:<%=SubHeaderFontweight%>"> <%=maincount %>.2 Appendix B -Key Performance Parameters / Key System Attributes</h2>
+		<h4 style="font-family:<%=FontFamily %>;margin-left: 20px; font-weight:normal; text-align: justify;font-size: <%= ParaFontSize%>pt"> The key Measures of Effectiveness (MOE) are given below :</h4>
+    <table style="font-family: <%= FontFamily %>;width: 550px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: 20px margin-right: auto;font-size: <%= ParaFontSize%>pt">
         <thead>
             <tr>
                 <th class="text-dark" style="border: 1px solid black; width: 20px; text-align: center;"><span class="text-dark">S.No</span></th>
-                <th class="text-dark" style="border: 1px solid black; width: 150px;padding: 5px; "><span class="text-dark">Key MOEs</span></th>
+                <th class="text-dark" style="border: 1px solid black; width: 60px;padding: 5px; "><span class="text-dark">Key MOEs</span></th>
                 <th class="text-dark" style="border: 1px solid black; text-align: center; width: 100px;"><span class="text-dark">Values</span></th>
            </tr>
         </thead>
         <tbody>
-        
-        <% 
+              <% 
     if (PerformanceList != null) {
         int i = 1;
         for (Object[] plist : PerformanceList) {
 %>
-      
-        
-            <tr>
+             <tr>
                 <td style="text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
                 <td style="border: 1px solid black;padding-left: 10px;"><%= plist[1] %></td>
                 <td style="border: 1px solid black; padding-left: 10px;text-align:center"><%= "-"+plist[2] +"-"%></td>
@@ -1434,26 +1434,27 @@ This appendix contains acronyms and provides standard definitions for terminolog
 %>
         </tbody>
     </table>
-			<h4 style="margin-left: 20px; font-weight:normal"> Guidance:
-This appendix contains tabularized KPPs, and KSAs, if applicable, listed in prioritized order.<br>
-Sample Key performance Parameters / Key System Attributes are shown above. Modify the Key performance Parameters / Key System Atributes based on your specific project constraints. 
-</h4>	
-			<h3 style="margin-left: 20px;font-size:14pt"><%=maincount %>.3	Appendix C - Requirements Traceability Matrices
-</h3>	
-			<h4 style="margin-left: 20px ;font-weight:normal">  The Traceability to next level should be provided in - SSS Type A. Traceability to OR already provided in Sec 5.1</h4>
+			<h4 style="font-family: <%= FontFamily %>;margin-left: 20px; font-weight: normal; text-align: justify;font-size: <%= ParaFontSize%>pt">Guidance:
+    This appendix contains tabularized KPPs, and KSAs, if applicable, listed in prioritized order.<br>
+    Sample Key performance Parameters / Key System Attributes are shown above. Modify the Key performance Parameters / Key System Atributes based on your specific project constraints. 
+</h4>
 
-			
-		
-	<h3 style="margin-left: 20px;font-size:14pt"><%=maincount %>.4	Appendix D - Test Verification Matrices</h3>			
+			<h2 style="font-family: <%= FontFamily %>;margin-left: 20px;font-size: <%=SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.3	Appendix C - Requirements Traceability Matrices
+</h2>	
+			<h4 style="font-family: <%= FontFamily %>;margin-left: 20px ;font-weight:normal;font-size: <%= ParaFontSize%>pt">  The Traceability to next level should be provided in - SSS Type A. Traceability to OR already provided in Sec 5.1</h4>
+	<h2 style="font-family: <%= FontFamily %>; margin-left: 20px; font-size: <%= SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.4	Appendix D - Test Verification Matrices</h2>			
+			<div style="font-family: <%= FontFamily %>;">
 			${htmlContent}
-		
-	<h4 style="margin-left: 20px ;font-weight:normal"> 	Guidance:
+			</div>
+		<h4 style="font-family: <%= FontFamily %>;margin-left: 20px ;font-weight:normal;text-align: justify;font-size: <%= ParaFontSize%>pt"> 	Guidance:
 This appendix contains tabularized verification method for every system or subsystem requirement.  If not known, pre contract award, the verification method is to be included in the resultant system or subsystem specification.
 Sample Test verification Matrix are shown above. Modify the Verification matrix based on your specific project constraints. 
+			<%=SuperHeaderFontWeight%>
 			</h4>
 			</div>
 		</div>
-	
-		</div>
+			</div>
+			
 </body>
+ 
 </html>

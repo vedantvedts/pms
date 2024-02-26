@@ -19,19 +19,22 @@ public class TemplateAttributes {
 	
 	private int HeaderFontSize;
 	
-	private int HeaderFontWeight;
+	private String HeaderFontWeight;
 	
 	private int SubHeaderFontsize;
 	
-	private int SubHeaderFontweight;
+	private String  SubHeaderFontweight;
 	
 	private int ParaFontSize;
 	
-	private int ParaFontWeight;
+	private String ParaFontWeight;
 	
 	private int MainTableWidth;
 	
 	private int subTableWidth;
+	private int  SuperHeaderFontsize;
+	private String SuperHeaderFontWeight;
+	private String FontFamily;
 	
 	private String CreatedBy;
 	
@@ -40,5 +43,5 @@ public class TemplateAttributes {
 	private String ModifiedBy;
 	
 	private String ModifiedDate;
-	
+	private int IsActive;
 }
