@@ -284,7 +284,7 @@ background: none;border-style: none;
 <body>
 <%
 FormatConverter fc = new FormatConverter();
-List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationList");
+List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList");
 %>
 
 <% String ses=(String)request.getParameter("result");
@@ -311,93 +311,11 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 			<div class="card shadow-nohover">
 				<div class="row card-header">
 			   		<div class="col-md-6">
-						<h4>Initiation List</h4>
+						<h4>Closure List</h4>
 					</div>
 				</div>
-				<div class="card-body">	
-				
-					<%-- <div class="table-responsive">
-	                	<table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
-	                    	<thead>
-	                        	<tr>
-	                            	<th width="5%">SN</th>
-	                                <th width="10%">Date</th>
-	                                <th width="15%">CARSNo</th>
-	                                <th width="10%">Funds From</th>
-	                                <th width="20%">Title</th>
-	                                <th width="30%">Status</th>
-	                                <th width="10%">Action</th>
-	                            </tr>
-	                        </thead>
-	                        <tbody>
-	                        	<% if(intiationList!=null && intiationList.size()>0) {
-	                               int slno=0; 
-	                               for(Object[] obj : intiationList) {%>   
-	                            	<tr>
-	                                	<td style="text-align: center;"><%=++slno %> </td>
-	                                    <td style="text-align: center;"><%if(obj[3]!=null) {%><%=fc.SqlToRegularDate(obj[3].toString()) %><%} else {%>- <%} %></td>
-	                                    <td style="text-align: center;"><%=obj[2] %> </td>
-	                                    <td style="text-align: left;">
-	                                    	<%if(obj[7]!=null) {%> <%if(obj[7].toString().equalsIgnoreCase("0")) {%>Buildup<%} else{%>Project<%} }%>
-	                                    </td>
-	                                    <td style="text-align: left;"><%=obj[4] %> </td>
-	                                    <td style="text-align: center;">
-	                                    	<form action="#">
-	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
-	                                       	  	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction=CARSTransStatus.htm value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
-								    			<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
-								    			</button>
-	                                        </form>
-	                                    </td>
-	                                    <td style="text-align: center;">
-	                                        <form action="#" method="post">
-	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                                        	
-	                                       	 	<button class="editable-click" name="carsInitiationId" value="<%=obj[0] %>" formaction="CARSInitiationDetails.htm">
-													<div class="cc-rockmenu">
-														<div class="rolling">
-															<figure class="rolling_icon">
-																<img src="view/images/clipboard.png">
-															</figure>
-															<span>Details</span>
-														</div>
-													</div>
-											    </button>
-											    <%if(obj[12]!=null && (obj[12].toString().equalsIgnoreCase("FWD") || obj[12].toString().equalsIgnoreCase("SFU"))) {%>
-	                                       	 	<button class="editable-click" name="carsUserRevoke" value="<%=obj[0] %>/<%=obj[12] %>" formaction="CARSUserRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
-													<div class="cc-rockmenu">
-														<div class="rolling">
-															<figure class="rolling_icon">
-																<img src="view/images/userrevoke.png" style="width: 22px !important;">
-															</figure>
-															<span>Revoke</span>
-														</div>
-													</div>
-											    </button>
-											    <%} %>
-	                                        </form>
-	                                    </td>
-	                                </tr>
-	                            <%} }%>
-	                        </tbody>
-	                    </table>
-	                </div> --%>
-	                
-	                
-	                
-	                <div align="center">
-	                	<form action="#" id="myform" method="post">
-	                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                        <button  class="btn add" type="submit" name="Action" value="Add" formaction="CARSInitiationDetails.htm" formnovalidate="formnovalidate">Add CARS</button>
-	                 	</form>
-	              	</div>
-				
-				
-				
-				</div>
-				
-				<%if(intiationList!=null && intiationList.size()>0) {%>
+				<br>
+				<%if(closureList!=null && closureList.size()>0) {%>
 				<!-- search box -->
 					<form method="get" class="form-inline my-2 my-lg-0" style="display: flex; justify-content: center; padding-bottom:10px;">
 						<div >
@@ -413,98 +331,102 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 					<div style="display: flex; justify-content: center;padding-bottom:10px;position: relative;">
 						<div class="card-deck" style="position: relative;">
 							<%
-							for(Object[] obj: intiationList){ %>
+							for(Object[] obj: closureList){ %>
 							
 								<div class="card" style="margin:10px; margin-left: 20px;margin-right: 20px;min-width:450px;">
 									<div class="card-body">
+									
 										<div class="container">
-				  							<div class="row">
-					  							<div class="col-lg">
-													<h4 class="card-title" ><%=obj[2] %></h4></div>
-											<%-- <div class="col-">
-												<p> <%if(obj[8]!=null){if(obj[8].equals('Y')){%><%="MAIN" %>
-													<%}else{ %><%="SUB" %> <% }}else{ %> - <%} %>
-												</p>
-											</div> --%>
-											</div>
-										</div>
-									
-									<%-- <div class="container">
-				  						<div class="row">
-					  						<div class="col-lg">
-												<h6> <%if(obj[2]!=null){%><%=obj[2] %></h6>
-											</div>
-											<div class="col-" style="text-align: right;">
-												<h6><%if(obj[6]!=null){%><%=obj[6] %> lakhs
-												<%}else{ %>-<%} %>
-												</h6> 
-											</div>
-										</div>
-									</div> --%>
-									
-									
-										<%-- <div class="container">
 					  						<div class="row">
-												<div class="col-xl" style="text-align: left;">
-												Date : <%if(obj[3]!=null) {%><%=fc.SqlToRegularDate(obj[3].toString()) %><%} else {%>-<%} %>
-												<br/></div>
+						  						<div class="col-lg">
+													<h4 class="card-title" ><%=obj[4] %></h4></div>
+												<div class="col-">
+													<p> <%if(obj[6]!=null){if(obj[6].toString().equalsIgnoreCase("1")){%><%="MAIN" %>
+														<%}else{ %><%="SUB" %> <% }}else{ %> - <%} %>
+													</p>
+												</div>
 											</div>
-										</div> --%>
+										</div>
 										
 										<div class="container">
 					  						<div class="row">
-												<div class="col-xl" style="height: 45px;">
-												Title : <%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %>
-												<br/></div>
-											</div>
-										</div>
-									
-										<div class="container">
-					  						<div class="row">
-					  							<div class="col-xl" style="text-align: left;">
-													Date : <%if(obj[3]!=null) {%><%=fc.SqlToRegularDate(obj[3].toString()) %><%} else {%>-<%} %>
+						  						<div class="col-lg">
+													<h6> <%if(obj[2]!=null && obj[3]!=null){%><%=obj[2]+" ("+obj[3]+")" %><%} %></h6>
 												</div>
-												<div class="col-">
-													Funds from : <%if(obj[7]!=null) {%> <%if(obj[7].toString().equalsIgnoreCase("0")) {%>Buildup<%} else{%>Project<%} }%>
-												</div>
-												
-											</div>
-										</div>
-									
-										<div class="container" style="">
-					  						<div class="row">
-												<div class="col-xl">
-													Amount : <%if(obj[13]!=null){%><%=Double.parseDouble(obj[13].toString())/100000 %> Lakhs <%}else{ %>-<%} %>
-												</div>
-												<div class="col-">
-													Duration : <%if(obj[8]!=null){%><%=obj[8] %> months <%}else{ %>-<%} %>
-												</div>
-											</div>
-										</div>
-										<%-- <div class="container" style="">
-					  						<div class="row">
-												<div class="col-xl">
-													Duration : <%if(obj[8]!=null){%><%=obj[8] %> months
+												<div class="col-" style="text-align: right;">
+													<h6><%if(obj[5]!=null){ %>
+													<%=String.format("%.2f", Double.parseDouble(obj[5].toString()) / 100000) %> lakhs
 													<%}else{ %>-<%} %>
-													<br/>
+													</h6> 
 												</div>
 											</div>
-										</div> --%>
+										</div>
 										
-										<div class="container" style="">
+										<div class="container">
 					  						<div class="row">
 												<div class="col-xl">
-													<form action="#">
+												Sanctioned on : <%if(obj[7]!=null){%><%=fc.SqlToRegularDate(obj[7].toString()) %>
+												<%}else{ %>-<%} %>
+												<br/>
+												</div>
+											</div>
+										</div>
+										
+										<div class="container">
+					  						<div class="row">
+												<div class="col-xl">
+												PDC : <%if(obj[8]!=null){%><%=fc.SqlToRegularDate(obj[8].toString()) %>
+												<%}else{ %>-<%} %>
+												<br/>
+												</div>
+											</div>
+										</div>
+										
+										<div class="container" style="display: inline-flex;">
+											<div>SoC Status :</div>
+					  						<div class="row" style="margin-top: -1%;margin-left: 1%;">
+												<div class="col-xl">
+													 <%if(obj[11]!=null) {%>
+														<form action="#">
 				                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
-				                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=CARSTransStatus.htm value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
-											    			<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+				                                        	<input type="hidden" name="projectId" value="<%=obj[0] %>">
+				                                       	  	
+				                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureSoCTransStatus.htm value="<%=obj[0] %>" name="projectId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
+											    				<%=obj[12] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 											    			</button>
 	                                        			</form>
+	                                        		<%} else{%>
+	                                        			<button type="button" class="btn btn-sm btn-link w-100 btn-status" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: violet; font-weight: 600;" formtarget="_blank">
+											    			Not Initiated <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+											    		</button>
+	                                        		<%} %>
 													<br/>
 												</div>
 											</div>
-										</div>
+										</div>  
+										
+										<div class="container" style="display: inline-flex;">
+											<div>ACR Status :</div>
+					  						<div class="row" style="margin-top: -1%;margin-left: 1%;">
+												<div class="col-xl">
+													 <%if(obj[14]!=null) {%>
+														<form action="#">
+				                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				                                        	<input type="hidden" name="projectId" value="<%=obj[0] %>">
+				                                       	  	
+				                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureACPTransStatus.htm value="<%=obj[0] %>" name="projectId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[16] %>; font-weight: 600;" formtarget="_blank">
+											    				<%=obj[15] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+											    			</button>
+	                                        			</form>
+	                                        		<%} else{%>
+	                                        			<button type="button" class="btn btn-sm btn-link w-100 btn-status" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: violet; font-weight: 600;" formtarget="_blank">
+											    			Not Initiated <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+											    		</button>
+	                                        		<%} %>
+													<br/>
+												</div>
+											</div>
+										</div>  
 										
 										<%-- <div style="bottom: 0px;margin-bottom: 15px;">
 											<div class="container">
@@ -524,34 +446,46 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 												
 										<div style="bottom: 0px;margin-bottom: 15px;padding-top: 10px;">
 											<div class="container">
-						  						<div class="row" style="margin-left: 40%;">
+						  						<div class="row" style="">
 													<div class="col-xl">
 													
 														<form action="#" method="post">
 		                                        			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		                                        	
-		                                       	 				<button class="editable-clicko" name="carsInitiationId" value="<%=obj[0] %>" formaction="CARSInitiationDetails.htm">
+		                                       	 				<button class="editable-clicko" name="projectId" value="<%=obj[0] %>" formaction="ProjectClosureSoCDetails.htm" data-toggle="tooltip" data-placement="top" title="Details of Statement of Case">
 																	<div class="cc-rockmenu">
 																		<div class="rolling">
 																			<figure class="rolling_icon">
-																				<img src="view/images/clipboard.png">
+																				<img src="view/images/handbook.png">
 																			</figure>
-																			<span>Details</span>
+																			<span>SoC</span>
 																		</div>
 																	</div>
 												    			</button>
-												    			<%if(obj[12]!=null && (obj[12].toString().equalsIgnoreCase("FWD") || obj[12].toString().equalsIgnoreCase("SFU"))) {%>
-						                                       	 	<button class="editable-clicko" name="carsUserRevoke" value="<%=obj[0] %>/<%=obj[12] %>" formaction="CARSUserRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
-																		<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<img src="view/images/userrevoke.png" style="width: 22px !important;">
-																				</figure>
-																				<span>Revoke</span>
-																			</div>
+												    			<%if(obj[11]!=null && (obj[11].toString().equalsIgnoreCase("SFW"))) {%>
+												    			<button class="editable-clicko" name="projectId" value="<%=obj[0] %>" formaction="ProjectClosureSoCRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to Revoke?')">
+																	<div class="cc-rockmenu">
+																		<div class="rolling">
+																			<figure class="rolling_icon">
+																				<img src="view/images/userrevoke.png" style="width: 22px !important;">
+																			</figure>
+																			<span>SoC Revoke</span>
 																		</div>
-																    </button>
+																	</div>
+												    			</button>
 												    			<%} %>
+												    			
+		                                       	 				<button class="editable-clicko" name="projectId" value="<%=obj[0] %>" formaction="ProjectClosureACPDetails.htm" formmethod="post" data-toggle="tooltip" data-placement="top" title="Details of Administrative Closure of Project">
+																	<div class="cc-rockmenu">
+																		<div class="rolling">
+																			<figure class="rolling_icon">
+																				<img src="view/images/docpaper.png">
+																			</figure>
+																			<span>ACR</span>
+																		</div>
+																	</div>
+												    			</button>
+												    			
 		                                        		</form>
 													</div>
 												</div>
@@ -573,7 +507,7 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 								<% int pagin = Integer.parseInt(request.getAttribute("pagination").toString()) ; %>
 							
 									<div class="page-item">
-										<form method="get" action="CARSInitiationList.htm" onsubmit="return verify()">
+										<form method="get" action="ProjectClosureList.htm" onsubmit="return verify()">
 											<input class="page-link" type="submit" <%if(pagin==0){ %>disabled<%} %> value="Previous" />
 											<% if (request.getAttribute("searchFactor")!=null){ %>
 												<input type="hidden" value="<%= request.getAttribute("searchFactor").toString() %>" name="search" />
@@ -585,7 +519,7 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 										<input class="page-link" type="button" value="<%=pagin+1 %>" disabled/>
 									</div>
 									<div class="page-item">
-										<form method="get" action="CARSInitiationList.htm" >
+										<form method="get" action="ProjectClosureList.htm" >
 											<% int last=pagin+2;if(Integer.parseInt(request.getAttribute("maxpagin").toString())<last)
 												last=0; %>
 												<input class="page-link" type="submit" value="Next" <%if(last==0){ %><%="disabled"%><%} %> />

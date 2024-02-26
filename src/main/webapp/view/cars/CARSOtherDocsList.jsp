@@ -824,7 +824,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 												    	otherdocdate = otherdocdate!=null?fc.SqlToRegularDate(otherdocdate):rdf.format(new Date());
 												    	
 												    	%>
-												    	<button type="button" class="btn btn-sm" data-toggle="modal" onclick="openCalendar('<%=carsInitiationId%>','<%=otherdocdetailsid%>','<%=milestones.get(0).getMilestoneNo() %>','<%=otherdocdate %>')" style="margin-top: -0.8rem;">
+												    	<button type="button" class="btn btn-sm" data-toggle="modal" onclick="openCalendar('<%=carsInitiationId%>','<%=otherdocdetailsid%>','<%=mil %>','<%=otherdocdate %>')" style="margin-top: -0.8rem;">
 													  		<div class="cc-rockmenu">
 																<div class="rolling">
 																	<figure class="rolling_icon">
@@ -929,7 +929,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 												    	otherdocdate = otherdocdate!=null?fc.SqlToRegularDate(otherdocdate):rdf.format(new Date());
 												    	
 												    	%>
-												    	<button type="button" class="btn btn-sm" data-toggle="modal" onclick="openCalendar('<%=carsInitiationId%>','<%=otherdocdetailsid%>','<%=milestones.get(0).getMilestoneNo() %>','<%=otherdocdate %>')" style="margin-top: -0.8rem;">
+												    	<button type="button" class="btn btn-sm" data-toggle="modal" onclick="openCalendar('<%=carsInitiationId%>','<%=otherdocdetailsid%>','<%=milestones.get(milestones.size()-1).getMilestoneNo() %>','<%=otherdocdate %>')" style="margin-top: -0.8rem;">
 													  		<div class="cc-rockmenu">
 																<div class="rolling">
 																	<figure class="rolling_icon">
@@ -1016,6 +1016,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 
 
 function openCalendar(carsIniId, otherdocdetailsid, milestoneno, otherdocdate){
+	console.log(otherdocdetailsid);
 	$('#myModal').modal('show');
 	$('#carsInitiationId').val(carsIniId);
 	$('#otherDocDetailsId').val(otherdocdetailsid);

@@ -1893,15 +1893,15 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 											<table style="width:100% ; " id="milestones2">
 												<thead style = "background-color: #055C9D; color: white;text-align: center;">
 													<tr>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone <br> No.</th>
+												    	<th style="width: 8%;padding: 0px 5px 0px 5px;">Milestone <br> No.</th>
 												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
-												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
+												    	<th style="width: 7%;padding: 0px 5px 0px 5px;">T0 + Months</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
-												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
+												    	<th style="width: 6%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
 												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Amount (&#8377;)</th>
 												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Remarks</th>
 														<td style="width: 5%;">
-															<button type="button" class=" btn btn_add_milestones2"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+															<button style="padding: 3px 7px 3px 7px;" type="button" class=" btn btn_add_milestones2"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
 														</td>
 													</tr>
 												</thead>
@@ -1909,19 +1909,19 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 								 					<%if(milestones!=null && milestones.size()>0) {
 								 					   for(CARSSoCMilestones mil :milestones) {%>
 													<tr class="tr_clone_milestones2">
-														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
+														<td style="width: 8%;padding: 10px 5px 0px 5px;" >
 															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="<%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
 														</td>	
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+														<td style="width: 7%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control " name="months" min="0" max="<%if(carsSoC!=null) {%><%=carsSoC.getSoCDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
 														</td>
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+														<td style="width: 6%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 10%;padding: 10px 5px 0px 5px;">
@@ -1931,7 +1931,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
 														</td>
 														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+															<button style="padding: 3px 7px 3px 7px;" type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
 														</td>									
 													</tr>
 													<%} }else{%>
@@ -1942,20 +1942,20 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 														<td style="width: 30%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
 														</td>	
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+														<td style="width: 7%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control" name="months" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCDuration() %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
 														</td>
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+														<td style="width: 6%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 20%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ></textarea>
 														</td>
 														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+															<button style="padding: 3px 7px 3px 7px;" type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
 														</td>									
 													</tr>
 													<%} %>

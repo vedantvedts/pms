@@ -86,7 +86,7 @@ public class CARSServiceImpl implements CARSService{
 		
 		long maxCARSInitiationId = dao.getMaxCARSInitiationId();
 		LocalDate now = LocalDate.now();
-		String CARSNo = labcode+"/CARS-"+(maxCARSInitiationId+1)+"/RTMD/"+now.getYear();
+		String CARSNo = labcode+"/CARS/D-P&C/"+now.getYear()+"-"+(maxCARSInitiationId+1);
 		initiation.setCARSNo(CARSNo);
 		
 //		double amount = Double.parseDouble(initiation.getAmount())*100000;
@@ -1334,7 +1334,7 @@ public class CARSServiceImpl implements CARSService{
 				String[] split = maxCARSContractNo!=null?maxCARSContractNo.split("/"):null;
 				String CARSContractId = split!=null?split[0]:"0";
 				LocalDate now = LocalDate.now();
-				String ContractNo = labcode+"/CARS-"+(Long.parseLong(CARSContractId)+1)+"/CONT/"+now.getYear();
+				String ContractNo = labcode+"/CARS-"+(Long.parseLong(CARSContractId)+1)+"/RTMD/"+now.getYear();
 				contract.setContractNo(ContractNo);
 			}
 			dao.editCARSContractDetails(contract);
