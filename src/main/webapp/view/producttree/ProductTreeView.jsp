@@ -57,7 +57,7 @@
     padding: 17px 0px 0 0px;
 }
 
- .genealogy-tree li::before, .genealogy-tree li::after{
+/*  .genealogy-tree li::before, .genealogy-tree li::after{
     content: '';
     position: absolute; 
     top: 0; 
@@ -96,61 +96,75 @@
     border-left: 2px solid #ccc;
     width: 0; height: 20px;
 }
- 
+  */
  
  
 
- 
- 
- 
- /* .genealogy-tree li .before, .genealogy-tree li .after{
-    background-color: black;
+.genealogy-tree li .before, .genealogy-tree li .after{
+  
     position: absolute; 
     top: 0; 
     right: 50%;
     border-top: 1px solid black;
     width: 50%; 
-    height: 2px;
+    height: 18px;
 }
+
   .genealogy-tree li .after{
     right: auto; 
     left: 50%;
-    border-left: 2px solid black;
+     border-left: 2px solid black; 
+   
 } 
-  */
- /*  .genealogy-tree li:only-child .after, .genealogy-tree li:only-child .before {
-    display: none;
-}   */
- /*  .genealogy-tree li:only-child{ 
-    padding-top: 0;
-}  */
-  /* .genealogy-tree li:first-child .before, .genealogy-tree li:last-child .after{
-    border: 0 none;
-}  
- .genealogy-tree li:last-child .before{
-     border-right: 2px solid black;
-     border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-}
-
- .genealogy-tree li:first-child .after{
   
-    border-radius: 5px 0 0 0;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
+
+   .genealogy-tree li:only-child{ 
+    padding-top: 0;
+}  
+ 
+ 
+ 
+ /* .genealogy-tree li:last-child .before {
+    border-right: 2px solid black ! important;
+    border-top: 2px solid black ! important;
+    border-radius: 0 5px 0 0 ! important;
+    -webkit-border-radius: 0 5px 0 0 ! important;
+    -moz-border-radius: 0 5px 0 0 ! important;
+}
+.genealogy-tree li:last-child .after {
+    border-right: none ! important;
+    border-top: 2px solid black ! important;
+    border-radius: 0 5px 0 0 ! important;
+    -webkit-border-radius: 0 5px 0 0 ! important;
+    -moz-border-radius: 0 5px 0 0 ! important;
 }
 
+.genealogy-tree li:first-child .before {
+
+    border-radius: 5px 0 0 0 ! important;
+    -webkit-border-radius: 5px 0 0 0 ! important;
+    -moz-border-radius: 5px 0 0 0 ! important;
+    border-top: none ! important;
+}
+
+.genealogy-tree li:first-child .after {
+
+    border-radius: 5px 0 0 0 ! important;
+    -webkit-border-radius: 5px 0 0 0 ! important;
+    -moz-border-radius: 5px 0 0 0 ! important;
+    border-top: 2px solid black ! important;
+} */
+ 
  
   .genealogy-tree ul ul .firstchildafter{
-    content: '';
+    
     position: absolute;
      top: 0; 
      left: 50%;
     border-left: 2px solid black;
     width: 0;
      height: 20px;
-} */
+} 
   
  
  .genealogy-tree li .action-view-box{
@@ -182,19 +196,10 @@
 <style type="text/css">
 .action-box
 {
-    /*  width: fit-content ; 
-     height: fit-content; */
-     /* min-width:190px; */
-   /*   min-width:190px; */
-  
+
     border: 1px solid black;
-    
     max-width:100px;
-    /* max-height:110px; */
-/*     display: block; */
     
-   
-    /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%); */
     
 }
 
@@ -202,18 +207,17 @@
 .action-box-header
 {
 
-
-/*  max-width:120px; */
 	padding:2px;
  	text-align: center;
- 	 
-   
- 	/* color: #3468C0; */
-	 /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%);  */
+ 	
 }
 
+.gradient-background{
+
+ 
 
 
+}
 
 .action-box-body
 {
@@ -242,7 +246,7 @@ table,td{
     position: fixed;
     bottom: 50px;
     left: -20px;
-    width: 100%; /* Ensures the div stretches across the entire width of the page */
+    width: 100%; 
 }
 
 
@@ -272,13 +276,9 @@ table,td{
 		
 	    <div class="genealogy-tree"  >
 	  
-	 
-	  		<ul>
-	  		  
-				<li> 
-				
-	
-						 <div class="member-view-box action-view-box" style=" padding:0px 15px;">
+	 <ul>
+	  	<li> 
+			 <div class="member-view-box action-view-box" style=" padding:0px 15px;">
 			                    
 			                         <div class="action-box" style="border:-1px;" > 
 			                         	
@@ -301,14 +301,16 @@ table,td{
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
 			           <ul class="active">
 			           	          
-			           	         <!--  <div class="firstchildafter"></div>       -->
-			                <% for(Object[] level1 : ProductTreeList){
+			           	           <div class="firstchildafter"></div>      
+			                <%int i=1; for(Object[] level1 : ProductTreeList){
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
 			              
-			                	<li >	
+			                	<li >
+			                	<% List<Object[]> L1 =ProductTreeList.stream().filter(e-> e[2].toString().equalsIgnoreCase("1") ).collect(Collectors.toList());%>	
 			                	
 			                	
-			                	<!--  <div class="before"></div>  -->
+			                	
+			                	  <div class="before" <%if(i==1) {%> style="border:none;" <%} %> ></div>  
 			                	
 									    <div class="member-view-box action-view-box">
 											 <div class="action-box" > 
@@ -341,7 +343,7 @@ table,td{
 										             </span>  
 										            
 													          
-											 <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+											<!--  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													      
 			                          		    </div> 
 			                          	 </div> 
@@ -354,15 +356,13 @@ table,td{
 											
 								<!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->
 						                <ul  <% if(Level1!=null && Level1.size()>0){%> class="active" <%}%> >	
-						                <!--  <div class="firstchildafter"></div>  -->   
-						                <%for(Object[] level2 : ProductTreeList){
+						                  <div class="firstchildafter"></div>     
+						                <% int j=1;for(Object[] level2 : ProductTreeList){
 						                  if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString()))
 							                { %>
 							             
 												<li>
-												
-												
-													 
+												<div class="before" <%if(j==1) {%> style="border:none;" <%} %> ></div>  
 												
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
@@ -392,7 +392,7 @@ table,td{
 			                          			                              <%=level2[3] %>
 			                          			                   </span>
 			                          			                   
-			                          			                  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													             
 												             
@@ -404,14 +404,17 @@ table,td{
 												   <% List<Object[]> Level2 =ProductTreeList.stream().filter(e-> level2[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 												    
 												    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->
-										             <ul <% if(Level2!=null && Level2.size()>0){%> class="active" <%}%> >	                
-										                	  <%for(Object[] level3 : ProductTreeList){
+										             <ul <% if(Level2!=null && Level2.size()>0){%> class="active" <%}%> >
+										              <div class="firstchildafter"></div>    	                
+										                	  <% int k=1;for(Object[] level3 : ProductTreeList){
 										                 if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) )
 										                
 										                  { %>
 																  <li> 
+																  
+																
 																 
-																   
+																   <div class="before" <%if(k==1) {%> style="border:none;" <%} %> ></div>  
 																   
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
@@ -444,7 +447,7 @@ table,td{
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                      <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                     <!--  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													                   
 			                          			                          
@@ -458,40 +461,24 @@ table,td{
 															
 										                <%------------------------------------------------------LEVEL 4 -------------------------------------------------------%>
 										                
-										               <ul <% if(Level3!=null && Level3.size()>0){%> class="active" <%}%> >	                
-										                	 <%for(Object[] level4 : ProductTreeList){
+										               <ul <% if(Level3!=null && Level3.size()>0){%> class="active" <%}%> >	
+										                <div class="firstchildafter"></div>                    
+										                	 <% int l=1;for(Object[] level4 : ProductTreeList){
 															                 
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
 										                     { %>    
 																  <li> 
 																  
+																  
+																  
 																 
+																   <div class="before" <%if(l==1) {%> style="border:none;" <%} %> ></div> 
+																   
 																  
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		 
-																		  style="background: linear-gradient(to bottom right, 
-																			<%if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
+																		<div class="action-box-header gradient-background">
 																		
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
@@ -500,7 +487,7 @@ table,td{
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                         <!--  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													                     
 												                                              			
@@ -514,13 +501,16 @@ table,td{
 																	
 																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
 																	
-														 <ul <% if(Level4!=null && Level4.size()>0){%> class="active" <%}%> >	                
-										                	<%for(Object[] level5 : ProductTreeList){%>
+														 <ul <% if(Level4!=null && Level4.size()>0){%> class="active" <%}%> >	
+														  <div class="firstchildafter"></div>                    
+										                	<% int m=1;for(Object[] level5 : ProductTreeList){%>
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
 								                             {%> 
 																  <li> 
 																  
-																   
+																    
+																 
+																   <div class="before" <%if(m==1) {%> style="border:none;" <%} %> ></div>  
 																  
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
@@ -556,7 +546,7 @@ table,td{
 			                          			                          
 			                          			                          
 			                          			                          
-			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                        <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													                   
 												                                              			
@@ -569,21 +559,21 @@ table,td{
 																	
 																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
 																	
-																
+																<div class="after"   <% if(m==Level4.size()) {%> style="border-top:none;" <%} %>></div> 	
 																	   
 																   </li>
 															
-														    <% } %>
+														    <%m++; } %>
 														<% } %>
 														
 														
 													</ul>      
 																	
 														<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%> 
-																    
+															<div class="after" <% if(l==Level3.size()) {%> style="border-top:none;" <%} %> ></div> 		    
 														 </li>
 															
-												    <% } %>
+												    <%l++; } %>
 												<% } %>
 														
 													 </ul>     
@@ -591,11 +581,11 @@ table,td{
 																    
 																    
 														<!-- --------------------------------------------------------   LEVEL 4 ---------------------------------------------------- -->  		    														    
-																    
+														<div class="after" <% if(k==Level2.size()) {%> style="border-top:none;" <%} %>></div> 			    
 															 
 							                		    </li>
 												
-													    <% } %>
+													    <%k++; } %>
 													<% } %>
 											
 											
@@ -605,18 +595,18 @@ table,td{
 										                
 										                   
 										    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
-											  	
+										<div class="after" <% if(j==Level1.size()) {%> style="border-top:none;" <%} %> ></div> 	  	
 								 	 </li>
-								 <% } %>
+								 <%j++; } %>
                 	        <% } %>
                 	        
                 	       
 			                </ul>  
 						                  
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
-						 	 <!-- <div class="after"></div>   -->    			
+						 	 <div class="after" <% if(i==L1.size()) {%> style="border-top:none;" <%} %> ></div>  			
                 		 </li>
-                	   <% } %>
+                	   <%i++; } %>
                 	<% } %>
 					
 			
@@ -710,13 +700,24 @@ table,td{
  <script>
 function downloadPDF() {
 	
+	  var body = document.body;
+	  
 	
-	    var body = document.body;
+	 
+	  
+	    var downloadButton = document.getElementById('generatePdfBtn'); // Assuming your download button has an ID
+
+	    // Store the current display style of the download button
+	    var originalDisplayStyle = downloadButton.style.display;
+
+	    // Hide the download button during rendering
+	    downloadButton.style.display = 'none';
+
 
 	    html2canvas(body, {
 	        onrendered: function(canvas) {
 	            
-	         
+	        	 downloadButton.style.display = originalDisplayStyle;
 
 	            // Convert canvas to base64 image data
 	            var imageData = canvas.toDataURL('image/jpeg');
