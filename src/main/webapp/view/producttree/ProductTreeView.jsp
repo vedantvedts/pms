@@ -57,21 +57,20 @@
     padding: 17px 0px 0 0px;
 }
 
-.genealogy-tree li::before, .genealogy-tree li::after{
+ .genealogy-tree li::before, .genealogy-tree li::after{
     content: '';
     position: absolute; 
     top: 0; 
     right: 50%;
-    border-top: 2px solid black;
+    border-top: 2px solid #ccc;
     width: 50%; 
     height: 18px;
 }
 .genealogy-tree li::after{
-    right: auto; 
-    left: 50%;
-    border-left: 2px solid black;
+    right: auto; left: 50%;
+    border-left: 2px solid #ccc;
 }
- .genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
+.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
     display: none;
 }
 .genealogy-tree li:only-child{ 
@@ -79,9 +78,9 @@
 }
 .genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
     border: 0 none;
-} 
+}
 .genealogy-tree li:last-child::before{
-     border-right: 2px solid black;
+     border-right: 2px solid #ccc;
      border-radius: 0 5px 0 0;
     -webkit-border-radius: 0 5px 0 0;
     -moz-border-radius: 0 5px 0 0;
@@ -93,14 +92,68 @@
 }
 .genealogy-tree ul ul::before{
     content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 2px solid #ccc;
+    width: 0; height: 20px;
+}
+ 
+ 
+ 
+
+ 
+ 
+ 
+ /* .genealogy-tree li .before, .genealogy-tree li .after{
+    background-color: black;
+    position: absolute; 
+    top: 0; 
+    right: 50%;
+    border-top: 1px solid black;
+    width: 50%; 
+    height: 2px;
+}
+  .genealogy-tree li .after{
+    right: auto; 
+    left: 50%;
+    border-left: 2px solid black;
+} 
+  */
+ /*  .genealogy-tree li:only-child .after, .genealogy-tree li:only-child .before {
+    display: none;
+}   */
+ /*  .genealogy-tree li:only-child{ 
+    padding-top: 0;
+}  */
+  /* .genealogy-tree li:first-child .before, .genealogy-tree li:last-child .after{
+    border: 0 none;
+}  
+ .genealogy-tree li:last-child .before{
+     border-right: 2px solid black;
+     border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+
+ .genealogy-tree li:first-child .after{
+  
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+
+ 
+  .genealogy-tree ul ul .firstchildafter{
+    content: '';
     position: absolute;
      top: 0; 
      left: 50%;
     border-left: 2px solid black;
     width: 0;
      height: 20px;
-}
-.genealogy-tree li .action-view-box{
+} */
+  
+ 
+ .genealogy-tree li .action-view-box{
      text-decoration: none;
      /* font-family: arial, verdana, tahoma; */
      font-size: 11px;
@@ -108,7 +161,7 @@
      border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-}
+} 
 
 
 /*--------------memeber-card-design----------*/
@@ -214,20 +267,22 @@ table,td{
 
 	
 
-     <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;" > <!-- onclick="downloadPDF()" --> <i class="fa fa-download fa-lg" ></i></button> 
+     <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;"  onclick="downloadPDF()"> <i class="fa fa-download fa-lg" ></i></button> 
 
 		
 	    <div class="genealogy-tree"  >
 	  
 	 
 	  		<ul>
-				<li >      
+	  		  
+				<li> 
+				
 	
 						 <div class="member-view-box action-view-box" style=" padding:0px 15px;">
 			                    
-			                         <div class=" action-box" style="border:-1px;" > 
+			                         <div class="action-box" style="border:-1px;" > 
 			                         	
-			                         	<div  class="action-box-header" id="aaaa">
+			                         	<div  class="action-box-header" >
 			                         	
 			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;">
 	                          			        <%if(ProjectId!=null){	
@@ -241,15 +296,19 @@ table,td{
 			                           
 			                </div>
 			          </div>
-			          
-			               
+			         
+			             
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
 			           <ul class="active">
-			           	                
+			           	          
+			           	         <!--  <div class="firstchildafter"></div>       -->
 			                <% for(Object[] level1 : ProductTreeList){
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
 			              
-			                	<li >	 
+			                	<li >	
+			                	
+			                	
+			                	<!--  <div class="before"></div>  -->
 			                	
 									    <div class="member-view-box action-view-box">
 											 <div class="action-box" > 
@@ -288,16 +347,22 @@ table,td{
 			                          	 </div> 
 									</div>
 									
+									
+									
 											<% List<Object[]> Level1 =ProductTreeList.stream().filter(e-> level1[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 											
 											
 								<!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->
 						                <ul  <% if(Level1!=null && Level1.size()>0){%> class="active" <%}%> >	
+						                <!--  <div class="firstchildafter"></div>  -->   
 						                <%for(Object[] level2 : ProductTreeList){
 						                  if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString()))
 							                { %>
 							             
 												<li>
+												
+												
+													 
 												
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
@@ -335,7 +400,7 @@ table,td{
 													     </div>
 												   </div> 
 												   
-												   
+												  
 												   <% List<Object[]> Level2 =ProductTreeList.stream().filter(e-> level2[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 												    
 												    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->
@@ -344,8 +409,10 @@ table,td{
 										                 if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) )
 										                
 										                  { %>
-																  <li>  
-																   <div class="line-top"></div>    
+																  <li> 
+																 
+																   
+																   
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
@@ -386,7 +453,7 @@ table,td{
 													              </div>
 														   </div> 
 															
-															
+															 
 															 <% List<Object[]> Level3 =ProductTreeList.stream().filter(e-> level3[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 															
 										                <%------------------------------------------------------LEVEL 4 -------------------------------------------------------%>
@@ -397,7 +464,9 @@ table,td{
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
 										                     { %>    
 																  <li> 
-																   <div class="line-top"></div>     
+																  
+																 
+																  
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
@@ -440,7 +509,7 @@ table,td{
 																</div>
 														</div> 
 																	
-																	
+															 	
 																	<% List<Object[]> Level4 =ProductTreeList.stream().filter(e-> level4[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 																	
 																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
@@ -450,7 +519,9 @@ table,td{
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
 								                             {%> 
 																  <li> 
-																   <div class="line-top"></div>     
+																  
+																   
+																  
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
@@ -534,7 +605,7 @@ table,td{
 										                
 										                   
 										    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
-												
+											  	
 								 	 </li>
 								 <% } %>
                 	        <% } %>
@@ -543,7 +614,7 @@ table,td{
 			                </ul>  
 						                  
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
-						 		    
+						 	 <!-- <div class="after"></div>   -->    			
                 		 </li>
                 	   <% } %>
                 	<% } %>
@@ -554,7 +625,7 @@ table,td{
                 
                          
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->        
-			           		
+			         
 						
 	        		</li>
 	        		
@@ -635,53 +706,8 @@ table,td{
 </script> 
 
 
-<!-- <script>
 
-
-document.getElementById('generatePdfBtn').addEventListener('click', function() {
-    downloadJspPage();
-});
-
-    function downloadJspPage() {
-    	
-    	
-    	var jspFilePath = "/producttree/ProductTreeView.jsp";
-
-
-        var link = document.createElement('a');
-        link.href = "producttree/ProductTreeView.jsp";
-        link.download = 'ProductTreeView.jsp'; // Specify the filename for download
-
-        // Append the link to the body and simulate a click
-        document.body.appendChild(link);
-        link.click();
-
-        // Remove the link from the DOM
-        document.body.removeChild(link);
-   }
-    
-
-
-</script>  -->
-
-
-
-<!-- <script>
-function downloadPDF() {
-    // Create a new jsPDF instance
-    var doc = new jsPDF();
-
-    // Add content from your JSP page to the PDF
-    var content = document.getElementById("mybody").innerHTML; // Replace 'your-content-id' with the ID of the element containing your JSP content
-    doc.text(content, 10, 10);
-
-    // Save the PDF
-    doc.save("download.pdf");
-}
-</script> -->
-
-
-<!-- <script>
+ <script>
 function downloadPDF() {
 	
 	
@@ -702,11 +728,9 @@ function downloadPDF() {
 	            link.click();
 	        }
 	    });
-	
-
 		
 }
-</script> -->
+</script> 
 
 
 
