@@ -187,7 +187,8 @@ if(ses1!=null){	%>
 																	
 																	
 															
-		                                                              <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')">  
+		                                                              <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>','0')">  
+		                                                              
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -243,7 +244,7 @@ if(ses1!=null){	%>
 														 	<td class="width-30px" style="text-align: center;">
 														 	
 														 	
-														 	 <button class="editable-click" name="sub" value="E" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')">  
+														 	 <button class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>','<%=count %>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -289,7 +290,7 @@ if(ses1!=null){	%>
 															<td class="width-30px"  style="text-align: center;">
 															
 															
-															 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>')">  
+															 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>','<%=count %>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -303,6 +304,7 @@ if(ses1!=null){	%>
 													             <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
+																    <input type="hidden" name="buttonid" value="<%=count %>">
 													                 <button class="editable-click" name="Mainid" value="<%=level3[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
@@ -333,7 +335,7 @@ if(ses1!=null){	%>
 															<td class="width-30px"  style="text-align: center;">
 															
 															
-														 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>')">  
+														 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>','<%=count %>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -346,6 +348,7 @@ if(ses1!=null){	%>
 													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
+																    <input type="hidden" name="buttonid" value="<%=count %>">
 													                 <button class="editable-click" name="Mainid" value="<%=level4[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
@@ -380,7 +383,7 @@ if(ses1!=null){	%>
 																<td class="width-30px" style="text-align: center;">
 															
 															
-																 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')">  
+																 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>','<%=count %>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -394,6 +397,7 @@ if(ses1!=null){	%>
 													               <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 													                  <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																      <input type="hidden" name="Action" value="D"/>
+																      <input type="hidden" name="buttonid" value="<%=count %>">
 													                  <button class="editable-click" name="Mainid" value="<%=level5[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
@@ -428,7 +432,7 @@ if(ses1!=null){	%>
 														    <td class="width-30px">
 															
 															
-																 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>')">  
+																 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>','<%=count %>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -442,6 +446,7 @@ if(ses1!=null){	%>
 													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
+																    <input type="hidden" name="buttonid" value="<%=count %>">
 													                 <button class="editable-click" name="Mainid" value="<%=level6[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
@@ -557,6 +562,7 @@ if(ses1!=null){	%>
         	<input type="hidden" id="Mainid" name="Mainid" value="" >
         	<input type="hidden" id="" name="Action" value="E" >
         	<input type="hidden" id="" name="ProjectId" value="<%=ProjectId %>" >
+        	<input type="hidden" id="count" name="buttonid" value="">
         	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
         </form>
       </div>
@@ -571,10 +577,11 @@ if(ses1!=null){	%>
 	
 <script type="text/javascript">
 
-function EditModal(mainid,levelname,stage,module)
+function EditModal(mainid,levelname,stage,module,count)
 {
 	$('#Mainid').val(mainid);			
 	$('#levelname').val(levelname);
+	$('#count').val(count);
 
 	
 var selectedstage=stage	
@@ -709,9 +716,11 @@ $('#Module').html("");
 	if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
 	$( "#btn"+id ).removeClass( "btn btn-sm btn-success" ).addClass( "btn btn-sm btn-danger" );
 	$( "#fa"+id ).removeClass( "fa fa-plus" ).addClass( "fa fa-minus" );
+	$( ".row"+id).show();
     }else{
 	$( "#btn"+id ).removeClass( "btn btn-sm btn-danger" ).addClass( "btn btn-sm btn-success" );
 	$( "#fa"+id ).removeClass( "fa fa-minus" ).addClass( "fa fa-plus" );
+	$( ".row"+id).hide();
     }
 }
   

@@ -261,7 +261,7 @@ public class ProductTreeController {
 			 
 				 redir.addAttribute("result", "Level Name Updated Successfully");
 			     redir.addAttribute("ProjectId", ProjectId);
-			 
+			     redir.addAttribute("id",req.getParameter("buttonid"));
 				 if(Action.equalsIgnoreCase("E")) {
 				 
 				 return "redirect:/ProductTreeEditDelete.htm";
@@ -274,7 +274,7 @@ public class ProductTreeController {
 			 }else {
 				 redir.addAttribute("resultfail", "Level Name Update Unsuccessful");
 				 redir.addAttribute("ProjectId", ProjectId);
-				 
+				 redir.addAttribute("id",req.getParameter("buttonid"));
 				 if(Action.equalsIgnoreCase("E")) {
 				 return "redirect:/ProductTreeEditDelete.htm";
 				 }
