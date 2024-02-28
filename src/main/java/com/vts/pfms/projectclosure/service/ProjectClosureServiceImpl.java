@@ -14,9 +14,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,10 +26,10 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.project.model.ProjectMaster;
-import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.projectclosure.dao.ProjectClosureDao;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
+import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
@@ -89,6 +86,33 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
+	public ProjectClosure getProjectClosureById(String closureId) throws Exception {
+		
+		return dao.getProjectClosureById(closureId);
+	}
+	
+	@Override
+	public long addProjectClosure(ProjectClosure closure, String empId) throws Exception {
+		
+		long result = dao.addProjectClosure(closure);
+		ProjectClosureTrans transaction = ProjectClosureTrans.builder()
+				  						  .ClosureId(result)
+				  						  .ClosureForm(closure.getApprovalFor().equalsIgnoreCase("SoC")?"S":"A")
+				  						  .ClosureStatusCode(closure.getClosureStatusCode())
+				  						  .ActionBy(Long.parseLong(empId))
+				  						  .ActionDate(sdtf.format(new Date()))
+				  						  .build();
+		dao.addProjectClosureTransaction(transaction);
+		return result;
+	}
+
+	@Override
+	public long editProjectClosure(ProjectClosure closure) throws Exception {
+		
+		return dao.editProjectClosure(closure);
+	}
+	
+	@Override
 	public ProjectClosureSoC getProjectClosureSoCByProjectId(String projectId) throws Exception {
 		
 		return dao.getProjectClosureSoCByProjectId(projectId);
@@ -120,17 +144,17 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			soc.setLessonsLearnt(null);
 		}
 		
-		long closuresocid = dao.addProjectClosureSoC(soc);
-		if(closuresocid!=0) {
-			ProjectClosureTrans transaction = ProjectClosureTrans.builder()
-											  .ProjectId(soc.getProjectId())
-											  .ClosureForm("S")
-											  .ClosureStatusCode("SIN")
-											  .ActionBy(Long.parseLong(EmpId))
-											  .ActionDate(sdtf.format(new Date()))
-											  .build();
-			dao.addProjectClosureTransaction(transaction);
-		}
+//		long closuresocid = dao.addProjectClosureSoC(soc);
+//		if(closuresocid!=0) {
+//			ProjectClosureTrans transaction = ProjectClosureTrans.builder()
+//											  .ClosureId(soc.getClosureId())
+//											  .ClosureForm("S")
+//											  .ClosureStatusCode("SIN")
+//											  .ActionBy(Long.parseLong(EmpId))
+//											  .ActionDate(sdtf.format(new Date()))
+//											  .build();
+//			dao.addProjectClosureTransaction(transaction);
+//		}
 		return dao.addProjectClosureSoC(soc);
 	}
 
@@ -159,21 +183,15 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public ProjectMasterRev getProjectMasterRevByProjectId(String projectId) throws Exception {
+	public List<Object[]> projectClosureApprovalDataByType(String closureId, String closureForward, String closureForm) throws Exception {
 		
-		return dao.getProjectMasterRevByProjectId(projectId);
+		return dao.projectClosureApprovalDataByType(closureId, closureForward, closureForm);
 	}
 
 	@Override
-	public List<Object[]> projectClosureApprovalDataByType(String projectId, String closureForward, String closureForm) throws Exception {
+	public List<Object[]> projectClosureRemarksHistoryByType(String closureId, String closureForward, String closureForm) throws Exception {
 		
-		return dao.projectClosureApprovalDataByType(projectId, closureForward, closureForm);
-	}
-
-	@Override
-	public List<Object[]> projectClosureRemarksHistoryByType(String projectId, String closureForward, String closureForm) throws Exception {
-		
-		return dao.projectClosureRemarksHistoryByType(projectId, closureForward, closureForm);
+		return dao.projectClosureRemarksHistoryByType(closureId, closureForward, closureForm);
 	}
 
 	@Override
@@ -185,8 +203,9 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long projectClosureSoCApprovalForward(ProjectClosureApprovalForwardDTO dto) throws Exception {
 		try {
-			long closureSoCId = dto.getClosureSoCId();
-			String projectId = dto.getProjectId();
+//			long closureSoCId = dto.getClosureSoCId();
+			String closureId = dto.getClosureId();
+//			String projectId = dto.getProjectId();
 			String action = dto.getAction();
 			String EmpId = dto.getEmpId();
 			String UserId = dto.getUserId();
@@ -195,9 +214,10 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			String approverEmpId = dto.getApproverEmpId();
 			String approvalDate = dto.getApprovalDate();
 
-			ProjectClosureSoC soc = dao.getProjectClosureSoCByProjectId(projectId);
-			String statusCode = soc.getClosureStatusCode();
-			String statusCodeNext = soc.getClosureStatusCodeNext();
+			ProjectClosure closure = dao.getProjectClosureById(closureId);
+			String projectId = closure.getProjectId()+"";
+			String statusCode = closure.getClosureStatusCode();
+			String statusCodeNext = closure.getClosureStatusCodeNext();
 			
 			Object[] PD = carsdao.getEmpPDEmpId(projectId);
 			Object[] GD = dao.getEmpGDDetails(PD!=null?PD[1].toString():"0");
@@ -209,61 +229,61 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				if(forwardstatus.contains(statusCode)) {
 					
 					if(statusCode.equalsIgnoreCase("SIN")) {
-						soc.setForwardedBy(PD!=null?PD[1].toString():"0");
-						soc.setForwardedDate(sdf.format(new Date()));
+						closure.setForwardedBy(PD!=null?PD[1].toString():"0");
+						closure.setForwardedDate(sdf.format(new Date()));
 					}
 					
-					soc.setClosureStatusCode("SFW");
+					closure.setClosureStatusCode("SFW");
 					if(PD!=null && PD[1].toString().equalsIgnoreCase(GD!=null? GD[0].toString():"0")) {
-						soc.setClosureStatusCodeNext("SAA");
+						closure.setClosureStatusCodeNext("SAA");
 					}
 					else {
-						soc.setClosureStatusCodeNext("SAG");
+						closure.setClosureStatusCodeNext("SAG");
 					}
 					
 				}else {
-					soc.setClosureStatusCode(statusCodeNext);
+					closure.setClosureStatusCode(statusCodeNext);
 					if(statusCodeNext.equalsIgnoreCase("SAG")) {
-						soc.setClosureStatusCodeNext("SAA");
+						closure.setClosureStatusCodeNext("SAA");
 					}else if(statusCodeNext.equalsIgnoreCase("SAA")) {
-						soc.setClosureStatusCodeNext("SAP");
+						closure.setClosureStatusCodeNext("SAP");
 					}else if(statusCodeNext.equalsIgnoreCase("SAP")) {
-						soc.setClosureStatusCodeNext("SAD");
+						closure.setClosureStatusCodeNext("SAD");
 					}else if(statusCodeNext.equalsIgnoreCase("SAD")) {
-						soc.setClosureStatusCodeNext("SAC");
+						closure.setClosureStatusCodeNext("SAC");
 					}else if(statusCodeNext.equalsIgnoreCase("SAC")) {
-						soc.setClosureStatusCodeNext("SAC");
-						soc.setClosureStatus("A");
+						closure.setClosureStatusCodeNext("SAC");
+						closure.setApprStatus("A");
 					}
 				}
-				dao.editProjectClosureSoC(soc);
+				dao.editProjectClosure(closure);
 			}
 			// This is for return the application form to the user
 			else if(action.equalsIgnoreCase("R")) {
 				// Setting StatusCode
 				if(statusCodeNext.equalsIgnoreCase("SAG")) {
-					soc.setClosureStatusCode("SRG");	
+					closure.setClosureStatusCode("SRG");	
 				}else if(statusCodeNext.equalsIgnoreCase("SAA")) {
-					soc.setClosureStatusCode("SRA");	
+					closure.setClosureStatusCode("SRA");	
 				}else if(statusCodeNext.equalsIgnoreCase("SAP")) {
-					soc.setClosureStatusCode("SRP");	
+					closure.setClosureStatusCode("SRP");	
 				}else if(statusCodeNext.equalsIgnoreCase("SAD")) {
-					soc.setClosureStatusCode("SRD");	
+					closure.setClosureStatusCode("SRD");	
 				}else if(statusCodeNext.equalsIgnoreCase("SAC")) {
-					soc.setClosureStatusCode("SRC");	
+					closure.setClosureStatusCode("SRC");	
 				}
 
 				// Setting StatusCode Next
-				soc.setClosureStatusCodeNext("SFW");
+				closure.setClosureStatusCodeNext("SFW");
 
-				dao.editProjectClosureSoC(soc);
+				dao.editProjectClosure(closure);
 			}
 
 			// Transaction
 			ProjectClosureTrans transaction = ProjectClosureTrans.builder()
-											  .ProjectId(Long.parseLong(projectId))
+											  .ClosureId(Long.parseLong(closureId))
 											  .ClosureForm("S")
-											  .ClosureStatusCode(soc.getClosureStatusCode())
+											  .ClosureStatusCode(closure.getClosureStatusCode())
 											  .Remarks(remarks)
 											  .ActionBy(Long.parseLong(approverEmpId!=null? approverEmpId:EmpId))
 											  .ActionDate(approvalDate!=null?fc.RegularToSqlDate(approvalDate):sdtf.format(new Date()))
@@ -278,7 +298,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			long PDEmpId = PD!=null?Long.parseLong(PD[1].toString()):0;
 			// Notification
 			PfmsNotification notification = new PfmsNotification();
-			if(action.equalsIgnoreCase("A") && soc.getClosureStatus().equalsIgnoreCase("A") ) {
+			if(action.equalsIgnoreCase("A") && closure.getApprStatus().equalsIgnoreCase("A") ) {
 				notification.setEmpId(PDEmpId);
 				notification.setNotificationUrl("ProjectClosureList.htm");
 				notification.setNotificationMessage("Project Closure SoC request approved");
@@ -292,20 +312,20 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			}
 			else if(action.equalsIgnoreCase("A")) {
 				
-				if(soc.getClosureStatusCodeNext().equalsIgnoreCase("SAG")) {
+				if(closure.getClosureStatusCodeNext().equalsIgnoreCase("SAG")) {
 					notification.setEmpId(Long.parseLong(GD[0].toString()));
 				}
 				
-				else if(soc.getClosureStatusCodeNext().equalsIgnoreCase("SAA")) {
+				else if(closure.getClosureStatusCodeNext().equalsIgnoreCase("SAA")) {
 					notification.setEmpId(Long.parseLong(AD[0].toString()));
 				}
-				else if(soc.getClosureStatusCodeNext().equalsIgnoreCase("SAP")) {
+				else if(closure.getClosureStatusCodeNext().equalsIgnoreCase("SAP")) {
 					notification.setEmpId(Long.parseLong(GDDPandC[0].toString()));
 				}
-				else if(soc.getClosureStatusCodeNext().equalsIgnoreCase("SAD")) {
+				else if(closure.getClosureStatusCodeNext().equalsIgnoreCase("SAD")) {
 					notification.setEmpId(Long.parseLong(Director[0].toString()));
 				}
-				else if(soc.getClosureStatusCodeNext().equalsIgnoreCase("SAC")) {
+				else if(closure.getClosureStatusCodeNext().equalsIgnoreCase("SAC")) {
 					notification.setEmpId(PDEmpId);
 				}
 				
@@ -352,23 +372,23 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public List<Object[]> projectClosureTransListByType(String projectId, String closureStatusFor, String closureForm) throws Exception {
+	public List<Object[]> projectClosureTransListByType(String closureId, String closureStatusFor, String closureForm) throws Exception {
 		
-		return dao.projectClosureTransListByType(projectId, closureStatusFor, closureForm);
+		return dao.projectClosureTransListByType(closureId, closureStatusFor, closureForm);
 	}
 
 	@Override
-	public long projectClosureSoCRevoke(String projectId, String userId, String empId) throws Exception {
+	public long projectClosureSoCRevoke(String closureId, String userId, String empId) throws Exception {
 		
 		try {
-			ProjectClosureSoC soc = dao.getProjectClosureSoCByProjectId(projectId);
-			soc.setClosureStatusCode("SRV");
-			soc.setClosureStatusCodeNext("FWD");
+			ProjectClosure closure = dao.getProjectClosureById(closureId);
+			closure.setClosureStatusCode("SRV");
+			closure.setClosureStatusCodeNext("SFW");
 			
-			long closureSoCId = dao.editProjectClosureSoC(soc);
-			if(closureSoCId!=0) {
+			long result = dao.editProjectClosure(closure);
+			if(result!=0) {
 				ProjectClosureTrans transaction = ProjectClosureTrans.builder()
-						  						  .ProjectId(Long.parseLong(projectId))
+						  						  .ClosureId(result)
 						  						  .ClosureForm("S")
 						  						  .ClosureStatusCode("SRV")
 						  						  .ActionBy(Long.parseLong(empId))
@@ -385,9 +405,9 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public ProjectClosureACP getProjectClosureACPByProjectId(String projectId) throws Exception {
+	public ProjectClosureACP getProjectClosureACPByProjectId(String closureId) throws Exception {
 		
-		return dao.getProjectClosureACPByProjectId(projectId);
+		return dao.getProjectClosureACPByProjectId(closureId);
 	}
 
 	@Override
@@ -408,22 +428,19 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			String UserId = dto.getUserId();
 			String EmpId = dto.getEmpId();
 			
-			long projectId = dto.getProjectId();
+			long closureId = dto.getClosureId();
 			String details = dto.getDetails();
 
 
-			ProjectClosureACP acp = dao.getProjectClosureACPByProjectId(projectId+"");
+			ProjectClosureACP acp = dao.getProjectClosureACPByProjectId(closureId+"");
 			String firstime = "N";
 			if(acp==null) {
 				firstime = "Y";
 				acp = new ProjectClosureACP();
 			}
 
-			if(details.equalsIgnoreCase("aimobjectives")) {
-				acp.setACPAim(dto.getACPAim());
-				acp.setACPObjectives(dto.getACPObjectives());
-			}
-			else if(details.equalsIgnoreCase("facilitiescreated")) {
+
+			if(details.equalsIgnoreCase("facilitiescreated")) {
 				acp.setFacilitiesCreated(dto.getFacilitiesCreated());
 			}
 			else if(details.equalsIgnoreCase("recommendations")) {
@@ -446,15 +463,6 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			}
 			else if(details.equalsIgnoreCase("others")) {
 
-				String expndAsOn = dto.getExpndAsOn();
-				String totalExpnd = dto.getTotalExpnd();
-				String totalExpndFE = dto.getTotalExpndFE();
-
-				acp.setExpndAsOn(fc.RegularToSqlDate(expndAsOn));
-//				acp.setTotalExpnd(totalExpnd!=null?String.format("%.2f", Double.parseDouble(totalExpnd)*10000000 ):null );
-//				acp.setTotalExpndFE(totalExpndFE!=null?String.format("%.2f", Double.parseDouble(totalExpndFE)*10000000 ):null );
-				acp.setTotalExpnd(totalExpnd);
-				acp.setTotalExpndFE(totalExpndFE);
 				acp.setPrototyes(Integer.parseInt(dto.getPrototyes()));
 				acp.setTechReportNo(dto.getTechReportNo());
 
@@ -472,24 +480,21 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			}
 
 			if(firstime.equalsIgnoreCase("Y")) {
-				acp.setProjectId(projectId);
-				acp.setACPStatus("N");
-				acp.setClosureStatusCode("AIN");
-				acp.setClosureStatusCodeNext("AIN");
+				acp.setClosureId(closureId);
 				acp.setCreatedBy(UserId);
 				acp.setCreatedDate(sdtf.format(new Date()));
 				acp.setIsActive(1);
 				long count = dao.addProjectClosureACP(acp);
-				if(count!=0) {
-					ProjectClosureTrans transaction = ProjectClosureTrans.builder()
-							               			  .ProjectId(projectId)
-							               			  .ClosureForm("A")
-							               			  .ClosureStatusCode("AIN")
-							               			  .ActionBy(Long.parseLong(EmpId))
-							               			  .ActionDate(sdtf.format(new Date()))
-							               			  .build();
-					dao.addProjectClosureTransaction(transaction);
-				}
+//				if(count!=0) {
+//					ProjectClosureTrans transaction = ProjectClosureTrans.builder()
+//							               			  .ClosureId(closureId)
+//							               			  .ClosureForm("A")
+//							               			  .ClosureStatusCode("AIN")
+//							               			  .ActionBy(Long.parseLong(EmpId))
+//							               			  .ActionDate(sdtf.format(new Date()))
+//							               			  .build();
+//					dao.addProjectClosureTransaction(transaction);
+//				}
 			}else {
 				acp.setModifiedBy(UserId);
 				acp.setModifiedDate(sdtf.format(new Date()));
@@ -505,39 +510,39 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public List<ProjectClosureACPProjects> getProjectClosureACPProjectsByProjectId(String projectId) throws Exception {
+	public List<ProjectClosureACPProjects> getProjectClosureACPProjectsByProjectId(String closureId) throws Exception {
 		
-		return dao.getProjectClosureACPProjectsByProjectId(projectId);
+		return dao.getProjectClosureACPProjectsByProjectId(closureId);
 	}
 
 	@Override
-	public List<ProjectClosureACPConsultancies> getProjectClosureACPConsultanciesByProjectId(String projectId) throws Exception {
+	public List<ProjectClosureACPConsultancies> getProjectClosureACPConsultanciesByProjectId(String closureId) throws Exception {
 		
-		return dao.getProjectClosureACPConsultanciesByProjectId(projectId);
+		return dao.getProjectClosureACPConsultanciesByProjectId(closureId);
 	}
 
 	@Override
-	public List<ProjectClosureACPTrialResults> getProjectClosureACPTrialResultsByProjectId(String projectId) throws Exception {
+	public List<ProjectClosureACPTrialResults> getProjectClosureACPTrialResultsByProjectId(String closureId) throws Exception {
 		
-		return dao.getProjectClosureACPTrialResultsByProjectId(projectId);
+		return dao.getProjectClosureACPTrialResultsByProjectId(closureId);
 	}
 
 	@Override
-	public List<ProjectClosureACPAchievements> getProjectClosureACPAchievementsByProjectId(String projectId) throws Exception {
+	public List<ProjectClosureACPAchievements> getProjectClosureACPAchievementsByProjectId(String closureId) throws Exception {
 		
-		return dao.getProjectClosureACPAchievementsByProjectId(projectId);
+		return dao.getProjectClosureACPAchievementsByProjectId(closureId);
 	}
 
 	@Override
 	public long addProjectClosureProjectDetailsSubmit(ProjectClosureACPDTO dto) throws Exception {
 		try {
-			long projectId = dto.getProjectId();
+			long closureId = dto.getClosureId();
 			String acpProjectTypeFlag = dto.getAcpProjectTypeFlag();
 			//Removing previously added details
-			dao.removeProjectClosureACPProjectDetailsByType(projectId, acpProjectTypeFlag);
+			dao.removeProjectClosureACPProjectDetailsByType(closureId, acpProjectTypeFlag);
 			for(int i=0;i<dto.getACPProjectName().length;i++) {
 				ProjectClosureACPProjects projects = ProjectClosureACPProjects.builder()
-													 .ProjectId(projectId)
+													 .ClosureId(closureId)
 													 .ACPProjectType(acpProjectTypeFlag!=null && acpProjectTypeFlag.equalsIgnoreCase("S")?acpProjectTypeFlag: dto.getACPProjectType()[i])
 													 .ACPProjectName(dto.getACPProjectName()[i])
 													 .ACPProjectNo(dto.getACPProjectNo()[i])
@@ -564,13 +569,13 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long addProjectClosureConsultancyDetailsSubmit(ProjectClosureACPDTO dto) throws Exception {
 		try {
-			long projectId = dto.getProjectId();
+			long closureId = dto.getClosureId();
 			//Removing previously added details
-			dao.removeProjectClosureACPConsultancyDetails(projectId);
+			dao.removeProjectClosureACPConsultancyDetails(closureId);
 			
 			for(int i=0;i<dto.getConsultancyAim().length;i++) {
 				ProjectClosureACPConsultancies consultancy = ProjectClosureACPConsultancies.builder()
-															 .ProjectId(projectId)
+															 .ClosureId(closureId)
 															 .ConsultancyAim(dto.getConsultancyAim()[i])
 															 .ConsultancyAgency(dto.getConsultancyAgency()[i])
 															 .ConsultancyCost(dto.getConsultancyCost()[i])
@@ -592,13 +597,13 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long projectClosureACPTrialResultsSubmit(ProjectClosureACPDTO dto) throws Exception {
 		try {
-			long projectId = dto.getProjectId();
+			long closureId = dto.getClosureId();
 			//Removing previously added details
-			dao.removeProjectClosureACPTrialResultsDetails(projectId);
+			dao.removeProjectClosureACPTrialResultsDetails(closureId);
 			for(int i=0;i<dto.getAttachment().length ;i++) {
 				ProjectClosureACPTrialResults results = new ProjectClosureACPTrialResults();
 				
-				results.setProjectId(projectId);
+				results.setClosureId(closureId);
 				results.setDescription(dto.getDescription()[i]);
 				
 				Timestamp instant = Timestamp.from(Instant.now());
@@ -638,13 +643,13 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long projectClosureACPAchievementDetailsSubmit(ProjectClosureACPDTO dto) throws Exception {
 		try {
-			long projectId = dto.getProjectId();
+			long closureId = dto.getClosureId();
 			//Removing previously added details
-			dao.removeProjectClosureACPAchievementDetails(projectId);
+			dao.removeProjectClosureACPAchievementDetails(closureId);
 			
 			for(int i=0;i<dto.getEnvisaged().length ;i++) {
 				ProjectClosureACPAchievements achivements = ProjectClosureACPAchievements.builder()
-														   .ProjectId(projectId)
+														   .ClosureId(closureId)
 														   .Envisaged(dto.getEnvisaged()[i])
 														   .Achieved(dto.getAchieved()[i])
 														   .Remarks(dto.getRemarks()[i])
@@ -665,7 +670,8 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long projectClosureACPApprovalForward(ProjectClosureApprovalForwardDTO dto) throws Exception {
 		try {
-			String projectId = dto.getProjectId();
+//			String projectId = dto.getProjectId();
+			String closureId = dto.getClosureId();
 			String action = dto.getAction();
 			String EmpId = dto.getEmpId();
 			String UserId = dto.getUserId();
@@ -674,13 +680,15 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			String approverEmpId = dto.getApproverEmpId();
 			String approvalDate = dto.getApprovalDate();
 
+			ProjectClosure closure = dao.getProjectClosureById(closureId);
+			String projectId = closure.getProjectId()+"";
+			String statusCode = closure.getClosureStatusCode();
+			String statusCodeNext = closure.getClosureStatusCodeNext();
+			
 			ProjectMaster pm = dao.getProjectMasterByProjectId(projectId);
 			int isMain = pm.getIsMainWC();
 			Double sanctionCost = pm.getTotalSanctionCost();
 			
-			ProjectClosureACP acp = dao.getProjectClosureACPByProjectId(projectId);
-			String statusCode = acp.getClosureStatusCode();
-			String statusCodeNext = acp.getClosureStatusCodeNext();
 			
 			Object[] PD = carsdao.getEmpPDEmpId(projectId);
 			Object[] GD = dao.getEmpGDDetails(PD!=null?PD[1].toString():"0");
@@ -692,93 +700,93 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				if(forwardstatus.contains(statusCode)) {
 					
 					if(statusCode.equalsIgnoreCase("AIN")) {
-						acp.setForwardedBy(PD!=null?PD[1].toString():"0");
-						acp.setForwardedDate(sdf.format(new Date()));
+						closure.setForwardedBy(PD!=null?PD[1].toString():"0");
+						closure.setForwardedDate(sdf.format(new Date()));
 					}
 					
-					acp.setClosureStatusCode("AFW");
+					closure.setClosureStatusCode("AFW");
 					if(PD!=null && PD[1].toString().equalsIgnoreCase(GD!=null? GD[0].toString():"0")) {
-						acp.setClosureStatusCodeNext("AAA");
+						closure.setClosureStatusCodeNext("AAA");
 					}
 					else {
-						acp.setClosureStatusCodeNext("AAG");
+						closure.setClosureStatusCodeNext("AAG");
 					}
 					
 				}else {
-					acp.setClosureStatusCode(statusCodeNext);
+					closure.setClosureStatusCode(statusCodeNext);
 					if(statusCodeNext.equalsIgnoreCase("AAG")) {
-						acp.setClosureStatusCodeNext("AAA");
+						closure.setClosureStatusCodeNext("AAA");
 					}
 					else if(statusCodeNext.equalsIgnoreCase("AAA")) {
-						acp.setClosureStatusCodeNext("AAP");
+						closure.setClosureStatusCodeNext("AAP");
 					}
 					else if(statusCodeNext.equalsIgnoreCase("AAP")) {
-						acp.setClosureStatusCodeNext("AAL");
+						closure.setClosureStatusCodeNext("AAL");
 					}
 					else if(statusCodeNext.equalsIgnoreCase("AAL")) {
-						acp.setClosureStatusCodeNext("AAD");
+						closure.setClosureStatusCodeNext("AAD");
 					}
 					else if(statusCodeNext.equalsIgnoreCase("AAD")) {
 						if(isMain!=0 && sanctionCost<=10000000) {
-							acp.setClosureStatusCodeNext("AAD");
-							acp.setACPStatus("A");
+							closure.setClosureStatusCodeNext("AAD");
+							closure.setApprStatus("A");
 						}else if(isMain!=0 && (sanctionCost>10000000 && sanctionCost<=750000000)) {
-							acp.setClosureStatusCodeNext("AAC");
+							closure.setClosureStatusCodeNext("AAC");
 						}else {
-							acp.setClosureStatusCodeNext("AAO");
+							closure.setClosureStatusCodeNext("AAO");
 						}
 						
 					}
 					else if(statusCodeNext.equalsIgnoreCase("AAO")) {
 						if(isMain==0 && sanctionCost>750000000) {
-							acp.setClosureStatusCodeNext("AAN");
+							closure.setClosureStatusCodeNext("AAN");
 						}else {
-							acp.setClosureStatusCodeNext("AAC");
+							closure.setClosureStatusCodeNext("AAC");
 						}
 						
 					}
 					else if(statusCodeNext.equalsIgnoreCase("AAN")) {
-						acp.setClosureStatusCodeNext("AAC");
+						closure.setClosureStatusCodeNext("AAC");
 					}
 					else if(statusCodeNext.equalsIgnoreCase("AAC")) {
-						acp.setClosureStatusCodeNext("AAC");
-						acp.setACPStatus("A");
+						closure.setClosureStatusCodeNext("AAC");
+						closure.setApprStatus("A");
 					}
 				}
-				dao.editProjectClosureACP(acp);
+				dao.editProjectClosure(closure);
 			}
 			// This is for return the application form to the user
 			else if(action.equalsIgnoreCase("R")) {
 				// Setting StatusCode
 				if(statusCodeNext.equalsIgnoreCase("AAG")) {
-					acp.setClosureStatusCode("ARG");	
+					closure.setClosureStatusCode("ARG");	
 				}else if(statusCodeNext.equalsIgnoreCase("AAA")) {
-					acp.setClosureStatusCode("ARA");	
+					closure.setClosureStatusCode("ARA");	
 				}else if(statusCodeNext.equalsIgnoreCase("AAP")) {
-					acp.setClosureStatusCode("ARP");	
+					closure.setClosureStatusCode("ARP");	
 				}else if(statusCodeNext.equalsIgnoreCase("AAL")) {
-					acp.setClosureStatusCode("ARL");	
+					closure.setClosureStatusCode("ARL");	
 				}else if(statusCodeNext.equalsIgnoreCase("AAD")) {
-					acp.setClosureStatusCode("ARD");	
+					closure.setClosureStatusCode("ARD");	
 				}else if(statusCodeNext.equalsIgnoreCase("AAO")) {
-					acp.setClosureStatusCode("ARO");	
+					closure.setClosureStatusCode("ARO");	
 				}else if(statusCodeNext.equalsIgnoreCase("AAN")) {
-					acp.setClosureStatusCode("ARN");	
+					closure.setClosureStatusCode("ARN");	
 				}else if(statusCodeNext.equalsIgnoreCase("AAC")) {
-					acp.setClosureStatusCode("ARC");	
+					closure.setClosureStatusCode("ARC");	
 				}
 
 				// Setting StatusCode Next
-				acp.setClosureStatusCodeNext("AFW");
+				closure.setClosureStatusCodeNext("AFW");
 
-				dao.editProjectClosureACP(acp);
+				dao.editProjectClosure(closure);
 			}
 
 			// Transaction
 			ProjectClosureTrans transaction = ProjectClosureTrans.builder()
-											  .ProjectId(Long.parseLong(projectId))
+											  .ClosureId(Long.parseLong(closureId))
 											  .ClosureForm("A")
-											  .ClosureStatusCode(acp.getClosureStatusCode())
+											  .ClosureStatusCode(closure.getClosureStatusCode())
 											  .Remarks(remarks)
 											  .ActionBy(Long.parseLong(approverEmpId!=null? approverEmpId:EmpId))
 											  .ActionDate(approvalDate!=null?fc.RegularToSqlDate(approvalDate):sdtf.format(new Date()))
@@ -796,7 +804,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			long PDEmpId = PD!=null?Long.parseLong(PD[1].toString()):0;
 			// Notification
 			PfmsNotification notification = new PfmsNotification();
-			if(action.equalsIgnoreCase("A") && acp.getACPStatus().equalsIgnoreCase("A") ) {
+			if(action.equalsIgnoreCase("A") && closure.getApprStatus().equalsIgnoreCase("A") ) {
 				notification.setEmpId(PDEmpId);
 				notification.setNotificationUrl("ProjectClosureList.htm");
 				notification.setNotificationMessage("Administrative Closure request approved");
@@ -810,22 +818,22 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			}
 			else if(action.equalsIgnoreCase("A")) {
 				
-				if(acp.getClosureStatusCodeNext().equalsIgnoreCase("AAG")) {
+				if(closure.getClosureStatusCodeNext().equalsIgnoreCase("AAG")) {
 					notification.setEmpId(Long.parseLong(GD[0].toString()));
 				}
-				else if(acp.getClosureStatusCodeNext().equalsIgnoreCase("AAA")) {
+				else if(closure.getClosureStatusCodeNext().equalsIgnoreCase("AAA")) {
 					notification.setEmpId(Long.parseLong(AD[0].toString()));
 				}
-				else if(acp.getClosureStatusCodeNext().equalsIgnoreCase("AAP")) {
+				else if(closure.getClosureStatusCodeNext().equalsIgnoreCase("AAP")) {
 					notification.setEmpId(Long.parseLong(GDDPandC[0].toString()));
 				}
-				else if(acp.getClosureStatusCodeNext().equalsIgnoreCase("AAL")) {
+				else if(closure.getClosureStatusCodeNext().equalsIgnoreCase("AAL")) {
 					notification.setEmpId(Long.parseLong(LAO[0].toString()));
 				}
-				else if(acp.getClosureStatusCodeNext().equalsIgnoreCase("AAD")) {
+				else if(closure.getClosureStatusCodeNext().equalsIgnoreCase("AAD")) {
 					notification.setEmpId(Long.parseLong(Director[0].toString()));
 				}
-				else if(apporvenextstatus.contains(acp.getClosureStatusCodeNext())) {
+				else if(apporvenextstatus.contains(closure.getClosureStatusCodeNext())) {
 					notification.setEmpId(PDEmpId);
 				}
 				
@@ -876,5 +884,37 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.projectOriginalAndRevisionDetails(projectId);
 	}
-	
+
+	@Override
+	public Object[] projectExpenditureDetails(String projectId) throws Exception {
+		
+		return dao.projectExpenditureDetails(projectId);
+	}
+
+	@Override
+	public long projectClosureACPRevoke(String closureId, String userId, String empId) throws Exception {
+		
+		try {
+			ProjectClosure closure = dao.getProjectClosureById(closureId);
+			closure.setClosureStatusCode("ARV");
+			closure.setClosureStatusCodeNext("AFW");
+			
+			long result = dao.editProjectClosure(closure);
+			if(result!=0) {
+				ProjectClosureTrans transaction = ProjectClosureTrans.builder()
+						  						  .ClosureId(result)
+						  						  .ClosureForm("A")
+						  						  .ClosureStatusCode("ARV")
+						  						  .ActionBy(Long.parseLong(empId))
+						  						  .ActionDate(sdtf.format(new Date()))
+						  						  .build();
+				dao.addProjectClosureTransaction(transaction);
+			}
+			return 1;
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProjectClosureServiceImpl projectClosureSoCRevoke "+e);
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }

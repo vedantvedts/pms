@@ -26,7 +26,7 @@ public class ProjectClosureACPAchievements implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long AchievementsId;
-	private long ProjectId;
+	private long ClosureId;
 	private String Envisaged;
 	private String Achieved;
 	private String Remarks;

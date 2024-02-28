@@ -56,6 +56,7 @@ import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
+import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
@@ -168,15 +169,15 @@ public class ProjectClosureController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date()+ " Inside ProjectClosureSoCDetails.htm "+UserId);
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String socTabId = req.getParameter("socTabId");
 			String isApproval = req.getParameter("isApproval");
 			
-			if(projectId==null) {
+			if(closureId==null) {
 				String fromapprovals = req.getParameter("closureSoCApprovals");
 				if(fromapprovals!=null) {
 					String[] split = fromapprovals.split("/");
-					projectId = split[0];
+					closureId = split[0];
 					if(isApproval==null) {
 						isApproval = split[1];
 					}
@@ -187,15 +188,19 @@ public class ProjectClosureController {
 				
 			}
 			
-			if(projectId!=null) {
+			if(closureId!=null) {
+				ProjectClosure closure = service.getProjectClosureById(closureId);
+				String projectId = closure.getProjectId()+"";
+				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
-				req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(projectId));
+				req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
 				Object[] PDData = carsservice.getEmpPDEmpId(projectId);
 				req.setAttribute("PDData", PDData);
 				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
-				req.setAttribute("SoCRemarksHistory", service.projectClosureRemarksHistoryByType(projectId,"SF","S"));
-				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(projectId,"SF","S"));
+				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
+				req.setAttribute("SoCRemarksHistory", service.projectClosureRemarksHistoryByType(closureId,"SF","S"));
+				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
 			}
 			req.setAttribute("Director", carsservice.getLabDirectorData(labcode));
 			req.setAttribute("AD", carsservice.getApprAuthorityDataByType(labcode, "AD"));
@@ -204,7 +209,7 @@ public class ProjectClosureController {
 			
 			req.setAttribute("LabList", carsservice.getLabList(labcode));
 			
-			req.setAttribute("projectId", projectId);
+			req.setAttribute("closureId", closureId);
 			req.setAttribute("isApproval", isApproval);
 			req.setAttribute("socTabId", socTabId!=null?socTabId:"1");
 			return "project/ProjectClosureSoCDetails";
@@ -222,21 +227,21 @@ public class ProjectClosureController {
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
-			String expndAsOn = req.getParameter("expndAsOn");
-			String totalExpnd = req.getParameter("totalExpnd");
-			String totalExpndFE = req.getParameter("totalExpndFE");
+//			String expndAsOn = req.getParameter("expndAsOn");
+//			String totalExpnd = req.getParameter("totalExpnd");
+//			String totalExpndFE = req.getParameter("totalExpndFE");
 			
-			ProjectClosureSoC soc = (action!=null && action.equalsIgnoreCase("Add"))?new ProjectClosureSoC() : service.getProjectClosureSoCByProjectId(projectId);
+			ProjectClosureSoC soc = (action!=null && action.equalsIgnoreCase("Add"))?new ProjectClosureSoC() : service.getProjectClosureSoCByProjectId(closureId);
 			
-			soc.setProjectId(Long.parseLong(projectId));
-			soc.setClosureCategory(req.getParameter("closureCategory"));
+			soc.setClosureId(Long.parseLong(closureId));
+//			soc.setClosureCategory(req.getParameter("closureCategory"));
 			soc.setQRNo(req.getParameter("qrNo"));
-			soc.setExpndAsOn(fc.RegularToSqlDate(expndAsOn));
-			soc.setTotalExpnd(totalExpnd!=null?String.format("%.2f", Double.parseDouble(totalExpnd)*10000000 ):null );
-			soc.setTotalExpndFE(totalExpndFE!=null?String.format("%.2f", Double.parseDouble(totalExpndFE)*10000000 ):null );
+//			soc.setExpndAsOn(fc.RegularToSqlDate(expndAsOn));
+//			soc.setTotalExpnd(totalExpnd!=null?String.format("%.2f", Double.parseDouble(totalExpnd)*10000000 ):null );
+//			soc.setTotalExpndFE(totalExpndFE!=null?String.format("%.2f", Double.parseDouble(totalExpndFE)*10000000 ):null );
 			soc.setPresentStatus(req.getParameter("presentStatus"));
 			soc.setReason(req.getParameter("reason"));
 			soc.setRecommendation(req.getParameter("recommendation"));
@@ -246,9 +251,7 @@ public class ProjectClosureController {
 			
 			long result=0l;
 			if(action!=null && action.equalsIgnoreCase("Add")) {
-				soc.setClosureStatus("N");
-				soc.setClosureStatusCode("SIN");
-				soc.setClosureStatusCodeNext("SIN");
+				
 				soc.setCreatedBy(UserId);
 				soc.setCreatedDate(sdtf.format(new Date()));
 				soc.setIsActive(1);
@@ -266,7 +269,7 @@ public class ProjectClosureController {
 				} else {
 					redir.addAttribute("resultfail", "Closure SoC Details Update Unsuccessful");
 				}
-				redir.addAttribute("projectId", projectId);
+				redir.addAttribute("closureId", closureId);
 				redir.addAttribute("socTabId","2");
 				return "redirect:/ProjectClosureSoCDetails.htm";
 			}
@@ -275,7 +278,7 @@ public class ProjectClosureController {
 			} else {
 				redir.addAttribute("resultfail", "Closure SoC Details Add Unsuccessful");
 			}
-			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("closureId", closureId);
 			redir.addAttribute("socTabId","2");
 			
 			return "redirect:/ProjectClosureSoCDetails.htm";
@@ -293,16 +296,15 @@ public class ProjectClosureController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ProjectClosureSoCApprovalSubmit.htm "+UserId);
 		try {
-			String projectId = req.getParameter("projectId");
-			String closureSoCId = req.getParameter("closureSoCId");
+			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
-			ProjectClosureSoC soc = service.getProjectClosureSoCByProjectId(projectId);
-			String statusCode = soc.getClosureStatusCode();
+			ProjectClosure closure = service.getProjectClosureById(closureId);
+			String statusCode = closure.getClosureStatusCode();
 			
 			ProjectClosureApprovalForwardDTO dto = new ProjectClosureApprovalForwardDTO();
-			dto.setClosureSoCId(Long.parseLong(closureSoCId));
-			dto.setProjectId(projectId);
+//			dto.setClosureSoCId(Long.parseLong(closureSoCId));
+			dto.setClosureId(closureId);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
 			dto.setRemarks(req.getParameter("remarks"));
@@ -400,12 +402,16 @@ public class ProjectClosureController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectClosureSoCDownload.htm "+UserId);		
 		try {
-			String projectId = req.getParameter("projectId");
-			if(projectId!=null) {
+			String closureId = req.getParameter("closureId");
+			if(closureId!=null) {
+				ProjectClosure closure = service.getProjectClosureById(closureId);
+				String projectId = closure.getProjectId()+"";
+				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
-				req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(projectId));
+				req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
-				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(projectId,"SF","S"));
+				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
+				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
 			}
 			String filename="SoC";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -453,10 +459,10 @@ public class ProjectClosureController {
 		String Username = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectClosureSoCTransStatus.htm "+Username);
 		try {
-			String projectId = req.getParameter("projectId");
-			req.setAttribute("TransactionList", service.projectClosureTransListByType(projectId, "S", "S")) ;
+			String closureId = req.getParameter("closureId");
+			req.setAttribute("TransactionList", service.projectClosureTransListByType(closureId, "S", "S")) ;
 			req.setAttribute("TransFlag", "S");
-			req.setAttribute("projectId", projectId);
+			req.setAttribute("closureId", closureId);
 			return "project/ProjectClosureTransStatus";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -470,7 +476,7 @@ public class ProjectClosureController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectClosureTransactionDownload.htm "+UserId);		
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String TransFlag = req.getParameter("TransFlag");
 			
 //			if(TransFlag!=null && TransFlag.equalsIgnoreCase("S")) {
@@ -478,7 +484,9 @@ public class ProjectClosureController {
 //			}else if(TransFlag!=null && TransFlag.equalsIgnoreCase("A")) {
 //				req.setAttribute("TransactionList", service.projectClosureTransListByType(projectId, "A", "A")) ;
 //			}
-			req.setAttribute("TransactionList", service.projectClosureTransListByType(projectId, TransFlag, TransFlag)) ;
+			req.setAttribute("TransactionList", service.projectClosureTransListByType(closureId, TransFlag, TransFlag)) ;
+			ProjectClosure closure = service.getProjectClosureById(closureId);
+			String projectId = closure.getProjectId()+"";
 			req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
 			String filename="Closure-Transaction";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -528,9 +536,9 @@ public class ProjectClosureController {
 		try
 		{
 			String ftype=req.getParameter("filename");
-			String projectId=req.getParameter("projectId");
+			String closureId=req.getParameter("closureId");
 			res.setContentType("Application/octet-stream");	
-			 ProjectClosureSoC soc = service.getProjectClosureSoCByProjectId(projectId);
+			 ProjectClosureSoC soc = service.getProjectClosureSoCByProjectId(closureId);
 			File my_file=null;
 			String file = ftype.equalsIgnoreCase("monitoringcommitteefile") ?soc.getMonitoringCommitteeAttach(): soc.getLessonsLearnt();
 			my_file = new File(LabLogoPath+"Project-Closure\\SoC\\"+File.separator+file); 
@@ -558,9 +566,9 @@ public class ProjectClosureController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ProjectClosureSoCRevoke.htm "+UserId);
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 		
-			long count = service.projectClosureSoCRevoke(projectId, UserId, EmpId);
+			long count = service.projectClosureSoCRevoke(closureId, UserId, EmpId);
 			
 			if (count > 0) {
 				redir.addAttribute("result", "Project Closure Approval form Revoked Successfully");
@@ -585,16 +593,16 @@ public class ProjectClosureController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date()+ " Inside ProjectClosureACPDetails.htm "+UserId);
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String acpTabId = req.getParameter("acpTabId");
 			String isApproval = req.getParameter("isApproval");
 			String details = req.getParameter("details");
 			
-			if(projectId==null) {
+			if(closureId==null) {
 				String fromapprovals = req.getParameter("closureACPApprovals");
 				if(fromapprovals!=null) {
 					String[] split = fromapprovals.split("/");
-					projectId = split[0];
+					closureId = split[0];
 					if(isApproval==null) {
 						isApproval = split[1];
 					}
@@ -606,23 +614,26 @@ public class ProjectClosureController {
 			}
 			
 			
-			if(projectId!=null) {
+			if(closureId!=null) {
+				ProjectClosure closure = service.getProjectClosureById(closureId);
+				String projectId = closure.getProjectId()+"";
 				ProjectMaster projectMasterDetails= service.getProjectMasterByProjectId(projectId);
 				String projectCode = projectMasterDetails.getProjectCode();
+				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", projectMasterDetails);
-				req.setAttribute("ProjectMasterRevDetails", service.getProjectMasterRevByProjectId(projectId));
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
-				req.setAttribute("ProjectClosureACPData", service.getProjectClosureACPByProjectId(projectId));
-				req.setAttribute("ACPProjectsData", service.getProjectClosureACPProjectsByProjectId(projectId));
-				req.setAttribute("ACPConsultanciesData", service.getProjectClosureACPConsultanciesByProjectId(projectId));
-				req.setAttribute("ACPTrialResultsData", service.getProjectClosureACPTrialResultsByProjectId(projectId));
-				req.setAttribute("ACPAchivementsData", service.getProjectClosureACPAchievementsByProjectId(projectId));
+				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
+				req.setAttribute("ProjectClosureACPData", service.getProjectClosureACPByProjectId(closureId));
+				req.setAttribute("ACPProjectsData", service.getProjectClosureACPProjectsByProjectId(closureId));
+				req.setAttribute("ACPConsultanciesData", service.getProjectClosureACPConsultanciesByProjectId(closureId));
+				req.setAttribute("ACPTrialResultsData", service.getProjectClosureACPTrialResultsByProjectId(closureId));
+				req.setAttribute("ACPAchivementsData", service.getProjectClosureACPAchievementsByProjectId(closureId));
 				
 				Object[] PDData = carsservice.getEmpPDEmpId(projectId);
 				req.setAttribute("PDData", PDData);
 				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
-				req.setAttribute("ACPRemarksHistory", service.projectClosureRemarksHistoryByType(projectId,"AF","A"));
-				req.setAttribute("ACPApprovalEmpData", service.projectClosureApprovalDataByType(projectId,"AF","A"));
+				req.setAttribute("ACPRemarksHistory", service.projectClosureRemarksHistoryByType(closureId,"AF","A"));
+				req.setAttribute("ACPApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"AF","A"));
 				
 				/*-------------------------------------------------------------------------------------------------- */
 				List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
@@ -667,7 +678,7 @@ public class ProjectClosureController {
 			req.setAttribute("LabList", carsservice.getLabList(labcode));
 			
 			req.setAttribute("details", details);
-			req.setAttribute("projectId", projectId);
+			req.setAttribute("closureId", closureId);
 			req.setAttribute("isApproval", isApproval);
 			req.setAttribute("acpTabId", acpTabId!=null?acpTabId:"1");
 			return "project/ProjectClosureACPDetails";
@@ -687,7 +698,7 @@ public class ProjectClosureController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date()+ " Inside ProjectClosureACPDetailsSubmit.htm "+UserId);	
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
@@ -695,7 +706,7 @@ public class ProjectClosureController {
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
 			dto.setEmpId(EmpId);
-			dto.setProjectId(Long.parseLong(projectId));
+			dto.setClosureId(Long.parseLong(closureId));
 			dto.setDetails(details);
 			dto.setACPAim(req.getParameter("acpAim"));
 			dto.setACPObjectives(req.getParameter("acpObjectives"));
@@ -715,7 +726,7 @@ public class ProjectClosureController {
 				redir.addAttribute("resultfail", "Closure Details "+action+" Unsuccessful");	
 			}	
 			
-			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("closureId", closureId);
 			redir.addAttribute("details", details);
 			redir.addAttribute("acpTabId", "1");
 			
@@ -734,7 +745,7 @@ public class ProjectClosureController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date()+ " Inside ProjectClosureACPSubProjectDetailsSubmit.htm "+UserId);	
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
@@ -742,7 +753,7 @@ public class ProjectClosureController {
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
 			dto.setEmpId(EmpId);
-			dto.setProjectId(Long.parseLong(projectId));
+			dto.setClosureId(Long.parseLong(closureId));
 			dto.setDetails(details);
 			dto.setAcpProjectTypeFlag(req.getParameter("acpProjectTypeFlag"));
 			dto.setACPProjectType(req.getParameterValues("acpProjectType"));
@@ -762,7 +773,7 @@ public class ProjectClosureController {
 				redir.addAttribute("resultfail", "Closure Details "+action+" Unsuccessful");	
 			}	
 			
-			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("closureId", closureId);
 			redir.addAttribute("details", details);
 			redir.addAttribute("acpTabId", "1");
 			
@@ -781,7 +792,7 @@ public class ProjectClosureController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date()+ " Inside ProjectClosureACPConsultancyDetailsSubmit.htm "+UserId);	
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
@@ -789,7 +800,7 @@ public class ProjectClosureController {
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
 			dto.setEmpId(EmpId);
-			dto.setProjectId(Long.parseLong(projectId));
+			dto.setClosureId(Long.parseLong(closureId));
 			dto.setDetails(details);
 			dto.setConsultancyAim(req.getParameterValues("consultancyAim"));
 			dto.setConsultancyAgency(req.getParameterValues("consultancyAgency"));
@@ -805,7 +816,7 @@ public class ProjectClosureController {
 				redir.addAttribute("resultfail", "Closure Details "+action+" Unsuccessful");	
 			}	
 			
-			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("closureId", closureId);
 			redir.addAttribute("details", details);
 			redir.addAttribute("acpTabId", "1");
 			
@@ -825,7 +836,7 @@ public class ProjectClosureController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date()+ " Inside ProjectClosureACPTrialResultsSubmit.htm "+UserId);	
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
@@ -833,7 +844,7 @@ public class ProjectClosureController {
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
 			dto.setEmpId(EmpId);
-			dto.setProjectId(Long.parseLong(projectId));
+			dto.setClosureId(Long.parseLong(closureId));
 			dto.setDetails(details);
 			dto.setAttatchmentName(req.getParameterValues("attatchmentname"));
 			dto.setTrialResults(req.getParameter("trialResults"));
@@ -851,7 +862,7 @@ public class ProjectClosureController {
 				redir.addAttribute("resultfail", "Closure Details "+action+" Unsuccessful");	
 			}	
 			
-			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("closureId", closureId);
 			redir.addAttribute("details", details);
 			redir.addAttribute("acpTabId", "1");
 			
@@ -901,7 +912,7 @@ public class ProjectClosureController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date()+ " Inside ProjectClosureACPAchievementDetailsSubmit.htm "+UserId);	
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
@@ -909,7 +920,7 @@ public class ProjectClosureController {
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
 			dto.setEmpId(EmpId);
-			dto.setProjectId(Long.parseLong(projectId));
+			dto.setClosureId(Long.parseLong(closureId));
 			dto.setDetails(details);
 			dto.setEnvisaged(req.getParameterValues("envisaged"));
 			dto.setAchieved(req.getParameterValues("achieved"));
@@ -924,7 +935,7 @@ public class ProjectClosureController {
 				redir.addAttribute("resultfail", "Closure Details "+action+" Unsuccessful");	
 			}	
 			
-			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("closureId", closureId);
 			redir.addAttribute("details", details);
 			redir.addAttribute("acpTabId", "1");
 			
@@ -944,9 +955,9 @@ public class ProjectClosureController {
 		try
 		{
 			String ftype=req.getParameter("filename");
-			String projectId=req.getParameter("projectId");
+			String closureId=req.getParameter("closureId");
 			res.setContentType("Application/octet-stream");	
-			ProjectClosureACP acp = service.getProjectClosureACPByProjectId(projectId);
+			ProjectClosureACP acp = service.getProjectClosureACPByProjectId(closureId);
 			File my_file=null;
 			String file = ftype.equalsIgnoreCase("monitoringcommitteefile") ?acp.getMonitoringCommitteeAttach(): acp.getCertificateFromLab();
 			my_file = new File(LabLogoPath+"Project-Closure\\ACP\\"+File.separator+file); 
@@ -975,14 +986,14 @@ public class ProjectClosureController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ProjectClosureACPApprovalSubmit.htm "+UserId);
 		try {
-			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
-			ProjectClosureACP acp = service.getProjectClosureACPByProjectId(projectId);
-			String statusCode = acp.getClosureStatusCode();
+			ProjectClosure closure = service.getProjectClosureById(closureId);
+			String statusCode = closure.getClosureStatusCode();
 			
 			ProjectClosureApprovalForwardDTO dto = new ProjectClosureApprovalForwardDTO();
-			dto.setProjectId(projectId);
+			dto.setClosureId(closureId);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
 			dto.setRemarks(req.getParameter("remarks"));
@@ -1040,20 +1051,23 @@ public class ProjectClosureController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectClosureACPDownload.htm "+UserId);		
 		try {
-			String projectId = req.getParameter("projectId");
-			if(projectId!=null) {
+			String closureId = req.getParameter("closureId");
+			if(closureId!=null) {
+				ProjectClosure closure = service.getProjectClosureById(closureId);
+				String projectId = closure.getProjectId()+"";
 				ProjectMaster projectMasterDetails= service.getProjectMasterByProjectId(projectId);
 				String projectCode = projectMasterDetails.getProjectCode();
+				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", projectMasterDetails);
-				req.setAttribute("ProjectMasterRevDetails", service.getProjectMasterRevByProjectId(projectId));
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
-				req.setAttribute("ProjectClosureACPData", service.getProjectClosureACPByProjectId(projectId));
-				req.setAttribute("ACPProjectsData", service.getProjectClosureACPProjectsByProjectId(projectId));
-				req.setAttribute("ACPConsultanciesData", service.getProjectClosureACPConsultanciesByProjectId(projectId));
-				req.setAttribute("ACPTrialResultsData", service.getProjectClosureACPTrialResultsByProjectId(projectId));
-				req.setAttribute("ACPAchivementsData", service.getProjectClosureACPAchievementsByProjectId(projectId));
+				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
+				req.setAttribute("ProjectClosureACPData", service.getProjectClosureACPByProjectId(closureId));
+				req.setAttribute("ACPProjectsData", service.getProjectClosureACPProjectsByProjectId(closureId));
+				req.setAttribute("ACPConsultanciesData", service.getProjectClosureACPConsultanciesByProjectId(closureId));
+				req.setAttribute("ACPTrialResultsData", service.getProjectClosureACPTrialResultsByProjectId(closureId));
+				req.setAttribute("ACPAchivementsData", service.getProjectClosureACPAchievementsByProjectId(closureId));
 				
-				req.setAttribute("ACPApprovalEmpData", service.projectClosureApprovalDataByType(projectId,"AF","A"));
+				req.setAttribute("ACPApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"AF","A"));
 				
 				/*-------------------------------------------------------------------------------------------------- */
 				List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
@@ -1131,15 +1145,15 @@ public class ProjectClosureController {
 	
 
 	@RequestMapping(value = "ProjectClosureACPTransStatus.htm" , method={RequestMethod.POST,RequestMethod.GET})
-	public String projectClosureACPTransStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	public String projectClosureACPTransStatus(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String Username = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectClosureACPTransStatus.htm "+Username);
 		try {
-			String projectId = req.getParameter("projectId");
-			req.setAttribute("TransactionList", service.projectClosureTransListByType(projectId, "A", "A")) ;
+			String closureId = req.getParameter("closureId");
+			req.setAttribute("TransactionList", service.projectClosureTransListByType(closureId, "A", "A")) ;
 			req.setAttribute("TransFlag", "A");
-			req.setAttribute("projectId", projectId);
+			req.setAttribute("closureId", closureId);
 			return "project/ProjectClosureTransStatus";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1148,5 +1162,80 @@ public class ProjectClosureController {
 		}
 	}
 	
+	@RequestMapping(value="ProjectClosureSubmit.htm" , method={RequestMethod.POST})
+	public String projectClosureSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+		String Username = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside ProjectClosureSubmit.htm "+Username);
+		try {
+			String projectId = req.getParameter("projectId");
+			String closureId = req.getParameter("closureId");
+			String closureCategory = req.getParameter("closureCategory");
+			
+			System.out.println("closureId: "+closureId+"  projectId: "+projectId);
+			ProjectClosure closure = closureId.equalsIgnoreCase("0") ? new ProjectClosure(): service.getProjectClosureById(closureId);
+			closure.setProjectId(Long.parseLong(projectId));
+			closure.setClosureCategory(closureCategory);
+			closure.setApprovalFor(closureCategory!=null && closureCategory.equalsIgnoreCase("Completed Successfully")?"ACR":"SoC");
+			closure.setClosureStatusCode(closure.getApprovalFor().equalsIgnoreCase("SoC")?"SIN":"AIN");
+			closure.setClosureStatusCodeNext(closure.getApprovalFor().equalsIgnoreCase("SoC")?"SIN":"AIN");
+			
+			long result = 0L;
+			if(closureId.equals("0")) {
+				closure.setApprStatus("N");
+				closure.setForwardedBy("0");
+				closure.setCreatedBy(Username);
+				closure.setCreatedDate(sdtf.format(new Date()));
+				closure.setIsActive(1);
+				
+				result = service.addProjectClosure(closure, EmpId);
+			}else {
+				closure.setModifiedBy(Username);
+				closure.setModifiedDate(sdtf.format(new Date()));
+				
+				result = service.editProjectClosure(closure);
+			}
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Closure Category Details Submitted Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "Closure Category Details Submit Unsuccessful");	
+			}	
+			
+			return "redirect:/ProjectClosureList.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectClosureSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="ProjectClosureACPRevoke.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String projectClosureACPRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside ProjectClosureACPRevoke.htm "+UserId);
+		try {
+			String closureId = req.getParameter("closureId");
+		
+			long count = service.projectClosureACPRevoke(closureId, UserId, EmpId);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "Administrative Closure Approval form Revoked Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "Administrative Closure Approval form Revoke Unsuccessful");	
+			}	
+
+			return "redirect:/ProjectClosureList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectClosureSoCRevoke.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
 	
 }

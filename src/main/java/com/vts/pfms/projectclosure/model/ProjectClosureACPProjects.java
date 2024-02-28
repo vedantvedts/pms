@@ -25,7 +25,7 @@ public class ProjectClosureACPProjects implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ClosureACPProjectId;
-	private long ProjectId;
+	private long ClosureId;
 	private String ACPProjectType;
 	private String ACPProjectName;
 	private String ACPProjectNo;

@@ -147,7 +147,7 @@
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("TransactionList");
 String TransFlag = (String)request.getAttribute("TransFlag");
-String projectId = (String)request.getAttribute("projectId");
+String closureId = (String)request.getAttribute("closureId");
 %>
 
 <div class="page card dashboard-card">
@@ -155,7 +155,7 @@ String projectId = (String)request.getAttribute("projectId");
 		<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<input type="hidden" name="TransFlag" value="<%=TransFlag %>" />
-			<input type="hidden" name="projectId" value="<%=projectId %>" />
+			<input type="hidden" name="closureId" value="<%=closureId %>" />
 			<button type="submit" class="btn btn-sm btn-primary" formaction="ProjectClosureTransactionDownload.htm" formmethod="POST" formtarget="_blank" formnovalidate="formnovalidate"
 			 style="font-weight: 600;text-transform: uppercase;background: darkblue;">Print &emsp; <img alt="" src="view/images/trackingPrint.png"> </button>
 		</form>

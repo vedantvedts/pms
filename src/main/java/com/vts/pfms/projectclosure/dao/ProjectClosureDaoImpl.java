@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.project.model.ProjectMaster;
-import com.vts.pfms.project.model.ProjectMasterRev;
+import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
@@ -34,14 +34,14 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	EntityManager manager;
 	
 	private static final String PROJECTCLOSURELIST = "SELECT a.ProjectId,a.ProjectMainId,a.ProjectCode,a.ProjectShortName,a.ProjectName,a.TotalSanctionCost,a.IsMainWC,a.SanctionDate,a.PDC,b.EmpName,c.Designation,\r\n"
-			+ "	(SELECT d.ClosureStatusCode FROM pfms_closure_soc soc,pfms_closure_approval_status d WHERE soc.ProjectId=a.ProjectId AND soc.ClosureStatusCode=d.ClosureStatusCode AND soc.IsActive=1 LIMIT 1) AS 'socstatuscode',\r\n"
-			+ "	(SELECT d.ClosureStatus FROM pfms_closure_soc soc,pfms_closure_approval_status d WHERE soc.ProjectId=a.ProjectId AND soc.ClosureStatusCode=d.ClosureStatusCode AND soc.IsActive=1 LIMIT 1) AS 'socstatus',\r\n"
-			+ "	(SELECT d.ClosureStatusColor FROM pfms_closure_soc soc,pfms_closure_approval_status d WHERE soc.ProjectId=a.ProjectId AND soc.ClosureStatusCode=d.ClosureStatusCode AND soc.IsActive=1 LIMIT 1) AS 'socstatuscolor',\r\n"
-			+ "	(SELECT d.ClosureStatusCode FROM pfms_closure_acp acp,pfms_closure_approval_status d WHERE acp.ProjectId=a.ProjectId AND acp.ClosureStatusCode=d.ClosureStatusCode AND acp.IsActive=1 LIMIT 1) AS 'acpstatuscode',\r\n"
-			+ "	(SELECT d.ClosureStatus FROM pfms_closure_acp acp,pfms_closure_approval_status d WHERE acp.ProjectId=a.ProjectId AND acp.ClosureStatusCode=d.ClosureStatusCode AND acp.IsActive=1 LIMIT 1) AS 'acpstatus',\r\n"
-			+ "	(SELECT d.ClosureStatusColor FROM pfms_closure_acp acp,pfms_closure_approval_status d WHERE acp.ProjectId=a.ProjectId AND acp.ClosureStatusCode=d.ClosureStatusCode AND acp.IsActive=1 LIMIT 1) AS 'acpstatuscolor'\r\n"
-			+ "FROM project_master a, employee b, employee_desig c \r\n"
-			+ "WHERE a.IsActive=1 AND a.ProjectDirector=b.EmpId AND b.DesigId=c.DesigId AND a.LabCode=:LabCode AND a.ProjectDirector=:EmpId";
+			+ "	(SELECT d.ClosureStatusCode FROM pfms_closure cl,pfms_closure_approval_status d WHERE cl.ProjectId=a.ProjectId AND cl.ClosureStatusCode=d.ClosureStatusCode AND cl.IsActive=1 LIMIT 1) AS 'statuscode',\r\n"
+			+ "	(SELECT d.ClosureStatus FROM pfms_closure cl,pfms_closure_approval_status d WHERE cl.ProjectId=a.ProjectId AND cl.ClosureStatusCode=d.ClosureStatusCode AND cl.IsActive=1 LIMIT 1) AS 'apprstatus',\r\n"
+			+ "	(SELECT d.ClosureStatusColor FROM pfms_closure cl,pfms_closure_approval_status d WHERE cl.ProjectId=a.ProjectId AND cl.ClosureStatusCode=d.ClosureStatusCode AND cl.IsActive=1 LIMIT 1) AS 'statuscolor',\r\n"
+			+ "	(SELECT cl.ClosureId FROM pfms_closure cl WHERE cl.ProjectId=a.ProjectId AND cl.IsActive=1 LIMIT 1) AS 'closureid',\r\n"
+			+ "	(SELECT cl.ApprovalFor FROM pfms_closure cl WHERE cl.ProjectId=a.ProjectId AND cl.IsActive=1 LIMIT 1) AS 'approvalfor',\r\n"
+			+ "	(SELECT cl.ClosureCategory FROM pfms_closure cl WHERE cl.ProjectId=a.ProjectId AND cl.IsActive=1 LIMIT 1) AS 'closurecategory'\r\n"
+			+ "	FROM project_master a, employee b, employee_desig c \r\n"
+			+ "	WHERE a.IsActive=1 AND a.ProjectDirector=b.EmpId AND b.DesigId=c.DesigId AND a.LabCode=:LabCode AND a.ProjectDirector=:EmpId";
 	@Override
 	public List<Object[]> projectClosureList(String EmpId, String labcode) throws Exception {
 		try {
@@ -70,9 +70,54 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	}
 	
 	@Override
-	public ProjectClosureSoC getProjectClosureSoCByProjectId(String projectId) throws Exception {
+	public ProjectClosure getProjectClosureById(String closureId) throws Exception {
 		try {
-			return manager.find(ProjectClosureSoC.class, Long.parseLong(projectId));
+			return manager.find(ProjectClosure.class, Long.parseLong(closureId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getProjectClosureById "+e);
+			return null;
+		}
+		
+	}
+
+	@Override
+	public long addProjectClosure(ProjectClosure closure) throws Exception{
+		try {
+			manager.persist(closure);
+			manager.flush();
+			return closure.getClosureId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addProjectClosure "+e);
+			return 0L;
+		}
+	}
+
+	@Override
+	public long editProjectClosure(ProjectClosure closure) throws Exception {
+		try {
+			manager.merge(closure);
+			manager.flush();
+			return closure.getClosureId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO editProjectClosure "+e);
+			return 0L;
+		}
+	}
+	
+	@Override
+	public ProjectClosureSoC getProjectClosureSoCByProjectId(String closureId) throws Exception {
+		try {
+			Query query = manager.createQuery("FROM ProjectClosureSoC WHERE ClosureId=:ClosureId AND IsActive=1");
+			query.setParameter("ClosureId", Long.parseLong(closureId));
+			List<ProjectClosureSoC> list = (List<ProjectClosureSoC>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO getProjectClosureSoCByProjectId "+e);
@@ -106,18 +151,6 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return 0L;
 		}
 	}
-
-	@Override
-	public ProjectMasterRev getProjectMasterRevByProjectId(String projectId) throws Exception {
-		try {
-			return manager.find(ProjectMasterRev.class, Long.parseLong(projectId));
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date()+" Inside DAO getProjectMasterRevByProjectId "+e);
-			return null;
-		}
-		
-	}
 	
 	@Override
 	public long addProjectClosureTransaction(ProjectClosureTrans transaction) throws Exception{
@@ -132,19 +165,19 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 	
-	private static final String PROJECTCLOSURESOCTRANSAPPROVALDATABYTYPE = "SELECT a.ClosureTransId,\r\n"
-			+ "	(SELECT empno FROM pfms_closure_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.ClosureStatusCode =  b.ClosureStatusCode AND t.ProjectId=d.ProjectId ORDER BY t.ClosureTransId DESC LIMIT 1) AS 'empno',\r\n"
-			+ "	(SELECT empname FROM pfms_closure_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.ClosureStatusCode =  b.ClosureStatusCode AND t.ProjectId=d.ProjectId ORDER BY t.ClosureTransId DESC LIMIT 1) AS 'empname',\r\n"
-			+ "	(SELECT designation FROM pfms_closure_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.ClosureStatusCode = b.ClosureStatusCode AND t.ProjectId=d.ProjectId ORDER BY t.ClosureTransId DESC LIMIT 1) AS 'Designation',\r\n"
+	private static final String PROJECTCLOSURETRANSAPPROVALDATABYTYPE = "SELECT a.ClosureTransId,\r\n"
+			+ "	(SELECT empno FROM pfms_closure_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.ClosureStatusCode =  b.ClosureStatusCode AND t.ClosureId=d.ClosureId ORDER BY t.ClosureTransId DESC LIMIT 1) AS 'empno',\r\n"
+			+ "	(SELECT empname FROM pfms_closure_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.ClosureStatusCode =  b.ClosureStatusCode AND t.ClosureId=d.ClosureId ORDER BY t.ClosureTransId DESC LIMIT 1) AS 'empname',\r\n"
+			+ "	(SELECT designation FROM pfms_closure_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.ClosureStatusCode = b.ClosureStatusCode AND t.ClosureId=d.ClosureId ORDER BY t.ClosureTransId DESC LIMIT 1) AS 'Designation',\r\n"
 			+ "	MAX(a.ActionDate) AS ActionDate,a.Remarks,b.ClosureStatus,b.ClosureStatusColor,b.ClosureStatusCode\r\n"
-			+ "	FROM pfms_closure_trans a,pfms_closure_approval_status b,employee c,pfms_closure_soc d\r\n"
-			+ "	WHERE a.ProjectId=d.ProjectId AND a.ClosureStatusCode =b.ClosureStatusCode  AND a.Actionby=c.EmpId AND b.ClosureForward=:ClosureForward AND a.ClosureForm=:ClosureForm AND d.ProjectId=:ProjectId GROUP BY b.ClosureStatusCode ORDER BY a.ClosureTransId ASC";
+			+ "	FROM pfms_closure_trans a,pfms_closure_approval_status b,employee c,pfms_closure d\r\n"
+			+ "	WHERE a.ClosureId=d.ClosureId AND a.ClosureStatusCode =b.ClosureStatusCode  AND a.Actionby=c.EmpId AND b.ClosureForward=:ClosureForward AND a.ClosureForm=:ClosureForm AND d.ClosureId=:ClosureId GROUP BY b.ClosureStatusCode ORDER BY a.ClosureTransId ASC";
 	@Override
-	public List<Object[]> projectClosureApprovalDataByType(String projectId, String closureForward, String closureForm) throws Exception{
+	public List<Object[]> projectClosureApprovalDataByType(String closureId, String closureForward, String closureForm) throws Exception{
 
 		try {
-			Query query = manager.createNativeQuery(PROJECTCLOSURESOCTRANSAPPROVALDATABYTYPE);
-			query.setParameter("ProjectId", projectId);
+			Query query = manager.createNativeQuery(PROJECTCLOSURETRANSAPPROVALDATABYTYPE);
+			query.setParameter("ClosureId", closureId);
 			query.setParameter("ClosureForward", closureForward);
 			query.setParameter("ClosureForm", closureForm);
 			return (List<Object[]>)query.getResultList();
@@ -156,14 +189,14 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 
 	}
 	
-	private static final String PROJECTCLOSURESOCREMARKSHISTORYBYTYPE  ="SELECT b.ProjectId,b.Remarks,a.ClosureStatusCode,d.EmpName,e.Designation FROM pfms_closure_approval_status a,pfms_closure_trans b,pfms_closure_soc c,employee d,employee_desig e WHERE b.ActionBy = d.EmpId AND d.DesigId = e.DesigId AND a.ClosureStatusCode = b.ClosureStatusCode AND c.ProjectId = b.ProjectId AND TRIM(b.Remarks)<>'' AND a.ClosureForward=:ClosureForward AND b.ClosureForm=:ClosureForm AND c.ProjectId=:ProjectId ORDER BY b.ClosureTransId ASC";
+	private static final String PROJECTCLOSUREREMARKSHISTORYBYTYPE  ="SELECT b.ClosureId,b.Remarks,a.ClosureStatusCode,d.EmpName,e.Designation FROM pfms_closure_approval_status a,pfms_closure_trans b,pfms_closure c,employee d,employee_desig e WHERE b.ActionBy = d.EmpId AND d.DesigId = e.DesigId AND a.ClosureStatusCode = b.ClosureStatusCode AND c.ClosureId = b.ClosureId AND TRIM(b.Remarks)<>'' AND a.ClosureForward=:ClosureForward AND b.ClosureForm=:ClosureForm AND c.ClosureId=:ClosureId ORDER BY b.ClosureTransId ASC";
 	@Override
-	public List<Object[]> projectClosureRemarksHistoryByType(String projectId, String closureForward, String closureForm) throws Exception
+	public List<Object[]> projectClosureRemarksHistoryByType(String closureId, String closureForward, String closureForm) throws Exception
 	{
 		List<Object[]> list =new ArrayList<Object[]>();
 		try {
-			Query query= manager.createNativeQuery(PROJECTCLOSURESOCREMARKSHISTORYBYTYPE);
-			query.setParameter("ProjectId", projectId);
+			Query query= manager.createNativeQuery(PROJECTCLOSUREREMARKSHISTORYBYTYPE);
+			query.setParameter("ClosureId", closureId);
 			query.setParameter("ClosureForward", closureForward);
 			query.setParameter("ClosureForm", closureForm);
 			list= (List<Object[]>)query.getResultList();
@@ -230,13 +263,13 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 	
-	private static final String PROJECTCLOSURESOCTRANSLISTBYTYPE = "SELECT a.ClosureTransId,c.EmpId,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ClosureStatus,b.ClosureStatusColor FROM pfms_closure_trans a,pfms_closure_approval_status b,employee c,employee_desig d,pfms_closure_soc e WHERE e.ProjectId = a.ProjectId AND a.ClosureStatusCode = b.ClosureStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND b.ClosureStatusFor=:ClosureStatusFor AND a.ClosureForm=:ClosureForm AND e.ProjectId=:ProjectId ORDER BY a.ClosureTransId DESC";
+	private static final String PROJECTCLOSURESOCTRANSLISTBYTYPE = "SELECT a.ClosureTransId,c.EmpId,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ClosureStatus,b.ClosureStatusColor FROM pfms_closure_trans a,pfms_closure_approval_status b,employee c,employee_desig d,pfms_closure e WHERE e.ClosureId = a.ClosureId AND a.ClosureStatusCode = b.ClosureStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND b.ClosureStatusFor=:ClosureStatusFor AND a.ClosureForm=:ClosureForm AND e.ClosureId=:ClosureId ORDER BY a.ClosureTransId DESC";
 	@Override
-	public List<Object[]> projectClosureTransListByType(String projectId, String closureStatusFor, String closureForm) throws Exception {
+	public List<Object[]> projectClosureTransListByType(String closureId, String closureStatusFor, String closureForm) throws Exception {
 
 		try {
 			Query query = manager.createNativeQuery(PROJECTCLOSURESOCTRANSLISTBYTYPE);
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ClosureId", Long.parseLong(closureId));
 			query.setParameter("ClosureStatusFor", closureStatusFor);
 			query.setParameter("ClosureForm", closureForm);
 			return (List<Object[]>)query.getResultList();
@@ -249,9 +282,16 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	}
 
 	@Override
-	public ProjectClosureACP getProjectClosureACPByProjectId(String projectId) throws Exception {
+	public ProjectClosureACP getProjectClosureACPByProjectId(String closureId) throws Exception {
 		try {
-			return manager.find(ProjectClosureACP.class, Long.parseLong(projectId));
+			Query query = manager.createQuery("FROM ProjectClosureACP WHERE ClosureId=:ClosureId AND IsActive=1");
+			query.setParameter("ClosureId", Long.parseLong(closureId));
+			List<ProjectClosureACP> list = (List<ProjectClosureACP>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO getProjectClosureACPByProjectId "+e);
@@ -338,12 +378,12 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 
-	private static final String PROJECTCLOSUREACPPROJECTSBYPROJECTSBYID = "FROM ProjectClosureACPProjects WHERE ProjectId=:ProjectId AND IsActive=1";
+	private static final String PROJECTCLOSUREACPPROJECTSBYPROJECTSBYID = "FROM ProjectClosureACPProjects WHERE ClosureId=:ClosureId AND IsActive=1";
 	@Override
-	public List<ProjectClosureACPProjects> getProjectClosureACPProjectsByProjectId(String projectId) throws Exception {
+	public List<ProjectClosureACPProjects> getProjectClosureACPProjectsByProjectId(String closureId) throws Exception {
 		try {
 			Query query = manager.createQuery(PROJECTCLOSUREACPPROJECTSBYPROJECTSBYID);
-			query.setParameter("ProjectId", Long.parseLong(projectId));
+			query.setParameter("ClosureId", Long.parseLong(closureId));
 			return (List<ProjectClosureACPProjects>)query.getResultList();
 
 		}catch (Exception e) {
@@ -353,12 +393,12 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 	
-	private static final String PROJECTCLOSUREACPPROJECTSBYCONSULTANTSBYID = "FROM ProjectClosureACPConsultancies WHERE ProjectId=:ProjectId AND IsActive=1";
+	private static final String PROJECTCLOSUREACPPROJECTSBYCONSULTANTSBYID = "FROM ProjectClosureACPConsultancies WHERE ClosureId=:ClosureId AND IsActive=1";
 	@Override
-	public List<ProjectClosureACPConsultancies> getProjectClosureACPConsultanciesByProjectId(String projectId) throws Exception {
+	public List<ProjectClosureACPConsultancies> getProjectClosureACPConsultanciesByProjectId(String closureId) throws Exception {
 		try {
 			Query query = manager.createQuery(PROJECTCLOSUREACPPROJECTSBYCONSULTANTSBYID);
-			query.setParameter("ProjectId", Long.parseLong(projectId));
+			query.setParameter("ClosureId", Long.parseLong(closureId));
 			return (List<ProjectClosureACPConsultancies>)query.getResultList();
 			
 		}catch (Exception e) {
@@ -368,12 +408,12 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 	
-	private static final String PROJECTCLOSUREACPPROJECTSBYTRIALRESULTSBYID = "FROM ProjectClosureACPTrialResults WHERE ProjectId=:ProjectId AND IsActive=1";
+	private static final String PROJECTCLOSUREACPPROJECTSBYTRIALRESULTSBYID = "FROM ProjectClosureACPTrialResults WHERE ClosureId=:ClosureId AND IsActive=1";
 	@Override
-	public List<ProjectClosureACPTrialResults> getProjectClosureACPTrialResultsByProjectId(String projectId) throws Exception {
+	public List<ProjectClosureACPTrialResults> getProjectClosureACPTrialResultsByProjectId(String closureId) throws Exception {
 		try {
 			Query query = manager.createQuery(PROJECTCLOSUREACPPROJECTSBYTRIALRESULTSBYID);
-			query.setParameter("ProjectId", Long.parseLong(projectId));
+			query.setParameter("ClosureId", Long.parseLong(closureId));
 			return (List<ProjectClosureACPTrialResults>)query.getResultList();
 			
 		}catch (Exception e) {
@@ -383,12 +423,12 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 	
-	private static final String PROJECTCLOSUREACPPROJECTSBYACHIVEMENTSBYID = "FROM ProjectClosureACPAchievements WHERE ProjectId=:ProjectId AND IsActive=1";
+	private static final String PROJECTCLOSUREACPPROJECTSBYACHIVEMENTSBYID = "FROM ProjectClosureACPAchievements WHERE ClosureId=:ClosureId AND IsActive=1";
 	@Override
-	public List<ProjectClosureACPAchievements> getProjectClosureACPAchievementsByProjectId(String projectId) throws Exception {
+	public List<ProjectClosureACPAchievements> getProjectClosureACPAchievementsByProjectId(String closureId) throws Exception {
 		try {
 			Query query = manager.createQuery(PROJECTCLOSUREACPPROJECTSBYACHIVEMENTSBYID);
-			query.setParameter("ProjectId", Long.parseLong(projectId));
+			query.setParameter("ClosureId", Long.parseLong(closureId));
 			return (List<ProjectClosureACPAchievements>)query.getResultList();
 			
 		}catch (Exception e) {
@@ -398,13 +438,13 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 	
-	private static final String REMOVEPROJECTCLOSUREACPPROJECTDETAILSBYTYPE = "UPDATE pfms_closure_acp_projects SET IsActive=:IsActive WHERE ProjectId=:ProjectId AND (CASE WHEN 'S'=:ACPProjectType THEN ACPProjectType=:ACPProjectType ELSE ACPProjectType IN('R','P') END)";
+	private static final String REMOVEPROJECTCLOSUREACPPROJECTDETAILSBYTYPE = "UPDATE pfms_closure_acp_projects SET IsActive=:IsActive WHERE ClosureId=:ClosureId AND (CASE WHEN 'S'=:ACPProjectType THEN ACPProjectType=:ACPProjectType ELSE ACPProjectType IN('R','P') END)";
 	@Override
-	public int removeProjectClosureACPProjectDetailsByType(long projectId, String acpProjectType) throws Exception{
+	public int removeProjectClosureACPProjectDetailsByType(long closureId, String acpProjectType) throws Exception{
 		try {
 			Query query = manager.createNativeQuery(REMOVEPROJECTCLOSUREACPPROJECTDETAILSBYTYPE);
 			query.setParameter("IsActive", "0");
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ClosureId", closureId);
 			query.setParameter("ACPProjectType", acpProjectType);
 			return query.executeUpdate();
 		}catch (Exception e) {
@@ -415,13 +455,13 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 
 	}
 
-	private static final String REMOVEPROJECTCLOSUREACPCONSULTANCYDETAILSBYTYPE = "UPDATE pfms_closure_acp_consultancies SET IsActive=:IsActive WHERE ProjectId=:ProjectId";
+	private static final String REMOVEPROJECTCLOSUREACPCONSULTANCYDETAILSBYTYPE = "UPDATE pfms_closure_acp_consultancies SET IsActive=:IsActive WHERE ClosureId=:ClosureId";
 	@Override
-	public int removeProjectClosureACPConsultancyDetails(long projectId) throws Exception {
+	public int removeProjectClosureACPConsultancyDetails(long closureId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(REMOVEPROJECTCLOSUREACPCONSULTANCYDETAILSBYTYPE);
 			query.setParameter("IsActive", "0");
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ClosureId", closureId);
 			return query.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -431,13 +471,13 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 
 	}
 	
-	private static final String REMOVEPROJECTCLOSUREACPTRIALRESULTSDETAILSBYTYPE = "UPDATE pfms_closure_acp_trial_results SET IsActive=:IsActive WHERE ProjectId=:ProjectId";
+	private static final String REMOVEPROJECTCLOSUREACPTRIALRESULTSDETAILSBYTYPE = "UPDATE pfms_closure_acp_trial_results SET IsActive=:IsActive WHERE ClosureId=:ClosureId";
 	@Override
-	public int removeProjectClosureACPTrialResultsDetails(long projectId) throws Exception {
+	public int removeProjectClosureACPTrialResultsDetails(long closureId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(REMOVEPROJECTCLOSUREACPTRIALRESULTSDETAILSBYTYPE);
 			query.setParameter("IsActive", "0");
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ClosureId", closureId);
 			return query.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -459,13 +499,13 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 	}
 
-	private static final String REMOVEPROJECTCLOSUREACPACHIVEMENTDETAILSBYTYPE = "UPDATE pfms_closure_acp_achievements SET IsActive=:IsActive WHERE ProjectId=:ProjectId";
+	private static final String REMOVEPROJECTCLOSUREACPACHIVEMENTDETAILSBYTYPE = "UPDATE pfms_closure_acp_achievements SET IsActive=:IsActive WHERE ClosureId=:ClosureId";
 	@Override
-	public int removeProjectClosureACPAchievementDetails(long projectId) throws Exception {
+	public int removeProjectClosureACPAchievementDetails(long closureId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(REMOVEPROJECTCLOSUREACPACHIVEMENTDETAILSBYTYPE);
 			query.setParameter("IsActive", "0");
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ClosureId", closureId);
 			return query.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -525,6 +565,26 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			}			
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DAO projectOriginalAndRevisionDetails " + e);
+			e.printStackTrace();
+			return null;
+		}		
+	}
+	
+	private static final String PROJECTEXPENDITUREDETAILS = "SELECT SUM(CASE WHEN ReFe = 'RE' THEN Expenditure ELSE 0 END) AS 'ExpenditureRE',SUM(CASE WHEN ReFe = 'FE' THEN Expenditure ELSE 0 END) AS 'ExpenditureFE' FROM project_hoa WHERE ProjectId = :ProjectId";
+	@Override
+	public Object[] projectExpenditureDetails(String projectId) throws Exception
+	{
+		try {			
+			Query query= manager.createNativeQuery(PROJECTEXPENDITUREDETAILS);
+			query.setParameter("ProjectId", projectId);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO projectExpenditureDetails " + e);
 			e.printStackTrace();
 			return null;
 		}		

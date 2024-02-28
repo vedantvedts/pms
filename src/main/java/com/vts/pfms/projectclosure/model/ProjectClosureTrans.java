@@ -27,7 +27,7 @@ public class ProjectClosureTrans implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ClosureTransId;
-	private long ProjectId;
+	private long ClosureId;
 	private String ClosureForm;
 	private String ClosureStatusCode;
 	private String Remarks;

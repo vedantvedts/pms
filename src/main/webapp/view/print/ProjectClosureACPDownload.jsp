@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
@@ -200,10 +201,12 @@ p,td,th
 <body>
 <%
 ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
+ProjectClosure closure = (ProjectClosure)request.getAttribute("ProjectClosureDetails");
 ProjectMasterRev projectMasterRev = (ProjectMasterRev)request.getAttribute("ProjectMasterRevDetails");
 ProjectClosureACP acp = (ProjectClosureACP)request.getAttribute("ProjectClosureACPData");
 
 Object[] potherdetails = (Object[])request.getAttribute("ProjectOriginalRevDetails");
+Object[] expndDetails = (Object[])request.getAttribute("ProjectExpenditureDetails");
 List<ProjectClosureACPProjects> linkedprojectsdata = (List<ProjectClosureACPProjects>)request.getAttribute("ACPProjectsData");
 List<ProjectClosureACPConsultancies> consultancies = (List<ProjectClosureACPConsultancies>)request.getAttribute("ACPConsultanciesData");
 List<ProjectClosureACPTrialResults> trialresults = (List<ProjectClosureACPTrialResults>)request.getAttribute("ACPTrialResultsData");
@@ -216,7 +219,7 @@ List<Object[]> acpApprovalEmpData = (List<Object[]>)request.getAttribute("ACPApp
 
 String labcode = (String)session.getAttribute("labcode");
 
-long projectId = acp!=null? acp.getProjectId():0;
+long closureId = closure!=null? closure.getClosureId():0;
 
 FormatConverter fc = new FormatConverter();
 DecimalFormat df = new DecimalFormat("####################.##");
@@ -235,27 +238,27 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     <table id="tabledata" style="margin-top: -2rem;">
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;">Name of Lab</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 600;">Name of Lab</td>
 			<td>: <%=labcode %> </td>
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Title of the Project/Programme</td>
+    		<td style="width: 35%;font-weight: 600;">Title of the Project/Programme</td>
     		<td>: <%=projectMaster.getProjectName() %> </td>
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Date of Sanction</td>
+    		<td style="width: 35%;font-weight: 600;">Date of Sanction</td>
     		<td>: <%if(projectMaster!=null && projectMaster.getSanctionDate()!=null) {%><%=fc.SqlToRegularDate(projectMaster.getSanctionDate().toString()) %><%} else{%><%} %></td>
 		</tr>	
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Category of Project</td>
+    		<td style="width: 35%;font-weight: 600;">Category of Project</td>
     		<td>: <%if(potherdetails!=null && potherdetails[0]!=null) {%><%=potherdetails[0] %><%} %> </td>
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td colspan="1" style="width: 35%;">Cost (original & revised)</td>
+    		<td colspan="1" style="width: 35%;font-weight: 600;">Cost (original & revised)</td>
     		<td>:</td>
 		</tr>
 		<tr>
@@ -327,7 +330,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">PDC of the Project</td>
+    		<td style="width: 35%;font-weight: 600;">PDC of the Project</td>
     		<td>:</td>
 		</tr>
 		<tr>
@@ -369,32 +372,32 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Expenditure ( as on <%if(acp.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(acp.getExpndAsOn()) %> <%} else{%>-<%} %> )</td>
+    		<td style="width: 35%;font-weight: 600;">Expenditure ( as on <%-- <%if(acp.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(acp.getExpndAsOn()) %> <%} else{%>-<%} %> --%> )</td>
     		<td>
     			: Total(<span style="font-size: 12px;">&#x20B9;</span>)
     				<span style="text-decoration: underline;">
-    					<%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %> <%} %>
-    				</span>
+    					<%-- <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %> <%} %> --%>
+    					<%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %>
+    				</span> Cr
     			 (FE<span style="text-decoration: underline;">
-    					<%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %> <%} %>
-    				</span>)	
+    					<%-- <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %> <%} %> --%>
+    					<%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %>
+    				</span>) Cr	
     		</td>
 		</tr>	
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Aim & Objectives</td>
-    		<td>: <%if(acp.getACPAim()!=null) {%><%=acp.getACPAim() %><%} %> <br>
-    			  <%if(acp.getACPObjectives()!=null) {%><%=acp.getACPObjectives() %> <%} %>
-    		</td>
+    		<td style="width: 35%;font-weight: 600;">Aim & Objectives</td>
+    		<td>: <%if(projectMaster.getObjective()!=null) {%><%=projectMaster.getObjective() %><%} %></td>
     	</tr>
     	<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">No of Prototypes</td>
-    		<td>: <%if(acp.getPrototyes()!=0) {%><%=acp.getPrototyes() %><%} %> </td>
+    		<td style="width: 35%;font-weight: 600;">No of Prototypes (type approved/qualified) deliverables as brought out in Govt. Letter</td>
+    		<td>: <%=acp.getPrototyes() %></td>
     	</tr>
     	<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">List of sub-projects</td>
+    		<td style="width: 35%;font-weight: 600;">List of sub-projects</td>
     		<td>: </td>
 		</tr>
 		<tr>
@@ -432,7 +435,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">List of CARS / CAPSI</td>
+    		<td style="width: 35%;font-weight: 600;">List of CARS / CAPSI</td>
     		<td>: </td>
 		</tr>
 		<tr>
@@ -478,7 +481,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">List of Consultancies</td>
+    		<td style="width: 35%;font-weight: 600;">List of Consultancies</td>
     		<td>: </td>
 		</tr>
     	<tr>
@@ -500,7 +503,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						for(ProjectClosureACPConsultancies consultancy :consultancies) {%>
 						<tr>
 							<td style="width: 5%;text-align: center !important;"><%=++consultancieslno %></td>
-							<td style="width: 35%;"><%=consultancy.getConsultancyAim() %> </td>
+							<td style="width: 35%;"> <span class="editor-text"><%=new String(consultancy.getConsultancyAim().getBytes("ISO-8859-1"), "UTF-8") %></span> </td>
 							<td style="width: 25%;"><%=consultancy.getConsultancyAgency() %> </td>
 							<td style="width: 20%;text-align: right !important;"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(consultancy.getConsultancyCost())) %> </td>
 							<td style="width: 15%;text-align: center !important;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
@@ -512,17 +515,17 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     	</tr>
     	<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Details of Facilities created (as proposed in the programme) </td>
+    		<td style="width: 35%;font-weight: 600;">Details of Facilities created (as proposed in the programme) </td>
     		<td>: </td>
 		</tr>
     	<tr>
     		<td colspan="3">
-    			<span><%if(acp.getFacilitiesCreated()!=null) {%><%=acp.getFacilitiesCreated() %><%} %></span>
+    			<div class="editor-text"><%if(acp.getFacilitiesCreated()!=null) {%><%=acp.getFacilitiesCreated() %><%} %></div>
     		</td>
     	</tr>
     	<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Trial Results </td>
+    		<td style="width: 35%;font-weight: 600;">Trial Results </td>
     		<td>: </td>
     	</tr>
     	<tr>
@@ -563,7 +566,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Achievements</td>
+    		<td style="width: 35%;font-weight: 600;">Achievements</td>
     		<td>: </td>
 		</tr>
 		<tr>
@@ -595,7 +598,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td colspan="2" style="width: 35%;">Recommendation of highest Monitoring Committee Meeting for Administrative Closure of the Project</td>
+    		<td colspan="2" style="width: 35%;font-weight: 600;">Recommendation of highest Monitoring Committee Meeting for Administrative Closure of the Project</td>
 		</tr>
 		<tr>
     		<td colspan="1"></td>
@@ -603,26 +606,26 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     			<span>
     				<%if(acp.getMonitoringCommittee()!=null) {%><%=acp.getMonitoringCommittee() %><%} %>
     				<%if(acp!=null && acp.getMonitoringCommitteeAttach()!=null){ %>
-                     	<a href="ProjectClosureACPFileDownload.htm?projectId=<%=projectId%>&filename=monitoringcommitteefile" target="_blank">Minutes of Meeting</a>					
+                     	<a href="ProjectClosureACPFileDownload.htm?closureId=<%=closureId%>&filename=monitoringcommitteefile" target="_blank">Minutes of Meeting</a>					
                   	<%} %>
     			</span>
     		</td>
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td colspan="2" style="width: 35%;">Certificate from Lab MMG/Store Section stating no outstanding commitment, no live supply order or contracts & warranty is enclosed. List of payments, to be made due to contractual obligation be enclosed. </td>
+    		<td colspan="2" style="width: 35%;font-weight: 600;">Certificate from Lab MMG/Store Section stating no outstanding commitment, no live supply order or contracts & warranty is enclosed. List of payments, to be made due to contractual obligation be enclosed. </td>
 		</tr>
     	<tr>
     		<td colspan="1"></td>
     		<td colspan="2">
     			<%if(acp!=null && acp.getCertificateFromLab()!=null){ %>
-                 	<a href="ProjectClosureACPFileDownload.htm?projectId=<%=projectId%>&filename=certificatefromlabfile" target="_blank">Certificate from lab MMG/Store Section </a>				 				
+                 	<a href="ProjectClosureACPFileDownload.htm?closureId=<%=closureId%>&filename=certificatefromlabfile" target="_blank">Certificate from lab MMG/Store Section </a>				 				
                 <%} %>
     		</td>
     	</tr>
     	<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;">Certified that objectives set for the project have been met as per Technical Report No.</td>
+    		<td style="width: 35%;font-weight: 600;">Certified that objectives set for the project have been met as per Technical Report No.</td>
     		<td>: <%if(acp.getTechReportNo()!=null) {%><%=acp.getTechReportNo() %><%} %> </td>
     	</tr>
 	</table>
@@ -660,9 +663,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 	   			
 	   			 No. <%if(projectMaster.getSanctionNo()!=null) {%><%=projectMaster.getSanctionNo() %> <%} %>
 	   			 has incurred the expenditure of 
-	   			 <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %><%} %>
+	   			 <%-- <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %><%} %> --%>
+	   			  <%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %> Cr
 	   			 including FE
-	   			 <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %><%} %>
+	   			 <%-- <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %><%} %> --%>
+				  <%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %> Cr
 				 against the sanctioned cost of
 				 <%if(projectMaster.getTotalSanctionCost()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(projectMaster.getTotalSanctionCost()) %><%} %>
 				 including FE
@@ -739,7 +744,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 	<table id="tabledata">
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;"style="">
+			<td style="width: 35%;"style="font-weight: 600;">
 				Expenditure Status (in Crores) 
 			</td>
 			<td></td>

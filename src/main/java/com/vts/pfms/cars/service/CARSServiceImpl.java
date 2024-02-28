@@ -1329,12 +1329,16 @@ public class CARSServiceImpl implements CARSService{
 	@Override
 	public long carsFinalReportEditSubmit(CARSContract contract, String firstTime,String labcode) throws Exception {
 		try {
+			long carsInitiationId = contract.getCARSInitiationId();
+			CARSInitiation carsInitiation = dao.getCARSInitiationById(carsInitiationId);
+			Object[] empDetails = dao.getEmpDetailsByEmpId(carsInitiation.getEmpId()+"");
+			
 			if(firstTime!=null && firstTime.equalsIgnoreCase("Y")) {
 				String maxCARSContractNo = dao.getMaxCARSContractNo();
 				String[] split = maxCARSContractNo!=null?maxCARSContractNo.split("/"):null;
 				String CARSContractId = split!=null?split[0]:"0";
 				LocalDate now = LocalDate.now();
-				String ContractNo = labcode+"/CARS-"+(Long.parseLong(CARSContractId)+1)+"/RTMD/"+now.getYear();
+				String ContractNo = labcode+"/CARS-"+(Long.parseLong(CARSContractId)+1)+"/"+empDetails[6]+"/"+now.getYear();
 				contract.setContractNo(ContractNo);
 			}
 			dao.editCARSContractDetails(contract);

@@ -337,7 +337,7 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 
-	private static final String GETEMPDETAILS  ="SELECT a.EmpId,a.EmpName,b.Designation,c.DivisionName,a.Title,a.Salutation FROM employee a,employee_desig b,division_master c WHERE a.EmpId=:EmpId AND a.DesigId=b.DesigId AND a.DivisionId=c.DivisionId";
+	private static final String GETEMPDETAILS  ="SELECT a.EmpId,a.EmpName,b.Designation,c.DivisionName,a.Title,a.Salutation,c.DivisionCode FROM employee a,employee_desig b,division_master c WHERE a.EmpId=:EmpId AND a.DesigId=b.DesigId AND a.DivisionId=c.DivisionId";
 	@Override
 	public Object[] getEmpDetailsByEmpId(String empId) throws Exception
 	{
@@ -778,7 +778,7 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 	
-	private static final String CARSDPCSOCFINALAPPROVEDLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,b.EmpNo,e.Designation,d.SoCAmount FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c,pfms_cars_soc d,employee_desig e  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND d.IsActive=1 AND a.CARSInitiationId=d.CARSInitiationId AND DPCSoCStatus='A' AND b.DesigId=e.DesigId AND a.InitiationDate BETWEEN :FromDate AND :ToDate ORDER BY a.CARSInitiationId DESC";
+	private static final String CARSDPCSOCFINALAPPROVEDLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,b.EmpNo,e.Designation,d.SoCAmount,(SELECT IFNULL(MAX(con.CARSContractId),0) FROM pfms_cars_contract con WHERE con.CARSInitiationId=a.CARSInitiationId AND con.IsActive=1) AS 'ContractId' FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c,pfms_cars_soc d,employee_desig e  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND d.IsActive=1 AND a.CARSInitiationId=d.CARSInitiationId AND DPCSoCStatus='A' AND b.DesigId=e.DesigId AND a.InitiationDate BETWEEN :FromDate AND :ToDate ORDER BY a.CARSInitiationId DESC";
 	@Override
 	public List<Object[]> carsDPCSoCFinalApprovedList(String fromdate, String todate) throws Exception {
 		try {

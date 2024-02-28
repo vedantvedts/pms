@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 public class ProjectClosureACPDTO {
 	private long ClosureACPId;
-	private long ProjectId;
+//	private long ProjectId;
+	private long ClosureId;
 	private String ACPAim;
 	private String ACPObjectives;
 	private String Prototyes;

@@ -23,12 +23,12 @@ public class ProjectClosureSoC implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ClosureSoCId;
-	private long ProjectId;
-	private String ClosureCategory;
+	private long ClosureId;
+//	private String ClosureCategory;
 	private String QRNo;
-	private String ExpndAsOn;
-	private String TotalExpnd;
-	private String TotalExpndFE;
+//	private String ExpndAsOn;
+//	private String TotalExpnd;
+//	private String TotalExpndFE;
 	private String PresentStatus;
 	private String Reason;
 	private String Recommendation;
@@ -37,11 +37,11 @@ public class ProjectClosureSoC implements Serializable{
 	private String DMCDirection;
 	private String LessonsLearnt;
 	private String OtherRelevant;
-	private String ClosureStatus;
-	private String ClosureStatusCode;
-	private String ClosureStatusCodeNext;
-	private String ForwardedBy;
-	private String ForwardedDate;
+//	private String ClosureStatus;
+//	private String ClosureStatusCode;
+//	private String ClosureStatusCodeNext;
+//	private String ForwardedBy;
+//	private String ForwardedDate;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

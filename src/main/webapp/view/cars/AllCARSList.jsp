@@ -711,6 +711,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 																			</div>
 																		</div>
 																	</button>
+																	<%if(form[16]!=null && form[16].toString()!="0") {%>
 						                            				<button type="submit" class="btn btn-sm view-icon" formaction="CARSOtherDocsList.htm" name="carsInitiationId" value="<%=form[0]%>" data-toggle="tooltip" data-placement="top" title="Other Documents Details" style="font-weight: 600;" >
 														   				<div class="cc-rockmenu">
 																			<div class="rolling">
@@ -721,6 +722,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 																			</div>
 																		</div>
 																	</button>
+																	<%} %>
 																</td>
 						                        			</tr>
 						                       			<%} }else{%>

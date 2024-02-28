@@ -25,24 +25,24 @@ public class ProjectClosureACP implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ClosureACPId;
-	private long ProjectId;
-	private String ACPAim;
-	private String ACPObjectives;
+	private long ClosureId;
+//	private String ACPAim;
+//	private String ACPObjectives;
 	private int Prototyes;
 	private String FacilitiesCreated;
 	private String MonitoringCommittee;
 	private String MonitoringCommitteeAttach;
 	private String CertificateFromLab;
 	private String TechReportNo;
-	private String ExpndAsOn;
-	private String TotalExpnd;
-	private String TotalExpndFE;
+//	private String ExpndAsOn;
+//	private String TotalExpnd;
+//	private String TotalExpndFE;
 	private String TrialResults;
-	private String ACPStatus;
-	private String ClosureStatusCode;
-	private String ClosureStatusCodeNext;
-	private String ForwardedBy;
-	private String ForwardedDate;
+//	private String ACPStatus;
+//	private String ClosureStatusCode;
+//	private String ClosureStatusCodeNext;
+//	private String ForwardedBy;
+//	private String ForwardedDate;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

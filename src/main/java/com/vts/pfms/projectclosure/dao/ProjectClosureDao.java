@@ -3,7 +3,7 @@ package com.vts.pfms.projectclosure.dao;
 import java.util.List;
 
 import com.vts.pfms.project.model.ProjectMaster;
-import com.vts.pfms.project.model.ProjectMasterRev;
+import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
@@ -16,10 +16,12 @@ public interface ProjectClosureDao {
 
 	public List<Object[]> projectClosureList(String EmpId, String labcode) throws Exception;
 	public ProjectMaster getProjectMasterByProjectId(String projectId) throws Exception;
+	public ProjectClosure getProjectClosureById(String closureId) throws Exception;
+	public long addProjectClosure(ProjectClosure closure) throws Exception;
+	public long editProjectClosure(ProjectClosure closure) throws Exception;
 	public ProjectClosureSoC getProjectClosureSoCByProjectId(String projectId) throws Exception;
 	public long addProjectClosureSoC(ProjectClosureSoC soc) throws Exception;
 	public long editProjectClosureSoC(ProjectClosureSoC soc) throws Exception;
-	public ProjectMasterRev getProjectMasterRevByProjectId(String projectId) throws Exception;
 	public long addProjectClosureTransaction(ProjectClosureTrans transaction) throws Exception;
 	public List<Object[]> projectClosureApprovalDataByType(String projectId, String closureForward, String closureForm)  throws Exception;
 	public List<Object[]> projectClosureRemarksHistoryByType(String projectId, String closureForward, String closureForm) throws Exception;
@@ -46,5 +48,6 @@ public interface ProjectClosureDao {
 	public List<Object[]> projectClosureACPPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectClosureACPApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public Object[] projectOriginalAndRevisionDetails(String projectId) throws Exception;
+	public Object[] projectExpenditureDetails(String projectId) throws Exception;
 
 }

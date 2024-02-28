@@ -26,7 +26,7 @@ public class ProjectClosureACPTrialResults implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long TrialResultsId;
-	private long ProjectId;
+	private long ClosureId;
 	private String Description;
 	private String Attachment;
 	private String CreatedBy;

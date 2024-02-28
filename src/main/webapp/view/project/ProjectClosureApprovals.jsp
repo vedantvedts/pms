@@ -213,7 +213,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																		</div>
 																	</button>
 																				
-																	<button type="submit" class="btn btn-sm" formaction="ProjectClosureSoCDownload.htm" name="projectId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+																	<button type="submit" class="btn btn-sm" formaction="ProjectClosureSoCDownload.htm" name="closureId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
 								  	 									<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -252,7 +252,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																		</div>
 																	</button>
 																				
-																	<button type="submit" class="btn btn-sm" formaction="ProjectClosureACPDownload.htm" name="projectId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+																	<button type="submit" class="btn btn-sm" formaction="ProjectClosureACPDownload.htm" name="closureId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
 								  	 									<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -328,7 +328,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             											<td style="text-align: center;width: 10%;"><%=form[13]+" ("+form[14]+")"%></td>
                             											<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
                             											<td style="text-align: center;width: 25%;">
-                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectClosureSoCTransStatus.htm" value="<%=form[4] %>" name="projectId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectClosureSoCTransStatus.htm" value="<%=form[4] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
 								    											<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    										</button>
 						 												</td>
@@ -344,7 +344,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																				</div>
 																			</button>
 																					
-																			<button type="submit" class="btn btn-sm" formaction="ProjectClosureSoCDownload.htm" name="projectId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+																			<button type="submit" class="btn btn-sm" formaction="ProjectClosureSoCDownload.htm" name="closureId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
 								  	 											<div class="cc-rockmenu">
 																					<div class="rolling">
 																						<figure class="rolling_icon">
@@ -370,7 +370,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             											<td style="text-align: center;width: 10%;"><%=form[13]+" ("+form[14]+")"%></td>
                             											<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
                             											<td style="text-align: center;width: 25%;">
-                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectClosureACPTransStatus.htm" value="<%=form[4] %>" name="projectId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectClosureACPTransStatus.htm" value="<%=form[4] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
 								    											<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    										</button>
 						 												</td>
@@ -386,7 +386,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																				</div>
 																			</button>
 																					
-																			<button type="submit" class="btn btn-sm" formaction="ProjectClosureACPDownload.htm" name="projectId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+																			<button type="submit" class="btn btn-sm" formaction="ProjectClosureACPDownload.htm" name="closureId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
 								  	 											<div class="cc-rockmenu">
 																					<div class="rolling">
 																						<figure class="rolling_icon">

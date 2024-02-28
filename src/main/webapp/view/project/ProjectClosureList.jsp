@@ -1,3 +1,4 @@
+<%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -285,6 +286,7 @@ background: none;border-style: none;
 <%
 FormatConverter fc = new FormatConverter();
 List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList");
+List<String> closurecategory = Arrays.asList("Completed Successfully","Partial Success","Stage Closure","Cancellation");
 %>
 
 <% String ses=(String)request.getParameter("result");
@@ -383,17 +385,48 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 										</div>
 										
 										<div class="container" style="display: inline-flex;">
-											<div>SoC Status :</div>
+											<div>Closure Type : </div>
+					  						<div class="row" style="margin-top: -1%;margin-left: 1%;">
+												<div class="col-xl">
+												
+													<form action="ProjectClosureSubmit.htm" method="post" id="closureform<%=obj[0]%>">
+														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+														<input type="hidden" name="projectId" value="<%=obj[0]%>">
+														<input type="hidden" name="closureId" value="<%if(obj[14]!=null) {%><%=obj[14] %><%}else{%>0<%}%>">
+														<select name="closureCategory" id="closureCategory" class="form-control  form-control" data-width="70%" data-live-search="true" required>
+			                								<option value="-1" disabled="disabled" selected="selected">--Select--</option>
+												        		<%
+												                	for(String category: closurecategory ){
+												               %>
+																	<option value="<%=category%>" <%if(obj[16]!=null){ if(category.equalsIgnoreCase(obj[16].toString())){%>selected="selected" <%}} %>  style="text-align: left;"><%=category %></option>
+																<%} %>
+														</select>
+													</form>
+												<br/>
+												</div>
+											</div>
+											<div>
+												<button class="btn bg-transparent buttuonEd1" type="submit" form="closureform<%=obj[0]%>" onclick="return confirm('Are you sure to submit?')"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></button>
+											</div>
+										</div>
+										
+										<div class="container" style="display: inline-flex;margin-top: 1%;">
+											<div>Status :</div>
 					  						<div class="row" style="margin-top: -1%;margin-left: 1%;">
 												<div class="col-xl">
 													 <%if(obj[11]!=null) {%>
 														<form action="#">
 				                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				                                        	<input type="hidden" name="projectId" value="<%=obj[0] %>">
-				                                       	  	
-				                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureSoCTransStatus.htm value="<%=obj[0] %>" name="projectId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
-											    				<%=obj[12] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
-											    			</button>
+				                                        	<input type="hidden" name="closureId" value="<%=obj[14] %>">
+				                                       	  	<%if(obj[15]!=null && obj[15].toString().equalsIgnoreCase("SoC")) {%>
+					                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureSoCTransStatus.htm value="<%=obj[14] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
+												    				<%=obj[12] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+												    			</button>
+											    			<%} else if(obj[15]!=null && obj[15].toString().equalsIgnoreCase("ACR")) {%>
+											    				<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureACPTransStatus.htm value="<%=obj[14] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
+											    					<%=obj[12] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+											    				</button>
+											    			<%} %>
 	                                        			</form>
 	                                        		<%} else{%>
 	                                        			<button type="button" class="btn btn-sm btn-link w-100 btn-status" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: violet; font-weight: 600;" formtarget="_blank">
@@ -405,16 +438,16 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 											</div>
 										</div>  
 										
-										<div class="container" style="display: inline-flex;">
+										<%-- <div class="container" style="display: inline-flex;">
 											<div>ACR Status :</div>
 					  						<div class="row" style="margin-top: -1%;margin-left: 1%;">
 												<div class="col-xl">
 													 <%if(obj[14]!=null) {%>
 														<form action="#">
 				                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				                                        	<input type="hidden" name="projectId" value="<%=obj[0] %>">
+				                                        	<input type="hidden" name="projectId" value="<%=obj[14] %>">
 				                                       	  	
-				                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureACPTransStatus.htm value="<%=obj[0] %>" name="projectId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[16] %>; font-weight: 600;" formtarget="_blank">
+				                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureACPTransStatus.htm value="<%=obj[14] %>" name="projectId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[16] %>; font-weight: 600;" formtarget="_blank">
 											    				<%=obj[15] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 											    			</button>
 	                                        			</form>
@@ -426,7 +459,7 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 													<br/>
 												</div>
 											</div>
-										</div>  
+										</div>  --%> 
 										
 										<%-- <div style="bottom: 0px;margin-bottom: 15px;">
 											<div class="container">
@@ -434,8 +467,8 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 													<div class="col-xl">
 														<form action="#">
 				                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
-				                                       	  	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction=CARSTransStatus.htm value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
+				                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[14] %>">
+				                                       	  	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction=CARSTransStatus.htm value="<%=obj[14] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
 											    			<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 											    			</button>
 	                                        			</form>
@@ -443,7 +476,8 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 												</div>
 											</div>
 										</div> --%>
-												
+										
+										<%if(obj[14]!=null) {%>		
 										<div style="bottom: 0px;margin-bottom: 15px;padding-top: 10px;">
 											<div class="container">
 						  						<div class="row" style="">
@@ -451,8 +485,9 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 													
 														<form action="#" method="post">
 		                                        			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		                                        	
-		                                       	 				<button class="editable-clicko" name="projectId" value="<%=obj[0] %>" formaction="ProjectClosureSoCDetails.htm" data-toggle="tooltip" data-placement="top" title="Details of Statement of Case">
+		                                        				
+		                                        				<%if(obj[15]!=null && obj[15].toString().equalsIgnoreCase("SoC")) {%>
+		                                       	 				<button class="editable-clicko" name="closureId" value="<%=obj[14] %>" formaction="ProjectClosureSoCDetails.htm" data-toggle="tooltip" data-placement="top" title="Details of Statement of Case">
 																	<div class="cc-rockmenu">
 																		<div class="rolling">
 																			<figure class="rolling_icon">
@@ -463,7 +498,7 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 																	</div>
 												    			</button>
 												    			<%if(obj[11]!=null && (obj[11].toString().equalsIgnoreCase("SFW"))) {%>
-												    			<button class="editable-clicko" name="projectId" value="<%=obj[0] %>" formaction="ProjectClosureSoCRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to Revoke?')">
+												    			<button class="editable-clicko" name="closureId" value="<%=obj[14] %>" formaction="ProjectClosureSoCRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to Revoke?')">
 																	<div class="cc-rockmenu">
 																		<div class="rolling">
 																			<figure class="rolling_icon">
@@ -474,8 +509,9 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 																	</div>
 												    			</button>
 												    			<%} %>
+												    			<%} else if(obj[15]!=null && obj[15].toString().equalsIgnoreCase("ACR")) {%>
 												    			
-		                                       	 				<button class="editable-clicko" name="projectId" value="<%=obj[0] %>" formaction="ProjectClosureACPDetails.htm" formmethod="post" data-toggle="tooltip" data-placement="top" title="Details of Administrative Closure of Project">
+		                                       	 				<button class="editable-clicko" name="closureId" value="<%=obj[14] %>" formaction="ProjectClosureACPDetails.htm" formmethod="post" data-toggle="tooltip" data-placement="top" title="Details of Administrative Closure of Project">
 																	<div class="cc-rockmenu">
 																		<div class="rolling">
 																			<figure class="rolling_icon">
@@ -485,13 +521,26 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 																		</div>
 																	</div>
 												    			</button>
+												    			<%if(obj[11]!=null && (obj[11].toString().equalsIgnoreCase("AFW"))) {%>
+												    			<button class="editable-clicko" name="closureId" value="<%=obj[14] %>" formaction="ProjectClosureACPRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to Revoke?')">
+																	<div class="cc-rockmenu">
+																		<div class="rolling">
+																			<figure class="rolling_icon">
+																				<img src="view/images/userrevoke.png" style="width: 22px !important;">
+																			</figure>
+																			<span>ACR Revoke</span>
+																		</div>
+																	</div>
+												    			</button>
+												    			<%} %>
+												    			<%} %>
 												    			
 		                                        		</form>
 													</div>
 												</div>
 											</div>
 										</div>
-										
+										<%} %>
 									</div>
 								</div>
 							

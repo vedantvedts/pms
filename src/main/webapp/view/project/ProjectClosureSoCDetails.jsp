@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.projectclosure.model.ProjectClosureSoC"%>
@@ -264,9 +265,11 @@ hr{
 <%
 
 ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
+ProjectClosure closure = (ProjectClosure)request.getAttribute("ProjectClosureDetails");
 ProjectClosureSoC soc = (ProjectClosureSoC)request.getAttribute("ProjectClosureSoCData");
 
 Object[] potherdetails = (Object[])request.getAttribute("ProjectOriginalRevDetails");
+Object[] expndDetails = (Object[])request.getAttribute("ProjectExpenditureDetails");
 
 List<Object[]> socApprovalEmpData = (List<Object[]>)request.getAttribute("SoCApprovalEmpData");
 List<Object[]> socRemarksHistory = (List<Object[]>)request.getAttribute("SoCRemarksHistory");
@@ -274,7 +277,7 @@ List<Object[]> socRemarksHistory = (List<Object[]>)request.getAttribute("SoCRema
 List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 
 String socTabId = (String)request.getAttribute("socTabId");
-String projectId = (String)request.getAttribute("projectId");
+String closureId = (String)request.getAttribute("closureId");
 String isApproval = (String)request.getAttribute("isApproval");
 
 List<String> socforward = Arrays.asList("SIN","SRG","SRA","SRP","SRD","SRC","SRV");
@@ -297,7 +300,7 @@ SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 SimpleDateFormat sdf = fc.getSqlDateFormat();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
 
-String statuscode = soc!=null?soc.getClosureStatusCode():null;
+String statuscode = closure!=null?closure.getClosureStatusCode():null;
 %>
 
 <% String ses=(String)request.getParameter("result"); 
@@ -385,10 +388,10 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
 								        		
 													<form action="ProjectClosureSoCDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-												    	<input type="hidden" name="projectId" value="<%=projectId%>">
+												    	<input type="hidden" name="closureId" value="<%=closureId%>">
 												    	<div class="row" style="margin-left: 2%;margin-right: 2%;">
 												    		
-												        	<div class="col-md-2" style="">
+												        	<%-- <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Closure Category:</label><span class="mandatory">*</span>
 												                    <select name="closureCategory" id="closureCategory" class="form-control  form-control selectdee" onchange="closurecategorychange()" data-width="100%" data-live-search="true" required>
@@ -400,7 +403,7 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
 																		<%} %>
 																	</select>
 												                </div>
-												            </div>
+												            </div> --%>
 												        	<div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">QR No:</label>
@@ -408,7 +411,7 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
 												                     value="<%if(soc!=null && soc.getQRNo()!=null) {%><%=soc.getQRNo() %><%} %>" > 
 												                </div>
 												            </div>
-												            <div class="col-md-2" style="">
+												            <%-- <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Expnd as on :</label><span class="mandatory">*</span>
 												                    <input  class="form-control form-control" type="text" name="expndAsOn" id="expndAsOn"
@@ -428,7 +431,7 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
 												                    <input  class="form-control form-control" type="number" step="0.1" name="totalExpndFE" placeholder="Enter Total Expenditure FE" maxlength="6"
 												                     value="<%if(soc!=null && soc.getTotalExpndFE()!=null) {%><%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000) %><%} %>" required> 
 												                </div>
-												            </div>
+												            </div> --%>
 												            <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Direction of DMC:</label><span class="mandatory">*</span>
@@ -521,7 +524,7 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
 												        
 								               			<div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
 															<%if(soc!=null){ %>
-															    <input type="hidden" name="projectId" value="<%=soc.getProjectId()%>">
+															    <input type="hidden" name="closureId" value="<%=soc.getClosureId()%>">
 																<button type="submit" class="btn btn-sm btn-warning edit btn-soc" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
 															<%}else{ %>
 																<button type="submit" class="btn btn-sm btn-success submit btn-soc" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
@@ -540,7 +543,7 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
 		               					<%if(soc!=null){ %>
 				               				<form action="">
 				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosureSoCDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="SoC Download" style="background-color: purple;border: none;color: white;font-weight: bold;">SoC</button>
-				               					<input type="hidden" name="projectId" value="<%=projectId%>">
+				               					<input type="hidden" name="closureId" value="<%=closureId%>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				               				</form>
 			               				<%} %>
@@ -569,16 +572,14 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
                								<div class="card-body mt-2 ml-4">
                									<form action="#">
                										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                   									<input type="hidden" name="projectId" value="<%=projectId%>">
+                   									<input type="hidden" name="closureId" value="<%=closureId%>">
                    									<input type="hidden" name="closureSoCId" value="<%=soc.getClosureSoCId()%>">
 			               							<div class="mt-2" align="center">
 			               								<h5 style="font-weight: bold;margin-top: 1.5rem;">STATEMENT OF CASE FOR PROJECT COMPLETED WITH
-				               								<%if(soc.getClosureCategory()!=null) {
-				               								 String category = soc.getClosureCategory();
+				               								<%if(closure!=null) {
+				               								 String category = closure.getClosureCategory();
 				               								%>
-				               									<%if(category.equalsIgnoreCase("Completed Successfully")) {%>
-				               									COMPLETE SUCCESS
-				               									<%} else if(category.equalsIgnoreCase("Partial Success")){%>
+				               									<%if(category.equalsIgnoreCase("Partial Success")){%>
 				               									PARTIAL SUCCESS
 				               									<%} else if(category.equalsIgnoreCase("Stage Closure")){%>
 				               									STAGE CLOSURE
@@ -635,8 +636,17 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
 												    	</tr> 
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Statement of Accounts ( as on <%if(soc.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(soc.getExpndAsOn()) %><%} %> )</td>
-												    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) : Total <span style="text-decoration: underline;"><%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000 ) %></span> Cr (FE <span style="text-decoration: underline;"><%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000 ) %></span> Cr)</td>
+												    		<td style="width: 40%;">Statement of Accounts ( as on <%-- <%if(soc.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(soc.getExpndAsOn()) %><%} %> --%> )</td>
+												    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) 
+												    		: Total <span style="text-decoration: underline;">
+												    			<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000 ) %> --%>
+												    			<%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %>
+												    		</span> Cr 
+												    		(FE <span style="text-decoration: underline;">
+												    			<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000 ) %> --%>
+												    			<%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %>
+												    			</span> Cr)
+												    		</td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
@@ -647,7 +657,7 @@ String statuscode = soc!=null?soc.getClosureStatusCode():null;
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Detailed reasons/considerations for Project <%=soc.getClosureCategory() %> </td>
+												    		<td style="width: 40%;">Detailed reasons/considerations for Project <%=closure.getClosureCategory() %> </td>
 												    		<td style="">: <%if(soc.getReason()!=null) {%><%=soc.getReason() %> <%} else{%>-<%} %> </td>
 												    	</tr>
 												    	<tr>
@@ -957,7 +967,7 @@ $('#expndAsOn').daterangepicker({
 
 </script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $(document).ready(function(){
 	closurecategorychange();
 });
@@ -973,11 +983,11 @@ function closurecategorychange(){
 		$('#recommendation').prop('required', false);
 	}
 }
-</script>
+</script> -->
 
 <script type="text/javascript">
 /* button disabling for SoC Approval */
-<%if((soc!=null && socforward.contains(soc.getClosureStatusCode())) || soc==null) {%>
+<%if((soc!=null && socforward.contains(closure.getClosureStatusCode())) || soc==null) {%>
 $('.btn-soc').prop('disabled',false);
 <%} else{%>
 $('.btn-soc').prop('disabled',true);

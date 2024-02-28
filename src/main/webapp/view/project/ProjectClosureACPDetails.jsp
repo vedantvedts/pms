@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
 <%@page import="com.vts.pfms.project.model.ProjectMasterRev"%>
@@ -311,10 +312,11 @@ hr{
 <body>
 <%
 ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
-ProjectMasterRev projectMasterRev = (ProjectMasterRev)request.getAttribute("ProjectMasterRevDetails");
+ProjectClosure closure = (ProjectClosure)request.getAttribute("ProjectClosureDetails");
 ProjectClosureACP acp = (ProjectClosureACP)request.getAttribute("ProjectClosureACPData");
 
 Object[] potherdetails = (Object[])request.getAttribute("ProjectOriginalRevDetails");
+Object[] expndDetails = (Object[])request.getAttribute("ProjectExpenditureDetails");
 List<ProjectClosureACPProjects> linkedprojectsdata = (List<ProjectClosureACPProjects>)request.getAttribute("ACPProjectsData");
 List<ProjectClosureACPConsultancies> consultancies = (List<ProjectClosureACPConsultancies>)request.getAttribute("ACPConsultanciesData");
 List<ProjectClosureACPTrialResults> trialresults = (List<ProjectClosureACPTrialResults>)request.getAttribute("ACPTrialResultsData");
@@ -331,7 +333,7 @@ List<Object[]> acpRemarksHistory = (List<Object[]>)request.getAttribute("ACPRema
 List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 
 String acpTabId = (String)request.getAttribute("acpTabId");
-String projectId = (String)request.getAttribute("projectId");
+String closureId = (String)request.getAttribute("closureId");
 String isApproval = (String)request.getAttribute("isApproval");
 String Details=(String)request.getAttribute("details");
 
@@ -354,7 +356,7 @@ SimpleDateFormat sdf = fc.getSqlDateFormat();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
 DecimalFormat df = new DecimalFormat("####################.##");
 
-String statuscode = acp!=null?acp.getClosureStatusCode():null;
+String statuscode = closure!=null?closure.getClosureStatusCode():null;
 
 int isMain = projectMaster.getIsMainWC();
 Double sanctionCost = projectMaster.getTotalSanctionCost();
@@ -448,11 +450,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 							                			</a>
 						                			</li> --%>
 						                			
-						                			<li class="nav-item">
+						                			<%-- <li class="nav-item">
 						            					<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("aimobjectives")){ %> active <%} %>  <%if(Details==null){ %> active <%} %>" id="aimobjectives-vertical-tab" data-toggle="tab" href="#aimobjectives-vertical" role="tab" aria-controls="home" aria-selected="false">
 						            						Aim & Objectives &emsp;<%if(acp!=null && acp.getACPAim()!=null && acp.getACPObjectives()!=null) {%> <img src="view/images/check.png" align="right"> <%} %>
 						            					</a> 
-													</li>
+													</li> --%>
 													
 													<%-- <li class="nav-item">
 						            					<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("prototypes")){ %> active <%} %>  " id="prototypes-vertical-tab" data-toggle="tab" href="#prototypes-vertical" role="tab" aria-controls="contact" aria-selected="false">
@@ -461,7 +463,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 													</li> --%>
 													
 													<li class="nav-item">
-						            					<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("subprojects")){ %> active <%} %>  " id="subprojects-vertical-tab" data-toggle="tab" href="#subprojects-vertical" role="tab" aria-controls="contact" aria-selected="false">
+						            					<a class="nav-link <%if((Details!=null&&Details.equalsIgnoreCase("subprojects")) || Details==null){ %> active <%} %>  " id="subprojects-vertical-tab" data-toggle="tab" href="#subprojects-vertical" role="tab" aria-controls="home" aria-selected="true">
 						            						List of Sub-Projects &emsp;<%if(subprojects!=null && subprojects.size()>0) {%> <img src="view/images/check.png" align="right"> <%} %>
 						            					</a> 
 													</li>
@@ -504,7 +506,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 													
 													<li class="nav-item">
 						            					<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("others")){ %> active <%} %>  " id="others-vertical-tab" data-toggle="tab" href="#others-vertical" role="tab" aria-controls="contact" aria-selected="false">
-						            						Others &emsp;<%if(acp!=null && acp.getExpndAsOn()!=null){ %> <img src="view/images/check.png" align="right"> <%} %>
+						            						Others &emsp;<%if(acp!=null && acp.getTechReportNo()!=null){ %> <img src="view/images/check.png" align="right"> <%} %>
 						            					</a> 
 													</li>
 						                		</ul>
@@ -512,7 +514,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                		<!-- Side tab Details -->
 						                		<div class="tab-content" id="myTabContent3">
 						                		
-						                			<!-- Aim & Objectives Side bar Details  -->
+						                			<%-- <!-- Aim & Objectives Side bar Details  -->
 						                			<div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("aimobjectives")){ %> show active <%} %> <%if(Details==null){ %> show active <%} %> " id="aimobjectives-vertical" role="tabpanel" aria-labelledby="aimobjectives-vertical-tab">
 						                				
 						                				<!-- Aim & Objectives showing as Doc -->
@@ -570,7 +572,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<!-- Aim & Objectives Add / Edit -->
 					                					<form action="ProjectClosureACPDetailsSubmit.htm" method="POST" name="myform1" id="myform1" >	
 															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-															<input type="hidden" name="projectId" value="<%=projectId %>" />
+															<input type="hidden" name="closureId" value="<%=closureId %>" />
 															<div class="row"> 
 																<div class="col-md-12"  >
 																	<div class="card" >
@@ -624,10 +626,10 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															</div>
 														</form>
 						                				
-						                			</div>
+						                			</div> --%>
 						                			
 						                			<!-- Sub-Projects Side bar Details -->
-						                			<div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("subprojects")){ %> show active <%} %> " id="subprojects-vertical" role="tabpanel" aria-labelledby="subprojects-vertical-tab">
+						                			<div class="tab-pane fade <%if((Details!=null&&Details.equalsIgnoreCase("subprojects")) || Details==null){ %> show active <%} %> " id="subprojects-vertical" role="tabpanel" aria-labelledby="subprojects-vertical-tab">
 						                				
 						                				<!-- Sub-Projects showing as Doc -->
 						                				<div id="subprojectsdiv">
@@ -759,7 +761,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																<%} else{%> 
 																	<button type="submit" class="btn btn-sm submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 																<%} %>
-																<input type="hidden" name="projectId" value="<%=projectId%>">
+																<input type="hidden" name="closureId" value="<%=closureId%>">
 																<input type="hidden" name="details" value="subprojects" />
 																<input type="hidden" name="acpProjectTypeFlag" value="S" />
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -922,7 +924,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																<%} else{%> 
 																	<button type="submit" class="btn btn-sm submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 																<%} %>
-																<input type="hidden" name="projectId" value="<%=projectId%>">
+																<input type="hidden" name="closureId" value="<%=closureId%>">
 																<input type="hidden" name="details" value="carscapsi" />
 																<input type="hidden" name="acpProjectTypeFlag" value="O" />
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -1046,7 +1048,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																<%} else{%> 
 																	<button type="submit" class="btn btn-sm submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 																<%} %>
-																<input type="hidden" name="projectId" value="<%=projectId%>">
+																<input type="hidden" name="closureId" value="<%=closureId%>">
 																<input type="hidden" name="details" value="consultancies" />
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																
@@ -1093,7 +1095,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<!-- Facilities Created Add / Edit -->
 					                					<form action="ProjectClosureACPDetailsSubmit.htm" method="POST" name="myform5" id="myform5" >	
 															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-															<input type="hidden" name="projectId" value="<%=projectId %>" />
+															<input type="hidden" name="closureId" value="<%=closureId %>" />
 															<div class="row"> 
 																<div class="col-md-12"  >
 																	<div class="card" >
@@ -1218,7 +1220,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				
 						                				<!-- Trial Results Add / Edit -->
 					                					<form action="ProjectClosureACPTrialResultsSubmit.htm" method="POST" name="myform6" id="myform6" enctype="multipart/form-data">	
-															<input type="hidden" name="projectId" value="<%=projectId%>">
+															<input type="hidden" name="closureId" value="<%=closureId%>">
 																<input type="hidden" name="details" value="trialresults" />
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 															<div class="row"> 
@@ -1428,7 +1430,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																<%} else{%> 
 																	<button type="submit" class="btn btn-sm submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 																<%} %>
-																<input type="hidden" name="projectId" value="<%=projectId%>">
+																<input type="hidden" name="closureId" value="<%=closureId%>">
 																<input type="hidden" name="details" value="achievements" />
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																
@@ -1464,7 +1466,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
  																	</label>
  																	<form action="#">
  																		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-																		<input type="hidden" name="projectId" value="<%=projectId %>" />
+																		<input type="hidden" name="closureId" value="<%=closureId %>" />
  																		<%if(acp!=null && acp.getMonitoringCommitteeAttach()!=null){ %>
 				                            					 			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  	 value="monitoringcommitteefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
@@ -1476,7 +1478,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
  																<%-- <div class="col-md-6" align="left">
  																	<form action="#">
  																		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-																		<input type="hidden" name="projectId" value="<%=projectId %>" />
+																		<input type="hidden" name="closureId" value="<%=closureId %>" />
  																		<%if(acp!=null && acp.getMonitoringCommitteeAttach()!=null){ %>
 				                            					 			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  	 value="monitoringcommitteefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
@@ -1507,7 +1509,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<!-- Recommendations Add / Edit -->
 					                					<form action="ProjectClosureACPDetailsSubmit.htm" method="POST" name="myform8" id="myform8" enctype="multipart/form-data" >	
 															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-															<input type="hidden" name="projectId" value="<%=projectId %>" />
+															<input type="hidden" name="closureId" value="<%=closureId %>" />
 															<div class="row"> 
 																<div class="col-md-12"  >
 																	<div class="card" >
@@ -1586,7 +1588,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																</div>       			  	
 				                            				</div>
 				                            				
-				                            				<hr>
+				                            				<%-- <hr>
 				                            				
 				                            				<div class="row">
 				                            					<div class="col-md-4" align="left">
@@ -1606,7 +1608,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            					<div class="col-md-2" align="left">
 				                            						Total FE: &emsp;<%if(acp!=null && acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %><%} else{%>-<%} %>
 				                            					</div>
-				                            				</div>
+				                            				</div> --%>
 				                            				
 				                            				<hr>
 				                            				
@@ -1619,8 +1621,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				</div>
 				                            				
 				                            				<div class="row">
-				                            					<div class="col-md-2" align="left">
-				                            						No of Prototypes: &emsp;<%if(acp!=null && acp.getPrototyes()!=0) {%><%=acp.getPrototyes() %> <%} else{%>0<%} %>
+				                            					<div class="col-md-12" align="left">
+				                            						No of Prototypes (type approved/qualified) deliverables as brought out in Govt. Letter: &emsp;<%if(acp!=null && acp.getPrototyes()!=0) {%><%=acp.getPrototyes() %> <%} else{%>0<%} %>
 				                            					</div>
 				                            				</div>
 				                            				
@@ -1648,7 +1650,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
  																	</label>
  																	<form action="#">
  																		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-																		<input type="hidden" name="projectId" value="<%=projectId %>" />
+																		<input type="hidden" name="closureId" value="<%=closureId %>" />
  																		<%if(acp!=null && acp.getCertificateFromLab()!=null){ %>
 				                            					 			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  	 value="certificatefromlabfile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Certificate from Lab MMG/Store Section Download">
@@ -1664,11 +1666,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                    			<!-- Others Add / Edit -->
 						                    			<form action="ProjectClosureACPDetailsSubmit.htm" method="POST" name="myform9" id="myform9" enctype="multipart/form-data">
 															<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-												    		<input type="hidden" name="projectId" value="<%=projectId%>">
+												    		<input type="hidden" name="closureId" value="<%=closureId%>">
 												    		<input type="hidden" name="details" value="others">
 												    		<div class="row" style="margin-left: 2%;margin-right: 2%;">
 												    				
-												    			<div class="col-md-2" style="">
+												    			<%-- <div class="col-md-2" style="">
 														        	<div class="form-group">
 														                <label class="control-label">Expenditure as on:</label><span class="mandatory">*</span>
 														                	<input  class="form-control form-control" type="text" name="expndAsOn" id="expndAsOn"
@@ -1688,7 +1690,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 													                    <input  class="form-control form-control" type="number" step="0.01" name="totalExpndFE" placeholder="Enter Total Expenditure FE" maxlength="15"
 													                     value="<%if(acp!=null && acp.getTotalExpndFE()!=null) {%><%=acp.getTotalExpndFE() %><%} %>" required> 
 													                </div>
-													            </div>
+													            </div> --%>
 													            <div class="col-md-2">
 													            	<div class="form-group">
 													                	<label class="control-label">No of Prototypes:</label><span class="mandatory">*</span>
@@ -1704,8 +1706,22 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 													                     value="<%if(acp!=null && acp.getTechReportNo()!=null) {%><%=acp.getTechReportNo() %><%} %>" required> 
 													                </div>
 													            </div>
+													            
+													            <div class="col-md-4">
+													            	<div class="form-group">
+											                			<label class="control-label">Certificate from Lab MMG / Store Section:</label><span class="mandatory">*</span>
+													                	<%if(acp!=null && acp.getCertificateFromLab()!=null){ %>
+	                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+	                            					 		  				 	value="labcertificatefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Certifciate from Lab Download">
+	                            					 							<i class="fa fa-download fa-lg"></i>
+	                            					 						</button>
+	                            					 					<%} %>
+                             		      								<input type="file" class="form-control modals" name="labCertificateAttach" <%if(acp==null || (acp!=null && acp.getCertificateFromLab()==null)) {%>required<%} %> accept=".pdf">
+											                		</div>
+													            </div>
+													            
 												    		</div>
-											    			<div class="row" style="margin-left: 2%;margin-right: 2%;">
+											    			<%-- <div class="row" style="margin-left: 2%;margin-right: 2%;">
 											    				<div class="col-md-4">
 													            	<div class="form-group">
 											                			<label class="control-label">Certificate from Lab MMG / Store Section:</label><span class="mandatory">*</span>
@@ -1718,9 +1734,9 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
                              		      								<input type="file" class="form-control modals" name="labCertificateAttach" <%if(acp==null || (acp!=null && acp.getCertificateFromLab()==null)) {%>required<%} %> accept=".pdf">
 											                		</div>
 													            </div>
-											    			</div>
+											    			</div> --%>
 											    			<div align="center">
-											    				<%if(acp!=null && acp.getExpndAsOn()!=null){ %>
+											    				<%if(acp!=null && acp.getTechReportNo()!=null){ %>
 																	<button type="submit" class="btn btn-sm btn-warning edit btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
 																	
 																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;" onclick="CloseEdit('others')"
@@ -1744,13 +1760,13 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 		               				<div class="navigation_btn"  style="text-align: center;">
 		               					<%if( (subprojects!=null && subprojects.size()>0) && (carscapsiprojects!=null && carscapsiprojects.size()>0) && (consultancies!=null && consultancies.size()>0) &&
 		                 						  (trialresults!=null && trialresults.size()>0) && (achievements!=null && achievements.size()>0) &&
-		                   						  (acp!=null && acp.getACPAim()!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getExpndAsOn()!=null) ){ %>
+		                   						  (acp!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getTechReportNo()!=null) ){ %>
 				               				<form action="#">
 				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosureACPDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Administrative closure Download" 
 				               					 style="background-color: purple;border: none;color: white;font-weight: bold;">
 				               						Print Administrative Closure
 				               					</button>
-				               					<input type="hidden" name="projectId" value="<%=projectId%>">
+				               					<input type="hidden" name="closureId" value="<%=closureId%>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				               				</form>
 			               				<%} %>
@@ -1775,14 +1791,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
                			<%} %>
                					<%if( (subprojects!=null && subprojects.size()>0) && (carscapsiprojects!=null && carscapsiprojects.size()>0) && (consultancies!=null && consultancies.size()>0) &&
                						  (trialresults!=null && trialresults.size()>0) && (achievements!=null && achievements.size()>0) &&
-               						  (acp!=null && acp.getACPAim()!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getExpndAsOn()!=null) ) {%>
+               						  (acp!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getTechReportNo()!=null) ) {%>
                					
                						<div class="col-md-8 mt-2">
                							<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%; <%if(isApproval==null) {%>max-height: 600px;<%} else{%>max-height: 700px;<%} %>  overflow-y: auto;">
                								<div class="card-body mt-2 ml-4">
                									<form action="#">
                										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                   									<input type="hidden" name="projectId" value="<%=projectId%>">
+                   									<input type="hidden" name="closureId" value="<%=closureId%>">
                    									<div class="mt-2" align="center">
 			               								<h5 style="font-weight: bold;margin-top: 1.5rem;">
 				               								AUDIT OF STATEMENT OF ACCOUNTS (EXPENDITURE) AND ADMINISTRATIVE CLOSURE OF PROJECT / PROGRAMME
@@ -1793,27 +1809,27 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     												<table id="tabledata">
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Name of Lab</td>
+												    		<td style="width: 40%;font-weight: 600;">Name of Lab</td>
 												    		<td>: <%=labcode %> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Title of the Project/Programme</td>
+												    		<td style="width: 40%;font-weight: 600;">Title of the Project/Programme</td>
 												    		<td>: <%=projectMaster.getProjectName() %> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Date of Sanction</td>
+												    		<td style="width: 40%;font-weight: 600;">Date of Sanction</td>
 												    		<td>: <%if(projectMaster!=null && projectMaster.getSanctionDate()!=null) {%><%=fc.SqlToRegularDate(projectMaster.getSanctionDate().toString()) %><%} else{%><%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Category of Project</td>
+												    		<td style="width: 40%;font-weight: 600;">Category of Project</td>
 												    		<td>: <%if(potherdetails!=null && potherdetails[0]!=null) {%><%=potherdetails[0] %><%} %> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="1" style="width: 40%;">Cost (original & revised)</td>
+												    		<td colspan="1" style="width: 40%;font-weight: 600;">Cost (original & revised)</td>
 												    		<td>:</td>
 												    	</tr>
 												    	<tr>
@@ -1886,7 +1902,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">PDC of the Project</td>
+												    		<td style="width: 40%;font-weight: 600;">PDC of the Project</td>
 												    		<td>:</td>
 												    	</tr>
 												    	<tr>
@@ -1929,32 +1945,32 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Expenditure ( as on <%if(acp.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(acp.getExpndAsOn()) %> <%} else{%>-<%} %> )</td>
+												    		<td style="width: 40%;font-weight: 600;">Expenditure ( as on <%-- <%if(acp.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(acp.getExpndAsOn()) %> <%} else{%>-<%} %> --%> )</td>
 												    		<td>
 												    			: Total(<span style="font-size: 12px;">&#x20B9;</span>)
 												    				<span style="text-decoration: underline;">
-												    					<%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %> <%} %>
-												    				</span>
+												    					<%-- <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %> <%} %> --%>
+												    					<%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %>
+												    				</span> Cr
 												    			 (FE<span style="text-decoration: underline;">
-												    					<%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %> <%} %>
-												    				</span>)	
+												    					<%-- <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %> <%} %> --%>
+												    					<%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %>
+												    				</span>) Cr	
 												    		</td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Aim & Objectives</td>
-												    		<td>: <%if(acp.getACPAim()!=null) {%><%=acp.getACPAim() %><%} %> <br>
-												    			  <%if(acp.getACPObjectives()!=null) {%><%=acp.getACPObjectives() %> <%} %>
-												    		</td>
+												    		<td style="width: 40%;font-weight: 600;">Aim & Objectives</td>
+												    		<td>: <%if(projectMaster.getObjective()!=null) {%><%=projectMaster.getObjective() %><%} %> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">No of Prototypes</td>
-												    		<td>: <%if(acp.getPrototyes()!=0) {%><%=acp.getPrototyes() %><%} %> </td>
+												    		<td style="width: 40%;font-weight: 600;">No of Prototypes (type approved/qualified) deliverables as brought out in Govt. Letter</td>
+												    		<td>: <%=acp.getPrototyes() %> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">List of sub-projects</td>
+												    		<td style="width: 40%;font-weight: 600;">List of sub-projects</td>
 												    		<td>: </td>
 												    	</tr>
 												    	<tr>
@@ -1991,7 +2007,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">List of CARS / CAPSI</td>
+												    		<td style="width: 40%;font-weight: 600;">List of CARS / CAPSI</td>
 												    		<td>: </td>
 												    	</tr>
 												    	<tr>
@@ -2036,7 +2052,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">List of Consultancies</td>
+												    		<td style="width: 40%;font-weight: 600;">List of Consultancies</td>
 												    		<td>: </td>
 												    	</tr>
 												    	<tr>
@@ -2069,7 +2085,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Details of Facilities created (as proposed in the programme) </td>
+												    		<td style="width: 40%;font-weight: 600;">Details of Facilities created (as proposed in the programme) </td>
 												    		<td>: </td>
 												    	</tr>
 												    	<tr>
@@ -2079,7 +2095,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Trial Results </td>
+												    		<td style="width: 40%;font-weight: 600;">Trial Results </td>
 												    		<td>: </td>
 												    	</tr>
 												    	<tr>
@@ -2122,7 +2138,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Achievements</td>
+												    		<td style="width: 40%;font-weight: 600;">Achievements</td>
 												    		<td>: </td>
 												    	</tr>
 												    	<tr>
@@ -2153,7 +2169,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="2" style="width: 40%;">Recommendation of highest Monitoring Committee Meeting for Administrative Closure of the Project</td>
+												    		<td colspan="2" style="width: 40%;font-weight: 600;">Recommendation of highest Monitoring Committee Meeting for Administrative Closure of the Project</td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="1"></td>
@@ -2171,7 +2187,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="2" style="width: 40%;">Certificate from Lab MMG/Store Section stating no outstanding commitment, no live supply order or contracts & warranty is enclosed. List of payments, to be made due to contractual obligation be enclosed. </td>
+												    		<td colspan="2" style="width: 40%;font-weight: 600;">Certificate from Lab MMG/Store Section stating no outstanding commitment, no live supply order or contracts & warranty is enclosed. List of payments, to be made due to contractual obligation be enclosed. </td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="1"></td>
@@ -2186,7 +2202,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Certified that objectives set for the project have been met as per Technical Report No.</td>
+												    		<td style="width: 40%;font-weight: 600;">Certified that objectives set for the project have been met as per Technical Report No.</td>
 												    		<td>: <%if(acp.getTechReportNo()!=null) {%><%=acp.getTechReportNo() %><%} %> </td>
 												    	</tr>
 												    </table>
@@ -2250,9 +2266,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    			
 												    			 No. <%if(projectMaster.getSanctionNo()!=null) {%><%=projectMaster.getSanctionNo() %> <%} %>
 												    			 has incurred the expenditure of 
-												    			 <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %><%} %>
+												    			 <%-- <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %><%} %> --%>
+												    			 <%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %> Cr
 												    			 including FE
-												    			 <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %><%} %>
+												    			 <%-- <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %><%} %> --%>
+												    			 <%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %> Cr
 																 against the sanctioned cost of
 																 <%if(projectMaster.getTotalSanctionCost()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(projectMaster.getTotalSanctionCost()) %><%} %>
 																 including FE
@@ -2334,7 +2352,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 							            			 <table id="tabledata">
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="2" style="">
+												    		<td colspan="2" style="font-weight: 600;">
 												    			Expenditure Status 
 												    		</td>
 												    	</tr>
@@ -2890,7 +2908,7 @@ $('#consultancyDate').daterangepicker({
 
 <script type="text/javascript">
 /* button disabling for ACP Approval */
-<%if((acp!=null && acpforward.contains(acp.getClosureStatusCode())) || acp==null) {%>
+<%if((acp!=null && acpforward.contains(closure.getClosureStatusCode())) || acp==null) {%>
 $('.btn-acp').prop('disabled',false);
 <%} else{%>
 $('.btn-acp').prop('disabled',true);
@@ -3089,12 +3107,12 @@ var editor_config = {
 
 /* -------------------------- Form Submission with CKEDITOR Data -------------------------------------------- */
 
-$('#myform1').submit(function() {
+/* $('#myform1').submit(function() {
 
 	  var data =CKEDITOR.instances['objectivesnote'].getData();
 	  $('textarea[name=acpObjectives]').val(data);
 
-});
+}); */
 
 $('#myform5').submit(function() {
 
@@ -3111,7 +3129,7 @@ $('#myform8').submit(function() {
 });
 
 /* ------------------------ Using CKEDITOR Configuration ------------------------ */
-CKEDITOR.replace('objectivesnote', editor_config);
+/* CKEDITOR.replace('objectivesnote', editor_config); */
 CKEDITOR.replace('facilitiesnote', editor_config);
 CKEDITOR.replace('recommendationsnote', editor_config);	
 </script>
@@ -3122,7 +3140,7 @@ CKEDITOR.replace('recommendationsnote', editor_config);
 $( document ).ready(function() {
 	
 	/* ----------------------- Aim & Objectives ------------------------ */ 
-	<%if(acp!=null && acp.getACPAim()!=null && acp.getACPObjectives()!=null) {%>
+	<%-- <%if(acp!=null && acp.getACPAim()!=null && acp.getACPObjectives()!=null) {%>
 		$('#myform1').hide();
 		$('#aimobjectivesdiv').show();
 		 var html=$('#objectiveshidden').val();
@@ -3132,7 +3150,7 @@ $( document ).ready(function() {
 	<%} else{%>
 		$('#myform1').show();
 		$('#aimobjectivesdiv').hide();
-	<%} %>
+	<%} %> --%>
 	
 	/* ----------------------- Sub-Projects ------------------------ */ 
 	<%if(subprojects!=null && subprojects.size()>0) {%>
@@ -3206,7 +3224,7 @@ $( document ).ready(function() {
 	<%} %>
 	
 	/* ----------------------- Others ------------------------ */
-	<%if(acp!=null && acp.getExpndAsOn()!=null) {%>
+	<%if(acp!=null && acp.getTechReportNo()!=null) {%>
 		$('#myform9').hide();
 		$('#othersdiv').show();
 	<%} else{%>
@@ -3221,10 +3239,11 @@ $( document ).ready(function() {
 <script type="text/javascript">
 
 function AllowEdit(openingtab){
-	if(openingtab=='aimobjectives'){
+	/* if(openingtab=='aimobjectives'){
 		$('#myform1').show();
 		$('#aimobjectivesdiv').hide();
-	}else if(openingtab=='subprojects'){
+	}else  */
+	if(openingtab=='subprojects'){
 		$('#myform2').show();
 		$('#subprojectsdiv').hide();
 	}else if(openingtab=='carscapsi'){
@@ -3252,10 +3271,11 @@ function AllowEdit(openingtab){
 }
 
 function CloseEdit(closingtab){
-	if(closingtab=='aimobjectives'){
+	/* if(closingtab=='aimobjectives'){
 		$('#myform1').hide();
 		$('#aimobjectivesdiv').show();
-	}else if(closingtab=='subprojects'){
+	}else  */
+	if(closingtab=='subprojects'){
 		$('#myform2').hide();
 		$('#subprojectsdiv').show();
 	}else if(closingtab=='carscapsi'){

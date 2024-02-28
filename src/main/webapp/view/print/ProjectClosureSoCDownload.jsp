@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.projectclosure.model.ProjectClosureSoC"%>
@@ -164,10 +165,12 @@ p,td,th
 <body>
 <%
 ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
+ProjectClosure closure = (ProjectClosure)request.getAttribute("ProjectClosureDetails");
 ProjectClosureSoC soc = (ProjectClosureSoC)request.getAttribute("ProjectClosureSoCData");
 
-long projectId = soc!=null? soc.getProjectId():0;
+long closureId = closure!=null? closure.getClosureId():0;
 Object[] potherdetails = (Object[])request.getAttribute("ProjectOriginalRevDetails");
+Object[] expndDetails = (Object[])request.getAttribute("ProjectExpenditureDetails");
 
 List<Object[]> socApprovalEmpData = (List<Object[]>)request.getAttribute("SoCApprovalEmpData");	
 
@@ -178,8 +181,8 @@ FormatConverter fc = new FormatConverter();
 
 	<div align="center">
 		<h5 style="font-weight: bold;margin-top: 1rem;">STATEMENT OF CASE FOR PROJECT COMPLETED WITH 
-       		<%if(soc.getClosureCategory()!=null) {
-				String category = soc.getClosureCategory(); %>
+       		<%if(closure.getClosureCategory()!=null) {
+				String category = closure.getClosureCategory(); %>
 				<%if(category.equalsIgnoreCase("Completed Successfully")) {%>
 					COMPLETE SUCCESS
 				<%} else if(category.equalsIgnoreCase("Partial Success")){%>
@@ -243,8 +246,17 @@ FormatConverter fc = new FormatConverter();
 	    	</tr> 
 	    	<tr>
 	    		<td style="width: 4%;"><%=++slno %>.</td>
-	    		<td style="width: 35%;">Statement of Accounts ( as on <%if(soc.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(soc.getExpndAsOn()) %><%} %> )</td>
-	    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) : Total <span style="text-decoration: underline;"><%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000 ) %></span> Cr (FE <span style="text-decoration: underline;"><%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000 ) %></span> Cr)</td>
+	    		<td style="width: 35%;">Statement of Accounts ( as on <%-- <%if(soc.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(soc.getExpndAsOn()) %><%} %> --%> )</td>
+	    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) 
+	    		: Total <span style="text-decoration: underline;">
+				<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000 ) %> --%>
+				<%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %>
+				</span> Cr 
+				(FE <span style="text-decoration: underline;">
+				<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000 ) %> --%>
+				<%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %>
+				</span> Cr)
+	    		</td>
 	    	</tr>
 	    	<tr>
 	    		<td style="width: 4%;"><%=++slno %>.</td>
@@ -255,7 +267,7 @@ FormatConverter fc = new FormatConverter();
 	    	</tr>
 	    	<tr>
 	    		<td style="width: 4%;"><%=++slno %>.</td>
-	    		<td style="width: 35%;">Detailed reasons/considerations for Project <%=soc.getClosureCategory() %> </td>
+	    		<td style="width: 35%;">Detailed reasons/considerations for Project <%=closure.getClosureCategory() %> </td>
 	    		<td style="">: <%if(soc.getReason()!=null) {%><%=soc.getReason() %> <%} else{%>-<%} %> </td>
 	    	</tr>
 	    	<tr>
@@ -270,7 +282,7 @@ FormatConverter fc = new FormatConverter();
 	 				of the highest monitoring committee for closure of the project/programme
 	 			</td>
 	    		<td style="">: <%=soc.getMonitoringCommittee() %>
-	    			<a href="ProjectClosureSoCFileDownload.htm?projectId=<%=projectId%>&filename=monitoringcommitteefile" target="_blank">Download</a>
+	    			<a href="ProjectClosureSoCFileDownload.htm?closureId=<%=closureId%>&filename=monitoringcommitteefile" target="_blank">Download</a>
 	    		</td>
 	    	</tr>
 	    	<tr>
@@ -282,7 +294,7 @@ FormatConverter fc = new FormatConverter();
 	    		<td style="width: 4%;"><%=++slno %>.</td>
 	    		<td style="width: 35%;">Lessons Learnt</td>
 	    		<td style="">:
-	    			<a href="ProjectClosureSoCFileDownload.htm?projectId=<%=projectId%>&filename=lessonslearntfile" target="_blank">Download</a>
+	    			<a href="ProjectClosureSoCFileDownload.htm?closureId=<%=closureId%>&filename=lessonslearntfile" target="_blank">Download</a>
 	    		</td>
 	    	</tr>
 	    	<tr>
