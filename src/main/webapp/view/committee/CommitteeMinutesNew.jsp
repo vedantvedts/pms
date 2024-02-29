@@ -69,6 +69,11 @@
 	List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envisagedDemandlist");
 	
 	
+	
+	// new
+	
+		LinkedHashMap< String, ArrayList<Object[]>> actionlist = (LinkedHashMap< String, ArrayList<Object[]>>) request.getAttribute("tableactionlist");
+	
 	%>
 <style type="text/css">
 p{
@@ -1624,6 +1629,66 @@ for(Object[] temp : invitedlist){
 			<%} %>
 			</div>
 		</div> 
+		
+		 <h1 class="break"></h1> 
+		
+						<%if(actionlist.size()>=0){ %>
+							
+					<div align="center">
+						<div style="text-align: center ; padding-right: 15px; " ><h3 style="text-decoration: underline;">Annexure - AI</h3></div>
+						<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEM DETAILS</h2></div>
+					
+						<table style="  margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ;margin-right: 10px;">
+						<tbody>
+							<tr>
+								<th  class="sth" style=" max-width: 40px"> SN </th>
+								<th  class="sth" style=" max-width: 110px"> Action Id</th>	
+								<th  class="sth" style=" max-width: 600px"> Item</th>				
+								<th  class="sth" style=" max-width: 100px"> Responsibility </th>					
+								<th  class="sth" style=" width: 100px"> PDC</th>
+							</tr>
+							
+							<% 	int count =1;
+							  	Iterator actIterator = actionlist.entrySet().iterator();
+								while(actIterator.hasNext()){	
+								Map.Entry mapElement = (Map.Entry)actIterator.next();
+					            String key = ((String)mapElement.getKey());
+					            ArrayList<Object[]> values=(ArrayList<Object[]>)mapElement.getValue();
+								%>
+								<tr>
+									<td class="std" style="text-align: center;"> <%=count%></td>
+									<td  class="std">
+										
+										<%	int count1=0;
+											for(Object obj[]:values){
+												 count1++; %>
+												<%if(count1==1 ){ %>
+													<%if(obj[3]!=null){ %> <%= obj[3]%><%}else{ %> - <%} %>
+												<%}else if(count1==values.size() ){ %>
+													<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
+												<%} %>
+										<%} %>
+									</td>
+									
+									<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
+									<td  class="std" >
+									<%	int count2=0;
+										for(Object obj[]:values){ %>
+										<%if(obj[13]!=null){ %> <%= obj[13]%>,&nbsp;<%=obj[14] %>
+											<%if(count2>=0 && count2<values.size()-1){ %>
+											,&nbsp;
+											<%} %>
+										<%}else{ %> - <%} %>
+									<%count2++;} %>
+									</td>                       						
+									<td  class="std"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
+								</tr>				
+							<% count++;} %>
+						</tbody>
+					</table>
+					</div>
+					<br>	
+				<%} %>
 	
 	</div>
 	</body>

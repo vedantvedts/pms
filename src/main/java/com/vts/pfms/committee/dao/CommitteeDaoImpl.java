@@ -36,6 +36,7 @@ import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMemberRep;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
+import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
@@ -97,10 +98,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String UPDATEOTP="UPDATE committee_schedule SET kickoffotp=:otp,scheduleflag=:scheduleflag WHERE scheduleid=:committeescheduleid";
 	private static final String KICKOFFOTP="SELECT kickoffotp FROM committee_schedule WHERE scheduleid=:scheduleid";
 	private static final String PROJECTDETAILS="SELECT projectid, projectname, projectdescription,projectmainid,projectcode,projecttype,projectimmscd, unitcode, sanctionno,PDC,projectcategory FROM project_master WHERE projectid=:projectid";
-	private static final String PROJECTSCHEDULELISTALL ="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname,cs.scheduleflag FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.isactive=1 AND cs.projectid=:projectid ";
+	private static final String PROJECTSCHEDULELISTALL ="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname,cs.scheduleflag FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.isactive=1 AND cs.projectid=:projectid ORDER BY cs.scheduledate";
 	private static final String PROJECTAPPLICABLECOMMITTEELIST="SELECT  b.committeeid,a.projectid, a.autoschedule,b.committeeshortname,b.committeename,b.projectapplicable FROM committee_project a,committee b WHERE a.committeeid=b.committeeid AND b.projectapplicable='P' AND a.projectid=:projectid";
 	private static final String UPDATECOMITTEEMAINID = "UPDATE committee_schedule SET committeemainid=:committeemainid WHERE scheduleid=:scheduleid";
-	private static final String PROJECTCOMMITTEESCHEDULELISTALL ="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname ,cs.scheduleflag FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.projectid=:projectid AND cs.CommitteeId=:committeeid AND cs.isactive=1 ";
+	private static final String PROJECTCOMMITTEESCHEDULELISTALL ="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname ,cs.scheduleflag FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.projectid=:projectid AND cs.CommitteeId=:committeeid AND cs.isactive=1 ORDER BY cs.scheduledate";
 	private static final String AGENDARETURNDATA="SELECT remarks,empid,meetingstatus FROM committee_meeting_approval WHERE meetingstatus IN ('MAR','MMR') AND scheduleid=:scheduleid ";
 	private static final String LABDETAILS = "SELECT LabMasterId, LabCode, LabName, LabUnitCode, LabAddress, LabCity, LabPin, LabTelNo, LabFaxNo, LabEmail, LabAuthority, LabAuthorityId, LabRfpEmail, LabId, ClusterId, LabLogo FROM lab_master WHERE labcode=:labcode ;";
 	private static final String COMMITTEESCHEDULEDATAPRO = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive, a.committeeid ,b.committeeshortname, b.committeename, c.MeetingStatusId FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid AND a.projectid=:projectid ";
@@ -2912,6 +2913,42 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		List<Object[]> CommitteeOthersList=(List<Object[]>)query.getResultList();
 		return CommitteeOthersList;
 
+	}
+	
+	@Override
+	public Long MomAttach(CommitteeMomAttachment cm) throws Exception {
+		
+		manager.persist(cm);
+		manager.flush();
+		return cm.getAttachmentId();
+	}
+	
+	@Override
+	public Long UpdateMomAttach(Long scheduleId) throws Exception {
+		
+		String s= "Update committee_mom_attachment set isactive='0' where ScheduleId=:ScheduleId";
+		Query query = manager.createNativeQuery(s);
+		query.setParameter("ScheduleId", scheduleId);
+		
+		return (long) query.executeUpdate();
+	}
+	
+	private static final String MOMATTACH="SELECT AttachmentId,FilePath,AttachmentName FROM committee_mom_attachment WHERE ScheduleId=:ScheduleId AND isactive='1';";
+	
+	@Override
+	public Object[] MomAttachmentFile(String committeescheduleid) throws Exception {
+		
+		Query query = manager.createNativeQuery(MOMATTACH);
+		query.setParameter("ScheduleId", committeescheduleid);
+		
+		List<Object[]>momattach= (List<Object[]>)query.getResultList();
+		
+		if(momattach.size()>0) {
+			return momattach.get(0);
+		}
+		
+		
+		return null;
 	}
 }
 

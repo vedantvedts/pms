@@ -346,10 +346,12 @@ public class LoginController {
 		String LoginType = (String) ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String LabCode = (String) ses.getAttribute("labcode");
+		List<Object[]> updatedProjectsList = new ArrayList<>();
 		
 		
-		
-		List<Object[]> projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
+		List<Object[]> projects = new ArrayList<>();
+		List<Object[]> projectsReturns = new ArrayList<>();
+				projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
 		
 		req.setAttribute("projects", projects);
 		req.setAttribute("tableshow", "no");
@@ -358,18 +360,18 @@ public class LoginController {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			System.out.println("in post");
 			String pid = String.valueOf(req.getParameter("getprojects").toString());
-			List<Object[]> updatedProjectsList = Actservice.getAllRecentUpdateList(pid);
+			updatedProjectsList = Actservice.getAllRecentUpdateList(pid);
+			System.out.println(updatedProjectsList.size());
 			if(updatedProjectsList.size()>0)
 			req.setAttribute("tableshow", "yes");
-			System.out.println(updatedProjectsList.size()>0);
+			else
+				req.setAttribute("resultfail", "Not Yet Updated");
 			for(int i=0;i<updatedProjectsList.size();i++)
 			{
-				System.out.println(updatedProjectsList.get(i)[1]);
 				updatedProjectsList.get(i)[1] = Actservice.getEmpnameById(Integer.parseInt((String.valueOf(updatedProjectsList.get(i)[1]))));
 				String strNew = String.valueOf(updatedProjectsList.get(i)[1]).replace("[", "");
 				strNew = String.valueOf(strNew).replace("]", "");
 				updatedProjectsList.get(i)[1] = strNew;
-				System.out.println(updatedProjectsList.get(i)[1]);
 				strNew =String.valueOf(Actservice.getProjectCodeById(Integer.parseInt(pid))).replace("[", "");
 				strNew = String.valueOf(strNew).replace("]", "");
 				req.setAttribute("projectname", strNew );
@@ -394,10 +396,21 @@ public class LoginController {
 				
 				
 			}
+			String selectedproj = "";
+			for(int i=0;i<projects.size();i++)
+			{
+				if(Integer.valueOf(pid) == Integer.valueOf(projects.get(i)[0].toString()) ) {
+					selectedproj=projects.get(i)[4].toString()+projects.get(i)[17];
+					projects.remove(i);}
+			}
+			
+			req.setAttribute("projects", projects);
+			req.setAttribute("selectedProject", selectedproj);
+			
 		
-			req.setAttribute("tabledata", updatedProjectsList);
-			System.out.println(Actservice.getAllRecentUpdateList(pid));
+			
 		}
+		req.setAttribute("tabledata", updatedProjectsList);
 		return "master/WeeklyUpdateReport";
 	}
 	

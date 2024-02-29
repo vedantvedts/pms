@@ -3266,4 +3266,9 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		public long editreqSummary(RequirementSummary rs) throws Exception {
 			return dao.editreqSummary(rs);
 		}
+		@Override
+		public Object[] DocTempAttributes() throws Exception {
+			 
+			return dao.DocTempAttributes();
+		}
 }

@@ -318,4 +318,16 @@ public class HeaderServiceImpl implements HeaderService {
 	
 		return dao.getNotificationId(Empid);
 	}
+	
+	@Override
+	public List<Object[]> getFormNameByName(String Search)  throws Exception{
+		// TODO Auto-generated method stub
+		return dao.getFormNameByName(Search);
+	}
+
+	@Override
+	public Boolean getRoleAccess(String formModuleId, String logintype) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.getRoleAccess( formModuleId,  logintype);
+	}
 }

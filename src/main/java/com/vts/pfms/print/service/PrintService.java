@@ -120,5 +120,7 @@ public interface PrintService {
 	public long briefingReturnAction(PfmsBriefingFwdDto briefingDto)throws Exception;
 	public Object[] getBriefingData(String sheduleId)throws Exception;
 	public List<Object[]> getBriefingRemarks(String sheduleId)throws Exception;
+	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode, String Date)throws Exception;
+	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String Date) throws Exception;
 
 }

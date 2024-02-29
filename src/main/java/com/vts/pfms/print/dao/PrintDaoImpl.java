@@ -240,6 +240,19 @@ public class PrintDaoImpl implements PrintDao {
 		return Milestones;
 	}
 	
+	
+	@Override
+	public List<Object[]> Milestones(String projectid, String committeeid, String Date) throws Exception {
+		String milestones ="CALL Pfms_Milestone_Level_Prior_meeting(:projectid,:committeeid,:date)";
+		Query query=manager.createNativeQuery(milestones);	   
+		query.setParameter("projectid", projectid);
+		query.setParameter("committeeid", committeeid);
+		query.setParameter("date", Date);
+		List<Object[]> Milestones=(List<Object[]>)query.getResultList();	
+		
+		return Milestones;
+	}
+	
 	@Override
 	public List<Object[]> MilestonesChange(String projectid,String milestoneactivitystatusid) throws Exception {
 
@@ -1298,4 +1311,16 @@ public class PrintDaoImpl implements PrintDao {
 				return remarksList;
 			}
 			
+			
+		@Override
+		public List<Object[]> LastPMRCActions(String projectid, String committeeid, String date) throws Exception {
+			// TODO Auto-generated method stub
+			Query query=manager.createNativeQuery("CALL Last_PMRC_Actions_List_meeting(:projectid,:committeeid,:date);");	   
+			query.setParameter("projectid", projectid);
+			query.setParameter("committeeid", committeeid);
+			query.setParameter("date", date);
+			//query.setParameter("lastpmrcdate", lastpmrcdate);
+			List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
+			return LastPMRCActions;
+		}
 	}

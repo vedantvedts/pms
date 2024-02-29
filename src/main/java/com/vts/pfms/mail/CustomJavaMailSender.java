@@ -138,8 +138,8 @@ public class CustomJavaMailSender {
 				  String email=meetingMailDtoSubData.get(0).getEmail();
 				  String DronaEmail=meetingMailDtoData.get(0).getDronaEmail();
 				  String subject="Tommorrow's Meeting Schedule";
-				  CompletableFuture<Integer> sendResult = sendScheduledEmailAsync(email,DronaEmail, subject, message, true);
-				  
+				  CompletableFuture<Integer> sendResult = sendScheduledEmailAsync1(email, subject, message, true);
+				  CompletableFuture<Integer> sendResult2 = sendScheduledEmailAsync2(DronaEmail, subject, message, true);
 				  
 					meetingMailDtoData=meetingMailDtoData.stream().filter( e -> !e.getEmpid().equalsIgnoreCase(empid)).collect(Collectors.toList());
 					++mailCount;
@@ -154,7 +154,7 @@ public class CustomJavaMailSender {
 				}
 	
 	 	@Async
-	    public CompletableFuture<Integer> sendScheduledEmailAsync(String email,String DronaEmail, String subject, String msg, boolean isHtml) {
+	    public CompletableFuture<Integer> sendScheduledEmailAsync1(String email, String subject, String msg, boolean isHtml) {
 		 
 	 		System.out.println("email "+email);
 	        String typeOfHost = "L";
@@ -208,6 +208,83 @@ public class CustomJavaMailSender {
 			    	MimeMessage message = new MimeMessage(session);
 			    	message.setFrom(new InternetAddress(mailSender.getUsername()));
 		            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+		            //message.addRecipient(Message.RecipientType.TO, new InternetAddress(DronaEmail));
+					message.setSubject(subject);
+					message.setText(msg);
+					message.setContent(msg, "text/html");// this code is used to make the message in HTML formatting
+					// Send message
+					Transport.send(message);
+					System.out.println("Message Sent");
+					mailSendresult++;
+			    } catch (AuthenticationFailedException e) {
+			        // Handle authentication failure (wrong password) and complete the CompletableFuture with -2
+			        e.printStackTrace();
+			        System.out.println("ERORRRR -2");
+			        return CompletableFuture.completedFuture(-2);
+			    } catch (MessagingException e) {
+			        // Handle other email sending exceptions and complete the CompletableFuture with -1
+			        e.printStackTrace();
+			        System.out.println("ERORRRR -1");
+			        return CompletableFuture.completedFuture(-1);
+			    }
+			    return CompletableFuture.completedFuture(mailSendresult);
+			  }
+	    }
+	 	
+	 	@Async
+	    public CompletableFuture<Integer> sendScheduledEmailAsync2(String DronaEmail, String subject, String msg, boolean isHtml) {
+		 
+	        String typeOfHost = "D";
+			MailConfigurationDto mailAuthentication;
+			
+			try {
+				mailAuthentication = mailService.getMailConfigByTypeOfHost(typeOfHost);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				return null;
+			}
+
+			
+			  if (mailAuthentication == null) {
+			      // Handle the case where mail configuration for the specified typeOfHost is not found
+				  System.out.println("ERRROR -3 ");
+			      return CompletableFuture.completedFuture(-3); // You can choose an appropriate error code
+			  }else {
+
+	      
+			  JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+			    // Set mail configuration from the database
+			    mailSender.setHost(mailAuthentication.getHost().toString());
+			    mailSender.setPort(Integer.parseInt(mailAuthentication.getPort().toString()));
+			    mailSender.setUsername(mailAuthentication.getUsername().toString());
+			    mailSender.setPassword(mailAuthentication.getPassword().toString());
+
+			    Properties properties = System.getProperties();
+				// Setup mail server
+				properties.setProperty("mail.smtp.host", mailSender.getHost());
+				//properties.put("mail.smtp.starttls.enable", "true");
+				// SSL Port
+				properties.put("mail.smtp.port", mailSender.getPort());
+				// enable authentication
+				properties.put("mail.smtp.auth", "true");
+				// SSL Factory
+				//properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			    
+				properties.put("mail.smtp.starttls.enable", "true");
+
+			    Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+					// override the getPasswordAuthentication
+					// method
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(mailSender.getUsername(), mailSender.getPassword());
+					}
+				});
+			    int mailSendresult = 0;
+			    try {
+			    	MimeMessage message = new MimeMessage(session);
+			    	message.setFrom(new InternetAddress(mailSender.getUsername()));
+		            //message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 		            message.addRecipient(Message.RecipientType.TO, new InternetAddress(DronaEmail));
 					message.setSubject(subject);
 					message.setText(msg);
@@ -230,6 +307,7 @@ public class CustomJavaMailSender {
 			    return CompletableFuture.completedFuture(mailSendresult);
 			  }
 	    }
+	 	
 	 	
 		public int sendMessage(String toEmail, String subject, String msg)  {
 			
@@ -289,6 +367,77 @@ public class CustomJavaMailSender {
 				// Send message
 				Transport.send(message);
 				System.out.println("Message Sent");
+				mailSendresult++;
+			} catch (MessagingException mex) {
+				mex.printStackTrace();
+			}
+			return mailSendresult;
+		}
+
+		
+public int sendMessage(String []Email, String subject, String msg)  {
+	long startTime = System.currentTimeMillis();
+			String typeOfHost = "L";
+			MailConfigurationDto mailAuthentication=null;
+			try {
+				mailAuthentication = mailService.getMailConfigByTypeOfHost(typeOfHost);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			// change accordingly
+			String to = Email[0];
+			// change accordingly
+			String from = mailAuthentication.getUsername().toString();
+			// or IP address
+			String hostAddress = mailAuthentication.getHost().toString();
+			// mail id from which mail will go
+			final String username = mailAuthentication.getUsername().toString();
+			// correct password for gmail id
+			final String password = mailAuthentication.getPassword().toString();
+			System.out.println("Sending Mail to" + Email[0]);
+			// Get the session object
+			// Get system properties
+			Properties properties = System.getProperties();
+			// Setup mail server
+			properties.setProperty("mail.smtp.host", host);
+			//properties.put("mail.smtp.starttls.enable", "true");
+			// SSL Port
+			properties.put("mail.smtp.port", port);
+			// enable authentication
+			properties.put("mail.smtp.auth", "true");
+			// SSL Factory
+			properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			// creating Session instance referenced to
+			// Authenticator object to pass in
+			// Session.getInstance argument
+			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+				// override the getPasswordAuthentication
+				// method
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(username, password);
+				}
+			});
+			int mailSendresult = 0;
+			// compose the message
+			try {
+				// javax.mail.internet.MimeMessage class is mostly
+				// used for abstraction.
+				MimeMessage message = new MimeMessage(session);
+				// header field of the header.
+				message.setFrom(new InternetAddress(from));
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+				for (String ccRecipient : Email) {
+					message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccRecipient));
+				}
+				message.setSubject(subject);
+				message.setText(msg);
+				message.setContent(msg, "text/html");// this code is used to make the message in HTML formatting
+				// Send message
+				Transport.send(message);
+				long endTime = System.currentTimeMillis();
+				long elapsedTime = endTime - startTime;
+				System.out.println("Elapsed time: " + elapsedTime + " milliseconds");
 				mailSendresult++;
 			} catch (MessagingException mex) {
 				mex.printStackTrace();

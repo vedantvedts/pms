@@ -35,4 +35,7 @@ public interface HeaderService {
 	public List<Object[]> LabMasterList(String Clusterid) throws Exception;
 	// new method by anil
 	public List<Object[]> getNotificationId(String Empid)throws Exception;
+	public List<Object[]> getFormNameByName(String valueOf) throws Exception;
+	public Boolean getRoleAccess(String valueOf, String string)throws Exception;
+	
 }

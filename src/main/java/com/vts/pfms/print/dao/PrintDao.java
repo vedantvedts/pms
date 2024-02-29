@@ -123,5 +123,7 @@ public interface PrintDao {
 	public Object[] getUserId(String sheduleId)throws Exception;
 	public String getEmpName(String empId)throws Exception;
 	public List<Object[]> getBriefingRemarks(String sheduleId)throws Exception;
+	public List<Object[]> Milestones(String projectid, String committeeCode, String date)throws Exception;
+	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String date) throws Exception;
 
 }

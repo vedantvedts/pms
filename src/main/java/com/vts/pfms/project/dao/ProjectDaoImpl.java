@@ -3725,8 +3725,24 @@ private static final String ABBREVIATIONS="SELECT AbbreviationsId,Abbreviations,
 			
 			return query.executeUpdate();
 		}
+		private static final String DOCTEMPATTRIBUTES="SELECT a.HeaderFontSize,a.HeaderFontWeight,a.SubHeaderFontsize, a.SubHeaderFontweight,a.ParaFontSize,a.ParaFontWeight,a.MainTableWidth, a.subTableWidth,a.AttributId,a.SuperHeaderFontsize,a.SuperHeaderFontWeight,a.FontFamily FROM  pfms_doc_template_attributes a";
+		@Override
+		public Object[] DocTempAttributes() throws Exception {
+			
+			try {
+				Query query=manager.createNativeQuery(DOCTEMPATTRIBUTES);
+				List<Object[]> list =(List<Object[]>)query.getResultList();	
+				if(list!=null && list.size()>0) {
+					return list.get(0);
+				}else {
+					return null;
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 }
 
-
+}
 
 

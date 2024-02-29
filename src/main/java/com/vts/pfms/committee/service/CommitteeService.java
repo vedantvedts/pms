@@ -26,6 +26,7 @@ import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
+import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
@@ -261,6 +262,9 @@ public interface CommitteeService {
 	public List<Object[]> getTodaysMeetings(String date)throws Exception;// to get all the scheduleid and projectid of the meeting scheduled on that day
 	public List<Object[]> actionDetailsForNonProject(String committeeId, String scheduledate) throws Exception;// 27-11 to get all action points for non project
 	public List<Object[]> CommitteeOthersList(String projectid, String divisionid, String initiationid, String projectstatus)throws Exception; //project dashborad others meting list
+	public Long MomAttach(CommitteeMomAttachment cm,String LabCode) throws Exception;// new Method
+	public Long UpdateMomAttach(Long scheduleId) throws Exception;
+	public Object[] MomAttachmentFile(String committeescheduleid) throws Exception;
 
 	
     

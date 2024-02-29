@@ -528,6 +528,26 @@ public class HeaderController {
 		
 		
 	}
+	
+	@RequestMapping(value = "SmartSearch.htm" , method = RequestMethod.GET)
+	public @ResponseBody String SmartSearch(HttpServletRequest request ,HttpSession ses) throws Exception
+	{
+		Gson json = new Gson();
+		List<Object[]> send = null;
+		if (String.valueOf(request.getParameter("search")).length()>0)
+		send = service.getFormNameByName(String.valueOf(request.getParameter("search")));
+		return json.toJson(send);
+	}
+	
+	@RequestMapping(value = "searchForRole.htm" , method = RequestMethod.GET)
+	public @ResponseBody String searchForRole(HttpServletRequest request ,HttpSession ses) throws Exception
+	{
+		Gson json = new Gson();
+		Boolean send = null;
+		if (String.valueOf(request.getParameter("search")).length()>0)
+		send = service.getRoleAccess(String.valueOf(request.getParameter("search")),ses.getAttribute("LoginType").toString());
+		return json.toJson(send);
+	}
 }
 
 

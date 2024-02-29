@@ -19,6 +19,7 @@ import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMemberRep;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
+import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
@@ -284,6 +285,9 @@ public interface CommitteeDao {
 	public List<Object[]> getTodaysMeetings(String date)throws Exception;
 	public List<Object[]> actionDetailsForNonProject(String committeeId)throws Exception;
 	public List<Object[]> CommitteeOthersList(String projectid, String divisionid, String initiationid, String projectstatus)throws Exception;
+	public Long MomAttach(CommitteeMomAttachment cm)throws Exception;
+	public Long UpdateMomAttach(Long scheduleId) throws Exception;
+	public Object[] MomAttachmentFile(String committeescheduleid) throws Exception;
 	
 	
 

@@ -472,6 +472,9 @@ public class PrintServiceImpl implements PrintService{
 		return newList;
 	}
 
+
+	
+	
 	@Override
 	public int saveTechImages(MultipartFile file, String ProjectId, String path,String userName,String LabCode) throws Exception {
 		logger.info(new Date()  +"Inside SERVICE saveTechImages ");
@@ -1040,5 +1043,24 @@ public class PrintServiceImpl implements PrintService{
 		return dao.getBriefingRemarks(sheduleId);
 	}
 	
+	@Override
+	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode, String Date)throws Exception {
+		List<Object[]>milestones=dao.Milestones(Projectid,CommitteeCode,Date);
+		List<Object[]>newList=new ArrayList<>();
+		
+		
+		newList=milestones.stream()
+					.filter(i ->( i[21].toString().equalsIgnoreCase("0") && i[17]!=null && Integer.parseInt(i[17].toString())>0 && i[26]!=null  && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )
+					||(!i[21].toString().equalsIgnoreCase("0") && i[17]!=null && Integer.parseInt(i[17].toString())>0 && i[26] !=null && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString()))) && i[29].toString().equalsIgnoreCase("Y")) // for 6.(a)
+					.collect(Collectors.toList());
+		
+	
+			return newList;
+	}
+	
+	@Override
+	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String Date) throws Exception {
+		return dao.LastPMRCActions(projectid,committeeid,Date);
+	}
 	
 }

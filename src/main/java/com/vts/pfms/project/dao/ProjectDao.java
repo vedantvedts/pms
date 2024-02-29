@@ -354,5 +354,6 @@ public interface ProjectDao {
 	public long addReqSummary(RequirementSummary rs)throws Exception;
 	public List<Object[]> getDocumentSummary(String initiationid) throws Exception;
 	public long editreqSummary(RequirementSummary rs) throws Exception;
+	public Object[] DocTempAttributes()throws Exception;
 	
 }

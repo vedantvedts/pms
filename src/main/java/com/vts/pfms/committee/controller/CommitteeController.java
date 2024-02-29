@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
@@ -27,18 +28,28 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
@@ -94,6 +105,8 @@ import com.ibm.icu.text.DecimalFormat;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
+import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -104,6 +117,7 @@ import com.itextpdf.kernel.pdf.PdfReader;
 //import com.itextpdf.kernel.pdf.PdfWriter;
 //import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.kernel.utils.PdfMerger;
+import com.itextpdf.kernel.pdf.CompressionConstants;
 //import com.itextpdf.layout.Document;
 import com.itextpdf.kernel.pdf.EncryptionConstants;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -140,10 +154,13 @@ import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
+import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.mail.CustomJavaMailSender;
+import com.vts.pfms.mail.MailConfigurationDto;
+import com.vts.pfms.mail.MailService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.controller.PrintController;
@@ -160,11 +177,17 @@ public class CommitteeController {
 
 	@Autowired CommitteeService service;
 	
+	@Autowired
+	MailService mailService;
+	
 //	@Autowired 
 //	private JavaMailSender javaMailSender;
 	
 	@Autowired
 	CustomJavaMailSender cm;
+	
+	@Value("${port}")
+	private String port;
 	
 	@Autowired 
 	BCryptPasswordEncoder encoder;
@@ -1528,6 +1551,7 @@ public class CommitteeController {
 			req.setAttribute("minutesattachmentlist",service.MinutesAttachmentList(CommitteeScheduleId));
 			req.setAttribute("committeescheduledata",service.CommitteeActionList(CommitteeScheduleId));
 			req.setAttribute("filesize",file_size);
+			req.setAttribute("MomAttachment", service.MomAttachmentFile(CommitteeScheduleId));
 			
 		}
 		catch (Exception e) {
@@ -3150,6 +3174,43 @@ public class CommitteeController {
 		redir.addFlashAttribute("unit1","unit1");
 		return "redirect:/CommitteeScheduleMinutes.htm";	
 	}
+	@RequestMapping(value="MomAttachment.htm",method=RequestMethod.POST)
+	public String MomAttachment(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart("MOMFile") MultipartFile FileAttach) throws Exception{
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside MomAttachment.htm "+UserId);
+		try
+		{			
+			CommitteeMomAttachment cm = new CommitteeMomAttachment();
+			
+			cm.setScheduleId(Long.parseLong(req.getParameter("ScheduleId")));
+			cm.setFile(FileAttach);
+			cm.setCreatedBy(UserId);
+			cm.setCreatedDate(sdf1.format(new Date()));
+			
+			long result=service.UpdateMomAttach(cm.getScheduleId());
+			
+			Long count = service.MomAttach(cm,LabCode);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "Mom Attachment Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Mom Attachment Add Unsuccessful");
+			}
+			
+		}
+		
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside MomAttachment.htm "+UserId,e);
+		}
+		
+		redir.addFlashAttribute("committeescheduleid", req.getParameter("ScheduleId"));
+		redir.addFlashAttribute("specname", "Introduction");
+		redir.addFlashAttribute("unit1","unit1");
+		return "redirect:/CommitteeScheduleMinutes.htm";	
+	}
 	
 	@RequestMapping(value="MinutesAttachmentDelete.htm",method=RequestMethod.POST)
 	public String MinutesAttachmentDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
@@ -4192,20 +4253,21 @@ public class CommitteeController {
 					emails.add(obj[6].toString());				 
 				}
 				
-				if(obj[10]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW"))) 
-				{				 
-					emails.add(obj[10].toString());				 
-				}
+//				if(obj[10]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW"))) 
+//				{				 
+//					emails.add(obj[10].toString());				 
+//				}
 				
 			}
 			String [] Email = emails.toArray(new String[emails.size()]);
 			String subject=committeemaindata[8] + " " +" Committee Formation Letter";
 			int count=0;
-			if(Email!=null && Email.length>0){
-			for(String email:Email) {
-			count= count +	cm.sendMessage(email, subject, Message);
-			}
-			}
+//			if(Email!=null && Email.length>0){
+//			for(String email:Email) {
+//			count= count +	cm.sendMessage(email, subject, Message);
+//			}
+//			}
+			count = cm.sendMessage(Email,subject,Message);
 			if (count>0) 
 			{
 			redir.addAttribute("result", " Committee Formation Letter Sent Successfully !! ");
@@ -4334,9 +4396,9 @@ public class CommitteeController {
 						emails.add(obj[8].toString());
 					}
 					
-					if(obj[13]!=null) {
-						emails.add(obj[13].toString());
-					}
+//					if(obj[13]!=null) {
+//						emails.add(obj[13].toString());
+//					}
 				}
 			}
 			
@@ -4370,9 +4432,10 @@ public class CommitteeController {
 				try{
 					int count=0;
 					String subject=scheduledata[8] + " " +" Committee Invitation Letter";
-					for(String email:Email) {
-					count= count +	cm.sendMessage(email, subject, Message);
-					}
+//					for(String email:Email) {
+//					count= count +	cm.sendMessage(email, subject, Message);
+//					}
+					count=cm.sendMessage(Email, subject, Message);
 					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
 					if(count>0) {
 						redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
@@ -5763,9 +5826,11 @@ public class CommitteeController {
 						req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
 						req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 						req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
-					//	req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committee.getCommitteeShortName().trim()));
-						req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
-		
+						//req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
+					
+						// this method will show the milestones based on each meeting date
+						req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid,committeescheduleeditdata[2].toString()));
+
 		//				req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
 		//				req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
 						String LevelId= "2";
@@ -5857,8 +5922,12 @@ public class CommitteeController {
 								}
 						} 
 						
-						 	req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid));
-//							req.setAttribute("actionlist",actionsdata);
+						 	//req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid));
+						 	req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid,committeescheduleeditdata[2].toString()));
+						 	
+//							
+						 	
+						 	req.setAttribute("actionlist",actionsdata);
 						 	req.setAttribute("procurementOnDemand", procurementOnDemand);
 						 	req.setAttribute("procurementOnSanction", procurementOnSanction);
 						 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
@@ -5931,7 +6000,10 @@ public class CommitteeController {
 							    		req.setAttribute("mappmrc", mappmrc);
 								    	req.setAttribute("mapEB", mapEB);
 								    	
+								    	Object[]momAttachment=service.MomAttachmentFile(committeescheduleid);
+								    
 								    	
+								    	 req.setAttribute("tableactionlist",  actionsdata);
 									 	 //
 									 	 String filename=committeescheduleeditdata[11].toString().replace("/", "-");
 									 	 String path=req.getServletContext().getRealPath("/view/temp");
@@ -5939,92 +6011,111 @@ public class CommitteeController {
 									 	 CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 									 	 req.getRequestDispatcher("/view/committee/CommitteeMinutesNew.jsp").forward(req, customResponse);
 									 	 String html = customResponse.getOutput();
-									 	 HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
-									 	 req.setAttribute("tableactionlist",  actionsdata);
-									 	 CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
-									 	 req.getRequestDispatcher("/view/committee/ActionDetailsTable.jsp").forward(req, customResponse1);
-									 	 String html1 = customResponse1.getOutput();  
-									 	 HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
 									 	 
-//									 	PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-//									 	PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-//							            PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+									 	 
+									 	 byte[]data=html.getBytes();
+									 	InputStream fis1 = new ByteArrayInputStream(data);
+									 	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path + "/" + filename +  ".pdf"));
+									 	pdfDoc.setTagged(); 
+									 	Document document = new Document(pdfDoc, PageSize.LEGAL);
+									 	document.setMargins(50, 100, 150, 50);
+									 	ConverterProperties converterProperties = new ConverterProperties();
+									 	FontProvider dfp = new DefaultFontProvider(true, true, true);
+									 	converterProperties.setFontProvider(dfp);
+										HtmlConverter.convertToPdf(fis1, pdfDoc, converterProperties);
+										
+										PdfWriter pdfw=null;
+										
+										if(PROTECTED_MINUTES == null) {
+											 pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
+										}else {
+											String password = "LRDE123";
+								            pdfw = new PdfWriter(path +File.separator+ "mergedb.pdf",
+						                    new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
+						                            EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
+										}
+								        PdfDocument pdfDocs = new PdfDocument(pdfw);
+								        pdfw.setCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+								        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+								        Document docMain = new Document(pdfDocMain,PageSize.A4);
+								        docMain.setMargins(50, 50, 50, 50);
+								  
+								        docMain.close();
+								        pdfDocMain.close();
+								        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
 								        
-									 	PdfWriter pdfw = null;
-									 	PdfReader pdf1 = null;
-									 	PdfReader pdf2 = null;
-									 	
-									 	PdfDocument pdfDocument = null;
-									    PdfDocument pdfDocument2 = null;
-									    PdfMerger merger = null;
-									 	 
-									 	 if(PROTECTED_MINUTES == null) {
-									 		 
-											 pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-											 pdf1=new PdfReader(path+File.separator+filename+".pdf");
-									         pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
-									         
-									         pdfDocument = new PdfDocument(pdf1, pdfw);
-											 pdfDocument2 = new PdfDocument(pdf2);
-											 merger = new PdfMerger(pdfDocument);
-											 
-											 merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
-									 		 
-									 	 } else {
+								        
+								        PdfReader pdf1=new PdfReader(path+File.separator+filename+"Maintemp.pdf");
+								        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+								        PdfMerger merger = new PdfMerger(pdfDocument);
+								        
+								        if(momAttachment!=null) {
+								        	if(momAttachment[2]!=null) {
+								        		if(FilenameUtils.getExtension(momAttachment[2].toString()).equalsIgnoreCase("pdf")) {
+							        		        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+momAttachment[1]+"\\"+momAttachment[2]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+							        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
+							        		        document4.setMargins(50, 50, 50, 50);
+							        		        Rectangle pageSize;
+							        		        PdfCanvas canvas;
+							        		        int n = pdfDocument1.getNumberOfPages();
+							        		
+							        		        for(int i=1;i<=n;i++) {
+							        		            PdfPage page = pdfDocument1.getPage(i);
+							        		            pageSize = page.getPageSize();
+							        		            canvas = new PdfCanvas(page);
+							        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40); // Left side position
+							        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40); // Right side position
 
-										 	String password = "lrde123";
-								            pdfw = new PdfWriter(path +File.separator+ "merged.pdf",
-								                    new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
-								                            EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
-	
-								            pdf1=new PdfReader(path+File.separator+filename+".pdf");
-								            pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
-								            
-										 	 
-										    pdfDocument = new PdfDocument(pdf1, pdfw);
-										    pdfDocument2 = new PdfDocument(pdf2);
-										    merger = new PdfMerger(pdfDocument);
-										    
-										    merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
-							        
-										    PMSFileUtils.addWatermarktoPdf(pdfDocument, EmpName , EmpNo );
-									    
-									 	}
+							        		            
+							        		            // Add content on the left side
+							        		            String[] no=committeescheduleeditdata[11].toString().split("/");
+							        		        
+
+							        		            // Add content on the right side
+							        		            
+							        		            canvas.beginText()
+							        		                .setFontAndSize(PdfFontFactory.createFont(FontConstants.TIMES_ROMAN), 10)
+							        		                .moveText(pageSize.getWidth()-200 , pageSize.getHeight() - 10)
+							        		                .showText("Attachment to MoM - "+no[2]+"/"+(service.MeetingNo(committeescheduleeditdata)>0?service.MeetingNo(committeescheduleeditdata):"")+"/"+projectdetails[4].toString())
+							        		                .endText();
+
+							        		        }
+							        		        document4.close();
+							        		        pdfDocument1.close();
+							        	        	PdfReader pdf4=new PdfReader(path+"/"+filename+"temp.pdf");
+							        	        	PdfDocument pdfDocument4 = new PdfDocument(pdf4);
+							        		        merger.merge(pdfDocument4, 1, pdfDocument4.getNumberOfPages());
+							        		        
+							        		        pdfDocument4.close();
+							        		        pdf4.close();
+							        		        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+							        		        Files.delete(pathOfFile);	
+								        	}
+								        	}
+								        }
 								        
-								        
-							            pdfDocument2.close();
+									 	
+
 								        pdfDocument.close();
 								        merger.close();
-								        pdf2.close();
+
 								        pdf1.close();	       
 								        pdfw.close();
-//								        writer.close();
-								        
-									    
 								        res.setContentType("application/pdf");
-										res.setHeader("Content-Disposition", "inline; name="+ filename+".pdf; filename"+ filename+".pdf");
-								        File f =new File(path +File.separator+ "merged.pdf");
-						         
-			
-								        OutputStream out = res.getOutputStream();
-										FileInputStream in = new FileInputStream(f);
-										byte[] buffer = new byte[4096];
-										int length;
-										
-									while ((length = in.read(buffer)) > 0) {
-										out.write(buffer, 0, length);
-									}
-									
-									in.close();
-									out.close();
-									
-							        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf");
-							        Files.delete(pathOfFile2);		
-							        pathOfFile2= Paths.get( path+File.separator+filename+".pdf");
-							        Files.delete(pathOfFile2);	
-							        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf");
-							        Files.delete(pathOfFile2);
-						        
+								        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+								        File f=new File(path +File.separator+ "mergedb.pdf");
+										FileInputStream fis = new FileInputStream(f);
+										DataOutputStream os = new DataOutputStream(res.getOutputStream());
+										res.setHeader("Content-Length", String.valueOf(f.length()));
+										byte[] buffer = new byte[1024];
+										int len = 0;
+										while ((len = fis.read(buffer)) >= 0) {
+										os.write(buffer, 0, len);
+										}
+										os.close();
+										fis.close();
+										Path pathOfFile2 = Paths.get(path + "/" + filename  + ".pdf");
+								        
 					}
 				}
 				catch (Exception e) 
@@ -7722,4 +7813,666 @@ public class CommitteeController {
 		}
 	
 		
+		
+		
+		
+		
+		@RequestMapping(value="SendMinutes.htm", method = {RequestMethod.POST,RequestMethod.GET})
+		public @ResponseBody String SendMinutes(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			String UserId=(String)ses.getAttribute("Username");
+			String EmpNo=(String)ses.getAttribute("EmpNo");
+			String EmpName=(String)ses.getAttribute("EmpName");
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId);
+			int mailcount=0;
+			
+			try
+			{		
+				String committeescheduleid = req.getParameter("committeescheduleid");			
+				String PROTECTED_MINUTES = req.getParameter("PROTECTED MINUTES");
+				
+				Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+				String projectid= committeescheduleeditdata[9].toString();
+				String committeeid=committeescheduleeditdata[0].toString();
+				if(Long.parseLong(projectid) >0 && committeescheduleeditdata[22].toString().equals("Y")) 
+				{}
+				else 
+				{
+	
+					Object[] projectdetails = null;
+					
+					if(projectid!=null && Integer.parseInt(projectid)>0)
+					{
+					projectdetails = service.projectdetails(projectid);
+						req.setAttribute("projectdetails", projectdetails);
+					}
+					String divisionid= committeescheduleeditdata[16].toString();
+					if(divisionid!=null && Integer.parseInt(divisionid)>0)
+					{
+						req.setAttribute("divisiondetails", service.DivisionData(divisionid));
+					}
+					String initiationid= committeescheduleeditdata[17].toString();
+					if(initiationid!=null && Integer.parseInt(initiationid)>0)
+					{
+						req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
+					}
+					
+					Committee committee = printservice.getCommitteeData(committeeid);
+					
+					HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
+					long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);
+					
+					//****************************envi download start**********************************
+		    		List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
+		    		envisagedDemandlist=service.getEnvisagedDemandList(projectid);
+		    		req.setAttribute("envisagedDemandlist", envisagedDemandlist);
+					
+					req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
+					req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
+					req.setAttribute("committeeminutes",service.CommitteeMinutesSpecNew());
+					req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
+					req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
+					req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
+					req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
+					req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
+				
+					// this method will show the milestones based on each meeting date
+					//req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid,committeescheduleeditdata[2].toString()));
+
+	//				req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
+	//				req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
+					String LevelId= "2";
+		    		Object[] MileStoneLevelId = printservice.MileStoneLevelId(projectid,committeeid);
+					if( MileStoneLevelId!= null) {
+						LevelId= MileStoneLevelId[0].toString();
+					}
+					req.setAttribute("levelid", LevelId);
+					req.setAttribute("labInfo", service.LabDetailes(LabCode));
+				/*---------------------------------------------------------------------------------------------------------------*/
+	//				if(Long.parseLong(projectid) >0 && committeescheduleeditdata[22].toString().equals("N") ) {
+						
+						 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
+					 		HttpHeaders headers = new HttpHeaders();
+					 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+					 		headers.set("labcode", LabCode);
+					 		String jsonResult=null;
+							try {
+								HttpEntity<String> entity = new HttpEntity<String>(headers);
+								ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
+								jsonResult=response.getBody();						
+							}catch(Exception e) {
+								req.setAttribute("errorMsg", "errorMsg");
+							}
+							ObjectMapper mapper = new ObjectMapper();
+							mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+							mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+							List<ProjectFinancialDetails> projectDetails=null;
+							if(jsonResult!=null) {
+								try {
+									projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
+									req.setAttribute("financialDetails",projectDetails);
+								} catch (JsonProcessingException e) {
+									e.printStackTrace();
+								}
+							}
+			 	
+							final String localUri2=uri+"/pfms_serv/getTotalDemand";
+	
+					 		String jsonResult2=null;
+							try {
+								HttpEntity<String> entity = new HttpEntity<String>(headers);
+								ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
+								jsonResult2=response.getBody();						
+							}catch(Exception e) {
+								req.setAttribute("errorMsg", "errorMsg");
+							}
+							ObjectMapper mapper2 = new ObjectMapper();
+							mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+							mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+							List<TotalDemand> totaldemand=null;
+							if(jsonResult2!=null) {
+								try {
+									totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+									req.setAttribute("TotalProcurementDetails",totaldemand);
+								} catch (JsonProcessingException e) {
+								e.printStackTrace();
+							}
+						}
+	
+					 	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
+					 	List<Object[]> procurementOnDemand=null;
+					 	List<Object[]> procurementOnSanction=null;
+		 	
+					
+					 	 if(procurementStatusList!=null){
+					 		Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
+					 		Collection<?> keys = map.keySet();
+				 		for(Object key:keys){
+					 		    if(key.toString().equals("D")) {
+					 		    	procurementOnDemand=map.get(key);
+					 		    }else if(key.toString().equals("S")) {
+					 		    	procurementOnSanction=map.get(key);
+					 		    }
+					 		 }
+					 	}
+					 	List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+						
+					 	for(Object obj[] : actionlist) {
+								
+							ArrayList<Object[]> values=new ArrayList<Object[]>();
+							for(Object obj1[] : actionlist ) {
+								if(obj1[0].equals(obj[0])) {
+										values.add(obj1);
+								}
+							}
+							if(!actionsdata.containsKey(obj[0].toString())) {
+								actionsdata.put(obj[0].toString(), values);
+							}
+					} 
+					
+					 	req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid));
+//						req.setAttribute("actionlist",actionsdata);
+					 	req.setAttribute("procurementOnDemand", procurementOnDemand);
+					 	req.setAttribute("procurementOnSanction", procurementOnSanction);
+					 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+					 	req.setAttribute("projectdatadetails", service.ProjectDataDetails(projectid));
+					 	// new code
+					 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
+					 	List<Object[]>first=null;   //store the milestones with levelid 1
+					 	List<Object[]>second=null;	// store the milestones with levelid 2
+					 	List<Object[]>three= null; // store the milestones with levelid 3
+					 	Map<Integer,String> treeMapLevOne = new TreeMap<>();  // store the milestoneid with level id 1 and counts 
+					 	Map<Integer,String>treeMapLevTwo= new TreeMap<>(); // store the milestonidid with level id 2 and counts
+					 	Map<Integer,String>treeMapLevThree= new TreeMap<>();  // store the milestoneid with level id 3 and counts 
+					 	 TreeSet<Integer> AllMilestones = new TreeSet<>();   // store the number of milestone in sorted order
+					 	 if(!totalMileStones.isEmpty()) {
+					 	 for(Object[]obj:totalMileStones){
+					 	 AllMilestones.add(Integer.parseInt(obj[22].toString())); // getting the milestones from list
+					 	 }
+					 	 for(Integer mile:AllMilestones) {
+					 	 int count=1;
+					 	 first=totalMileStones.stream().
+				 			   filter(i->i[26].toString().equalsIgnoreCase("1") && i[22].toString().equalsIgnoreCase(mile+""))
+				 				.map(objectArray -> new Object[]{objectArray[0], objectArray[2]})
+				 				.collect(Collectors.toList());
+					 		for(Object[]obj:first) {
+					 		treeMapLevOne.put(Integer.parseInt(obj[1].toString()),"A"+(count++));// to get the first level
+					 		}
+					 	}
+					 	for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
+					 		int count=1;
+					 		second=totalMileStones.stream().
+					 			   filter(i->i[26].toString().equalsIgnoreCase("2") && i[2].toString().equalsIgnoreCase(entry.getKey()+""))
+					 			    .map(objectArray -> new Object[] {entry.getKey(),objectArray[3]})
+					 			   .collect(Collectors.toList());
+					 	for(Object[]obj:second) {
+					 		treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),entry.getValue()+"-B"+(count++));
+					 	}
+					 	}
+					 	for(Map.Entry<Integer,String>entry: treeMapLevTwo.entrySet()) {
+					 		int count=1;
+					 		three=totalMileStones.stream().
+					 				filter(i->i[26].toString().equalsIgnoreCase("3") && i[3].toString().equalsIgnoreCase(entry.getKey()+""))
+					 				.map(objectArray -> new Object[] {entry.getKey(),objectArray[4]})
+					 				.collect(Collectors.toList());
+					 		for(Object[]obj:three) {
+								treeMapLevThree.put(Integer.parseInt(obj[1].toString()), "C"+(count++)); 
+					 			
+					 		}
+					 	}
+					 	 }
+								 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
+								 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
+								 	 // new code end
+								 	 //code on 06-10-2023				 	 
+								 	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
+							    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
+							    	ReviewMeetingList.add(printservice.ReviewMeetingList(projectid, "EB"));
+						    		ReviewMeetingListPMRC.add(printservice.ReviewMeetingList(projectid, "PMRC")); 
+						    		Map<Integer,String> mappmrc = new HashMap<>();
+						    		Map<Integer,String> mapEB = new HashMap<>();
+						    		int pmrccount=0;
+						     		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
+						     			mappmrc.put(++pmrccount,obj[3].toString());
+						     		}
+						     	
+						    		int ebcount=0;
+						    	
+						    		for (Object []obj:ReviewMeetingList.get(0)) {
+						    		mapEB.put(++ebcount,obj[3].toString());
+						    		}
+						    		req.setAttribute("mappmrc", mappmrc);
+							    	req.setAttribute("mapEB", mapEB);
+							    	Object[]momAttachment=service.MomAttachmentFile(committeescheduleid);
+							    	 req.setAttribute("tableactionlist",  actionsdata);
+								 	 //
+							    	 String filename=committeescheduleeditdata[11].toString().replace("/", "-");
+								 	 String path=req.getServletContext().getRealPath("/view/temp");
+								 	 req.setAttribute("path",path);
+								 	 CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+								 	 req.getRequestDispatcher("/view/committee/CommitteeMinutesNew.jsp").forward(req, customResponse);
+								 	 String html = customResponse.getOutput();
+								 	 
+								 	 
+								 	 byte[]data=html.getBytes();
+								 	InputStream fis1 = new ByteArrayInputStream(data);
+								 	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path + "/" + filename +  ".pdf"));
+								 	pdfDoc.setTagged(); 
+								 	Document document = new Document(pdfDoc, PageSize.LEGAL);
+								 	document.setMargins(50, 100, 150, 50);
+								 	ConverterProperties converterProperties = new ConverterProperties();
+								 	FontProvider dfp = new DefaultFontProvider(true, true, true);
+								 	converterProperties.setFontProvider(dfp);
+									HtmlConverter.convertToPdf(fis1, pdfDoc, converterProperties);
+									
+									PdfWriter pdfw=null;
+									
+									if(PROTECTED_MINUTES == null) {
+										 pdfw=new PdfWriter(path +File.separator+ "MoM.pdf");
+									}else {
+										String password = "LRDE123";
+							            pdfw = new PdfWriter(path +File.separator+ "MoM.pdf",
+					                    new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
+					                            EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
+									}
+							        PdfDocument pdfDocs = new PdfDocument(pdfw);
+							        pdfw.setCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+							        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+							        Document docMain = new Document(pdfDocMain,PageSize.A4);
+							        docMain.setMargins(50, 50, 50, 50);
+							  
+							        docMain.close();
+							        pdfDocMain.close();
+							        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
+							        
+							        
+							        PdfReader pdf1=new PdfReader(path+File.separator+filename+"Maintemp.pdf");
+							        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+							        PdfMerger merger = new PdfMerger(pdfDocument);
+							        
+							        if(momAttachment!=null) {
+							        	if(momAttachment[2]!=null) {
+							        		if(FilenameUtils.getExtension(momAttachment[2].toString()).equalsIgnoreCase("pdf")) {
+						        		        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+momAttachment[1]+"\\"+momAttachment[2]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+						        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
+						        		        document4.setMargins(50, 50, 50, 50);
+						        		        Rectangle pageSize;
+						        		        PdfCanvas canvas;
+						        		        int n = pdfDocument1.getNumberOfPages();
+						        		
+						        		        for(int i=1;i<=n;i++) {
+						        		            PdfPage page = pdfDocument1.getPage(i);
+						        		            pageSize = page.getPageSize();
+						        		            canvas = new PdfCanvas(page);
+						        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40); // Left side position
+						        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40); // Right side position
+
+						        		            
+						        		            // Add content on the left side
+						        		            String[] no=committeescheduleeditdata[11].toString().split("/");
+						        		        
+
+						        		            // Add content on the right side
+						        		            
+						        		            canvas.beginText()
+						        		                .setFontAndSize(PdfFontFactory.createFont(FontConstants.TIMES_ROMAN), 10)
+						        		                .moveText(pageSize.getWidth()-200 , pageSize.getHeight() - 10)
+						        		                .showText("Attachment to MoM - "+no[2]+"/"+(service.MeetingNo(committeescheduleeditdata)>0?service.MeetingNo(committeescheduleeditdata):"")+"/"+projectdetails[4].toString())
+						        		                .endText();
+
+						        		        }
+						        		        document4.close();
+						        		        pdfDocument1.close();
+						        	        	PdfReader pdf4=new PdfReader(path+"/"+filename+"temp.pdf");
+						        	        	PdfDocument pdfDocument4 = new PdfDocument(pdf4);
+						        		        merger.merge(pdfDocument4, 1, pdfDocument4.getNumberOfPages());
+						        		        
+						        		        pdfDocument4.close();
+						        		        pdf4.close();
+						        		        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+						        		        Files.delete(pathOfFile);	
+							        	}
+							        	}
+							        }
+							        
+								 	
+
+							        pdfDocument.close();
+							        merger.close();
+
+							        pdf1.close();	       
+							        pdfw.close();
+							        res.setContentType("application/pdf");
+							        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+							        File f=new File(path +File.separator+ "MoM.pdf");
+					         
+							        
+							        
+							        
+							        ArrayList<String> emails= new ArrayList<String>();
+									ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
+
+									List<Object[]>committeeinvitedlist=service.CommitteeAtendance(committeescheduleid);
+									
+									String MainEmail="";
+									
+									for(Object[] obj : committeeinvitedlist) 
+									{	 
+										if(membertypes.contains(obj[3].toString())   && obj[4].toString().equalsIgnoreCase("P")) 
+										{
+											if(obj[8]!=null) {
+												emails.add(obj[8].toString());
+											}
+										}
+										
+										if(obj[3].toString().equalsIgnoreCase("CC")) {
+											MainEmail=obj[8].toString();
+										}
+									}
+									if(emails.contains(MainEmail)) {
+										emails.remove(MainEmail);
+									}
+									
+								
+									String typeOfHost = "L";
+									MailConfigurationDto mailAuthentication=null;
+									try {
+										mailAuthentication = mailService.getMailConfigByTypeOfHost(typeOfHost);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}	
+									
+									
+									String from = mailAuthentication.getUsername().toString();
+									String hostAddress = mailAuthentication.getHost().toString();
+									final String username = mailAuthentication.getUsername().toString();
+									final String password = mailAuthentication.getPassword().toString(); 
+									System.out.println("TLSEmail Start");
+									long startTime = System.currentTimeMillis();
+									
+									Properties properties = System.getProperties(); 
+									properties.setProperty("mail.smtp.host", hostAddress);
+									//properties.put("mail.smtp.starttls.enable", "true"); //TLS
+									properties.put("mail.smtp.port", port); 
+									properties.put("mail.smtp.auth", "true"); 
+									properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
+									Session session = Session.getDefaultInstance(properties,
+										new javax.mail.Authenticator() {
+											protected PasswordAuthentication getPasswordAuthentication() {
+												return new PasswordAuthentication(from,password);
+											}
+										});	
+									try {
+										MimeMessage message = new MimeMessage(session);
+										message.setFrom(new InternetAddress(from));
+										message.addRecipient(Message.RecipientType.TO, new InternetAddress(MainEmail));
+										message.setSubject("MOM");
+										MimeBodyPart part1 = new MimeBodyPart();
+										for (String ccRecipient : emails) {
+											message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccRecipient));
+										}
+										part1.setText("This is a System generated mail please Don't reply.");
+										MimeBodyPart part2 = new MimeBodyPart();
+										part2.attachFile(f);
+										MimeMultipart mimeMultipart = new MimeMultipart();
+										mimeMultipart.addBodyPart(part1);
+										mimeMultipart.addBodyPart(part2);
+										message.setContent(mimeMultipart);
+										Transport.send(message);
+										mailcount++;
+										long endTime = System.currentTimeMillis();
+										long elapsedTime = endTime - startTime;
+										System.out.println("Elapsed time: " + elapsedTime + " milliseconds");
+										
+									} catch (MessagingException mex) {
+										mex.printStackTrace();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} 
+							        
+							
+		
+									FileInputStream fis = new FileInputStream(f);
+									DataOutputStream os = new DataOutputStream(res.getOutputStream());
+									res.setHeader("Content-Length", String.valueOf(f.length()));
+									byte[] buffer = new byte[1024];
+									int len = 0;
+									while ((len = fis.read(buffer)) >= 0) {
+									os.write(buffer, 0, len);
+									}
+									os.close();
+									fis.close();
+									Path pathOfFile2 = Paths.get(path + "/" + filename  + ".pdf");
+						       
+									Gson json = new Gson();
+									System.out.println("mailcount123 -"+json.toJson(mailcount));
+									return json.toJson(mailcount);
+					        
+				}
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace(); 
+				logger.error(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId,e);
+			}
+			
+			   return null;
+		}
+	
+		@RequestMapping(value="SendNonProjectMinutes.htm", method = {RequestMethod.POST,RequestMethod.GET})
+		public @ResponseBody String SendNonProjectMinutes(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			String UserId=(String)ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside CommitteeMinutesViewAllDownload.htm "+UserId);
+			int mailcount=0;
+			
+			try
+			{
+				String committeescheduleid = req.getParameter("committeescheduleid");	
+				
+				System.out.println("committeescheduleid"+committeescheduleid);
+				Object[] scheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+				String projectid= scheduleeditdata[9].toString();
+				
+				if(projectid!=null && Integer.parseInt(projectid)>0)
+					
+				{
+					req.setAttribute("projectdetails", service.projectdetails(projectid));
+				}
+				String divisionid= scheduleeditdata[16].toString();
+				if(divisionid!=null && Integer.parseInt(divisionid)>0)
+				{
+					req.setAttribute("divisiondetails", service.DivisionData(divisionid));
+				}
+				String initiationid= scheduleeditdata[17].toString();
+				if(initiationid!=null && Integer.parseInt(initiationid)>0)
+				{
+					req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
+				}
+				
+				List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+				HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
+				
+				for(Object obj[] : actionlist) {
+						
+						ArrayList<Object[]> values=new ArrayList<Object[]>(); 
+						for(Object obj1[] : actionlist ) {
+							if(obj1[0].equals(obj[0])) {
+								values.add(obj1);
+							}
+						}
+						if(!actionsdata.containsKey(obj[0].toString())) {
+							actionsdata.put(obj[0].toString(), values);
+						}
+					} 
+				
+				req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
+				req.setAttribute("committeescheduleeditdata", scheduleeditdata);
+				req.setAttribute("CommitteeAgendaList", service.AgendaList(committeescheduleid));
+				req.setAttribute("committeeminutes",service.CommitteeMinutesSpecdetails());
+				req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
+				req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));
+
+				req.setAttribute("actionlist",  actionsdata);
+				req.setAttribute("labdetails", service.LabDetails(scheduleeditdata[24].toString()));
+				req.setAttribute("isprint", "Y");	
+				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(scheduleeditdata[24].toString()));
+				req.setAttribute("labInfo", service.LabDetailes(LabCode));
+				String committeeId=scheduleeditdata[0].toString();
+				String scheduledate=scheduleeditdata[2].toString();
+						
+				List<Object[]>ActionDetails=service.actionDetailsForNonProject(committeeId,scheduledate);
+				List<Object[]>actionSubDetails=new ArrayList();
+				if(ActionDetails.size()>0) {
+					actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+				}
+				Set<Integer>committeeCount=new TreeSet<>();
+				for(Object[]obj:ActionDetails) {
+					committeeCount.add(Integer.parseInt(obj[7].toString()));
+				}
+				int count=0;
+				Map<Integer,Integer>committeeCountMap= new HashMap<>();
+				for(Integer i:committeeCount) {
+					committeeCountMap.put(++count, i);
+				}
+				req.setAttribute("committeeCountMap", committeeCountMap);
+				req.setAttribute("ActionDetails", actionSubDetails);
+				req.setAttribute("meetingcount",service.MeetingNo(scheduleeditdata));
+				String filename=scheduleeditdata[11].toString().replace("/", "-");
+				String path=req.getServletContext().getRealPath("/view/temp");
+				req.setAttribute("path",path);
+				CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+				req.getRequestDispatcher("/view/committee/CommitteeMinutesViewAll.jsp").forward(req, customResponse);
+				String html = customResponse.getOutput();
+				HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+				req.setAttribute("tableactionlist",  actionsdata);
+		        CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+				req.getRequestDispatcher("/view/committee/ActionDetailsTable.jsp").forward(req, customResponse1);
+				String html1 = customResponse1.getOutput();        
+		        HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
+		        PdfWriter pdfw=new PdfWriter(path +File.separator+ "Mom.pdf");
+		        PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+		        PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+		        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
+		        PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+		        PdfMerger merger = new PdfMerger(pdfDocument);
+		        merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+	            pdfDocument2.close();
+		        pdfDocument.close();
+		        merger.close();
+		        pdf2.close();
+		        pdf1.close();	       
+		        pdfw.close();
+		        res.setContentType("application/pdf");
+		        res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+		        File f=new File(path +File.separator+ "Mom.pdf");
+		        ArrayList<String> emails= new ArrayList<String>();
+				ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
+				List<Object[]>committeeinvitedlist=service.CommitteeAtendance(committeescheduleid);
+				String MainEmail="";
+				for(Object[] obj : committeeinvitedlist) 
+				{	 
+					if(membertypes.contains(obj[3].toString()) && obj[4].toString().equalsIgnoreCase("P")) 
+					{
+						if(obj[8]!=null) {
+							emails.add(obj[8].toString());
+						}
+					}
+					
+					if(obj[3].toString().equalsIgnoreCase("CC")) {
+						MainEmail=obj[8].toString();
+					}
+				}
+				if(emails.contains(MainEmail)) {
+					emails.remove(MainEmail);
+				}
+		        
+				String typeOfHost = "L";
+				MailConfigurationDto mailAuthentication=null;
+				try {
+					mailAuthentication = mailService.getMailConfigByTypeOfHost(typeOfHost);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}	
+				
+				
+				String from = mailAuthentication.getUsername().toString();
+				String hostAddress = mailAuthentication.getHost().toString();
+				final String username = mailAuthentication.getUsername().toString();
+				final String password = mailAuthentication.getPassword().toString(); 
+				System.out.println("TLSEmail Start");
+				long startTime = System.currentTimeMillis();
+				
+				Properties properties = System.getProperties(); 
+				properties.setProperty("mail.smtp.host", hostAddress);
+				//properties.put("mail.smtp.starttls.enable", "true"); //TLS
+				properties.put("mail.smtp.port", port); 
+				properties.put("mail.smtp.auth", "true"); 
+				properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
+				Session session = Session.getDefaultInstance(properties,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(from,password);
+						}
+					});	
+				try {
+					MimeMessage message = new MimeMessage(session);
+					message.setFrom(new InternetAddress(from));
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress(MainEmail));
+					message.setSubject("MOM");
+					MimeBodyPart part1 = new MimeBodyPart();
+					for (String ccRecipient : emails) {
+						message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccRecipient));
+					}
+					part1.setText("This is a System generated mail please Don't reply.");
+					MimeBodyPart part2 = new MimeBodyPart();
+					part2.attachFile(f);
+					MimeMultipart mimeMultipart = new MimeMultipart();
+					mimeMultipart.addBodyPart(part1);
+					mimeMultipart.addBodyPart(part2);
+					message.setContent(mimeMultipart);
+					Transport.send(message);
+					mailcount++;
+					long endTime = System.currentTimeMillis();
+					long elapsedTime = endTime - startTime;
+					System.out.println("Elapsed time: " + elapsedTime + " milliseconds");
+					System.out.println("Message Sent");
+					
+				} catch (MessagingException mex) {
+					mex.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        OutputStream out = res.getOutputStream();
+				FileInputStream in = new FileInputStream(f);
+				byte[] buffer = new byte[4096];
+				int length;
+				while ((length = in.read(buffer)) > 0) {
+					out.write(buffer, 0, length);
+				}
+				in.close();
+				out.flush();
+				out.close();
+		        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
+		        Files.delete(pathOfFile2);		
+		        pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+		        Files.delete(pathOfFile2);	
+		        pathOfFile2= Paths.get(path +File.separator+ "MoM.pdf"); 
+		        Files.delete(pathOfFile2);
+		        
+		        
+		        Gson json= new Gson();
+		        return json.toJson(mailcount);
+		        
+		        
+			}catch(Exception e) {	    		
+				logger.error(new Date() +" Inside "+UserId, e);
+				e.printStackTrace();
+			}		
+		return null;	
+		}
 }

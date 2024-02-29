@@ -36,4 +36,6 @@ public interface HeaderDao {
 	public List<Object[]> LabMasterList(String Clusterid) throws Exception;
 	//new method by anil
 	public List<Object[]> getNotificationId(String empid) throws Exception;
+	public List<Object[]> getFormNameByName(String search)throws Exception;
+	public Boolean getRoleAccess(String formModuleId, String logintype)throws Exception;
 }

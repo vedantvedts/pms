@@ -68,6 +68,7 @@ import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMemberRep;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
+import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
@@ -3262,5 +3263,30 @@ public List<Object[]> CommitteeOthersList(String projectid, String divisionid, S
 	
 	return dao.CommitteeOthersList(projectid,divisionid,initiationid,projectstatus);
 }
+
+@Override
+public Long UpdateMomAttach(Long scheduleId) throws Exception {
+	// TODO Auto-generated method stub
+	return dao.UpdateMomAttach(scheduleId);
+}
+
+	@Override
+	public Long MomAttach(CommitteeMomAttachment cm,String LabCode) throws Exception {
+		// TODO Auto-generated method stub
+		
+	String Path = LabCode +"\\MinutesAttachment\\";
+		
+		if(!cm.getFile().isEmpty()) {
+			cm.setAttachmentName(cm.getFile().getOriginalFilename());
+			saveFile(uploadpath+Path,cm.getAttachmentName(),cm.getFile());
+		}
+		cm.setIsActive(1);
+		cm.setFilePath(Path);
+		return dao.MomAttach(cm);
+	}
+	@Override
+	public Object[] MomAttachmentFile(String committeescheduleid) throws Exception {
+		return dao.MomAttachmentFile(committeescheduleid);
+	}
 	
 }

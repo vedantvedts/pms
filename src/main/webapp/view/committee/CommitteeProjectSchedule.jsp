@@ -130,10 +130,10 @@ List<Object[]>PreviousmeetingList= new ArrayList<>();
 
 if(!Projectschedulelist.isEmpty()){
 	if(committeeid.equalsIgnoreCase("all")){
-		PreviousmeetingList=Projectschedulelist.stream().filter(i -> LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())  && status.contains(i[7].toString())).collect(Collectors.toList());
+		PreviousmeetingList=Projectschedulelist.stream().filter(i -> LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())  ).collect(Collectors.toList());
 		
 	}else{
-		PreviousmeetingList=Projectschedulelist.stream().filter(i -> i[1].toString().equalsIgnoreCase(committeeid) &&  LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())&& status.contains(i[7].toString())   ).collect(Collectors.toList());
+		PreviousmeetingList=Projectschedulelist.stream().filter(i -> i[1].toString().equalsIgnoreCase(committeeid) &&  LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())  ).collect(Collectors.toList());
 	
 	}
 }

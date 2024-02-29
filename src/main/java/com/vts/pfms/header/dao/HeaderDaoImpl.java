@@ -1,5 +1,6 @@
 package com.vts.pfms.header.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -367,5 +368,23 @@ public class HeaderDaoImpl implements HeaderDao {
 		NotificationList=(List<Object[]>)query.getResultList();
 		return NotificationList;
 	}
+	@Override
+	public List<Object[]> getFormNameByName(String search) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT * FROM pfms_form_detail WHERE formname LIKE :search");
+		query.setParameter("search", "%"+search+"%");
+		
+		return (List<Object[]>)query.getResultList();
+	}
 
+	@Override
+	public Boolean getRoleAccess(String formModuleId, String logintype) {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT COUNT(FormRoleAccessId) FROM `pfms_form_role_access` WHERE LoginType=:logintype AND isactive=1 AND FormDetailId =:formModuleId");
+		query.setParameter("logintype",logintype);
+		query.setParameter("formModuleId", formModuleId);
+		List<BigInteger> result = query.getResultList();
+		if (result.get(0).intValue()==0)return false;
+		else return true;
+	}
 }

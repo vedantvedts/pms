@@ -42,9 +42,9 @@ pageEncoding="ISO-8859-1"%>
 			$("#source-html").wordExport("System-Requirement");
 		});
 	}); */
- 	 $( document ).ready(function() {
+ /* 	 $( document ).ready(function() {
 		 download();
-		}); 
+		}); */ 
 		 function download(){
 			$("#source-html").wordExport("System-Requirement");
 			window.close();
