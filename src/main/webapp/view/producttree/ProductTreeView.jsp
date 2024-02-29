@@ -312,7 +312,7 @@ table,td{
 			                         	
 			                         	<div  class="action-box-header" >
 			                         	
-			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;">
+			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;color:#40A2E3;">
 	                          			        <%if(ProjectId!=null){	
 				                                       Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");%>  
 			                                              <%=ProjectDetail[1] %>
@@ -345,25 +345,25 @@ table,td{
 												
 												 <div  class="action-box-header" 
 												
-												style="background: linear-gradient(to bottom right, 
-												<%if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-												
-												<%}else { %> white 5%, white 10% 
-												<%} %>
-												, white 10%, white 90%,
-												
-											    <%if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-												
-												<%}else { %> white 5%, white 10% 
-												<%} %>
-												 
-												 );" >  
+												style="background-image: -webkit-linear-gradient(top,
+													<%if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Design")) {%> #D24545  10%, 
+													<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 10%,
+													<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 10%,
+													<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 10%,
+													
+													<%}else { %> white 5%,
+													<%} %>
+													 white 5%, white 90%,
+													
+												    <%if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 90% 
+													<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 90% 
+													<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 90%
+													<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 90%
+													
+													<%}else { %> white 95%
+													<%} %>
+													 
+													 );" >
 												
 										             <span  style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;"> 
 										                  <%=level1[3] %>
@@ -396,25 +396,25 @@ table,td{
 															<div class=" action-box" >
 															  <div class="action-box-header" 
 															  
-															      style="background: linear-gradient(to bottom right, 
-																<%if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																
-																<%}else { %> white 5%, white 10% 
-																<%} %>
-																, white 10%, white 90%,
-																
-															    <%if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																
-																<%}else { %> white 5%, white 10% 
-																<%} %>
-																 
-																 );" >
+															      style="background-image: -webkit-linear-gradient(top,
+																			<%if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Design")) {%> #D24545  10%, 
+																			<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 10%,
+																			<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 10%,
+																			<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 10%,
+																			
+																			<%}else { %> white 5%,
+																			<%} %>
+																			 white 5%, white 90%,
+																			
+																		    <%if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 90% 
+																			<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 90% 
+																			<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 90%
+																			<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 90%
+																			
+																			<%}else { %> white 95%
+																			<%} %>
+																			 
+																			 );" >
 														
 															       <span style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;"> 
 			                          			                              <%=level2[3] %>
@@ -449,50 +449,28 @@ table,td{
 																		
 																		<div class="action-box-header"
 																		
-																		  style="background-image: linear-gradient(to bottom right,
-																			<%if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Design")) {%> #D24545  0%,#D24545  5%, 
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 0%,#E9B824 5%, 
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 0%,#0B60B0 5%, 
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 0%,green 5%,
-																			
-																			<%}else { %> white 0%,white 5%,
-																			<%} %>
-																			
-																			white 5%,white 90%,
-																		    <%if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
-																			
-																			<%}else { %> white 95%
-																			<%} %>
-																			 
-																			 );,
-																			 
-																			 background-image: -webkit-linear-gradient(to bottom right,
-																			<%if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, 
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, 
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
+							                                                   style="background-image: -webkit-linear-gradient(top,
+																			<%if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Design")) {%> #D24545  10%, 
+																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 10%,
+																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 10%,
+																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 10%,
 																			
 																			<%}else { %> white 5%,
 																			<%} %>
+																			 white 5%, white 90%,
 																			
-																			white 90%,
-																		    <%if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
+																		    <%if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 90% 
+																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 90% 
+																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 90%
+																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 90%
 																			
 																			<%}else { %> white 95%
 																			<%} %>
 																			 
-																			 );"
+																			 );" >
+																		
+                                                                      
 																			 
-																			 
-																			 
-																			 
-																			  >
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
 			                          			                             
@@ -534,22 +512,22 @@ table,td{
 																		<div class="action-box-header" 
 																		
 																		
-																		 style="background-image: linear-gradient(top,
-																			<%if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
+																		 style="background-image: -webkit-linear-gradient(top,
+																			<%if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Design")) {%> #D24545  4px, 
+																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824  4px,
+																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0  4px,
+																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green  4px,
 																			
-																			<%}else { %> white 5%,
+																			<%}else { %> white  4px,
 																			<%} %>
-																			 white 5%, white 95%,
+																			 white 5px, white 40px,
 																			
-																		    <%if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
+																		    <%if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0px 
+																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0px 
+																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0px 
+																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0px 
 																			
-																			<%}else { %> white 95%
+																			<%}else { %> white 0px 
 																			<%} %>
 																			 
 																			 );" >
@@ -591,22 +569,22 @@ table,td{
 																		
 																		<div class="action-box-header"
 																		
-																		 style="background: linear-gradient(to bottom right, 
-																			<%if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
+																		 style="background-image: -webkit-linear-gradient(top,
+																			<%if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
+																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
+																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
+																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
 																			
-																			<%}else { %> white 5%, white 10% 
+																			<%}else { %> white 5%,
 																			<%} %>
-																			, white 10%, white 90%,
+																			 white 5%, white 95%,
 																			
-																		    <%if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
+																		    <%if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
+																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
+																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
+																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
 																			
-																			<%}else { %> white 5%, white 10% 
+																			<%}else { %> white 95%
 																			<%} %>
 																			 
 																			 );" >
