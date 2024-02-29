@@ -79,6 +79,7 @@ public class PFTSController {
 			
 			req.setAttribute("projectslist",projectlist );
 			req.setAttribute("fileStatusList",service.getFileStatusList(projectId));
+			req.setAttribute("pftsStageList", service.getpftsStageList());
 			req.setAttribute("projectId",projectId);
 			
 			
@@ -171,7 +172,7 @@ public class PFTSController {
 			Long result=service.addDemandfile(pf);
 			
 			if(result>0) {
-				redir.addAttribute("result","Demand successfully added ");
+				redir.addAttribute("result","Demand Added Successfully ");
 			}else {
 				redir.addAttribute("resultfail","Something went worng");
 			}
@@ -222,7 +223,9 @@ public class PFTSController {
              String fileId=req.getParameter("fileId");
              String remarks=req.getParameter("remarks");
              String demandNo=req.getParameter("demandNo");
+             
              redir.addAttribute("projectid",projectId);
+             
              if(statusId.equals("10")) {
             	   	final String localUri=uri+"/pfms_serv/newDemandsOrderDetails?demandNo="+demandNo;
     				List<DemandOrderDetails> demandOrderList=null;
@@ -242,7 +245,8 @@ public class PFTSController {
     				ObjectMapper mapper = new ObjectMapper();
     				mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     				mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-    				if(jsonResult!=null) {
+    			
+    				if(jsonResult!=null && jsonResult.length()>2) {
     					try {
     					
     						demandOrderList = mapper.readValue(jsonResult, new TypeReference<List<DemandOrderDetails>>(){});
@@ -250,13 +254,16 @@ public class PFTSController {
     						redir.addAttribute("resultfail","Order not placed in IBAS");
     						return  "redirect:/ProcurementStatus.htm";
     					}
+    				}else {
+    					redir.addAttribute("resultfail","Order not placed in IBAS");
+						return  "redirect:/ProcurementStatus.htm";
     				}
             	 service.updateCostOnDemand(demandOrderList,fileId,UserId);
              }
 			int result =service.upadteDemandFile(fileId,statusId,eventDate,remarks);
 			
 			if(result>0) {
-				redir.addAttribute("result","Demand Edited successfully");
+				redir.addAttribute("result","Demand Updated Successfully");
 			}else {
 				redir.addAttribute("resultfail","Something went worng");
 			}
@@ -582,6 +589,33 @@ public class PFTSController {
 					return "static/Error";	
 				}
 			}
-	
+			
+	// ********************************************************** Eniv End ***********************************************
+			
+		@RequestMapping(value = "getFileViewList.htm", method = RequestMethod.GET)
+		public @ResponseBody String getFileViewList(HttpServletRequest request, HttpSession ses) throws Exception
+			{
+				String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside getFileViewList.htm "+UserId);		
+				try {
+						String procFileId=request.getParameter("fileId");
+						Object[] fileViewList=service.getpftsFileViewList(procFileId);
+						Gson json = new Gson();
+						return json.toJson(fileViewList);
+				}catch (Exception e) 
+				{			
+					e.printStackTrace(); 
+					logger.error(new Date() +" Inside getFileViewList.htm "+UserId, e); 
+					return null;
+				}
+
+			}
+			
+		@RequestMapping(value = "AddManualDemand.htm", method = RequestMethod.POST)
+		public String AddManualDemand(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			return "pfts/AddManualDemand";
+		}
+			
 }
 

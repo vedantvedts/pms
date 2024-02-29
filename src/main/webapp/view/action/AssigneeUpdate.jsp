@@ -52,7 +52,6 @@ h6{
   if(Assignee!=null && Assignee[5]!=null){
 	  length=Assignee[5].toString().length();
   }
-  String Empid=(String)request.getAttribute("Empid");
  %>
 
 
@@ -138,11 +137,13 @@ h6{
 	                           	<a type="button" class="btn  btn-sm back" href="ProjectRisk.htm?projectid=<%=projectid %>" >BACK</a>
 	                           	<input type="hidden" name="flag" value="risk">
 	                          	 <input type="hidden" name="projectid" value="<%=projectid!=null?projectid:"0" %>" /> 
-	          					<%}else{ %>
+	          					<%}else if(flag.equalsIgnoreCase("action")){ %>
+	          					<a type="button" class="btn  btn-sm back" href="AssigneeList.htm" >BACK</a>
+				            	<%}else{ %>
 	          					<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=empId %>" >BACK</a>
 	          					<%} %>
 				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
-	                           	<% if(SubList.size()>0 && (!Empid.equalsIgnoreCase(Assignee[22].toString())||Assignee[22].toString().equalsIgnoreCase(Assignee[23].toString()))){ %>  
+	                           	<% if(SubList.size()>0 && (!empId.equalsIgnoreCase(Assignee[22].toString())||Assignee[22].toString().equalsIgnoreCase(Assignee[23].toString()))){ %>  
 	                      		<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>
 	       					</div>
@@ -259,7 +260,7 @@ h6{
 												<th style="">Progress %</th>
 												<th style="">Remarks</th>								
 											 	<th style="">Attachment</th>
-												<!-- <th style="">Action</th> -->
+												<th style="">Action</th> 
 											</tr>
 										</thead>
 										<tbody>					
@@ -283,16 +284,25 @@ h6{
 												<div  align="center">-</div>
 												 <%}%>
 												</td>
-											<%-- <td style="text-align: left; width: 6%;">
-												<form method="post" action="SubSubmit.htm" enctype="multipart/form-data">
-					                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
+											   <td style="text-align: left; width: 6%;">
+											        <div class="form-inline">
+												    <form method="post" action="SubSubmit.htm" enctype="multipart/form-data">
+					                                <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
+				 									 <%if(count==SubList.size()) {%>
+				 									 <button class="btn btn-sm" type="button" data-toggle="modal" data-target="#exampleModal" onclick="actionEditform('<%=sdf.format(obj[3])%>',<%=obj[2]%>,'<%=obj[4]%>',<%=Assignee[18] %>,<%=obj[0]%>,<%=Assignee[0] %>,<%=Assignee[20] %>,1)" style="background-color:  #D3D3D3;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 				 									<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
+													  <%}else {%>
+												 <button class="btn btn-sm" type="button" data-toggle="modal" data-target="#exampleModal" onclick="actionEditform('<%=sdf.format(obj[3])%>',<%=obj[2]%>,'<%=obj[4]%>',<%=Assignee[18] %>,<%=obj[0]%>,<%=Assignee[0] %>,<%=Assignee[20] %>,0)" style="background-color:  #D3D3D3;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+													  <%} %>
 													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
 									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
-									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
-									                <input type="hidden" name="ActionAttachid" value="<%=obj[5]%>"> 
+									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>"/> 
+									                <input type="hidden" name="projectid" value="<%=Assignee[20] %>"/> 
+									                <input type="hidden" name="ActionAttachid" value="<%=obj[5]%>">
+									                <input type="hidden" name="flag" value="action">
 											        </form>
-												</td> --%>
+											        </div>
+												</td> 
 											</tr>				
 											<% count++; } %>
 										</tbody>
@@ -323,6 +333,55 @@ h6{
   </div>
 </div>
 
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="margin-left: -13%; width: 37rem;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+              <div class="modal-body">
+                 <form action="ActionRemarksEdit.htm" method="post">
+						<div class="row" >
+							<div class="col-md-3">
+								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px">Progress % :</label>
+								</div>
+								<div class="col-md-4" style="margin-left: -6%;">
+								<input type="number" class="form-control item_name" max="100" min="0"
+									name="progressVal" id="progressVal"
+									style="width: 26rem">
+								</div>
+						 </div>
+						<div class="row mt-4">
+						<div class="col-md-3" >
+								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px"> Remarks : </label> 
+								</div>
+								<div class="col-md-8" style=" margin-left: -6%;" >
+								<textarea class="form-control" rows="5"
+									name="progressRemarks" id="progressRemarks"
+									style="width: 26rem"></textarea>
+							</div>
+							</div>
+						<br>
+						<div align="center">
+							<button type="submit" class="btn btn-sm submit" onclick="">Submit</button>
+                            <input type="hidden" name="ActionAssignId" id="ActionAssignId" value="">
+                            <input type="hidden" name="ActionSubId" id="ActionSubId" value=""/>
+                            <input type="hidden" name="ActionMainId" id="ActionMainId" value=""/> 
+							<input type="hidden" name="projectid" id="projectid" value=""/> 
+                            <input type="hidden" name="flag" value="action">
+                            <input type="hidden" name="subaction" id="subaction" >
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						</div>
+						</form>
+					</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 
 	function formreset()
@@ -332,8 +391,6 @@ h6{
 		document.getElementById("DateCompletion").click();	
 		
 	}
-
-
 
 
 		var fsizeindi=0;
@@ -389,6 +446,20 @@ h6{
    			$('#header').html(b);
    			$('#exampleModalCenter').modal('show');
    		}
+   		
+   		
+   		function actionEditform(pdate,progress,premarks,assignid,subid,mainid,project,subaction){
+   		    $('#exampleModal .modal-title').html('<span style="color: #FF3D00;">Progress Date : ' + pdate);
+   			$('#exampleModal').modal('show');
+   			$('#progressVal').val(progress);
+   			$('#progressRemarks').val(premarks);
+   			$('#ActionAssignId').val(assignid);
+   			$('#ActionSubId').val(subid);
+   			$('#ActionMainId').val(mainid);
+   			$('#projectid').val(project);
+   			$('#subaction').val(subaction);
+   		}
+   		
 </script> 
 
 

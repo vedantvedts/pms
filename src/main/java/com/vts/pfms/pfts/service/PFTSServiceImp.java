@@ -272,4 +272,17 @@ public class PFTSServiceImp implements PFTSService{
 	{
 		return dao.getEnviData(PftsFileId);
 	}
+	
+	@Override
+	public List<Object[]> getpftsStageList() throws Exception {
+		
+		return  dao.getpftsStageList();
+	}
+	@Override
+	public Object[] getpftsFileViewList(String procFileId) throws Exception {
+
+		return dao.getpftsFileViewList(procFileId);
+	}
+	
+	
 }

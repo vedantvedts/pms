@@ -1971,70 +1971,86 @@ public List<Object[]> RfaProjectwiseList(String empId, String Project, String fd
 	return dao.RfaProjectwiseList(empId,Project,fdate,tdate);
 }
 @Override
-public List<Object[]> getmodifieddate(String userId, int pid) {
+public List<Object[]> getmodifieddate(String userId, int pid)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getmodifieddate(userId,pid);
 }
 
 @Override
-public List<Object[]> getProjectByDirectorID(String empId) {
+public List<Object[]> getProjectByDirectorID(String empId)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getProjectByDirectorID(empId);
 }
 
 @Override
-public List<Object[]> getRecentWeeklyUpdateDate(String string) {
+public List<Object[]> getRecentWeeklyUpdateDate(String string)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getRecentWeeklyUpdateDate(string);
 	
 }
 
 @Override
-public List<Object[]> getRiskDetails(String LabCode, int pid) {
+public List<Object[]> getRiskDetails(String LabCode, int pid)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getRiskDetails(LabCode,pid);
 }
 
 @Override
-public List<Object[]> getMilestoneDate( int pid) {
+public List<Object[]> getMilestoneDate( int pid)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getMilestoneDate(pid);
 }
 
 @Override
-public List<Object[]> getMeetingDate(int pid) {
+public List<Object[]> getMeetingDate(int pid)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getMeetingDate(pid);
 }
 
 @Override
-public List<Object[]> getProdurementDate(int pid) {
+public List<Object[]> getProdurementDate(int pid)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getProdurementDate(pid);
 }
 
 @Override
-public List<Object[]> getAllRecentUpdateList(String projectId) {
+public List<Object[]> getAllRecentUpdateList(String projectId)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getAllRecentUpdateList(projectId);
 }
 
 @Override
-public Object getEmpnameById(int EmpId) {
+public Object getEmpnameById(int EmpId)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getEmpnameById(EmpId);
 }
 
 @Override
-public Object getProjectCodeById(int ProjectId) {
+public Object getProjectCodeById(int ProjectId)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getProjectCodeById(ProjectId);
 }
 
 @Override
-public Object getProjectShortNameById(int ProjectId) {
+public Object getProjectShortNameById(int ProjectId)throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getProjectShortNameById(ProjectId);
+}
+
+@Override
+public int ActionSubDeleteUpdate(String ActionAssignId, String progress, String progressDate, String progressRemarks) throws Exception {
+	
+	return dao.ActionSubDeleteUpdate(ActionAssignId,progress,progressDate,progressRemarks);
+}
+
+@Override
+public int ActionRemarksEdit(String actionAssignId, String progress, String progressRemarks,String UserId) throws Exception {
+
+	return dao.ActionRemarksEdit(actionAssignId,progress,progressRemarks,UserId);
+}
+@Override
+public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId) throws Exception {
+	return dao.actionSubRemarksEdit(actionSubId,progress,progressRemarks,UserId);
 }
 
 }

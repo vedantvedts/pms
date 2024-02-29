@@ -2447,10 +2447,10 @@ System.out.println(todayDate+"---");
 							 		<table  style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;width: 1370px;font-size: 12px;" >
 									<thead>
 										<tr>
-											<th colspan="23" style="text-align: right; border: 0px;"><span class="currency">(In &#8377; Lakhs)</span></th>
+											<th colspan="25" style="text-align: right; border: 0px;"><span class="currency">(In &#8377; Lakhs)</span></th>
 										</tr>
 										<tr>
-											<th colspan="23" ><span class="mainsubtitle">Procurement Status</span></th>
+											<th colspan="25" ><span class="mainsubtitle">Procurement Status</span></th>
 									 	</tr>
 									 	<tr>
 											<th style="width: 40x">SN</th>
@@ -2474,6 +2474,8 @@ System.out.println(todayDate+"---");
 											<th style="width: 35px">15</th>
 											<th style="width: 35px">16</th>
 											<th style="width: 35px">17</th>
+											<th style="width: 35px">18</th>
+											<th style="width: 35px">19</th>
 											<th style="width: 150px">PDC</th>
 											<th style="width: 150px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
 									 	</tr>
@@ -2504,10 +2506,10 @@ System.out.println(todayDate+"---");
 												<% int filestatus = Integer.parseInt(proc[13].toString());
 													int tempstatus = filestatus;
 												%>
-												<%for(int tdc=1;tdc<=17;tdc++){ %>
+												<%for(int tdc=1;tdc<=19;tdc++){ %>
 												
 													<%if(filestatus>11){  filestatus--;  } %>
-													<%if(filestatus>17){  filestatus--;  } %>
+													<%if(filestatus>19){  filestatus--;  } %>
 													
 													
 													<%if(tdc < (tempstatus)){ %>
@@ -2550,6 +2552,8 @@ System.out.println(todayDate+"---");
 												<td></td>
 												<td></td>
 												<td></td>
+												<td></td>
+												<td></td>
 												<td style="text-align: center;">-</td>
 												<td style="text-align: center;">-</td>
 												</tr>
@@ -2558,7 +2562,7 @@ System.out.println(todayDate+"---");
 										
 										<%if(psn ==0 && envisagedDemandlist.size()==0 ){ %>
 											<tr>
-										      <td colspan="22" style="text-align: center;">Nil</td>
+										      <td colspan="25" style="text-align: center;">Nil</td>
 										   </tr>
 										<%} %>
 										
@@ -2573,7 +2577,7 @@ System.out.println(todayDate+"---");
 										<td>10</td>
 										<td>Order Placement</td>
 											<td>15</td>
-										<td>Inward Inspection Clerance</td>
+										<td>Delivery at Stores</td>
 									
 									</tr>
 									<tr>
@@ -2582,32 +2586,31 @@ System.out.println(todayDate+"---");
 										<td style="width: 3%;">6</td>
 										<td style="width: 22%;">Tender Opening</td>
 										<td style="width: 3%;">11</td>
-										<td style="width: 22%;">Issue of CDEC / EDEC</td>
+										<td style="width: 22%;">Revised DP</td>
 										<td style="width: 3%;">16</td>
-										<td style="width: 22%;">Payment Process</td>
+										<td style="width: 22%;">Inward Inspection Clerance</td>
 									
 									</tr>
 									<tr>
 										<td>2</td>
 										<td>SPC Cleared</td>
-									<td>7</td>
+									    <td>7</td>
 										<td>TCEC Approved</td>
 										<td>12</td>
-										<td>Realization Completed</td>
+										<td>Realization in progress</td>
 										<td>17</td>
-										<td>Payment Released</td>
+										<td>Payment Process</td>
 									
 									</tr>
 									<tr>
 										<td>3</td>
 										<td>EPC Approved</td>
-									<td>8</td>
+									    <td>8</td>
 										<td>TPC Approved</td>
 										<td>13</td>
-										<td>ATP/QTP Completed</td>
-									
-										<td></td>
-										<td></td>
+										<td>Realization Completed</td>
+										<td>18</td>
+										<td>Partialy Paid</td>
 									</tr>
 									<tr>
 										<td>4</td>
@@ -2615,10 +2618,9 @@ System.out.println(todayDate+"---");
 										<td>9</td>
 										<td>Financial Sanction</td>
 										<td>14</td>
-										<td>Delivery at Stores</td>
-									
-										<td></td>
-										<td></td>
+										<td>ATP/QTP Completed</td>
+										<td>19</td>
+										<td>Payment Released</td>
 									</tr>
 								</table>
 						<% } %>

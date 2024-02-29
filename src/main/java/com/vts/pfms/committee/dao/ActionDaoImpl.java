@@ -2,6 +2,7 @@ package com.vts.pfms.committee.dao;
 
 import java.math.BigInteger;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,7 @@ import com.vts.pfms.committee.model.RfaTransaction;
 @Repository
 public class ActionDaoImpl implements ActionDao{
 	
+	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static final Logger logger=LogManager.getLogger(ActionDaoImpl.class);
 	
 	private static final String EMPLOYEELIST="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND LabCode=:LabCode ORDER BY a.srno=0,a.srno ";
@@ -44,7 +46,7 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String ASSIGNEEDATA="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignor' ,c.designation,a.actiondate,e.enddate,a.actionitem,e.actionstatus,a.scheduleminutesid,a.actionlinkid,e.actionno,e.revision,CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assignee',a.actiontype,e.pdcorg,e.pdc1,e.pdc2 ,e.assignorlabcode,e.assigneelabcode , e.actionassignid , (SELECT COUNT(actionmainid) FROM  action_main WHERE (actionmainid=a.actionmainid OR parentActionid=a.actionmainid)) AS 'levelcount' , a.projectid , a.type,e.assignor AS actionassignor,e.Assignee AS 'AssigneeMain',e.progress FROM  action_main a, employee b ,employee_desig c ,employee d ,action_assign e WHERE e.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND  e.assignee=d.empid AND e.assigneelabcode <>'@EXP'  AND a.actionmainid=e.actionmainid AND e.actionassignid=:actionassignid UNION SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignor' ,c.designation,a.actiondate,e.enddate,a.actionitem,e.actionstatus,a.scheduleminutesid,a.actionlinkid,e.actionno,e.revision,CONCAT(IFNULL(CONCAT(d.title,' '),''), d.expertname) AS 'assignee',a.actiontype,e.pdcorg,e.pdc1,e.pdc2 ,e.assignorlabcode,e.assigneelabcode , e.actionassignid , (SELECT COUNT(actionmainid) FROM  action_main WHERE (actionmainid=a.actionmainid OR parentActionid=a.actionmainid)) AS 'levelcount' , a.projectid , a.type,e.assignor AS actionassignor,e.Assignee AS 'AssigneeMain',e.progress FROM  action_main a, employee b ,employee_desig c ,expert d ,action_assign e WHERE e.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND  e.assignee=d.expertid AND e.assigneelabcode = '@EXP'  AND a.actionmainid=e.actionmainid AND e.actionassignid=:actionassignid";
 	private static final String SUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid,b.attachname,(SELECT e.empname FROM employee e ,login l WHERE e.empid=l.empid AND l.username=a.createdby)AS'Progress By' FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid AND a.isactive='1' ORDER BY actionsubid ASC";
 //	private static final String SUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid,b.attachname FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
-	private static final String SUBDELETE="delete from action_sub where actionsubid=:subid";
+	private static final String SUBDELETE="DELETE FROM action_sub WHERE ActionSubId =:subid";
 	private static final String MAINFORWARD="UPDATE action_assign SET  actionstatus=:actionstatus, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assign"; //actionflag=:flag,
 	private static final String FORWARDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS 'empname' ,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionstatus as 'status' ,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,a.actionlinkid,aas.actionno, aas.actionassignid ,a.projectid FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.actionstatus IN ('F','A','B','I','C') AND aas.assignor=:empid AND aas.assigneelabcode <> '@EXP' UNION SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.expertname) AS 'empname' ,'Expert' AS 'designation',a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionstatus as 'status',a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,a.actionlinkid,aas.actionno, aas.actionassignid ,a.projectid FROM action_main a,  expert ab , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.expertid AND ab.isactive='1'  AND aas.actionstatus IN ('F','A','B','I','C') AND aas.assignor=:empid AND aas.assigneelabcode = '@EXP'ORDER BY actionassignid DESC";
 	private static final String ACTIONLIST ="SELECT DISTINCT(a.scheduleid), a.committeeid, a.committeemainid, b.committeename, a.scheduledate, a.schedulestarttime  FROM committee_schedule a, committee b, committee_schedules_minutes_details c,committee_main d ,committee_member cm WHERE a.committeeid=b.committeeid AND a.scheduledate<=CURDATE() AND a.scheduleid=c.scheduleid AND c.idarck IN('A','K','I','R')  AND a.committeemainid=d.committeemainid  AND d.isactive=1 AND a.isactive=1   AND d.committeemainid=cm.committeemainid AND cm.membertype IN ('CS','PS','CC','CH') AND cm.empid=:empid";
@@ -1416,7 +1418,8 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	
-	public static final String RFATDLIST="SELECT DISTINCT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.srNo FROM employee a,employee_desig b,division_td c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND c.tdheadid=a.empid ORDER BY srno";
+	//public static final String RFATDLIST="SELECT DISTINCT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.srNo FROM employee a,employee_desig b,division_td c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND c.tdheadid=a.empid ORDER BY srno";
+	public static final String RFATDLIST="CALL pfms_Rfa_ModalEmplist()"; // all emp list will come
 	@Override
 	public List<Object[]> getRfaTDList() throws Exception {
 		Query query = manager.createNativeQuery(RFATDLIST);
@@ -1604,7 +1607,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	@Override
-	public List<Object[]> getmodifieddate(String userId, int pid) {
+	public List<Object[]> getmodifieddate(String userId, int pid)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT max(a.modifieddate),max(m.projectid) FROM action_assign a JOIN action_main m ON m.actionmainid=a.actionmainid WHERE a.createdby=:person AND m.projectid=:pid");
 		// SELECT dateofupdate, projectId  FROM pfms_weekly_update WHERE pfms_weekly_update.role=:roal Limit :limitcount
@@ -1614,7 +1617,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public List<Object[]> getProjectByDirectorID(String empId) {
+	public List<Object[]> getProjectByDirectorID(String empId)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT projectmainid, projectcode FROM project_main WHERE projectdirector=:id");
 		query.setParameter("id", empId);
@@ -1622,7 +1625,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public List<Object[]> getRecentWeeklyUpdateDate(String string) {
+	public List<Object[]> getRecentWeeklyUpdateDate(String string)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT UpdatedDate, projectId FROM pfms_weekly_update WHERE projectid=:id order by UpdatedDate desc");
 		query.setParameter("id", string);
@@ -1632,7 +1635,7 @@ public class ActionDaoImpl implements ActionDao{
 	
 
 	@Override
-	public List<Object[]> getRiskDetails(String LabCode, int pid) {
+	public List<Object[]> getRiskDetails(String LabCode, int pid)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT MAX(aas.progressdate), MAX(am.projectid) FROM action_assign aas, action_main am WHERE aas.actionmainid = am.actionmainid AND am.type='K' AND am.projectid=:projectid");
 		query.setParameter("projectid", pid );
@@ -1640,7 +1643,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public List<Object[]> getMilestoneDate( int pid) {
+	public List<Object[]> getMilestoneDate( int pid)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT MAX(modifieddate), max(projectid) FROM milestone_activity WHERE projectid=:projectid");
 		query.setParameter("projectid", pid );
@@ -1648,7 +1651,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public List<Object[]> getMeetingDate(int pid) {
+	public List<Object[]> getMeetingDate(int pid)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT MAX(modifieddate), max(projectid) FROM committee_schedule WHERE projectid=:projectid");
 		query.setParameter("projectid", pid );
@@ -1656,7 +1659,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public List<Object[]> getProdurementDate(int pid) {
+	public List<Object[]> getProdurementDate(int pid)throws Exception {
 		// TODO Auto-generated method stub
 		 String ProcurementLastUpdateDate = "SELECT MAX(modifieddate), max(projectid) FROM pfts_file WHERE projectid=:projectid";
 		Query query = manager.createNativeQuery(ProcurementLastUpdateDate);
@@ -1665,7 +1668,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public List<Object[]> getAllRecentUpdateList(String projectId) {
+	public List<Object[]> getAllRecentUpdateList(String projectId)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("select * from pfms_weekly_update where projectid=:projectid order by UpdatedDate desc");
 		query.setParameter("projectid", projectId );
@@ -1673,7 +1676,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public Object getEmpnameById(int empId) {
+	public Object getEmpnameById(int empId)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("select EmpName from employee where empid=:empId");
 		query.setParameter("empId", empId );
@@ -1681,7 +1684,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public Object getProjectCodeById(int projectId) {
+	public Object getProjectCodeById(int projectId)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT projectcode FROM project_master WHERE projectid=:projectId");
 		query.setParameter("projectId", projectId );
@@ -1689,10 +1692,54 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public Object getProjectShortNameById(int projectId) {
+	public Object getProjectShortNameById(int projectId)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT projectshortname FROM project_master WHERE projectid=:projectId");
 		query.setParameter("projectId", projectId );
 		return query.getResultList();
+	}
+	
+	private static final String SUBDELETEUPDATE="UPDATE action_assign SET progress=:progress, progressdate=:progressdate, ProgressRemark=:remarks WHERE actionassignid=:actionassignid";
+	private static final String SUBDELETEUPDATE1="UPDATE action_assign SET progress='0', progressdate=NULL, ProgressRemark=NULL WHERE actionassignid=:actionassignid";
+	@Override
+	public int ActionSubDeleteUpdate(String ActionAssignId, String progress, String progressDate, String progressRemarks) throws Exception {
+		
+		if(progress!=null && progressDate!=null && progressRemarks!=null) {
+		Query query = manager.createNativeQuery(SUBDELETEUPDATE);
+		query.setParameter("actionassignid", ActionAssignId );
+		query.setParameter("progress", progress );
+		query.setParameter("progressdate", progressDate );
+		query.setParameter("remarks", progressRemarks );
+		return query.executeUpdate();
+		}else {
+			Query query = manager.createNativeQuery(SUBDELETEUPDATE1);
+			query.setParameter("actionassignid", ActionAssignId );
+			return query.executeUpdate();
+		}
+		
+	}
+	
+	private static final String ACTIONREMARKUPDATE="UPDATE action_assign SET progress=:progress, ProgressRemark=:remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE actionassignid=:actionassignid";
+	@Override
+	public int ActionRemarksEdit(String actionAssignId, String progress, String progressRemarks, String UserId) throws Exception {
+		Query query = manager.createNativeQuery(ACTIONREMARKUPDATE);
+		query.setParameter("actionassignid", actionAssignId );
+		query.setParameter("progress", progress );
+		query.setParameter("remarks", progressRemarks );
+		query.setParameter("ModifiedBy", UserId );
+		query.setParameter("ModifiedDate", sdf1.format(new java.util.Date()));
+		return query.executeUpdate();
+	}
+	
+	private static final String SUBREMARKSUPDATE="UPDATE action_sub SET progress=:progress, Remarks=:remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE actionsubid=:actionsubid";
+	@Override
+	public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId) throws Exception {
+		Query query = manager.createNativeQuery(SUBREMARKSUPDATE);
+		query.setParameter("actionsubid", actionSubId );
+		query.setParameter("progress", progress );
+		query.setParameter("remarks", progressRemarks );
+		query.setParameter("ModifiedBy", UserId );
+		query.setParameter("ModifiedDate", sdf1.format(new java.util.Date()));
+		return query.executeUpdate();
 	}
 }

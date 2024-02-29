@@ -134,15 +134,18 @@ public interface ActionService {
 	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate)throws Exception;
 	
 	
-	public List<Object[]> getmodifieddate(String userId, int pid);
-	public List<Object[]> getProjectByDirectorID(String empId);
-	public List<Object[]> getRecentWeeklyUpdateDate(String string);
-	public List<Object[]> getRiskDetails(String userId, int pid);
-	List<Object[]> getMilestoneDate( int pid);
-	public List<Object[]> getMeetingDate(int pid);
-	public List<Object[]> getProdurementDate(int pid);
-	public List<Object[]> getAllRecentUpdateList(String projectId);
-	public Object getEmpnameById(int int1);
-	public Object getProjectCodeById(int ProjectId);
-	public Object getProjectShortNameById(int ProjectId);
+	public List<Object[]> getmodifieddate(String userId, int pid)throws Exception;
+	public List<Object[]> getProjectByDirectorID(String empId)throws Exception;
+	public List<Object[]> getRecentWeeklyUpdateDate(String string)throws Exception;
+	public List<Object[]> getRiskDetails(String userId, int pid)throws Exception;
+	List<Object[]> getMilestoneDate( int pid)throws Exception;
+	public List<Object[]> getMeetingDate(int pid)throws Exception;
+	public List<Object[]> getProdurementDate(int pid)throws Exception;
+	public List<Object[]> getAllRecentUpdateList(String projectId)throws Exception;
+	public Object getEmpnameById(int int1)throws Exception;
+	public Object getProjectCodeById(int ProjectId)throws Exception;
+	public Object getProjectShortNameById(int ProjectId)throws Exception;
+	public int ActionSubDeleteUpdate(String ActionAssignId, String progress, String progressDate, String progressRemarks)throws Exception;
+	public int ActionRemarksEdit(String actionAssignId, String progress, String progressRemarks, String UserId)throws Exception;
+	public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId)throws Exception;
 }

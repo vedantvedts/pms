@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="java.text.Format"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -140,6 +141,22 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
+
+.blinking-element {
+            animation: blinker 1.5s linear infinite;
+            color: #D81B60;
+            font-size: 1.5em;
+            font-weight:600;
+            margin-bottom: 20px;
+            text-shadow: 5px 5px 10px  #D81B60;
+}
+
+@keyframes blinker { 
+   0%{opacity: 0;}
+  50%{opacity: 1;}
+  100%{opacity: 1;}
+}
+
 		
 </style>
 
@@ -158,7 +175,10 @@ NFormatConvertion nfc=new NFormatConvertion();
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
 List<Object[]> fileStatusList=(List<Object[]>)request.getAttribute("fileStatusList");
 String projectId=request.getAttribute("projectId").toString();
-
+List<Object[]> pftsStageList=(List<Object[]>)request.getAttribute("pftsStageList");
+List<Object[]> pftsStageList1=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())<=10).collect(Collectors.toList());
+List<Object[]> pftsStageList2=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())>=10).collect(Collectors.toList());
+List<Object[]> pftsStageList3=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())>10).collect(Collectors.toList());
 Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 
 %>
@@ -315,7 +335,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
                                                 <td><%=fileStatus[6]%></td>
                                                 <%if(!fileStatus[7].toString().equals("19")){ %>
                                                    <td>
-                                                      <button class="btn btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="openEditform('<%=fileStatus[0]%>','<%=fileStatus[1]%>')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                                      <button class="btn btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="openEditform('<%=fileStatus[0]%>','<%=fileStatus[1]%>',<%=fileStatus[7]%>,'<%=fileStatus[4]%>')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                                   </td>
                                                    <td style="margin-left:5px;">  
                                                    <form action="FileInActive.htm" method="post">
@@ -347,7 +367,8 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                        		
 	                        		<button  class="btn add" type="button" formaction="AddNewDemandFile.htm" id="ibasAddBtn" onclick="addIbis()">Add Demand From IBAS</button>
-	                        		<button  class="btn btn-success" type="button" id="enviBtn" onclick="addEnvi()" formaction="envisagedAction.htm">ENVISAGED DEMAND</button>
+<!-- 	                        		<button  class="btn btn-info" style="font-weight:600" type="button" id="manualAddBtn" onclick="addManual()" formaction="AddManualDemand.htm">MANNUAL DEMAND</button>
+ -->	                        		<button  class="btn btn-success" style="font-weight:600"  type="button" id="enviBtn" onclick="addEnvi()" formaction="envisagedAction.htm">ENVISAGED DEMAND</button>
 	                        		
 	                           </form>
 	                        
@@ -364,60 +385,105 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 		</div>
 	</div>
 	
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<form action="upadteDemandFile.htm" method="post" onsubmit="return confirm('Are you sure to submit');">
-				<div class="modal-header">
-					<div id="headerId">
-						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+		   <div class="modal-content" style="width: 125%; margin-left:-12%">
+			<form action="upadteDemandFile.htm" id="form1" method="post" >
+					<div class="modal-header" style="background-color: #ECEFF1">
+						<h5 class="modal-title" id="statusModalLabel"></h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
-
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-8">
-							<table style="border: none; margin-top: -6px;">
-								<tr>
-									<td style="border: none; padding-bottom: .2rem;">
-										<label class="control-label">Event Status</label>
-									</td>
-								</tr>
-								<tr>
-									<td style="border: none; padding: 0px;">
-										<select	class="custom-select selectdee" style="width: 20rem;" id="selectDemand" required="required" name="statusId">
-											<option disabled="true" selected value="">Choose...</option>
-	
-										</select>
-									</td>
-								</tr>
-							</table>
-						</div>
-
-						<div class="col-md-4">
-							<label class="control-label">Event Date</label> <input
+					<div class="modal-body">
+						<div class="row" >
+							<div class="col-md-3">
+								<label class="control-label" > Procurement Status :</label>
+								</div>
+								<div class="col-md-4" style="margin-left: -6%;">
+								 <select
+									class="form-control selectdee" style="width: 100%"
+									id="procstatus" required="required" name="procstatus">
+								</select>
+								</div>
+							
+							<div class="col-md-2" >
+							   <label class="control-label" >Event Date :</label>
+							   </div>
+							   <div class="col-md-3" >
+							   <input style="margin-left: -23%;"
 								type="text" class="form-control" name="eventDate" id="eventDate"
 								required="required" readonly="readonly">
+						    </div>
+						</div>
+						<div class="row mt-4">
+						<div class="col-md-3" >
+								<label> Remarks : </label> 
+								</div>
+								<div class="col-md-8" style=" margin-left: -6%;" >
+								<input type="text" class="form-control"
+									name="procRemarks" id="procRemarks" required="required"
+									style="width: 122%">
+							</div>
+							</div>
+						<br>
+						<div align="center">
+							<button type="button" class="btn btn-sm submit" onclick="submitStatus()">Update</button>
+							   <input type="hidden" name="fileId" id="updateprocFileId"  value=""/>
+                               <input type="hidden" name="demandNo" id="updateprocDemand"  value=""/>
+                               <input type="hidden" name="eventDate" id="updateeventDate"  value=""/>
+                               <input type="hidden" name="remarks" id="updateprocRemarks" value="">
+                               <input type="hidden" name="statusId" id="updateStatus" value="">
+                               <input type="hidden" name="projectId" value=<%=projectId%> />
+                               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						</div>
+						<br>
+						<div class="col-md-12 "
+							style="border: 1px solid #055C9D; display: flex; justify-content: space-around;">
+							<div>
+								<%
+								int i = 0;
+								for (Object[] obj1 : pftsStageList) {
+									if (i == 7)
+										break;
+								%>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[2].toString()%>
+								</p>
+								<%
+								i++;
+								}
+								%>
+							</div>
+							<div>
+								<%
+								int j = 0;
+								for (Object[] obj1 : pftsStageList.stream().skip(7).collect(Collectors.toList())) {
+									if (j == 7)
+										break;
+								%>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[2].toString()%>
+								</p>
+								<%
+								j++;
+								}
+								%>
+							</div>
+							<div>
+								<%
+								int k = 0;
+								for (Object[] obj1 : pftsStageList.stream().skip(14).collect(Collectors.toList())) {
+									if (k == 7)
+										break;
+								%>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[2].toString() %>
+								</p>
+								<%
+		                        k++;
+		                        } %>
+						  </div>
 						</div>
 					</div>
-
-					<div class="row">
-						<div class="col-md-12">
-							<label class="control-label">Remarks</label> <input type="text" class="form-control" name="remarks" id="remarksId" value="Nil" required="required">
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<input type="hidden" name="projectId" value="<%=projectId%>" /> 
-					<input type="hidden" name="fileId" id="updateFileId" /> 
-					<input type="hidden" name="demandNo" id="DemandNo" /> 
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn submit">Submit</button>
-				</div>
 			</form>
 		</div>
 	</div>
@@ -461,7 +527,6 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	</div>
 </div>
 
-
 <script type="text/javascript">
 
 function submitForm(frmid)
@@ -497,6 +562,21 @@ function addEnvi() {
              }
         }
 }
+
+function addManual() {
+	   var form = document.getElementById("enviForm");
+	   
+    if (form) {
+     var manualBtn = document.getElementById("manualAddBtn");
+        if (manualBtn) {
+            var formactionValue = manualBtn.getAttribute("formaction");
+            
+             form.setAttribute("action", formactionValue);
+              form.submit();
+          }
+     }
+}
+
 function fileClose() {
 	var confirmation=confirm('Are You Sure To InActive ?');
 	if(confirmation){
@@ -580,39 +660,85 @@ function openEnviform(PftsFileId) {
 
 <script type="text/javascript">
 
-function openEditform(fileId , demandid){
-	var x=x+'<option disabled="true"  value="" style="font-size:20px;">Choose...</option>';
-	$.ajax({
-		type : "GET",
-		url : "getStatusEvent.htm",
-		data : {
-			fileid : fileId,
-			projectId:<%=projectId%>
-		},
-		datatype : 'json',
-		success : function(result) {
-		var values = JSON.parse(result);
-
-		for(i = 0; i < values.length; i++){
-				 x=x+"<option value="+values[i][0]+">"+ values[i][2]+ "</option>"; 
-			  			   		     
-			}
-	        
-			$("#selectDemand").html(x); 
-			$("#DemandNo").val(demandid); 
-            $("#updateFileId").val(fileId);
-		}
-		});	
+function openEditform(fileId,demandid,pstatusid,itemname){
 	
+	  $('#updateprocDemand').val(demandid);
+	  $('#updateprocFileId').val(fileId);
+	
+	  $('#exampleModal .modal-title').html('<span style="color: #FF3D00;">Demand No : ' + demandid + '<br> <span style="color: #039BE5;">Item : ' + itemname);
+	  $('#exampleModal').modal('show');
+	  $(".pstatus").removeClass("blinking-element"); // Remove blink class from all elements
+      $("#" + pstatusid).addClass("blinking-element"); //add blink class on specific id
+      
+      $.ajax({
+			type : "GET",
+			url : "getFileViewList.htm",
+			data : {
+				fileId : fileId
+			},
+			datatype : 'json',
+			success : function(result) {
+				 if (result != null) {
+				        var resultData = JSON.parse(result); 
+				        $('#procRemarks').val(resultData[9]);
+				        $('#procstatus').empty();
+				        if(pstatusid<10){
+				        <%for(Object[] obj3:pftsStageList1){%>
+				        var optionValue = <%=obj3[0]%>;
+		     		    var optionText = '<%=obj3[2]%>';
+		     	        var option = $("<option></option>").attr("value", optionValue).text(optionText);
+		                  if(pstatusid==optionValue){
+		                  option.prop('selected', true);
+		                  }
+		                  $('#procstatus').append(option);
+				        <%}%>
+				        }else if(pstatusid===10){
+				        	 <%for(Object[] obj4:pftsStageList2){%>
+						        var optionValue = <%=obj4[0]%>;
+				     		    var optionText = '<%=obj4[2]%>';
+				     	        var option = $("<option></option>").attr("value", optionValue).text(optionText);
+				                  if(pstatusid==optionValue){
+				                  option.prop('selected', true);
+				                  }
+				                  $('#procstatus').append(option);
+						        <%}%>	
+				        }
+				        else{
+				            <%for(Object[] obj4:pftsStageList3){%>
+					        var optionValue = <%=obj4[0]%>;
+			     		    var optionText = '<%=obj4[2]%>';
+			     	        var option = $("<option></option>").attr("value", optionValue).text(optionText);
+			                  if(pstatusid==optionValue){
+			                  option.prop('selected', true);
+			                  }
+			                  $('#procstatus').append(option);
+					        <%}%>	
+				        }
+				        
+				       }
+				   }      
+			});	
+}
+</script>
 
-$("#headerId").html('<h5 class="modal-title" id="exampleModalLabel"> Demand No : '+demandid+'</h5>');
+<script type="text/javascript">
+function submitStatus(){
+	var remarks=$('#procRemarks').val();
+	var procstatusId=$('#procstatus').val();
+	var procDate=$('#eventDate').val();
+
+	$('#updateStatus').val(procstatusId);
+	$('#updateprocRemarks').val(remarks);
+	$('#updateeventDate').val(procDate);
+	
+		if(confirm('Are you Sure To Update ?')){
+		$('#form1').submit();  
+		}
 }
 
 </script>
 
 <script type="text/javascript">
-
-
 $('#eventDate').daterangepicker({
 	"singleDatePicker" : true,
 	"linkedCalendars" : false,
@@ -659,7 +785,7 @@ $( "#selectDemand" ).change(function() {
 });
 
 </script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $('#exampleModal').on('hidden.bs.modal', function () {
 	  $("#orderDetails").hide();
 	  $('#orderNoId').removeAttr('required');
@@ -679,7 +805,7 @@ $('#exampleModal').on('shown.bs.modal', function () {
 	  }
 });
 
-</script>
+</script> -->
 
 
 <script type="text/javascript">
@@ -733,5 +859,6 @@ function openPDCform(fileId){
 }
 
 </script>
+
 </body>
 </html>

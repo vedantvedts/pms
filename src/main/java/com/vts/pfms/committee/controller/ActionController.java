@@ -590,13 +590,18 @@ public class ActionController {
 	@RequestMapping(value = "ActionSubDelete.htm", method = RequestMethod.POST)
 	public String TCCMemberDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
 	{
-
 		String UserId = (String) ses.getAttribute("Username");
+		String ActionSubId=req.getParameter("ActionSubId");
+		String AttachMentId=req.getParameter("ActionAttachid");
+		String Progress=null;
+		String ProgressDate=null;
+		String ProgressRemarks=null;
+		
 		logger.info(new Date() +"Inside ActionSubDelete.htm "+UserId);		
 		try { 
 			ActionAttachment attach = null;
-			if(req.getParameter("ActionAttachid" )!=null) {
-				attach=service.ActionAttachmentDownload(req.getParameter("ActionAttachid" ));	
+			if(!AttachMentId.equalsIgnoreCase("null")) {
+				attach=service.ActionAttachmentDownload(AttachMentId);	
 				File my_file=null;
 			       
 				my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
@@ -605,14 +610,24 @@ public class ActionController {
 					my_file.delete();
 				}
 			}
-			int count = service.ActionSubDelete(req.getParameter("ActionSubId"), UserId);	
+			int count = service.ActionSubDelete(ActionSubId, UserId);
 			if (count > 0) {
-				redir.addAttribute("result", "Action Sub Deleted Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Action Sub Delete Unsuccessful");
+				List<Object[]> Sublist=service.SubList(req.getParameter("ActionAssignId"));
+				if(Sublist.size() > 0) {
+					Progress=Sublist.get(Sublist.size()-1)[2].toString();
+					ProgressDate=Sublist.get(Sublist.size()-1)[3].toString();
+					ProgressRemarks=Sublist.get(Sublist.size()-1)[4].toString();
+				}
+				int result = service.ActionSubDeleteUpdate(req.getParameter("ActionAssignId"),Progress,ProgressDate,ProgressRemarks);
+				redir.addAttribute("result", "Action Status Deleted Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "Action Status Delete Unsuccessful");
 			}
 			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
 			redir.addFlashAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
+			redir.addFlashAttribute("projectid",req.getParameter("projectid"));
+			redir.addFlashAttribute("flag",req.getParameter("flag"));
 			return "redirect:/ActionSubLaunchRedirect.htm";
 		}catch (Exception e) {
 				e.printStackTrace();
@@ -2928,7 +2943,7 @@ public class ActionController {
 				List<Object[]> RfaActionList = new ArrayList<>();
 				
 				if(LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("C") || LoginType.equalsIgnoreCase("I")) {
-					RfaActionList = service.GetRfaActionList1(Project,fdate,tdate);    // admin,TD,PGD can see all rfa list
+					RfaActionList = service.GetRfaActionList1(Project,fdate,tdate);    // Admin,TD,PGD can see all rfa list
 				}else if(LoginType.equalsIgnoreCase("P")){
 					RfaActionList = service.RfaProjectwiseList(EmpId,Project,fdate,tdate);  // project wise rfa list
 				}else {
@@ -4001,5 +4016,40 @@ public class ActionController {
         				e.printStackTrace();
         			}
         				return null;
-        		}    	
+        		}
+            
+            
+        	@RequestMapping(value = "ActionRemarksEdit.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String ActionRemarksEdit(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+        	{
+				String UserId =(String)ses.getAttribute("Username");
+				String progress=req.getParameter("progressVal");
+				String progressRemarks=req.getParameter("progressRemarks");
+				String ActionAssignId=req.getParameter("ActionAssignId");
+				String ActionSubId=req.getParameter("ActionSubId");
+				
+        		logger.info(new Date() +"Inside ActionRemarksEdit.htm "+UserId);
+        		try {
+				
+        			int count=service.actionSubRemarksEdit(ActionSubId,progress,progressRemarks,UserId);
+        	    	if(req.getParameter("subaction").equalsIgnoreCase("1")) {
+        			int result = service.ActionRemarksEdit(ActionAssignId,progress,progressRemarks,UserId);
+        	    	}
+        			if(count>0) {
+        				redir.addAttribute("result","Action Remarks Updated successfully");
+        			}else {
+        				redir.addAttribute("result","Action Remarks Update unsuccessful");
+        			}
+
+        			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
+        			redir.addFlashAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
+        			redir.addFlashAttribute("projectid",req.getParameter("projectid"));
+        			redir.addFlashAttribute("flag",req.getParameter("flag"));
+        			return "redirect:/ActionSubLaunchRedirect.htm";
+        			
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+        		return null;
+        	}
 }

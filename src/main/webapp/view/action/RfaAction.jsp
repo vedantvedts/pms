@@ -642,7 +642,6 @@ function forwardmodal(rfanomodal,RFAID){
 function rfaOptionFunc(){
 	
 	 var selectValue = $("#rfaoptionby").val();
-	 console.log()
 	 var ModalEmpList =<%=ModalEmpList%>;
 	 var ModalTDList =<%=ModalTDList%>;
 	 if (selectValue === "AF") {

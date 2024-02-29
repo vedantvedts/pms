@@ -23,7 +23,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	
 	
 	private static final String PROJECTSLIST="SELECT projectid, projectcode, projectname FROM project_master";
-	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND s.PftsStatusId < 19 AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
+	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND s.PftsStatusId < 19 AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag,f.Remarks FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
 	private static final String PrevDemandFile ="SELECT ProjectId, DemandNo, DemandDate, ItemNomenclature, EstimatedCost FROM pfts_file WHERE ProjectId=:projectid";
 	private static final String StatusList="SELECT s.PftsStatusId, s.PftsStatus, s.PftsStageName FROM pfts_status s WHERE s.PftsStatusId > (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) AND CASE WHEN (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) < 10 THEN s.PftsStatusId <= 10 ELSE TRUE END ORDER BY pftsstatusid ";
 	private static final String updateCostDetails="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
@@ -202,4 +202,23 @@ public  class PFTSDaoImpl implements PFTSDao{
 		query.setParameter("PftsFileId", PftsFileId);
 		return ( Object[])query.getSingleResult();
 	}
+	
+	private static final String GETSTAGELIST="SELECT PftsStatusId, PftsStatus, PftsStageName FROM pfts_status  ORDER BY pftsstatusid ";
+	@Override
+	public List<Object[]> getpftsStageList() throws Exception {
+		Query query=manager.createNativeQuery(GETSTAGELIST);
+		return ( List<Object[]>)query.getResultList();
+	}
+	
+	
+	private static final String FILEVIEWLIST="SELECT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus,s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks FROM pfts_file f, pfts_status s WHERE f.PftsFileId=:pftsfileid AND f.PftsStatusId = s.PftsStatusId";
+	@Override
+	public Object[] getpftsFileViewList(String procFileId) throws Exception {
+		
+		Query query = manager.createNativeQuery(FILEVIEWLIST);
+		query.setParameter("pftsfileid", procFileId);
+		
+		return  (Object[])query.getSingleResult();
+	}
+	
 }

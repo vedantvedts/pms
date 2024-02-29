@@ -23,5 +23,7 @@ public interface PFTSService {
 	public int getpftsFieldId(String fileId)throws Exception;
 	long updateEnvi(PFTSFile pf, String userId) throws Exception;
 	public Object[] getEnviData(String pftsFileId)throws Exception;
+	public List<Object[]> getpftsStageList()throws Exception;
+	public Object[] getpftsFileViewList(String procFileId)throws Exception;
 
 }

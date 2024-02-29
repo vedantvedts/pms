@@ -25,4 +25,6 @@ public interface PFTSDao {
 	public int getpftsFieldId(String enviId)throws Exception;
 	Long updatepftsEnvi(PFTSFile pf) throws Exception;
 	public Object[] getEnviData(String pftsFileId)throws Exception;
+	public List<Object[]> getpftsStageList()throws Exception;
+	public Object[] getpftsFileViewList(String procFileId)throws Exception;
 }
