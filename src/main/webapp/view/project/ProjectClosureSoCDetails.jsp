@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -300,6 +301,8 @@ SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 SimpleDateFormat sdf = fc.getSqlDateFormat();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
 
+DecimalFormat df = new DecimalFormat("#.####");
+df.setMinimumFractionDigits(4); 
 String statuscode = closure!=null?closure.getClosureStatusCode():null;
 %>
 
@@ -614,7 +617,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Sponsoring Agency and QR No.</td>
-												    		<td>: <%=projectMaster.getEndUser() %> and <%if(soc.getQRNo()!=null && !soc.getQRNo().isEmpty()) {%> <%=soc.getQRNo() %><%} else{%>NA<%} %> </td>
+												    		<td>: <%if(projectMaster.getEndUser()!=null) {%> <%=projectMaster.getEndUser() %><%} else{%>--<%} %> and <%if(soc.getQRNo()!=null && !soc.getQRNo().isEmpty()) {%> <%=soc.getQRNo() %><%} else{%>NA<%} %> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
@@ -632,7 +635,14 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Sanctioned Cost ( <span style="font-size: 12px;">&#x20B9;</span> Cr) </td>
-												    		<td style="">: Total <span style="text-decoration: underline;"><%=String.format("%.2f", projectMaster.getTotalSanctionCost()/10000000 ) %></span> Cr (FE <span style="text-decoration: underline;"><%=String.format("%.2f", projectMaster.getSanctionCostRE()/10000000 ) %></span> Cr)</td>
+												    		<td style="">: Total 
+												    			<span style="text-decoration: underline;">
+												    				<%=df.format(projectMaster.getTotalSanctionCost()/10000000) %>
+												    			</span> Cr (FE 
+												    			<span style="text-decoration: underline;">
+												    				<%=df.format(projectMaster.getSanctionCostRE()/10000000 ) %>
+												    			</span> Cr)
+												    		</td>
 												    	</tr> 
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
@@ -640,11 +650,15 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) 
 												    		: Total <span style="text-decoration: underline;">
 												    			<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000 ) %> --%>
-												    			<%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %>
+												    			<%if(expndDetails!=null && expndDetails[0]!=null) {%>
+												    				<%=df.format(Double.parseDouble(expndDetails[0].toString())/10000000 ) %> 
+												    			<%} %>
 												    		</span> Cr 
 												    		(FE <span style="text-decoration: underline;">
 												    			<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000 ) %> --%>
-												    			<%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %>
+												    			<%if(expndDetails!=null && expndDetails[1]!=null) {%>
+												    				<%=df.format(Double.parseDouble(expndDetails[1].toString())/10000000 ) %> 
+												    			<%} %>
 												    			</span> Cr)
 												    		</td>
 												    	</tr>
@@ -771,7 +785,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 														<%} %>
 					   								</div>
 							            			
-							            			<div class="row mt-2 mb-4">
+							            			<div class="row mt-2 mb-4" style="margin-left: 18px;">
 														<div class="col-md-12" align="center">
 															<%if(statuscode!=null && socforward.contains(statuscode)) {%>
 																<div class="ml-2" align="left">

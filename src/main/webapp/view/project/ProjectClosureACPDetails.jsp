@@ -354,7 +354,9 @@ FormatConverter fc = new FormatConverter();
 SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 SimpleDateFormat sdf = fc.getSqlDateFormat();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
-DecimalFormat df = new DecimalFormat("####################.##");
+
+DecimalFormat df = new DecimalFormat("#.####");
+df.setMinimumFractionDigits(4); 
 
 String statuscode = closure!=null?closure.getClosureStatusCode():null;
 
@@ -655,7 +657,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																    	<th style="width: 20%;">Projects Name</th>
 																    	<th style="width: 10%;">Project No</th>
 																    	<th style="width: 15%;">Agency</th>
-																    	<th style="width: 10%;">Cost (&#8377;)</th>
+																    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
 																    	<th style="width: 20%;">Status</th>
 																    	<th style="">Achievement</th>
 																	</tr>
@@ -669,7 +671,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			<td style="width: 20%;"><%=sub.getACPProjectName() %> </td>
 																			<td style="width: 10%;text-align: center;"><%=sub.getACPProjectNo() %> </td>
 																			<td style="width: 15%;"><%=sub.getProjectAgency() %> </td>
-																			<td style="width: 10%;text-align: right;"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(sub.getProjectCost())) %> </td>
+																			<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
 																			<td style="width: 20%;"><%=sub.getProjectStatus() %> </td>
 																			<td style=""><%=sub.getProjectAchivements() %> </td>
 																		</tr>
@@ -798,7 +800,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																    	<th style="width: 20%;">CARS / CAPSI Name</th>
 																    	<th style="width: 10%;">CARS / CAPSI No</th>
 																    	<th style="width: 15%;">Agency</th>
-																    	<th style="width: 10%;">Cost (&#8377;)</th>
+																    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
 																    	<th style="width: 15%;">Status</th>
 																    	<th style="">Achievement</th>
 																	</tr>
@@ -819,7 +821,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			<td style="width: 20%;"><%=carscapsi.getACPProjectName() %> </td>
 																			<td style="width: 10%;text-align: center;"><%=carscapsi.getACPProjectNo() %> </td>
 																			<td style="width: 15%;"><%=carscapsi.getProjectAgency() %> </td>
-																			<td style="width: 10%;text-align: right;"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carscapsi.getProjectCost())) %> </td>
+																			<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(carscapsi.getProjectCost()) / 10000000) %> </td>
 																			<td style="width: 20%;"><%=carscapsi.getProjectStatus() %> </td>
 																			<td style=""><%=carscapsi.getProjectAchivements() %> </td>
 																		</tr>
@@ -959,7 +961,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		<th style="width: 5%;">SN</th>
 																    	<th style="width: 35%;">Aim</th>
 																    	<th style="width: 30%;">Agency</th>
-																    	<th style="width: 20%;">Amount (&#8377;)</th>
+																    	<th style="width: 20%;">Amount in Cr(&#8377;)</th>
 																    	<th style="width: 10%;">Date</th>
 																	</tr>
 																</thead>
@@ -971,7 +973,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			<td style="width: 5%;text-align: center;"><%=++consultancieslno %></td>
 																			<td style="width: 35%;"><%=consultancy.getConsultancyAim() %> </td>
 																			<td style="width: 30%;"><%=consultancy.getConsultancyAgency() %> </td>
-																			<td style="width: 20%;text-align: right;"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(consultancy.getConsultancyCost())) %> </td>
+																			<td style="width: 20%;text-align: right;"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost()) / 10000000) %> </td>
 																			<td style="width: 10%;text-align: center;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
 																		</tr>
 																	<%} }%>	
@@ -1829,7 +1831,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="1" style="width: 40%;font-weight: 600;">Cost (original & revised)</td>
+												    		<td colspan="1" style="width: 40%;font-weight: 600;">Cost in Cr (original & revised)</td>
 												    		<td>:</td>
 												    	</tr>
 												    	<tr>
@@ -1848,14 +1850,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			<td>RE</td>
 																			<td style="text-align: right;">
 																				<%if(potherdetails!=null && potherdetails[1]!=null) {%>
-																					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(potherdetails[1].toString())) %>
+																					<%=df.format(Double.parseDouble(potherdetails[1].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
 																			</td>
 																			<td style="text-align: right;">
 																				<%if(potherdetails!=null && potherdetails[4]!=null) {%>
-																					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(potherdetails[4].toString())) %>
+																					<%=df.format(Double.parseDouble(potherdetails[4].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
@@ -1865,14 +1867,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			<td>FE</td>
 																			<td style="text-align: right;">
 																				<%if(potherdetails!=null && potherdetails[2]!=null) {%>
-																					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(potherdetails[2].toString())) %>
+																					<%=df.format(Double.parseDouble(potherdetails[2].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
 																			</td>
 																			<td style="text-align: right;">
 																				<%if(potherdetails!=null && potherdetails[5]!=null) {%>
-																					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(potherdetails[5].toString())) %>
+																					<%=df.format(Double.parseDouble(potherdetails[5].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
@@ -1882,14 +1884,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			<td>Total (FE)</td>
 																			<td style="text-align: right;">
 																				<%if(potherdetails!=null && potherdetails[3]!=null) {%>
-																					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(potherdetails[3].toString())) %>
+																					<%=df.format(Double.parseDouble(potherdetails[3].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
 																			</td>
 																			<td style="text-align: right;">
 																				<%if(potherdetails!=null && potherdetails[6]!=null) {%>
-																					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(potherdetails[6].toString())) %>
+																					<%=df.format(Double.parseDouble(potherdetails[6].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
@@ -1950,11 +1952,15 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    			: Total(<span style="font-size: 12px;">&#x20B9;</span>)
 												    				<span style="text-decoration: underline;">
 												    					<%-- <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %> <%} %> --%>
-												    					<%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %>
+												    					<%if(expndDetails!=null && expndDetails[0]!=null) {%>
+												    						<%=df.format(Double.parseDouble(expndDetails[0].toString())/10000000 ) %> 
+												    					<%} %>
 												    				</span> Cr
 												    			 (FE<span style="text-decoration: underline;">
 												    					<%-- <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %> <%} %> --%>
-												    					<%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %>
+												    					<%if(expndDetails!=null && expndDetails[1]!=null) {%>
+												    						<%=df.format(Double.parseDouble(expndDetails[1].toString())/10000000 ) %> 
+												    					<%} %>
 												    				</span>) Cr	
 												    		</td>
 												    	</tr>
@@ -1982,7 +1988,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	    	<th style="width: 15%;">Projects Name</th>
 																	    	<th style="width: 10%;">Project No</th>
 																	    	<th style="width: 15%;">Agency</th>
-																	    	<th style="width: 10%;">Cost (&#8377;)</th>
+																	    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
 																	    	<th style="width: 20%;">Status</th>
 																	    	<th style="">Achievement</th>
 																		</tr>
@@ -1996,7 +2002,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				<td style="width: 15%;"><%=sub.getACPProjectName() %> </td>
 																				<td style="width: 10%;text-align: center;"><%=sub.getACPProjectNo() %> </td>
 																				<td style="width: 15%;"><%=sub.getProjectAgency() %> </td>
-																				<td style="width: 10%;text-align: right;"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(sub.getProjectCost())) %> </td>
+																				<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
 																				<td style="width: 20%;"><%=sub.getProjectStatus() %> </td>
 																				<td style=""><%=sub.getProjectAchivements() %> </td>
 																			</tr>
@@ -2020,7 +2026,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	    	<th style="width: 15%;">CARS / CAPSI Name</th>
 																	    	<th style="width: 10%;">CARS / CAPSI No</th>
 																	    	<th style="width: 15%;">Agency</th>
-																	    	<th style="width: 10%;">Cost (&#8377;)</th>
+																	    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
 																	    	<th style="width: 15%;">Status</th>
 																	    	<th style="width: 15%;">Achievement</th>
 																		</tr>
@@ -2041,7 +2047,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				<td style="width: 15%;"><%=carscapsi.getACPProjectName() %> </td>
 																				<td style="width: 10%;text-align: center;"><%=carscapsi.getACPProjectNo() %> </td>
 																				<td style="width: 15%;"><%=carscapsi.getProjectAgency() %> </td>
-																				<td style="width: 10%;text-align: right;"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carscapsi.getProjectCost())) %> </td>
+																				<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(carscapsi.getProjectCost())/10000000) %> </td>
 																				<td style="width: 20%;"><%=carscapsi.getProjectStatus() %> </td>
 																				<td style="width: 15%;"><%=carscapsi.getProjectAchivements() %> </td>
 																			</tr>
@@ -2063,7 +2069,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		<th style="width: 5%;">SN</th>
 																    	<th style="width: 35%;">Aim</th>
 																    	<th style="width: 25%;">Agency</th>
-																    	<th style="width: 20%;">Amount (&#8377;)</th>
+																    	<th style="width: 20%;">Amount in Cr (&#8377;)</th>
 																    	<th style="width: 10%;">Date</th>
 																	</tr>
 																</thead>
@@ -2075,7 +2081,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			<td style="width: 5%;text-align: center;"><%=++consultancieslno %></td>
 																			<td style="width: 35%;"><%=consultancy.getConsultancyAim() %> </td>
 																			<td style="width: 25%;"><%=consultancy.getConsultancyAgency() %> </td>
-																			<td style="width: 20%;text-align: right;"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(consultancy.getConsultancyCost())) %> </td>
+																			<td style="width: 20%;text-align: right;"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost())/10000000) %> </td>
 																			<td style="width: 10%;text-align: center;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
 																		</tr>
 																	<%} }%>	
@@ -2267,14 +2273,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    			 No. <%if(projectMaster.getSanctionNo()!=null) {%><%=projectMaster.getSanctionNo() %> <%} %>
 												    			 has incurred the expenditure of 
 												    			 <%-- <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %><%} %> --%>
-												    			 <%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %> Cr
+												    			 <%if(expndDetails!=null && expndDetails[0]!=null) {%><%=df.format(Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %> Cr
 												    			 including FE
 												    			 <%-- <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %><%} %> --%>
-												    			 <%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %> Cr
+												    			 <%if(expndDetails!=null && expndDetails[1]!=null) {%><%=df.format(Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %> Cr
 																 against the sanctioned cost of
-																 <%if(projectMaster.getTotalSanctionCost()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(projectMaster.getTotalSanctionCost()) %><%} %>
+																 <%if(projectMaster.getTotalSanctionCost()!=null) {%><%=df.format(projectMaster.getTotalSanctionCost()/10000000) %><%} %> Cr
 																 including FE
-																 <%if(projectMaster.getSanctionCostFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(projectMaster.getSanctionCostFE()) %><%} %>
+																 <%if(projectMaster.getSanctionCostFE()!=null) {%><%=df.format(projectMaster.getSanctionCostFE()/10000000) %><%} %> Cr
 																 as per the enclosed Audited Statement of Expenditure.
 																<%} %>
 																<br><br>
@@ -2353,7 +2359,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td colspan="2" style="font-weight: 600;">
-												    			Expenditure Status 
+												    			Expenditure Status in Cr
 												    		</td>
 												    	</tr>
 												    	<tr>

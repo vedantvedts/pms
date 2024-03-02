@@ -385,7 +385,7 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 										</div>
 										
 										<div class="container" style="display: inline-flex;">
-											<div>Closure Type : </div>
+											<div>Closure Category : </div>
 					  						<div class="row" style="margin-top: -1%;margin-left: 1%;">
 												<div class="col-xl">
 												
@@ -393,7 +393,7 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 														<input type="hidden" name="projectId" value="<%=obj[0]%>">
 														<input type="hidden" name="closureId" value="<%if(obj[14]!=null) {%><%=obj[14] %><%}else{%>0<%}%>">
-														<select name="closureCategory" id="closureCategory" class="form-control  form-control" data-width="70%" data-live-search="true" required>
+														<select name="closureCategory" id="closureCategory<%=obj[0]%>" class="form-control  form-control" data-width="70%" data-live-search="true" required>
 			                								<option value="-1" disabled="disabled" selected="selected">--Select--</option>
 												        		<%
 												                	for(String category: closurecategory ){
@@ -406,7 +406,7 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 												</div>
 											</div>
 											<div>
-												<button class="btn bg-transparent buttuonEd1" type="submit" form="closureform<%=obj[0]%>" onclick="return confirm('Are you sure to submit?')"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></button>
+												<button class="btn bg-transparent buttuonEd1" type="button" form="closureform<%=obj[0]%>" onclick="return checkClosureType('<%=obj[0]%>')" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></button>
 											</div>
 										</div>
 										
@@ -603,6 +603,23 @@ function verify(){
 		return false;
 	}
 	return true;
+}
+
+function checkClosureType(projectId){
+
+	var category = $('#closureCategory'+projectId).val();
+
+	if(category=="-1" || category==null || category=="" || category=="NULL"){
+		alert('Please Select Closure Category..!');
+		return false;
+	}else{
+		if(confirm('Are you sure to Submit?')){
+			$('#closureform'+projectId).submit();
+			return true;
+		}else{
+			return false;
+		}
+	}
 }
 
 </script>

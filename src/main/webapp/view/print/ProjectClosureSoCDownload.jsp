@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -177,6 +178,8 @@ List<Object[]> socApprovalEmpData = (List<Object[]>)request.getAttribute("SoCApp
 String labcode = (String)session.getAttribute("labcode");
 
 FormatConverter fc = new FormatConverter();
+DecimalFormat df = new DecimalFormat("#.####");
+df.setMinimumFractionDigits(4); 
 %>
 
 	<div align="center">
@@ -222,7 +225,7 @@ FormatConverter fc = new FormatConverter();
 			<tr>
 				<td style="width: 4%;"><%=++slno %>.</td>
 				<td style="width: 35%;">Sponsoring Agency and QR No.</td>
-				<td>: <%=projectMaster.getEndUser() %> and <%if(soc.getQRNo()!=null && !soc.getQRNo().isEmpty()) {%> <%=soc.getQRNo() %><%} else{%>NA<%} %> </td>
+				<td>: <%if(projectMaster.getEndUser()!=null) {%> <%=projectMaster.getEndUser() %><%} else{%>--<%} %> and <%if(soc.getQRNo()!=null && !soc.getQRNo().isEmpty()) {%> <%=soc.getQRNo() %><%} else{%>NA<%} %> </td>
 			</tr>
 			<tr>
 				<td style="width: 4%;"><%=++slno %>.</td>
@@ -242,7 +245,14 @@ FormatConverter fc = new FormatConverter();
 	    	<tr>
 	    		<td style="width: 4%;"><%=++slno %>.</td>
 	    		<td style="width: 35%;">Sanctioned Cost ( <span style="font-size: 12px;">&#x20B9;</span> Cr) </td>
-	    		<td style="">: Total <span style="text-decoration: underline;"><%=String.format("%.2f", projectMaster.getTotalSanctionCost()/10000000 ) %></span> Cr (FE <span style="text-decoration: underline;"><%=String.format("%.2f", projectMaster.getSanctionCostRE()/10000000 ) %></span> Cr)</td>
+	    		<td style="">: Total 
+	    			<span style="text-decoration: underline;">
+	    				<%=df.format(projectMaster.getTotalSanctionCost()/10000000 ) %>
+	    			</span> Cr (FE 
+	    			<span style="text-decoration: underline;">
+	    				<%=df.format(projectMaster.getSanctionCostRE()/10000000 ) %>
+	    			</span> Cr)
+	    		</td>
 	    	</tr> 
 	    	<tr>
 	    		<td style="width: 4%;"><%=++slno %>.</td>
@@ -250,11 +260,15 @@ FormatConverter fc = new FormatConverter();
 	    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) 
 	    		: Total <span style="text-decoration: underline;">
 				<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000 ) %> --%>
-				<%if(expndDetails!=null && expndDetails[0]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[0].toString())/10000000 ) %> <%} %>
+				<%if(expndDetails!=null && expndDetails[0]!=null) {%>
+					<%=df.format(Double.parseDouble(expndDetails[0].toString())/10000000 ) %> 
+				<%} %>
 				</span> Cr 
 				(FE <span style="text-decoration: underline;">
 				<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000 ) %> --%>
-				<%if(expndDetails!=null && expndDetails[1]!=null) {%><%=String.format("%.2f", Double.parseDouble(expndDetails[1].toString())/10000000 ) %> <%} %>
+				<%if(expndDetails!=null && expndDetails[1]!=null) {%>
+					<%=df.format(Double.parseDouble(expndDetails[1].toString())/10000000 ) %> 
+				<%} %>
 				</span> Cr)
 	    		</td>
 	    	</tr>
