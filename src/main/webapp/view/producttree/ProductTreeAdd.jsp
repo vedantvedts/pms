@@ -625,7 +625,7 @@ if(ses1!=null){	%>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-													                               <!-- <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div> -->
+													                                <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div> 
 													
 													                    
 												                                              			
@@ -645,10 +645,179 @@ if(ses1!=null){	%>
 													                       
 													                       
 																	</div> 
+																		<% List<Object[]> Level5 =ProductTreeList.stream().filter(e-> level5[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
+																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
+																	
+																	 <ul <% if(Level5!=null && Level5.size()>0){%> class="active" <%}%> >	                
+													                	<%for(Object[] level6 : ProductTreeList){%>
+											                        	  <% if(level6[2].toString().equalsIgnoreCase("6") && level5[0].toString().equalsIgnoreCase(level6[1].toString()) )
+											                             { %> 
+																  <li>      
+																	<div class="member-view-box action-view-box">
+																		<div class=" action-box" >
+																		
+																		<div class="action-box-header"
+																		
+																		style="background: linear-gradient(to bottom right, 
+																			<%if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
+																			
+																			<%}else { %> white 5%, white 10% 
+																			<%} %>
+																			, white 10%, white 90%,
+																			
+																		    <%if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
+																			
+																			<%}else { %> white 5%, white 10% 
+																			<%} %>
+																			 
+																			 );" >
+																		
+																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+			                          			                             
+			                          			                                <%=level6[3] %>
+			                          			                                
+			                          			                          </span>
+			                          			                          
+			                          			                          
+			                          			                           <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div> 
+			                          			                            			
+													                    </div>
+													                        
+													                </div>
+													                       
+													                        
+																              <div class="actions">
+																				       <button class="update" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>')" ><img src="view/images/edit.png" ></button>
+																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																						     <input type="hidden" name="Action" value="TD">
+																					            <button class="delet" name="Mainid" value="<%=level6[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
+																				        </form> 
+															                     </div>
+													                       
+													                       
+																	</div>
 																	
 																	
-																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
-																	   
+																		<% List<Object[]> Level6 =ProductTreeList.stream().filter(e-> level6[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
+																	<%--------------------------------------------------------------------------------LEVEL 7 ---------------------------------------------%>
+																	
+																	 <ul <% if(Level6!=null && Level6.size()>0){%> class="active" <%}%> >	                
+													                	<%for(Object[] level7 : ProductTreeList){ %>
+											                        	  <% if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString()) )
+											                             { %> 
+																  <li>      
+																	<div class="member-view-box action-view-box">
+																		<div class=" action-box" >
+																		
+																		<div class="action-box-header"
+																		
+																		style="background: linear-gradient(to bottom right, 
+																			<%if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
+																			
+																			<%}else { %> white 5%, white 10% 
+																			<%} %>
+																			, white 10%, white 90%,
+																			
+																		    <%if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
+																			
+																			<%}else { %> white 5%, white 10% 
+																			<%} %>
+																			 
+																			 );" >
+																		
+																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+			                          			                             
+			                          			                                <%=level7[3] %>
+			                          			                                
+			                          			                          </span>
+			                          			                            			
+													                    </div>
+													                        
+													                </div>
+													                       
+													                        
+																              <div class="actions">
+																				       <button class="update" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[6]%>','<%=level7[7]%>')" ><img src="view/images/edit.png" ></button>
+																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																						     <input type="hidden" name="Action" value="TD">
+																					            <button class="delet" name="Mainid" value="<%=level7[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
+																				        </form> 
+															                     </div>
+													                       
+													                       
+																	</div>
+																	
+																</li>
+															<%} %>
+														<%} %>	
+														
+															 <%---------------------------------------Level 7 Add---------------------------------------------------------%>
+														
+												   <li>
+				                                       <div class="member-view-box action-view-box">
+															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															
+															<form action="LevelNameAdd.htm" method="get">
+													            <input type="text" name="LevelName" required >
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#7#<%=level6[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													             
+													         </form>    
+													             
+													                
+													        </span> 	
+													    </div> 
+				                
+				                               </li>
+														
+												 <%---------------------------------------Level 7 Add---------------------------------------------------------%>		
+														
+														</ul>	  
+														
+														  <%---------------------------------------Level 7 ---------------------------------------------------------%>		
+																   </li>
+															
+														    <% } %>
+														<% } %>
+														
+														
+														
+																	 <%---------------------------------------Level 6 Add---------------------------------------------------------%>
+														
+												   <li>
+				                                       <div class="member-view-box action-view-box">
+															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															
+															<form action="LevelNameAdd.htm" method="get">
+													            <input type="text" name="LevelName" required >
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#6#<%=level5[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													             
+													         </form>    
+													             
+													                
+													        </span> 	
+													    </div> 
+				                
+				                               </li>
+														
+												 <%---------------------------------------Level 6 Add---------------------------------------------------------%>		
+																	
+															</ul>			
+																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
+																   
 																   </li>
 															
 														    <% } %>

@@ -279,7 +279,7 @@ if(ses1!=null){
 	  
 	 
 			  		<ul>
-						<li >      
+						<li>      
 			
 						 <div class="member-view-box action-view-box" style=" padding:0px 15px;">
 			                    
@@ -505,7 +505,7 @@ if(ses1!=null){
 														 <ul <% if(Level4!=null && Level4.size()>0){%> class="active" <%}%> >	                
 										                	<%for(Object[] level5 : ProductRevTreeList){%>
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
-								                             {%> 
+								                             { %> 
 																  <li> 
 																   <div class="line-top"></div>     
 																	<div class="member-view-box action-view-box">
@@ -553,8 +553,127 @@ if(ses1!=null){
 																	
 																	
 																	
+		
+																	
+																	<% List<Object[]> Level5 =ProductRevTreeList.stream().filter(e-> level5[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
+																	
 																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
 																	
+														 <ul <% if(Level5!=null && Level5.size()>0){%> class="active" <%}%> >	                
+										                	<%for(Object[] level6 : ProductRevTreeList){%>
+								                        	  <% if(level6[2].toString().equalsIgnoreCase("6") && level5[0].toString().equalsIgnoreCase(level6[1].toString()) )
+								                             {%> 
+																  <li> 
+																   <div class="line-top"></div>     
+																	<div class="member-view-box action-view-box">
+																		<div class=" action-box" >
+																		
+																		<div class="action-box-header"
+																		
+																		 style="background: linear-gradient(to bottom right, 
+																			<%if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
+																			
+																			<%}else { %> white 5%, white 10% 
+																			<%} %>
+																			, white 10%, white 90%,
+																			
+																		    <%if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
+																			
+																			<%}else { %> white 5%, white 10% 
+																			<%} %>
+																			 
+																			 );" >
+																		
+																		
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+			                          			                             
+			                          			                                <%=level6[3] %>
+			                          			                                
+			                          			                          </span>
+			                          			                          
+			                          			                          
+			                          			                          
+			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+													
+													                   
+												                                              			
+													                        </div>
+													                        
+													                       </div>
+																	</div> 
+																	
+																
+																
+													
+													
+													
+													<% List<Object[]> Level6 =ProductRevTreeList.stream().filter(e-> level6[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
+																	
+																	<%--------------------------------------------------------------------------------LEVEL 7 ---------------------------------------------%>
+																	
+														 <ul <% if(Level6!=null && Level6.size()>0){%> class="active" <%}%> >	                
+										                	<%for(Object[] level7 : ProductRevTreeList){ %>
+								                        	  <% if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString()) )
+								                             { %> 
+																  <li> 
+																   <div class="line-top"></div>     
+																	<div class="member-view-box action-view-box">
+																		<div class=" action-box" >
+																		
+																		<div class="action-box-header"
+																		
+																		 style="background: linear-gradient(to bottom right, 
+																			<%if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
+																			
+																			<%}else { %> white 5%, white 10% 
+																			<%} %>
+																			, white 10%, white 90%,
+																			
+																		    <%if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
+																			
+																			<%}else { %> white 5%, white 10% 
+																			<%} %>
+																			 
+																			 );" >
+																		
+																		
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+			                          			                             
+			                          			                                <%=level7[3] %>
+			                          			                                
+			                          			                          </span>
+			                          			                          
+			                          			                                             			
+													                        </div>
+													                        
+													                       </div>
+																	</div> 
+																	
+																<%--------------------------------------------------------------------------------LEVEL 7 ---------------------------------------------%>		
+																
+																 </li>
+															
+														    <% } %>
+														<% } %>
+														
+														
+													</ul>    
+													
+													
+													      
+													<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>		
 																
 																	   
 																   </li>
@@ -614,7 +733,12 @@ if(ses1!=null){
 			           		
 						
 	        		</li>
-	        		
+	        		  <% } %>
+                	<% } %>
+		        </ul>
+		        
+		        
+		        </li>
 		        </ul>
 		        
 			  

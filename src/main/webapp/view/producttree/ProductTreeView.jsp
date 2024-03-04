@@ -608,8 +608,149 @@ table,td{
 																	</div> 
 																	
 																	
+																		<% List<Object[]> Level5 =ProductTreeList.stream().filter(e-> level5[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
+																		
+																		<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
+																		 <ul <% if(Level5!=null && Level5.size()>0){%> class="active" <%}%> >	
+														  <div class="firstchildafter"></div>                    
+										                	<% int n=1;for(Object[] level6 : ProductTreeList){%>
+								                        	  <% if(level6[2].toString().equalsIgnoreCase("6") && level5[0].toString().equalsIgnoreCase(level6[1].toString()) )
+								                             {%> 
+																  <li> 
+																  
+																    
+																 
+																   <div class="before" <%if(n==1) {%> style="border:none;" <%} %> ></div>  
+																  
+																	<div class="member-view-box action-view-box">
+																		<div class=" action-box" >
+																		
+																		<div class="action-box-header"
+																		
+																		 style="background-image: -webkit-linear-gradient(top,
+																			<%if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
+																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
+																			
+																			<%}else { %> white 5%,
+																			<%} %>
+																			 white 5%, white 90%,
+																			
+																		    <%if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
+																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
+																			
+																			<%}else { %> white 95%
+																			<%} %>
+																			 
+																			 );" >
+																		
+																		
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+			                          			                             
+			                          			                                <%=level6[3] %>
+			                          			                                
+			                          			                          </span>
+			                          			                          
+			                          			                          
+			                          			                          
+			                          			                        <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
+													
+													                   
+												                                              			
+													                        </div>
+													                        
+													                       </div>
+																	</div> 	
+																		
+																		
+																		<% List<Object[]> Level6 =ProductTreeList.stream().filter(e-> level6[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
+																		<%--------------------------------------------------------------------------------LEVEL 7 ---------------------------------------------%>
+																		
+																		 <ul <% if(Level6!=null && Level6.size()>0){%> class="active" <%}%> >	
+														  <div class="firstchildafter"></div>                    
+										                	<% int o=1;for(Object[] level7: ProductTreeList){%>
+								                        	  <% if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString()) )
+								                             {%> 
+																  <li> 
+																  
+																    
+																 
+																   <div class="before" <%if(o==1) {%> style="border:none;" <%} %> ></div>  
+																  
+																	<div class="member-view-box action-view-box">
+																		<div class=" action-box" >
+																		
+																		<div class="action-box-header"
+																		
+																		 style="background-image: -webkit-linear-gradient(top,
+																			<%if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
+																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
+																			
+																			<%}else { %> white 5%,
+																			<%} %>
+																			 white 5%, white 90%,
+																			
+																		    <%if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
+																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
+																			
+																			<%}else { %> white 95%
+																			<%} %>
+																			 
+																			 );" >
+																		
+																		
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+			                          			                             
+			                          			                                <%=level7[3] %>
+			                          			                                
+			                          			                          </span>
+			                          			                          
+			                          			                          
+			                          			                          
+			                          			                        <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
+													
+													                   
+												                                              			
+													                        </div>
+													                        
+													                       </div>
+																	</div> 	
+																		
+																		<%--------------------------------------------------------------------------------LEVEL 7 ---------------------------------------------%>
 																	
-																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
+																<div class="after"   <% if(o==Level6.size()) {%> style="border-top:none;" <%} %>></div> 	
+																	   
+																   </li>
+															
+														    <%o++; } %>
+														<% } %>
+														
+														
+													</ul>      
+																		
+																		
+																		
+																		<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
+																	
+																<div class="after"   <% if(n==Level5.size()) {%> style="border-top:none;" <%} %>></div> 	
+																	   
+																   </li>
+															
+														    <%n++; } %>
+														<% } %>
+														
+														
+													</ul>      
+																		
+																	
+																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
 																	
 																<div class="after"   <% if(m==Level4.size()) {%> style="border-top:none;" <%} %>></div> 	
 																	   
@@ -621,7 +762,7 @@ table,td{
 														
 													</ul>      
 																	
-														<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%> 
+														<%--------------------------------------------------------------------------------LEVEL 4 ---------------------------------------------%> 
 															<div class="after" <% if(l==Level3.size()) {%> style="border-top:none;" <%} %> ></div> 		    
 														 </li>
 															
@@ -632,7 +773,7 @@ table,td{
 																    
 																    
 																    
-														<!-- --------------------------------------------------------   LEVEL 4 ---------------------------------------------------- -->  		    														    
+														<!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  		    														    
 														<div class="after" <% if(k==Level2.size()) {%> style="border-top:none;" <%} %>></div> 			    
 															 
 							                		    </li>
@@ -646,7 +787,7 @@ table,td{
 							                </ul>    
 										                
 										                   
-										    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
+										    <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->  
 										<div class="after" <% if(j==Level1.size()) {%> style="border-top:none;" <%} %> ></div> 	  	
 								 	 </li>
 								 <%j++; } %>
@@ -655,7 +796,7 @@ table,td{
                 	       
 			                </ul>  
 						                  
-						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
+						        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->    
 						 	 <div class="after" <% if(i==L1.size()) {%> style="border-top:none;" <%} %> ></div>  			
                 		 </li>
                 	   <%i++; } %>
@@ -666,7 +807,7 @@ table,td{
 				 </ul> 
                 
                          
-			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->        
+			          
 			         
 						
 	        		</li>

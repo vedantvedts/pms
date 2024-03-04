@@ -429,7 +429,7 @@ if(ses1!=null){	%>
 															<td><% if(level6[6]!=null){%><%=level6[6] %><%} else { %> -- <%} %></td>
 															<td><% if(level6[7]!=null){%><%=level6[7] %><%} else { %> -- <%} %></td>
 															 
-														    <td class="width-30px">
+														    <td class="width-30px" style="text-align: center;">
 															
 															
 																 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>','<%=count %>')">  
@@ -463,6 +463,57 @@ if(ses1!=null){	%>
 															
 															
                                                          </tr>
+                                                         
+                                                         <% int countF=1;
+														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
+															for(Object[] level7: ProductTreeList){ 
+																if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString())) {
+																	
+																%>
+															
+														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
+															<td style="width:2% !important; " class="center"> </td>
+															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%></td>
+															
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level7[3] %></td>
+															<td><% if(level7[6]!=null){%><%=level7[6] %><%} else { %> -- <%} %></td>
+															<td><% if(level7[7]!=null){%><%=level7[7] %><%} else { %> -- <%} %></td>
+															 
+														    <td class="width-30px" style="text-align: center;">
+															
+															
+																 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[6]%>','<%=level7[7]%>','<%=count %>')">  
+																		<div class="cc-rockmenu">
+																		 <div class="rolling">	
+													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
+													                        <span>Edit</span>
+													                      </div>
+													                     </div>
+													                  </button> 
+														
+													                  
+													                  
+													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																    <input type="hidden" name="Action" value="D"/>
+																    <input type="hidden" name="buttonid" value="<%=count %>">
+													                 <button class="editable-click" name="Mainid" value="<%=level7[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
+																		<div class="cc-rockmenu">
+																		 <div class="rolling">	
+													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
+													                        <span>Delete</span>
+													                      </div>
+													                     </div>
+													                  </button>
+															     </form>
+															
+															
+															
+															</td>
+															
+															
+                                                         </tr>
+                                                <% countF++;} }}%>         
 												<% countE++;} }}%>
 												<% countD++;} }}%>
 												<% countC++;} }}%>
@@ -730,7 +781,7 @@ $('#Module').html("");
 
  var id= <%=id%>;
  
- console.log("id--"+id);
+ 
  if(id!=null){
  
  if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){

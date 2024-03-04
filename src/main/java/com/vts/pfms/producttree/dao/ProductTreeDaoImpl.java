@@ -36,14 +36,20 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 			+ "	LEFT JOIN pfms_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t4 ON t3.mainid = t4.parentlevelid\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t5 ON t4.parentlevelid = t5.mainid\r\n"
+			+ "	LEFT JOIN pfms_product_tree AS t6 ON t5.parentlevelid = t6.mainid\r\n"
+			+ "	LEFT JOIN pfms_product_tree AS t7 ON t6.parentlevelid = t7.mainid\r\n"
 			+ "	SET\r\n"
 			+ "	    t1.isActive = CASE WHEN t1.mainid = :mainid OR t1.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
 			+ "	    t2.isActive = CASE WHEN t2.mainid = :mainid OR t2.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
 			+ "	    t3.isActive = CASE WHEN t3.mainid = :mainid OR t3.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
 			+ "	    t4.isActive = CASE WHEN t4.mainid = :mainid OR t4.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
-			+ "	    t5.isActive = CASE WHEN t5.mainid = :mainid OR t5.parentlevelid = :mainid THEN 0 ELSE 1 END \r\n"
-			+ "    \r\n"
-			+ "	WHERE t1.mainid = :mainid  OR t2.mainid = :mainid OR t3.mainid = :mainid OR t4.mainid = :mainid OR t5.mainid=:mainid";
+			+ "	    t5.isActive = CASE WHEN t5.mainid = :mainid OR t5.parentlevelid = :mainid THEN 0 ELSE 1 END ,\r\n"
+			+ "	    t6.isActive = CASE WHEN t6.mainid = :mainid OR t6.parentlevelid = :mainid THEN 0 ELSE 1 END , \r\n"
+			+ "	    t7.isActive = CASE WHEN t7.mainid = :mainid OR t7.parentlevelid = :mainid THEN 0 ELSE 1 END \r\n"
+			+ "\r\n"
+			+ "	WHERE \r\n"
+			+ "	t1.mainid = :mainid  OR t2.mainid = :mainid OR t3.mainid = :mainid OR t4.mainid = :mainid OR t5.mainid=:mainid\r\n"
+			+ "	OR t6.mainid=:mainid OR t7.mainid=:mainid";
 	
 	private static final String REVISIONCOUNT="SELECT DISTINCT RevisionNo,DATE(CreatedDate),projectid FROM pfms_product_tree_rev WHERE projectid=:projectId ORDER BY RevisionNo DESC ";
 	private static final String PRODUCTTREEREVISIONLIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.RevisionNo FROM pfms_product_tree_rev a,project_master b WHERE MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId AND a.isActive='1' AND a.RevisionNo=:revisionCount ORDER BY parentlevelid";
