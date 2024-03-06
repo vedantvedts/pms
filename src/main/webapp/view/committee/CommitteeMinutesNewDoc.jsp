@@ -1393,7 +1393,7 @@ for(Object[] temp : invitedlist){
 													<%	}
 													}
 												%>
-												countC=1;
+												<%countC=1;
 												countD=1;
 												countE=1;
 												}else if(obj[26].toString().equals("3")) { %>
