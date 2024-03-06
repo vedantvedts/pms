@@ -371,7 +371,7 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> getFormNameByName(String search) {
 		// TODO Auto-generated method stub
-		Query query = manager.createNativeQuery("SELECT * FROM pfms_form_detail WHERE formname LIKE :search");
+		Query query = manager.createNativeQuery("SELECT * FROM pfms_form_detail WHERE formname LIKE :search and isactive='1'");
 		query.setParameter("search", "%"+search+"%");
 		
 		return (List<Object[]>)query.getResultList();

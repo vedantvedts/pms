@@ -740,7 +740,7 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 		@Override
-		public long AddMailConfiguration(String userName, String password, String hostType, String createdBy)throws Exception{
+		public long AddMailConfiguration(String userName, String password, String hostType, String createdBy,String port)throws Exception{
 			
 			long finalResult = 0;
 			try {
@@ -756,10 +756,9 @@ public class AdminServiceImpl implements AdminService{
 	        mailConfigAdd.setCreatedBy(createdBy);
 		    mailConfigAdd.setCreatedDate(sdf1.format(new Date()));
 		    mailConfigAdd.setIsActive(1);
-			/////////////////////////////////////////////////////////Just defaut value
-	System.out.println("The Host Type is :"+hostType);
+		
 	        mailConfigAdd.setHost("smtp.gmail.com");
-		    mailConfigAdd.setPort("25");
+		    mailConfigAdd.setPort(port);
 			
 			
 			////////////////////////////////////////////////////////

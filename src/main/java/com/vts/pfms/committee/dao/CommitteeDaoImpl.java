@@ -573,6 +573,14 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("modifieddate", committeescheduleminutesdetails.getModifiedDate());
 		query.setParameter("scheduleminutesid", committeescheduleminutesdetails.getScheduleMinutesId());
 		query.setParameter("remarks", committeescheduleminutesdetails.getRemarks());
+		
+		// update query to update action_main based on detailsId
+		String s="UPDATE action_main SET actionItem = :actionItem WHERE ScheduleMinutesId =:ScheduleMinutesId";
+		Query query1= manager.createNativeQuery(s);
+		query1.setParameter("actionItem", committeescheduleminutesdetails.getDetails());
+		query1.setParameter("ScheduleMinutesId", committeescheduleminutesdetails.getScheduleMinutesId());
+		query1.executeUpdate();
+		
 		int count=query.executeUpdate();
 		
 		return (long)count;

@@ -2718,7 +2718,7 @@ function sendEmail(a){
 		
 		success:function (result){
 				
-			console.log( typeof result);
+			console.log( result);
 
 			if(result.length>0){
 				 $('#main1').show();

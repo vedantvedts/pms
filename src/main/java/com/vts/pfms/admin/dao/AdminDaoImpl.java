@@ -1025,7 +1025,7 @@ public class AdminDaoImpl implements AdminDao{
 		
 	}
 	
-	private static final String LastUpdate = "SELECT UpdatedDate, projectId  FROM pfms_weekly_update WHERE projectId IN ( SELECT projectid FROM project_main) ORDER BY UpdatedDate DESC ";
+	private static final String LastUpdate = "SELECT pwu.UpdatedDate, pwu.projectId  FROM pfms_weekly_update AS pwu  JOIN project_main pm ON pwu.projectid=pm.projectmainid  WHERE DATEDIFF(NOW(),pwu.updateddate)<6 ORDER BY pwu.UpdatedDate DESC";
 
 	@Override
 	public List<Object[]> lastUpdate() {

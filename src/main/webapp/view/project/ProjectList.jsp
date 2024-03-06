@@ -180,7 +180,8 @@ Project List</h3>
 			<th width="25%" class="text-nowrap">Project Name</th>
 			<th style="width:10%" class="text-nowrap">Sanc Date</th>
 			<th style="width: 124.892px;" >Sanc Cost<br>(&#8377; In Lakh)</th>
-			<th style="width:10%">PDC</th>
+			<th style="width:6%">PDC</th>
+			<th style="width:14%">Project Director</th>
 			<th style="width: 5%;">RevNo</th>
 	  </tr>
 	   </thead> 
@@ -219,7 +220,7 @@ NFormatConvertion nfc1=new NFormatConvertion();
  %>
 
 <td class="text-nowrap"><%=sdf.format(obj[9]) %></td>
-
+<td><%=obj[14].toString() %></td>
 <td ><%=obj[20]%></td>
 </tr>
 

@@ -46,11 +46,13 @@ public class CustomJavaMailSender {
 	@Value("${host}")
 	private String host;
 	
+	
 	private static final Logger logger=LogManager.getLogger(CustomJavaMailSender.class);
 //    public HttpSession MyScheduledTasks(HttpSession httpSession) {
 //        this.httpSession = httpSession;
 //    }
 	private final SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+	
 	@Scheduled(cron = "0 0 17 * * *")
 	public void reportCurrentTime() throws Exception {
 		asyncMethodforSendingMail("tommorrow");

@@ -153,7 +153,7 @@ label {
 
 
 
-	<div class="container-fluid">
+	<div class="container-fluid" style="width:70%">
 		<div class="row">
 
 			<div class="col-md-12">
@@ -168,9 +168,9 @@ label {
 					class="table table-bordered table-hover table-striped table-condensed "
 					id="myTable">
 					<thead>
-						<tr>
+						<tr style="text-align: center;">
 							<th>Select</th>
-							<th>Type Of Host</th>
+							 <th>Type Of Mail</th>
 							<th>User Name</th>
 							<th>Host</th>
 							<th>Port</th>
@@ -182,19 +182,17 @@ label {
 							String TypeOfHost = null;
 							for (Object[] obj : MailConfigurationList) {
 								if (obj[3] != null) {
-							if ("M".equalsIgnoreCase(obj[3].toString())) {
-								TypeOfHost = "Mail";
-							} else if ("I".equalsIgnoreCase(obj[3].toString())) {
-								TypeOfHost = "Intranet";
-							} else if ("E".equalsIgnoreCase(obj[3].toString())) {
-								TypeOfHost = "Extranet";
-							}
+							if ("L".equalsIgnoreCase(obj[3].toString())) {
+								TypeOfHost = "Lab Email";
+							} else if ("D".equalsIgnoreCase(obj[3].toString())) {
+								TypeOfHost = "Drona Email";
+							} 
 								}
 						%>
 						<tr>
 							<td style="text-align: center;"><input type="radio"
 								name="Lid" value=<%=obj[0]%>></td>
-							<td>
+						 	<td>
 								<%
 								if (obj[3] != null) {
 								%><%=TypeOfHost%>
@@ -203,7 +201,7 @@ label {
 								%>-<%
 								}
 								%>
-							</td>
+							</td> 
 							<td>
 								<%
 								if (obj[1] != null) {
@@ -254,17 +252,11 @@ label {
 				<div align="center">
 					<button type="submit" formaction="MailConfigurationAdd.htm"
 						class="btn btn-primary btn-sm add" id="MailConfigAddBtn">ADD</button>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 					<%
 					if (MailConfigurationList != null && MailConfigurationList.size() > 0) {
 					%>
-					<button type="submit" formaction="MailConfigurationEdit.htm"
-						class="btn btn-warning btn-sm edit" name="sub" value="edit"
-						onclick="Edit(frm1)">EDIT</button>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
 					<button type="submit" formaction="MailConfigurationDelete.htm"
 						class="btn btn-danger btn-sm delete" onclick="Delete(frm1)">DELETE</button>
 					<%

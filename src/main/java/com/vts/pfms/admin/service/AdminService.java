@@ -79,7 +79,7 @@ public interface AdminService {
 	public int approvalAuthRevoke(String RtmddoId) throws Exception;
 	public List<Object[]> MailConfigurationList()throws Exception;
 	public long DeleteMailConfiguration(long MailConfigurationId, String ModifiedBy)throws Exception;
-	public long AddMailConfiguration(String userName, String password, String hostType, String createdBy)throws Exception;
+	public long AddMailConfiguration(String userName, String password, String hostType, String createdBy,String port)throws Exception;
 	public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception;
 	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception;
 		public List<Object[]> lastUpdate();

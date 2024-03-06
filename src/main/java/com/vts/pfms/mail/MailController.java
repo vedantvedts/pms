@@ -153,10 +153,11 @@ public class MailController {
 			String Username = (String)req.getParameter("UserNameData");
 			String Password = (String)req.getParameter("PasswordData");
 			String HostType = (String)req.getParameter("HostTypeData");
+			String port = (String)req.getParameter("port");
 			//String MailType = (String)req.getParameter("MailTypeData");
 			
 			
-			result = adminService.AddMailConfiguration(Username,Password,HostType,req.getUserPrincipal().getName());
+			result = adminService.AddMailConfiguration(Username,Password,HostType,req.getUserPrincipal().getName(),port);
 			
 		}catch (Exception e) {
 		 	 logger.error(new Date() +" Login Problem Occures When MailConfigurationAddSubmit.htm was clicked ", e);

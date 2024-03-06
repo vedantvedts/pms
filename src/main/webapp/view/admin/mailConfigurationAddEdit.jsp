@@ -54,7 +54,7 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
 </div>
 <div  align="center"> 
 
-<form id="MailConfigAddEditFrm" method="POST" autocomplete="off">
+<form action="#" id="MailConfigAddEditFrm" method="POST" autocomplete="off">
    <div class="col-sm-8"  style="top: 10px;" align="center">
       <div class="card"  style="background-color: aliceblue;">
           <div class="card-body">
@@ -90,6 +90,17 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
                   
                    </td>
                    </tr> 
+                   <tr>
+                   <th><label >Port :<span class="mandatory" style="color: red;">*</span></label></th>
+                   <td  colspan="4" >
+                   <input  class="form-control form-control" placeholder="Port" type="text"
+                    name="port"  required="required" maxlength="50" style="font-size: 15px; "oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
+                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=EditObject[4] %>"<%} %>
+                     >
+                   </td>
+                   </tr> 
+
+
 
                    <tr>
                    <th><label >HOST TYPE:<span class="mandatory" style="color: red;">*</span></label></th>
@@ -98,40 +109,13 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
                     name="HostTypeData" id="HostTypeVal"  required="required" >
 				       <option value="" disabled="disabled" selected="selected"
 					  hidden="true">--Select--</option>
-				      <option   <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null && EditObject[3].toString().equalsIgnoreCase("M")){%>selected<%} %> value="M">Mail</option>
-				      <option   <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null && EditObject[3].toString().equalsIgnoreCase("I")){%>selected<%} %> value="I">Intranet</option>
-				      <option   <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null && EditObject[3].toString().equalsIgnoreCase("E")){%>selected<%} %> value="E">Extranet</option>
+				      <option   <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null && EditObject[3].toString().equalsIgnoreCase("L")){%>selected<%} %> value="L">Lab Mail</option>
+				      <option   <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null && EditObject[3].toString().equalsIgnoreCase("D")){%>selected<%} %> value="D">Drona Mail</option>
                  </select> 
                   </td>
                  </tr>
     
-             <!--<tr>
-                <th><label >MAIL TYPE:<span class="mandatory" style="color: red;">*</span></label></th>
-                 <td >
-                   <select class="form-control selectpicker"  data-container="body" data-live-search="true" 
-                   name="MailTypeData" id="MailTypeVal"  required="required" style="font-size: 5px;">
-				  <option value="" disabled="disabled" selected="selected"
-					hidden="true">--Select--</option>
-				  <option value="Gmail">Gmail</option>
-				  <option value="Outlook">Outlook</option>
-                 <option value="Yahoo">Yahoo</option>
-	           </select> 
-              </td>
-             </tr>  -->
-      <!--  <tr>
-      <th><label >HOST:<span class="mandatory" style="color: red;">*</span></label></th>
-      <td  colspan="4" >
-       <input  class="form-control form-control" placeholder="Host" type="text" name="Host" required="required" maxlength="255" style="font-size: 15px;"  id="UserName" readonly="readonly">
-      </td>
-       </tr> 
-       
-       
-         <tr>
-      <th><label >PORT:<span class="mandatory" style="color: red;">*</span></label></th>
-      <td  colspan="4" >
-       <input  class="form-control form-control" placeholder="Port" type="text" name="Port" required="required" maxlength="255" style="font-size: 15px;"  id="UserName" readonly="readonly">
-      </td>
-       </tr>  -->
+
        
        </table>
   </div>
@@ -141,14 +125,14 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
     <div id="AddEditSubmit" >
 	   
 	   <% if(Action.equalsIgnoreCase("Add") &&  EditObject==null){ %> 
-	     <button type="button"formaction="MailConfigurationAddSubmit.htm" class="btn btn-primary btn-sm submit" 
-	     id="MailConfigAddSubmitBtn"  onclick="return MailConfigAddValidation()" >Submit</button>
+	     <button type="submit"formaction="MailConfigurationAddSubmit.htm" class="btn btn-primary btn-sm submit" 
+	     id="MailConfigAddSubmitBtn"  onclick="return confirm('Are you sure to submit?')" >Submit</button>
 	  <%} %>
 	     
 	       <% if(Action.equalsIgnoreCase("Edit") &&  EditObject!=null){ %> 
 	       <input type="hidden" name="MailConfigIdFrEditSubmit" value="<%=mailConfigIdFrEdit%>">
-	        <button type="button"formaction="MailConfigurationEditSubmit.htm" class="btn btn-primary btn-sm submit" 
-	     id="MailConfigEditSubmitBtn"  onclick="return MailConfigEditValidation()" >Update</button>
+	        <button type="submit"formaction="MailConfigurationEditSubmit.htm" class="btn btn-primary btn-sm submit" 
+	     id="MailConfigEditSubmitBtn"  onclick="return confirm('Are you sure to update?')" >Update</button>
 	  <%} %>
 	       
 	   <a class="btn  btn-sm  back" href="MailConfigurationList.htm">BACK</a>
@@ -181,8 +165,8 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
   }
 </script>
   
- <script type="text/javascript">
-  function MailConfigAddValidation(){
+ <!-- <script type="text/javascript">
+ function MailConfigAddValidation(){
 	    var Submit = true;
 		var username=$('#UserNameVal').val();
 		var password=$('#PasswordVal').val();
@@ -276,7 +260,7 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
 	  
 }
   
-</script>
+</script> -->
 
   
 </body>

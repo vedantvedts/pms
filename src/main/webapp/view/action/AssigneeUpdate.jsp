@@ -55,6 +55,8 @@ h6{
  %>
 
 
+
+
 <%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
@@ -73,7 +75,6 @@ h6{
     <br/>
     
     
-
 
 <div class="container-fluid">
 
@@ -159,7 +160,7 @@ h6{
 	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      				<input type="hidden" name="Type" value="NB" /> 
-	      				<input type="hidden" name="flag" value="risk" /> 
+	      				<input type="hidden" name="flag" value="<%=flag %>" /> 
 	      				<input type="hidden" name="projectid" value="<%=projectid!=null?projectid:"0" %>" /> 
 	      				<input type="hidden" name="committeeid" value="<%= (committeeid!=null?committeeid:"0")%>" /> 
 	      				<input type="hidden" name="meettingid" value="<%=(meettingid!=null?meettingid:"0") %>" />  

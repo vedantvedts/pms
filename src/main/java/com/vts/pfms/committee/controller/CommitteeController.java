@@ -4432,9 +4432,6 @@ public class CommitteeController {
 				try{
 					int count=0;
 					String subject=scheduledata[8] + " " +" Committee Invitation Letter";
-//					for(String email:Email) {
-//					count= count +	cm.sendMessage(email, subject, Message);
-//					}
 					count=cm.sendMessage(Email, subject, Message);
 					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
 					if(count>0) {
@@ -8247,7 +8244,6 @@ public class CommitteeController {
 									Path pathOfFile2 = Paths.get(path + "/" + filename  + ".pdf");
 						       
 									Gson json = new Gson();
-									System.out.println("mailcount123 -"+json.toJson(mailcount));
 									return json.toJson(mailcount);
 					        
 				}

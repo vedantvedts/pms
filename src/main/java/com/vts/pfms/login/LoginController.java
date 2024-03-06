@@ -430,248 +430,222 @@ public class LoginController {
     
     @RequestMapping(value = "MainDashBoard.htm", method = RequestMethod.GET)
     public String MainDashBoard(HttpServletRequest req,HttpSession ses) throws Exception {
-   
-    	String UserId = (String) ses.getAttribute("Username");
-    	String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
-    	String LoginType=(String)ses.getAttribute("LoginType");
-    	String LoginId=String.valueOf(ses.getAttribute("LoginId"));
-    	String empNo=(String)ses.getAttribute("empNo"); 
-    	String LabCode  = (String)ses.getAttribute("labcode");
-    	String ClusterId =(String)ses.getAttribute("clusterid");
 
-    	if ( LoginType.equals("Q")|| LoginType.equals("P") ) {
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType = (String) ses.getAttribute("LoginType");
+		String LoginId = String.valueOf(ses.getAttribute("LoginId"));
+		String empNo = (String) ses.getAttribute("empNo");
+		String LabCode = (String) ses.getAttribute("labcode");
+		String ClusterId = (String) ses.getAttribute("clusterid");
 
-			// if userid PD or IOC last update is NOT on recent last Monday or IS Monday
-			// if lastupdate>7days || present day == Monday
-			LocalDate currentDate = LocalDate.now();
+		//check if it is project director or qioc
+		if (LoginType.equals("Q") || LoginType.equals("P")) {
+
 			List<Object[]> projects = new ArrayList<>();
-			List<Integer> project = new ArrayList<>();
-			List<Object[]> p = new ArrayList<>();
-			
-			LocalDate inputDate = null;
-			projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode); //project master
-			
+
+
+			// project master, only get projects of THIS user
+			//which we will display all in dropdown
+			projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
+
+			// returns dates that are less than 7 days old, we delete these projects in
+			// 'Total Projects To Show' in dropdown
 			List<Object[]> l = service.lastUpdate();
-			System.out.println(projects);
-			if(l.size()>0)
-			System.out.println(l.get(0));
-			if(l.size()!=0) {
-				req.setAttribute("lastupdatedate", l);
-				req.setAttribute("showmodal", "yes");
+			for (Object[] objects : l) {
+				System.out.println(objects[0]);
 			}
-			else if(l.size()==0 && projects.size()>0) {
-				
+			// if there is no existing data is updated, it will directly sent to dropdown,
+			// with empty last update date
+			if (l.size() == 0 && projects.size() > 0) {
 				req.setAttribute("projectsOfEmp", projects);
 				req.setAttribute("showmodal", "yes");
-			}
-			else {
-				
+			} 
+			// de-assigned projects || 
+			else if (l.size() > 0 && projects.size() == 0) 
+			{ 
+				// else no
 				req.setAttribute("showmodal", "no");
 			}
-			
-			try {
-				// Parse the input date string into a LocalDate object
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-				// Get the current date
-				// to Calculate the difference in days
-				long daysDifference = 0L;
-				
-				//checking date for every recent update, weather the date is more then some specific days old
-				// cannot execute this loop if the person has no projects or updates done
-				
-				if(l.size()>0) {
-					for(int i=0;i<l.size();i++)
-					{
-						inputDate = LocalDate.parse(l.get(i)[0].toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-						inputDate = LocalDate.parse(inputDate.format(formatter), formatter);
-						// Get the current date
-						// Calculate the difference in days
-						daysDifference = Duration.between(inputDate.atStartOfDay(), currentDate.atStartOfDay()).toDays();
-						if(daysDifference>6) project.add((int) daysDifference);
-						else project.add(0);
-					}
-					
-					for (int i = 0; i < l.size(); i++) {
-						for (int j = 0; j < projects.size(); j++) 
-							if (l.get(i)[1].toString().equals(projects.get(j)[0].toString())) 
-								if (project.get(i) < 6)
-									projects.remove(j);
-							
-						
-					}
-					if(projects.size()>0) {
-						req.setAttribute("showmodal", "yes");
-						req.setAttribute("lastupdatedate", l);
-						req.setAttribute("projectsOfEmp", projects);
-					}
-					else {
-						req.setAttribute("showmodal", "no");
-					}
-					System.out.println(" is greater than 0");
+
+			//some updates are done
+			if (l.size() > 0) {
+				// multi iter for removing already updated project status
+				for (int i = 0; i < l.size(); i++) {
+					for (int j = 0; j < projects.size(); j++)
+						if (l.get(i)[1].toString().equals(projects.get(j)[0].toString()))
+							projects.remove(j);
 				}
-				
-				
-				
-			} catch (DateTimeParseException e) {
-				e.printStackTrace();
+				// if atleast one project has been not updated, then show
+				if (projects.size() > 0) {
+					req.setAttribute("showmodal", "yes");
+					req.setAttribute("lastupdatedate", l);
+					req.setAttribute("projectsOfEmp", projects);
+				} else {
+					// when all projects are already updated, and nothing yet to update
+					req.setAttribute("showmodal", "no");
+				}
+			}
+			//no projects & no updates
+			if (projects.size() == 0)
+			{
+				req.setAttribute("showmodal", "no");
 			}
 		}
-			
+		//if not projector or qioc
 		else {
+			// as in front end it continusly checks for the showmodal,
+			// null value will not allow rest of page to render, so no is sent
 			req.setAttribute("showmodal", "no");
 		}
 
-    	
-    	
-    	
-    	String ProjectId="A";
-		if(req.getParameter("projectid")!=null) {
-			ProjectId=req.getParameter("projectid");
+		String ProjectId = "A";
+		if (req.getParameter("projectid") != null) {
+			ProjectId = req.getParameter("projectid");
 		}
 
-    	
-    	logger.info(new Date() +"Inside MainDashBoard.htm ");
-	      try {    
+		logger.info(new Date() + "Inside MainDashBoard.htm ");
+		try {
 
-			     req.setAttribute("loginTypeList", headerservice.loginTypeList(LoginType));
-			     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));			   
-			     req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId,LocalDate.now().toString()));
+			req.setAttribute("loginTypeList", headerservice.loginTypeList(LoginType));
+			req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
+			req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId, LocalDate.now().toString()));
 //			     req.setAttribute("todayactionlist", headerservice.TodayActionList(EmpId)); // CALL Pfms_Action_PDC(:empid)
-			     req.setAttribute("dashbordNotice", rfpmainservice.GetNotice(LabCode));
-			     req.setAttribute("noticeEligibility", rfpmainservice.GetNoticeEligibility(EmpId));
-			     req.setAttribute("logintype",LoginType);
-			     req.setAttribute("selfremindercount",rfpmainservice.SelfActionsList(EmpId).size() );
-			     //req.setAttribute("NotiecList",rfpmainservice.getAllNotice());
+			req.setAttribute("dashbordNotice", rfpmainservice.GetNotice(LabCode));
+			req.setAttribute("noticeEligibility", rfpmainservice.GetNoticeEligibility(EmpId));
+			req.setAttribute("logintype", LoginType);
+			req.setAttribute("selfremindercount", rfpmainservice.SelfActionsList(EmpId).size());
+			// req.setAttribute("NotiecList",rfpmainservice.getAllNotice());
 //			     req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
-			     req.setAttribute("ibasUri",ibasUri);
-			     req.setAttribute("interval", interval);
-			     req.setAttribute("ibasV3Uri","http:8082/ibas");
-			     req.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(EmpId,LoginType).size());
-			     req.setAttribute("mytasklist", headerservice.MyTaskList(EmpId)); 
-			     req.setAttribute("approvallist", headerservice.ApprovalList(EmpId,LoginType));
-					req.setAttribute("mytaskdetails",
-							headerservice.MyTaskDetails(EmpId)); /* CALL `Dashboard_Mytask_Details` (:empid) */
-			     req.setAttribute("dashboardactionpdc", headerservice.DashboardActionPdc(EmpId,LoginType));
-			     req.setAttribute("QuickLinkList", headerservice.QuickLinksList(LoginType));
-			     req.setAttribute("projecthealthdata",  rfpmainservice.ProjectHealthData(LabCode));
-			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,"Y"));
-			    System.out.println(ProjectId+"--"+EmpId+"---"+LoginType+"---"+LabCode);
-			     //req.setAttribute("clusterlablist", headerservice.LabList());
-			     //req.setAttribute("clusterlist", comservice.ClusterList());
-			     //req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
-			     req.setAttribute("DashboardFinanceCashOutGo",rfpmainservice.DashboardFinanceCashOutGo(LoginType,EmpId,LabCode,ClusterId ));
-			     req.setAttribute("DashboardFinance",rfpmainservice.DashboardFinance(LoginType,EmpId,LabCode,ClusterId ));
-			     
-			     
-			     
-			     
-			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
-			  
-			     
-			     
-			     String IsDG = "No";
-			     System.out.println("DGName"+DGName+"LoginType"+LoginType);
-			     if(DGName.equalsIgnoreCase(LabCode) || LoginType.equalsIgnoreCase("K"))
-			    	 IsDG = "Yes";
-			     else
-			    	 IsDG = "No";
-			     req.setAttribute("IsDG", IsDG);	 
-			    	 
-			     List<Object[]> labdatalist = new ArrayList<Object[]>();
-			     List<Object[]> LabMasterList = new ArrayList<Object[]>();
-			     String InAll ="N";
-			     
-			     
-			     if(LoginType.equalsIgnoreCase("K")) {// For Secretary
-			    	 LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
-			     	 InAll="Y";
-			     }
-			     else {
-			    	 LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
-			     }
-			     
-			     for(Object[] obj : LabMasterList) {
-			    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,InAll));
-			     }
-			     
-			     req.setAttribute("projecthealthtotaldg", labdatalist);
-			     
-			     if(!LoginType.equalsIgnoreCase("U") || !LoginType.equalsIgnoreCase("K")  )
-			     {
+			req.setAttribute("ibasUri", ibasUri);
+			req.setAttribute("interval", interval);
+			req.setAttribute("ibasV3Uri", "http:8082/ibas");
+			req.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(EmpId, LoginType).size());
+			req.setAttribute("mytasklist", headerservice.MyTaskList(EmpId));
+			req.setAttribute("approvallist", headerservice.ApprovalList(EmpId, LoginType));
+			req.setAttribute("mytaskdetails",
+					headerservice.MyTaskDetails(EmpId)); /* CALL `Dashboard_Mytask_Details` (:empid) */
+			req.setAttribute("dashboardactionpdc", headerservice.DashboardActionPdc(EmpId, LoginType));
+			req.setAttribute("QuickLinkList", headerservice.QuickLinksList(LoginType));
+			req.setAttribute("projecthealthdata", rfpmainservice.ProjectHealthData(LabCode));
+			req.setAttribute("projecthealthtotal",
+					rfpmainservice.ProjectHealthTotalData(ProjectId, EmpId, LoginType, LabCode, "Y"));
+			System.out.println(ProjectId + "--" + EmpId + "---" + LoginType + "---" + LabCode);
+			// req.setAttribute("clusterlablist", headerservice.LabList());
+			// req.setAttribute("clusterlist", comservice.ClusterList());
+			// req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
+			req.setAttribute("DashboardFinanceCashOutGo",
+					rfpmainservice.DashboardFinanceCashOutGo(LoginType, EmpId, LabCode, ClusterId));
+			req.setAttribute("DashboardFinance", rfpmainservice.DashboardFinance(LoginType, EmpId, LabCode, ClusterId));
 
-			    	//code for pfms service call to get data for project pie chart
+			String DGName = Optional.ofNullable(
+					headerservice.LabMasterList(ClusterId).stream().filter(e -> "Y".equalsIgnoreCase(e[2].toString()))
+							.collect(Collectors.toList()).get(0)[1].toString())
+					.orElse("");
 
-			    	final String localUri=uri+"/pfms_serv/pfms-chart-service?inType="+LoginType+"&employeeNo="+empNo;
-			    	
-			 		HttpHeaders headers = new HttpHeaders();
-			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			 		headers.add("labcode", LabCode);
-			 		
-			 		String jsonResult=null;
+			String IsDG = "No";
+			System.out.println("DGName" + DGName + "LoginType" + LoginType);
+			if (DGName.equalsIgnoreCase(LabCode) || LoginType.equalsIgnoreCase("K"))
+				IsDG = "Yes";
+			else
+				IsDG = "No";
+			req.setAttribute("IsDG", IsDG);
 
+			List<Object[]> labdatalist = new ArrayList<Object[]>();
+			List<Object[]> LabMasterList = new ArrayList<Object[]>();
+			String InAll = "N";
+
+			if (LoginType.equalsIgnoreCase("K")) {// For Secretary
+				LabMasterList = headerservice.LabMasterList(ClusterId).stream()
+						.filter(e -> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList());
+				InAll = "Y";
+			} else {
+				LabMasterList = headerservice.LabMasterList(ClusterId).stream()
+						.filter(e -> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList());
+			}
+
+			for (Object[] obj : LabMasterList) {
+				labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId, EmpId, LoginType,
+						obj[1].toString().trim(), InAll));
+			}
+
+			req.setAttribute("projecthealthtotaldg", labdatalist);
+
+			if (!LoginType.equalsIgnoreCase("U") || !LoginType.equalsIgnoreCase("K")) {
+
+				// code for pfms service call to get data for project pie chart
+
+				final String localUri = uri + "/pfms_serv/pfms-chart-service?inType=" + LoginType + "&employeeNo="
+						+ empNo;
+
+				HttpHeaders headers = new HttpHeaders();
+				headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+				headers.add("labcode", LabCode);
+
+				String jsonResult = null;
+
+				try {
+
+					HttpEntity<String> entity = new HttpEntity<String>(headers);
+					ResponseEntity<String> response = restTemplate.exchange(localUri, HttpMethod.POST, entity,
+							String.class);
+					jsonResult = response.getBody();
+
+				} catch (HttpClientErrorException | ResourceAccessException e) {
+					logger.error(new Date() + " Inside MainDashboard.htm " + UserId, e);
+					e.printStackTrace();
+
+					req.setAttribute("budgetlist", new ArrayList<ProjectSanctionDetailsMaster>());
+					req.setAttribute("errorMsg", "IBAS Server Not Responding !!");
+
+				} catch (Exception e) {
+					logger.error(new Date() + " Inside MainDashboard.htm " + UserId, e);
+					e.printStackTrace();
+					req.setAttribute("budgetlist", new ArrayList<ProjectSanctionDetailsMaster>());
+					req.setAttribute("errorMsg", "IBAS Server Not Responding !!");
+				}
+
+				ObjectMapper mapper = new ObjectMapper();
+				List<ProjectSanctionDetailsMaster> projectDetails = null;
+				if (jsonResult != null) {
 					try {
 
-						HttpEntity<String> entity = new HttpEntity<String>(headers);
-						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-						jsonResult=response.getBody();
-						
-					}
-					catch(HttpClientErrorException  | ResourceAccessException e) {
-						logger.error(new Date() +" Inside MainDashboard.htm "+UserId, e);
+						projectDetails = mapper.readValue(jsonResult, mapper.getTypeFactory()
+								.constructCollectionType(List.class, ProjectSanctionDetailsMaster.class));
+						req.setAttribute("budgetlist", projectDetails);
+
+					} catch (JsonProcessingException e) {
+
 						e.printStackTrace();
-					
-						req.setAttribute("budgetlist",new ArrayList<ProjectSanctionDetailsMaster>());
-						req.setAttribute("errorMsg", "IBAS Server Not Responding !!");
-
-					}catch(Exception e)
-					{
-						logger.error(new Date() +" Inside MainDashboard.htm "+UserId, e);
-						e.printStackTrace();
-						req.setAttribute("budgetlist",new ArrayList<ProjectSanctionDetailsMaster>());
-						req.setAttribute("errorMsg", "IBAS Server Not Responding !!");
 					}
-					
-					
-					ObjectMapper mapper=new ObjectMapper();
-					List<ProjectSanctionDetailsMaster> projectDetails=null;
-					if(jsonResult!=null) {
-						try {
+				}
 
-							projectDetails = mapper.readValue(jsonResult, mapper.getTypeFactory().constructCollectionType(List.class, ProjectSanctionDetailsMaster.class));
-							req.setAttribute("budgetlist",projectDetails);
-							
-						} catch (JsonProcessingException e) {
-	
-							e.printStackTrace();
-						}
-					}
+				// req.setAttribute("AllSchedulesCount",
+				// rfpmainservice.AllSchedulesCount(LoginType,LoginId));
+				req.setAttribute("actionscount", rfpmainservice.AllActionsCount(LoginType, EmpId, LoginId, LabCode));
+				req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType, EmpId, LabCode));
+				req.setAttribute("ProjectMeetingCount", rfpmainservice.ProjectMeetingCount(LoginType, EmpId, LabCode));
+				req.setAttribute("ganttchartlist", rfpmainservice.GanttChartList());
 
-					//req.setAttribute("AllSchedulesCount", rfpmainservice.AllSchedulesCount(LoginType,LoginId));
-			    	req.setAttribute("actionscount",rfpmainservice.AllActionsCount(LoginType,EmpId,LoginId,LabCode));
-			    	req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType,EmpId,LabCode));
-			    	req.setAttribute("ProjectMeetingCount", rfpmainservice.ProjectMeetingCount(LoginType,EmpId,LabCode));
-			    	req.setAttribute("ganttchartlist", rfpmainservice.GanttChartList());
+				/*
+				 * for(Object[] obj:rfpmainservice.ProjectList(LoginType,LoginId)) {
+				 * 
+				 * req.setAttribute("Quater"+obj[0],
+				 * rfpmainservice.ProjectQuaters(obj[0].toString()));
+				 * 
+				 * }
+				 */
 
-					/*
-					 * for(Object[] obj:rfpmainservice.ProjectList(LoginType,LoginId)) {
-					 * 
-					 * req.setAttribute("Quater"+obj[0],
-					 * rfpmainservice.ProjectQuaters(obj[0].toString()));
-					 * 
-					 * }
-					 */
-			    	
-			     }
+			}
 
-			     } catch (Exception e) {
-			    	   
-			    	 logger.error(new Date() +" Inside MainDashboard.htm "+UserId, e);
-			    	 e.printStackTrace();
-	    	} 
-			    	
+		} catch (Exception e) {
 
-     return "static/MainDashBoard";
-    }
+			logger.error(new Date() + " Inside MainDashboard.htm " + UserId, e);
+			e.printStackTrace();
+		}
+
+		return "static/MainDashBoard";
+	}
  
     
     @RequestMapping(value = "IndividualProjectDetails.htm", method = RequestMethod.GET)
