@@ -1,6 +1,6 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +9,7 @@
 <title>Project Revision Data</title>
 </head>
 <%
+	SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	List<Object[]> projectslist=(List<Object[]>) request.getAttribute("projectslist");
 	List<Object[]> ProjectMasterRevList=(List<Object[]>) request.getAttribute("ProjectMasterRevList");
 	String projectid = (String) request.getAttribute("projectid");
@@ -73,8 +74,8 @@
 							<td>Sanction No.</td>
 						</tr>
 						<tr style="font-weight:600 ">
-							<td style="padding: 6px;"><%=obj[10] %></td>
-							<td><%=obj[12] %></td>
+							<td style="padding: 6px;"><%=sdf.format(obj[10]) %></td>
+							<td><%=sdf.format(obj[12]) %></td>
 							<td><%=obj[11] %></td>
 							<td><%=obj[13] %>, <%=obj[14] %></td>
 							<td><%=obj[9] %></td>
