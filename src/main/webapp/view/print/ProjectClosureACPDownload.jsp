@@ -746,7 +746,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 	<%} %>	
 	
 	<h1 class="break"></h1>
-	<table id="tabledata">
+	<%-- <table id="tabledata">
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
 			<td style="width: 35%;"style="font-weight: 600;">
@@ -810,11 +810,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						%>
 						<tr>
 							<td align="center" style="max-width: 50px !important; text-align: center;"><%=count++%></td>
-							<%-- <%if(i++==0) {%> 
+							<%if(i++==0) {%> 
 								<td rowspan="<%=revenue.size()+1%>" style="transform : rotate(270deg); width : 4%; text-align: center;" >
 							 		REVENUE
 							 	</td>
-							<%} %> --%>
+							<%} %>
 							<td style=""><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
 							<!-- Sanction Cost -->
 							<!-- IC -->
@@ -894,11 +894,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						
 						<tr>
 							<td align="center" style="max-width: 50px !important; text-align: center;"><%=count++%></td>
-							<%-- <%if(j++==0) {%> 
+							<%if(j++==0) {%> 
 								<td rowspan="<%=capital.size()+1%>" style="transform : rotate(270deg); width : 4%; text-align: center;" >
 							 		CAPITAL
 							 	</td>
-							<%} %> --%>
+							<%} %>
 							<td><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
 							<!-- Sanction Cost -->
 							<!-- IC -->
@@ -993,6 +993,6 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			</td>
 		</tr> 
 	</table>
-	</div>		               														
+	</div>		       --%>         														
 </body>
 </html>

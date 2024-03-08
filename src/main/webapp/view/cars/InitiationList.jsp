@@ -474,7 +474,7 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 										<div class="container" style="">
 					  						<div class="row">
 												<div class="col-xl">
-													Amount : <%if(obj[13]!=null){%><%=Double.parseDouble(obj[13].toString())/100000 %> Lakhs <%}else{ %>-<%} %>
+													Amount : <%if(obj[13]!=null){%><%=String.format("%.2f", Double.parseDouble(obj[13].toString())/100000) %> Lakhs <%}else{ %>-<%} %>
 												</div>
 												<div class="col-">
 													Duration : <%if(obj[8]!=null){%><%=obj[8] %> months <%}else{ %>-<%} %>

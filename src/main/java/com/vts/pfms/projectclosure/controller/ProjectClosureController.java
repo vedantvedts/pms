@@ -47,6 +47,7 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.utils.PdfMerger;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.service.CARSService;
@@ -1106,23 +1107,42 @@ public class ProjectClosureController {
 			String filename="Administrative-Closure";	
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
+			
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/print/ProjectClosureACPDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
 
 			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
-			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-			pdfDocument.close();
-			pdf1.close();	       
-			pdfw.close();
-
-			res.setContentType("application/pdf");
-			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-			File f=new File(path+"/"+filename+".pdf");
-
-			OutputStream out = res.getOutputStream();
+			
+			CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/project/ProjectExpndStatusTable.jsp").forward(req, customResponse1);
+			String html1 = customResponse1.getOutput();        
+	        
+	        HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
+	        
+	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+	        PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+	        PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+	        
+	        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
+	        PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+	        PdfMerger merger = new PdfMerger(pdfDocument);
+	        
+	        merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+            
+            pdfDocument2.close();
+	        pdfDocument.close();
+	        merger.close();
+	        pdf2.close();
+	        pdf1.close();	       
+	        pdfw.close();
+	    
+	        res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+	        File f=new File(path +File.separator+ "merged.pdf");
+	         
+	        
+	        OutputStream out = res.getOutputStream();
 			FileInputStream in = new FileInputStream(f);
 			byte[] buffer = new byte[4096];
 			int length;
@@ -1132,9 +1152,14 @@ public class ProjectClosureController {
 			in.close();
 			out.flush();
 			out.close();
-
-			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
-			Files.delete(pathOfFile2);		
+	       
+	       
+	        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
+	        Files.delete(pathOfFile2);		
+	        pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile2);	
+	        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
+	        Files.delete(pathOfFile2);		
 
 		}
 	    catch(Exception e) {	    		

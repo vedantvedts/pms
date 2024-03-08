@@ -457,8 +457,8 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 14%;">
                             		<label class="control-label">Amount (&#8377;)</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="number" name="amount" id="amount" min="0" max="15" style="font-size: 15px;"  step=".1"
-                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())%><%} %>" required> 
+                              		<input  class="form-control form-control" type="text" name="amount" id="amount" maxlength="15" style="font-size: 15px;" 
+                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         		</div>
                         		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
                             		<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
@@ -575,7 +575,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 9.5%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
                             		<label class="control-label">Fax No</label>
-                              		<input  class="form-control form-control" type="text" name="piFaxNo" id="piFaxNo" maxlength="50" style="font-size: 15px;" 
+                              		<input  class="form-control form-control" type="text" name="piFaxNo" id="piFaxNo" maxlength="20" style="font-size: 15px;" 
                               		 placeholder="Enter Fax No of PI" value="<%if(carsIni!=null && carsIni.getPIFaxNo()!=null){ %><%=carsIni.getPIFaxNo()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"> 
                         		</div>
                     		 </div>
@@ -1308,8 +1308,8 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         						</div>
                         						<div class="column b" style="width: 14%;">
 				                            		<label class="control-label">Amount ( &#8377;)</label><span class="mandatory">*</span>
-				                              		<input  class="form-control form-control" type="number" name="socAmount" id="socAmount" min="0" max="15" style="font-size: 15px;" step="0.01"
-				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=Double.parseDouble(carsSoC.getSoCAmount())%><%} %>" required> 
+				                              		<input  class="form-control form-control" type="text" name="socAmount" id="socAmount" maxlength="15" style="font-size: 15px;"
+				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=Double.parseDouble(carsSoC.getSoCAmount())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
 			                        			</div>
                         						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
                             						<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
@@ -2394,9 +2394,9 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 					         						<%} %>
 					         						<%if(  (totalamount == socamount )  &&  (totalamount == expndtotal ) ) {%>
 														<button type="submit" class="btn btn-sm submit" id="" name="Action" formaction="SoCApprovalSubmit.htm" formnovalidate="formnovalidate" value="A" onclick="return confirm('Are you Sure to Submit ?');" >Forward</button>
-													<%}else if(socamount < expndtotal) {%>
+													<%}else if(expndtotal < socamount) {%>
 														<button type="button" class="btn btn-sm submit" formnovalidate="formnovalidate" onclick="alert('Cost of project should be equal to Total Cost of Expenditure')">Forward</button>
-													<%} else{%>
+													<%} else if(totalamount < socamount ){%>
 														<button type="button" class="btn btn-sm submit" formnovalidate="formnovalidate" onclick="alert('Cost of project should be equal to Total Cost \n of Proposed Milestone and Deliverables')">Forward</button>
 													<%} %>
 												<%} %>

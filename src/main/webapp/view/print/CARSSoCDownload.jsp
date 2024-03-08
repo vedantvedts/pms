@@ -207,7 +207,7 @@ int socforwardslno=0;
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">RSQR</td>
 		<td style="width: 73%;text-align: center;">
-			<a href="CARSFinalRSQRDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank" onclick="window.open(this.href); return false;">Annexure - I</a>
+			<a href="CARSFinalRSQRDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank">Annexure - I</a>
 		</td>
 	</tr>
 	<tr>
