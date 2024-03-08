@@ -458,7 +458,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		<div class="column b" style="width: 14%;">
                             		<label class="control-label">Amount (&#8377;)</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="amount" id="amount" maxlength="15" style="font-size: 15px;" 
-                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
+                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=String.format("%.2f", Double.parseDouble(carsIni.getAmount()))%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         		</div>
                         		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
                             		<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
@@ -1309,7 +1309,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         						<div class="column b" style="width: 14%;">
 				                            		<label class="control-label">Amount ( &#8377;)</label><span class="mandatory">*</span>
 				                              		<input  class="form-control form-control" type="text" name="socAmount" id="socAmount" maxlength="15" style="font-size: 15px;"
-				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=Double.parseDouble(carsSoC.getSoCAmount())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
+				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=String.format("%.2f", Double.parseDouble(carsSoC.getSoCAmount()))%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
 			                        			</div>
                         						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
                             						<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
@@ -1925,7 +1925,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 10%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="actualAmount" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCAmount() %><%} %>" value="<%if(mil.getActualAmount()!=null) {%><%=mil.getActualAmount() %><%} %>" required="required" oninput="return checkActualAmount(this)">
+															<input type="number" class="form-control" name="actualAmount" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCAmount() %><%} %>" value="<%if(mil.getActualAmount()!=null) {%><%=String.format("%.2f", Double.parseDouble(mil.getActualAmount())) %><%} %>" required="required" oninput="return checkActualAmount(this)">
 														</td>
 														<td style="width: 10%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>

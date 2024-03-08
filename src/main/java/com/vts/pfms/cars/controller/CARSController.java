@@ -1064,6 +1064,7 @@ public class CARSController {
 				req.setAttribute("RSQRDeliverables", service.getCARSRSQRDeliverablesByCARSInitiationId(carsiniid));
 				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
 				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
 			}
 			String filename="Final-RSQR";	
 			String path=req.getServletContext().getRealPath("/view/temp");
