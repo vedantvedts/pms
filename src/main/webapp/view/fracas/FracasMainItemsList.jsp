@@ -207,9 +207,14 @@ a:hover {
 										<td>
 											<select class="form-control selectdee" id="projectid" name="projectid" required onchange="$('#projectchange').submit();">
 												<%-- <option <%if(projectid.equals("0")){ %>selected <%} %>	value="0">General</option> --%>
-												<%for(Object[] obj:projectslist){ %>
+												<% for (Object[] obj : projectslist) {
+    										    String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+    										     %>
+											    <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectid)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
+											    <%} %>
+												<%-- <%for(Object[] obj:projectslist){ %>
 													<option <%if(projectid.equals(obj[0].toString())){ %>selected <%} %> value="<%=obj[0]%>"><%=obj[4]%></option>	
-												<%} %>
+												<%} %> --%>
 											</select>
 										</td>
 									</tr>

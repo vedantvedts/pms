@@ -1,6 +1,7 @@
 package com.vts.pfms.pfts.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,9 @@ import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.google.gson.Gson;
 import com.vts.pfms.master.dto.DemandDetails;
 import com.vts.pfms.pfts.dto.DemandOrderDetails;
+import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
+import com.vts.pfms.pfts.model.PftsFileOrder;
 import com.vts.pfms.pfts.service.PFTSService;
 
 @Controller
@@ -51,6 +54,7 @@ public class PFTSController {
 	
 	private static final Logger logger=LogManager.getLogger(PFTSController.class);
 	SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+	private  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
 	
 	@RequestMapping(value = "ProcurementStatus.htm" ,method= {RequestMethod.GET,RequestMethod.POST})
@@ -102,8 +106,6 @@ public class PFTSController {
 		logger.info(new Date() +"Inside AddNewDemandFile.htm "+UserId);		
 		try {
 			String projectId =req.getParameter("projectId");
-			
-			
 			String projectcode = service.ProjectData(projectId)[1].toString();
 			
 			
@@ -148,7 +150,7 @@ public class PFTSController {
 		}	
 		
 	} 
-	private  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	
 	@RequestMapping(value="AddDemandFileSubmit.htm", method=RequestMethod.POST)
 	public String addDemandFileSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
 	{
@@ -166,8 +168,6 @@ public class PFTSController {
 			pf.setRemarks("Nil");
 			
 			List<DemandDetails> prevDemandFile=service.getprevDemandFile(projectId);
-			
-			
 			
 			Long result=service.addDemandfile(pf);
 			
@@ -206,8 +206,6 @@ public class PFTSController {
 		}
 
 	}
-	
-
 	
 	@RequestMapping(value="upadteDemandFile.htm", method=RequestMethod.POST)
 	public String upadteDemandFile(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
@@ -578,9 +576,6 @@ public class PFTSController {
 					req.setAttribute("projectId", req.getParameter("projectId"));
 					req.setAttribute("value", "Edit");
 					
-					
-			
-					
 					return  "pfts/envisagedAction";
 				}catch (Exception e) 
 				{			
@@ -614,7 +609,295 @@ public class PFTSController {
 		@RequestMapping(value = "AddManualDemand.htm", method = RequestMethod.POST)
 		public String AddManualDemand(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
+			String UserId = (String) ses.getAttribute("Username");
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String Logintype= (String)ses.getAttribute("LoginType");
+			String LabCode = (String)ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside AddManualDemand.htm "+UserId);
+			
+			try {
+				
+				String projectId = req.getParameter("projectId");
+				
+				System.out.println("ProjectId##########"+projectId);
+				
+				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+				req.setAttribute("projectslist",projectlist );
+				req.setAttribute("projectId",projectId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return "pfts/AddManualDemand";
+		}
+		
+		@RequestMapping(value = "AddManualDemandSubmit.htm", method= {RequestMethod.GET,RequestMethod.POST})
+		public String AddManualDemandSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String Logintype= (String)ses.getAttribute("LoginType");
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			
+			logger.info(new Date() +"Inside AddManualDemand.htm "+UserId);
+			
+			try {
+				
+				String ProjectId = req.getParameter("ProjectId");
+				String demandNo = req.getParameter("demandNo");
+				String demanddate = req.getParameter("demanddate");
+				String estimatedcost = req.getParameter("estimatedcost");
+				String itemname = req.getParameter("itemname");
+				String demandType = req.getParameter("demandType");
+				
+				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+				
+				 PFTSFile pf = new PFTSFile();
+				 
+				 pf.setDemandType(demandType);
+				 pf.setProjectId(Long.parseLong(ProjectId));
+				 pf.setDemandNo(demandNo);
+				 pf.setDemandDate(new java.sql.Date(inputFormat.parse(demanddate).getTime()));
+				 pf.setItemNomenclature(itemname);
+				 pf.setEstimatedCost(Double.parseDouble(estimatedcost));
+				 pf.setPftsStatusId(1l);
+			     pf.setRemarks("Nil");
+				 pf.setCreatedBy(UserId);
+				 pf.setCreatedDate(sdf.format(new Date()));
+				 
+				 Long result=service.addDemandfile(pf);
+					
+					if(result>0) {
+						redir.addAttribute("result","Demand Added Successfully ");
+					}else {
+						redir.addAttribute("resultfail","Something went worng");
+					}
+					
+					redir.addAttribute("projectslist",projectlist);
+					redir.addAttribute("projectid",ProjectId);
+					redir.addAttribute("fileStatusList",service.getFileStatusList(ProjectId));
+					redir.addAttribute("pftsStageList", service.getpftsStageList());
+					return  "redirect:/ProcurementStatus.htm";
+				
+			} catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside AddManualDemandSubmit.htm "+UserId, e); 
+				return "static/Error";	
+			}
+		}
+		
+		@RequestMapping(value = "updateManualDemand.htm", method = RequestMethod.POST)
+		public String updateManualDemand(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside updateManualDemand.htm "+UserId);
+			
+			try {
+				
+	             String fileId=req.getParameter("fileId");
+	             req.setAttribute("fileViewList",service.getpftsFileViewList(fileId));
+	 		     req.setAttribute("pftsStageList", service.getpftsStageList());
+				return  "pfts/UpdateManualDemand";
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.info(new Date() +"Inside updateManualDemand.htm "+UserId);
+				return "static/Error";
+			}
+		}
+		
+		
+		@RequestMapping(value = "updateManualDemandSubmit.htm", method = RequestMethod.POST)
+		public String updateManualDemandSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String Logintype= (String)ses.getAttribute("LoginType");
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			
+			logger.info(new Date() +"Inside updateManualDemandSubmit.htm "+UserId);
+			
+			try {
+				
+				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+				
+				 String statusId=req.getParameter("procstatus");
+	             String projectId=req.getParameter("projectId");
+	             String eventDate=req.getParameter("eventDate");
+	             String fileId=req.getParameter("fileId");
+	             String remarks=req.getParameter("procRemarks");
+	             String flag=req.getParameter("flag");
+	        
+	             long result=0l;
+	             result =service.upadteDemandFile(fileId,statusId,eventDate,remarks);
+	             
+	             List<DemandOrderDetails> fileList = new ArrayList<DemandOrderDetails>();
+	             
+	             if(flag!=null &&   flag.equalsIgnoreCase("order")) {
+	            	 
+	                 String[] orderNo=req.getParameterValues("orderno");
+		             String[] orderDate=req.getParameterValues("orderdate");
+		             String[] orderCost=req.getParameterValues("ordercost");
+		             String[] dpDate=req.getParameterValues("dpdate");
+		             String[] itemFor=req.getParameterValues("itemfor");
+		             String[] vendorName=req.getParameterValues("vendor");
+	     			
+		             for(int i=0;i<orderNo.length;i++) {
+		            	 DemandOrderDetails pfts = new DemandOrderDetails();
+		            	 pfts.setOrderNo(orderNo[i]);
+		            	 pfts.setOrderDate(new java.sql.Date(inputFormat.parse(orderDate[i]).getTime()).toString());
+		            	 pfts.setDpDate(new java.sql.Date(inputFormat.parse(dpDate[i]).getTime()).toString());
+		            	 pfts.setOrderCost(Double.parseDouble(orderCost[i]));
+		            	 pfts.setItemFor(itemFor[i]);
+		            	 pfts.setVendorName(vendorName[i]);
+		            	 fileList.add(pfts);
+		             }
+		             
+		             result=service.updateCostOnDemand(fileList, fileId, UserId);
+	             }
+	             
+	             if(result>0) {
+	     				redir.addAttribute("result","Demand Updated Successfully");
+	     			}else {
+	     				redir.addAttribute("resultfail","Something went worng");
+	     			}
+	             
+	             redir.addAttribute("projectslist",projectlist);
+				 redir.addAttribute("projectid",projectId);
+				 redir.addAttribute("fileStatusList",service.getFileStatusList(projectId));
+				 redir.addAttribute("pftsStageList", service.getpftsStageList());
+				 return  "redirect:/ProcurementStatus.htm";
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.info(new Date() +"Inside updateManualDemandSubmit.htm "+UserId);
+				return "static/Error";
+			}
+		}
+		
+
+		@RequestMapping(value = "getOrderDetailsAjax.htm", method = RequestMethod.GET)
+		public @ResponseBody String getOrderDetailsAjax(HttpServletRequest request, HttpSession ses) throws Exception
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside getOrderDetailsAjax.htm "+UserId);		
+			try {
+					String fileId=request.getParameter("fileId");
+					List<Object[]> orderList=service.getOrderDetailsAjax(fileId);
+					Gson json = new Gson();
+					return json.toJson(orderList);
+			}catch (Exception e) 
+			{			
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside getOrderDetailsAjax.htm "+UserId, e); 
+				return null;
+			}
+
+		}
+		
+		
+		@RequestMapping(value = "updateManualOrderSubmit.htm", method = RequestMethod.POST)
+		public String updateManualOrderSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String Logintype= (String)ses.getAttribute("LoginType");
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			
+			logger.info(new Date() +"Inside updateManualOrderSubmit.htm "+UserId);
+			
+			try {
+				
+				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+				
+	                 String projectId=req.getParameter("projectId");
+	                 String orderid=req.getParameter("orderid");
+	                 String orderNo=req.getParameter("orderno");
+		             String orderDate=req.getParameter("orderdate");
+		             String orderCost=req.getParameter("ordercost");
+		             String dpDate=req.getParameter("dpdate");
+		             String itemFor=req.getParameter("itemfor");
+		             String vendorName=req.getParameter("vendor");
+	     			
+		             PftsFileOrder order = new PftsFileOrder();
+		             order.setOrderNo(orderNo);
+		             order.setOrderDate(new java.sql.Date(inputFormat.parse(orderDate).getTime()).toString());
+		             order.setDpDate(new java.sql.Date(inputFormat.parse(dpDate).getTime()).toString());
+		             order.setOrderCost(Double.parseDouble(orderCost));
+		             order.setItemFor(itemFor);
+		             order.setVendorName(vendorName);
+		             order.setModifiedBy(UserId);
+		             order.setModifiedDate(sdf.format(new Date()));
+		             
+		             long result=service.ManualOrderSubmit(order,orderid);
+	             
+	             if(result>0) {
+	     				redir.addAttribute("result","Order Updated Successfully");
+	     			}else {
+	     				redir.addAttribute("resultfail","Order Update Unsuccessfull");
+	     			}
+	             
+	             redir.addAttribute("projectslist",projectlist);
+				 redir.addAttribute("projectid",projectId);
+				 redir.addAttribute("fileStatusList",service.getFileStatusList(projectId));
+				 redir.addAttribute("pftsStageList", service.getpftsStageList());
+				 return  "redirect:/ProcurementStatus.htm";
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.info(new Date() +"Inside updateManualOrderSubmit.htm "+UserId);
+				return "static/Error";
+			}
+		}
+		
+		
+		@RequestMapping(value = "manualDemandEditSubmit.htm", method= {RequestMethod.GET,RequestMethod.POST})
+		public String manualDemandEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String Logintype= (String)ses.getAttribute("LoginType");
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			
+			logger.info(new Date() +"Inside manualDemandEditSubmit.htm "+UserId);
+			
+			try {
+				String fileId=req.getParameter("procfileId");
+				String ProjectId = req.getParameter("ProjectId");
+				String demandNo = req.getParameter("demandno");
+				String demanddate = req.getParameter("demanddate");
+				String estimatedcost = req.getParameter("estimatedcost");
+				String itemname = req.getParameter("itemname");
+				
+				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+				
+				  PFTSFileDto pftsDto = new PFTSFileDto();
+				  pftsDto.setPftsFileId(Long.parseLong(fileId));
+				  pftsDto.setDemandNo(demandNo);
+				  pftsDto.setDemandDate(new java.sql.Date(inputFormat.parse(demanddate).getTime()));
+				  pftsDto.setItemNomenclature(itemname);
+				  pftsDto.setEstimatedCost(Double.parseDouble(estimatedcost));
+				  pftsDto.setModifiedBy(UserId);
+				  pftsDto.setModifiedDate(sdf.format(new Date()));
+				
+				 Long result=service.manualDemandEditSubmit(pftsDto);
+					
+					if(result>0) {
+						redir.addAttribute("result","Demand Edited Successfully ");
+					}else {
+						redir.addAttribute("resultfail","Demand Edit Unsuccessfull");
+					}
+					
+					redir.addAttribute("projectslist",projectlist);
+					redir.addAttribute("projectid",ProjectId);
+					redir.addAttribute("fileStatusList",service.getFileStatusList(ProjectId));
+					redir.addAttribute("pftsStageList", service.getpftsStageList());
+					return  "redirect:/ProcurementStatus.htm";
+				
+			} catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside manualDemandEditSubmit.htm "+UserId, e); 
+				return "static/Error";	
+			}
 		}
 			
 }

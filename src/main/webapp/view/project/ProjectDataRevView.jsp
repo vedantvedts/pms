@@ -170,9 +170,11 @@ if(ses1!=null){
 										<form method="post" action="ProjectDataRevList.htm" id="projectchange">
 											<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 												<option disabled  selected value="">Choose...</option>
-												<%for(Object[] obj : projectslist){ %>
+												<%for(Object[] obj : projectslist){ 
+											     String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+												%>
 												<%-- <option <%if(projectid.equals(obj[0].toString())){ %> selected <%} %> value="<%=obj[0] %>" ><%=obj[4] %></option> --%>
-												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4] %></option>
+												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]+projectshortName %></option>
 												<%} %>
 											</select>
 											<button type="submit" class="btn  btn-sm back" formaction="ProjectData.htm" >Back</button>

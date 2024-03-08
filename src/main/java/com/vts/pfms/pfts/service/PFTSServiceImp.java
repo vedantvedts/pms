@@ -14,6 +14,7 @@ import com.vts.pfms.master.dto.DemandDetails;
 import com.vts.pfms.pfts.controller.FileStatusController;
 import com.vts.pfms.pfts.dao.PFTSDao;
 import com.vts.pfms.pfts.dto.DemandOrderDetails;
+import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
 import com.vts.pfms.pfts.model.PftsFileOrder;
 
@@ -284,5 +285,22 @@ public class PFTSServiceImp implements PFTSService{
 		return dao.getpftsFileViewList(procFileId);
 	}
 	
+	@Override
+	public List<Object[]> getOrderDetailsAjax(String fileId) throws Exception {
+		
+		return dao.getOrderDetailsAjax(fileId);
+	}
 	
+	@Override
+	public long ManualOrderSubmit(PftsFileOrder order, String orderid) throws Exception {
+		
+		return dao.ManualOrderSubmit(order,orderid);
+	}
+	
+	@Override
+	public long manualDemandEditSubmit(PFTSFileDto pftsDto) throws Exception {
+		
+		return dao.manualDemandEditSubmit(pftsDto);
+	}
+
 }

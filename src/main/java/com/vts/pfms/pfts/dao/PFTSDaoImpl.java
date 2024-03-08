@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
 import com.vts.pfms.pfts.model.PftsFileOrder;
 
@@ -23,7 +24,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	
 	
 	private static final String PROJECTSLIST="SELECT projectid, projectcode, projectname FROM project_master";
-	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND s.PftsStatusId < 19 AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag,f.Remarks FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
+	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks,f.demandtype FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND s.PftsStatusId < 19 AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag,f.Remarks,f.demandtype FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
 	private static final String PrevDemandFile ="SELECT ProjectId, DemandNo, DemandDate, ItemNomenclature, EstimatedCost FROM pfts_file WHERE ProjectId=:projectid";
 	private static final String StatusList="SELECT s.PftsStatusId, s.PftsStatus, s.PftsStageName FROM pfts_status s WHERE s.PftsStatusId > (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) AND CASE WHEN (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) < 10 THEN s.PftsStatusId <= 10 ELSE TRUE END ORDER BY pftsstatusid ";
 	private static final String updateCostDetails="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
@@ -211,7 +212,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	}
 	
 	
-	private static final String FILEVIEWLIST="SELECT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus,s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks FROM pfts_file f, pfts_status s WHERE f.PftsFileId=:pftsfileid AND f.PftsStatusId = s.PftsStatusId";
+	private static final String FILEVIEWLIST="SELECT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus,s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks,f.demandtype,f.projectid FROM pfts_file f, pfts_status s WHERE f.PftsFileId=:pftsfileid AND f.PftsStatusId = s.PftsStatusId";
 	@Override
 	public Object[] getpftsFileViewList(String procFileId) throws Exception {
 		
@@ -221,4 +222,44 @@ public  class PFTSDaoImpl implements PFTSDao{
 		return  (Object[])query.getSingleResult();
 	}
 	
+	private static final String ORDERETAILSAJAX="SELECT a.PftsFileOrderId,b.PftsFileId,b.DemandType,b.DemandNo,b.PftsStatusId,b.projectid,a.OrderNo,a.OrderDate,a.DpDate,a.ItemFor,a.OrderCost,a.VendorName FROM pfts_file_order a, pfts_file b WHERE a.PftsFileId=b.PftsFileId AND b.PftsFileId=:fileId GROUP BY OrderNo";
+	@Override
+	public List<Object[]> getOrderDetailsAjax(String fileId) throws Exception {
+		
+		Query query = manager.createNativeQuery(ORDERETAILSAJAX);
+		query.setParameter("fileId", fileId);
+		return  (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String MANUALORDERSUBMIT=" UPDATE pfts_file_order SET OrderNo=:OrderNo,OrderDate=:OrderDate,OrderCost=:OrderCost,DpDate=:DpDate,ItemFor=:ItemFor,VendorName=:VendorName,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE PftsFileOrderId=:PftsFileOrderId";
+	@Override
+	public long ManualOrderSubmit(PftsFileOrder order, String orderid) throws Exception {
+
+		Query query = manager.createNativeQuery(MANUALORDERSUBMIT);
+		query.setParameter("PftsFileOrderId", orderid);
+		query.setParameter("OrderNo", order.getOrderNo());
+		query.setParameter("OrderDate", order.getOrderDate());
+		query.setParameter("OrderCost", order.getOrderCost());
+		query.setParameter("DpDate", order.getDpDate());
+		query.setParameter("ItemFor", order.getItemFor());
+		query.setParameter("VendorName", order.getVendorName());
+		query.setParameter("ModifiedBy", order.getModifiedBy());
+		query.setParameter("ModifiedDate", order.getModifiedDate());
+		return  query.executeUpdate();
+	}
+	
+	private static final String MANUALDEMANDEDITSUBMIT="UPDATE pfts_file SET DemandNo=:DemandNo,DemandDate=:DemandDate,EstimatedCost=:EstimatedCost,ItemNomenclature=:ItemNomenclature,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE PftsFileId=:fileId";
+	@Override
+	public long manualDemandEditSubmit(PFTSFileDto pftsDto) throws Exception {
+		
+		Query query = manager.createNativeQuery(MANUALDEMANDEDITSUBMIT);
+		query.setParameter("DemandNo", pftsDto.getDemandNo());
+		query.setParameter("DemandDate", pftsDto.getDemandDate());
+		query.setParameter("EstimatedCost", pftsDto.getEstimatedCost());
+		query.setParameter("ItemNomenclature", pftsDto.getItemNomenclature());
+		query.setParameter("ModifiedBy", pftsDto.getModifiedBy());
+		query.setParameter("ModifiedDate", pftsDto.getModifiedDate());
+		query.setParameter("fileId", pftsDto.getPftsFileId());
+		return  query.executeUpdate();
+	}
 }

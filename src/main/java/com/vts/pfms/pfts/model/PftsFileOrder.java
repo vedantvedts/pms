@@ -31,4 +31,6 @@ public class PftsFileOrder implements Serializable {
 	private String ItemFor;
 	private String CreatedBy;
 	private String CreatedDate;
+	private String ModifiedBy;
+	private String ModifiedDate;
 }

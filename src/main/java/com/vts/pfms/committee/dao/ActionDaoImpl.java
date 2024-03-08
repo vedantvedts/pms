@@ -65,7 +65,7 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1";
     private static final String ACTIONCOUNT="CALL Pfms_Action_PD_Chart(:projectid)";
     private static final String LOGINPROJECTIDLIST="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a,project_employee b WHERE a.isactive=1 and a.projectid=b.projectid and b.empid=:empid";
-    private static final String ALLPROJECTDETAILSLIST ="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a WHERE a.isactive=1 ";
+    private static final String ALLPROJECTDETAILSLIST ="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector,a.projectshortname FROM project_master a WHERE a.isactive=1 ";
 	private static final String ACTIONWISE="CALL Pfms_Action_Wise_Reports(:term,:ProjectId)";
     private static final String ACTIONNOTIFIC="SELECT ab.empname AS emp,dc.designation AS desig,aas.assignee,b.empname,c.designation,aas.assignor,aas.revision,aas.actionno , a.type FROM action_main a,  employee ab ,employee_desig dc,employee b ,employee_desig c ,action_assign aas   WHERE   aas.assignor=b.empid  AND b.isactive='1' AND c.desigid=b.desigid AND aas.assignee=ab.empid  AND ab.isactive='1' AND aas.AssigneeLabCode <> '@EXP' AND dc.desigid=ab.desigid  AND aas.actionassignid=:actionassignid AND a.actionmainid=:mainid UNION SELECT ab.expertname AS emp,'Expert' AS desig,aas.assignee,b.empname,c.designation,aas.assignor,aas.revision,aas.actionno , a.type FROM action_main a, expert ab ,employee b ,employee_desig c ,action_assign aas   WHERE   aas.assignor=b.empid  AND b.isactive='1' AND c.desigid=b.desigid AND aas.assignee=ab.expertid  AND ab.isactive='1' AND aas.AssigneeLabCode = '@EXP'   AND aas.actionassignid=:actionassignid AND a.actionmainid=:mainid";
 	private static final String ACTIONPDC="CALL Pfms_Action_PDC_Report(:empid,:ProjectId,:Position,:From,:To)";
@@ -607,7 +607,7 @@ public class ActionDaoImpl implements ActionDao{
 		}
 		return assigndata;
 	}
-	private static final String PROJECTDATA="SELECT projectid ,projectcode , projectname FROM project_master WHERE projectid=:projectid";
+	private static final String PROJECTDATA="SELECT projectid ,projectcode , projectname, projectshortName FROM project_master WHERE projectid=:projectid";
 	@Override
 	public Object[] GetProjectData(String projectid)throws Exception
 	{

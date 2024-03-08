@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.vts.pfms.master.dto.DemandDetails;
 import com.vts.pfms.pfts.dto.DemandOrderDetails;
+import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
+import com.vts.pfms.pfts.model.PftsFileOrder;
 
 public interface PFTSService {
 	
@@ -25,5 +27,8 @@ public interface PFTSService {
 	public Object[] getEnviData(String pftsFileId)throws Exception;
 	public List<Object[]> getpftsStageList()throws Exception;
 	public Object[] getpftsFileViewList(String procFileId)throws Exception;
+	public List<Object[]> getOrderDetailsAjax(String fileId)throws Exception;
+	public long ManualOrderSubmit(PftsFileOrder order, String orderid)throws Exception;
+	public long manualDemandEditSubmit(PFTSFileDto pftsDto)throws Exception;
 
 }

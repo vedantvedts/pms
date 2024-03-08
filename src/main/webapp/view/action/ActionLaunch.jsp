@@ -189,11 +189,15 @@ a:hover {
 									</label><br>
 									<select class="form-control selectdee "  name="Project"  id="Project" required="required"   data-live-search="true" id="projectid" <%if(ActionData!=null && ActionData[5]!=null){%>disabled <%}%>>                                                     
 										
-										<%if(projectdata!=null){%>
-										    <option value="<%=projectdata[0] %>" <%if(projectdata!=null && projectdata[0]!=null && projectdata[0].toString().equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>><%=projectdata[1]%></option>
+										<%if(projectdata!=null){
+										 String projectshortName=(projectdata[3]!=null)?" ( "+projectdata[3].toString()+" ) ":"";
+										%>
+										    <option value="<%=projectdata[0] %>" <%if(projectdata!=null && projectdata[0]!=null && projectdata[0].toString().equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>><%=projectdata[1]+projectshortName%></option>
 										<%}else{%>
-										<%for(Object[] obj:ProjectList){%>
-											<option value="<%=obj[0] %>" ><%=obj[4]%></option>	
+										<%for(Object[] obj:ProjectList){
+										  String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+										%>
+											<option value="<%=obj[0] %>" ><%=obj[4]+projectshortName%></option>	
 										<%}}%>
 										<option value="0" <%if(ActionData!=null && ActionData[5]!=null && "0".equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>>General</option>	
 									</select>	

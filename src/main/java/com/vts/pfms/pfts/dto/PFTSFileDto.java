@@ -1,32 +1,12 @@
-package com.vts.pfms.pfts.model;
+package com.vts.pfms.pfts.dto;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-
-@Entity
-@Table(name="pfts_file")
-public class PFTSFile implements Serializable {
+public class PFTSFileDto {
 	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long PftsFileId;
 	private String DemandType;
 	private Long ProjectId;
@@ -64,5 +44,5 @@ public class PFTSFile implements Serializable {
 	private Date PrbDateOfInti;
 	private String EnvisagedFlag;
 	private String ModifiedDate;
-		
+
 }

@@ -64,8 +64,10 @@ h6{
                                                         <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true"  >
                                                            	
                                                            <%
-                                                           for(Object[] obj:AssigneeList){ %>
-														   <option value="<%=obj[0] %>" <%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4] %></option>	
+                                                           for(Object[] obj:AssigneeList){
+                                                        	   String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+                                                        	   %>
+														   <option value="<%=obj[0] %>" <%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4]+projectshortName %></option>	
 														<%} %>
 														<option value="0" <%if(ProjectId.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>
 																</select>	

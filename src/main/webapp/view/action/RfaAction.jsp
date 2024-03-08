@@ -147,8 +147,10 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
                                                         <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true"  >
                                                          <option value="A"  <%if(Project.equalsIgnoreCase("A")){%> selected="selected" <%}%>>ALL</option>	
                                                            <%
-                                                           for(Object[] obj:ProjectList){ %>
-														   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4] %></option>	
+                                                           for(Object[] obj:ProjectList){
+                                                           String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+                                                           %>
+														   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4]+projectshortName %></option>	
 														<%} %>
 																</select>	        
 											</td>

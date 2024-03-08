@@ -957,7 +957,9 @@ if(ses!=null){ %>
 						
 									<div class="carousel-inner">	
 									
-										<%	for (Object[] obj : ProjectList) { %>
+										<%	for (Object[] obj : ProjectList) { 
+											String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+										%>
 									
 										 <div class="carousel-item" id="projectname<%=obj[0]%>">
 										 
@@ -965,7 +967,7 @@ if(ses!=null){ %>
 						
 												<div class="col-md-12" style="text-transform: uppercase;font-size: 22px; ">
 												
-													<%=obj[4] %>
+													<%=obj[4]+projectshortName %>
 												
 													<br><br>
 													
@@ -1164,8 +1166,10 @@ if(ses!=null){ %>
 							<div class="col-md-12" style="display: none" id="projectdropdown" >
 		
 								<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="dropdown()"  >
-									<%	for (Object[] obj2 : ProjectList) { %>
-										<option value="<%=obj2[0]%>"  style="text-align: left !important" ><%=obj2[4]%></option>
+									<%	for (Object[] obj2 : ProjectList) {
+										String projectshortName=(obj2[17]!=null)?" ( "+obj2[17].toString()+" ) ":"";
+										%>
+										<option value="<%=obj2[0]%>"  style="text-align: left !important" ><%=obj2[4]+projectshortName%></option>
 									<%} %>
 								</select>
 								<br><br>
