@@ -622,7 +622,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                		
                		<div class="container-fluid">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<div class="card" style="border-color: #00DADA; margin-top: 2%;">
 									<div class="card-body scrollclass" id="scrollclass" style="height: 30.5rem;">
 
@@ -760,7 +760,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 							</div>
 							
 							<!--div for Editor-->
-							<div class="col-md-8" style="display: block" id="col1">
+							<div class="col-md-10" style="display: block" id="col1">
 			  					<form action="RSQRDetailsSubmit.htm" method="POST" id="myfrm">
 									<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
 										<h5 class="heading ml-4 mt-3" id="editorHeading"style="font-weight: 500; color: #31708f;">Introduction</h5>
@@ -791,7 +791,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 							<!-- editor ends  -->
 							
 							<!-- Cloning table for Major Requirements -->
-							<div class="col-md-8" style="display: none" id="col2">
+							<div class="col-md-10" style="display: none" id="col2">
 								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
 									<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight: 500; color: #31708f;">Major Requirements</h5>
 									<hr>
@@ -875,7 +875,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 							</div>
 							
 							<!-- Cloning table for Deliverables -->
-							<div class="col-md-8" style="display: none" id="col3">
+							<div class="col-md-10" style="display: none" id="col3">
 								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
 									<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight: 500; color: #31708f;">Deliverables</h5>
 									<hr>
@@ -946,7 +946,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 							</div>
 							
 							<!-- Cloning table for Milestones -->
-							<div class="col-md-8" id="col7" style="" >
+							<div class="col-md-10" id="col7" style="" >
 								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
 									<h5 class="heading ml-4 mt-3" id="" style="font-weight: 500; color: #31708f;">Proposed Milestones & Timelines</h5>
 									<hr>
@@ -1557,7 +1557,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                		
                		<div class="container-fluid">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<div class="card" style="border-color: #00DADA; margin-top: 2%;">
 									<div class="card-body scrollclass" style="height: 30.5rem;">
 
@@ -1629,10 +1629,10 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 										<div class="panel panel-info" style="margin-top: 10px;">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Proposed Milestones & Timelines</span>
+													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Milestones & Timelines</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor16" onclick="showTableMilestones2('Proposed Milestones Timelines')">
+												id="btnEditor16" onclick="showTableMilestones2('<%=carsInitiationId%>')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -1681,7 +1681,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 										<div class="panel panel-info" style="margin-top: 10px;">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Literature Reference if any</span>
+													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Literature Ref (if any)</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor20" onclick="showEditor2('Literature Reference')">
@@ -1695,7 +1695,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 							</div>
 							
 							<!--div for Editor2-->
-							<div class="col-md-8" style="display: block" id="col4">
+							<div class="col-md-10" style="display: block" id="col4">
 			  					<form action="RSQRDetailsSubmit.htm" method="POST" id="myfrm2">
 									<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
 										<h5 class="heading ml-4 mt-3" id="editorHeading2"style="font-weight: 500; color: #31708f;">Introduction</h5>
@@ -1727,7 +1727,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 							<!-- editor2 ends  -->
 							
 							<!-- Cloning table for Major Requirements2 (Final)-->
-							<div class="col-md-8" style="display: none" id="col5">
+							<div class="col-md-10" style="display: none" id="col5">
 								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
 									<h5 class="heading ml-4 mt-3" id="editorHeading2" style="font-weight: 500; color: #31708f;">Major Requirements</h5>
 									<hr>
@@ -1812,7 +1812,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 							</div>
 							
 							<!-- Cloning table for Deliverables2 (Final) -->
-							<div class="col-md-8" style="display: none" id="col6">
+							<div class="col-md-10" style="display: none" id="col6">
 								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
 									<h5 class="heading ml-4 mt-3" id="editorHeading2" style="font-weight: 500; color: #31708f;">Deliverables</h5>
 									<hr>
@@ -1884,7 +1884,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 							</div>
 							
 							<!-- Cloning table for Milestones2 (Final) -->
-							<div class="col-md-8" id="col8" style="" >
+							<div class="col-md-10" id="col8" style="" >
 								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
 									<h5 class="heading ml-4 mt-3" id="" style="font-weight: 500; color: #31708f;">Proposed Milestones & Timelines</h5>
 									<hr>
