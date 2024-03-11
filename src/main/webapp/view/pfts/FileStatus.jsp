@@ -355,13 +355,13 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
                                                 <td><%=fileStatus[6]%></td>
                                                 <%if(!fileStatus[7].toString().equals("19")){ %>
                                                     <td style="text-align: center;">
-                                                     <%if(fileStatus[10].toString().equalsIgnoreCase("M")){ %>
+                                                     <%if(fileStatus[10]!=null && fileStatus[10].toString().equalsIgnoreCase("M")){ %>
                                                      <button class="btn btn-sm"  data-toggle="tooltip" data-placement="top" title="Edit Demand" onclick="manualDemandEdit('<%=fileStatus[0]%>','<%=fileStatus[1]%>','<%=fileStatus[2]%>','<%=fileStatus[3]%>','<%=fileStatus[4]%>')">
                                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                                      <%}%>
                                                     </td>
                                                     <td>
-                                                     <%if(fileStatus[10].toString().equals("I")) {%> 
+                                                     <%if(fileStatus[10]!=null && fileStatus[10].toString().equals("I")) {%> 
                                                      <button class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Demand Status" onclick="openEditform('<%=fileStatus[0]%>','<%=fileStatus[1]%>',<%=fileStatus[7]%>,'<%=fileStatus[4]%>','<%=fileStatus[10]%>')"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                                    <%}else{ %>
                                                    <form action="updateManualDemand.htm" method="post">
@@ -384,7 +384,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                                                   <button class="btn btn-sm" type="button" onclick="openPDCform('<%=fileStatus[0]%>')">
                                                   	  	<i class="fa fa-calendar" aria-hidden="true"></i>
                                                   	  </button>
-	                                                   <%if(Long.parseLong(fileStatus[7].toString())>9 && !fileStatus[10].toString().equalsIgnoreCase("M")){ %>
+	                                                   <%if(Long.parseLong(fileStatus[7].toString())>9 && fileStatus[10]!=null && !fileStatus[10].toString().equalsIgnoreCase("M")){ %>
 	                                                   <button class="btn btn-sm " data-toggle="tooltip" title="Refresh Demand" formaction="FileOrderRetrive.htm" title="Refresh Order"> <i class="fa fa-refresh" aria-hidden="true"></i></button>
 	                                                   <%} %>
                                                    </form>
@@ -395,7 +395,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
                                             </td>
                                             <td style="text-align: center;">
                                             <%if(fileStatus[1]!=null && fileStatus[7].toString().equalsIgnoreCase("10")){ %>
-                                            <%if(fileStatus[10].toString().equalsIgnoreCase("M")){ %>
+                                            <%if(fileStatus[10]!=null && fileStatus[10].toString().equalsIgnoreCase("M")){ %>
                                             <button type="button" id="orderstatus" onclick="manualOrderStatus('<%=fileStatus[0]%>','<%=fileStatus[1]%>')" class="btn btn-sm submit" >Order View</button>
                                             <%}else{ %>
                                              <button type="button" id="orderstatus" onclick="ibasOrderStatus('<%=fileStatus[0]%>','<%=fileStatus[1]%>')" class="btn btn-sm submit" >Order View</button>
