@@ -2281,6 +2281,7 @@ public class CARSController {
 		logger.info(new Date() +"Inside OthersCSApprovalSubmit.htm "+UserId);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
+			String otherDocDetailsId = req.getParameter("otherDocDetailsId");
 			String action = req.getParameter("Action");
 			String remarks = req.getParameter("remarks");
 			long carsini = Long.parseLong(carsInitiationId);
@@ -2293,7 +2294,7 @@ public class CARSController {
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
 			dto.setRemarks(remarks);
-			
+			dto.setOtherDocDetailsId(otherDocDetailsId);
 			long result = service.othersCSApprovalForward(dto,labcode);
 			
 			if(action.equalsIgnoreCase("A")) {

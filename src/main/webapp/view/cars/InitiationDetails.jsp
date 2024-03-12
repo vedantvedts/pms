@@ -1179,14 +1179,14 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 												<%if(statuscode!=null && rsqrforward.contains(statuscode)) {%>
 													<div class="ml-2" align="left">
 						   								<b >Remarks :</b><br>
-						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
+						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 					         						</div>
 													<button type="submit" class="btn btn-sm submit" name="Action" formaction="RSQRApprovalSubmit.htm" value="A" onclick="return confirm('Are you Sure to Submit ?');">Forward</button>
 												<%} %>
 												<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y")) {%>
 													<div class="ml-2" align="left">
 						   								<b >Remarks :</b><br>
-						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
+						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 					         						</div>
 													<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
 							    						Approve	
@@ -1329,11 +1329,11 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="alignment" placeholder="Enter Alignement with" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getAlignment()!=null) {%><%=carsSoC.getAlignment() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="alignment" placeholder="Enter Alignement with" cols="" rows="2" maxlength="" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getAlignment()!=null) {%><%=carsSoC.getAlignment() %><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for time reasonability</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="timeReasonability" placeholder="Enter Justification for time reasonability" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getTimeReasonability()!=null) {%><%=carsSoC.getTimeReasonability() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="timeReasonability" placeholder="Enter Justification for time reasonability" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getTimeReasonability()!=null) {%><%=carsSoC.getTimeReasonability() %><%} %></textarea>
                         						</div>
                     		 				</div>
                     		 				
@@ -1341,11 +1341,11 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for cost reasonability</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="costReasonability" placeholder="Enter Justification for cost reasonability" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getCostReasonability()!=null) {%><%=carsSoC.getCostReasonability() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="costReasonability" placeholder="Enter Justification for cost reasonability" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getCostReasonability()!=null) {%><%=carsSoC.getCostReasonability() %><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for selection of RSP</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="rspSelection" placeholder="Enter Justification for selection of RSP" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getRSPSelection()!=null) {%><%=carsSoC.getRSPSelection() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="rspSelection" placeholder="Enter Justification for selection of RSP" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getRSPSelection()!=null) {%><%=carsSoC.getRSPSelection() %><%} %></textarea>
                         						</div>
                     		 				</div>
                     		 				
@@ -1353,7 +1353,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Success / Acceptance Criterion</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="socCriterion" placeholder="Enter Success / Acceptance Criterion" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getSoCCriterion()!=null) {%><%=carsSoC.getSoCCriterion() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="socCriterion" placeholder="Enter Success / Acceptance Criterion" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getSoCCriterion()!=null) {%><%=carsSoC.getSoCCriterion() %><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 37.25%;">
                             					 	<label class="control-label">RSP's Offer Ref:</label><span class="mandatory">*</span>
@@ -1371,11 +1371,11 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Key Professional-1 Details:</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="kp1Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="1000" required><%if(carsContract!=null && carsContract.getKP1Details()!=null) {%><%=carsContract.getKP1Details() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="kp1Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="2000" required><%if(carsContract!=null && carsContract.getKP1Details()!=null) {%><%=carsContract.getKP1Details() %><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Key Professional-2 Details:</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="kp2Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="1000" required><%if(carsContract!=null && carsContract.getKP2Details()!=null) {%><%=carsContract.getKP2Details() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="kp2Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="2000" required><%if(carsContract!=null && carsContract.getKP2Details()!=null) {%><%=carsContract.getKP2Details() %><%} %></textarea>
                         						</div>
                     		 				</div>
                     		 				
@@ -2379,7 +2379,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 												<%if(statuscode!=null && socforward.contains(statuscode)) {%>
 													<div class="ml-2" align="left">
 						   								<b >Remarks :</b><br>
-						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
+						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 					         						</div>
 					         						<%
 					         							double socamount = carsSoC.getSoCAmount()!=null?Double.parseDouble(carsSoC.getSoCAmount()):0.00;
@@ -2403,7 +2403,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 												<%if(isApproval!=null && isApproval.equalsIgnoreCase("S")) {%>
 													<div class="ml-2" align="left">
 						   								<b >Remarks :</b><br>
-						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
+						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 					         						</div>
 													<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
 							    						Recommend	

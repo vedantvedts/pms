@@ -1482,6 +1482,7 @@ public class CARSServiceImpl implements CARSService{
 					statusCode.equalsIgnoreCase("CRD") || statusCode.equalsIgnoreCase("CRV")) {
 
 					if(statusCode.equalsIgnoreCase("CIN")) {
+						
 						dao.updateOtherDocForwardDetails(EmpId, sdf.format(new Date()), otherDocDetailsId);
 					}
 					cars.setCARSStatusCode("CFW");

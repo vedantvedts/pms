@@ -491,12 +491,12 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                			     				<div class="row details">
                        							<div class="column b" style="width: 47.25%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
                            							<label class="control-label">Expenditure Head</label><span class="mandatory">*</span>
-                             						<textarea  class="form-control form-control" name="dpcExpenditure" id="dpcExpenditure" rows="4" cols="65" style="font-size: 15px;"
+                             						<textarea  class="form-control form-control" name="dpcExpenditure" id="dpcExpenditure" rows="4" cols="65" style="font-size: 15px;" maxlength="2000"
                              		 				 placeholder="Enter Expenditure Head" required><%if(carsSoC!=null && carsSoC.getDPCExpenditure()!=null){ %><%=carsSoC.getDPCExpenditure()%><%} %></textarea>
                        							</div>
                        							<div class="column b" style="width: 47.25%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
                            							<label class="control-label">Additional Points</label>
-                             						<textarea  class="form-control form-control" name="dpcAdditional" id="dpcAdditional" rows="4" cols="65" style="font-size: 15px;"
+                             						<textarea  class="form-control form-control" name="dpcAdditional" id="dpcAdditional" rows="4" cols="65" style="font-size: 15px;" maxlength="1000"
                              		 				 placeholder="Enter Additional Points ( if any )" ><%if(carsSoC!=null && carsSoC.getDPCAdditional()!=null){ %><%=carsSoC.getDPCAdditional()%><%} %></textarea>
                        							</div>
                         					</div>
@@ -691,7 +691,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 																		<%=carsSoC.getDPCApprovalSought().replaceAll("\n", "<br>") %>
 																	</p>
 				               		   							<%} else{%>
-				               		   								<textarea class="form-control" name="approvalSought" rows="4" required>The case is being submitted along with the above-mentioned documents for obtaining the Concurrence cum Financial sanction and approval from Competent Financial Authority (CFA) for placement of Contract for Acquisition of Research Services (CARS) on <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> at a cost of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %> please.</textarea>
+				               		   								<textarea class="form-control" name="approvalSought" rows="4" maxlength="3000" required>The case is being submitted along with the above-mentioned documents for obtaining the Concurrence cum Financial sanction and approval from Competent Financial Authority (CFA) for placement of Contract for Acquisition of Research Services (CARS) on <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> at a cost of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %> please.</textarea>
 				               		   							<%} %>
 				               		   						</div>
 			               		   						</div>
@@ -873,7 +873,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 															<%if(statuscode!=null && dpcsocforwardstatus.contains(statuscode) && ( GHDPandC!=null && EmpId.equalsIgnoreCase(GHDPandC[0].toString()) ) ) {%>
 																<div class="ml-2" align="left">
 									   								<b >Remarks :</b><br>
-									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
+									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000" ></textarea>
 								         						</div>
 																<button type="submit" class="btn btn-sm submit" id="" name="Action" formaction="DPCSoCApprovalSubmit.htm" formnovalidate="formnovalidate" value="A" onclick="return confirm('Are you Sure to Submit ?');" >Forward</button>
 															<%} %>
@@ -906,7 +906,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 																<%} %>
 																<div class="ml-2" align="left">
 									   								<b >Remarks :</b><br>
-									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
+									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 								         						</div>
 								         						<%if(carsIni!=null && dpcsocapprovestatus.contains(statuscode)) {%>
 								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
