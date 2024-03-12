@@ -369,8 +369,8 @@ div {
 																	<a data-toggle="collapse" data-parent="#accordion"
 																		href="#collapse55B<%=ProjectSubCount%><%=Sub1Count%>">
 																		<i class="fa fa-plus"
-																		id="ClkB<%=ProjectSubCount%><%=Sub1Count%>"
-																		onclick="faChange('#ClkB<%=ProjectSubCount%><%=Sub1Count%>')"></i>
+																		id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>"
+																		onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>')"></i>
 																	</a>
 																</div>
 															</div>
@@ -419,8 +419,8 @@ div {
 																					<a data-toggle="collapse" data-parent="#accordion"
 																						href="#collapse55C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>">
 																						<i class="fa fa-plus"
-																						id="ClkC<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>"
-																						onclick="faChange('#ClkC<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')"></i>
+																						id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>"
+																						onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>')"></i>
 																					</a>
 																				</div>
 																			</div>
@@ -471,8 +471,8 @@ div {
 																										data-parent="#accordion"
 																										href="#collapse55D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>">
 																										<i class="fa fa-plus"
-																										id="ClkD<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>"
-																										onclick="faChange('#ClkD<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')"></i>
+																										id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>D<%=Sub3Count%>"
+																										onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>D<%=Sub3Count%>')"></i>
 																									</a>
 																								</div>
 																							</div>
@@ -527,8 +527,8 @@ div {
 																														data-parent="#accordion"
 																														href="#collapse55E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>">
 																														<i class="fa fa-plus"
-																														id="ClkE<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>"
-																														onclick="faChange('#ClkE<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')"></i>
+																														id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>D<%=Sub3Count%>E<%=Sub4Count%>"
+																														onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>D<%=Sub3Count%>E<%=Sub4Count%>')"></i>
 																													</a>
 																												</div>
 																											</div>
@@ -668,7 +668,7 @@ div {
 																													<input type="hidden" name="LevelId"
 																														value="5" /> <input type="hidden"
 																														name="formname"
-																														value="<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" />
+																														value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>/<%=Sub3Count%>/<%=Sub4Count%>" />
 																													<input type="hidden"
 																														name="MilestoneActivityId"
 																														value="<%=getMA[0]%>" /> <input
@@ -1533,8 +1533,10 @@ $('#Clk').click();
 if(FormName!=null){
 	String [] id=FormName.split("/");
 	String IdName="Clk";
+	String []level={"A","B","C","D","E"};
 	for(int i=0;i<id.length;i++){
-		IdName=IdName.concat(id[i]);
+		IdName=IdName+level[i]+id[i];
+		System.out.println("IdName:- "+IdName);
 %>
       $('#<%=IdName%>').click();
 <%}}%>
