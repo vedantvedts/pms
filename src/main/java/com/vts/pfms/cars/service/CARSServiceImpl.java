@@ -877,7 +877,9 @@ public class CARSServiceImpl implements CARSService{
 			String fundsFrom = cars.getFundsFrom();
 			String statusCode = cars.getCARSStatusCode();
 			String statusCodeNext = cars.getCARSStatusCodeNext();
-			Double amount = cars.getAmount()!=null?Double.parseDouble(cars.getAmount()):0.00;
+			
+			CARSSoC soc = dao.getCARSSoCByCARSInitiationId(carsinitiationid);
+			Double amount = soc.getSoCAmount()!=null?Double.parseDouble(soc.getSoCAmount()):0.00;
 
 			List<String> forwardstatus = Arrays.asList("SFG","SFP","SID","SGR","SPR","SRC","SRM","SRF","SRR","SRI","RDG","SRD");
 
