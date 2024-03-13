@@ -1823,15 +1823,15 @@ public List<Object[]> getAllEmployees(String flag) throws Exception {
 }
 
 @Override
-public List<Object[]> getRfaModalEmpList() throws Exception {
+public List<Object[]> getRfaModalEmpList(String labCode) throws Exception {
 	
-	return  dao.getRfaModalEmpList();
+	return  dao.getRfaModalEmpList(labCode);
 }
 
 @Override
-public List<Object[]> getRfaTDList() throws Exception {
+public List<Object[]> getRfaTDList(String labCode) throws Exception {
 	
-	return  dao.getRfaTDList();
+	return  dao.getRfaTDList(labCode);
 }
 
 @Override
@@ -2051,6 +2051,11 @@ public int ActionRemarksEdit(String actionAssignId, String progress, String prog
 @Override
 public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId) throws Exception {
 	return dao.actionSubRemarksEdit(actionSubId,progress,progressRemarks,UserId);
+}
+
+@Override
+public List<String> rfaMailSend(String rfa) throws Exception {
+	return dao.rfaMailSend(rfa);
 }
 
 }

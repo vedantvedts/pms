@@ -1410,19 +1410,21 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	
-	public static final String RFAMODALEMPLIST="CALL pfms_Rfa_ModalEmplist()";
+	public static final String RFAMODALEMPLIST="CALL pfms_Rfa_ModalEmplist(:labCode)";
 	@Override
-	public List<Object[]> getRfaModalEmpList() throws Exception {
+	public List<Object[]> getRfaModalEmpList(String labCode) throws Exception {
 		Query query = manager.createNativeQuery(RFAMODALEMPLIST);
+		query.setParameter("labCode", labCode);
 		return (List<Object[]>)query.getResultList();
 	}
 
 	
 	//public static final String RFATDLIST="SELECT DISTINCT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.srNo FROM employee a,employee_desig b,division_td c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND c.tdheadid=a.empid ORDER BY srno";
-	public static final String RFATDLIST="CALL pfms_Rfa_ModalEmplist()"; // all emp list will come
+	public static final String RFATDLIST="CALL pfms_Rfa_ModalEmplist(:labCode)"; // all emp list will come
 	@Override
-	public List<Object[]> getRfaTDList() throws Exception {
+	public List<Object[]> getRfaTDList(String labCode) throws Exception {
 		Query query = manager.createNativeQuery(RFATDLIST);
+		query.setParameter("labCode", labCode);
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -1455,7 +1457,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 	}
 
-	public static final String RFAATTACHMENTDOWNLOAD="SELECT rfaattachmentid,rfaid,filespath,assignorattachment,assigneeattachment FROM pfms_rfa_attachment WHERE rfaid=:rfaid AND isactive=1";
+	public static final String RFAATTACHMENTDOWNLOAD="SELECT a.rfaattachmentid,a.rfaid,a.filespath,a.assignorattachment,a.assigneeattachment,b.rfano FROM pfms_rfa_attachment a,pfms_rfa_action b WHERE a.rfaid=:rfaid AND a.rfaid=b.rfaid AND a.isactive=1";
 	@Override
 	public Object[] RfaAttachmentDownload(String rfaid) throws Exception {
 		try {
@@ -1741,5 +1743,15 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("ModifiedBy", UserId );
 		query.setParameter("ModifiedDate", sdf1.format(new java.util.Date()));
 		return query.executeUpdate();
+	}
+	
+	private static final String RFAMAILSENDING="CALL pfms_Rfa_Mail(:rfa)";
+	@Override
+	public List<String> rfaMailSend(String rfa) throws Exception {
+		
+		Query query = manager.createNativeQuery(RFAMAILSENDING);
+		query.setParameter("rfa", rfa);
+		
+		return (List<String>)query.getResultList();
 	}
 }

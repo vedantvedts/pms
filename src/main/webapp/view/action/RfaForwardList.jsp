@@ -47,7 +47,18 @@ th {
   z-index: 5;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
-
+ .spinner {
+    position: fixed;
+    top: 40%;
+    left: 20%;
+    margin-left: -50px; /* half width of the spinner gif */
+    margin-top: -50px; /* half height of the spinner gif */
+    text-align:center;
+    z-index:1234;
+    overflow: auto;
+    width: 1000px; /* width of the spinner gif */
+    height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
+}
 </style>
 </head>
 <body>
@@ -69,9 +80,12 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AX");
 List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList"); 
 	 
 %>
+	<div id="spinner" class="spinner" style="display: none;">
+		<img id="img-spinner" style="width: 200px; height: 200px;"
+			src="view/images/spinner1.gif" alt="Loading" />
+	</div>
 
-
-<div class="card-header page-top ">
+	<div class="card-header page-top ">
 	<div class="row">
 		<div class="col-md-8">
 			<h5>RFA Forward List </h5>
@@ -97,9 +111,9 @@ List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplL
         </div>
     </div>
 	<%} %>
-<br>
-  	
-  	<div class="page card dashboard-card">
+
+                
+  	<div class="page card dashboard-card" id="main1">
  <div class="card-body" >	
    <div align="center">	
   
@@ -199,11 +213,11 @@ List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplL
 												value="<%=obj[10].toString()%>">
 											<%%>
 											<%if(obj[10].toString().equalsIgnoreCase("AC") || obj[10].toString().equalsIgnoreCase("AX")){%>
-												     <button class="editable-click" type="submit" formaction="RfaActionForward.htm" formmethod="POST"
+												     <button class="editable-click mail" type="submit" formaction="RfaActionForward.htm" formmethod="POST"
 													 style="background-color: transparent;"
 													 data-toggle="tooltip" data-placement="top" title="RFA FORWARD" name="RFAID"
 													 value="<%=obj[0]%>"
-													 onclick="return confirm('Are you sure to Submit?')">
+													 >
 													<div class="cc-rockmenu">
 														<figure class="rolling_icon">
 															<img src="view/images/forward1.png">
@@ -807,7 +821,29 @@ function forwardmodal(rfanomodal,RFAID){
     $('#ActionAssignfilemodal').modal('show');
     		
 }
-	
+
+$(document).ready(function() {
+    $('#main1').show();
+    $('#spinner').hide();
+    $('body').css("filter", "none");
+
+    $(".mail").click(function(event) {
+        // Display confirmation dialog
+        var confirmation = confirm('Are you sure want to submit?');
+
+        // Proceed only if the user confirms
+        if (!confirmation) {
+            // If user cancels, prevent the default action
+            event.preventDefault();
+        }
+        else {
+            $('body').css("filter", "blur(1.0px)");
+            $('#spinner').show();
+            $('#main1').hide();
+        }
+    });
+});
+
  </script>
 
 </body>

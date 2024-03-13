@@ -142,8 +142,8 @@ public interface ActionDao {
 	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid)throws Exception;
 	public List<Object[]> MeettingActionList(String committeeid, String projectid, String scheduleid, String empId)throws Exception;
 	public List<Object[]> getAllEmployees(String flag)throws Exception;// new added
-	public List<Object[]> getRfaModalEmpList()throws Exception;
-	public List<Object[]> getRfaTDList()throws Exception;
+	public List<Object[]> getRfaModalEmpList(String labCode)throws Exception;
+	public List<Object[]> getRfaTDList(String labCode)throws Exception;
 	public List<Object[]> getRfaTransList(String rfaTransId)throws Exception;
 	public Long RfaAttachment(RfaAttachment rfaAttach)throws Exception;
 	public Object[] RfaAttachmentDownload(String rfaid)throws Exception;
@@ -172,4 +172,5 @@ public interface ActionDao {
 	public int ActionSubDeleteUpdate(String ActionAssignId, String progress, String progressDate, String progressRemarks)throws Exception;
 	public int ActionRemarksEdit(String actionAssignId, String progress, String progressRemarks, String UserId)throws Exception;
 	public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId)throws Exception;
+	public List<String> rfaMailSend(String rfa)throws Exception;
 }

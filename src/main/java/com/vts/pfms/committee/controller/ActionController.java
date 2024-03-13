@@ -24,8 +24,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -97,6 +107,8 @@ import com.vts.pfms.committee.model.RfaAssign;
 import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.committee.service.CommitteeService;
+import com.vts.pfms.mail.MailConfigurationDto;
+import com.vts.pfms.mail.MailService;
 import com.vts.pfms.milestone.dto.MileEditDto;
 import com.vts.pfms.utils.PMSLogoUtil;
 
@@ -113,6 +125,9 @@ public class ActionController {
 	Environment env;
 	@Autowired
 	ActionService service;
+	
+	@Autowired
+	MailService mailService;
 	
 	@Value("${File_Size}")
 	String file_size;
@@ -2929,8 +2944,8 @@ public class ActionController {
 				
 				req.setAttribute("tdate",tdate);
 				req.setAttribute("fdate",fdate);
-				req.setAttribute("ModalEmpList",json.toJson(service.getRfaModalEmpList()));
-				req.setAttribute("ModalTDList", json.toJson( service.getRfaTDList()));
+				req.setAttribute("ModalEmpList",json.toJson(service.getRfaModalEmpList(LabCode)));
+				req.setAttribute("ModalTDList", json.toJson( service.getRfaTDList(LabCode)));
 				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
 				req.setAttribute("Project",Project);
 				req.setAttribute("Employee", Emp);
@@ -2974,7 +2989,7 @@ public class ActionController {
 			
 		       String UserId = (String) ses.getAttribute("Username");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		       
+		       String LabCode =(String) ses.getAttribute("labcode");
 		       String assignDetails = null;
 		     
 			logger.info(new Date() +"Inside RfaInspection.htm"+UserId);		
@@ -2993,8 +3008,8 @@ public class ActionController {
 				
 				req.setAttribute("RfaInspectionList", RfaInspectionList);
 				req.setAttribute("RfaForwardApprovedList", RfaForwardApprovedList);
-				req.setAttribute("ModalEmpList",json.toJson(service.getRfaModalEmpList()));
-				req.setAttribute("ModalTDList", json.toJson( service.getRfaTDList()));
+				req.setAttribute("ModalEmpList",json.toJson(service.getRfaModalEmpList(LabCode)));
+				req.setAttribute("ModalTDList", json.toJson( service.getRfaTDList(LabCode)));
 				req.setAttribute("EmpId", EmpId);
 				req.setAttribute("rfaCount", assignDetails);
 				req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
@@ -3420,11 +3435,11 @@ public class ActionController {
 		
 		
 		@RequestMapping(value = "RfaActionForward.htm", method = RequestMethod.POST)
-		public String RfaActionForward(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		public String RfaActionForward(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception {
 			
 		       String UserId = (String) ses.getAttribute("Username");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-
+		       String LabCode =(String ) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside RfaActionForward.htm "+UserId);		
 			try {
 
@@ -3434,10 +3449,217 @@ public class ActionController {
 			    String rfaEmpId=req.getParameter("rfaEmpModal");
 
 			  long count=service.RfaActionForward(status,projectid,UserId,rfa,EmpId,rfaEmpId);
-
 			  
+			  List<String> rfaMailSend = service.rfaMailSend(rfa);
+
+		
 			  if (count > 0) {
 				  
+				  if(status.equalsIgnoreCase("AV") || status.equalsIgnoreCase("AP")) {
+					  
+					    String rfaid=rfa;
+				     
+					    Object[] RfaPrintData = service.RfaPrintData(rfaid);
+					  
+						req.setAttribute("RfaPrint", RfaPrintData);
+						req.setAttribute("ProjectList", service.ProjectList());		
+						req.setAttribute("ProjectTypeList",service.ProjectTypeList());
+						req.setAttribute("PriorityList", service.PriorityList());
+						req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
+					    req.setAttribute("LabDetails", service.RfaLabDetails(LabCode)); 
+					    req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
+					    req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+					    
+					    List<String> assigneeCC=service.CCAssigneeList(rfaid); // Multiple assignee's TD/PGD list
+					    List<String> assignorCC =service.CCAssignorList(rfaid); // Only single assignor is getting but for itearate create list
+					    // Here in assignorCC adding assigneeCC because assigneeCC is multiple data and 
+					    // assignorCC is only one data so, assigneeCC is added in assignorCC.
+					    assignorCC.addAll(assigneeCC);
+					    // Here by using stream, removing duplicate names
+					    assignorCC=assignorCC.stream().distinct().collect(Collectors.toList());
+					    // Here assignorCC is sending to jsp and now assignorCC have all assignee and assignor TD/PGD list 
+					    req.setAttribute("CCTdeEmplList", assignorCC);
+					    
+					 Object[]attachmentData=service.RfaAttachmentDownload(rfaid);
+					    
+					String RFANo=RfaPrintData[3].toString();
+					String filename="RFA Attachment ";
+					
+					String path=req.getServletContext().getRealPath("/view/temp");
+				  	req.setAttribute("path",path);
+					CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+					req.getRequestDispatcher("/view/action/RfaActionPrint.jsp").forward(req, customResponse);
+					String html = customResponse.getOutput();
+					
+					byte[] data = html.getBytes();
+					InputStream fis1 = new ByteArrayInputStream(data);
+					PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path + "/" + filename +  ".pdf"));
+					pdfDoc.setTagged();
+					Document document = new Document(pdfDoc, PageSize.LEGAL);
+					document.setMargins(50, 100, 150, 50);
+					ConverterProperties converterProperties = new ConverterProperties();
+					FontProvider dfp = new DefaultFontProvider(true, true, true);
+					converterProperties.setFontProvider(dfp);
+					HtmlConverter.convertToPdf(fis1, pdfDoc, converterProperties);
+					//new
+					PdfWriter pdfw=new PdfWriter(path +File.separator+ "RFA.pdf");
+			        PdfDocument pdfDocs = new PdfDocument(pdfw);
+			        pdfw.setCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+			        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+			        Document docMain = new Document(pdfDocMain,PageSize.A4);
+			        docMain.setMargins(50, 50, 50, 50);
+			  
+			        docMain.close();
+			        pdfDocMain.close();
+			        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
+			        //Files.delete(pathOfFileMain);	
+			        
+			        PdfReader pdf1=new PdfReader(path+File.separator+filename+"Maintemp.pdf");
+			        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+			        PdfMerger merger = new PdfMerger(pdfDocument);
+			        
+			        if(attachmentData!=null) {
+			        	try {
+			        		
+			        		if(attachmentData[3]!=null) {
+				        		
+			        			if(FilenameUtils.getExtension(attachmentData[3].toString()).equalsIgnoreCase("pdf")) {
+			        		        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+attachmentData[2]+"\\"+attachmentData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+			        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
+			        		        document4.setMargins(50, 50, 50, 50);
+			        		        Rectangle pageSize;
+			        		        PdfCanvas canvas;
+			        		        int n = pdfDocument1.getNumberOfPages();
+			        		
+			        		            PdfPage page = pdfDocument1.getPage(1);
+			        		            pageSize = page.getPageSize();
+			        		            canvas = new PdfCanvas(page);
+			        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+			        		           // canvas.addImage(leftLogo, recta, false);
+			        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+			        		            //canvas.addImage(rightLogo, recta2, false);
+			        		            canvas.beginText().setFontAndSize(
+			        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 20)
+			        		                .moveText(pageSize.getWidth() / 3  , pageSize.getHeight() - 25)
+			        		                 .showText("RFA Attachment")
+			        		                  .endText();
+
+			        		   
+			        		        document4.close();
+			        		        pdfDocument1.close();
+			        	        	PdfReader pdf4=new PdfReader(path+"/"+filename+"temp.pdf");
+			        	        	PdfDocument pdfDocument4 = new PdfDocument(pdf4);
+			        		        merger.merge(pdfDocument4, 1, pdfDocument4.getNumberOfPages());
+			        		        
+			        		        pdfDocument4.close();
+			        		        pdf4.close();
+			        		        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+			        		        Files.delete(pathOfFile);	
+			        			}
+							} 
+			        		
+			        		
+			        	if(attachmentData[4]!=null) {
+			        		
+			        			if(FilenameUtils.getExtension(attachmentData[4].toString()).equalsIgnoreCase("pdf")) {
+			        		        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+attachmentData[2]+"\\"+attachmentData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+			        		        Document document5 = new Document(pdfDocument2,PageSize.A4);
+			        		        document5.setMargins(50, 50, 50, 50);
+			        		        Rectangle pageSize;
+			        		        PdfCanvas canvas;
+			        		        PdfPage page = pdfDocument2.getPage(1);
+			        		            pageSize = page.getPageSize();
+			        		            canvas = new PdfCanvas(page);
+			        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+			        		           // canvas.addImage(leftLogo, recta, false);
+			        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+			        		            //canvas.addImage(rightLogo, recta2, false);
+			        		            canvas.beginText().setFontAndSize(
+			        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 20)
+			        		                .moveText(pageSize.getWidth() / 3, pageSize.getHeight() - 25)
+			        		                 .showText("Inspection Attachment")
+			        		                  .endText();
+
+			        		   
+			        		        document5.close();
+			        		        pdfDocument2.close();
+			        	        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+			        	        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+			        		        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+			        		        
+			        		        pdfDocument3.close();
+			        		        pdf2.close();
+			        		        Path pathOfFile1= Paths.get( path+File.separator+filename+"temp.pdf");
+			        		        Files.delete(pathOfFile1);	
+			        			}
+							} 
+			        	}
+			        	
+			        	catch (Exception e) {
+							
+						}
+			        }
+			        
+			        pdfDocument.close();
+			        merger.close();
+
+			        pdf1.close();	       
+			        pdfw.close();
+			        res.setContentType("application/pdf");
+			        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			        File f=new File(path +File.separator+ "RFA.pdf");
+					  
+			    	String typeOfHost = "L";
+					MailConfigurationDto mailAuthentication=null;
+					try {
+						mailAuthentication = mailService.getMailConfigByTypeOfHost(typeOfHost);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					String from = mailAuthentication.getUsername().toString();
+					String hostAddress = mailAuthentication.getHost().toString();
+					final String username = mailAuthentication.getUsername().toString();
+					final String password = mailAuthentication.getPassword().toString(); 
+					final String port = mailAuthentication.getPort().toString(); 
+			
+						System.out.println("RFA TLSEmail Start");
+						Properties properties = System.getProperties(); 
+						properties.setProperty("mail.smtp.host", hostAddress);
+						properties.put("mail.smtp.starttls.enable", "true"); //TLS
+						properties.put("mail.smtp.port", port); 
+						properties.put("mail.smtp.auth", "true"); 
+						properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
+						Session session = Session.getDefaultInstance(properties,
+							new javax.mail.Authenticator() {
+								protected PasswordAuthentication getPasswordAuthentication() {
+									return new PasswordAuthentication(from,password);
+								}
+							});	
+						try {
+							MimeMessage message = new MimeMessage(session);
+							message.setFrom(new InternetAddress(from));
+							message.addRecipient(Message.RecipientType.TO, new InternetAddress(from));
+							for (String ccRecipient : rfaMailSend) {
+								message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccRecipient));
+							}
+							message.setSubject("RFA "+RFANo);
+							MimeBodyPart part1 = new MimeBodyPart();
+							
+							part1.setText("This is a System generated mail please Don't reply.");
+							MimeBodyPart part2 = new MimeBodyPart();
+							part2.attachFile(f);
+							MimeMultipart mimeMultipart = new MimeMultipart();
+							mimeMultipart.addBodyPart(part1);
+							mimeMultipart.addBodyPart(part2);
+							message.setContent(mimeMultipart);
+							Transport.send(message);
+							System.out.println("Message Sent");
+					} catch (MessagingException mex) {
+						mex.printStackTrace();
+					} 	
+						
+				  }
 				  if(status.equalsIgnoreCase("AF") || status.equalsIgnoreCase("AX")) {
 					  redir.addAttribute("result", "RFA Forwarded Successfully");
 				  }else if( status.equalsIgnoreCase("AC")||status.equalsIgnoreCase("AV")){
@@ -3455,7 +3677,6 @@ public class ActionController {
 				  else {
 		        	  redir.addAttribute("result", "RFA Forward Unsuccessful");
 		          }
-				  
 			  }
 			  	
 			}
@@ -3468,14 +3689,13 @@ public class ActionController {
 
 		}
 	 
-		
 
 		@RequestMapping(value = "RfaActionForwardList.htm", method = RequestMethod.GET)
 		public String RfaActionForwardList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 			
 		       String UserId = (String) ses.getAttribute("Username");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-
+		       String LabCode =(String ) ses.getAttribute("labcode");
 		       String assignDetails = null;
 		     
 			logger.info(new Date() +"Inside RfaActionForwardList.htm "+UserId);		
@@ -3490,7 +3710,7 @@ public class ActionController {
 					
 				}
 				req.setAttribute("RfaForwardList", RfaForwardList);
-				req.setAttribute("ModalTDList", service.getRfaTDList());
+				req.setAttribute("ModalTDList", service.getRfaTDList(LabCode));
 				req.setAttribute("RfaForwardApprovedList", RfaForwardApprovedList);
 				req.setAttribute("EmpId", EmpId);
 				req.setAttribute("rfaCount", assignDetails);
@@ -3509,7 +3729,7 @@ public class ActionController {
 			
 		       String UserId = (String) ses.getAttribute("Username");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-
+		       String LabCode =(String ) ses.getAttribute("labcode");
 		       String assignDetails = null;
 		     
 			logger.info(new Date() +"Inside RfaInspectionApproval.htm "+UserId);		
@@ -3525,7 +3745,7 @@ public class ActionController {
 				}
 				req.setAttribute("RfaInspectionApprovalList", RfaInspectionApprovalList);
 				req.setAttribute("RfaInspectionApprovedList", RfaInspectionApprovedList);
-				req.setAttribute("ModalTDList", service.getRfaTDList());
+				req.setAttribute("ModalTDList", service.getRfaTDList(LabCode));
 				req.setAttribute("EmpId", EmpId);
 				req.setAttribute("rfaCount", assignDetails);
 				
