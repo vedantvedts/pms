@@ -209,7 +209,7 @@ if(ses1!=null){
 							<thead>
 								<tr>
 									<th style="width: 5%;" data-field="0" tabindex="0" >SN</th>
-									<th style="width: 40%;"> Issue Description </th>
+									<th style="width: 40%; "> Issue Description </th>
 									<th style="width: 20%;"> Status </th>
 									<th style="width: 15%;"> Progress </th>
 									<th style="width: 20%;"> Action </th>
@@ -222,7 +222,7 @@ if(ses1!=null){
 					%>
 							<tr>
 								<td class="center"><%=i+1 %></td>
-								<td class="center"><%=issuedatalist.get(i)[1] %></td>
+								<td style="text-align: justify;"><%=issuedatalist.get(i)[1] %></td>
 								<td class="center">
 									<%if(issuedatalist.get(i)[3].toString().equals("I")){ %>
 										In Progress
