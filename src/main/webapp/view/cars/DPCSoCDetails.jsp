@@ -321,7 +321,7 @@ expenditure = expenditure!=null?expenditure.replaceAll("\n", "<br>"):expenditure
 
 List<String> dpcsocforwardstatus = Arrays.asList("SFG","SFP","SID","SGR","SPR","SRC","SRM","SRF","SRR","SRI","RDG","SRJ","SRS","SRD");
 List<String> dpcsocapprovestatus = Arrays.asList("SDF","SAD","SAI","ADG","SAJ","SAS");
-List<String> dpcsocexternalapprovestatus = Arrays.asList("SAI","ADG","SAJ","SAS");
+List<String> dpcsocexternalapprovestatus = Arrays.asList("ADG","SAJ","SAS");
 
 Object[] emp = (Object[])request.getAttribute("EmpData");
 Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
@@ -878,7 +878,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 																<button type="submit" class="btn btn-sm submit" id="" name="Action" formaction="DPCSoCApprovalSubmit.htm" formnovalidate="formnovalidate" value="A" onclick="return confirm('Are you Sure to Submit ?');" >Forward</button>
 															<%} %>
 															<%if(isApproval!=null && isApproval.equalsIgnoreCase("P")) {%>
-																<%if(dpcsocexternalapprovestatus.contains(statuscode) || (statuscode.contains("SAD") && statuscodeNext.equalsIgnoreCase("SAI") || statuscodeNext.equalsIgnoreCase("SAJ"))  ) {%>
+																<%if(dpcsocexternalapprovestatus.contains(statuscode) || (statuscode.contains("SAD") && statuscodeNext.equalsIgnoreCase("SAI") || statuscodeNext.equalsIgnoreCase("SAJ")) || (statuscode.contains("SDF") && statuscodeNext.equalsIgnoreCase("SAI"))) {%>
 																	<div class="row externalapproval" style="">
 																		<div class="col-md-3">
 																			<label class="control-label">Lab</label><span class="mandatory">*</span>
@@ -1007,7 +1007,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                							</td>
 			                						
 				                						<td class="trup" style="background: linear-gradient(to top, #f28309 10%, transparent 115%);">
-				                							IFA, O/o DG (ECS) - 
+				                							IFA, O/o DG (ECS) - IFA, O/o DG (ECS)
 				                	    				</td>
 				                	    				
 				                	    				<td rowspan="2">

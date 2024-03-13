@@ -851,6 +851,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    			</td>
 							    		</tr>
 							    		<%}%>
+							    		<%if(milestones.size()>1) {%>
 							    		<tr>
 							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
 							    			<%-- <td style="text-align : center;vertical-align: top;"><%=milestones.get(milestones.size()-1).getMilestoneNo() %> </td> --%>
@@ -955,6 +956,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 		                                        </form>
 							    			</td>
 							    		</tr>
+							    		<%} %>
 			    					<%} %>
 					            </tbody>
 					        </table>

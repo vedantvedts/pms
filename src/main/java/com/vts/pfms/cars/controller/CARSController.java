@@ -1567,7 +1567,7 @@ public class CARSController {
 				req.setAttribute("DPCSoCApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "DF"));
 				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
 				
-				List<String> dpcsocexternalapprovestatus = Arrays.asList("SAD","SAI","ADG","SAJ","SAS");
+				List<String> dpcsocexternalapprovestatus = Arrays.asList("SDF","SAD","SAI","ADG","SAJ","SAS");
 				if(dpcsocexternalapprovestatus.contains(carsInitiation.getCARSStatusCode())) {
 					req.setAttribute("LabList", service.getLabList(labcode));
 				}
@@ -2184,9 +2184,10 @@ public class CARSController {
 			doc.setCARSInitiationId(carsiniid);
 			doc.setOtherDocType("C");
 			doc.setOtherDocDate(fc.RegularToSqlDate(csOtherDocDate));
-			doc.setForwardedBy(0);
+			
 			long result=0l;
 			if(Action!=null && Action.equalsIgnoreCase("Add")) {
+				doc.setForwardedBy(0);
 				doc.setCreatedBy(Username);
 				doc.setCreatedDate(sdtf.format(new Date()));
 				doc.setIsActive(1);
@@ -2543,10 +2544,10 @@ public class CARSController {
 			doc.setInvoiceNo(req.getParameter("invoiceNo"));
 			doc.setInvoiceDate(fc.RegularToSqlDate(invoiceDate));
 			doc.setMilestoneNo(MilestoneNo);
-			doc.setForwardedBy(0);
 			
 			long result=0l;
 			if(Action!=null && Action.equalsIgnoreCase("Add")) {
+				doc.setForwardedBy(0);
 				doc.setOthersStatusCode("MIN");
 				doc.setOthersStatusCodeNext("MFA");
 				doc.setCreatedBy(Username);
