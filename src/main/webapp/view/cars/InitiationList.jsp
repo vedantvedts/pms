@@ -279,6 +279,24 @@ background: none;border-style: none;
   z-index: 5;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
+
+.modal-dialog-jump {
+  animation: jumpIn 1.5s ease;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 </style>
 </head>
 <body>
@@ -413,8 +431,10 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 					<div style="display: flex; justify-content: center;padding-bottom:10px;position: relative;">
 						<div class="card-deck" style="position: relative;">
 							<%
-							for(Object[] obj: intiationList){ %>
-							
+							for(Object[] obj: intiationList){ 
+								String carstitle = obj[4].toString();
+							%>
+								
 								<div class="card" style="margin:10px; margin-left: 20px;margin-right: 20px;min-width:450px;">
 									<div class="card-body">
 										<div class="container">
@@ -454,7 +474,22 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 										<div class="container">
 					  						<div class="row">
 												<div class="col-xl" style="height: 45px;">
-												Title : <%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %>
+												Title : 
+														<%if(obj[4]!=null){%>
+														    <span>
+														    	<%if(carstitle.length()<100){%> <%=carstitle%> <%}else{%><%=carstitle.substring(0,100)%>
+														    </span>
+															<span>
+																<b><span style="color:#1176ab;font-size: 14px;"><a href="#" onclick="titlemodal('<%=obj[0]%>','<%=obj[4]%>')" style="text-decoration: none;">......(View More)</a></span></b>
+															</span>
+																
+											            		<%-- <button type="button" class="editable-click" style="border-style:none;" name="carsInitiationId"  id="carsInitiationId" value="<%=obj[0]%>" onclick="titlemodal('<%=obj[0]%>')">
+																	<b><span style="color:#1176ab;font-size: 14px;">......(View More)</span></b>
+													         	</button> --%>
+											         		<%}%> 
+														<%}else{ %>
+															-
+														<%} %>
 												<br/></div>
 											</div>
 										</div>
@@ -596,10 +631,43 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 						</nav>
 					</div>
 				<%} %>	
+				<div class="modal fade" id="titlemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-jump modal-dialog-centered" role="document" style="max-width: 70% !important;height: 40%;">
+						<div class="modal-content" style="min-height: 80%;" >
+						    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
+						    	<h4 class="modal-title" id="model-card-header" style="color: #145374">Title</h4>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						    </div>
+						    
+							<div class="modal-body"  style="padding: 0.5rem !important;">
+								<div class="card-body" style="min-height:30% ;max-height: 25% !important;overflow-y: auto;">
+									<div class="row" id="titledata">
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>	
+
+<script type="text/javascript">
+function titlemodal(carsinitiationid,carstitle) {
+	
+	$('#titledata').html(carstitle);
+	$('#titlemodal').modal('toggle');
+	console.log(carsinitiationid,carstitle);
+	event.preventDefault();
+}
+	
+	
+
+</script>
 
 <script type="text/javascript">
 

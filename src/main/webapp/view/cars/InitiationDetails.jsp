@@ -226,6 +226,9 @@ div {
 	font-weight: 600;
 }
 
+#select2-rspState-container, #select2-fundsFrom-container {
+	text-align: left;
+}
 </style>
 
 </head>
@@ -575,7 +578,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 9.5%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
                             		<label class="control-label">Fax No</label>
-                              		<input  class="form-control form-control" type="text" name="piFaxNo" id="piFaxNo" maxlength="20" style="font-size: 15px;" 
+                              		<input  class="form-control form-control" type="text" name="piFaxNo" id="piFaxNo" maxlength="10" style="font-size: 15px;" 
                               		 placeholder="Enter Fax No of PI" value="<%if(carsIni!=null && carsIni.getPIFaxNo()!=null){ %><%=carsIni.getPIFaxNo()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"> 
                         		</div>
                     		 </div>

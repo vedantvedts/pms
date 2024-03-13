@@ -297,7 +297,9 @@ margin-left: -30%;
 	font
 }
 
-
+#select2-LabCode-container,#select2-approverEmpId-container{
+	text-align: left;
+}
 </style>
 </head>
 <body>

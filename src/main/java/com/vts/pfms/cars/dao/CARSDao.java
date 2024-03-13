@@ -19,7 +19,7 @@ import com.vts.pfms.model.LabMaster;
 
 public interface CARSDao {
 
-	public List<Object[]> carsInitiationList(String EmpId) throws Exception;
+	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception;
 	public CARSInitiation getCARSInitiationById(long carsIntiationId) throws Exception;
 	public long addCARSInitiation(CARSInitiation initiation) throws Exception;
 	public long editCARSInitiation(CARSInitiation initiation) throws Exception;

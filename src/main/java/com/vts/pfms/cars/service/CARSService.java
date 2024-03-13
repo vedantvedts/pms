@@ -24,7 +24,7 @@ import com.vts.pfms.model.LabMaster;
 
 public interface CARSService {
 
-	public List<Object[]> carsInitiationList(String EmpId) throws Exception;
+	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception;
 	public CARSInitiation getCARSInitiationById(long carsIntiationId) throws Exception;
 	public long addCARSInitiation(CARSInitiation initiation,String labcode) throws Exception;
 	public long editCARSInitiation(CARSInitiation initiation) throws Exception;

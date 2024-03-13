@@ -135,13 +135,14 @@ public class CARSController {
 	{
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String UserId = (String) ses.getAttribute("Username");
+		String LoginType = (String) ses.getAttribute("LoginType");
 		logger.info(new Date() +"Inside CARSInitiationList.htm "+UserId);
 		try {
 			String pagination = req.getParameter("pagination");
 			int pagin = Integer.parseInt(pagination!=null?pagination:"0");
 
 			/* fetching actual data */
-			List<Object[]> initiationList = service.carsInitiationList(EmpId);
+			List<Object[]> initiationList = service.carsInitiationList(LoginType, EmpId);
 
 			// adding values to this List<Object[]>
 			List<Object[]> arrayList = new ArrayList<>();

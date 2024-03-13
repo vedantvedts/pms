@@ -70,9 +70,9 @@ public class CARSServiceImpl implements CARSService{
 	CARSDao dao;
 
 	@Override
-	public List<Object[]> carsInitiationList(String EmpId) throws Exception {
+	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception {
 		
-		return dao.carsInitiationList(EmpId);
+		return dao.carsInitiationList(LoginType,EmpId);
 	}
 	
 	@Override
