@@ -229,8 +229,8 @@ String ses=(String)request.getParameter("result");
 	                                         <td><input type="radio" name="groupid" value=<%=obj[0]%>  ></td> 
 	                                         <td><%=obj[6] %></td>
 	                                         <td><%=obj[1] %></td>
-	                                         <td ><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-	                                         <td > <%if(obj[3]!=null){%><%=obj[4]%>, <%=obj[5]%><%}else{ %>-<%} %></td>
+	                                         <td style="text-align: left;"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
+	                                         <td style="text-align: left;"> <%if(obj[3]!=null){%><%=obj[4]%>, <%=obj[5]%><%}else{ %>-<%} %></td>
 	                                         <td ><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></td>
 	                                     </tr>
 	                                 <%} %>

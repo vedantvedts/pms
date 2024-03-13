@@ -122,10 +122,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 			                      					<thead style=" text-align: center;">
 			                                        	<tr> 
 						                              		<th>Select</th>
-						                              		<th>Admin </th>
-				                                            <th>Admin Role</th>
-				                                            <th>Admin From</th>
-				                                            <th>Admin To</th>
+						                              		<th>Authorized Officer </th>
+				                                            <th>Role</th>
+				                                            <th>valid From</th>
+				                                            <th>valid To</th>
 				                                    	</tr>      
 			                          				</thead>
 								                    <tbody>
@@ -134,7 +134,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						                                 for(Object[] obj:InitiationApprAuthList){ %>
 						                                     <tr>
 							                                     <td style="text-align: center;"><input type="radio" name="RtmddoId" value=<%=obj[0]%>  ></td> 
-							                                     <td style="text-align: left;"><%=obj[6]+"( "+obj[7]+" ), "+obj[8] %></td>
+							                                     <td style="text-align: left;"><%=obj[6] +" ("+obj[7]+"), "+obj[8] %></td>
 							                                     <td style="text-align: center;"><%=obj[5] %></td>
 																 <td style="text-align: center;"><%if(obj[3]!=null){%><%=rdf.format(obj[3]) %><%}else{ %>-<%} %></td>
 																 <td style="text-align: center;"><%if(obj[4]!=null){%><%=rdf.format(obj[4]) %><%}else{ %>-<%} %></td>

@@ -187,8 +187,8 @@ String ses=(String)request.getParameter("result");
 	                                         <td><input type="radio" name="tdid" value=<%=obj[0]%>  ></td> 
 	                                        <td><%=obj[6]!=null?obj[6].toString():"" %></td>
 	                                         <td><%=obj[1]!=null?obj[1].toString():"" %></td>
-	                                         <td ><%if(obj[2]!=null){%><%=obj[2].toString() %><%}else{ %>-<%} %></td>
-	                                         <td > <%if(obj[3]!=null){%><%=obj[4].toString()+", "+obj[5].toString()%><%}else{ %>-<%} %></td>
+	                                         <td style="text-align: left;"><%if(obj[2]!=null){%><%=obj[2].toString() %><%}else{ %>-<%} %></td>
+	                                         <td style="text-align: left;"> <%if(obj[3]!=null){%><%=obj[4].toString()+", "+obj[5].toString()%><%}else{ %>-<%} %></td>
 	                                     </tr>
 	                                 <%} %>
 	                             </tbody>
