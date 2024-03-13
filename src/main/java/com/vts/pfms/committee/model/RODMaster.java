@@ -22,6 +22,8 @@ public class RODMaster {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long RODNameId;
 	private String RODName;
+	private String RODShortName;
+	
 	private String CreatedBy;
 	private String CreatedDate;
 	private int IsActive;

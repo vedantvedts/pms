@@ -139,7 +139,7 @@ a:hover {
 						</select>
 						</div> -->
 						<div class="col-sm-3" align="left" style="margin-top: -8px;">
-						<form action="ActionForwardList.htm" method="post">
+					<%-- 	<form action="ActionForwardList.htm" method="post">
 										<select class="form-control selectdee " name="Type"  required="required"  data-live-search="true" onchange="this.form.submit();">                                                     
 											<option value="A" <%if("A".equalsIgnoreCase(type)){%>selected="selected" <%}%>>  All</option>	
 											<option value="F" <%if("F".equalsIgnoreCase(type)){%>selected="selected" <%}%>>  Forwarded</option>
@@ -147,7 +147,7 @@ a:hover {
 										</select>	
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										
-						</form>	
+						</form>	 --%>
 									</div>		
 						</div>
 					</div>
@@ -163,11 +163,20 @@ a:hover {
 										<div class="sparkline13-graph">
 											<div class="datatable-dashv1-list custom-datatable-overright">
 												<div id="toolbar">
-													<select class="form-control dt-tb">
+													<!-- <select class="form-control dt-tb">
 														<option value="">Export Basic</option>
 														<option value="all">Export All</option>
 														<option value="selected">Export Selected</option>
-													</select>
+													</select> -->
+														<form action="ActionForwardList.htm" method="post">
+										<select class="form-control selectdee " name="Type"  required="required"  data-live-search="true" onchange="this.form.submit();">                                                     
+											<option value="A" <%if("A".equalsIgnoreCase(type)){%>selected="selected" <%}%>>  All</option>	
+											<option value="F" <%if("F".equalsIgnoreCase(type)){%>selected="selected" <%}%>>  Forwarded</option>
+											<option value="NB" <%if("NB".equalsIgnoreCase(type)){%>selected="selected" <%}%>> Assigned</option>
+										</select>	
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										
+						</form>	
 												</div>
 												<table id="table" data-toggle="table" data-pagination="true"
 													data-search="true" data-show-columns="true"

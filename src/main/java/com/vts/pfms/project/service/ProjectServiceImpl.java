@@ -2236,15 +2236,13 @@ public class ProjectServiceImpl implements ProjectService {
 		Object[] attachdata = dao.ProjectMasterAttachData(projectattachid);
 		boolean result = false;
 		File file = new File(attachdata[2] + File.separator + attachdata[3]);
+		System.out.println("esists1"+file.exists());
 		if (file.exists()) {
+			System.out.println("esists2");
 			result = file.delete();
-			if (result)
-				dao.ProjectMasterAttachDelete(projectattachid);
 		}
-		if (result)
-			return 1;
-		else
-			return 0;
+	
+			return dao.ProjectMasterAttachDelete(projectattachid);
 	}
 
 	@Override
@@ -2413,9 +2411,9 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		
 		@Override
-		public long numberOfReqTypeId(String intiationId) throws Exception {
+		public long numberOfReqTypeId(String intiationId,String projectId) throws Exception {
 		
-			return dao.numberOfReqTypeId(intiationId);
+			return dao.numberOfReqTypeId(intiationId,projectId);
 		}
 
 		@Override
@@ -2981,9 +2979,9 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 @Override
-	public List<Object[]> projecOtherRequirements(String initiationid) throws Exception {
+	public List<Object[]> projecOtherRequirements(String initiationid,String projectid) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.projecOtherRequirements(initiationid);
+		return dao.projecOtherRequirements(initiationid,projectid);
 	}
 	@Override
 	public long AddOtherRequirement(ProjectOtherReqDto pd, String subreqName) throws Exception {
@@ -2993,7 +2991,11 @@ public class ProjectServiceImpl implements ProjectService {
 		pm.setRequirementName(pd.getRequirementName());
 		pm.setReqParentId(0l);
 		pm.setIsActive(1);
-		List<Object[]>MainIdDetails=dao.OtherRequirementList(pd.getInitiationId(),pd.getReqMainId());
+		pm.setProjectId(pd.getProjectId());
+		List<Object[]>MainIdDetails=dao.OtherRequirementList(pd.getInitiationId(),pd.getReqMainId(),pd.getProjectId());    //changed and the method is used to get if any req with specific mainid is added or not
+		System.out.println("MainId - "+pd.getReqMainId());
+		System.out.println("MainIdDetails - "+MainIdDetails.size());
+		
 		long count=0l;
 		long count1=0l;
 		if(MainIdDetails.size()==0) {
@@ -3002,6 +3004,7 @@ public class ProjectServiceImpl implements ProjectService {
 				  ProjectOtherReqModel pms= new ProjectOtherReqModel();
 				  pms.setInitiationId(pd.getInitiationId());
 				  pms.setReqMainId(pd.getReqMainId()); 
+				  pms.setProjectId(pd.getProjectId());
 				  pms.setReqParentId(count1);
 				  pms.setRequirementName(subreqName);
 				  pms.setIsActive(1);
@@ -3015,9 +3018,9 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return count;
 	}@Override
-	public List<Object[]> OtherRequirementList(String initiationid, String mainid) throws Exception {
+	public List<Object[]> OtherRequirementList(String initiationid, String mainid,String projectId) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.OtherRequirementList(Long.parseLong(initiationid),Long.parseLong(mainid));
+		return dao.OtherRequirementList(Long.parseLong(initiationid),Long.parseLong(mainid),Long.parseLong(projectId));
 	}
 	@Override
 	public long UpdateOtherRequirementName(ProjectOtherReqDto pd) throws Exception {
@@ -3068,7 +3071,7 @@ public class ProjectServiceImpl implements ProjectService {
 		return OtherSubRequirementsDetails;
 	}
 	@Override
-	public long AddOtherRequirementDetails(String[] reqNames, String[] reqValue, String initiationid) throws Exception {
+	public long AddOtherRequirementDetails(String[] reqNames, String[] reqValue, String initiationid,String projectID) throws Exception {
 		long count=0;
 		for(int i=0;i<reqNames.length;i++) {
 			ProjectOtherReqModel pm= new ProjectOtherReqModel();
@@ -3077,26 +3080,74 @@ public class ProjectServiceImpl implements ProjectService {
 			pm.setRequirementName(reqNames[i]);
 			pm.setReqParentId(0l);
 			pm.setIsActive(1);
+			pm.setProjectId(Long.parseLong(projectID));
 			count=dao.ProjectOtherRequirementAdd(pm);
 		}
 		return count;
 	}
 	@Override
-	public List<Object[]> otherProjectRequirementList(String initiationid) throws Exception {
+	public List<Object[]> otherProjectRequirementList(String initiationid, String projectId) throws Exception {
 		// To get main requirementList 
-		return dao.otherProjectRequirementList(initiationid);
+		return dao.otherProjectRequirementList(initiationid,projectId);
 	}
 	@Override
 	public List<Object[]> getAllOtherrequirementsByInitiationId(String initiationid) throws Exception {
 		return dao.getAllOtherReqByInitiationId(initiationid);
 	}
+//	@Override
+//	public Object[] RequirementIntro(String initiationid) throws Exception {
+//		// TODO Auto-generated method stub
+//		return dao.RequirementIntro(initiationid);
+//	}
+//	@Override
+//	public long ReqIntroSubmit(String initiationid, String attributes, String details, String UserId) throws Exception {
+//		
+//		PfmsInitiationReqIntro pr= new PfmsInitiationReqIntro();
+//		if(attributes.equalsIgnoreCase("Introduction")) {
+//			pr.setIntroduction(details);
+//		}else if(attributes.equalsIgnoreCase("Block Diagram")) {
+//			pr.setSystemBlockDiagram(details);
+//		}else if(attributes.equalsIgnoreCase("System Overview")) {
+//			pr.setSystemOverview(details);
+//		}else if(attributes.equalsIgnoreCase("Document Overview")) {
+//			pr.setDocumentOverview(details);
+//		}else if(attributes.equalsIgnoreCase("Applicable Standards")) {
+//			pr.setApplicableStandards(details);
+//		}
+//		pr.setInitiationId(Long.parseLong(initiationid));
+//		pr.setCreatedBy(UserId);
+//		pr.setCreatedDate(sdf1.format(new Date()));
+//		pr.setIsActive(1);
+//		return dao.ReqIntroSubmit(pr);
+//	}
+//	
+//	
+//	@Override
+//	public long reqIntroUpdate(String initiationid, String attributes, String details, String userId) throws Exception {
+//		PfmsInitiationReqIntro pr= new PfmsInitiationReqIntro();
+//		if(attributes.equalsIgnoreCase("Introduction")) {
+//			pr.setIntroduction(details);
+//		}else if(attributes.equalsIgnoreCase("Block Diagram")) {
+//			pr.setSystemBlockDiagram(details);
+//		}else if(attributes.equalsIgnoreCase("System Overview")) {
+//			pr.setSystemOverview(details);
+//		}else if(attributes.equalsIgnoreCase("Document Overview")) {
+//			pr.setDocumentOverview(details);
+//		}else if(attributes.equalsIgnoreCase("Applicable Standards")) {
+//			pr.setApplicableStandards(details);
+//		}
+//		pr.setInitiationId(Long.parseLong(initiationid));
+//		pr.setModifiedBy(userId);
+//		pr.setModifiedDate(sdf1.format(new Date()));
+//		return dao.ReqIntroUpdate(pr,attributes);
+//	}
 	@Override
-	public Object[] RequirementIntro(String initiationid) throws Exception {
+	public Object[] RequirementIntro(String initiationid, String ProjectId) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.RequirementIntro(initiationid);
+		return dao.RequirementIntro(initiationid, ProjectId);
 	}
 	@Override
-	public long ReqIntroSubmit(String initiationid, String attributes, String details, String UserId) throws Exception {
+	public long ReqIntroSubmit(String initiationid, String ProjectId, String attributes, String details, String UserId) throws Exception {
 		
 		PfmsInitiationReqIntro pr= new PfmsInitiationReqIntro();
 		if(attributes.equalsIgnoreCase("Introduction")) {
@@ -3110,6 +3161,13 @@ public class ProjectServiceImpl implements ProjectService {
 		}else if(attributes.equalsIgnoreCase("Applicable Standards")) {
 			pr.setApplicableStandards(details);
 		}
+		if(ProjectId==null) {
+			ProjectId="0";
+		}
+		if(initiationid==null) {
+			initiationid="0";
+		}
+		pr.setProjectId(Long.parseLong(ProjectId));
 		pr.setInitiationId(Long.parseLong(initiationid));
 		pr.setCreatedBy(UserId);
 		pr.setCreatedDate(sdf1.format(new Date()));
@@ -3119,7 +3177,7 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	
 	@Override
-	public long reqIntroUpdate(String initiationid, String attributes, String details, String userId) throws Exception {
+	public long reqIntroUpdate(String initiationid, String ProjectId, String attributes, String details, String userId) throws Exception {
 		PfmsInitiationReqIntro pr= new PfmsInitiationReqIntro();
 		if(attributes.equalsIgnoreCase("Introduction")) {
 			pr.setIntroduction(details);
@@ -3132,11 +3190,19 @@ public class ProjectServiceImpl implements ProjectService {
 		}else if(attributes.equalsIgnoreCase("Applicable Standards")) {
 			pr.setApplicableStandards(details);
 		}
+		if(ProjectId==null) {
+			ProjectId="0";
+		}
+		if(initiationid==null) {
+			initiationid="0";
+		}
+		pr.setProjectId(Long.parseLong(ProjectId));
 		pr.setInitiationId(Long.parseLong(initiationid));
 		pr.setModifiedBy(userId);
 		pr.setModifiedDate(sdf1.format(new Date()));
 		return dao.ReqIntroUpdate(pr,attributes);
 	}
+	
 	@Override
 	public Long ReqForwardProgress(String initiationid) throws Exception {
 		return dao.ReqForwardProgress(initiationid);
@@ -3185,8 +3251,8 @@ public long updateRequirementVerificationDetails(RequirementVerification rv) thr
 }
 
 @Override
-public List<Object[]> getAbbreviationDetails(String initiationid) throws Exception {
-	return dao.getAbbreviationDetails(initiationid);
+public List<Object[]> getAbbreviationDetails(String initiationid,String ProjectId) throws Exception {
+	return dao.getAbbreviationDetails(initiationid,ProjectId);
 }
 @Override
 public long addAbbreviation(List<InitiationAbbreviations> iaList) throws Exception {
@@ -3206,24 +3272,24 @@ public long addReqAcronyms(List<RequirementAcronyms> raList) throws Exception {
 	return dao.addReqAcronyms(raList);
 }
 @Override
-public List<Object[]> AcronymsList(String initiationid) throws Exception {
-	return dao.getAcronymsList(initiationid);
+public List<Object[]> AcronymsList(String initiationid,String ProjectId) throws Exception {
+	return dao.getAcronymsList(initiationid,ProjectId);
 }
 @Override
 public long addReqPerformanceParameters(List<RequirementPerformanceParameters> raList) throws Exception {
 	return dao.addReqPerformanceParameters(raList);
 }
 @Override
-public List<Object[]> getPerformanceList(String initiationid) throws Exception {
-	return dao.getPerformanceList(initiationid);
+public List<Object[]> getPerformanceList(String initiationid,String ProjectId) throws Exception {
+	return dao.getPerformanceList(initiationid,ProjectId);
 }
 @Override
-public Object[] getVerificationExcelData(String initiationid) throws Exception {
-	return dao.getVerificationExcelData(initiationid);
+public Object[] getVerificationExcelData(String initiationid,String ProjectId) throws Exception {
+	return dao.getVerificationExcelData(initiationid,ProjectId);
 }
 @Override
-public List<Object[]> EmployeeList(String labCode, String initiationid) throws Exception {
-	return dao.EmployeeList(labCode,initiationid);
+public List<Object[]> EmployeeList(String labCode, String initiationid,String ProjectId) throws Exception {
+	return dao.EmployeeList(labCode,initiationid,ProjectId);
 }
 
 @Override
@@ -3235,7 +3301,7 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 	long count=0;
 	for(int i=0;i<numberOfPersons;i++) {
 		RequirementMembers r = new RequirementMembers();
-		
+		r.setProjectId(rm.getProjectId());
 		r.setInitiationId(rm.getInitiationId());
 		r.setCreatedBy(rm.getCreatedBy());
 		r.setCreatedDate(rm.getCreatedDate());
@@ -3249,9 +3315,9 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 	return count;
 }
 		@Override
-		public List<Object[]> reqMemberList(String initiationid) throws Exception {
+		public List<Object[]> reqMemberList(String initiationid,String ProjectId) throws Exception {
 			
-			return dao.reqMemberList(initiationid);
+			return dao.reqMemberList(initiationid,ProjectId);
 		}
 		@Override
 		public long addReqSummary(RequirementSummary rs) throws Exception {
@@ -3259,8 +3325,8 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		}
 		
 		@Override
-		public List<Object[]> getDocumentSummary(String initiationid) throws Exception {
-			return dao.getDocumentSummary(initiationid);
+		public List<Object[]> getDocumentSummary(String initiationid,String ProjectId) throws Exception {
+			return dao.getDocumentSummary(initiationid,ProjectId);
 		}
 		@Override
 		public long editreqSummary(RequirementSummary rs) throws Exception {
@@ -3270,5 +3336,18 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		public Object[] DocTempAttributes() throws Exception {
 			 
 			return dao.DocTempAttributes();
+		}
+		@Override
+		public List<Object[]> ReqParaDetailsMain(String ProjectId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ReParaDetailsMain(ProjectId);
+		}
+		@Override
+		public List<Object[]> getVerificationListMain(String ProjectId) throws Exception {
+			return dao.getVerificationListMain(ProjectId);
+		}
+		@Override
+		public List<Object[]> VPDetails(String initiationid, String projectId) throws Exception {
+			return dao.VPDetails(initiationid, projectId);
 		}
 }

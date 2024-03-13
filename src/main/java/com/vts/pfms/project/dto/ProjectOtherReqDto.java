@@ -11,4 +11,5 @@ public class ProjectOtherReqDto {
 	private Long ReqParentId;
 	private String RequirementName;
 	private String RequirementDetails;
+	private Long ProjectId;
 }

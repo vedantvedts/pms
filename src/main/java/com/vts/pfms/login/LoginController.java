@@ -341,79 +341,147 @@ public class LoginController {
 		return convertedgson.toJson(projectwiseaction);
 	}
 	
-	@RequestMapping(value = "WeeklyUpdateReport.htm", method = {RequestMethod.GET,RequestMethod.POST})
+//	@RequestMapping(value = "WeeklyUpdateReport.htm", method = {RequestMethod.GET,RequestMethod.POST})
+//	public String WeeklyUpdateReport(HttpServletRequest req, HttpSession ses) throws Exception {
+//		String LoginType = (String) ses.getAttribute("LoginType");
+//		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//		String LabCode = (String) ses.getAttribute("labcode");
+//		List<Object[]> updatedProjectsList = new ArrayList<>();
+//		
+//		
+//		List<Object[]> projects = new ArrayList<>();
+//		List<Object[]> projectsReturns = new ArrayList<>();
+//				projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
+//		
+//		req.setAttribute("projects", projects);
+//		req.setAttribute("tableshow", "no");
+//		System.out.println(req.getMethod());
+//		if(req.getMethod().equals("POST")) {
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//			System.out.println("in post");
+//			String pid = String.valueOf(req.getParameter("getprojects").toString());
+//			updatedProjectsList = Actservice.getAllRecentUpdateList(pid);
+//			System.out.println(updatedProjectsList.size());
+//			if(updatedProjectsList.size()>0)
+//			req.setAttribute("tableshow", "yes");
+//			else
+//				req.setAttribute("resultfail", "Not Yet Updated");
+//			for(int i=0;i<updatedProjectsList.size();i++)
+//			{
+//				updatedProjectsList.get(i)[1] = Actservice.getEmpnameById(Integer.parseInt((String.valueOf(updatedProjectsList.get(i)[1]))));
+//				String strNew = String.valueOf(updatedProjectsList.get(i)[1]).replace("[", "");
+//				strNew = String.valueOf(strNew).replace("]", "");
+//				updatedProjectsList.get(i)[1] = strNew;
+//				strNew =String.valueOf(Actservice.getProjectCodeById(Integer.parseInt(pid))).replace("[", "");
+//				strNew = String.valueOf(strNew).replace("]", "");
+//				req.setAttribute("projectname", strNew );
+//				
+//				
+//				
+//				
+//				
+//				strNew =String.valueOf(Actservice.getProjectShortNameById(Integer.parseInt(pid))).replace("[", "");
+//				strNew = String.valueOf(strNew).replace("]", "");
+//				req.setAttribute("shortname", strNew );
+//				
+//				LocalDate iD = LocalDate.parse(updatedProjectsList.get(i)[3].toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//				String inputDate = iD.format(formatter);
+//				updatedProjectsList.get(i)[3] = inputDate;
+//				
+//				
+//				iD = LocalDate.parse(updatedProjectsList.get(i)[10].toString().substring(0,10 ), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//				inputDate = iD.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+//				updatedProjectsList.get(i)[10] = updatedProjectsList.get(i)[10].toString()
+//						.replace(updatedProjectsList.get(i)[10].toString().substring(0,10), inputDate.toString());
+//				
+//				
+//			}
+//			String selectedproj = "";
+//			for(int i=0;i<projects.size();i++)
+//			{
+//				if(Integer.valueOf(pid) == Integer.valueOf(projects.get(i)[0].toString()) ) {
+//					selectedproj=projects.get(i)[4].toString()+projects.get(i)[17];
+//					projects.remove(i);}
+//			}
+//			
+//			req.setAttribute("projects", projects);
+//			req.setAttribute("selectedProject", selectedproj);
+//			
+//		
+//			
+//		}
+//		req.setAttribute("tabledata", updatedProjectsList);
+//		return "master/WeeklyUpdateReport";
+//	}
+	
+	@RequestMapping(value = "WeeklyUpdateReport.htm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String WeeklyUpdateReport(HttpServletRequest req, HttpSession ses) throws Exception {
 		String LoginType = (String) ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String LabCode = (String) ses.getAttribute("labcode");
 		List<Object[]> updatedProjectsList = new ArrayList<>();
-		
-		
+
 		List<Object[]> projects = new ArrayList<>();
 		List<Object[]> projectsReturns = new ArrayList<>();
-				projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
-		
+		projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
+
 		req.setAttribute("projects", projects);
 		req.setAttribute("tableshow", "no");
-		System.out.println(req.getMethod());
-		if(req.getMethod().equals("POST")) {
+	
+		if (req.getMethod().equals("POST")) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			System.out.println("in post");
-			String pid = String.valueOf(req.getParameter("getprojects").toString());
+		
+			String pid = req.getParameter("getprojects").toString();
+			
+			System.out.println("pid "+pid);
+			
 			updatedProjectsList = Actservice.getAllRecentUpdateList(pid);
-			System.out.println(updatedProjectsList.size());
-			if(updatedProjectsList.size()>0)
-			req.setAttribute("tableshow", "yes");
+
+			if (updatedProjectsList.size() > 0)
+				req.setAttribute("tableshow", "yes");
 			else
 				req.setAttribute("resultfail", "Not Yet Updated");
-			for(int i=0;i<updatedProjectsList.size();i++)
-			{
-				updatedProjectsList.get(i)[1] = Actservice.getEmpnameById(Integer.parseInt((String.valueOf(updatedProjectsList.get(i)[1]))));
+			for (int i = 0; i < updatedProjectsList.size(); i++) {
+				updatedProjectsList.get(i)[1] = Actservice
+						.getEmpnameById(Integer.parseInt((String.valueOf(updatedProjectsList.get(i)[1]))));
 				String strNew = String.valueOf(updatedProjectsList.get(i)[1]).replace("[", "");
 				strNew = String.valueOf(strNew).replace("]", "");
 				updatedProjectsList.get(i)[1] = strNew;
-				strNew =String.valueOf(Actservice.getProjectCodeById(Integer.parseInt(pid))).replace("[", "");
+				strNew = String.valueOf(Actservice.getProjectCodeById(Integer.parseInt(pid))).replace("[", "");
 				strNew = String.valueOf(strNew).replace("]", "");
-				req.setAttribute("projectname", strNew );
-				
-				
-				
-				
-				
-				strNew =String.valueOf(Actservice.getProjectShortNameById(Integer.parseInt(pid))).replace("[", "");
+				req.setAttribute("projectname", strNew);
+
+				strNew = String.valueOf(Actservice.getProjectShortNameById(Integer.parseInt(pid))).replace("[", "");
 				strNew = String.valueOf(strNew).replace("]", "");
-				req.setAttribute("shortname", strNew );
-				
-				LocalDate iD = LocalDate.parse(updatedProjectsList.get(i)[3].toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				req.setAttribute("shortname", strNew);
+
+				LocalDate iD = LocalDate.parse(updatedProjectsList.get(i)[3].toString(),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				String inputDate = iD.format(formatter);
 				updatedProjectsList.get(i)[3] = inputDate;
-				
-				
-				iD = LocalDate.parse(updatedProjectsList.get(i)[10].toString().substring(0,10 ), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+				iD = LocalDate.parse(updatedProjectsList.get(i)[10].toString().substring(0, 10),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				inputDate = iD.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 				updatedProjectsList.get(i)[10] = updatedProjectsList.get(i)[10].toString()
-						.replace(updatedProjectsList.get(i)[10].toString().substring(0,10), inputDate.toString());
-				
-				
+						.replace(updatedProjectsList.get(i)[10].toString().substring(0, 10), inputDate.toString());
+
 			}
 			String selectedproj = "";
-			for(int i=0;i<projects.size();i++)
-			{
-				if(Integer.valueOf(pid) == Integer.valueOf(projects.get(i)[0].toString()) ) {
-					selectedproj=projects.get(i)[4].toString()+projects.get(i)[17];
-					projects.remove(i);}
+			for (int i = 0; i < projects.size(); i++) {
+				if (Integer.valueOf(pid) == Integer.valueOf(projects.get(i)[0].toString())) {
+					selectedproj = projects.get(i)[4].toString() + " ("+ projects.get(i)[17] +")";
+					projects.remove(i);
+				}
 			}
-			
+
 			req.setAttribute("projects", projects);
 			req.setAttribute("selectedProject", selectedproj);
-			
-		
-			
+
 		}
 		req.setAttribute("tabledata", updatedProjectsList);
 		return "master/WeeklyUpdateReport";
 	}
-	
 	@RequestMapping(value = "GetUpdateReport.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody String GetUpdateReport(HttpServletRequest req, HttpSession ses) throws Exception {
 		List<Object[]> projectwiseaction = new ArrayList<>();

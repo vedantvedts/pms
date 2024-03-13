@@ -1,5 +1,6 @@
 package com.vts.pfms.committee.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.RODMaster;
 
 @Repository
@@ -24,7 +26,7 @@ public class RODDaoImpl implements RODDao{
 	@PersistenceContext
 	EntityManager manager;
 	
-	private static final String RODPROJECTSCHEDULELISTALL = "SELECT a.ScheduleId, a.RODNameId,a.MeetingId,a.ScheduleDate,a.ScheduleStartTime,a.ProjectId,b.RODName,a.ScheduleFlag FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.IsActive=1 AND a.ProjectId=:ProjectId ORDER BY a.ScheduleDate";
+	private static final String RODPROJECTSCHEDULELISTALL = "SELECT a.ScheduleId, a.RODNameId,a.MeetingId,a.ScheduleDate,a.ScheduleStartTime,a.ProjectId,b.RODName,a.ScheduleFlag,b.RODShortName FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.IsActive=1 AND a.ProjectId=:ProjectId ORDER BY a.ScheduleDate";
 	@Override
 	public List<Object[]> rodProjectScheduleListAll(String projectId) throws Exception
 	{
@@ -40,7 +42,7 @@ public class RODDaoImpl implements RODDao{
 		
 	}
 	
-	private static final String RODMASTERDETAILS ="SELECT RODNameId,RODName FROM pfms_rod_master WHERE IsActive=1 AND (CASE WHEN 'A'=:RODNameId THEN 1=1 ELSE RODNameId=:RODNameId END)";
+	private static final String RODMASTERDETAILS ="SELECT RODNameId,RODName,RODShortName FROM pfms_rod_master WHERE IsActive=1 AND (CASE WHEN 'A'=:RODNameId THEN 1=1 ELSE RODNameId=:RODNameId END)";
 	@Override
 	public Object[] getRODMasterDetails(String rodNameId) throws Exception {
 		
@@ -60,7 +62,7 @@ public class RODDaoImpl implements RODDao{
 		}
 	}
 	
-	private static final String RODPROJECTSCHEDULELISTALL2 = "SELECT a.ScheduleId, a.RODNameId,a.MeetingId,a.ScheduleDate,a.ScheduleStartTime,a.ProjectId,b.RODName,a.ScheduleFlag FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.ProjectId=:ProjectId AND a.RODNameId=:RODNameId AND a.IsActive=1 ORDER BY a.ScheduleDate";
+	private static final String RODPROJECTSCHEDULELISTALL2 = "SELECT a.ScheduleId, a.RODNameId,a.MeetingId,a.ScheduleDate,a.ScheduleStartTime,a.ProjectId,b.RODName,a.ScheduleFlag,b.RODShortName FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.ProjectId=:ProjectId AND a.RODNameId=:RODNameId AND a.IsActive=1 ORDER BY a.ScheduleDate";
 	@Override
 	public List<Object[]> rodProjectScheduleListAll(String projectId, String rodNameId) throws Exception
 	{
@@ -77,7 +79,7 @@ public class RODDaoImpl implements RODDao{
 		
 	}
 	
-	private static final String RODNAMESLIST = "SELECT RODNameId,RODName FROM pfms_rod_master WHERE IsActive=1";
+	private static final String RODNAMESLIST = "SELECT RODNameId,RODName,RODShortName FROM pfms_rod_master WHERE IsActive=1";
 	@Override
 	public List<Object[]> rodNamesList() throws Exception
 	{
@@ -106,12 +108,12 @@ public class RODDaoImpl implements RODDao{
 		
 	}
 	
-	private static final String RODSCHEDULEEDITDATA = "SELECT a.RODNameId,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.RODName,'' AS Test1,a.projectid,\r\n"
-			+ "c.meetingstatusid,a.meetingid,a.meetingvenue,a.confidential,a.Reference,d.classification ,a.divisionid  ,a.initiationid ,a.pmrcdecisions,a.kickoffotp ,\r\n"
+	private static final String RODSCHEDULEEDITDATA = "SELECT a.RODNameId,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.RODName,b.RODShortName,a.projectid,\r\n"
+			+ "c.meetingstatusid,a.meetingid,a.meetingvenue,a.confidential,a.Reference,'0' AS classification ,a.divisionid  ,a.initiationid ,a.pmrcdecisions,a.kickoffotp ,\r\n"
 			+ "(SELECT minutesattachmentid FROM committee_minutes_attachment WHERE scheduleid=a.scheduleid) AS 'attachid',\r\n"
 			+ "'' AS Test2,a.MinutesFrozen,a.briefingpaperfrozen,a.labcode \r\n"
-			+ "FROM committee_schedule a,pfms_rod_master b ,committee_meeting_status c, pfms_security_classification d \r\n"
-			+ "WHERE a.scheduleflag=c.MeetingStatus AND a.scheduleid=:committeescheduleid AND a.RODNameId=b.RODNameId AND a.confidential=d.classificationid";
+			+ "FROM committee_schedule a,pfms_rod_master b ,committee_meeting_status c \r\n"
+			+ "WHERE a.scheduleflag=c.MeetingStatus AND a.scheduleid=:committeescheduleid AND a.RODNameId=b.RODNameId ";
 
 	@Override
 	public Object[] RODScheduleEditData(String CommitteeScheduleId) throws Exception {
@@ -130,5 +132,87 @@ public class RODDaoImpl implements RODDao{
 			return null;
 		}
 		
+	}
+	
+	private static final String RODSCHEDULEDATA = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive,a.RODNameId ,\r\n"
+			+ "       b.RODShortName, b.RODName, c.MeetingStatusId,a.projectid,a.meetingid, a.divisionid ,a.initiationid,a.labcode \r\n"
+			+ "FROM committee_schedule a,pfms_rod_master b,committee_meeting_status c \r\n"
+			+ "WHERE a.RODNameId=b.RODNameId AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid";
+	@Override
+	public Object[] RODScheduleData(String CommitteeScheduleId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(RODSCHEDULEDATA);
+			query.setParameter("committeescheduleid", CommitteeScheduleId );
+			List<Object[]> list = (List<Object[]>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside RODDaoImpl RODScheduleEditData "+e);
+			return null;
+		}
+		
+	}
+	
+	private static final String RODMEETINGSEARCHLIST="SELECT '0' RODNameId, 0 AS empid,a.scheduleid,a.scheduledate,a.schedulestarttime,a.scheduleflag,'NA' AS membertype ,a.meetingid,b.RODName,b.RODShortName AS 'ShortName', a.meetingvenue FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.meetingid LIKE :meetingid AND a.isactive=1 AND a.labcode=:labcode";
+	@Override
+	public List<Object[]> RODMeetingSearchList(String MeetingId ,String LabCode) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(RODMEETINGSEARCHLIST);
+			query.setParameter("meetingid",MeetingId);
+			query.setParameter("labcode", LabCode);
+			return (List<Object[]>) query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside RODDaoImpl MeetingSearchList "+e);
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	private static final String UPDATEOTP="UPDATE committee_schedule SET kickoffotp=:otp,scheduleflag=:scheduleflag WHERE scheduleid=:committeescheduleid";
+	@Override
+	public String UpdateOtp(CommitteeSchedule schedule) throws Exception {
+
+		Query query=manager.createNativeQuery(UPDATEOTP);
+		query.setParameter("otp", schedule.getKickOffOtp());
+		query.setParameter("committeescheduleid", schedule.getScheduleId());
+		query.setParameter("scheduleflag", schedule.getScheduleFlag());
+		int ret=query.executeUpdate();
+
+		if(schedule.getKickOffOtp()==null) {
+			return String.valueOf(ret);
+		}else {
+			return schedule.getKickOffOtp();
+		}
+		
+	}
+	
+	private static final String NONPROJECTACTIONS="SELECT d.ActionAssignId,d.ActionNo,CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.empname) AS 'empname',\r\n"
+			+ "d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate\r\n"
+			+ "FROM committee_schedule a, committee_schedules_minutes_details b , action_main c,action_assign d, employee e\r\n"
+			+ "WHERE a.RODNameId = :RODNameId AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId\r\n"
+			+ "AND c.ScheduleMinutesId=b.ScheduleMinutesId AND c.ActionMainId=d.ActionMainId AND d.Assignee=e.empid ORDER BY ScheduleDate";
+	
+	@Override
+	public List<Object[]> RODActionDetails(String rodNameId) throws Exception {
+		Query query =manager.createNativeQuery(NONPROJECTACTIONS);
+		query.setParameter("RODNameId", rodNameId);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String COMMPROSCHEDULELIST = "SELECT COUNT(*)+1 FROM  committee_schedule cs ,committee_meeting_status ms WHERE cs.RODNameId=:RODNameId AND cs.projectid=:projectid AND cs.isactive=1 AND  ms.meetingstatus=cs.scheduleflag AND ms.meetingstatusid > 6 AND cs.scheduledate<:sdate ";
+	@Override
+	public int RODCommProScheduleList(String projectid,String rodNameId,String sdate) throws Exception 
+	{
+		Query query=manager.createNativeQuery(COMMPROSCHEDULELIST);
+		query.setParameter("projectid", projectid);
+		query.setParameter("RODNameId", rodNameId);
+		query.setParameter("sdate", sdate);
+		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
+		return CommProScheduleList.intValue();
 	}
 }

@@ -139,18 +139,22 @@ a:hover {
 										<div class="sparkline13-graph">
 											<div class="datatable-dashv1-list custom-datatable-overright">
 												<div id="toolbar">
-													<select class="form-control dt-tb">
+												<!-- 	<select class="form-control dt-tb">
 														<option value="">Export Basic</option>
 														<option value="all">Export All</option>
 														<option value="selected">Export Selected</option>
-													</select>
+													</select> -->
+													<span class="badge">PDC COLOR CODES:</span>
+												<span class="badge badge-primary  p-2">PDC ON TODAY</span>
+												<span class="badge badge-success p-2">UPCOMING PDC</span>
+												<span class="badge badge-danger p-2">MISSED PDC</span>
 												</div>
-												<div align="right" style="height:30px;width:100%;">
+											<!-- 	<div align="right" style="height:30px;width:100%;">
 												<span class="badge">PDC COLOR CODES:</span>
 												<span class="badge badge-primary  p-2">PDC ON TODAY</span>
 												<span class="badge badge-success p-2">UPCOMING PDC</span>
 												<span class="badge badge-danger p-2">MISSED PDC</span>
-												 </div>
+												 </div> -->
 												<table id="table" data-toggle="table" data-pagination="true"
 													data-search="true" data-show-columns="true"
 													data-show-pagination-switch="true" data-show-refresh="true"

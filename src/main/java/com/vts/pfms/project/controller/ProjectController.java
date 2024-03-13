@@ -245,67 +245,67 @@ public class ProjectController
     		return "static/Error";
 		} 
 	}
-	
-	@RequestMapping(value="ProjectOverAllRequirement.htm")
-	public String ProjectOverallRequirement(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
-	{	
-		String UserId=(String)ses.getAttribute("Username");
-		String LabCode =(String ) ses.getAttribute("labcode");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		String LoginType=(String)ses.getAttribute("LoginType");
-		logger.info(new Date() +"Inside ProjectOverAllRequirement.htm"+UserId);
-		try {
-			String Project=req.getParameter("project");
-			if(Project!=null) {
-			String[]project=Project.split("/");
-			String initiationid=project[0];
-			String projectshortName=project[1];
-			String projectTitle=project[2];
-			req.setAttribute("initiationid", initiationid);
-			req.setAttribute("projectshortName",projectshortName );
-			req.setAttribute("RequirementList", service.RequirementList(initiationid) );
-			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-			req.setAttribute("ProjectDetailes", ProjectDetailes);
-			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
-			req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
-			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-			req.setAttribute("project", Project);
-			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
-			req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid));
-	
-			req.setAttribute("MemberList", service.reqMemberList(initiationid));
-			req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
-			
-			}else {
-				if(service.ProjectIntiationList(EmpId,LoginType,LabCode).size()>0) {
-					String projectshortName=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[4].toString();
-					String initiationid=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[0].toString();
-					req.setAttribute("initiationid", initiationid);
-					req.setAttribute("projectshortName",projectshortName);
-				    req.setAttribute("project", initiationid+"/"+projectshortName+"/"+"NA");
-					req.setAttribute("RequirementList", service.RequirementList(initiationid) );
-					Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-					req.setAttribute("ProjectDetailes", ProjectDetailes);
-					req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
-					req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
-					req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-					req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
-					req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid));
-					req.setAttribute("MemberList", service.reqMemberList(initiationid));
-					req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
-				}
-			}
-			req.setAttribute("TotalEmployeeList", service.EmployeeList(LabCode));
-			req.setAttribute("LabList", service.LabListDetails(LabCode));
-			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
-		
-		}catch (Exception e) {
-			e.printStackTrace(); 
-			logger.error(new Date() +" Inside ProjectOverAllRequirement.htm "+UserId, e);
-			return "static/Error";
-		}
-		return "project/ProjectOverallRequirement";
-	}
+//	
+//	@RequestMapping(value="ProjectOverAllRequirement.htm")
+//	public String ProjectOverallRequirement(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
+//	{	
+//		String UserId=(String)ses.getAttribute("Username");
+//		String LabCode =(String ) ses.getAttribute("labcode");
+//		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//		String LoginType=(String)ses.getAttribute("LoginType");
+//		logger.info(new Date() +"Inside ProjectOverAllRequirement.htm"+UserId);
+//		try {
+//			String Project=req.getParameter("project");
+//			if(Project!=null) {
+//			String[]project=Project.split("/");
+//			String initiationid=project[0];
+//			String projectshortName=project[1];
+//			String projectTitle=project[2];
+//			req.setAttribute("initiationid", initiationid);
+//			req.setAttribute("projectshortName",projectshortName );
+//			req.setAttribute("RequirementList", service.RequirementList(initiationid) );
+//			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+//			req.setAttribute("ProjectDetailes", ProjectDetailes);
+//			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
+//			req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
+//			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
+//			req.setAttribute("project", Project);
+//			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
+//			req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid));
+//	
+//			req.setAttribute("MemberList", service.reqMemberList(initiationid));
+//			req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
+//			
+//			}else {
+//				if(service.ProjectIntiationList(EmpId,LoginType,LabCode).size()>0) {
+//					String projectshortName=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[4].toString();
+//					String initiationid=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[0].toString();
+//					req.setAttribute("initiationid", initiationid);
+//					req.setAttribute("projectshortName",projectshortName);
+//				    req.setAttribute("project", initiationid+"/"+projectshortName+"/"+"NA");
+//					req.setAttribute("RequirementList", service.RequirementList(initiationid) );
+//					Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+//					req.setAttribute("ProjectDetailes", ProjectDetailes);
+//					req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
+//					req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
+//					req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
+//					req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
+//					req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid));
+//					req.setAttribute("MemberList", service.reqMemberList(initiationid));
+//					req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
+//				}
+//			}
+//			req.setAttribute("TotalEmployeeList", service.EmployeeList(LabCode));
+//			req.setAttribute("LabList", service.LabListDetails(LabCode));
+//			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
+//		
+//		}catch (Exception e) {
+//			e.printStackTrace(); 
+//			logger.error(new Date() +" Inside ProjectOverAllRequirement.htm "+UserId, e);
+//			return "static/Error";
+//		}
+//		return "project/ProjectOverallRequirement";
+//	}
 	@RequestMapping(value = "ProjectRequirement.htm")
 	public String ProjectRequirement(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
@@ -340,7 +340,7 @@ public class ProjectController
 			req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
 			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
 			req.setAttribute("ParaDetails", service.ReqParaDetails(initiationid));
-			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
+			//req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
 			}
 			else {
 				if(ProjectIntiationList.size()>0) {
@@ -354,7 +354,7 @@ public class ProjectController
 				if(!service.RequirementList(initiationid).isEmpty()) {
 					req.setAttribute("initiationReqId", service.RequirementList(initiationid).get(0)[0].toString());
 					}
-				req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
+				//req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
 				req.setAttribute("ParaDetails", service.ReqParaDetails(initiationid));
 				req.setAttribute("RequirementList", service.RequirementList(initiationid) );
 				req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
@@ -369,6 +369,86 @@ public class ProjectController
 		return "project/ProjectRequirements";
 	}
 
+	
+	// new
+	
+	@RequestMapping(value="ProjectOverAllRequirement.htm")
+	public String ProjectOverallRequirement(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
+	{	
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType=(String)ses.getAttribute("LoginType");
+		logger.info(new Date() +"Inside ProjectOverAllRequirement.htm"+UserId);
+		try {
+			
+			List<Object[]>projectList=service.ProjectIntiationList(EmpId,LoginType,LabCode);
+			
+			if(projectList.size()==0) {
+				redir.addAttribute("resultfail","No Project is Assigned to you!");
+				return  "redirect:/MainDashBoard.htm";
+			}
+			
+			
+			String Project=req.getParameter("project");
+			if(Project!=null) {
+			String[]project=Project.split("/");
+			String initiationid=project[0];
+			String projectshortName=project[1];
+			String projectTitle=project[2];
+			String ProjectId="0";
+			req.setAttribute("initiationid", initiationid);
+			req.setAttribute("projectshortName",projectshortName );
+			req.setAttribute("RequirementList", service.RequirementList(initiationid) );
+			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+			req.setAttribute("ProjectDetailes", ProjectDetailes);
+			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
+			req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
+			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
+			req.setAttribute("project", Project);
+			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid, ProjectId));
+			req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid, ProjectId));
+			req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
+			req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid,ProjectId ));
+		
+			
+			
+			}else {
+				if(projectList.size()>0) {
+					String projectshortName=projectList.get(0)[4].toString();
+					String initiationid=projectList.get(0)[0].toString();
+					req.setAttribute("initiationid", initiationid);
+					req.setAttribute("projectshortName",projectshortName);
+				    req.setAttribute("project", initiationid+"/"+projectshortName+"/"+"NA");
+					req.setAttribute("RequirementList", service.RequirementList(initiationid) );
+					Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+					req.setAttribute("ProjectDetailes", ProjectDetailes);
+					req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
+					req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
+					req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
+					String ProjectId="0";
+					req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid, ProjectId));
+					req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid,ProjectId));
+					req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
+					req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid, ProjectId));
+					String ProjectType=req.getParameter("ismain");
+				
+				
+				}
+			}
+			req.setAttribute("TotalEmployeeList", service.EmployeeList(LabCode));
+			req.setAttribute("LabList", service.LabListDetails(LabCode));
+			req.setAttribute("ProjectIntiationList", projectList);
+			req.setAttribute("ProjectType", "I");
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ProjectOverAllRequirement.htm "+UserId, e);
+			return "static/Error";
+		}
+		return "project/ProjectOverallRequirement";
+	}
+	
+	
 	@RequestMapping(value = "ProjectSanction.htm")
 	public String ProjectSanction(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -1098,7 +1178,14 @@ public class ProjectController
 				String  r=req.getParameter("reqtype");
 				String[]reqtype=r.split(" ");
 				Long reqTypeId=Long.parseLong(reqtype[0]);
-				Long a=	(Long)service.numberOfReqTypeId(req.getParameter("IntiationId"));
+				
+				String projectId=req.getParameter("projectId");
+				
+				if(projectId==null) {
+					projectId="0";
+				}
+				
+				Long a=	(Long)service.numberOfReqTypeId(req.getParameter("IntiationId"),projectId);
 				String requirementId="";
 				if(a<90L) {
 				 requirementId=reqtype[2]+reqtype[1]+("000"+(a+10));
@@ -2982,12 +3069,20 @@ public class ProjectController
 		
 		try {
 			String initiationid = req.getParameter("initiationid");
+			
 			String projectcode=req.getParameter("projectcode");
 			String project=req.getParameter("project");
+			
+			// new projetcid
+			String projectId= req.getParameter("projectId");
+			if(projectId==null) {
+				projectId="0";
+			}
+			
 			req.setAttribute("initiationid", initiationid);
 			req.setAttribute("project", project);
-			req.setAttribute("Otherrequirements", service.projecOtherRequirements(initiationid));
-			req.setAttribute("RequirementList", service.otherProjectRequirementList(initiationid));
+			req.setAttribute("Otherrequirements", service.projecOtherRequirements(initiationid,projectId)); //changed the code here pass the projectId
+			req.setAttribute("RequirementList", service.otherProjectRequirementList(initiationid,projectId)); // changed the code here pass the projectId
 			req.setAttribute("MainId", req.getParameter("MainId")==null?"0":req.getParameter("MainId"));
 		}catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +" Inside OtherRequirement.htm "+UserId, e);
@@ -3001,14 +3096,15 @@ public class ProjectController
 		logger.info(new Date() +"Inside RequirementPara.htm "+UserId);
 		
 		try {
+			//get the projectId here if it is coming null make it as 0,same goes for InitiationId
 			String initiationid = req.getParameter("initiationid");
 			String projectcode=req.getParameter("projectcode");
 			String project=req.getParameter("project");
 			req.setAttribute("initiationid", initiationid);
 			req.setAttribute("project", project);
 			req.setAttribute("projectcode", projectcode);
-			req.setAttribute("SQRFile", service.SqrFiles(initiationid));
-			req.setAttribute("ParaDetails", service.ReqParaDetails(initiationid));
+			req.setAttribute("SQRFile", service.SqrFiles(initiationid)); //changed the code here pass the projectId
+			req.setAttribute("ParaDetails", service.ReqParaDetails(initiationid)); //changed the code here pass the projectId
 			req.setAttribute("paracounts", req.getParameter("paracounts")==null?"1":req.getParameter("paracounts"));
 		}catch(Exception e) {
 			logger.error(new Date() +" Inside RequirementPara.htm "+UserId, e);
@@ -3100,9 +3196,17 @@ public class ProjectController
 			String ReqName=req.getParameter("ReqName");
 			String initiationid= req.getParameter("initiationid");
 			String subreqName=req.getParameter("subreqName");
+			String projectId=req.getParameter("projectId");
+			if(projectId==null) {
+				projectId="0";
+			}
+			if(initiationid==null) {
+				initiationid="0";
+			}
 			ProjectOtherReqDto pd= new ProjectOtherReqDto();
 			pd.setInitiationId(Long.parseLong(initiationid));
 			pd.setReqMainId(Long.parseLong(Mainid));
+			pd.setProjectId(Long.parseLong(projectId));
 			pd.setRequirementName(ReqName);
 			long count=service.AddOtherRequirement(pd,subreqName);
 			if (count > 0) {
@@ -3110,10 +3214,18 @@ public class ProjectController
 			} else {
 				redir.addAttribute("resultfail", "SubRequirement add Unsuccessful");
 			}
+			if(initiationid!="0") {
 			redir.addAttribute("initiationid", initiationid);
 			redir.addAttribute("project", req.getParameter("project"));
-			redir.addAttribute("Otherrequirements", service.projecOtherRequirements(initiationid));
+			redir.addAttribute("Otherrequirements", service.projecOtherRequirements(initiationid,projectId));
 			redir.addAttribute("MainId",Mainid);
+			return "redirect:/OtherRequirement.htm";
+		}else {
+			redir.addAttribute("initiationid", initiationid);
+			redir.addAttribute("MainId",Mainid);
+			redir.addAttribute("projectId",projectId);
+			return "redirect:/OtherMainRequirement.htm";
+		}
 		}
 		catch(Exception e) {
 			e.printStackTrace(); logger.error(new Date() +" Inside ProjectOtherReqAdd.htm "+UserId, e);
@@ -3127,12 +3239,18 @@ public class ProjectController
 		try {
 			String RequirementName=req.getParameter("RequirementName");
 			String RequirementId=req.getParameter("RequirementId");
-			String initiationid=req.getParameter("initiationid");
+			String initiationid=req.getParameter("initiationid");   //same get the projectId and if it is null pass 0
 			String Mainid=req.getParameter("Mainid");
 			ProjectOtherReqDto pd= new ProjectOtherReqDto();
 			pd.setRequirementName(RequirementName);
 			pd.setRequirementId(Long.parseLong(RequirementId));
-			
+			String projectId=req.getParameter("projectId");
+			if(projectId==null) {
+				projectId="0";
+			}
+			if(initiationid==null) {
+				initiationid="0";
+			}
 			long count=service.UpdateOtherRequirementName(pd);
 			if (count > 0) {
 				redir.addAttribute("result", "Sub requirement updated Successfully");
@@ -3141,7 +3259,7 @@ public class ProjectController
 			}
 			redir.addAttribute("initiationid", initiationid);
 			redir.addAttribute("project", req.getParameter("project"));
-			redir.addAttribute("Otherrequirements", service.projecOtherRequirements(initiationid));
+			redir.addAttribute("Otherrequirements", service.projecOtherRequirements(initiationid,projectId));
 			redir.addAttribute("MainId",Mainid);
 			
 		}catch(Exception e) {
@@ -3157,6 +3275,14 @@ public class ProjectController
 			String Details=req.getParameter("Details");
 			String project=req.getParameter("project");
 			String initiationid=req.getParameter("initiationid");
+			String projectId=req.getParameter("projectId");
+			if(projectId==null) {
+				projectId="0";
+			}
+			if(initiationid==null) {
+				initiationid="0";
+			}
+			
 			String MainId=req.getParameter("MainId");
 			String ReqName=req.getParameter("ReqName");
 			String ReqParentId=req.getParameter("ReqParentId");
@@ -3173,11 +3299,17 @@ public class ProjectController
 			} else {
 				redir.addAttribute("resultfail", ReqName+" Details update Unsuccessful");
 			}
+			if(initiationid!="0") {
 			redir.addAttribute("initiationid", initiationid);
 			redir.addAttribute("project", req.getParameter("project"));
-			redir.addAttribute("Otherrequirements", service.projecOtherRequirements(initiationid));
+			redir.addAttribute("Otherrequirements", service.projecOtherRequirements(initiationid,projectId));
 			redir.addAttribute("MainId",MainId);
-			
+			}else {
+				redir.addAttribute("initiationid", initiationid);
+				redir.addAttribute("MainId",MainId);
+				redir.addAttribute("projectId",projectId);
+				return "redirect:/OtherMainRequirement.htm";
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -3185,41 +3317,103 @@ public class ProjectController
 		return "redirect:/OtherRequirement.htm";
 	}
 	
+//	@RequestMapping(value="RequiremnetIntroSubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+//	public String RequiremnetIntroSubmit(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) {
+//		String UserId=(String)ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside RequiremnetIntroSubmit.htm "+UserId);
+//		try {
+//		String initiationid=req.getParameter("initiationid");
+//		String project=req.getParameter("project");
+//		String attributes=req.getParameter("attributes");
+//		String Details=req.getParameter("Details");
+//		Object[]RequirementInto=service.RequirementIntro(initiationid);
+//		long count=0l;
+//		if(RequirementInto==null) {
+//			count=service.ReqIntroSubmit(initiationid,attributes,Details,UserId);
+//		}else {
+//			count=service.reqIntroUpdate(initiationid,attributes,Details,UserId);
+//			if (count > 0) {
+//				redir.addAttribute("result", attributes+" updated Successfully");
+//			} else {
+//				redir.addAttribute("resultfail", attributes+" update Unsuccessful");
+//			}
+//			redir.addAttribute("initiationid", initiationid);
+//			redir.addAttribute("project", req.getParameter("project"));
+//			redir.addAttribute("attributes", attributes);
+//			return "redirect:/ProjectRequiremntIntroduction.htm";
+//		}
+//		if (count > 0) {
+//			redir.addAttribute("result", attributes+" added Successfully");
+//		} else {
+//			redir.addAttribute("resultfail", attributes+" add Unsuccessful");
+//		}
+//		redir.addAttribute("initiationid", initiationid);
+//		redir.addAttribute("project", req.getParameter("project"));
+//		return "redirect:/ProjectRequiremntIntroduction.htm";
+//		}catch(Exception e) {
+//			
+//		}
+//		return null;
+//	}
+	
+	
 	@RequestMapping(value="RequiremnetIntroSubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	public String RequiremnetIntroSubmit(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) {
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside RequiremnetIntroSubmit.htm "+UserId);
 		try {
 		String initiationid=req.getParameter("initiationid");
+		String ProjectId=req.getParameter("projectId");
 		String project=req.getParameter("project");
 		String attributes=req.getParameter("attributes");
 		String Details=req.getParameter("Details");
-		Object[]RequirementInto=service.RequirementIntro(initiationid);
+		if(initiationid==null) {
+			initiationid="0";
+		}
+		if(ProjectId==null) {
+			ProjectId="0";
+		}
+		Object[]RequirementInto=service.RequirementIntro(initiationid, ProjectId);
 		long count=0l;
 		if(RequirementInto==null) {
-			count=service.ReqIntroSubmit(initiationid,attributes,Details,UserId);
+			// this is for add
+			count=service.ReqIntroSubmit(initiationid,ProjectId,attributes,Details,UserId);
 		}else {
-			count=service.reqIntroUpdate(initiationid,attributes,Details,UserId);
+//			this is for edit 
+			count=service.reqIntroUpdate(initiationid,ProjectId,attributes,Details,UserId);
 			if (count > 0) {
 				redir.addAttribute("result", attributes+" updated Successfully");
 			} else {
 				redir.addAttribute("resultfail", attributes+" update Unsuccessful");
 			}
+			if(initiationid!="0") {
 			redir.addAttribute("initiationid", initiationid);
 			redir.addAttribute("project", req.getParameter("project"));
 			redir.addAttribute("attributes", attributes);
 			return "redirect:/ProjectRequiremntIntroduction.htm";
+			}else {
+				redir.addAttribute("projectId", ProjectId);
+				redir.addAttribute("attributes", attributes);
+				return "redirect:/ProjectRequiremntIntroductionMain.htm";
+			}
 		}
 		if (count > 0) {
 			redir.addAttribute("result", attributes+" added Successfully");
 		} else {
 			redir.addAttribute("resultfail", attributes+" add Unsuccessful");
 		}
+		if(initiationid!="0") {
 		redir.addAttribute("initiationid", initiationid);
 		redir.addAttribute("project", req.getParameter("project"));
+		redir.addAttribute("attributes", attributes);
 		return "redirect:/ProjectRequiremntIntroduction.htm";
+		}else {
+			redir.addAttribute("projectId", ProjectId);
+			redir.addAttribute("attributes", attributes);
+			return "redirect:/ProjectRequiremntIntroductionMain.htm";
+		}
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -3229,8 +3423,16 @@ public class ProjectController
 		logger.info(new Date() +"Inside RequirementIntro.htm "+UserId);
 		Object[]RequirementIntroDetails=null;
 		try {
-			System.out.println(req.getParameter("initiationid"));
-			RequirementIntroDetails=service.RequirementIntro(req.getParameter("initiationid"));
+			String ProjectId=req.getParameter("projectId");
+			String InitiationId=req.getParameter("initiationid");
+			if(ProjectId==null) {
+				ProjectId="0";
+			}
+			if(InitiationId==null) {
+				InitiationId="0";
+			}
+
+			RequirementIntroDetails=service.RequirementIntro(InitiationId,ProjectId);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -3249,6 +3451,13 @@ public class ProjectController
 			String initiationid=req.getParameter("initiationid");
 			String project=req.getParameter("project");
 			String []Array=req.getParameterValues("ReqValue");
+			String projectId=req.getParameter("projectId");
+			if(projectId==null) {
+				projectId="0";
+			}
+			if(initiationid==null) {
+				initiationid="0";
+			}
 			long count=0l;
 			if(Array==null) {
 				
@@ -3260,12 +3469,21 @@ public class ProjectController
 				ReqNames[i]=x[1];
 				ReqValue[i]=x[0];
 			}
-			 count=service.AddOtherRequirementDetails(ReqNames,ReqValue,initiationid);
+//			 count=service.AddOtherRequirementDetails(ReqNames,ReqValue,initiationid);
+			 count=service.AddOtherRequirementDetails(ReqNames,ReqValue,initiationid,projectId); //changed
 			}
+			if(initiationid!="0") {
+			System.out.println("Hiiiiii");
 			redir.addAttribute("initiationid", initiationid);
 			redir.addAttribute("project", req.getParameter("project"));
-			redir.addAttribute("Otherrequirements", service.projecOtherRequirements(initiationid));
-		}catch(Exception e) {
+			redir.addAttribute("Otherrequirements", service.projecOtherRequirements(initiationid,projectId));
+			return "redirect:/OtherRequirement.htm";
+			}else {
+				redir.addAttribute("initiationid", initiationid);
+				redir.addAttribute("projectId", projectId);
+				return "redirect:/OtherMainRequirement.htm";
+			}
+			}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return "redirect:/OtherRequirement.htm";
@@ -3276,7 +3494,19 @@ public class ProjectController
 		logger.info(new Date() +"Inside OtherSubRequirements.htm "+UserId);
 		List<Object[]>OtherSubRequirements=null;
 		try {
-			OtherSubRequirements=service.OtherRequirementList(req.getParameter("initiationid"),req.getParameter("Mainid"));
+			
+			String initiationId=req.getParameter("initiationid");
+			String projectId= req.getParameter("projectId");
+			
+			if(initiationId==null) {
+				initiationId="0";
+			}
+			if(projectId==null) {
+				projectId="0";
+			}
+			
+			
+			OtherSubRequirements=service.OtherRequirementList(initiationId,req.getParameter("Mainid"),projectId);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -3297,9 +3527,19 @@ public class ProjectController
 			String ReqParentId=req.getParameter("ReqParentId");
 			String initiationid=req.getParameter("initiationid");
 			String RequirementId=req.getParameter("RequirementId");
-			pd.setInitiationId(Long.parseLong(initiationid));
-			pd.setReqMainId(Long.parseLong(MainId));
-			pd.setReqParentId(Long.parseLong(ReqParentId));
+			String projectId = req.getParameter("projectId");
+			
+//			if(initiationid!=null) {
+//				initiationid="0";
+//			}
+//			if(projectId!=null) {
+//				projectId="0";
+//			}
+			
+//			pd.setInitiationId(Long.parseLong(initiationid));
+//			pd.setReqMainId(Long.parseLong(MainId));
+//			pd.setReqParentId(Long.parseLong(ReqParentId));
+			//pd.setProjectId(Long.parseLong(projectId));
 			OtherSubRequirements=service.OtherSubRequirementsDetails(pd,RequirementId);
 		}
 		catch(Exception e){
@@ -5737,6 +5977,95 @@ public class ProjectController
 		return json.toJson(count);
 	}
 	//Requirement Pdf
+//	@RequestMapping(value = "RequirementDocumentDownlod.htm" )
+//	public String RequirementDocumentDownlod(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//		String LabCode =(String ) ses.getAttribute("labcode");
+//		logger.info(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId);
+//		try {
+//			
+//			Object[] DocTempAttributes =null;
+//			
+//			DocTempAttributes=service.DocTempAttributes();
+//			
+//			req.setAttribute("DocTempAttributes", DocTempAttributes);
+//			
+//			String initiationid=req.getParameter("initiationid");
+//			Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+//			String filename="ProjectRequirement";
+//			String path=req.getServletContext().getRealPath("/view/temp");
+//		  	req.setAttribute("path",path);
+//		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+//		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
+//		  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+//		  	req.setAttribute("LabList", service.LabListDetails(LabCode));
+//		  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
+//		  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
+//		  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
+//		  	req.setAttribute("uploadpath", uploadpath);
+//		  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
+//		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
+//		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
+//		  	req.setAttribute("Verifications", service.getVerificationList(initiationid));
+//		  	req.setAttribute("MemberList", service.reqMemberList(initiationid));
+//		 	req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
+//			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+//			//req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
+//			String html = customResponse.getOutput();
+//		  	List<Object[]>AcronymsList= service.AcronymsList(initiationid);
+//			req.setAttribute("AcronymsList", AcronymsList);
+//			req.setAttribute("PerformanceList", service.getPerformanceList(initiationid));;
+//		  	req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(initiationid));
+//			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid);
+//			File my_file=null;
+//			my_file=new File(uploadpath+VerificationExcelData[1]+File.separator+VerificationExcelData[2]);
+//			
+//			if(my_file!=null) {
+//				String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
+//		        req.setAttribute("htmlContent", htmlContent);
+//			}
+//			
+////			ConverterProperties converterProperties = new ConverterProperties();
+////	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+////	    	converterProperties.setFontProvider(dfp);
+////
+////			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+////			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+////			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+////			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+////			pdfDocument.close();
+////			pdf1.close();	       
+////	        pdfw.close();
+////			res.setContentType("application/pdf");
+////	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+////	        File f=new File(path+"/"+filename+".pdf");
+////	      
+////	        OutputStream out = res.getOutputStream();
+////			FileInputStream in = new FileInputStream(f);
+////			byte[] buffer = new byte[4096];
+////			int length;
+////			while ((length = in.read(buffer)) > 0) {
+////				out.write(buffer, 0, length);
+////			}
+////			in.close();
+////			out.flush();
+////			out.close();
+////			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+////	        Files.delete(pathOfFile2);	
+//			
+//			
+//		}catch(Exception e) {
+//			e.printStackTrace(); 
+//			logger.error(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId,e);
+//		}
+//		
+//		return "print/RequirementDownload";
+//
+//	}
+	
+	
+	
 	@RequestMapping(value = "RequirementDocumentDownlod.htm" )
 	public String RequirementDocumentDownlod(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
 	{
@@ -5744,7 +6073,7 @@ public class ProjectController
 		String LabCode =(String ) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId);
 		try {
-			
+			String ProjectId="0";
 			Object[] DocTempAttributes =null;
 			
 			DocTempAttributes=service.DocTempAttributes();
@@ -5765,19 +6094,18 @@ public class ProjectController
 		  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
 		  	req.setAttribute("uploadpath", uploadpath);
 		  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
-		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
+		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid, ProjectId));
 		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
 		  	req.setAttribute("Verifications", service.getVerificationList(initiationid));
-		  	req.setAttribute("MemberList", service.reqMemberList(initiationid));
-		 	req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
-			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-			//req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
-			String html = customResponse.getOutput();
-		  	List<Object[]>AcronymsList= service.AcronymsList(initiationid);
+		  	req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
+		 	req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid, ProjectId));
+	
+		  	List<Object[]>AcronymsList= service.AcronymsList(initiationid, ProjectId);
 			req.setAttribute("AcronymsList", AcronymsList);
-			req.setAttribute("PerformanceList", service.getPerformanceList(initiationid));;
-		  	req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(initiationid));
-			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid);
+			req.setAttribute("PerformanceList", service.getPerformanceList(initiationid, ProjectId));;
+		
+		  	req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(initiationid, ProjectId));
+			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid,ProjectId);
 			File my_file=null;
 			my_file=new File(uploadpath+VerificationExcelData[1]+File.separator+VerificationExcelData[2]);
 			
@@ -5785,6 +6113,10 @@ public class ProjectController
 				String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
 		        req.setAttribute("htmlContent", htmlContent);
 			}
+		
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
 			
 //			ConverterProperties converterProperties = new ConverterProperties();
 //	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
@@ -5823,7 +6155,6 @@ public class ProjectController
 		return "print/RequirementDownload";
 
 	}
-	
 	 public static String convertExcelToHtml(InputStream inputStream) throws Exception {
 	        Workbook workbook = new XSSFWorkbook(inputStream);
 	        Sheet sheet = workbook.getSheetAt(0); // Assuming you are working with the first sheet
@@ -7312,84 +7643,298 @@ public class ProjectController
 		try {
 			
 			RequirementVerification rv = new RequirementVerification();
-			
-			rv.setProvisions(req.getParameter("Provisions").trim());
-			rv.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			rv.setProvisions(req.getParameter("Provisions"));
+			String initiationid=req.getParameter("initiationid");
+			String ProjectId=req.getParameter("projectId");
+			if(initiationid==null) {
+				initiationid="0";
+			}
+			if(ProjectId==null) {
+				ProjectId="0";
+			}
+			rv.setInitiationId(Long.parseLong(initiationid));
+			rv.setProjectId(Long.parseLong(ProjectId));
 			rv.setCreatedBy(UserId);
 			rv.setCreatedDate(sdf1.format(new Date()));
 			rv.setIsActive(1);
 			long count=service.insertRequirementVerification(rv);
 			if (count > 0) {
+				if(initiationid!="0") {
+				redir.addAttribute("initiationid", req.getParameter("initiationid"));
+				redir.addAttribute("project", req.getParameter("project"));
 				redir.addAttribute("result", "Provision Added Successfully");
+				return "redirect:/RequirementVerify.htm";
+				}
+				else {
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					redir.addAttribute("result", "Provision Added Successfully");
+					return "redirect:/RequirementVerifyMain.htm";
+				}
 			} else {
+				redir.addAttribute("initiationid", req.getParameter("initiationid"));
+				redir.addAttribute("project", req.getParameter("project"));
 				redir.addAttribute("resultfail", "Data add Unsuccessful");
+				
 			}
-			redir.addAttribute("initiationid", req.getParameter("initiationid"));
-			redir.addAttribute("project", req.getParameter("project"));
-			List<Object[]>Verifications=service.getVerificationList(req.getParameter("initiationid"));
-			redir.addAttribute("Verifications", Verifications);
-			redir.addAttribute("verificationId",count+"");
+			//List<Object[]>Verifications=service.getVerificationList(initiationid,ProjectId);
+			//redir.addAttribute("Verifications", Verifications);
+			//redir.addAttribute("verificationId",count+"");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		
-		return "redirect:/RequirementVerify.htm";
+		return "static/Error";
 	}
-	@RequestMapping(value="RequirementProvisionUpdate.htm",method= {RequestMethod.GET, RequestMethod.POST})
-	 public @ResponseBody String RequirementProvisionUpdate(HttpSession ses, HttpServletRequest req) throws Exception {
-		Gson json=new Gson();
-		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date()+ "Inside RequirementProvisionUpdate.htm"+UserId);
-		Long count=0l;
-		try {
-			RequirementVerification rv = new RequirementVerification();
-			rv.setProvisions(req.getParameter("value"));
-			rv.setVerificationId(Long.parseLong(req.getParameter("VerificationId")));;
-			count=service.updateRequirementVerification(rv);
-		}
-		catch(Exception e) {
-			logger.error(new Date()+"Inside insertRequirement.htm"+UserId);
-			e.printStackTrace();
-		}
+//	@RequestMapping(value="RequirementProvisionUpdate.htm",method= {RequestMethod.GET, RequestMethod.POST})
+//	 public @ResponseBody String RequirementProvisionUpdate(HttpSession ses, HttpServletRequest req) throws Exception {
+//		Gson json=new Gson();
+//		String UserId=(String)ses.getAttribute("Username");
+//		logger.info(new Date()+ "Inside RequirementProvisionUpdate.htm"+UserId);
+//		Long count=0l;
+//		try {
+//			RequirementVerification rv = new RequirementVerification();
+//			rv.setProvisions(req.getParameter("value"));
+//			rv.setVerificationId(Long.parseLong(req.getParameter("VerificationId")));;
+//			count=service.updateRequirementVerification(rv);
+//		}
+//		catch(Exception e) {
+//			logger.error(new Date()+"Inside insertRequirement.htm"+UserId);
+//			e.printStackTrace();
+//		}
+//		
+//		return json.toJson(count);
+//	}
+//	@RequestMapping(value = "RequirementProvisionDetailsUpdate.htm", method= {RequestMethod.POST,RequestMethod.GET})
+//	public String RequirementProvisionDetailsUpdate(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception {
+//		String UserId=(String)ses.getAttribute("Username");
+//		logger.info(new Date()+ "Inside RequirementProvisionDetailsUpdate.htm"+UserId);
+//		
+//		try {
+//			
+//			RequirementVerification rv = new RequirementVerification();
+//			System.out.println(req.getParameter("Details"));
+//			
+//			rv.setProvisionsDetails(req.getParameter("Details"));
+//			rv.setVerificationId(Long.parseLong(req.getParameter("verificationId")));;
+//			long count=service.updateRequirementVerificationDetails(rv);
+//			if (count > 0) {
+//				redir.addAttribute("result", "Provision Details Added Successfully");
+//			} else {
+//				redir.addAttribute("resultfail", "Data add Unsuccessful");
+//			}
+//			redir.addAttribute("initiationid", req.getParameter("initiationid"));
+//			redir.addAttribute("project", req.getParameter("project"));
+//			Gson json=new Gson();
+//			List<Object[]>Verifications=service.getVerificationList(req.getParameter("initiationid"));
+//			String Verification=json.toJson(Verifications);		
+//			redir.addAttribute("Verifications", Verifications);
+//			redir.addAttribute("Verification", Verification);
+//			redir.addAttribute("verificationId",req.getParameter("verificationId"));
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return "redirect:/RequirementVerify.htm";
+//	}
+//	
+//	
+	
+	@RequestMapping(value = "VerificationProvisionEdit.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String VerificationProvisionEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		
-		return json.toJson(count);
-	}
-	@RequestMapping(value = "RequirementProvisionDetailsUpdate.htm", method= {RequestMethod.POST,RequestMethod.GET})
-	public String RequirementProvisionDetailsUpdate(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception {
-		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date()+ "Inside RequirementProvisionDetailsUpdate.htm"+UserId);
-		
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside VerificationProvisionEdit.htm "+UserId);
 		try {
-			
-			RequirementVerification rv = new RequirementVerification();
-			System.out.println(req.getParameter("Details"));
-			
+		
+			String initiationid=req.getParameter("initiationid");
+			String projectId =  req.getParameter("projectId");
+			if(initiationid==null) {
+				initiationid="0";
+			}
+			if(projectId== null) {
+				projectId="0";
+			}
+			String VerificationId= req.getParameter("VerificationId");
+			RequirementVerification  rv= new RequirementVerification(); 
+			rv.setVerificationId(Long.parseLong(VerificationId));
+			rv.setProvisions(req.getParameter("Provisions"));
 			rv.setProvisionsDetails(req.getParameter("Details"));
-			rv.setVerificationId(Long.parseLong(req.getParameter("verificationId")));;
-			long count=service.updateRequirementVerificationDetails(rv);
+		
+			String verificationcount = req.getParameter("verificationcount");
+			
+			long count=0;
+		if(req.getParameter("Details")!=null) {
+			count=service.updateRequirementVerificationDetails(rv);
+		}
+			 count=service.updateRequirementVerification(rv);
 			if (count > 0) {
-				redir.addAttribute("result", "Provision Details Added Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Data add Unsuccessful");
-			}
+				if(req.getParameter("Provisions")!=null) {
+			redir.addAttribute("result",  req.getParameter("Provisions") +" updated successfully");
+				}else {
+			redir.addAttribute("resultfail", req.getParameter("Provisions") +" details updated successfully");
+				}
+				if(initiationid!="0") {
+					redir.addAttribute("initiationid", req.getParameter("initiationid"));
+					redir.addAttribute("project", req.getParameter("project"));
+					return "redirect:/RequirementVerify.htm";
+					
+				}
+				else {
+					redir.addAttribute("paracounts",req.getParameter("verificationcount"));
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					return "redirect:/RequirementVerifyMain.htm";
+				}
+				
+				} else {
+			redir.addAttribute("resultfail", " para update Unsuccessful");
+			redir.addAttribute("paracounts",req.getParameter("paracount"));
 			redir.addAttribute("initiationid", req.getParameter("initiationid"));
 			redir.addAttribute("project", req.getParameter("project"));
-			Gson json=new Gson();
-			List<Object[]>Verifications=service.getVerificationList(req.getParameter("initiationid"));
-			String Verification=json.toJson(Verifications);		
-			redir.addAttribute("Verifications", Verifications);
-			redir.addAttribute("Verification", Verification);
-			redir.addAttribute("verificationId",req.getParameter("verificationId"));
-		}catch (Exception e) {
+			}
+			
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/RequirementVerify.htm";
+		return "static/error";
+	}	
+	
+	@RequestMapping(value="VerificationProvisionDetails.htm",method = {RequestMethod.GET})
+	public @ResponseBody String verificationProvision(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside RequirementParaDetails.htm "+UserId);
+		List<Object[]>verificationProvision=null;
+		try {
+			
+			String initiationid =req.getParameter("initiationid");
+			String ProjectId=req.getParameter("projectId");
+			
+			if(initiationid==null) {
+				initiationid="0";
+			}
+			if(ProjectId==null) {
+				ProjectId="0";
+			}
+			
+			verificationProvision=service.VPDetails(initiationid,ProjectId);
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside VerificationProvisionDetails.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(verificationProvision);
 	}
 	
 	
-	
-	
+//	 @RequestMapping(value="ExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+//	 public String DivisionmasterExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+//	 {
+//		 String UserId=(String)ses.getAttribute("Username");
+//		 String LabCode =(String) ses.getAttribute("labcode");
+//		 logger.info(new Date() +"Inside ExcelUpload.htm "+UserId);
+//			String project= req.getParameter("project");
+//			 try{
+//				String action = req.getParameter("Action"); 
+//				String initiationId=req.getParameter("initiationid");
+//		
+//				if("GenerateExcel".equalsIgnoreCase(action)) {
+//						XSSFWorkbook workbook = new XSSFWorkbook();
+//						XSSFSheet sheet =  workbook.createSheet("Abbreviation Details");
+//						XSSFRow row=sheet.createRow(0);
+//						
+//						CellStyle unlockedCellStyle = workbook.createCellStyle();
+//						unlockedCellStyle.setLocked(true);
+//						
+//						row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+//						row.createCell(1).setCellValue("Abbreviation");sheet.setColumnWidth(1, 5000);
+//						row.createCell(2).setCellValue("Meaning");sheet.setColumnWidth(2, 5000);
+//
+//						int r=0;
+//					
+//						row=sheet.createRow(++r);
+//						row.createCell(0).setCellValue(String.valueOf(r));
+//						row.createCell(1).setCellValue("");
+//						row.createCell(2).setCellValue("");
+//
+//					    res.setContentType("application/vnd.ms-excel");
+//			            res.setHeader("Content-Disposition", "attachment; filename=Abbreviation Details.xls");	
+//			            workbook.write(res.getOutputStream());
+//						}else if("UploadExcel".equalsIgnoreCase(action)) {
+//						if(ServletFileUpload.isMultipartContent(req)) {
+//							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
+//							Part filePart = req.getPart("filename");
+//							List<InitiationAbbreviations>iaList=new ArrayList<>();
+//							InputStream fileData = filePart.getInputStream();
+//							Workbook workbook = new XSSFWorkbook(fileData);
+//						     Sheet sheet  = workbook.getSheetAt(0);
+//						     int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
+//						
+//						     for (int i=1;i<=rowCount;i++) {
+//						    	
+//						    	 int cellcount= sheet.getRow(i).getLastCellNum();
+//						    	 InitiationAbbreviations iA= new InitiationAbbreviations();
+//						    	 
+//						    	 for(int j=1;j<cellcount;j++) {
+//						    		
+//						    		 if(sheet.getRow(i).getCell(j)!=null) {
+//						    			 if(j==1) {
+//						    				 switch(sheet.getRow(i).getCell(j).getCellType()) {
+//						    				 case Cell.CELL_TYPE_BLANK:break;
+//						    				 case Cell.CELL_TYPE_NUMERIC:
+//						    					 iA.setAbbreviations(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+//						    					 break;
+//						    				 case Cell.CELL_TYPE_STRING:
+//					                            	iA.setAbbreviations(sheet.getRow(i).getCell(j).getStringCellValue());
+//					                            	break;	 
+//						    				 }
+//						    			 }
+//						    			 
+//						    			 if(j==2) {
+//						    				 switch(sheet.getRow(i).getCell(j).getCellType()) {
+//						    				 case Cell.CELL_TYPE_BLANK:break;
+//						    				 case Cell.CELL_TYPE_NUMERIC:
+//						    					 iA.setMeaning(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+//						    					 break;
+//						    				 case Cell.CELL_TYPE_STRING:
+//					                            	iA.setMeaning(sheet.getRow(i).getCell(j).getStringCellValue());
+//					                            	break;	 
+//						    				 }
+//						    			 
+//						    			 
+//						    			 }	 
+//						    		 }
+//						    	 }
+//						    	 
+//						    	iA.setInitiationId(Long.parseLong(initiationId));
+//						    	
+//						    if(iA.getAbbreviations()!=null && iA.getMeaning()!=null) {
+//						    	iaList.add(iA);
+//						    }
+//						    	
+//						     }
+//						     
+//						    long Count= service.addAbbreviation(iaList); 
+//						    if(Count>0) {
+//						    	redir.addAttribute("project",project);
+//						    	redir.addAttribute("result","Abbreviations Added Successfully");
+//						    	
+//						    }
+//						    
+//						}
+//					}
+//					
+//				}catch(Exception e){
+//					e.printStackTrace();
+//				
+//					redir.addAttribute("resultfail", " Adding Unsuccessfully");
+//					logger.error(new Date() +"Inside ExcelUpload.htm "+UserId,e);
+//				}
+//			 redir.addFlashAttribute("project",project);
+//				return "redirect:/ProjectOverAllRequirement.htm";
+//		 
+//	 }
+//	 
 	 @RequestMapping(value="ExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
 	 public String DivisionmasterExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
 	 {
@@ -7400,7 +7945,7 @@ public class ProjectController
 			 try{
 				String action = req.getParameter("Action"); 
 				String initiationId=req.getParameter("initiationid");
-		
+				String projectId=req.getParameter("projectId");//bharath
 				if("GenerateExcel".equalsIgnoreCase(action)) {
 						XSSFWorkbook workbook = new XSSFWorkbook();
 						XSSFSheet sheet =  workbook.createSheet("Abbreviation Details");
@@ -7469,7 +8014,16 @@ public class ProjectController
 						    		 }
 						    	 }
 						    	 
+						    	 if(initiationId==null) {//bharath
+						    		 initiationId="0";
+						    	 }
+						    	 if(projectId==null) {
+						    		 projectId="0";
+						    	 }
+						    	 
+						    	 
 						    	iA.setInitiationId(Long.parseLong(initiationId));
+						    	iA.setProjectId(Long.parseLong(projectId));//bharath
 						    	
 						    if(iA.getAbbreviations()!=null && iA.getMeaning()!=null) {
 						    	iaList.add(iA);
@@ -7477,11 +8031,21 @@ public class ProjectController
 						    	
 						     }
 						     
-						    long Count= service.addAbbreviation(iaList); 
+						    long Count= service.addAbbreviation(iaList); //bharath
 						    if(Count>0) {
+						    	if(initiationId!="0") {
 						    	redir.addAttribute("project",project);
 						    	redir.addAttribute("result","Abbreviations Added Successfully");
-						    	
+						    	return "redirect:/ProjectOverAllRequirement.htm";
+						    }else {
+						    	redir.addAttribute("projectId",projectId);
+						    	redir.addAttribute("result","Abbreviations Added Successfully");//bharath
+						    	return "redirect:/Requirements.htm";
+						    }
+						    }else {
+						    	redir.addFlashAttribute("project",project);
+						    	redir.addAttribute("resultfail","Abbreviations Add UnSuccessfully");//bharath
+						    	return "redirect:/ProjectOverAllRequirement.htm";
 						    }
 						    
 						}
@@ -7489,15 +8053,41 @@ public class ProjectController
 					
 				}catch(Exception e){
 					e.printStackTrace();
-				
 					redir.addAttribute("resultfail", " Adding Unsuccessfully");
-					logger.error(new Date() +"Inside ExcelUpload.htm "+UserId,e);
+					logger.error(new Date() +"Inside ExcelUpload.htm "+UserId,e);//bharath
 				}
-			 redir.addFlashAttribute("project",project);
-				return "redirect:/ProjectOverAllRequirement.htm";
+			
+				return "static/Error";
 		 
 	 }
 	 
+//	 @RequestMapping(value ="RequirementAppendix.htm",method = {RequestMethod.POST,RequestMethod.GET})
+//	 public String RequirementAppendix( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception{
+//		 
+//		 String UserId=(String)ses.getAttribute("Username");
+//		 String LabCode =(String) ses.getAttribute("labcode");
+//		 logger.info(new Date() +"Inside RequirementAppendix.htm "+UserId);
+//		 try {
+//				String initiationid = req.getParameter("initiationid");
+//				String projectcode=req.getParameter("projectcode");
+//				String project=req.getParameter("project");
+//				req.setAttribute("initiationid", initiationid);
+//				req.setAttribute("project", project);
+//				
+//				List<Object[]>AppendixList= service.AppendixList(initiationid);
+//				req.setAttribute("AppendixList", AppendixList);
+//				
+//				List<Object[]>AcronymsList= service.AcronymsList(initiationid);
+//				req.setAttribute("AcronymsList", AcronymsList);
+//				
+//				req.setAttribute("PerformanceList", service.getPerformanceList(initiationid));;
+//		 }
+//		 catch(Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() +"Inside RequirementAppendix.htm "+UserId,e);
+//		 }
+//		 return "project/RequirementAppendices";
+//	 }
 	 
 	 @RequestMapping(value ="RequirementAppendix.htm",method = {RequestMethod.POST,RequestMethod.GET})
 	 public String RequirementAppendix( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception{
@@ -7507,18 +8097,26 @@ public class ProjectController
 		 logger.info(new Date() +"Inside RequirementAppendix.htm "+UserId);
 		 try {
 				String initiationid = req.getParameter("initiationid");
+				String ProjectId = req.getParameter("ProjectId");//bharath
 				String projectcode=req.getParameter("projectcode");
 				String project=req.getParameter("project");
 				req.setAttribute("initiationid", initiationid);
 				req.setAttribute("project", project);
+				if(initiationid==null) {
+					initiationid="0";
+				}
+				if(ProjectId==null) {
+					ProjectId="0";
+				}
 				
-				List<Object[]>AppendixList= service.AppendixList(initiationid);
-				req.setAttribute("AppendixList", AppendixList);
-				
-				List<Object[]>AcronymsList= service.AcronymsList(initiationid);
+		
+//				List<Object[]>AppendixList= service.AppendixList(initiationid, ProjectId);
+//				req.setAttribute("AppendixList", AppendixList);
+			
+				List<Object[]>AcronymsList= service.AcronymsList(initiationid, ProjectId);
 				req.setAttribute("AcronymsList", AcronymsList);
 				
-				req.setAttribute("PerformanceList", service.getPerformanceList(initiationid));;
+				req.setAttribute("PerformanceList", service.getPerformanceList(initiationid, ProjectId));;
 		 }
 		 catch(Exception e) {
 			e.printStackTrace();
@@ -7567,6 +8165,134 @@ public class ProjectController
 	 }
 	 
 	 
+//	 @RequestMapping(value="AccronymsExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+//	 public String AccronymsExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+//	 {
+//		 String UserId=(String)ses.getAttribute("Username");
+//		 String LabCode =(String) ses.getAttribute("labcode");
+//		 logger.info(new Date() +"Inside ExcelUpload.htm "+UserId);
+//			String project= req.getParameter("project");
+//			 try{
+//					String action = req.getParameter("Action"); 
+//					String initiationId=req.getParameter("initiationid");
+//			
+//					if("GenerateExcel".equalsIgnoreCase(action)) {
+//						XSSFWorkbook workbook = new XSSFWorkbook();
+//						XSSFSheet sheet =  workbook.createSheet("Acronyms");
+//						XSSFRow row=sheet.createRow(0);
+//						
+//						CellStyle unlockedCellStyle = workbook.createCellStyle();
+//						unlockedCellStyle.setLocked(true);
+//						
+//						row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+//						row.createCell(1).setCellValue("Acronyms");sheet.setColumnWidth(1, 5000);
+//						row.createCell(2).setCellValue("Definition");sheet.setColumnWidth(2, 5000);
+//
+//						int r=0;
+//						
+//							row=sheet.createRow(++r);
+//							row.createCell(0).setCellValue(String.valueOf(r));
+//							row.createCell(1).setCellValue("");
+//							row.createCell(2).setCellValue("");
+//
+//						    res.setContentType("application/vnd.ms-excel");
+//				            res.setHeader("Content-Disposition", "attachment; filename=Acronyms.xls");	
+//				            workbook.write(res.getOutputStream());
+//					}
+//					
+//					else if("UploadExcel".equalsIgnoreCase(action)) {
+//						
+//						if(ServletFileUpload.isMultipartContent(req)) {
+//							try {
+//							List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req))	;
+//							Part filePart = req.getPart("filenameA");
+//							
+//							List<RequirementAcronyms> raList = new ArrayList<>();
+//							InputStream fileData = filePart.getInputStream();
+//							
+//							Workbook workbook = new XSSFWorkbook(fileData);
+//							
+//							Sheet sheet = workbook.getSheetAt(0);
+//							
+//							int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum();
+//							
+//							for(int i=1;i<=rowCount;i++) {
+//								
+//								int cellCount= sheet.getRow(i).getLastCellNum();
+//								RequirementAcronyms ra = new RequirementAcronyms();
+//								
+//								for(int j=1;j<cellCount;j++) {
+//									
+//									if(sheet.getRow(i).getCell(j)!=null) {
+//										
+//										if(j==1) {
+//											switch (sheet.getRow(i).getCell(j).getCellType()) {
+//											case Cell.CELL_TYPE_BLANK:
+//												break;
+//											case Cell.CELL_TYPE_NUMERIC:
+//												ra.setAcronyms(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+//												break;
+//											case Cell.CELL_TYPE_STRING:
+//												ra.setAcronyms(sheet.getRow(i).getCell(j).getStringCellValue());
+//												break;
+//											}
+//										}
+//										if(j==2) {
+//											switch (sheet.getRow(i).getCell(j).getCellType()){
+//				                            case Cell.CELL_TYPE_BLANK:
+//				                            	break;
+//				                            case Cell.CELL_TYPE_NUMERIC:
+//				                            	 ra.setDefinition(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+//				                            	 break;
+//				                            case Cell.CELL_TYPE_STRING:
+//				                            	 ra.setDefinition(sheet.getRow(i).getCell(j).getStringCellValue().toString());
+//				                            	 break;
+//						                	}
+//										}
+//										
+//										
+//									}
+//									
+//									ra.setInitiationId(Long.parseLong(initiationId));
+//									ra.setIsActive(1);
+//									
+//									if(ra.getAcronyms()!=null && ra.getDefinition()!=null) {
+//									raList.add(ra);
+//									}
+//									
+//								}
+//							}
+//							
+//							System.out.println(raList.size()+"---");
+//							
+//							long count = service.addReqAcronyms(raList);
+//							
+//							if(count>0) {
+//								redir.addAttribute("result","Acronyms added Successfully");
+//								redir.addAttribute("initiationid", initiationId);
+//								redir.addAttribute("project", project);
+//								 return "redirect:/RequirementAppendix.htm";
+//							}else {
+//								redir.addAttribute("resultfail","Acronyms add Unsuccessful");
+//								redir.addAttribute("initiationid", initiationId);
+//								redir.addAttribute("project", project);
+//								 return "redirect:/RequirementAppendix.htm";
+//							}
+//							
+//							}
+//							catch (Exception e) {
+//								e.printStackTrace();
+//							}
+//						}
+//					}
+//			 }
+//					catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//			
+//			 return "redirect:/RequirementAppendix.htm";
+//	 }		
+//	 
 	 @RequestMapping(value="AccronymsExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
 	 public String AccronymsExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
 	 {
@@ -7577,6 +8303,7 @@ public class ProjectController
 			 try{
 					String action = req.getParameter("Action"); 
 					String initiationId=req.getParameter("initiationid");
+					String ProjectId=req.getParameter("projectId");//bharath
 			
 					if("GenerateExcel".equalsIgnoreCase(action)) {
 						XSSFWorkbook workbook = new XSSFWorkbook();
@@ -7654,8 +8381,14 @@ public class ProjectController
 										
 										
 									}
-									
+									if(initiationId==null) {//bharath
+										initiationId="0";
+									}
+									if(ProjectId==null) {
+										ProjectId="0";
+									}
 									ra.setInitiationId(Long.parseLong(initiationId));
+									ra.setProjectId(Long.parseLong(ProjectId));
 									ra.setIsActive(1);
 									
 									if(ra.getAcronyms()!=null && ra.getDefinition()!=null) {
@@ -7670,11 +8403,20 @@ public class ProjectController
 							long count = service.addReqAcronyms(raList);
 							
 							if(count>0) {
+								if(initiationId!="0") {
 								redir.addAttribute("result","Acronyms added Successfully");
 								redir.addAttribute("initiationid", initiationId);
 								redir.addAttribute("project", project);
 								 return "redirect:/RequirementAppendix.htm";
-							}else {
+							}
+								else {
+									redir.addAttribute("projectId",ProjectId);
+							    	redir.addAttribute("result","Acronyms added Successfully");
+							    	return "redirect:/RequirementAppendixMain.htm";
+									}
+								}
+								
+								else {
 								redir.addAttribute("resultfail","Acronyms add Unsuccessful");
 								redir.addAttribute("initiationid", initiationId);
 								redir.addAttribute("project", project);
@@ -7684,7 +8426,7 @@ public class ProjectController
 							}
 							catch (Exception e) {
 								e.printStackTrace();
-							}
+							}//bharath
 						}
 					}
 			 }
@@ -7692,10 +8434,139 @@ public class ProjectController
 						e.printStackTrace();
 					}
 			
-			 return "redirect:/RequirementAppendix.htm";
+				return "static/Error";
 	 }		
 	 
-
+//	 @RequestMapping(value="PerformanceExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+//	 public String PerformanceExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+//	 {
+//		 String UserId=(String)ses.getAttribute("Username");
+//		 String LabCode =(String) ses.getAttribute("labcode");
+//		 logger.info(new Date() +"Inside ExcelUpload.htm "+UserId);
+//			String project= req.getParameter("project");
+//			 try{
+//					String action = req.getParameter("Action"); 
+//					String initiationId=req.getParameter("initiationid");
+//			
+//					if("GenerateExcel".equalsIgnoreCase(action)) {
+//						XSSFWorkbook workbook = new XSSFWorkbook();
+//						XSSFSheet sheet =  workbook.createSheet("PerformanceParameters");
+//						XSSFRow row=sheet.createRow(0);
+//						
+//						CellStyle unlockedCellStyle = workbook.createCellStyle();
+//						unlockedCellStyle.setLocked(true);
+//						
+//						row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+//						row.createCell(1).setCellValue("Key MOE'S");sheet.setColumnWidth(1, 5000);
+//						row.createCell(2).setCellValue("Values");sheet.setColumnWidth(2, 5000);
+//
+//						int r=0;
+//						
+//							row=sheet.createRow(++r);
+//							row.createCell(0).setCellValue(String.valueOf(r));
+//							row.createCell(1).setCellValue("");
+//							row.createCell(2).setCellValue("");
+//
+//						    res.setContentType("application/vnd.ms-excel");
+//				            res.setHeader("Content-Disposition", "attachment; filename=PerformanceParameters.xls");	
+//				            workbook.write(res.getOutputStream());
+//					}
+//
+//		else if("UploadExcel".equalsIgnoreCase(action)) {
+//						
+//						if(ServletFileUpload.isMultipartContent(req)) {
+//							try {
+//							List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req))	;
+//							Part filePart = req.getPart("filenameB");
+//							
+//							List<RequirementPerformanceParameters> raList = new ArrayList<>();
+//							InputStream fileData = filePart.getInputStream();
+//							
+//							Workbook workbook = new XSSFWorkbook(fileData);
+//							
+//							Sheet sheet = workbook.getSheetAt(0);
+//							
+//							int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum();
+//							
+//							for(int i=1;i<=rowCount;i++) {
+//								
+//								int cellCount= sheet.getRow(i).getLastCellNum();
+//								RequirementPerformanceParameters ra = new RequirementPerformanceParameters();
+//								
+//								for(int j=1;j<cellCount;j++) {
+//									
+//									if(sheet.getRow(i).getCell(j)!=null) {
+//										
+//										if(j==1) {
+//											switch (sheet.getRow(i).getCell(j).getCellType()) {
+//											case Cell.CELL_TYPE_BLANK:
+//												break;
+//											case Cell.CELL_TYPE_NUMERIC:
+//												ra.setKeyEffectiveness(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+//												break;
+//											case Cell.CELL_TYPE_STRING:
+//												ra.setKeyEffectiveness(sheet.getRow(i).getCell(j).getStringCellValue());
+//												break;
+//											}
+//										}
+//										if(j==2) {
+//											switch (sheet.getRow(i).getCell(j).getCellType()){
+//				                            case Cell.CELL_TYPE_BLANK:
+//				                            	break;
+//				                            case Cell.CELL_TYPE_NUMERIC:
+//				                            	 ra.setKeyValues(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+//				                            	 break;
+//				                            case Cell.CELL_TYPE_STRING:
+//				                            	 ra.setKeyValues(sheet.getRow(i).getCell(j).getStringCellValue().toString());
+//				                            	 break;
+//						                	}
+//										}
+//										
+//										
+//									}
+//									
+//									ra.setInitiationId(Long.parseLong(initiationId));
+//									ra.setIsActive(1);
+//									
+//									if(ra.getKeyEffectiveness()!=null && ra.getKeyValues()!=null) {
+//									raList.add(ra);
+//									}
+//									
+//								}
+//							}
+//							
+//							System.out.println(raList.size()+"---");
+//							
+//							long count = service.addReqPerformanceParameters(raList);
+//							
+//							if(count>0) {
+//								redir.addAttribute("result","Performance Parameters added Successfully");
+//								redir.addAttribute("initiationid", initiationId);
+//								redir.addAttribute("project", project);
+//								 return "redirect:/RequirementAppendix.htm";
+//							}else {
+//								redir.addAttribute("resultfail","Performance Parameters add Unsuccessful");
+//								redir.addAttribute("initiationid", initiationId);
+//								redir.addAttribute("project", project);
+//								 return "redirect:/RequirementAppendix.htm";
+//							}
+//							
+//							}
+//							catch (Exception e) {
+//								e.printStackTrace();
+//							}
+//						}
+//					}
+//			 }
+//					catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//			
+//		return null;	
+//	 }		 
+//	
+//	 
+	 
 	 @RequestMapping(value="PerformanceExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
 	 public String PerformanceExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
 	 {
@@ -7706,7 +8577,8 @@ public class ProjectController
 			 try{
 					String action = req.getParameter("Action"); 
 					String initiationId=req.getParameter("initiationid");
-			
+					String ProjectId=req.getParameter("projectId");
+				
 					if("GenerateExcel".equalsIgnoreCase(action)) {
 						XSSFWorkbook workbook = new XSSFWorkbook();
 						XSSFSheet sheet =  workbook.createSheet("PerformanceParameters");
@@ -7783,7 +8655,13 @@ public class ProjectController
 										
 										
 									}
-									
+									if(ProjectId==null) {//bharath
+										ProjectId="0";
+									}
+									if(initiationId==null) {
+										initiationId="0";
+									}
+									ra.setProjectId(Long.parseLong(ProjectId));
 									ra.setInitiationId(Long.parseLong(initiationId));
 									ra.setIsActive(1);
 									
@@ -7799,15 +8677,21 @@ public class ProjectController
 							long count = service.addReqPerformanceParameters(raList);
 							
 							if(count>0) {
+								if(initiationId!="0") {
 								redir.addAttribute("result","Performance Parameters added Successfully");
 								redir.addAttribute("initiationid", initiationId);
 								redir.addAttribute("project", project);
 								 return "redirect:/RequirementAppendix.htm";
-							}else {
+								}else {
+									redir.addAttribute("result","Performance Parameters added Successfully");
+									redir.addAttribute("projectId", ProjectId);
+									 return "redirect:/RequirementAppendixMain.htm";
+								}
+								}else {
 								redir.addAttribute("resultfail","Performance Parameters add Unsuccessful");
 								redir.addAttribute("initiationid", initiationId);
 								redir.addAttribute("project", project);
-								 return "redirect:/RequirementAppendix.htm";
+								return "static/Error";
 							}
 							
 							}
@@ -7824,7 +8708,54 @@ public class ProjectController
 		return null;	
 	 }		 
 	
+	 	 
 	 
+//	 @RequestMapping(value="TestVerificationUpload.htm",method=RequestMethod.POST)
+//		public String TestVerificationUpload(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestParam("filenameC") MultipartFile FileAttach)throws Exception {
+//			
+//			String UserId=(String)ses.getAttribute("Username");
+//			String LabCode = (String)ses.getAttribute("labcode");
+//			String Logintype= (String)ses.getAttribute("LoginType");
+//			
+//			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//			logger.info(new Date() +"Inside TestVerificationUpload.htm "+UserId);
+//			try {
+//				
+//				String initiationid  = req.getParameter("initiationid");
+//				String project = req.getParameter("project");
+//
+//				ReqTestExcelFile re = new ReqTestExcelFile();
+//				
+//				re.setInitiationId(Long.parseLong(initiationid));
+//				re.setFile(FileAttach);
+//				re.setCreatedBy(UserId);
+//				re.setCreatedDate(sdf1.format(new Date()));
+//				
+//				long count = service.insertTestVerificationFile(re,LabCode);
+//				
+//				if(count>0) {
+//					redir.addAttribute("result","Document Uploaded Successfully");
+//					redir.addAttribute("initiationid", initiationid);
+//					redir.addAttribute("project", project);
+//					 return "redirect:/RequirementAppendix.htm";
+//				}else {
+//					redir.addAttribute("resultfail","Document Upload Unsuccessful");
+//					redir.addAttribute("initiationid", initiationid);
+//					redir.addAttribute("project", project);
+//					 return "redirect:/RequirementAppendix.htm";
+//				}
+//				
+//				
+//				
+//			} catch (Exception e) {
+//
+//				 logger.info(new Date() +"Inside TestVerificationUpload.htm "+UserId);
+//				 return "static/Error";
+//			}
+//			
+//		
+//		}
+		
 	 @RequestMapping(value="TestVerificationUpload.htm",method=RequestMethod.POST)
 		public String TestVerificationUpload(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestParam("filenameC") MultipartFile FileAttach)throws Exception {
 			
@@ -7838,10 +8769,17 @@ public class ProjectController
 				
 				String initiationid  = req.getParameter("initiationid");
 				String project = req.getParameter("project");
-
+				String ProjectId=req.getParameter("projectId");
 				ReqTestExcelFile re = new ReqTestExcelFile();
+				if(initiationid==null) { //bharath
+					initiationid="0";
+				}
+				if(ProjectId==null) {
+					ProjectId="0";
+				}
 				
-				re.setInitiationId(Long.parseLong(initiationid));
+				re.setInitiationId(Long.parseLong(initiationid));//bharath
+				re.setProjectId(Long.parseLong(ProjectId));
 				re.setFile(FileAttach);
 				re.setCreatedBy(UserId);
 				re.setCreatedDate(sdf1.format(new Date()));
@@ -7849,28 +8787,80 @@ public class ProjectController
 				long count = service.insertTestVerificationFile(re,LabCode);
 				
 				if(count>0) {
-					redir.addAttribute("result","Document Uploaded Successfully");
-					redir.addAttribute("initiationid", initiationid);
-					redir.addAttribute("project", project);
-					 return "redirect:/RequirementAppendix.htm";
+					if(initiationid!="0") {
+						redir.addAttribute("result","Document Uploaded Successfully");
+						redir.addAttribute("initiationid", initiationid);
+						redir.addAttribute("project", project);
+						 return "redirect:/RequirementAppendix.htm";
+					}
+					else {
+						redir.addAttribute("projectId",ProjectId);
+				    	redir.addAttribute("result","Document Uploaded Successfully");
+				    	return "redirect:/RequirementAppendixMain.htm";
+					}
+					
 				}else {
-					redir.addAttribute("resultfail","Document Upload Unsuccessful");
-					redir.addAttribute("initiationid", initiationid);
-					redir.addAttribute("project", project);
-					 return "redirect:/RequirementAppendix.htm";
+					if(initiationid!="0") {
+						redir.addAttribute("result","Document Uploaded Successfully");
+						redir.addAttribute("initiationid", initiationid);
+						redir.addAttribute("project", project);
+						 return "redirect:/RequirementAppendix.htm";
+					}
+					else {
+						redir.addAttribute("projectId",ProjectId);
+				    	redir.addAttribute("result","Document Uploaded Successfully");
+				    	return "redirect:/RequirementAppendixMain.htm";
+					}
 				}
-				
-				
-				
 			} catch (Exception e) {
-
 				 logger.info(new Date() +"Inside TestVerificationUpload.htm "+UserId);
 				 return "static/Error";
 			}
-			
-		
 		}
-		
+	 
+//	 @RequestMapping(value="RequirementMemberSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+//	 public String RequirementMemberSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+//	 {
+//			
+//			String UserId=(String)ses.getAttribute("Username");
+//			String LabCode = (String)ses.getAttribute("labcode");
+//			String Logintype= (String)ses.getAttribute("LoginType");
+//			
+//			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//			logger.info(new Date() +"Inside RequirementMemberSubmit.htm "+UserId);
+//			try {
+//				String initiationid  = req.getParameter("initiationid");
+//				String project = req.getParameter("project");
+//				
+//				String [] Assignee = req.getParameterValues("Assignee");
+//				
+//				
+//				RequirementMembers rm = new RequirementMembers();
+//				
+//				rm.setInitiationId(Long.parseLong(initiationid));
+//				rm.setCreatedBy(UserId);
+//				rm.setCreatedDate(sdf1.format(new Date()));
+//				rm.setEmps(Assignee);
+//				
+//				long count = service.AddreqMembers(rm);
+//				  if(count>0) {
+//				    	redir.addAttribute("project",project);
+//				    	redir.addAttribute("result","Members Added Successfully for Document Distribution");
+//				    }else{
+//				    	redir.addAttribute("project",project);
+//				    	redir.addAttribute("resultfail","Members Add unsuccessful for Document Distribution");
+//				    };
+//				
+//			}catch (Exception e) {
+//			e.printStackTrace();
+//			
+//			 logger.info(new Date() +"Inside RequirementMemberSubmit.htm "+UserId);
+//			}
+//		 
+//			return "redirect:/ProjectOverAllRequirement.htm";
+//	 }
+	 
+	 
 	 @RequestMapping(value="RequirementMemberSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
 	 public String RequirementMemberSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
 	 {
@@ -7884,12 +8874,21 @@ public class ProjectController
 			try {
 				String initiationid  = req.getParameter("initiationid");
 				String project = req.getParameter("project");
-				
+				String ProjectId =req.getParameter("projectId");
 				String [] Assignee = req.getParameterValues("Assignee");
 				
+				if(ProjectId==null) {
+					ProjectId="0";
+				}
+				if(initiationid==null) {
+					initiationid="0";
+				}
 				
 				RequirementMembers rm = new RequirementMembers();
-				
+				System.out.println("@@@"+ProjectId);
+	
+				rm.setProjectId(Long.parseLong(ProjectId));
+				System.out.println("After@@@"+ProjectId);
 				rm.setInitiationId(Long.parseLong(initiationid));
 				rm.setCreatedBy(UserId);
 				rm.setCreatedDate(sdf1.format(new Date()));
@@ -7897,22 +8896,90 @@ public class ProjectController
 				
 				long count = service.AddreqMembers(rm);
 				  if(count>0) {
+					  if(initiationid!="0") {
 				    	redir.addAttribute("project",project);
 				    	redir.addAttribute("result","Members Added Successfully for Document Distribution");
+				    	return "redirect:/ProjectOverAllRequirement.htm";
+				    	
 				    }else{
-				    	redir.addAttribute("project",project);
+				    	redir.addAttribute("projectId",ProjectId);
 				    	redir.addAttribute("resultfail","Members Add unsuccessful for Document Distribution");
-				    };
-				
+				    	return "redirect:/Requirements.htm";
+				    }
+				  }else{
+						  redir.addFlashAttribute("project",project);
+					    	redir.addAttribute("resultfail","Document Summary adding unsuccessful ");
+					    	return "redirect:/ProjectOverAllRequirement.htm";
+					  }
+				  
 			}catch (Exception e) {
 			e.printStackTrace();
 			
 			 logger.info(new Date() +"Inside RequirementMemberSubmit.htm "+UserId);
 			}
+			return "static/Error";
 		 
-			return "redirect:/ProjectOverAllRequirement.htm";
+			
 	 }
 	 
+	 
+	 
+//	 @RequestMapping(value="RequirementSummaryAdd.htm",method=RequestMethod.POST)
+//		public String RequirementSummaryAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+//			
+//			String UserId=(String)ses.getAttribute("Username");
+//			String LabCode = (String)ses.getAttribute("labcode");
+//			String Logintype= (String)ses.getAttribute("LoginType");
+//			
+//			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//			logger.info(new Date() +"Inside RequirementSummaryAdd.htm "+UserId);
+//			try {
+//				
+//				String initiationid  = req.getParameter("initiationid");
+//				String project = req.getParameter("project");
+//				
+//				System.out.println(project+"---");
+//				
+//				RequirementSummary rs = new RequirementSummary();
+//				
+//				rs.setInitiationId(Long.parseLong(initiationid));
+//				rs.setAbstract(req.getParameter("abstract"));
+//				rs.setAdditionalInformation(req.getParameter("information"));
+//				rs.setKeywords(req.getParameter("keywords"));
+//				rs.setDistribution(req.getParameter("distribution"));
+//				rs.setApprover(Long.parseLong(req.getParameter("Approver")));;
+//				rs.setReviewer(Long.parseLong(req.getParameter("Reviewer")));
+//				rs.setCreatedBy(UserId);
+//				rs.setCreatedDate(sdf1.format(new Date()));
+//			
+//				rs.setIsActive(1);				
+//				String action = req.getParameter("btn");
+//				long count=0l;
+//				if(action.equalsIgnoreCase("submit")) {
+//					count=service.addReqSummary(rs);
+//				}else if(action.equalsIgnoreCase("edit")) {
+//					rs.setSummaryId(Long.parseLong(req.getParameter("summaryid")));
+//					rs.setModifiedBy(UserId);
+//					rs.setModifiedDate(sdf1.format(new Date()));
+//					count=service.editreqSummary(rs);
+//				}
+//				
+//				
+//				 if(count>0){
+//				    	redir.addAttribute("project",project);
+//				    	redir.addAttribute("result","Document Summary given successfully");
+//				    }else{
+//				    	redir.addFlashAttribute("project",project);
+//				    	redir.addAttribute("resultfail","Document Summary adding unsuccessful ");
+//				    };
+//				;
+//			} catch (Exception e) {
+//
+//				 logger.info(new Date() +"Inside RequirementSummaryAdd.htm "+UserId);
+//				 return "static/Error";
+//			}
+//			return "redirect:/ProjectOverAllRequirement.htm";
+//	 }
 	 
 	 @RequestMapping(value="RequirementSummaryAdd.htm",method=RequestMethod.POST)
 		public String RequirementSummaryAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
@@ -7926,12 +8993,19 @@ public class ProjectController
 			try {
 				
 				String initiationid  = req.getParameter("initiationid");
+				String projectId =req.getParameter("projectId");
 				String project = req.getParameter("project");
 				
-				System.out.println(project+"---");
+	if(initiationid==null) {
+		initiationid="0";
+	}
+	if(projectId==null) {
+		projectId="0";	
+	}
+	
 				
 				RequirementSummary rs = new RequirementSummary();
-				
+				rs.setProjectId(Long.parseLong(projectId));
 				rs.setInitiationId(Long.parseLong(initiationid));
 				rs.setAbstract(req.getParameter("abstract"));
 				rs.setAdditionalInformation(req.getParameter("information"));
@@ -7941,9 +9015,9 @@ public class ProjectController
 				rs.setReviewer(Long.parseLong(req.getParameter("Reviewer")));
 				rs.setCreatedBy(UserId);
 				rs.setCreatedDate(sdf1.format(new Date()));
-			
 				rs.setIsActive(1);				
 				String action = req.getParameter("btn");
+				String result="Document Summary added successfully";
 				long count=0l;
 				if(action.equalsIgnoreCase("submit")) {
 					count=service.addReqSummary(rs);
@@ -7952,24 +9026,34 @@ public class ProjectController
 					rs.setModifiedBy(UserId);
 					rs.setModifiedDate(sdf1.format(new Date()));
 					count=service.editreqSummary(rs);
+					result ="Document Summary edited successfully";
 				}
-				
-				
 				 if(count>0){
-				    	redir.addAttribute("project",project);
-				    	redir.addAttribute("result","Document Summary given successfully");
+						if (initiationid != "0") {
+							redir.addAttribute("project", project);
+							redir.addAttribute("result", result);
+							return "redirect:/ProjectOverAllRequirement.htm";
+						} else {
+							redir.addAttribute("projectId", projectId);
+							redir.addAttribute("result", result);
+							return "redirect:/Requirements.htm";
+						}
 				    }else{
 				    	redir.addFlashAttribute("project",project);
 				    	redir.addAttribute("resultfail","Document Summary adding unsuccessful ");
-				    };
-				;
+				    	return "redirect:/ProjectOverAllRequirement.htm";
+				    }
+			
 			} catch (Exception e) {
-
 				 logger.info(new Date() +"Inside RequirementSummaryAdd.htm "+UserId);
 				 return "static/Error";
 			}
-			return "redirect:/ProjectOverAllRequirement.htm";
+			
 	 }
+	 
+	 
+	 
+	 
 //package com.vts.pfms.project.controller;
 
 //import java.io.ByteArrayInputStream;

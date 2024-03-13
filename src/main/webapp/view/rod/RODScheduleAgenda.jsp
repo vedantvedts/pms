@@ -332,13 +332,13 @@ ul, #myUL {
 			        	<input type="hidden" name="scheduleid" value="<%=scheduledata[6] %>">
 			     		<input type="hidden" name="schedulesub" value="<%=scheduledata[5]%>"/>
 			         	<input type="hidden" name="projectid" value="<%=projectid%>"/>
-			    
+			    		<input type="hidden" name="redirpageflag" value="ROD">
 	      			</form>
 	    		</div>
     		</div>
 	   	</div>   
 	   	
-	   	<form action="RODAgendasFromPreviousMeetingsAdd"  method="post" id="agendasprevious">
+	   	<form action="RODAgendasFromPreviousMeetingsAdd.htm"  method="post" id="agendasprevious">
 	   		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	   		<input type="hidden" name="scheduleidto" value="<%=scheduledata[6]%>"/>	   
 		</form>
@@ -449,6 +449,7 @@ ul, #myUL {
 												<input type="hidden"  name="AgendaPriority" value="<%= obj[8]%>"/>
 												<input type="hidden" name="committeescheduleagendaid" value="<%=obj[0]%>"/>
 												<input type="hidden" name="scheduleid" value="<%=scheduleid%>"/>
+												<input type="hidden" name="redirpageflag" value="ROD">
 												<button type="submit" class="btn  btn-sm" name="action" value="edit" onclick="return confirm('Are you sure To Edit this Agenda?')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 												<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete this Agenda?')" formaction="CommitteeAgendaDelete.htm"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
 											</td>

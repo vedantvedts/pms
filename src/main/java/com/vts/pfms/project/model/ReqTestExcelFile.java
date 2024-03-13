@@ -25,6 +25,7 @@ public class ReqTestExcelFile {
 	private String CreatedDate;
 	private String CreatedBy;
 	private int IsActive;
+	private Long ProjectId;
 	
 	@Transient
 	private MultipartFile file;

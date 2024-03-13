@@ -30,4 +30,5 @@ public class ProjectOtherReqModel implements Serializable{
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
+	private Long ProjectId;
 }

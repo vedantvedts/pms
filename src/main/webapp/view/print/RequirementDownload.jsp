@@ -37,18 +37,18 @@ pageEncoding="ISO-8859-1"%>
 	 fileDownload.click();
 	 document.body.removeChild(fileDownload);
 	 } */
-/* 	jQuery(document).ready(function($) {
+ 	jQuery(document).ready(function($) {
 		$("#btn-export").click(function(event) {
 			$("#source-html").wordExport("System-Requirement");
 		});
-	}); */
+	}); 
  /* 	 $( document ).ready(function() {
 		 download();
 		}); */ 
-		 function download(){
+	/* 	 function download(){
 			$("#source-html").wordExport("System-Requirement");
 			window.close();
-	 }
+	 } */
 </script>
 <spring:url value="/resources/js/FileSaver.min.js" var="FileSaver" />
 <script src="${FileSaver}"></script>
@@ -208,7 +208,7 @@ span {
 
 
 	<div class="content-footer" align="center"> 
-		<button id="btn-export" class="btn btn-lg bg-transparent" onclick="download()"
+		<button id="btn-export" class="btn btn-lg bg-transparent" 
 			style="padding: 10px;">
 			<i class="fa fa-lg fa-download" aria-hidden="true"
 				style="color: green;"></i>

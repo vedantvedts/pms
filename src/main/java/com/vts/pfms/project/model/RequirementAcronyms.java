@@ -24,4 +24,5 @@ public class RequirementAcronyms {
 	private Long InitiationId;
 	
 	private int IsActive;
+	private Long ProjectId;
 }

@@ -22,4 +22,5 @@ public class RequirementVerification {
     private String CreatedBy;
     private String CreatedDate;
 	private int IsActive;
+	private Long ProjectId ;
 }

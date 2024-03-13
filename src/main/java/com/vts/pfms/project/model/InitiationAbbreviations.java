@@ -19,4 +19,5 @@ public class InitiationAbbreviations {
 	private String Abbreviations;
 	private String Meaning;
 	private Long InitiationId;
+	private Long ProjectId;
 }

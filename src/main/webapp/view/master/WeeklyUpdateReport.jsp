@@ -129,9 +129,8 @@ h6 {
 											<div style="width: 95%; margin: auto;">
 												<h3 style="text-align: center;">
 													Weekly status of
-													<% if( request.getAttribute("projectname")!=null ){ %>
-													<%= request.getAttribute("projectname") %>
-													<%= request.getAttribute("shortname") %><%} %>
+													<%= request.getAttribute("projectname")!=null?request.getAttribute("projectname"):"" %>
+													<%= request.getAttribute("shortname")!=null?request.getAttribute("shortname"):"" %>
 													project
 												</h3>
 												<table class="table table-bordered table-hover table-striped table-condensed " id="table" data-toggle="table"

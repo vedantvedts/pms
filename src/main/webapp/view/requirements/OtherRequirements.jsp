@@ -12,12 +12,15 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+<spring:url value="/resources/richtexteditor/richtexteditor.js" var="richtexteditorjs" />
+<spring:url value="/resources/richtexteditor/richtexteditor.css" var="richtexteditorcss" />
+<spring:url value="/resources/richtexteditor/plugins/all_plugins.js" var="allpluginsjs" />
+
 <script src="${ckeditor}"></script>
 <script src="${richtexteditorjs}"></script>
 <script src="${allpluginsjs}"></script>
 <link href="${contentCss}" rel="stylesheet" />
 <link href="${richtexteditorcss}" rel="stylesheet" />
-
   <style>
     .bs-example{
         margin: 20px;
@@ -314,30 +317,25 @@ animation: fade-in 1s ease forwards;
   }
 }
 	</style>
+	</head>
+<body>
 <%
-String initiationid=(String)request.getAttribute("initiationid");
-String project=(String)request.getAttribute("project");
-String[]projectDetails=project.split("/");
+String projectId = (String)request.getAttribute("projectId");
 List<Object[]>Otherrequirements=(List<Object[]>)request.getAttribute("Otherrequirements");
 List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
 
 String MainId=(String)request.getAttribute("MainId");
 %>
-</head>
-<body>
 <nav class="navbar navbar-light bg-light justify-content-between"  style="margin-top: -1%">
 		<a class="navbar-brand">
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f">Additional Requirements for Project </span> <span style="color:#31708f;font-size: 19px"> <%=projectDetails[1].toString() %></span></b>
+		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f">Additional Requirements </span></b>
 		</a>
 		<form action="#">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		<button class="btn bg-transparent" formaction="RequirementDocumentDownlod.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank">
-		<i class="fa fa-download text-success" aria-hidden="true"></i></button>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		<input type="hidden" name="project" value="<%=project%>">
-		<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+		<input type="hidden" name="projectId" value="<%=projectId%>"> 
 <!-- 		<button type="button" class="btn btn-sm btn-success font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq">Other Requirements</button> 
- -->		<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectOverAllRequirement.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
+ -->		<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="Requirements.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
 		</form>
 </nav>
 		<%String ses=(String)request.getParameter("result"); 
@@ -356,7 +354,7 @@ String MainId=(String)request.getAttribute("MainId");
 		</div>
 	</div>
 	<%} %>
-	<%if(!RequirementList.isEmpty()){ %>
+<%if(!RequirementList.isEmpty()){ %>
 <div class="container-fluid">          
 <div class="row"> 
 <div class="col-md-5" >
@@ -374,7 +372,7 @@ String MainId=(String)request.getAttribute("MainId");
 		 		<table style="text-align: right;" >
      				<thead>
 	             		<tr>
-	                 		<th ></th>
+	                 		<th ><input type="hidden" id="subspan<%=obj[0].toString() %>" value="<%=i%>"></th>
 	             		</tr>
 	         		</thead>
 	         		
@@ -383,7 +381,6 @@ String MainId=(String)request.getAttribute("MainId");
          		<td>
 	         		<span id="<%="span"+obj[0].toString() %>">
 	         		<button class="btn btn-sm bg-transparent"  id="<%="btn"+obj[0].toString()%>" onclick="showSubpoint(<%=obj[0]%>)"><i class="fa fa-plus" aria-hidden="true"></</button>
-	         		
 	         		</span>
 	         		</td><td>
 	         		<!-- <input class="btn btn-success btn-sm ml-3" type="submit"  value="ADD" style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;margin-top: -10%;display:inline-block;"> -->
@@ -405,8 +402,8 @@ String MainId=(String)request.getAttribute("MainId");
 	    			<h4 class="panel-title">
 	    			<input type="hidden" id="Mainid<%=obj[0].toString() %>" name="Mainid" value="<%=obj[0].toString()%>">
 	    			<input type="hidden" id="ReqName<%=obj[0].toString() %>" name="ReqName" value="<%=obj[1].toString() %>">
-	    			<input type="hidden" name="project" value="<%=project%>">
-	    			<input type="hidden" name="initiationid" value="<%=initiationid%>">
+	    			
+	    			<input type="hidden" name="projectId" value="<%=projectId%>">
 	    			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 	           		<input class="form-control inputx" id="inputx<%=obj[0].toString() %>" name="subreqName" style="padding:0px; line-height: 0px;" maxlength="255 characters">
 	           		<button class="btn btn-success btn-sm ml-3" type="submit"  onclick="subPointSubmit(<%=obj[0].toString() %>)"
@@ -421,40 +418,50 @@ String MainId=(String)request.getAttribute("MainId");
 	         		</div>
 	         		</form>
 	    			<%}} %>
-	    			<br>
-	    			<!-- <button class="btn bg-transparent"></button>  --> 
+			<br>
 	    			<button type="button"  class="btn btn-sm  ml-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq" style="color:#31708f;"><i class="fa fa-arrow-right text-primary" aria-hidden="true"></i>&nbsp; </button>
+</div>
 	         		</div>
 	         		</div>
-	         		</div>
-	   				<!-- Editor -->
-	         		<div class="col-md-7" <%if(RequirementList.isEmpty()) {%>style="display:none;"<%} %>>
-	         		<form action="OtherRequirementDetailsAdd.htm" method="POST" id="myfrm">
-	      			<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
+
+	         	<div class="col-md-7" <%if(RequirementList.isEmpty()) {%>style="display:none;"<%} %>>
+	         	<form action="OtherRequirementDetailsAdd.htm" method="POST" id="myfrm">
+	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
 	      			<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;"></h5><hr>
-    				<div class="card-body" style="margin-top: -8px" >
+					<div class="card-body" style="margin-top: -8px" >
 					<div class="row">	
 					<div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
-					<div id="Editor" class="center"></div>
+					<!-- <div id="Editor" class="center"></div> -->
+					<div id="div_editor1">
+		
+					</div>
+					
 					<textarea name="Details" style="display: none;"></textarea>
 					<div class="mt-2" align="center" id="detailsSubmit">
-					<span id="EditorDetails"></span>
-				    <input type="hidden" name="project" value="<%=project%>">
-	    			<input type="hidden" name="initiationid" value="<%=initiationid%>">
+					<span id="EditorDetails">
+					<input type='hidden' name='MainId' value=>
+					<input type='hidden' name='ReqName' value=>
+					<input type='hidden' name='ReqParentId' value=>
+					<input type='hidden' id='RequirementId' name='RequirementId' value=>
+					</span>
+				    
+	    			<input type="hidden" name="projectId" value="<%=projectId%>">
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 					<span id="Editorspan">
-					<button type="submit" class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button>
-					</span>
+					<button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button></span>
 					</div>
 					</div>
 					</div>
 					</div>
-	         		</div>
-	         		</form>
-	         		</div>
+	         		</div> 
+         		</form>
 	         	</div>
-	         	</div>	 
-<!-- Modal for choosing the things  -->
+
+			</div>
+			</div>
+
+
+
 <form action="AddProjectOtherReq.htm" method="POST">	         	  	
   <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-jump" role="document">
@@ -486,8 +493,8 @@ String MainId=(String)request.getAttribute("MainId");
        <%} %>
       <hr class="mb-2">
       <div class="p-2" align="center">
-      			    <input type="hidden" name="project" value="<%=project%>">
-	    			<input type="hidden" name="initiationid" value="<%=initiationid%>">
+      		
+	    			<input type="hidden" name="projectId" value="<%=projectId%>"> 
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
         		<%if(!Otherrequirements.isEmpty()){ %>	<button type="submit" class="btn btn-sm btn-success submit" onclick="EditorValueSubmit()">SUBMIT</button><%} %>
       </div>
@@ -495,45 +502,20 @@ String MainId=(String)request.getAttribute("MainId");
   </div>
 </div>   	
   </form> 
-  
-<!--Modal for requirement add  -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-primary"  id="exampleModalLongTitle">Requirement Title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      	
-      	<div>
-      	
-      	<input class="form-control" type="text" name="requirements" id="reqtitle" style="width: 80%;display: inline-block;" placeholder="maximum 500 character" maxlength="500" required>
-      	<button type="button" class="btn btn-sm btn-success" style="float: right"onclick="addNew()">SUBMIT</button>
-      	
-      	</div>
-      </div>
-    </div>
-  </div>
-</div>
-  
-  	
-<!--  -->	         	
+
+
 </body>
-<script>
-function showSubpoint(a){
+<script type="text/javascript">
+
+function showSubpoint(a) { 
 	 $('#subdiv'+a).css("display","block");
 	 $('#inputDiv'+a).css("display","block");
 	 $('#span'+a).html('<button class="btn btn-sm bg-transparent" id="btn'+a+'" onclick="hideSubpoint('+a+')"><i class="fa fa-minus" aria-hidden="true"></</button>');
 	// to disabled the checkbox when subdivs are open
- 	 var checkboxes = document.getElementsByName('check-1');
-/* 	 for(var i=0;i<checkboxes.length;i++){
-	 if(Number(i+1)===Number(a)){
-	 checkboxes[i].disabled = true;
-	 }
-	 }  */
+	 var checkboxes = document.getElementsByName('check-1');
+	
+	var subspan = $('#subspan'+a).val();
+	
 	 var Mainid=$('#Mainid'+a).val();
 	 document.getElementById('subdiv'+a).innerHTML="";
 	 $.ajax({
@@ -542,25 +524,28 @@ function showSubpoint(a){
 		 datatype:'json',
 		 data:{
 			 Mainid:Mainid,
-			 initiationid:<%=initiationid%>,
+			 projectId:<%=projectId%>,
 		 },
 		 success:function(result){
 			 var ajaxresult=JSON.parse(result);
-			 var x=document.getElementById('subdiv'+a).innerHTML
+			 console.log("ajaxresult"+ajaxresult.length)
+			  var x=document.getElementById('subdiv'+a).innerHTML
+			  console.log(x)
 			 var html="";
 			 for(var i=1;i<ajaxresult.length;i++){
 			 //onclick to get edit button
-			 var spanHidden='<span id="subSpan'+ajaxresult[i][0]+'" style="display:none;"><button class="btn btn-sm btn-info spansub" type="submit" formaction="ProjectOtherReqNameEdit.htm" formmethod="POST" formnovalidate="formnovalidate" onclick="reqNameUpdate('+ajaxresult[i][0]+')">Update</button><button class="btn bg-transparent" type="button" onclick="hideUpdateSpan('+ajaxresult[i][0]+')"><i class="fa fa-times" aria-hidden="true"></i></button></span>';
-			 var inputHidden="<input type='hidden' name='Mainid' value='"+ajaxresult[i][2]+"'><input type='hidden' name='initiationid' value='"+<%=initiationid%>+"'><input type='hidden' name='RequirementId' value='"+ajaxresult[i][0]+"'><input type='hidden' name='${_csrf.parameterName}'	value='${_csrf.token}' /> <input type='hidden' name='project' value='<%=project%>'>"
-			 var inputHeading="<input type='text' class='form-control' readonly value='"+ajaxresult[i][4]+"' name='RequirementName' id='inputSub"+ajaxresult[i][0]+"'style='width:50%;display:inline; padding:0px;' maxlength='255 charecters'>"
-			 html=html+'<div class="row"><div class="col-md-11 mt-1"  align="left"  style="margin-left: 10px;"><div class="panel panel-info"><div class="panel-heading"><form action="#"><h4 class="panel-title">'+a+"."+''+(i+".")+'&nbsp;'+inputHeading+''+inputHidden+'<button class="btn btn-sm bg-transparent" type="button" onclick="EditSubRequirement('+ajaxresult[i][0]+')" id="subbtn'+ajaxresult[i][0]+'"><i class="fa fa-pencil" aria-hidden="true"></i></button>'+spanHidden+'<button class="btn bg-transparent" onclick="showEditor('+"'"+''+ajaxresult[i][4]+''+"'"+','+ajaxresult[i][2]+','+ajaxresult[i][3]+','+ajaxresult[i][0]+')"style="float:right" type="button" "><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></h4></form></div></div></div> </div>';
+			  var spanHidden='<span id="subSpan'+ajaxresult[i][0]+'" style="display:none;"><button class="btn btn-sm btn-info spansub" type="submit" formaction="ProjectOtherReqNameEdit.htm" formmethod="POST" formnovalidate="formnovalidate" onclick="reqNameUpdate('+ajaxresult[i][0]+')">Update</button><button class="btn bg-transparent" type="button" onclick="hideUpdateSpan('+ajaxresult[i][0]+')"><i class="fa fa-times" aria-hidden="true"></i></button></span>';
+			  var inputHidden="<input type='hidden' name='Mainid' value='"+ajaxresult[i][2]+"'><input type='hidden' name='projectId' value='"+<%=projectId%>+"'><input type='hidden' name='RequirementId' value='"+ajaxresult[i][0]+"'><input type='hidden' name='${_csrf.parameterName}'	value='${_csrf.token}' />"
+			  var inputHeading="<input type='text' class='form-control' readonly value='"+ajaxresult[i][4]+"' name='RequirementName' id='inputSub"+ajaxresult[i][0]+"'style='width:50%;display:inline; padding:0px;' maxlength='255 charecters'>"
+			 html=html+'<div class="row"><div class="col-md-11 mt-1"  align="left"  style="margin-left: 10px;"><div class="panel panel-info"><div class="panel-heading"><form action="#"><h4 class="panel-title">'+subspan+"."+''+(i+".")+'&nbsp;'+inputHeading+''+inputHidden+'<button class="btn btn-sm bg-transparent" type="button" onclick="EditSubRequirement('+ajaxresult[i][0]+')" id="subbtn'+ajaxresult[i][0]+'"><i class="fa fa-pencil" aria-hidden="true"></i></button>'+spanHidden+'<button class="btn bg-transparent" onclick="showEditor('+"'"+''+ajaxresult[i][4]+''+"'"+','+ajaxresult[i][2]+','+ajaxresult[i][3]+','+ajaxresult[i][0]+')"style="float:right" type="button" "><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></h4></form></div></div></div> </div>'; 
 			 }
 			 html=html+x;
 			 $('#subdiv'+a).html(html);
 		 }
 	 });
 }
- function hideSubpoint(a) { 
+
+function hideSubpoint(a) { 
 	 $('#subdiv'+a).css("display","none");
 	 $('#inputDiv'+a).css("display","none");
 	 $('#span'+a).html('<button class="btn btn-sm bg-transparent" id="btn'+a+'" onclick="showSubpoint('+a+')"><i class="fa fa-plus" aria-hidden="true"></</button>');
@@ -572,25 +557,7 @@ function showSubpoint(a){
 		 }
 	 	}  */
 	}
-/*   function validate(){
- var checkboxes = document.getElementsByName('check-1');
- for(var i=0;i<checkboxes.length;i++){
- if(checkboxes[i].checked){
-	  $('#tablediv'+(i+1)).show()
- }else{
-	 $('#tablediv'+(i+1)).hide()
-	 hideSubpoint(i+1);
- }
- }
- }  */
- <%if(MainId!=null){%> 
- $( document ).ready(function() {
-	 var Mainid=<%=MainId%>;
-	 if(Number(Mainid)!=0){
-	 showSubpoint(Mainid);
-	 }
-	});
- <%}%>
+	
 var inputValues; // declared as var so get the value before updated
 function EditSubRequirement(a){
   inputValues= document.getElementById("inputSub"+a).value;
@@ -604,7 +571,8 @@ function hideUpdateSpan(a){
 	  $('#subSpan'+a).hide();
 	  $('#subbtn'+a).css("display","inline-block");
 }
-function subPointSubmit(a){
+
+function subPointSubmit(a) { 
 	var inputx=$('#inputx'+a).val().trim();
 	if(confirm("Are you sure you want to submit?")){
 		if(inputx.length==0){
@@ -619,6 +587,7 @@ function subPointSubmit(a){
 		return false;
 	}
 }
+
 function reqNameUpdate(a){
 	var inputSub=$('#inputSub'+a).val().trim();
 		if(inputSub.length==0){
@@ -634,154 +603,61 @@ function reqNameUpdate(a){
 			}
 		}
 }
-var editor_config = {
-		
-		toolbar: [{
-		          name: 'clipboard',
-		          items: ['PasteFromWord', '-', 'Undo', 'Redo']
-		        },
-		        {
-		          name: 'basicstyles',
-		          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
-		        },
-		        {
-		          name: 'links',
-		          items: ['Link', 'Unlink']
-		        },
-		        {
-		          name: 'paragraph',
-		          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
-		        },
-		        {
-		          name: 'insert',
-		          items: ['Image', 'Table']
-		        },
-		        {
-		          name: 'editing',
-		          items: ['Scayt']
-		        },
-		        '/',
 
-		        {
-		          name: 'styles',
-		          items: ['Format', 'Font', 'FontSize']
-		        },
-		        {
-		          name: 'colors',
-		          items: ['TextColor', 'BGColor', 'CopyFormatting']
-		        },
-		        {
-		          name: 'align',
-		          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
-		        },
-		        {
-		          name: 'document',
-		          items: ['Print', 'PageBreak', 'Source']
-		        }
-		      ],
-		     
-		    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+<%if(MainId!=null){%> 
+$( document ).ready(function() {
+	 var Mainid=<%=MainId%>;
+	 if(Number(Mainid)!=0){
+	 showSubpoint(Mainid);
+	 }
+	 
+	 if(Mainid===0){
+			$('#buttuonEd1').click()
+			}else{
+			 $('#btnEditor'+Mainid).click(); 
+			}
+	 
+	});
+<%}%>
 
-			customConfig: '',
+var editor1 = new RichTextEditor("#div_editor1");
 
-			disallowedContent: 'img{width,height,float}',
-			extraAllowedContent: 'img[width,height,align]',
-
-			height: 250,
-
-			
-			contentsCss: [CKEDITOR.basePath +'mystyles.css' ],
-
-			
-			bodyClass: 'document-editor',
-
-			
-			format_tags: 'p;h1;h2;h3;pre',
-
-			
-			removeDialogTabs: 'image:advanced;link:advanced',
-
-			stylesSet: [
-			
-				{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
-				{ name: 'Cited Work', element: 'cite' },
-				{ name: 'Inline Quotation', element: 'q' },
-
-				
-				{
-					name: 'Special Container',
-					element: 'div',
-					styles: {
-						padding: '5px 10px',
-						background: '#eee',
-						border: '1px solid #ccc'
-					}
-				},
-				{
-					name: 'Compact table',
-					element: 'table',
-					attributes: {
-						cellpadding: '5',
-						cellspacing: '0',
-						border: '1',
-						bordercolor: '#ccc'
-					},
-					styles: {
-						'border-collapse': 'collapse'
-					}
-				},
-				{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-				{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
-				{ filebrowserUploadUrl: '/path/to/upload-handler'},
-			]
-		} ;
-CKEDITOR.replace('Editor',editor_config);
 function showEditor(a,b,c,d){
- $('#editorHeading').html(a);
- $('#Editor').html(a);
-var x="<input type='hidden' name='MainId' value='"+b+"'><input type='hidden' name='ReqName' value='"+a+"'><input type='hidden' name='ReqParentId' value='"+c+"'><input type='hidden' id='RequirementId' name='RequirementId' value='"+d+"'>"
-$('#EditorDetails').html(x);
+	 $('#editorHeading').html(a);
+	 $('#Editor').html(a);
+	var x="<input type='hidden' name='MainId' value='"+b+"'><input type='hidden' name='ReqName' value='"+a+"'><input type='hidden' name='ReqParentId' value='"+c+"'><input type='hidden' id='RequirementId' name='RequirementId' value='"+d+"'>"
+	$('#EditorDetails').html(x);
 
-$.ajax({
-	type:'GET',
-	url:'OtherRequirementsData.htm',
-	datatype:'json',
-	data:{
-		MainId:b,
-		ReqParentId:c,
-		RequirementId:d,
-		initiationid:<%=initiationid%>,
-	},
-	success:function(result){
-	var ajaxresult=JSON.parse(result);
-	if(ajaxresult[5]==null){
-	console.log(ajaxresult[5])
-	ajaxresult[5]=""
-	$('#Editorspan').html('<button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button>');
-	}else{
-	$('#Editorspan').html('<button type="submit" class="btn btn-sm btn-warning mt-2 edit" onclick=EditorValueSubmit()>UPDATE</button>');
+	$.ajax({
+		type:'GET',
+		url:'OtherRequirementsData.htm',
+		datatype:'json',
+		data:{
+			MainId:b,
+			ReqParentId:c,
+			RequirementId:d,
+			projectId:<%=projectId%>,
+		},
+		success:function(result){
+		var ajaxresult=JSON.parse(result);
+		console.log(ajaxresult);
+		if(ajaxresult[5]==null){
+		console.log(ajaxresult[5])
+		ajaxresult[5]=""
+		$('#Editorspan').html('<button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button>');
+		}else{
+		$('#Editorspan').html('<button type="submit" class="btn btn-sm btn-warning mt-2 edit" onclick=EditorValueSubmit()>UPDATE</button>');
+		}
+		editor1.setHTMLCode(ajaxresult[5]);
+		}
+	})
 	}
-	CKEDITOR.instances['Editor'].setData(ajaxresult[5]);
-	}
-})
-}
- // for giving the editor value to text area
-   $('#myfrm').submit(function() {
-	 var data =CKEDITOR.instances['Editor'].getData();
+$('#myfrm').submit(function() {
+	 var data =editor1.getHTMLCode();
 	 $('textarea[name=Details]').val(data);
 	 });
-	$( document ).ready(function() {
-	<%if(RequirementList.isEmpty()){%>
-	$('#ModalReq').click();
-	<%}%>
-	var Mainid=<%=MainId%>;
-	if(Mainid===0){
-	$('.buttuonEd1').click()
-	}else{
-	 $('#btnEditor'+Mainid).click(); 
-	}
-	});
-	function EditorValueSubmit(){
+	 
+function EditorValueSubmit(){
 	if(confirm("Are you sure you want to submit?")){
 	return true;
 	}else{
@@ -791,37 +667,5 @@ $.ajax({
 	}
 	
 	
-	function addNew() {
-		var reqtitle=$('#reqtitle').val();
-		if(reqtitle.length==0){
-			alert("Please fill the Requirement Title")
-			event.preventDefault();
-		}else{
-		if(confirm("Are you sure to submit?")){	
-		 $.ajax({
-			 type:'GET',
-			 url:'insertRequirement.htm',
-			 	datatype:'json',
-			 data:{
-				 reqtitle:reqtitle,
-			 },
-		
-			 success:function (result){
-				 var ajaxresult = Number(result);
-				 console.log(ajaxresult)
-				 if(ajaxresult!=="0"){
-					 alert("Requirement Added Successfully");
-					 location.reload();
-				 }
-			 }
-		 })	//
-		}else{
-			event.prevenDefault();
-		} 
-		 
-		}
-	}
-	
-
 </script>
 </html>

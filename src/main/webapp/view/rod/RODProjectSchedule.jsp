@@ -162,84 +162,130 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 				<div class="card-header">
 					<div class="row" >
 						<div class="col" style="margin-top: -8px;">	
-							<form class="form-inline " method="post" action="RecordofDiscussion.htm" id="myform" style="width: 108% !important">
-						  		<div class="form-group">    
-						    		<label class="control-label">Project : </label>   
-									<div class="col-sm-2">
-										<select class="form-control selectdee" id="projectId" required="required" name="projectId" onchange='submitForm1();' >
-											<% for (Object[] obj : ProjectsList) {
-												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
-											%>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
-											<%} %>
-										</select>
-									</div>    
-						 		</div>  
-
-								<div class="form-group">        
-								    <label class="control-label">ROD Name : </label>	   
-								    <div class="col-sm-2">
-								    	<select class="form-control selectdee" id="rodNameId" required="required" name="rodNameId" onchange="submitForm2();">
-									   		<option value="addNew">Add New</option>
-									   		<option value="all"  <%if(rodNameId.equals("all")){ %>selected <%} %> >All</option>
-									   		<% for (Object[] obj : RODNameslist) {%>
-												<option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(rodNameId)){ %>selected<%} %> ><%=obj[1]%></option>
-											<%} %>   
-									  	</select>
-								    </div> 
-								</div>
-								<div class="form-group" id="addNewFormdiv">
-									<div class="col-sm-12">
-										<div class="row">
-											<div class="col-md-8">
-												<input form="addNewForm" type="text" class="form-control" id="rodName" name="rodName" placeholder="Record of Discussion" required>
-											</div>
-											<div class="col-md-4 mt-1">
-												<button form="addNewForm" type="submit" class="btn btn-sm btn-primary ml-2" onclick="return confirm('Are you sure to Add?')">ADD</button>
-											</div>
-										</div>
-										
-									</div>
-								</div>
- 						 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
+							<form method="post" action="RecordofDiscussion.htm" id="myform" style="">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							</form>
 							<form action="AddNewRODName.htm" method="post" id="addNewForm">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<input type="hidden" name="projectId" value="<%=projectId %>" /> 
 							</form>
-		   						
+							<form action="RODScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" >
+								<input type="hidden" name="divisionId" value="0" /> 
+		                    	<input type="hidden" name="initiationId" value="0" /> 
+		                    	<input type="hidden" name="committeeId" value="0" /> 
+		                    	<input type="hidden" name="projectId" value="<%=projectId %>" /> 
+		                    	<input type="hidden" name="rodNameId" value="<%=rodNameId%>" /> 
+		                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		                    	<input type="hidden" name="rodName" <%if(rodMasterDetails!=null) {%>value="<%=rodMasterDetails[1] %>"> <%}%>
+							</form>
+							
+							<table style="width:100%;">
+								<tr>
+									<td style="width: 50%;">
+										<table>
+								  			<tr>
+								  				<td>
+								  					<label class="control-label">Project : </label>
+								  				</td>
+								  				<td>
+								  					<select form="myform" class="form-control selectdee" id="projectId" required="required" name="projectId" onchange='submitForm1();' >
+														<% for (Object[] obj : ProjectsList) {
+															String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
+														%>
+															<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
+														<%} %>
+													</select>
+								  				</td>
+								  				<td>
+								  					<label class="control-label">ROD Name : </label>
+								  				</td>
+								  				<td>
+								  					<select form="myform" class="form-control selectdee" id="rodNameId" required="required" name="rodNameId" onchange="submitForm2();">
+												   		<option value="addNew">Add New</option>
+												   		<option value="all"  <%if(rodNameId.equals("all")){ %>selected <%} %> >All</option>
+												   		<% for (Object[] obj : RODNameslist) {%>
+															<option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(rodNameId)){ %>selected<%} %> ><%=obj[1]%></option>
+														<%} %>   
+											  		</select>
+								  				</td>
+								  				
+								  			</tr>
+						  				</table>
+									</td>
+									<td id="addNewFormtd" style="width: 50%;">
+										<table>
+											<tr>
+												<td>
+													<label class="control-label">ROD Name : </label>	
+												</td>
+												<td>
+								  					<input form="addNewForm" type="text" class="form-control" id="rodName" name="rodName" placeholder="Enter ROD Name" maxlength="2000" required>
+								  				</td>
+								  				<td>
+													<label class="control-label">ROD Short Name : </label>	
+												</td>
+								  				<td>
+								  					<input form="addNewForm" type="text" class="form-control" id="rodShortName" name="rodShortName" placeholder="Enter ROD Short Name" maxlength="200" required>
+								  				</td>
+								  				<td>&nbsp;</td>
+								  				<td>
+								  					<button form="addNewForm" type="submit" class="btn btn-sm btn-primary ml-2" onclick="return confirm('Are you sure to Add?')">ADD</button>
+								  				</td>
+											</tr>
+										</table>
+									</td>
+									
+									<td id="myform1td" style="width: 50%;">
+										<table style="margin-left: 20%;">
+											<tr>
+												<td>
+													<label class="control-label">Date : </label>	
+												</td>
+												<td>
+													<input form="myfrm1" style=""  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>
+												</td>
+												<td>
+													<label class="control-label"> Time : </label>
+												</td>
+												<td>
+													<input form="myfrm1" class="form-control" type="text" id="starttime" name="starttime"  required="required" value="<%=LocalTime.now() %>"  readonly>
+												</td>
+												<td>&nbsp;</td>
+												<td>
+													<input form="myfrm1" type="button" class="btn  btn-sm add " style="float: right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" >
+												</td>
+											</tr>
+										</table>
+									</td>
+									
+								</tr>
+							</table>
 						</div>
-					
-						<div class="col" style="margin-top: -8px;">		
-							<%if(!rodNameId.equals("all") && Long.parseLong(rodNameId)>0 ){ %>
-					 			<form class="form-check-inline" action="RODScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" > 
-									<input type="hidden" name="rodName" value="<%=rodMasterDetails[1] %>">
-									<div class="col ">
-										<label class="control-label"> Date &nbsp;&nbsp; : </label>
-									</div>
-									<div class="col" style="margin-left:-8%;">
-				                          <input style="width:135%"  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>	
-				                    </div>
-				                    <div class="col " style="text-align: right;">
-				                    	<label class="control-label"> Time &nbsp;&nbsp; : </label>
-				                    </div>
-				                    <div class="col">
-				       					<input  class="form-control" type="text" id="starttime" name="starttime"  required="required" value="<%=LocalTime.now() %>"  readonly>
-				                    </div>
-				                    <div class="col" align="right" >
-				                    	<input type="hidden" name="divisionId" value="0" /> 
-				                    	<input type="hidden" name="initiationId" value="0" /> 
-				                    	<input type="hidden" name="committeeId" value="0" /> 
-				                    	<input type="hidden" name="projectId" value="<%=projectId %>" /> 
-				                    	<input type="hidden" name="rodNameId" value="<%=rodNameId%>" /> 
-				                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-				                    	<input type="button" class="btn  btn-sm add " style="float: right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
-			                    	</div>                   	
-                  				</form> 
-                  			<%} %>
+						
+					</div>
+				</div>
+				
+				<div class="card-body" style="display: flex;justify-content: space-around;">
+					<div id="calendar" style="width:79%;float:left"></div>
+					<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;">
+						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">
+							Earlier Meetings
+						</div>
+						<div class="mt-2" id="scrollclass" style="height:520px;overflow: auto">
+							<%if(!PreviousmeetingList.isEmpty()){
+								int i=0;
+								for(Object[]obj:PreviousmeetingList){
+							%>
+					 			<a class="tag meetingsp" style="text-decoration: none;" href="RODScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[8].toString()%>
+									&nbsp;&nbsp;Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
+								</a>
+							<%}}else{ %>
+								<p class="meetingsp ml-3 mr-3"> No Previous Meetings held !</p>
+							<%} %>
 						</div>
 					</div>
 				</div>
+					
 			</div>
 		</div>
 	</div>
@@ -247,11 +293,19 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 <script type='text/javascript'> 
 function submitForm2()
 { 
+	console.log("Method enter");
 	var rodNameId = $('#rodNameId').val();
 	if (rodNameId == 'addNew') {
-        $('#addNewFormdiv').slideDown();
+
+		$('#addNewFormtd').show();
+		$('#myform1td').hide();
+       /*  $('#addNewFormdiv').slideDown(); */
+        
     } else {
-        $('#addNewFormdiv').slideUp();
+
+    	$('#addNewFormtd').hide();
+    	$('#myform1td').show();
+        /* $('#addNewFormdiv').slideUp(); */
         document.getElementById('myform').submit(); 
     }
   
@@ -312,7 +366,18 @@ $(function() {
 </script>
 <script>
 $(document).ready(function() {
-	$('#addNewFormdiv').hide();
+	<%if(!rodNameId.equals("all") && Long.parseLong(rodNameId)>0 ){ %>
+		$('#addNewFormtd').hide();
+		$('#myform1td').show();
+	<%} else{%>
+		$('#addNewFormtd').show();
+		$('#myform1td').hide();
+	<%}%>
+	
+	<%if(rodNameId.equals("all")) {%>
+		$('#addNewFormtd').hide();
+		$('#myform1td').hide();
+	<%}%>
     
     // Handle form submission
    /* $('#addNewForm').submit(function(event) {
@@ -344,6 +409,36 @@ $(document).ready(function() {
 });
 </script>
 
+<script type="text/javascript">
 
+<%if(rodNameId!=null &&  projectId!=null )
+{%>
+myEvents = [
+	<%	
+	for(Object obj[] :Projectschedulelist) {%>
+	 { 
+	    id: "required-id-1",
+	    name: "Meeting Details",
+	    scheduleid: "<%if(obj[0]!=null){%><%=obj[0].toString()%><%}%>",
+	    time: "<%=obj[4].toString()%>",
+	    ComCode : "<%=obj[8]%>" ,
+	    date: "<%=obj[3].toString()%>", 
+	    url: "RODScheduleView.htm",
+	    type: "event",  
+	    color: "#0383F3",
+	   type: "event"
+	  },
+	<%}%>
+	]
+
+<%}%>
+	
+$("#calendar").evoCalendar(
+		{
+			theme : 'Royal Navy',
+			calendarEvents: myEvents,
+			
+		});
+</script>
 </body>
 </html>

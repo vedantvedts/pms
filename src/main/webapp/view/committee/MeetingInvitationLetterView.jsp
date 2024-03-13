@@ -40,6 +40,9 @@ Object[] projectdata = (Object[]) request.getAttribute("projectdata");
 Object[] labdetails = (Object[]) request.getAttribute("labdetails");
 Object[] tomember = (Object[]) request.getAttribute("tomember");
 String projectid =(String)request.getAttribute("projectid");  
+
+// Prudhvi - 05/03/2024
+String rodflag = (String)request.getAttribute("rodflag");
 %>
 
 
@@ -71,7 +74,8 @@ String projectid =(String)request.getAttribute("projectid");
 		<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
 			<tr><td><span style="font-weight: bold; font-size: 17px">Dear Sir/Madam,</span></td></tr>
 			<tr><td><p style=" font-size: 17px ;text-align: justify;  text-justify: inter-word; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			This is to inform you that Meeting is Scheduled <%-- on <b><u>"<%=sdf.format(sdf1.parse(scheduledata[2].toString())) %>"</u></b>  at  &nbsp;<b><u><%=scheduledata[3] %></u></b> held at <b><u><%=scheduledata[12] %></u></b> --%> for the <b><%=scheduledata[7] %> (<%=scheduledata[8] %>)</b>&nbsp; committee <%if(projectid!=null && Long.parseLong(projectid)>0){ %> of <b><%=projectdata[1] %> (<%=projectdata[4] %>)</b><%} %> and further details about the meeting is mentioned below. </p></td></tr>
+			<!-- Prudhvi - 05/03/2024 -->
+			This is to inform you that Meeting is Scheduled <%-- on <b><u>"<%=sdf.format(sdf1.parse(scheduledata[2].toString())) %>"</u></b>  at  &nbsp;<b><u><%=scheduledata[3] %></u></b> held at <b><u><%=scheduledata[12] %></u></b> --%> for the <b><%=scheduledata[7] %> <%if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {%> Record of Discussion <%} else{%> (<%=scheduledata[8] %>)</b>&nbsp; committee <%} %> <%if(projectid!=null && Long.parseLong(projectid)>0){ %> of <b><%=projectdata[1] %> (<%=projectdata[4] %>)</b><%} %> and further details about the meeting is mentioned below. </p></td></tr>
 		</table>
 		
 		<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; min-width: 100px; font-size: 16px; border-collapse:collapse;" >	

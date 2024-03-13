@@ -29,4 +29,5 @@ public class RequirementSummary {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
+	private Long ProjectId;
 }

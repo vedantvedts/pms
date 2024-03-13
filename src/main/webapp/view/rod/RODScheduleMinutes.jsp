@@ -10,7 +10,6 @@
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 
-<title>COMMITTEE SCHEDULE MINUTES</title>
 
  <script src="${ckeditor}"></script>
  <link href="${contentCss}" rel="stylesheet" />
@@ -257,21 +256,21 @@ String specname=(String)request.getAttribute("specname");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 
-Object[] committeescheduleeditdata=(Object[])request.getAttribute("committeescheduleeditdata");
-List<Object[]> committeeagendalist=(List<Object[]>)request.getAttribute("committeeagendalist");
+Object[] rodscheduleeditdata=(Object[])request.getAttribute("rodscheduleeditdata");
+List<Object[]> rodagendalist=(List<Object[]>)request.getAttribute("rodagendalist");
 List<Object[]> dis=(List<Object[]>)request.getAttribute("minutesspeclist");
 List<Object[]> minutesoutcomelist=(List<Object[]>)request.getAttribute("minutesoutcomelist");
 String committscheduleid=(String) request.getAttribute("committscheduleid");
 String membertype=(String) request.getAttribute("membertype");
 String filesize=(String) request.getAttribute("filesize");
-String committeeid=committeescheduleeditdata[0].toString();
-String projectid=committeescheduleeditdata[9].toString();
-String   committeecode    = committeescheduleeditdata[8].toString();
+String committeeid=rodscheduleeditdata[0].toString();
+String projectid=rodscheduleeditdata[9].toString();
+//String   committeecode    = rodscheduleeditdata[7].toString();
 String GenId="GenAdd";
 List<Object[]> minutesattachmentlist=(List<Object[]>)request.getAttribute("minutesattachmentlist");
 
-List<Object[]> committeescheduledata=(List<Object[]>)request.getAttribute("committeescheduledata");
-List<String> SplCommitteeCodes=(List<String>)request.getAttribute("SplCommitteeCodes");
+List<Object[]> rodscheduledata=(List<Object[]>)request.getAttribute("rodscheduledata");
+//List<String> SplCommitteeCodes=(List<String>)request.getAttribute("SplCommitteeCodes");
 
 Object[]MomAttachment=(Object[])request.getAttribute("MomAttachment");
 
@@ -283,7 +282,7 @@ if(formname!=null){
 	GenId="GenAdd";
 }  */
 	String scheduleId="";
-scheduleId=committeescheduleeditdata[6].toString();
+scheduleId=rodscheduleeditdata[6].toString();
 %>
 
 
@@ -315,40 +314,40 @@ scheduleId=committeescheduleeditdata[6].toString();
 <nav class="navbar navbar-light bg-light justify-content-between" id="main1" style="margin-top: -1%">
 	<a class="navbar-brand">
 		
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=committeescheduleeditdata[7] %> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString()))%> - <%=committeescheduleeditdata[3] %>)</span></b>
+		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=rodscheduleeditdata[7] %> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=sdf.format(sdf1.parse(rodscheduleeditdata[2].toString()))%> - <%=rodscheduleeditdata[3] %>)</span></b>
 
 	</a>
 	
-	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
-					<%-- <button type="button" class="btn btn-sm prints my-2 my-sm-0" formaction=""  style="font-size:12px;" onclick="sendEmail(<%=committeescheduleeditdata[6]%>)">
+	<form class="form-inline" method="GET" action="RODMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
+					<%-- <button type="button" class="btn btn-sm prints my-2 my-sm-0" formaction=""  style="font-size:12px;" onclick="sendEmail(<%=rodscheduleeditdata[6]%>)">
 					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> --%>
 		
-		<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
+		<%-- <%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
 		    <!-- <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
-		<%if(committeescheduleeditdata[22].toString().equals("N")){%>	
-			<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmail(<%=committeescheduleeditdata[6]%>)">
+		<%if(rodscheduleeditdata[22].toString().equals("N")){%>	
+		<!-- <input type="submit" class="btn  btn-sm view" value="PROTECTED MINUTES" name="PROTECTED MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#DF4646 ;color:white ;font-size:12px;" /> --> 
+			<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmail(<%=rodscheduleeditdata[6]%>)">
 			<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
-<!-- 					 <input type="submit" class="btn  btn-sm view" value="PROTECTED MINUTES" name="PROTECTED MINUTES" formaction="CommitteeMinutesNewProtected.htm" formmethod="get" formtarget="_blank" style="background-color:#DF4646 ;color:white ;font-size:12px;" /> 
- -->			<input type="submit" class="btn  btn-sm view" value="MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
+			<input type="submit" class="btn  btn-sm view" value="MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
 			<button type="submit" class="btn btn-primary btn-sm"  name="sub" value="word"  id="wordDownloadBtn" formmethod="get" formtarget="_blank" formaction="CommitteeMinutesNewWordDownload.htm"  ><i class="fa fa-file-word-o" style="font-size:17px" title="Committee Minutes New Word Download"></i></button> 
 		<%} %>
-			<%if(committeescheduleeditdata[22].toString().equals("N")){%><button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" >FREEZE</button>
+			<%if(rodscheduleeditdata[22].toString().equals("N")){%><button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" >FREEZE</button>
 			<%}else{ %>
 			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to unfreeze Minutes 2021 ?')" style="font-size:12px;" >UNFREEZE</button>
 			<%} %>
-		<%} %>
-		<input type="hidden" name="IsFrozen" value="<%=committeescheduleeditdata[22].toString()%>">
-		<%if(!SplCommitteeCodes.contains(committeecode.trim())) { %>
-		<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmails(<%=committeescheduleeditdata[6]%>)">
+		<%} %> --%>
+		<input type="hidden" name="IsFrozen" value="<%=rodscheduleeditdata[22].toString()%>">
+		<%-- <%if(!SplCommitteeCodes.contains(committeecode.trim())) { %>
+		<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmails(<%=rodscheduleeditdata[6]%>)">
 					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
 		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;">MINUTES</button>
-		<%} %>
-		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
-		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
-		<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
+		<%} %> --%>
+		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;">MINUTES</button>
+		<input type="hidden" name="isFrozen" value="<%=rodscheduleeditdata[22]%>">
+		<input type="hidden" name="committeescheduleid" value="<%=rodscheduleeditdata[6]%>">
+		<input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
-		<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>			
+		<button  class="btn  btn-sm back" formaction="RODScheduleView.htm" style=" font-size:12px;" >BACK</button>			
 	</form>
 	
 	
@@ -356,7 +355,7 @@ scheduleId=committeescheduleeditdata[6].toString();
  <div id="spinner" class="spinner" style="display:none;">
                 <img id="img-spinner" style="width: 200px;height: 200px;" src="view/images/spinner1.gif" alt="Loading"/>
                 </div>
-<%if(committeescheduleeditdata[22].toString().equalsIgnoreCase("N")) {%>   
+<%if(rodscheduleeditdata[22].toString().equalsIgnoreCase("N")) {%>   
 <div class="container-fluid" id="main2">          
 <div class="row"> 
 <div class="col-md-5" >
@@ -570,9 +569,9 @@ scheduleId=committeescheduleeditdata[6].toString();
    			<%int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145;int collapse=140;String temp=null;int form6=565;int form7=123;
    
    
-    if(!committeeagendalist.isEmpty()){
+    if(!rodagendalist.isEmpty()){
     	
- 	  for(Object[] hlo1:committeeagendalist){
+ 	  for(Object[] hlo1:rodagendalist){
  	
  		 Unit=hlo1[3].toString();
  		 String scheduleagendaid=hlo1[0].toString();
@@ -1407,7 +1406,7 @@ scheduleId=committeescheduleeditdata[6].toString();
      </div>   <!-- Agenda collapse end -->     
  </div><!-- Agenda Panel end --> 
 
-<%if(SplCommitteeCodes.contains(committeecode.trim())) { %>
+<%-- <%if(SplCommitteeCodes.contains(committeecode.trim())) { %>
 <div class="panel panel-info">
 	
 	<div class="panel-heading">
@@ -1424,7 +1423,7 @@ scheduleId=committeescheduleeditdata[6].toString();
         </div>
         </div>
 
-<%} %>
+<%} %> --%>
 <!--  New code end-->
 
 <!-- Modal for Attachment -->
@@ -1453,8 +1452,10 @@ scheduleId=committeescheduleeditdata[6].toString();
   
   
   
+  <input type="hidden" name="redirpageflag" value="ROD">
   <input type="hidden" name="ScheduleId" value=<%=scheduleId %>>
   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+  
   </div>
   </div>
       </form>
@@ -1482,7 +1483,7 @@ function showAttachmentModal(){
 	<br>
 	
 	
-	<%if(!committeescheduledata.isEmpty()){ %>
+	<%if(!rodscheduledata.isEmpty()){ %>
 	
 	<div class="row">
 	
@@ -1491,7 +1492,7 @@ function showAttachmentModal(){
 			<form class="" name="assignaction" id="assignaction" action="CommitteeAction.htm" method="post">
 	
 				<input type="submit" name="sub" class="btn btn-sm add fa-thumbs-up" style="background-color:#0e49b5 !important; " form="assignaction"  value="ASSIGN ACTION &nbsp;&nbsp;&#xf164;"  onclick=""/>
-				<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">	
+				<input type="hidden" name="ScheduleId" value="<%=rodscheduleeditdata[6] %>">	
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<input type="hidden" name="minutesback" value="minutesback"/>
 				
@@ -1529,8 +1530,9 @@ function showAttachmentModal(){
 											<form method="post" action="MinutesAttachmentDelete.htm">
 												<button class="fa fa-trash btn  " type="submit" onclick="return confirm('Are You Sure To Delete this File?');" style="margin-right: -30px"></button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-												<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
+												<input type="hidden" name="ScheduleId" value="<%=rodscheduleeditdata[6] %>">
 												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">
+												<input type="hidden" name="redirpageflag" value="ROD">
 											</form>									
 										</td>
 									</tr>
@@ -1540,7 +1542,8 @@ function showAttachmentModal(){
 					<%} %>
 				<form method="post" action="MinutesAttachment.htm" enctype="multipart/form-data" id="attachmentfrm" name="attachmentfrm" >					
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>"> 
+					<input type="hidden" name="ScheduleId" value="<%=rodscheduleeditdata[6] %>"> 
+					<input type="hidden" name="redirpageflag" value="ROD">
 					<table>
 						<tr>
 							<td>
@@ -1660,10 +1663,11 @@ function showAttachmentModal(){
  										<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd"  id="adding" value="SUBMIT"  />
 								  		<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd" id="editing"  value="SUBMIT" formaction="CommitteeMinutesEditSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
 										<input type="submit" name="sub" hidden="hidden" form="specadd" id="hiddensubmit">
-										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
+										<input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6] %>">	
 										<input type="hidden" name="schedulesubid" value="1" readonly="readonly">
 										<input type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
-										<input type="hidden" name="committeename" value="<%=committeescheduleeditdata[8]%>">
+										<input type="hidden" name="committeename" value="<%=rodscheduleeditdata[7]%>">
+										<input type="hidden" name="redirpageflag" value="ROD">
 								</div>
   							</div>
   						</div>
@@ -1699,7 +1703,6 @@ function showAttachmentModal(){
 							<input class="form-control" type="hidden" name="scheduleidedit" id="scheduleideditair" >
 							<input class="form-control" type="hidden" name="minutesidedits" id="minutesideditair" >
 							<input class="form-control" type="hidden" name="schedulminutesid" id="scheduleminutesideditair" >
-							
 						</label>
 					</div>
    					
@@ -1752,11 +1755,12 @@ function showAttachmentModal(){
 								  		<input type="submit" name="sub" class="btn  btn-sm submit" form="specair" id="editingair"  value="SUBMIT" formaction="CommitteeMinutesEditSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
 								  		<input type="submit" name="sub" class="btn  btn-sm submit" style="background-color: #dc3545; border-color: #dc3545;" form="specair" id="deletingair"  value="DELETE" formaction="CommitteeMinutesDeleteSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
 										<input type="submit" name="sub" hidden="hidden" form="specadd" id="hiddensubmit">
-										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
+										<input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6] %>">	
 										<input type="hidden" name="schedulesubid" value="1" readonly="readonly">
 										<input type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
-										<input type="hidden" name="committeename" value="<%=committeescheduleeditdata[8]%>">
+										<input type="hidden" name="committeename" value="<%=rodscheduleeditdata[7]%>">
 										<input type="hidden" name="OutComeAirHead"  id="OutComeAirHead" value="">
+										<input type="hidden" name="redirpageflag" value="ROD">
 								</div>
   							</div>
   						</div>
@@ -1779,17 +1783,17 @@ function showAttachmentModal(){
   	<div style="font-size: 1.25rem;font-weight: 600; color: crimson; text-shadow: 2px 2px 2px skyblue">MOM already freezed. If you want to edit please unfreeze it. </div>
   	</div>
   	<div class="mb-2" align="center">
-  	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
-	<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
+  	<form class="form-inline" method="GET" action="RODMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
+	<%-- <%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
 	<!--<input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
 	<button type="submit" class="btn  btn-sm view"  formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">MINUTES
 	<i class="fa fa-download blink" aria-hidden="true" style="color:white;"></i>
 	</button>&nbsp;&nbsp;
 	
-	<%}%>
-	<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
-	<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
-	<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
+	<%}%> --%>
+	<input type="hidden" name="isFrozen" value="<%=rodscheduleeditdata[22]%>">
+	<input type="hidden" name="committeescheduleid" value="<%=rodscheduleeditdata[6]%>">
+	<input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6]%>">
 	<input type="hidden" name="membertype" value="<%=membertype%>">
 	</form>
 	</div> 
@@ -1815,8 +1819,9 @@ function showAttachmentModal(){
 											<form method="post" action="MinutesAttachmentDelete.htm">
 												<button class="fa fa-trash btn  " type="submit" onclick="return confirm('Are You Sure To Delete this File?');" style="margin-right: -30px"></button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-												<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
+												<input type="hidden" name="ScheduleId" value="<%=rodscheduleeditdata[6] %>">
 												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">
+												<input type="hidden" name="redirpageflag" value="ROD">
 											</form>									
 										</td>
 									</tr>
@@ -1826,7 +1831,8 @@ function showAttachmentModal(){
 					<%} %>
 				<form method="post" action="MinutesAttachment.htm" enctype="multipart/form-data" id="attachmentfrm" name="attachmentfrm" >					
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
+					<input type="hidden" name="ScheduleId" value="<%=rodscheduleeditdata[6] %>">
+					<input type="hidden" name="redirpageflag" value="ROD">
 					<table>
 						<tr>
 							<td>
@@ -2234,6 +2240,7 @@ function editcheck1(editfileid)
     		    $("#unit1idadd").val(unit1idadd);
     		    $("#formnameadd").val(formnameadd);
     		    
+    		  
     		    $.ajax({
     				type : "GET",
     				url : "CommitteeMinutesSpecAdd.htm",
@@ -2687,10 +2694,10 @@ var genid="<%=GenId%>";
 
 
 <script type='text/javascript'> 
-function submitForm(formname)
+/* function submitForm(formname)
 { 
   document.getElementById(formname).submit(); 
-} 
+}  */
 
 
 
@@ -2701,7 +2708,7 @@ function showModal(a){
 	$('#myModal').modal('show');
 }
 
-function sendEmail(a){
+/* function sendEmail(a){
 	  $('body').css("filter", "blur(1.0px)");
 	 $('#spinner').show();
 	 $('#main1').hide();
@@ -2718,7 +2725,7 @@ function sendEmail(a){
 		
 		success:function (result){
 				
-			console.log( result);
+			console.log( typeof result);
 
 			if(result.length>0){
 				 $('#main1').show();
@@ -2732,10 +2739,10 @@ function sendEmail(a){
 		}
 	}) 
 	
-}
+} */
 
 
-function sendEmails(a){
+/* function sendEmails(a){
 	  $('body').css("filter", "blur(1.0px)");
 		 $('#spinner').show();
 		 $('#main1').hide();
@@ -2765,7 +2772,7 @@ function sendEmails(a){
 				
 			}
 		}) 
-}
+} */ 
 </script>
 
 </body>

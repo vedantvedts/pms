@@ -24,6 +24,7 @@ public class RequirementMembers {
 	private String CreatedBy;
 	private String CreatedDate;
 	private int IsActive;
+	private Long ProjectId;
 	
 	@Transient
 	private String[] emps;

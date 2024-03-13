@@ -158,6 +158,7 @@ import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.service.CommitteeService;
+import com.vts.pfms.committee.service.RODService;
 import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
@@ -203,6 +204,9 @@ public class CommitteeController {
 	
 	@Autowired
 	Environment env;
+	
+	@Autowired
+	RODService rodservice;
 	
 	@Value("${ApplicationFilesDrive}")
 	private String ApplicationFilesDrive;
@@ -1271,6 +1275,13 @@ public class CommitteeController {
 				e.printStackTrace(); 
 				logger.error(new Date() +"Inside CommitteeAgendaSubmit.htm "+UserId,e);
 		}
+		// Prudhvi - 04/03/2024
+		/* ------------------ start ----------------------- */
+		String redirpageflag = req.getParameter("redirpageflag");
+		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+			return"redirect:/RODScheduleView.htm";
+		}
+		/* ------------------ end ----------------------- */
 		return"redirect:/CommitteeScheduleAgenda.htm";
 	}
 	
@@ -1323,6 +1334,13 @@ public class CommitteeController {
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeScheduleAgendaEdit.htm "+UserId,e);
 		}
+		// Prudhvi - 04/03/2024
+		/* ------------------ start ----------------------- */
+		String redirpageflag = req.getParameter("redirpageflag");
+		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+			return"redirect:/RODScheduleView.htm";
+		}
+		/* ------------------ end ----------------------- */
 		return"redirect:/CommitteeScheduleAgenda.htm";
 	}
 	
@@ -1614,7 +1632,13 @@ public class CommitteeController {
 				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesSubmit.htm "+ 
 		UserId,e);
 		}
-		
+		// Prudhvi - 06/03/2024
+		/* ------------------ start ----------------------- */
+		String redirpageflag = req.getParameter("redirpageflag");
+		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+			return"redirect:/RODScheduleMinutes.htm";
+		}
+		/* ------------------ end ----------------------- */
 		return "redirect:/CommitteeScheduleMinutes.htm";
 	}
 	
@@ -1704,7 +1728,13 @@ public class CommitteeController {
 			catch (Exception e) {
 					e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId,e);
 			}
-			
+			// Prudhvi - 06/03/2024
+			/* ------------------ start ----------------------- */
+			String redirpageflag = req.getParameter("redirpageflag");
+			if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+				return"redirect:/RODScheduleMinutes.htm";
+			}
+			/* ------------------ end ----------------------- */
 			return "redirect:/CommitteeScheduleMinutes.htm";
 		}
 	  
@@ -1746,7 +1776,13 @@ public class CommitteeController {
 			catch (Exception e) {
 					e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesDeleteSubmit.htm "+UserId,e);
 			}
-			
+			// Prudhvi - 06/03/2024
+			/* ------------------ start ----------------------- */
+			String redirpageflag = req.getParameter("redirpageflag");
+			if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+				return"redirect:/RODScheduleMinutes.htm";
+			}
+			/* ------------------ end ----------------------- */
 			return "redirect:/CommitteeScheduleMinutes.htm";
 		}
 	  
@@ -1952,7 +1988,13 @@ public class CommitteeController {
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeInvitationCreate.htm "+UserId,e);
 		}
-
+		// Prudhvi - 05/03/2024
+		/* ------------------ start ----------------------- */
+		String redirpageflag = req.getParameter("redirpageflag");
+		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+			return"redirect:/RODInvitations.htm";
+		}
+		/* ------------------ end ----------------------- */
 		return "redirect:/CommitteeInvitations.htm";
 	}
 		
@@ -2175,6 +2217,13 @@ public class CommitteeController {
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeInvitationDelete.htm "+UserId,e);
 		}
+		// Prudhvi - 05/03/2024
+		/* ------------------ start ----------------------- */
+		String redirpageflag = req.getParameter("redirpageflag");
+		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+			return"redirect:/RODInvitations.htm";
+		}
+		/* ------------------ end ----------------------- */
 		return "redirect:/CommitteeInvitations.htm";
 	}
 	
@@ -3172,6 +3221,13 @@ public class CommitteeController {
 		redir.addFlashAttribute("committeescheduleid", req.getParameter("ScheduleId"));
 		redir.addFlashAttribute("specname", "Introduction");
 		redir.addFlashAttribute("unit1","unit1");
+		// Prudhvi - 06/03/2024
+		/* ------------------ start ----------------------- */
+		String redirpageflag = req.getParameter("redirpageflag");
+		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+			return"redirect:/RODScheduleMinutes.htm";
+		}
+		/* ------------------ end ----------------------- */
 		return "redirect:/CommitteeScheduleMinutes.htm";	
 	}
 	@RequestMapping(value="MomAttachment.htm",method=RequestMethod.POST)
@@ -3209,6 +3265,13 @@ public class CommitteeController {
 		redir.addFlashAttribute("committeescheduleid", req.getParameter("ScheduleId"));
 		redir.addFlashAttribute("specname", "Introduction");
 		redir.addFlashAttribute("unit1","unit1");
+		// Prudhvi - 06/03/2024
+		/* ------------------ start ----------------------- */
+		String redirpageflag = req.getParameter("redirpageflag");
+		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+			return"redirect:/RODScheduleMinutes.htm";
+		}
+		/* ------------------ end ----------------------- */
 		return "redirect:/CommitteeScheduleMinutes.htm";	
 	}
 	
@@ -3236,6 +3299,13 @@ public class CommitteeController {
 		redir.addFlashAttribute("committeescheduleid", req.getParameter("ScheduleId"));
 		redir.addFlashAttribute("specname", "Introduction");
 		redir.addFlashAttribute("unit1","unit1");
+		// Prudhvi - 06/03/2024
+		/* ------------------ start ----------------------- */
+		String redirpageflag = req.getParameter("redirpageflag");
+		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+			return"redirect:/RODScheduleMinutes.htm";
+		}
+		/* ------------------ end ----------------------- */
 		return "redirect:/CommitteeScheduleMinutes.htm";	
 	}
 	
@@ -3663,7 +3733,17 @@ public class CommitteeController {
 	{			
 		String scheduleid=req.getParameter("committeescheduleid");		
 		String invitationid=req.getParameter("invitationid");				
-		Object[] scheduledata=service.CommitteeScheduleEditData(scheduleid);
+		// Prudhvi - 05/03/2024
+		/* ------------------ start ----------------------- */
+		Object[] scheduledata = null;
+		String rodflag = req.getParameter("rodflag");
+		if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
+			req.setAttribute("rodflag", rodflag);
+			scheduledata = rodservice.RODScheduleEditData(scheduleid);
+		}else {
+			scheduledata = service.CommitteeScheduleEditData(scheduleid);
+		}
+		/* ------------------ end ----------------------- */
 		String projectid=scheduledata[9].toString();
 								
 		if(projectid==null || Long.parseLong(projectid)==0)
@@ -3753,7 +3833,17 @@ public class CommitteeController {
 	
 		String invitationid=req.getParameter("invitationid");
 		
-		Object[] scheduledata=service.CommitteeScheduleEditData(scheduleid);
+		// Prudhvi - 05/03/2024
+		/* ------------------ start ----------------------- */
+		Object[] scheduledata = null;
+		String rodflag = req.getParameter("rodflag");
+		if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
+			req.setAttribute("rodflag", rodflag);
+			scheduledata = rodservice.RODScheduleEditData(scheduleid);
+		}else {
+			scheduledata = service.CommitteeScheduleEditData(scheduleid);
+		}
+		/* ------------------ end ----------------------- */
 		String projectid=scheduledata[9].toString();
 		
 		
@@ -4381,9 +4471,20 @@ public class CommitteeController {
 			 
 			List<Object[]> committeeinvitedlist=service.CommitteeAtendance(committeescheduleid);
 			
+			// Prudhvi - 05/03/2024
+			/* ------------------ start ----------------------- */
+			Object[] scheduledata = null;
+			String rodflag = req.getParameter("rodflag");
+			String rodmessagehandle = "";
+			if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
+				scheduledata = rodservice.RODScheduleEditData(committeescheduleid);
+				rodmessagehandle = "Record of Discussion of";
+			}else {
+				scheduledata = service.CommitteeScheduleEditData(committeescheduleid);
+				rodmessagehandle = "(" + scheduledata[8] + ")" +"</b> committee of <b>";
+			}
+			/* ------------------ end ----------------------- */
 			
-			
-			Object[] scheduledata=service.CommitteeScheduleEditData(committeescheduleid);
 			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			ArrayList<String> emails= new ArrayList<String>();
 			ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
@@ -4410,7 +4511,7 @@ public class CommitteeController {
 			}
 			 
 			String [] Email = emails.toArray(new String[emails.size()]);
-			String Message="Sir/Madam<br><p>&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + "(" + scheduledata[8] + ")" +"</b> committee of <b>"+ ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
+			String Message="Sir/Madam<br><p>&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + rodmessagehandle + ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
 			 		+ "<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
 			 		 + "<tr><td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Date :  </td>"
 			 		 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + sdf.format(scheduledata[2])+","+LocalDate.parse(scheduledata[2].toString()).getDayOfWeek()+"</td></tr>"
@@ -4452,7 +4553,14 @@ public class CommitteeController {
 				
 			 	e.printStackTrace(); 
 			 	logger.error(new Date() +"Inside SendInvitationLetter.htm "+UserId,e);
-			}			 
+			}	
+		// Prudhvi - 05/03/2024
+		/* ------------------ start ----------------------- */
+		String rodflag = req.getParameter("rodflag");
+		if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
+			return "redirect:/RODInvitations.htm";
+		}
+		/* ------------------ end ----------------------- */
 		 return "redirect:/CommitteeInvitations.htm";
 		 }
 	
@@ -5340,6 +5448,13 @@ public class CommitteeController {
 				}	
 								
 				redir.addAttribute("committeescheduleid", committeescheduleid);
+				// Prudhvi - 06/03/2024
+				/* ------------------ start ----------------------- */
+				String redirpageflag = req.getParameter("redirpageflag");
+				if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+					return"redirect:/RODAttendance.htm";
+				}
+				/* ------------------ end ----------------------- */
 				return "redirect:/CommitteeAttendance.htm";
 			}
 			catch (Exception e)
@@ -5773,17 +5888,6 @@ public class CommitteeController {
 							  }
 						  in.close(); 
 						  out.close();
-						
-						// newly updated by sankha 12-10
-						/*
-						 * res.setContentType("application/pdf"); res.setHeader("Content-Disposition",
-						 * "inline; name="+ CPF.getMoM()+".pdf; filename"+ CPF.getMoM()); File f=new
-						 * File(uploadpath+CPF.getFrozenBriefingPath() +CPF.getMoM()); OutputStream out
-						 * = res.getOutputStream(); FileInputStream in = new FileInputStream(f); byte[]
-						 * buffer = new byte[4096]; int length; while ((length = in.read(buffer)) > 0) {
-						 * out.write(buffer, 0, length); } in.close(); out.close();
-						 */
-						
 					}
 					else 
 					{
@@ -6124,6 +6228,364 @@ public class CommitteeController {
 				
 			}
 		
+			@RequestMapping(value="CommitteeMinutesNewProtected.htm", method = {RequestMethod.POST,RequestMethod.GET})
+			public void CommitteeMinutesNewProtected(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
+			{
+				String UserId=(String)ses.getAttribute("Username");
+				String EmpNo=(String)ses.getAttribute("EmpNo");
+				String EmpName=(String)ses.getAttribute("EmpName");
+				String LabCode =(String) ses.getAttribute("labcode");
+				logger.info(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId);
+				try
+				{		
+					String committeescheduleid = req.getParameter("committeescheduleid");			
+					String PROTECTED_MINUTES = req.getParameter("PROTECTED MINUTES");
+					
+					Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+					String projectid= committeescheduleeditdata[9].toString();
+					String committeeid=committeescheduleeditdata[0].toString();
+					if(Long.parseLong(projectid) >0 && committeescheduleeditdata[22].toString().equals("Y")) 
+					{
+					
+					}
+					else 
+					{
+		
+						Object[] projectdetails = null;
+						
+						if(projectid!=null && Integer.parseInt(projectid)>0)
+						{
+						projectdetails = service.projectdetails(projectid);
+							req.setAttribute("projectdetails", projectdetails);
+						}
+						String divisionid= committeescheduleeditdata[16].toString();
+						if(divisionid!=null && Integer.parseInt(divisionid)>0)
+						{
+							req.setAttribute("divisiondetails", service.DivisionData(divisionid));
+						}
+						String initiationid= committeescheduleeditdata[17].toString();
+						if(initiationid!=null && Integer.parseInt(initiationid)>0)
+						{
+							req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
+						}
+						
+						Committee committee = printservice.getCommitteeData(committeeid);
+						
+						HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
+						long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);
+						
+						//****************************envi download start**********************************
+			    		List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
+			    		envisagedDemandlist=service.getEnvisagedDemandList(projectid);
+			    		req.setAttribute("envisagedDemandlist", envisagedDemandlist);
+						
+						req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
+						req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
+						req.setAttribute("committeeminutes",service.CommitteeMinutesSpecNew());
+						req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
+						req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
+						req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
+						req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
+						//req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
+					
+						// this method will show the milestones based on each meeting date
+						req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid,committeescheduleeditdata[2].toString()));
+
+		//				req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
+		//				req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
+						String LevelId= "2";
+			    		Object[] MileStoneLevelId = printservice.MileStoneLevelId(projectid,committeeid);
+						if( MileStoneLevelId!= null) {
+							LevelId= MileStoneLevelId[0].toString();
+						}
+						req.setAttribute("levelid", LevelId);
+						req.setAttribute("labInfo", service.LabDetailes(LabCode));
+					/*---------------------------------------------------------------------------------------------------------------*/
+		//				if(Long.parseLong(projectid) >0 && committeescheduleeditdata[22].toString().equals("N") ) {
+							
+							 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
+						 		HttpHeaders headers = new HttpHeaders();
+						 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+						 		headers.set("labcode", LabCode);
+						 		String jsonResult=null;
+								try {
+									HttpEntity<String> entity = new HttpEntity<String>(headers);
+									ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
+									jsonResult=response.getBody();						
+								}catch(Exception e) {
+									req.setAttribute("errorMsg", "errorMsg");
+								}
+								ObjectMapper mapper = new ObjectMapper();
+								mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+								mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+								List<ProjectFinancialDetails> projectDetails=null;
+								if(jsonResult!=null) {
+									try {
+										projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
+										req.setAttribute("financialDetails",projectDetails);
+									} catch (JsonProcessingException e) {
+										e.printStackTrace();
+									}
+								}
+				 	
+								final String localUri2=uri+"/pfms_serv/getTotalDemand";
+		
+						 		String jsonResult2=null;
+								try {
+									HttpEntity<String> entity = new HttpEntity<String>(headers);
+									ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
+									jsonResult2=response.getBody();						
+								}catch(Exception e) {
+									req.setAttribute("errorMsg", "errorMsg");
+								}
+								ObjectMapper mapper2 = new ObjectMapper();
+								mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+								mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+								List<TotalDemand> totaldemand=null;
+								if(jsonResult2!=null) {
+									try {
+										totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+										req.setAttribute("TotalProcurementDetails",totaldemand);
+									} catch (JsonProcessingException e) {
+									e.printStackTrace();
+								}
+							}
+		
+						 	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
+						 	List<Object[]> procurementOnDemand=null;
+						 	List<Object[]> procurementOnSanction=null;
+			 	
+						
+						 	 if(procurementStatusList!=null){
+						 		Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
+						 		Collection<?> keys = map.keySet();
+					 		for(Object key:keys){
+						 		    if(key.toString().equals("D")) {
+						 		    	procurementOnDemand=map.get(key);
+						 		    }else if(key.toString().equals("S")) {
+						 		    	procurementOnSanction=map.get(key);
+						 		    }
+						 		 }
+						 	}
+						 	List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+							
+						 	for(Object obj[] : actionlist) {
+									
+								ArrayList<Object[]> values=new ArrayList<Object[]>();
+								for(Object obj1[] : actionlist ) {
+									if(obj1[0].equals(obj[0])) {
+											values.add(obj1);
+									}
+								}
+								if(!actionsdata.containsKey(obj[0].toString())) {
+									actionsdata.put(obj[0].toString(), values);
+								}
+						} 
+						
+						 	//req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid));
+						 	req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid,committeescheduleeditdata[2].toString()));
+						 	
+//							
+						 	
+						 	req.setAttribute("actionlist",actionsdata);
+						 	req.setAttribute("procurementOnDemand", procurementOnDemand);
+						 	req.setAttribute("procurementOnSanction", procurementOnSanction);
+						 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+						 	req.setAttribute("projectdatadetails", service.ProjectDataDetails(projectid));
+						 	// new code
+						 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
+						 	List<Object[]>first=null;   //store the milestones with levelid 1
+						 	List<Object[]>second=null;	// store the milestones with levelid 2
+						 	List<Object[]>three= null; // store the milestones with levelid 3
+						 	Map<Integer,String> treeMapLevOne = new TreeMap<>();  // store the milestoneid with level id 1 and counts 
+						 	Map<Integer,String>treeMapLevTwo= new TreeMap<>(); // store the milestonidid with level id 2 and counts
+						 	Map<Integer,String>treeMapLevThree= new TreeMap<>();  // store the milestoneid with level id 3 and counts 
+						 	 TreeSet<Integer> AllMilestones = new TreeSet<>();   // store the number of milestone in sorted order
+						 	 if(!totalMileStones.isEmpty()) {
+						 	 for(Object[]obj:totalMileStones){
+						 	 AllMilestones.add(Integer.parseInt(obj[22].toString())); // getting the milestones from list
+						 	 }
+						 	 for(Integer mile:AllMilestones) {
+						 	 int count=1;
+						 	 first=totalMileStones.stream().
+					 			   filter(i->i[26].toString().equalsIgnoreCase("1") && i[22].toString().equalsIgnoreCase(mile+""))
+					 				.map(objectArray -> new Object[]{objectArray[0], objectArray[2]})
+					 				.collect(Collectors.toList());
+						 		for(Object[]obj:first) {
+						 		treeMapLevOne.put(Integer.parseInt(obj[1].toString()),"A"+(count++));// to get the first level
+						 		}
+						 	}
+						 	for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
+						 		int count=1;
+						 		second=totalMileStones.stream().
+						 			   filter(i->i[26].toString().equalsIgnoreCase("2") && i[2].toString().equalsIgnoreCase(entry.getKey()+""))
+						 			    .map(objectArray -> new Object[] {entry.getKey(),objectArray[3]})
+						 			   .collect(Collectors.toList());
+						 	for(Object[]obj:second) {
+						 		treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),entry.getValue()+"-B"+(count++));
+						 	}
+						 	}
+						 	for(Map.Entry<Integer,String>entry: treeMapLevTwo.entrySet()) {
+						 		int count=1;
+						 		three=totalMileStones.stream().
+						 				filter(i->i[26].toString().equalsIgnoreCase("3") && i[3].toString().equalsIgnoreCase(entry.getKey()+""))
+						 				.map(objectArray -> new Object[] {entry.getKey(),objectArray[4]})
+						 				.collect(Collectors.toList());
+						 		for(Object[]obj:three) {
+									treeMapLevThree.put(Integer.parseInt(obj[1].toString()), "C"+(count++)); 
+						 			
+						 		}
+						 	}
+						 	 }
+									 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
+									 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
+									 	 // new code end
+									 	 //code on 06-10-2023				 	 
+									 	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
+								    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
+								    	ReviewMeetingList.add(printservice.ReviewMeetingList(projectid, "EB"));
+							    		ReviewMeetingListPMRC.add(printservice.ReviewMeetingList(projectid, "PMRC")); 
+							    		Map<Integer,String> mappmrc = new HashMap<>();
+							    		Map<Integer,String> mapEB = new HashMap<>();
+							    		int pmrccount=0;
+							     		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
+							     			mappmrc.put(++pmrccount,obj[3].toString());
+							     		}
+							     	
+							    		int ebcount=0;
+							    	
+							    		for (Object []obj:ReviewMeetingList.get(0)) {
+							    		mapEB.put(++ebcount,obj[3].toString());
+							    		}
+							    		req.setAttribute("mappmrc", mappmrc);
+								    	req.setAttribute("mapEB", mapEB);
+								    	
+								    	Object[]momAttachment=service.MomAttachmentFile(committeescheduleid);
+								    
+								    	
+								    	 req.setAttribute("tableactionlist",  actionsdata);
+									 	 //
+									 	 String filename=committeescheduleeditdata[11].toString().replace("/", "-");
+									 	 String path=req.getServletContext().getRealPath("/view/temp");
+									 	 req.setAttribute("path",path);
+									 	 CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+									 	 req.getRequestDispatcher("/view/committee/CommitteeMinutesNew.jsp").forward(req, customResponse);
+									 	 String html = customResponse.getOutput();
+									 	 
+									 	 
+									 	 byte[]data=html.getBytes();
+									 	InputStream fis1 = new ByteArrayInputStream(data);
+									 	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path + "/" + filename +  ".pdf"));
+									 	pdfDoc.setTagged(); 
+									 	Document document = new Document(pdfDoc, PageSize.LEGAL);
+									 	document.setMargins(50, 100, 150, 50);
+									 	ConverterProperties converterProperties = new ConverterProperties();
+									 	FontProvider dfp = new DefaultFontProvider(true, true, true);
+									 	converterProperties.setFontProvider(dfp);
+										HtmlConverter.convertToPdf(fis1, pdfDoc, converterProperties);
+										
+									
+										String password = "LRDE123";
+										PdfWriter pdfw= new PdfWriter(path +File.separator+ "mergedb.pdf",
+								                   new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
+								                            EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
+										
+								        PdfDocument pdfDocs = new PdfDocument(pdfw);
+								        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+								        Document docMain = new Document(pdfDocMain,PageSize.A4);
+								        docMain.setMargins(50, 50, 50, 50);
+								  
+								        docMain.close();
+								        pdfDocMain.close();
+								        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
+								        
+								        
+								        PdfReader pdf1=new PdfReader(path+File.separator+filename+"Maintemp.pdf");
+								        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+								        PdfMerger merger = new PdfMerger(pdfDocument);
+								        
+//								        if(momAttachment!=null) {
+//								        	if(momAttachment[2]!=null) {
+//								        		if(FilenameUtils.getExtension(momAttachment[2].toString()).equalsIgnoreCase("pdf")) {
+//							        		        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+momAttachment[1]+"\\"+momAttachment[2]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+//							        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
+//							        		        document4.setMargins(50, 50, 50, 50);
+//							        		        Rectangle pageSize;
+//							        		        PdfCanvas canvas;
+//							        		        int n = pdfDocument1.getNumberOfPages();
+//							        		
+//							        		        for(int i=1;i<=n;i++) {
+//							        		            PdfPage page = pdfDocument1.getPage(i);
+//							        		            pageSize = page.getPageSize();
+//							        		            canvas = new PdfCanvas(page);
+//							        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40); // Left side position
+//							        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40); // Right side position
+//
+//							        		            
+//							        		            // Add content on the left side
+//							        		            String[] no=committeescheduleeditdata[11].toString().split("/");
+//							        		        
+//
+//							        		            // Add content on the right side
+//							        		            
+//							        		            canvas.beginText()
+//							        		                .setFontAndSize(PdfFontFactory.createFont(FontConstants.TIMES_ROMAN), 10)
+//							        		                .moveText(pageSize.getWidth()-200 , pageSize.getHeight() - 10)
+//							        		                .showText("Attachment to MoM - "+no[2]+"/"+(service.MeetingNo(committeescheduleeditdata)>0?service.MeetingNo(committeescheduleeditdata):"")+"/"+projectdetails[4].toString())
+//							        		                .endText();
+//
+//							        		        }
+//							        		        document4.close();
+//							        		        pdfDocument1.close();
+//							        	        	PdfReader pdf4=new PdfReader(path+"/"+filename+"temp.pdf");
+//							        	        	PdfDocument pdfDocument4 = new PdfDocument(pdf4);
+//							        		        merger.merge(pdfDocument4, 1, pdfDocument4.getNumberOfPages());
+//							        		        
+//							        		        pdfDocument4.close();
+//							        		        pdf4.close();
+//							        		        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+//							        		        Files.delete(pathOfFile);	
+//								        	}
+//								        	}
+//								        }
+//								        
+									 	
+
+								        pdfDocument.close();
+								        merger.close();
+
+								        pdf1.close();	       
+								        pdfw.close();
+								        res.setContentType("application/pdf");
+								        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+								        File f=new File(path +File.separator+ "mergedb.pdf");
+										FileInputStream fis = new FileInputStream(f);
+										DataOutputStream os = new DataOutputStream(res.getOutputStream());
+										res.setHeader("Content-Length", String.valueOf(f.length()));
+										byte[] buffer = new byte[1024];
+										int len = 0;
+										while ((len = fis.read(buffer)) >= 0) {
+										os.write(buffer, 0, len);
+										}
+										os.close();
+										fis.close();
+										Path pathOfFile2 = Paths.get(path + "/" + filename  + ".pdf");
+								        
+					}
+				}
+				catch (Exception e) 
+				{
+					e.printStackTrace(); 
+					logger.error(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId,e);
+				}
+				
+				
+			}
+			
+			
+			
+			
+			
 		
 		@RequestMapping(value="EmployeeScheduleReports.htm", method = {RequestMethod.POST,RequestMethod.GET})
 		public String EmployeeScheduleReports(Model model,HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
@@ -8378,7 +8840,7 @@ public class CommitteeController {
 						}
 					}
 					
-					if(obj[3].toString().equalsIgnoreCase("CC")) {
+					if( obj[8]!=null && obj[3].toString().equalsIgnoreCase("CC")) {
 						MainEmail=obj[8].toString();
 					}
 				}
@@ -8404,7 +8866,7 @@ public class CommitteeController {
 				
 				Properties properties = System.getProperties(); 
 				properties.setProperty("mail.smtp.host", hostAddress);
-				//properties.put("mail.smtp.starttls.enable", "true"); //TLS
+				properties.put("mail.smtp.starttls.enable", "true"); //TLS
 				properties.put("mail.smtp.port", port); 
 				properties.put("mail.smtp.auth", "true"); 
 				properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
