@@ -840,6 +840,7 @@ public class CARSController {
 			@RequestPart(name="FRUpload", required = false) MultipartFile FRFile,
 			@RequestPart(name="ExecutionPlan", required = false) MultipartFile ExecutionPlanFile) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside CARSSoCAdd.htm "+Username);
 		try {
@@ -897,6 +898,7 @@ public class CARSController {
 												  .CARSInitiationId(soc.getCARSInitiationId())
 												  .MilestoneNo("0")
 												  .CARSStatusCode("SIN")
+												  .LabCode(labcode)
 												  .ActionBy(EmpId)
 												  .ActionDate(sdtf.format(new Date()))
 												  .build();
@@ -1110,6 +1112,7 @@ public class CARSController {
 	@RequestMapping(value="SoCApprovalSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String socApprovalSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res, RedirectAttributes redir) throws Exception{
 		String UserId=(String)ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside SoCApprovalSubmit.htm "+UserId);
 		try {
@@ -1126,6 +1129,7 @@ public class CARSController {
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
 			dto.setRemarks(remarks);
+			dto.setLabcode(labcode);
 			long result = service.socApprovalForward(dto);
 			
 			if(action.equalsIgnoreCase("A")) {
@@ -1260,6 +1264,7 @@ public class CARSController {
 	public String carsUserRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside CARSUserRevoke.htm "+UserId);
 		try {
@@ -1269,7 +1274,7 @@ public class CARSController {
 			String carsStatusCode = split[1];
             String status = carsStatusCode.equalsIgnoreCase("FWD")?"RSQR":"SoC";
             
-			long count = service.carsUserRevoke(carsInitiationId, UserId, EmpId,carsStatusCode);
+			long count = service.carsUserRevoke(carsInitiationId, UserId, EmpId,carsStatusCode, labcode);
 			
 			if (count > 0) {
 				redir.addAttribute("result", "CARS "+status+" Revoked Successfully");
@@ -1568,8 +1573,8 @@ public class CARSController {
 				req.setAttribute("DPCSoCApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "DF"));
 				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
 				
-				List<String> dpcsocexternalapprovestatus = Arrays.asList("SDF","SAD","SAI","ADG","SAJ","SAS");
-				if(dpcsocexternalapprovestatus.contains(carsInitiation.getCARSStatusCode())) {
+				List<String> dpcsocexternalapprovestatus = Arrays.asList("SAI","ADG","SAJ","SAS");
+				if(dpcsocexternalapprovestatus.contains(carsInitiation.getCARSStatusCodeNext())) {
 					req.setAttribute("LabList", service.getLabList(labcode));
 				}
 			}
@@ -1650,6 +1655,7 @@ public class CARSController {
 			dto.setRemarks(req.getParameter("remarks"));
 			dto.setLabcode(labcode);
 			dto.setApprovalSought(req.getParameter("approvalSought"));
+			dto.setApproverLabCode(req.getParameter("LabCode"));
 			dto.setApproverEmpId(req.getParameter("approverEmpId"));
 			dto.setApprovalDate(req.getParameter("approvalDate"));
 			long result = service.dpcSoCApprovalForward(dto);
@@ -1816,13 +1822,14 @@ public class CARSController {
 	public String carsSoCDPCRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside CARSSoCDPCRevoke.htm "+UserId);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 		
             
-			long count = service.carsSoCDPCRevoke(carsInitiationId, UserId, EmpId);
+			long count = service.carsSoCDPCRevoke(carsInitiationId, UserId, EmpId, labcode);
 			
 			if (count > 0) {
 				redir.addAttribute("result", "CARS SoC Revoked Successfully");
@@ -1898,7 +1905,12 @@ public class CARSController {
 		List<Object[]> GetLabcodeEmpList=null;
 		try {
 			String LabCode=(String)req.getParameter("LabCode");
-			GetLabcodeEmpList=service.getEmployeeListByLabCode(LabCode);
+			if(LabCode!=null && !LabCode.equalsIgnoreCase("@EXP")) {
+				GetLabcodeEmpList=service.getEmployeeListByLabCode(LabCode);
+			}else {
+				GetLabcodeEmpList=service.ExpertEmployeeList();
+			}
+			
 			} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside GetLabcodeEmpList.htm "+Username, e);
@@ -2169,6 +2181,7 @@ public class CARSController {
 			@RequestPart(name="attatchFlagB", required = false) MultipartFile attatchFlagB,
 			@RequestPart(name="attatchFlagC", required = false) MultipartFile attatchFlagC) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + " Inside CARSOtherDocsDetails.htm "+Username);
 		try {
@@ -2192,7 +2205,7 @@ public class CARSController {
 				doc.setCreatedBy(Username);
 				doc.setCreatedDate(sdtf.format(new Date()));
 				doc.setIsActive(1);
-				result=service.CARSCSDocDetailsSubmit(doc, attatchFlagA, attatchFlagB, attatchFlagC, EmpId);
+				result=service.CARSCSDocDetailsSubmit(doc, attatchFlagA, attatchFlagB, attatchFlagC, EmpId, labcode);
 			}else {
 				doc.setModifiedBy(Username);
 				doc.setModifiedDate(sdtf.format(new Date()));
@@ -2347,12 +2360,13 @@ public class CARSController {
 	public String carsCSDoCRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside CARSCSDocRevoke.htm "+UserId);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 		
-			long count = service.carsCSDoCRevoke(carsInitiationId, UserId, EmpId);
+			long count = service.carsCSDoCRevoke(carsInitiationId, UserId, EmpId, labcode);
 			
 			if (count > 0) {
 				redir.addAttribute("result", "CARS Contract Signature form Revoked Successfully");
@@ -2524,6 +2538,7 @@ public class CARSController {
 			@RequestPart(name="attatchFlagB", required = false) MultipartFile attatchFlagB,
 			@RequestPart(name="attatchFlagC", required = false) MultipartFile attatchFlagC) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + " Inside CARSMPDocDetailsSubmit.htm "+Username);
 		try {
@@ -2554,7 +2569,7 @@ public class CARSController {
 				doc.setCreatedBy(Username);
 				doc.setCreatedDate(sdtf.format(new Date()));
 				doc.setIsActive(1);
-				result=service.CARSMPDocDetailsSubmit(doc, attatchFlagA, attatchFlagB, attatchFlagC, EmpId);
+				result=service.CARSMPDocDetailsSubmit(doc, attatchFlagA, attatchFlagB, attatchFlagC, EmpId, labcode);
 			}else {
 				doc.setModifiedBy(Username);
 				doc.setModifiedDate(sdtf.format(new Date()));
@@ -2663,13 +2678,14 @@ public class CARSController {
 	public String carsMPDocRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside CARSMPDocRevoke.htm "+UserId);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String MilestoneNo = req.getParameter("MilestoneNo");
 		
-			long count = service.carsMPDoCRevoke(carsInitiationId, UserId, EmpId,MilestoneNo);
+			long count = service.carsMPDoCRevoke(carsInitiationId, UserId, EmpId, MilestoneNo, labcode);
 			
 			if (count > 0) {
 				redir.addAttribute("result", "CARS Payment Approval form Revoked Successfully");

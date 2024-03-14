@@ -131,7 +131,7 @@ SimpleDateFormat time=new SimpleDateFormat("HH:mm");
  	<tr>
  		<td style="font-weight: bold;"><%=obj[6] %> </td>
  		<td>
- 			<%=obj[2] %>, <%=obj[3] %> <br>
+ 			<%if(obj[2]!=null) {%> <%=obj[2] %><%} else{%><%=obj[9] %><%} %> , <%if(obj[3]!=null) {%> <%=obj[3] %><%} else{%>Expert<%} %><br>
  			[ <span style="font-size: 13px;">On</span> : 
  			  <span style="color: #0289BF;font-size: 13px;">
  			  	<%=day.format(obj[4]) %> <%=month.format(obj[4]) %> <%=year.format(obj[4]) %>, <%=time.format(obj[4]) %>

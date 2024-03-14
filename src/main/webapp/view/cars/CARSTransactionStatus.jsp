@@ -179,7 +179,7 @@ String carsInitiationId = (String)request.getAttribute("carsInitiationId");
 				<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=object[6] %> at <%=time.format(object[4]) %></h2> 
 				<p style="background-color:  #f0f2f5;">
 					<span class="remarks_title">Action By : </span>
-					<%=object[2] %>, <%=object[3] %><br>
+					<%if(object[2]!=null) {%> <%=object[2] %><%} else{%><%=object[9] %><%} %> , <%if(object[3]!=null) {%> <%=object[3] %><%} else{%>Expert<%} %><br>
 					<%if(object[5]!= null) { %>
 						<span class="remarks_title">Remarks : </span>
 							<%=object[5] %>

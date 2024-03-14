@@ -92,5 +92,6 @@ public interface CARSDao {
 	public List<Object[]> carsMPApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> carsMPStatusDetailsByCARSInitiationId(long carsInitiationId) throws Exception;
 	public int updateCARSOtherDocStatusCodes(long carsInitiationId, String othersStatusCode, String othersStatusCodeNext, String milestoneNo) throws Exception;
+	public List<Object[]> ExpertEmployeeList() throws Exception;
 	
 }

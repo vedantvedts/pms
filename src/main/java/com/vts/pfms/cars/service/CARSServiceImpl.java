@@ -98,6 +98,7 @@ public class CARSServiceImpl implements CARSService{
 										  .CARSInitiationId(carsinitiationid)
 										  .MilestoneNo("0")
 										  .CARSStatusCode("INI")
+										  .LabCode(labcode)
 										  .ActionBy(initiation.getEmpId()+"")
 										  .ActionDate(sdtf.format(new Date()))
 										  .build();
@@ -325,6 +326,7 @@ public class CARSServiceImpl implements CARSService{
 											  .MilestoneNo("0")
 											  .CARSStatusCode(cars.getCARSStatusCode())
 											  .Remarks(remarks)
+											  .LabCode(labcode)
 											  .ActionBy(EmpId)
 											  .ActionDate(sdtf.format(new Date()))
 											  .build();
@@ -633,6 +635,7 @@ public class CARSServiceImpl implements CARSService{
 			String EmpId = dto.getEmpId();
 			String UserId = dto.getUserId();
 			String remarks = dto.getRemarks();
+			String labcode = dto.getLabcode();
 			
 			CARSInitiation cars = dao.getCARSInitiationById(carsinitiationid);
 			long formempid = cars.getEmpId();
@@ -699,6 +702,7 @@ public class CARSServiceImpl implements CARSService{
 											  .MilestoneNo("0")
 											  .CARSStatusCode(cars.getCARSStatusCode())
 											  .Remarks(remarks)
+											  .LabCode(labcode)
 											  .ActionBy(EmpId)
 											  .ActionDate(sdtf.format(new Date()))
 											  .build();
@@ -786,7 +790,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long carsUserRevoke(String carsInitiationId, String username, String empId, String carsStatusCode) throws Exception {
+	public long carsUserRevoke(String carsInitiationId, String username, String empId, String carsStatusCode, String labcode) throws Exception {
 		
 		long carsinitiationid = Long.parseLong(carsInitiationId);
 		
@@ -801,6 +805,7 @@ public class CARSServiceImpl implements CARSService{
 										  .CARSInitiationId(carsinitiationid)
 										  .MilestoneNo("0")
 										  .CARSStatusCode(carsStatusCode.equalsIgnoreCase("FWD")?"REV":"SRV")
+										  .LabCode(labcode)
 										  .ActionBy(empId)
 										  .ActionDate(sdtf.format(new Date()))
 										  .build();
@@ -868,6 +873,7 @@ public class CARSServiceImpl implements CARSService{
 			String UserId = dto.getUserId();
 			String remarks = dto.getRemarks();
 			String labcode = dto.getLabcode();
+			String approverLabCode = dto.getApproverLabCode();
 			String approverEmpId = dto.getApproverEmpId();
 			String approvalDate = dto.getApprovalDate();
 
@@ -1027,6 +1033,7 @@ public class CARSServiceImpl implements CARSService{
 											  .MilestoneNo("0")
 											  .CARSStatusCode(cars.getCARSStatusCode())
 											  .Remarks(remarks)
+											  .LabCode(approverLabCode!=null?approverLabCode:labcode)
 											  .ActionBy(approverEmpId!=null?approverEmpId:EmpId)
 											  .ActionDate(approvalDate!=null?fc.RegularToSqlDate(approvalDate):sdtf.format(new Date()))
 											  .build();
@@ -1139,7 +1146,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long carsSoCDPCRevoke(String carsInitiationId, String userId, String empId) throws Exception {
+	public long carsSoCDPCRevoke(String carsInitiationId, String userId, String empId, String labcode) throws Exception {
 		
 		long carsinitiationid = Long.parseLong(carsInitiationId);
 		
@@ -1154,6 +1161,7 @@ public class CARSServiceImpl implements CARSService{
 										  .CARSInitiationId(carsinitiationid)
 										  .MilestoneNo("0")
 										  .CARSStatusCode("SRD")
+										  .LabCode(labcode)
 										  .ActionBy(empId)
 										  .ActionDate(sdtf.format(new Date()))
 										  .build();
@@ -1359,7 +1367,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long CARSCSDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId) throws Exception {
+	public long CARSCSDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId, String labcode) throws Exception {
 		
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
@@ -1407,6 +1415,7 @@ public class CARSServiceImpl implements CARSService{
 										  .CARSInitiationId(doc.getCARSInitiationId())
 										  .MilestoneNo("0")
 										  .CARSStatusCode("CIN")
+										  .LabCode(labcode)
 										  .ActionBy(EmpId)
 										  .ActionDate(sdtf.format(new Date()))
 										  .build();
@@ -1520,6 +1529,7 @@ public class CARSServiceImpl implements CARSService{
 											  .MilestoneNo("0")
 											  .CARSStatusCode(cars.getCARSStatusCode())
 											  .Remarks(remarks)
+											  .LabCode(labcode)
 											  .ActionBy(EmpId)
 											  .ActionDate(sdtf.format(new Date()))
 											  .build();
@@ -1600,7 +1610,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long carsCSDoCRevoke(String carsInitiationId, String userId, String empId) throws Exception {
+	public long carsCSDoCRevoke(String carsInitiationId, String userId, String empId, String labcode) throws Exception {
 		
 		try {
 			long carsinitiationid = Long.parseLong(carsInitiationId);
@@ -1612,6 +1622,7 @@ public class CARSServiceImpl implements CARSService{
 											  .CARSInitiationId(carsinitiationid)
 											  .MilestoneNo("0")
 											  .CARSStatusCode("CRV")
+											  .LabCode(labcode)
 											  .ActionBy(empId)
 											  .ActionDate(sdtf.format(new Date()))
 											  .build();
@@ -1658,7 +1669,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long CARSMPDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId) throws Exception {
+	public long CARSMPDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId, String labcode) throws Exception {
 		
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
@@ -1706,6 +1717,7 @@ public class CARSServiceImpl implements CARSService{
 										  .CARSInitiationId(doc.getCARSInitiationId())
 										  .MilestoneNo(doc.getMilestoneNo())
 										  .CARSStatusCode("MIN")
+										  .LabCode(labcode)
 										  .ActionBy(EmpId)
 										  .ActionDate(sdtf.format(new Date()))
 										  .build();
@@ -1819,6 +1831,7 @@ public class CARSServiceImpl implements CARSService{
 											  .MilestoneNo(milestoneNo)
 											  .CARSStatusCode(doc.getOthersStatusCode())
 											  .Remarks(remarks)
+											  .LabCode(labcode)
 											  .ActionBy(EmpId)
 											  .ActionDate(sdtf.format(new Date()))
 											  .build();
@@ -1909,7 +1922,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long carsMPDoCRevoke(String carsInitiationId, String userId, String empId, String milestoneNo) throws Exception {
+	public long carsMPDoCRevoke(String carsInitiationId, String userId, String empId, String milestoneNo, String labcode) throws Exception {
 		
 		try {
 			long carsinitiationid = Long.parseLong(carsInitiationId);
@@ -1923,6 +1936,7 @@ public class CARSServiceImpl implements CARSService{
 											  .CARSInitiationId(carsinitiationid)
 											  .MilestoneNo(milestoneNo)
 											  .CARSStatusCode("MRV")
+											  .LabCode(labcode)
 											  .ActionBy(empId)
 											  .ActionDate(sdtf.format(new Date()))
 											  .build();
@@ -1966,6 +1980,12 @@ public class CARSServiceImpl implements CARSService{
 	public long CARSPTCDocDetailsUpdate(CARSOtherDocDetails doc) throws Exception {
 		
 		return dao.editCARSOtherDocDetails(doc);
+	}
+
+	@Override
+	public List<Object[]> ExpertEmployeeList() throws Exception {
+		
+		return dao.ExpertEmployeeList();
 	}
 
 }

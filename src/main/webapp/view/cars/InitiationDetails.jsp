@@ -697,7 +697,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 										<div class="panel panel-info" style="margin-top: 10px;">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Proposed Milestones & Timelines</span>
+													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Milestones & Timelines</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor6" onclick="showTableMilestones('Proposed Milestones Timelines')">

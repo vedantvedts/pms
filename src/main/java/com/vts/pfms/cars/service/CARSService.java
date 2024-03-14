@@ -53,7 +53,7 @@ public interface CARSService {
 	public void carsRSQRFormFreeze(HttpServletRequest req, HttpServletResponse res, long carsInitiationId) throws Exception;
 	public long socApprovalForward(CARSApprovalForwardDTO dto) throws Exception;
 	public long addCARSInitiationTransaction(CARSInitiationTrans transaction) throws Exception;
-	public long carsUserRevoke(String carsInitiationId, String username, String empId, String carsStatusCode) throws Exception;
+	public long carsUserRevoke(String carsInitiationId, String username, String empId, String carsStatusCode, String labcode) throws Exception;
 	public List<CARSSoCMilestones> getCARSSoCMilestonesByCARSInitiationId(long carsInitiationId) throws Exception;
 	public long carsSoCMilestonesDetailsSubmit(CARSRSQRDetailsDTO dto) throws Exception;
 	public int removeCARSSoCMilestonesDetails(long carsInitiationId) throws Exception;
@@ -63,7 +63,7 @@ public interface CARSService {
 	public Object[] getApprAuthorityDataByType(String labcode, String type) throws Exception;
 	public Object[] getLabDirectorData(String labcode) throws Exception;
 	public List<Object[]> carsDPandCSoCPendingList(String empId, String labcode) throws Exception;
-	public long carsSoCDPCRevoke(String carsInitiationId, String userId, String empId) throws Exception;
+	public long carsSoCDPCRevoke(String carsInitiationId, String userId, String empId, String labcode) throws Exception;
 	public List<Object[]> carsDPCSoCApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> carsTransListByType(String carsInitiationId, String statusFor) throws Exception;
 	public List<Object[]> carsRemarksHistoryByType(String carsInitiationId, String remarksFor) throws Exception;
@@ -81,25 +81,26 @@ public interface CARSService {
 	public long addCARSContractEquipmentDetails(CARSContractDetailsDTO dto) throws Exception;
 	public long carsFinalReportEditSubmit(CARSContract contract, String firstTime,String labcode) throws Exception;
 	public List<CARSOtherDocDetails> getCARSOtherDocDetailsByCARSInitiationId(long carsInitiationId) throws Exception;
-	public long CARSCSDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId) throws Exception;
+	public long CARSCSDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId, String labcode) throws Exception;
 	public long CARSCSDocDetailsUpdate(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC) throws Exception;
 	public Object[] carsStatusDetailsByCARSInitiationId(long carsInitiationId) throws Exception;
 	public CARSOtherDocDetails getCARSOtherDocDetailsById(long otherDocDetailsId) throws Exception;
 	public long othersCSApprovalForward(CARSApprovalForwardDTO dto,String labcode) throws Exception;
 	public List<Object[]> carsCSPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> carsCSApprovedList(String empId, String FromDate, String ToDate) throws Exception;
-	public long carsCSDoCRevoke(String carsInitiationId, String userId, String empId) throws Exception;
+	public long carsCSDoCRevoke(String carsInitiationId, String userId, String empId, String labcode) throws Exception;
 	public long carsCSDocUpload(MultipartFile otherdocfile, String otherDocDetailsId) throws Exception;
 	public List<Object[]> carsRemarksHistoryByMilestoneNo(String carsInitiationId, String milestoneNo) throws Exception;
 	public List<Object[]> carsTransApprovalDataByMilestoneNo(String carsInitiationId, String milestoneNo);
-	public long CARSMPDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId) throws Exception;
+	public long CARSMPDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId, String labcode) throws Exception;
 	public long CARSMPDocDetailsUpdate(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC) throws Exception;
 	public long othersMPApprovalForward(CARSApprovalForwardDTO dto, String labcode) throws Exception;
 	public List<Object[]> carsMPPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> carsMPApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> carsMPStatusDetailsByCARSInitiationId(long carsInitiationId) throws Exception;
-	public long carsMPDoCRevoke(String carsInitiationId, String userId, String empId, String milestoneNo) throws Exception;
+	public long carsMPDoCRevoke(String carsInitiationId, String userId, String empId, String milestoneNo, String labcode) throws Exception;
 	public long carsMPDocUpload(MultipartFile otherdocfile, String otherDocDetailsId) throws Exception;
 	public long CARSPTCDocDetailsSubmit(CARSOtherDocDetails doc) throws Exception;
 	public long CARSPTCDocDetailsUpdate(CARSOtherDocDetails doc) throws Exception;
+	public List<Object[]> ExpertEmployeeList() throws Exception;
 }

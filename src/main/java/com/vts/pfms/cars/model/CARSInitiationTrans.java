@@ -30,6 +30,7 @@ private static final long serialVersionUID = 1L;
 	private String MilestoneNo;
 	private String CARSStatusCode;
 	private String Remarks;
+	private String LabCode;
 	private String ActionBy;
 	private String ActionDate;
 }

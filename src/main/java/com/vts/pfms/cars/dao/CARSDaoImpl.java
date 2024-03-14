@@ -39,7 +39,7 @@ public class CARSDaoImpl implements CARSDao{
 	@PersistenceContext
 	EntityManager manager;
 
-	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND (CASE WHEN 'A'=:LoginType THEN 1=1 ELSE a.EmpId=:EmpId END) ORDER BY a.CARSInitiationId DESC";
+	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND (CASE WHEN ('A','Z','E','L') IN :LoginType THEN 1=1 ELSE a.EmpId=:EmpId END) ORDER BY a.CARSInitiationId DESC";
 	@Override
 	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception {
 		try {
@@ -359,12 +359,15 @@ public class CARSDaoImpl implements CARSDao{
 	}
 
 	private static final String CARSTRANSAPPROVALDATA = "SELECT tra.CARSInitiationTransId,\r\n"
-			+ "	(SELECT empno FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empno',\r\n"
-			+ "	(SELECT empname FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empname',\r\n"
-			+ "	(SELECT designation FROM pfms_cars_initiation_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'Designation',\r\n"
-			+ "	MAX(tra.ActionDate) AS ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor,sta.CARSStatusCode \r\n"
-			+ "	FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,pfms_cars_initiation par\r\n"
-			+ "	WHERE par.CARSInitiationId=tra.CARSInitiationId AND tra.CARSStatusCode =sta.CARSStatusCode AND tra.Actionby=emp.EmpId AND CASE WHEN 'AF'=:ApprFor THEN sta.CARSForward IN ('RF','SF','DF','CF') ELSE sta.CARSForward=:ApprFor END AND par.CARSInitiationId=:CARSInitiationId GROUP BY sta.CARSStatusCode ORDER BY tra.CARSInitiationTransId ASC";
+			+ "	(SELECT empno FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.LabCode=e.LabCode AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empno',\r\n"
+			+ "	(SELECT empname FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.LabCode=e.LabCode AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empname',\r\n"
+			+ "	(SELECT designation FROM pfms_cars_initiation_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND t.LabCode=e.LabCode AND t.CARSStatusCode =  sta.CARSStatusCode AND e.desigid=des.desigid AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'Designation',\r\n"
+			+ "	MAX(tra.ActionDate) AS ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor,sta.CARSStatusCode,\r\n"
+			+ "	(SELECT ExpertNo FROM pfms_cars_initiation_trans t, expert e WHERE e.ExpertId=t.ActionBy AND t.LabCode='@EXP' AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'expempno',\r\n"
+			+ "	(SELECT ExpertName FROM pfms_cars_initiation_trans t, expert e WHERE e.ExpertId=t.ActionBy AND t.LabCode='@EXP' AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'expempname'\r\n"
+			+ "	FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,pfms_cars_initiation par\r\n"
+			+ "	WHERE par.CARSInitiationId=tra.CARSInitiationId AND tra.CARSStatusCode =sta.CARSStatusCode\r\n"
+			+ "	AND CASE WHEN 'AF'=:ApprFor THEN sta.CARSForward IN ('RF','SF','DF','CF') ELSE sta.CARSForward=:ApprFor END AND par.CARSInitiationId=:CARSInitiationId GROUP BY sta.CARSStatusCode ORDER BY tra.CARSInitiationTransId ASC";
 	@Override
 	public List<Object[]> carsTransApprovalData(String carsInitiationId, String apprFor) {
 
@@ -661,7 +664,16 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 
-	private static final String CARSTRANSLISTBYTYPE = "SELECT tra.CARSInitiationTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,employee_desig des,pfms_cars_initiation par WHERE par.CARSInitiationId = tra.CARSInitiationId AND tra.CARSStatusCode = sta.CARSStatusCode AND CASE WHEN 'A'=:CARSStatusFor THEN 1=1 ELSE sta.CARSStatusFor =:CARSStatusFor END AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND par.CARSInitiationId=:CARSInitiationId ORDER BY tra.CARSInitiationTransId DESC";
+	private static final String CARSTRANSLISTBYTYPE = "SELECT tra.CARSInitiationTransId,\r\n"
+			+ "(SELECT emp.EmpId FROM employee emp WHERE tra.ActionBy=emp.EmpId AND tra.LabCode=emp.LabCode LIMIT 1) AS 'EmpId',\r\n"
+			+ "(SELECT emp.EmpName FROM employee emp WHERE tra.ActionBy=emp.EmpId AND tra.LabCode=emp.LabCode LIMIT 1) AS 'EmpName',\r\n"
+			+ "(SELECT des.Designation FROM employee emp, employee_desig des WHERE tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND tra.LabCode=emp.LabCode LIMIT 1) AS 'Designation',\r\n"
+			+ "tra.ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor,\r\n"
+			+ "(SELECT ex.ExpertId FROM expert ex WHERE tra.ActionBy=ex.ExpertId AND tra.LabCode='@EXP' LIMIT 1) AS 'ExpertId',\r\n"
+			+ "(SELECT ex.ExpertName FROM expert ex WHERE tra.ActionBy=ex.ExpertId AND tra.LabCode='@EXP' LIMIT 1) AS 'ExpName'\r\n"
+			+ "FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,pfms_cars_initiation par \r\n"
+			+ "WHERE par.CARSInitiationId = tra.CARSInitiationId AND tra.CARSStatusCode = sta.CARSStatusCode AND CASE WHEN 'A'=:CARSStatusFor THEN 1=1 ELSE sta.CARSStatusFor =:CARSStatusFor END \r\n"
+			+ "AND par.CARSInitiationId=:CARSInitiationId ORDER BY tra.CARSInitiationTransId DESC";
 	@Override
 	public List<Object[]> carsTransListByType(String carsInitiationId, String statusFor) throws Exception {
 
@@ -678,7 +690,12 @@ public class CARSDaoImpl implements CARSDao{
 
 	}
 
-	private static final String CARSREMARKSHISTORYBYTYPE  ="SELECT cat.CARSInitiationId,cat.Remarks,cs.CARSStatusCode,e.EmpName,ed.Designation FROM pfms_cars_approval_status cs,pfms_cars_initiation_trans cat,pfms_cars_initiation ca,employee e,employee_desig ed WHERE cat.ActionBy = e.EmpId AND e.DesigId = ed.DesigId AND cs.CARSStatusCode = cat.CARSStatusCode AND CASE WHEN 'AF'=:RemarksFor THEN cs.CARSForward IN('RF','SF','DF','CF','MF') ELSE cs.CARSForward=:RemarksFor END AND ca.CARSInitiationId = cat.CARSInitiationId AND TRIM(cat.Remarks)<>'' AND ca.CARSInitiationId=:CARSInitiationId ORDER BY cat.CARSInitiationTransId ASC";
+	private static final String CARSREMARKSHISTORYBYTYPE  ="SELECT cat.CARSInitiationId,cat.Remarks,cs.CARSStatusCode,\r\n"
+			+ "(SELECT emp.EmpName FROM employee emp WHERE cat.ActionBy=emp.EmpId AND cat.LabCode=emp.LabCode LIMIT 1) AS 'EmpId',\r\n"
+			+ "(SELECT des.Designation FROM employee emp, employee_desig des WHERE cat.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND cat.LabCode=emp.LabCode LIMIT 1) AS 'Designation',\r\n"
+			+ "(SELECT ex.ExpertName FROM expert ex WHERE cat.ActionBy=ex.ExpertId AND cat.LabCode='@EXP' LIMIT 1) AS 'ExpName'\r\n"
+			+ "FROM pfms_cars_approval_status cs,pfms_cars_initiation_trans cat,pfms_cars_initiation ca\r\n"
+			+ "WHERE cs.CARSStatusCode = cat.CARSStatusCode AND CASE WHEN 'AF'=:RemarksFor THEN cs.CARSForward IN('RF','SF','DF','CF','MF') ELSE cs.CARSForward=:RemarksFor END AND ca.CARSInitiationId = cat.CARSInitiationId AND TRIM(cat.Remarks)<>'' AND ca.CARSInitiationId=:CARSInitiationId ORDER BY cat.CARSInitiationTransId ASC";
 	@Override
 	public List<Object[]> carsRemarksHistoryByType(String carsInitiationId, String remarksFor) throws Exception
 	{
@@ -1214,5 +1231,21 @@ public class CARSDaoImpl implements CARSDao{
 			return 0;
 		}
 
+	}
+	
+	private static final String EXPERTEMPLOYEELIST="SELECT e.expertid,CONCAT(IFNULL(CONCAT(e.title,' '),''),e.expertname) AS 'expertname' ,e.expertno,'Expert' AS designation FROM expert e WHERE e.isactive=1";
+	@Override
+	public List<Object[]> ExpertEmployeeList() throws Exception {
+		logger.info(new Date() + "Inside the DaoImpl ExpertEmployeeList");
+		try {
+			Query query=manager.createNativeQuery(EXPERTEMPLOYEELIST);
+			List<Object[]> ExpertEmployeeList=(List<Object[]>)query.getResultList();
+			return ExpertEmployeeList;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl ExpertEmployeeList", e);
+			return null;
+		}
 	}
 }
