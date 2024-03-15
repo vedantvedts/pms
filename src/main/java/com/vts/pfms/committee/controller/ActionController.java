@@ -107,6 +107,7 @@ import com.vts.pfms.committee.model.RfaAssign;
 import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.committee.service.CommitteeService;
+import com.vts.pfms.committee.service.RODService;
 import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.milestone.dto.MileEditDto;
@@ -134,6 +135,10 @@ public class ActionController {
 	
 	@Autowired 
 	CommitteeService committeservice;
+	
+	// Prudhvi - 13/03/2024
+	@Autowired
+	RODService rodservice;
 	
 	@Autowired
 	PMSLogoUtil LogoUtil;
@@ -921,7 +926,17 @@ public class ActionController {
 			if(req.getParameter("minutesback")!=null) {
 				MinutesBack=req.getParameter("minutesback");
 			}
-			Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(CommitteeScheduleId);
+			// Prudhvi - 13/03/2024
+			/* ------------------ start ----------------------- */
+			Object[] committeescheduleeditdata = null;
+			String rodflag = req.getParameter("rodflag");
+			if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
+				req.setAttribute("rodflag", rodflag);
+				committeescheduleeditdata = rodservice.RODScheduleEditData(CommitteeScheduleId);
+			}else {
+				committeescheduleeditdata = service.CommitteeScheduleEditData(CommitteeScheduleId);
+			}
+			/* ------------------ end ----------------------- */
 			String projectid =committeescheduleeditdata[9].toString();
 		
 			req.setAttribute("minutesback", MinutesBack);
@@ -992,7 +1007,11 @@ public class ActionController {
 			mainDto.setPriority(req.getParameter("Priority"));
 			mainDto.setCategory(req.getParameter("Category"));
 			mainDto.setActionStatus("A");
-			mainDto.setActionType("S");
+			// Prudhvi - 13/03/2024
+			String rodflag = req.getParameter("rodflag");
+			redir.addAttribute("rodflag", rodflag);
+			mainDto.setActionType(rodflag!=null && rodflag.equalsIgnoreCase("Y")?"R":"S");
+			
 			mainDto.setActivityId("0");
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(req.getParameter("meetingdate"));

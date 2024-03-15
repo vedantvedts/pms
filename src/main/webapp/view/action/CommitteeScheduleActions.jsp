@@ -249,6 +249,9 @@ if(MinutesBack==null){
 	MinutesBack="NO";
 }
 List<String>committees=Arrays.asList("PMRC","EB");
+
+//Prudhvi - 13/03/2024
+String rodflag=(String)request.getAttribute("rodflag");
 %>
 
 
@@ -281,9 +284,13 @@ List<String>committees=Arrays.asList("PMRC","EB");
 		</a>
 
 		<%if(MinutesBack.equalsIgnoreCase("minutesback")){ %>
-
+		<!-- Prudhvi - 13/03/2024 -->
 		<a class="btn  btn-sm back"
-			href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>"
+		    <%if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {%>
+		    	href="RODScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>"
+		    <%} else{%>
+				href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>"
+			<%} %>
 			style="margin-left: 50px; font-size: 12px; font-weight: bold; width: 62px; margin-top: -2px;">BACK</a>
 
 		<%} %>
@@ -323,9 +330,9 @@ List<String>committees=Arrays.asList("PMRC","EB");
 							<div class="panel-heading ">
 								<h4 class="panel-title">
 									<span style="font-size: 14px"><%=obj[7]+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
-									<input type="hidden" id="Action<%=obj[0].toString()%>" value='"<%=obj[1].toString()%>"'>
+									
 									<%if(obj[1].toString().length()>50) {%>
-									<%=obj[1].toString().substring(0,50) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[0].toString()%>")'>&nbsp;( view more)</span>
+									<%=obj[1].toString().substring(0,50) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[1].toString()%>")'>&nbsp;( view more)</span>
 									<%}else {%>
 									<%=obj[1].toString() %>
 									<%} %>	
@@ -503,7 +510,8 @@ List<String>committees=Arrays.asList("PMRC","EB");
 											style="width: 100%"></select>
 									</div>
 								</div> -->
-								<%if(!committees.contains(committeescheduleeditdata[8].toString())) {%>
+								<!-- Prudhvi - 13/03/2024 -->
+								<%if(!committees.contains(committeescheduleeditdata[8].toString()) && rodflag==null) {%>
 								<div class="col-sm-4" align="left" id="main">
 									<div class="form-group" >
 										<label>Multiple Assignee : </label><br> 
@@ -530,6 +538,8 @@ List<String>committees=Arrays.asList("PMRC","EB");
 										onclick="resetSubmit()">Reset</button>
 									<input type="hidden" name="${_csrf.parameterName}"
 										value="${_csrf.token}" />
+									<!-- Prudhvi - 13/03/2024 -->
+									<input type="hidden" name="rodflag" value="Y">	
 								</div>
 							</div>
 							<!-- Form End -->
@@ -1024,9 +1034,8 @@ function AssigneeEmpList(){
 	    }
    }
  function showModal(a){
-	 var value=$('#Action'+a).val();
 	 $('#actionModal').modal('show');
-	 document.getElementById('modalbody').innerHTML=value;
+	 document.getElementById('modalbody').innerHTML=a;
  }
 </script>
 </body>

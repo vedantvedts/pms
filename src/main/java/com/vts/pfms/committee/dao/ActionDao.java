@@ -173,4 +173,5 @@ public interface ActionDao {
 	public int ActionRemarksEdit(String actionAssignId, String progress, String progressRemarks, String UserId)throws Exception;
 	public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId)throws Exception;
 	public List<String> rfaMailSend(String rfa)throws Exception;
+	public Object[] rodShortName(String scheduleid) throws Exception;
 }

@@ -1754,4 +1754,15 @@ public class ActionDaoImpl implements ActionDao{
 		
 		return (List<String>)query.getResultList();
 	}
+
+	// Prudhvi - 13/03/2024
+	private static final String RODSHORTNAME = "SELECT a.RODNameId, a.RODName,a.RODShortName FROM pfms_rod_master a,committee_schedule b , committee_schedules_minutes_details c WHERE a.RODNameId=b.RODNameId AND b.scheduleid=c.scheduleid AND c.scheduleminutesid=:scheduleid AND b.isactive=1";
+	@Override
+	public Object[] rodShortName(String scheduleid)throws Exception
+	{
+		Query query=manager.createNativeQuery(RODSHORTNAME);
+		query.setParameter("scheduleid", scheduleid);
+		Object[] rodShortName=(Object[])query.getResultList().get(0);
+		return rodShortName;
+	}
 }

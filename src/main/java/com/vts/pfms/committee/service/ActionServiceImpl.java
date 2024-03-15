@@ -220,7 +220,14 @@ public class ActionServiceImpl implements ActionService {
 				{
 					Object[] comishortname=dao.CommitteeShortName(main.getScheduleMinutesId());
 					Project="/"+ProjectCode+"/"+comishortname[1]+"/";
-				}else if(main.getActionType().equalsIgnoreCase("N")) {
+				}
+				// Prudhvi - 13/03/2024
+				else if(main.getActionType().equalsIgnoreCase("R")) {
+					Object[] rodshortname=dao.rodShortName(main.getScheduleMinutesId());
+					Project="/"+ProjectCode+"/"+rodshortname[2]+"/";
+					main.setActionType("S");
+				}
+				else if(main.getActionType().equalsIgnoreCase("N")) {
 					Project="/"+ProjectCode+"/";
 					
 				}else {
