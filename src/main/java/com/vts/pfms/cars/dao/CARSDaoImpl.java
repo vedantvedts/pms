@@ -39,7 +39,7 @@ public class CARSDaoImpl implements CARSDao{
 	@PersistenceContext
 	EntityManager manager;
 
-	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND (CASE WHEN ('A','Z','E','L') IN :LoginType THEN 1=1 ELSE a.EmpId=:EmpId END) ORDER BY a.CARSInitiationId DESC";
+	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.EmpId=:EmpId END) ORDER BY a.CARSInitiationId DESC";
 	@Override
 	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception {
 		try {
