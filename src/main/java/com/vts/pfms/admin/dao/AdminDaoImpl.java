@@ -1049,4 +1049,32 @@ public class AdminDaoImpl implements AdminDao{
 		manager.flush();
 		return null;
 	}
+	
+	@Override
+	public List<Object[]> ProjectListPD(String empId) throws Exception {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT * FROM project_master WHERE projectdirector=:empId");
+		query.setParameter("empId", empId);
+		try {
+			return query.getResultList();
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+	}
+	
+	@Override
+	public List<Object[]> ProjectListIC(String empId) throws Exception {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery("SELECT pe.projectid,pm.labcode, pm.projectmainid, pm.projecttype, pm.projectshortname,pm.UnitCode , pm.projectname FROM project_employee pe JOIN project_master pm ON pe.projectid=pm.projectid WHERE pe.empid=:empId");
+		query.setParameter("empId", empId);
+		try {
+			return query.getResultList();
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+	}
 }

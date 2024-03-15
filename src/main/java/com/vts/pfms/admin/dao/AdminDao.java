@@ -108,4 +108,6 @@ public interface AdminDao {
 	public Object weeklyupdate(int empid, String username, String dateofupdate, String procurement,
 			String actionpoints, String riskdetails, String meeting, String mile, int projectid);
 
+	public List<Object[]> ProjectListPD(String empId)throws Exception;
+	public List<Object[]> ProjectListIC(String empId)throws Exception;
   }

@@ -515,7 +515,10 @@ public class LoginController {
 
 			// project master, only get projects of THIS user
 			//which we will display all in dropdown
-			projects = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
+			if(LoginType.equals("P"))
+				projects = service.ProjectListPD(EmpId);
+				else
+				projects = service.ProjectListIC(EmpId);
 
 			// returns dates that are less than 7 days old, we delete these projects in
 			// 'Total Projects To Show' in dropdown

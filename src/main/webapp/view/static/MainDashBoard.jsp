@@ -626,7 +626,7 @@
 					<% List<Object[]> projectEmp = (List<Object[]>)request.getAttribute("projectsOfEmp"); %>
 						<%  for (int i=0;i< projectEmp.size();i++){ %>
 						
-							<option class="form-control" value="<%= projectEmp.get(i)[0] %>"><%= projectEmp.get(i)[4] %> (<%= projectEmp.get(i)[17] %>)</option>
+							<option class="form-control" value="<%= projectEmp.get(i)[0] %>"><%= projectEmp.get(i)[6] %> (<%= projectEmp.get(i)[4] %>)</option>
 						
 						<%} %>
 					</select></p>

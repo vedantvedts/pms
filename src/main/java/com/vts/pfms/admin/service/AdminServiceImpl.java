@@ -805,4 +805,16 @@ public class AdminServiceImpl implements AdminService{
 			return dao.weeklyupdate( empid, username, dateofupdate, procurement,   
 					 actionpoints,  riskdetails,  meeting,  mile, projectid);
 		}
+		
+		@Override
+		public List<Object[]> ProjectListPD(String empId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ProjectListPD(empId);
+		}
+
+		@Override
+		public List<Object[]> ProjectListIC(String empId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ProjectListIC(empId);
+		}
 }
