@@ -539,7 +539,9 @@ String rodflag=(String)request.getAttribute("rodflag");
 									<input type="hidden" name="${_csrf.parameterName}"
 										value="${_csrf.token}" />
 									<!-- Prudhvi - 13/03/2024 -->
-									<input type="hidden" name="rodflag" value="Y">	
+									<%if(rodflag!=null) {%>
+										<input type="hidden" name="rodflag" value="Y">	
+									<%} %>
 								</div>
 							</div>
 							<!-- Form End -->
