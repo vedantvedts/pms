@@ -259,6 +259,9 @@ hr{
  padding : 5px;
 }
 
+#select2-LabCode-container,#select2-approverEmpId-container{
+	text-align: left;
+}
 </style>
 </head>
 <body>
@@ -806,6 +809,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																					%>
 																						<option value=<%=obj[2].toString()%>><%=obj[2].toString()%></option>
 																					<%}}%>
+																					<option value="@EXP">Expert</option>
 																			</select>
 																		</div>
 																		<div class="col-md-3">
@@ -1048,14 +1052,24 @@ function LabcodeSubmit() {
 	       },
 	       dataType: 'json',
 	       success: function(result) {
-	               	for (var i = 0; i < result.length; i++) {
-	                       var data = result[i];
-	                       var optionValue = data[0];
-	                       var optionText = data[1].trim() + ", " + data[3]; 
-	                       var option = $("<option></option>").attr("value", optionValue).text(optionText);
-	                       $('#approverEmpId').append(option); 
-	                   }
-	                   $('#approverEmpId').selectpicker('refresh');
+	    	   for (var i = 0; i < result.length; i++) {
+                   var data = result[i];
+                   var optionValue = data[0];
+                   var optionText = data[1].trim() + ", " + data[3]; 
+                   var option = $("<option></option>").attr("value", optionValue).text(optionText);
+                   $('#approverEmpId').append(option); 
+               }
+               $('#approverEmpId').selectpicker('refresh');
+               }else{
+               	for (var i = 0; i < result.length; i++) {
+                       var data = result[i];
+                       var optionValue = data[0];
+                       var optionText = data[1].trim() + ", " + data[3]; 
+                       var option = $("<option></option>").attr("value", optionValue).text(optionText);
+                       $('#approverEmpId').append(option); 
+                   }
+                   $('#approverEmpId').selectpicker('refresh');
+               }
 	               
 	           }
 	   });

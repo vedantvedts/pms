@@ -13,6 +13,7 @@ public class ProjectClosureApprovalForwardDTO {
 	private String UserId;
 	private String remarks;
 	private String labcode;
+	private String approverLabCode;
 	private String approverEmpId;
 	private String approvalDate;
 }

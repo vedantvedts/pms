@@ -74,9 +74,9 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 	
 	@Override
-	public List<Object[]> projectClosureList(String EmpId, String labcode) throws Exception {
+	public List<Object[]> projectClosureList(String EmpId, String labcode, String LoginType) throws Exception {
 		
-		return dao.projectClosureList(EmpId, labcode);
+		return dao.projectClosureList(EmpId, labcode, LoginType);
 	}
 
 	@Override
@@ -92,13 +92,14 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 	
 	@Override
-	public long addProjectClosure(ProjectClosure closure, String empId) throws Exception {
+	public long addProjectClosure(ProjectClosure closure, String empId, String labcode) throws Exception {
 		
 		long result = dao.addProjectClosure(closure);
 		ProjectClosureTrans transaction = ProjectClosureTrans.builder()
 				  						  .ClosureId(result)
 				  						  .ClosureForm(closure.getApprovalFor().equalsIgnoreCase("SoC")?"S":"A")
 				  						  .ClosureStatusCode(closure.getClosureStatusCode())
+				  						  .LabCode(labcode)
 				  						  .ActionBy(Long.parseLong(empId))
 				  						  .ActionDate(sdtf.format(new Date()))
 				  						  .build();
@@ -211,6 +212,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			String UserId = dto.getUserId();
 			String remarks = dto.getRemarks();
 			String labcode = dto.getLabcode();
+			String approverLabCode = dto.getApproverLabCode();
 			String approverEmpId = dto.getApproverEmpId();
 			String approvalDate = dto.getApprovalDate();
 
@@ -285,6 +287,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 											  .ClosureForm("S")
 											  .ClosureStatusCode(closure.getClosureStatusCode())
 											  .Remarks(remarks)
+											  .LabCode(approverLabCode!=null?approverLabCode:labcode)
 											  .ActionBy(Long.parseLong(approverEmpId!=null? approverEmpId:EmpId))
 											  .ActionDate(approvalDate!=null?fc.RegularToSqlDate(approvalDate):sdtf.format(new Date()))
 											  .build();
@@ -378,7 +381,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public long projectClosureSoCRevoke(String closureId, String userId, String empId) throws Exception {
+	public long projectClosureSoCRevoke(String closureId, String userId, String empId, String labcode) throws Exception {
 		
 		try {
 			ProjectClosure closure = dao.getProjectClosureById(closureId);
@@ -391,6 +394,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 						  						  .ClosureId(result)
 						  						  .ClosureForm("S")
 						  						  .ClosureStatusCode("SRV")
+						  						  .LabCode(labcode)
 						  						  .ActionBy(Long.parseLong(empId))
 						  						  .ActionDate(sdtf.format(new Date()))
 						  						  .build();
@@ -677,6 +681,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			String UserId = dto.getUserId();
 			String remarks = dto.getRemarks();
 			String labcode = dto.getLabcode();
+			String approverLabCode = dto.getApproverLabCode();
 			String approverEmpId = dto.getApproverEmpId();
 			String approvalDate = dto.getApprovalDate();
 
@@ -788,6 +793,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 											  .ClosureForm("A")
 											  .ClosureStatusCode(closure.getClosureStatusCode())
 											  .Remarks(remarks)
+											  .LabCode(approverLabCode!=null?approverLabCode:labcode)
 											  .ActionBy(Long.parseLong(approverEmpId!=null? approverEmpId:EmpId))
 											  .ActionDate(approvalDate!=null?fc.RegularToSqlDate(approvalDate):sdtf.format(new Date()))
 											  .build();
@@ -892,7 +898,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public long projectClosureACPRevoke(String closureId, String userId, String empId) throws Exception {
+	public long projectClosureACPRevoke(String closureId, String userId, String empId, String labcode) throws Exception {
 		
 		try {
 			ProjectClosure closure = dao.getProjectClosureById(closureId);
@@ -905,6 +911,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 						  						  .ClosureId(result)
 						  						  .ClosureForm("A")
 						  						  .ClosureStatusCode("ARV")
+						  						  .LabCode(labcode)
 						  						  .ActionBy(Long.parseLong(empId))
 						  						  .ActionDate(sdtf.format(new Date()))
 						  						  .build();

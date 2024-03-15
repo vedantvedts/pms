@@ -18,10 +18,10 @@ import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 
 public interface ProjectClosureService {
 
-	public List<Object[]> projectClosureList(String EmpId, String labcode) throws Exception;
+	public List<Object[]> projectClosureList(String EmpId, String labcode, String LoginType) throws Exception;
 	public ProjectMaster getProjectMasterByProjectId(String projectId) throws Exception;
 	public ProjectClosure getProjectClosureById(String closureId) throws Exception;
-	public long addProjectClosure(ProjectClosure closure, String empId) throws Exception;
+	public long addProjectClosure(ProjectClosure closure, String empId, String labcode) throws Exception;
 	public long editProjectClosure(ProjectClosure closure) throws Exception;
 	public ProjectClosureSoC getProjectClosureSoCByProjectId(String closureId) throws Exception;
 	public long addProjectClosureSoC(ProjectClosureSoC soc, String EmpId, MultipartFile monitoringCommitteeAttach, MultipartFile lessonsLearnt) throws Exception;
@@ -33,7 +33,7 @@ public interface ProjectClosureService {
 	public List<Object[]> projectClosureSoCPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectClosureSoCApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> projectClosureTransListByType(String closureId, String closureStatusFor, String closureForm) throws Exception;
-	public long projectClosureSoCRevoke(String closureId, String userId, String empId) throws Exception;
+	public long projectClosureSoCRevoke(String closureId, String userId, String empId, String labcode) throws Exception;
 	public ProjectClosureACP getProjectClosureACPByProjectId(String closureId) throws Exception;
 	public long addProjectClosureACP(ProjectClosureACP acp) throws Exception;
 	public long editProjectClosureACP(ProjectClosureACP acp) throws Exception;
@@ -52,6 +52,6 @@ public interface ProjectClosureService {
 	public List<Object[]> projectClosureACPApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public Object[] projectOriginalAndRevisionDetails(String projectId) throws Exception;
 	public Object[] projectExpenditureDetails(String projectId) throws Exception;
-	public long projectClosureACPRevoke(String closureId, String userId, String empId) throws Exception;
+	public long projectClosureACPRevoke(String closureId, String userId, String empId, String labcode) throws Exception;
 	
 }

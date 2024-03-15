@@ -101,13 +101,14 @@ public class ProjectClosureController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
+		String LoginType = (String) ses.getAttribute("LoginType");
 		logger.info(new Date() +"Inside ProjectClosureList.htm "+UserId);
 		try {
 			String pagination = req.getParameter("pagination");
 			int pagin = Integer.parseInt(pagination!=null?pagination:"0");
 
 			/* fetching actual data */
-			List<Object[]> closureList = service.projectClosureList(EmpId, labcode);
+			List<Object[]> closureList = service.projectClosureList(EmpId, labcode, LoginType);
 
 			// adding values to this List<Object[]>
 			List<Object[]> arrayList = new ArrayList<>();
@@ -310,6 +311,7 @@ public class ProjectClosureController {
 			dto.setEmpId(EmpId);
 			dto.setRemarks(req.getParameter("remarks"));
 			dto.setLabcode(labcode);
+			dto.setApproverLabCode(req.getParameter("LabCode"));
 			dto.setApproverEmpId(req.getParameter("approverEmpId"));
 			dto.setApprovalDate(req.getParameter("approvalDate"));
 			
@@ -564,12 +566,13 @@ public class ProjectClosureController {
 	public String projectClosureSoCRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ProjectClosureSoCRevoke.htm "+UserId);
 		try {
 			String closureId = req.getParameter("closureId");
 		
-			long count = service.projectClosureSoCRevoke(closureId, UserId, EmpId);
+			long count = service.projectClosureSoCRevoke(closureId, UserId, EmpId, labcode);
 			
 			if (count > 0) {
 				redir.addAttribute("result", "Project Closure Approval form Revoked Successfully");
@@ -999,6 +1002,7 @@ public class ProjectClosureController {
 			dto.setEmpId(EmpId);
 			dto.setRemarks(req.getParameter("remarks"));
 			dto.setLabcode(labcode);
+			dto.setApproverLabCode(req.getParameter("LabCode"));
 			dto.setApproverEmpId(req.getParameter("approverEmpId"));
 			dto.setApprovalDate(req.getParameter("approvalDate"));
 			
@@ -1190,6 +1194,7 @@ public class ProjectClosureController {
 	@RequestMapping(value="ProjectClosureSubmit.htm" , method={RequestMethod.POST})
 	public String projectClosureSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
 		String Username = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ProjectClosureSubmit.htm "+Username);
 		try {
@@ -1213,7 +1218,7 @@ public class ProjectClosureController {
 				closure.setCreatedDate(sdtf.format(new Date()));
 				closure.setIsActive(1);
 				
-				result = service.addProjectClosure(closure, EmpId);
+				result = service.addProjectClosure(closure, EmpId, labcode);
 			}else {
 				closure.setModifiedBy(Username);
 				closure.setModifiedDate(sdtf.format(new Date()));
@@ -1240,12 +1245,13 @@ public class ProjectClosureController {
 	public String projectClosureACPRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ProjectClosureACPRevoke.htm "+UserId);
 		try {
 			String closureId = req.getParameter("closureId");
 		
-			long count = service.projectClosureACPRevoke(closureId, UserId, EmpId);
+			long count = service.projectClosureACPRevoke(closureId, UserId, EmpId ,labcode);
 			
 			if (count > 0) {
 				redir.addAttribute("result", "Administrative Closure Approval form Revoked Successfully");

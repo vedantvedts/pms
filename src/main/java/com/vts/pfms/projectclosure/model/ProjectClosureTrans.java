@@ -31,6 +31,7 @@ public class ProjectClosureTrans implements Serializable{
 	private String ClosureForm;
 	private String ClosureStatusCode;
 	private String Remarks;
+	private String LabCode;
 	private long ActionBy;
 	private String ActionDate;
 }

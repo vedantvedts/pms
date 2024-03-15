@@ -41,13 +41,14 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			+ "	(SELECT cl.ApprovalFor FROM pfms_closure cl WHERE cl.ProjectId=a.ProjectId AND cl.IsActive=1 LIMIT 1) AS 'approvalfor',\r\n"
 			+ "	(SELECT cl.ClosureCategory FROM pfms_closure cl WHERE cl.ProjectId=a.ProjectId AND cl.IsActive=1 LIMIT 1) AS 'closurecategory'\r\n"
 			+ "	FROM project_master a, employee b, employee_desig c \r\n"
-			+ "	WHERE a.IsActive=1 AND a.ProjectDirector=b.EmpId AND b.DesigId=c.DesigId AND a.LabCode=:LabCode AND a.ProjectDirector=:EmpId";
+			+ "	WHERE a.IsActive=1 AND a.ProjectDirector=b.EmpId AND b.DesigId=c.DesigId AND a.LabCode=:LabCode AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.ProjectDirector=:EmpId END) ORDER BY a.ProjectId DESC";
 	@Override
-	public List<Object[]> projectClosureList(String EmpId, String labcode) throws Exception {
+	public List<Object[]> projectClosureList(String EmpId, String labcode, String LoginType) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(PROJECTCLOSURELIST);
 			query.setParameter("EmpId", EmpId);
 			query.setParameter("LabCode", labcode);
+			query.setParameter("LoginType", LoginType);
 			return (List<Object[]>) query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();

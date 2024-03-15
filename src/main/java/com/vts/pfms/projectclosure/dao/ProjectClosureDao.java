@@ -14,7 +14,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
 public interface ProjectClosureDao {
 
-	public List<Object[]> projectClosureList(String EmpId, String labcode) throws Exception;
+	public List<Object[]> projectClosureList(String EmpId, String labcode, String LoginType) throws Exception;
 	public ProjectMaster getProjectMasterByProjectId(String projectId) throws Exception;
 	public ProjectClosure getProjectClosureById(String closureId) throws Exception;
 	public long addProjectClosure(ProjectClosure closure) throws Exception;
