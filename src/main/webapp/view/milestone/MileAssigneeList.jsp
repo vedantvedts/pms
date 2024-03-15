@@ -113,7 +113,7 @@ h6{
      <select   class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
      <option disabled="disabled"  selected value="">Choose...</option>
      <% for (Object[] obj : ProjectList) {
-    String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+    String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":"";
      %>
 	 <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[4]+projectshortName%>  </option>
 	 <%} %>
@@ -150,7 +150,7 @@ h6{
 					<h5 ><%if(ProjectId!=null){
 						Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 						%>
-						<%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) 
+						<%=ProjectDetail[2] %> (<%=ProjectDetail[1]%>) 
 					<%} %>
 					 Milestone List</h5>
 					</div>
