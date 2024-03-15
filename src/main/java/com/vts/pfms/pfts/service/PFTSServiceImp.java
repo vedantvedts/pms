@@ -227,6 +227,7 @@ public class PFTSServiceImp implements PFTSService{
         	 pfo.setPftsFileId(Long.parseLong(fileId));
         	 pfo.setCreatedBy(userid);
         	 pfo.setCreatedDate(sdf1.format(new Date()));
+        	 pfo.setIsActive(1);
         	 try {
         	 result=dao.addDemandfileOrder(pfo);
         	 }catch (Exception e) {

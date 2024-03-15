@@ -33,4 +33,5 @@ public class PftsFileOrder implements Serializable {
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	private int IsActive;
 }

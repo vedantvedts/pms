@@ -24,7 +24,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	
 	
 	private static final String PROJECTSLIST="SELECT projectid, projectcode, projectname FROM project_master";
-	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks,f.demandtype FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND s.PftsStatusId < 19 AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag,f.Remarks,f.demandtype FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
+	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks,f.demandtype FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag,f.Remarks,f.demandtype FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
 	private static final String PrevDemandFile ="SELECT ProjectId, DemandNo, DemandDate, ItemNomenclature, EstimatedCost FROM pfts_file WHERE ProjectId=:projectid";
 	private static final String StatusList="SELECT s.PftsStatusId, s.PftsStatus, s.PftsStageName FROM pfts_status s WHERE s.PftsStatusId > (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) AND CASE WHEN (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) < 10 THEN s.PftsStatusId <= 10 ELSE TRUE END ORDER BY pftsstatusid ";
 	private static final String updateCostDetails="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
@@ -140,6 +140,10 @@ public  class PFTSDaoImpl implements PFTSDao{
 
 	@Override
 	public Long addDemandfileOrder(PftsFileOrder pfo) throws Exception {
+		String updateOrder="UPDATE pfts_file_order SET IsActive='0' WHERE PftsFileId=:PftsFileId";
+		Query query = manager.createNativeQuery(updateOrder);
+		query.setParameter("PftsFileId", pfo.getPftsFileId());
+		query.executeUpdate();
 		manager.persist(pfo);
 		manager.flush();
 		
@@ -222,7 +226,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 		return  (Object[])query.getSingleResult();
 	}
 	
-	private static final String ORDERETAILSAJAX="SELECT a.PftsFileOrderId,b.PftsFileId,b.DemandType,b.DemandNo,b.PftsStatusId,b.projectid,a.OrderNo,a.OrderDate,a.DpDate,a.ItemFor,a.OrderCost,a.VendorName FROM pfts_file_order a, pfts_file b WHERE a.PftsFileId=b.PftsFileId AND b.PftsFileId=:fileId GROUP BY OrderNo";
+	private static final String ORDERETAILSAJAX="SELECT a.PftsFileOrderId,b.PftsFileId,b.DemandType,b.DemandNo,b.PftsStatusId,b.projectid,a.OrderNo,a.OrderDate,a.DpDate,a.ItemFor,a.OrderCost,a.VendorName FROM pfts_file_order a, pfts_file b WHERE a.PftsFileId=b.PftsFileId AND a.IsActive='1' AND b.PftsFileId=:fileId";
 	@Override
 	public List<Object[]> getOrderDetailsAjax(String fileId) throws Exception {
 		

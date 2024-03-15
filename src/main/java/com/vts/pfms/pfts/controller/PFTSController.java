@@ -160,6 +160,7 @@ public class PFTSController {
 			String projectId=req.getParameter("projectId");
 			PFTSFile pf=new PFTSFile();
 			pf.setDemandNo(req.getParameter("DemandNo"));
+			pf.setDemandType("I");
 			pf.setProjectId(Long.parseLong(projectId));
 			pf.setDemandDate(new java.sql.Date(sdf.parse(req.getParameter("demandDate")).getTime()));
 			pf.setItemNomenclature(req.getParameter("ItemNomcl"));

@@ -4674,8 +4674,6 @@ public class ProjectController
 	}
 	
 	
-
-	
 	@RequestMapping(value = "ProjectRisk.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectRisk(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
@@ -4734,16 +4732,21 @@ public class ProjectController
 		{
 			String actionmainid=req.getParameter("actionmainid");
 			String actionassignid=req.getParameter("actionassignid");
-			if(actionmainid==null)
+			
+			  if(actionmainid==null) { 
+				  Map md=model.asMap();
+			      actionmainid=(String)md.get("actionmainid"); 
+			      }
+			
+			if(actionassignid==null)
 			{
 				Map md=model.asMap();
-				actionmainid=(String)md.get("actionmainid");				
+				actionassignid=(String)md.get("actionassignid");				
 			}
 			List<Object[]> projectlist=service.getProjectList();
 				
-			Object[] riskdata=service.ProjectRiskData(actionmainid);
-			System.out.println("@@@@@@@@@"+actionmainid);
-			System.out.println("@@@@@@@@@"+actionmainid);
+			Object[] riskdata=service.ProjectRiskData(actionassignid);
+
 			String projectid=riskdata[2].toString();
 			
 			req.setAttribute("projectriskmatrixrevlist",service.ProjectRiskMatrixRevList(actionmainid));
@@ -4771,7 +4774,9 @@ public class ProjectController
 		try 
 		{						
 			String actionmainid=req.getParameter("actionmainid");			
-			Object[] riskdata=service.ProjectRiskData(actionmainid);
+			String actionassignid=req.getParameter("actionassignid");
+			
+			Object[] riskdata=service.ProjectRiskData(actionassignid);
 			String projectid=riskdata[2].toString();
 			
 			PfmsRiskDto dto=new PfmsRiskDto();
@@ -4798,7 +4803,8 @@ public class ProjectController
 			{
 				redir.addAttribute("resultfail","Project Risk Data Adding Unsuccessfully");
 			}		
-			redir.addFlashAttribute("actionmainid", actionmainid);			
+			redir.addFlashAttribute("actionmainid", actionmainid);
+			redir.addFlashAttribute("actionassignid", actionassignid);
 			return "redirect:/ProjectRiskData.htm";
 		}
 		catch (Exception e) {
@@ -4847,7 +4853,9 @@ public class ProjectController
 		try 
 		{						
 			String actionmainid=req.getParameter("actionmainid");			
-			Object[] riskdata=service.ProjectRiskData(actionmainid);
+			String actionassignid=req.getParameter("actionassignid");
+	
+			Object[] riskdata=service.ProjectRiskData(actionassignid);
 			String projectid=riskdata[2].toString();
 			String rev=req.getParameter("rev");
 			String revisionno=req.getParameter("revisionno");
@@ -4894,6 +4902,7 @@ public class ProjectController
 			
 		
 			redir.addFlashAttribute("actionmainid", actionmainid);
+			redir.addFlashAttribute("actionassignid", actionassignid);
 			
 			
 			return "redirect:/ProjectRiskData.htm";

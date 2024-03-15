@@ -161,12 +161,13 @@ if(ses1!=null){
 						<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >
 							<thead>
 								<tr>
-									<th style="width: 10%;" data-field="0" tabindex="0" >SN</th>
-									<th style="width: 20%;">Risk Id</th>
-									<th style="width: 40%;">Risk Description</th>
+									<th style="width: 5%;" data-field="0" tabindex="0" >SN</th>
+									<th style="width: 17%;">Risk Id</th>
+									<th style="width: 33%;">Risk Description</th>
 									<th style="width: 10%;">PDC</th>
+									<th style="width: 15%;">Assigned To</th>
 									<th style="width: 10%;">Status</th>
-									<th style="width: 10%;">View Or Add</th>
+									<th style="width: 10%;">View / Add</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -179,6 +180,7 @@ if(ses1!=null){
 								<td class="left"><%=riskdatalist.get(i)[7]%></td>
 								<td class="left"><%=riskdatalist.get(i)[1] %></td>
 								<td class="center"><%=sdf.format(riskdatalist.get(i)[8])%></td>
+								<td class="center"><%=riskdatalist.get(i)[9]%>, <%=riskdatalist.get(i)[10]%></td>
 								<td class="center">
 									<%if(riskdatalist.get(i)[3].toString().equals("I") || riskdatalist.get(i)[3].toString().equals("B")){ %>
 										In Progress

@@ -1882,8 +1882,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Object[] ProjectRiskData(String actionmainid) throws Exception {
-		return dao.ProjectRiskData(actionmainid);
+	public Object[] ProjectRiskData(String actionassignid) throws Exception {
+		return dao.ProjectRiskData(actionassignid);
 	}
 	@Override
 	public long CloseProjectRisk(PfmsRiskDto dto)throws Exception

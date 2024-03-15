@@ -289,6 +289,7 @@ if(ses1!=null){
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							    	
 							    	<input type="hidden" name="actionmainid" value="<%=riskdata[0]%>"/>
+							    	<input type="hidden" name="actionassignid" value="<%=riskdata[8]%>"/>
 							  </form>
 							  
 							  
@@ -437,6 +438,7 @@ if(ses1!=null){
 								    			<td colspan="2" class="center" >
 									    			<%if(riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O")){if(Long.parseLong(riskmatrixdata[7].toString())==0){ %>
 									    				<button type="submit" class="btn btn-sm edit" style="margin-top: 15px;" onclick="return confirm('Are You Sure to Edit ?');">EDIT</button>
+									    				<input type="hidden" name="actionassignid" value="<%=riskdata[8]%>"/>
 									    			<%}%>
 									    				<button type="button" class="btn btn-sm submit"  style="margin-top: 15px;" onclick="return appendrev('editrevform');" >REVISE</button>
 									    			<%}if(riskmatrixdata!=null && riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O") && logintype!=null && logintype.equalsIgnoreCase("A") || logintype.equalsIgnoreCase("P") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("C")|| logintype.equalsIgnoreCase("I")  ){%>
@@ -452,6 +454,7 @@ if(ses1!=null){
 										<input type="hidden" name="riskid" value="<%=riskmatrixdata[0]%>"/>
 										<input type="hidden" name="revisionno" value="<%=riskmatrixdata[7]%>"/>
 								    	<input type="hidden" name="actionmainid" value="<%=riskdata[0]%>"/>
+								    	<input type="hidden" name="actionassignid" value="<%=riskdata[8]%>"/>
 								  </form>
 								  
 							   <%} %>

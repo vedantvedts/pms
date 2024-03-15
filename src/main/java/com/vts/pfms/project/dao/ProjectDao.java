@@ -172,7 +172,7 @@ public interface ProjectDao {
     public String StatusDetails(String Status)throws Exception;
     public BigInteger EmpId(String InitiationId) throws Exception;
 	public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception;
-	public Object[] ProjectRiskData(String actionmainid) throws Exception;
+	public Object[] ProjectRiskData(String actionassignid) throws Exception;
 	public long CloseProjectRisk(PfmsRiskDto dto)throws Exception;
 	public long ProjectRiskDataSubmit(PfmsRisk model) throws Exception;
 	public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception;
