@@ -224,7 +224,7 @@ String labcode= (String)session.getAttribute("labcode");
 											<div class="container">
 												<div class="row">
 													<div class="col-lg">
-														<input autocomplete="off"
+														<input autocomplete="off" autofocus
 															placeholder="Enter Module Name To Navigate"
 															required="required" oninput="changed()" id="projectids"
 															class="form-control" type="text">
@@ -246,7 +246,7 @@ String labcode= (String)session.getAttribute("labcode");
 
 								<li class="nav-item active">
 								<button type="button" class="btn btn-light"
-									onclick="opensmartsearch()">
+									onclick="opensmartsearch()" >
 									<b>Smart Search </b>&#x1F50D;
 								</button>
 								<a class="btn custom-button "
@@ -893,6 +893,10 @@ function changed() {
 				function opensmartsearch() {
 					$('#smartsearch').modal('show')
 				}
+				
+				$('#smartsearch').on('shown.bs.modal', function() {
+					  $(this).find('[autofocus]').focus();
+					});
 </script>
 
 
