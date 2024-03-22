@@ -330,9 +330,9 @@ String rodflag=(String)request.getAttribute("rodflag");
 							<div class="panel-heading ">
 								<h4 class="panel-title">
 									<span style="font-size: 14px"><%=obj[7]+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
-									
+									<input type="hidden" id="Data<%=obj[0].toString()%>" value="<%=obj[1].toString()%>">
 									<%if(obj[1].toString().length()>50) {%>
-									<%=obj[1].toString().substring(0,50) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[1].toString()%>")'>&nbsp;( view more)</span>
+									<%=obj[1].toString().substring(0,50) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[0].toString()%>")'>&nbsp;( view more)</span>
 									<%}else {%>
 									<%=obj[1].toString() %>
 									<%} %>	
@@ -1036,8 +1036,10 @@ function AssigneeEmpList(){
 	    }
    }
  function showModal(a){
+	 var value= document.getElementById("Data"+a).value;
+	 console.log(a);
 	 $('#actionModal').modal('show');
-	 document.getElementById('modalbody').innerHTML=a;
+	 document.getElementById('modalbody').innerHTML=value;
  }
 </script>
 </body>

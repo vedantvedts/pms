@@ -143,29 +143,7 @@ private static final Logger logger=LogManager.getLogger(ProjectController.class)
 			
 			return "requirements/RequirementIntro";
 		}
-	 @RequestMapping(value="ProjectMainRequirement.htm", method= {RequestMethod.GET, RequestMethod.POST})
-		public String ProjectMainRequirement(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
-			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside ProjectMainRequirement.htm "+UserId);
-		try {
-			String projectId= req.getParameter("projectId");
-			String initiationid = req.getParameter("initiationid");
-			if(initiationid==null) {
-				initiationid="0";
-			}
-			System.out.println("projectId ---- "+projectId);
-			req.setAttribute("projectId", projectId);
-			req.setAttribute("reqTypeList", service.RequirementTypeList());
-			req.setAttribute("RequirementList", reqService.RequirementList(initiationid,projectId) );
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-			
-			return "requirements/ProjectRequirement";
-			
-	 }
-	 
+
 //		bharath changes
 			@RequestMapping(value = "RequirementParaMain.htm", method = {RequestMethod.GET,RequestMethod.POST})
 			public String RequirementPara(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
@@ -202,119 +180,6 @@ private static final Logger logger=LogManager.getLogger(ProjectController.class)
 				return "requirements/OtherRequirements";
 			}
 			
-			
-//			@RequestMapping(value = "ProjectRequirementAddSubmit.htm", method=RequestMethod.POST)
-//			public String ProjectRequirementAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir  ) throws Exception {
-//				
-//				String UserId = (String) ses.getAttribute("Username");
-//				logger.info(new Date() +"Inside ProjectRequirementAddSubmit.htm "+UserId);
-//				String LabCode = (String)ses.getAttribute("labcode");
-//				
-//				String option=req.getParameter("action");
-//				try {
-//						String  r=req.getParameter("reqtype");
-//						String[]reqtype=r.split(" ");
-//						Long reqTypeId=Long.parseLong(reqtype[0]);
-//						Long a=	(Long)service.numberOfReqTypeId(req.getParameter("IntiationId"));
-//						String requirementId="";
-//						if(a<90L) {
-//						 requirementId=reqtype[2]+reqtype[1]+("000"+(a+10));
-//						}else if(a<990L) {
-//							requirementId=reqtype[2]+reqtype[1]+("00"+(a+10));
-//						}else {
-//							requirementId=reqtype[2]+reqtype[1]+("0"+(a+10));
-//						}
-//						
-//						String needType=req.getParameter("needtype");
-//						
-//						String RequirementDesc=req.getParameter("description");
-//						String RequirementBrief=req.getParameter("reqbrief");
-//						String linkedRequirements="";
-//						if(req.getParameterValues("linkedRequirements")!=null) {
-//						String []linkedreq= req.getParameterValues("linkedRequirements");
-//						
-//						
-//						for(int i=0;i<linkedreq.length;i++) {
-//							linkedRequirements=linkedRequirements+linkedreq[i];
-//							if(i!=linkedreq.length-1) {
-//								linkedRequirements=linkedRequirements+",";
-//							}
-//						}
-//						}
-//						String linkedPara="";
-//						if(req.getParameterValues("LinkedPara")!=null) {
-//							String []linkedParaArray= req.getParameterValues("LinkedPara");
-//							
-//							
-//							for(int i=0;i<linkedParaArray.length;i++) {
-//								linkedPara=linkedPara+linkedParaArray[i];
-//								if(i!=linkedParaArray.length-1) {
-//									linkedPara=linkedPara+",";
-//								}
-//							}
-//							}
-//						
-//						String linkedAttachements="";
-//						if(req.getParameterValues("linkedAttachements")!=null) {
-//							String []linkedreq= req.getParameterValues("linkedAttachements");
-//							
-//							
-//							for(int i=0;i<linkedreq.length;i++) {
-//								linkedAttachements=linkedAttachements+linkedreq[i];
-//								if(i!=linkedreq.length-1) {
-//									linkedAttachements=linkedAttachements+",";
-//								}
-//							}
-//							}
-//						Long IntiationId=Long.parseLong(req.getParameter("IntiationId"));
-//						PfmsInitiationRequirementDto prd= new PfmsInitiationRequirementDto();
-//						prd.setInitiationId(IntiationId);
-//						prd.setReqTypeId(reqTypeId);
-//						prd.setRequirementId(requirementId);
-//						prd.setRequirementBrief(RequirementBrief);
-//						prd.setRequirementDesc(RequirementDesc);
-//						prd.setReqCount((a.intValue()+10));
-//						prd.setPriority(req.getParameter("priority"));
-//						prd.setLinkedRequirements(linkedRequirements);
-//						prd.setLinkedPara(linkedPara);	
-//						prd.setNeedType(needType);
-//						prd.setRemarks(req.getParameter("remarks"));
-//						prd.setCategory(req.getParameter("Category"));
-//						prd.setConstraints(req.getParameter("Constraints"));;
-//						prd.setLinkedDocuments(linkedAttachements);
-//						long count= service.ProjectRequirementAdd(prd,UserId,LabCode,req.getParameter("projectshortName"));
-//						long initiationReqId=count;
-//					
-//						
-//						
-//					//	long count1=service.RequirementAttachmentAdd(initiationReqId,FileAttach,LabCode);
-//						
-//						
-//						if (count > 0) {
-//							redir.addAttribute("result", "Project Requirement Added Successfully");
-//						} else {
-//							redir.addAttribute("resultfail", "Project Requirement Add Unsuccessful");
-//						}
-//						redir.addFlashAttribute("ParaDetails",service.ReqParaDetails(req.getParameter("IntiationId")));
-//						redir.addFlashAttribute("RequirementFiles", service.requirementFiles(req.getParameter("IntiationId"),1));
-//						redir.addFlashAttribute("initiationReqId", String.valueOf(initiationReqId));
-//						redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
-//						redir.addFlashAttribute("RequirementList", service.RequirementList(req.getParameter("IntiationId")));
-//						redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
-//						return "redirect:/ProjectRequirement.htm";
-//				
-//				
-//				}
-//				catch(Exception e){
-//					e.printStackTrace();
-//					logger.error(new Date() +"Inside ProjectRequirementAddSubmit.htm  "+UserId, e);
-//			 		return "static/Error";
-//				}
-//				/* return "redirect:/ProjectRequirement.htm"; */
-//			}	
-//			
-//			
-//		
 			@RequestMapping(value = "RequirementVerifyMain.htm" , method= {RequestMethod.POST,RequestMethod.GET})
 			public String RequirementVerify(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
 			{
@@ -338,7 +203,153 @@ private static final Logger logger=LogManager.getLogger(ProjectController.class)
 					
 				}
 				return "requirements/MainProjectVerification";
-			}		
+			}	
+			
+			 @RequestMapping(value="ProjectMainRequirement.htm", method= {RequestMethod.GET, RequestMethod.POST})
+				public String ProjectMainRequirement(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+					String UserId = (String) ses.getAttribute("Username");
+					logger.info(new Date() +"Inside ProjectMainRequirement.htm "+UserId);
+				try {
+					String projectId= req.getParameter("projectId");
+					String initiationid = req.getParameter("initiationid");
+					if(initiationid==null) {
+						initiationid="0";
+					}
+
+					
+					List<Object[]>requirementList=reqService.RequirementList(initiationid,projectId);
+					
+					req.setAttribute("projectId", projectId);
+					req.setAttribute("reqTypeList", service.RequirementTypeList());
+					req.setAttribute("ParaDetails", service.ReqParaDetailsMain(projectId));
+					req.setAttribute("RequirementList", requirementList);
+					String InitiationReqId = req.getParameter("InitiationReqId");
+					if(InitiationReqId==null) {
+					if(requirementList!=null && requirementList.size()>0) {
+						InitiationReqId=requirementList.get(0)[0].toString();
+					}
+					}
+					req.setAttribute("InitiationReqId", InitiationReqId);
+
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+					
+					return "requirements/ProjectRequirement";
+					
+			 }
+			 
+			
+			@RequestMapping(value = "ProjectRequirementSubmit.htm", method=RequestMethod.POST)
+			public String ProjectRequirementAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+					throws Exception {
+
+				String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() + "Inside ProjectRequirementSubmit.htm " + UserId);
+				String LabCode = (String) ses.getAttribute("labcode");
+
+				String option = req.getParameter("action");
+				try {
+					String r = req.getParameter("reqtype");
+					String[] reqtype = r.split(" ");
+					Long reqTypeId = Long.parseLong(reqtype[0]);
+
+					String projectId = req.getParameter("projectId");
+					String intiationId = req.getParameter("IntiationId");
+					if (projectId == null) {
+						projectId = "0";
+					}
+					if (intiationId == null) {
+						intiationId = "0";
+					}
+					
+					
+					
+					Long a = (Long) service.numberOfReqTypeId(intiationId, projectId);
+					String requirementId = "";
+					if (a < 90L) {
+						requirementId = reqtype[2] + reqtype[1] + ("000" + (a + 10));
+					} else if (a < 990L) {
+						requirementId = reqtype[2] + reqtype[1] + ("00" + (a + 10));
+					} else {
+						requirementId = reqtype[2] + reqtype[1] + ("0" + (a + 10));
+					}
+
+					String needType = req.getParameter("needtype");
+
+					String RequirementDesc = req.getParameter("description");
+					String RequirementBrief = req.getParameter("reqbrief");
+					String linkedRequirements = "";
+					if (req.getParameterValues("linkedRequirements") != null) {
+						String[] linkedreq = req.getParameterValues("linkedRequirements");
+
+						for (int i = 0; i < linkedreq.length; i++) {
+							linkedRequirements = linkedRequirements + linkedreq[i];
+							if (i != linkedreq.length - 1) {
+								linkedRequirements = linkedRequirements + ",";
+							}
+						}
+					}
+					String linkedPara = "";
+					if (req.getParameterValues("LinkedPara") != null) {
+						String[] linkedParaArray = req.getParameterValues("LinkedPara");
+
+						for (int i = 0; i < linkedParaArray.length; i++) {
+							linkedPara = linkedPara + linkedParaArray[i];
+							if (i != linkedParaArray.length - 1) {
+								linkedPara = linkedPara + ",";
+							}
+						}
+					}
+
+					String linkedAttachements = "";
+					if (req.getParameterValues("linkedAttachements") != null) {
+						String[] linkedreq = req.getParameterValues("linkedAttachements");
+
+						for (int i = 0; i < linkedreq.length; i++) {
+							linkedAttachements = linkedAttachements + linkedreq[i];
+							if (i != linkedreq.length - 1) {
+								linkedAttachements = linkedAttachements + ",";
+							}
+						}
+					}
+					Long IntiationId = Long.parseLong(intiationId);
+					PfmsInitiationRequirementDto prd = new PfmsInitiationRequirementDto();
+					prd.setInitiationId(IntiationId);
+					prd.setReqTypeId(reqTypeId);
+					prd.setRequirementId(requirementId);
+					prd.setRequirementBrief(RequirementBrief);
+					prd.setRequirementDesc(RequirementDesc);
+					prd.setReqCount((a.intValue() + 10));
+					prd.setPriority(req.getParameter("priority"));
+					prd.setLinkedRequirements(linkedRequirements);
+					prd.setLinkedPara(linkedPara);
+					prd.setNeedType(needType);
+					prd.setRemarks(req.getParameter("remarks"));
+					prd.setCategory(req.getParameter("Category"));
+					prd.setConstraints(req.getParameter("Constraints"));
+					prd.setLinkedDocuments(linkedAttachements);
+					prd.setProjectId(Long.parseLong(projectId));
+					long count = reqService.ProjectRequirementAdd(prd, UserId, LabCode);
+					long InitiationReqId = count;
+					if (count > 0) {
+						redir.addAttribute("result", "Project Requirement Added Successfully");
+					} else {
+						redir.addAttribute("resultfail", "Project Requirement Add Unsuccessful");
+					}
+					redir.addAttribute("projectId", projectId);
+					redir.addAttribute("InitiationReqId", InitiationReqId);
+					return "redirect:/ProjectMainRequirement.htm";
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() + "Inside ProjectRequirementSubmit.htm  " + UserId, e);
+					return "static/Error";
+				}
+				/* return "redirect:/ProjectRequirement.htm"; */
+				
+			}
+			
 
 		}
 

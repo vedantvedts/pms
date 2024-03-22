@@ -127,16 +127,17 @@ h6 {
 											<div id="toolbar"></div>
 											
 											<div style="width: 95%; margin: auto;">
-												<h3 style="text-align: center;">
-													Weekly status of
-													<%= request.getAttribute("projectname")!=null?request.getAttribute("projectname"):"" %>
-													<%= request.getAttribute("shortname")!=null?request.getAttribute("shortname"):"" %>
-													project
-												</h3>
+												<h4 style="text-align: center;padding: 35px;">
+													Weekly Status <%if(request.getAttribute("projectname")!=null){ %> of
+													<%=request.getAttribute("projectname")%>
+													<% if(request.getAttribute("shortname")!=null){ %>(
+													<%=request.getAttribute("shortname")%>)<%} %><%} %>
+													
+												</h4>
 												<table class="table table-bordered table-hover table-striped table-condensed " id="table" data-toggle="table"
 													class="table table-bordered table-hover table-striped table-condensed "
 													>
-													<thead>
+													<thead style="text-align: center;">
 
 														<tr>
 															<th scope="col">Date</th>
@@ -156,12 +157,12 @@ h6 {
 
 
 
-															<td><%= data.get(i)[3] %></td>
-															<td><%= data.get(i)[2] %></td>
-															<td><%= data.get(i)[7] %></td>
-															<td><%= data.get(i)[5] %></td>
-															<td><%= data.get(i)[4] %></td>
-															<td><%= data.get(i)[9] %></td>
+															<td ><div style="text-align: center;"><%= data.get(i)[3] %></div></td>
+															<td ><div style="text-align: center;"><%= data.get(i)[2] %></div></td>
+															<td ><div style="text-align: center;"><%= data.get(i)[7] %></div></td>
+															<td ><div style="text-align: center;"><%= data.get(i)[5] %></div></td>
+															<td><div style="text-align: center;"><%= data.get(i)[4] %></div></td>
+															<td><div style="text-align: center;"><%= data.get(i)[9] %></div></td>
 
 															<td id='trimname'><%= data.get(i)[1] %></td>
 															<td><%= data.get(i)[10] %></td>

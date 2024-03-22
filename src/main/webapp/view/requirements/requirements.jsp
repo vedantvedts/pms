@@ -184,7 +184,12 @@ if(DocumentSummaryList.size()>0){
 					<button type="submit" id="verification" style="display:none"></button>
 					</form>
 					<!--  -->
-				
+						<!-- para -->		
+						<form action="RequirementParaMain.htm" method="GET" id="">
+					<input type="hidden" name="projectId" value="<%=projectId%>">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button type="submit" id="parareq" style="display:none"></button>
+					</form>	
 					
 					<!-- additional requirement -->
 					<form action="OtherMainRequirement.htm" method="GET" id="myStatus">
@@ -563,9 +568,7 @@ if(DocumentSummaryList.size()>0){
 		function showIntroudction(){
 			$('#Introbtn').click();
 		}
-		function showParaPage(){
-			$('#parareq').click();
-		}
+	
 const excel_file = document.getElementById('excel_file');
 		
 		
@@ -748,6 +751,12 @@ function showOtherRequirements(){
 function showVerification(){
 	$('#verification').click();
 }
+
+function showParaPage(){
+	$('#parareq').click();
+}
+
+
 </script>
 </body>
 </html>

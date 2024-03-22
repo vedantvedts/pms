@@ -70,4 +70,6 @@ public interface MasterDao  {
 	public Object[] TDAddCheck(String tCode)throws Exception;
 	public int TDMasterUpdate(DivisionTd model)throws Exception;
 	public List<Object[]> TDListAdd()throws Exception;
+	public List<Object[]> UpdateActivityType(String ActivityType, String ActivityId) throws Exception;
+	public Boolean DeleteActivityType(String activityType)throws Exception;
 }

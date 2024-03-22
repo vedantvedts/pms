@@ -22,5 +22,5 @@ public class PfmsInitiationRequirementDto {
 	private String Constraints;
 	private String LinkedDocuments;
 	private String LinkedPara;
-
+	private Long ProjectId;
 }

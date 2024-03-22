@@ -533,6 +533,16 @@ public class MasterServiceImpl implements MasterService {
 		
 		return dao.TDListAdd();
 	}
-	
+	@Override
+	public List<Object[]> UpdateActivityType(String ActivityType, String ActivityId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.UpdateActivityType(ActivityType,ActivityId);
+	}
+
+	@Override
+	public Boolean DeleteActivityType(String ActivityId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.DeleteActivityType(ActivityId);
+	}
 	
 }

@@ -2,6 +2,7 @@ package com.vts.pfms.project.dao;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1767,17 +1768,20 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			return ProjectRiskData;		
 		}
 		private static final String PROJECTCLOSERISK="UPDATE pfms_risk SET status=:status, statusdate=:statusdate , remarks=:remarks , modifiedby=:modifiedby, modifieddate=:modifieddate WHERE riskid=:riskid";
-		private static final String ACTIONRISK="UPDATE action_assign SET actionstatus=:actionstatus , modifiedby=:modifiedby, modifieddate=:modifieddate WHERE actionassignid=:actionassignid";
+		private static final String ACTIONRISK="UPDATE action_assign SET ClosedDate=:ClosedDate, actionstatus=:actionstatus , modifiedby=:modifiedby, modifieddate=:modifieddate WHERE actionassignid=:actionassignid";
 		@Override
 		public long CloseProjectRisk(PfmsRiskDto dto)throws Exception
 		{
 			
+			
+			String date=LocalDate.now().toString();
 			
 			Query query1=manager.createNativeQuery(ACTIONRISK);
 			query1.setParameter("actionassignid", dto.getActionMainId());
 			query1.setParameter("actionstatus", dto.getStatus());
 			query1.setParameter("modifiedby", dto.getModifiedBy());
 			query1.setParameter("modifieddate", dto.getModifiedDate());
+			query1.setParameter("ClosedDate", date);
 			query1.executeUpdate();
 			Query query=manager.createNativeQuery(PROJECTCLOSERISK);
 				query.setParameter("riskid", dto.getRiskId());
@@ -3844,7 +3848,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 				return null;
 			}
 }
-		private static final String PARADETAILSMAIN="SELECT paraid,sqrid,ProjectId,parano,paradetails FROM pfms_initiation_sqr_para WHERE ProjectId=:ProjectId AND isactive=1";
+		private static final String PARADETAILSMAIN="SELECT paraid,sqrid,ProjectId,parano,paradetails FROM pfms_initiation_sqr_para WHERE ProjectId=:ProjectId AND InitiationId='0'  AND isactive=1";
 		@Override
 		public List<Object[]> ReParaDetailsMain(String ProjectId) throws Exception {
 			Query query = manager.createNativeQuery(PARADETAILSMAIN);

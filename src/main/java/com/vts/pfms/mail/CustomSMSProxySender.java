@@ -30,7 +30,7 @@ public class CustomSMSProxySender {
         this.restTemplate = restTemplate;
     }
 
-    @Scheduled(cron = "0 0 7 * * ?")
+    @Scheduled(cron = "0 47 14 * * ?")
     public void myDailySmsSend() {
       logger.info(new Date() + " Inside CONTROLLER myDailySmsSend ");
       try {
@@ -59,7 +59,7 @@ public class CustomSMSProxySender {
   }
     
     
-    @Scheduled(cron = "0 5 7 * * ?")
+    @Scheduled(cron = "0 48 14 * * ?")
     public void DirectorDailySmsSend() {
       logger.info(new Date() + " Inside CONTROLLER DirectorDailySmsSend ");
       try {

@@ -3112,6 +3112,33 @@ public class ProjectController
 		return "project/ProjectRequirementPara";
 	}
 	
+//	@RequestMapping(value = "RequirementParaSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
+//	public String RequirementParaSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+//		
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside RequirementParaSubmit.htm "+UserId);
+//		try {
+//			RequirementparaModel rpm= new RequirementparaModel();
+//			rpm.setSqrId(Long.parseLong(req.getParameter("sqrid")));
+//			rpm.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+//			rpm.setParaNo(req.getParameter("ParaNo"));
+//			rpm.setCreatedBy(UserId);
+//			rpm.setCreatedDate(sdf1.format(new Date()));
+//			rpm.setIsActive(1);
+//			long count=service.RequirementParaSubmit(rpm);
+//			if (count > 0) {
+//				redir.addAttribute("result", "QR para added Successfully");
+//			} else {
+//				redir.addAttribute("resultfail", "QR para add Unsuccessful");
+//			}
+//			redir.addAttribute("initiationid", req.getParameter("initiationid"));
+//			redir.addAttribute("project", req.getParameter("project"));
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//	return "redirect:/RequirementPara.htm";
+//	}
+	
 	@RequestMapping(value = "RequirementParaSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String RequirementParaSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		
@@ -3119,25 +3146,86 @@ public class ProjectController
 		logger.info(new Date() +"Inside RequirementParaSubmit.htm "+UserId);
 		try {
 			RequirementparaModel rpm= new RequirementparaModel();
-			rpm.setSqrId(Long.parseLong(req.getParameter("sqrid")));
-			rpm.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			String sqrid =req.getParameter("sqrid");
+			String initiationid=req.getParameter("initiationid");
+			String ProjectId =req.getParameter("projectId");
+			if(sqrid==null) {
+				sqrid="0";
+			}
+			if(initiationid==null) {
+				initiationid="0";
+			}
+			if(ProjectId==null) {
+				ProjectId="0";
+			}
+			rpm.setSqrId(Long.parseLong(sqrid));
+			rpm.setInitiationId(Long.parseLong(initiationid));
+			rpm.setProjectId(Long.parseLong(ProjectId));
 			rpm.setParaNo(req.getParameter("ParaNo"));
 			rpm.setCreatedBy(UserId);
 			rpm.setCreatedDate(sdf1.format(new Date()));
 			rpm.setIsActive(1);
 			long count=service.RequirementParaSubmit(rpm);
 			if (count > 0) {
-				redir.addAttribute("result", "QR para added Successfully");
+				if(initiationid!="0") {
+					redir.addAttribute("initiationid", req.getParameter("initiationid"));
+					redir.addAttribute("project", req.getParameter("project"));
+					redir.addAttribute("result", "QR para added Successfully");
+					return "redirect:/RequirementPara.htm";
+				}
+				else {
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					redir.addAttribute("result", "QR para added Successfully");
+					return "redirect:/RequirementParaMain.htm";
+				}
+				
 			} else {
 				redir.addAttribute("resultfail", "QR para add Unsuccessful");
+				redir.addAttribute("initiationid", req.getParameter("initiationid"));
+				redir.addAttribute("project", req.getParameter("project"));
 			}
-			redir.addAttribute("initiationid", req.getParameter("initiationid"));
-			redir.addAttribute("project", req.getParameter("project"));
+			
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-	return "redirect:/RequirementPara.htm";
+	return "static/error";
 	}
+	
+//	
+//	@RequestMapping(value = "RequirementParaEdit.htm", method = {RequestMethod.GET,RequestMethod.POST})
+//	public String RequirementParaEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+//		
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside RequirementParaEdit.htm "+UserId);
+//		try {
+//			RequirementparaModel rpm= new RequirementparaModel();
+//			rpm.setParaId(Long.parseLong(req.getParameter("paraid")));;
+//			rpm.setParaNo(req.getParameter("ParaNo"));
+//			rpm.setParaDetails(req.getParameter("Details"));
+//			rpm.setModifiedBy(UserId);
+//			rpm.setModifiedDate(sdf1.format(new Date()));
+//			long count=service.RequirementParaEdit(rpm);
+//			if (count > 0) {
+//				if(req.getParameter("Details")==null) {
+//			redir.addAttribute("result", "para - " +req.getParameter("paracount") +" updated successfully");
+//				}else {
+//			redir.addAttribute("result", "para - " +req.getParameter("paracount") +" details updated successfully");
+//				}
+//				} else {
+//			redir.addAttribute("resultfail", " para update Unsuccessful");
+//			}
+//			redir.addAttribute("paracounts",req.getParameter("paracount"));
+//			redir.addAttribute("initiationid", req.getParameter("initiationid"));
+//			redir.addAttribute("project", req.getParameter("project"));
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		return "redirect:/RequirementPara.htm";
+//	}
+//	
+//	
+	
 	
 	@RequestMapping(value = "RequirementParaEdit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String RequirementParaEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
@@ -3146,6 +3234,10 @@ public class ProjectController
 		logger.info(new Date() +"Inside RequirementParaEdit.htm "+UserId);
 		try {
 			RequirementparaModel rpm= new RequirementparaModel();
+			String initiationid=req.getParameter("initiationid");
+			if(initiationid==null) {
+				initiationid="0";
+			}
 			rpm.setParaId(Long.parseLong(req.getParameter("paraid")));;
 			rpm.setParaNo(req.getParameter("ParaNo"));
 			rpm.setParaDetails(req.getParameter("Details"));
@@ -3158,18 +3250,31 @@ public class ProjectController
 				}else {
 			redir.addAttribute("result", "para - " +req.getParameter("paracount") +" details updated successfully");
 				}
+				if(initiationid!="0") {
+					redir.addAttribute("paracounts",req.getParameter("paracount"));
+					redir.addAttribute("initiationid", req.getParameter("initiationid"));
+					redir.addAttribute("project", req.getParameter("project"));
+					return "redirect:/RequirementPara.htm";
+					
+				}
+				else {
+					redir.addAttribute("paracounts",req.getParameter("paracount"));
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					return "redirect:/RequirementParaMain.htm";
+				}
+				
 				} else {
 			redir.addAttribute("resultfail", " para update Unsuccessful");
-			}
 			redir.addAttribute("paracounts",req.getParameter("paracount"));
 			redir.addAttribute("initiationid", req.getParameter("initiationid"));
 			redir.addAttribute("project", req.getParameter("project"));
+			}
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/RequirementPara.htm";
+		return "static/error";
 	}
-	
 	
 	@RequestMapping(value="RequirementParaDetails.htm",method = {RequestMethod.GET})
 	public @ResponseBody String RequirementParaDetails(HttpServletRequest req, HttpSession ses) throws Exception {
@@ -3178,7 +3283,13 @@ public class ProjectController
 		List<Object[]>RequirementParaDetails=null;
 		try {
 			
+			String projectId=req.getParameter("projectId");
+			if(projectId!=null) {
+				RequirementParaDetails =	service.ReqParaDetailsMain(projectId);
+			}else {
+			
 			RequirementParaDetails=service.ReqParaDetails(req.getParameter("initiationid"));
+		}
 		}
 		catch(Exception e){
 			e.printStackTrace();

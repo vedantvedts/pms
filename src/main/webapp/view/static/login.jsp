@@ -91,7 +91,7 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
         			</div>
       			</div>
      			<div class="logo">
-     				<a href="#" title="PMS"><span class="c"  style="margin-top: 2% !important;font-size: 113% !important;">PROJECT MANAGEMENT SYSTEM  (VER 1.5)</span></a>
+     				<a href="#" title="PMS"><span class="c"  style="margin-top: 2% !important;font-size: 113% !important;">PROJECT MANAGEMENT SYSTEM  (VER 1.6)</span></a>
      			</div>
      		
      			

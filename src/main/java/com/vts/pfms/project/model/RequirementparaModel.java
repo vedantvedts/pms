@@ -26,4 +26,5 @@ public class RequirementparaModel {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
+	private Long ProjectId;
 }

@@ -291,11 +291,8 @@ keyframes blinker { 50% {
 </head>
 <body>
 	<%
-	Object[] SQRFile = (Object[]) request.getAttribute("SQRFile");
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-	String initiationid = (String) request.getAttribute("initiationid");
-	String project = (String) request.getAttribute("project");
-	String[] projectDetails = project.split("/");
+	String projectId = (String) request.getAttribute("projectId");
 	List<Object[]> ParaDetails = (List<Object[]>) request.getAttribute("ParaDetails");
 	String paracounts = (String) request.getAttribute("paracounts");
 	%>
@@ -303,33 +300,15 @@ keyframes blinker { 50% {
 		style="margin-top: -1%">
 		<a class="navbar-brand"> <b
 			style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left"><span
-				style="color: #31708f">SQR para for Project <%=projectDetails[1]%>
+				style="color: #31708f">SQR para 
 			</span> <span style="color: #31708f; font-size: 19px"> <%-- <%=projectDetails[1].toString() %> --%></span></b>
 		</a>
 		<form action="#">
-			<button class="btn bg-transparent"
-				formaction="RequirementParaDownload.htm" formmethod="get"
-				formnovalidate="formnovalidate" formtarget="_blank">
-				<i class="fa fa-download text-success" aria-hidden="true"></i>
-			</button>
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" /> <input type="hidden"
-				name="${_csrf.parameterName}" value="${_csrf.token}" /> <input
-				type="hidden" name="project" value="<%=project%>"> <input
-				type="hidden" name="initiationid" value="<%=initiationid%>">
-			<%-- <button type="button" class="btn btn-sm btn-success font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq">Other Requirements</button> 
- -->	
- 		 <%if(SQRFile==null){ %>
- 		<button class="btn btn-sm btn-success mt-1" formaction="ProjectIntiationListSubmit.htm" formmethod="post" formnovalidate="formnovalidate" name="sub" value="Details">ADD SQR</button>
- 		
- 		<%} %> --%>
 			<button class="btn btn-info btn-sm  back ml-2 mt-1"
-				formaction="ProjectOverAllRequirement.htm" formmethod="get"
+				formaction="Requirements.htm" formmethod="get"
 				formnovalidate="formnovalidate" style="float: right;">BACK</button>
-			<input type="hidden" name="InitiationId"> <input
+			<input type="hidden" name="projectId" value=<%=projectId%>> <input
 				type="hidden" name="projectShortName">
-			<button type="button" class="btn btn-sm prints bg-secondary mt-1"
-				style="border: white;" onclick="showsqrModal()">SQR</button>
 
 		</form>
 	</nav>
@@ -356,9 +335,7 @@ keyframes blinker { 50% {
 	}
 	%>
 
-	<%
-	if (SQRFile != null) {
-	%>
+	
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-5">
@@ -378,10 +355,11 @@ keyframes blinker { 50% {
 										<span class="ml-2" style="font-size: 14px">Para - <%=++count%>
 											&nbsp;&nbsp;&nbsp; <input type="hidden"
 											id="paracount<%=obj[0].toString()%>" name="paracount"
-											value="<%=count%>"> <input type="hidden"
-											name="${_csrf.parameterName}" value="${_csrf.token}" /> <input
-											type="hidden" name="project" value="<%=project%>"> <input
-											type="hidden" name="initiationid" value="<%=initiationid%>">
+											value="<%=count%>"> 
+											<input type="hidden"
+											name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+											<input
+											type="hidden" name="projectId" value="<%=projectId%>">
 											<input type="text" class="form-control inputx"
 											id="input<%=obj[0].toString()%>" name="ParaNo"
 											maxlength="250 characters" placeholder="Enter Text"
@@ -413,10 +391,8 @@ keyframes blinker { 50% {
 										</span>
 									</h4>
 									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> <input type="hidden" name="sqrid"
-										value="<%=SQRFile[7].toString()%>"> <input
-										type="hidden" name="project" value="<%=project%>"> <input
-										type="hidden" name="initiationid" value="<%=initiationid%>">
+										value="${_csrf.token}" />   <input
+										type="hidden" name="projectId" value="<%=projectId%>">
 									<button class="btn bg-transparent buttonEd" type="button"
 										style="display: block;" id="btnEditor<%=count%>"
 										onclick="showEditor(<%=obj[0].toString()%>,'<%=obj[3].toString()%>')"
@@ -449,10 +425,8 @@ keyframes blinker { 50% {
 										</span>
 									</h4>
 									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> <input type="hidden" name="sqrid"
-										value="<%=SQRFile[7].toString()%>"> <input
-										type="hidden" name="project" value="<%=project%>"> <input
-										type="hidden" name="initiationid" value="<%=initiationid%>">
+										value="${_csrf.token}" />  <input
+										type="hidden" name="projectId" value="<%=projectId%>">
 									<button class="btn bg-transparent buttonEd" type="button"
 										style="display: none;" id="btnEditor1" onclick="">
 										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -482,9 +456,8 @@ keyframes blinker { 50% {
 										<span id="EditorDetails"></span> <input type="hidden"
 											id="paracountDetails" name="paracount" value=""> <input
 											type="hidden" name="ParaNo" id="ParaNos" value=""> <input
-											type="hidden" name="paraid" id="paraids" value=""> <input
-											type="hidden" name="project" value="<%=project%>"> <input
-											type="hidden" name="initiationid" value="<%=initiationid%>">
+											type="hidden" name="paraid" id="paraids" value="">  <input
+											type="hidden" name="projectId" value="<%=projectId%>">
 										<input type="hidden" name="${_csrf.parameterName}"
 											value="${_csrf.token}" /> <span id="Editorspan"> <span
 											id="btn1" style="display: none;">
@@ -501,238 +474,8 @@ keyframes blinker { 50% {
 			</div>
 		</div>
 	</div>
-	<%
-	} else {
-	%>
-	<h2 align="center" id="noSqr">SQR is not specified for the
-		Project!</h2>
-	<%
-	}
-	%>
-	<div class="modal fade bd-example-modal-lg" id="sqrModal" tabindex="-1"
-		role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content" style="margin-left: -10%; width: 120%;">
-				<div class="modal-header" style="background: antiquewhite;">
-					<h5 class="modal-title" id="exampleModalLabel"
-						style="color: #07689f !important;">Staff Qualification
-						Requirement</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close" onclick="hidemodalbody()">
-						<span aria-hidden="true" style="color: red;">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<table class="table table-bordered" id="MyTable1">
-						<thead>
-							<tr style="text-align: center;">
-								<th>SN</th>
-								<th>User</th>
-								<th>Ref No.</th>
-								<th>Date</th>
-								<th>Version</th>
-								<th>Issuing Authority</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<%
-							if (SQRFile == null) {
-							%>
-							<tr>
-								<td colspan="7" style="text-align: center;">No Data
-									Available</td>
-							</tr>
-							<%
-							} else {
-							%>
-							<tr>
-								<td style="text-align: center">1.</td>
-								<td>
-									<%
-									if (SQRFile[0].toString().equalsIgnoreCase("IA")) {
-									%>Indian Army<%
-									}
-									%>
-									<%
-									if (SQRFile[0].toString().equalsIgnoreCase("IN")) {
-									%>Indian Navy<%
-									}
-									%>
-									<%
-									if (SQRFile[0].toString().equalsIgnoreCase("OH")) {
-									%>Others<%
-									}
-									%>
-									<%
-									if (SQRFile[0].toString().equalsIgnoreCase("DO")) {
-									%>DRDO<%
-									}
-									%> <%
- if (SQRFile[0].toString().equalsIgnoreCase("IAF")) {
- %>Indian
-									Air Force<%
- }
- %>
-								</td>
-								<td>
-									<%
-									if (SQRFile[1] != null) {
-									%><%=SQRFile[1].toString()%>
-									<%
-									}
-									%>
-								</td>
-								<td>
-									<%
-									if (SQRFile[5] != null) {
-									%><%=(sdf.format(SQRFile[5]))%>
-									<%
-									}
-									%>
-								</td>
-								<td style="text-align: right">
-									<%
-									if (SQRFile[4] != null) {
-									%><%=SQRFile[4].toString()%>
-									<%
-									}
-									%>
-								</td>
-								<td>
-									<%
-									if (SQRFile[3] != null) {
-									%><%=SQRFile[3].toString()%>
-									<%
-									}
-									%>
-								</td>
-								<td align="center"><button
-										class="btn btn-sm bg-transparent">
-										<i class="fa fa-download" aria-hidden="true"
-											style="color: green;"></i>
-									</button></td>
-							</tr>
-							<%
-							}
-							%>
-						</tbody>
-					</table>
-					<%
-					if (SQRFile == null) {
-					%>
-					<form action="ProjectSqrSubmit.htm" method="post"
-						enctype="multipart/form-data">
-						<div id="modalbody" class="mt-2"
-							style="padding: 20px; display: block; background: aliceblue">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-3">
-										<label
-											style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f; font-weight: bold">User:</label>
-										<span class="mandatory" style="color: red;">*</span>
-									</div>
-									<div class="col-md-4">
-										<select class="form-control modals" required name="users">
-											<option value="IA"
-												<%if (SQRFile != null && SQRFile[0].toString().equalsIgnoreCase("IA")) {%>
-												selected <%}%>>Indian Army</option>
-											<option value="IN"
-												<%if (SQRFile != null && SQRFile[0].toString().equalsIgnoreCase("IN")) {%>
-												selected <%}%>>Indian Navy</option>
-											<option value="IAF"
-												<%if (SQRFile != null && SQRFile[0].toString().equalsIgnoreCase("IAF")) {%>
-												selected <%}%>>Indian Air Force</option>
-											<option value="DO"
-												<%if (SQRFile != null && SQRFile[0].toString().equalsIgnoreCase("DO")) {%>
-												selected <%}%>>DRDO</option>
-											<option value="OH"
-												<%if (SQRFile != null && SQRFile[0].toString().equalsIgnoreCase("OH")) {%>
-												selected <%}%>>Other</option>
-										</select>
-									</div>
-								</div>
-								<div class="row mt-2">
-									<div class="col-md-3">
-										<label
-											style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f; font-weight: bold">Refernce
-											No:</label> <span class="mandatory" style="color: red;">*</span>
-									</div>
-									<div class="col-md-4">
-										<input class="form-control modals" type="text" required
-											name="refNo" maxlength="255 characters"
-											value="<%if (SQRFile != null && SQRFile[1] != null) {%><%=SQRFile[1].toString()%><%}%>">
-									</div>
-								</div>
-								<div class="row mt-2">
-									<div class="col-md-4">
-										<label
-											style="font-size: 17px; margin-top: 5%; margin-left: -5%; color: #07689f; font-weight: bold">Issuing
-											Authority:</label> <span class="mandatory" style="color: red;">*</span>
-									</div>
-									<div class="col-md-4" style="margin-left: -8%!important;">
-										<input type="text" class="form-control modals"
-											name="IssuingAuthority" required maxlength="255 characters"
-											value="<%if (SQRFile != null && SQRFile[3] != null) {%><%=SQRFile[3].toString()%><%}%>">
-									</div>
-								</div>
-								<div class="row mt-2">
-									<div class="col-md-3">
-										<label
-											style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f; font-weight: bold">
-											Version No.&nbsp;:</label> <span class="mandatory"
-											style="color: red;">*</span>
-									</div>
-									<div class="col-md-4">
-										<input class="form-control modals" id="versionUpdates" maxlength="5"
-											type="text" style="width: 50%; float: left;" required
-											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-											name="version"
-											value="<%if (SQRFile != null && SQRFile[4] != null) {%><%=SQRFile[4].toString()%><%}%>"
-											<%if (SQRFile != null) {%> readonly <%}%>>
-									</div>
-								</div>
-								<div class="row mt-2">
-									<div class="col-md-3">
-										<label
-											style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f; font-weight: bold">Choose
-											file:</label> <span class="mandatory" style="color: red;">*</span>
-									</div>
-									<div class="col-md-6">
-										<input type="file" class="form-control modals" required
-											accept=".pdf" name="Attachments">
-									</div>
-								</div>
-								<div align="center" class="mt-3">
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> <input type="hidden" name="project"
-										value="<%=project%>"> <input type="hidden"
-										name="initiationid" value="<%=initiationid%>"> <input
-										type="hidden" name="pageid" value="2"> <span> <%
- if (SQRFile != null) {
- %>
-										<button class="btn btn-sm edit" type="submit"
-											onclick="return confirm('Are you sure you want to update?')"
-											style="box-shadow: 2px 2px 2px gray;">UPDATE</button> <%
- } else {
- %>
-										<button class="btn btn-sm submit" type="submit"
-											onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button>
-										<%
-										}
-										%>
-									</span>
-								</div>
-							</div>
-						</div>
-					</form>
-					<%
-					}
-					%>
-				</div>
-			</div>
-		</div>
-	</div>
+	
+
 
 	<script>
 	var inputValue; 
@@ -870,9 +613,7 @@ keyframes blinker { 50% {
 		$('#sqrModal').modal('show');
 		}
 		$( document ).ready(function() {
-			<%if (SQRFile == null) {%>
-			showsqrModal();
-			<%}%>
+			
 			var paracounts=<%=paracounts%>;
 			$('#btnEditor'+paracounts).click();
 			var editorHeading=document.getElementById('editorHeading').innerHTML;
@@ -891,7 +632,7 @@ keyframes blinker { 50% {
 			url:'RequirementParaDetails.htm',
 			datatype:'json',
 			data:{
-				initiationid:<%=initiationid%>,
+				projectId:<%=projectId%>,
 			},
 			success:function(result){
 				var ajaxresult=JSON.parse(result);
@@ -938,9 +679,6 @@ keyframes blinker { 50% {
 			}
 			}
 	
-		function show(){
-			
-		}
 </script>
 </body>
 </html>

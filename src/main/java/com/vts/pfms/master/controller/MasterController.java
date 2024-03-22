@@ -1279,6 +1279,38 @@ public class MasterController {
 				}
 			  
 			  
-	 	
+			  @RequestMapping(value = "ActivityTypeEdit.htm", method = { RequestMethod.POST })
+				public String ActivityTypeEdit(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir)throws Exception 
+				{
+					System.out.println("in ActivityTypeEdit");
+					logger.info(new Date() +"Inside ActivityTypeEdit.htm ");
+					try {
+						boolean flag=true;
+						if(req.getParameter("Delete")==null)flag=false; // if Edit, flag false
+						List<Object[]> activityList = service.ActivityList();
+						
+						String ActivityID = req.getParameter("ActivityID");
+						boolean Editflag = true;// cannot be false if deleting
+						if(flag && ActivityID!=null)service.DeleteActivityType(ActivityID); // only Deletes, flag is true
+						else	{		// else updates
+							String toActivity = req.getParameter("toActivity").toString();
+							
+							for (Object[] objects : activityList) {
+								System.out.println("objects[1] "+objects[1]+" toActivity "+toActivity);
+								if(objects[1].toString().equals(toActivity))Editflag=false;
+							}
+							if(Editflag)
+							service.UpdateActivityType(toActivity, ActivityID);
+						}
+						
+						redir.addAttribute("result", flag?"Deleted Activity Type Succesfully":Editflag?"Edited Activity Type Succesfully":"");
+						if(!Editflag)redir.addAttribute("result","Activity Type Already Exists!");
+						return "redirect:/MilestoneActivityTypes.htm";		
+					}catch (Exception e) {
+							e.printStackTrace(); 
+							logger.error(new Date() +" Inside ActivityTypeEdit.htm ", e); 
+							return "static/Error";
+					}
+				}
 
 }

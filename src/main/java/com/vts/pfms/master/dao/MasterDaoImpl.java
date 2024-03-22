@@ -689,4 +689,26 @@ public class MasterDaoImpl implements MasterDao {
 		List<Object[]> TDListAdd = (List<Object[]>)query.getResultList();
 		return TDListAdd;
 	}
+	
+	public static final String UpdateActivityTypeQuery="UPDATE milestone_activity_type SET activityType=:activityType WHERE activitytypeid=:activitytypeid";
+	@Override
+	public List<Object[]> UpdateActivityType(String ActivityType, String ActivityId) throws Exception {
+		
+		Query query = manager.createNativeQuery(UpdateActivityTypeQuery);
+		query.setParameter("activityType", ActivityType);
+		query.setParameter("activitytypeid", ActivityId);
+		query.executeUpdate();
+		List<Object[]> TDListAdd = null;
+		return TDListAdd;
+	}
+	public static final String DeleteActivityTypeQuery="UPDATE milestone_activity_type SET isactive=0 WHERE ActivityTypeId=:activitytypeid";
+
+	@Override
+	public Boolean DeleteActivityType(String ActivityId) throws Exception {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery(DeleteActivityTypeQuery);
+		query.setParameter("activitytypeid", ActivityId);
+		query.executeUpdate();
+		return null;
+	}
 }

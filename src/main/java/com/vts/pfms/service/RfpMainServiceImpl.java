@@ -686,35 +686,35 @@ public class RfpMainServiceImpl implements RfpMainService {
 				            Insights.setActionItemTP(Long.parseLong(obj[3].toString()));
 				            Insights.setActionItemDP(Long.parseLong(obj[4].toString()));
 				            if(Long.parseLong(obj[2].toString())>0) {
-				            Action=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString()) +" / "+ Long.parseLong(obj[3].toString())+"";
+				            Action="Action Pending - "+Long.parseLong(obj[2].toString()) +" / Action Delay - "+ Long.parseLong(obj[4].toString()) +" / Action Today - "+ Long.parseLong(obj[3].toString())+" / ";
 				            }
 		            	}else if(obj[0].toString().equalsIgnoreCase("MeetingActions")) {
 		            		Insights.setMeetingActionP(Long.parseLong(obj[2].toString()));
 				            Insights.setMeetingActionTP(Long.parseLong(obj[3].toString()));
 				            Insights.setMeetingActionDP(Long.parseLong(obj[4].toString()));
 				            if(Long.parseLong(obj[2].toString())>0) {
-				            Meeting=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString())+ " / "+Long.parseLong(obj[3].toString())+"";
+				            Meeting="Meeting Pending - "+Long.parseLong(obj[2].toString()) +" /  Meeting Delay - "+ Long.parseLong(obj[4].toString())+ " /  Meeting Today - "+Long.parseLong(obj[3].toString())+" ";
 				            }
 		            	}else {
 		            		Insights.setMilestoneActionP(Long.parseLong(obj[2].toString()));
 				            Insights.setMilestoneActionTP(Long.parseLong(obj[3].toString()));
 				            Insights.setMilestoneActionDP(Long.parseLong(obj[4].toString()));
 				            if(Long.parseLong(obj[2].toString())>0) {
-				            Milestone=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString())+ " / "+Long.parseLong(obj[3].toString())+"";
+				            Milestone="MileStone Pending - "+Long.parseLong(obj[2].toString()) +" / MileStone Delay - "+ Long.parseLong(obj[4].toString())+ " / Milestone Today - "+Long.parseLong(obj[3].toString())+" / ";
 				            }
 		            	}
 		            //	message="Good Morning,\nPMS P / D / T  \n" +(Action != null ? "AI  "+ Action : "") + "\n"+ (Meeting != null ?"MS  "+ Meeting : "") +"\n"+(Milestone != null ?"MT  "+ Milestone : "")+"\n-PMS Team.";
-		            	message = "Good Morning,\nPMS P  / D  / T  \n" ;
+		            	message = "Good Morning PMS  " ;
 		            	if(Action!=null) {
-		            		 message += "AI  " + Action + "\n";
+		            		 message += Action+" " ;
 		            	}
 		            	if (Milestone != null) {
-		            	    message += "MS  " + Milestone + "\n";
+		            	    message +=  Milestone+" " ;
 		            	}
 		            	if (Meeting != null) {
-		            	    message += "MT  " + Meeting + "\n";
+		            	    message += Meeting+" " ;
 		            	}
-		            	message += "-PMS Team.";
+		            	message += " - PMS Team.";
 
 		            	Insights.setMessage(message);
 		            	System.out.println("message:12343524"+message);
@@ -807,34 +807,34 @@ public class RfpMainServiceImpl implements RfpMainService {
 				            Insights.setActionItemTP(Long.parseLong(obj[3].toString()));
 				            Insights.setActionItemDP(Long.parseLong(obj[4].toString()));
 				            if(Long.parseLong(obj[2].toString())>0) {
-					            Action=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString()) +" / "+ Long.parseLong(obj[3].toString())+"";
+				            	 Action="Action Pending - "+Long.parseLong(obj[2].toString()) +" / Action Delay - "+ Long.parseLong(obj[4].toString()) +" / Action Today - "+ Long.parseLong(obj[3].toString())+" / ";
 					        }
 		            	}else if(obj[0].toString().equalsIgnoreCase("MeetingActions")) {
 		            		Insights.setMeetingActionP(Long.parseLong(obj[2].toString()));
 				            Insights.setMeetingActionTP(Long.parseLong(obj[3].toString()));
 				            Insights.setMeetingActionDP(Long.parseLong(obj[4].toString()));
 				            if(Long.parseLong(obj[2].toString())>0) {
-					            Meeting=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString())+ " / "+Long.parseLong(obj[3].toString())+"";
+				            	Meeting="Meeting Pending - "+Long.parseLong(obj[2].toString()) +" /  Meeting Delay - "+ Long.parseLong(obj[4].toString())+ " /  Meeting Today - "+Long.parseLong(obj[3].toString())+" ";
 					        }
 		            	}else {
 		            		Insights.setMilestoneActionP(Long.parseLong(obj[2].toString()));
 				            Insights.setMilestoneActionTP(Long.parseLong(obj[3].toString()));
 				            Insights.setMilestoneActionDP(Long.parseLong(obj[4].toString()));
 				            if(Long.parseLong(obj[2].toString())>0) {
-					            Milestone=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString())+ " / "+Long.parseLong(obj[3].toString())+"";
+				            	Milestone="MileStone Pending - "+Long.parseLong(obj[2].toString()) +" / MileStone Delay - "+ Long.parseLong(obj[4].toString())+ " / Milestone Today - "+Long.parseLong(obj[3].toString())+" / ";
 					        }
 		            	}
-		            	message = "Good Morning,\nPMS P  / D  / T  \n" ;
+		            	message = "Good Morning PMS " ;
 		            	if(Action!=null) {
-		            		 message += "AI  " + Action + "\n";
+		            		 message += Action+" " ;
 		            	}
 		            	if (Milestone != null) {
-		            	    message += "MS  " + Milestone + "\n";
+		            	    message += Milestone+" ";
 		            	}
 		            	if (Meeting != null) {
-		            	    message += "MT  " + Meeting + "\n";
+		            	    message += Meeting+" " ;
 		            	}
-		            	message += "-PMS Team.";
+		            	message += " - PMS Team.";
 
 		            	Insights.setMessage(message);
 		            	System.out.println("message:12343524"+message);
@@ -912,17 +912,17 @@ public class RfpMainServiceImpl implements RfpMainService {
 				        // Format the time as "HH:mm Hrs"
 				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm 'Hrs'");
 				        String formattedTime = time.format(formatter);
-				        message="Good Morning,\n";
+				        message="Good Morning ";
 						if(str[7]!=null && str[7].toString().equalsIgnoreCase("P")) {
-							message+="Today Status: P"+str[1].toString()+" - "+str[2].toString() +" @ " +formattedTime+"\n";
+							message+=" Today Status: P"+str[1].toString()+" - "+str[2].toString() +" @ " +formattedTime+". ";
 						}else if(str[7]!=null && str[7].toString().equalsIgnoreCase("N")){
-							message+="Today Status: NP - "+str[2].toString() +" @ " +formattedTime+"\n";
-						}else{
-							message+="Today Status: GEN - "+str[2].toString() +" @ " +formattedTime+"\n";
+							message+=" Today Status: NP - "+str[2].toString() +" @ " +formattedTime+". ";
+						}else{ 
+							message+=" Today Status: GEN - "+str[2].toString() +" @ " +formattedTime+". ";
 						}
 						
 					}
-					message+="\n-PMS Team.";
+					message+=" - PMS Team.";
 					Insights.setMessage(message);
 		            Insights.setCreatedDate(sdf1.format(new Date()));
 		            Insights.setSmsSentDate(sdf1.format(new Date()));

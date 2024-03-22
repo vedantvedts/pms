@@ -6968,8 +6968,10 @@ public class CommitteeController {
 				req.setAttribute("isprint", "Y");	
 				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 				req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
-				req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
+				//req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
 
+				req.setAttribute("lastpmrcactions", printservice.LastPMRCActions(projectid,committeeid,committeescheduleeditdata[2].toString()));
+				req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid,committeescheduleeditdata[2].toString()));
 //				req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
 //				req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
 				String LevelId= "2";
@@ -7061,7 +7063,7 @@ public class CommitteeController {
 							}
 					} 
 					
-					 	req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
+					 	//req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
 						req.setAttribute("actionlist",actionsdata);
 					 	req.setAttribute("procurementOnDemand", procurementOnDemand);
 					 	req.setAttribute("procurementOnSanction", procurementOnSanction);
@@ -7154,13 +7156,8 @@ public class CommitteeController {
 				    		ReviewMeetingListPMRC.add(printservice.ReviewMeetingList(projectid, "PMRC")); 
 				    		Map<Integer,String> mappmrc = new HashMap<>();
 				     		int pmrccount=0;
-				     		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
-				     			mappmrc.put(++pmrccount,obj[3].toString());
-				     		}
-				     		for(Map.Entry<Integer, String>entry:mappmrc.entrySet()) {
-				     			System.out.println("hiii");
-				     			System.out.println(entry.getKey()+"-------"+entry.getValue());
-				     		}
+				     
+				     		
 				    		int ebcount=0;
 				    		Map<Integer,String> mapEB = new HashMap<>();
 				    		for (Object []obj:ReviewMeetingList.get(0)) {
@@ -7168,7 +7165,7 @@ public class CommitteeController {
 				    		}
 				    		req.setAttribute("mappmrc", mappmrc);
 					    	req.setAttribute("mapEB", mapEB);
-					 	 
+					    	req.setAttribute("tableactionlist",  actionsdata);
 					 	 
 				String filename=committeescheduleeditdata[11].toString().replace("/", "-");
 				String path=req.getServletContext().getRealPath("/view/temp");
@@ -8098,8 +8095,8 @@ public class CommitteeController {
 					req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 					req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 				//	req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committee.getCommitteeShortName().trim()));
-					req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
-
+//					req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
+					req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid,committeescheduleeditdata[2].toString()));
 //					req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
 //					req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
 					String LevelId= "2";
@@ -8666,7 +8663,7 @@ public class CommitteeController {
 										MimeMessage message = new MimeMessage(session);
 										message.setFrom(new InternetAddress(from));
 										message.addRecipient(Message.RecipientType.TO, new InternetAddress(MainEmail));
-										message.setSubject("MOM");
+										message.setSubject("Mom attachement for "+committeescheduleeditdata[11].toString());
 										MimeBodyPart part1 = new MimeBodyPart();
 										for (String ccRecipient : emails) {
 											message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccRecipient));
@@ -8866,7 +8863,7 @@ public class CommitteeController {
 				
 				Properties properties = System.getProperties(); 
 				properties.setProperty("mail.smtp.host", hostAddress);
-				properties.put("mail.smtp.starttls.enable", "true"); //TLS
+				//properties.put("mail.smtp.starttls.enable", "true"); //TLS
 				properties.put("mail.smtp.port", port); 
 				properties.put("mail.smtp.auth", "true"); 
 				properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
@@ -8880,7 +8877,7 @@ public class CommitteeController {
 					MimeMessage message = new MimeMessage(session);
 					message.setFrom(new InternetAddress(from));
 					message.addRecipient(Message.RecipientType.TO, new InternetAddress(MainEmail));
-					message.setSubject("MOM");
+					message.setSubject("Mom attachement for "+scheduleeditdata[11].toString());
 					MimeBodyPart part1 = new MimeBodyPart();
 					for (String ccRecipient : emails) {
 						message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccRecipient));

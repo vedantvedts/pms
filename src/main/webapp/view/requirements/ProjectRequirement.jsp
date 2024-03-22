@@ -320,8 +320,29 @@ keyframes blinker { 20% {
 String projectId = (String)request.getAttribute("projectId");
 List<Object[]>RequirementTypeList= (List<Object[]>)request.getAttribute("reqTypeList");
 List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("RequirementList");
+List<Object[]>ParaDetails=(List<Object[]>)request.getAttribute("ParaDetails");
 
+String InitiationReqId=(String)request.getAttribute("InitiationReqId");
 %>
+<%String ses=(String)request.getParameter("result"); 
+ String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){
+	%>
+	
+
+	<div align="center">
+
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</div>
+	<%}if(ses!=null){ %>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
+	</div>
+	<%} %>
 	<div id="reqmain" class="card-slider">
 
 		<div class="container-fluid" style="" id="main">
@@ -357,11 +378,145 @@ List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("Requiremen
 								</div>
 								</div>
 								</div>
+								
+		<%if((RequirementList!=null) &&(!RequirementList.isEmpty())){ %>
+		<div class="requirementid"
+			style="display:block;<%if(RequirementList.size()>9){%>height:500px;<%}%>">
+
+			<%int count=1;
+			for(Object []obj:RequirementList) {%>
+			<button type="button" class="btn btn-secondary viewbtn mt-2"
+				id="<%=obj[0] %>" value="<%=obj[0]%>"  onclick="showDetails(<%=obj[0].toString()%>)"><%=obj[1] %></button>
+			<%count++;} %>
+		</div>	
+			<div class="container" id="container">
+			<div class="row">
+				<div class="col-md-12" id="reqdiv">
+					<div class="card-body" id="cardbody">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2" id="reqName"></div>
+									<div class="col-md-10" style="" id="editreq"></div>
+
 								</div>
+							</div>
+							<div class="col-md-10" style="margin-top: 1%">
+								<h5 style="font-size: 22px; color: #005086; width: fit-content">Brief
+								</h5>
+
+							</div>
+
+							<div class="col-md-12" style="">
+								<p id="brief" style="font-size: 18px;"></p>
+								<hr>
+							</div>
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-3" style="">
+										<h5 style="font-size: 22px; color: #005086;">Linked
+											Requirements:</h5>
+										<span id="linked" style="font-size: 18px;"></span>
+
+									</div>
+
+									<div class="col-md-4" style="">
+										<div class="row">
+											<div class="col-md-4">
+												<h5 style="font-size: 22px; color: #005086;" id="priority">Priority
+													:</h5>
+											</div>
+											<p id="Prioritytext" style="font-size: 18px;"></p>
+										</div>
+									</div>
+									<hr>
+									<div class="col-md-4">
+										<div class="row">
+											<div class="col-md-4"
+												style="padding-left: 0px; padding-right: 0px;">
+												<h5 style="font-size: 22px; color: #005086;" id="priority">Need
+													Type :</h5>
+											</div>
+											<p id="needtypetext" style="font-size: 18px;"></p>
+										</div>
+									</div>
+
+
+								</div>
+								<hr>
+							</div>
+							<!-- category -->
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Category:</h5>
+									</div>
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="categoryShow" style="font-size: 18px;">azxzczxc</p>
+									</div>
+								</div>
+								<hr>
+							</div>
+
+							<div class="col-md-12" style="">
+								<h5 style="font-size: 22px; color: #005086; width: fit-content">Description
+								</h5>
+
+							</div>
+							<div class="col-md-12" style="">
+								<p id="description" style="font-size: 18px;"></p>
+								<hr>
+							</div>
+							<form action="###" class="form-horizontal" style="width: 100%">
+
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-2" style="margin-top: 1%">
+											<h5
+												style="font-size: 20px; color: #005086; width: fit-content">Remarks:
+											</h5>
+										</div>
+
+										<div class="col-md-10" style="margin-top: 1%;">
+											<p id="remarksshow" style="font-size: 18px;"></p>
+										</div>
+
+								<div class="row">
+				 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							    </div>
+									</div>
+								</div>
+								<hr>
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-2" style="margin-top: 1%">
+											<h5
+												style="font-size: 20px; color: #005086; width: fit-content">Constraints:</h5>
+										</div>
+										<div class="col-md-10" style="margin-top: 1%;">
+											<p id="constrainshow" style="font-size: 18px;"></p>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<%} %>		
+								
+								
+								
+</div>
+								
+								
 								
 				<!--*********************** modal for add **************************-->
 		<form class="form-horizontal" role="form"
-			action="ProjectRequirementAddSubmit.htm" method="POST" id="myform1">
+			action="ProjectRequirementSubmit.htm" method="POST" id="myform1">
 			<div class="modal fade bd-example-modal-lg" id="exampleModalLong"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
@@ -486,10 +641,28 @@ List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("Requiremen
 											</div>
 											<div class="col-md-7" style="margin-top: 1%;">
 												<div class="form-group">
+													<%
+													if ((ParaDetails != null) && (!ParaDetails.isEmpty())) {
+													%>
+													<select class="form-control selectdee" name="LinkedPara"
+														id="LinkedPara" data-width="80%" data-live-search="true"
+														multiple onchange="">
+														<option value="" disabled="disabled">---Choose----</option>
+														<%
+														for (Object[] obj : ParaDetails) {
+														%>
+														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+														<%
+														}
+														%>
+													</select>
+													<%
+													} else {
+													%>
 													<input class="form-control" name="LinkedPara"
 														id="LinkedPara" value="" readonly
 														placeholder="No para specified for Project">
-													
+													<%} %>
 												</div>
 											</div>
 										</div>
@@ -532,7 +705,7 @@ List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("Requiremen
 											</div>
 										</div>
 									</div>
-																		<div class=col-md-12>
+<!-- 																		<div class=col-md-12>
 										<div class="row">
 											<div class="col-md-4">
 												<label
@@ -548,7 +721,7 @@ List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("Requiremen
 												</div>
 											</div>
 										</div>
-									</div>
+									</div> -->
 									<div class=col-md-12>
 										<div class="row">
 											<div class="col-md-4">
@@ -610,7 +783,7 @@ List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("Requiremen
 										<button type="submit" class="btn btn-primary btn-sm submit"
 											id="add" name="action" value="SUBMIT"
 											onclick="return reqCheck('myform1');">SUBMIT</button>
-
+								<input type="hidden" name="projectId" value=<%=projectId %>>
 									</div>
 								</div>
 							</div>
@@ -631,5 +804,86 @@ List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("Requiremen
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 			})
+			
+			
+			
+    function reqCheck(frmid){
+	var description=$('#descriptionadd').val();
+	var reqbrief=$('#reqbrief').val();
+	var remarks=$('#remarks').val();
+	var priorityAdd=$('#priorityAdd').val();
+	var needtypeadd=$('#needtypeadd').val();
+	var categoryAdd=$('#categoryAdd').val();
+	if(description===null||description===""||reqbrief===null||reqbrief===""||remarks===null||remarks===""||priorityAdd==null||needtypeadd==null||categoryAdd==null){
+		window.alert('Please fill all the fields');
+	}else if
+		(description.length>4000){
+			var extra=description.length-4000;
+			window.alert('Description exceed 4000 characters, '+extra+'characters are extra')
+			return false;
+		} 
+	else{
+	if(window.confirm('Are you sure to save?')){
+		document.getElementById(frmid).submit(); 
+	}else{
+		event.preventDefault();
+		return false;
+	}
+	}
+}
+		
+	function showDetails(InitiationReqId){
+		$('.viewbtn').css("background","#055C9D");
+		$('#'+InitiationReqId).css("background","green");
+		
+		$.ajax({
+			url:'RequirementJsonValue.htm',
+			datatype:'json',
+			data:{
+				inititationReqId:InitiationReqId
+			},
+			success:function(result){
+				 var ajaxresult=JSON.parse(result);
+				console.log(ajaxresult+"---");
+				 
+				$('#brief').html(ajaxresult[2]);
+				
+				if(ajaxresult[5]==="L"){
+					$('#Prioritytext').html("Low");
+					 }else if(ajaxresult[5]==="M"){
+							$('#Prioritytext').html("Medium"); 
+					 }else{
+						 $('#Prioritytext').html("High"); 
+					 }
+				
+				if(ajaxresult[8]==="E"){
+					$('#needtypetext').html("Essential");
+				}else{
+					$('#needtypetext').html("Deliverable");
+				}
+		$('#reqName').html(ajaxresult[4]);	 	
+		$('#description').html(ajaxresult[3]);
+		$('#remarksshow').html(ajaxresult[9]);
+		$('#constrainshow').html(ajaxresult[12]);	
+		if(ajaxresult[11]==="E"){
+			$('#categoryShow').html("Environmental");
+		}else if(ajaxresult[11]==="P"){
+			$('#categoryShow').html("Performance");
+		}else{
+			$('#categoryShow').html("Maintenance")
+		}	
+		$('#editreq').html('<button type="button"  class="btn btn-sm  btn-warning edit " onclick="edit()"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button>');
+		
+		
+			}
+		})
+	}	
+		
+	<%if(InitiationReqId!=null){%>
+	$( document ).ready(function() {
+		showDetails(<%=InitiationReqId%>)
+	});
+	
+	<%}%>
 		</script>
 </html>
