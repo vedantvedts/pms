@@ -215,4 +215,19 @@ public class RODDaoImpl implements RODDao{
 		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
 		return CommProScheduleList.intValue();
 	}
+	
+	private static final String INDUSTRYPARTNERREPLISTINVITATIONS ="SELECT a.IndustryPartnerRepId,a.RepName,'00' AS EmpNo,a.RepDesignation,'00' AS DesigId FROM pfms_industry_partner_rep a,pfms_industry_partner b WHERE a.IndustryPartnerId=b.IndustryPartnerId AND b.IndustryPartnerId=:IndustryPartnerId AND a.IsActive=1 AND a.IndustryPartnerRepId NOT IN (SELECT empid  FROM committee_schedules_invitation WHERE  committeescheduleid=:scheduleid AND labcode='@IP')";
+	@Override
+	public List<Object[]> industryPartnerRepListInvitations(String industryPartnerId, String scheduleid) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(INDUSTRYPARTNERREPLISTINVITATIONS);
+			query.setParameter("IndustryPartnerId", industryPartnerId);
+			query.setParameter("scheduleid", scheduleid);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+		
+	}
 }

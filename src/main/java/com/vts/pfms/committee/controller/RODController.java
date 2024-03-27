@@ -1,11 +1,8 @@
 package com.vts.pfms.committee.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +10,6 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,7 +27,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailAuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,16 +35,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
-import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.utils.PdfMerger;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
@@ -57,9 +47,10 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.model.RODMaster;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.committee.service.RODService;
-import com.vts.pfms.committee.service.RODServiceImpl;
 import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.mail.MailService;
+import com.vts.pfms.master.model.IndustryPartner;
+import com.vts.pfms.master.service.MasterService;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -79,6 +70,9 @@ public class RODController {
 
 	@Autowired
 	RODService service;
+	
+	@Autowired
+	MasterService masterservice;
 	
 	@Value("${File_Size}")
 	String file_size;
@@ -555,7 +549,7 @@ public class RODController {
 			List<Object[]> rodinvitedlist = committeeservice.CommitteeAtendance(committeescheduleid);
 			List<Object[]> EmployeeList = committeeservice.EmployeeListNoInvitedMembers(committeescheduleid,LabCode);
 			List<Object[]> ExpertList = committeeservice.ExternalMembersNotInvited(committeescheduleid);
-			
+			List<IndustryPartner> industryPartnerList = masterservice.getIndustryPartnerList();
 			if(rodinvitedlist.size()==0) 
 			{	
 //				String committeemainid="0";
@@ -575,6 +569,7 @@ public class RODController {
 				req.setAttribute("EmployeeList", EmployeeList);
 				req.setAttribute("ExpertList", ExpertList);
 				req.setAttribute("clusterlablist", committeeservice.AllLabList());
+				req.setAttribute("industryPartnerList", industryPartnerList);
 				return "rod/ViewRODInvitation";
 			}
 			else
@@ -590,6 +585,7 @@ public class RODController {
 				req.setAttribute("agendalist",committeeservice.AgendaList(committeescheduleid) );
 				req.setAttribute("clusterlablist", committeeservice.AllLabList());
 				req.setAttribute("labid", committeeservice.LabDetails(rodscheduledata[15].toString())[13].toString());
+				req.setAttribute("industryPartnerList", industryPartnerList);
 				return "rod/ViewRODInvitation";
 			}
 
@@ -872,5 +868,21 @@ public class RODController {
 			logger.error(new Date() +" Inside RODMinutesViewAllDownload.htm "+UserId, e);
 			e.printStackTrace();
 		}	
+	}
+	
+	@RequestMapping(value = "IndustryPartnerRepListInvitations.htm", method = RequestMethod.GET)
+	public @ResponseBody String industryPartnerRepListInvitations(HttpServletRequest req,HttpSession ses) throws Exception
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside IndustryPartnerRepListInvitations.htm"+ UserId);
+		
+		List<Object[]> industryPartnerRepList = new ArrayList<Object[]>();
+		
+		String industryPartnerId =req.getParameter("industryPartnerId");
+	
+		industryPartnerRepList = service.industryPartnerRepListInvitations(industryPartnerId,req.getParameter("scheduleid"));
+	 
+		Gson json = new Gson();
+		return json.toJson(industryPartnerRepList);	
 	}
 }

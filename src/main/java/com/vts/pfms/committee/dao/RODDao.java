@@ -18,5 +18,6 @@ public interface RODDao {
 	public String UpdateOtp(CommitteeSchedule schedule) throws Exception;
 	public List<Object[]> RODActionDetails(String rodNameId) throws Exception;
 	public int RODCommProScheduleList(String projectid, String rodNameId, String sdate) throws Exception;
+	public List<Object[]> industryPartnerRepListInvitations(String industryPartnerId, String scheduleid) throws Exception;
 
 }

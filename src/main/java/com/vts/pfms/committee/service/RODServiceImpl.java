@@ -339,4 +339,10 @@ public class RODServiceImpl implements RODService{
 		}
 		return count;
 	}
+	
+	@Override
+	public List<Object[]> industryPartnerRepListInvitations(String industryPartnerId, String scheduleid) throws Exception {
+		
+		return dao.industryPartnerRepListInvitations(industryPartnerId, scheduleid);
+	}
 }

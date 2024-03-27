@@ -25,5 +25,6 @@ public interface RODService {
 	public Object[] KickOffRODMeeting(HttpServletRequest req, RedirectAttributes redir) throws Exception;
 	public List<Object[]> RODActionDetails(String rodNameId) throws Exception;
 	public  int RODMeetingNo(Object[] scheduledata) throws Exception;
+	public List<Object[]> industryPartnerRepListInvitations(String industryPartnerId, String scheduleid) throws Exception;
 	
 }

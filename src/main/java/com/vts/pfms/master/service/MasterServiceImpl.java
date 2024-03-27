@@ -31,6 +31,8 @@ import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.master.model.IndustryPartner;
+import com.vts.pfms.master.model.IndustryPartnerRep;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -535,14 +537,60 @@ public class MasterServiceImpl implements MasterService {
 	}
 	@Override
 	public List<Object[]> UpdateActivityType(String ActivityType, String ActivityId) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return dao.UpdateActivityType(ActivityType,ActivityId);
 	}
 
 	@Override
 	public Boolean DeleteActivityType(String ActivityId) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return dao.DeleteActivityType(ActivityId);
 	}
+
+	@Override
+	public List<Object[]> industryPartnerList() throws Exception {
+		
+		return dao.industryPartnerList();
+	}
 	
+	@Override
+	public Object[] industryPartnerDetailsByIndustryPartnerRepId(String industryPartnerRepId) throws Exception {
+		
+		return dao.industryPartnerDetailsByIndustryPartnerRepId(industryPartnerRepId);
+	}
+
+	@Override
+	public List<IndustryPartner> getIndustryPartnerList() throws Exception {
+		
+		return dao.getIndustryPartnerList();
+	}
+
+	@Override
+	public IndustryPartner getIndustryPartnerById(String industryPartnerId) throws Exception {
+		
+		return dao.getIndustryPartnerById(industryPartnerId);
+	}
+
+	@Override
+	public IndustryPartnerRep getIndustryPartnerRepById(String industryPartnerRepId) throws Exception {
+		
+		return dao.getIndustryPartnerRepById(industryPartnerRepId);
+	}
+
+	@Override
+	public long addIndustryPartner(IndustryPartner partner) throws Exception {
+		
+		return dao.addIndustryPartner(partner);
+	}
+
+	@Override
+	public int revokeIndustryPartnerRep(String industryPartnerRepId) throws Exception {
+		
+		return dao.revokeIndustryPartnerRep(industryPartnerRepId);
+	}
+	@Override
+	public List<Object[]> industryPartnerRepDetails(String industryPartnerId, String industryPartnerRepId) throws Exception {
+		
+		return dao.industryPartnerRepDetails(industryPartnerId, industryPartnerRepId);
+	}
 }

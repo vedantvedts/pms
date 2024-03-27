@@ -7,6 +7,8 @@ import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.master.model.IndustryPartner;
+import com.vts.pfms.master.model.IndustryPartnerRep;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -72,4 +74,12 @@ public interface MasterDao  {
 	public List<Object[]> TDListAdd()throws Exception;
 	public List<Object[]> UpdateActivityType(String ActivityType, String ActivityId) throws Exception;
 	public Boolean DeleteActivityType(String activityType)throws Exception;
+	public List<Object[]> industryPartnerList() throws Exception;
+	public Object[] industryPartnerDetailsByIndustryPartnerRepId(String industryPartnerRepId) throws Exception;
+	public List<IndustryPartner> getIndustryPartnerList() throws Exception;
+	public IndustryPartner getIndustryPartnerById(String industryPartnerId) throws Exception;
+	public IndustryPartnerRep getIndustryPartnerRepById(String industryPartnerRepId) throws Exception;
+	public long addIndustryPartner(IndustryPartner partner) throws Exception;
+	public int revokeIndustryPartnerRep(String industryPartnerRepId) throws Exception;
+	public List<Object[]> industryPartnerRepDetails(String industryPartnerId, String industryPartnerRepId) throws Exception;
 }

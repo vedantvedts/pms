@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@page import="java.awt.Container"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.time.LocalDate"%>
@@ -84,7 +85,7 @@ h5,h6{
 	//List<String> InvitedList = new ArrayList<String>();
 	//rodinvitedlist.stream().map(obj -> InvitedList.add(obj[0].toString()+"_"+obj[11].toString())).collect(Collectors.toList());;
 	
-	
+	List<IndustryPartner> industryPartnerList = (List<IndustryPartner>)request.getAttribute("industryPartnerList");
 	%>		
 		
 	<%	String ses = (String) request.getParameter("result");
@@ -345,6 +346,78 @@ h5,h6{
 						</table>
 						</div>
 				<!-- ----------------------External end------------------------------ -->
+				
+				<!-- ---------------------- Industry Partner start------------------------------ -->
+						
+						<div class="col-md-4">
+						
+						<% 
+						if(rodinvitedlist!=null && rodinvitedlist.size()>0){
+							for(int i=0;i<rodinvitedlist.size();i++)
+							{
+								if(rodinvitedlist.get(i)[3].toString().equals("IP"))
+								{%>		
+						
+						<br>
+						<label class="control-label">Industry Partner </label>
+						
+						<%break;} } } %>
+						
+						<table border="0">
+						
+						<% 
+						if(rodinvitedlist!=null && rodinvitedlist.size()>0){
+						int extcountwithin=1; 
+							for(int i=0;i<rodinvitedlist.size();i++)
+							{
+								
+								if(rodinvitedlist.get(i)[3].toString().equals("IP"))
+								{%>		
+										
+										<tr>
+										<td><%=extcountwithin%> . <%=rodinvitedlist.get(i)[6]%> (<%=rodinvitedlist.get(i)[7]%>) (<%=rodinvitedlist.get(i)[11]%>)</td> 
+										<td style="padding-left: 30px">
+										
+										<%if(Long.parseLong(rodscheduledata[10].toString())<11 ){ %>
+											<form action="CommitteeInvitationDelete.htm" method="Post">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="committeeinvitationid" value="<%=rodinvitedlist.get(i)[1]%>">
+												<input type="hidden" name="redirpageflag" value="ROD">
+												<button type="submit" class="btn" onclick="return confirm('Are you sure To Remove this Member?')" > <i class="fa fa-trash" aria-hidden="true" ></i> </button>
+											</form>		
+										<%} %>										
+										<td>										
+											<form action="MeetingInvitationLetter.htm" method="Post" target="_blank">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="memberid" value="<%=rodinvitedlist.get(i)[0]%>">
+												<input type="hidden" name="invitationid" value="<%=rodinvitedlist.get(i)[1]%>">
+												<input type="hidden" name="membertype" value="<%=rodinvitedlist.get(i)[3]%>">
+												<input type="hidden" name="rodflag" value="Y">
+												<button type="submit" class="btn"  > <i class="fa fa-eye" aria-hidden="true" ></i>  </button>
+											</form>
+										</td>
+										<td>
+											<form action="MeetingInvitationLetterDownload.htm" method="Post" target="_blank">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="invitationid" value="<%=rodinvitedlist.get(i)[1]%>">
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="memberid" value="<%=rodinvitedlist.get(i)[0]%>">
+												<input type="hidden" name="membertype" value="<%=rodinvitedlist.get(i)[3]%>">
+												<input type="hidden" name="rodflag" value="Y">
+												<button type="submit" class="btn"  > <i class="fa fa-download" aria-hidden="true" ></i>  </button>
+											</form>
+										</td>
+										</tr>				  
+								<% extcountwithin++;}
+							}}%>
+					
+						</table>
+						
+						</div>
+					
+				<!-- ---------------------- Industry Partner end------------------------------ -->
 						
 					</div>		
 					
@@ -515,6 +588,56 @@ h5,h6{
 					</div>	
 					</form>
 	<!-- --------------------------------External Members (Outside DRDO)----------------------------------------------- -->
+	
+	<!-- --------------------------------Industry Partner----------------------------------------------- -->
+					<form  action="CommitteeInvitationCreate.htm" method="POST" name="myfrm1" id="myfrm1">
+					<div class="row">	
+						
+						<div class="col-md-6">
+							
+							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="table1" style="margin-top: 10px;">
+								<thead>  
+									<tr id="">
+										<th colspan="2"> Industry Partner</th>
+									</tr>
+								</thead>
+								<tr class="tr_clone1">
+									<td style="width:30%">							
+										<div class="input select">
+											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"  style="" id="industryPartnerId" onchange="industrypartnerrepname()" required>
+												<option disabled="true"  selected value="">Industry Partner</option>
+													<% for (IndustryPartner partner : industryPartnerList) {
+													%>
+														<option value="<%=partner.getIndustryPartnerId()%>"><%=partner.getIndustryName()%></option>
+													<%}%>
+											</select>
+											<input type="hidden" name="expertlabid" value="@IP" />
+										</div>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
+		 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
+		 								<input type="hidden" name="rep" id="rep4" value="0" />
+										<input type="hidden" name="redirpageflag" value="ROD">
+									</td>
+									<td style="width:70%">
+										<div class="input select ">
+											<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" multiple>
+											</select>
+										</div>
+									</td>						
+								</tr>
+							</table>				
+						</div>
+						
+						<div class="col-md-6 align-self-center">
+							
+								<button class="btn btn-primary btn-sm add" name="submit" value="submit" type="submit"  onclick="return confirm('Are you Sure to Add these Members ?');">SUBMIT</button>
+									
+						</div>
+						
+					</div>
+					</form>
+	<!-- --------------------------------Industry Partner----------------------------------------------- -->
+	
 				</div>	
 				
 				<br>	
@@ -732,5 +855,54 @@ function employeename(){
 			})
 </script>
 
+<script type="text/javascript">
+function industrypartnerrepname(){
+
+	$('#industryPartnerRep').val("");
+	
+		var $industryPartnerId = $('#industryPartnerId').val();
+	
+		
+				if($industryPartnerId!=""){
+		
+							$
+								.ajax({
+
+								type : "GET",
+								url : "IndustryPartnerRepListInvitations.htm",
+								data : {
+									industryPartnerId : $industryPartnerId,
+											scheduleid : '<%=committeescheduleid %>' 	
+									   },
+								datatype : 'json',
+								success : function(result) {
+
+								var result = JSON.parse(result);
+						
+								var values = Object.keys(result).map(function(e) {
+							 				 return result[e]
+							  
+												});
+						
+						var s = '';
+						s += '<option value="">'
+							+"--Select--"+ '</option>';
+						 for (i = 0; i < values.length; i++) {
+							
+							s += '<option value="'+values[i][0]+",IP,"+values[i][4]+'">'
+									+values[i][1] + " (" +values[i][3]+")" 
+									+ '</option>';
+						} 
+						 
+						$('#industryPartnerRep').html(s);
+						
+				
+						
+					}
+				});
+
+}
+	}
+</script>
 </body>
 </html>
