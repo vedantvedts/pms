@@ -288,6 +288,7 @@ public interface CommitteeDao {
 	public Long MomAttach(CommitteeMomAttachment cm)throws Exception;
 	public Long UpdateMomAttach(Long scheduleId) throws Exception;
 	public Object[] MomAttachmentFile(String committeescheduleid) throws Exception;
+	public List<Object[]> MomReportList(String projectId, String committeeId) throws Exception;
 	
 	
 

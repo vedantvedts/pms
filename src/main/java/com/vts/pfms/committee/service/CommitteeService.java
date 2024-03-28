@@ -265,6 +265,7 @@ public interface CommitteeService {
 	public Long MomAttach(CommitteeMomAttachment cm,String LabCode) throws Exception;// new Method
 	public Long UpdateMomAttach(Long scheduleId) throws Exception;
 	public Object[] MomAttachmentFile(String committeescheduleid) throws Exception;
+	public List<Object[]> MomReportList(String projectId, String committeeId) throws Exception;
 
 	
     

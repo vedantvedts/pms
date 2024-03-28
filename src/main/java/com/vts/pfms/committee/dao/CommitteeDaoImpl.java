@@ -2958,5 +2958,16 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		return null;
 	}
+	
+	private static final String MOMREPORTLIST="SELECT ScheduleId,CommitteeId,MeetingId,ScheduleDate,ScheduleStartTime,MeetingVenue FROM committee_schedule WHERE ProjectId=:projectId AND CommitteeId=:committeeId AND ScheduleFlag IN('MKV','MMR','MMF','MMS','MMA')";
+	
+	@Override
+	public List<Object[]> MomReportList(String projectId, String committeeId) throws Exception {
+		Query query =manager.createNativeQuery(MOMREPORTLIST);
+		query.setParameter("projectId", projectId );
+		query.setParameter("committeeId", committeeId );
+		List<Object[]> MomReportList=(List<Object[]>)query.getResultList();
+		return MomReportList;
+	}
 }
 

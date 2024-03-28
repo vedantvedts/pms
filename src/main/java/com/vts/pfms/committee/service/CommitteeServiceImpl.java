@@ -3289,4 +3289,9 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		return dao.MomAttachmentFile(committeescheduleid);
 	}
 	
+	@Override
+	public List<Object[]> MomReportList(String projectId, String committeeId) throws Exception {
+		return dao.MomReportList(projectId,committeeId);
+	}
+	
 }

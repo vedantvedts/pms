@@ -8930,4 +8930,46 @@ public class CommitteeController {
 			}		
 		return null;	
 		}
+		
+		
+		
+		
+		@RequestMapping(value = "MomReportList.htm")
+		public String MomReportList(HttpServletRequest req, HttpSession ses) throws Exception
+		{	
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
+			String Logintype= (String)ses.getAttribute("LoginType");
+  			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			logger.info(new Date() +"Inside CommitteeAdd.htm "+UserId);
+			try {
+				String projectId=req.getParameter("projectid");
+      			String committeeId=req.getParameter("committeeid");
+      			
+      			List<Object[]> projectList=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+      			
+      			if(committeeId==null)
+      			{
+      				committeeId="1";
+      			}
+      			
+      		
+      			if(projectId==null || projectId.equals("null"))
+      			{
+      				projectId=projectList.get(0)[0].toString();
+      			}
+      			
+      			List<Object[]> projectCommitteList=service.ProjectApplicableCommitteeList(projectId);
+      			
+      			List<Object[]> MomReportList=service.MomReportList(projectId,committeeId);
+      			req.setAttribute("MomReportList", MomReportList);
+      			req.setAttribute("projectId", projectId);
+      			req.setAttribute("committeeId", committeeId);
+      			req.setAttribute("projectList", projectList);
+      			req.setAttribute("projectCommitteList", projectCommitteList);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "committee/MomReportList";
+		}
 }
