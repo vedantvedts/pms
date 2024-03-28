@@ -641,11 +641,27 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ProgressLevel(String ActivityId, String Status, int Progress,MileEditDto dto) throws Exception {
 		Query query=manager.createNativeQuery(PROGRESSLEVEL);
+		
+		System.out.println("date of Completion - "+dto.getDateOfCompletion());
+		
 		query.setParameter("id",ActivityId);
 		query.setParameter("status",Status);
 		query.setParameter("progress",Progress);
 		query.setParameter("ModifiedDate", dto.getCreatedDate());
+		
 		int result=query.executeUpdate();
+		
+//		//newly added 
+//		System.out.println("id - "+ActivityId);
+//		if(Progress==100) {
+//			String docUpdate="UPDATE milestone_activity_level SET DateOfCompletion=:DateOfCompletion,ModifiedDate=:ModifiedDate WHERE activityid=:id";
+//			Query query1=manager.createNativeQuery(docUpdate);
+//			query1.setParameter("ModifiedDate", dto.getCreatedDate());
+//			query1.setParameter("id",ActivityId);
+//			query1.setParameter("DateOfCompletion",dto.getDateOfCompletion());
+//			query1.executeUpdate();
+//			System.out.println("progress - "+Progress);
+//		}
 		return result;
 	}
 

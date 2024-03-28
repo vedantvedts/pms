@@ -53,12 +53,12 @@ public class CustomJavaMailSender {
 //    }
 	private final SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	
-	@Scheduled(cron = "0 0 17 * * *")
+	//@Scheduled(cron = "0 0 17 * * *")
 	public void reportCurrentTime() throws Exception {
 		asyncMethodforSendingMail("tommorrow");
 		}
 	
-	@Scheduled(cron = "0 0 7 * * *")
+	//@Scheduled(cron = "0 0 7 * * *")
 	public void reporttodayCurrentTime() throws Exception {
 		asyncMethodforSendingMail("today");
 		}

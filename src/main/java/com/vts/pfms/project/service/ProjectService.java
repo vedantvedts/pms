@@ -340,4 +340,6 @@ public interface ProjectService {
 	public List<Object[]> ReqParaDetailsMain(String ProjectId) throws Exception;
 	public List<Object[]> getVerificationListMain(String ProjectId)throws Exception;
 	public List<Object[]> VPDetails(String initiationid, String projectId) throws Exception;
+	public List<Object[]> EmployeeList1(String labCode, String initiationid, String ProjectId) throws Exception;
+
 }

@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="./webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
 
 <link rel="stylesheet" href="./webjars/font-awesome/4.7.0/css/font-awesome.min.css" />
+
 	<%
 	List<Object[]> speclists = (List<Object[]>) request.getAttribute("committeeminutesspeclist");
 	List<Object[]> committeeminutes = (List<Object[]>) request.getAttribute("committeeminutes");
@@ -77,9 +78,6 @@
 	Object[] membersec=null; 
 	Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
 	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
- /* 	for (Map.Entry<Integer,String> entry : treeMapLevTwo.entrySet()) {
-		System.out.println(entry.getKey()+"-------"+entry.getValue());
-	}  */
 	//maps for pmrc and EB
 	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
@@ -87,182 +85,51 @@
 	
 	
 	%>
-<style type="text/css">
-p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-.break
-	{
-		page-break-after: always;
-	} 
-	
- #pageborder {
-      position:fixed;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      border: 2px solid black;
-    }     
- 
-@page {             
-          size: 790px 1120px;
-          margin-top: 49px;
-          margin-left: 39px;
-          margin-right: 39px;
-          margin-buttom: 49px; 	
-          border: 1px solid black;    
-          @bottom-right {          		
-             content: "Page " counter(page) " of " counter(pages);
-             margin-bottom: 30px;
-             margin-right: 10px;
-              font-size: 13px;
-          }
-          @top-right {
-          		<%if( Long.parseLong(projectid)>0){%>
-             content: "Project:<%=projectdetails[4]%>";
-             <%}else if(Long.parseLong(divisionid)>0){%>
-               	content: "Division:<%=divisiondetails[1]%>";
-             <%}else if(Long.parseLong(initiationid)>0){ %>
-             	content: "Pre-Project :<%=initiationdetails[1]%>";
-             <%} else{%>
-             	content: "<%=labdetails[1]%>";
-             <%}%>
-             margin-top: 30px;
-             margin-right: 10px;
-             font-size: 13px;
-          }
-          @top-left {
-           font-size: 13px;
-          	margin-top: 30px;
-            margin-left: 10px;
-            content: "<%=no[0]+"/"+no[1]+"/"+no[2] %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %><%="/"+no[3]%>";
-          }            
-          
-          @top-center { 
-           font-size: 13px;
-          margin-top: 30px;
-          content: "<%=committeescheduleeditdata[15]%>"; 
-          
-          }
-          
- @bottom-center { 
-             font-size: 13px;
-	          margin-bottom: 30px;
-	          content: "<%=committeescheduleeditdata[15]%>"; 
-          
-          } 
-          
-          @bottom-left { 
-             font-size: 13px;
-	          margin-bottom: 30px;
-	          content: "Generated On : <%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
-          } 
-          
-         <%--  @bottom-left {          		
-        
-             content : "The information in this Document is proprietary of <%=labInfo.getLabCode() %> /DRDO , MOD Government of India. Unauthorized possession/use is violating the Government procedure which may be liable for prosecution. ";
-        
- 			 content : "The information in this Document is proprietary of <%=labInfo.getLabCode() %> /DRDO , MOD Govt. of India. Unauthorized possession may be liable for prosecution.";
- 			 margin-bottom: 30px;
-             margin-right: 5px;
-             font-size: 9.5px;
-          } --%>
-             
 
- }
- .sth
- {
- 	   font-size: 16px;
- 	   border: 1px solid black;
- }
- 
- .std
- {
- 	
- 	border: 1px solid black;
- 	padding: 3px 2px 2px 2px; 
- 	
- }
- 
- .pname
-{
-	margin: 10px 0px 10px 20px;
-}
- 
- .completed{
-	color: green;
-	font-weight: 700;
-}
-
-.briefactive{
-	color: blue;
-	font-weight: 700;
-}
-
-.inprogress{
-	color: #F66B0E;
-	font-weight: 700;
-}
-
-.assigned{
-	color: brown;
-	font-weight: 700;
-}
-
-.notyet{
-	color: purple;
-	font-weight: 700;
-}
-
-.notassign{
-	color:#AB0072;
-	font-weight: 700;
-}
-
-.ongoing{
-	color: #F66B0E;
-	font-weight: 700;
-}
-
-.completed{
-	color: green;
-	font-weight: 700;
-}
-
-.delay{
-	color: maroon;
-	font-weight: 700;
-}
-
-.completeddelay{
-	color:#BABD42;
-	font-weight: 700;
-}
-
-.inactive{
-	color: red;
-	font-weight: 700;
-}
-
- 
-.executive{
-	align-items: center;
-} 
-
-</style>
 <meta charset="ISO-8859-1">
 <title><%=committeescheduleeditdata[8]%> Minutes View</title>
+
 </head>
 <body>
 <div  align="center" ><button class="btn btn-lg bg-transparent" id="btn-export" onclick=exportHTML() ><i class="fa fa-lg fa-download" aria-hidden="true"style="color:green"></i></button></div>
 <div id="source-html">
-	<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
-	
-		  <div class="firstpage" id="firstpage"> 	
-		
-			<div align="center" ><h5>Minutes of  <%=meetingcount %>th <%=committeescheduleeditdata[8].toString().toUpperCase() %> Meeting for Project
+
+<style type="text/css">
+
+
+    .normal {
+        font-family:"Calibri",sans-serif; 
+        line-height:107%;
+        font-size:11.0pt;
+        mso-ascii-font-family:Calibri;
+        mso-ascii-theme-font:minor-latin;
+    }
+
+
+    @page portrait_A4_page  {
+        size:595.3pt 841.9pt;
+        margin:72.0pt 72.0pt 72.0pt 72.0pt;
+        mso-header-margin:35.4pt;
+        mso-footer-margin:35.4pt;
+        mso-paper-source:0;
+    }
+
+    div.portrait_A4_page { page:portrait_A4_page; }
+
+    @page landscape_A4_page {
+        size:841.9pt 595.3pt;
+        mso-page-orientation:landscape;
+        margin:72.0pt 72.0pt 72.0pt 72.0pt;
+        mso-header-margin:35.45pt;
+        mso-footer-margin:35.45pt;
+        mso-paper-source:0;
+    }
+
+    div.landscape_A4_page { page:landscape_A4_page; }
+
+</style>
+<div class=portrait_A4_page>
+  			<div align="center" ><h5>Minutes of  <%=meetingcount %>th <%=committeescheduleeditdata[8].toString().toUpperCase() %> Meeting for Project
 															<br>
 				<%if(Integer.parseInt(projectid)>0){ %>					
 				"<%=projectdetails[1] %>  (<%=projectdetails[4]%>)"
@@ -309,8 +176,8 @@ for(Object[] temp : invitedlist){
 %>
 
 
-<div style="align : left;">
-<table style="margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
+<div style="align : justify;">
+<table style="width: 620px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
 	
 	 <tr>
 		 <th style="text-align: left ;padding: 5px;width: 10px;font-weight:600 ">1.Following Members were present during the meeting:</th>
@@ -318,7 +185,7 @@ for(Object[] temp : invitedlist){
 		 </table>
 
 
-<table style="margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
+<table style=" width: 620px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
 	
 	 <tr>
 		 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 10px; ">SN</th>
@@ -353,13 +220,13 @@ for(Object[] temp : invitedlist){
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External&nbsp;(<%=invitedlist.get(i)[11]%>)<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
 				%>
 	 		</td>	
 	 		</tr>
@@ -394,13 +261,13 @@ for(Object[] temp : invitedlist){
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External&nbsp;(<%=invitedlist.get(i)[11]%>)<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
 				%>
 	 		</td>	
 	 	</tr>
@@ -445,12 +312,12 @@ for(Object[] temp : invitedlist){
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External&nbsp;(<%=invitedlist.get(i)[11]%>)<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
 					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
 				%>
 	 		</td>	
@@ -494,13 +361,13 @@ for(Object[] temp : invitedlist){
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External&nbsp;(<%=invitedlist.get(i)[11]%>)<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
+					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
 				%>
 	 		</td>	
 	 	</tr>
@@ -518,13 +385,8 @@ for(Object[] temp : invitedlist){
 	  
 	 <tr> <td></td>	</tr>
 </table>
-
-
-
-</div>
-<%} %>
-	
-<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;" >
+<br>
+<table style="width: 620px; margin-top:5px;font-size: 16px; border-collapse: collapse;" >
 			<tbody>
 				<tr>
 					<th colspan="8" style="text-align: left; font-weight: 600;"><br>2.Introduction</th>
@@ -562,8 +424,12 @@ for(Object[] temp : invitedlist){
 				
 				</tr>
 				</table>
-				
-								<table style="  margin-top: 0px; margin-left: 8px; width: 693px; font-size: 16px; border-collapse: collapse;" >
+
+
+</div>
+<%} %>
+<br>
+					<table style="  margin-top: 0px; margin-left: 8px; width:620px; font-size: 16px; border-collapse: collapse;" >
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 600;">3. Record of Discussions and Action Points of Current Meeting.</th>
 						</tr>
@@ -571,13 +437,13 @@ for(Object[] temp : invitedlist){
 							<td colspan="8" style="border: 1px solid black;" style="text-align: center ;padding: 5px;">Item Codes/Type : A: Action, C: Comment, D: Decision, R: Recommendation</td>
 						</tr>
 					</table>	
-					<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black">
+					<table style=" margin-left: 8px; width: 620px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black">
 					<thead>
 						<tr>
-							<th  class="sth" style="border: 1px solid black;text-align :center !important;width: 130px"> SN</th>
-							<th  class="sth" style="border: 1px solid black; width: 470px"> Item</th>				
-							<th  class="sth" style="border: 1px solid black;text-align :center !important;width: 95px"> Type</th>
-							<!-- <th  class="sth" style="border: 1px solid black;width: 195px"> Remarks</th> -->	
+							<th  class="sth" style="border: 1px solid black;text-align :center !important;width: 80px"> SN</th>
+							<th  class="sth" style="border: 1px solid black; width: 320px"> Item</th>				
+							<th  class="sth" style="border: 1px solid black;text-align :center !important;width: 80px"> Type</th>
+							<th  class="sth" style="border: 1px solid black;width: 120px"> Remarks</th> 
 						</tr>
 					</thead>
 					<tbody>
@@ -591,9 +457,9 @@ for(Object[] temp : invitedlist){
 								%>
 								
 								<% if(tempagenda!=Long.parseLong(speclists.get(i)[6].toString())){%>
-							<%-- 	<tr>
+								<tr>
 									<td class="std" style="text-align :center;border:1px solid black;"  colspan="4"><%=speclists.get(i)[10]%></td>
-								</tr> --%>
+								</tr>
 							<%tempagenda=Long.parseLong(speclists.get(i)[6].toString());
 							} %>
 							<tr>
@@ -604,8 +470,8 @@ for(Object[] temp : invitedlist){
 								<p  style="text-align :center !important; ">	<%=speclists.get(i)[7]%> 
 								</p> 				
 								</td>
-<%-- 								<td class="std" style="text-align :center;border:1px solid black;padding:  5px 5px 5px 5px;"  > <%if( speclists.get(i)[8]!=null && !speclists.get(i)[8].toString().equalsIgnoreCase("nil")){ %> <%= speclists.get(i)[8]%> <%}else{ %> - <%} %></td>
- --%>		</tr>
+								<td class="std" style="text-align :center;border:1px solid black;padding:  5px 5px 5px 5px;"  > <%if( speclists.get(i)[8]!=null && !speclists.get(i)[8].toString().equalsIgnoreCase("nil")){ %> <%= speclists.get(i)[8]%> <%}else{ %> - <%} %></td>
+		</tr>
 				<%} 
 				}%>
 				<% if(countcm==0){%>
@@ -613,15 +479,18 @@ for(Object[] temp : invitedlist){
 				<td class="std" style="text-align :center;border: 1px solid black;"  colspan="4">No Minutes details Added</td>
 				</tr>
 							<%} %>
-				</table>			
-				<p style="text-align: center; page-break-before: always;">&nbsp;</p>	
+				</table>	
+<br>
 				<div align="left" style="font-weight: 600;margin-top:10px;">4.Status of major sub system and sub projects  (Annexure - A)</div>
 				<div align="left" style="font-weight: 600;margin-top:10px;">5.Details of procurements items envisaged in the projects (Annexure - B)</div>
 				<div align="left" style="font-weight: 600;margin-top:10px;">6.Financial Status presented during the review (Annexure - C)</div>
 				<div align="left" style="font-weight: 600;margin-top:10px;">7.Major milestones proposed to be completed in next 06 months along with financial outlay (Annexure - D)</div>
 				<div align="left" style="font-weight: 600">8.Other relevant Points:</div>
-					
-				<table style=" margin-left: 8px; width: 693px;font-size: 16px; border-collapse: collapse;">
+
+
+<br>
+
+				<table style="width: 620px;font-size: 16px; border-collapse: collapse;">
 					<tbody>
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br></th>
@@ -648,9 +517,9 @@ for(Object[] temp : invitedlist){
 	</tbody>
 	</table>
 	
+	<br>
 	<div align="left" style="font-weight: 600;margin-top: 10px;">9.Recommendations</div>
-	
-					<table style=" margin-left: 8px; width: 693px;font-size: 16px; border-collapse: collapse;">
+					<table style=" margin-left: 8px; width: 620px;font-size: 16px; border-collapse: collapse;">
 					<tbody>
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br></th>
@@ -679,9 +548,11 @@ for(Object[] temp : invitedlist){
 							NIL
 							<%} %>
 	</tbody>
-	</table>
+	</table>	
+	<br>
 		<div align="left" style="font-weight: 600;margin-top: 10px;">10.Concluding Remarks</div>
-					<table style=" margin-left: 8px; width: 693px;font-size: 16px; border-collapse: collapse;">
+	<br>
+					<table style="width: 620px;font-size: 16px; border-collapse: collapse;">
 					<tbody>
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br></th>
@@ -708,7 +579,8 @@ for(Object[] temp : invitedlist){
 	</tbody>
 	</table>
 	
-			<div style="width: 650px;margin-left: 15px; ">
+	<br>
+			<div style="width: 620px;margin-left: 15px; ">
 			<div align="center" style="padding-left: 2.5rem;">
 				<p>These Minutes are issued with the approval of the Chairperson. </p>
 			</div>
@@ -722,28 +594,30 @@ for(Object[] temp : invitedlist){
 			</div>
 			<%} %>
 			</div>
-		</div> 		
-	<p style="text-align: center; page-break-before: always;">&nbsp;</p>
+		</div> 	
 	
+	</div>
+<br clear=all style='page-break-before:always; mso-break-type:section-break'>
+<div class=landscape_A4_page>
 	<div align="center" style="text-decoration: underline">Annexure - A</div>	
-	<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
+	<table style="width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;">Status of major sub system and sub projects</th>
 						</tr>
 					</table>	
 					<br>
-							<table style=" margin-left: 8px; width: 693px; margin-top:25px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" margin-left: 8px; width: 950px; margin-top:25px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 						     <thead>
 									
 						     
 						         		 <tr>
 										 <th class="" style="border:1px solid black;width: 30px !important; ">MS</th>
 										 <th class="" style="border:1px solid black;width: 50px !important; padding:8px;">L</th>
-										 <th class="" style="border:1px solid black;width:300px; ">System/ Subsystem/ Activities</th>
-										 <th class="" style="border:1px solid black;width:160px; ">  PDC</th>
+										 <th class="" style="border:1px solid black;width:600px; ">System/ Subsystem/ Activities</th>
+										 <th class="" style="border:1px solid black;width:120px; ">  PDC</th>
 										 <th class="" style="border:1px solid black;width:100px; "> Progress</th>
 <!-- 										 <th class="std" style="border: 1px solid black;max-width:70px; "> Status</th>
- -->										 <th class="" style="border: 1px solid black;width:240px; "> Remarks</th> 
+ -->										 <th class="" style="border: 1px solid black;width:300px; "> Remarks</th> 
 										 
 									</tr>
 								</thead>
@@ -761,8 +635,8 @@ for(Object[] temp : invitedlist){
 										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
 										%>
 										<tr>
-											<td class=""  style=" border: 1px solid black;max-width: 50px;text-align: center;">M<%=obj[0] %></td>
-											<td class=""  style=" border: 1px solid black;max-width: 50px;text-align: center;" >
+											<td class=""  style=" border: 1px solid black;text-align: center;">M<%=obj[0] %></td>
+											<td class=""  style=" border: 1px solid black;text-align: center;" >
 												<%
 												
 												if(obj[21].toString().equals("0")) { %>
@@ -806,7 +680,7 @@ for(Object[] temp : invitedlist){
 												} %>
 											</td>
 
-											<td class=""  style=" border: 1px solid black;max-width: 150px;text-align: left; <%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
+											<td class=""  style=" border: 1px solid black;text-align: left; <%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
 												<%if(obj[21].toString().equals("0")) {%>
 													<%=obj[10] %>
 												<%}else if(obj[21].toString().equals("1")) { %>
@@ -821,9 +695,9 @@ for(Object[] temp : invitedlist){
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td class=""  style=" border: 1px solid black;max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %><br><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
-											<td class=""  style=" border: 1px solid black;max-width: 100px;text-align: center;"><%=obj[17] %>%</td>											
-											<td class=""  style=" border: 1px solid black;max-width: 100px;text-align: left;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+											<td class=""  style=" border: 1px solid black;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %><br><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td class=""  style=" border: 1px solid black;text-align: center;"><%=obj[17] %>%</td>											
+											<td class=""  style=" border: 1px solid black;text-align: left;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
 										</tr>
 									<%milcount1++;}} %>
 								<%} else{ %>
@@ -834,12 +708,11 @@ for(Object[] temp : invitedlist){
 
 						</tbody>
 					</table>	
-					
-					
-					
-				<p style="text-align: center; page-break-before: always;">&nbsp;</p>
+</div>
+<br clear=all style='page-break-before:always; mso-break-type:section-break'>
+<div class=landscape_A4_page>
 					<div align="center" style="text-decoration: underline">Annexure - B</div>		
-					<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;" >
+					<table style="  width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse;" >
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br>Financial Status presented during the review</th>
 						</tr>
@@ -849,7 +722,7 @@ for(Object[] temp : invitedlist){
 					</table>	
 					<%if(Long.parseLong(projectid) >0 && projectFinancialDetails!=null) { %>
 							
-							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 								    <thead>
 								        <tr>
 								           	<td class="std" colspan="2" align="center" style="border:1px solid black;"><b>Head</b></td>
@@ -947,30 +820,23 @@ for(Object[] temp : invitedlist){
 							
 					<% }else {  %>
 						
-						<table style=" margin-left: 8px; width: 693px;font-size: 16px; border-collapse: collapse;" >
+						<table style=" width: 950px;font-size: 16px; border-collapse: collapse;" >
 						<tr >
 							<td colspan="8" style="border: 1px solid black;border-top:0px;font-weight: bold"  align="center">No Data Available</td>
 						</tr>
 					</table>	
 							  
 					<% } %>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				<p style="text-align: center; page-break-before: always;">&nbsp;</p>	
-									<div align="center" style="text-decoration: underline">Annexure - C</div>		
-				<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;" >
+</div>
+<br clear=all style='page-break-before:always; mso-break-type:section-break'>
+<div class=landscape_A4_page>
+		<div  align="center" style="text-decoration: underline">Annexure - C</div>		
+				<table style=" margin-left: 8px; width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse;" >
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;">Details of procurements items envisaged in the projects along with status</th>
 						</tr>
 					</table>	
-							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" margin-left: 8px; width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 										<thead>
 										<tr>
 											<th colspan="8" style="text-align: right;"> <span class="currency" >(In &#8377; Lakhs)</span></th>
@@ -1150,29 +1016,28 @@ for(Object[] temp : invitedlist){
 												<tr><td colspan="8" style="border: 1px solid black;" class="std"  style="text-align: center;">Nil </td></tr>
 											<%} %>
 									</table> 
-				
-				
-					
-					
-					<p style="text-align: center; page-break-before: always;">&nbsp;</p>	
+</div>
+
+<br clear=all style='page-break-before:always; mso-break-type:section-break'>
+<div class=landscape_A4_page>
 					<div align="center" style="text-decoration: underline">Annexure - D</div>		
-						<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
+						<table style=" width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;">Major milestones to be completed in next 06 months along with the financial outlay.</th>
 						</tr>
 					</table>
-					<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 5px; width: 693px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+					<table style="margin-top: 5px; margin-bottom: 0px;  width: 950px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 							 <thead>
 									
 								<tr style="font-size:14px; ">
 									<th class="std"  style=" border: 1px solid black;width:20px !important;">SN</th>
 									<th class="std"  style=" border: 1px solid black;width:20px; ">MS</th>
 									<th class="std"  style=" border: 1px solid black;width:20px; ">L</th>
-									<th class="std"  style=" border: 1px solid black;width:200px;">Action Plan </th>	
+									<th class="std"  style=" border: 1px solid black;width:400px;">Action Plan </th>	
 									<th class="std"  style=" border: 1px solid black;width:90px;">Responsibility </th>
-									<th class="std"  style=" border: 1px solid black;width:200px;">PDC</th>	
-									<th class="std"  style=" border: 1px solid black;width:55px;">Progress </th>
-					                 <th class="std"  style=" border: 1px solid black;width:80px;">Remarks</th>
+									<th class="std"  style=" border: 1px solid black;width:100px;">PDC</th>	
+									<th class="std"  style=" border: 1px solid black;width:70px;">Progress </th>
+					                 <th class="std"  style=" border: 1px solid black;width:180px;">Remarks</th>
 								</tr>
 							</thead>
 							<tbody style="font-size: 14px;">
@@ -1204,9 +1069,7 @@ for(Object[] temp : invitedlist){
 											
 											<td class="std"  style=" border: 1px solid black;text-align: center;border:1px solid black;">
 												<%
-												
 												if(obj[26].toString().equals("0")) {%>
-													
 												<%countA=1;
 													countB=1;
 													countC=1;
@@ -1218,7 +1081,6 @@ for(Object[] temp : invitedlist){
 													<%=entry.getValue() %>
 												<%}
 												}
-													
 												    countB=1;
 												    countC=1;
 													countD=1;
@@ -1280,14 +1142,15 @@ for(Object[] temp : invitedlist){
 									<%milecount++;mile=obj[2].toString();mileA=obj[3].toString();mainMileStone=obj[0].toString();mileBid=obj[1].toString();}} %>
 								<%} else{ %>
 								<tr><td class="std"  colspan="9" style="text-align:center; "> Nil</td></tr>
-								
-								
 								<%} %>
 						</tbody>				
 					</table>
-									
+</div>
+</div>
+
+				
 	</div>
-	</div>
+	</div> 
 	
 	</body>
 	<script>
@@ -1296,7 +1159,6 @@ for(Object[] temp : invitedlist){
     	    $("#source-html").wordExport("<%=committeescheduleeditdata[8].toString().toUpperCase() %>"+"-MOM"+ "(<%=sdf3.format(sdf1.parse(committeescheduleeditdata[2].toString()))%>)");
     	  });
     	});
-    
 	</script>
 </html>
 

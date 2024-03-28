@@ -149,12 +149,6 @@ a:hover {
 												<span class="badge badge-success p-2">UPCOMING PDC</span>
 												<span class="badge badge-danger p-2">MISSED PDC</span>
 												</div>
-											<!-- 	<div align="right" style="height:30px;width:100%;">
-												<span class="badge">PDC COLOR CODES:</span>
-												<span class="badge badge-primary  p-2">PDC ON TODAY</span>
-												<span class="badge badge-success p-2">UPCOMING PDC</span>
-												<span class="badge badge-danger p-2">MISSED PDC</span>
-												 </div> -->
 												<table id="table" data-toggle="table" data-pagination="true"
 													data-search="true" data-show-columns="true"
 													data-show-pagination-switch="true" data-show-refresh="true"

@@ -3350,4 +3350,9 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		public List<Object[]> VPDetails(String initiationid, String projectId) throws Exception {
 			return dao.VPDetails(initiationid, projectId);
 		}
+		@Override
+		public List<Object[]> EmployeeList1(String labCode, String initiationid, String ProjectId) throws Exception {
+			return dao.EmployeeList1(labCode,initiationid, ProjectId);
+		}
+		
 }

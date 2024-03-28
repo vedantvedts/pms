@@ -481,13 +481,13 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			+ "a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.title,' '),''), j.empname) AS 'empname' ,\r\n"
 			+ "h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM employee j,employee_desig h, committee_schedules_agenda a, committee_schedule cs\r\n"
 			+ "WHERE a.scheduleid=:committeescheduleid AND a.scheduleid=cs.scheduleid  AND a.isactive=1 AND a.projectid=0 \r\n"
-			+ "AND a.presenterid=j.empid AND j.desigid=h.desigid \r\n"
+			+ "AND a.presenterid=j.empid AND j.desigid=h.desigid AND a.PresentorLabCode<>'@EXP' \r\n"
 			+ "UNION\r\n"
 			+ "SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,cs.labcode AS 'projectname' , '0' AS projectid,\r\n"
 			+ "a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.title,' '),''), j.expertname) AS 'empname' ,\r\n"
 			+ "h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM expert j,employee_desig h, committee_schedules_agenda a, committee_schedule cs\r\n"
 			+ "WHERE a.scheduleid=:committeescheduleid AND a.scheduleid=cs.scheduleid  AND a.isactive=1 AND a.projectid=0 \r\n"
-			+ "AND a.presenterid=j.expertid AND j.desigid=h.desigid  ORDER BY agendapriority ";
+			+ "AND a.presenterid=j.expertid AND j.desigid=h.desigid AND a.PresentorLabCode='@EXP'  ORDER BY agendapriority ";
 	
 	@Override
 	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception {
