@@ -289,6 +289,10 @@ public interface CommitteeDao {
 	public Long UpdateMomAttach(Long scheduleId) throws Exception;
 	public Object[] MomAttachmentFile(String committeescheduleid) throws Exception;
 	public List<Object[]> MomReportList(String projectId, String committeeId) throws Exception;
+	// Prudhvi 27/03/2024
+	/* ------------------ start ----------------------- */
+	List<Object[]> IndustryPartnerRepListInvitationsMainMembers(String industryPartnerId, String committeemainid) throws Exception;
+	/* ------------------ end ----------------------- */
 	
 	
 

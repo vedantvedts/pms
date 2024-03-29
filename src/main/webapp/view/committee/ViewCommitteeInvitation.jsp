@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@page import="java.awt.Container"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.time.LocalDate"%>
@@ -85,7 +86,11 @@ h5,h6{
 	List<String> InvitedList = new ArrayList<String>();
 	committeeinvitedlist.stream().map(obj -> InvitedList.add(obj[0].toString()+"_"+obj[11].toString())).collect(Collectors.toList());;
 	
-	
+	// Prudhvi - 27/03/2024 
+	/* --------- start -------------- */
+	List<IndustryPartner> industryPartnerList = (List<IndustryPartner>)request.getAttribute("industryPartnerList");
+	/* --------- end -------------- */
+	//
 	%>		
 		
 	<%	String ses = (String) request.getParameter("result");
@@ -326,6 +331,38 @@ h5,h6{
 						
 					</div>
 					<%} %>
+										
+					<!-- Prudhvi - 27/03/2024 start -->
+					<%if(committeeinvitedlist.size()>0){ %>
+					
+						<div  class="col-md-4">
+						
+						<h5>Industry Partner</h5>
+							<hr>						
+						 <table border='0'>
+
+							<tbody>
+								<%	 int outsidemember=1;
+								for (Object[] obj : committeeinvitedlist ) {
+									if(obj[3].toString().equals("CIP")){  	%>
+									<tr>			
+										<td class="tdclass"><%=outsidemember%> )</td> <td> <%=obj[6]%> (<%=obj[7]%>) (<%=obj[11] %>)</td>
+									<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
+										<td style="padding-left: 10px">
+									 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+										</td>
+									<%} %>
+			
+									</tr>
+								<%	outsidemember++; }}	%>		
+											
+							</tbody>	
+						</table>						
+						<br>	
+						
+					</div>
+					<%} %>
+					<!-- Prudhvi - 27/03/2024 end -->
 				</div>
 
 
@@ -413,7 +450,10 @@ h5,h6{
 					
 							<table >
 							<% int repcount=1;
-							ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CH","CI","CW","CO","P","I","W","E"));
+							// Prudhvi 27/03/2024
+							/* ------------------ start ----------------------- */
+							ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CH","CI","CW","CO","P","I","W","E","CIP","IP"));
+							/* ------------------ end ----------------------- */
 							for(int i=0;i<committeeinvitedlist.size();i++)
 							{								
 								if(!membertypes.contains(committeeinvitedlist.get(i)[3].toString()))
@@ -655,6 +695,76 @@ h5,h6{
 						</table>
 						</div>
 				<!-- ----------------------External end------------------------------ -->
+								<!-- Prudhvi - 27/03/2024 start-->
+				<!-- ---------------------- Industry Partner start------------------------------ -->
+						
+						<div class="col-md-4">
+						
+						<% 
+						if(committeeinvitedlist!=null && committeeinvitedlist.size()>0){
+							for(int i=0;i<committeeinvitedlist.size();i++)
+							{
+								if(committeeinvitedlist.get(i)[3].toString().equals("IP"))
+								{%>		
+						
+						<br>
+						<label class="control-label">Industry Partner </label>
+						
+						<%break;} } } %>
+						
+						<table border="0">
+						
+						<% 
+						if(committeeinvitedlist!=null && committeeinvitedlist.size()>0){
+							int indpartnercount=1; 
+							for(int i=0;i<committeeinvitedlist.size();i++)
+							{
+								
+								if(committeeinvitedlist.get(i)[3].toString().equals("IP"))
+								{%>		
+										
+										<tr>
+										<td><%=indpartnercount%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>) (<%=committeeinvitedlist.get(i)[11]%>)</td> 
+										<td style="padding-left: 30px">
+										
+										<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){ %>
+											<form action="CommitteeInvitationDelete.htm" method="Post">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="committeeinvitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
+												<button type="submit" class="btn" onclick="return confirm('Are you sure To Remove this Member?')" > <i class="fa fa-trash" aria-hidden="true" ></i> </button>
+											</form>		
+										<%} %>										
+										<td>										
+											<form action="MeetingInvitationLetter.htm" method="Post" target="_blank">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="memberid" value="<%=committeeinvitedlist.get(i)[0]%>">
+												<input type="hidden" name="invitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
+												<input type="hidden" name="membertype" value="<%=committeeinvitedlist.get(i)[3]%>">
+												<button type="submit" class="btn"  > <i class="fa fa-eye" aria-hidden="true" ></i>  </button>
+											</form>
+										</td>
+										<td>
+											<form action="MeetingInvitationLetterDownload.htm" method="Post" target="_blank">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="invitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="memberid" value="<%=committeeinvitedlist.get(i)[0]%>">
+												<input type="hidden" name="membertype" value="<%=committeeinvitedlist.get(i)[3]%>">
+												<button type="submit" class="btn"  > <i class="fa fa-download" aria-hidden="true" ></i>  </button>
+											</form>
+										</td>
+										</tr>				  
+								<% indpartnercount++;}
+							}}%>
+					
+						</table>
+						
+						</div>
+					
+				<!-- ---------------------- Industry Partner end------------------------------ -->		
+				<!-- Prudhvi - 27/03/2024 end-->
 						
 					</div>		
 					<br>	
@@ -857,6 +967,58 @@ h5,h6{
 					</div>	
 					</form>
 	<!-- --------------------------------External Members (Outside DRDO)----------------------------------------------- -->
+		<!-- Prudhvi - 27/03/2024 start-->
+	<!-- --------------------------------Industry Partner----------------------------------------------- -->
+					<form  action="CommitteeInvitationCreate.htm" method="POST" name="myfrm1" id="myfrm1">
+					<div class="row">	
+						
+						<div class="col-md-6">
+							
+							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="table1" style="margin-top: 10px;">
+								<thead>  
+									<tr id="">
+										<th colspan="2"> Industry Partner</th>
+									</tr>
+								</thead>
+								<tr class="tr_clone1">
+									<td style="width:30%">							
+										<div class="input select">
+											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"  style="" id="industryPartnerId" onchange="industrypartnerrepname()" required>
+												<option disabled="true"  selected value="">Industry Partner</option>
+													<% for (IndustryPartner partner : industryPartnerList) {
+													%>
+														<option value="<%=partner.getIndustryPartnerId()%>"
+														data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
+														><%=partner.getIndustryName()%> (<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)</option>
+														
+													<%}%>
+											</select>
+											<input type="hidden" name="industrypartnerlabid" value="@IP" />
+										</div>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
+		 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
+		 								<input type="hidden" name="rep" id="rep4" value="0" />
+									</td>
+									<td style="width:70%">
+										<div class="input select ">
+											<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" multiple>
+											</select>
+										</div>
+									</td>						
+								</tr>
+							</table>				
+						</div>
+						
+						<div class="col-md-6 align-self-center">
+							
+								<button class="btn btn-primary btn-sm add" name="submit" value="submit" type="submit"  onclick="return confirm('Are you Sure to Add these Members ?');">SUBMIT</button>
+									
+						</div>
+						
+					</div>
+					</form>
+	<!-- --------------------------------Industry Partner----------------------------------------------- -->
+	<!-- Prudhvi - 27/03/2024 end-->
 				</div>	
 			</div>		
 					
@@ -1036,6 +1198,56 @@ function employeename(){
 			  $('[data-toggle="tooltip"]').tooltip()
 			})
 </script>
+<!-- Prudhvi 27/03/2024 start -->
+<script type="text/javascript">
+function industrypartnerrepname(){
 
+	$('#industryPartnerRep').val("");
+	
+		var $industryPartnerId = $('#industryPartnerId').val();
+	
+		
+				if($industryPartnerId!=""){
+		
+							$
+								.ajax({
+
+								type : "GET",
+								url : "IndustryPartnerRepListInvitations.htm",
+								data : {
+									industryPartnerId : $industryPartnerId,
+											scheduleid : '<%=committeescheduleid %>' 	
+									   },
+								datatype : 'json',
+								success : function(result) {
+
+								var result = JSON.parse(result);
+						
+								var values = Object.keys(result).map(function(e) {
+							 				 return result[e]
+							  
+												});
+						
+						var s = '';
+						s += '<option value="">'
+							+"--Select--"+ '</option>';
+						 for (i = 0; i < values.length; i++) {
+							
+							s += '<option value="'+values[i][0]+",IP,"+values[i][4]+'">'
+									+values[i][1] + " (" +values[i][3]+")" 
+									+ '</option>';
+						} 
+						 
+						$('#industryPartnerRep').html(s);
+						
+				
+						
+					}
+				});
+
+}
+	}
+</script>
+<!-- Prudhvi 27/03/2024 end -->
 </body>
 </html>

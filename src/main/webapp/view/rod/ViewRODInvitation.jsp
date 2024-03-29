@@ -608,10 +608,13 @@ h5,h6{
 												<option disabled="true"  selected value="">Industry Partner</option>
 													<% for (IndustryPartner partner : industryPartnerList) {
 													%>
-														<option value="<%=partner.getIndustryPartnerId()%>"><%=partner.getIndustryName()%></option>
+														<option value="<%=partner.getIndustryPartnerId()%>"
+														data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
+														><%=partner.getIndustryName()%> (<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)</option>
+														
 													<%}%>
 											</select>
-											<input type="hidden" name="expertlabid" value="@IP" />
+											<input type="hidden" name="industrypartnerlabid" value="@IP" />
 										</div>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 		 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">

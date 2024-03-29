@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -130,6 +131,11 @@ for(int i=0;i<committeemembersall.size();i++)
 	}
 }
 String CpLabCode = chairperson[9].toString();
+
+//Prudhvi - 27/03/2024 
+/* --------- start -------------- */
+List<IndustryPartner> industryPartnerList = (List<IndustryPartner>)request.getAttribute("industryPartnerList");
+/* --------- end -------------- */
 %>
 
 <%
@@ -417,6 +423,45 @@ String ses=(String)request.getParameter("result");
 						
 					</div>
 					<%} %>
+					<!-- Prudhvi - 27/03/2024 start-->
+					<%if(committeemembersall.size()>0){ %>
+					
+					<div  class="col-md-4">
+						
+						<h5 style="color: #FF5733">Industry Partner</h5>
+							<hr>						
+						 <table border='0'>
+
+							<tbody>
+								<%int count = 1;
+										for (int i=0;i<committeemembersall.size();i++) {
+											Object[] obj=committeemembersall.get(i);
+											if(obj[9].toString().equalsIgnoreCase("@IP")){
+									%>
+								<tr>
+									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%>, <%=obj[4]%></td>
+									<td>
+										<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+									        <input type="hidden" name="committeememberid" value="<%=obj[0] %>" />
+									        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">	
+									        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
+											<button class="fa fa-trash btn btn-danger " type="submit"  style="background-color: white;border-color: white;" onclick="return confirm('Are You Sure To Delete this Member?');" ></button>
+											<%} %>
+										</form>	
+									</td>
+								</tr>
+								<%	count++; 
+										
+										}
+									} %>
+							</tbody>
+						</table>						
+						<br>	
+						
+					</div>
+					<%} %>
+					<!-- end -->
 				</div>		
 						
 			
@@ -662,6 +707,56 @@ String ses=(String)request.getParameter("result");
 									<input type="hidden" name="committeemainid" value="<%=committeemainid%>"> 
 							</div>
 						</form>
+				<!-- --------------------------------------External Members Outside DRDO -------------------------------------------- -->
+				<!-- Prudhvi - 27/03/2024 start -->
+				<!-- -------------------------------------- Industry Partner -------------------------------------------- -->
+							<form action="CommitteeMainMembersSubmit.htm" method="post"  >				
+								<div class="row">				
+									<div class="col-md-9">
+										<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="table1" style="margin-top: 10px;">
+								<thead>  
+									<tr id="">
+										<th colspan="2"> Industry Partner</th>
+									</tr>
+								</thead>
+								<tr class="tr_clone1">
+									<td style="width:30%">							
+										<div class="input select">
+											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"  style="" id="industryPartnerId" onchange="industrypartnerrepname()" required>
+												<option disabled="true"  selected value="">Industry Partner</option>
+													<% for (IndustryPartner partner : industryPartnerList) {
+													%>
+														<option value="<%=partner.getIndustryPartnerId()%>"
+														data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
+														><%=partner.getIndustryName()%> (<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)</option>
+														
+													<%}%>
+											</select>
+											<input type="hidden" name="industrypartnerlabid" value="@IP" />
+										</div>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
+		 								<input type="hidden" name="rep" id="rep4" value="0" />
+									</td>
+									<td style="width:70%">
+										<div class="input select ">
+											<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" multiple>
+											</select>
+										</div>
+									</td>						
+								</tr>
+							</table>
+									</div>
+									<div class="col-md-2 align-self-center">					
+										<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
+										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
+										<%} %>							
+									</div>	
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />											
+									<input type="hidden" name="committeemainid" value="<%=committeemainid%>"> 
+							</div>
+						</form>
+				<!-- -------------------------------------- Industry Partner -------------------------------------------- -->
+				<!-- Prudhvi - 27/03/2024 end -->
 				</div>
 				
 							<div class="col-md-5">
@@ -1083,7 +1178,58 @@ function Add(myfrm){
 
  
 
-</script>		
+</script>	
+<!-- Prudhvi 27/03/2024 start -->
+<script type="text/javascript">
+function industrypartnerrepname(){
+
+	$('#industryPartnerRep').val("");
+	
+		var $industryPartnerId = $('#industryPartnerId').val();
+	
+		
+				if($industryPartnerId!=""){
+		
+							$
+								.ajax({
+
+								type : "GET",
+								url : "IndustryPartnerRepListInvitationsMainMembers.htm",
+								data : {
+									industryPartnerId : $industryPartnerId,
+									committeemainid : '<%=committeemainid %>' 	
+									   },
+								datatype : 'json',
+								success : function(result) {
+
+								var result = JSON.parse(result);
+						
+								var values = Object.keys(result).map(function(e) {
+							 				 return result[e]
+							  
+												});
+						
+						var s = '';
+						s += '<option value="">'
+							+"--Select--"+ '</option>';
+						 for (i = 0; i < values.length; i++) {
+							
+							s += '<option value="'+values[i][0]+'">'
+									+values[i][1] + " (" +values[i][3]+")" 
+									+ '</option>';
+						} 
+						 
+						$('#industryPartnerRep').html(s);
+						
+				
+						
+					}
+				});
+
+}
+	}
+</script>
+<!-- Prudhvi 27/03/2024 end -->	
 </body>
 
 </html>

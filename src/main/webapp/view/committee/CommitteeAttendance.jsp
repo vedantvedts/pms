@@ -145,6 +145,10 @@ String LabCode=(String) request.getAttribute("LabCode");
 											else if(obj[3].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
 											else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[11] %>)<%}
 											else if(obj[3].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[11] %>)<%}
+										    // Prudhvi - 27/03/2024 start
+											else if(obj[3].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[11] %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[11] %>)<%}
+											// Prudhvi - 27/03/2024 end
 											else {%> REP_<%=obj[3].toString()%> (<%=obj[11] %>)  <%}
 										%>
 										

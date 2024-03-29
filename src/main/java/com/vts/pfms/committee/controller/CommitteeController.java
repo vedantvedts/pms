@@ -163,6 +163,7 @@ import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
+import com.vts.pfms.master.service.MasterService;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.controller.PrintController;
 import com.vts.pfms.print.service.PrintService;
@@ -207,6 +208,12 @@ public class CommitteeController {
 	
 	@Autowired
 	RODService rodservice;
+	
+	// Prudhvi - 27/03/2024
+	/* ------------------ start ----------------------- */
+	@Autowired
+	MasterService masterservice;
+	/* ------------------ end ----------------------- */
 	
 	@Value("${ApplicationFilesDrive}")
 	private String ApplicationFilesDrive;
@@ -715,7 +722,10 @@ public class CommitteeController {
 			req.setAttribute("proposedcommitteemainid",proposedcommitteemainid );
 			req.setAttribute("committeeapprovaldata",service.CommitteeMainApprovalData(committeemainid));
 			req.setAttribute("clusterlist", service.ClusterList());
-			
+			// Prudhvi - 27/03/2024
+			/* ------------------ start ----------------------- */
+			req.setAttribute("industryPartnerList",  masterservice.getIndustryPartnerList());
+			/* ------------------ end ----------------------- */
 			if( Long.parseLong(projectid)>0) {
 				req.setAttribute("projectdata", service.projectdetails(projectid));
 			}
@@ -751,7 +761,11 @@ public class CommitteeController {
 			dto.setExternalMemberIds(req.getParameterValues("ExternalMemberIds"));
 			dto.setExternalLabCode(req.getParameter("Ext_LabCode"));
 			dto.setExpertMemberIds(req.getParameterValues("ExpertMemberIds"));
-			
+			// Prudhvi 27/03/2024
+			/* ------------------ start ----------------------- */
+			dto.setIndustrialPartnerRepIds(req.getParameterValues("industryPartnerRep"));
+			dto.setIndustrialPartnerLabCode(req.getParameter("industrypartnerlabid"));
+			/* ------------------ end ----------------------- */
 			dto.setCreatedBy(Username);
 			
 			long count=service.CommitteeMembersInsert(dto);
@@ -1863,7 +1877,10 @@ public class CommitteeController {
 			String initiationid=committeescheduledata[14].toString();
 			
 			List<Object[]> committeeinvitedlist = service.CommitteeAtendance(committeescheduleid);
-						
+			// Prudhvi - 27/03/2024
+			/* ------------------ start ----------------------- */
+			req.setAttribute("industryPartnerList",  masterservice.getIndustryPartnerList());
+			/* ------------------ end ----------------------- */			
 			if(committeeinvitedlist.size()==0) 
 			{	
 				String committeemainid="0";
@@ -1965,6 +1982,21 @@ public class CommitteeController {
 						labCodelist.add(labid);
 					}
 				}
+
+				// Prudhvi - 27/03/2024
+				/* ------------------ start ----------------------- */
+				
+				if(req.getParameterValues("industryPartnerRep")!=null && req.getParameterValues("industryPartnerRep").length!=0) {
+					String members[] =req.getParameterValues("industryPartnerRep");
+					String labid =req.getParameter("industrypartnerlabid");
+					emplist.addAll(Arrays.asList(members));
+					for(String member : members )
+					{
+						labCodelist.add(labid);
+					}
+				}
+				
+				/* ------------------ end ----------------------- */
 			}
 			CommitteeInvitationDto committeeinvitationdto = new CommitteeInvitationDto();
 
@@ -8972,4 +9004,22 @@ public class CommitteeController {
 			}
 			return "committee/MomReportList";
 		}
+		
+		
+		// Prudhvi 27/03/2024
+		/* ------------------ start ----------------------- */
+		@RequestMapping(value = "IndustryPartnerRepListInvitationsMainMembers.htm", method = RequestMethod.GET)
+		public @ResponseBody String industryPartnerRepListInvitationsMainMembers(HttpServletRequest req,HttpSession ses) throws Exception
+		{
+			String UserId = (String)ses.getAttribute("Username");
+			logger.info(new Date() +" Inside IndustryPartnerRepListInvitationsMainMembers.htm"+ UserId);
+			
+			List<Object[]> industryPartnerRepList = new ArrayList<Object[]>();
+			
+			industryPartnerRepList = service.IndustryPartnerRepListInvitationsMainMembers(req.getParameter("industryPartnerId"), req.getParameter("committeemainid"));
+		 
+			Gson json = new Gson();
+			return json.toJson(industryPartnerRepList);	
+		}
+		/* ------------------ end ----------------------- */
 }

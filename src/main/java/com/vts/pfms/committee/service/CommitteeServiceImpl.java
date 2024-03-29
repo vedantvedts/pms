@@ -1902,7 +1902,19 @@ public class CommitteeServiceImpl implements CommitteeService{
 			}
 			emplist.addAll(Arrays.asList(dto.getExpertMemberIds()));
 		}
-		
+
+		// Prudhvi 27/03/2024
+		/* ------------------ start ----------------------- */
+		if (dto.getIndustrialPartnerRepIds() != null) {
+			
+			for(int i=0;i<dto.getIndustrialPartnerRepIds().length;i++) {
+				
+				lablist.add("@IP");
+				membertype.add("CIP");
+			}
+			emplist.addAll(Arrays.asList(dto.getIndustrialPartnerRepIds()));
+		}
+		/* ------------------ end ----------------------- */
 		
 		for(int i=0;i< emplist.size();i++)
 		{
@@ -3293,5 +3305,13 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	public List<Object[]> MomReportList(String projectId, String committeeId) throws Exception {
 		return dao.MomReportList(projectId,committeeId);
 	}
-	
+
+	// Prudhvi 27/03/2024
+	/* ------------------ start ----------------------- */
+	@Override
+	public List<Object[]> IndustryPartnerRepListInvitationsMainMembers(String industryPartnerId, String committeemainid) throws Exception {
+		
+		return dao.IndustryPartnerRepListInvitationsMainMembers(industryPartnerId, committeemainid);
+	}
+	/* ------------------ end ----------------------- */
 }

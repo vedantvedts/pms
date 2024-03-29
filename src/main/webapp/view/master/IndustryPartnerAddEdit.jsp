@@ -171,7 +171,7 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
                     			<label class="control-label" style="color: black;">Industry Partner Representative Details:</label>
                     		</div>
                     	</div>
-                    	<div class="row details" id="existingrepdetails">
+                    	<div class="row details mb-2" id="existingrepdetails">
                     	</div>
                     	<%if(IPDetails!=null) {%>
 						<div class="row">
@@ -350,9 +350,11 @@ function IndustryPartnerSub()
 						
 						y+='<div class="col-md-12" style="text-align: left;">';
 						if(i==0){
-							y+='<label class="control-label" style="color: black;font-weight: 500;">Existing Representative:</label> <br> ';
+							y+='<h5 style="color: #FF5733;text-indent: 20px;">Existing Representatives: <button type="button" id="existingRepInfo" value="1" class="btn btn-info btn-sm" style="padding: 0px 5px 0px 5px;border: none;" onclick="return existingRepInfoHandle()"><i class="fa fa-info-circle" aria-hidden="true"></i></button></h5> <hr style="width: 50%;"> ';
 						}
-						y+='<span>'+(i+1)+'. '+result[i][2]+', '+result[i][3]+'</span>';
+						y+='<div class="existingRepInfoContent" style="text-indent: 40px;">';
+						y+='<span style="line-height: 1.5;word-spacing: 2px;">'+(i+1)+'. '+result[i][2]+', '+result[i][3]+'</span>';
+						y+='</div>';
 						y+='</div>';
 					}
 					
@@ -423,4 +425,25 @@ $("#addformsubmit").click(function(){
 });
 </script>  -->
 </body>
+
+<script type="text/javascript">
+
+//Onclick showing / Closing the info content
+
+/* For Existing Rep Details Content */
+ function existingRepInfoHandle() {
+	var existingRepInfo = $('#existingRepInfo').val();
+	console.log(existingRepInfo+"*************");
+	if(existingRepInfo=="0"){
+		$('#existingRepInfo').val('1');
+		$('.existingRepInfoContent').show();
+	
+	}else{
+		$('#existingRepInfo').val('0');
+		$('.existingRepInfoContent').hide();
+		}
+} 
+
+</script> 
+
 </html>

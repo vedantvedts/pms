@@ -125,6 +125,7 @@ font-weight: bold;
 <%
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> industryPartnerList = (List<Object[]>)request.getAttribute("IndustryPartnerList");
+int slno = (Integer)request.getAttribute("slno");
 
 Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.stream().collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList()));
 %>
@@ -190,27 +191,26 @@ Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.strea
 			                            	
 			                            	<thead style=" text-align: center;background: #1967a1;color: white;" >
 			                                    <tr>
-			                                    	<td colspan="1"></td>
+			                                    	<td rowspan="2">SN</td>
 			                                    	<td colspan="2">Industry</td>
 			                                    	<td colspan="4">Representative</td>
-			                                    	<td colspan="1"></td>
-			                                    	<td colspan="1"></td>
+			                                    	<td rowspan="2">Status</td>
+			                                     	<td rowspan="2">Edit and Revoke</td>  
 			                                    </tr>     
 			                               		<tr>
-			                                   		<td>SN</td>
 			                                    	<td>Name</td>
 			                                    	<td>Address</td>
 			                                    	<td>Name</td>
 			                                     	<td>Designation </td>
 			                                      	<td>MobileNo </td>
 			                                      	<td>Email</td>
-			                                      	<td>Status</td>
-			                                     	<td>Edit and Revoke</td>       
 			                                   	</tr>
 			                            	</thead>
 			                                <tbody>
-			                                	<%if(industryPartnerList!=null && industryPartnerList.size()>0){
-			        	   							int slno = 0;
+			                                	<%
+			                                	//int slno = 0;
+			                                	if(industryPartnerList!=null && industryPartnerList.size()>0){
+			        	   							
 			        	   							for (Map.Entry<String, List<Object[]>> entry : industryPartnerToListMap.entrySet()) {
 			                   							String key = entry.getKey();
 			                   							List<Object[]> values = entry.getValue();
@@ -235,7 +235,7 @@ Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.strea
 			                                               <span class="badge badge-danger">Inactive</span>
 			                                               <%} %>
 			                                               </td>
-												        <td  class="left width">
+												        <td  class="center width">
 															<% if(Boolean.parseBoolean(obj[8].toString())) {%>
 													 		<form action="#" method="POST" name="myfrm"  style="display: inline">
 																<button  class="editable-click" name="Action" value="Edit" formaction="IndustryPartner.htm">
@@ -273,7 +273,7 @@ Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.strea
 			                                    <%} %> 
 											</tbody>				    
 			                        	</table>
-			                      
+			                      		<input type="hidden" name="slno" value="<%=slno%>">
 			                    	</div>
 			                	</div>
 			            	</div>
@@ -292,6 +292,7 @@ Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.strea
 													<input type="hidden" value="<%= request.getAttribute("searchFactor").toString() %>" name="search" />
 												<%} %>
 												<input type="hidden" id="pagination" name="pagination" value=<%=pagin-1 %> />
+												<input type="hidden" name="slno" value="<%=slno%>">
 											</form>
 										</div>
 										<div class="page-item">
@@ -303,6 +304,7 @@ Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.strea
 													last=0; %>
 													<input class="page-link" type="submit" value="Next" <%if(last==0){ %><%="disabled"%><%} %> />
 													<input type="hidden" name="pagination" value=<%=pagin+1 %> />
+													<input type="hidden" name="slno" value="<%=slno%>">
 											</form>
 										</div>
 								</div>

@@ -13,7 +13,11 @@ public class CommitteeMembersDto {
 	private String ExternalLabCode;
 	private String[] ExpertMemberIds;
 	private String CreatedBy;
-	
+	// Prudhvi 27/03/2024
+	/* ------------------ start ----------------------- */
+	private String[] IndustrialPartnerRepIds;
+	private String IndustrialPartnerLabCode;
+	/* ------------------ end ----------------------- */
 	
 	
 	

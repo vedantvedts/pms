@@ -340,6 +340,7 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Industry Partner<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	
@@ -382,6 +383,7 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Industry Partner<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	
@@ -433,6 +435,7 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Industry Partner<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
 					%>
 		 		</td>	
@@ -482,6 +485,7 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Industry Partner<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	

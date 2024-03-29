@@ -348,6 +348,10 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+			 			// Prudhvi - 27/03/2024 start
+			 			else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CIP") )    {%>Industry Partner<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Addl. Industry Partner<%}
+						// Prudhvi - 27/03/2024 end
 						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	
@@ -390,6 +394,10 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+			 			// Prudhvi - 27/03/2024 start
+			 			else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CIP") )    {%>Industry Partner<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Addl. Industry Partner<%}
+						// Prudhvi - 27/03/2024 end
 						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	
@@ -441,6 +449,10 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+			 			// Prudhvi - 27/03/2024 start
+			 			else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CIP") )    {%>Industry Partner<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Addl. Industry Partner<%}
+						// Prudhvi - 27/03/2024 end
 						else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
 					%>
 		 		</td>	
@@ -490,6 +502,10 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+			 			// Prudhvi - 27/03/2024 start
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CIP") )    {%>Industry Partner<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Addl. Industry Partner<%}
+						// Prudhvi - 27/03/2024 end
 						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	

@@ -2969,5 +2969,23 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		List<Object[]> MomReportList=(List<Object[]>)query.getResultList();
 		return MomReportList;
 	}
+
+	// Prudhvi 27/03/2024
+	/* ------------------ start ----------------------- */
+	private static final String INDUSTRYPARTNERREPLISTINVITATIONS ="SELECT a.IndustryPartnerRepId,a.RepName,'00' AS EmpNo,a.RepDesignation,'00' AS DesigId FROM pfms_industry_partner_rep a,pfms_industry_partner b WHERE a.IndustryPartnerId=b.IndustryPartnerId AND b.IndustryPartnerId=:IndustryPartnerId AND a.IsActive=1 AND a.IndustryPartnerRepId NOT IN (SELECT empid  FROM committee_member WHERE  CommitteeMainId=:CommitteeMainId AND labcode='@IP')";
+	@Override
+	public List<Object[]> IndustryPartnerRepListInvitationsMainMembers(String industryPartnerId, String committeemainid) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(INDUSTRYPARTNERREPLISTINVITATIONS);
+			query.setParameter("IndustryPartnerId", industryPartnerId);
+			query.setParameter("CommitteeMainId", committeemainid);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+		
+	}
+	/* ------------------ end ----------------------- */
 }
 

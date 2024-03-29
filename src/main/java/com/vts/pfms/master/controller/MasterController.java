@@ -1340,7 +1340,9 @@ public class MasterController {
 				//req.setAttribute("IndustryPartnerList", service.industryPartnerList());
 				
 				String pagination = req.getParameter("pagination");
+				String slno = req.getParameter("slno");
 				int pagin = Integer.parseInt(pagination!=null?pagination:"0");
+				int sln = Integer.parseInt(slno!=null?slno:"0");
 
 				/* fetching actual data */
 				List<Object[]> IndustryPartnerList = service.industryPartnerList();
@@ -1368,21 +1370,23 @@ public class MasterController {
 				}
 
 				/* search action ends */
-				int p = IndustryPartnerList.size()/6;
-				int extra = IndustryPartnerList.size()%6;
+				int p = IndustryPartnerList.size()/10;
+				int extra = IndustryPartnerList.size()%10;
 				if(arrayList.size()==0) arrayList=IndustryPartnerList;
 
 				/* pagination process starts */
-
+				System.out.println(sln);
 				if(pagin>0 && pagin<(p+(extra>0?1:0)))
 				{
 					req.setAttribute("pagination", pagin);
-					arrayList = arrayList.subList(pagin*6, ((pagin*6)+6)<arrayList.size()?((pagin*6)+6):arrayList.size());
+					req.setAttribute("slno", sln);
+					arrayList = arrayList.subList(pagin*10, ((pagin*10)+10)<arrayList.size()?((pagin*10)+10):arrayList.size());
 				}
 				else
 				{
-					arrayList = arrayList.subList(0, arrayList.size()>=6?6:arrayList.size());
+					arrayList = arrayList.subList(0, arrayList.size()>=10?10:arrayList.size());
 					req.setAttribute("pagination", 0);
+					req.setAttribute("slno", 0);
 					pagin=0;
 				}
 

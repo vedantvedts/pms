@@ -285,6 +285,45 @@ h5,h6{
 									
 								</div>
 								<%} %>
+																
+								<!-- Prudhvi - 27/03/2024 start-->
+								<%if(committeeallmemberlist.size()>(count+count1)){ %>
+								
+									<div  class="col-md-4">
+									
+									<h5>Industry Partner</h5>
+										<hr>						
+									 <table border='0'>
+									 	
+									 	<tbody>
+											<%int count2 = 0;
+												for(int i=0;i<committeeallmemberlist.size();i++){
+													Object[] obj=committeeallmemberlist.get(i);
+													if(obj[8].toString().equalsIgnoreCase("CIP")){
+													count2++;	
+												%>
+												<tr>
+													<td class="tdclass"><%=count2%> )</td> 
+													<td><%=obj[2]%> (<%= obj[4]%>) (<%= obj[9]%>)
+														<input type="hidden" name="empid" value="<%=obj[5]%>,CIP,<%=obj[3]%>">
+														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
+													</td>						
+																																										
+												</tr>
+															
+												<% }
+												}%>
+										</tbody>
+			
+										
+									</table>						
+									<br>	
+									
+								</div>
+								<%} %>
+								<!-- Prudhvi - 27/03/2024 end-->
+								
+								
 							</div>
 							<div class="row">
 								<div class="col-md-6">

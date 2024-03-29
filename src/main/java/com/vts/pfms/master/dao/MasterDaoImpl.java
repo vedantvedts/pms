@@ -716,7 +716,7 @@ public class MasterDaoImpl implements MasterDao {
 		return null;
 	}
 	
-	public static final String INDUSTRYPARTNERLIST="SELECT a.IndustryPartnerId,a.IndustryName,a.IndustryAddress,b.IndustryPartnerRepId,b.RepName,b.RepDesignation,b.RepMobileNo,b.RepEmail,b.IsActive,a.IndustryCity,a.IndustryPinCode FROM pfms_industry_partner a, pfms_industry_partner_rep b WHERE a.IndustryPartnerId=b.IndustryPartnerId AND a.IsActive=1 ORDER BY a.IndustryPartnerId DESC";
+	public static final String INDUSTRYPARTNERLIST="SELECT a.IndustryPartnerId,a.IndustryName,a.IndustryAddress,b.IndustryPartnerRepId,b.RepName,b.RepDesignation,b.RepMobileNo,b.RepEmail,b.IsActive,a.IndustryCity,a.IndustryPinCode FROM pfms_industry_partner a, pfms_industry_partner_rep b WHERE a.IndustryPartnerId=b.IndustryPartnerId AND a.IsActive=1 ORDER BY a.IndustryPartnerId DESC, b.IndustryPartnerRepId ASC";
 	@Override
 	public List<Object[]> industryPartnerList() throws Exception{
 		try {
