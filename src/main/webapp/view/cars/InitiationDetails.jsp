@@ -674,7 +674,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Major Requirements</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor4" onclick="showTableMajorReqr('<%=carsInitiationId%>')">
+												id="btnEditor4" onclick="showTableMajorReqr('Major Requirements')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -687,7 +687,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Deliverables</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor5" onclick="showTableDeliverables('<%=carsInitiationId%>')">
+												id="btnEditor5" onclick="showTableDeliverables('Deliverables')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -1609,7 +1609,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Major Requirements</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor14" onclick="showTableMajorReqr2('<%=carsInitiationId%>')">
+												id="btnEditor14" onclick="showTableMajorReqr2('Major Requirements')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -1622,7 +1622,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Deliverables</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor15" onclick="showTableDeliverables2('<%=carsInitiationId%>')">
+												id="btnEditor15" onclick="showTableDeliverables2('Deliverables')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -1635,7 +1635,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Milestones & Timelines</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor16" onclick="showTableMilestones2('<%=carsInitiationId%>')">
+												id="btnEditor16" onclick="showTableMilestones2('Proposed Milestones Timelines')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -3373,12 +3373,14 @@ function showEditor2(a){
   			$('#col4').hide();
 			$('#col5').show();
 			$('#col6').hide();
+			$('#col8').hide();
   		}
   		
   		function showTableDeliverables2(b){
   			$('#col4').hide();
 			$('#col5').hide();
 			$('#col6').show();
+			$('#col8').hide();
   		}
   		
   		function showTableMilestones2(b){
