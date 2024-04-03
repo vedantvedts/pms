@@ -427,6 +427,8 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 											    					<%=obj[12] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 											    				</button>
 											    			<%} %>
+											    			
+											    			
 	                                        			</form>
 	                                        		<%} else{%>
 	                                        			<button type="button" class="btn btn-sm btn-link w-100 btn-status" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: violet; font-weight: 600;" formtarget="_blank">
@@ -535,6 +537,17 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 												    			<%} %>
 												    			<%} %>
 												    			
+												    			
+												    			<button class="editable-clicko" name="" value="<%=obj[14] %>" formaction="ProjectClosureCheckList.htm" formmethod="post" >
+																	<div class="cc-rockmenu">
+																		<div class="rolling">
+																			<figure class="rolling_icon">
+																				<img src="view/images/checklist.png" style="width: 22px !important;">
+																			</figure>
+																			<span>Check List</span>
+																		</div>
+																	</div>
+												    			</button>
 		                                        		</form>
 													</div>
 												</div>

@@ -1269,4 +1269,25 @@ public class ProjectClosureController {
 
 	}
 	
+	@RequestMapping(value="ProjectClosureCheckList.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String ProjectClosureCheckList(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside ProjectClosureCheckList.htm "+UserId);
+		try {
+			
+			
+			
+			return "project/ProjectClosureCheckListAdd";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectClosureCheckList.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
+	
 }
