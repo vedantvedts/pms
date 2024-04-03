@@ -2213,7 +2213,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 										  	 	 <th class="std" style="border: 1px solid black;width:150px;">Demand No <br>Demand  Date</th>
 										  	 	<!--  <th class="std" style="border: 1px solid black;" >Demand  Date</th> -->
 												 <th class="std" colspan="2" style="border: 1px solid black;"> Nomenclature</th>
-												 <th class="std"  style=" border: 1px solid black;width: 150px;">Supply Order No </th>
+												 <th class="std"  style=" border: 1px solid black;width: 150px;">Supply Order No <br> SO Date </th>
 												 <th class="std"  colspan="1" style="border: 1px solid black;width:100px">SO Cost-Lakh &#8377;</th>
 												<!--  <th class="std" style="border: 1px solid black;max-width:90px;	">DP Date</th> -->
 													 <th class="std" style="border: 1px solid black;width:100px;">DP Date<br> Rev DP</th>
@@ -2254,7 +2254,9 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 					<%=obj[8]%>
 					<%} %>
 					</td>
-				<td style="border: 1px solid black;text-align: center;"><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %></td>
+				<td style="border: 1px solid black;text-align: center;"><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %><br>
+					<%if(obj[16]!=null){%> <%=sdf.format(sdf1.parse(obj[16].toString()))%> <%}else{ %> - <%} %>
+				</td>
 				<td style="border: 1px solid black;text-align: right"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>
 				<td style="border: 1px solid black;">
 				<%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %><br>
