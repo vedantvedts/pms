@@ -942,7 +942,7 @@ for(Object[] temp : invitedlist){
 										  	 	 <th class="std" style="border: 1px solid black;width:150px;">Demand No <br>Demand  Date</th>
 										  	 	<!--  <th class="std" style="border: 1px solid black;" >Demand  Date</th> -->
 												 <th class="std" colspan="2" style="border: 1px solid black;"> Nomenclature</th>
-												  	<th class="std"  style=" border: 1px solid black;width: 150px;">Supply Order No </th>
+												  	<th class="std"  style=" border: 1px solid black;width: 150px;">Supply Order No <br> Order Date</th>
 												  <th class="std"  colspan="1" style="border: 1px solid black;width:100px">SO Cost-Lakh &#8377;</th>
 												<!--  <th class="std" style="border: 1px solid black;max-width:90px;	">DP Date</th> -->
 												  <th class="std" style="border: 1px solid black;width:100px;">DP Date  <br>Rev DP</th>
@@ -983,7 +983,9 @@ for(Object[] temp : invitedlist){
 					<%=obj[8]%>
 					<%} %>
 					</td>
-						<td style="border: 1px solid black;text-align: center;"><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> 
+						<td style="border: 1px solid black;text-align: center;">
+						<% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> <br>
+						<%if(obj[14]!=null){%> <%=sdf.format(sdf1.parse(obj[14].toString()))%> <%}else{ %> - <%} %>
 					</td>
 						<td style="border: 1px solid black;text-align: right"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>
 					<td style="border: 1px solid black;">
