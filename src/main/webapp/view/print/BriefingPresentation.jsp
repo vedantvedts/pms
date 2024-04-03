@@ -2166,8 +2166,198 @@ System.out.println(todayDate+"---");
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
 					<% } %>
+					
+									<table class="subtables" style=" margin-left: 8px;margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+										<thead>
+										<tr>
+											<th colspan="11" style="text-align: right;"> <span class="currency" >(In &#8377; Lakhs)</span></th>
+										</tr>
+										 <tr>
+										 	<th colspan="11" class="std">Demand Details ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
+													<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
+												
+											</th>
+										</tr>
+										</thead>
+										
+										<tr>
+											<th class="std" style="border: 1px solid black;width: 30px !important;">SN</th>
+											<th class="std" style="border: 1px solid black;max-width:90px;">Demand No<br>Demand Date</th>
+<!-- 											<th class="std" style="border: 1px solid black;max-width:90px; ">Demand Date</th>
+ -->											<th class="std" colspan="4" style="border: 1px solid black;max-width: 150px;"> Nomenclature</th>
+											<th class="std" style="border: 1px solid black;max-width:90px;"> Est. Cost</th>
+											<th class="std" style="border: 1px solid black;max-width:80px; "> Status</th>
+											<th class="std" colspan="3" style="border: 1px solid black;max-width:200px;">Remarks</th>
+										</tr>
+										    <% int k=0;
+										    if(procurementOnDemand.get(z)!=null &&  procurementOnDemand.get(z).size()>0){
+										    Double estcost=0.0;
+										    Double socost=0.0;
+										    for(Object[] obj : procurementOnDemand.get(z)){ 
+										    	k++; %>
+											<tr>
+												<td class="std"  style=" border: 1px solid black;"><%=k%></td>
+												<td class="std"  style=" border: 1px solid black;"><%=obj[1]%><br><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
+<%-- 												<td class="std"  style=" border: 1px solid black;"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
+ --%>												<td class="std" colspan="4" ><%=obj[8]%></td>
+												<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
+												<td class="std"  style=" border: 1px solid black;"> <%=obj[10]%> </td>
+												<td class="std" colspan="3" style=" border: 1px solid black;"><%=obj[11]%> </td>		
+											</tr>		
+											<%
+											estcost += Double.parseDouble(obj[5].toString());
+										    }%>
+										    
+										    <tr>
+										    	<td class="std" colspan="8" style="text-align: right;"><b>Total</b></td>
+										    	<td class="std" style="text-align: right;"><b><%=df.format(estcost)%></b></td>
+										    	
+										    	<td class="std" colspan="2" style="text-align: right;"></td>
 
-					<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse: collapse;">
+										    </tr>
+										    
+										    
+										    <% }else{%>											
+												<tr><td colspan="11" style="border: 1px solid black;text-align: center;" class="std" >Nil </td></tr>
+											<%} %>
+											<!-- ********************************Future Demand Start *********************************** -->
+											<tr>
+											<th class="std" colspan="11" style="border: 1px solid black"><span class="mainsubtitle">Future Demand</span></th>
+											</tr>
+											<tr>
+												 <th class="std" style="border: 1px solid black;width: 15px !important;text-align: center;">SN</th>
+													 <th class="std"  colspan="4" style="border: 1px solid black;;width: 295px;"> Nomenclature</th>
+													 <th class="std" style="border: 1px solid black;width: 80px;"> Est. Cost-Lakh &#8377;</th>
+													 <th class="std" style="border: 1px solid black;max-width:50px; "> Status</th>
+													 <th class="std" colspan="4" style="border: 1px solid black;max-width: 310px;">Remarks</th>
+											</tr>
+										
+										    			    <% int a=0;
+										    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
+										    Double estcost=0.0;
+										    Double socost=0.0;
+										    for(Object[] obj : envisagedDemandlist){ 
+										    	a++; %>
+											<tr>
+												<td class="std"  style=" border: 1px solid black;"><%=a%></td>
+												<td class="std" colspan="4" style="border: 1px solid black;" ><%=obj[3]%></td>
+												<td class="std" style="border: 1px solid black; text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
+												<td class="std"  style=" border: 1px solid black;"> <%=obj[6]%> </td>
+												<td class="std" colspan="4" style="border: 1px solid black;"><%=obj[4]%> </td>		
+											</tr>		
+											<%
+												estcost += Double.parseDouble(obj[2].toString());
+										    }%>
+										    
+										    <tr>
+										    	<td  class="std"colspan="7" style="border: 1px solid black;text-align: right;"><b>Total</b></td>
+										    	<td class="std" style="border: 1px solid black;text-align: right;" colspan="4"><b><%=df.format(estcost)%></b></td>
+										    </tr>
+										    
+										    
+										    <% }else{%>											
+												<tr><td colspan="11" style="border: 1px solid black;text-align: center;" class="std" >Nil </td></tr>
+											<%} %>
+											
+									<!-- ********************************Future Demand End *********************************** -->
+											
+											 <tr >
+											 
+												<th  class="std"  colspan="11">Orders Placed ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
+													<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
+												</th>
+											 </tr>
+										
+										  	 <tr>	
+										  	 	 <th class="std" rowspan="1" style="border: 1px solid black;width: 30px !important;">SN</th>
+										  	 	 <th class="std" style="border: 1px solid black;width:150px;">Demand No <br>Demand  Date</th>
+										  	 	<!--  <th class="std" style="border: 1px solid black;" >Demand  Date</th> -->
+												 <th class="std" colspan="2" style="border: 1px solid black;"> Nomenclature</th>
+												 <th class="std"  style=" border: 1px solid black;width: 150px;">Supply Order No </th>
+												 <th class="std"  colspan="1" style="border: 1px solid black;width:100px">SO Cost-Lakh &#8377;</th>
+												<!--  <th class="std" style="border: 1px solid black;max-width:90px;	">DP Date</th> -->
+													 <th class="std" style="border: 1px solid black;width:100px;">DP Date<br> Rev DP</th>
+												 <th class="std" colspan="2" style="border: 1px solid black;width: 200px;">Vendor Name</th>
+												 <th class="std" style="border: 1px solid black;max-width:80px; "> Status</th>
+												<th class="std" style="border: 1px solid black;width:200px; "> Remarks</th>
+												</tr>
+											
+											
+											<%if(procurementOnSanction.get(z)!=null && procurementOnSanction.get(z).size()>0){ 
+												  int rowk=0;
+										    	  Double estcost=0.0;
+												  Double socost=0.0;
+												  String demand="";
+												  List<Object[]> list = new ArrayList<>();
+												  for(Object[] obj:procurementOnSanction.get(z)){ 
+													if(obj[2]!=null){
+														if(!obj[1].toString().equalsIgnoreCase(demand)){
+															rowk++;
+											  	 		 	 list = procurementOnSanction.get(z).stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+														}
+													}
+													  
+											%>
+					<tr>
+					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>  style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
+					<%=rowk %>
+					<%} %>
+					</td>
+					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %><%if(obj[1]!=null) {%> <%=obj[1].toString()%><% }else{ %>-<%} %><br>
+					<%=sdf.format(sdf1.parse(obj[3].toString()))%>
+					<%} %>
+					</td>
+					<td colspan="2" <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
+					<%=obj[8]%>
+					<%} %>
+					</td>
+				<td style="border: 1px solid black;text-align: center;"><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %></td>
+				<td style="border: 1px solid black;text-align: right"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>
+				<td style="border: 1px solid black;">
+				<%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %><br>
+				<span style="text-align: center"><%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></span>	</td>
+					<td colspan="2" style="border: 1px solid black;"><%=obj[12] %> </td>
+					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+						<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
+					<%=obj[10]%>
+					<%} %>
+					
+					</td>					
+					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+						<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
+					<%=obj[11].toString()%>
+					<%} %>
+					
+					</td>
+					
+					
+					</tr>
+											<%
+											demand = obj[1].toString();
+											Double value = 0.00;
+								  	 		if(obj[6]!=null){
+								  	 			value=Double.parseDouble(obj[6].toString());
+								  	 		}
+								  	 		
+								  	 		estcost += Double.parseDouble(obj[5].toString());
+								  	 		socost +=  value;
+											}
+											%>
+											
+												<tr>
+										    	<td colspan="5" class="std" style="text-align: right;border: 1px solid black;"><b>Total</b></td>
+										    	<td colspan="1" class="std" style="text-align: right;border: 1px solid black;"><b><%=df.format(socost)%></b></td>
+										    	<td colspan="5" class="std" style="text-align: right;border: 1px solid black;"></td>
+										   		 </tr>	
+										 <% }else{%>
+											
+												<tr><td colspan="8" style="border: 1px solid black;" class="std"  style="text-align: center;">Nil </td></tr>
+											<%} %>
+									</table> 
+			<%-- <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse: collapse;">
 						<thead>
 							<tr>
 								<th colspan="8"><span class="mainsubtitle">Demand Details ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
@@ -2357,7 +2547,7 @@ System.out.println(todayDate+"---");
 							<td colspan="8" style="text-align: center;">Nil</td>
 						</tr>
 						<% } %>
-					</table>
+					</table>  --%>
 
 					
 
