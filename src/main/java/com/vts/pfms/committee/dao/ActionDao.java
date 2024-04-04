@@ -14,6 +14,7 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
 import com.vts.pfms.committee.model.RfaAttachment;
+import com.vts.pfms.committee.model.RfaCC;
 import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.model.RfaTransaction;
 
@@ -151,8 +152,8 @@ public interface ActionDao {
 	public long updateRfaAttachment(RfaAttachment rfaAttach)throws Exception;
 	public long RfaAssignInsert(RfaAssign assign)throws Exception;
 	public List<Object[]> AssigneeEmpList()throws Exception;
-	public Long UpdateAssigneeData(String string)throws Exception;
-	public List<String> CCAssigneeList(String rfaid)throws Exception;
+	public Long UpdateAssigneeData(String rfaid)throws Exception;
+//	public List<String> CCAssigneeList(String rfaid)throws Exception;
 	public List<String> CCAssignorList(String rfaid)throws Exception;
 	public int RfaActionUpdate(String rfaId)throws Exception;
 	public Long updateRfaTransaction(RfaTransaction tr)throws Exception;
@@ -174,4 +175,9 @@ public interface ActionDao {
 	public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId)throws Exception;
 	public List<String> rfaMailSend(String rfa)throws Exception;
 	public Object[] rodShortName(String scheduleid) throws Exception;
+	public List<Object[]> getRfaType()throws Exception;
+	public long rfaCCInsert(RfaCC rfaCC)throws Exception;
+	public Long updateRfaCC(String rfaid)throws Exception;
+	public List<Object[]> RfaCCList()throws Exception;
+	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate);
 }

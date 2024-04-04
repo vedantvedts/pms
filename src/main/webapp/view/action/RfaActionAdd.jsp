@@ -47,6 +47,7 @@ List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> ProjectTypeList=(List<Object[]>)request.getAttribute("ProjectTypeList");
 List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList");
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
+List<Object[]> RfaNoTypeList=(List<Object[]>)request.getAttribute("RfaNoTypeList");
 String EmpId=(String)request.getAttribute("EmpId");
 
 %>
@@ -83,6 +84,21 @@ String EmpId=(String)request.getAttribute("EmpId");
 			  							
 		                        </div>
 		                    </div>
+		                    
+		                  <div class="col-md-2">
+		                     <div class="form-group">
+		                            <label class="control-label"> RFA Type</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <select class="form-control selectdee" required="required" name="rfanotype" id="rfanotype" data-placeholder= "Select Type">                   
+		                            <% if(RfaNoTypeList!=null && RfaNoTypeList.size()>0){
+		                            for(Object[] obj : RfaNoTypeList) { %>
+		                            <option value="<%=obj[0]%>"><%=obj[1]%></option>
+		                            <%}} %>
+		                           </select>
+		                           <!--  <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" > -->	
+		                      </div>
+		                   </div> 
+		                
 
 		                    <div class="col-md-2">
 		                        <div class="form-group">
@@ -101,7 +117,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                     <div class="form-group">
 		                            <label class="control-label">Assigned To</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                      <select class="form-control selectdee" required="required" name="assignee" id="assignee" multiple="multiple" data-placeholder= "Select Employees">                   
+		                         <select class="form-control selectdee" required="required" name="assignee" id="assignee" multiple="multiple" data-placeholder= "Select Employees">                   
 		                         <% for(Object[] obj : EmployeeList) { %>
 		                         <option value="<%=obj[0]%>"><%=obj[1]%> , <%=obj[2]%></option>
 		                         <%} %>
@@ -109,21 +125,25 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                  </div>
 		                </div> 
 		                
-		                 <div class="col-md-3">
-		                     <div class="form-group">
-		                            <label class="control-label"> RFA No.</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                            <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" >	
-		                  </div>
-		                </div> 
-		                
-		                  <div class="col-md-2">
+		                  <div class="col-md-1">
 		                       <div class="form-group">
 		                            <label class="control-label">RFA Date</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  required="required">						
+						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1"
+						  			 name="rfadate"  required="required" style="width: 110%;">						
 		                        </div>
 		                  </div>   
+		                  
+		                   <div class="col-md-2">
+		                     <div class="form-group">
+		                         <label class="control-label">CC To</label>
+		                         <select class="form-control selectdee" name="CCEmpName" id="CCEmpName" multiple="multiple" data-placeholder= "Select Employees">                   
+		                         <% for(Object[] obj : EmployeeList) { %>
+		                         <option value="<%=obj[0]%>"><%=obj[1]%> , <%=obj[2]%></option>
+		                         <%} %>
+		                      </select>
+		                  </div>
+		                </div> 
 		            
 		          </div>
 		                   

@@ -104,7 +104,7 @@ String tdate=(String)request.getAttribute("tdate");
 String LoginType=(String)request.getAttribute("LoginType");
 String UserId=(String)request.getAttribute("UserId");
 String Status = (String)request.getAttribute("Status");
-List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
+List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 
 
 %>
@@ -250,15 +250,20 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 													</div>
 		                                                  
 												</button> 
-			 			 <%if(obj[11].toString().equalsIgnoreCase(UserId)&& toUserStatus.contains(obj[14].toString()) ){ %>
-			 			 <button class="btn bg-transparent" formaction="RfaActionEdit.htm" formmethod="post" type="submit" name="Did" value="<%=obj[0].toString() %>" onclick="" 
-			 				data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="EDIT" >
-			 			 <i class="fa fa-lg fa-pencil-square-o" style="color:orange" aria-hidden="true"></i>
-			 			 </button><%} %>
-												<input type="hidden"   /> <input
-												type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}" />
-					                       <%
+												<%if(obj[11].toString().equalsIgnoreCase(UserId) && toUserStatus.contains(obj[14].toString())) {
+                                                %>
+												<button class="btn bg-transparent"
+													formaction="RfaActionEdit.htm" formmethod="post"
+													type="submit" name="Did" value="<%=obj[0].toString()%>"
+													onclick="" data-toggle="tooltip" data-placement="top"
+													data-original-data="" title="" data-original-title="EDIT">
+													<i class="fa fa-lg fa-pencil-square-o"
+														style="color: orange" aria-hidden="true"></i>
+												</button>
+												<%
+												}
+												%> <input type="hidden" /> <input type="hidden"
+												name="${_csrf.parameterName}" value="${_csrf.token}" /> <%
 					                       if(obj[11].toString().equalsIgnoreCase(UserId) && toUserStatus.contains(obj[14].toString())){%>
 				                         <button class="editable-click"  style="background-color: transparent; name="rfa" value="<%=obj[0]%>" 
 											type="button"	data-toggle="tooltip" data-placement="top" id="rfaCloseBtn" 
@@ -294,7 +299,8 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 													onclick="return rfaRemarks(<%=obj[0]%>,'<%=obj[14]%>')">
 													<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
-											 <%} if(obj[14].toString().equalsIgnoreCase("AP") && obj[15].toString().equalsIgnoreCase(EmpId)){%>  
+											 <%} %>
+											 <%-- if(obj[14].toString().equalsIgnoreCase("AP") && obj[15].toString().equalsIgnoreCase(EmpId)){
 											 	<button type="submit" class="editable-click"  style="background-color: transparent;" 
 											formaction="RfaActionForward.htm" formmethod="POST" formnovalidate="formnovalidate"
 												name="RFAID" value="<%=obj[0]%>" 
@@ -311,7 +317,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 											</button>
 											<input type="hidden" name="rfaoptionby" value="ARC" >
 											<%} %>
-											
+											 --%>
 											
 											</td>
 											
@@ -543,7 +549,7 @@ function returnRfa(rfaId,RfaStatus,createdBy) {
 	$('#rfaHidden').val(rfaId);
 	$('#RfaStatusHidden').val(RfaStatus);
 	$('#assignorId').val(createdBy);
-	  var confirmation = confirm('Are You Sure To Return this RFA ?');
+	  var confirmation = confirm('Are You Sure To Revoke this RFA ?');
 	  if(confirmation){
 		  var form = document.getElementById("myFrom");
 		   

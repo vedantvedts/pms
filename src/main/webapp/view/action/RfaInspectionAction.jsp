@@ -104,7 +104,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 String UserId=(String)request.getAttribute("UserId");
 String rfaCount=(String) request.getAttribute("rfaCount");
 List<String> toAssigneRevokeStatus  = Arrays.asList("RFA","AY");
-List<String> forwardAllow = Arrays.asList("RP","RR","RE","AAA");
+List<String> forwardAllow = Arrays.asList("RP","RR","RE","AAA","REK");
 List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 %>
 
@@ -182,16 +182,12 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													formtarget="_blank">
 													<div class="cc-rockmenu">
 														<div class="rolling">
-															<figure class="rolling_icon" style="margin: 0px;
-    outline: 0px!important;
-    background: transparent;
-    padding: 0px;">
+															<figure class="rolling_icon"
+																style="margin: 0px; outline: 0px !important; background: transparent; padding: 0px;">
 																<img src="view/images/preview3.png">
 															</figure>
 														</div>
-
 													</div>
-
 												</button> 
 												<%if(obj[10].toString().equalsIgnoreCase("AV")){ %>
 														<button title="ADD"  data-original-title="ADD" class="editable-click" name="sub" type="button"
@@ -199,15 +195,14 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													onclick="showModel('<%=obj[3].toString()%>',<%=obj[0].toString()%>)">
 													<div class="cc-rockmenu">
 														<div class="rolling">
-															<figure class="rolling_icon"  style="margin: 0px;
-    outline: 0px!important;
-    background: transparent;
-    padding: 0px;">
+															<figure class="rolling_icon"
+																style="margin: 0px; outline: 0px !important; background: transparent; padding: 0px;">
 																<img src="view/images/assign.jpg">
 															</figure>
 														</div>
 													</div>
 												</button>
+												
 												<%} %>
 												 <input type="hidden"
 												name="${_csrf.parameterName}" value="${_csrf.token}" /> <input
@@ -225,10 +220,8 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													 value="<%=obj[0]%>"
 													 onclick="forwardmodal('<%=obj[3]%>','<%=obj[0]%>')">
 													<div class="cc-rockmenu">
-														<figure class="rolling_icon" style="margin: 0px;
-    outline: 0px!important;
-    background: transparent;
-    padding: 0px;">
+														<figure class="rolling_icon"
+															style="margin: 0px; outline: 0px !important; background: transparent; padding: 0px;">
 															<img src="view/images/forward1.png">
 														</figure>
 													</div>
@@ -242,10 +235,8 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													onclick="showdata(<%=obj[0].toString()%>,'<%=obj[3].toString()%>')">
 													<div class="cc-rockmenu">
 														<div class="rolling">
-															<figure class="rolling_icon" style="margin: 0px;
-    outline: 0px!important;
-    background: transparent;
-    padding: 0px;" >
+															<figure class="rolling_icon"
+																style="margin: 0px; outline: 0px !important; background: transparent; padding: 0px;">
 																<img src="view/images/edit.png">
 															</figure>
 														</div>
@@ -258,26 +249,38 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													formnovalidate="formnovalidate" name="rfa" id="rfaRevokeBtn"
 													value="<%=obj[0]%>"
 													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[10]%>','<%=obj[9]%>')">
-													
-														
-														<i class="fa fa-backward" aria-hidden="true" style="color: #007bff; font-size: 24px; position: relative; top: 5px;"></i>
-													
+
+													<i class="fa fa-backward" aria-hidden="true"
+														style="color: #007bff; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
-												<%} %>
-												<%--  if(obj[15]!=null){
-												 if(Integer.valueOf(obj[15].toString())>0){ %>  
-												 	<button title="REMARKS" class="editable-click" name="sub" type="button"
+												<input type="hidden" name="revoke" value="Y">
+												<%} %> 
+											
+												 <%if(obj[10].toString().equalsIgnoreCase("AV")){%> 
+												<button class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
-													formaction="RemarksList.htm" formmethod="POST"
-													formnovalidate="formnovalidate" name="rfa" id="rfaRemarksBtn"
-													value="<%=obj[0]%>"
-													onclick="return rfaRemarks(<%=obj[0]%>,'<%=obj[14]%>')">
-													
-														
-														<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
-													
+													formaction="#" formmethod="POST"
+													formnovalidate="formnovalidate" name="rfa"
+													value="<%=obj[0]%>" id="rfaReturnBtn"
+													onclick="returnRfaAssignee(<%=obj[0]%>,'<%=obj[10]%>','<%=obj[17]%>');">
+														<i class="fa fa-backward" aria-hidden="true" style="color: red; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
-												<% }} %> --%>
+												 <%} %>
+												 
+												<%if (obj[16] != null) {
+													if (Integer.valueOf(obj[16].toString()) > 0) { %>
+												<button title="REMARKS" class="editable-click" name="sub"
+													type="button" value=""
+													style="background-color: transparent;"
+													formaction="RemarksList.htm" formmethod="POST"
+													formnovalidate="formnovalidate" name="rfa"
+													id="rfaRemarksBtn" value="<%=obj[0]%>"
+													onclick="return rfaRemarks(<%=obj[0]%>,'<%=obj[14]%>')">
+
+													<i class="fa fa-comment" aria-hidden="true"
+														style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
+												</button> 
+												<%}}%>
 											</td>
 										</tr>
 										<%}} %>
@@ -287,7 +290,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 						</div>
 						<input type="hidden" name="rfa" id="rfaHidden">
 						<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
-						<input type="hidden" name="assigneed" id="assigneedHidden">
+						<input type="hidden" name="assignee" id="assigneedHidden">
 					</form>
 					</div>
 					</div>
@@ -361,15 +364,6 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 			                    		</div>
 					                    </div>
 					                    </div>
-										<!-- <div class="row">
-											<div class="col-md-12" id="textarea" >
-												<div class="form-group">
-													<textarea required="required" name="clarification"
-														class="form-control" maxlength="1000" id="clarification"
-														rows="5" cols="53" placeholder="Maximum 1000 Chararcters"></textarea>
-												</div>
-											</div>
-										</div> -->
 									</div>
 									
 									<div class=col-md-12>
@@ -425,48 +419,49 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 		<!-- -- ******************************************************************Assign  Model End ***********************************************************************************-->
 
 	<!-- -- ******************************************************************Remarks  Model Start ***********************************************************************************-->
-<form class="form-horizontal" role="form"
-			action="#" method="POST" id="returnFrm" autocomplete="off">
-			<div class="modal fade bd-example-modal-lg" id="rfaRemarksmodal"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="width: 100%; position: relative; " >
-						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
-							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA Remarks</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div style="height: 300px; overflow: auto;">
-							<div class="modal-body">
-							
-		<div class="form-inline" >
-		<table class=" table-hover table-striped remarksDetails " style="width: 100%;"  >
-		<tbody id="remarksTb"></tbody>
-							</table>
+	<form class="form-horizontal" role="form" action="#" method="POST"
+		id="returnFrm" autocomplete="off">
+		<div class="modal fade bd-example-modal-lg" id="rfaRemarksmodal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq"
+					style="width: 100%; position: relative;">
+					<div class="modal-header" id="modalreqheader"
+						style="background-color: #021B79">
+						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA
+							Remarks</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div style="height: 300px; overflow: auto;">
+						<div class="modal-body">
 
-				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
- 		<input type="hidden" name="rfa" id="rfaHidden">
- 		<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
-    
-        
+							<div class="form-inline">
+								<table class=" table-hover table-striped remarksDetails "
+									style="width: 100%;">
+									<tbody id="remarksTb"></tbody>
+								</table>
 
-        
-        
-	</div>
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden" name="rfa"
+									id="rfaHidden"> <input type="hidden" name="RfaStatus"
+									id="RfaStatusHidden">
 
-	
 							</div>
+
+
 						</div>
 					</div>
+				</div>
 
-				</div>
-				</div>
-		
-		</form>
-		
+			</div>
+		</div>
+
+	</form>
+
 	<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
 				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
@@ -515,9 +510,68 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 						</div>
 					</div>
 				</div>
-		
-		
-<script>
+				
+				
+<!-- Return Modal Remarks Start -->	
+
+	<form class="form-horizontal" role="form"
+		action="RfaActionReturnList.htm" method="POST" id="returnFrm"
+		autocomplete="off">
+		<div class="modal fade bd-example-modal-lg" id="rfaReturnmodal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-md">
+				<div class="modal-content addreq"
+					style="height: 20rem; width: 150%; margin-left: -22%; position: relative;">
+					<div class="modal-header" id="modalreqheader"
+						style="background-color: #021B79">
+						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA
+							Return</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div style="height: 530px; overflow: auto;">
+						<div class="modal-body">
+							<div class="row" style="" id="mainrow">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-3" style="max-width: 18%">
+											<label class="control-label returnLabel">Reply</label> <span
+												class="mandatory" style="color: #cd0a0a;">*</span>
+										</div>
+										<div class="col-md-10" style="max-width: 82%">
+											<textarea class="form-control" rows="3" cols="30"
+												placeholder="Max 500 Characters" name="replyMsg"
+												id="replyMsg" maxlength="500" required></textarea>
+										</div>
+									</div>
+									<br>
+									<div class="form-group" align="center">
+										<span id="btnsub"><button type="submit"
+												class="btn btn-primary btn-sm submit" id="submit"
+												value="SUBMIT"
+												onclick="return confirm('Are you sure to return?')">SUBMIT</button></span>
+									</div>
+
+									<input type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden" name="rfa"
+										id="rfaIdHidden"> <input type="hidden" name="RfaStatus"
+										id="StatusHidden"> <input type="hidden"
+										name="assignor" id="assignorHidden">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+ <!-- Return Modal Remarks End -->	
+
+	<script>
 
 $("#myTable1,#myTable2").DataTable({
     "lengthMenu": [ 5,10,20,50,75,100],
@@ -695,10 +749,19 @@ $('#observation,#clarification,#action').keyup(function (){
 		  });
 
 
+function returnRfaAssignee(rfaId,RfaStatus,assignee) {
+	$('#rfaReturnmodal').modal('show');
+	$('#rfaIdHidden').val(rfaId);
+	$('#StatusHidden').val(RfaStatus);
+	$('#assignorHidden').val(assignee);
+	
+}
+
 function returnRfa(rfaId,RfaStatus,assignee) {
 	$('#rfaHidden').val(rfaId);
 	$('#RfaStatusHidden').val(RfaStatus);
 	$('#assigneedHidden').val(assignee);
+	
 	  var confirmation = confirm('Are You Sure To Return this RFA ?');
 	  if(confirmation){
 		  var form = document.getElementById("myFrom");
@@ -707,7 +770,6 @@ function returnRfa(rfaId,RfaStatus,assignee) {
          var rfaRevokeBtn = document.getElementById("rfaRevokeBtn");
             if (rfaRevokeBtn) {
                 var formactionValue = rfaRevokeBtn.getAttribute("formaction");
-                
                  form.setAttribute("action", formactionValue);
                   form.submit();
               }

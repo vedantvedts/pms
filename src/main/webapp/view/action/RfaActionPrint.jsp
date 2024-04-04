@@ -133,7 +133,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
     <div id="container pageborder" align="center"  class="firstpage" id="firstpage"  >
         <table class="border-black" style="margin-top: 5px; margin-left: 3px; width: 700px">
            <tr>
-		     <th colspan="10" style="font-size: 33px; height: 80px">Requirement For Action (RFA)</th>
+		     <th colspan="10" style="font-size: 33px; height: 80px">Request For Action (RFA)</th>
 	      </tr>
               
               <tr>
@@ -196,7 +196,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <%} %>
               </tr> 
               <tr>
-             <%if(RfaPrint[17]!=null){ %>
+             <%if(RfaPrint[17]!=null && Arrays.asList("AA","AF","AC","AV","AAA","AR","AP","ARC","RFA","AX","AY","AAA","AR","RR","AP","RP","REK").contains(RfaPrint[11]+"")){ %>
                  <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 62px">&nbsp;&nbsp;Checked By </td>
                  <%if(checkedByStatus.contains(RfaPrint[11].toString()) ){ %>
                  <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700;height: 62px "><span style="font-weight: normal;">&nbsp;&nbsp;<%=checkedBy2%> <br> <span style="font-size: 13px;"> &nbsp; [checked on :</span> <span class="spanDate"><%=checkedDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>
@@ -208,7 +208,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <%} %>
               </tr> 
               <tr>
-               <%if(RfaPrint[18]!=null){ %>
+				<%if(RfaPrint[17]!=null && Arrays.asList("AV","AAA","AR","AP","ARC","RFA","AX","AY","RR","RP","REK","ARC").contains(RfaPrint[11]+"")){ %>
                  <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 64px">&nbsp;&nbsp;Approved By </td>
                  <%if(approvedByStatus.contains(RfaPrint[11].toString())){ %>
                  <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700; height: 64px"><span style="font-weight: normal;">&nbsp;&nbsp;<%=approvedBy2%> <br> <span style="font-size: 13px;"> &nbsp; [approved on :</span> <span class="spanDate"><%=approvedDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>
@@ -231,7 +231,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
         <div id="container pageborder" align="center"  class="firstpage" id="firstpage"  >
         <table class="border-black" style="margin-top: 5px; margin-left: 3px; width: 700px">
            <tr>
-		     <th colspan="10" style="font-size: 33px; height: 80px">Inspection Taken For Action (RFA)</th>
+		     <th colspan="10" style="font-size: 33px; height: 80px">Closure Report (RFA)</th>
 	      </tr>
               
               <tr>
@@ -277,7 +277,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <%} %>
               </tr> 
               <tr>
-              <%if(RfaPrint[20]!=null){ %>
+              <%if(RfaPrint[20]!=null && Arrays.asList("RFA","AR","ARC").contains(RfaPrint[11]+"")){ %>
                  <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 62px">&nbsp;&nbsp;Received By </td>
                  <%if(receiverIdStatus.contains(RfaPrint[11]) ){ %>
                  <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700;height: 62px "><span style="font-weight: normal;">&nbsp;&nbsp;<%=receivedBy2%> <br> <span style="font-size: 13px;"> &nbsp; [received on :</span> <span class="spanDate"><%=receivedBy2ByDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>
@@ -289,7 +289,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <%}%>
               </tr> 
               <tr>
-              <%if(RfaPrint[21]!=null){ %>
+              <%if(RfaPrint[21]!=null && Arrays.asList("AY","AP","ARC").contains(RfaPrint[11]+"")){ %>
                  <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 64px">&nbsp;&nbsp;Approved By </td>
                  <%if(approvedIdStatus.contains(RfaPrint[11])){ %>
                  <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700; height: 64px"><span style="font-weight: normal;">&nbsp;&nbsp;<%=approvedBy%> <br> <span style="font-size: 13px;"> &nbsp; [approved on :</span> <span class="spanDate"><%=approvedByByDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>
