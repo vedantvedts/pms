@@ -120,8 +120,8 @@ public class ProjectClosureController {
 				for(Object[] obj: closureList) {
 					for(Object value:obj) {
 						if(value instanceof String)
-							if (((String)(value)).contains(search) ) {
-								arrayList.add(obj);
+							if (((String)(value)).toLowerCase().contains(search.toLowerCase()) ) {
+                                  arrayList.add(obj);
 								continue;
 							}
 					}
@@ -1278,6 +1278,49 @@ public class ProjectClosureController {
 		logger.info(new Date() +"Inside ProjectClosureCheckList.htm "+UserId);
 		try {
 			
+			String closureId = req.getParameter("closureId");
+			String socTabId = req.getParameter("socTabId");
+			String isApproval = req.getParameter("isApproval");
+			
+			if(closureId==null) {
+				String fromapprovals = req.getParameter("closureSoCApprovals");
+				if(fromapprovals!=null) {
+					String[] split = fromapprovals.split("/");
+					closureId = split[0];
+					if(isApproval==null) {
+						isApproval = split[1];
+					}
+					if(socTabId==null) {
+						socTabId = split[2];
+					}
+				}
+				
+			}
+			
+			if(closureId!=null) {
+				ProjectClosure closure = service.getProjectClosureById(closureId);
+				String projectId = closure.getProjectId()+"";
+				req.setAttribute("ProjectClosureDetails", closure);
+				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
+				req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
+				Object[] PDData = carsservice.getEmpPDEmpId(projectId);
+				req.setAttribute("PDData", PDData);
+				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
+				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
+				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
+				req.setAttribute("SoCRemarksHistory", service.projectClosureRemarksHistoryByType(closureId,"SF","S"));
+				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
+			}
+			req.setAttribute("Director", carsservice.getLabDirectorData(labcode));
+			req.setAttribute("AD", carsservice.getApprAuthorityDataByType(labcode, "AD"));
+			req.setAttribute("GDDPandC", carsservice.getApprAuthorityDataByType(labcode, "DO-RTMD"));
+			req.setAttribute("EmpData", carsservice.getEmpDetailsByEmpId(EmpId));
+			
+			req.setAttribute("LabList", carsservice.getLabList(labcode));
+			
+			req.setAttribute("closureId", closureId);
+			req.setAttribute("isApproval", isApproval);
+			req.setAttribute("socTabId", socTabId!=null?socTabId:"1");
 			
 			
 			return "project/ProjectClosureCheckListAdd";
