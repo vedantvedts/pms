@@ -28,5 +28,9 @@ public class RfaActionDto
 	private String AssignorAttachment;
 	private String AssigneAttachment;
 	private MultipartFile multipartfile;
+	private Long RfaCCId;
+	private Long CCEmpId;
+	private Long ActionBy;
+	private int IsActive;
 	
 }

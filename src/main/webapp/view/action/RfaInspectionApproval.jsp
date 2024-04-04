@@ -227,7 +227,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 													</div>
 												
 												</button>
-													<input type="hidden" value="AP" name="rfaoptionby">
+													<input type="hidden" value="ARC" name="rfaoptionby">
 													<input type="hidden" value="<%=obj[16]%>" name="rfaEmpModal">
 											  <%}else{ %>
 											  		<button class="editable-click" type="button"

@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"  import="java.util.*,java.text.SimpleDateFormat"%>
  
@@ -140,23 +141,70 @@
 	font-weight: 800;
 	color:black;
 }
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
 </style>
 
 </head>
 <body>
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("RfaTransactionList");
+
+List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgnoreCase("AV"))
+									.map(e->e[10].toString()).collect(Collectors.toList());
+	
 %>
 
-<div class="page card dashboard-card">
+<div class="page card dashboard-card" style="height:80vh;overflow:auto" id="scrollclass">
 	<section id="timeline">
 		<% int count=1;
 	       	 SimpleDateFormat month=new SimpleDateFormat("MMM");
 			 SimpleDateFormat day=new SimpleDateFormat("dd");
 			 SimpleDateFormat year=new SimpleDateFormat("yyyy");
 			 SimpleDateFormat time=new SimpleDateFormat("HH:mm");
+			 String status="";
 			 for(Object[] object:statuslist){
-			 
+				 if(status.equalsIgnoreCase("AV")){
+					status="";
+					 continue;
+					 }
 		%>
 	      <article>
 		  	<div class="inner">
@@ -175,10 +223,23 @@ List<Object[]> statuslist = (List<Object[]>)request.getAttribute("RfaTransaction
 					<%}else{ %> 
 						<span class="remarks_title">No Remarks </span> 
 					<%} %>
+					<br>
+					<%if(object[2].equals(object[11])){ %>
+					  
+				   <% }else{%>
+				     <span class="remarks_title">Forwarded To : </span>
+					<%if(object[9].toString().equalsIgnoreCase("AV")){ %>
+					 <%=forwardList.toString().replace("[", "").replace("]", "") %>
+					<%}else{ %>
+					   <%=object[10] %>
+					<%} %>
+				   <%} %>
 				</p>
 			 </div>
 		 </article>
-		<%count++;}%> 		
+		<%count++;
+		  status=object[9].toString();
+	    }%> 		
 	</section>	
 </div>
 </body>

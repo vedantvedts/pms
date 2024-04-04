@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +39,7 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
 import com.vts.pfms.committee.model.RfaAttachment;
+import com.vts.pfms.committee.model.RfaCC;
 import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.model.RfaTransaction;
 
@@ -1406,17 +1408,25 @@ public class ActionServiceImpl implements ActionService {
 		return dao.PriorityList();
 	}
 	@Override
-	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String[] assignee) throws Exception {
+	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String[] assignee,String[] CCEmpName) throws Exception {
 		
 		logger.info(new Date() + "Inside Service RfaActionSubmit");
 		
 		try {
 			
-//		String project = dao.ProjectCode(rfa.getProjectId().toString());
+		String project = dao.ProjectCode(rfa.getProjectId().toString());
 //		Object[] division = dao.GetDivisionCode(Division);
 //		String DivisionCode = division[1].toString();
-//		Long RfaCount = dao.GetRfaCount();	
-//		String RfaNo = LabCode + "/" + project + "/" + DivisionCode + "/" + (RfaCount+1);
+		List<Object[]> rfaDivType=dao.getRfaType();
+		String RfaTypeName=null;
+		
+		for(Object[] obj : rfaDivType) {
+			if(obj[0]!=null && obj[0].toString().equalsIgnoreCase(rfa.getRfaNo())) {
+				RfaTypeName=obj[1].toString();
+			}
+		}
+		Long RfaCount = dao.GetRfaCount();	
+		String RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + (RfaCount+1);
 
 		String Path = LabCode+"\\RFAFiles\\";
 		
@@ -1424,7 +1434,7 @@ public class ActionServiceImpl implements ActionService {
 		
 		rfa1.setRfaDate(rfa.getRfaDate());
 		rfa1.setLabCode(LabCode);
-		rfa1.setRfaNo(rfa.getRfaNo());
+		rfa1.setRfaNo(RfaNo);
 		rfa1.setProjectId(rfa.getProjectId());
 		rfa1.setPriorityId(rfa.getPriorityId());
 		rfa1.setStatement(rfa.getStatement());
@@ -1438,6 +1448,14 @@ public class ActionServiceImpl implements ActionService {
 		
 		long rfaIdAttach= dao.RfaActionSubmit(rfa1);
 		
+		RfaTransaction rfaTrans = new RfaTransaction();
+		rfaTrans.setRfaId(rfaIdAttach);
+		rfaTrans.setEmpId(Long.parseLong(rfa.getAssignorId()));
+		rfaTrans.setRfaStatus("AA");
+		rfaTrans.setActionBy(rfa.getAssignorId());
+		rfaTrans.setActionDate(sdf1.format(new Date()));
+		dao.updateRfaTransaction(rfaTrans);
+		
 		for(int i=0;i<assignee.length;i++) {
 
 			RfaAssign assign = new RfaAssign();
@@ -1450,6 +1468,19 @@ public class ActionServiceImpl implements ActionService {
 			
 			dao.RfaAssignInsert(assign);
 		}
+		
+		for(int i=0;i<CCEmpName.length;i++) 
+		{
+			RfaCC rfaCC = new RfaCC();
+			rfaCC.setRfaId(rfaIdAttach);
+			rfaCC.setCCEmpId(Long.parseLong(CCEmpName[i]));
+			rfaCC.setActionBy(rfa.getActionBy());
+			rfaCC.setCreatedBy(UserId);
+			rfaCC.setCreatedDate(sdf.format(new Date()));
+			rfaCC.setIsActive(1);
+			dao.rfaCCInsert(rfaCC);
+		}
+		
  if(!rfa.getAssignorAttachment().isEmpty()) {
 		RfaAttachment rfaAttach=new RfaAttachment();
 		rfaAttach.setRfaId(rfaIdAttach);
@@ -1485,7 +1516,7 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public Long RfaEditSubmit(RfaActionDto rfa,String[] assignee) throws Exception {
+	public Long RfaEditSubmit(RfaActionDto rfa,String[] assignee,String[] CCEmpName) throws Exception {
 		
 		String LabCode = rfa.getLabCode();
 		String Path = LabCode + "\\RFAFiles\\";
@@ -1536,10 +1567,10 @@ public class ActionServiceImpl implements ActionService {
 		
 		}
 		
-		Long result=dao.UpdateAssigneeData(rfa.getRfaId()+"");
-
-		for(int i=0;i<assignee.length;i++) {
-
+		//for assignee emplist edit start
+		Long result=dao.UpdateAssigneeData(rfa.getRfaId()+""); // here first existing data isactive will be "0"
+		for(int i=0;i<assignee.length;i++) 
+		{
 			RfaAssign assign = new RfaAssign();
 			assign.setAssigneeid(Long.parseLong(assignee[i]));
 			assign.setLabCode(LabCode);
@@ -1547,10 +1578,26 @@ public class ActionServiceImpl implements ActionService {
 			assign.setCreatedBy(rfa.getModifiedBy());
 			assign.setCreatedDate(sdf.format(new Date()));
 			assign.setIsActive(1);
-			
-			dao.RfaAssignInsert(assign);
+			dao.RfaAssignInsert(assign);                      //again it insert to table 
 		}
+		//for assignee emplist edit end
 		
+		System.out.println(Arrays.asList(CCEmpName)+"-------");
+		
+		//for CC emplist edit start
+		Long result1=dao.updateRfaCC(rfa.getRfaId()+"");  // here first existing data isactive will be "0"
+		for(int i=0;i<CCEmpName.length;i++) 
+		{
+			RfaCC rfaCC = new RfaCC();
+			rfaCC.setRfaId(rfa.getRfaId());
+			rfaCC.setCCEmpId(Long.parseLong(CCEmpName[i]));
+			rfaCC.setActionBy(rfa.getActionBy());
+			rfaCC.setModifiedBy(rfa.getModifiedBy());
+			rfaCC.setModifiedDate(sdf.format(new Date()));
+			rfaCC.setIsActive(1);
+			dao.rfaCCInsert(rfaCC);                      //again it insert to table 
+		}
+		//for CC emplist edit end
 		
 		return count;
 	}
@@ -1703,7 +1750,6 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
     
     String Url="";
     
- 
     List<String> ReturnStatus1  = Arrays.asList("AF","AX","AC","AV");
 	List<String> ReturnStatus2  = Arrays.asList("RFA","AY","AR");
 	
@@ -1711,20 +1757,19 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 	
 	if(ReturnStatus1.contains(rfaStatus)) {
 		SetEmployee=assignor;
-		Url="RfaActionForwardList.htm";
+		Url="RfaAction.htm";
 	}if(ReturnStatus2.contains(rfaStatus)) {
 		SetEmployee=assignee;
+		//Url="RfaInspection.htm";
 		Url="RfaInspection.htm";
-	}if(rfaStatus.equalsIgnoreCase("REV")) {
+	}if(rfaStatus.equalsIgnoreCase("REV") || rfaStatus.equalsIgnoreCase("REK")) {
 		SetEmployee=EmpId;
 		Url="RfaAction.htm";
 	}
 	
-	
 	RfaAction rf= new RfaAction();
 	
 	RfaTransaction tr= new RfaTransaction();
-	
 	
 	String newstatus="";
     
@@ -1746,6 +1791,9 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 	if(rfaStatus.equalsIgnoreCase("AR") || rfaStatus.equalsIgnoreCase("AY")) {
 		newstatus="RP";
 	}
+	if((rfaStatus.equalsIgnoreCase("REK"))) {
+		newstatus="REK";
+	}
 	
 	rf.setRfaStatus(newstatus);   // for rfa action table
 	
@@ -1757,9 +1805,11 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 	tr.setActionDate(sdf1.format(new Date()));
 	
 	List<PfmsNotification> x = new ArrayList<>();  
+	
+	List<String> revokeList = Arrays.asList("REV","REK");
 
 	PfmsNotification pf = new PfmsNotification();
-	if(!rfaStatus.equalsIgnoreCase("REV")) {
+	if(!revokeList.contains(newstatus)) {
 	pf.setEmpId(Long.parseLong(SetEmployee));
 	pf.setStatus("MAR");
 	pf.setNotificationUrl(Url);
@@ -1774,6 +1824,11 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 	
     long count=dao.RfaReturnList(x,rf,tr,rfa);
 	
+    if(newstatus.equalsIgnoreCase("REK")) {
+    	//if status is REK pass default 4
+    	return 4l;
+    }
+    
 	return count;
 }
 
@@ -1877,7 +1932,7 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
 		}
 	}
 	
-	List<RfaTransaction> trans = new ArrayList<RfaTransaction>();//
+	List<RfaTransaction> trans = new ArrayList<RfaTransaction>();
 	
 	
 	if(rfaStatus.equalsIgnoreCase("AV")){
@@ -1954,12 +2009,11 @@ public List<Object[]> AssigneeEmpList() throws Exception {
 	return dao.AssigneeEmpList();
 }
 
-@Override
-public List<String> CCAssigneeList(String rfaid) throws Exception {
-	
-	return dao.CCAssigneeList(rfaid);
-}
-
+/*
+ * @Override public List<String> CCAssigneeList(String rfaid) throws Exception {
+ * 
+ * return dao.CCAssigneeList(rfaid); }
+ */
 @Override
 public List<String> CCAssignorList(String rfaid) throws Exception {
 	
@@ -2065,4 +2119,17 @@ public List<String> rfaMailSend(String rfa) throws Exception {
 	return dao.rfaMailSend(rfa);
 }
 
+@Override
+public List<Object[]> getRfaNoTypeList() throws Exception {
+	return dao.getRfaType();                       
 }
+
+@Override
+public List<Object[]> RfaCCList() throws Exception {
+	return dao.RfaCCList();
+}
+
+@Override
+public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate) {
+	return dao.rfaTotalActionList(projectid,rfatypeid,fdate,tdate);
+}}

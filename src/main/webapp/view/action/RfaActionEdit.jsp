@@ -72,7 +72,7 @@ String Project="";
         
         		<div class="card-body">
             <div class="row">
-		                    <div class="col-md-2">
+		                    <div class="col-md-1">
 		                        <div class="form-group">
 		                            <label class="control-label">Project</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -86,6 +86,15 @@ String Project="";
 			  						
 		                        </div>
 		                    </div>
+		                    
+		                   <div class="col-md-2">
+		                       <div class="form-group">
+		                            <label class="control-label"> RFA No.</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <input  class="form-control"  name="rfano" id="rfano" disabled="disabled"  value="<%=RfaAction[3]%>">	
+		                      </div>
+		                   </div> 
+		                    
 						<input type="hidden" name="rfaid" value="<%=RfaAction[0] %>">
 		                    <div class="col-md-2">
 		                        <div class="form-group">
@@ -111,20 +120,24 @@ String Project="";
 		                  </div>
 		                </div> 
 		                
-		                <div class="col-md-3">
-		                     <div class="form-group">
-		                            <label class="control-label"> RFA No.</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                            <input  class="form-control"  name="rfano" id="rfano" disabled="disabled"  value="<%=RfaAction[3]%>">	
-		                  </div>
-		                </div> 
-		                
-		                  <div class="col-md-2">
+		                  <div class="col-md-1">
 		                       <div class="form-group">
 		                            <label class="control-label">RFA Date</label>
-						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  value="<%=new FormatConverter().SqlToRegularDate(  RfaAction[4].toString() )%>">						
+						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  
+						  			value="<%=new FormatConverter().SqlToRegularDate(  RfaAction[4].toString() )%>" style="width: 110%;">						
 		                        </div>
-		                  </div>   
+		                  </div> 
+		                  
+		                   <div class="col-md-3">
+		                     <div class="form-group">
+		                         <label class="control-label">CC To</label>
+		                         <select class="form-control selectdee" name="CCEmpName" id="CCEmpName" multiple="multiple" data-placeholder= "Select Employees">                   
+		                         <% for(Object[] obj : EmployeeList) { %>
+		                         <option value="<%=obj[0]%>"><%=obj[1]%> , <%=obj[2]%></option>
+		                         <%} %>
+		                      </select>
+		                  </div>
+		                </div>   
 		            
 		          </div>
 		          
@@ -134,7 +147,7 @@ String Project="";
 		                  <div class="col-md-3" style="max-width: 18%">
 		                      <label class="control-label"> Problem Statement</label>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
+		                  <div class="col-md-10" style="max-width: 83%;margin-left: -22px;">
 		                      <textarea class="form-control" rows="2" cols="30" name="statement" id="statement"><%=RfaAction[6].toString() %></textarea>
 		                  </div>
 		            </div>
@@ -169,7 +182,7 @@ String Project="";
 		                  <div class="col-md-3" style="max-width: 18%">
 		                      <label class="control-label">References</label>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
+		                  <div class="col-md-10" style="max-width: 84%;margin-left: -22px;">
 		                       <textarea class="form-control" rows="2" cols="30" name="reference" id="reference"><%=RfaAction[8].toString() %></textarea>
 		                  </div> 
 		            </div>
@@ -180,7 +193,7 @@ String Project="";
 		                <div class="col-md-4" style="max-width: 18%">
 		                      <label class="control-label">Attachment</label>
 		                  </div>
-		                  <div class="col-md-4" style="max-width: 40%">    
+		                  <div class="col-md-4" style="max-width: 40%;margin-left: -22px;">    
 		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/* " >
 		                  </div>
 		                  <%if(rfaAttachDownload!=null){ %> 
@@ -285,10 +298,19 @@ String Project="";
 	
 	  $( document ).ready(function() {
 		  var assignEmp = <%=request.getAttribute("AssignEmp") %>;
+		  var ccEmpName = <%=request.getAttribute("RfaCCEmp") %>;
+		  console.log(ccEmpName);
+		  $('#CCEmpName').val(ccEmpName).trigger('change');
 		  console.log(assignEmp);
 		  $('#assignee').val(assignEmp).trigger('change');
 		});
 	  
+	 <%--  $( document ).ready(function() {
+		  var ccEmpName = <%=request.getAttribute("RfaCCEmp") %>;
+		  console.log(ccEmpName);
+		  $('#CCEmpName').val(ccEmpName).trigger('change');
+		});
+	   --%>
 	  	 
  var editor_config = {
 	 				

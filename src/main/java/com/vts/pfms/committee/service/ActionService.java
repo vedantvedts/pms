@@ -98,10 +98,10 @@ public interface ActionService {
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> PriorityList() throws Exception;
 	
-	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String[] assignee) throws Exception;
+	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String[] assignee,String[] CCEmpName) throws Exception;
 	public Object[] RfaActionEdit(String rfaid) throws Exception;
 	public Object[] RfaLabDetails(String LabCode) throws Exception;
-	public Long RfaEditSubmit(RfaActionDto rfa, String[] assignee) throws Exception;
+	public Long RfaEditSubmit(RfaActionDto rfa, String[] assignee, String[] CCEmpName) throws Exception;
 	public Object[] RfaPrintData(String rfaid)throws Exception;
 	public List<Object[]> RfaForwardList(String EmpId) throws Exception;
 	public List<Object[]> RfaInspectionApprovalList(String EmpId) throws Exception;
@@ -128,7 +128,7 @@ public interface ActionService {
 	public List<Object[]> getRfaTransList(String rfaTransId)throws Exception;
 	public Object[] RfaAttachmentDownload(String rfaid)throws Exception;
 	public List<Object[]> AssigneeEmpList()throws Exception;
-	public List<String> CCAssigneeList(String rfaid)throws Exception;
+	//public List<String> CCAssigneeList(String rfaid)throws Exception;
 	public List<String> CCAssignorList(String rfaid)throws Exception;
 	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate)throws Exception;
 	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate)throws Exception;
@@ -149,4 +149,7 @@ public interface ActionService {
 	public int ActionRemarksEdit(String actionAssignId, String progress, String progressRemarks, String UserId)throws Exception;
 	public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId)throws Exception;
 	public List<String> rfaMailSend(String rfa)throws Exception;
+	public List<Object[]> getRfaNoTypeList()throws Exception;
+	public List<Object[]> RfaCCList()throws Exception;
+	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate);
 }
