@@ -567,6 +567,26 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 																</div>
 															</div>
 														</button>
+														<button type="button" class="btn btn-sm" data-toggle="modal" onclick="openCalendar2('<%=carsInitiationId%>')" >
+											  	 			<div class="cc-rockmenu2">
+																<div class="rolling2">
+																	<figure class="rolling_icon2">
+																		<img src="view/images/calendar.png" style="width: 18px;">
+																	</figure>
+																	<span>Date</span>
+																</div>
+															</div>
+														</button>
+					                					<button type="submit" form="transform" class="btn btn-sm" name="carsInitiationId" value="<%=carsInitiationId %>" formaction="CARSFinalSoOLetter.htm" formtarget="_blank" formnovalidate="formnovalidate" formmethod="post" data-toggle="tooltip" data-placement="top" title="Contract Letter">
+													  		<div class="cc-rockmenu2">
+																<div class="rolling2" >
+																	<figure class="rolling_icon2">
+																		<img src="view/images/letter.png" style="width: 18px;">
+																	</figure>
+																	<span>Letter</span>
+																</div>
+															</div>
+														</button>
 														<%if(statusdetails[1]!=null && statusdetails[1].toString().equalsIgnoreCase("CFW") ) {%>
 						                                	<button type="submit" form="transform" class="btn btn-sm" name="carsInitiationId" value="<%=carsInitiationId %>" formaction="CARSCSDocRevoke.htm" formnovalidate="formnovalidate" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
 																<div class="cc-rockmenu2">
@@ -1006,11 +1026,71 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							</div>
 						</div>
 					</div>
-				</form>   
+					
+				</form> 
+				<form action="FinalSoODateSubmit.htm" method="post">
+					<div class="container">
+													
+						<!-- The Modal -->
+						<div class="modal" id="myModal2" style="margin-top: 10%;">
+					 		<div class="modal-dialog">
+					 			<div class="modal-dialog modal-dialog-jump modal-lg modal-dialog-centered">
+						    		<div class="modal-content">
+						     
+						        		<!-- Modal Header -->
+						        		<div class="modal-header">
+						          			<h4 class="modal-title">Choose date for Letter</h4>
+						          			<button type="button" class="close" data-dismiss="modal">&times;</button>
+						        		</div>
+						        		<!-- Modal body -->
+						        		<div class="modal-body">
+						        			<div class="form-inline">
+						        				<div class="form-group w-100">
+						               				<label>Date : &nbsp;&nbsp;&nbsp;</label> 
+						              	 			<input class="form-control" type="text" name="calendardate" id="calendardate" required readonly>
+						      					</div>
+						      				</div>
+						      			</div>
+						      
+						        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						        		<input type="hidden" name="carsInitiationId" id="carsInitiationId2">
+						        		<!-- Modal footer -->
+						        		<div class="modal-footer" style="justify-content: center;">
+						        			<button type="submit"  class="btn btn-sm submit" onclick="return confirm('Are You Sure To Submit?');" >SUBMIT</button>
+						       			</div>
+						      		</div>
+					    		</div>
+					  		</div>
+					  	</div>
+					</div>  
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+function openCalendar2(carsIniId){
+	console.log(carsIniId);
+	$('#myModal2').modal('show');
+	$('#carsInitiationId2').val(carsIniId);
+}
+
+
+$('#calendardate').daterangepicker({
+	"singleDatePicker" : true,
+	"linkedCalendars" : false,
+	"showCustomRangeLabel" : true,
+	/* "minDate" :datearray,   */
+	 "startDate" : new Date(),
+	 "maxDate" : new Date(),
+	"cancelClass" : "btn-default",
+	showDropdowns : true,
+	locale : {
+		format : 'DD-MM-YYYY'
+	}
+});	 
+
+</script>
 
 <script type="text/javascript">
 

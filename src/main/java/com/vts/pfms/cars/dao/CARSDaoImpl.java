@@ -39,7 +39,7 @@ public class CARSDaoImpl implements CARSDao{
 	@PersistenceContext
 	EntityManager manager;
 
-	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.EmpId=:EmpId END) ORDER BY a.CARSInitiationId DESC";
+	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount,a.DPCSoCStatus FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.EmpId=:EmpId END) ORDER BY a.CARSInitiationId DESC";
 	@Override
 	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception {
 		try {
@@ -1246,6 +1246,61 @@ public class CARSDaoImpl implements CARSDao{
 			e.printStackTrace();
 			logger.error(new Date() + "Inside DaoImpl ExpertEmployeeList", e);
 			return null;
+		}
+	}
+
+	private static final String UPDATESOOLETTERDATE = "UPDATE pfms_cars_contract SET FinalSoODate=:FinalSoODate WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
+	@Override
+	public int finalSoODateSubmit(String carsInitiationId, String date) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(UPDATESOOLETTERDATE);
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("FinalSoODate", date);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO finalSoODateSubmit "+e);
+			return 0;
+		}
+	}
+	
+	@Override
+	public CARSSoCMilestones getCARSSoCMilestonesById(String carsSoCMilestoneId) throws Exception{
+		try {
+			
+			return manager.find(CARSSoCMilestones.class, Long.parseLong(carsSoCMilestoneId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getCARSSoCMilestonesById "+e);
+			return null;
+		}
+	}
+	
+	private static final String ASSIGNEDLISTBYCARSSOCMILESTONEID="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS emp,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.progress, aas.IsSeen , aas.actionassignid , \r\n"
+			+ "(SELECT COUNT(am.actionmainid) FROM action_main am WHERE am.ParentActionid = a.actionmainid ) AS 'ChildActionCount',aas.actionno \r\n"
+			+ "FROM action_main a,  employee ab ,employee_desig dc ,action_assign aas \r\n"
+			+ "WHERE aas.actionmainid=a.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid  AND aas.actionstatus<>'C' AND aas.assigneelabcode <> '@EXP' AND a.CARSSoCMilestoneId=:CARSSoCMilestoneId \r\n"
+			+ "\r\n"
+			+ "UNION \r\n"
+			+ "\r\n"
+			+ "SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.expertname) AS emp,'Expert' AS 'designation',a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.progress, aas.IsSeen , aas.actionassignid , \r\n"
+			+ "(SELECT COUNT(am.actionmainid) FROM action_main am WHERE am.ParentActionid = a.actionmainid ) AS 'ChildActionCount',aas.actionno \r\n"
+			+ "FROM action_main a,  expert ab , action_assign aas \r\n"
+			+ "WHERE aas.actionmainid=a.actionmainid AND aas.assignee=ab.expertid AND ab.isactive='1' AND aas.actionstatus<>'C' AND aas.assigneelabcode = '@EXP' AND a.CARSSoCMilestoneId=:CARSSoCMilestoneId\r\n"
+			+ "\r\n"
+			+ "ORDER BY actionassignid DESC";
+	@Override
+	public List<Object[]> assignedListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception {
+		logger.info(new Date() + "Inside the DaoImpl assignedListByCARSSoCMilestoneId");
+		try {
+			Query query=manager.createNativeQuery(ASSIGNEDLISTBYCARSSOCMILESTONEID);
+			query.setParameter("CARSSoCMilestoneId", Long.parseLong(carsSoCMilestoneId));
+			return (List<Object[]>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl assignedListByCARSSoCMilestoneId", e);
+			return new ArrayList<Object[]>();
 		}
 	}
 }

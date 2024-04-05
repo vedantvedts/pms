@@ -1495,6 +1495,8 @@ public class ActionController {
 						req.setAttribute("LabCode", LabCode);
 						req.setAttribute("ActionPath", req.getParameter("ActionPath"));
 						req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignId")));
+						req.setAttribute("carsInitiationId", req.getParameter("carsInitiationId"));;
+						req.setAttribute("carsSoCMilestoneId", req.getParameter("carsSoCMilestoneId"));
 						}
 						catch (Exception e) {
 							e.printStackTrace();

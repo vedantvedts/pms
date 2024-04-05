@@ -40,6 +40,7 @@ public class CARSContract implements Serializable{
 	private String ExpndOthersCost;
 	private String ExpndGST;
 	private String ExpndTotalCost;
+	private String FinalSoODate;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

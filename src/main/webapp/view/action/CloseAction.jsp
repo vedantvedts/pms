@@ -307,6 +307,9 @@ td {
 	List<Object[]> AllLabList = (List<Object[]>)request.getAttribute("AllLabList");
 	List<Object[]> SubList=(List<Object[]> ) request.getAttribute("SubList");
 	String ActionPath= (String)request.getAttribute("ActionPath");
+	
+	String carsInitiationId = (String)request.getAttribute("carsInitiationId");
+	String carsSoCMilestoneId = (String)request.getAttribute("carsSoCMilestoneId");
 %>
 
 
@@ -1153,6 +1156,10 @@ td {
 				<%}else if(ActionPath!=null && ActionPath.equalsIgnoreCase("A")){%>
 				<div align="center" style="padding-bottom: 15px;">
 					<a class="btn btn-primary btn-sm back" href="ActionLaunch.htm">BACK</a>
+				</div>
+				<%}else if(ActionPath!=null && ActionPath.equalsIgnoreCase("C")){%>
+				<div align="center" style="padding-bottom: 15px;">
+					<a class="btn btn-primary btn-sm back" href="CARSMilestonesMonitorDetails.htm?carsInitiationId=<%=carsInitiationId%>&carsSoCMilestoneId=<%=carsSoCMilestoneId%>">BACK</a>
 				</div>
 				<%} %>
 			</div>

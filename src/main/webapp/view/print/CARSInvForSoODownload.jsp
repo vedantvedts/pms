@@ -4,6 +4,10 @@
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
+<%-- <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var="contPath" value="${pageContext.request.contextPath}"/>    --%>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,13 +94,16 @@ Object[] emp = (Object[])request.getAttribute("EmpData");
 Object[] dPandC = (Object[])request.getAttribute("DPandC");
 
 String lablogo=(String)request.getAttribute("lablogo");
+
 LabMaster labMaster = (LabMaster)request.getAttribute("LabMasterData");
 
 FormatConverter fc = new FormatConverter();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
 
+String labcode=(String)session.getAttribute("labcode");
 %>
-<table style="width: 100%;margin-right: -25px !important;">
+<jsp:include page="../static/LetterHead.jsp"></jsp:include>
+<%-- <table style="width: 100%;margin-right: -25px !important;">
 	<tr>
 		<td style="width: 39%;font-size: 14px;line-height: 17px;">
 			<span style="color: blue;">इलेक्ट्रॉनिक्स तथा रेडार विकास स्थापना</span> <br>
@@ -124,7 +131,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 			<span style="font-size: 13px;">E-Mail <span style="margin-left: 8px;">:</span> director.lrde@gov.in</span>
 		</td>
 	</tr>
-</table>
+</table> --%>
 <br>
 <table style="width: 100%;font-size: 14px !important;">
 	<tr>
@@ -201,7 +208,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	<tr><td></td></tr>
 	<tr><td></td></tr>
 	<tr>
-		<td style="text-align: right;">For Director, LRDE</td>
+		<td style="text-align: right;">For Director, <%=labcode %></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>

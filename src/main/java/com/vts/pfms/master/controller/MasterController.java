@@ -1357,7 +1357,7 @@ public class MasterController {
 					for(Object[] obj: IndustryPartnerList) {
 						for(Object value:obj) {
 							if(value instanceof String)
-								if (((String)(value)).contains(search) ) {
+								if (((String)(value)).toLowerCase().contains(search.toLowerCase()) ) {
 									arrayList.add(obj);
 									continue;
 								}

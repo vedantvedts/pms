@@ -575,6 +575,18 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 																		</div>
 																	</div>
 												    			</button>
+												    			<%if(obj[14]!=null && obj[14].toString().equalsIgnoreCase("A")) {%>
+			                                       	 				<button class="editable-clicko" name="carsInitiationId" value="<%=obj[0] %>" formaction="CARSMilestonesMonitor.htm">
+																		<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/milestone.png">
+																				</figure>
+																				<span>Milestones</span>
+																			</div>
+																		</div>
+													    			</button>
+												    			<%} %>
 												    			<%if(obj[12]!=null && (obj[12].toString().equalsIgnoreCase("FWD") || obj[12].toString().equalsIgnoreCase("SFU"))) {%>
 						                                       	 	<button class="editable-clicko" name="carsUserRevoke" value="<%=obj[0] %>/<%=obj[12] %>" formaction="CARSUserRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
 																		<div class="cc-rockmenu">

@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -64,6 +65,11 @@ import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
 import com.vts.pfms.cars.service.CARSService;
+import com.vts.pfms.committee.dto.ActionAssignDto;
+import com.vts.pfms.committee.dto.ActionMainDto;
+import com.vts.pfms.committee.model.ActionAssign;
+import com.vts.pfms.committee.model.ActionMain;
+import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.project.service.ProjectService;
 
 @Controller
@@ -74,7 +80,7 @@ public class CARSController {
 	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	private SimpleDateFormat sdf = fc.getSqlDateFormat();
-	
+	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	
 //	@Autowired
 //	RestTemplate restTemplate;
@@ -84,6 +90,9 @@ public class CARSController {
 	
 	@Autowired
 	ProjectService projectservice;
+	
+	@Autowired
+	ActionService actionservice;
 	
 	@Value("${ApplicationFilesDrive}")
 	private String LabLogoPath;
@@ -154,7 +163,7 @@ public class CARSController {
 				for(Object[] obj: initiationList) {
 					for(Object value:obj) {
 						if(value instanceof String)
-							if (((String)(value)).contains(search) ) {
+							if (((String)(value)).toLowerCase().contains(search.toLowerCase()) ) {
 								arrayList.add(obj);
 								continue;
 							}
@@ -2918,4 +2927,263 @@ public class CARSController {
     		e.printStackTrace();
     	}		
 	}
+	
+	@RequestMapping(value="CARSFinalSoOLetter.htm")
+	public void carsFinalSoOLetter(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CARSFinalSoOLetter.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("CARSOtherDocDetailsData", service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid));
+				Object[] obj = service.getApprAuthorityDataByType(labcode, "DO-RTMD");
+				req.setAttribute("DPandC", service.getEmpDetailsByEmpId(obj[0].toString()));
+			}
+			req.setAttribute("LabMasterData", service.getLabDetailsByLabCode(labcode));
+			req.setAttribute("lablogo", getLabLogoAsBase64());
+			String filename="Final-SoO";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			
+			//Path for Hindi font
+			String fontPath = req.getServletContext().getRealPath("/view/pfp/NotoSansDevanagari-Regular.ttf");
+			req.setAttribute("fontPath", fontPath);
+			PdfFont hindiFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
+			
+			req.getRequestDispatcher("/view/print/CARSFinalSoOLetter.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			// Hindi font converter
+			ConverterProperties converterProperties = new ConverterProperties();
+			FontProvider fontProvider = new DefaultFontProvider();
+			fontProvider.addFont(fontPath, PdfEncodings.IDENTITY_H);
+			converterProperties.setFontProvider(fontProvider);
+			
+			try (PdfWriter writer = new PdfWriter(path + File.separator + filename + ".pdf");
+					PdfDocument pdfDoc = new PdfDocument(writer);
+					Document document = HtmlConverter.convertToDocument(html, pdfDoc, converterProperties)) {
+	                document.setFont(hindiFont);
+	            }
+			
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);	
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSFinalSoOLetter.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+	
+	@RequestMapping(value="FinalSoODateSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String finalSoODateSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside FinalSoODateSubmit.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String calendardate = req.getParameter("calendardate");
+			int result = service.finalSoODateSubmit(carsInitiationId, fc.RegularToSqlDate(calendardate));
+			if(result!=0) {
+				redir.addAttribute("result","Letter Date Submitted Successfully");
+			}else {
+				redir.addAttribute("resultfail","Letter Date Submit Unsuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			
+			return "redirect:/CARSOtherDocsList.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside FinalSoODateSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="CARSMilestonesMonitor.htm")
+	public String carsMilestonesMonitorList(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSMilestonesMonitor.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+			}
+			
+			return "cars/CARSMilestonesMonitor";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMilestonesMonitor.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSMilestonesMonitorDetails.htm")
+	public String carsMilestonesMonitorDetails(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSMilestonesMonitor.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String carsSoCMilestoneId = req.getParameter("carsSoCMilestoneId");
+			
+			req.setAttribute("assignedList", service.assignedListByCARSSoCMilestoneId(carsSoCMilestoneId));
+			req.setAttribute("carsInitiationId", carsInitiationId);
+			req.setAttribute("carsSoCMilestoneId", carsSoCMilestoneId);
+			return "cars/CARSMilestonesMonitorDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMilestonesMonitorDetails.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSMilestonesMonitorDetailsSubmit.htm", method = RequestMethod.POST)
+	public String CARSMilestonesMonitorDetailsSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CARSMilestonesMonitorDetailsSubmit.htm "+Username);
+		try {
+			String action = req.getParameter("Action");
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String carsSoCMilestoneId = req.getParameter("carsSoCMilestoneId");
+			String actionMainId = req.getParameter("actionMainId");
+			
+			CARSInitiation carsInitiation = service.getCARSInitiationById(Long.parseLong(carsInitiationId));
+					
+			ActionMainDto mainDto=new ActionMainDto();
+			mainDto.setActionMainId(actionMainId);
+			mainDto.setMainId("0");
+			mainDto.setActionItem(req.getParameter("activityName"));
+			mainDto.setActionLinkId("0");
+			mainDto.setProjectId(carsInitiation.getFundsFrom());
+			mainDto.setActionDate(req.getParameter("pdc"));
+			mainDto.setScheduleMinutesId("0");
+			mainDto.setCARSSoCMilestoneId(carsSoCMilestoneId);
+			mainDto.setActionStatus("A");
+			mainDto.setType("A");
+			mainDto.setActionType("Z");
+			mainDto.setPriority("L");
+			mainDto.setCategory("O");
+			mainDto.setLabName(labcode);
+			mainDto.setActivityId("0");
+			mainDto.setCreatedBy(Username);
+			mainDto.setMeetingDate(sdf.format(new Date()));
+			mainDto.setActionLevel(1L);
+			mainDto.setActionParentId("0");
+			
+			List<String> emp = new ArrayList<>();
+			String [] assignee = req.getParameterValues("Assignee");
+			for(String s : assignee) {
+				emp.add(s);
+			}
+			
+			ActionAssignDto assign = new ActionAssignDto();
+			
+			assign.setActionDate(req.getParameter("pdc"));
+			assign.setAssigneeList(req.getParameterValues("Assignee"));
+			assign.setAssignor((Long) ses.getAttribute("EmpId"));
+			assign.setAssigneeLabCode(labcode);
+			assign.setAssignorLabCode(labcode);
+			assign.setRevision(0);
+//			assign.setActionFlag("N");		
+			assign.setActionStatus("A");
+			assign.setCreatedBy(Username);
+			assign.setIsActive(1);
+			assign.setMeetingDate(sdf.format(new Date()));
+			assign.setPDCOrg(req.getParameter("pdc"));
+			assign.setMultipleAssigneeList(emp);
+			
+			Long result = service.carsMilestoneActionMainInsert(mainDto , assign);
+			if(result!=0) {
+				redir.addAttribute("result","Milestone Action Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail","Milestone Activity Details "+action+" Unsuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("carsSoCMilestoneId", carsSoCMilestoneId);
+			
+			return "redirect:/CARSMilestonesMonitorDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMilestonesMonitorDetailsSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSMilestonesMonitorDetailsEditSubmit.htm", method = RequestMethod.POST)
+	public String CARSMilestonesMonitorDetailsEditSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CARSMilestonesMonitorDetailsEditSubmit.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String carsSoCMilestoneId = req.getParameter("carsSoCMilestoneId");
+			
+			ActionMain main=new ActionMain();
+			main.setActionMainId(Long.parseLong(req.getParameter("actionmainid")));
+			main.setActionItem(req.getParameter("activityName"));
+			main.setModifiedBy(Username);
+			main.setModifiedDate(sdtf.format(new Date()));
+			
+			ActionAssign assign=new ActionAssign();
+			
+			String newPDC = req.getParameter("newPDC");
+			if(newPDC!=null) {
+				assign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(newPDC))));
+				assign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(newPDC))));
+			}	
+			assign.setAssigneeLabCode(labcode);
+			assign.setAssignee(Long.parseLong(req.getParameter("Assignee")));
+			assign.setActionAssignId(Long.parseLong(req.getParameter("actionassigneid")));
+			assign.setModifiedBy(Username);
+			
+			Long result = (long) actionservice.ActionMainEdit(main);
+			actionservice.ActionAssignEdit(assign);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "Milestone Action Details Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Milestone Action Details Update Unsuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("carsSoCMilestoneId", carsSoCMilestoneId);
+			
+			return "redirect:/CARSMilestonesMonitorDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMilestonesMonitorDetailsEditSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
 }

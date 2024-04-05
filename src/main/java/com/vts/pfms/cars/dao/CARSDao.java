@@ -93,5 +93,8 @@ public interface CARSDao {
 	public List<Object[]> carsMPStatusDetailsByCARSInitiationId(long carsInitiationId) throws Exception;
 	public int updateCARSOtherDocStatusCodes(long carsInitiationId, String othersStatusCode, String othersStatusCodeNext, String milestoneNo) throws Exception;
 	public List<Object[]> ExpertEmployeeList() throws Exception;
+	public int finalSoODateSubmit(String carsInitiationId, String date) throws Exception;
+	public CARSSoCMilestones getCARSSoCMilestonesById(String carsSoCMilestoneId) throws Exception;
+	public List<Object[]> assignedListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception;
 	
 }

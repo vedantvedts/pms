@@ -20,6 +20,8 @@ import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
+import com.vts.pfms.committee.dto.ActionAssignDto;
+import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.model.LabMaster;
 
 public interface CARSService {
@@ -103,4 +105,7 @@ public interface CARSService {
 	public long CARSPTCDocDetailsSubmit(CARSOtherDocDetails doc) throws Exception;
 	public long CARSPTCDocDetailsUpdate(CARSOtherDocDetails doc) throws Exception;
 	public List<Object[]> ExpertEmployeeList() throws Exception;
+	public int finalSoODateSubmit(String carsInitiationId, String date) throws Exception;
+	public Long carsMilestoneActionMainInsert(ActionMainDto mainDto, ActionAssignDto assign) throws Exception;
+	public List<Object[]> assignedListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception;
 }

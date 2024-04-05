@@ -49,6 +49,11 @@ import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
+import com.vts.pfms.committee.dao.ActionDao;
+import com.vts.pfms.committee.dto.ActionAssignDto;
+import com.vts.pfms.committee.dto.ActionMainDto;
+import com.vts.pfms.committee.model.ActionAssign;
+import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.model.LabMaster;
@@ -64,11 +69,15 @@ public class CARSServiceImpl implements CARSService{
 	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	private SimpleDateFormat sdf = fc.getSqlDateFormat();
-	
+	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
+	private SimpleDateFormat sdf2=new SimpleDateFormat("dd-MMM-yyyy");
 	
 	@Autowired
 	CARSDao dao;
 
+	@Autowired
+	ActionDao actiondao;
+	
 	@Override
 	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception {
 		
@@ -1988,4 +1997,137 @@ public class CARSServiceImpl implements CARSService{
 		return dao.ExpertEmployeeList();
 	}
 
+	@Override
+	public int finalSoODateSubmit(String carsInitiationId, String date) throws Exception {
+		
+		return dao.finalSoODateSubmit(carsInitiationId, date);
+	}
+	
+	@Override
+	public Long carsMilestoneActionMainInsert(ActionMainDto main, ActionAssignDto assign) throws Exception {
+		try {
+			logger.info(new Date() +"Inside SERVICE carsMilestoneActionMainInsert ");
+//			long success=1;
+			long unsuccess=0;
+			Object[] lab=null;
+			int count=0;
+			String ProjectCode=null;
+			try
+			{
+				lab=actiondao.LabDetails();
+				count=actiondao.ActionGenCount(main.getProjectId(),main.getType());
+				if(!main.getProjectId().equalsIgnoreCase("0"))
+				{
+					ProjectCode=actiondao.ProjectCode(main.getProjectId());
+				}
+			}
+			catch (Exception e) 
+			{	
+				logger.info(new Date() +"Inside SERVICE carsMilestoneActionMainInsert ",e);	
+				return unsuccess;
+			}
+			
+			CARSSoCMilestones carsSoCMilestones = dao.getCARSSoCMilestonesById(main.getCARSSoCMilestoneId());
+			String Project=null;
+			
+			if(!main.getProjectId().equalsIgnoreCase("0")) {
+				
+					Project="/"+ProjectCode;
+				
+			}else{
+				Project="/GEN";
+			}
+			Project+="/CARS-"+carsSoCMilestones.getCARSInitiationId()+"/"+carsSoCMilestones.getMilestoneNo()+"/";
+			ActionMain actionmain=new ActionMain();
+			
+			actionmain.setCARSSoCMilestoneId(Long.parseLong(main.getCARSSoCMilestoneId()));
+			actionmain.setActionLinkId(Long.parseLong(main.getActionLinkId()));
+			actionmain.setMainId(Long.parseLong(main.getMainId()));
+			actionmain.setActivityId(Long.parseLong(main.getActivityId()));
+			actionmain.setActionType(main.getActionType());
+			actionmain.setType(main.getType());
+			actionmain.setActionItem(main.getActionItem());
+			actionmain.setActionDate(java.sql.Date.valueOf(main.getMeetingDate()));
+			actionmain.setCategory(main.getCategory());
+			actionmain.setPriority(main.getPriority());
+			//actionmain.setActionStatus(main.getActionStatus());
+			actionmain.setProjectId(Long.parseLong(main.getProjectId()));
+			actionmain.setScheduleMinutesId(Long.parseLong(main.getScheduleMinutesId()));
+			actionmain.setCreatedBy(main.getCreatedBy());
+			actionmain.setCreatedDate(sdtf.format(new Date()));
+			actionmain.setIsActive(1);
+			actionmain.setParentActionId(Long.parseLong(main.getActionParentId()));
+			actionmain.setActionLevel(main.getActionLevel());
+			long result=actiondao.ActionMainInsert(actionmain);
+			//changed on 06-11
+			if(assign.getMultipleAssigneeList().size()>0) {
+				for(int i=0;i<assign.getMultipleAssigneeList().size();i++) {
+					ActionAssign actionassign = new ActionAssign();
+						
+					//count=count+1;
+					String actionCount=(count+1)+"-"+(i+1);
+
+					if(lab!=null && main.getLabName()!=null) {
+				    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
+
+					     actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+actionCount);
+					}else {
+						return unsuccess;
+					}
+					
+					actionassign.setActionMainId(result);
+					actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+					actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+					actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
+					actionassign.setAssignee(Long.parseLong(assign.getMultipleAssigneeList().get(i)));
+					actionassign.setAssignorLabCode(assign.getAssignorLabCode());
+					actionassign.setAssignor(assign.getAssignor());
+					actionassign.setRevision(0);
+//					actionassign.setActionFlag("N");		
+					actionassign.setActionStatus("A");
+					actionassign.setCreatedBy(main.getCreatedBy());
+					actionassign.setCreatedDate(sdtf.format(new Date()));
+					actionassign.setIsActive(1);
+					actionassign.setProgress(0);
+					long assignid=  actiondao.ActionAssignInsert(actionassign);
+					System.out.println("assignid---"+assignid);
+//					if(result>0) {
+//						Object[] data=actiondao.ActionNotification(String.valueOf(result) ,String.valueOf(assignid)).get(0);
+//						PfmsNotification notification=new PfmsNotification();
+//						notification.setEmpId(Long.parseLong(data[2].toString()));
+//						notification.setNotificationby(Long.parseLong(data[5].toString()));
+//						notification.setNotificationDate(sdtf.format(new Date()));
+//						notification.setScheduleId(unsuccess);
+//						notification.setCreatedBy(main.getCreatedBy());
+//						notification.setCreatedDate(sdtf.format(new Date()));
+//						notification.setIsActive(1);
+//						if("I".equalsIgnoreCase(actionmain.getType())) {
+//							notification.setNotificationUrl("ActionIssue.htm");
+//							 notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+//						} else {
+//							notification.setNotificationUrl("AssigneeList.htm");
+//							notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+//						}
+//						notification.setStatus("MAR");
+//			            dao.ActionNotificationInsert(notification);
+//					}else {
+//					return unsuccess;
+//					}
+					}	
+		
+			}
+		
+			return 1L;
+		} catch (Exception e) {
+			logger.info(new Date() +"Inside SERVICE carsMilestoneActionMainInsert "+ e);	
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	@Override
+	public List<Object[]> assignedListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception {
+		
+		return dao.assignedListByCARSSoCMilestoneId(carsSoCMilestoneId);
+	}
 }
