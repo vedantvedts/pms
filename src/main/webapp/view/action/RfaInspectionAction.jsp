@@ -174,7 +174,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[15] %> 
 								    			</button>
 	                                        </td>
-											<td class="left width" style="text-align: center;">
+											<td style="text-align: center;">
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid"
@@ -202,7 +202,6 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 														</div>
 													</div>
 												</button>
-												
 												<%} %>
 												 <input type="hidden"
 												name="${_csrf.parameterName}" value="${_csrf.token}" /> <input
@@ -213,7 +212,6 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 											<%
 												if(forwardAllow.contains(obj[10].toString())){
 											%>
-										
 												<button class="editable-click" type="button"
 													 style="background-color: transparent;"
 													 data-toggle="tooltip" data-placement="top" title="RFA FORWARD"
@@ -267,12 +265,10 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 												</button> 
 												 <%} %>
 												 
-												<%if (obj[16] != null) {
-													if (Integer.valueOf(obj[16].toString()) > 0) { %>
+												<%if (obj[16] != null && obj[18].toString().equalsIgnoreCase(EmpId)) {%>
 												<button title="REMARKS" class="editable-click" name="sub"
 													type="button" value=""
 													style="background-color: transparent;"
-													formaction="RemarksList.htm" formmethod="POST"
 													formnovalidate="formnovalidate" name="rfa"
 													id="rfaRemarksBtn" value="<%=obj[0]%>"
 													onclick="return rfaRemarks(<%=obj[0]%>,'<%=obj[14]%>')">
@@ -280,7 +276,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													<i class="fa fa-comment" aria-hidden="true"
 														style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
-												<%}}%>
+												<%}%>
 											</td>
 										</tr>
 										<%}} %>
@@ -762,7 +758,7 @@ function returnRfa(rfaId,RfaStatus,assignee) {
 	$('#RfaStatusHidden').val(RfaStatus);
 	$('#assigneedHidden').val(assignee);
 	
-	  var confirmation = confirm('Are You Sure To Return this RFA ?');
+	  var confirmation = confirm('Are You Sure To Revoke this RFA ?');
 	  if(confirmation){
 		  var form = document.getElementById("myFrom");
 		   

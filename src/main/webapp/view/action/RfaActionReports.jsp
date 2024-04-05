@@ -124,14 +124,15 @@ String projectid = (String)request.getAttribute("projectid");
 									id="myTable">
 													<thead>
 														<tr style="text-align: center;">
-															<th >SN</th>
-															<th>RFA No</th>	
-															<th>RFA Date</th>
+															<th>SN</th>
+															<th style="width: 15%">RFA No</th>	
+															<th style="width: 7%">RFA Date</th>
 															<th>Priority</th>																								
 														 	<th>Problem Statement</th>					 	
 														 	<th>Observation</th>
-														 	<th>Completion Date</th>
-														 	<th>RFA Status</th>
+														 	<th style="width: 8%">Close Date</th>
+														 	<th style="width: 9%">RFA Status</th>
+														 	<th style="width: 8%">Action</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -140,19 +141,55 @@ String projectid = (String)request.getAttribute("projectid");
 													  for(Object[]obj:RfaActionList){%>
 													<tr>
 													<td style="text-align: center;"><%=++count %></td>
-													<td><%if(obj[1]!=null){%><%=obj[1].toString() %><%}else{ %>-<%} %></td>
-													<td><%if(obj[2]!=null){%><%=obj[2].toString()  %><%}else{ %>-<%} %></td>
+													
+													<td <%if(obj[13]!=null && obj[13].toString().equalsIgnoreCase("RFC")){ %>style="color: red"<%} %>><%if(obj[1]!=null){%><%=obj[1].toString() %><%}else{ %>-<%} %></td>
+													
+													<td><%if(obj[2]!=null){%><%=sdf.format(obj[2])%><%}else{ %>-<%} %></td>
 													<td><%if(obj[3]!=null){%><%=obj[3].toString()  %><%}else{ %>-<%} %></td>
-													<td><%if(obj[5]!=null){%><%=obj[5].toString()  %><%}else{ %>-<%} %></td>
-													<td><%if(obj[10]!=null){%><%=obj[10].toString()  %><%}else{ %>-<%} %></td>
-													<td><%if(obj[9]!=null){%><%=obj[9].toString()  %><%}else{ %>-<%} %></td>
+													<%-- <td><%if(obj[5]!=null){%><%=obj[5].toString()  %><%}else{ %>-<%} %></td> --%>
+													<td>
+													   <%if(obj[5]!=null){%>
+														<%if(obj[5].toString().length()>70){ %>
+														 <%=obj[5].toString().substring(0, 70) %>
+														    <input type="hidden" value='"<%=obj[5].toString()%>"' id="tdpro<%=obj[0].toString()%>">
+														    <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showProblem('<%=obj[0].toString()%>','<%=obj[1].toString()%>')">show more..</span>
+														<%}else{ %>
+														<%=obj[5].toString() %>
+														<%} %>
+													   <%}else{ %>-<%} %>
+													</td>	
+													<%-- <td><%if(obj[10]!=null){%><%=obj[10].toString() %><%}else{ %>-<%} %></td> --%>
+													<td>
+													   <%if(obj[10]!=null){%>
+														<%if(obj[10].toString().length()>70){ %>
+														 <%=obj[10].toString().substring(0, 70) %>
+														    <input type="hidden" value='"<%=obj[10].toString()%>"' id="tdobs<%=obj[0].toString()%>">
+														    <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showObservation('<%=obj[0].toString()%>','<%=obj[1].toString()%>')">show more..</span>
+														<%}else{ %>
+														<%=obj[10].toString() %>
+														<%} %>
+													  <%}else{ %>-<%} %>
+													</td>
+													<td><%if(obj[9]!=null){%><%=sdf.format(obj[9])%><%}else{ %>-<%} %></td>
 													<td style="text-align: center;">
-													
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
-	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[8] %> 
-								    			</button>
-													
+	                                       	  	    <button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
+	                                       	  	    style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[8] %> 
+								    			    </button>
+												    </td>
+													<td style="text-align: center;">
+													   <button class="editable-click bg-transparent"
+													formaction="RfaActionPrint.htm" formmethod="get"
+													formnovalidate="formnovalidate" name="rfaid" value="<%=obj[0]%>/<%=obj[1] %>" 
+													style="margin-left:10%;" formtarget="_blank"   data-toggle="tooltip" data-placement="top"  data-original-title="VIEW DOCUMENT">
+													<div class="cc-rockmenu">
+														<div class="rolling">
+															<figure class="rolling_icon">
+																<img src="view/images/preview3.png">
+															</figure>
+														</div>
+													</div>
+												</button> 
 													</td>
 													</tr>
 													<%}} %>
@@ -164,11 +201,44 @@ String projectid = (String)request.getAttribute("projectid");
 									</div>
 								</div>
 							</div>
-						</div>
+						</div>		
 						
-					
-						<br>
-						<div class="card-footer" align="right">&nbsp;</div>
+						
+								<!-- Modal for Problem Statement -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="height:50px;">
+        <h5 class="modal-title" id="exampleModalLongTitle">Problem Statement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbody">
+     
+      </div>
+      <div align="right" id="header" class="p-2"></div>
+    </div>
+  </div>
+</div>
+
+                       <!-- Modal for Observation -->
+<div class="modal fade" id="exampleModalCenterObs" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="height:50px;">
+        <h5 class="modal-title" id="exampleModalLongTitle">Observation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbodyobs">
+     
+      </div>
+      <div align="right" id="headerobs" class="p-2"></div>
+    </div>
+  </div>
+</div>
 		
 </body>
 <script type="text/javascript">
@@ -219,5 +289,27 @@ $(document).ready(function(){
 	
 });
 });
+
+function showProblem(a,b){
+	/* var y=JSON.stringify(a); */
+	var pro=$('#tdpro'+a).val();
+	console.log(a);
+	$('#modalbody').html(pro);
+	$('#header').html(b);
+	$('#exampleModalCenter').modal('show');
+}
+
+function showObservation(a,b){
+	/* var y=JSON.stringify(a); */
+	var obs=$('#tdobs'+a).val();
+	console.log(a);
+	$('#modalbodyobs').html(obs);
+	$('#headerobs').html(b);
+	$('#exampleModalCenterObs').modal('show');
+}
+
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+	})
 </script>
 </html>

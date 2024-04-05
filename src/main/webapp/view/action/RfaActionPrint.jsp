@@ -124,8 +124,8 @@ List<Object[]> ProjectTypeList=(List<Object[]>)request.getAttribute("ProjectType
 List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList");
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 
-List<String> checkedByStatus  = Arrays.asList("AC","AV","AE","RC","RFA","RE","RP","RR","AR","AP","ARC","AY","AX","RV");
-List<String> approvedByStatus  = Arrays.asList("AV","AE","RV","RFA","RE","RP","RR","AR","AP","ARC","AY","AX","AAA");
+List<String> checkedByStatus  = Arrays.asList("AC","AV","AE","RC","RFA","RE","RP","RR","AR","AP","ARC","AY","AX","RV","AAA","REK");
+List<String> approvedByStatus  = Arrays.asList("AV","AE","RV","RFA","RE","RP","RR","AR","AP","ARC","AY","AX","AAA","REK");
 List<String> receiverIdStatus  = Arrays.asList("AR","AP","ARC");
 List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
 %>
@@ -196,7 +196,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <%} %>
               </tr> 
               <tr>
-             <%if(RfaPrint[17]!=null && Arrays.asList("AA","AF","AC","AV","AAA","AR","AP","ARC","RFA","AX","AY","AAA","AR","RR","AP","RP","REK").contains(RfaPrint[11]+"")){ %>
+             <%if(RfaPrint[17]!=null && Arrays.asList("AA","AF","AC","AV","AAA","AR","AP","ARC","RFA","AX","AY","AR","RR","AP","RP","REK").contains(RfaPrint[11]+"")){ %>
                  <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 62px">&nbsp;&nbsp;Checked By </td>
                  <%if(checkedByStatus.contains(RfaPrint[11].toString()) ){ %>
                  <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700;height: 62px "><span style="font-weight: normal;">&nbsp;&nbsp;<%=checkedBy2%> <br> <span style="font-size: 13px;"> &nbsp; [checked on :</span> <span class="spanDate"><%=checkedDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>

@@ -2943,11 +2943,12 @@ public class ActionController {
 				String Status=req.getParameter("Status");
 				
 				 Gson json = new Gson();
-				
-			
+				 LocalDate currentDate = LocalDate.now();
 				if(fdate==null)
 				{
-					fdate=LocalDate.now().minusYears(1).toString();
+					LocalDate firstDayOfYear = LocalDate.of(currentDate.getYear(), 1, 1);
+				    fdate = firstDayOfYear.toString();
+				//	fdate=LocalDate.now().minusYears(1).toString();
 					Emp="A";
 					Project="A";
 				}else
@@ -2956,7 +2957,9 @@ public class ActionController {
 				}		
 				if(tdate==null)
 				{
-					tdate=LocalDate.now().toString();
+					LocalDate lastDayOfYear = LocalDate.of(currentDate.getYear(), 12, 31);
+					tdate=lastDayOfYear.toString();
+				    //	tdate=LocalDate.now().toString();
 				}
 				else 
 				{	
@@ -2990,6 +2993,8 @@ public class ActionController {
 					req.setAttribute("RfaActionList", RfaActionList.stream().filter(e-> !e[14].toString().equalsIgnoreCase("ARC")).collect(Collectors.toList()));
 				}else if ( Status!=null && Status.equalsIgnoreCase("C")) {   // for rfa close list
 					req.setAttribute("RfaActionList", RfaActionList.stream().filter(e-> e[14].toString().equalsIgnoreCase("ARC")).collect(Collectors.toList()));
+				}else if ( Status!=null && Status.equalsIgnoreCase("CAN")) {   // for rfa cancel list
+					req.setAttribute("RfaActionList", RfaActionList.stream().filter(e-> e[14].toString().equalsIgnoreCase("RFC")).collect(Collectors.toList()));
 				}else {
 					req.setAttribute("RfaActionList", RfaActionList);
 				}
@@ -3950,6 +3955,11 @@ public class ActionController {
 			 if(count==4l) {
 				 redir.addAttribute("result", "RFA Revoked Successfully"); 
 				 return "redirect:/RfaInspection.htm";
+			 }
+			 
+			 if(status.equalsIgnoreCase("RFC")) {
+				 redir.addAttribute("result", "RFA Cancelled Successfully"); 
+				 return "redirect:/RfaAction.htm";
 			 }
 			 
 			 if(count>0) {

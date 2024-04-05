@@ -1334,7 +1334,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId AND CASE WHEN 'user'=:status THEN t.RfaStatus IN ('RC','RV','RE') WHEN 'assigner'=:status THEN t.RfaStatus IN ('RR','RP') END  AND t.actionby=e.EmpId AND e.desigid=c.desigid";
+	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId AND CASE WHEN 'user'=:status THEN t.RfaStatus IN ('RC','RV','RE','RFC') WHEN 'assigner'=:status THEN t.RfaStatus IN ('RR','RP') END  AND t.actionby=e.EmpId AND e.desigid=c.desigid";
 	@Override
 	public List<Object[]> getrfaRemarks(String rfaId,String status) throws Exception {
 		Query query=manager.createNativeQuery(GETRFAREMARKS);
@@ -1812,7 +1812,7 @@ public class ActionDaoImpl implements ActionDao{
 	
 	private static final String RFAACTIONLISTS="SELECT a.RfaId, a.RfaNo,a.RfaDate,d.Priority,a.projectId,a.Statement,a.Description,a.Reference,\r\n"
 			+ "c.RfaStatusDetails,(SELECT b.CompletionDate FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid) AS 'CompletionDate',\r\n"
-			+ "((SELECT b.Observation FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid))AS'Observation',(SELECT b.Clarification FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid) AS 'Clarification', (SELECT b.ActionRequired FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid) AS 'ActionRequired'\r\n"
+			+ "((SELECT b.Observation FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid))AS'Observation',(SELECT b.Clarification FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid) AS 'Clarification', (SELECT b.ActionRequired FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid) AS 'ActionRequired',a.rfastatus\r\n"
 			+ "FROM pfms_rfa_action a ,pfms_rfa_status c,pfms_rfa_priority d WHERE  a.RfaStatus = c.RfaStatus AND a.PriorityId= d.PriorityId AND a.projectid=:projectid AND a.RfaNo LIKE :rfatypeid AND a.RfaDate BETWEEN :fdate AND :tdate ORDER BY a.rfaid";
 	//private static final String RFAACTIONLISTS="SELECT a.RfaId, a.RfaNo,a.RfaDate,d.Priority,a.projectId,a.Statement,a.Description,a.Reference,c.RfaStatusDetails,b.CompletionDate,b.Observation,b.clarification,b.actionrequired FROM pfms_rfa_action a, pfms_rfa_inspection b ,pfms_rfa_status c,pfms_rfa_priority d WHERE a.RfaId=b.RfaId  AND a.RfaStatus = c.RfaStatus AND a.PriorityId= d.PriorityId AND a.projectid=:projectid AND a.RfaNo LIKE :rfatypeid AND a.RfaDate BETWEEN :fdate AND :tdate ORDER BY a.rfaid";
 @Override

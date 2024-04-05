@@ -176,6 +176,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											        <option value="A" <%if("A".equalsIgnoreCase(Status)){%>selected="selected" <%}%> >  All</option>	
 											        <option value="O" <%if("O".equalsIgnoreCase(Status)){%>selected="selected" <%}%> >  Open</option>
 											        <option value="C" <%if("C".equalsIgnoreCase(Status)){%>selected="selected" <%}%> > Close</option>
+											        <option value="CAN" <%if("CAN".equalsIgnoreCase(Status)){%>selected="selected" <%}%> > Cancel</option>
 										        </select>	       
 											</td>
 					   						<td>
@@ -246,9 +247,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 																<img src="view/images/preview3.png">
 															</figure>
 														</div>
-													
 													</div>
-		                                                  
 												</button> 
 												<%if(obj[11].toString().equalsIgnoreCase(UserId) && toUserStatus.contains(obj[14].toString())) {
                                                 %>
@@ -293,34 +292,26 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 	                                    <% } if(obj[11].toString().equalsIgnoreCase(UserId) && Integer.valueOf(obj[16].toString()) >0){ %>  
 													<button title="REMARKS" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
-													formaction="RemarksList.htm" formmethod="POST"
 													formnovalidate="formnovalidate" name="rfa" id="rfaRemarksBtn"
 													value="<%=obj[0]%>"
 													onclick="return rfaRemarks(<%=obj[0]%>,'<%=obj[14]%>')">
 													<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
 											 <%} %>
-											 <%-- if(obj[14].toString().equalsIgnoreCase("AP") && obj[15].toString().equalsIgnoreCase(EmpId)){
-											 	<button type="submit" class="editable-click"  style="background-color: transparent;" 
-											formaction="RfaActionForward.htm" formmethod="POST" formnovalidate="formnovalidate"
-												name="RFAID" value="<%=obj[0]%>" 
-												onclick="return confirm('Are you sure to close?')"
-													data-toggle="tooltip" data-placement="top" id="rfaFwdBtn" title="" data-original-title="CLOSE RFA"
-
-												>
+											 <%if(obj[14].toString().equalsIgnoreCase("AA") && obj[15].toString().equalsIgnoreCase(EmpId)){%>
+											 	<button type="button" class="editable-click"  style="background-color: transparent;" 
+												name="RFAID" value="<%=obj[0]%>" formaction="#" formmethod="POST"
+												onclick="returnCancelRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>');"
+													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CANCEL RFA">
 												<div class="cc-rockmenu" >
 														<figure class="rolling_icon" >
 															<img src="view/images/close.png" id="closeImg">
 														</figure>
 												</div>
-												
-											</button>
-											<input type="hidden" name="rfaoptionby" value="ARC" >
+											   </button>
+											   <input type="hidden" name="rfaoptionby" value="RFC" >
 											<%} %>
-											 --%>
-											
 											</td>
-											
 										</tr>
 										<%}} %>
 									</tbody>
@@ -345,93 +336,168 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 	</div>
 
 		<!-- -- ******************************************************************Remarks  Model Start ***********************************************************************************-->
-<form class="form-horizontal" role="form"
-			action="#" method="POST" id="returnFrm" autocomplete="off">
-			<div class="modal fade bd-example-modal-lg" id="rfaRemarksmodal"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="width: 100%; position: relative; " >
-						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
-							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA Remarks</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div style="height: 300px; overflow: auto;">
-							<div class="modal-body">
-							
-		<div class="form-inline" >
-		<table class=" table-hover table-striped remarksDetails " style="width: 100%;"  >
-		<tbody id="remarksTb"></tbody>
-							</table>
+	<form class="form-horizontal" role="form" action="#" method="POST"
+		id="returnFrm" autocomplete="off">
+		<div class="modal fade bd-example-modal-lg" id="rfaRemarksmodal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq"
+					style="width: 100%; position: relative;">
+					<div class="modal-header" id="modalreqheader"
+						style="background-color: #021B79">
+						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA
+							Remarks</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div style="height: 300px; overflow: auto;">
+						<div class="modal-body">
 
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
- 		<input type="hidden" name="rfa" id="rfaHidden">
- 		<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
-       <input type="hidden" name="assignor" id="assignorId">
+							<div class="form-inline">
+								<table class=" table-hover table-striped remarksDetails "
+									style="width: 100%;">
+									<tbody id="remarksTb"></tbody>
+								</table>
+
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden" name="rfa"
+									id="rfaHidden"> <input type="hidden" name="RfaStatus"
+									id="RfaStatusHidden"> <input type="hidden"
+									name="assignor" id="assignorId">
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</form>
+
+	<div class="modal fade  bd-example-modal-lg" tabindex="-1"
+		role="dialog" id="ActionAssignfilemodal">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						RFA No : <b id="rfamodalval"></b>
+					</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form name="specadd" id="specadd" action="RfaActionForward.htm"
+					method="POST">
+					<div class="modal-body">
+
+						<div class="row">
+
+							<div class="col-3">
+								<div class="form-group">
+									<b><label> RFA By : <span class="mandatory"
+											style="color: red;">* </span></label></b> <br> <select
+										class=" form-control selectdee"
+										onchange="return rfaOptionFunc()" style="width: 100%;"
+										name="rfaoptionby" id="rfaoptionby" required="required"
+										style="margin-top:-5px">
+										<option disabled="disabled" selected value="">Choose...</option>
+										<option value="AF">Checked By</option>
+										<option value="AX">Approved By</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-6" id="selectClassModal2">
+								<div class="form-group">
+									<b><label>RFA Forward To : </label><br></b> <select
+										class="form-control selectdee " style="width: 100%;"
+										name="rfaEmpModal" id="modalEmpList2" required="required"
+										data-live-search="true" data-placeholder="Select Assignee">
+									</select>
+								</div>
+							</div>
+						</div>
+						<div align="center">
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" /> <input type="hidden" name="rfano1"
+								id="rfanomodal" value=""> <input type="submit"
+								name="sub" class="btn  btn-sm submit" form="specadd"
+								id="rfaforwarding" value="SUBMIT"
+								onclick="return confirm('Are you sure To Submit?')" /> <input
+								type="hidden" name="RFAID" id="RFAID">
+						</div>
+
+					</div>
+
+					<!-- Form End -->
+				</form>
+			</div>
+		</div>
 	</div>
 
-	
+	<!-- Cancel Modal Remarks Start -->	
+
+	<form class="form-horizontal" role="form"
+		action="RfaActionReturnList.htm" method="POST" id="returnFrm"
+		autocomplete="off">
+		<div class="modal fade bd-example-modal-lg" id="rfaCancelmodal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-md">
+				<div class="modal-content addreq"
+					style="height: 20rem; width: 150%; margin-left: -22%; position: relative;">
+					<div class="modal-header" id="modalreqheader"
+						style="background-color: #021B79">
+						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA CLOSE</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div style="height: 520px; overflow: auto;">
+						<div class="modal-body">
+							<div class="row" style="" id="mainrow">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-3">
+											<label class="control-label returnLabel" style="font-weight: 600;font-size: 16px">Reason For Close</label> <span
+												class="mandatory" style="color: #cd0a0a;">*</span>
+										</div>
+										<div class="col-md-9" style="max-width: 82%">
+											<textarea class="form-control" rows="5" cols="30"
+												placeholder="Max 500 Characters" name="replyMsg"
+												id="replyMsg" maxlength="500" required></textarea>
+										</div>
+									</div>
+									<br>
+									<div class="form-group" align="center">
+										<span id="btnsub"><button type="submit"
+												class="btn btn-primary btn-sm submit" id="submit"
+												value="SUBMIT"
+												onclick="return confirm('Are you sure to close this RFA ?')">SUBMIT</button></span>
+									</div>
+
+									<input type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden" name="rfa"
+										id="rfaIdHidden"> <input type="hidden" name="RfaStatus"
+										id="" value="RFC"> <input type="hidden"
+										name="assignor" id="assignorHidden">
+
+								</div>
 							</div>
 						</div>
 					</div>
-
 				</div>
-				</div>
-		
-		</form>
-		
-			<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">RFA No : <b id="rfamodalval" ></b></h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-								<form name="specadd" id="specadd" action="RfaActionForward.htm" method="POST">
-						<div class="modal-body" >
-					
-				   			<div class="row">
-									 
-			                          <div class="col-3">
-				                             <div class="form-group">
-				                                     <b><label> RFA By : <span class="mandatory" style="color: red;">* </span></label></b> 
-				                                       <br>
-				                                       <select class=" form-control selectdee" onchange="return rfaOptionFunc()" style="width: 100%;" name="rfaoptionby" id="rfaoptionby" required="required" style="margin-top:-5px" >
-															<option disabled="disabled"  selected value="" >Choose...</option>
-															  <option value="AF" >Checked By</option>	
-											                  <option value="AX" >Approved By</option>
-														</select>	
-				                              </div>
-			                         </div>
-
-									  <div class="col-6" id="selectClassModal2">
-			                               <div class="form-group">
-											    <b><label>RFA Forward To : </label><br></b>
-												<select class="form-control selectdee " style="width: 100%;" name="rfaEmpModal" id="modalEmpList2" required="required"  data-live-search="true"  data-placeholder="Select Assignee" >
-												</select>
-											</div>
-									</div>
-									</div>
-											<div  align="center">
-			 				          		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
-											<input type="hidden" name="rfano1" id="rfanomodal" value="">
-			 								<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd"  id="rfaforwarding" value="SUBMIT"  onclick="return confirm('Are you sure To Submit?')"/>
-											<input type="hidden" name="RFAID" id="RFAID"> 
-							</div>
-								
-			 				</div>  
-			 			
- 	<!-- Form End -->			
-							</form>
-						</div>
-					</div>
-				</div>
-		
+			</div>
+		</div>
+	</form>
+ <!-- Cancel Modal Remarks End -->	
 		
 </body>
 
@@ -669,6 +735,14 @@ function rfaOptionFunc(){
 				$('#modalEmpList2').html("");
 				$('#modalEmpList2').html(html);
 		  }
+}
+
+function returnCancelRfa(rfaId,RfaStatus,assignee) {
+	$('#rfaCancelmodal').modal('show');
+	$('#rfaIdHidden').val(rfaId);
+	$('#StatusHidden').val(RfaStatus);
+	$('#assignorHidden').val(assignee);
+	
 }
 </script>
 

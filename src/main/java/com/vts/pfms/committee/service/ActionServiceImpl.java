@@ -1762,7 +1762,7 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 		SetEmployee=assignee;
 		//Url="RfaInspection.htm";
 		Url="RfaInspection.htm";
-	}if(rfaStatus.equalsIgnoreCase("REV") || rfaStatus.equalsIgnoreCase("REK")) {
+	}if(rfaStatus.equalsIgnoreCase("REV") || rfaStatus.equalsIgnoreCase("REK") || rfaStatus.equalsIgnoreCase("RFC")) {
 		SetEmployee=EmpId;
 		Url="RfaAction.htm";
 	}
@@ -1793,6 +1793,8 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 	}
 	if((rfaStatus.equalsIgnoreCase("REK"))) {
 		newstatus="REK";
+	}if((rfaStatus.equalsIgnoreCase("RFC"))) {
+		newstatus="RFC";
 	}
 	
 	rf.setRfaStatus(newstatus);   // for rfa action table
@@ -1806,7 +1808,7 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 	
 	List<PfmsNotification> x = new ArrayList<>();  
 	
-	List<String> revokeList = Arrays.asList("REV","REK");
+	List<String> revokeList = Arrays.asList("REV","REK","RFC");
 
 	PfmsNotification pf = new PfmsNotification();
 	if(!revokeList.contains(newstatus)) {
