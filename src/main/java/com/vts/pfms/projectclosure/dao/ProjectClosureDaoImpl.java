@@ -20,6 +20,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
+import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
@@ -589,5 +590,17 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			e.printStackTrace();
 			return null;
 		}		
+	}
+
+	@Override
+	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception {
+		
+		try {
+			return manager.find(ProjectClosureCheckList.class, Long.parseLong(closureId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getProjectClosureCheckListByProjectId "+e);
+			return null;
+		}
 	}
 }

@@ -14,6 +14,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
+import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 
 public interface ProjectClosureService {
@@ -53,5 +54,6 @@ public interface ProjectClosureService {
 	public Object[] projectOriginalAndRevisionDetails(String projectId) throws Exception;
 	public Object[] projectExpenditureDetails(String projectId) throws Exception;
 	public long projectClosureACPRevoke(String closureId, String userId, String empId, String labcode) throws Exception;
+	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception;
 	
 }
