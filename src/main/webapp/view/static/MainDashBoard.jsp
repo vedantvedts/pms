@@ -840,9 +840,8 @@ String ibasUri=(String)request.getAttribute("ibasUri");
 /* Long divisionId=(Long)session.getAttribute("Division");  */
 /* Long empId =(Long)session.getAttribute("EmpId");  */
 /* Long formRoleId=(Long)session.getAttribute("FormRole");  */
-
-
-
+String statsUrl=(String)request.getAttribute("statsUrl");
+String pmsToStatsUrl = statsUrl+"/login";
   
 List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
 List<Object[]> todaysMeetings= new ArrayList<>();
@@ -2019,11 +2018,19 @@ if(ses!=null){ %>
 <!-- @@@@@@@@ MAIN ROW col-md-3 START @@@@@@@ -->		
 
 		 <div class="col-md-3" >
-		  	
-		  	
+		
 		 <!-- ----------- COMMON TOGGLE BUTTONS(ACTION,PROJECT,OVERALL) STARTS --------------------------- --> 	
 		   <div style="float: right;padding:5px;margin-top:-7px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
 		  	 <div class="btn-group "> 
+	
+		  	 	  	<form id="pmsToIbasForm" action="<%=pmsToStatsUrl%>" target="blank" method="get"> 
+             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+             <input type="hidden" name="username" value="<%=Username%>">
+             <input type="hidden" name="action" value="loginFromPms">
+             <!--  <input type="hidden" name="redirectVal" value="">  -->
+		  <button type="submit" class="btn External" data-toggle="tooltip" title="STATS" ><img src="view/images/stats.png" /></button>
+		  	</form>
+		  	 	
 		  	 	<form action="ProjectHealthUpdate.htm" method="get" style=" <%if (IsDG.equalsIgnoreCase("Yes") ){%> display:none   <%}%>" >
 		        	<button type="submit" class="btn btn4" data-toggle="tooltip" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
 		        </form>

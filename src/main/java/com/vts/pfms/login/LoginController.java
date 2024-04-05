@@ -23,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -84,6 +85,10 @@ public class LoginController {
 
 	@Autowired
 	PFMSServeFeignClient PFMSServ;
+	
+	
+	@Autowired
+    private Environment env;
 
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -506,6 +511,7 @@ public class LoginController {
 		String empNo = (String) ses.getAttribute("empNo");
 		String LabCode = (String) ses.getAttribute("labcode");
 		String ClusterId = (String) ses.getAttribute("clusterid");
+		String statsUrl   = env.getProperty("stats_url");
 
 		//check if it is project director or qioc
 		if (LoginType.equals("Q") || LoginType.equals("P")) {
@@ -577,17 +583,18 @@ public class LoginController {
 
 		logger.info(new Date() + "Inside MainDashBoard.htm ");
 		try {
-
+			req.setAttribute("statsUrl", statsUrl);
+			System.out.println("statsUrl###########"+statsUrl);
 			req.setAttribute("loginTypeList", headerservice.loginTypeList(LoginType));
 			req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
 			req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId, LocalDate.now().toString()));
-//			     req.setAttribute("todayactionlist", headerservice.TodayActionList(EmpId)); // CALL Pfms_Action_PDC(:empid)
+            //req.setAttribute("todayactionlist", headerservice.TodayActionList(EmpId)); // CALL Pfms_Action_PDC(:empid)
 			req.setAttribute("dashbordNotice", rfpmainservice.GetNotice(LabCode));
 			req.setAttribute("noticeEligibility", rfpmainservice.GetNoticeEligibility(EmpId));
 			req.setAttribute("logintype", LoginType);
 			req.setAttribute("selfremindercount", rfpmainservice.SelfActionsList(EmpId).size());
 			// req.setAttribute("NotiecList",rfpmainservice.getAllNotice());
-//			     req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
+           //req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
 			req.setAttribute("ibasUri", ibasUri);
 			req.setAttribute("interval", interval);
 			req.setAttribute("ibasV3Uri", "http:8082/ibas");
@@ -595,12 +602,12 @@ public class LoginController {
 			req.setAttribute("mytasklist", headerservice.MyTaskList(EmpId));
 			req.setAttribute("approvallist", headerservice.ApprovalList(EmpId, LoginType));
 			req.setAttribute("mytaskdetails",
-					headerservice.MyTaskDetails(EmpId)); /* CALL `Dashboard_Mytask_Details` (:empid) */
+			headerservice.MyTaskDetails(EmpId)); /* CALL `Dashboard_Mytask_Details` (:empid) */
 			req.setAttribute("dashboardactionpdc", headerservice.DashboardActionPdc(EmpId, LoginType));
 			req.setAttribute("QuickLinkList", headerservice.QuickLinksList(LoginType));
 			req.setAttribute("projecthealthdata", rfpmainservice.ProjectHealthData(LabCode));
 			req.setAttribute("projecthealthtotal",
-					rfpmainservice.ProjectHealthTotalData(ProjectId, EmpId, LoginType, LabCode, "Y"));
+			rfpmainservice.ProjectHealthTotalData(ProjectId, EmpId, LoginType, LabCode, "Y"));
 			System.out.println(ProjectId + "--" + EmpId + "---" + LoginType + "---" + LabCode);
 			// req.setAttribute("clusterlablist", headerservice.LabList());
 			// req.setAttribute("clusterlist", comservice.ClusterList());
