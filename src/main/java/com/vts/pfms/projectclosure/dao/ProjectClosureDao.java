@@ -9,6 +9,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
+import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
@@ -49,5 +50,6 @@ public interface ProjectClosureDao {
 	public List<Object[]> projectClosureACPApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public Object[] projectOriginalAndRevisionDetails(String projectId) throws Exception;
 	public Object[] projectExpenditureDetails(String projectId) throws Exception;
+	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId)  throws Exception;
 
 }

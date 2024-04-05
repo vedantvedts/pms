@@ -1333,4 +1333,116 @@ public class ProjectClosureController {
 
 	}
 	
+
+	
+	
+	
+	@RequestMapping(value="ProjectClosureCheckListDetailsSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String ProjectClosureCheckListDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
+			@RequestPart(name="monitoringCommitteeAttach1", required = false) MultipartFile monitoringCommitteeAttach,
+			@RequestPart(name="lessonsLearnt1", required = false) MultipartFile lessonsLearnt) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		try {
+			String closureId = req.getParameter("closureId");
+			String action = req.getParameter("Action");
+			
+			com.vts.pfms.projectclosure.model.ProjectClosureCheckList clist = (action!=null && action.equalsIgnoreCase("Add"))?new com.vts.pfms.projectclosure.model.ProjectClosureCheckList() : service.getProjectClosureCheckListByProjectId(closureId);
+			
+			clist.setQARHQrsSentDate(req.getParameter("QARHQrsSentDate"));
+			clist.setQARSentDate(req.getParameter("QARSentDate"));
+			clist.setQARObjective(req.getParameter("QARObjective"));
+			//clist.setQARMilestone(req.getParameter("QARMilestone"));
+			clist.setQARPDCDate(req.getParameter("QARPDCDate"));
+			clist.setQARProposedCost(req.getParameter("QARProposedCost"));
+			clist.setQARCostBreakup(req.getParameter("QARCostBreakup"));
+			clist.setSCRequested(req.getParameter("SCRequested"));
+			clist.setSCGranted(req.getParameter("SCGranted"));
+			clist.setSCRevisionCost(Double.parseDouble(req.getParameter("SCRevisionCost")));
+			clist.setSCReason(req.getParameter("SCReason"));
+			clist.setPDCRequested(req.getParameter("PDCRequested"));
+			clist.setPDCGranted(req.getParameter("PDCGranted"));
+			clist.setPDCRevised(req.getParameter("PDCRevised"));
+			clist.setPDCReason(req.getParameter("PDCReason"));
+			clist.setPRMaintained(req.getParameter("PRMaintained"));
+			
+			clist.setPRSanctioned(req.getParameter("PRSanctioned"));
+			clist.setPECVerified(req.getParameter("PECVerified"));
+			clist.setSRMaintained(req.getParameter("SRMaintained"));
+			clist.setCSProcedure(req.getParameter("CSProcedure"));
+			clist.setCSDrawn(req.getParameter("CSDrawn"));
+			clist.setCSReason(req.getParameter("CSReason"));
+			clist.setCSamountdebited(Double.parseDouble(req.getParameter("CSamountdebited")));
+			clist.setNCSProcedure(req.getParameter("NCSProcedure"));
+			clist.setNCSDrawn(req.getParameter("NCSDrawn"));
+			clist.setNCSReason(req.getParameter("NCSReason"));
+			clist.setNCSamountdebited(Double.parseDouble(req.getParameter(req.getParameter("NCSamountdebited"))));
+			clist.setNCSReason(req.getParameter("NCSDistributed"));
+			clist.setNCSReason(req.getParameter("NCSIncorporated"));
+			
+			clist.setEquipPurchased(req.getParameter("EquipPurchased"));
+			clist.setEquipReason(req.getParameter("EquipReason"));
+			clist.setEquipProcuredBeforePDC(req.getParameter("EquipProcuredBeforePDC"));
+			clist.setEquipBoughtOnCharge(req.getParameter("EquipBoughtOnCharge"));
+			clist.setBudgetAllocation(req.getParameter("BudgetAllocation"));
+			clist.setBudgetFinancialProgress(req.getParameter("BudgetFinancialProgress"));
+			clist.setBudgetexpenditureReports(req.getParameter("BudgetexpenditureReports"));
+			clist.setBudgetexpenditureIncurred(req.getParameter("BudgetexpenditureIncurred"));
+			clist.setLogBookMaintained(req.getParameter("LogBookMaintained"));
+			clist.setJobCardsMaintained(req.getParameter("JobCardsMaintained"));
+			clist.setSPdemand(req.getParameter("SPdemand"));
+			clist.setCWIncluded(req.getParameter("CWIncluded"));
+			clist.setCWAdminApp(req.getParameter("CWAdminApp"));
+			clist.setCWRevenueWorks(req.getParameter("CWRevenueWorks"));
+			clist.setCWDeviation(req.getParameter("CWDeviation"));
+			clist.setCWExpenditure(req.getParameter("CWExpenditure"));
+			clist.setNoOfVehicleSanctioned(req.getParameter("NoOfVehicleSanctioned"));
+			clist.setVehicleAvgRun(req.getParameter("VehicleAvgRun"));
+			clist.setVehicleAvgFuel(req.getParameter("VehicleAvgFuel"));
+			clist.setProjectClosedDate(req.getParameter("ProjectClosedDate"));
+			
+			
+			
+
+			long result=0l;
+			if(action!=null && action.equalsIgnoreCase("Add")) {
+				
+				clist.setCreatedBy(UserId);
+				clist.setCreatedDate(sdtf.format(new Date()));
+				clist.setIsActive(1);
+				
+				//result = service.addProjectClosureSoC(soc, EmpId, monitoringCommitteeAttach, lessonsLearnt);
+				
+			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
+				clist.setModifiedBy(UserId);
+				clist.setModifiedDate(sdtf.format(new Date()));
+				
+				//result = service.editProjectClosureSoC(soc, monitoringCommitteeAttach, lessonsLearnt);
+				
+				if (result > 0) {
+					redir.addAttribute("result", "Closure SoC Details Updated Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Closure SoC Details Update Unsuccessful");
+				}
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("socTabId","2");
+				return "redirect:/ProjectClosureCheckList.htm";
+			}
+			if (result > 0) {
+				redir.addAttribute("result", "Closure SoC Details Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Closure SoC Details Add Unsuccessful");
+			}
+			redir.addAttribute("closureId", closureId);
+			redir.addAttribute("socTabId","2");
+			
+			return "redirect:/ProjectClosureCheckList.htm";
+			
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProjectClosureCheckListDetailsSubmit.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+	
 }

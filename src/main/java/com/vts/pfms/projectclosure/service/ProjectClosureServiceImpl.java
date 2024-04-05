@@ -35,6 +35,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
+import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
@@ -923,5 +924,11 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+	@Override
+	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception {
+		
+		return dao.getProjectClosureCheckListByProjectId(closureId);
 	}
 }

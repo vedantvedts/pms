@@ -392,7 +392,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 							        			</div> 
 												<div class="card-body" style="overflow:auto;max-height:25rem;">
 								        		
-													<form action="ProjectClosureSoCDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
+													<form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												    	<input type="hidden" name="closureId" value="<%=closureId%>">
 												    	
@@ -411,7 +411,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        	<div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Sent by the Lab to HQrs :</label><span class="mandatory">*</span>
-												                    <input  class="form-control form-control" type="text" name="" placeholder="Enter Date" 
+												                    <input  class="form-control form-control" type="text" name="QARHQrsSentDate" id="HQrsSentDate" 
 												                     value="" > 
 												                </div>
 												            </div>
@@ -419,7 +419,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">When sent to the CFA :</label><span class="mandatory">*</span>
-												                	 <input  class="form-control form-control" type="text" name="" id="CFASendDate" placeholder="Enter Sent Date" 
+												                	 <input  class="form-control form-control" type="text" name="QARSentDate" id="CFASendDate"  
 												                     value="" > 
 												                    
 												                </div>
@@ -428,7 +428,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            <div class="col-md-4" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Objective  of the  Project mentioned in the QAR :</label><span class="mandatory">*</span>
-												                	 <input  class="form-control form-control" type="text" name="" placeholder="Enter Sent Date" 
+												                	 <input  class="form-control form-control" type="text" name="QARObjective" placeholder="Enter Objective  of the  Project mentioned in the QAR" 
 												                     value="" > 
 												                   
 												                </div>
@@ -445,7 +445,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="monitoringCommitteeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARMilestone" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												            </div>
 												            
@@ -458,7 +458,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">PDC</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="PDCDate" placeholder="Enter PDC Date" 
+												                    <input  class="form-control " type="text" name="QARPDCDate" id="PDCDate"
 												                     value="" > 
 												                </div>
 												            </div>
@@ -466,7 +466,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Proposed Cost</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="ProposedDate" placeholder="Enter Proposed Date" 
+												                    <input  class="form-control " type="text" name="QARProposedCost" id="ProposedDate" 
 												                     value="" > 
 												                </div>
 												            </div> 
@@ -481,7 +481,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="monitoringCommitteeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARCostBreakup" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                   
 												                </div>
 												            </div>
@@ -495,7 +495,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="monitoringCommitteeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARNCItems" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                   
 												                </div>
 												            </div>
@@ -519,7 +519,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">When requested</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="SCRequested" placeholder="Enter Date" 
+												                    <input  class="form-control " type="text" name="SCRequested" id="SCRequested" placeholder="Enter Requested Date" 
 												                     value="" > 
 												                </div>
 												            </div> 
@@ -527,7 +527,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												             <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">When granted</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="SCGranted" placeholder="Enter Date" 
+												                    <input  class="form-control " type="text" name="SCGranted" id="SCGranted" placeholder="Enter Granted Date" 
 												                     value="" > 
 												                </div>
 												            </div> 
@@ -537,7 +537,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												             <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">How much/ revised cost</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="" placeholder="Enter Cost" 
+												                    <input  class="form-control " type="text" name="SCRevisionCost" id="" placeholder="Enter Revision Cost" 
 												                     value="" > 
 												                </div>
 												            </div> 
@@ -546,7 +546,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Any reason specified</label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="otherRelevant" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control" name="SCReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
                               		  								 placeholder="Enter Reason" ></textarea>  
 												                </div>
 												            </div> 
@@ -571,7 +571,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">When requested</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="SCRequested" placeholder="Enter Date" 
+												                    <input  class="form-control " type="text" name="PDCRequested" id="SCRequested"
 												                     value="" > 
 												                </div>
 												            </div> 
@@ -579,7 +579,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												             <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">When granted</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="SCGranted" placeholder="Enter Date" 
+												                    <input  class="form-control " type="text" name="PDCGranted" id="SCGranted" 
 												                     value="" > 
 												                </div>
 												            </div> 
@@ -589,7 +589,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												             <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Quantum/ revised PDC</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="" placeholder="Enter revised PDC" 
+												                    <input  class="form-control " type="text" name="PDCRevised" id="" placeholder="Enter revised PDC" 
 												                     value="" > 
 												                </div>
 												            </div> 
@@ -598,7 +598,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Any reason specified</label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="otherRelevant" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control" name="PDCReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
                               		  								 placeholder="Enter Reason" ></textarea>  
 												                </div>
 												            </div>
@@ -623,7 +623,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-4" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Maintained in proper format</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="PRMaintained"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												            </div> 
@@ -632,7 +632,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Sanctioned projects entered (including sub-projects)</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="PRSanctioned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												            </div> 
@@ -654,7 +654,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Expenditure verified by Project Director/ In-charge</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="PECVerified"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												            </div> 
@@ -676,7 +676,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Maintained Properly</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="SRMaintained"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												            </div> 
@@ -699,7 +699,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Procedure followed </label><span class="mandatory">*</span>
-												                    <select name="dmcDirection" id="dmcDirection" class="form-control" data-width="100%" data-live-search="true" required>
+												                    <select name="CSProcedure"  class="form-control" data-width="100%" data-live-search="true"  id="select1" required>
 			                											<option value="0" disabled="disabled" selected="selected">--Select--</option>
 												               			
 												               			<option value="PurchasedDirectly" >Purchased Directly </option>
@@ -710,14 +710,33 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                </div>
 												              </div> 
 												               
+												               <div class="col-md-6" style="" id="CSDrawn" >
+												                 <div class="form-group">
+												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>
+												                    <input name="CSDrawn"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    
+												                </div>
+												              </div>
+												              
+												              
+												              <div class="col-md-3" style="" id="CSReason">
+												                 <div class="form-group">
+												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
+												                    <textarea class="form-control form-control" name="CSReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ></textarea> 
+												                    
+												                </div>
+												              </div>
+												               
 												                
 												               <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Amount is debited to Project Expenditure card </label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="CSamountdebited"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
+												              
 												                 
 												        </div>
 												        
@@ -738,7 +757,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Procedure followed </label><span class="mandatory">*</span>
-												                    <select name="dmcDirection" id="dmcDirection" class="form-control" data-width="100%" data-live-search="true" required>
+												                    <select name="NCSProcedure" id="select2" class="form-control" data-width="100%" data-live-search="true" required>
 			                											<option value="0" disabled="disabled" selected="selected">--Select--</option>
 												               			
 												               			<option value="PurchasedDirectly" >Purchased Directly </option>
@@ -748,12 +767,31 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                    
 												                </div>
 												              </div> 
+												              
+												              <div class="col-md-6" style="" id="NCSDrawn" >
+												                 <div class="form-group">
+												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>
+												                    <input name="NCSDrawn"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    
+												                </div>
+												              </div>
+												              
+												              
+												              <div class="col-md-3" style="" id="NCSReason">
+												                 <div class="form-group">
+												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
+												                    <textarea class="form-control form-control" name="NCSReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ></textarea> 
+												                    
+												                </div>
+												              </div>
+												              
 												               
 												                
 												               <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Amount is debited to Project Expenditure card </label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="NCSamountdebited"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -767,7 +805,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 													         <div class="col-md-9" style="">
 													                 <div class="form-group">
 													                	<label class="control-label">In main stores ledger, item shown as distributed to Project Inventory of non-consumables being maintained in project group </label><span class="mandatory">*</span>
-													                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+													                    <input name="NCSDistributed"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 													                    
 													                </div>
 													          </div>
@@ -777,7 +815,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 													           <div class="col-md-9" style="">
 													                 <div class="form-group">
 													                	<label class="control-label">Any non-consumable item incorporated in any prototype stores are received and SIR is prepared before closure of project </label><span class="mandatory">*</span>
-													                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+													                    <input name="NCSIncorporated"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 													                    
 													                </div>
 													          </div>
@@ -807,7 +845,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="monitoringCommitteeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipProcured" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                    
 												                </div>
 												              </div> 
@@ -816,8 +854,16 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any major equipment not listed in Q.P.R has been purchased? </label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="EquipPurchased"  type="checkbox"  id="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
+												                </div>
+												              </div>
+												              
+												              <div class="col-md-3" style="" id="EquipReason">
+												                 <div class="form-group">
+												                	<label class="control-label">If yes, reason assigned </label><span class="mandatory">*</span>
+												                     <textarea class="form-control form-control" name="EquipReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ></textarea> 
 												                </div>
 												              </div>
 												              
@@ -829,8 +875,22 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												         <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any major equipment procured within one month before the PDC (give details and reason thereof) </label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="EquipProcuredBeforePDC"  type="checkbox"  id="checkbox1" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
+												                </div>
+												              </div>
+												              
+												              
+												              <div class="col-md-3" style="" id="EquipProcuredBeforePDCAttach">
+												                 <div class="form-group">
+												                	<label class="control-label">Attach if yes</label><span class="mandatory">*</span>
+												                     <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 							<i class="fa fa-download fa-lg"></i>
+                            					 						</button>
+                            					 					<%} %>
+                              		      							<input type="file" class="form-control modals" name="EquipProcuredBeforePDCAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												              </div>
 												               
@@ -840,10 +900,25 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        <div class="col-md-8" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="EquipBoughtOnCharge"  type="checkbox"  id="checkbox2" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
+												              
+												              
+												              <div class="col-md-3" style="" id="EquipBoughtOnChargeAttach">
+												                 <div class="form-group">
+												                	<label class="control-label">Attach if yes </label><span class="mandatory">*</span>
+												                     <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 							<i class="fa fa-download fa-lg"></i>
+                            					 						</button>
+                            					 					<%} %>
+                              		      							<input type="file" class="form-control modals" name="EquipBoughtOnChargeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+												                </div>
+												              </div>
+												              
 												        </div>
 												        
 												        
@@ -864,7 +939,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">The reviewing officer should  see  the allocation  w.r.t demands  and  also  the  projections  in  the Q.P.R </label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="BudgetAllocation"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -873,18 +948,23 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">What is the mechanism for monitoring/ control of head-wise expenditure? </label><span class="mandatory">*</span>
-												                   <textarea class="form-control form-control" name="otherRelevant" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control" name="BudgetMechanism" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
                               		  								 placeholder="Enter Reason" ></textarea> 
 												                    
 												                </div>
 												              </div>
 												              
 												              
-												              <div class="col-md-6" style="">
+												              <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Mention, if expenditure under any head exceeded the respective allocation</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
-												                    
+												                    <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 							<i class="fa fa-download fa-lg"></i>
+                            					 						</button>
+                            					 					<%} %>
+                              		      							<input type="file" class="form-control modals" name="BudgetExpenditureAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												              </div>
 												              
@@ -892,7 +972,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-6" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Whether financial progress is in consonance with Tech. progress.</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="BudgetFinancialProgress"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -903,7 +983,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Monthly/ Quarterly expenditure Reports are rendered to R&D HQrs and copy sent to local CDA</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="BudgetexpenditureReports"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -912,7 +992,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any expenditure incurred after Project PDC (Give details and reasons thereof)</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="BudgetexpenditureIncurred"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -938,7 +1018,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Log book maintained in r/o high cost equipment</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="LogBookMaintained"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>   
@@ -946,7 +1026,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Job cards maintained</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="JobCardsMaintained"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>    
@@ -968,7 +1048,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												         <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Demanded as per Q.P.R</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="SPdemand"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -982,7 +1062,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="monitoringCommitteeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="SPActualposition" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												          </div> 
 												          
@@ -997,7 +1077,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="monitoringCommitteeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="SPGeneralSpecific" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												          </div> 
 												          
@@ -1019,7 +1099,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												         <div class="col-md-6" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Civil works are included in the estimated prepared before project sanction.</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="CWIncluded"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1027,7 +1107,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Admin approval is accorded for the work.</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="CWAdminApp"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1037,7 +1117,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Minor works are completed within the financial year and not costing more than one lakh.</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="CWMinorWorks"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1046,7 +1126,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Revenue major works are completed within the financial year and not costing more than two lakhs.</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="CWRevenueWorks"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1055,7 +1135,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">There are no deviations from the  admin   approval.</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="CWDeviation"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1063,7 +1143,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="CWExpenditure"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1085,7 +1165,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">No. of vehicles sanctioned in the project (With types).</label><span class="mandatory">*</span>
-												                    <input name="toggle"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input name="NoOfVehicleSanctioned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1093,7 +1173,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly run of each vehicle.</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="" placeholder="Enter Average monthly run of each vehicle" 
+												                    <input  class="form-control " type="text" name="VehicleAvgRun" id="" placeholder="Enter Average monthly run of each vehicle" 
 												                     value="" >
 												                    
 												                </div>
@@ -1103,7 +1183,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly fuel consumption of each vehicle.</label><span class="mandatory">*</span>
-                                                                     <input  class="form-control " type="text" name="" id="" placeholder="Enter Average monthly fuel consumption of each vehicle" 
+                                                                     <input  class="form-control " type="text" name="VehicleAvgFuel" id="" placeholder="Enter Average monthly fuel consumption of each vehicle" 
 												                     value="" >												                    
 												                </div>
 												          </div> 
@@ -1125,15 +1205,15 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">When the project finally closed</label><span class="mandatory">*</span>
-												                     <input  class="form-control form-control" type="text" name="" placeholder="Enter Sent Date" 
+												                     <input  class="form-control" type="text" name="ProjectClosedDate" id="ProjectClosedDate" placeholder="Enter Project Closed Date" 
 												                     value="" >
 												                </div>
 												          </div> 
 												          
 												          <div class="col-md-4" style="">
 												                 <div class="form-group">
-												                	<label class="control-label">Project closures Report send to R&D HQrs.(Mention Dated).</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="" id="" placeholder="Enter Average monthly run of each vehicle" 
+												                	<label class="control-label">Project closures Report send to R&D HQrs.(Mention Dated)</label><span class="mandatory">*</span>
+												                    <input  class="form-control " type="text" name="ReportDate" id="ClosureReportDate" placeholder="" 
 												                     value="" >
 												                    
 												                </div>
@@ -1143,58 +1223,95 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">If undue delay in sending the Closure Report, reasons thereof.</label><span class="mandatory">*</span>
-                                                                     <input  class="form-control " type="text" name="" id="" placeholder="Enter Average monthly fuel consumption of each vehicle" 
+                                                                     <input  class="form-control " type="text" name="ProjectDelayReason" id="" placeholder="If undue delay in sending the Closure Report, reasons thereof" 
 												                     value="" >												                    
 												                </div>
 												          </div> 
 												          
-												           <div class="col-md-3" style="">
+												           <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Whether  the  stated  objectives achieved.</label><span class="mandatory">*</span>
-                                                                     <input  class="form-control " type="text" name="" id="" placeholder="Enter Average monthly fuel consumption of each vehicle" 
-												                     value="" >												                    
+                                                                    <input name="CRObjective"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    											                    
 												                </div>
+												           </div>
+												                
+												            <div class="col-md-3" style="">
+												                 <div class="form-group">
+												                	<label class="control-label">Any other spin-off achieved.</label><span class="mandatory">*</span>
+                                                                    <input name="CRspinoff"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    											                    
 												                </div>
+												           </div>  
+												           
+												           
+												           <div class="col-md-7" style="">
+												                 <div class="form-group">
+												                	<label class="control-label">Reason, if PDC not  meet (Delay in  convening of TPC or  delayed placement of indent by the user)</label><span class="mandatory">*</span>
+                                                                    <input name="PDCNotMeetReason"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    											                    
+												                </div>
+												           </div>  
+												             
+												              
+												              
+												               <div class="col-md-5" style="">
+												                 <div class="form-group">
+												                	<label class="control-label">Reason, if Cost Over-run</label><span class="mandatory">*</span>
+                                                                    <textarea class="form-control form-control" name="otherRelevant" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ></textarea> 											                    
+												                </div>
+												           </div>  
+												           
+												           
+												           <div class="col-md-8" style="">
+												                 <div class="form-group">
+												                	<label class="control-label">Non-consumable items returned to main stores on nominal voucher (No credit to be given in Project expenditure  card)</label><span class="mandatory">*</span>
+                                                                     <input name="NonConsumableItemsReturned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    
+                                                                    											                    
+												                </div>
+												           </div> 
+												           
+												            
+												            <div class="col-md-8" style="">
+												                 <div class="form-group">
+												                	<label class="control-label">Consumable (non-consumed) returned to main store on Issue voucher (Credit to be given in Project Expenditure Card)</label><span class="mandatory">*</span>
+                                                                     <input name="ConsumableItemsReturned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    
+                                                                    											                    
+												                </div>
+												           </div> 
+												           
+												           
+												           <%-- <div class="col-md-8" style="">
+												                 <div class="form-group">
+												                	<label class="control-label">Consumable (non-consumed) returned to main store on Issue voucher (Credit to be given in Project Expenditure Card)</label><span class="mandatory">*</span>
+                                                                     <input name="ConsumableItemsReturned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    
+                                                                    											                    
+												                </div>
+												           </div>  --%>
 												                
-												                
-												          </div> 
-												         
-												          
-												         </div>
-												         
-												         
-												         
-												         
-												         
-												    
-												      <%--   <div class="row" style="margin-left: 2%;margin-right: 2%;">
-												        	<div class="col-md-3" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Monitoring Committee:</label><span class="mandatory">*</span>
-												                	<%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												              <div class="col-md-7" style="">
+												                 <div class="form-group">
+												                	<label class="control-label">How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary)</label><span class="mandatory">*</span>
+                                                                    <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="monitoringCommitteeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="CRAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                                                                    											                    
 												                </div>
-												            </div>
-												            <div class="col-md-3" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Lessons Learnt:</label><span class="mandatory">*</span>
-												                    <%if(soc!=null && soc.getLessonsLearnt()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="lessonslearntfile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Lessons Learnt Download">
-                            					 							<i class="fa fa-download fa-lg"></i>
-                            					 						</button>
-                            					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="lessonsLearnt" <%if(soc==null) {%>required<%} %> accept=".pdf">
-												                </div>
-												            </div>
-												            
-												        </div> --%>
+												           </div>  
+												           
+												    </div> 
+												         
+												          
 												        
+												         
 								               			<div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
 															<%if(soc!=null){ %>
 															    <input type="hidden" name="closureId" value="<%=soc.getClosureId()%>">
@@ -1619,7 +1736,7 @@ $('#expndAsOn').daterangepicker({
 	}
 });	
 
-$('#PDCDate,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted').daterangepicker({
+$('#PDCDate,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted,#ProjectClosedDate,#ClosureReportDate,#HQrsSentDate').daterangepicker({
 	"singleDatePicker" : true,
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
@@ -1632,6 +1749,142 @@ $('#PDCDate,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted').daterangepicker
 		format : 'DD-MM-YYYY'
 	}
 });	
+
+
+$(document).ready(function() {
+	
+	 $('#CSReason').hide();
+	 $('#CSDrawn').hide();
+	 
+    $('#select1').on('change', function() {
+    var selectedValue = $(this).val();
+    if(selectedValue=="PurchasedDirectly"){
+    	
+    	 $('#CSDrawn').hide();
+    	 $('#CSReason').show();
+    	
+    }
+    else{
+    	 $('#CSReason').hide();
+    	 $('#CSDrawn').show();
+    	 
+    	
+    }
+     if(selectedValue=="PurchasedDirectly"){
+    	
+    	
+    	$('#CSReason').attr('required', true);
+    } 
+    
+    
+    });
+  });
+
+
+$(document).ready(function() {
+	
+	 $('#NCSReason').hide();
+	 $('#NCSDrawn').hide();
+	 
+   $('#select2').on('change', function() {
+   var selectedValue = $(this).val();
+   if(selectedValue=="PurchasedDirectly"){
+   	
+   	 $('#NCSDrawn').hide();
+   	 $('#NCSReason').show();
+   	
+   }
+   else{
+   	 $('#NCSReason').hide();
+   	 $('#NCSDrawn').show();
+   	 
+   	
+   }
+    if(selectedValue=="PurchasedDirectly"){
+   	
+   	
+   	$('#NCSReason').attr('required', true);
+   } 
+   
+   
+   });
+ });
+ 
+ 
+$(document).ready(function() {
+	
+	$('#EquipReason').hide();
+	
+$("#checkbox").on('change', function() {
+	
+	
+	
+    if($(this).prop("checked") == true){
+    	
+    	 $('#EquipReason').show();
+     
+    	 //pono.setAttribute('required', '');
+    	 
+    }else{
+    	
+    	$('#EquipReason').hide();
+    }
+    
+   });
+  
+});
+
+
+$(document).ready(function() {
+	
+	$('#EquipProcuredBeforePDCAttach').hide();
+	
+$("#checkbox1").on('change', function() {
+	
+	
+	
+    if($(this).prop("checked") == true){
+    	
+    	 $('#EquipProcuredBeforePDCAttach').show();
+     
+    	 //pono.setAttribute('required', '');
+    	 
+    }else{
+    	
+    	$('#EquipProcuredBeforePDCAttach').hide();
+    }
+    
+   });
+  
+});
+
+
+
+$(document).ready(function() {
+	
+	$('#EquipBoughtOnChargeAttach').hide();
+	
+$("#checkbox2").on('change', function() {
+	
+	
+	
+    if($(this).prop("checked") == true){
+    	
+    	 $('#EquipBoughtOnChargeAttach').show();
+     
+    	 //pono.setAttribute('required', '');
+    	 
+    }else{
+    	
+    	$('#EquipBoughtOnChargeAttach').hide();
+    }
+    
+   });
+  
+});
+
+
+
 
 </script>
 
