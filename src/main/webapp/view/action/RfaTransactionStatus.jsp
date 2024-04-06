@@ -203,8 +203,8 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 			 SimpleDateFormat time=new SimpleDateFormat("HH:mm");
 			 String status="";
 			 for(Object[] object:statuslist){
-				 if(status.equalsIgnoreCase("AV")){
-					status="";
+				 if(status.equalsIgnoreCase("AV") && status.equalsIgnoreCase(object[9].toString())){
+					status="AV";
 					 continue;
 					 }
 		%>
