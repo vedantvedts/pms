@@ -404,7 +404,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											style="color: red;">* </span></label></b> <br> <select
 										class=" form-control selectdee"
 										onchange="return rfaOptionFunc()" style="width: 100%;"
-										name="rfaoptionby" id="rfaoptionby" required="required"
+										name="rfaoptionby" id="rfaoptionby"
 										style="margin-top:-5px">
 										<option disabled="disabled" selected value="">Choose...</option>
 										<option value="AF">Checked By</option>
@@ -413,7 +413,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 								</div>
 							</div>
 
-							<div class="col-6" id="selectClassModal2">
+							<div class="col-6" id="selectClassModal2" style="display:none;">
 								<div class="form-group">
 									<b><label>RFA Forward To : </label><br></b> <select
 										class="form-control selectdee " style="width: 100%;"
@@ -716,6 +716,7 @@ function forwardmodal(rfanomodal,RFAID){
 function rfaOptionFunc(){
 	
 	 var selectValue = $("#rfaoptionby").val();
+	 document.getElementById("selectClassModal2").style.display = "block";
 	 var ModalEmpList =<%=ModalEmpList%>;
 	 var ModalTDList =<%=ModalTDList%>;
 	 if (selectValue === "AF") {

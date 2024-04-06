@@ -484,7 +484,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 				                              </div>
 			                         </div>
 
-									  <div class="col-6" id="selectClassModal2">
+									  <div class="col-6" id="selectClassModal2" style="display:none;">
 			                               <div class="form-group">
 											    <b><label>RFA Forward To : </label><br></b>
 												<select class="form-control selectdee " style="width: 100%;" name="rfaEmpModal" id="modalEmpList2" required="required"  data-live-search="true"  data-placeholder="Select Assignee" >
@@ -797,7 +797,7 @@ function forwardmodal(rfanomodal,RFAID){
 function rfaOptionFunc(){
 	
 	 var selectValue = $("#rfaoptionby").val();
-	 console.log()
+	 document.getElementById("selectClassModal2").style.display = "block";
 	 var ModalEmpList =<%=ModalEmpList%>;
 	 var ModalTDList =<%=ModalTDList%>;
 	 if (selectValue === "AF") {
