@@ -155,7 +155,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                  </div>
 		                  <div class="col-md-10" >
-		                      <textarea class="form-control" rows="2" cols="30" placeholder="Max 500 Characters" name="statement" id="statement" maxlength="500" required="required"></textarea>
+		                      <textarea class="form-control" rows="2" cols="30" placeholder="Max 1000 Characters" name="statement" id="statement" maxlength="1000" required="required"></textarea>
 		                  </div>
 		            </div>
 		            
@@ -192,7 +192,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                  </div>
 		                  <div class="col-md-10">
-		                       <textarea class="form-control" rows="2" cols="30" placeholder="Max 500 Characters" name="reference" id="reference" maxlength="500" required="required"></textarea>
+		                       <textarea class="form-control" rows="2" cols="30" placeholder="Max 1000 Characters" name="reference" id="reference" maxlength="1000" required="required"></textarea>
 		                      
 		                  </div>
 		            </div>

@@ -333,7 +333,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 												<div class="form-group" >
 													<input type="text" name="observation" class="form-control"
 														id="observation" maxlength="1000" required="required"
-														placeholder="Maximum 500 Chararcters"
+														placeholder="Maximum 1000 Chararcters"
 														style="line-height: 4rem !important; width:126%;">
 												</div>
 											</div>
@@ -370,8 +370,8 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 											<div class="col-md-8" style="margin-top: 10px">
 												<div class="form-group" style="width: 129%; margin-left: -16%">
 													<input type="text" class="form-control" name="Rfaaction"
-														id="action" maxlength="255" required="required"
-														placeholder="Maximum 250 Chararcters"
+														id="action" maxlength="1000" required="required"
+														placeholder="Maximum 1000 Chararcters"
 														style="line-height: 3rem !important">
 												</div>
 											</div>
