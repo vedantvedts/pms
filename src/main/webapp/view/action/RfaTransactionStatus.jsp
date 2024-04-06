@@ -188,7 +188,9 @@
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("RfaTransactionList");
 
 List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgnoreCase("AV"))
-									.map(e->e[10].toString()).collect(Collectors.toList());
+									.map(e->e[10].toString())
+									.distinct() 
+									.collect(Collectors.toList());
 	
 %>
 

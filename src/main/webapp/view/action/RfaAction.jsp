@@ -454,7 +454,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 					style="height: 20rem; width: 150%; margin-left: -22%; position: relative;">
 					<div class="modal-header" id="modalreqheader"
 						style="background-color: #021B79">
-						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA CLOSE</h5>
+						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA CANCEL</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close" style="color: white">
 							<span aria-hidden="true">&times;</span>
@@ -466,7 +466,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-3">
-											<label class="control-label returnLabel" style="font-weight: 600;font-size: 16px">Reason For Close</label> <span
+											<label class="control-label returnLabel" style="font-weight: 600;font-size: 16px">Reason For Cancel</label> <span
 												class="mandatory" style="color: #cd0a0a;">*</span>
 										</div>
 										<div class="col-md-9" style="max-width: 82%">

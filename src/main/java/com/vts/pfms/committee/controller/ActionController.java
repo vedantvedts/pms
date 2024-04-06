@@ -2990,7 +2990,7 @@ public class ActionController {
 				}
 				
 				if(Status!=null && Status.equalsIgnoreCase("O")) {  // for rfa open list
-					req.setAttribute("RfaActionList", RfaActionList.stream().filter(e-> !e[14].toString().equalsIgnoreCase("ARC")).collect(Collectors.toList()));
+					req.setAttribute("RfaActionList", RfaActionList.stream().filter(e-> !e[14].toString().equalsIgnoreCase("ARC") && !e[14].toString().equalsIgnoreCase("RFC")).collect(Collectors.toList()));
 				}else if ( Status!=null && Status.equalsIgnoreCase("C")) {   // for rfa close list
 					req.setAttribute("RfaActionList", RfaActionList.stream().filter(e-> e[14].toString().equalsIgnoreCase("ARC")).collect(Collectors.toList()));
 				}else if ( Status!=null && Status.equalsIgnoreCase("CAN")) {   // for rfa cancel list
