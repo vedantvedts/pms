@@ -354,7 +354,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 				                    	<div class="row">	
 			                    		<div class="col-md-12" align="left" style="margin-left: 0px; width: 100%;">
 			                     		<div id="Editor" class="center"></div>
-		                      			<textarea  name="clarification" id="clarification" required="required" style="display: none;"></textarea>
+		                      			<textarea  name="clarification" id="clarification" style="display: none;"></textarea>
 	                    				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 		                    			</div>
 			                    		</div>
