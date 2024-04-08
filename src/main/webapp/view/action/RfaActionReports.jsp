@@ -163,7 +163,7 @@ String projectid = (String)request.getAttribute("projectid");
 													   <%if(obj[10]!=null){%>
 														<%if(obj[10].toString().length()>70){ %>
 														 <%=obj[10].toString().substring(0, 70) %>
-														    <input type="hidden" value='"<%=obj[10].toString()%>"' id="tdobs<%=obj[0].toString()%>">
+														    <input type="hidden" value="<%=obj[10].toString()%>" id="tdobs<%=obj[0].toString()%>">
 														    <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showObservation('<%=obj[0].toString()%>','<%=obj[1].toString()%>')">show more..</span>
 														<%}else{ %>
 														<%=obj[10].toString() %>
