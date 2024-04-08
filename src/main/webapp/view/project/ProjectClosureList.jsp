@@ -320,10 +320,11 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 				<%if(closureList!=null && closureList.size()>0) {%>
 				<!-- search box -->
 					<form method="get" class="form-inline my-2 my-lg-0" style="display: flex; justify-content: center; padding-bottom:10px;">
-						<div >
+						<div>
+						
 							<input name="search" id="search" required class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="Search" />
 							<input type="submit" class="btn btn-outline-success my-2 my-sm-0" name="clicked" value="Search" />
-							<a href="CARSInitiationList.htm"><button type="submit" class="btn btn-outline-danger my-2 my-sm-0" formnovalidate="formnovalidate" >Reset</button></a>
+							<a href="ProjectClosureList.htm"><button type="submit" class="btn btn-outline-danger my-2 my-sm-0" formnovalidate="formnovalidate" >Reset</button></a>
 							
 						</div>
 					</form>

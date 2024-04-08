@@ -35,6 +35,11 @@
 	margin: 1%;
 }
 
+.checklistpage {
+
+   margin: 1%;
+
+}
  .b{
 	background-color: #ebecf1;	
 }
@@ -375,7 +380,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
          		<!-- This is for Tab Panes -->
          		<div class="card">
          			<div class="tab-content text-center" style="margin-top : 0.2rem;">
-         				<!-- *********** SoC Details ***********      --> 
+         				<!-- *********** checklist Details ***********      --> 
                			<%if(socTabId!=null && socTabId.equalsIgnoreCase("1")){ %> 
          					<div class="tab-pane active" id="socdetails" role="tabpanel">
          				<%}else{ %>
@@ -396,6 +401,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												    	<input type="hidden" name="closureId" value="<%=closureId%>">
 												    	
+												     <div class="" id="firstpage" >	
 												    	 <div class="col-md-3" style="">
 												        		<div class="form-group">
 												                	<label class="control-label" style="color:black">1. Project Appraisal Letter (QAR)</label>
@@ -406,6 +412,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<br>
 												    	<br>
 												    	
+												  
+												   
 												    	<div class="row" style="margin-left: 2%;margin-right: 2%;">
 												    		
 												        	<div class="col-md-2" style="">
@@ -499,10 +507,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                   
 												                </div>
 												            </div>
-												              
-												          
-												        
-												        </div>
+												            
+												     </div>
 												        
 												    <hr>
 												        
@@ -659,10 +665,49 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                </div>
 												            </div> 
 												            
-												        </div>  
+												        </div> 
 												        
-												        <hr>
+												         <div class="checklistpage"  style="text-align: center;">
+												        
+            							                        <button class="btn btn-info btn-sm success submit" id="firstpagechange" >Save & Next</button>
+            							                    
+														</div> 
+														
+														
+														
+															 <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
+																
+																	
+																	<div class="pagination">
+																			<div class="page-item">
+																				
+																					<input class="page-link" type="submit"  value="Previous" />
+																					
+																						<input type="hidden" value="" name="search" />
+																					
+																					<input type="hidden" id="pagination" name="pagination" value="" />
+																				
+																			</div>
+																			<div class="page-item">
+																				<input class="page-link" type="button" value="1" disabled/>
+																			</div>
+																			<div class="page-item">
+																				
+																					
+																						<input class="page-link" type="submit" value="Next"  />
+																						<input type="hidden" name="pagination" value=/>
+																				
+																			</div>
+																			
+																	</div>
+																
+															 </div> 
+												        
+												   </div>
+												    
+												   
 												         
+												    <div class="" id="secondpage">
 												            <div class="col-md-3" style="">
 												        		<div class="form-group">
 												                	<label class="control-label" style="color:black">6. Subsidiary register</label>
@@ -845,7 +890,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipProcured" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipProcured"<%--  <%if(soc==null) {%>required<%} %> --%> accept=".pdf">
 												                    
 												                </div>
 												              </div> 
@@ -871,7 +916,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        </div>
 												        
 												        
-												      <div class="row" style="margin-left: 2%;margin-right: 2%;">          
+												      <div class="row" style="margin-left: 2%;margin-right: 2%;">         
 												         <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any major equipment procured within one month before the PDC (give details and reason thereof) </label><span class="mandatory">*</span>
@@ -921,15 +966,14 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              
 												        </div>
 												        
-												        
-												        <hr>
+												  <hr>
 												        
 												        
 												      <div class="col-md-4" style="">
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">10. Budget</label>
+												                	   <label class="control-label" style="color:black">10. Budget</label>
 												                </div>
-												        </div> 
+												        </div>
 												            
 												        <br>
 												        <br>   
@@ -964,7 +1008,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="BudgetExpenditureAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="BudgetExpenditureAttach" <%-- <%if(soc==null) {%>required<%} %> --%> accept=".pdf">
 												                </div>
 												              </div>
 												              
@@ -996,24 +1040,60 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                    
 												                </div>
 												              </div>
-												              
-												              
-												              
-												                     
-												        </div>  
+												              <div class="checklistpage"  style="text-align: left;">
+												             
+												              <button class="btn btn-info btn-sm" id="backtofirstpage" >Previous</button>
+													                <button class="btn btn-info btn-sm success submit" id="secondpagechange">Save & Next</button>
+													                
+	            							                </div>
+	            							                
+	            							                
+	            							              <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
+																
+																	
+																	<div class="pagination">
+																			<div class="page-item">
+																				
+																					<input class="page-link" type="submit"  value="Previous" />
+																					
+																						<input type="hidden" value="" name="search" />
+																					
+																					<input type="hidden" id="pagination" name="pagination" value="" />
+																				
+																			</div>
+																			<div class="page-item">
+																				<input class="page-link" type="button" value="1" disabled/>
+																			</div>
+																			<div class="page-item">
+																				
+																					
+																						<input class="page-link" type="submit" value="Next"  />
+																						<input type="hidden" name="pagination" value=/>
+																				
+																			</div>
+																			
+																	</div>
+																
+															 </div>   
+	            							                
+	            							                
+	            							             </div>
+	            							       </div> 
 												        
-												        <hr>
-												        
+												      
+												       
+												    <div class="" id="thirdpage">  
+												    
 												         <div class="col-md-4" style="">
 												        		<div class="form-group">
 												                	<label class="control-label" style="color:black">11. Utilization of Equipment</label>
 												                </div>
-												        </div> 
+												        </div>
 												            
 												        <br>
 												        <br> 
 												        
-												          <div class="row" style="margin-left: 2%;margin-right: 2%;">
+												      <div class="row" style="margin-left: 2%;margin-right: 2%;">
 												          
 												          <div class="col-md-4" style="">
 												                 <div class="form-group">
@@ -1062,7 +1142,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="SPActualposition" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="SPActualposition" <%-- <%if(soc==null) {%>requ ired<%} %> --%> accept=".pdf">
 												                </div>
 												          </div> 
 												          
@@ -1077,7 +1157,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="SPGeneralSpecific" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="SPGeneralSpecific" <%-- <%if(soc==null) {%>required<%} %> --%> accept=".pdf">
 												                </div>
 												          </div> 
 												          
@@ -1193,9 +1273,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												         <hr>
 												         
 												         <div class="col-md-4" style="">
-												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">15. If the project is closed</label>
-												                </div>
+											        		<div class="form-group">
+											                	<label class="control-label" style="color:black">15. If the project is closed</label>
+											                </div>
 												        </div> 
 												            
 												        <br>
@@ -1302,24 +1382,59 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="CRAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="CRAttach" <%-- <%if(soc==null) {%>required<%} %> --%> accept=".pdf">
                                                                     											                    
 												                </div>
 												           </div>  
-												           
 												    </div> 
-												         
-												          
+												    
+														     <div class="checklistpage"  style="text-align: left;">
+														            <button class="btn btn-info btn-sm" id="backtosecondpage" >Previous</button>
+														            <button class="btn btn-info btn-sm success submit">Save & Next</button>
+															 </div> 
+															 
+															 
+															<div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
+																
+																	
+																	<div class="pagination">
+																			<div class="page-item">
+																				
+																					<input class="page-link" type="submit"  value="Previous" />
+																					
+																					<input type="hidden" value="" name="search" />
+																					
+																					<input type="hidden" id="pagination" name="pagination" value="" />
+																				
+																			</div>
+																			
+																			<div class="page-item">
+																				<input class="page-link" type="button" value="1" disabled/>
+																			</div>
+																			<div class="page-item">
+																				
+																					
+																						<input class="page-link" type="submit" value="Next"  />
+																						<input type="hidden" name="pagination" value=/>
+																				
+																			</div>
+																			
+																	</div>
+																
+															 </div> 
+															 
+															 
+												</div>          
 												        
 												         
-								               			<div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
+								               			<%-- <div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
 															<%if(soc!=null){ %>
 															    <input type="hidden" name="closureId" value="<%=soc.getClosureId()%>">
 																<button type="submit" class="btn btn-sm btn-warning edit btn-soc" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
 															<%}else{ %>
 																<button type="submit" class="btn btn-sm btn-success submit btn-soc" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?')" >SUBMIT</button>
 															<%} %>
-														</div>
+														</div> --%>
 						
 												    </form>
 												</div>
@@ -1643,7 +1758,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                					
                					<%} else{%>
 			               			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-			               				<h4 style="font-weight: bold;color: red;">Please fill SoC Details..!</h4>
+			               				<h4 style="font-weight: bold;color: red;">Please Fill Check List Details..!</h4>
 			               			</div>
                					<%} %>
                					
@@ -1728,6 +1843,7 @@ $('#expndAsOn').daterangepicker({
 	"showCustomRangeLabel" : true,
 	/* "minDate" :datearray,   */
 	 /* "startDate" : new Date(), */
+	 
 	 "maxDate" : new Date(), 
 	"cancelClass" : "btn-default",
 	showDropdowns : true,
@@ -1735,6 +1851,7 @@ $('#expndAsOn').daterangepicker({
 		format : 'DD-MM-YYYY'
 	}
 });	
+
 
 $('#PDCDate,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted,#ProjectClosedDate,#ClosureReportDate,#HQrsSentDate').daterangepicker({
 	"singleDatePicker" : true,
@@ -1795,19 +1912,16 @@ $(document).ready(function() {
    	
    }
    else{
-   	 $('#NCSReason').hide();
-   	 $('#NCSDrawn').show();
-   	 
-   	
+	   	 $('#NCSReason').hide();
+	   	 $('#NCSDrawn').show();
+   		
    }
     if(selectedValue=="PurchasedDirectly"){
-   	
-   	
-   	$('#NCSReason').attr('required', true);
-   } 
-   
+   	  $('#NCSReason').attr('required', true);
+    } 
    
    });
+   
  });
  
  
@@ -1866,8 +1980,6 @@ $(document).ready(function() {
 	
 $("#checkbox2").on('change', function() {
 	
-	
-	
     if($(this).prop("checked") == true){
     	
     	 $('#EquipBoughtOnChargeAttach').show();
@@ -1881,6 +1993,58 @@ $("#checkbox2").on('change', function() {
     
    });
   
+});
+
+
+$(document).ready(function() {
+	
+	
+	$('#secondpage').hide();
+	$('#thirdpage').hide();
+	
+	$("#firstpagechange").on('click', function() {
+		
+		
+		$('#firstpage').hide();
+		$('#secondpage').show();
+		$('#thirdpage').hide();
+		
+		
+		
+	});
+	
+     $("#secondpagechange").on('click', function() {
+		
+			$('#firstpage').hide();
+			$('#secondpage').hide();
+			$('#thirdpage').show();
+		
+	});
+     
+     
+     $("#backtofirstpage").on('click', function() {
+    	 
+    	 
+		   	    $('#firstpage').show();
+				$('#secondpage').hide();
+				$('#thirdpage').hide();
+    	 
+    	 
+ 	}); 
+	
+	
+     $("#backtosecondpage").on('click', function() {
+    	 
+    	 
+	   	    $('#firstpage').hide();
+			$('#secondpage').show();
+			$('#thirdpage').hide();
+	 
+	 
+}); 
+     
+     
+	
 });
 
 
