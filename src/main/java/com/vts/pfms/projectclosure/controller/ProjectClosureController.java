@@ -70,6 +70,7 @@ public class ProjectClosureController {
 	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	private SimpleDateFormat sdf = fc.getSqlDateFormat();
+	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	
 	@Autowired
 	ProjectClosureService service;
@@ -1278,48 +1279,48 @@ public class ProjectClosureController {
 		logger.info(new Date() +"Inside ProjectClosureCheckList.htm "+UserId);
 		try {
 			
-			String closureId = req.getParameter("closureId");
+//			String closureId = req.getParameter("closureId");
 			String socTabId = req.getParameter("socTabId");
-			String isApproval = req.getParameter("isApproval");
-			
-			if(closureId==null) {
-				String fromapprovals = req.getParameter("closureSoCApprovals");
-				if(fromapprovals!=null) {
-					String[] split = fromapprovals.split("/");
-					closureId = split[0];
-					if(isApproval==null) {
-						isApproval = split[1];
-					}
-					if(socTabId==null) {
-						socTabId = split[2];
-					}
-				}
-				
-			}
-			
-			if(closureId!=null) {
-				ProjectClosure closure = service.getProjectClosureById(closureId);
-				String projectId = closure.getProjectId()+"";
-				req.setAttribute("ProjectClosureDetails", closure);
-				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
-				req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
-				Object[] PDData = carsservice.getEmpPDEmpId(projectId);
-				req.setAttribute("PDData", PDData);
-				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
-				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
-				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
-				req.setAttribute("SoCRemarksHistory", service.projectClosureRemarksHistoryByType(closureId,"SF","S"));
-				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
-			}
-			req.setAttribute("Director", carsservice.getLabDirectorData(labcode));
-			req.setAttribute("AD", carsservice.getApprAuthorityDataByType(labcode, "AD"));
-			req.setAttribute("GDDPandC", carsservice.getApprAuthorityDataByType(labcode, "DO-RTMD"));
-			req.setAttribute("EmpData", carsservice.getEmpDetailsByEmpId(EmpId));
-			
-			req.setAttribute("LabList", carsservice.getLabList(labcode));
-			
-			req.setAttribute("closureId", closureId);
-			req.setAttribute("isApproval", isApproval);
+//			String isApproval = req.getParameter("isApproval");
+//			
+//			if(closureId==null) {
+//				String fromapprovals = req.getParameter("closureSoCApprovals");
+//				if(fromapprovals!=null) {
+//					String[] split = fromapprovals.split("/");
+//					closureId = split[0];
+//					if(isApproval==null) {
+//						isApproval = split[1];
+//					}
+//					if(socTabId==null) {
+//						socTabId = split[2];
+//					}
+//				}
+//				
+//			}
+//			
+//			if(closureId!=null) {
+//				ProjectClosure closure = service.getProjectClosureById(closureId);
+//				String projectId = closure.getProjectId()+"";
+//				req.setAttribute("ProjectClosureDetails", closure);
+//				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
+//				req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
+//				Object[] PDData = carsservice.getEmpPDEmpId(projectId);
+//				req.setAttribute("PDData", PDData);
+//				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
+//				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
+//				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
+//				req.setAttribute("SoCRemarksHistory", service.projectClosureRemarksHistoryByType(closureId,"SF","S"));
+//				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
+//			}
+//			req.setAttribute("Director", carsservice.getLabDirectorData(labcode));
+//			req.setAttribute("AD", carsservice.getApprAuthorityDataByType(labcode, "AD"));
+//			req.setAttribute("GDDPandC", carsservice.getApprAuthorityDataByType(labcode, "DO-RTMD"));
+//			req.setAttribute("EmpData", carsservice.getEmpDetailsByEmpId(EmpId));
+//			
+//			req.setAttribute("LabList", carsservice.getLabList(labcode));
+//			
+//			req.setAttribute("closureId", closureId);
+//			req.setAttribute("isApproval", isApproval);
 			req.setAttribute("socTabId", socTabId!=null?socTabId:"1");
 			
 			
@@ -1339,29 +1340,33 @@ public class ProjectClosureController {
 	
 	@RequestMapping(value="ProjectClosureCheckListDetailsSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectClosureCheckListDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
-			@RequestPart(name="monitoringCommitteeAttach1", required = false) MultipartFile monitoringCommitteeAttach,
-			@RequestPart(name="lessonsLearnt1", required = false) MultipartFile lessonsLearnt) throws Exception{
+			@RequestPart(name="QARMilestone", required = false) MultipartFile QARMilestoneAttach,
+			@RequestPart(name="QARCostBreakup", required = false) MultipartFile QARCostBreakupAttach,
+			@RequestPart(name="QARNCItems", required = false) MultipartFile QARNCItemsAttach) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		try {
-			String closureId = req.getParameter("closureId");
+			String checklistId = req.getParameter("checklistId");
 			String action = req.getParameter("Action");
+			System.out.println("action---"+action);
 			
-			com.vts.pfms.projectclosure.model.ProjectClosureCheckList clist = (action!=null && action.equalsIgnoreCase("Add"))?new com.vts.pfms.projectclosure.model.ProjectClosureCheckList() : service.getProjectClosureCheckListByProjectId(closureId);
+			com.vts.pfms.projectclosure.model.ProjectClosureCheckList clist = (action!=null && action.equalsIgnoreCase("Add"))?new com.vts.pfms.projectclosure.model.ProjectClosureCheckList() : service.getProjectClosureCheckListByProjectId(checklistId);
 			
-			clist.setQARHQrsSentDate(req.getParameter("QARHQrsSentDate"));
-			clist.setQARSentDate(req.getParameter("QARSentDate"));
+			clist.setQARHQrsSentDate(sdf.format(rdf.parse(req.getParameter("QARHQrsSentDate"))));
+			clist.setQARSentDate(sdf.format(rdf.parse(req.getParameter("QARSentDate"))));
 			clist.setQARObjective(req.getParameter("QARObjective"));
 			//clist.setQARMilestone(req.getParameter("QARMilestone"));
-			clist.setQARPDCDate(req.getParameter("QARPDCDate"));
-			clist.setQARProposedCost(req.getParameter("QARProposedCost"));
-			clist.setQARCostBreakup(req.getParameter("QARCostBreakup"));
-			clist.setSCRequested(req.getParameter("SCRequested"));
-			clist.setSCGranted(req.getParameter("SCGranted"));
-			clist.setSCRevisionCost(Double.parseDouble(req.getParameter("SCRevisionCost")));
+			clist.setQARPDCDate(sdf.format(rdf.parse(req.getParameter("QARPDCDate"))));
+			clist.setQARProposedCost(sdf.format(rdf.parse(req.getParameter("QARProposedCost"))));
+			//clist.setQARCostBreakup(req.getParameter("QARCostBreakup"));
+			clist.setSCRequested(sdf.format(rdf.parse(req.getParameter("SCRequested"))));
+			clist.setSCGranted(sdf.format(rdf.parse(req.getParameter("SCGranted"))));
+			
+			String SCRevisionCost=req.getParameter("SCRevisionCost");
+			clist.setSCRevisionCost(Double.parseDouble(SCRevisionCost!=null && !SCRevisionCost.isEmpty()? SCRevisionCost:"0"));
 			clist.setSCReason(req.getParameter("SCReason"));
-			clist.setPDCRequested(req.getParameter("PDCRequested"));
-			clist.setPDCGranted(req.getParameter("PDCGranted"));
+			clist.setPDCRequested(sdf.format(rdf.parse(req.getParameter("PDCRequested"))));
+			clist.setPDCGranted(sdf.format(rdf.parse(req.getParameter("PDCGranted"))));
 			clist.setPDCRevised(req.getParameter("PDCRevised"));
 			clist.setPDCReason(req.getParameter("PDCReason"));
 			clist.setPRMaintained(req.getParameter("PRMaintained"));
@@ -1372,11 +1377,15 @@ public class ProjectClosureController {
 			clist.setCSProcedure(req.getParameter("CSProcedure"));
 			clist.setCSDrawn(req.getParameter("CSDrawn"));
 			clist.setCSReason(req.getParameter("CSReason"));
-			clist.setCSamountdebited(Double.parseDouble(req.getParameter("CSamountdebited")));
+			
+			String CSamountdebited=req.getParameter("CSamountdebited");
+			clist.setCSamountdebited(Double.parseDouble(CSamountdebited!=null && !CSamountdebited.isEmpty()? CSamountdebited:"0"));
 			clist.setNCSProcedure(req.getParameter("NCSProcedure"));
 			clist.setNCSDrawn(req.getParameter("NCSDrawn"));
 			clist.setNCSReason(req.getParameter("NCSReason"));
-			clist.setNCSamountdebited(Double.parseDouble(req.getParameter(req.getParameter("NCSamountdebited"))));
+			
+			String NCSamountdebited=req.getParameter("NCSamountdebited");
+			clist.setNCSamountdebited(Double.parseDouble(NCSamountdebited!=null && !NCSamountdebited.isEmpty()? NCSamountdebited:"0"));
 			clist.setNCSReason(req.getParameter("NCSDistributed"));
 			clist.setNCSReason(req.getParameter("NCSIncorporated"));
 			
@@ -1411,7 +1420,7 @@ public class ProjectClosureController {
 				clist.setCreatedDate(sdtf.format(new Date()));
 				clist.setIsActive(1);
 				
-				//result = service.addProjectClosureSoC(soc, EmpId, monitoringCommitteeAttach, lessonsLearnt);
+				result = service.addProjectClosureCheckList(clist,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach);
 				
 			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
 				clist.setModifiedBy(UserId);
@@ -1424,17 +1433,18 @@ public class ProjectClosureController {
 				} else {
 					redir.addAttribute("resultfail", "Closure SoC Details Update Unsuccessful");
 				}
-				redir.addAttribute("closureId", closureId);
-				redir.addAttribute("socTabId","2");
+				//redir.addAttribute("closureId", checklistId);
+				redir.addAttribute("socTabId","1");
 				return "redirect:/ProjectClosureCheckList.htm";
 			}
+			
 			if (result > 0) {
-				redir.addAttribute("result", "Closure SoC Details Added Successfully");
+				redir.addAttribute("result", "Closure CheckList Details Added Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Closure SoC Details Add Unsuccessful");
+				redir.addAttribute("resultfail", "Closure CheckList Details Add Unsuccessful");
 			}
-			redir.addAttribute("closureId", closureId);
-			redir.addAttribute("socTabId","2");
+			redir.addAttribute("closureId", checklistId);
+			redir.addAttribute("socTabId","1");
 			
 			return "redirect:/ProjectClosureCheckList.htm";
 			

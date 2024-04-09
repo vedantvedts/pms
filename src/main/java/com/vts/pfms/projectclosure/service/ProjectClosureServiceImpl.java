@@ -931,4 +931,56 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.getProjectClosureCheckListByProjectId(closureId);
 	}
+
+	@Override
+	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,
+			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach,MultipartFile qARNCItemsAttach) throws Exception {
+		
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+		String path = "Project-Closure\\Check-List\\";
+		
+		// To upload file path for qARMilestoneAttach
+		if (!qARMilestoneAttach.isEmpty()) {
+			clist.setQARMilestone("QARMilestone" + timestampstr + "."
+					+ FilenameUtils.getExtension(qARMilestoneAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getQARMilestone(), qARMilestoneAttach);
+		} else {
+			clist.setQARMilestone(null);
+		}
+		
+		// To upload file path for qARCostBreakupAttach
+		if (!qARCostBreakupAttach.isEmpty()) {
+			clist.setQARCostBreakup("QARCostBreakup" + timestampstr + "."
+					+ FilenameUtils.getExtension(qARCostBreakupAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getQARCostBreakup(), qARCostBreakupAttach);
+		} else {
+			clist.setQARCostBreakup(null);
+		}
+		
+		
+		// To upload file path for QARNCItems
+		if (!qARNCItemsAttach.isEmpty()) {
+			clist.setQARNCItems("QARNCItems" + timestampstr + "."
+					+ FilenameUtils.getExtension(qARNCItemsAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getQARNCItems(), qARNCItemsAttach);
+		} else {
+			clist.setQARNCItems(null);
+		}
+		
+//		long closuresocid = dao.addProjectClosureSoC(soc);
+//		if(closuresocid!=0) {
+//			ProjectClosureTrans transaction = ProjectClosureTrans.builder()
+//											  .ClosureId(soc.getClosureId())
+//											  .ClosureForm("S")
+//											  .ClosureStatusCode("SIN")
+//											  .ActionBy(Long.parseLong(EmpId))
+//											  .ActionDate(sdtf.format(new Date()))
+//											  .build();
+//			dao.addProjectClosureTransaction(transaction);
+//		}
+		return dao.addProjectClosureCheckList(clist);
+	}
 }

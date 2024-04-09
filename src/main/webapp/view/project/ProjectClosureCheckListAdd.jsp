@@ -286,7 +286,7 @@ List<Object[]> socRemarksHistory = (List<Object[]>)request.getAttribute("SoCRema
 List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 
 String socTabId = (String)request.getAttribute("socTabId");
-String closureId = (String)request.getAttribute("closureId");
+String checklistId = (String)request.getAttribute("checklistId");
 String isApproval = (String)request.getAttribute("isApproval");
 
 List<String> socforward = Arrays.asList("SIN","SRG","SRA","SRP","SRD","SRC","SRV");
@@ -397,9 +397,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 							        			</div> 
 												<div class="card-body" style="overflow:auto;max-height:25rem;">
 								        		
-													<form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
+													<form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data" id="firstpagesubmit">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-												    	<input type="hidden" name="closureId" value="<%=closureId%>">
+												    	<input type="hidden" name="checklistId" value="<%=checklistId%>">
 												    	
 												     <div class="" id="firstpage" >	
 												    	 <div class="col-md-3" style="">
@@ -669,7 +669,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        
 												         <div class="checklistpage"  style="text-align: center;">
 												        
-            							                        <button class="btn btn-info btn-sm success submit" id="firstpagechange" >Save & Next</button>
+            							                        <button class="btn btn-info btn-sm success submit" type="submit" id="firstpagechange" name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')">Save & Next</button>
             							                    
 														</div> 
 														
@@ -694,17 +694,21 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																			<div class="page-item">
 																				
 																					
-																						<input class="page-link" type="submit" value="Next"  />
-																						<input type="hidden" name="pagination" value=/>
+																						<button class="page-link" id="firstpagechanges" >Next</button>
+																						<!-- <input type="hidden" name="pagination" value=/> -->
 																				
 																			</div>
-																			
-																	</div>
-																
-															 </div> 
-												        
-												   </div>
+																		</div>
+																 </div> 
+												       </div>
+												       
+										</form>
 												    
+												    
+												    
+												    <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
+														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+												    	<input type="hidden" name="checklistId" value="<%=checklistId%>">
 												   
 												         
 												    <div class="" id="secondpage">
@@ -1040,35 +1044,37 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                    
 												                </div>
 												              </div>
-												              <div class="checklistpage"  style="text-align: left;">
+												              
 												             
-												              <button class="btn btn-info btn-sm" id="backtofirstpage" >Previous</button>
+												              
+												              
+												              <div class="checklistpage"  style="text-align: center;">
+												             
+												             <!--  <button class="btn btn-info btn-sm" id="backtofirstpage" >Previous</button> -->
 													                <button class="btn btn-info btn-sm success submit" id="secondpagechange">Save & Next</button>
 													                
 	            							                </div>
 	            							                
 	            							                
-	            							              <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
+	            							              <div class="pagin" style="display: flex;justify-content: right;padding-bottom:10px;"> 
 																
 																	
 																	<div class="pagination">
 																			<div class="page-item">
 																				
-																					<input class="page-link" type="submit"  value="Previous" />
+																					<button class="page-link" id="backtofirstpages">Previous</button>
 																					
-																						<input type="hidden" value="" name="search" />
-																					
-																					<input type="hidden" id="pagination" name="pagination" value="" />
+																						
 																				
 																			</div>
 																			<div class="page-item">
-																				<input class="page-link" type="button" value="1" disabled/>
+																				<input class="page-link" type="button" value="2" disabled/>
 																			</div>
 																			<div class="page-item">
 																				
 																					
-																						<input class="page-link" type="submit" value="Next"  />
-																						<input type="hidden" name="pagination" value=/>
+																						<button class="page-link" id="secondpagechanges">Next</button>
+																						
 																				
 																			</div>
 																			
@@ -1079,7 +1085,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 	            							                
 	            							             </div>
 	            							       </div> 
-												        
+												    
+												    </form>
+												    
+												    
+												    <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
+														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+												    	<input type="hidden" name="checklistId" value="<%=checklistId%>">    
 												      
 												       
 												    <div class="" id="thirdpage">  
@@ -1388,8 +1400,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           </div>  
 												    </div> 
 												    
-														     <div class="checklistpage"  style="text-align: left;">
-														            <button class="btn btn-info btn-sm" id="backtosecondpage" >Previous</button>
+														     <div class="checklistpage"  style="text-align: center;">
+														            <!-- <button class="btn btn-info btn-sm" id="backtosecondpage" >Previous</button> -->
 														            <button class="btn btn-info btn-sm success submit">Save & Next</button>
 															 </div> 
 															 
@@ -1400,31 +1412,23 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																	<div class="pagination">
 																			<div class="page-item">
 																				
-																					<input class="page-link" type="submit"  value="Previous" />
+																					<button class="page-link"   id="backtosecondpages" >Previous</button>
 																					
-																					<input type="hidden" value="" name="search" />
 																					
-																					<input type="hidden" id="pagination" name="pagination" value="" />
 																				
 																			</div>
 																			
 																			<div class="page-item">
-																				<input class="page-link" type="button" value="1" disabled/>
+																				<input class="page-link" type="button" value="3" disabled/>
 																			</div>
 																			<div class="page-item">
-																				
-																					
-																						<input class="page-link" type="submit" value="Next"  />
-																						<input type="hidden" name="pagination" value=/>
-																				
+																				   <button class="page-link"  id="" >Next</button>
 																			</div>
 																			
 																	</div>
-																
-															 </div> 
-															 
-															 
-												</div>          
+															</div> 
+													</div> 
+										         
 												        
 												         
 								               			<%-- <div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
@@ -1448,7 +1452,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 		               					<%if(soc!=null){ %>
 				               				<form action="">
 				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosureSoCDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="SoC Download" style="background-color: purple;border: none;color: white;font-weight: bold;">SoC</button>
-				               					<input type="hidden" name="closureId" value="<%=closureId%>">
+				               					<%-- <input type="hidden" name="closureId" value="<%=closureId%>"> --%>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				               				</form>
 			               				<%} %>
@@ -1477,7 +1481,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                								<div class="card-body mt-2 ml-4">
                									<form action="#">
                										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                   									<input type="hidden" name="closureId" value="<%=closureId%>">
+                   									<%-- <input type="hidden" name="closureId" value="<%=closureId%>"> --%>
                    									<input type="hidden" name="closureSoCId" value="<%=soc.getClosureSoCId()%>">
 			               							<div class="mt-2" align="center">
 			               								<h5 style="font-weight: bold;margin-top: 1.5rem;">STATEMENT OF CASE FOR PROJECT COMPLETED WITH
@@ -1763,59 +1767,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                					<%} %>
                					
                					<div style="display: flex;justify-content: space-between;">
-	               					<div></div>
-		               				<div>
-		               					<%if(isApproval==null) {%>
-		               					<div class="row"  >
-				 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For SoC Approval</b></div>
-				 	    				</div>
-				 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
-			              					<table align="center"  >
-			               						<tr>
-			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-			                							PD -  <%=PDData[2] %>
-			                						</td>
-			                		
-		                        					<td rowspan="2">
-			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-			                							GD - <%if(GD!=null) {%><%=GD[1] %> <%} else{%>GD<%} %>
-			                	    				</td>
-			                	    				
-			                	    				<td rowspan="2">
-			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
-			                							AD - <%if(AD!=null) {%><%=AD[1] %> <%} else{%>AD<%} %>
-			                	    				</td>
-			                	    				
-			                	    				<td rowspan="2">
-			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #76ebcb 10%, transparent 115%);">
-			                							GD-DP&C - <%if(GDDPandC!=null) {%><%=GDDPandC[1] %> <%} else{%>GD-DP&C<%} %>
-			                	    				</td>
-			                	    				
-			                	    				<td rowspan="2">
-			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #13f816 10%, transparent 115%);">
-			                							Director - <%if(Director!=null) {%><%=Director[1] %> <%} else{%>Director<%} %>
-			                	    				</td>
-			                	    				
-			                	    				<td rowspan="2">
-			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-			                						</td>
-			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #00c7e4 10%, transparent 115%);">
-			                							Competent Authority - Competent Authority
-			                	    				</td>
-			               						</tr> 	
-			               	    			</table>			             
-					 					</div>
-					 					<%} %>
-		               				</div>
+	               				
 		               				<div class="navigation_btn"  style="text-align: right;">
 		            					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 										<button class="btn btn-info btn-sm next">Next</button>
@@ -2002,7 +1954,19 @@ $(document).ready(function() {
 	$('#secondpage').hide();
 	$('#thirdpage').hide();
 	
-	$("#firstpagechange").on('click', function() {
+/* 	$("#firstpagechange,#firstpagechanges").on('click', function() {
+		
+		
+		$('#firstpage').hide();
+		$('#secondpage').show();
+		$('#thirdpage').hide();
+		
+		$('#firstpagesubmit').submit();
+		
+	}); */
+	
+	
+$("#firstpagechanges").on('click', function() {
 		
 		
 		$('#firstpage').hide();
@@ -2010,10 +1974,9 @@ $(document).ready(function() {
 		$('#thirdpage').hide();
 		
 		
-		
 	});
 	
-     $("#secondpagechange").on('click', function() {
+     $("#secondpagechange,#secondpagechanges").on('click', function() {
 		
 			$('#firstpage').hide();
 			$('#secondpage').hide();
@@ -2022,7 +1985,7 @@ $(document).ready(function() {
 	});
      
      
-     $("#backtofirstpage").on('click', function() {
+     $("#backtofirstpage,#backtofirstpages").on('click', function() {
     	 
     	 
 		   	    $('#firstpage').show();
@@ -2033,7 +1996,7 @@ $(document).ready(function() {
  	}); 
 	
 	
-     $("#backtosecondpage").on('click', function() {
+     $("#backtosecondpage,#backtosecondpages").on('click', function() {
     	 
     	 
 	   	    $('#firstpage').hide();
