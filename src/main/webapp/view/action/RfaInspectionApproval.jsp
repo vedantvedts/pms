@@ -435,7 +435,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 														</select>	
 				                              </div>
 			                         </div>
-			
+			                  
 			                         
 									   <div class="col-6" id="selectClassModal2" style="display:none;">
 			                               <div class="form-group">

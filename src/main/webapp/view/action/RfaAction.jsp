@@ -279,8 +279,8 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 												
 	                                      <% }if(obj[11].toString().equalsIgnoreCase(UserId) && (obj[14].toString().equalsIgnoreCase("AF") || obj[14].toString().equalsIgnoreCase("AX"))){
 	                                      %>
-												<button data-original-title="REVOKE" class="editable-click" name="sub" type="button"
-													value="" style="background-color: transparent;"
+												<button data-original-title="REVOKE RFA" class="editable-click" name="sub" type="button"
+													value="" style="background-color: transparent;" data-toggle="tooltip" data-placement="top"
 													formaction="RfaActionReturnList.htm" formmethod="POST"
 													formnovalidate="formnovalidate"  id="rfaRevokeBtn"
 													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>')">
@@ -289,14 +289,14 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 													<input type="hidden" name="rfa" id="rfaHidden">
  													<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
       												 <input type="hidden" name="assignor" id="assignorId">
-	                                    <% } if(obj[11].toString().equalsIgnoreCase(UserId) && Integer.valueOf(obj[16].toString()) >0){ %>  
+	                                    <% } if(Integer.valueOf(obj[16].toString())>0 && obj[11].toString().equalsIgnoreCase(UserId) || obj[14].toString().equalsIgnoreCase("RFC")){ %>
 													<button title="REMARKS" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
 													formnovalidate="formnovalidate" name="rfa" id="rfaRemarksBtn"
 													value="<%=obj[0]%>"
 													onclick="return rfaRemarks(<%=obj[0]%>,'<%=obj[14]%>')">
 													<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
-												</button> 
+												    </button> 
 											 <%} %>
 											 <%if(obj[14].toString().equalsIgnoreCase("AA") && obj[15].toString().equalsIgnoreCase(EmpId)){%>
 											 	<button type="button" class="editable-click"  style="background-color: transparent;" 

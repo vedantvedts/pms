@@ -36,7 +36,11 @@ hr{
     margin-top: 0.5rem;
     margin-bottom: 1rem;
 }
-
+#filealert {
+    color: red;
+    font-weight:bold;
+    font-size: 19px;
+  }
 </style>
 
 </head>
@@ -204,8 +208,10 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                      <label class="control-label">Attachment</label>
 		                  </div>
 		                  <div class="col-md-4">
-		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/* "  onchange=" editcheck('systemconfig',1)" >
+		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/* " 
+		                      oninput="validateFile(this)">
 		                  </div>
+		                  <div id="filealert"></div>
 		            </div>
 		             <br>
 		        <div class="form-group" align="center" >
@@ -364,8 +370,23 @@ $('#myfrm').submit(function() {
 	 $('textarea[name=description]').val(data);
 	 });
 	 
-	</script> 
-  
-  
+</script> 
+<script>
+function validateFile(input) {
+  const file = input.files[0];
+  const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+
+  if (!file) return;
+
+  if (!allowedTypes.includes(file.type)) {
+    document.getElementById('filealert').innerText = 'Only image and PDF files are allowed!';
+    // Clearing the file input to prevent submission
+    input.value = '';
+  } else {
+    document.getElementById('filealert').innerText = '';
+  }
+}
+</script>
+
 </body>
 </html>

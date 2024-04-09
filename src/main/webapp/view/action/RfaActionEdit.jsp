@@ -37,7 +37,13 @@ hr{
     margin-top: 0.5rem;
     margin-bottom: 1rem;
 }
-
+#filealert {
+    color: red;
+    font-weight:bold;
+    font-size: 19px;
+    margin-left: 22%;
+    margin-top: 5px;
+  }
 </style>
 
 </head>
@@ -194,7 +200,7 @@ String Project="";
 		                      <label class="control-label">Attachment</label>
 		                  </div>
 		                  <div class="col-md-4" style="max-width: 40%;margin-left: -22px;">    
-		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/* " >
+		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/*" oninput="validateFile(this)">
 		                  </div>
 		                  <%if(rfaAttachDownload!=null){ %> 
 		                  <div class="col-md-4" style="max-width: 40%">    
@@ -203,8 +209,8 @@ String Project="";
 		                  </div>
 		                    <input type="hidden" name="type" value="ARD">
 		                    <input type="hidden" name="rfaId" value="<%=rfaAttachDownload[1]%>">
-		              <%} %>
-		                
+		                 <%} %>
+		                  <div id="filealert"></div>
 		            </div>
 		            
 		             <br>
@@ -416,7 +422,22 @@ String Project="";
 CKEDITOR.replace('Editor',editor_config);
 
 </script> 
-  
+<script>
+function validateFile(input) {
+  const file = input.files[0];
+  const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+
+  if (!file) return;
+
+  if (!allowedTypes.includes(file.type)) {
+    document.getElementById('filealert').innerText = 'Only image and PDF files are allowed!';
+    // Clearing the file input to prevent submission
+    input.value = '';
+  } else {
+    document.getElementById('filealert').innerText = '';
+  }
+}
+</script>
   
 </body>
 </html>

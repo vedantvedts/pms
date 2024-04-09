@@ -111,6 +111,7 @@ import com.vts.pfms.committee.service.RODService;
 import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.milestone.dto.MileEditDto;
+import com.vts.pfms.utils.PMSFileUtils;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 
@@ -129,6 +130,9 @@ public class ActionController {
 	
 	@Autowired
 	MailService mailService;
+	
+	@Autowired
+	PMSFileUtils pmsFileUtils;
 	
 	@Value("${File_Size}")
 	String file_size;
@@ -2998,7 +3002,6 @@ public class ActionController {
 				}else {
 					req.setAttribute("RfaActionList", RfaActionList);
 				}
-				
 			
 			    }catch (Exception e) {
 					e.printStackTrace();
@@ -3329,6 +3332,8 @@ public class ActionController {
 			req.getRequestDispatcher("/view/action/RfaActionPrint.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
 			
+//			pmsFileUtils.addWatermarktoPdf1(path + "/" + filename +  ".pdf", path + "/" + filename +  "1.pdf", "CANCEL");
+			
 			byte[] data = html.getBytes();
 			InputStream fis1 = new ByteArrayInputStream(data);
 			PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path + "/" + filename +  ".pdf"));
@@ -3445,7 +3450,12 @@ public class ActionController {
 	        pdf1.close();	       
 	        pdfw.close();
 	        res.setContentType("application/pdf");
-	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+	        
+	        if(RfaPrintData[11]!=null && RfaPrintData[11].toString().equalsIgnoreCase("RFC")) {
+	        pmsFileUtils.addWatermarktoPdf1(path +File.separator+ "mergedb.pdf", path +File.separator+ "mergedb1.pdf", "CANCEL");
+	        }
+	        
 	        File f=new File(path +File.separator+ "mergedb.pdf");
 			FileInputStream fis = new FileInputStream(f);
 			DataOutputStream os = new DataOutputStream(res.getOutputStream());
