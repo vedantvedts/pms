@@ -52,5 +52,6 @@ public interface ProjectClosureDao {
 	public Object[] projectExpenditureDetails(String projectId) throws Exception;
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId)  throws Exception;
 	public long addProjectClosureCheckList(ProjectClosureCheckList clist)throws Exception;
+	public long editProjectClosureCheckList(ProjectClosureCheckList clist) throws Exception;
 
 }

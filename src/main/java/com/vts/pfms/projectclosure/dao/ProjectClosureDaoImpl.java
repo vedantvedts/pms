@@ -596,10 +596,17 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception {
 		
 		try {
-			return manager.find(ProjectClosureCheckList.class, Long.parseLong(closureId));
+			Query query = manager.createQuery("FROM ProjectClosureCheckList WHERE ClosureId=:ClosureId AND IsActive=1");
+			query.setParameter("ClosureId", Long.parseLong(closureId));
+			List<ProjectClosureCheckList> list = (List<ProjectClosureCheckList>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date()+" Inside DAO getProjectClosureCheckListByProjectId "+e);
+			logger.error(new Date()+" Inside DAO getProjectClosureSoCByProjectId "+e);
 			return null;
 		}
 	}
@@ -616,6 +623,21 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO addProjectClosureCheckList "+e);
+			return 0L;
+		}
+	}
+
+	@Override
+	public long editProjectClosureCheckList(ProjectClosureCheckList clist) throws Exception {
+		
+		
+		try {
+			manager.merge(clist);
+			manager.flush();
+			return clist.getClosureCheckListId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO editProjectClosureCheckList "+e);
 			return 0L;
 		}
 	}

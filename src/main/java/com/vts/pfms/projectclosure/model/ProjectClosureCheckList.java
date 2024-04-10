@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -29,6 +31,7 @@ public class ProjectClosureCheckList implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	private   long ClosureCheckListId;
+	//private   long ClosureId;
 	private   String QARHQrsSentDate;
 	private   String QARSentDate ;
 	private   String QARObjective;
@@ -43,7 +46,7 @@ public class ProjectClosureCheckList implements Serializable {
 	private   String SCReason;
 	private   String PDCRequested;
 	private   String PDCGranted;
-	private   String PDCRevised;
+	private   double PDCRevised;
 	private   String PDCReason;
 	private   String PRMaintained;
 	private   String PRSanctioned;
@@ -103,4 +106,7 @@ public class ProjectClosureCheckList implements Serializable {
 	private   String ModifiedDate;
 	private   int isActive;
 	
+	@JoinColumn(name="ClosureId")
+	@OneToOne
+	private ProjectClosure projectClosure;
 }

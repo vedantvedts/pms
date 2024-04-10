@@ -56,5 +56,6 @@ public interface ProjectClosureService {
 	public long projectClosureACPRevoke(String closureId, String userId, String empId, String labcode) throws Exception;
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception;
 	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach) throws Exception;
+	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach) throws Exception;
 	
 }

@@ -983,4 +983,38 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 //		}
 		return dao.addProjectClosureCheckList(clist);
 	}
+
+	@Override
+	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,
+			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach) throws Exception {
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+        String path = "Project-Closure\\Check-List\\";
+		
+		// To upload file path for qARMilestoneAttach
+		if (!qARMilestoneAttach.isEmpty()) {
+			clist.setQARMilestone("QARMilestone" + timestampstr + "."
+					+ FilenameUtils.getExtension(qARMilestoneAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getQARMilestone(), qARMilestoneAttach);
+		} 
+		
+		// To upload file path for qARCostBreakupAttach
+		if (!qARCostBreakupAttach.isEmpty()) {
+			clist.setQARCostBreakup("QARCostBreakup" + timestampstr + "."
+					+ FilenameUtils.getExtension(qARCostBreakupAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getQARCostBreakup(), qARCostBreakupAttach);
+		} 
+		
+		
+		// To upload file path for QARNCItems
+		if (!qARNCItemsAttach.isEmpty()) {
+			clist.setQARNCItems("QARNCItems" + timestampstr + "."
+					+ FilenameUtils.getExtension(qARNCItemsAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getQARNCItems(), qARNCItemsAttach);
+		} 
+		
+		return dao.editProjectClosureCheckList(clist);
+	}
 }

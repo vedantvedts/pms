@@ -2,7 +2,7 @@
 <%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
-<%@page import="com.vts.pfms.projectclosure.model.ProjectClosureSoC"%>
+<%@page import="com.vts.pfms.projectclosure.model.ProjectClosureCheckList"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.project.model.ProjectMaster"%>
@@ -275,21 +275,21 @@ hr{
 
 ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
 ProjectClosure closure = (ProjectClosure)request.getAttribute("ProjectClosureDetails");
-ProjectClosureSoC soc = (ProjectClosureSoC)request.getAttribute("ProjectClosureSoCData");
+ProjectClosureCheckList chlist = (ProjectClosureCheckList)request.getAttribute("ProjectClosureCheckListData");
 
 Object[] potherdetails = (Object[])request.getAttribute("ProjectOriginalRevDetails");
 Object[] expndDetails = (Object[])request.getAttribute("ProjectExpenditureDetails");
 
-List<Object[]> socApprovalEmpData = (List<Object[]>)request.getAttribute("SoCApprovalEmpData");
-List<Object[]> socRemarksHistory = (List<Object[]>)request.getAttribute("SoCRemarksHistory");
+
 
 List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 
-String socTabId = (String)request.getAttribute("socTabId");
+String chlistTabId = (String)request.getAttribute("chlistTabId");
 String checklistId = (String)request.getAttribute("checklistId");
+String closureId=(String)request.getAttribute("closureId");
 String isApproval = (String)request.getAttribute("isApproval");
 
-List<String> socforward = Arrays.asList("SIN","SRG","SRA","SRP","SRD","SRC","SRV");
+List<String> chlistforward = Arrays.asList("SIN","SRG","SRA","SRP","SRD","SRC","SRV");
 
 List<String> closurecategory = Arrays.asList("Completed Successfully","Partial Success","Stage Closure","Cancellation");
 List<String> dmcdirection = Arrays.asList("Recommended","Not Recommended","Not Applicable");
@@ -353,22 +353,22 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
              		<hr style="margin: -8px 0px !important;">
              		<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
 
-            			<li class="nav-item" id="nav-socdetails">
-             				<%if(socTabId!=null && socTabId.equalsIgnoreCase("1")){ %> 
-             		    		<a class="nav-link active " data-toggle="tab" href="#socdetails" id="nav" role="tab">
+            			<li class="nav-item" id="nav-chlistdetails">
+             				<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("1")){ %> 
+             		    		<a class="nav-link active " data-toggle="tab" href="#chlistdetails" id="nav" role="tab">
              				<%}else{ %>
-              			 		<a class="nav-link  " data-toggle="tab" href="#socdetails" role="tab">
+              			 		<a class="nav-link  " data-toggle="tab" href="#chlistdetails" role="tab">
                				<%} %>  
                					
                 	         	Check List
               			 		</a>
             			</li>
 
-            			<li class="nav-item" id="nav-socforward">
-            	     		<%if(socTabId!=null && socTabId.equalsIgnoreCase("2")){ %>
-              					<a class="nav-link active" data-toggle="tab" href="#socforward" id="nav"role="tab" >
+            			<li class="nav-item" id="nav-chlistforward">
+            	     		<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("2")){ %>
+              					<a class="nav-link active" data-toggle="tab" href="#chlistforward" id="nav"role="tab" >
               				<%}else{ %>
-              					<a class="nav-link" data-toggle="tab" href="#socforward" role="tab" >
+              					<a class="nav-link" data-toggle="tab" href="#chlistforward" role="tab" >
                				<%} %>
                   				Check List Forward
               					</a>
@@ -381,10 +381,10 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
          		<div class="card">
          			<div class="tab-content text-center" style="margin-top : 0.2rem;">
          				<!-- *********** checklist Details ***********      --> 
-               			<%if(socTabId!=null && socTabId.equalsIgnoreCase("1")){ %> 
-         					<div class="tab-pane active" id="socdetails" role="tabpanel">
+               			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("1")){ %> 
+         					<div class="tab-pane active" id="chlistdetails" role="tabpanel">
          				<%}else{ %>
-              				<div class="tab-pane " id="socdetails" role="tabpanel">
+              				<div class="tab-pane " id="chlistdetails" role="tabpanel">
                			<%} %>
                					<div class="container">
 									<div class="row" style="width: 140%; margin-left: -15rem;margin-top: 1rem;">
@@ -397,11 +397,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 							        			</div> 
 												<div class="card-body" style="overflow:auto;max-height:25rem;">
 								        		
+								        		
+								        		<div class="" id="firstpage" >
 													<form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data" id="firstpagesubmit">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-												    	<input type="hidden" name="checklistId" value="<%=checklistId%>">
+												    	<input type="hidden" name="closureId" value="<%=closureId%>">
 												    	
-												     <div class="" id="firstpage" >	
+												     	
 												    	 <div class="col-md-3" style="">
 												        		<div class="form-group">
 												                	<label class="control-label" style="color:black">1. Project Appraisal Letter (QAR)</label>
@@ -420,7 +422,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Sent by the Lab to HQrs :</label><span class="mandatory">*</span>
 												                    <input  class="form-control form-control" type="text" name="QARHQrsSentDate" id="HQrsSentDate" 
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getQARHQrsSentDate()!=null) {%><%=chlist.getQARHQrsSentDate() %><%} %>" > 
 												                </div>
 												            </div>
 												            
@@ -428,7 +430,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">When sent to the CFA :</label><span class="mandatory">*</span>
 												                	 <input  class="form-control form-control" type="text" name="QARSentDate" id="CFASendDate"  
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getQARSentDate()!=null) {%><%=chlist.getQARSentDate() %><%} %>" > 
 												                    
 												                </div>
 												            </div>
@@ -437,7 +439,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Objective  of the  Project mentioned in the QAR :</label><span class="mandatory">*</span>
 												                	 <input  class="form-control form-control" type="text" name="QARObjective" placeholder="Enter Objective  of the  Project mentioned in the QAR" 
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getQARObjective()!=null) {%><%=chlist.getQARObjective() %><%} %>" > 
 												                   
 												                </div>
 												            </div>
@@ -447,13 +449,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            <div class="col-md-3" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Milestones :</label><span class="mandatory">*</span>
-												                	<%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                	<%if(chlist!=null && chlist.getQARMilestone()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="QARMilestonefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="QARMilestone Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="QARMilestone" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARMilestone" <%if(chlist==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												            </div>
 												            
@@ -467,7 +469,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">PDC</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="QARPDCDate" id="PDCDate"
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getQARPDCDate()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARPDCDate()) %><%} %>" > 
 												                </div>
 												            </div>
 												            
@@ -475,7 +477,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Proposed Cost</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="QARProposedCost" id="ProposedDate" 
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getQARProposedCost()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARProposedCost()) %><%} %>" > 
 												                </div>
 												            </div> 
 												            
@@ -483,13 +485,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            <div class="col-md-3" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Cost Break-up (Activity wise, Period wise) </label><span class="mandatory">*</span>
-												                   <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                   <%if(chlist!=null && chlist.getQARCostBreakup()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="QARCostBreakupfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="QARCostBreakup" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARCostBreakup" <%if(chlist==null) {%>required<%} %> accept=".pdf">
 												                   
 												                </div>
 												            </div>
@@ -497,13 +499,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">List of non-consumable items required (at least costing more than Rs. 10 lakhs) </label><span class="mandatory">*</span>
-												                   <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                   <%if(chlist!=null && chlist.getQARNCItems()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="QARNCItemsfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="QARNCItems" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARNCItems" <%if(chlist==null) {%>required<%} %> accept=".pdf">
 												                   
 												                </div>
 												            </div>
@@ -526,7 +528,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">When requested</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="SCRequested" id="SCRequested" placeholder="Enter Requested Date" 
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getSCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCRequested()) %><%} %>" > 
 												                </div>
 												            </div> 
 												            
@@ -534,7 +536,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">When granted</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="SCGranted" id="SCGranted" placeholder="Enter Granted Date" 
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getSCGranted()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCGranted()) %><%} %>" > 
 												                </div>
 												            </div> 
 												            
@@ -544,7 +546,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">How much/ revised cost</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="SCRevisionCost" id="" placeholder="Enter Revision Cost" 
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getSCRevisionCost()>=0){%><%=chlist.getSCRevisionCost() %><%} %>" >
 												                </div>
 												            </div> 
 												            
@@ -553,7 +555,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Any reason specified</label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="SCReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ></textarea>  
+                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getSCReason()!=null){ %><%=chlist.getSCReason() %><%} %></textarea>  
 												                </div>
 												            </div> 
 												            
@@ -577,16 +579,16 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">When requested</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="PDCRequested" id="SCRequested"
-												                     value="" > 
+												                    <input  class="form-control " type="text" name="PDCRequested" id="PDCRequested"
+												                     value="<%if(chlist!=null && chlist.getPDCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRequested()) %><%} %>" > 
 												                </div>
 												            </div> 
 												            
 												             <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">When granted</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="PDCGranted" id="SCGranted" 
-												                     value="" > 
+												                    <input  class="form-control " type="text" name="PDCGranted" id="PDCGranted" 
+												                     value="<%if(chlist!=null && chlist.getPDCGranted()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCGranted()) %><%} %>" > 
 												                </div>
 												            </div> 
 												            
@@ -596,7 +598,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Quantum/ revised PDC</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="PDCRevised" id="" placeholder="Enter revised PDC" 
-												                     value="" > 
+												                     value="<%if(chlist!=null && chlist.getPDCRevised()>0) {%><%=chlist.getPDCRevised() %><%} %>" > 
 												                </div>
 												            </div> 
 												            
@@ -605,7 +607,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Any reason specified</label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="PDCReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ></textarea>  
+                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getPDCReason()!=null){ %><%=chlist.getPDCReason() %><%} %></textarea>  
 												                </div>
 												            </div>
 												             
@@ -629,7 +631,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-4" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Maintained in proper format</label><span class="mandatory">*</span>
-												                    <input name="PRMaintained"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="PRMaintained"  type="checkbox"  <% if(chlist!=null &&  chlist.getPRMaintained() !=null && chlist.getPRMaintained().equalsIgnoreCase("Yes")){ %> checked <%} %>  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												            </div> 
@@ -638,7 +640,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Sanctioned projects entered (including sub-projects)</label><span class="mandatory">*</span>
-												                    <input name="PRSanctioned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="PRSanctioned"  type="checkbox"  <% if(chlist!=null &&  chlist.getPRSanctioned() !=null && chlist.getPRSanctioned().equalsIgnoreCase("Yes")){ %> checked <%} %> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												            </div> 
@@ -656,11 +658,12 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           
 												         <br> 
 												      
-												       <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												       <div class="row" style="margin-left: 2%;margin-right: 2%;"> 
+												               
 												          <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Expenditure verified by Project Director/ In-charge</label><span class="mandatory">*</span>
-												                    <input name="PECVerified"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="PECVerified"  type="checkbox"   <% if(chlist!=null &&  chlist.getPECVerified() !=null && chlist.getPECVerified().equalsIgnoreCase("Yes")){ %> checked <%} %> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												            </div> 
@@ -669,13 +672,22 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        
 												         <div class="checklistpage"  style="text-align: center;">
 												        
-            							                        <button class="btn btn-info btn-sm success submit" type="submit" id="firstpagechange" name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')">Save & Next</button>
+												        <% if(chlist!=null && chlist.getQARObjective()!=null) { %>
+												        
+            							                         <button class="btn-warning edit btn" type="submit" id="firstpagechange" name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
             							                    
+            							                    
+            							                    <%}else{ %>
+            							                    
+            							                        <button class="btn btn-info btn-sm success submit" type="submit" id="firstpagechange" name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
+            							                        
+            							                    
+            							                    <%} %>
 														</div> 
-														
-														
-														
-															 <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
+											</form>
+											   
+												   
+												   <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
 																
 																	
 																	<div class="pagination">
@@ -693,25 +705,24 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																			</div>
 																			<div class="page-item">
 																				
-																					
-																						<button class="page-link" id="firstpagechanges" >Next</button>
+																					   <button class="page-link" id="firstpagechanges" >Next</button>
 																						<!-- <input type="hidden" name="pagination" value=/> -->
 																				
 																			</div>
 																		</div>
-																 </div> 
-												       </div>
-												       
-										</form>
+																 </div>  
+												    
+												    </div>	
 												    
 												    
 												    
+											  <div class="" id="secondpage">	    
 												    <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												    	<input type="hidden" name="checklistId" value="<%=checklistId%>">
 												   
 												         
-												    <div class="" id="secondpage">
+												  
 												            <div class="col-md-3" style="">
 												        		<div class="form-group">
 												                	<label class="control-label" style="color:black">6. Subsidiary register</label>
@@ -888,13 +899,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-4" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">List out major non-consumable/ equipment procured</label><span class="mandatory">*</span>
-												                     <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                     <%if(chlist!=null && chlist.getEquipProcured()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipProcured"<%--  <%if(soc==null) {%>required<%} %> --%> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipProcured"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
 												                    
 												                </div>
 												              </div> 
@@ -933,13 +944,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-3" style="" id="EquipProcuredBeforePDCAttach">
 												                 <div class="form-group">
 												                	<label class="control-label">Attach if yes</label><span class="mandatory">*</span>
-												                     <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                     <%if(chlist!=null && chlist.getEquipProcuredBeforePDCAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipProcuredBeforePDCAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipProcuredBeforePDCAttach" <%if(chlist==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												              </div>
 												               
@@ -958,13 +969,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-3" style="" id="EquipBoughtOnChargeAttach">
 												                 <div class="form-group">
 												                	<label class="control-label">Attach if yes </label><span class="mandatory">*</span>
-												                     <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                     <%if(chlist!=null && chlist.getEquipBoughtOnChargeAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipBoughtOnChargeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipBoughtOnChargeAttach" <%if(chlist==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												              </div>
 												              
@@ -1006,13 +1017,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Mention, if expenditure under any head exceeded the respective allocation</label><span class="mandatory">*</span>
-												                    <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                    <%if(chlist!=null && chlist.getBudgetExpenditureAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="BudgetExpenditureAttach" <%-- <%if(soc==null) {%>required<%} %> --%> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="BudgetExpenditureAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
 												                </div>
 												              </div>
 												              
@@ -1051,12 +1062,15 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="checklistpage"  style="text-align: center;">
 												             
 												             <!--  <button class="btn btn-info btn-sm" id="backtofirstpage" >Previous</button> -->
-													                <button class="btn btn-info btn-sm success submit" id="secondpagechange">Save & Next</button>
+													                <button class="btn btn-info btn-sm success submit" id="secondpagechange" name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
 													                
 	            							                </div>
-	            							                
-	            							                
-	            							              <div class="pagin" style="display: flex;justify-content: right;padding-bottom:10px;"> 
+	            							                 
+	            							             </div>
+	            							        
+												    </form>
+												    
+												     <div class="pagin" style="display: flex;justify-content: right;padding-bottom:10px;"> 
 																
 																	
 																	<div class="pagination">
@@ -1080,13 +1094,14 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																			
 																	</div>
 																
-															 </div>   
-	            							                
-	            							                
-	            							             </div>
-	            							       </div> 
+															 </div> 
 												    
-												    </form>
+												    
+												    
+												    </div> 
+												    
+												    
+												     <div class="" id="thirdpage">  
 												    
 												    
 												    <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
@@ -1094,7 +1109,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<input type="hidden" name="checklistId" value="<%=checklistId%>">    
 												      
 												       
-												    <div class="" id="thirdpage">  
+												   
 												    
 												         <div class="col-md-4" style="">
 												        		<div class="form-group">
@@ -1148,13 +1163,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-2" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Actual position-held</label><span class="mandatory">*</span>
-												                    <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                    <%if(chlist!=null && chlist.getSPActualpositionAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="SPActualposition" <%-- <%if(soc==null) {%>requ ired<%} %> --%> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="SPActualposition" <%if(chlist==null) {%>required<%} %>  accept=".pdf">
 												                </div>
 												          </div> 
 												          
@@ -1163,13 +1178,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">General Specific (Category wise)</label><span class="mandatory">*</span>
-												                    <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+												                    <%if(chlist!=null && chlist.getSPGeneralSpecificAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="SPGeneralSpecific" <%-- <%if(soc==null) {%>required<%} %> --%> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="SPGeneralSpecific"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
 												                </div>
 												          </div> 
 												          
@@ -1388,13 +1403,13 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary)</label><span class="mandatory">*</span>
-                                                                    <%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
+                                                                    <%if(chlist!=null && chlist.getCRAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="CRAttach" <%-- <%if(soc==null) {%>required<%} %> --%> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="CRAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
                                                                     											                    
 												                </div>
 												           </div>  
@@ -1402,11 +1417,28 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    
 														     <div class="checklistpage"  style="text-align: center;">
 														            <!-- <button class="btn btn-info btn-sm" id="backtosecondpage" >Previous</button> -->
-														            <button class="btn btn-info btn-sm success submit">Save & Next</button>
+														            <button class="btn btn-info btn-sm success submit" name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
 															 </div> 
 															 
 															 
-															<div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
+															
+													
+										         
+												        
+												         
+								               			<%-- <div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
+															<%if(chlist!=null){ %>
+															    <input type="hidden" name="closureId" value="<%=chlist.getClosureId()%>">
+																<button type="submit" class="btn btn-sm btn-warning edit btn-chlist" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
+															<%}else{ %>
+																<button type="submit" class="btn btn-sm btn-success submit btn-chlist" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?')" >SUBMIT</button>
+															<%} %>
+														</div> --%>
+						
+												    </form>
+												    
+												    
+												    <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
 																
 																	
 																	<div class="pagination">
@@ -1427,20 +1459,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																			
 																	</div>
 															</div> 
-													</div> 
-										         
-												        
-												         
-								               			<%-- <div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
-															<%if(soc!=null){ %>
-															    <input type="hidden" name="closureId" value="<%=soc.getClosureId()%>">
-																<button type="submit" class="btn btn-sm btn-warning edit btn-soc" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
-															<%}else{ %>
-																<button type="submit" class="btn btn-sm btn-success submit btn-soc" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?')" >SUBMIT</button>
-															<%} %>
-														</div> --%>
-						
-												    </form>
+												    
+												    
+												    </div> 
 												</div>
 											</div>
                							</div>
@@ -1448,41 +1469,41 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                					</div>
                					<div style="display: flex;justify-content: space-between;">
                						<div></div>
-		               				<div class="navigation_btn"  style="text-align: center;">
-		               					<%if(soc!=null){ %>
+		               				<%-- <div class="navigation_btn"  style="text-align: center;">
+		               					<%if(chlist!=null){ %>
 				               				<form action="">
-				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosureSoCDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="SoC Download" style="background-color: purple;border: none;color: white;font-weight: bold;">SoC</button>
-				               					<%-- <input type="hidden" name="closureId" value="<%=closureId%>"> --%>
+				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosurechlistDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="chlist Download" style="background-color: purple;border: none;color: white;font-weight: bold;">chlist</button>
+				               					<input type="hidden" name="closureId" value="<%=closureId%>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				               				</form>
 			               				<%} %>
-									</div>
+									</div> --%>
 		               				<div class="navigation_btn"  style="text-align: right;">
             							<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectClosureList.htm" style="color: white!important">Back</a>
 										<button class="btn btn-info btn-sm next">Next</button>
 									</div>
                					</div>
                					
-               			<%if(socTabId!=null && socTabId.equalsIgnoreCase("1")){ %> 
+               			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("1")){ %> 
          					</div>
          				<%}else{ %>
               				</div>
                			<%} %>
                			
-               			<!-- *********** SoC Forward ***********      --> 
-               			<%if(socTabId!=null && socTabId.equalsIgnoreCase("2")){ %> 
-         					<div class="tab-pane active" id="socforward" role="tabpanel">
+               			<!-- *********** chlist Forward ***********      --> 
+               			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("2")){ %> 
+         					<div class="tab-pane active" id="chlistforward" role="tabpanel">
          				<%}else{ %>
-              				<div class="tab-pane " id="socforward" role="tabpanel">
+              				<div class="tab-pane " id="chlistforward" role="tabpanel">
                			<%} %>
-               					<%if(soc!=null) {%>
+               					<%if(chlist!=null) { %>
                						<div class="col-md-8 mt-2">
                							<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%; <%if(isApproval==null) {%>max-height: 600px;<%} else{%>max-height: 700px;<%} %>  overflow-y: auto;">
                								<div class="card-body mt-2 ml-4">
                									<form action="#">
                										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                    									<%-- <input type="hidden" name="closureId" value="<%=closureId%>"> --%>
-                   									<input type="hidden" name="closureSoCId" value="<%=soc.getClosureSoCId()%>">
+                   									<%-- <input type="hidden" name="closurechlistId" value="<%=chlist.getClosurechlistId()%>"> --%>
 			               							<div class="mt-2" align="center">
 			               								<h5 style="font-weight: bold;margin-top: 1.5rem;">STATEMENT OF CASE FOR PROJECT COMPLETED WITH
 				               								<%if(closure!=null) {
@@ -1523,8 +1544,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Sponsoring Agency and QR No.</td>
-												    		<td>: <%if(projectMaster.getEndUser()!=null) {%> <%=projectMaster.getEndUser() %><%} else{%>--<%} %> and <%if(soc.getQRNo()!=null && !soc.getQRNo().isEmpty()) {%> <%=soc.getQRNo() %><%} else{%>NA<%} %> </td>
-												    	</tr>
+<%-- 												    		<td>: <%if(projectMaster.getEndUser()!=null) {%> <%=projectMaster.getEndUser() %><%} else{%>--<%} %> and <%if(chlist.getQRNo()!=null && !chlist.getQRNo().isEmpty()) {%> <%=chlist.getQRNo() %><%} else{%>NA<%} %> </td>
+ --%>												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Date of Sanction</td>
@@ -1552,16 +1573,16 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	</tr> 
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Statement of Accounts ( as on <%-- <%if(soc.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(soc.getExpndAsOn()) %><%} %> --%> )</td>
+												    		<td style="width: 40%;">Statement of Accounts ( as on <%-- <%if(chlist.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(chlist.getExpndAsOn()) %><%} %> --%> )</td>
 												    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) 
 												    		: Total <span style="text-decoration: underline;">
-												    			<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000 ) %> --%>
+												    			<%-- <%=String.format("%.2f", Double.parseDouble(chlist.getTotalExpnd())/10000000 ) %> --%>
 												    			<%if(expndDetails!=null && expndDetails[0]!=null) {%>
 												    				<%=df.format(Double.parseDouble(expndDetails[0].toString())/10000000 ) %> 
 												    			<%} %>
 												    		</span> Cr 
 												    		(FE <span style="text-decoration: underline;">
-												    			<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000 ) %> --%>
+												    			<%-- <%=String.format("%.2f", Double.parseDouble(chlist.getTotalExpndFE())/10000000 ) %> --%>
 												    			<%if(expndDetails!=null && expndDetails[1]!=null) {%>
 												    				<%=df.format(Double.parseDouble(expndDetails[1].toString())/10000000 ) %> 
 												    			<%} %>
@@ -1573,42 +1594,42 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    		<!-- <td style="width: 39.2%;">Present Status</td>
 												    		<td style="width: 55.3%;">:</td> -->
 												    		<td style="width: 40%;">Present Status</td>
-												    		<td style="">: <%=soc.getPresentStatus() %> </td>
+												    		<%-- <td style="">: <%=chlist.getPresentStatus() %> </td> --%>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Detailed reasons/considerations for Project <%=closure.getClosureCategory() %> </td>
-												    		<td style="">: <%if(soc.getReason()!=null) {%><%=soc.getReason() %> <%} else{%>-<%} %> </td>
+												    		<%-- <td style="">: <%if(chlist.getReason()!=null) {%><%=chlist.getReason() %> <%} else{%>-<%} %> </td> --%>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Recommendation of Review Committee for Project success (as applicable)</td>
-												    		<td style="">: <%if(soc.getRecommendation()!=null && !soc.getRecommendation().isEmpty()) {%><%=soc.getRecommendation() %> <%} else{%>NA<%} %> </td>
-												    	</tr>
+<%-- 												    		<td style="">: <%if(chlist.getRecommendation()!=null && !chlist.getRecommendation().isEmpty()) {%><%=chlist.getRecommendation() %> <%} else{%>NA<%} %> </td>
+ --%>												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">
 												    			Minutes of Monitoring Committee Meetings held so far and recommendations 
 												 				of the highest monitoring committee for closure of the project/programme
 												 			</td>
-												    		<td style="">: <%=soc.getMonitoringCommittee() %>
-												    			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 	 		     value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Download">
+												    		<%-- <td style="">: <%=chlist.getMonitoringCommittee() %> --%>
+												    			<!-- <button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 	 		     value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Download">
                             					 				 	<i class="fa fa-download fa-lg"></i>
                             					 				</button>
-												    		</td>
+												    		</td> -->
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Direction of DMC</td>
-												    		<td style="">: <%=soc.getDMCDirection() %> </td>
+												    		<%-- <td style="">: <%=chlist.getDMCDirection() %> </td> --%>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Lessons Learnt</td>
 												    		<td style="">: 
 												    		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 	 		 value="lessonslearntfile" formaction="ProjectClosureSoCFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Lessons learnt Download">
+                            					 	 		 value="lessonslearntfile" formaction="ProjectClosurechlistFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Lessons learnt Download">
                             					 				<i class="fa fa-download fa-lg"></i>
                             					 			</button>
 												    		</td>
@@ -1616,89 +1637,22 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Other relevant details</td>
-												    		<td style="">: <%if(soc.getOtherRelevant()!=null && !soc.getOtherRelevant().isEmpty()) {%><%=soc.getOtherRelevant() %> <%} else{%>--<%} %></td>
-												    	</tr>
+<%-- 												    		<td style="">: <%if(chlist.getOtherRelevant()!=null && !chlist.getOtherRelevant().isEmpty()) {%><%=chlist.getOtherRelevant() %> <%} else{%>--<%} %></td>
+ --%>												    	</tr>
    	 												</table>
    	 												
    	 												<br>
 			               		   					
 			               		   					<!-- Signatures and timestamps -->
 			               		   					
-													<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-		               								 	<div style="font-size: 15px;">Project Director</div>
-						               					<%for(Object[] apprInfo : socApprovalEmpData){ %>
-						   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("SFW")){ %>
-						   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-						   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-						   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
-						   			    				<%break;}} %>  
-							            			 </div>
-							            			 
-							            			 <%for(Object[] apprInfo : socApprovalEmpData) {%>
-							            			 	<div style="width: 96%;text-align: left;margin-left: 40px;line-height: 10px;margin-top: 50px;">
-							            			 		<%if(apprInfo[8].toString().equalsIgnoreCase("SAG")){ %>
-							            			 			<div style="font-size: 15px;"> Signature of GD</div>
-								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
-							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAA")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of AD</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
-							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAP")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of GD-DP&C</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
-							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of Director</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
-							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAC")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of Competent Authority</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-								   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
-							   			    			
-							   			    				<%} %>
-							            			 	</div>	
-							            			 <%} %>
-							            			 
-							            			 <!-- Remarks History -->
-							            			 <div class="row mt-2" style="margin-left: 18px;">
-														<%if(socRemarksHistory.size()>0){ %>
-															<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
-																<%if(socRemarksHistory.size()>0){ %>
-																	<table style="margin: 3px;padding: 0px">
-																		<tr>
-																			<td style="border:none;padding: 0px">
-																			<h6 style="text-decoration: underline;">Remarks :</h6> 
-																			</td>											
-																		</tr>
-																		<%for(Object[] obj : socRemarksHistory){%>
-																		<tr>
-																			<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
-																				<%=obj[3]%>&nbsp; :
-																				<span style="border:none; color: blue;">	<%=obj[1] %></span>
-																			</td>
-																		</tr>
-																		<%} %>
-																	</table>
-																<%} %>
-															</div>
-														<%} %>
-					   								</div>
-							            			
-							            			<div class="row mt-2 mb-4" style="margin-left: 18px;">
+							            			<%-- <div class="row mt-2 mb-4" style="margin-left: 18px;">
 														<div class="col-md-12" align="center">
-															<%if(statuscode!=null && socforward.contains(statuscode)) {%>
+															<%if(statuscode!=null && chlistforward.contains(statuscode)) {%>
 																<div class="ml-2" align="left">
 									   								<b >Remarks :</b><br>
 									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 								         						</div>
-																<button type="submit" class="btn btn-sm submit" name="Action" formaction="ProjectClosureSoCApprovalSubmit.htm" value="A" onclick="return confirm('Are you Sure to Submit ?');">Forward</button>
+																<button type="submit" class="btn btn-sm submit" name="Action" formaction="ProjectClosurechlistApprovalSubmit.htm" value="A" onclick="return confirm('Are you Sure to Submit ?');">Forward</button>
 															<%} %>
 															<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y")) {%>
 																<%if(statuscode!=null && statuscode.contains("SAD")  ) {%>
@@ -1735,24 +1689,24 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 								         						</div>
 								         						<%if(statuscode!=null && (statuscode.contains("SAP") || statuscode.contains("SAD"))) {%>
-								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
+								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosurechlistApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
 										    						Approve	
 									      						</button>
 									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosurechlistApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
 										 							Return
 																</button>
 								         						<%} else{%>
-																<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
+																<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosurechlistApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
 										    						Recommend	
 									      						</button>
 									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosurechlistApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
 										 							Return
 																</button>
 															<%} }%>
 														</div>
-                   									</div>
+                   									</div> --%>
                    						 
 			               						</form>
 			               					</div>
@@ -1774,7 +1728,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 									</div>
                					</div>
                			
-               			<%if(socTabId!=null && socTabId.equalsIgnoreCase("2")){ %> 
+               			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("2")){ %> 
          					</div>
          				<%}else{ %>
               				</div>
@@ -1805,7 +1759,7 @@ $('#expndAsOn').daterangepicker({
 });	
 
 
-$('#PDCDate,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted,#ProjectClosedDate,#ClosureReportDate,#HQrsSentDate').daterangepicker({
+$('#PDCDate,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted,#ProjectClosedDate,#ClosureReportDate,#HQrsSentDate,#PDCRequested,#PDCGranted').daterangepicker({
 	"singleDatePicker" : true,
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
@@ -1976,7 +1930,7 @@ $("#firstpagechanges").on('click', function() {
 		
 	});
 	
-     $("#secondpagechange,#secondpagechanges").on('click', function() {
+     $("#secondpagechanges").on('click', function() {
 		
 			$('#firstpage').hide();
 			$('#secondpage').hide();
@@ -2050,17 +2004,17 @@ $("#firstpagechanges").on('click', function() {
 
 
 <script type="text/javascript">
-/* button disabling for SoC Approval */
-<%if((soc!=null && socforward.contains(closure.getClosureStatusCode())) || soc==null) {%>
-$('.btn-soc').prop('disabled',false);
+/* button disabling for chlist Approval */
+<%if((chlist!=null && chlistforward.contains(closure.getClosureStatusCode())) || chlist==null) {%>
+$('.btn-chlist').prop('disabled',false);
 <%} else{%>
-$('.btn-soc').prop('disabled',true);
+$('.btn-chlist').prop('disabled',true);
 <%} %>
 
-/* tabs hiding for SoC approval */
+/* tabs hiding for chlist approval */
 <%if(isApproval!=null && (isApproval.equalsIgnoreCase("Y") || isApproval.equalsIgnoreCase("N"))) {%>
    $('.navigation_btn').hide();
-   $('#nav-socdetails').hide();
+   $('#nav-chlistdetails').hide();
 <%} %>
 </script>
 
@@ -2087,39 +2041,8 @@ function disapprove() {
 </script>
 
 <script type="text/javascript">
-function LabcodeSubmit() {
-	   var LabCode = document.getElementById("LabCode").value;
-	   $('#approverEmpId').empty();
-	   $.ajax({
-	       type: "GET",
-	       url: "GetLabcodeEmpList.htm",
-	       data: {
-	       	LabCode: LabCode
-	       },
-	       dataType: 'json',
-	       success: function(result) {
-	    	   for (var i = 0; i < result.length; i++) {
-                   var data = result[i];
-                   var optionValue = data[0];
-                   var optionText = data[1].trim() + ", " + data[3]; 
-                   var option = $("<option></option>").attr("value", optionValue).text(optionText);
-                   $('#approverEmpId').append(option); 
-               }
-               $('#approverEmpId').selectpicker('refresh');
-               }else{
-               	for (var i = 0; i < result.length; i++) {
-                       var data = result[i];
-                       var optionValue = data[0];
-                       var optionText = data[1].trim() + ", " + data[3]; 
-                       var option = $("<option></option>").attr("value", optionValue).text(optionText);
-                       $('#approverEmpId').append(option); 
-                   }
-                   $('#approverEmpId').selectpicker('refresh');
-               }
-	               
-	           }
-	   });
-	}
+
+	
 	
 $('#approvalDate').daterangepicker({
 	"singleDatePicker" : true,
