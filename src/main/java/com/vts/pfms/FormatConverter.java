@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
 
@@ -211,4 +212,20 @@ public class FormatConverter
 		return sqlDateFormat.format(regularDateFormat.parse(regulardate));
 	}
 	
+	public long getDurationInMonths(String fromDate, String toDate) throws Exception{
+		try {
+			// Define date format
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	        
+	        // Parse input strings into LocalDate objects
+	        LocalDate localFromDate = LocalDate.parse(fromDate, formatter);
+	        LocalDate localToDate = LocalDate.parse(toDate, formatter);
+	        
+	        // Calculate months between the dates
+	        return ChronoUnit.MONTHS.between(localFromDate, localToDate);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }
