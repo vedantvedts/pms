@@ -251,12 +251,13 @@ label {
 				</table>
 				<div align="center">
 					<button type="submit" formaction="MailConfigurationAdd.htm"
-						class="btn btn-primary btn-sm add" id="MailConfigAddBtn">ADD</button>
+						class="btn btn-primary btn-sm add" id="MailConfigAddBtn">ADD</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 					<%
 					if (MailConfigurationList != null && MailConfigurationList.size() > 0) {
 					%>
+					<button type="submit" formaction="MailConfigurationEdit.htm" class="btn btn-warning btn-sm edit" name="sub" value="edit" onclick="Edit(frm1)"  >EDIT</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<button type="submit" formaction="MailConfigurationDelete.htm"
 						class="btn btn-danger btn-sm delete" onclick="Delete(frm1)">DELETE</button>
 					<%

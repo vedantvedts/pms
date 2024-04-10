@@ -101,8 +101,8 @@ public interface AdminDao {
 	public long DeleteMailConfiguration(long MailConfigurationId, String ModifiedBy)throws Exception;
 
 	public long AddMailConfiguration( MailConfiguration mailConfigAdd)throws Exception;
-	public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception;
-	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception;
+	public Object[] MailConfigurationEditList(long MailConfigurationId)throws Exception;
+	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy,String Host,String Port,String pass)throws Exception;
 	public List<Object[]> lastUpdate();
 
 	public Object weeklyupdate(int empid, String username, String dateofupdate, String procurement,
@@ -110,4 +110,5 @@ public interface AdminDao {
 
 	public List<Object[]> ProjectListPD(String empId)throws Exception;
 	public List<Object[]> ProjectListIC(String empId)throws Exception;
+	public long getTypeOfHostCount(String hostType) throws Exception;
   }

@@ -114,9 +114,16 @@ SimpleDateFormat sdfInput = new SimpleDateFormat("HH:mm:ss");
 													    <td align="center"><%=ScheduleTime %></td>
 													    <td ><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></td>
 													    <td align="center">
-													    <button type="submit" class="btn btn-sm " formaction="CommitteeMinutesNewDownload.htm" id=<%="committeescheduleid"+obj[0]%> value="<%=obj[0] %>"  name="committeescheduleid" formmethod="post" formtarget="_blank">
+													    <button type="submit" class="btn  btn-sm view"  formaction="CommitteeMinutesNewDownload.htm" id=<%="committeescheduleid"+obj[0]%> value="<%=obj[0] %>" name="committeescheduleid" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">MINUTES
+	                                                        <i class="fa fa-download blink" aria-hidden="true" style="color:white;"></i>
+	                                                    </button>&nbsp;&nbsp;
+													   <%--  <button type="submit" class="btn btn-sm " formaction="CommitteeMinutesNewDownload.htm" id=<%="committeescheduleid"+obj[0]%> value="<%=obj[0] %>"  name="committeescheduleid" formmethod="post" formtarget="_blank">
 												           <i class="fa fa-download fa-lg"></i>
-											            </button>
+											            </button> --%>
+											            <%-- <input type="hidden" name="isFrozen" id=<%="frozen"+obj[0] %> value="<%=obj[6]%>">
+														<input type="hidden" name="scheduleid" id=<%="scheduleid"+obj[0]%> value="<%=obj[0]%>">
+														<input type="hidden" name="membertype" value="<%="CC"%>"> --%>
+											            
 														</td>
 													  </tr>
  												<%}} %>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.vts.pfms.mail.ReversibleEncryptionAlg;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.committee.service.CommitteeService;
 
@@ -29,6 +30,10 @@ public class MailController {
 	
 	@Autowired 
 	AdminService adminService;
+	
+	@Autowired
+	ReversibleEncryptionAlg rea;
+	
 	private static final Logger logger=LogManager.getLogger(MailController.class);
 	
 //	@Autowired
@@ -153,11 +158,12 @@ public class MailController {
 			String Username = (String)req.getParameter("UserNameData");
 			String Password = (String)req.getParameter("PasswordData");
 			String HostType = (String)req.getParameter("HostTypeData");
-			String port = (String)req.getParameter("port");
+			String port = (String)req.getParameter("Port");
+			String Host = (String)req.getParameter("Host");
 			//String MailType = (String)req.getParameter("MailTypeData");
 			
 			
-			result = adminService.AddMailConfiguration(Username,Password,HostType,req.getUserPrincipal().getName(),port);
+			result = adminService.AddMailConfiguration(Username,Password,HostType,req.getUserPrincipal().getName(),Host,port);
 			
 		}catch (Exception e) {
 		 	 logger.error(new Date() +" Login Problem Occures When MailConfigurationAddSubmit.htm was clicked ", e);
@@ -166,7 +172,9 @@ public class MailController {
 		if(result >0) {
 			redir.addAttribute("result", "Mail Configuration Added Successfully");
 		}
-		else {
+		else if(result ==-1){
+			redir.addAttribute("resultfail", "TypeOfHost Already Exists ...!");
+		}else {
 			redir.addAttribute("resultfail", "Mail Configuration Add Unsuccessful");
 		}
 
@@ -181,12 +189,11 @@ public class MailController {
 			   String MailConfigurationId = (String)req.getParameter("Lid");
 			   req.setAttribute("action", "Edit");
 			   req.setAttribute("mailConfigIdFrEdit", MailConfigurationId);
-			   List<Object[]> MailConfigurationEdit = adminService.MailConfigurationEditList(Long.parseLong(MailConfigurationId));
-			   Object[] MailConfigurationEditObject = null;
-					   if (!MailConfigurationEdit.isEmpty()) {
-						   MailConfigurationEditObject = MailConfigurationEdit.get(0);
-						}
-			   
+			   Object[] MailConfigurationEditObject = adminService.MailConfigurationEditList(Long.parseLong(MailConfigurationId));
+			   if(MailConfigurationEditObject!=null && MailConfigurationEditObject[5]!=null) {
+				   String pass=rea.decryptByAesAlg(MailConfigurationEditObject[5].toString());
+				   req.setAttribute("pass", pass);
+			   }
 			   if(MailConfigurationId!=null && MailConfigurationEditObject!=null) {
 				   req.setAttribute("mailConfigEditList", MailConfigurationEditObject);
 			   }else {
@@ -207,11 +214,13 @@ public class MailController {
 		try {
 			String MailConfigurationId = (String)req.getParameter("MailConfigIdFrEditSubmit");
 			String Username = (String)req.getParameter("UserNameData");
-			//String Password = (String)req.getParameter("PasswordData");
+			String Password = (String)req.getParameter("PasswordData");
 			String HostType = (String)req.getParameter("HostTypeData");
+			String Host = (String)req.getParameter("Host");
+			String Port = (String)req.getParameter("Port");
 			
 			if(MailConfigurationId!=null) {
-			result = adminService.UpdateMailConfiguration(Long.parseLong(MailConfigurationId),Username,HostType,req.getUserPrincipal().getName());
+			result = adminService.UpdateMailConfiguration(Long.parseLong(MailConfigurationId),Username,HostType,req.getUserPrincipal().getName(),Host,Port,Password);
 			}else {
 				result = 0;
 			}

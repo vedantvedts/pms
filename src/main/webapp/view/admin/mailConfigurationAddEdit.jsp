@@ -42,6 +42,7 @@ String mailConfigIdFrEdit =(String)request.getAttribute("mailConfigIdFrEdit");
 
 //System.out.println("MailConfigAction :"+Action);
 Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
+String pass=(String)request.getAttribute("pass");
 %>
 
 <div class="card-header page-top">
@@ -73,36 +74,7 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
                    </td>
                    </tr> 
        
-                   <tr>
-                   <th><label >PASSWORD:<span class="mandatory" style="color: red;">*</span></label></th>
-                   <td  colspan="4" >
-                   <div class="password-container">
-                <input class="form-control" placeholder="Password" type="password"
-                name="PasswordData" id="PasswordVal" required="required" maxlength="50" style="font-size: 15px;"
-                <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=EditObject[5] %>"  readonly<%} %>>
-               <%if( Action.equalsIgnoreCase("Add") && EditObject==null){%>
-             <i class="toggle-password fa fa-fw fa-eye-slash"></i>
-               <%} else{%>
-                 <i class="disabled-password fa fa-fw fa-eye-slash"></i>
-                 <span style="color:red;float:left;padding-top: 8px; cursor: pointer;" onclick="return resetPassword()">Reset Password</span>
-               <%} %>
-           </div>
-                  
-                   </td>
-                   </tr> 
-                   <tr>
-                   <th><label >Port :<span class="mandatory" style="color: red;">*</span></label></th>
-                   <td  colspan="4" >
-                   <input  class="form-control form-control" placeholder="Port" type="text"
-                    name="port"  required="required" maxlength="50" style="font-size: 15px; "oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
-                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=EditObject[4] %>"<%} %>
-                     >
-                   </td>
-                   </tr> 
-
-
-
-                   <tr>
+                    <tr>
                    <th><label >HOST TYPE:<span class="mandatory" style="color: red;">*</span></label></th>
                    <td >
                    <select class="form-control selectpicker" data-container="body" data-live-search="true" 
@@ -114,6 +86,58 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
                  </select> 
                   </td>
                  </tr>
+                 
+                 
+                   <tr>
+                   <th><label >HOST :<span class="mandatory" style="color: red;">*</span></label></th>
+                   <td >
+                   <input  class="form-control form-control" placeholder="Host" type="text"
+                    name="Host"  id="Host" required="required" maxlength="50" style="font-size: 15px;"
+                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=EditObject[2] %>"<%} %>
+                     >
+                  </td>
+                 </tr>
+                 
+                 
+                   <tr>
+                   <th><label >PORT :<span class="mandatory" style="color: red;">*</span></label></th>
+                   <td >
+                   <input  class="form-control form-control" placeholder="Port" type="text"
+                    name="Port"  id="Port" required="required" maxlength="50" style="font-size: 15px;"
+                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=EditObject[4] %>"<%} %>
+                     >
+                  </td>
+                 </tr>
+                 
+                 <tr>
+                   <th><label >ENTER PASSWORD:<span class="mandatory" style="color: red;">*</span></label></th>
+                   <td  colspan="4" >
+                   <div class="password-container">
+                <input class="form-control" placeholder="Password" type="password"
+                name="PasswordData" id="PasswordVal" required="required" maxlength="50" style="font-size: 15px;"
+                <%if( Action.equalsIgnoreCase("Edit") && pass!=null){%>value="<%=pass %>" <%} %>>
+               <%if( Action.equalsIgnoreCase("Add") && EditObject==null){%>
+             <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+               <%}  %>
+           </div>
+                  
+                   </td>
+                   </tr> 
+                   
+                   <tr>
+                   <th><label >CONFIRM PASSWORD:<span class="mandatory" style="color: red;">*</span></label></th>
+                   <td  colspan="4" >
+                   <div class="password-container">
+                <input class="form-control" placeholder="Password" type="password"
+                name="NewPasswordVal" id="NewPasswordVal" required="required" maxlength="50" style="font-size: 15px;"
+                <%if( Action.equalsIgnoreCase("Edit") && pass!=null){%>value="<%=pass %>"  <%} %>>
+               <%if( Action.equalsIgnoreCase("Add") && EditObject==null){%>
+             <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+               <%}  %>
+           </div>
+                  
+                   </td>
+                   </tr> 
     
 
        
@@ -164,31 +188,52 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
     alert("Reset Password logic goes here!");
   }
 </script>
-  
- <!-- <script type="text/javascript">
- function MailConfigAddValidation(){
+<script>
+   function MailConfigAddValidation(){
 	    var Submit = true;
 		var username=$('#UserNameVal').val();
-		var password=$('#PasswordVal').val();
+		var Oldpassword=$('#PasswordVal').val();
+		var Newpassword=$('#NewPasswordVal').val();
 		var HostType= $("#HostTypeVal").val();
+		var Host= $("#Host").val();
+		var Port= $("#Port").val();
 /* 		var MailType= $("#MailTypeVal").val(); */
 		
     if(username==null || username==='' || username==="" || typeof(username)=='undefined'){
-	 alert("Please Enter a Username");
-	 event.preventDefault();
-	 Submit = false;
-   }else if(password==null || password==='' || password==="" || typeof(password)=='undefined'){
-	 alert("Please Enter a Password");
+	 alert("Please Enter a Username ...!");
+	 $("#UserNameVal").focus();
 	 event.preventDefault();
 	 Submit = false;
    }else if(HostType == null || HostType==='' || HostType==="" || typeof(HostType)=='undefined' ){	
-	 alert("Please Select a Host Type");
+	 alert("Please Select a Host Type ...!");
+	 $("#HostTypeVal").focus();
 	 event.preventDefault();
+	 
 	 Submit = false;
-   /* }else if( MailType== null || MailType==='' || MailType==="" || typeof(MailType)=='undefined' ){	
-	 alert("Please Select a Mail Type");
+    }else if( Host== null || Host==='' || Host==="" || typeof(Host)=='undefined' ){	
+	 alert("Please Enter a Host ...!");
+	 $("#Host").focus();
 	 event.preventDefault();	
-	 Submit = false; */
+	 Submit = false; 
+    }else if( Port== null || Port==='' || Port==="" || typeof(Port)=='undefined' ){	
+	 alert("Please Enter a Port ...!");
+	 $("#Port").focus();
+	 event.preventDefault();	
+	 Submit = false; 
+    }else if(Oldpassword==null || Oldpassword==='' || Oldpassword==="" || typeof(Oldpassword)=='undefined'){
+   	 alert("Please Enter a Password ...!");
+   	 $("#PasswordVal").focus();
+   	 event.preventDefault();
+   	 Submit = false;
+    }else if( Newpassword== null || Newpassword==='' || Newpassword==="" || typeof(Newpassword)=='undefined' ){	
+	 alert("Please Confirm the Password ...!");
+	 $("#NewPasswordVal").focus();
+	 event.preventDefault();	
+	 Submit = false; 
+    }else if(Oldpassword!=Newpassword){	
+	 alert("Password Not Matching ...!");
+	 event.preventDefault();	
+	 Submit = false; 
 	 
    }else{
 	   var userConfirmation = confirm("Are you sure to add this mail configuration?");
@@ -215,52 +260,73 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
   
   function  MailConfigEditValidation() {
 	    var Submit = true;
-		var username=$('#UserNameVal').val();
-		var password=$('#PasswordVal').val();
+	    var username=$('#UserNameVal').val();
+		var Oldpassword=$('#PasswordVal').val();
+		var Newpassword=$('#NewPasswordVal').val();
 		var HostType= $("#HostTypeVal").val();
+		var Host= $("#Host").val();
+		var Port= $("#Port").val();
 /* 		var MailType= $("#MailTypeVal").val(); */
 		
-    if(username==null || username==='' || username==="" || typeof(username)=='undefined'){
-	 alert("Please Enter a Username");
-	 event.preventDefault();
-	 Submit = false;
-   }else if(password==null || password==='' || password==="" || typeof(password)=='undefined'){
-	 alert("Please Enter a Password");
-	 event.preventDefault();
-	 Submit = false;
-   }else if(HostType == null || HostType==='' || HostType==="" || typeof(HostType)=='undefined' ){	
-	 alert("Please Select a Host Type");
-	 event.preventDefault();
-	 Submit = false;
-   /* }else if( MailType== null || MailType==='' || MailType==="" || typeof(MailType)=='undefined' ){	
-	 alert("Please Select a Mail Type");
-	 event.preventDefault();	
-	 Submit = false; */
-	 
-   }else{
-	   var userConfirmation = confirm("Are you sure to update this mail configuration?");
-	    
-	    if (userConfirmation) {
-	  
-		  var addButton = document.getElementById('MailConfigEditSubmitBtn');
-		  var formactionValue = addButton.getAttribute('formaction');
-
-		  const form =document.getElementById('MailConfigAddEditFrm');
-          form.action = formactionValue;
-          form.submit();
-          
-		  return true;
-		  
-		  }else{
-			  event.preventDefault();
-			  return false;
-			  }
-	
-    }  
+		if(username==null || username==='' || username==="" || typeof(username)=='undefined'){
+			 alert("Please Enter a Username ...!");
+			 $("#UserNameVal").focus();
+			 event.preventDefault();
+			 Submit = false;
+		   }else if(HostType == null || HostType==='' || HostType==="" || typeof(HostType)=='undefined' ){	
+			 alert("Please Select a Host Type ...!");
+			 $("#HostTypeVal").focus();
+			 event.preventDefault();
+			 
+			 Submit = false;
+		    }else if( Host== null || Host==='' || Host==="" || typeof(Host)=='undefined' ){	
+			 alert("Please Enter a Host ...!");
+			 $("#Host").focus();
+			 event.preventDefault();	
+			 Submit = false; 
+		    }else if( Port== null || Port==='' || Port==="" || typeof(Port)=='undefined' ){	
+			 alert("Please Enter a Port ...!");
+			 $("#Port").focus();
+			 event.preventDefault();	
+			 Submit = false; 
+		    }else if(Oldpassword==null || Oldpassword==='' || Oldpassword==="" || typeof(Oldpassword)=='undefined'){
+		   	 alert("Please Enter a Password ...!");
+		   	 $("#PasswordVal").focus();
+		   	 event.preventDefault();
+		   	 Submit = false;
+		    }else if( Newpassword== null || Newpassword==='' || Newpassword==="" || typeof(Newpassword)=='undefined' ){	
+			 alert("Please Confirm the Password ...!");
+			 $("#NewPasswordVal").focus();
+			 event.preventDefault();	
+			 Submit = false; 
+		    }else if(Oldpassword!=Newpassword){	
+			 alert("Password Not Matching ...!");
+			 event.preventDefault();	
+			 Submit = false; 
+			   
+		    }else{
+				   var userConfirmation = confirm("Are you sure to update this mail configuration?");
+				    
+				    if (userConfirmation) {
+				  
+					  var addButton = document.getElementById('MailConfigEditSubmitBtn');
+					  var formactionValue = addButton.getAttribute('formaction');
+			
+					  const form =document.getElementById('MailConfigAddEditFrm');
+			          form.action = formactionValue;
+			          form.submit();
+			          
+					  return true;
+					  
+					  }else{
+						  event.preventDefault();
+						  return false;
+						  }
+				
+			    }  
 	  
 }
-  
-</script> -->
+</script> 
 
   
 </body>

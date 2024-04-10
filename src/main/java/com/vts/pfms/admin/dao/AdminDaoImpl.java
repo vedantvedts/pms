@@ -988,14 +988,12 @@ public class AdminDaoImpl implements AdminDao{
 	}
     private static final String MAILCONFIGURATIONEDITLIST ="SELECT a.MailConfigurationId,a.Username,a.Host,a.TypeOfHost,a.Port,a.Password,a.CreatedBy,a.CreatedDate FROM mail_configuration a  WHERE a.MailConfigurationId=:mailConfigurationId";
 	@Override
-	public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception{
+	public Object[] MailConfigurationEditList(long MailConfigurationId)throws Exception{
 		logger.info(new Date() + "Inside DaoImpl MailConfigurationEditList");
 		try {
 			Query query = manager.createNativeQuery(MAILCONFIGURATIONEDITLIST);
 			query.setParameter("mailConfigurationId", MailConfigurationId);
-			List<Object[]> MailConfigurationEditList = query.getResultList();
-			return MailConfigurationEditList;
-
+			return (Object[])query.getSingleResult();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1003,16 +1001,20 @@ public class AdminDaoImpl implements AdminDao{
 			return null;
 		}
 	}
-    private static final String UPDATEMAILCONFIGURATION = "UPDATE mail_configuration SET a.Username=:userName ,a.TypeOfHost=:hostType, a.ModifiedBy=:modifiedBy ,a.ModifiedDate=:modifiedDate WHERE MailConfigurationId=:mailConfigurationId";
+	
+    private static final String UPDATEMAILCONFIGURATION = "UPDATE mail_configuration a SET a.Username=:userName ,a.TypeOfHost=:hostType, a.ModifiedBy=:modifiedBy ,a.ModifiedDate=:modifiedDate,a.Host=:Host,a.Port=:Port,a.Password=:pass WHERE a.MailConfigurationId=:mailConfigurationId";
 
 	@Override
-	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception{
+	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy,String Host,String Port,String pass)throws Exception{
 		logger.info(new Date() + "Inside DaoImpl MailConfigurationEditList");
 		try {
 			Query query = manager.createNativeQuery(UPDATEMAILCONFIGURATION);
 			query.setParameter("mailConfigurationId", MailConfigurationId);
 			query.setParameter("userName", userName);
 			query.setParameter("hostType", hostType);
+			query.setParameter("Host", Host);
+			query.setParameter("Port", Port);
+			query.setParameter("pass", pass);
 			query.setParameter("modifiedBy", modifiedBy);
 			query.setParameter("modifiedDate", sdf1.format(new Date()));		
 			int DeleteMailConfiguration = (int) query.executeUpdate();
@@ -1076,5 +1078,22 @@ public class AdminDaoImpl implements AdminDao{
 			// TODO: handle exception
 			return null;
 		}
+	}
+	
+	private static final String GETTYPEOFHOSTCOUNT="SELECT COUNT(*) FROM mail_configuration WHERE TypeOfHost=:hostType";
+	
+	@Override
+	public long getTypeOfHostCount(String hostType) throws Exception {
+		logger.info(new Date() + "Inside getTypeOfHostCount");
+		try {
+		Query query = manager.createNativeQuery(GETTYPEOFHOSTCOUNT);
+	    query.setParameter("hostType", hostType);
+	    BigInteger getTypeOfHostCount = (BigInteger) query.getSingleResult();
+        return getTypeOfHostCount.longValue();
+	  } catch (Exception e) {
+		 e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl getTypeOfHostCount", e);
+			return 0;
+	    }
 	}
 }

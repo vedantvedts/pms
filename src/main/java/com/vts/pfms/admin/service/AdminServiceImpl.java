@@ -740,7 +740,7 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 		@Override
-		public long AddMailConfiguration(String userName, String password, String hostType, String createdBy,String port)throws Exception{
+		public long AddMailConfiguration(String userName, String password, String hostType, String createdBy,String Host,String port)throws Exception{
 			
 			long finalResult = 0;
 			try {
@@ -757,7 +757,7 @@ public class AdminServiceImpl implements AdminService{
 		    mailConfigAdd.setCreatedDate(sdf1.format(new Date()));
 		    mailConfigAdd.setIsActive(1);
 		
-	        mailConfigAdd.setHost("smtp.gmail.com");
+	        mailConfigAdd.setHost(Host);
 		    mailConfigAdd.setPort(port);
 			
 			
@@ -766,25 +766,28 @@ public class AdminServiceImpl implements AdminService{
 	// (unlike bcrypt, which is designed to be irreversible)that means You can't really "decrypt" a bcrypt-hashed password.
 	//If you need to support both encryption and decryption of passwords for mail,you  want to use a reversible encryption algorithm
 		    mailConfigAdd.setPassword(rea.encryptByAesAlg(password));
-		    
-			
+		    long count=dao.getTypeOfHostCount(hostType);
+		    if(count==0) {
 		    finalResult = dao.AddMailConfiguration(mailConfigAdd);
-		    
+		    }else {
+		    	finalResult=-1;
+		    }
 			return finalResult;
 			
 		}
 		
 
 		@Override
-		public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception{
+		public Object[] MailConfigurationEditList(long MailConfigurationId)throws Exception{
 			return dao.MailConfigurationEditList(MailConfigurationId);
 		}
 		@Override
-		public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception{
+		public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy,String Host,String Port,String Password)throws Exception{
 		    logger.info(new Date() + " ServiceImpl  UpdateMailConfiguration");
 		    long finalResult = 0;
 			try {
-				finalResult = dao.UpdateMailConfiguration(MailConfigurationId,userName,hostType,modifiedBy);
+				String pass=rea.encryptByAesAlg(Password);
+				finalResult = dao.UpdateMailConfiguration(MailConfigurationId,userName,hostType,modifiedBy,Host,Port,pass);
 			  }catch (Exception e) {
 			    	 logger.error(new Date() +" Login Problem Occures When MailConfiguration.htm was clicked ", e);
 			    	 finalResult = 0;
