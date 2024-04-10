@@ -1249,7 +1249,7 @@ $( document ).ready(function() {
 															<script type="text/javascript">
 var from2 ="<%=sdf.format(getMA[2])%>".split("-")
 var dt22 = new Date(from2[2], from2[1] - 1, from2[0])
-var to2 ="<%=sdf.format(getMA[3])%>".split("-")
+var to2 ="<%=sdf.format(obj[3])%>".split("-")
 var dt2 = new Date(to2[2], to2[1] - 1, to2[0])
 $('#DateCompletionA'+'<%=obj[0]%>').daterangepicker({
 	"singleDatePicker" : true,
