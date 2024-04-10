@@ -603,4 +603,20 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return null;
 		}
 	}
+
+	@Override
+	public long addProjectClosureCheckList(ProjectClosureCheckList clist) throws Exception {
+		
+		
+		
+		try {
+			manager.persist(clist);
+			manager.flush();
+			return clist.getClosureCheckListId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addProjectClosureCheckList "+e);
+			return 0L;
+		}
+	}
 }
