@@ -736,7 +736,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-5" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Maintained Properly</label><span class="mandatory">*</span>
-												                    <input name="SRMaintained"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="SRMaintained"  type="checkbox"   <% if(chlist!=null &&  chlist.getSRMaintained() !=null && chlist.getSRMaintained().equalsIgnoreCase("Yes")){ %> checked <%} %>  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												            </div> 
@@ -762,8 +762,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                    <select name="CSProcedure"  class="form-control" data-width="100%" data-live-search="true"  id="select1" required>
 			                											<option value="0" disabled="disabled" selected="selected">--Select--</option>
 												               			
-												               			<option value="PurchasedDirectly" >Purchased Directly </option>
-												               			<option value="ThroughMainStream" >Through Main Stream </option>
+												               			<option value="PurchasedDirectly" <%if(chlist!=null && chlist.getCSProcedure()!=null && chlist.getCSProcedure().equalsIgnoreCase("PurchasedDirectly")){ %> selected <%} %> >Purchased Directly </option>
+												               			<option value="ThroughMainStream"  <%if(chlist!=null && chlist.getCSProcedure()!=null && chlist.getCSProcedure().equalsIgnoreCase("ThroughMainStream")){ %> selected <%} %> >Through Main Stream </option>
 												               			
 																	</select>
 												                    
@@ -773,7 +773,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-6" style="" id="CSDrawn" >
 												                 <div class="form-group">
 												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>
-												                    <input name="CSDrawn"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CSDrawn"  type="checkbox"  <% if(chlist!=null && chlist.getCSDrawn()!=null && chlist.getCSDrawn().equalsIgnoreCase("Yes")) {%> checked <%} %> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -783,7 +783,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="CSReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCSReason()!=null) {%><%=chlist.getCSReason() %><%} %></textarea> 
 												                    
 												                </div>
 												              </div>
@@ -792,7 +792,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Amount is debited to Project Expenditure card </label><span class="mandatory">*</span>
-												                    <input name="CSamountdebited"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CSamountdebited"  type="checkbox" <% if(chlist!=null && chlist.getCSamountdebited()!=null && chlist.getCSamountdebited().equalsIgnoreCase("Yes")) {%> checked <%} %>  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -820,8 +820,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                    <select name="NCSProcedure" id="select2" class="form-control" data-width="100%" data-live-search="true" required>
 			                											<option value="0" disabled="disabled" selected="selected">--Select--</option>
 												               			
-												               			<option value="PurchasedDirectly" >Purchased Directly </option>
-												               			<option value="ThroughMainStream" >Through Main Stream </option>
+												               			<option value="PurchasedDirectly" <%if(chlist!=null && chlist.getNCSProcedure()!=null && chlist.getNCSProcedure().equalsIgnoreCase("PurchasedDirectly")){ %> selected <%} %> >Purchased Directly </option>
+												               			<option value="ThroughMainStream" <%if(chlist!=null && chlist.getNCSProcedure()!=null && chlist.getNCSProcedure().equalsIgnoreCase("ThroughMainStream")){ %> selected <%} %> >Through Main Stream </option>
 												               			
 																	</select>
 												                    
@@ -831,7 +831,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-6" style="" id="NCSDrawn" >
 												                 <div class="form-group">
 												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>
-												                    <input name="NCSDrawn"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="NCSDrawn"  <% if(chlist!=null && chlist.getNCSDrawn()!=null && chlist.getNCSDrawn().equalsIgnoreCase("Yes")) {%> checked <%} %>  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -841,7 +841,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="NCSReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSReason()!=null) {%><%=chlist.getNCSReason() %><%} %></textarea> 
 												                    
 												                </div>
 												              </div>
@@ -851,7 +851,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Amount is debited to Project Expenditure card </label><span class="mandatory">*</span>
-												                    <input name="NCSamountdebited"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="NCSamountdebited"  <% if(chlist!=null && chlist.getNCSamountdebited()!=null && chlist.getNCSamountdebited().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -865,7 +865,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 													         <div class="col-md-9" style="">
 													                 <div class="form-group">
 													                	<label class="control-label">In main stores ledger, item shown as distributed to Project Inventory of non-consumables being maintained in project group </label><span class="mandatory">*</span>
-													                    <input name="NCSDistributed"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+													                    <input value="Yes" name="NCSDistributed" <% if(chlist!=null && chlist.getNCSDistributed()!=null && chlist.getNCSDistributed().equalsIgnoreCase("Yes")) {%> checked <%} %>   type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 													                    
 													                </div>
 													          </div>
@@ -875,7 +875,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 													           <div class="col-md-9" style="">
 													                 <div class="form-group">
 													                	<label class="control-label">Any non-consumable item incorporated in any prototype stores are received and SIR is prepared before closure of project </label><span class="mandatory">*</span>
-													                    <input name="NCSIncorporated"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+													                    <input value="Yes" name="NCSIncorporated"  <% if(chlist!=null && chlist.getNCSIncorporated()!=null && chlist.getNCSIncorporated().equalsIgnoreCase("Yes")) {%> checked <%} %>  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 													                    
 													                </div>
 													          </div>
@@ -901,7 +901,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                	<label class="control-label">List out major non-consumable/ equipment procured</label><span class="mandatory">*</span>
 												                     <%if(chlist!=null && chlist.getEquipProcured()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="EquipProcuredfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Equipment Procured Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
@@ -914,7 +914,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any major equipment not listed in Q.P.R has been purchased? </label><span class="mandatory">*</span>
-												                    <input name="EquipPurchased"  type="checkbox"  id="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="EquipPurchased"  <% if(chlist!=null && chlist.getEquipPurchased()!=null && chlist.getEquipPurchased().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -923,7 +923,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">If yes, reason assigned </label><span class="mandatory">*</span>
 												                     <textarea class="form-control form-control" name="EquipReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ></textarea> 
+                              		  								 placeholder="Enter Reason" > <% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=chlist.getEquipReason() %> <%} %></textarea> 
 												                </div>
 												              </div>
 												              
@@ -935,7 +935,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												         <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any major equipment procured within one month before the PDC (give details and reason thereof) </label><span class="mandatory">*</span>
-												                    <input name="EquipProcuredBeforePDC"  type="checkbox"  id="checkbox1" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="EquipProcuredBeforePDC" <% if(chlist!=null && chlist.getEquipProcuredBeforePDC()!=null  && chlist.getEquipProcuredBeforePDC().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox1" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -946,7 +946,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                	<label class="control-label">Attach if yes</label><span class="mandatory">*</span>
 												                     <%if(chlist!=null && chlist.getEquipProcuredBeforePDCAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="EquipProcuredBeforePDCfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="EquipProcuredBeforePDC Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
@@ -960,7 +960,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        <div class="col-md-8" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </label><span class="mandatory">*</span>
-												                    <input name="EquipBoughtOnCharge"  type="checkbox"  id="checkbox2" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="EquipBoughtOnCharge"  <% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null  && chlist.getEquipBoughtOnCharge().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox2" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -971,7 +971,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                	<label class="control-label">Attach if yes </label><span class="mandatory">*</span>
 												                     <%if(chlist!=null && chlist.getEquipBoughtOnChargeAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="EquipBoughtOnChargefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="EquipBoughtOnCharge Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
@@ -998,7 +998,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">The reviewing officer should  see  the allocation  w.r.t demands  and  also  the  projections  in  the Q.P.R </label><span class="mandatory">*</span>
-												                    <input name="BudgetAllocation"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="BudgetAllocation"  <% if(chlist!=null && chlist.getBudgetAllocation()!=null && chlist.getBudgetAllocation().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -1008,7 +1008,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">What is the mechanism for monitoring/ control of head-wise expenditure? </label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="BudgetMechanism" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetMechanism()!=null) {%><%=chlist.getBudgetMechanism() %><%} %></textarea> 
 												                    
 												                </div>
 												              </div>
@@ -1019,7 +1019,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                	<label class="control-label">Mention, if expenditure under any head exceeded the respective allocation</label><span class="mandatory">*</span>
 												                    <%if(chlist!=null && chlist.getBudgetExpenditureAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="BudgetExpenditurefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="BudgetExpenditure Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
@@ -1031,7 +1031,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-6" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Whether financial progress is in consonance with Tech. progress.</label><span class="mandatory">*</span>
-												                    <input name="BudgetFinancialProgress"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="BudgetFinancialProgress"  <% if(chlist!=null && chlist.getBudgetFinancialProgress()!=null  && chlist.getBudgetFinancialProgress().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -1042,7 +1042,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Monthly/ Quarterly expenditure Reports are rendered to R&D HQrs and copy sent to local CDA</label><span class="mandatory">*</span>
-												                    <input name="BudgetexpenditureReports"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="BudgetexpenditureReports"  <% if(chlist!=null && chlist.getBudgetexpenditureReports()!=null  && chlist.getBudgetexpenditureReports().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -1051,7 +1051,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any expenditure incurred after Project PDC (Give details and reasons thereof)</label><span class="mandatory">*</span>
-												                    <input name="BudgetexpenditureIncurred"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="BudgetexpenditureIncurred"  <% if(chlist!=null && chlist.getBudgetexpenditureIncurred()!=null  && chlist.getBudgetexpenditureIncurred().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>
@@ -1125,7 +1125,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Log book maintained in r/o high cost equipment</label><span class="mandatory">*</span>
-												                    <input name="LogBookMaintained"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="LogBookMaintained"  <% if(chlist!=null && chlist.getLogBookMaintained()!=null  && chlist.getLogBookMaintained().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>   
@@ -1133,7 +1133,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Job cards maintained</label><span class="mandatory">*</span>
-												                    <input name="JobCardsMaintained"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="JobCardsMaintained" <% if(chlist!=null && chlist.getJobCardsMaintained()!=null  && chlist.getJobCardsMaintained().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												              </div>    
@@ -1155,7 +1155,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												         <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Demanded as per Q.P.R</label><span class="mandatory">*</span>
-												                    <input name="SPdemand"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="SPdemand"  <% if(chlist!=null && chlist.getSPdemand()!=null  && chlist.getSPdemand().equalsIgnoreCase("Yes")) {%> checked <%} %>  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1165,7 +1165,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                	<label class="control-label">Actual position-held</label><span class="mandatory">*</span>
 												                    <%if(chlist!=null && chlist.getSPActualpositionAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="SPActualpositionfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SPActualposition Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
@@ -1180,7 +1180,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                	<label class="control-label">General Specific (Category wise)</label><span class="mandatory">*</span>
 												                    <%if(chlist!=null && chlist.getSPGeneralSpecificAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="SPGeneralSpecificfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SPGeneralSpecific Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
@@ -1206,7 +1206,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												         <div class="col-md-6" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Civil works are included in the estimated prepared before project sanction.</label><span class="mandatory">*</span>
-												                    <input name="CWIncluded"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CWIncluded"  <% if(chlist!=null && chlist.getCWIncluded()!=null  && chlist.getCWIncluded().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1214,7 +1214,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Admin approval is accorded for the work.</label><span class="mandatory">*</span>
-												                    <input name="CWAdminApp"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CWAdminApp"  <% if(chlist!=null && chlist.getCWAdminApp()!=null  && chlist.getCWAdminApp().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1224,7 +1224,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Minor works are completed within the financial year and not costing more than one lakh.</label><span class="mandatory">*</span>
-												                    <input name="CWMinorWorks"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CWMinorWorks"  <% if(chlist!=null && chlist.getCWAdminApp()!=null  && chlist.getCWAdminApp().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1233,7 +1233,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Revenue major works are completed within the financial year and not costing more than two lakhs.</label><span class="mandatory">*</span>
-												                    <input name="CWRevenueWorks"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CWRevenueWorks"  <% if(chlist!=null && chlist.getCWRevenueWorks()!=null  && chlist.getCWRevenueWorks().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1242,7 +1242,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">There are no deviations from the  admin   approval.</label><span class="mandatory">*</span>
-												                    <input name="CWDeviation"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CWDeviation"  <% if(chlist!=null && chlist.getCWDeviation()!=null  && chlist.getCWDeviation().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1250,7 +1250,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</label><span class="mandatory">*</span>
-												                    <input name="CWExpenditure"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CWExpenditure"  <% if(chlist!=null && chlist.getCWExpenditure()!=null  && chlist.getCWExpenditure().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1272,7 +1272,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">No. of vehicles sanctioned in the project (With types).</label><span class="mandatory">*</span>
-												                    <input name="NoOfVehicleSanctioned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="NoOfVehicleSanctioned"  <% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null  && chlist.getNoOfVehicleSanctioned().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1280,8 +1280,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly run of each vehicle.</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="VehicleAvgRun" id="" placeholder="Enter Average monthly run of each vehicle" 
-												                     value="" >
+												                    <input  class="form-control " type="text" name="VehicleAvgRun"  placeholder="Enter Average monthly run of each vehicle" 
+												                     value="<% if(chlist!=null && chlist.getVehicleAvgRun()!=null){ %> <%=chlist.getVehicleAvgRun() %><%} %>" >
 												                    
 												                </div>
 												          </div> 
@@ -1291,7 +1291,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly fuel consumption of each vehicle.</label><span class="mandatory">*</span>
                                                                      <input  class="form-control " type="text" name="VehicleAvgFuel" id="" placeholder="Enter Average monthly fuel consumption of each vehicle" 
-												                     value="" >												                    
+												                     value="<% if(chlist!=null && chlist.getVehicleAvgFuel()!=null){ %> <%=chlist.getVehicleAvgFuel() %><%} %>" >
+										                    
 												                </div>
 												          </div> 
 												          
@@ -1313,7 +1314,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">When the project finally closed</label><span class="mandatory">*</span>
 												                     <input  class="form-control" type="text" name="ProjectClosedDate" id="ProjectClosedDate" placeholder="Enter Project Closed Date" 
-												                     value="" >
+												                     value="<% if(chlist!=null && chlist.getProjectClosedDate()!=null){ %> <%=chlist.getProjectClosedDate() %><%} %>" >
+												                     
 												                </div>
 												          </div> 
 												          
@@ -1321,7 +1323,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">Project closures Report send to R&D HQrs.(Mention Dated)</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="ReportDate" id="ClosureReportDate" placeholder="" 
-												                     value="" >
+												                    value="<% if(chlist!=null && chlist.getReportDate()!=null){ %> <%=chlist.getReportDate() %><%} %>" >
+
 												                    
 												                </div>
 												          </div> 
@@ -1331,14 +1334,14 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">If undue delay in sending the Closure Report, reasons thereof.</label><span class="mandatory">*</span>
                                                                      <input  class="form-control " type="text" name="ProjectDelayReason" id="" placeholder="If undue delay in sending the Closure Report, reasons thereof" 
-												                     value="" >												                    
+												                     value="<% if(chlist!=null && chlist.getDelayReason()!=null){ %> <%=chlist.getDelayReason() %><%} %>" >												                    
 												                </div>
 												          </div> 
 												          
 												           <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Whether  the  stated  objectives achieved.</label><span class="mandatory">*</span>
-                                                                    <input name="CRObjective"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    <input value="Yes" name="CRObjective" <% if(chlist!=null && chlist.getCRObjective()!=null  && chlist.getCRObjective().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
                                                                     											                    
 												                </div>
 												           </div>
@@ -1346,7 +1349,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Any other spin-off achieved.</label><span class="mandatory">*</span>
-                                                                    <input name="CRspinoff"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    <input value="Yes" name="CRspinoff"  <% if(chlist!=null && chlist.getCRspinoff()!=null  && chlist.getCRspinoff().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
                                                                     											                    
 												                </div>
 												           </div>  
@@ -1355,7 +1358,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Reason, if PDC not  meet (Delay in  convening of TPC or  delayed placement of indent by the user)</label><span class="mandatory">*</span>
-                                                                    <input name="PDCNotMeetReason"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                    <input value="Yes" name="PDCNotMeetReason"  <% if(chlist!=null && chlist.getCRReason()!=null  && chlist.getCRReason().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
                                                                     											                    
 												                </div>
 												           </div>  
@@ -1366,7 +1369,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">Reason, if Cost Over-run</label><span class="mandatory">*</span>
                                                                     <textarea class="form-control form-control" name="otherRelevant" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ></textarea> 											                    
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCRReason()!=null) {%><%=chlist.getCRReason() %><%} %></textarea> 											                    
 												                </div>
 												           </div>  
 												           
@@ -1374,7 +1377,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-8" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Non-consumable items returned to main stores on nominal voucher (No credit to be given in Project expenditure  card)</label><span class="mandatory">*</span>
-                                                                     <input name="NonConsumableItemsReturned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                     <input value="Yes" name="NonConsumableItemsReturned"  <% if(chlist!=null && chlist.getNonConsumableItemsReturned()!=null  && chlist.getNonConsumableItemsReturned().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
                                                                     
                                                                     											                    
 												                </div>
@@ -1384,7 +1387,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            <div class="col-md-8" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Consumable (non-consumed) returned to main store on Issue voucher (Credit to be given in Project Expenditure Card)</label><span class="mandatory">*</span>
-                                                                     <input name="ConsumableItemsReturned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+                                                                     <input value="Yes" name="ConsumableItemsReturned"   <% if(chlist!=null && chlist.getConsumableItemsReturned()!=null  && chlist.getConsumableItemsReturned().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
                                                                     
                                                                     											                    
 												                </div>
@@ -1405,7 +1408,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                	<label class="control-label">How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary)</label><span class="mandatory">*</span>
                                                                     <%if(chlist!=null && chlist.getCRAttach()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
+                            					 		  				 	value="CRAttachfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CRAttach Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>

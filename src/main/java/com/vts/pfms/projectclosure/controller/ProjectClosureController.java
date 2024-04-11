@@ -1388,13 +1388,13 @@ public class ProjectClosureController {
 			clist.setCSReason(req.getParameter("CSReason"));
 			
 			String CSamountdebited=req.getParameter("CSamountdebited");
-			clist.setCSamountdebited(Double.parseDouble(CSamountdebited!=null && !CSamountdebited.isEmpty()? CSamountdebited:"0"));
+			clist.setCSamountdebited(CSamountdebited!=null ? "Yes":"No");
 			clist.setNCSProcedure(req.getParameter("NCSProcedure"));
 			clist.setNCSDrawn(req.getParameter("NCSDrawn"));
 			clist.setNCSReason(req.getParameter("NCSReason"));
 			
 			String NCSamountdebited=req.getParameter("NCSamountdebited");
-			clist.setNCSamountdebited(Double.parseDouble(NCSamountdebited!=null && !NCSamountdebited.isEmpty()? NCSamountdebited:"0"));
+			clist.setNCSamountdebited(NCSamountdebited!=null ? "Yes":"No");
 			clist.setNCSReason(req.getParameter("NCSDistributed"));
 			clist.setNCSReason(req.getParameter("NCSIncorporated"));
 			

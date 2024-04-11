@@ -54,11 +54,11 @@ public class ProjectClosureCheckList implements Serializable {
 	private   String SRMaintained;
 	private   String CSProcedure;
 	private   String CSDrawn;
-	private   double CSamountdebited;
+	private   String CSamountdebited;
 	private   String CSReason;
 	private   String NCSProcedure;
 	private   String NCSDrawn;
-	private   double NCSamountdebited;
+	private   String NCSamountdebited;
 	private   String NCSReason;
 	private   String NCSDistributed;
 	private   String NCSIncorporated;
