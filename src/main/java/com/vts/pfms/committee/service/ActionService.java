@@ -152,4 +152,5 @@ public interface ActionService {
 	public List<Object[]> getRfaNoTypeList()throws Exception;
 	public List<Object[]> RfaCCList()throws Exception;
 	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate);
+	public int CommitteActionEdit(ActionAssignDto actionAssign)throws Exception;
 }

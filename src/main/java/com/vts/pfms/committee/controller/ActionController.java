@@ -900,8 +900,6 @@ public class ActionController {
 		@RequestMapping(value="CommitteeAction.htm",method= {RequestMethod.GET,RequestMethod.POST})
 		public String CommitteeAction(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
 			
-			
-			
 		 	String UserId = (String) ses.getAttribute("Username");
 		 	String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside CommitteeAction.htm "+UserId);		
@@ -948,6 +946,7 @@ public class ActionController {
 			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
 			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("labcode", LabCode);
+			req.setAttribute("EmpNameList", service.EmployeeList(LabCode));
 			if(Long.parseLong(projectid)>0)
 			{
 				req.setAttribute("EmployeeList", service.ProjectEmpList(projectid));
@@ -1075,7 +1074,7 @@ public class ActionController {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ScheduleActionList.htm "+UserId);		
 			try {
-				ItemDescriptionSearchLedger =   service.ScheduleActionList(req.getParameter("ScheduleMinutesId"));
+				ItemDescriptionSearchLedger = service.ScheduleActionList(req.getParameter("ScheduleMinutesId"));
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -4406,4 +4405,46 @@ public class ActionController {
                 return "action/RfaActionReports"; 
              }
 
+            
+            @RequestMapping(value = "CommitteActionEdit.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String CommitteActionEdit(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+        	{
+            	String UserId = (String) ses.getAttribute("Username");
+        		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+        		logger.info(new Date() +"Inside CommitteActionEdit.htm "+UserId);
+        		try {
+        			
+        			FormatConverter fc=new FormatConverter();
+					SimpleDateFormat sdf=fc.getRegularDateFormat();
+					SimpleDateFormat sdf1=fc.getSqlDateFormat();
+					
+					String PDCDate=req.getParameter("PDCDate");
+					String AssigneeId=req.getParameter("AssigneeId");
+					String ActionAssignId=req.getParameter("ActionAssignId");
+					String CommitteeScheduleId=req.getParameter("CommitteeScheduleId");
+        			
+        			ActionAssignDto actionAssign = new ActionAssignDto();
+        			actionAssign.setActionAssignId(Long.parseLong(ActionAssignId));
+        			actionAssign.setAssignee(Long.parseLong(AssigneeId));
+        			actionAssign.setAssignor(Long.parseLong(EmpId));
+        			actionAssign.setPDCOrg(sdf1.format(sdf.parse(PDCDate)));
+        			actionAssign.setEndDate(sdf1.format(sdf.parse(PDCDate)));
+        			actionAssign.setModifiedBy(UserId);
+				
+        			int count = service.CommitteActionEdit(actionAssign);
+        			if(count>0) {
+        				redir.addAttribute("result","Action Updated successfully");
+        			}else {
+        				redir.addAttribute("result","Action Update unsuccessful");
+        			}
+
+        			redir.addFlashAttribute("ScheduleId", CommitteeScheduleId);
+        			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
+        			return "redirect:/CommitteeAction.htm";
+        			
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+        		return null;
+        	}
 }

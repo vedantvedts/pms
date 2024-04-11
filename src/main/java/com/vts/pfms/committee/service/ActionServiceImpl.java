@@ -2134,4 +2134,12 @@ public List<Object[]> RfaCCList() throws Exception {
 @Override
 public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate) {
 	return dao.rfaTotalActionList(projectid,rfatypeid,fdate,tdate);
-}}
+}
+
+@Override
+public int CommitteActionEdit(ActionAssignDto actionAssign) throws Exception {
+	actionAssign.setModifiedDate(sdf1.format(new Date()));
+	return dao.CommitteActionEdit(actionAssign);
+}
+
+}

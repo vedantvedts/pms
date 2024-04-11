@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
@@ -53,7 +54,7 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String ACTIONLIST ="SELECT DISTINCT(a.scheduleid), a.committeeid, a.committeemainid, b.committeename, a.scheduledate, a.schedulestarttime  FROM committee_schedule a, committee b, committee_schedules_minutes_details c,committee_main d ,committee_member cm WHERE a.committeeid=b.committeeid AND a.scheduledate<=CURDATE() AND a.scheduleid=c.scheduleid AND c.idarck IN('A','K','I','R')  AND a.committeemainid=d.committeemainid  AND d.isactive=1 AND a.isactive=1   AND d.committeemainid=cm.committeemainid AND cm.membertype IN ('CS','PS','CC','CH') AND cm.empid=:empid";
 	private static final String COMMITTEEDATA="CALL Pfms_Action_List(:scheduleid)";
 	private static final String COMMITTEESCHEDULEEDITDATA="SELECT a.committeeid,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.committeename,b.committeeshortname,a.projectid FROM committee_schedule a,committee b WHERE scheduleid=:committeescheduleid AND a.committeeid=b.committeeid AND a.isactive=1 ";
-	private static final String SCHEDULELIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status' ,d.assigneelabcode,d.actionno FROM  action_main a, employee b ,employee_desig c ,action_assign d WHERE d.assigneelabcode <> '@EXP' AND a.actionmainid=d.actionmainid AND d.assignee=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND a.scheduleminutesid=:schid UNION SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.expertname) AS 'empname','Expert' AS 'designation',a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status' ,'Expert' as 'assigneelabcode',d.actionno FROM  action_main a, expert b ,action_assign d WHERE d.assigneelabcode = '@EXP' AND a.actionmainid=d.actionmainid AND d.assignee=b.expertid AND b.isactive='1' AND a.scheduleminutesid=:schid ";
+	private static final String SCHEDULELIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status' ,d.assigneelabcode,d.actionno,d.pdcorg,d.assignee,d.actionassignid,(SELECT cs.ScheduleId FROM committee_schedules_minutes_details cs WHERE cs.scheduleminutesid=21) AS 'scheduleid' FROM  action_main a, employee b ,employee_desig c ,action_assign d WHERE d.assigneelabcode <> '@EXP' AND a.actionmainid=d.actionmainid AND d.assignee=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND a.scheduleminutesid=:schid UNION SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.expertname) AS 'empname','Expert' AS 'designation',a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status' ,'Expert' as 'assigneelabcode',d.actionno,d.pdcorg,d.assignee,d.actionassignid,(SELECT cs.ScheduleId FROM committee_schedules_minutes_details cs WHERE cs.scheduleminutesid=21) AS 'scheduleid' FROM  action_main a, expert b ,action_assign d WHERE d.assigneelabcode = '@EXP' AND a.actionmainid=d.actionmainid AND d.assignee=b.expertid AND b.isactive='1' AND a.scheduleminutesid=:schid ";
     private static final String CONTENT="SELECT a.actionmainid,b.details,b.minutesid,b.minutessubid,b.minutessubofsubid,b.minutesunitid,b.idarck FROM action_main a, committee_schedules_minutes_details b WHERE a.scheduleminutesid=b.scheduleminutesid AND a.actionmainid=:aid";
     private static final String ACTIONSEARCH="SELECT a.actionmainid,aas.actionno,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS 'empname',dc.designation FROM action_main a,  employee ab ,employee_desig dc,action_assign  aas WHERE aas.actionmainid=a.actionmainid AND aas.assignor=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.AssigneeLabCode <> '@EXP' AND aas.actionno LIKE :actionno union SELECT a.actionmainid,aas.actionno,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.expertname) AS 'empname','Expert' AS 'designation' FROM action_main a,  expert ab ,action_assign  aas  WHERE aas.actionmainid=a.actionmainid AND aas.assignor=ab.expertid AND ab.isactive='1' AND aas.AssigneeLabCode = '@EXP' AND aas.actionno LIKE :actionno";
     private static final String STATUSLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'assignoremp',c.designation,a.actiondate,f.enddate,a.actionitem,f.actionstatus, CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assigneemp',e.designation AS desig,f.actionno,a.actionlinkid,(SELECT g.progress FROM action_sub g  WHERE g.actionassignid = f.actionassignid AND g.actionsubid = (SELECT MAX(s.actionsubid) FROM action_sub s WHERE s.actionassignid = f.actionassignid) )  AS progress , f.actionassignid  FROM  action_main a, employee b ,employee_desig c, employee d ,employee_desig e ,action_assign f WHERE a.actionmainid = f.actionmainid  AND f.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND f.assignee=d.empid AND d.isactive='1' AND d.desigid=e.desigid AND f.assignee=:empid AND a.actiondate BETWEEN :fdate AND :tdate AND f.AssigneeLabCode <> '@EXP' ORDER BY a.actionmainid DESC";
@@ -1824,5 +1825,23 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
 		return (List<Object[]>)query.getResultList();
-	}	
+	}
+	
+	
+	private static final String COMMITTACTIONEDIT="UPDATE action_assign SET pdcorg=:pdcorg,enddate=:enddate,assignee=:assignee,assignor=:assignor,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE actionassignid=:actionassignid";
+	@Override
+	public int CommitteActionEdit(ActionAssignDto actionAssign) throws Exception {
+		
+		Query query = manager.createNativeQuery(COMMITTACTIONEDIT);
+		query.setParameter("actionassignid", actionAssign.getActionAssignId());
+		query.setParameter("pdcorg", actionAssign.getPDCOrg());
+		query.setParameter("enddate", actionAssign.getEndDate());
+		query.setParameter("assignee", actionAssign.getAssignee());
+		query.setParameter("assignor", actionAssign.getAssignor());
+		query.setParameter("modifiedby", actionAssign.getModifiedBy());
+		query.setParameter("modifieddate", actionAssign.getModifiedDate());
+		
+		return query.executeUpdate();
+	}
+	
 }

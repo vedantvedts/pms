@@ -238,6 +238,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 Object[] committeescheduleeditdata=(Object[])request.getAttribute("committeescheduleeditdata");
 List<Object[]> committeescheduledata=(List<Object[]>)request.getAttribute("committeescheduledata");
 List<Object[]> EmpList=(List<Object[]>)request.getAttribute("EmployeeList");
+List<Object[]> EmpNameList=(List<Object[]>)request.getAttribute("EmpNameList");
 String labcode = (String)request.getAttribute("labcode");
 List<Object[]> Alllablist = (List<Object[]>)request.getAttribute("AllLabList");
 String projectid=committeescheduleeditdata[9].toString();
@@ -555,6 +556,7 @@ String rodflag=(String)request.getAttribute("rodflag");
 											<th style="">PDC</th>
 											<th style="">Assigned On</th>
 											<th style="">Assignee</th>
+											<th style="">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -624,6 +626,51 @@ String rodflag=(String)request.getAttribute("rodflag");
 
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="exampleModalAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="margin-left: -13%; width: 37rem;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+              <div class="modal-body">
+                 <form action="CommitteActionEdit.htm" method="post">
+						<div class="row" >
+							<div class="col-md-3">
+								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px">PDC :</label>
+								</div>
+								<div class="col-md-4" style="margin-left: -6%;">
+								<input class="form-control " name="PDCDate" id="PDCDate" style="width: 261%;">
+								</div>
+						 </div>
+						<div class="row mt-4">
+						<div class="col-md-3" >
+								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px"> Assignee : </label> 
+								</div>
+								<div class="col-md-8" style=" margin-left: -6%;" >
+								<select class="form-control selectdee " name="AssigneeId" id="AssigneeUpdate" data-live-search="true" style="width: 118%;">
+										
+								</select>
+							</div>
+							</div>
+						<br>
+						<div align="center">
+							<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure To Submit?')">Submit</button>
+                            <input type="hidden" name="ActionAssignId" id="ActionAssignId" value="">
+                            <input type="hidden" name="ActionMainId" id="ActionMainId" value=""/>
+                            <input type="hidden" name="AssigneeId" id="AssigneeId" value=""/>
+                            <input type="hidden" name="CommitteeScheduleId" id="CommitteeScheduleId" value=""/>
+                            <input type="hidden" name="minutesback" value="<%=MinutesBack %>"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						</div>
+						</form>
+					</div>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -865,11 +912,18 @@ function changeempdd()
 	    		    			var formatday= moment(tempday).format("DD-MM-YYYY");
 	    		    			var tempday1 = moment(JSON.stringify(values[i][4]), "MMM-DD-YYYY");
 	    		    			var formatday1= moment(tempday1).format("DD-MM-YYYY");
+	    		    			var tempday2 = moment(JSON.stringify(values[i][10]), "MMM-DD-YYYY");
+	    		    			var pdcday= moment(tempday2).format("DD-MM-YYYY");
 	    		    			   
-	    		    			markup += "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]+"<br>"+"<b>(" + values[i][9] + ")</b>"  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td></tr>"; 
-	    		    			
+	    		    			markup += "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]+"<br>"+"<b>(" + values[i][9] + ")</b>"  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td>";
+	    		    			markup += "<td style='width:13%;text-align:center;'>";
+	    		    			if (values[i][6]==="A") {
+	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionEditform('" + values[i][9] + "','" + pdcday + "','" + values[i][0] + "','" + values[i][11] + "','" + values[i][12] + "','" + values[i][13] + "')\"><i class='fa fa-pencil-square-o' aria-hidden='true' style='color:red;font-size: 18px;'></i></button>";
+	    		    			} else {
+	    		    				 markup += "--";
+                                }
+	    		    			markup += "</td></tr>";
 	    		    		}
-	    		    		
 	    		    		
     		    		}
     		    		
@@ -898,7 +952,17 @@ function changeempdd()
 		}
 	});
 
-
+	$('#PDCDate').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+		/* "minDate" : new Date(), */
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
   
     </script>
 
@@ -1041,6 +1105,28 @@ function AssigneeEmpList(){
 	 $('#actionModal').modal('show');
 	 document.getElementById('modalbody').innerHTML=value;
  }
+ 
+ function actionEditform(actionno,pdc,mainid,assigneeId,actionAssignId,scheduleId){
+		$('#exampleModalAction').modal('show');   
+		$('#exampleModalAction .modal-title').html('<span style="color: #C2185B;">Action No : '+ actionno);
+	    $('#PDCDate').val(pdc);
+	    $('#ActionMainId').val(mainid);
+	    $('#ActionAssignId').val(actionAssignId);
+	    $('#CommitteeScheduleId').val(scheduleId);
+	    $('#AssigneeUpdate').empty();
+        <%for(Object[] obj1:EmpNameList){%>
+            var optionValue = <%=obj1[0]%>;
+		    var optionText = '<%=obj1[1]%>,<%=obj1[2]%>';
+	        var option = $("<option></option>").attr("value", optionValue).text(optionText);
+            if(assigneeId==optionValue)
+            {
+              option.prop('selected', true);
+            }
+          $('#AssigneeId').val(optionValue);
+          $('#AssigneeUpdate').append(option);
+        <%}%>
+ }
+	
 </script>
 </body>
 </html>

@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.util.List;
 
+import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
@@ -180,4 +181,5 @@ public interface ActionDao {
 	public Long updateRfaCC(String rfaid)throws Exception;
 	public List<Object[]> RfaCCList()throws Exception;
 	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate);
+	public int CommitteActionEdit(ActionAssignDto actionAssign)throws Exception;
 }
