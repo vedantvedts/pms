@@ -55,7 +55,7 @@ public interface ProjectClosureService {
 	public Object[] projectExpenditureDetails(String projectId) throws Exception;
 	public long projectClosureACPRevoke(String closureId, String userId, String empId, String labcode) throws Exception;
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception;
-	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach) throws Exception;
-	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach) throws Exception;
+	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach, MultipartFile equipBoughtOnChargeAttach, MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach, MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception;
+	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach, MultipartFile equipBoughtOnChargeAttach, MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach, MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception;
 	
 }

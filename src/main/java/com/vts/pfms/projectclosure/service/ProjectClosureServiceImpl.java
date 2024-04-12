@@ -934,7 +934,10 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 
 	@Override
 	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,
-			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach,MultipartFile qARNCItemsAttach) throws Exception {
+			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach,MultipartFile qARNCItemsAttach,
+			MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach, MultipartFile equipBoughtOnChargeAttach,
+			MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach,
+			MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception {
 		
 		
 		Timestamp instant = Timestamp.from(Instant.now());
@@ -970,6 +973,66 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			clist.setQARNCItems(null);
 		}
 		
+		
+		if (!equipProcuredAttach.isEmpty()) {
+			clist.setQARNCItems("EquipProcuredAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(equipProcuredAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getEquipProcured(), equipProcuredAttach);
+		} else {
+			clist.setEquipProcured(null);
+		}
+		
+		
+		if (!equipProcuredBeforePDCAttach.isEmpty()) {
+			clist.setQARNCItems("EquipProcuredBeforePDCAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(equipProcuredBeforePDCAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
+		} else {
+			clist.setEquipProcuredBeforePDCAttach(null);
+		}
+		
+		
+		if (!equipBoughtOnChargeAttach.isEmpty()) {
+			clist.setQARNCItems("EquipBoughtOnChargeAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(equipBoughtOnChargeAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getEquipBoughtOnChargeAttach(), equipBoughtOnChargeAttach);
+		} else {
+			clist.setEquipBoughtOnChargeAttach(null);
+		}
+		
+		if (!budgetExpenditureAttach.isEmpty()) {
+			clist.setQARNCItems("BudgetExpenditureAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(budgetExpenditureAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getBudgetExpenditureAttach(), budgetExpenditureAttach);
+		} else {
+			clist.setBudgetExpenditureAttach(null);
+		}
+		
+		
+		if (!sPActualpositionAttach.isEmpty()) {
+			clist.setQARNCItems("SPActualpositionAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(sPActualpositionAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getSPActualpositionAttach(), sPActualpositionAttach);
+		} else {
+			clist.setSPActualpositionAttach(null);
+		}
+		
+		if (!sPGeneralSpecificAttach.isEmpty()) {
+			clist.setQARNCItems("SPGeneralSpecificAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(sPGeneralSpecificAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getSPGeneralSpecificAttach(), sPGeneralSpecificAttach);
+		} else {
+			clist.setSPGeneralSpecificAttach(null);
+		}
+		
+		if (!cRAttach.isEmpty()) {
+			clist.setQARNCItems("CRAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(cRAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getCRAttach(), cRAttach);
+		} else {
+			clist.setCRAttach(null);
+		}
+		
 //		long closuresocid = dao.addProjectClosureSoC(soc);
 //		if(closuresocid!=0) {
 //			ProjectClosureTrans transaction = ProjectClosureTrans.builder()
@@ -986,7 +1049,10 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 
 	@Override
 	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,
-			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach) throws Exception {
+			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach
+			,MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach,
+			MultipartFile equipBoughtOnChargeAttach,MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach,
+			MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception {
 		
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
@@ -1014,6 +1080,54 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 					+ FilenameUtils.getExtension(qARNCItemsAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getQARNCItems(), qARNCItemsAttach);
 		} 
+		
+		
+		if (!equipProcuredAttach.isEmpty()) {
+			clist.setQARNCItems("EquipProcuredAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(equipProcuredAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getEquipProcured(), equipProcuredAttach);
+		} 
+		
+		if (!equipProcuredBeforePDCAttach.isEmpty()) {
+			clist.setQARNCItems("EquipProcuredBeforePDCAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(equipProcuredBeforePDCAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
+		} 
+		
+		
+		if (!equipBoughtOnChargeAttach.isEmpty()) {
+			clist.setQARNCItems("EquipBoughtOnChargeAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(equipBoughtOnChargeAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getEquipBoughtOnChargeAttach(), equipBoughtOnChargeAttach);
+		} 
+		
+		if (!budgetExpenditureAttach.isEmpty()) {
+			clist.setQARNCItems("BudgetExpenditureAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(budgetExpenditureAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getBudgetExpenditureAttach(), budgetExpenditureAttach);
+		} 
+		
+		
+		if (!sPActualpositionAttach.isEmpty()) {
+			clist.setQARNCItems("SPActualpositionAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(sPActualpositionAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getSPActualpositionAttach(), sPActualpositionAttach);
+		} 
+		
+		if (!sPGeneralSpecificAttach.isEmpty()) {
+			clist.setQARNCItems("SPGeneralSpecificAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(sPGeneralSpecificAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getSPGeneralSpecificAttach(), sPGeneralSpecificAttach);
+		} 
+		if (!cRAttach.isEmpty()) {
+			clist.setQARNCItems("CRAttach" + timestampstr + "."
+					+ FilenameUtils.getExtension(cRAttach.getOriginalFilename()));
+			saveFile(uploadpath + path, clist.getCRAttach(), cRAttach);
+		} 
+		
+		
+		
+		
 		
 		return dao.editProjectClosureCheckList(clist);
 	}

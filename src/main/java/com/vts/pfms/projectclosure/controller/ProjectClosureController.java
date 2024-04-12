@@ -1446,13 +1446,13 @@ public class ProjectClosureController {
 				clist.setCreatedDate(sdtf.format(new Date()));
 				clist.setIsActive(1);
 				
-				result = service.addProjectClosureCheckList(clist,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach);
+				result = service.addProjectClosureCheckList(clist,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach,EquipBoughtOnChargeAttach,BudgetExpenditureAttach,SPActualpositionAttach,SPGeneralSpecificAttach,CRAttach);
 				
 			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
 				clist.setModifiedBy(UserId);
 				clist.setModifiedDate(sdtf.format(new Date()));
 				
-				result = service.editProjectClosureCheckList(clist,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach);
+				result = service.editProjectClosureCheckList(clist,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach,EquipBoughtOnChargeAttach,BudgetExpenditureAttach,SPActualpositionAttach,SPGeneralSpecificAttach,CRAttach);
 				
 				if (result > 0) {
 					redir.addAttribute("result", "Closure SoC Details Updated Successfully");
