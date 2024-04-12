@@ -1344,7 +1344,16 @@ public class ProjectClosureController {
 	public String ProjectClosureCheckListDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
 			@RequestPart(name="QARMilestone", required = false) MultipartFile QARMilestoneAttach,
 			@RequestPart(name="QARCostBreakup", required = false) MultipartFile QARCostBreakupAttach,
-			@RequestPart(name="QARNCItems", required = false) MultipartFile QARNCItemsAttach) throws Exception{
+			@RequestPart(name="QARNCItems", required = false) MultipartFile QARNCItemsAttach,
+	        @RequestPart(name="EquipProcuredAttach", required = false) MultipartFile EquipProcuredAttach,
+	        @RequestPart(name="EquipProcuredBeforePDCAttach", required = false) MultipartFile EquipProcuredBeforePDCAttach,
+	        @RequestPart(name="EquipBoughtOnChargeAttach",required = false) MultipartFile EquipBoughtOnChargeAttach,
+	        @RequestPart(name="BudgetExpenditureAttach",required = false) MultipartFile BudgetExpenditureAttach,
+	        @RequestPart(name="SPActualposition",required=false) MultipartFile SPActualpositionAttach,
+	        @RequestPart(name="SPGeneralSpecific",required=false) MultipartFile SPGeneralSpecificAttach,
+	        @RequestPart(name="CRAttach",required=false) MultipartFile CRAttach
+			) throws Exception{
+		
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		
@@ -1382,43 +1391,51 @@ public class ProjectClosureController {
 			
 			clist.setPRSanctioned(req.getParameter("PRSanctioned")!=null?"Yes":"No");
 			clist.setPECVerified(req.getParameter("PECVerified")!=null?"Yes":"No");
-			clist.setSRMaintained(req.getParameter("SRMaintained"));
+			clist.setSRMaintained(req.getParameter("SRMaintained")!=null?"Yes":"No");
 			clist.setCSProcedure(req.getParameter("CSProcedure"));
-			clist.setCSDrawn(req.getParameter("CSDrawn"));
+			clist.setCSDrawn(req.getParameter("CSDrawn")!=null?"Yes":"No");
 			clist.setCSReason(req.getParameter("CSReason"));
 			
 			String CSamountdebited=req.getParameter("CSamountdebited");
 			clist.setCSamountdebited(CSamountdebited!=null ? "Yes":"No");
 			clist.setNCSProcedure(req.getParameter("NCSProcedure"));
-			clist.setNCSDrawn(req.getParameter("NCSDrawn"));
+			clist.setNCSDrawn(req.getParameter("NCSDrawn")!=null?"Yes":"No");
 			clist.setNCSReason(req.getParameter("NCSReason"));
 			
 			String NCSamountdebited=req.getParameter("NCSamountdebited");
 			clist.setNCSamountdebited(NCSamountdebited!=null ? "Yes":"No");
-			clist.setNCSReason(req.getParameter("NCSDistributed"));
-			clist.setNCSReason(req.getParameter("NCSIncorporated"));
+			clist.setNCSReason(req.getParameter("NCSDistributed")!=null?"Yes":"No");
+			clist.setNCSReason(req.getParameter("NCSIncorporated")!=null?"Yes":"No");
 			
-			clist.setEquipPurchased(req.getParameter("EquipPurchased"));
+			clist.setEquipPurchased(req.getParameter("EquipPurchased")!=null?"Yes":"No");
 			clist.setEquipReason(req.getParameter("EquipReason"));
-			clist.setEquipProcuredBeforePDC(req.getParameter("EquipProcuredBeforePDC"));
-			clist.setEquipBoughtOnCharge(req.getParameter("EquipBoughtOnCharge"));
-			clist.setBudgetAllocation(req.getParameter("BudgetAllocation"));
-			clist.setBudgetFinancialProgress(req.getParameter("BudgetFinancialProgress"));
-			clist.setBudgetexpenditureReports(req.getParameter("BudgetexpenditureReports"));
-			clist.setBudgetexpenditureIncurred(req.getParameter("BudgetexpenditureIncurred"));
-			clist.setLogBookMaintained(req.getParameter("LogBookMaintained"));
-			clist.setJobCardsMaintained(req.getParameter("JobCardsMaintained"));
-			clist.setSPdemand(req.getParameter("SPdemand"));
-			clist.setCWIncluded(req.getParameter("CWIncluded"));
-			clist.setCWAdminApp(req.getParameter("CWAdminApp"));
-			clist.setCWRevenueWorks(req.getParameter("CWRevenueWorks"));
-			clist.setCWDeviation(req.getParameter("CWDeviation"));
-			clist.setCWExpenditure(req.getParameter("CWExpenditure"));
-			clist.setNoOfVehicleSanctioned(req.getParameter("NoOfVehicleSanctioned"));
-			clist.setVehicleAvgRun(req.getParameter("VehicleAvgRun"));
-			clist.setVehicleAvgFuel(req.getParameter("VehicleAvgFuel"));
-			clist.setProjectClosedDate(req.getParameter("ProjectClosedDate"));
+			clist.setEquipProcuredBeforePDC(req.getParameter("EquipProcuredBeforePDC")!=null?"Yes":"No");
+			clist.setEquipBoughtOnCharge(req.getParameter("EquipBoughtOnCharge")!=null?"Yes":"No");
+			clist.setBudgetAllocation(req.getParameter("BudgetAllocation")!=null?"Yes":"No");
+			clist.setBudgetFinancialProgress(req.getParameter("BudgetFinancialProgress")!=null?"Yes":"No");
+			clist.setBudgetexpenditureReports(req.getParameter("BudgetexpenditureReports")!=null?"Yes":"No");
+			clist.setBudgetexpenditureIncurred(req.getParameter("BudgetexpenditureIncurred")!=null?"Yes":"No");
+			clist.setLogBookMaintained(req.getParameter("LogBookMaintained")!=null?"Yes":"No");
+			clist.setJobCardsMaintained(req.getParameter("JobCardsMaintained")!=null?"Yes":"No");
+			clist.setSPdemand(req.getParameter("SPdemand")!=null?"Yes":"No");
 			
+			clist.setCWIncluded(req.getParameter("CWIncluded")!=null?"Yes":"No");
+			clist.setCWAdminApp(req.getParameter("CWAdminApp")!=null?"Yes":"No");
+			clist.setCWRevenueWorks(req.getParameter("CWRevenueWorks")!=null?"Yes":"No");
+			clist.setCWDeviation(req.getParameter("CWDeviation")!=null?"Yes":"No");
+			clist.setCWExpenditure(req.getParameter("CWExpenditure")!=null?"Yes":"No");
+			clist.setNoOfVehicleSanctioned(req.getParameter("NoOfVehicleSanctioned")!=null?"Yes":"No");
+			clist.setVehicleAvgRun(req.getParameter("VehicleAvgRun")!=null?"Yes":"No");
+			clist.setVehicleAvgFuel(req.getParameter("VehicleAvgFuel")!=null?"Yes":"No");
+			clist.setProjectClosedDate(sdf.format(rdf.parse(req.getParameter("ProjectClosedDate"))));
+			clist.setReportDate(sdf.format(rdf.parse(req.getParameter("ReportDate"))));
+			clist.setDelayReason(req.getParameter("DelayReason")!=null?"Yes":"No");
+			clist.setCRObjective(req.getParameter("CRObjective")!=null?"Yes":"No");
+			clist.setCRspinoff(req.getParameter("CRspinoff")!=null?"Yes":"No");
+			clist.setCRReason(req.getParameter("CRReason")!=null?"Yes":"No");
+			clist.setCRcostoverin(req.getParameter("CRcostoverin")!=null?"Yes":"No");
+			clist.setNonConsumableItemsReturned(req.getParameter("NonConsumableItemsReturned")!=null?"Yes":"No");
+			clist.setConsumableItemsReturned(req.getParameter("ConsumableItemsReturned")!=null?"Yes":"No");;
 			
 			
 

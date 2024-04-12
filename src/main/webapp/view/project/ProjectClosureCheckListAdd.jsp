@@ -684,7 +684,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
             							                    
             							                    <%} %>
 														</div> 
-											</form>
+											<!-- </form> --> 
 											   
 												   
 												   <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
@@ -705,7 +705,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																			</div>
 																			<div class="page-item">
 																				
-																					   <button class="page-link" id="firstpagechanges" >Next</button>
+																					   <button type="button" class="page-link" id="firstpagechanges" >Next</button>
 																						<!-- <input type="hidden" name="pagination" value=/> -->
 																				
 																			</div>
@@ -717,9 +717,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    
 												    
 											  <div class="" id="secondpage">	    
-												    <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
+												    <!--  <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">  -->
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-												    	<input type="hidden" name="checklistId" value="<%=checklistId%>">
+												    	<input type="hidden" name="closureId" value="<%=closureId%>">
 												   
 												         
 												  
@@ -905,7 +905,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipProcured"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipProcuredAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
 												                    
 												                </div>
 												              </div> 
@@ -1062,13 +1062,19 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												              <div class="checklistpage"  style="text-align: center;">
 												             
 												             <!--  <button class="btn btn-info btn-sm" id="backtofirstpage" >Previous</button> -->
-													                <button class="btn btn-info btn-sm success submit" id="secondpagechange" name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
+												             
+												             <% if(chlist!=null && chlist.getCSProcedure()!=null) {%>
+												                    
+												                    <button class="btn-warning edit btn" type="submit" id="" name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
+												             <%}else{ %>
+													                <button class="btn btn-info btn-sm success submit" id="secondpagechange" name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
 													                
+													                <%} %>
 	            							                </div>
 	            							                 
 	            							             </div>
 	            							        
-												    </form>
+												   <!--   </form>  -->
 												    
 												     <div class="pagin" style="display: flex;justify-content: right;padding-bottom:10px;"> 
 																
@@ -1076,7 +1082,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																	<div class="pagination">
 																			<div class="page-item">
 																				
-																					<button class="page-link" id="backtofirstpages">Previous</button>
+																					<button type="button" class="page-link" id="backtofirstpages">Previous</button>
 																					
 																						
 																				
@@ -1087,7 +1093,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																			<div class="page-item">
 																				
 																					
-																						<button class="page-link" id="secondpagechanges">Next</button>
+																						<button type="button" class="page-link" id="secondpagechanges">Next</button>
 																						
 																				
 																			</div>
@@ -1104,9 +1110,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												     <div class="" id="thirdpage">  
 												    
 												    
-												    <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
+												    <!-- <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data"> -->
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-												    	<input type="hidden" name="checklistId" value="<%=checklistId%>">    
+												    	<input type="hidden" name="closureId" value="<%=closureId%>">    
 												      
 												       
 												   
@@ -1368,8 +1374,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Reason, if Cost Over-run</label><span class="mandatory">*</span>
-                                                                    <textarea class="form-control form-control" name="otherRelevant" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCRReason()!=null) {%><%=chlist.getCRReason() %><%} %></textarea> 											                    
+                                                                    <textarea class="form-control form-control" name="CRcostoverin" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCRcostoverin()!=null) {%><%=chlist.getCRcostoverin() %><%} %></textarea> 											                    
 												                </div>
 												           </div>  
 												           
@@ -1419,8 +1425,20 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    </div> 
 												    
 														     <div class="checklistpage"  style="text-align: center;">
+														     
 														            <!-- <button class="btn btn-info btn-sm" id="backtosecondpage" >Previous</button> -->
-														            <button class="btn btn-info btn-sm success submit" name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
+														            
+														             <% if(chlist!=null && chlist.getSPActualpositionAttach()!=null) {%>
+												                    
+												                    <button class="btn-warning edit btn" type="submit" id="" name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
+												                    
+												             <%}else{ %>
+												             
+													                <button class="btn btn-info btn-sm success submit" id="secondpagechange" name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
+													                
+													                <%} %>
+														            
+														           
 															 </div> 
 															 
 															 
@@ -1438,7 +1456,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 															<%} %>
 														</div> --%>
 						
-												    </form>
+												    </form> 
 												    
 												    
 												    <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
