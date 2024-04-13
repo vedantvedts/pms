@@ -156,7 +156,7 @@ String pass=(String)request.getAttribute("pass");
 	       <% if(Action.equalsIgnoreCase("Edit") &&  EditObject!=null){ %> 
 	       <input type="hidden" name="MailConfigIdFrEditSubmit" value="<%=mailConfigIdFrEdit%>">
 	        <button type="submit"formaction="MailConfigurationEditSubmit.htm" class="btn btn-primary btn-sm submit" 
-	     id="MailConfigEditSubmitBtn"  onclick="return confirm('Are you sure to update?')" >Update</button>
+	     id="MailConfigEditSubmitBtn"  onclick="return MailConfigEditValidation()" >Update</button>
 	  <%} %>
 	       
 	   <a class="btn  btn-sm  back" href="MailConfigurationList.htm">BACK</a>
