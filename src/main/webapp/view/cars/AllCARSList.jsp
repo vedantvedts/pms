@@ -404,6 +404,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 					                      				   if(ApprovedList.size()>0){
 					                      				   int SNA=0;
 					                          			   for(Object[] form:ApprovedList ){
+					                          				   if(form[12].toString().equalsIgnoreCase("RSQR")) {
 					                       				%>
 					                        			<tr>
 					                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
@@ -469,7 +470,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 																</button>
 															</td>
 					                        			</tr>
-					                       			<%} }else{%>
+					                       			<%} } }else{%>
 					                       				<tr>
 					                       					<td colspan="6" style="text-align: center;">No data available in table</td>
 					                       				</tr>
