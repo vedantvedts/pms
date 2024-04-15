@@ -364,7 +364,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
               			 		</a>
             			</li>
 
-            			<li class="nav-item" id="nav-chlistforward">
+            			<%-- <li class="nav-item" id="nav-chlistforward">
             	     		<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("2")){ %>
               					<a class="nav-link active" data-toggle="tab" href="#chlistforward" id="nav"role="tab" >
               				<%}else{ %>
@@ -372,7 +372,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                				<%} %>
                   				Check List Forward
               					</a>
-            			</li>
+            			</li> --%>
             			
               		</ul>
          		</div>
@@ -390,11 +390,19 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 									<div class="row" style="width: 140%; margin-left: -15rem;margin-top: 1rem;">
 										<div class="col-md-12">
 											<div class="card shadow-nohover" >
+											<form>
 												<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;text-align: left;">
-								                    <b class="text-white" style="">Check List Details: </b> 
+								                    <b class="text-white" style="">Check List Details : 
+								                    <button type="submit" class="btn btn-sm" style="" name="closureId" formmethod="get" formnovalidate="formnovalidate"
+                  					 		  				 	value="<%=closureId %>" formaction="ProjectClosureCheckListDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CheckList Download">
+                  					 							<i class="fa fa-download fa-lg"></i>
+                  					 						</button>
+                  					 						</b> 
 								                    <hr>
 								                    <span class="text-white" style="float:right;font-weight: 600"> </span>
 							        			</div> 
+							        	</form>	
+							        		
 												<div class="card-body" style="overflow:auto;max-height:25rem;">
 								        		
 								        		
@@ -1230,7 +1238,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-7" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Minor works are completed within the financial year and not costing more than one lakh.</label><span class="mandatory">*</span>
-												                    <input value="Yes" name="CWMinorWorks"  <% if(chlist!=null && chlist.getCWAdminApp()!=null  && chlist.getCWAdminApp().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input value="Yes" name="CWMinorWorks"  <% if(chlist!=null && chlist.getCWMinorWorks()!=null  && chlist.getCWMinorWorks().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 												                    
 												                </div>
 												          </div> 
@@ -1428,11 +1436,11 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 														     
 														            <!-- <button class="btn btn-info btn-sm" id="backtosecondpage" >Previous</button> -->
 														            
-														             <% if(chlist!=null && chlist.getSPActualpositionAttach()!=null) {%>
+														             <% if(chlist!=null && chlist.getSPActualpositionAttach()!=null) { %>
 												                    
 												                    <button class="btn-warning edit btn" type="submit" id="" name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
 												                    
-												             <%}else{ %>
+												             <%} else{ %>
 												             
 													                <button class="btn btn-info btn-sm success submit" id="secondpagechange" name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
 													                

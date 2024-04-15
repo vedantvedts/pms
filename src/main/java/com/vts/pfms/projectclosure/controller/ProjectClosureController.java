@@ -1360,7 +1360,7 @@ public class ProjectClosureController {
 		try {
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
-			System.out.println("action---"+action);
+			//System.out.println("action---"+action);
 			
 			ProjectClosureCheckList clist = (action!=null && action.equalsIgnoreCase("Add"))?new ProjectClosureCheckList() : service.getProjectClosureCheckListByProjectId(closureId);
 			
@@ -1482,7 +1482,7 @@ public class ProjectClosureController {
 		} 
 	}
 	
-	@RequestMapping(value = {"ProjectClosureChecklistFileDownload.htm"}, method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value = {"ProjectClosureChecklistFileDownload.htm"})
 	public void ProjectClosureChecklistFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
@@ -1511,6 +1511,64 @@ public class ProjectClosureController {
 				e.printStackTrace(); 
 				logger.error(new Date() +"Inside ProjectClosureChecklistFileDownload.htm "+UserId,e);
 		}
+	}
+	
+	
+	@RequestMapping(value="ProjectClosureCheckListDownload.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public void ProjectClosureCheckListDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectClosureCheckListDownload.htm "+UserId);		
+		try {
+			String closureId = req.getParameter("closureId");
+			
+			if(closureId!=null) {
+				req.setAttribute("ProjectClosureCheckListData", service.getProjectClosureCheckListByProjectId(closureId));
+				
+				req.setAttribute("closureId", closureId);
+				//req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
+				//req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
+				//req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
+				//req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
+				//req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
+			}
+			String filename="Check-List";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/ProjectClosureCheckListDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside ProjectClosureCheckListDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
 	}
 	
 	

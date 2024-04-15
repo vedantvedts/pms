@@ -524,7 +524,9 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 																		</div>
 																	</div>
 												    			</button>
-												    			<%if(obj[11]!=null && (obj[11].toString().equalsIgnoreCase("AFW"))) {%>
+												    			
+												    			
+												    			<%if(obj[11]!=null && (obj[11].toString().equalsIgnoreCase("AFW"))) { %>
 												    			<button class="editable-clicko" name="closureId" value="<%=obj[14] %>" formaction="ProjectClosureACPRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to Revoke?')">
 																	<div class="cc-rockmenu">
 																		<div class="rolling">
@@ -536,10 +538,8 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 																	</div>
 												    			</button>
 												    			<%} %>
-												    			<%} %>
 												    			
-												    			
-												    			<button class="editable-clicko" name="closureId" value="<%=obj[14] %>" formaction="ProjectClosureCheckList.htm" formmethod="post" >
+												    				<button class="editable-clicko" name="closureId" value="<%=obj[14] %>" formaction="ProjectClosureCheckList.htm" formmethod="post" >
 																	<div class="cc-rockmenu">
 																		<div class="rolling">
 																			<figure class="rolling_icon">
@@ -549,6 +549,11 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 																		</div>
 																	</div>
 												    			</button>
+												    			
+												    			<%} %>
+												    			
+												    			
+												    		
 		                                        		</form>
 													</div>
 												</div>
