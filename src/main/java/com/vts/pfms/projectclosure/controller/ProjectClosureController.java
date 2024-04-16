@@ -1426,19 +1426,20 @@ public class ProjectClosureController {
 			
 			clist.setCWIncluded(req.getParameter("CWIncluded")!=null?"Yes":"No");
 			clist.setCWAdminApp(req.getParameter("CWAdminApp")!=null?"Yes":"No");
+			clist.setCWMinorWorks(req.getParameter("CWMinorWorks")!=null?"Yes":"No");
 			clist.setCWRevenueWorks(req.getParameter("CWRevenueWorks")!=null?"Yes":"No");
 			clist.setCWDeviation(req.getParameter("CWDeviation")!=null?"Yes":"No");
 			clist.setCWExpenditure(req.getParameter("CWExpenditure")!=null?"Yes":"No");
-			clist.setNoOfVehicleSanctioned(req.getParameter("NoOfVehicleSanctioned")!=null?"Yes":"No");
-			clist.setVehicleAvgRun(req.getParameter("VehicleAvgRun")!=null?"Yes":"No");
-			clist.setVehicleAvgFuel(req.getParameter("VehicleAvgFuel")!=null?"Yes":"No");
+			clist.setNoOfVehicleSanctioned(req.getParameter("NoOfVehicleSanctioned"));
+			clist.setVehicleAvgRun(req.getParameter("VehicleAvgRun"));
+			clist.setVehicleAvgFuel(req.getParameter("VehicleAvgFuel"));
 			clist.setProjectClosedDate(sdf.format(rdf.parse(req.getParameter("ProjectClosedDate"))));
 			clist.setReportDate(sdf.format(rdf.parse(req.getParameter("ReportDate"))));
-			clist.setDelayReason(req.getParameter("DelayReason")!=null?"Yes":"No");
+			clist.setDelayReason(req.getParameter("ProjectDelayReason"));
 			clist.setCRObjective(req.getParameter("CRObjective")!=null?"Yes":"No");
 			clist.setCRspinoff(req.getParameter("CRspinoff")!=null?"Yes":"No");
-			clist.setCRReason(req.getParameter("CRReason")!=null?"Yes":"No");
-			clist.setCRcostoverin(req.getParameter("CRcostoverin")!=null?"Yes":"No");
+			clist.setCRReason(req.getParameter("PDCNotMeetReason")!=null?"Yes":"No");
+			clist.setCRcostoverin(req.getParameter("CRcostoverin"));
 			clist.setNonConsumableItemsReturned(req.getParameter("NonConsumableItemsReturned")!=null?"Yes":"No");
 			clist.setConsumableItemsReturned(req.getParameter("ConsumableItemsReturned")!=null?"Yes":"No");;
 			
@@ -1499,7 +1500,7 @@ public class ProjectClosureController {
 			res.setContentType("Application/octet-stream");	
 			ProjectClosureCheckList clist= service.getProjectClosureCheckListByProjectId(closureId);
 			File my_file=null;
-			String file = ftype.equalsIgnoreCase("QARMilestonefile") ? clist.getQARMilestone():ftype.equalsIgnoreCase("QARCostBreakupfile")? clist.getQARCostBreakup(): ftype.equalsIgnoreCase("QARNCItemsfile")? clist.getQARNCItems():ftype.equalsIgnoreCase("EquipProcuredfile")? clist.getEquipProcured(): ftype.equalsIgnoreCase("EquipProcuredBeforePDCfile")? clist.getEquipProcuredBeforePDCAttach(): ftype.equalsIgnoreCase("EquipBoughtOnChargefile")? clist.getEquipBoughtOnChargeAttach() : ftype.equalsIgnoreCase("BudgetExpenditurefile")? clist.getBudgetExpenditureAttach():"" ;
+			String file = ftype.equalsIgnoreCase("QARMilestonefile") ? clist.getQARMilestone():ftype.equalsIgnoreCase("QARCostBreakupfile")? clist.getQARCostBreakup(): ftype.equalsIgnoreCase("QARNCItemsfile")? clist.getQARNCItems():ftype.equalsIgnoreCase("EquipProcuredfile")? clist.getEquipProcured(): ftype.equalsIgnoreCase("EquipProcuredBeforePDCfile")? clist.getEquipProcuredBeforePDCAttach(): ftype.equalsIgnoreCase("EquipBoughtOnChargefile")? clist.getEquipBoughtOnChargeAttach() : ftype.equalsIgnoreCase("BudgetExpenditurefile")? clist.getBudgetExpenditureAttach(): ftype.equalsIgnoreCase("SPActualpositionfile")? clist.getSPActualpositionAttach(): ftype.equalsIgnoreCase("SPGeneralSpecificfile")? clist.getSPGeneralSpecificAttach(): ftype.equalsIgnoreCase("CRAttachfile")? clist.getCRAttach():"";
 			my_file = new File(LabLogoPath+"Project-Closure\\Check-List\\"+File.separator+file); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();

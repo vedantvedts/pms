@@ -1283,7 +1283,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-5" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">No. of vehicles sanctioned in the project (With types).</label><span class="mandatory">*</span>
-												                    <input value="Yes" name="NoOfVehicleSanctioned"  <% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null  && chlist.getNoOfVehicleSanctioned().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
+												                    <input class="form-control " type="text" name="NoOfVehicleSanctioned"  placeholder="No Of Vehicle Sanctioned" 
+												                    value="<% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null) {%><%=chlist.getNoOfVehicleSanctioned() %><%} %>" >
 												                    
 												                </div>
 												          </div> 
@@ -1292,7 +1293,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly run of each vehicle.</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="VehicleAvgRun"  placeholder="Enter Average monthly run of each vehicle" 
-												                     value="<% if(chlist!=null && chlist.getVehicleAvgRun()!=null){ %> <%=chlist.getVehicleAvgRun() %><%} %>" >
+												                     value="<% if(chlist!=null && chlist.getVehicleAvgRun()!=null){ %><%=chlist.getVehicleAvgRun() %><%} %>" >
 												                    
 												                </div>
 												          </div> 
@@ -1325,7 +1326,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">When the project finally closed</label><span class="mandatory">*</span>
 												                     <input  class="form-control" type="text" name="ProjectClosedDate" id="ProjectClosedDate" placeholder="Enter Project Closed Date" 
-												                     value="<% if(chlist!=null && chlist.getProjectClosedDate()!=null){ %> <%=chlist.getProjectClosedDate() %><%} %>" >
+												                     value="<% if(chlist!=null && chlist.getProjectClosedDate()!=null){ %><%=fc.SqlToRegularDate(chlist.getProjectClosedDate()) %><%} %>" >
 												                     
 												                </div>
 												          </div> 
@@ -1334,7 +1335,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">Project closures Report send to R&D HQrs.(Mention Dated)</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="ReportDate" id="ClosureReportDate" placeholder="" 
-												                    value="<% if(chlist!=null && chlist.getReportDate()!=null){ %> <%=chlist.getReportDate() %><%} %>" >
+												                    value="<% if(chlist!=null && chlist.getReportDate()!=null){ %><%=fc.SqlToRegularDate(chlist.getReportDate()) %><%} %>" >
 
 												                    
 												                </div>
@@ -1345,7 +1346,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">If undue delay in sending the Closure Report, reasons thereof.</label><span class="mandatory">*</span>
                                                                      <input  class="form-control " type="text" name="ProjectDelayReason" id="" placeholder="If undue delay in sending the Closure Report, reasons thereof" 
-												                     value="<% if(chlist!=null && chlist.getDelayReason()!=null){ %> <%=chlist.getDelayReason() %><%} %>" >												                    
+												                     value="<% if(chlist!=null && chlist.getDelayReason()!=null){ %><%=chlist.getDelayReason() %><%} %>" >												                    
 												                </div>
 												          </div> 
 												          
