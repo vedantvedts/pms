@@ -430,7 +430,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Sent by the Lab to HQrs :</label><span class="mandatory">*</span>
 												                    <input  class="form-control form-control" type="text" name="QARHQrsSentDate" id="HQrsSentDate" 
-												                     value="<%if(chlist!=null && chlist.getQARHQrsSentDate()!=null) {%><%=chlist.getQARHQrsSentDate() %><%} %>" > 
+												                     value="<%if(chlist!=null && chlist.getQARHQrsSentDate()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARHQrsSentDate()) %><%} %>" > 
 												                </div>
 												            </div>
 												            
@@ -438,7 +438,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">When sent to the CFA :</label><span class="mandatory">*</span>
 												                	 <input  class="form-control form-control" type="text" name="QARSentDate" id="CFASendDate"  
-												                     value="<%if(chlist!=null && chlist.getQARSentDate()!=null) {%><%=chlist.getQARSentDate() %><%} %>" > 
+												                     value="<%if(chlist!=null && chlist.getQARSentDate()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARSentDate()) %><%} %>" > 
 												                    
 												                </div>
 												            </div>
@@ -484,8 +484,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												           <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Proposed Cost</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="QARProposedCost" id="ProposedDate" 
-												                     value="<%if(chlist!=null && chlist.getQARProposedCost()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARProposedCost()) %><%} %>" > 
+												                    <input  class="form-control " type="number" min="0" name="QARProposedCost" 
+												                     value="<%if(chlist!=null && chlist.getQARProposedCost()>=0) {%><%=chlist.getQARProposedCost() %><%} %>" > 
 												                </div>
 												            </div> 
 												            
@@ -553,7 +553,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												             <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">How much/ revised cost</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="SCRevisionCost" id="" placeholder="Enter Revision Cost" 
+												                    <input  class="form-control " type="number" min="0" name="SCRevisionCost" id="" placeholder="Enter Revision Cost" 
 												                     value="<%if(chlist!=null && chlist.getSCRevisionCost()>=0){%><%=chlist.getSCRevisionCost() %><%} %>" >
 												                </div>
 												            </div> 
@@ -605,8 +605,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												             <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Quantum/ revised PDC</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="PDCRevised" id="" placeholder="Enter revised PDC" 
-												                     value="<%if(chlist!=null && chlist.getPDCRevised()>0) {%><%=chlist.getPDCRevised() %><%} %>" > 
+												                    <input  class="form-control " type="number" min="0" name="PDCRevised" id="" placeholder="Enter revised PDC" 
+												                     value="<%if(chlist!=null && chlist.getPDCRevised()>=0) {%><%=chlist.getPDCRevised() %><%} %>" > 
 												                </div>
 												            </div> 
 												            
@@ -913,7 +913,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipProcuredAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipProcuredAttach"  <%-- <%if(chlist==null) {%>required<%} %> --%>  accept=".pdf">
 												                    
 												                </div>
 												              </div> 
@@ -958,7 +958,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipProcuredBeforePDCAttach" <%if(chlist==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipProcuredBeforePDCAttach" <%-- <%if(chlist==null) {%>required<%} %> --%> accept=".pdf">
 												                </div>
 												              </div>
 												               
@@ -983,7 +983,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipBoughtOnChargeAttach" <%if(chlist==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="EquipBoughtOnChargeAttach" <%-- <%if(chlist==null) {%>required<%} %> --%> accept=".pdf">
 												                </div>
 												              </div>
 												              
@@ -1031,7 +1031,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="BudgetExpenditureAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="BudgetExpenditureAttach" <%--  <%if(chlist==null) {%>required<%} %>  --%> accept=".pdf">
 												                </div>
 												              </div>
 												              
@@ -1183,7 +1183,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="SPActualposition" <%if(chlist==null) {%>required<%} %>  accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="SPActualposition" <%-- <%if(chlist==null) {%>required<%} %> --%>  accept=".pdf">
 												                </div>
 												          </div> 
 												          
@@ -1198,7 +1198,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="SPGeneralSpecific"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="SPGeneralSpecific"  <%-- <%if(chlist==null) {%>required<%} %> --%>  accept=".pdf">
 												                </div>
 												          </div> 
 												          
@@ -1426,7 +1426,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="CRAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="CRAttach" <%--  <%if(chlist==null) {%>required<%} %> --%>  accept=".pdf">
                                                                     											                    
 												                </div>
 												           </div>  

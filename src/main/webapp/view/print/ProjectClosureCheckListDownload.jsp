@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
     <%@page import="com.vts.pfms.projectclosure.model.ProjectClosureCheckList"%>
     <%@page import="com.vts.pfms.FormatConverter"%>
+    <%@page import="com.vts.pfms.project.model.ProjectMaster"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -195,6 +196,7 @@ p,td,th
      ProjectClosureCheckList chlist = (ProjectClosureCheckList)request.getAttribute("ProjectClosureCheckListData");
      FormatConverter fc = new FormatConverter();
      String closureId=(String)request.getAttribute("closureId");
+     ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
 
 
 %>
@@ -259,7 +261,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi.Proposed Cost</td>
-			<td><%if(chlist!=null && chlist.getQARProposedCost()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARProposedCost()) %><%} %></td>
+			<td><%if(chlist!=null && chlist.getQARProposedCost()>=0) {%><%=chlist.getQARProposedCost() %><%} %></td>
 		</tr>
 		
 		<tr>
@@ -303,14 +305,20 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td  style="width: 35%;text-align: left !important;font-weight: 400;">i.No & Date </td>
-			<td></td>
+			<td><%if(projectMaster!=null && projectMaster.getSanctionNo()!=null){ %><%=projectMaster.getSanctionNo() %><%} %>
+			
+			&nbsp;&nbsp;
+			
+			<%if(projectMaster!=null && projectMaster.getSanctionDate()!=null){ %><%=fc.SqlToRegularDate(projectMaster.getSanctionDate().toString()) %><%} %>
+			
+			</td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.Sanctioned Cost </td>
-			<td></td>
+			<td><%if(projectMaster!=null && projectMaster.getTotalSanctionCost()!=null){ %><%=projectMaster.getTotalSanctionCost()%><%} %></td>
 		</tr>
 		
 		
@@ -324,15 +332,16 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td  style="width: 35%;text-align: left !important;font-weight: 400;">iv.PDC </td>
-			<td></td>
+			<td><%if(projectMaster!=null && projectMaster.getPDC()!=null){ %><%=fc.SqlToRegularDate(projectMaster.getPDC().toString())%><%} %></td>
+			
 		</tr>
 		
 		
-		<tr>
+		<!-- <tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">v.	Any other point worth mentioning </td>
 			<td></td>
-		</tr>
+		</tr> -->
 		
 		
 		<tr>
@@ -344,28 +353,28 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.	When requested </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	When requested </td>
 			<td><%if(chlist!=null && chlist.getSCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCRequested()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. When granted </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. When granted </td>
 			<td><%if(chlist!=null && chlist.getSCGranted()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCGranted()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. How much/ revised cost </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. How much/ revised cost </td>
 			<td><%if(chlist!=null && chlist.getSCRevisionCost()>=0){%><%=chlist.getSCRevisionCost() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iv. Any reason specified </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Any reason specified </td>
 			<td><%if(chlist!=null && chlist.getSCReason()!=null){ %><%=chlist.getSCReason() %><%} %></td>
 		</tr>
 		
@@ -379,28 +388,28 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.	When requested </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	When requested </td>
 			<td><%if(chlist!=null && chlist.getPDCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRequested()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. When granted </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. When granted </td>
 			<td><%if(chlist!=null && chlist.getPDCGranted()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCGranted()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. Quantum/ revised PDC </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Quantum/ revised PDC </td>
 			<td><%if(chlist!=null && chlist.getPDCRevised()>0) {%><%=chlist.getPDCRevised() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iv. Any reason specified </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Any reason specified </td>
 			<td><%if(chlist!=null && chlist.getPDCReason()!=null){ %><%=chlist.getPDCReason() %><%} %></td>
 		</tr>
 		
@@ -415,13 +424,13 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.	Maintained in proper format </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	Maintained in proper format </td>
 			<td><% if(chlist!=null &&  chlist.getPRMaintained() !=null ){%><%=chlist.getPRMaintained() %> <%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii.Sanctioned projects entered (including sub-projects) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.Sanctioned projects entered (including sub-projects) </td>
 			<td><% if(chlist!=null &&  chlist.getPRSanctioned() !=null ){%><%=chlist.getPRSanctioned() %> <%} %> </td>
 		</tr>
 		
@@ -434,13 +443,13 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.	Maintained separately for consumable & non-consumables </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	Maintained separately for consumable & non-consumables </td>
 			<td></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. Expenditure verified by Project Director/ In-charge </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Expenditure verified by Project Director/ In-charge </td>
 			<td><% if(chlist!=null &&  chlist.getPECVerified() !=null ){%><%=chlist.getPECVerified() %><%} %></td>
 		</tr>
 		
@@ -454,7 +463,7 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.If required, maintained properly </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.If required, maintained properly </td>
 			<td></td>
 		</tr>
 		
@@ -468,7 +477,7 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.If required, maintained properly </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.If required, maintained properly </td>
 			<td><% if(chlist!=null &&  chlist.getSRMaintained()!=null){%><%= chlist.getSRMaintained() %><%} %> </td>
 			
 		</tr>
@@ -483,27 +492,27 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.Procedure followed (purchased directly or through main stores) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.Procedure followed (purchased directly or through main stores) </td>
 			<td><%if(chlist!=null && chlist.getCSProcedure()!=null){%><%=chlist.getCSProcedure()%><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii.If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </td>
 			<td><% if(chlist!=null && chlist.getCSDrawn()!=null ){%><%=chlist.getCSDrawn() %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. Amount is debited to Project Expenditure card </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Amount is debited to Project Expenditure card </td>
 			<td><% if(chlist!=null && chlist.getCSamountdebited()!=null){%><%=chlist.getCSamountdebited()  %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;"> iv.If not through main stores, reason thereof </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;"> iv.If not through main stores, reason thereof </td>
 			<td><% if(chlist!=null && chlist.getCSReason()!=null) {%><%=chlist.getCSReason() %><%} %></td>
 		</tr>
 		
@@ -517,37 +526,37 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;"> i.Procedure followed (Purchased directly or through main stores) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;"> i.Procedure followed (Purchased directly or through main stores) </td>
 			<td><%if(chlist!=null && chlist.getNCSProcedure()!=null){%><%=chlist.getNCSProcedure()%><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;"> ii. If through main stores, drawn from main Stock Register through nominal Demand-cum-issue voucher</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;"> ii. If through main stores, drawn from main Stock Register through nominal Demand-cum-issue voucher</td>
 			<td><% if(chlist!=null && chlist.getNCSDrawn()!=null ){%><%=chlist.getNCSDrawn() %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;"> iii.	Amount is debited to Project Expenditure  Card </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;"> iii.	Amount is debited to Project Expenditure  Card </td>
 			<td><% if(chlist!=null && chlist.getNCSamountdebited()!=null){%><%=chlist.getNCSamountdebited()  %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;"> iv. If not through main stores, reason thereof </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;"> iv. If not through main stores, reason thereof </td>
 			<td><% if(chlist!=null && chlist.getNCSReason()!=null) {%><%=chlist.getNCSReason() %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;"> v. In main stores ledger, item shown as distributed to Project Inventory of non-consumables being maintained in project group</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;"> v. In main stores ledger, item shown as distributed to Project Inventory of non-consumables being maintained in project group</td>
 			<td><% if(chlist!=null && chlist.getNCSDistributed()!=null){%><%=chlist.getNCSDistributed() %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">vi. Any non-consumable item incorporated in any prototype stores are received and SIR is prepared before closure of project</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi. Any non-consumable item incorporated in any prototype stores are received and SIR is prepared before closure of project</td>
 			<td><% if(chlist!=null && chlist.getNCSIncorporated()!=null){%><%=chlist.getNCSIncorporated() %><%} %></td>
 		</tr>
 		
@@ -560,7 +569,7 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i. List out major non-consumable/ equipment procured </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. List out major non-consumable/ equipment procured </td>
 			<td> <%if(chlist!=null && chlist.getEquipProcured()!=null){ %>
 			
 			 <a href="ProjectClosureChecklistFileDownload.htm?filename=EquipProcuredfile&closureId=<%=closureId %>" target="_blank" title="EquipProcured Download">
@@ -573,19 +582,19 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. Any major equipment not listed in Q.P.R has been purchased? </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Any major equipment not listed in Q.P.R has been purchased? </td>
 			<td><% if(chlist!=null && chlist.getEquipPurchased()!=null){%><%=chlist.getEquipPurchased() %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. If yes, reason assigned </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. If yes, reason assigned </td>
 			<td><% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=chlist.getEquipReason() %> <%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iv. Any major equipment procured within one month before the PDC (give details and reason thereof) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Any major equipment procured within one month before the PDC (give details and reason thereof) </td>
 			<td><% if(chlist!=null && chlist.getEquipProcuredBeforePDC()!=null){%> <%=chlist.getEquipProcuredBeforePDC() %><%} %>
 			
 			  <%if(chlist!=null && chlist.getEquipProcuredBeforePDCAttach()!=null){ %>
@@ -601,7 +610,7 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">v. Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">v. Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </td>
 			<td><% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null ){%><%=chlist.getEquipBoughtOnCharge() %><%} %>
 			
 		 <%if(chlist!=null && chlist.getEquipBoughtOnChargeAttach()!=null){ %>
@@ -624,27 +633,27 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.Yearly break up of Allotment & Expenditure since the Project  sanctioned </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.Yearly break up of Allotment & Expenditure since the Project  sanctioned </td>
 			<td></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. The reviewing officer should  see  the allocation  w.r.t demands  and  also  the  projections  in  the Q.P.R </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. The reviewing officer should  see  the allocation  w.r.t demands  and  also  the  projections  in  the Q.P.R </td>
 			<td><% if(chlist!=null && chlist.getBudgetAllocation()!=null){%><%=chlist.getBudgetAllocation() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. What is the mechanism for monitoring/ control of head-wise expenditure? </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. What is the mechanism for monitoring/ control of head-wise expenditure? </td>
 			<td><% if(chlist!=null && chlist.getBudgetMechanism()!=null) {%><%=chlist.getBudgetMechanism() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iv. Mention, if expenditure under any head exceeded the respective allocation </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Mention, if expenditure under any head exceeded the respective allocation </td>
 			<td>
 			
 			 <%if(chlist!=null && chlist.getBudgetExpenditureAttach()!=null){ %>
@@ -661,21 +670,21 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Comment: Whether financial progress is in consonance with Tech. progress. </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Comment: Whether financial progress is in consonance with Tech. progress. </td>
 			<td><% if(chlist!=null && chlist.getBudgetFinancialProgress()!=null){%><%=chlist.getBudgetFinancialProgress() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i. Monthly/ Quarterly expenditure Reports are rendered to R&D HQrs and copy sent to local CDA </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Monthly/ Quarterly expenditure Reports are rendered to R&D HQrs and copy sent to local CDA </td>
 			<td><% if(chlist!=null && chlist.getBudgetexpenditureReports()!=null ){%><%=chlist.getBudgetexpenditureReports() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. Any expenditure incurred after Project PDC (Give details and reasons thereof)</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Any expenditure incurred after Project PDC (Give details and reasons thereof)</td>
 			<td><% if(chlist!=null && chlist.getBudgetexpenditureIncurred()!=null ){%><%=chlist.getBudgetexpenditureIncurred() %><%} %></td>
 		</tr>
 		
@@ -689,14 +698,14 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i.	Log book maintained in r/o high cost equipment </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	Log book maintained in r/o high cost equipment </td>
 			<td><% if(chlist!=null && chlist.getLogBookMaintained()!=null){%><%=chlist.getLogBookMaintained() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. Job cards maintained </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Job cards maintained </td>
 			<td><% if(chlist!=null && chlist.getJobCardsMaintained()!=null){%><%=chlist.getJobCardsMaintained() %><%} %></td>
 		</tr>
 		
@@ -708,14 +717,14 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i. Demanded as per Q.P.R </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Demanded as per Q.P.R </td>
 			<td><% if(chlist!=null && chlist.getSPdemand()!=null){%><%=chlist.getSPdemand() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. Actual position-held </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Actual position-held </td>
 			<td>
 			 <%if(chlist!=null && chlist.getSPActualpositionAttach()!=null){ %>
 			
@@ -731,7 +740,7 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. General Specific (Category wise) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. General Specific (Category wise) </td>
 			<td>
 			 <%if(chlist!=null && chlist.getSPGeneralSpecificAttach()!=null){ %>
 			
@@ -755,41 +764,41 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i. Civil works are included in the estimated prepared before project sanction.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Civil works are included in the estimated prepared before project sanction.</td>
 			<td><% if(chlist!=null && chlist.getCWIncluded()!=null){%><%=chlist.getCWIncluded() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. Admin approval is accorded for the work.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Admin approval is accorded for the work.</td>
 			<td><% if(chlist!=null && chlist.getCWAdminApp()!=null ){%><%=chlist.getCWAdminApp() %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. Minor works are completed within the financial year and not costing more than one lakh.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Minor works are completed within the financial year and not costing more than one lakh.</td>
 			<td><% if(chlist!=null && chlist.getCWMinorWorks()!=null){%><%=chlist.getCWMinorWorks() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iv. Revenue major works are completed within the financial year and not costing more than two lakhs.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Revenue major works are completed within the financial year and not costing more than two lakhs.</td>
 			<td><% if(chlist!=null && chlist.getCWRevenueWorks()!=null ){%><%=chlist.getCWRevenueWorks() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">v.	There are no deviations from the  admin   approval</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">v.	There are no deviations from the  admin   approval</td>
 			<td><% if(chlist!=null && chlist.getCWDeviation()!=null){%> <%=chlist.getCWDeviation() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">vi. Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi. Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</td>
 			<td><% if(chlist!=null && chlist.getCWExpenditure()!=null){%><%=chlist.getCWExpenditure() %><%} %></td>
 		</tr>
 		
@@ -803,7 +812,7 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i. No. of vehicles sanctioned in the project (With types).</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. No. of vehicles sanctioned in the project (With types).</td>
 			<td> <% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null){%><%=chlist.getNoOfVehicleSanctioned() %><%} %></td>
 		</tr>
 		
@@ -811,14 +820,14 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. Average  monthly run of each vehicle.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Average  monthly run of each vehicle.</td>
 			<td><% if(chlist!=null && chlist.getVehicleAvgRun()!=null){ %> <%=chlist.getVehicleAvgRun() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. Average monthly fuel consumption of each vehicle.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Average monthly fuel consumption of each vehicle.</td>
 			<td><% if(chlist!=null && chlist.getVehicleAvgFuel()!=null){ %> <%=chlist.getVehicleAvgFuel() %><%} %></td>
 		</tr>
 		
@@ -832,75 +841,75 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">i. When the project finally closed </td>
-			<td><% if(chlist!=null && chlist.getProjectClosedDate()!=null){ %> <%=chlist.getProjectClosedDate() %><%} %></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. When the project finally closed </td>
+			<td><% if(chlist!=null && chlist.getProjectClosedDate()!=null){ %> <%=fc.SqlToRegularDate(chlist.getProjectClosedDate()) %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">ii. Project closures Report send to R&D HQrs.(Mention Dated) </td>
-			<td><% if(chlist!=null && chlist.getReportDate()!=null){ %> <%=chlist.getReportDate() %><%} %></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Project closures Report send to R&D HQrs.(Mention Dated) </td>
+			<td><% if(chlist!=null && chlist.getReportDate()!=null){ %> <%=fc.SqlToRegularDate(chlist.getReportDate()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iii. If undue delay in sending the Closure Report, reasons thereof </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. If undue delay in sending the Closure Report, reasons thereof </td>
 			<td><% if(chlist!=null && chlist.getDelayReason()!=null){ %> <%=chlist.getDelayReason() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">iv. As per Closure Report </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. As per Closure Report </td>
 			<td></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">a. Whether  the  stated  objectives achieved </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">a. Whether  the  stated  objectives achieved </td>
 			<td><% if(chlist!=null && chlist.getCRObjective()!=null){%><%=chlist.getCRObjective() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">b. Any other spin-off achieved </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">b. Any other spin-off achieved </td>
 			<td><% if(chlist!=null && chlist.getCRspinoff()!=null){%><%=chlist.getCRspinoff() %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">c. Reason, if PDC not  meet (Delay in  convening of TPC or  delayed placement of indent by the user) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">c. Reason, if PDC not  meet (Delay in  convening of TPC or  delayed placement of indent by the user) </td>
 			<td><% if(chlist!=null && chlist.getCRReason()!=null){%><%=chlist.getCRReason() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">d. Reason, if Cost Over-run </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">d. Reason, if Cost Over-run </td>
 			<td><% if(chlist!=null && chlist.getCRcostoverin()!=null) {%><%=chlist.getCRcostoverin() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">v. Non-consumable items returned to main stores on nominal voucher (No credit to be given in Project expenditure  card) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">v. Non-consumable items returned to main stores on nominal voucher (No credit to be given in Project expenditure  card) </td>
 			<td><% if(chlist!=null && chlist.getNonConsumableItemsReturned()!=null){%><%=chlist.getNonConsumableItemsReturned() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">vi. Consumable (non-consumed) returned to main store on Issue voucher (Credit to be given in Project Expenditure Card) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi. Consumable (non-consumed) returned to main store on Issue voucher (Credit to be given in Project Expenditure Card) </td>
 			<td><% if(chlist!=null && chlist.getConsumableItemsReturned()!=null){%><%=chlist.getConsumableItemsReturned() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">vii. How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary) </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">vii. How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary) </td>
 			<td>
 			  <%if(chlist!=null && chlist.getCRAttach()!=null){ %>
 			  

@@ -37,7 +37,7 @@ public class ProjectClosureCheckList implements Serializable {
 	private   String QARObjective;
 	private   String QARMilestone;
 	private   String QARPDCDate ;
-	private   String QARProposedCost;
+	private   double QARProposedCost;
 	private   String QARCostBreakup;
 	private   String QARNCItems;
 	private   String SCRequested;

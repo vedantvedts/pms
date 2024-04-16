@@ -1372,7 +1372,8 @@ public class ProjectClosureController {
 			clist.setQARObjective(req.getParameter("QARObjective"));
 			//clist.setQARMilestone(req.getParameter("QARMilestone"));
 			clist.setQARPDCDate(sdf.format(rdf.parse(req.getParameter("QARPDCDate"))));
-			clist.setQARProposedCost(sdf.format(rdf.parse(req.getParameter("QARProposedCost"))));
+			
+			clist.setQARProposedCost(Double.parseDouble(req.getParameter("QARProposedCost")));
 			//clist.setQARCostBreakup(req.getParameter("QARCostBreakup"));
 			clist.setSCRequested(sdf.format(rdf.parse(req.getParameter("SCRequested"))));
 			clist.setSCGranted(sdf.format(rdf.parse(req.getParameter("SCGranted"))));
@@ -1455,9 +1456,9 @@ public class ProjectClosureController {
 				result = service.editProjectClosureCheckList(clist,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach,EquipBoughtOnChargeAttach,BudgetExpenditureAttach,SPActualpositionAttach,SPGeneralSpecificAttach,CRAttach);
 				
 				if (result > 0) {
-					redir.addAttribute("result", "Closure SoC Details Updated Successfully");
+					redir.addAttribute("result", "Closure CheckList Details Updated Successfully");
 				} else {
-					redir.addAttribute("resultfail", "Closure SoC Details Update Unsuccessful");
+					redir.addAttribute("resultfail", "Closure CheckList Details Update Unsuccessful");
 				}
 				
 				redir.addAttribute("closureId", closureId);
@@ -1525,7 +1526,12 @@ public class ProjectClosureController {
 				req.setAttribute("ProjectClosureCheckListData", service.getProjectClosureCheckListByProjectId(closureId));
 				
 				req.setAttribute("closureId", closureId);
-				//req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
+				
+				ProjectClosure closure = service.getProjectClosureById(closureId);
+				String projectId = closure.getProjectId()+"";
+				req.setAttribute("ProjectClosureDetails", closure);
+				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
+				
 				//req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
 				//req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
 				//req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
