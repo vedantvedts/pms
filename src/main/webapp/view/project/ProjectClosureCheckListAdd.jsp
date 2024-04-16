@@ -927,7 +927,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                 <div class="form-group">
 												                	<label class="control-label">If yes, reason assigned </label><span class="mandatory">*</span>
 												                     <textarea class="form-control form-control" name="EquipReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" > <% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=chlist.getEquipReason() %> <%} %></textarea> 
+                              		  								 placeholder="Enter Reason" > <% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=chlist.getEquipReason()%><%} %></textarea> 
 												                </div>
 												              </div>
 												              
@@ -1560,6 +1560,23 @@ $(document).ready(function() {
     
     
     });
+    
+    if ($("#select1").val() == 'PurchasedDirectly') {
+	
+    		 $('#CSDrawn').hide();
+        	 $('#CSReason').show();
+	
+     }else{
+    	 
+    	 $('#CSReason').hide();
+    	 $('#CSDrawn').show();
+    	 
+    	 
+     }
+    
+    
+    
+    
   });
 
 
@@ -1587,6 +1604,19 @@ $(document).ready(function() {
    
    });
    
+   if ($("#select2").val() == 'PurchasedDirectly') {
+	   
+		 $('#NCSDrawn').hide();
+	   	 $('#NCSReason').show();
+	   
+   }else{
+	   
+	     $('#NCSReason').hide();
+	   	 $('#NCSDrawn').show();
+   }
+   
+   
+   
  });
  
  
@@ -1610,6 +1640,17 @@ $("#checkbox").on('change', function() {
     }
     
    });
+   
+if ($("#checkbox").prop("checked") == true) {
+	
+	 $('#EquipReason').show();
+	
+}else{
+	
+	$('#EquipReason').hide();
+	
+}
+   
   
 });
 
@@ -1634,6 +1675,18 @@ $("#checkbox1").on('change', function() {
     }
     
    });
+   
+   
+if ($("#checkbox1").prop("checked") == true) {
+	
+	
+	 $('#EquipProcuredBeforePDCAttach').show();
+	
+	}else{
+		
+		$('#EquipProcuredBeforePDCAttach').hide();
+	}
+   
   
 });
 
@@ -1657,6 +1710,18 @@ $("#checkbox2").on('change', function() {
     }
     
    });
+   
+if ($("#checkbox2").prop("checked") == true) {
+	
+	
+	 $('#EquipBoughtOnChargeAttach').show();
+	
+	}else{
+		
+		$('#EquipBoughtOnChargeAttach').hide();
+	}
+   
+   
   
 });
 
