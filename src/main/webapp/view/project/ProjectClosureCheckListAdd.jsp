@@ -1060,8 +1060,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                </div>
 												              </div>
 												              
-												             
-												              
+												            
+												            </div>  
 												              
 												              <div class="checklistpage"  style="text-align: center;">
 												             
@@ -1077,7 +1077,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 													                <%} %>
 	            							                </div>
 	            							                 
-	            							             </div>
+	            							             
 	            							        
 												   <!--   </form>  -->
 												    
@@ -1088,8 +1088,6 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																			<div class="page-item">
 																				
 																					<button type="button" class="page-link" id="backtofirstpages">Previous</button>
-																					
-																						
 																				
 																			</div>
 																			<div class="page-item">
@@ -1427,6 +1425,14 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                               		      							<input type="file" class="form-control modals" name="CRAttach" <%--  <%if(chlist==null) {%>required<%} %> --%>  accept=".pdf">
                                                                     											                    
 												                </div>
+												                
+												                 <div class="form-group">
+												                	<label class="control-label">Overall Review Remarks/Recommendations </label><span class="mandatory">*</span>
+                                                                    <textarea class="form-control form-control" name="OverAllReason" maxlength="5000" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getRemarks()!=null) {%><%=chlist.getRemarks() %><%} %></textarea> 											                    
+												                </div>
+												                
+												                
 												           </div>  
 												    </div> 
 												    
@@ -1501,31 +1507,15 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
               				</div>
                			<%} %>
                			
-               			
-               					
-               					
-               			
-               			
                		</div>
                	</div>
+              </div>
+           </div>
          		
 	
 
 <script type="text/javascript">
-$('#expndAsOn').daterangepicker({
-	"singleDatePicker" : true,
-	"linkedCalendars" : false,
-	"showCustomRangeLabel" : true,
-	/* "minDate" :datearray,   */
-	 /* "startDate" : new Date(), */
-	 
-	 "maxDate" : new Date(), 
-	"cancelClass" : "btn-default",
-	showDropdowns : true,
-	locale : {
-		format : 'DD-MM-YYYY'
-	}
-});	
+	
 
 
 $('#PDCDate,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted,#ProjectClosedDate,#ClosureReportDate,#HQrsSentDate,#PDCRequested,#PDCGranted').daterangepicker({
@@ -1787,47 +1777,6 @@ $('.btn-chlist').prop('disabled',true);
 <%} %>
 </script>
 
-<!-- Remarks Handling -->
-<script type="text/javascript">
-function validateTextBox() {
-    if (document.getElementById("remarksarea").value.trim() != "") {
-    	return confirm('Are You Sure To Return?');
-    	
-    } else {
-        alert("Please enter Remarks to Return");
-        return false;
-    }
-}
-function disapprove() {
-    if (document.getElementById("remarksarea").value.trim() != "") {
-    	return confirm('Are You Sure To Disappove?');
-    	
-    } else {
-        alert("Please enter Remarks to Disapprove");
-        return false;
-    }
-}
-</script>
 
-<script type="text/javascript">
-
-	
-	
-$('#approvalDate').daterangepicker({
-	"singleDatePicker" : true,
-	"linkedCalendars" : false,
-	"showCustomRangeLabel" : true,
-	/* "minDate" :datearray,   */
-	 /* "startDate" : new Date(), */
-	 "maxDate" : new Date(), 
-	"cancelClass" : "btn-default",
-	showDropdowns : true,
-	locale : {
-		format : 'DD-MM-YYYY'
-	}
-});	
-
-
-</script>
 </body>
 </html>

@@ -927,7 +927,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"><%=++slno %></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 600;">Overall Review Remarks/Recommendations </td>
-			<td></td>
+			<td><%if(chlist!=null && chlist.getRemarks()!=null){ %> <%=chlist.getRemarks() %><%} %></td>
 		</tr>
 		
 		

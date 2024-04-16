@@ -1441,7 +1441,8 @@ public class ProjectClosureController {
 			clist.setCRReason(req.getParameter("PDCNotMeetReason")!=null?"Yes":"No");
 			clist.setCRcostoverin(req.getParameter("CRcostoverin"));
 			clist.setNonConsumableItemsReturned(req.getParameter("NonConsumableItemsReturned")!=null?"Yes":"No");
-			clist.setConsumableItemsReturned(req.getParameter("ConsumableItemsReturned")!=null?"Yes":"No");;
+			clist.setConsumableItemsReturned(req.getParameter("ConsumableItemsReturned")!=null?"Yes":"No");
+			clist.setRemarks(req.getParameter("OverAllReason"));
 			
 			
 
