@@ -1387,12 +1387,14 @@ public class ProjectClosureController {
 			String PDCRevised=req.getParameter("PDCRevised");
 			clist.setPDCRevised(Double.parseDouble(PDCRevised!=null && !PDCRevised.isEmpty()? PDCRevised:"0"));
 			clist.setPDCReason(req.getParameter("PDCReason"));
-			
+			//System.out.println("PRMaintained--"+req.getParameter("PRMaintained"));
 			clist.setPRMaintained(req.getParameter("PRMaintained")!=null?"Yes":"No");
 			
 			clist.setPRSanctioned(req.getParameter("PRSanctioned")!=null?"Yes":"No");
 			clist.setPECVerified(req.getParameter("PECVerified")!=null?"Yes":"No");
+			//System.out.println("SRMaintained--"+req.getParameter("SRMaintained"));
 			clist.setSRMaintained(req.getParameter("SRMaintained")!=null?"Yes":"No");
+			
 			clist.setCSProcedure(req.getParameter("CSProcedure"));
 			clist.setCSDrawn(req.getParameter("CSDrawn")!=null?"Yes":"No");
 			clist.setCSReason(req.getParameter("CSReason"));
@@ -1405,14 +1407,16 @@ public class ProjectClosureController {
 			
 			String NCSamountdebited=req.getParameter("NCSamountdebited");
 			clist.setNCSamountdebited(NCSamountdebited!=null ? "Yes":"No");
-			clist.setNCSReason(req.getParameter("NCSDistributed")!=null?"Yes":"No");
-			clist.setNCSReason(req.getParameter("NCSIncorporated")!=null?"Yes":"No");
+			clist.setNCSDistributed(req.getParameter("NCSDistributed")!=null?"Yes":"No");
+			clist.setNCSIncorporated(req.getParameter("NCSIncorporated")!=null?"Yes":"No");
 			
 			clist.setEquipPurchased(req.getParameter("EquipPurchased")!=null?"Yes":"No");
 			clist.setEquipReason(req.getParameter("EquipReason"));
 			clist.setEquipProcuredBeforePDC(req.getParameter("EquipProcuredBeforePDC")!=null?"Yes":"No");
 			clist.setEquipBoughtOnCharge(req.getParameter("EquipBoughtOnCharge")!=null?"Yes":"No");
 			clist.setBudgetAllocation(req.getParameter("BudgetAllocation")!=null?"Yes":"No");
+			clist.setBudgetMechanism(req.getParameter("BudgetMechanism"));
+			
 			clist.setBudgetFinancialProgress(req.getParameter("BudgetFinancialProgress")!=null?"Yes":"No");
 			clist.setBudgetexpenditureReports(req.getParameter("BudgetexpenditureReports")!=null?"Yes":"No");
 			clist.setBudgetexpenditureIncurred(req.getParameter("BudgetexpenditureIncurred")!=null?"Yes":"No");

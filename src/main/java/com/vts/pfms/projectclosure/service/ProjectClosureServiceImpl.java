@@ -975,7 +975,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		
 		if (!equipProcuredAttach.isEmpty()) {
-			clist.setQARNCItems("EquipProcuredAttach" + timestampstr + "."
+			clist.setEquipProcured("EquipProcuredAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipProcuredAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getEquipProcured(), equipProcuredAttach);
 		} else {
@@ -984,7 +984,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		
 		if (!equipProcuredBeforePDCAttach.isEmpty()) {
-			clist.setQARNCItems("EquipProcuredBeforePDCAttach" + timestampstr + "."
+			clist.setEquipProcuredBeforePDCAttach("EquipProcuredBeforePDCAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipProcuredBeforePDCAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
 		} else {
@@ -1001,7 +1001,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		}
 		
 		if (!budgetExpenditureAttach.isEmpty()) {
-			clist.setQARNCItems("BudgetExpenditureAttach" + timestampstr + "."
+			clist.setBudgetExpenditureAttach("BudgetExpenditureAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(budgetExpenditureAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getBudgetExpenditureAttach(), budgetExpenditureAttach);
 		} else {
@@ -1010,7 +1010,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		
 		if (!sPActualpositionAttach.isEmpty()) {
-			clist.setQARNCItems("SPActualpositionAttach" + timestampstr + "."
+			clist.setSPActualpositionAttach("SPActualpositionAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(sPActualpositionAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getSPActualpositionAttach(), sPActualpositionAttach);
 		} else {
@@ -1018,7 +1018,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		}
 		
 		if (!sPGeneralSpecificAttach.isEmpty()) {
-			clist.setQARNCItems("SPGeneralSpecificAttach" + timestampstr + "."
+			clist.setSPActualpositionAttach("SPGeneralSpecificAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(sPGeneralSpecificAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getSPGeneralSpecificAttach(), sPGeneralSpecificAttach);
 		} else {
@@ -1026,7 +1026,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		}
 		
 		if (!cRAttach.isEmpty()) {
-			clist.setQARNCItems("CRAttach" + timestampstr + "."
+			clist.setSPActualpositionAttach("CRAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(cRAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getCRAttach(), cRAttach);
 		} else {
@@ -1083,44 +1083,44 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		
 		if (!equipProcuredAttach.isEmpty()) {
-			clist.setQARNCItems("EquipProcuredAttach" + timestampstr + "."
+			clist.setEquipProcured("EquipProcuredAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipProcuredAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getEquipProcured(), equipProcuredAttach);
 		} 
 		
 		if (!equipProcuredBeforePDCAttach.isEmpty()) {
-			clist.setQARNCItems("EquipProcuredBeforePDCAttach" + timestampstr + "."
+			clist.setEquipProcuredBeforePDCAttach("EquipProcuredBeforePDCAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipProcuredBeforePDCAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
 		} 
 		
 		
 		if (!equipBoughtOnChargeAttach.isEmpty()) {
-			clist.setQARNCItems("EquipBoughtOnChargeAttach" + timestampstr + "."
+			clist.setEquipBoughtOnChargeAttach("EquipBoughtOnChargeAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipBoughtOnChargeAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getEquipBoughtOnChargeAttach(), equipBoughtOnChargeAttach);
 		} 
 		
 		if (!budgetExpenditureAttach.isEmpty()) {
-			clist.setQARNCItems("BudgetExpenditureAttach" + timestampstr + "."
+			clist.setBudgetExpenditureAttach("BudgetExpenditureAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(budgetExpenditureAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getBudgetExpenditureAttach(), budgetExpenditureAttach);
 		} 
 		
 		
 		if (!sPActualpositionAttach.isEmpty()) {
-			clist.setQARNCItems("SPActualpositionAttach" + timestampstr + "."
+			clist.setSPActualpositionAttach("SPActualpositionAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(sPActualpositionAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getSPActualpositionAttach(), sPActualpositionAttach);
 		} 
 		
 		if (!sPGeneralSpecificAttach.isEmpty()) {
-			clist.setQARNCItems("SPGeneralSpecificAttach" + timestampstr + "."
+			clist.setSPGeneralSpecificAttach("SPGeneralSpecificAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(sPGeneralSpecificAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getSPGeneralSpecificAttach(), sPGeneralSpecificAttach);
 		} 
 		if (!cRAttach.isEmpty()) {
-			clist.setQARNCItems("CRAttach" + timestampstr + "."
+			clist.setCRAttach("CRAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(cRAttach.getOriginalFilename()));
 			saveFile(uploadpath + path, clist.getCRAttach(), cRAttach);
 		} 

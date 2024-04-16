@@ -405,9 +405,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 							        		
 												<div class="card-body" style="overflow:auto;max-height:25rem;">
 								        		
-								        		
+								        <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data" id="firstpagesubmit">		
 								        		<div class="" id="firstpage" >
-													<form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data" id="firstpagesubmit">
+													
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												    	<input type="hidden" name="closureId" value="<%=closureId%>">
 												    	
@@ -463,7 +463,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="QARMilestone" <%if(chlist==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARMilestone" <%-- <%if(chlist==null) {%>required<%} %>  --%> accept=".pdf">
 												                </div>
 												            </div>
 												            
@@ -499,7 +499,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="QARCostBreakup" <%if(chlist==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARCostBreakup" <%-- <%if(chlist==null) {%>required<%} %> --%> accept=".pdf">
 												                   
 												                </div>
 												            </div>
@@ -513,7 +513,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
                             					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="QARNCItems" <%if(chlist==null) {%>required<%} %> accept=".pdf">
+                              		      							<input type="file" class="form-control modals" name="QARNCItems" <%-- <%if(chlist==null) {%>required<%} %> --%> accept=".pdf">
 												                   
 												                </div>
 												            </div>
@@ -701,11 +701,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																	<div class="pagination">
 																			<div class="page-item">
 																				
-																					<input class="page-link" type="submit"  value="Previous" />
-																					
-																						<input type="hidden" value="" name="search" />
-																					
-																					<input type="hidden" id="pagination" name="pagination" value="" />
+																					 <button type="button" class="page-link" id="" >Previous</button>
 																				
 																			</div>
 																			<div class="page-item">
@@ -1075,7 +1071,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                    
 												                    <button class="btn-warning edit btn" type="submit" id="" name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
 												             <%}else{ %>
-													                <button class="btn btn-info btn-sm success submit" id="secondpagechange" name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
+												             
+													                <button class="btn btn-info btn-sm success submit" id="" name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
 													                
 													                <%} %>
 	            							                </div>
@@ -1448,22 +1445,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 														            
 														           
 															 </div> 
-															 
-															 
-															
 													
-										         
-												        
-												         
-								               			<%-- <div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
-															<%if(chlist!=null){ %>
-															    <input type="hidden" name="closureId" value="<%=chlist.getClosureId()%>">
-																<button type="submit" class="btn btn-sm btn-warning edit btn-chlist" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
-															<%}else{ %>
-																<button type="submit" class="btn btn-sm btn-success submit btn-chlist" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?')" >SUBMIT</button>
-															<%} %>
-														</div> --%>
-						
 												    </form> 
 												    
 												    
@@ -1472,10 +1454,8 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																	
 																	<div class="pagination">
 																			<div class="page-item">
-																				
-																					<button class="page-link"   id="backtosecondpages" >Previous</button>
-																					
-																					
+																			
+																				<button class="page-link"  type="button" id="backtosecondpages" >Previous</button>
 																				
 																			</div>
 																			
@@ -1483,11 +1463,12 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																				<input class="page-link" type="button" value="3" disabled/>
 																			</div>
 																			<div class="page-item">
-																				   <button class="page-link"  id="" >Next</button>
+																				   <button class="page-link" type="button"  >Next</button>
 																			</div>
 																			
 																	</div>
 															</div> 
+															</div>	 
 												    
 												    
 												    </div> 
@@ -1519,257 +1500,15 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
               				</div>
                			<%} %>
                			
-               			<!-- *********** chlist Forward ***********      --> 
-               			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("2")){ %> 
-         					<div class="tab-pane active" id="chlistforward" role="tabpanel">
-         				<%}else{ %>
-              				<div class="tab-pane " id="chlistforward" role="tabpanel">
-               			<%} %>
-               					<%if(chlist!=null) { %>
-               						<div class="col-md-8 mt-2">
-               							<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%; <%if(isApproval==null) {%>max-height: 600px;<%} else{%>max-height: 700px;<%} %>  overflow-y: auto;">
-               								<div class="card-body mt-2 ml-4">
-               									<form action="#">
-               										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                   									<%-- <input type="hidden" name="closureId" value="<%=closureId%>"> --%>
-                   									<%-- <input type="hidden" name="closurechlistId" value="<%=chlist.getClosurechlistId()%>"> --%>
-			               							<div class="mt-2" align="center">
-			               								<h5 style="font-weight: bold;margin-top: 1.5rem;">STATEMENT OF CASE FOR PROJECT COMPLETED WITH
-				               								<%if(closure!=null) {
-				               								 String category = closure.getClosureCategory();
-				               								%>
-				               									<%if(category.equalsIgnoreCase("Partial Success")){%>
-				               									PARTIAL SUCCESS
-				               									<%} else if(category.equalsIgnoreCase("Stage Closure")){%>
-				               									STAGE CLOSURE
-				               									<%} else if(category.equalsIgnoreCase("Cancellation")){%>
-				               									CANCELLATION
-				               									<%} %>
-				               								<%} %>
-			               								 </h5>
-			               							</div>
-			               							<%int slno=0; %>
-    												<table id="tabledata">
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Name of Lab/Est</td>
-												    		<td>: <%=labcode %> </td>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Title of the Project/Programme</td>
-												    		<td>: <%=projectMaster.getProjectName() %> </td>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Project/Programme No.</td>
-												    		<td>: <%=projectMaster.getSanctionNo() %> </td>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Category of Project</td>
-												    		<td>: <%if(potherdetails!=null && potherdetails[0]!=null) {%><%=potherdetails[0] %><%} %> </td>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Sponsoring Agency and QR No.</td>
-<%-- 												    		<td>: <%if(projectMaster.getEndUser()!=null) {%> <%=projectMaster.getEndUser() %><%} else{%>--<%} %> and <%if(chlist.getQRNo()!=null && !chlist.getQRNo().isEmpty()) {%> <%=chlist.getQRNo() %><%} else{%>NA<%} %> </td>
- --%>												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Date of Sanction</td>
-												    		<td>: <%if(projectMaster.getSanctionDate()!=null) {%><%=fc.SqlToRegularDate(projectMaster.getSanctionDate()+"") %><%} %> </td>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">PDC original given and <br> Subsequent amendment, if any </td>
-												    		<td>: <%if(projectMaster.getPDC()!=null) {%><%=fc.SqlToRegularDate(projectMaster.getPDC()+"") %><%} %>
-												    		
-												    		<br>: <%if(potherdetails!=null && potherdetails[8]!=null) {%><%=fc.SqlToRegularDate(potherdetails[8].toString()) %><%} else{%>--<%} %>
-												    		</td>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Sanctioned Cost ( <span style="font-size: 12px;">&#x20B9;</span> Cr) </td>
-												    		<td style="">: Total 
-												    			<span style="text-decoration: underline;">
-												    				<%=df.format(projectMaster.getTotalSanctionCost()/10000000) %>
-												    			</span> Cr (FE 
-												    			<span style="text-decoration: underline;">
-												    				<%=df.format(projectMaster.getSanctionCostRE()/10000000 ) %>
-												    			</span> Cr)
-												    		</td>
-												    	</tr> 
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Statement of Accounts ( as on <%-- <%if(chlist.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(chlist.getExpndAsOn()) %><%} %> --%> )</td>
-												    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) 
-												    		: Total <span style="text-decoration: underline;">
-												    			<%-- <%=String.format("%.2f", Double.parseDouble(chlist.getTotalExpnd())/10000000 ) %> --%>
-												    			<%if(expndDetails!=null && expndDetails[0]!=null) {%>
-												    				<%=df.format(Double.parseDouble(expndDetails[0].toString())/10000000 ) %> 
-												    			<%} %>
-												    		</span> Cr 
-												    		(FE <span style="text-decoration: underline;">
-												    			<%-- <%=String.format("%.2f", Double.parseDouble(chlist.getTotalExpndFE())/10000000 ) %> --%>
-												    			<%if(expndDetails!=null && expndDetails[1]!=null) {%>
-												    				<%=df.format(Double.parseDouble(expndDetails[1].toString())/10000000 ) %> 
-												    			<%} %>
-												    			</span> Cr)
-												    		</td>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<!-- <td style="width: 39.2%;">Present Status</td>
-												    		<td style="width: 55.3%;">:</td> -->
-												    		<td style="width: 40%;">Present Status</td>
-												    		<%-- <td style="">: <%=chlist.getPresentStatus() %> </td> --%>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Detailed reasons/considerations for Project <%=closure.getClosureCategory() %> </td>
-												    		<%-- <td style="">: <%if(chlist.getReason()!=null) {%><%=chlist.getReason() %> <%} else{%>-<%} %> </td> --%>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Recommendation of Review Committee for Project success (as applicable)</td>
-<%-- 												    		<td style="">: <%if(chlist.getRecommendation()!=null && !chlist.getRecommendation().isEmpty()) {%><%=chlist.getRecommendation() %> <%} else{%>NA<%} %> </td>
- --%>												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">
-												    			Minutes of Monitoring Committee Meetings held so far and recommendations 
-												 				of the highest monitoring committee for closure of the project/programme
-												 			</td>
-												    		<%-- <td style="">: <%=chlist.getMonitoringCommittee() %> --%>
-												    			<!-- <button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 	 		     value="monitoringcommitteefile" formaction="ProjectClosurechlistFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Download">
-                            					 				 	<i class="fa fa-download fa-lg"></i>
-                            					 				</button>
-												    		</td> -->
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Direction of DMC</td>
-												    		<%-- <td style="">: <%=chlist.getDMCDirection() %> </td> --%>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Lessons Learnt</td>
-												    		<td style="">: 
-												    		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 	 		 value="lessonslearntfile" formaction="ProjectClosurechlistFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Lessons learnt Download">
-                            					 				<i class="fa fa-download fa-lg"></i>
-                            					 			</button>
-												    		</td>
-												    	</tr>
-												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Other relevant details</td>
-<%-- 												    		<td style="">: <%if(chlist.getOtherRelevant()!=null && !chlist.getOtherRelevant().isEmpty()) {%><%=chlist.getOtherRelevant() %> <%} else{%>--<%} %></td>
- --%>												    	</tr>
-   	 												</table>
-   	 												
-   	 												<br>
-			               		   					
-			               		   					<!-- Signatures and timestamps -->
-			               		   					
-							            			<%-- <div class="row mt-2 mb-4" style="margin-left: 18px;">
-														<div class="col-md-12" align="center">
-															<%if(statuscode!=null && chlistforward.contains(statuscode)) {%>
-																<div class="ml-2" align="left">
-									   								<b >Remarks :</b><br>
-									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
-								         						</div>
-																<button type="submit" class="btn btn-sm submit" name="Action" formaction="ProjectClosurechlistApprovalSubmit.htm" value="A" onclick="return confirm('Are you Sure to Submit ?');">Forward</button>
-															<%} %>
-															<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y")) {%>
-																<%if(statuscode!=null && statuscode.contains("SAD")  ) {%>
-																	<div class="row externalapproval" style="">
-																		<div class="col-md-3">
-																			<label class="control-label">Lab</label><span class="mandatory">*</span>
-																			<select class="form-control selectdee" id="LabCode" name="LabCode" onchange="LabcodeSubmit()" data-live-search="true"  required="required">
-		        																<option disabled="disabled" value="" selected="selected"> Select</option>
-																					<%if (labList != null && labList.size() > 0) {
-																						for (Object[] obj : labList) {
-																					%>
-																						<option value=<%=obj[2].toString()%>><%=obj[2].toString()%></option>
-																					<%}}%>
-																					<option value="@EXP">Expert</option>
-																			</select>
-																		</div>
-																		<div class="col-md-3">
-																			<label class="control-label">Approval Officer</label><span class="mandatory">*</span>
-				  															<select class="form-control selectdee" id="approverEmpId" name="approverEmpId" data-live-search="true" required>
-				  																<option disabled="disabled" value="" selected="selected"> Select</option>
-				  															</select>
-																		</div>
-																		<div class="col-md-2">
-																			<label class="control-label" >Approval Date</label><span class="mandatory">*</span>
-			          														<input type="text" class="form-control" id="approvalDate" name="approvalDate">
-																		</div>
-																		<div class="col-md-4"></div>
-																		
-																	</div>
-																<%} %>
-																
-																<div class="ml-2" align="left">
-									   								<b >Remarks :</b><br>
-									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
-								         						</div>
-								         						<%if(statuscode!=null && (statuscode.contains("SAP") || statuscode.contains("SAD"))) {%>
-								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosurechlistApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
-										    						Approve	
-									      						</button>
-									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosurechlistApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
-										 							Return
-																</button>
-								         						<%} else{%>
-																<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosurechlistApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
-										    						Recommend	
-									      						</button>
-									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosurechlistApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
-										 							Return
-																</button>
-															<%} }%>
-														</div>
-                   									</div> --%>
-                   						 
-			               						</form>
-			               					</div>
-			               				</div>
-			               			</div>
-			               							
-               					
-               					<%} else{%>
-			               			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-			               				<h4 style="font-weight: bold;color: red;">Please Fill Check List Details..!</h4>
-			               			</div>
-               					<%} %>
-               					
-               					<div style="display: flex;justify-content: space-between;">
-	               				
-		               				<div class="navigation_btn"  style="text-align: right;">
-		            					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
-										<button class="btn btn-info btn-sm next">Next</button>
-									</div>
-               					</div>
                			
-               			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("2")){ %> 
-         					</div>
-         				<%}else{ %>
-              				</div>
-               			<%} %>
+               					
+               					
+               			
                			
                		</div>
                	</div>
          		
-			</div>
-		</div>
-	</div>
-</div>
+	
 
 <script type="text/javascript">
 $('#expndAsOn').daterangepicker({
