@@ -4053,7 +4053,7 @@ public class ActionController {
           			String projectid=req.getParameter("projectid");
           			String committeeid=req.getParameter("committeeid");
           			String meettingid=req.getParameter("meettingid");
-          	
+          			
           			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
           			
           			if(projectdetailslist.size()==0) 
@@ -4090,8 +4090,10 @@ public class ActionController {
           			}else {
           				if(list.contains(meettingid)) {
           				scheduleid=meettingid;
-          				}else {
+          				}else if(list.size()>0) {
           					scheduleid=list.get(0);
+          				}else {
+          					scheduleid="0";
           				}
           			}
       
