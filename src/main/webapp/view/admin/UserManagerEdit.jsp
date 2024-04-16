@@ -166,11 +166,11 @@ if(ses1!=null){
 
 								</div>
 							</div>
-							<div class="row" style="margin-left: 47%;" align="center">
-								<input type="submit" class="btn btn-primary btn-sm submit" /> <a
-									class="btn btn-info btn-sm shadow-nohover back"
-									style="margin-left: 0.5rem;" href="UserManagerList.htm">Back</a>
-							</div>
+							<div class="row" style="margin-left: 40%;" align="center">
+                               <button type="submit" class="btn btn-primary btn-sm submit">SUBMIT</button>
+                               <a class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 0.5rem;" 
+                               href="UserManagerList.htm">Back</a>
+                           </div>
 							<input type="hidden" name="LoginId"
 								value="<%=login.getLoginId() %>" /> <input type="hidden"
 								name="${_csrf.parameterName}" value="${_csrf.token}" />
