@@ -628,62 +628,91 @@ String rodflag=(String)request.getAttribute("rodflag");
   </div>
 </div>
 
-<div class="modal fade" id="exampleModalAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content" style="margin-left: -13%; width: 37rem;">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-              <div class="modal-body">
-                 <form action="CommitteActionEdit.htm" method="post">
-						<div class="row" >
+	<div class="modal fade" id="exampleModalAction" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content" style="margin-left: -13%; width: 37rem;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="CommitteActionEdit.htm" method="post">
+						<div class="row">
 							<div class="col-md-3">
-								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px">PDC :</label>
+								<label
+									style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px">PDC
+									:</label>
+							</div>
+							<div class="col-md-4" style="margin-left: -6%;">
+								<input class="form-control " name="PDCDate" id="PDCDate"
+									style="width: 261%;">
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-3 mt-3">
+								<div class="form-group">
+									<label
+										style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px">Lab
+										:</label>
 								</div>
-								<div class="col-md-4" style="margin-left: -6%;">
-								<input class="form-control " name="PDCDate" id="PDCDate" style="width: 261%;">
 								</div>
-						 </div>
-						<div class="row mt-4">
-						<div class="col-md-3" >
-								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px"> Assignee : </label> 
-								</div>
-								<div class="col-md-8" style=" margin-left: -6%;" >
-								<select class="form-control selectdee " name="AssigneeId" id="AssigneeUpdate" data-live-search="true" style="width: 118%;">
+								<div class="col-md-8 mt-3" style="margin-left: -6%;">
+									<select class="form-control selectdee" name="AssigneeLab" onchange="labChange()"
+										id="AssigneeLabName" style="width: 118%;">
 										
+									</select>
+								</div>
+							</div>
+
+						<div class="row mt-2">
+							<div class="col-md-3">
+								<label
+									style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px">
+									Assignee : </label>
+							</div>
+							<div class="col-md-8" style="margin-left: -6%;">
+								<select class="form-control selectdee " name="AssigneeId"
+									id="AssigneeUpdate" data-live-search="true"
+									style="width: 118%;">
+
 								</select>
 							</div>
-							</div>
+						</div>
 						<br>
 						<div align="center">
-							<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure To Submit?')">Submit</button>
-                            <input type="hidden" name="ActionAssignId" id="ActionAssignId" value="">
-                            <input type="hidden" name="ActionMainId" id="ActionMainId" value=""/>
-                            <input type="hidden" name="AssigneeId" id="AssigneeId" value=""/>
-                            <input type="hidden" name="CommitteeScheduleId" id="CommitteeScheduleId" value=""/>
-                            <input type="hidden" name="minutesback" value="<%=MinutesBack %>"/>
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button type="submit" class="btn btn-sm submit"
+								onclick="return confirm('Are you sure To Submit?')">Submit</button>
+							<input type="hidden" name="ActionAssignId" id="ActionAssignId"
+								value=""> <input type="hidden" name="ActionMainId"
+								id="ActionMainId" value="" /> <input type="hidden"
+								name="AssigneeId" id="AssigneeId" value="" /> <input
+								type="hidden" name="CommitteeScheduleId"
+								id="CommitteeScheduleId" value="" /> <input type="hidden"
+								name="minutesback" value="<%=MinutesBack%>" /> <input
+								type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
 						</div>
-						</form>
-					</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
 
-<script type="text/javascript">
+	<script type="text/javascript">
+		function changeempdd() {
+			var $labcode = $('#AssigneeLabCode').val();
 
-function changeempdd()
-{
-	var $labcode = $('#AssigneeLabCode').val();
-
-  if (document.getElementById('allempcheckbox').checked) 
-  {
-    employeefetch(0 , $labcode);
-  } else {
-	  employeefetch(<%=committeescheduleeditdata[9]%> , $labcode);
+			if (document.getElementById('allempcheckbox').checked) {
+				employeefetch(0, $labcode);
+			} else {
+				employeefetch(
+	<%=committeescheduleeditdata[9]%> , $labcode);
   }
 }
 
@@ -912,13 +941,13 @@ function changeempdd()
 	    		    			var formatday= moment(tempday).format("DD-MM-YYYY");
 	    		    			var tempday1 = moment(JSON.stringify(values[i][4]), "MMM-DD-YYYY");
 	    		    			var formatday1= moment(tempday1).format("DD-MM-YYYY");
-	    		    			var tempday2 = moment(JSON.stringify(values[i][10]), "MMM-DD-YYYY");
+	    		    		    var tempday2 = moment(JSON.stringify(values[i][10]), "MMM-DD-YYYY");
 	    		    			var pdcday= moment(tempday2).format("DD-MM-YYYY");
 	    		    			   
 	    		    			markup += "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]+"<br>"+"<b>(" + values[i][9] + ")</b>"  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td>";
-	    		    			markup += "<td style='width:13%;text-align:center;'>";
+	    		    		    markup += "<td style='width:13%;text-align:center;'>";
 	    		    			if (values[i][6]==="A") {
-	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionEditform('" + values[i][9] + "','" + pdcday + "','" + values[i][0] + "','" + values[i][11] + "','" + values[i][12] + "','" + values[i][13] + "')\"><i class='fa fa-pencil-square-o' aria-hidden='true' style='color:red;font-size: 18px;'></i></button>";
+	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionEditform('" + values[i][9] + "','" + pdcday + "','" + values[i][0] + "','" + values[i][11] + "','" + values[i][12] + "','" + values[i][13] + "','" + values[i][8] + "','" + values[i][14] + "')\"><i class='fa fa-pencil-square-o' aria-hidden='true' style='color:red;font-size: 18px;'></i></button>";
 	    		    			} else {
 	    		    				 markup += "--";
                                 }
@@ -1038,7 +1067,7 @@ function AssigneeEmpList(){
 	
 	
 }  
-   function showEmployee(){
+function showEmployee(){
 	   var value=$('#multipleAssignee').val();
 	  $.ajax({
 		  type:'GET',
@@ -1106,28 +1135,86 @@ function AssigneeEmpList(){
 	 document.getElementById('modalbody').innerHTML=value;
  }
  
- function actionEditform(actionno,pdc,mainid,assigneeId,actionAssignId,scheduleId){
+ function actionEditform(actionno,pdc,mainid,assigneeId,actionAssignId,scheduleId,assigneeLab,projectid){
+	 
 		$('#exampleModalAction').modal('show');   
 		$('#exampleModalAction .modal-title').html('<span style="color: #C2185B;">Action No : '+ actionno);
 	    $('#PDCDate').val(pdc);
 	    $('#ActionMainId').val(mainid);
 	    $('#ActionAssignId').val(actionAssignId);
 	    $('#CommitteeScheduleId').val(scheduleId);
-	    $('#AssigneeUpdate').empty();
-        <%for(Object[] obj1:EmpNameList){%>
-            var optionValue = <%=obj1[0]%>;
-		    var optionText = '<%=obj1[1]%>,<%=obj1[2]%>';
-	        var option = $("<option></option>").attr("value", optionValue).text(optionText);
-            if(assigneeId==optionValue)
-            {
-              option.prop('selected', true);
-            }
-          $('#AssigneeId').val(optionValue);
-          $('#AssigneeUpdate').append(option);
-        <%}%>
+	    
+	    $('#AssigneeLabName').empty();
+	    <%for(Object[] obj2:Alllablist){%>
+        var optionValue = '<%=obj2[3]%>';
+	    var optionText = '<%=obj2[3]%>';
+        var option = $("<option></option>").attr("value", optionValue).text(optionText);
+        if (assigneeLab == optionValue || (assigneeLab == optionValue && optionValue == '@EXP')) {
+            option.prop('selected', true);
+        }
+      $('#AssigneeLabName').append(option);
+      <% }%>
+      
+      
+      $.ajax({
+          type: "GET",
+          url: "ActionAssigneeEmployeeList.htm",
+          data: {
+          	LabCode: assigneeLab,  
+              proid: projectid
+          },
+          dataType: 'json',
+          success: function(result) {
+          	 var values = Object.values(result);
+               var options = '';
+               for (var i = 0; i < values.length; i++) {
+                   var optionValue = values[i][0];
+                   var optionText = values[i][1] + ', ' + values[i][3];
+                   var isSelected = (assigneeId == optionValue) ? 'selected' : '';
+                   options += '<option value="' + optionValue + '" ' + isSelected + '>' + optionText + '</option>';
+               }
+
+               $('#AssigneeUpdate').html(options);
+               
+           },
+          error: function(xhr, status, error) {
+              console.error("Error:", error);
+          }
+      });
+  
+ }    
+ 
+ function labChange(){
+	 var labCode=$('#AssigneeLabName').val();
+	 var projectid=0;
+	 $('#AssigneeUpdate').empty();
+
+     $.ajax({
+         type: "GET",
+         url: "ActionAssigneeEmployeeList.htm",
+         data: {
+         	LabCode: labCode,  
+             proid: projectid
+         },
+         dataType: 'json',
+         success: function(result) {
+         	 var values = Object.values(result);
+              var options = '';
+              for (var i = 0; i < values.length; i++) {
+                  var optionValue = values[i][0];
+                  var optionText = values[i][1] + ', ' + values[i][3];
+                  options += '<option value="' + optionValue + '">' + optionText + '</option>';
+              }
+
+              $('#AssigneeUpdate').html(options);
+              
+          },
+         error: function(xhr, status, error) {
+             console.error("Error:", error);
+         }
+     });
  }
-	
-</script>
+	</script>
 </body>
 </html>
 

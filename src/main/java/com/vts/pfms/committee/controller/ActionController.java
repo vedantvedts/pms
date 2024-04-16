@@ -4411,6 +4411,7 @@ public class ActionController {
         	{
             	String UserId = (String) ses.getAttribute("Username");
         		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+        		String LabCode = (String) ses.getAttribute("labcode");
         		logger.info(new Date() +"Inside CommitteActionEdit.htm "+UserId);
         		try {
         			
@@ -4422,10 +4423,13 @@ public class ActionController {
 					String AssigneeId=req.getParameter("AssigneeId");
 					String ActionAssignId=req.getParameter("ActionAssignId");
 					String CommitteeScheduleId=req.getParameter("CommitteeScheduleId");
+					String AssigneeLab=req.getParameter("AssigneeLab");
         			
         			ActionAssignDto actionAssign = new ActionAssignDto();
         			actionAssign.setActionAssignId(Long.parseLong(ActionAssignId));
         			actionAssign.setAssignee(Long.parseLong(AssigneeId));
+        			actionAssign.setAssignorLabCode(LabCode);
+        			actionAssign.setAssigneeLabCode(AssigneeLab);
         			actionAssign.setAssignor(Long.parseLong(EmpId));
         			actionAssign.setPDCOrg(sdf1.format(sdf.parse(PDCDate)));
         			actionAssign.setEndDate(sdf1.format(sdf.parse(PDCDate)));
