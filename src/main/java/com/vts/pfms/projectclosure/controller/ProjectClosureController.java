@@ -1499,7 +1499,7 @@ public class ProjectClosureController {
 			res.setContentType("Application/octet-stream");	
 			ProjectClosureCheckList clist= service.getProjectClosureCheckListByProjectId(closureId);
 			File my_file=null;
-			String file = ftype.equalsIgnoreCase("QARMilestonefile") ? clist.getQARMilestone():ftype.equalsIgnoreCase("QARCostBreakupfile")? clist.getQARCostBreakup(): ftype.equalsIgnoreCase("QARNCItemsfile")? clist.getQARNCItems():"" ;
+			String file = ftype.equalsIgnoreCase("QARMilestonefile") ? clist.getQARMilestone():ftype.equalsIgnoreCase("QARCostBreakupfile")? clist.getQARCostBreakup(): ftype.equalsIgnoreCase("QARNCItemsfile")? clist.getQARNCItems():ftype.equalsIgnoreCase("EquipProcuredfile")? clist.getEquipProcured(): ftype.equalsIgnoreCase("EquipProcuredBeforePDCfile")? clist.getEquipProcuredBeforePDCAttach(): ftype.equalsIgnoreCase("EquipBoughtOnChargefile")? clist.getEquipBoughtOnChargeAttach() : ftype.equalsIgnoreCase("BudgetExpenditurefile")? clist.getBudgetExpenditureAttach():"" ;
 			my_file = new File(LabLogoPath+"Project-Closure\\Check-List\\"+File.separator+file); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
