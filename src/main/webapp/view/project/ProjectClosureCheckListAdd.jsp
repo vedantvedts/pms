@@ -390,18 +390,22 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 									<div class="row" style="width: 140%; margin-left: -15rem;margin-top: 1rem;">
 										<div class="col-md-12">
 											<div class="card shadow-nohover" >
+											
 											<form>
 												<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;text-align: left;">
 								                    <b class="text-white" style="">Check List Details : 
+								                    <% if(chlist!=null) {%>
 								                    <button type="submit" class="btn btn-sm" style="" name="closureId" formmethod="get" formnovalidate="formnovalidate"
                   					 		  				 	value="<%=closureId %>" formaction="ProjectClosureCheckListDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CheckList Download">
                   					 							<i class="fa fa-download fa-lg"></i>
                   					 						</button>
+                  					 							<%} %>
                   					 						</b> 
 								                    <hr>
 								                    <span class="text-white" style="float:right;font-weight: 600"> </span>
 							        			</div> 
 							        	</form>	
+							        
 							        		
 												<div class="card-body" style="overflow:auto;max-height:25rem;">
 								        		
@@ -1495,10 +1499,10 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 				               				</form>
 			               				<%} %>
 									</div> --%>
-		               				<div class="navigation_btn"  style="text-align: right;">
+		               				<!-- <div class="navigation_btn"  style="text-align: right;">
             							<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectClosureList.htm" style="color: white!important">Back</a>
 										<button class="btn btn-info btn-sm next">Next</button>
-									</div>
+									</div> -->
                					</div>
                					
                			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("1")){ %> 
@@ -1566,7 +1570,7 @@ $(document).ready(function() {
     		 $('#CSDrawn').hide();
         	 $('#CSReason').show();
 	
-     }else{
+     }else if($("#select1").val() == 'ThroughMainStream'){
     	 
     	 $('#CSReason').hide();
     	 $('#CSDrawn').show();
@@ -1593,7 +1597,7 @@ $(document).ready(function() {
    	 $('#NCSReason').show();
    	
    }
-   else{
+   else {
 	   	 $('#NCSReason').hide();
 	   	 $('#NCSDrawn').show();
    		
@@ -1609,7 +1613,7 @@ $(document).ready(function() {
 		 $('#NCSDrawn').hide();
 	   	 $('#NCSReason').show();
 	   
-   }else{
+   }else if($("#select2").val() == 'ThroughMainStream'){
 	   
 	     $('#NCSReason').hide();
 	   	 $('#NCSDrawn').show();

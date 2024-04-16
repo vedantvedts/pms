@@ -485,8 +485,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Procurement/ Accounting Procedure (consumable Stores) </td>
-			<td></td>
+			<td colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Procurement/ Accounting Procedure (consumable Stores) </td>
+			
 		</tr>
 		
 		
@@ -519,8 +519,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Procurement/ Accounting Procedure (Non-consumable Stores) </td>
-			<td></td>
+			<td colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Procurement/ Accounting Procedure (Non-consumable Stores) </td>
+			
 		</tr>
 		
 		
@@ -563,8 +563,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Equipment </td>
-			<td></td>
+			<td  colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Equipment </td>
+			
 		</tr>
 		
 		<tr>
@@ -626,8 +626,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Budget </td>
-			<td></td>
+			<td  colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Budget </td>
+			
 		</tr>
 		
 		
@@ -691,8 +691,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Utilization of Equipment </td>
-			<td></td>
+			<td  colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Utilization of Equipment </td>
+			
 		</tr>
 		
 		
@@ -711,8 +711,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Staff Position </td>
-			<td></td>
+			<td  colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Staff Position </td>
+			
 		</tr>
 		
 		<tr>
@@ -757,8 +757,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Civil Works </td>
-			<td></td>
+			<td  colspan="2"  style="width: 35%;text-align: left !important;font-weight: 600;">Civil Works </td>
+			
 		</tr>
 		
 		
@@ -805,8 +805,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">Vehicles </td>
-			<td></td>
+			<td  colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Vehicles </td>
+			
 		</tr>
 		
 		
@@ -834,8 +834,8 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 600;">If the project is closed </td>
-			<td></td>
+			<td  colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">If the project is closed </td>
+			
 		</tr>
 		
 		
