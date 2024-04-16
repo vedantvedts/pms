@@ -628,6 +628,8 @@ String rodflag=(String)request.getAttribute("rodflag");
   </div>
 </div>
 
+<!-- modal for action edit start -->
+
 	<div class="modal fade" id="exampleModalAction" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
@@ -694,8 +696,9 @@ String rodflag=(String)request.getAttribute("rodflag");
 								name="AssigneeId" id="AssigneeId" value="" /> <input
 								type="hidden" name="CommitteeScheduleId"
 								id="CommitteeScheduleId" value="" /> <input type="hidden"
-								name="minutesback" value="<%=MinutesBack%>" /> <input
-								type="hidden" name="${_csrf.parameterName}"
+								name="minutesback" value="<%=MinutesBack%>" /> 
+								<input type="hidden" name="specnamevalue" id="specValue" value="">
+								<input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}" />
 						</div>
 					</form>
@@ -703,6 +706,8 @@ String rodflag=(String)request.getAttribute("rodflag");
 			</div>
 		</div>
 	</div>
+	
+<!-- modal for action edit start -->
 
 	<script type="text/javascript">
 		function changeempdd() {
@@ -981,22 +986,10 @@ String rodflag=(String)request.getAttribute("rodflag");
 		}
 	});
 
-	$('#PDCDate').daterangepicker({
-		"singleDatePicker" : true,
-		"linkedCalendars" : false,
-		"showCustomRangeLabel" : true,
-		/* "minDate" : new Date(), */
-		"cancelClass" : "btn-default",
-		showDropdowns : true,
-		locale : {
-			format : 'DD-MM-YYYY'
-		}
-	});
-  
-    </script>
+	
+</script>
 
-	<script>
-
+<script>
 
  var genid="<%=GenId%>";
 	$(document).ready(function(){
@@ -1144,18 +1137,44 @@ function showEmployee(){
 	    $('#ActionAssignId').val(actionAssignId);
 	    $('#CommitteeScheduleId').val(scheduleId);
 	    
+	    var specNameAdd= $('#specnameadd').val();
+	    $('#specValue').val(specNameAdd);
+	    
+	    //all lab list
 	    $('#AssigneeLabName').empty();
 	    <%for(Object[] obj2:Alllablist){%>
         var optionValue = '<%=obj2[3]%>';
 	    var optionText = '<%=obj2[3]%>';
         var option = $("<option></option>").attr("value", optionValue).text(optionText);
-        if (assigneeLab == optionValue || (assigneeLab == optionValue && optionValue == '@EXP')) {
+        if (assigneeLab == optionValue) {
             option.prop('selected', true);
         }
       $('#AssigneeLabName').append(option);
       <% }%>
       
+      var expertOptionValue = "@EXP";
+      var expertOptionText = "Expert";
+      var expertOption = $("<option></option>").attr("value", expertOptionValue).text(expertOptionText);
+      if (assigneeLab == 'Expert') {
+          expertOption.prop('selected', true);
+      }
+      $('#AssigneeLabName').append(expertOption);
       
+      //pdc date 
+      $('#PDCDate').daterangepicker({
+  		"singleDatePicker" : true,
+  		"linkedCalendars" : false,
+  		"showCustomRangeLabel" : true,
+  		/* "minDate" : new Date(), */
+  		"startDate":pdc, 
+  		"cancelClass" : "btn-default",
+  		showDropdowns : true,
+  		locale : {
+  			format : 'DD-MM-YYYY'
+  		}
+  	});
+      
+      //exsiting employee name to be selected
       $.ajax({
           type: "GET",
           url: "ActionAssigneeEmployeeList.htm",
@@ -1181,9 +1200,9 @@ function showEmployee(){
               console.error("Error:", error);
           }
       });
-  
  }    
  
+ // labcode change then their lab employyee will show
  function labChange(){
 	 var labCode=$('#AssigneeLabName').val();
 	 var projectid=0;

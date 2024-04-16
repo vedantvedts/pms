@@ -281,7 +281,7 @@ public class ActionController {
 //					}
 				}
 			}else {
-				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
+				if(CpLabCode.trim().equalsIgnoreCase("@EXP") || CpLabCode.equalsIgnoreCase("Expert")) 
 				{
 					EmployeeList = service.ClusterExpertsList();
 				}else{
@@ -988,7 +988,6 @@ public class ActionController {
 				{
 					emp=allEmployees.stream().map(i -> i[0].toString()).collect(Collectors.toList());
 				}
-				System.out.println(emp);
 				String[]a=req.getParameterValues("Assignee");
 				if(a!=null) {
 					for(String s:a) {
@@ -4444,6 +4443,7 @@ public class ActionController {
 
         			redir.addFlashAttribute("ScheduleId", CommitteeScheduleId);
         			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
+        			redir.addFlashAttribute("specname", req.getParameter("specnamevalue"));
         			return "redirect:/CommitteeAction.htm";
         			
 				} catch (Exception e) {
