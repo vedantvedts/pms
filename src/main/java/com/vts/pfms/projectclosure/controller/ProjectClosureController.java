@@ -52,6 +52,7 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.service.CARSService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
+import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.service.ProjectService;
@@ -1537,6 +1538,33 @@ public class ProjectClosureController {
 				String projectId = closure.getProjectId()+"";
 				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
+				
+				final String localUri2=uri+"/pfms_serv/GetBudgetDetails";
+				HttpHeaders headers = new HttpHeaders();
+		 		String jsonResult2=null;
+				try {
+					HttpEntity<String> entity = new HttpEntity<String>(headers);
+					ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
+					jsonResult2=response.getBody();						
+				}catch(Exception e) {
+					req.setAttribute("errorMsg", "errorMsg");
+				}
+				ObjectMapper mapper2 = new ObjectMapper();
+				mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+				mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+				List<TotalDemand> totaldemand=null;
+				if(jsonResult2!=null) {
+					try {
+						totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+						req.setAttribute("TotalProcurementDetails",totaldemand);
+					} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+			}
+
+				
+				
+				
 				
 				//req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
 				//req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
