@@ -30,5 +30,6 @@ public interface PFTSService {
 	public List<Object[]> getOrderDetailsAjax(String fileId)throws Exception;
 	public long ManualOrderSubmit(PftsFileOrder order, String orderid)throws Exception;
 	public long manualDemandEditSubmit(PFTSFileDto pftsDto)throws Exception;
+	public List<Object[]> getDemandNoList()throws Exception;
 
 }

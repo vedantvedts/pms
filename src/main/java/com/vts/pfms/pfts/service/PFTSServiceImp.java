@@ -227,6 +227,11 @@ public class PFTSServiceImp implements PFTSService{
         	 pfo.setPftsFileId(Long.parseLong(fileId));
         	 pfo.setCreatedBy(userid);
         	 pfo.setCreatedDate(sdf1.format(new Date()));
+        	 if(dod.getIsPresent()!=null && dod.getIsPresent().equalsIgnoreCase("N")) {
+        		pfo.setIsPresent("N"); 
+        	 }else {
+        		 pfo.setIsPresent("Y"); 
+        	 }
         	 pfo.setIsActive(1);
         	 try {
         	 result=dao.addDemandfileOrder(pfo);
@@ -302,6 +307,12 @@ public class PFTSServiceImp implements PFTSService{
 	public long manualDemandEditSubmit(PFTSFileDto pftsDto) throws Exception {
 		
 		return dao.manualDemandEditSubmit(pftsDto);
+	}
+	
+	@Override
+	public List<Object[]> getDemandNoList() throws Exception{
+		
+		return dao.getDemandNoList();
 	}
 
 }

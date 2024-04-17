@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -34,4 +35,7 @@ public class PftsFileOrder implements Serializable {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
+	
+	@Transient
+	private String isPresent;
 }

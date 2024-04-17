@@ -85,6 +85,7 @@ font-weight: bold;
 		                   </div>
 		                    <div class="col-md-4" style="margin-left: -10%;">
 			                    <input  class="form-control"  name="demandNo" id="demandNo"  required="required"  placeholder="Enter Demand Number">
+		                        <span id="demandMessage"></span>
 		                    </div>
 		             </div>
 		             <br>
@@ -140,6 +141,45 @@ $('#datepicker1').daterangepicker({
 		format : 'DD-MM-YYYY'
 	}
 });
+
+$(document).ready(function() {
+	
+	// Initially disable the submit button
+    $('#manualAddBtn').prop('disabled', true);
+	
+    $('#demandNo').on('input', function() {
+        var demandno = $(this).val();
+        if (demandno.trim() === '') {
+            $('#demandMessage').text("Please Enter a Demand Number").css('color', 'blue');
+            // Disable the submit button if input is empty
+            $('#manualAddBtn').prop('disabled', true);
+            return; // Exit function if input is empty
+        }
+        
+        $.ajax({
+            type: 'GET',
+            url: 'checkManualDemandNo.htm',
+            success: function(data) {
+                var demandNumbers = JSON.parse(data);
+                var isDuplicate = demandNumbers.includes(demandno.trim());
+                if (isDuplicate) {
+                    $('#demandMessage').text("Demand Number Already Exists !").css('color', 'red');
+                    // Disable the submit button if Demand Number Already Exists
+                    $('#manualAddBtn').prop('disabled', true);
+                } else {
+                    $('#demandMessage').text("Demand Number is valid").css('color', 'green');
+                    // Enable the submit button if Demand Number is valid
+                    $('#manualAddBtn').prop('disabled', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+});
+
+
 </script>
 </body>
 </html>

@@ -107,6 +107,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public int upadteDemandFile(String fileId, String statusId, Date eventDateSql,String update,String remarks)throws Exception{
 		
+		
 		String UpdateDemand="UPDATE pfts_file SET PftsStatusId=:statusid, "+update+"=:eventDate, Remarks=:remarks  WHERE PftsFileId=:fileid";
 		Query query=manager.createNativeQuery(UpdateDemand);
 		query.setParameter("fileid", fileId);
@@ -140,10 +141,12 @@ public  class PFTSDaoImpl implements PFTSDao{
 
 	@Override
 	public Long addDemandfileOrder(PftsFileOrder pfo) throws Exception {
+		if(!pfo.getIsPresent().equalsIgnoreCase("N")) {
 		String updateOrder="UPDATE pfts_file_order SET IsActive='0' WHERE PftsFileId=:PftsFileId";
 		Query query = manager.createNativeQuery(updateOrder);
 		query.setParameter("PftsFileId", pfo.getPftsFileId());
 		query.executeUpdate();
+		}
 		manager.persist(pfo);
 		manager.flush();
 		
@@ -265,5 +268,12 @@ public  class PFTSDaoImpl implements PFTSDao{
 		query.setParameter("ModifiedDate", pftsDto.getModifiedDate());
 		query.setParameter("fileId", pftsDto.getPftsFileId());
 		return  query.executeUpdate();
+	}
+	
+	private static final String GETDEMANDNO="SELECT demandno FROM pfts_file WHERE isactive='1'";
+	@Override
+	public List<Object[]> getDemandNoList() throws Exception {
+		Query query = manager.createNativeQuery(GETDEMANDNO);
+		return (List<Object[]>)query.getResultList();
 	}
 }

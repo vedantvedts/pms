@@ -499,7 +499,9 @@ function RemoveDiv(btn) {
         console.error("No appended divs found");
     }
 }
-
+$(document).ready(function() {
+modalOpen()
+});
 </script>
 </body>
 </html>

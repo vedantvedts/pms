@@ -620,8 +620,6 @@ public class PFTSController {
 				
 				String projectId = req.getParameter("projectId");
 				
-				System.out.println("ProjectId##########"+projectId);
-				
 				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 				req.setAttribute("projectslist",projectlist );
 				req.setAttribute("projectId",projectId);
@@ -750,6 +748,7 @@ public class PFTSController {
 		            	 pfts.setOrderCost(Double.parseDouble(orderCost[i]));
 		            	 pfts.setItemFor(itemFor[i]);
 		            	 pfts.setVendorName(vendorName[i]);
+		            	 pfts.setIsPresent("N");
 		            	 fileList.add(pfts);
 		             }
 		             
@@ -900,6 +899,26 @@ public class PFTSController {
 				return "static/Error";	
 			}
 		}
+		
+		
+		@RequestMapping(value = "checkManualDemandNo.htm", method = RequestMethod.GET)
+		public @ResponseBody String checkManualDemandNo(HttpServletRequest req, HttpSession ses) throws Exception
+			{
+				String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside checkManualDemandNo.htm "+UserId);		
+				try {
+						String projectId=req.getParameter("projectId");
+						List<Object[]> demandNoList=service.getDemandNoList();
+						Gson json = new Gson();
+						return json.toJson(demandNoList);
+				}catch (Exception e) 
+				{			
+					e.printStackTrace(); 
+					logger.error(new Date() +" Inside checkManualDemandNo.htm "+UserId, e); 
+					return null;
+				}
+
+			}
 			
 }
 
