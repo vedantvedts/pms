@@ -642,6 +642,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 		                   </div>
 		                    <div class="col-md-4">
 			                    <input  class="form-control"  name="demandno" id="demandno"  required="required"  placeholder="Enter Demand Number">
+		                        <span id="demandMessage"></span>
 		                    </div>
 		             </div>
 		             <br>
@@ -674,7 +675,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 		             
 		          <br>
 		        <div class="form-group" align="center" >
-					 <button type="submit" class="btn btn-primary btn-sm submit "  value="SUBMIT" onclick ="return confirm('Are you sure to submit?')">SUBMIT </button>
+					 <button type="submit" class="btn btn-primary btn-sm submit" id="editSubmit" value="SUBMIT" onclick ="return confirm('Are you sure to submit?')">SUBMIT </button>
 					 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 					 <input type="hidden" name="procfileId" id="procfileId" value="">
 				</div>
@@ -1172,6 +1173,7 @@ function ibasOrderStatus(fileId,demandno){
 }
 </script>
 <script type="text/javascript">
+
 function manualDemandEdit(fileid,demandNo,demandDate,demandCost,itemName){
 	
 	$('#demanddate').daterangepicker({
@@ -1191,14 +1193,47 @@ function manualDemandEdit(fileid,demandNo,demandDate,demandCost,itemName){
     month: '2-digit',
     year: 'numeric',
     }).replace(/\//g, '-');
-	
+	$('#demandno').empty();
+	$('#demandMessage').empty();
 	$('#procfileId').val(fileid);
 	$('#demandno').val(demandNo);
 	$('#demanddate').val(demandDateFormat);
 	$('#estimatedcost').val(demandCost);
 	$('#itemname').val(itemName);
 	$('#manualDemandEditModal').modal('show');
+	
+	
 }
+$('#demandno').on('input', function() {
+    var demandno = $(this).val();
+    if (demandno.trim() === '') {
+        $('#demandMessage').text("Please Enter a Demand Number").css('color', 'blue');
+        // Disable the submit button if input is empty
+        $('#editSubmit').prop('disabled', true);
+        return; // Exit function if input is empty
+    }
+    
+    $.ajax({
+        type: 'GET',
+        url: 'checkManualDemandNo.htm',
+        success: function(data) {
+            var demandNumbers = JSON.parse(data);
+            var isDuplicate = demandNumbers.includes(demandno.trim());
+            if (isDuplicate) {
+                $('#demandMessage').text("Demand Number Already Exists !").css('color', 'red');
+                // Disable the submit button if Demand Number Already Exists
+                $('#editSubmit').prop('disabled', true);
+            } else {
+                $('#demandMessage').text("Demand Number is valid").css('color', 'green');
+                // Enable the submit button if Demand Number is valid
+                $('#editSubmit').prop('disabled', false);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
 
 $('.btn[data-toggle="tooltip"]').tooltip({
     animated: 'fade',
@@ -1206,6 +1241,7 @@ $('.btn[data-toggle="tooltip"]').tooltip({
     html : true,
     boundary: 'window'
 });
+
 </script>
 </body>
 </html>
