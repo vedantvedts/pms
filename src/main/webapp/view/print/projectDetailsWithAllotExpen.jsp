@@ -6,7 +6,7 @@
 <%@page import="java.math.BigDecimal"%>
 <%@page import="java.util.Map.Entry"%>
 <%@page import="java.text.DecimalFormat" %>
-<%-- <%@page import="com.vts.pfms.utils.DateTimeFormatUtil" %> --%>
+
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.*"%>
@@ -56,6 +56,11 @@ String GetPdc=(String)request.getAttribute("GetPdc");
 String Amount=(String)request.getAttribute("Amount");
 String BudgetHeadCode=(String)request.getAttribute("BudgetHeadCode");
 String LabCode=(String)request.getAttribute("LabCode");
+
+String outputFormat = "dd-MM-yyyy";
+DateFormat inputDateFormat = new SimpleDateFormat("MMM dd, yyyy");
+// Output date format
+DateFormat outputDateFormat = new SimpleDateFormat(outputFormat);
 
 if(ProjectDetails!=null && ProjectDetails.size()>0){
 	for(Object[] obj:ProjectDetails){
@@ -122,16 +127,16 @@ if(ProjectDetails!=null && ProjectDetails.size()>0){
 		<tr>
 		<td class="tdSize2" align="center">6</td>
  		<td class="tdSize" colspan="4">Sanction Letter No. & Date</td>
- 		<td colspan="5"><%if(obj[3]!=null){%><%=obj[3]%><%} %>&nbsp;&nbsp;&nbsp;Dt.- <%if(obj[4]!=null){%><%=obj[4].toString()%><%} %></td>
+ 		<td colspan="5"><%if(obj[3]!=null){%><%=obj[3]%><%} %>&nbsp;&nbsp;&nbsp;Dt.- <%if(obj[4]!=null){%><%=outputDateFormat.format(inputDateFormat.parse(obj[4].toString()))%><%} %></td>
  		</tr>
  		
 		<tr>
 		<td class="tdSize2" align="center">7</td>
  		<td class="tdSize" colspan="4">PDC Original</td>
  		<%if(obj[7]!=null){ %>
- 		<td colspan="5"><%if(obj[7]!=null){%><%=obj[7].toString()%><%}%></td>
+ 		<td colspan="5"><%if(obj[7]!=null){%><%=outputDateFormat.format(inputDateFormat.parse(obj[7].toString()))%><%}%></td>
  		<%}else{ %>
- 		<td colspan="5"><%if(obj[5]!=null){%><%=obj[5].toString()%><%}%></td>
+ 		<td colspan="5"><%if(obj[5]!=null){%><%=outputDateFormat.format(inputDateFormat.parse(obj[5].toString()))%><%}%></td>
  		<%} %>
  		</tr>
  		

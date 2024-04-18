@@ -197,7 +197,7 @@ p,td,th
      FormatConverter fc = new FormatConverter();
      String closureId=(String)request.getAttribute("closureId");
      ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
-
+     String ProjectId=(String)request.getAttribute("projectId");
 
 %>
 
@@ -636,7 +636,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.Yearly break up of Allotment & Expenditure since the Project  sanctioned </td>
 			<td>
 			
-			<a href="ProjectDetailsAllotExp.htm?ProjectIdSel=1&Amount=1" target="_blank" title="Budget Yearly BreakUp Download">
+			<a href="ProjectDetailsAllotExp.htm?ProjectIdSel=<%=ProjectId %>&Amount=L" target="_blank" title="Budget Yearly BreakUp Download">
 			       Download
 		     </a>
 			

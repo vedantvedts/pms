@@ -1545,11 +1545,8 @@ public class ProjectClosureController {
 				System.out.println("projectId---"+projectId);
 				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
+				req.setAttribute("projectId", projectId);
 				
-				
-				
-				
-
 				//req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
 				//req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
 				//req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
@@ -1601,24 +1598,25 @@ public class ProjectClosureController {
 		String Username = (String) ses.getAttribute("Username");
 		//String Client_name = (ses.getAttribute("client_name")).toString();
 		String labcode = (String) ses.getAttribute("labcode");
+		System.out.println("labcode---"+labcode);
 	    logger.info(new Date() + "Inside ProjectDetailsAllotExp.htm " + Username);
 		try {
 		String ProjectIdsel=req.getParameter("ProjectIdSel");
 	    req.setAttribute("LabCode", labcode);
-		 String ProjectCode=null;
+		 //String ProjectCode=null;
 		if(ProjectIdsel!=null) {
 		 long ProjectId=0;
 		 String[] prjArr=ProjectIdsel.split("#");
 			ProjectId=Integer.parseInt(prjArr[0]);
-			ProjectCode="PMS";
+			//ProjectCode="PMS";
 		 String Amount=(String)req.getParameter("Amount");
 		 int InRupeeValue=0;
 		 if (Amount.equalsIgnoreCase("R")) {
-			InRupeeValue = 1;
+			 InRupeeValue = 1;
 		 } else if (Amount.equalsIgnoreCase("L")) {
-			InRupeeValue = 100000;
+			 InRupeeValue = 100000;
 		 } else if (Amount.equalsIgnoreCase("C")) {
-			InRupeeValue = 10000000;
+			 InRupeeValue = 10000000;
 	}
 			
 		 
@@ -1636,11 +1634,11 @@ public class ProjectClosureController {
 			ObjectMapper mapper2 = new ObjectMapper();
 			mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-			List<Object[]> BudgetDetails=null;
+			List<Object[]> ProjectAllotAndExpeList=null;
 			//System.out.println("jsonResult2"+jsonResult2);
 			if(jsonResult2!=null) {
 				try {
-					BudgetDetails = mapper2.readValue(jsonResult2, new TypeReference<List<Object[]>>(){});
+					ProjectAllotAndExpeList = mapper2.readValue(jsonResult2, new TypeReference<List<Object[]>>(){});
 					
 				} catch (JsonProcessingException e) {
 				e.printStackTrace();
@@ -1682,7 +1680,7 @@ public class ProjectClosureController {
 //				}
 //			}
 			
-			List<Object[]> ProjectAllotAndExpeList=BudgetDetails;
+			//List<Object[]> ProjectAllotAndExpeList=BudgetDetails;
 			
 			Map<String, Map<String, String>> AllotExpListDetailList = new TreeMap<String, Map<String, String>>();
 			
