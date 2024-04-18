@@ -1,9 +1,11 @@
 package com.vts.pfms.projectclosure.controller;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +14,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +53,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.utils.PdfMerger;
+
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.service.CARSService;
@@ -1536,36 +1542,14 @@ public class ProjectClosureController {
 				
 				ProjectClosure closure = service.getProjectClosureById(closureId);
 				String projectId = closure.getProjectId()+"";
+				System.out.println("projectId---"+projectId);
 				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
 				
-				final String localUri2=uri+"/pfms_serv/GetBudgetDetails";
-				HttpHeaders headers = new HttpHeaders();
-		 		String jsonResult2=null;
-				try {
-					HttpEntity<String> entity = new HttpEntity<String>(headers);
-					ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
-					jsonResult2=response.getBody();						
-				}catch(Exception e) {
-					req.setAttribute("errorMsg", "errorMsg");
-				}
-				ObjectMapper mapper2 = new ObjectMapper();
-				mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-				mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-				List<TotalDemand> totaldemand=null;
-				if(jsonResult2!=null) {
-					try {
-						totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
-						req.setAttribute("TotalProcurementDetails",totaldemand);
-					} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-			}
+				
+				
+				
 
-				
-				
-				
-				
 				//req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
 				//req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
 				//req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
@@ -1610,6 +1594,356 @@ public class ProjectClosureController {
     		e.printStackTrace();
     	}		
 	}
+	
+	
+	@RequestMapping(value = "ProjectDetailsAllotExp.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public void ProjectDetailsAllotExp(HttpServletRequest req,HttpServletResponse resp,HttpSession ses,RedirectAttributes redir)throws Exception {
+		String Username = (String) ses.getAttribute("Username");
+		//String Client_name = (ses.getAttribute("client_name")).toString();
+		String labcode = (String) ses.getAttribute("labcode");
+	    logger.info(new Date() + "Inside ProjectDetailsAllotExp.htm " + Username);
+		try {
+		String ProjectIdsel=req.getParameter("ProjectIdSel");
+	    req.setAttribute("LabCode", labcode);
+		 String ProjectCode=null;
+		if(ProjectIdsel!=null) {
+		 long ProjectId=0;
+		 String[] prjArr=ProjectIdsel.split("#");
+			ProjectId=Integer.parseInt(prjArr[0]);
+			ProjectCode="PMS";
+		 String Amount=(String)req.getParameter("Amount");
+		 int InRupeeValue=0;
+		 if (Amount.equalsIgnoreCase("R")) {
+			InRupeeValue = 1;
+		 } else if (Amount.equalsIgnoreCase("L")) {
+			InRupeeValue = 100000;
+		 } else if (Amount.equalsIgnoreCase("C")) {
+			InRupeeValue = 10000000;
+	}
+			
+		 
+		 final String localUri2=uri+"/pfms_serv/GetBudgetDetails.htm?projectId="+ProjectId+"&inRuppes="+100000;
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+	 		String jsonResult2=null;
+			try {
+				HttpEntity<String> entity = new HttpEntity<String>(headers);
+				ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.GET, entity, String.class);
+				jsonResult2=response.getBody();						
+			}catch(Exception e) {
+				req.setAttribute("errorMsg", "errorMsg");
+			}
+			ObjectMapper mapper2 = new ObjectMapper();
+			mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+			List<Object[]> BudgetDetails=null;
+			//System.out.println("jsonResult2"+jsonResult2);
+			if(jsonResult2!=null) {
+				try {
+					BudgetDetails = mapper2.readValue(jsonResult2, new TypeReference<List<Object[]>>(){});
+					
+				} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+		 
+			final String localUri3=uri+"/pfms_serv/GetProjectDetails.htm?projectId="+ProjectId+"&inRuppes="+100000;
+			HttpHeaders headers1 = new HttpHeaders();
+			headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+	 		String jsonResult3=null;
+			try {
+				HttpEntity<String> entity = new HttpEntity<String>(headers);
+				ResponseEntity<String> response=restTemplate.exchange(localUri3, HttpMethod.GET, entity, String.class);
+				jsonResult3=response.getBody();						
+			}catch(Exception e) {
+				req.setAttribute("errorMsg", "errorMsg");
+			}
+			ObjectMapper mapper3 = new ObjectMapper();
+			mapper3.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			mapper3.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+			List<Object[]> ProjectDetails=null;
+			//System.out.println("jsonResult2"+jsonResult2);
+			if(jsonResult3!=null) {
+				try {
+					ProjectDetails = mapper2.readValue(jsonResult3, new TypeReference<List<Object[]>>(){});
+					
+				} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+			
+			
+		 
+//			List<String> GetPdc=(List<String>)reportService.GetPdc(ProjectId);
+//			String AllPdc="";
+//			if (GetPdc != null) {
+//				for (String pdc : GetPdc) {
+//					AllPdc = AllPdc + ", " + pdc;
+//				}
+//			}
+			
+			List<Object[]> ProjectAllotAndExpeList=BudgetDetails;
+			
+			Map<String, Map<String, String>> AllotExpListDetailList = new TreeMap<String, Map<String, String>>();
+			
+			String Year=null;
+			String AllotmentCost=null;
+			String RevOrCap = null;
+			String ExpAginestAllotment = null;
+			String ExpAginestNonAllotment = null;
+			String BudgetHeadCode = null;
+			
+			
+			/*initializing variables for calculating total allotment of all years*/
+			BigDecimal TotalRevAlotment = BigDecimal.ZERO;
+			BigDecimal TotalCapAlotment = BigDecimal.ZERO;
+			BigDecimal TotalBelAlotment = BigDecimal.ZERO;
+			BigDecimal TotalIafAlotment = BigDecimal.ZERO;
+			BigDecimal TotalRdrAlotment = BigDecimal.ZERO;
+			BigDecimal TotalAtvAlotment = BigDecimal.ZERO;
+			BigDecimal TotalNavAlotment = BigDecimal.ZERO;
+			BigDecimal TotalAdAlotment = BigDecimal.ZERO;
+			BigDecimal TotalArmAlotment = BigDecimal.ZERO;
+			BigDecimal TotalIsrAlotment = BigDecimal.ZERO;
+			
+
+			/*initializing variables for calculating total allotment expenditure of all years*/
+			BigDecimal TotalRevAllotment = BigDecimal.ZERO;
+		    BigDecimal TotalCapAllotment = BigDecimal.ZERO;
+			BigDecimal TotalBelAllotment = BigDecimal.ZERO;
+			BigDecimal TotalIafAllotment = BigDecimal.ZERO;
+			BigDecimal TotalRdrAllotment = BigDecimal.ZERO;
+			BigDecimal TotalAtvAllotment = BigDecimal.ZERO;
+			BigDecimal TotalNavAllotment = BigDecimal.ZERO;
+			BigDecimal TotalAdAllotment = BigDecimal.ZERO;
+			BigDecimal TotalArmAllotment = BigDecimal.ZERO;
+			BigDecimal TotalIsrAllotment = BigDecimal.ZERO;
+			
+			/*initializing variables for total non allotment expenditure of all years*/
+			BigDecimal TotalRevNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalCapNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalBelNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalIafNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalRdrNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalAtvNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalNavNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalAdNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalArmNonAllotment = BigDecimal.ZERO;
+			BigDecimal TotalIsrNonAllotment = BigDecimal.ZERO;
+			
+			Map<String, BigDecimal> AllotmentMap = new HashMap<String, BigDecimal>();
+			
+			if (ProjectAllotAndExpeList != null) {
+				for (Object[] obj : ProjectAllotAndExpeList) {
+					Year = "";
+					AllotmentCost = "0.0";
+					ExpAginestAllotment = "0.0";
+					ExpAginestNonAllotment = "0.0";
+					
+					if (obj[0] != null)
+						Year = obj[0].toString();
+					if (obj[1] != null)
+						AllotmentCost = obj[1].toString();
+					if (obj[2] != null)
+						RevOrCap = obj[2].toString();
+					if (obj[3] != null)
+						ExpAginestAllotment = obj[3].toString();
+					if (obj[4] != null)
+						ExpAginestNonAllotment = obj[4].toString();
+					if (obj[5] != null)
+						BudgetHeadCode = obj[5].toString();
+					
+				    int size = AllotExpListDetailList.size();
+				    
+				    Map<String, String> innerMap = AllotExpListDetailList.get(Year);
+				    if (innerMap == null) {
+						innerMap = new HashMap<String, String>();
+					}
+				    if ("1".equals(RevOrCap)) {
+						innerMap.put("REV_allotmentCost", AllotmentCost);
+						innerMap.put("REV_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("REV_expAginestNonAllotment", ExpAginestNonAllotment);
+
+						TotalRevAllotment = TotalRevAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalRevNonAllotment = TotalRevNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalRevAlotment = TotalRevAlotment.add(new BigDecimal(AllotmentCost));
+					
+					
+					} else if ("2".equals(RevOrCap)) {
+						innerMap.put("CAP_allotmentCost", AllotmentCost);
+						innerMap.put("CAP_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("CAP_expAginestNonAllotment", ExpAginestNonAllotment);
+
+						TotalCapAllotment = TotalCapAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalCapNonAllotment = TotalCapNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalCapAlotment = TotalCapAlotment.add(new BigDecimal(AllotmentCost));
+					
+					
+					} else if ("8".equals(RevOrCap)) {
+						innerMap.put("BEL_allotmentCost", AllotmentCost);
+						innerMap.put("BEL_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("BEL_expAginestNonAllotment", ExpAginestNonAllotment);
+
+						TotalBelAllotment = TotalBelAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalBelNonAllotment = TotalBelNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalBelAlotment = TotalBelAlotment.add(new BigDecimal(AllotmentCost));
+					
+					} else if ("9".equals(RevOrCap)) {
+						innerMap.put("IAF_allotmentCost", AllotmentCost);
+						innerMap.put("IAF_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("IAF_expAginestNonAllotment", ExpAginestNonAllotment);
+
+						TotalIafAllotment = TotalIafAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalIafNonAllotment = TotalIafNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalIafAlotment = TotalIafAlotment.add(new BigDecimal(AllotmentCost));
+					
+					
+					} else if ("10".equals(RevOrCap)) {
+						innerMap.put("RDR_allotmentCost", AllotmentCost);
+						innerMap.put("RDR_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("RDR_expAginestNonAllotment", ExpAginestNonAllotment);
+
+						TotalRdrAllotment = TotalRdrAllotment.add(new BigDecimal(ExpAginestAllotment));
+					    TotalRdrNonAllotment = TotalRdrNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalRdrAlotment = TotalRdrAlotment.add(new BigDecimal(AllotmentCost));
+						
+	                } else if ("11".equals(RevOrCap)) {
+						
+						innerMap.put("ATV_allotmentCost", AllotmentCost);
+						innerMap.put("ATV_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("ATV_expAginestNonAllotment", ExpAginestNonAllotment);
+						
+						TotalAtvAllotment = TotalAtvAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalAtvNonAllotment = TotalAtvNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalAtvAlotment = TotalAtvAlotment.add(new BigDecimal(AllotmentCost));
+
+					}else if ("12".equals(RevOrCap)) {
+						
+						innerMap.put("NAV_allotmentCost", AllotmentCost);
+						innerMap.put("NAV_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("NAV_expAginestNonAllotment", ExpAginestNonAllotment);
+						
+						TotalNavAllotment = TotalNavAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalNavNonAllotment = TotalNavNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalNavAlotment = TotalNavAlotment.add(new BigDecimal(AllotmentCost));
+
+	               }else if ("13".equals(RevOrCap)) {
+						
+						innerMap.put("AD_allotmentCost", AllotmentCost);
+						innerMap.put("AD_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("AD_expAginestNonAllotment", ExpAginestNonAllotment);
+						
+						TotalAdAllotment = TotalAdAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalAdNonAllotment = TotalAdNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalAdAlotment = TotalAdAlotment.add(new BigDecimal(AllotmentCost));
+
+	               }else if ("14".equals(RevOrCap)) {
+						
+						innerMap.put("ARM_allotmentCost", AllotmentCost);
+						innerMap.put("ARM_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("ARM_expAginestNonAllotment", ExpAginestNonAllotment);
+						
+						TotalArmAllotment = TotalArmAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalArmNonAllotment = TotalArmNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalArmAlotment = TotalArmAlotment.add(new BigDecimal(AllotmentCost));
+
+	               }else if ("15".equals(RevOrCap)) {
+						
+						innerMap.put("ISR_allotmentCost", AllotmentCost);
+						innerMap.put("ISR_expAginestAllotment", ExpAginestAllotment);
+						innerMap.put("ISR_expAginestNonAllotment", ExpAginestNonAllotment);
+						
+						TotalIsrAllotment = TotalIsrAllotment.add(new BigDecimal(ExpAginestAllotment));
+						TotalIsrNonAllotment = TotalIsrNonAllotment.add(new BigDecimal(ExpAginestNonAllotment));
+						TotalIsrAlotment = TotalIsrAlotment.add(new BigDecimal(AllotmentCost));
+
+					} 
+					
+					
+					AllotExpListDetailList.put(Year, innerMap);
+				}
+			}
+			AllotmentMap.put("totalRevNonAllotment", TotalRevNonAllotment);
+			AllotmentMap.put("totalCapNonAllotment", TotalCapNonAllotment);
+			AllotmentMap.put("totalBelNonAllotment", TotalBelNonAllotment);
+			AllotmentMap.put("totalIafNonAllotment", TotalIafNonAllotment);
+			AllotmentMap.put("totalRdrNonAllotment", TotalRdrNonAllotment);
+			AllotmentMap.put("totalAtvNonAllotment", TotalAtvNonAllotment);
+			AllotmentMap.put("totalNavNonAllotment", TotalNavNonAllotment);
+			AllotmentMap.put("totalAdNonAllotment", TotalAdNonAllotment);
+			AllotmentMap.put("totalArmNonAllotment", TotalArmNonAllotment);
+			AllotmentMap.put("totalIsrNonAllotment", TotalIsrNonAllotment);
+			
+			AllotmentMap.put("totalRevAllotment", TotalRevAllotment);
+			AllotmentMap.put("totalCapAllotment", TotalCapAllotment);
+			AllotmentMap.put("totalBelAllotment", TotalBelAllotment);
+			AllotmentMap.put("totalIafAllotment", TotalIafAllotment);
+			AllotmentMap.put("totalRdrAllotment", TotalRdrAllotment);
+			AllotmentMap.put("totalAtvAllotment", TotalAtvAllotment);
+			AllotmentMap.put("totalNavAllotment", TotalNavAllotment);
+			AllotmentMap.put("totalAdAllotment", TotalAdAllotment);
+			AllotmentMap.put("totalArmAllotment", TotalArmAllotment);
+			AllotmentMap.put("totalIsrAllotment", TotalIsrAllotment);
+			
+			
+			AllotmentMap.put("totalRevAlotment", TotalRevAlotment);
+			AllotmentMap.put("totalCapAlotment", TotalCapAlotment);
+			AllotmentMap.put("totalBelAlotment", TotalBelAlotment);
+			AllotmentMap.put("totalIafAlotment", TotalIafAlotment);
+			AllotmentMap.put("totalRdrAlotment", TotalRdrAlotment);
+			AllotmentMap.put("totalAtvAlotment", TotalAtvAlotment);
+			AllotmentMap.put("totalNavAlotment", TotalNavAlotment);
+			AllotmentMap.put("totalAdAlotment", TotalAdAlotment);
+			AllotmentMap.put("totalArmAlotment", TotalArmAlotment);
+			AllotmentMap.put("totalIsrAlotment", TotalIsrAlotment);
+			
+			
+			AllotmentMap.put("totalRevenue", TotalRevAllotment.add(TotalRevNonAllotment));
+			AllotmentMap.put("totalCapital", TotalCapAllotment.add(TotalCapNonAllotment));
+			AllotmentMap.put("totalBel", TotalBelAllotment.add(TotalBelNonAllotment));
+			AllotmentMap.put("totalIaf", TotalIafAllotment.add(TotalIafNonAllotment));
+			AllotmentMap.put("totalRdr", TotalRdrAllotment.add(TotalRdrNonAllotment));
+			AllotmentMap.put("totalAtv", TotalAtvAllotment.add(TotalAtvNonAllotment));
+			AllotmentMap.put("totalNav", TotalNavAllotment.add(TotalNavNonAllotment));
+			AllotmentMap.put("totalAd", TotalAdAllotment.add(TotalAdNonAllotment));
+			AllotmentMap.put("totalArm", TotalArmAllotment.add(TotalArmNonAllotment));
+			AllotmentMap.put("totalIsr", TotalIsrAllotment.add(TotalIsrNonAllotment));
+			
+			req.setAttribute("ProjectDetails", ProjectDetails);
+			
+			req.setAttribute("AllotExpListDetailList", AllotExpListDetailList);
+			req.setAttribute("AllotmentMap", AllotmentMap);
+			req.setAttribute("GetPdc", "");
+			req.setAttribute("Amount", Amount);
+			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("BudgetHeadCode", BudgetHeadCode);
+		}
+			    String filename="ProjectSanctionDetailsPrint";
+				String path=req.getServletContext().getRealPath("/view/temp");
+		        CharArrayWriterResponse customResponse = new CharArrayWriterResponse(resp);
+				req.getRequestDispatcher("/view/print/projectDetailsWithAllotExpen.jsp").forward(req, customResponse);
+				String html = customResponse.getOutput();        
+		        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")) ; 
+		        resp.setContentType("application/pdf");
+		        resp.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+		        File f=new File(path +File.separator+ filename+".pdf");
+		        FileInputStream fis = new FileInputStream(f);
+		        DataOutputStream os = new DataOutputStream(resp.getOutputStream());
+		        resp.setHeader("Content-Length",String.valueOf(f.length()));
+		        byte[] buffer = new byte[1024];
+		        int len = 0;
+		        while ((len = fis.read(buffer)) >= 0) {
+		            os.write(buffer, 0, len);
+		        } 
+		        os.close();
+		        fis.close();
+		        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
+		        Files.delete(pathOfFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	
 }

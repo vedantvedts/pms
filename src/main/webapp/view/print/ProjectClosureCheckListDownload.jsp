@@ -634,7 +634,14 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.Yearly break up of Allotment & Expenditure since the Project  sanctioned </td>
-			<td></td>
+			<td>
+			
+			<a href="ProjectDetailsAllotExp.htm?ProjectIdSel=1&Amount=1" target="_blank" title="Budget Yearly BreakUp Download">
+			       Download
+		     </a>
+			
+			
+			</td>
 		</tr>
 		
 		<tr>
