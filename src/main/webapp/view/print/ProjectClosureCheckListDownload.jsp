@@ -444,7 +444,14 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	Maintained separately for consumable & non-consumables </td>
-			<td></td>
+			<td>
+			
+			
+			 <a href="ProjectExpenditureReportPrint.htm?ProjectIdSel=<%=ProjectId %>&BudgetHeadIdSel=0#All&ItemTypeSel=A#ALL&FromDate=01-03-2024&toDate=01-04-2024&action=pdf" target="_blank" title="PEC Download">
+			       Download
+		     </a>
+			
+			</td>
 		</tr>
 		
 		<tr>
