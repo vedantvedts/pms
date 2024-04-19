@@ -2174,7 +2174,6 @@ public class ProjectClosureController {
 			 //JasperPrint print = JasperFillManager.fillReport(jasperDesign, parameters, conn);
 			 
 			 //if("pdf".equalsIgnoreCase(Action)) {
-					
 				
 				 byte[] bytes = JasperRunManager.runReportToPdf(jasperDesign, parameters,  conn);
 				  resp.setContentType("application/pdf");
