@@ -734,7 +734,7 @@
 			</div>
 	<script type="text/javascript">
 	document.getElementById("showmodal").click();
-	document.getElementById('Usubmit').innerHTML="Update "+document.getElementById('UProjects').options[document.getElementById('UProjects').selectedIndex].text;
+
 	<% if(projectdet!=null)for (int i=0;i<projectdet.size();i++){ %>
 	if(document.getElementById('UProjects').value== <%=projectdet.get(i)[1]%> ){document.getElementById('lastupdatedate').innerHTML='last update date: '+'<%=projectdet.get(i)[0] %>';<%i++;%>}
 	else {document.getElementById('lastupdatedate').innerHTML='last update date: '+'----';}<%}%>
@@ -781,12 +781,12 @@
 		document.getElementById('weeklyupdate').reset();
 		var name = document.getElementById('UProjects').innerHTML;
 		var value = document.getElementById('UProjects').value;
-		document.getElementById('Usubmit').innerHTML='Update '+document.getElementById('UProjects').options[document.getElementById('UProjects').selectedIndex].text;
+
 	}
 	
 	function changedates(val)
 	{
-		document.getElementById('Usubmit').innerHTML="Update "+document.getElementById('UProjects').options[document.getElementById('UProjects').selectedIndex].text;
+
 		document.getElementById('Usubmit').value=document.getElementById('UProjects').value;
 		$pid=val;
 		$.ajax({
