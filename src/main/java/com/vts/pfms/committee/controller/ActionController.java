@@ -1383,7 +1383,7 @@ public class ActionController {
 						    fdate=fc.getRegularDateFormat().format(new Date());
 							tdate=fc.getRegularDateFormat().format(d);
 							Emp="A";
-							Project="A";Position="A";
+							Project="A";Position="P";
 						
 					}
 					req.setAttribute("tdate",tdate);
@@ -3266,7 +3266,7 @@ public class ActionController {
 				rfa.setDescription(description);
 				rfa.setReference(reference);
 				rfa.setAssignorId(EmpId);
-				rfa.setRfaNo(rfanotype);
+				rfa.setRfaTypeId(rfanotype);
 				rfa.setMultipartfile(attachment);
 				rfa.setAssignorAttachment(attachment.getOriginalFilename());
 				rfa.setActionBy(Long.parseLong(EmpId));

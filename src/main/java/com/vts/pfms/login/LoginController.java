@@ -700,11 +700,22 @@ public class LoginController {
 
 				// req.setAttribute("AllSchedulesCount",
 				// rfpmainservice.AllSchedulesCount(LoginType,LoginId));
+				
 				req.setAttribute("actionscount", rfpmainservice.AllActionsCount(LoginType, EmpId, LoginId, LabCode));
 				req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType, EmpId, LabCode));
 				req.setAttribute("ProjectMeetingCount", rfpmainservice.ProjectMeetingCount(LoginType, EmpId, LabCode));
 				req.setAttribute("ganttchartlist", rfpmainservice.GanttChartList());
-
+				if(LabCode.equalsIgnoreCase("ADE")) {
+					LocalDate currentDate = LocalDate.now();
+					LocalDate firstDayOfYear = LocalDate.of(currentDate.getYear(), 1, 1);
+				     String fdate = firstDayOfYear.toString();
+				     LocalDate lastDayOfYear = LocalDate.of(currentDate.getYear(), 12, 31);
+					   String tdate=lastDayOfYear.toString();
+				req.setAttribute("rfaPendingCountList", Actservice.GetRfaActionList(EmpId,"A",fdate,tdate));
+				req.setAttribute("rfaForwardCount",Actservice.RfaForwardList(EmpId).size());
+				req.setAttribute("rfaInspectionCount",Actservice.RfaInspectionList(EmpId).size());
+				req.setAttribute("rfaInspectionAprCount",Actservice.RfaInspectionApprovalList(EmpId).size());
+				}
 				/*
 				 * for(Object[] obj:rfpmainservice.ProjectList(LoginType,LoginId)) {
 				 * 

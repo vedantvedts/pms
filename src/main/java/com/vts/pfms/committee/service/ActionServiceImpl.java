@@ -1421,12 +1421,17 @@ public class ActionServiceImpl implements ActionService {
 		String RfaTypeName=null;
 		
 		for(Object[] obj : rfaDivType) {
-			if(obj[0]!=null && obj[0].toString().equalsIgnoreCase(rfa.getRfaNo())) {
+			if(obj[0]!=null && obj[0].toString().equalsIgnoreCase(rfa.getRfaTypeId())) {
 				RfaTypeName=obj[1].toString();
 			}
 		}
-		Long RfaCount = dao.GetRfaCount();	
-		String RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + (RfaCount+1);
+		Long RfaCount = dao.GetRfaCount(rfa.getRfaTypeId());
+		String RfaNo=null;
+		if(RfaCount<9) {
+		    RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + ("0"+(RfaCount+1));
+		}else {
+			RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + (RfaCount+1);
+		}
 
 		String Path = LabCode+"\\RFAFiles\\";
 		
@@ -1435,6 +1440,7 @@ public class ActionServiceImpl implements ActionService {
 		rfa1.setRfaDate(rfa.getRfaDate());
 		rfa1.setLabCode(LabCode);
 		rfa1.setRfaNo(RfaNo);
+		rfa1.setRfaTypeId(rfa.getRfaTypeId());
 		rfa1.setProjectId(rfa.getProjectId());
 		rfa1.setPriorityId(rfa.getPriorityId());
 		rfa1.setStatement(rfa.getStatement());
@@ -2140,6 +2146,11 @@ public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, Str
 public int CommitteActionEdit(ActionAssignDto actionAssign) throws Exception {
 	actionAssign.setModifiedDate(sdf1.format(new Date()));
 	return dao.CommitteActionEdit(actionAssign);
+}
+
+@Override
+public List<Object[]> RfaPendingCount(String empId) throws Exception {
+	return dao.RfaPendingCount(empId);
 }
 
 }

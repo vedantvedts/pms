@@ -112,7 +112,7 @@ h6{
 					   						</td>
 					   						<td >
                                                         <select class="form-control selectdee " name="EmpId" id="EmpId" required="required"  data-live-search="true"  >
-                                                           <option value="A"  <%if(Employee.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>ALL</option>	
+                                                          <%--  <option value="A"  <%if(Employee.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>ALL</option> --%>	
                                                            
                                                            <%
                                                            for(Object[] obj:EmployeeList){ %>
@@ -120,15 +120,22 @@ h6{
 														<%} %>
 																</select>	        
 											</td>
-											<td >
+											<!-- <td >
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Date Type: </label>
-					   						</td>
-					   						<td >
-                                                        <select class="form-control selectdee " name="Position" id="Assignee" required="required"  data-live-search="true"  >
-                                               			 <option value="A" <%if("A".equalsIgnoreCase(Position)){ %> selected="selected" <%} %>>ALL</option>	
-                                               			 <option value="P" <%if("P".equalsIgnoreCase(Position)){ %> selected="selected" <%} %>>PDC</option>	
-															<option value="S" <%if("S".equalsIgnoreCase(Position)){ %> selected="selected" <%} %>>Assigned</option>	
-															</select>					   						</td>
+					   						</td> -->
+					   						<td>
+					   						<%-- <select class="form-control selectdee "
+												name="Position" id="Assignee" required="required"
+												data-live-search="true">
+													<option value="A" <%if ("A".equalsIgnoreCase(Position)) {%>
+														selected="selected" <%}%>>ALL</option>
+													<option value="P" <%if ("P".equalsIgnoreCase(Position)) {%>
+														selected="selected" <%}%>>PDC</option>
+													<option value="S" <%if ("S".equalsIgnoreCase(Position)) {%>
+														selected="selected" <%}%>>Assigned</option>
+											</select> --%>
+											<input type="hidden" name="Position" id="Assignee" value="P">
+											</td>
 					   				
 					   					    <td>
 					   						<td >
@@ -209,15 +216,17 @@ h6{
 																		<td><%=obj[1]%>, <%=obj[2]%></td>
 																	  	<td> <%=obj[3]%>, <%=obj[4]%></td>
 																		<td> 
-																				<%if(obj[5]!=null && "N".equalsIgnoreCase(obj[5].toString())){%>
+																				<%if(obj[5]!=null && ("N".equalsIgnoreCase(obj[5].toString()) || "A".equalsIgnoreCase(obj[5].toString()))){%>
 																						Assigned 
 																				<%}else if(obj[5]!=null && "F".equalsIgnoreCase(obj[5].toString())){%>
 																						Forward
 																				<%}else if(obj[5]!=null && "B".equalsIgnoreCase(obj[5].toString())){%>
 																						Send Back
-																				<%}else if(obj[5]!=null && "Y".equalsIgnoreCase(obj[5].toString())){%>
-																						Completed
-																				<%}%>	
+																				<%}else if(obj[5]!=null && "C".equalsIgnoreCase(obj[5].toString())){%>
+																						Closed
+																				<%}else if(obj[5]!=null && "I".equalsIgnoreCase(obj[5].toString())){%>	
+																				        In progress
+																				 <%} %>
 																		</td>
 																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
 																            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

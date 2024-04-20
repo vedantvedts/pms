@@ -13,6 +13,7 @@ public class RfaActionDto
 	private String LabCode;
 	private Long ProjectId;
 	private String RfaNo;
+	private String RfaTypeId;
 	private Date RfaDate;
 	private Long PriorityId;
 	private Long CategoryId;

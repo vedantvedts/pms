@@ -77,7 +77,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                        <div class="form-group">
 		                            <label class="control-label">Project</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-			                            <select class="form-control selectdee " id="ProjectProgramme"  name="projectid" >
+			                            <select class="form-control selectdee " id="ProjectProgramme"  name="projectid" required="required">
 										    <option disabled="true"  selected value="">Select...</option>
 										     <% for (Object[] obj : ProjectList) {
 										    	 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";

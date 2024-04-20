@@ -1011,15 +1011,16 @@ public class ActionDaoImpl implements ActionDao{
 		
 	}
     
-	private static final String GETRFACOUNT="SELECT MAX(RfaId) FROM pfms_rfa_action WHERE IsActive=1";
+	private static final String GETRFACOUNT="SELECT COUNT(RfaId) FROM pfms_rfa_action WHERE IsActive='1' AND rfatypeid=:rfatypeid";
 	@Override
-	public Long GetRfaCount() throws Exception {
+	public Long GetRfaCount(String rfatypeid) throws Exception {
 		
 		Query query = manager.createNativeQuery(GETRFACOUNT);
+		query.setParameter("rfatypeid", rfatypeid);
 		Object Count = (Object)query.getSingleResult();
 		Long RfaCount=0l ;
 		if(Count==null) {
-			RfaCount=0l;
+			RfaCount=0l; 
 		}else {
 			RfaCount=Long.parseLong(Count.toString());
 		}
@@ -1844,6 +1845,14 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("modifieddate", actionAssign.getModifiedDate());
 		
 		return query.executeUpdate();
+	}
+	
+	private static final String RFAPENDINGCOUNT="SELECT rfaid,rfastatus,empid,actionby FROM pfms_rfa_action_transaction WHERE empid=:empId";
+	@Override
+	public List<Object[]> RfaPendingCount(String empId) throws Exception {
+		Query query = manager.createNativeQuery(RFAPENDINGCOUNT);
+		query.setParameter("empId", empId);
+		return (List<Object[]>)query.getResultList();
 	}
 	
 }

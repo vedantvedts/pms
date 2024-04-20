@@ -110,7 +110,7 @@ public interface ActionDao {
 	public List<Object[]> PriorityList() throws Exception;
 	public Long RfaActionSubmit(RfaAction rfa) throws Exception;
 	public Object[] GetDivisionCode(String Division) throws Exception;
-	public Long GetRfaCount() throws Exception;
+	public Long GetRfaCount(String rfatypeid) throws Exception;
 	
 	public Object[] RfaActionEdit(String rfaid) throws Exception;
 	//public int RfaInspectionEdit(String rfaid) throws Exception;
@@ -182,4 +182,5 @@ public interface ActionDao {
 	public List<Object[]> RfaCCList()throws Exception;
 	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate);
 	public int CommitteActionEdit(ActionAssignDto actionAssign)throws Exception;
+	public List<Object[]> RfaPendingCount(String empId)throws Exception;
 }

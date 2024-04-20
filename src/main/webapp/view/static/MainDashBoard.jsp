@@ -48,6 +48,7 @@
       right: 20px;
       width: 300px;
       max-width: 80%;
+    
       background-color: #fff;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       border-radius: 8px;
@@ -74,7 +75,6 @@
     }
 
     .modalfooter {
-      padding: 10px;
       text-align: right;
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
@@ -834,7 +834,8 @@
 <%
 
 String Username =(String)session.getAttribute("Username");  
-String EmpNo=(String)session.getAttribute("empNo"); 
+String EmpNo=(String)session.getAttribute("empNo");
+String LabCode=(String)session.getAttribute("labcode");
 String ibasUri=(String)request.getAttribute("ibasUri");
 /* Long loginId=(Long)session.getAttribute("LoginId");  */
 /* Long divisionId=(Long)session.getAttribute("Division");  */
@@ -842,7 +843,6 @@ String ibasUri=(String)request.getAttribute("ibasUri");
 /* Long formRoleId=(Long)session.getAttribute("FormRole");  */
 String statsUrl=(String)request.getAttribute("statsUrl");
 String pmsToStatsUrl = statsUrl+"/login";
-  
 List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
 List<Object[]> todaysMeetings= new ArrayList<>();
 long todayMeetingCount=0;
@@ -852,6 +852,17 @@ if(todayschedulelist.size()>0){
 }
 ObjectMapper objectMapper = new ObjectMapper();
 String jsonArray = objectMapper.writeValueAsString(todaysMeetings);
+
+List<Object[]> rfaPendingCountList= (List<Object[]>)request.getAttribute("rfaPendingCountList");
+int rfaForwardCount=(int)request.getAttribute("rfaForwardCount");
+int rfaInspectionCount=(int)request.getAttribute("rfaInspectionCount");
+int rfaInspectionAprCount=(int)request.getAttribute("rfaInspectionAprCount");
+long todayRfaCount1=0;
+List<String> status1 = Arrays.asList("AA","REV", "RC", "RV", "RE");
+if(rfaPendingCountList.size()>0){
+	todayRfaCount1=rfaPendingCountList.stream().filter(i -> status1.contains(i[14].toString().toUpperCase())).count();
+}
+
 /* List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist"); */
 List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
 List<Object[]> actionscount=(List<Object[]>)request.getAttribute("actionscount");
@@ -883,6 +894,7 @@ Object[] ProjectHealthTotalData = (Object[])request.getAttribute("projecthealtht
 /* List<Object[]> CCMFinanceData = (List<Object[]>)request.getAttribute("CCMFinanceData"); */
 List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo");
 List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("DashboardFinance");
+
 
 FormatConverter fc=new FormatConverter(); 
 SimpleDateFormat sdf=fc.getRegularDateFormat();
@@ -3952,6 +3964,28 @@ if(ses!=null){ %>
       <a <%if(actionCounts>0){ %> href="AssigneeList.htm"<%} %> style="font-weight: 600;float:left; color:black; "><span style="text-decoration: underline">Actions PDC Today</span>:
       <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=actionCounts %></span>
       </a>
+      <%if(LabCode.equalsIgnoreCase("ADE")){ %>
+      <%if(todayRfaCount1>0){ %>
+      <a href="RfaAction.htm?Status=O" style="font-weight: 600;float:left; color:black; margin-top: 10px"><span style="text-decoration: underline">RFA Pending</span>:
+      <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=todayRfaCount1 %></span>
+      </a>
+      <%} %>
+       <%if(rfaForwardCount>0){ %>
+      <a href="RfaActionForwardList.htm" style="font-weight: 600;float:left; color:black; margin-top: 10px"><span style="text-decoration: underline">RFA Forward Pending</span>:
+      <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=rfaForwardCount %></span>
+      </a>
+      <%} %>
+       <%if(rfaInspectionCount>0){ %>
+      <a href="RfaInspection.htm" style="font-weight: 600;float:left; color:black; margin-top: 10px"><span style="text-decoration: underline">RFA Inspection Pending</span>:
+      <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=rfaInspectionCount %></span>
+      </a>
+      <%} %>
+       <%if(rfaInspectionAprCount>0){ %>
+      <a href="RfaInspectionApproval.htm" style="font-weight: 600;float:left; color:black; margin-top: 10px"><span style="text-decoration: underline">RFA Inspection Forward Pending</span>:
+      <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=rfaInspectionAprCount %></span>
+      </a>
+      <%} %>
+      <%}%>
     </div>
     <div class="modalfooter">
       <button class="btn" style="padding: 0px !important;font-weight: 500" onclick="closeModal()">Close</button>

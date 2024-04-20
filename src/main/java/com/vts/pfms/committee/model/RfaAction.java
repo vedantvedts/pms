@@ -22,6 +22,7 @@ public class RfaAction {
 	private Long ProjectId;
 	private String RfaNo;
 	private Date RfaDate;
+	private String RfaTypeId;
 	private Long PriorityId;
 	private String Statement;
 	private String Description;
