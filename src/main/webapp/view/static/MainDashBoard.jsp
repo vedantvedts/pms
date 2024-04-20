@@ -854,12 +854,12 @@ ObjectMapper objectMapper = new ObjectMapper();
 String jsonArray = objectMapper.writeValueAsString(todaysMeetings);
 
 List<Object[]> rfaPendingCountList= (List<Object[]>)request.getAttribute("rfaPendingCountList");
-int rfaForwardCount=(int)request.getAttribute("rfaForwardCount");
-int rfaInspectionCount=(int)request.getAttribute("rfaInspectionCount");
-int rfaInspectionAprCount=(int)request.getAttribute("rfaInspectionAprCount");
+Integer rfaForwardCount=(Integer)request.getAttribute("rfaForwardCount");
+Integer rfaInspectionCount=(Integer)request.getAttribute("rfaInspectionCount");
+Integer rfaInspectionAprCount=(Integer)request.getAttribute("rfaInspectionAprCount");
 long todayRfaCount1=0;
 List<String> status1 = Arrays.asList("AA","REV", "RC", "RV", "RE");
-if(rfaPendingCountList.size()>0){
+if(rfaPendingCountList!=null && rfaPendingCountList.size()>0){
 	todayRfaCount1=rfaPendingCountList.stream().filter(i -> status1.contains(i[14].toString().toUpperCase())).count();
 }
 
