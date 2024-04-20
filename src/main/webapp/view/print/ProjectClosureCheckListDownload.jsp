@@ -447,7 +447,7 @@ p,td,th
 			<td>
 			
 			
-			 <a href="ProjectExpenditureReportPrint.htm?ProjectIdSel=<%=ProjectId %>&BudgetHeadIdSel=0#All&ItemTypeSel=A#ALL&FromDate=01-03-2024&toDate=01-04-2024&action=pdf" target="_blank" title="PEC Download">
+			 <a href="http://localhost:8055/ibas/ProjectExpenditureReportPrint.htm?ProjectIdSel=<%=ProjectId %>&BudgetHeadIdSel=0#All&ItemTypeSel=A#ALL&FromDate=01-03-2024&toDate=01-04-2024&action=pdf&client_name=MTRDC" target="_blank" title="PEC Download">
 			       Download
 		     </a>
 			
