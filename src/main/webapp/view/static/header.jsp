@@ -255,7 +255,7 @@ String labcode= (String)session.getAttribute("labcode");
 										class="fa fa-home" aria-hidden="true"
 										style="font-size: 1.20rem"></i> Home</a></li>
 
-								<%if(!IsDG.equalsIgnoreCase("Yes") ){ %>
+								<%-- <%if(!IsDG.equalsIgnoreCase("Yes") ){ %>
 
 								<li class="nav-item dropdown">
 
@@ -305,20 +305,20 @@ String labcode= (String)session.getAttribute("labcode");
 										</li>
 
 
-										<%-- 									  			<li>
+																			  			<li>
 										  		<form action="ProjectRequirement.htm" method="POST" name="myfrm2"  style="display: inline">
 										  			<input type="hidden" name="sub" value="requirements"/>
 										  			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 										 	 		<button class="dropdown-item" >Requirements</button>
 										  	 	</form>
-									  		</li> --%>
-										<%-- 												<li>
+									  		</li>
+																						<li>
 										  		<form action="ProjectSanction.htm" method="POST" name="myfrm3"  style="display: inline">
 										  			<input type="hidden" name="sub" value="sanction"/>
 										  			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 										 	 		<button class="dropdown-item" >SOC of Project</button>
 										  	 	</form>
-									  		</li> --%>
+									  		</li>
 
 										<li>
 											<form action="ProjectProcurement.htm" method="POST"
@@ -336,7 +336,7 @@ String labcode= (String)session.getAttribute("labcode");
 
 
 								<%} %>
-
+ --%>
 								<!-- New Content from table start --------------------------------->
 
 								<li class="nav-item dropdown"><input type="hidden"

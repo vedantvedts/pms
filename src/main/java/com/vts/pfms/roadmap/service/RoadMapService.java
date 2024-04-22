@@ -1,0 +1,37 @@
+package com.vts.pfms.roadmap.service;
+
+import java.util.List;
+
+import com.vts.pfms.roadmap.dto.RoadMapApprovalDTO;
+import com.vts.pfms.roadmap.dto.RoadMapDetailsDTO;
+import com.vts.pfms.roadmap.model.AnnualTargets;
+import com.vts.pfms.roadmap.model.RoadMap;
+import com.vts.pfms.roadmap.model.RoadMapAnnualTargets;
+
+public interface RoadMapService {
+
+	public List<Object[]> roadMapList() throws Exception;
+	public List<Object[]> divisionList(String labCode) throws Exception;
+	public List<Object[]> getProjectList(String labCode) throws Exception;
+	public List<Object[]> getPreProjectList(String labcode) throws Exception;
+	public Object[] getProjectDetails(String labcode, String projectId, String roadMapType) throws Exception;
+	public RoadMap getRoadMapDetailsById(String roadMapId) throws Exception;
+	public List<RoadMapAnnualTargets> getRoadMapAnnualTargetDetails(String roadMapId) throws Exception;
+	public  long addRoadMapDetails(RoadMap roadMap) throws Exception;
+	public long addRoadMapDetails(RoadMapDetailsDTO dto) throws Exception;
+	public int removeRoadMapDetails(String roadMapId, String userId) throws Exception;
+	public List<Object[]> roadMapTransApprovalData(String roadMapId);
+	public List<Object[]> roadMapTransList(String roadMapId) throws Exception;
+	public List<Object[]> roadMapRemarksHistory(String roadMapId) throws Exception;
+	public long roadMapApprovalForward(RoadMapApprovalDTO dto) throws Exception;
+	public long roadMapUserRevoke(String roadMapId, String userId, String empId) throws Exception;
+	public long roadMapDetailsMoveToASP(String roadMapId, String userId, String empId) throws Exception;
+	public List<Object[]> roadMapPendingList(String empId, String labCode) throws Exception;
+	public List<Object[]> roadMapApprovedList(String empId, String fromDate, String toDate) throws Exception;
+	public List<RoadMap> getRoadMapList() throws Exception;
+	public List<Object[]> roadMapASPList() throws Exception;
+	public long roadMapDetailsMoveBackToRoadMap(String roadMapId, String userId, String empId) throws Exception;
+	public List<AnnualTargets> getAnnualTargetsFromMaster() throws Exception;
+	public Long addAnnualTargets(AnnualTargets targets) throws Exception;
+	
+}

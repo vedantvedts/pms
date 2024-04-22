@@ -433,7 +433,6 @@ $("#addformsubmit").click(function(){
 /* For Existing Rep Details Content */
  function existingRepInfoHandle() {
 	var existingRepInfo = $('#existingRepInfo').val();
-	console.log(existingRepInfo+"*************");
 	if(existingRepInfo=="0"){
 		$('#existingRepInfo').val('1');
 		$('.existingRepInfoContent').show();
