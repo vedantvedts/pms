@@ -3,6 +3,8 @@
     <%@page import="com.vts.pfms.projectclosure.model.ProjectClosureCheckList"%>
     <%@page import="com.vts.pfms.FormatConverter"%>
     <%@page import="com.vts.pfms.project.model.ProjectMaster"%>
+    <%@page import="java.time.LocalDate"%>
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -198,6 +200,21 @@ p,td,th
      String closureId=(String)request.getAttribute("closureId");
      ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
      String ProjectId=(String)request.getAttribute("projectId");
+     
+     LocalDate currentDate = LocalDate.now();
+    
+     
+     LocalDate firstDayOfCurrentMonth = currentDate.withDayOfMonth(1);
+     
+     // Get the first day of the previous month
+     LocalDate firstDayOfPreviousMonth = firstDayOfCurrentMonth.minusMonths(1);
+     
+     
+     String ProjectCode=(String)request.getAttribute("ProjectCode");
+     
+     String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
+
+   
 
 %>
 
@@ -246,7 +263,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv.Milestones</td>
 			<td><%if(chlist!=null && chlist.getQARMilestone()!=null){ %>
 			
-             <a href="ProjectClosureChecklistFileDownload.htm?filename=QARMilestonefile&closureId=<%=closureId %>" target="_blank" title="QARMilestone Download">
+             <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=QARMilestonefile&closureId=<%=closureId%>" target="_blank" title="QARMilestone Download">
 			       Download
 		     </a>
 		<%} %></td>
@@ -269,7 +286,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vii.Cost Break-up (Activity wise, Period wise)</td>
 			<td>  <%if(chlist!=null && chlist.getQARCostBreakup()!=null){ %>
 			
-			 <a href="ProjectClosureChecklistFileDownload.htm?filename=QARCostBreakupfile&closureId=<%=closureId %>" target="_blank" title="QARCostBreakup Download">
+			 <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=QARCostBreakupfile&closureId=<%=closureId %>" target="_blank" title="QARCostBreakup Download">
 			       Download
 		     </a>
 			
@@ -283,7 +300,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">viii.List of non-consumable items required (at least costing more than Rs. 10 lakhs)</td>
 			<td><%if(chlist!=null && chlist.getQARNCItems()!=null){ %>
 			
-			 <a href="ProjectClosureChecklistFileDownload.htm?filename=QARNCItemsfile&closureId=<%=closureId %>" target="_blank" title="QARNCItems Download">
+			 <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=QARNCItemsfile&closureId=<%=closureId %>" target="_blank" title="QARNCItems Download">
 			       Download
 		     </a>
 			
@@ -447,10 +464,14 @@ p,td,th
 			<td>
 			
 			
-			 <a href="http://localhost:8055/ibas/ProjectExpenditureReportPrint.htm?ProjectIdSel=<%=ProjectId %>&BudgetHeadIdSel=0#All&ItemTypeSel=A#ALL&FromDate=01-03-2024&toDate=01-04-2024&action=pdf&client_name=MTRDC" target="_blank" title="PEC Download">
+			<!--   <a href="http://192.168.1.14:8085/ibas/ProjectExpenditureReportPrint.htm?_csrf=79269a60-d989-47b5-8e7f-5e4c8ebc27f3&ProjectIdSel=1%23PRJ-01&BudgetHeadIdSel=0%23All&ItemTypeSel=A%23ALL&FromDate=01-03-2024&toDate=22-04-2024&action=pdf">
 			       Download
-		     </a>
-			
+		     </a>   -->
+		      
+		       <a href="http://192.168.1.14:8085/ibas/ProjectExpenditureReportPrint.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&BudgetHeadIdSel=0%23All&ItemTypeSel=A%23ALL&FromDate=<%=fc.SqlToRegularDate(firstDayOfPreviousMonth.toString())%>&toDate=<%=fc.SqlToRegularDate(currentDate.toString())%>&action=pdf" target="_blank" title="PEC Download">
+			        Download
+		       </a>   
+		      
 			</td>
 		</tr>
 		
@@ -471,7 +492,15 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.If required, maintained properly </td>
-			<td></td>
+			<td>
+			
+			<a href="http://192.168.1.14:8085/ibas/CommitmentListPdfExl.htm?ControllerProjectId=<%=ProjectId%>&ControllerProjectCode=<%=ProjectCode%>&ControllerFromDate=<%=fc.SqlToRegularDate(firstDayOfPreviousMonth.toString())%>&ControllerToDate=<%=fc.SqlToRegularDate(currentDate.toString())%>&ControllerbudgetHeadId=1&ControllerBudgetHeadDescription=Revenue&ControllerbudgetItemId=0&ControllerHeadOfAccounts=All&ControllerProjShortName=+%28TMS%29&Action=Pdf">
+			
+			  Download
+			
+			</a>
+			
+			</td>
 		</tr>
 		
 		
@@ -579,7 +608,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. List out major non-consumable/ equipment procured </td>
 			<td> <%if(chlist!=null && chlist.getEquipProcured()!=null){ %>
 			
-			 <a href="ProjectClosureChecklistFileDownload.htm?filename=EquipProcuredfile&closureId=<%=closureId %>" target="_blank" title="EquipProcured Download">
+			 <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=EquipProcuredfile&closureId=<%=closureId %>" target="_blank" title="EquipProcured Download">
 			       Download
 		     </a>
 			<%} %>
@@ -606,7 +635,7 @@ p,td,th
 			
 			  <%if(chlist!=null && chlist.getEquipProcuredBeforePDCAttach()!=null){ %>
 			
-			 <a href="ProjectClosureChecklistFileDownload.htm?filename=EquipProcuredBeforePDCfile&closureId=<%=closureId %>" target="_blank" title="EquipProcuredBeforePDC Download">
+			 <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=EquipProcuredBeforePDCfile&closureId=<%=closureId %>" target="_blank" title="EquipProcuredBeforePDC Download">
 			       Download
 		     </a>
 			<%} %>
@@ -621,7 +650,7 @@ p,td,th
 			<td><% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null ){%><%=chlist.getEquipBoughtOnCharge() %><%} %>
 			
 		 <%if(chlist!=null && chlist.getEquipBoughtOnChargeAttach()!=null){ %>
-			<a href="ProjectClosureChecklistFileDownload.htm?filename=EquipBoughtOnChargefile&closureId=<%=closureId %>" target="_blank" title="EquipBoughtOnCharge Download">
+			<a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=EquipBoughtOnChargefile&closureId=<%=closureId %>" target="_blank" title="EquipBoughtOnCharge Download">
 			       Download
 		     </a>
 		     
@@ -643,7 +672,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.Yearly break up of Allotment & Expenditure since the Project  sanctioned </td>
 			<td>
 			
-			<a href="ProjectDetailsAllotExp.htm?ProjectIdSel=<%=ProjectId %>&Amount=L" target="_blank" title="Budget Yearly BreakUp Download">
+			<a href="http://192.168.1.14:8085/ibas/ProjectDetailsAllotExp.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&Amount=L" target="_blank" title="Budget Yearly BreakUp Download">
 			       Download
 		     </a>
 			
@@ -672,7 +701,7 @@ p,td,th
 			
 			 <%if(chlist!=null && chlist.getBudgetExpenditureAttach()!=null){ %>
 			 
-			 <a href="ProjectClosureChecklistFileDownload.htm?filename=BudgetExpenditurefile&closureId=<%=closureId %>" target="_blank" title="BudgetExpenditure Download">
+			 <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=BudgetExpenditurefile&closureId=<%=closureId %>" target="_blank" title="BudgetExpenditure Download">
 			       Download
 		     </a>
 			
@@ -742,7 +771,7 @@ p,td,th
 			<td>
 			 <%if(chlist!=null && chlist.getSPActualpositionAttach()!=null){ %>
 			
-			<a href="ProjectClosureChecklistFileDownload.htm?filename=SPActualpositionfile&closureId=<%=closureId %>" target="_blank" title="SPActualposition Download">
+			<a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=SPActualpositionfile&closureId=<%=closureId %>" target="_blank" title="SPActualposition Download">
 			       Download
 		     </a>
 			
@@ -759,7 +788,7 @@ p,td,th
 			 <%if(chlist!=null && chlist.getSPGeneralSpecificAttach()!=null){ %>
 			
 			
-			<a href="ProjectClosureChecklistFileDownload.htm?filename=SPGeneralSpecificfile&closureId=<%=closureId %>" target="_blank" title="SPGeneralSpecific Download">
+			<a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=SPGeneralSpecificfile&closureId=<%=closureId %>" target="_blank" title="SPGeneralSpecific Download">
 			       Download
 		     </a>
 			
@@ -927,7 +956,7 @@ p,td,th
 			<td>
 			  <%if(chlist!=null && chlist.getCRAttach()!=null){ %>
 			  
-			  <a href="ProjectClosureChecklistFileDownload.htm?filename=CRAttachfile&closureId=<%=closureId %>" target="_blank" title="CRAttachfile Download">
+			  <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=CRAttachfile&closureId=<%=closureId %>" target="_blank" title="CRAttachfile Download">
 				          Download
 			     </a>
 			     

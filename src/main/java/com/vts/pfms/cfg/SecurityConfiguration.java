@@ -63,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		  .antMatchers("/pfms-dg/*").permitAll()
 		  .antMatchers("/login").permitAll()
 		  .antMatchers("/ProjectRequirementAttachmentDownload.htm").permitAll()
+		  .antMatchers("/ProjectClosureChecklistFileDownload.htm").permitAll()
 		  .anyRequest().authenticated().accessDecisionManager(adm())
 		  
 		  .and()

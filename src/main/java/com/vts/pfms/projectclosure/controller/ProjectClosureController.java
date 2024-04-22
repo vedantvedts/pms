@@ -1563,15 +1563,13 @@ public class ProjectClosureController {
 				
 				ProjectClosure closure = service.getProjectClosureById(closureId);
 				String projectId = closure.getProjectId()+"";
-				System.out.println("projectId---"+projectId);
+				
 				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
 				req.setAttribute("projectId", projectId);
+				ProjectMaster projectmaster=service.getProjectMasterByProjectId(projectId);
+				req.setAttribute("ProjectCode", projectmaster.getProjectCode());
 				
-				//req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
-				//req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
-				//req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
-				//req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
 			}
 			String filename="Check-List";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -1973,6 +1971,7 @@ public class ProjectClosureController {
 		String BudgetHeadIdSel=req.getParameter("BudgetHeadIdSel");
 		String ItemTypeSel=req.getParameter("ItemTypeSel");
 		String FromDate=req.getParameter("FromDate");
+		
 		String ToDate=req.getParameter("toDate");
 		String Action=(String)req.getParameter("action");
 		int ProjectId=0;
