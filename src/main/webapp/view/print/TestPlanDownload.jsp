@@ -415,12 +415,6 @@ if (TestContentList != null) {
 				<h4 style="font-size: 20px !important;font-family: <%= FontFamily %>;" class="heading-color">DOCUMENT SUMMARY
 				</h4>
 							</div>
-	<!-- 	<table class="border-black"
-					style="width: 650px; margin-top: 10px; margin-bottom: 5px;">
-			<tr>
-			<td>1.Title: System Requirement Document Template</td>
-			</tr>
-			</table> -->
 				<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">1.&nbsp; Title: <span class="text-dark">System Sub System Test Plan Document Template</span></td>

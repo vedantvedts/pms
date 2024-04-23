@@ -140,16 +140,17 @@ if(DocumentSummaryList.size()>0){
 	<div class="container" id="container">
 					<div class="row" style="display: inline">
 					<div class="requirementid mt-2 ml-2">
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Requirement Document</span> 
+			       	<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span>
 			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
-				     <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
+			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
+				    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" >&nbsp;System Requirements</span> 
-					 <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Additional Requirements</span>
-					 		<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAppendices()"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
+ 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showReq()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirements</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showVerification()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
-					
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAppendices()"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
+<!-- 						<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showReq()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirements</span> -->
+				
 				</div>
 					</div>
 					<!-- IntroductionPage -->
@@ -184,12 +185,18 @@ if(DocumentSummaryList.size()>0){
 					<button type="submit" id="verification" style="display:none"></button>
 					</form>
 					<!--  -->
-						<!-- para -->		
-						<form action="RequirementParaMain.htm" method="GET" id="">
+					<!-- para -->		
+					<form action="RequirementParaMain.htm" method="GET" id="">
 					<input type="hidden" name="projectId" value="<%=projectId%>">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<button type="submit" id="parareq" style="display:none"></button>
 					</form>	
+					<!--  -->
+				    <form action="RequirementList.htm" method="GET" id="myStatus">
+					<input type="hidden" name="projectId" value="<%=projectId%>">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button type="submit" id="reqList" style="display:none"></button>
+					</form>
 					
 					<!-- additional requirement -->
 					<form action="OtherMainRequirement.htm" method="GET" id="myStatus">
@@ -200,7 +207,7 @@ if(DocumentSummaryList.size()>0){
 					<!--  -->
 					<div class="row" style="display: inline">
 					<div class="mt-2" id="reqdiv">
-					<div style="height:420px;margin-left: 5%;overflow:auto"id="scrollclass">
+					<div style="height:500px;margin-left: 5%;overflow:auto"id="scrollclass">
 					<table class="table table-bordered">
 					<tr class="table-warning"><td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td></tr>
 					<tr>
@@ -389,6 +396,18 @@ if(DocumentSummaryList.size()>0){
   	 	</div>
     </div>
   </div>
+  			<!--Downlaod Document  -->
+			<form action="#">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<button class="btn bg-transparent" id="Downloadbtn" formaction="RequirementDocumentDownlod.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" style="display:none;">
+			<i class="fa fa-download text-success" aria-hidden="true"></i></button>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="projectId" value="<%=projectId%>"> 
+			</form>
+			<!-- End -->
+  
+  
+  
   <!--  Appedices-->
 					
 					<form action="RequirementAppendixMain.htm" method="GET" id="myStatus">
@@ -756,7 +775,13 @@ function showParaPage(){
 	$('#parareq').click();
 }
 
+function showReq(){
+	$('#reqList').click();
+}
 
+function DownloadDoc(){
+	$('#Downloadbtn').click();
+	}
 </script>
 </body>
 </html>

@@ -42,4 +42,11 @@ public class PfmsInititationRequirement implements Serializable {
     private String ModifiedDate;
 	private int IsActive;
 	private Long ProjectId;
+	private Long ReqMainId;
+	private Long ParentId;
+	private String Demonstration;
+	private String Test;
+	private String Analysis;
+	private String Inspection;
+	private String SpecialMethods;
 }

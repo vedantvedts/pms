@@ -2184,9 +2184,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 
 		@Override
 		public long ProjectRequirementAdd(PfmsInititationRequirement pir) throws Exception {
-			// TODO Auto-generated method stub
 			manager.persist(pir);
-			
 			manager.flush();
 			return pir.getInitiationReqId();
 		}
@@ -2208,7 +2206,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		public long ProjectRequirementDelete(long initiationReqId) throws Exception {
 			return 0;
 		}
-		private static final String REQUIREMENTS="SELECT a.InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
+		private static final String REQUIREMENTS="SELECT a.InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
 		@Override
 		public Object[] Requirement(long InitiationReqId) throws Exception {
 			Query query=manager.createNativeQuery(REQUIREMENTS);

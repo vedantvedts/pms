@@ -2,6 +2,7 @@ package com.vts.pfms.requirements.dao;
 
 import java.util.List;
 
+import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.TestAcceptance;
@@ -38,5 +39,22 @@ public interface RequirementDao {
 	public long AcceptanceUpdate(TestAcceptance pr, String details)throws Exception;
 	public Object[] AcceptanceTestingList(String Testid) throws Exception;
 	public Object[] AcceptanceTestingExcelData(String initiationId, String projectId)throws Exception;
+
+
+	public List<Object[]> requirementTypeList(String initiationid, String projectId) throws Exception;
+	public long RequirementUpdate(PfmsInititationRequirement pir) throws Exception;
+	public List<Object[]> getReqMainList(String reqMainId) throws Exception;
+
+
+	public List<Object[]> getreqTypeList(String reqMainId, String initiationReqId) throws Exception;
+
+
+	public List<Object[]> getVerificationMethodList(String projectId, String initiationId) throws Exception;
+
+
+	public List<Object[]> getProjectParaDetails(String initiationid, String projectId) throws Exception;
+
+
+	List<Object[]> getVerifications(String initiationid, String projectId) throws Exception;
 	
 }

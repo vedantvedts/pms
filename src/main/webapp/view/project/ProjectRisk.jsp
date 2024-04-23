@@ -126,11 +126,16 @@ if(ses1!=null){
 				<div class="card shadow-nohover">
 					<div class="col-md-12">
 						<div class="row card-header" style="margin-left: -13px;width: 102%;">
-				   			<div class="col-md-6">
+				   			<div class="col-md-3">
 								<h4>Project Risk List</h4>
 							</div>
-										
-							<div class="col-md-6 justify-content-end" style="margin-top: -8px;">
+							<div class="col-md-5">
+							
+							<a class="btn btn-sm" style="float:right" href="RiskTemplate.htm" target="blank">
+							Risk Management Plan Template <i class="fa fa-download" aria-hidden="true"></i>
+							</a>
+							</div>
+							<div class="col-md-4 justify-content-end" style="margin-top: -8px;">
 								<table style="float: right;" >
 									<tr>
 										<td ><h5>Project :</h5></td>

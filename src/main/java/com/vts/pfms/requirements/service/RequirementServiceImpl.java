@@ -288,5 +288,39 @@ public class RequirementServiceImpl implements RequirementService {
 		// TODO Auto-generated method stub
 		return dao.addAbbreviations(iaList);
 	}
-
+	@Override
+	public List<Object[]> requirementTypeList(String initiationid, String projectId) throws Exception {
+		return dao.requirementTypeList(initiationid,projectId);
+	}
+	@Override
+	public long addPfmsInititationRequirement(PfmsInititationRequirement pir) throws Exception {
+		pir.setCreatedDate(sdf1.format(new Date()));
+		pir.setIsActive(1);
+		return prodao.ProjectRequirementAdd(pir);
+	}
+	@Override
+	public long RequirementUpdate(PfmsInititationRequirement pir) throws Exception {
+		return dao.RequirementUpdate(pir);
+	}
+	@Override
+	public List<Object[]> getReqMainList(String reqMainId) throws Exception {
+		return dao.getReqMainList(reqMainId);
+	}
+	@Override
+	public List<Object[]> getreqTypeList(String reqMainId, String initiationReqId) throws Exception {
+		return dao.getreqTypeList(reqMainId,initiationReqId);
+	}
+	@Override
+	public List<Object[]> getVerificationMethodList(String projectId, String initiationId) throws Exception {
+		return dao.getVerificationMethodList(projectId,initiationId);
+	}
+	@Override
+	public List<Object[]> getProjectParaDetails(String initiationid, String projectId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.getProjectParaDetails(initiationid,projectId);
+	}
+	@Override
+	public List<Object[]> getVerifications(String initiationid, String projectId) throws Exception {
+		return dao.getVerifications(initiationid,projectId);
+	}
 }

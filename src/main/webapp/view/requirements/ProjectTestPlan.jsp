@@ -368,7 +368,6 @@
 					
 					<!--  AccceptanceTest end -->
 		<!--Downlaod Document  -->
-			
 			<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<button class="btn bg-transparent" id="Downloadbtn" formaction="TestDocumentDownlod.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" style="display:none;">
@@ -456,8 +455,8 @@
    			</div>
    			
    			<div class="row mt-2">
-			   	<div class="col-md-2">
-			   	 <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
+			   <div class="col-md-2">
+			   	<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
 			   	</div>	
    				<div class="col-md-5">
 	   		<select class="form-control selectdee"name="Reviewer" id=""data-width="100%" data-live-search="true" multiple  required>
@@ -1046,7 +1045,6 @@
 			 console.log(data);
 			 $('#Approchdetails').val(data);
 			 });
-		 
 		 
 </script>
 </body>

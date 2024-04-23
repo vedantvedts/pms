@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
+import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.TestAcceptance;
@@ -41,4 +42,21 @@ public interface RequirementService {
 	public Object[] AcceptanceTestingList(String testid)throws Exception;
 	public Object[] AcceptanceTestingExcelData(String initiationId, String projectId) throws Exception;
 	public long addAbbreviations(List<Abbreviations> iaList) throws Exception;
+
+
+	List<Object[]> requirementTypeList(String initiationid, String projectId) throws Exception;
+
+	long addPfmsInititationRequirement(PfmsInititationRequirement pir) throws Exception;
+
+	long RequirementUpdate(PfmsInititationRequirement pir) throws Exception;
+
+	List<Object[]> getReqMainList(String reqMainId) throws Exception;
+
+	List<Object[]> getreqTypeList(String reqMainId, String initiationReqId) throws Exception;
+
+	public List<Object[]> getVerificationMethodList(String projectId, String initiationId)throws Exception;
+
+	public List<Object[]> getProjectParaDetails(String initiationid, String projectId) throws Exception;
+
+	public List<Object[]> getVerifications(String initiationid, String projectId) throws Exception;
 }

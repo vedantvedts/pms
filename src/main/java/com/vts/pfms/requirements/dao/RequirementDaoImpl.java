@@ -1,5 +1,6 @@
 package com.vts.pfms.requirements.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.project.dao.ProjectDaoImpl;
+import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.TestAcceptance;
@@ -29,7 +31,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	EntityManager manager;
 	
 	
-	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,a.ProjectId FROM pfms_initiation_req a WHERE initiationid=:initiationid AND ProjectId=:ProjectId AND isActive='1' ORDER BY reqCount";
+	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,a.ProjectId,a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods FROM pfms_initiation_req a WHERE initiationid=:initiationid AND ProjectId=:ProjectId AND isActive='1' ORDER BY ReqMainId";
 	@Override
 	public List<Object[]> RequirementList(String intiationId,String projectId) throws Exception {
 		// TODO Auto-generated method stub
@@ -317,5 +319,94 @@ public Object[] AcceptanceTestingExcelData(String initiationid,String ProjectId)
 	 Object[] result= (Object[])query.getSingleResult();
 	return result;
 }
+
+
+private final String REQTYPELIST="SELECT RequirementId, ReqName , ReqParentId, ReqCode FROM pfms_req_types a WHERE ReqParentId= '0' AND RequirementId NOT IN (SELECT reqmainid FROM pfms_initiation_req WHERE parentid='0' AND isactive ='1' AND initiationid=:initiationid AND projectid=:projectId)";
+@Override
+public List<Object[]> requirementTypeList(String initiationid, String projectId) throws Exception{
+
+	Query query = manager.createNativeQuery(REQTYPELIST);
+	query.setParameter("initiationid", initiationid);
+	query.setParameter("projectId", projectId);
 	
+	return (List<Object[]>)query.getResultList();
+}
+
+private static final String REQUPDATE = "UPDATE pfms_initiation_req SET RequirementDesc=:RequirementDesc,modifiedby=:modifiedby,modifieddate=:modifieddate,priority=:priority,NeedType=:needtype WHERE initiationreqid=:initiationreqid AND isActive=1";
+@Override
+public long RequirementUpdate(PfmsInititationRequirement pir) throws Exception {
+	
+	Query query = manager.createNativeQuery(REQUPDATE);
+	query.setParameter("RequirementDesc",pir.getRequirementDesc() );
+	query.setParameter("modifiedby",pir.getModifiedBy() );
+	query.setParameter("modifieddate", pir.getModifiedDate());
+	query.setParameter("priority", pir.getPriority());
+	query.setParameter("needtype", pir.getNeedType());
+	query.setParameter("initiationreqid", pir.getInitiationReqId());
+	return query.executeUpdate();
+}
+
+		private static final String REQMAINLIST="SELECT RequirementId,ReqName,ReqParentId,ReqCode FROM pfms_req_types WHERE RequirementId =:reqMainId UNION SELECT RequirementId,ReqName,ReqParentId,ReqCode FROM pfms_req_types WHERE ReqParentId =:reqMainId";
+		@Override
+		public List<Object[]> getReqMainList(String reqMainId) throws Exception {
+			Query query = manager.createNativeQuery(REQMAINLIST);
+			query.setParameter("reqMainId", reqMainId);
+			
+			return (List<Object[]>)query.getResultList();
+		}
+		private static final String REQTYPE="SELECT InitiationReqId,RequirementId FROM pfms_initiation_req WHERE ReqMainId =:reqMainId AND ParentId =:initiationReqId AND isactive='1'";
+		@Override
+		public List<Object[]> getreqTypeList(String reqMainId, String initiationReqId) throws Exception {
+			
+			Query query = manager.createNativeQuery(REQTYPE);
+			query.setParameter("reqMainId", reqMainId);
+			query.setParameter("initiationReqId", initiationReqId);
+			
+			List<Object[]>getreqTypeList = new ArrayList<>();
+			try {
+				getreqTypeList=(List<Object[]>)query.getResultList();
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+			return getreqTypeList;
+		}
+		
+		private static final String METHODLIST="SELECT a.VerificationDataId,b.VerificationMasterId,b.VerificationName,a.TypeofTest,a.Purpose FROM pfms_initiation_verification_data a,pfms_initiation_verification_master b WHERE a.VerificationMasterId=b.VerificationMasterId AND a.IsActive='1' AND a.initiationid=:initiationId AND projectid=:projectId";
+		@Override
+		public List<Object[]> getVerificationMethodList(String projectId, String initiationId) throws Exception {
+			Query query = manager.createNativeQuery(METHODLIST);
+			
+			query.setParameter("projectId", projectId);
+			query.setParameter("initiationId", initiationId);
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		private static final String PARADETAILSMAIN="SELECT paraid,sqrid,ProjectId,parano,paradetails FROM pfms_initiation_sqr_para WHERE ProjectId=:ProjectId AND InitiationId=:initiationid  AND isactive=1";
+		@Override
+		public List<Object[]> getProjectParaDetails(String initiationid, String ProjectId) throws Exception {
+
+			Query query = manager.createNativeQuery(PARADETAILSMAIN);
+			query.setParameter("initiationid", initiationid);
+			query.setParameter("ProjectId",ProjectId );
+			List<Object[]>list= new ArrayList<>();
+			try {
+				list = (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+			return list;
+		}
+		
+		private static final String VERIFICATIONLIST="select VerificationId,Provisions,InitiationId,ProvisionsDetails from pfms_initiation_verification where InitiationId=:initiationid and projectId=:projectId and isactive='1'";
+		@Override
+		public List<Object[]> getVerifications(String initiationid,String projectId) throws Exception {
+			
+			Query query=manager.createNativeQuery(VERIFICATIONLIST);
+			query.setParameter("initiationid", initiationid);
+			query.setParameter("projectId", projectId);
+			List<Object[]> verificationList=(List<Object[]>)query.getResultList();
+			return verificationList;
+		}
 }

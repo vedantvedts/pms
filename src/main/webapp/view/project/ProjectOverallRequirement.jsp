@@ -1082,20 +1082,23 @@
 					<div class="container" id="container">
 					<div class="row" style="display: inline">
 					<div class="requirementid mt-2 ml-2">
+				    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Requirement Document</span> 
+			       	<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
 			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
+			         		<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
 			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" >&nbsp;System Requirements</span> 
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Additional Requirements</span> 
+<!-- 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" >&nbsp;System Requirements</span> 
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Additional Requirements</span>  -->
+												<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showReq()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirements</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showVerification()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
-<!-- 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirement Traceability</span>
- -->							
- 		<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
+
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAppendices()"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
 		<!-- 			 <span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img alt="" src="view/images/status.png" >&nbsp;Status</span>  -->
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Requirement Document</span> 
+
+
 				<!-- 	<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirement.png">&nbsp;System Requirements</span>  -->
+							
 					 
 					</div>
 					</div>
@@ -1120,7 +1123,7 @@
 				</form>
 			<!-- Introduction form end  -->
 				<div class="" id="reqdiv">
-					<div style="height:420px;margin-left: 1%;overflow:auto"id="scrollclass">
+					<div style="height:500px;margin-left: 1%;overflow:auto"id="scrollclass">
 					<table class="table table-bordered">
 					<tr class="table-warning"><td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td></tr>
 					<tr>
@@ -1295,7 +1298,7 @@
 				
 			</div>
 		</div>
-			<div class="row mt-2" style="border-top:1px solid lightslategrey;">
+<%-- 			<div class="row mt-2" style="border-top:1px solid lightslategrey;">
 			<div class="col-md-12" style="text-align: center;">
 				<b>Approval Flow</b>
 			</div>
@@ -1330,7 +1333,7 @@
 					</td></tr>
 				<tr>
 				</tr>
-			</table>
+			</table> --%>
 		</div>  
 	</div>
 	<%
@@ -1562,7 +1565,20 @@
   </div>
 </div>
 	
+	<!--  -->
+		<form action="RequirementList.htm" method="GET" id="myStatus">
+					<input type="hidden" name="initiationid" value="<%=initiationid%>">
+					<input type="hidden" name="pdd" value="<%=ProjectDetailes[1].toString() %>" >
+					<input type="hidden" name="projectcode" value="<%=ProjectDetailes[6].toString()%>" >
+					<input type="hidden" name="project" value="<%=ProjectDetailes[0] + "/" + ProjectDetailes[6] + "/" + ProjectDetailes[7]%>">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button type="submit" id="reqList" style="display:none"></button>
+					</form>
 	
+	
+	
+	
+	<!--  -->
 	<!-- Modal  for Abbreviations-->
 	
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="AbbreviationsModal">
@@ -1882,6 +1898,10 @@ $("#projectType").on('change', function() {
 	   form.submit();
    }
 });
+
+function showReq(){
+	$('#reqList').click();
+}
 </script>
 	
 </body>

@@ -1,6 +1,7 @@
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"
+	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.util.stream.Collectors"%>
 <%@page import="java.util.*"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.Month"%>
@@ -59,7 +60,7 @@ pageEncoding="ISO-8859-1"%>
 <%
 List<Object[]>OtherRequirements=(List<Object[]>)request.getAttribute("OtherRequirements");
 String lablogo=(String)request.getAttribute("lablogo");
-Object[]PfmsInitiationList=(Object[])request.getAttribute("PfmsInitiationList");
+/* Object[]PfmsInitiationList=(Object[])request.getAttribute("PfmsInitiationList"); */
 Object[]LabList=(Object[])request.getAttribute("LabList");
 Object[]reqStatus=(Object[])request.getAttribute("reqStatus");
 List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
@@ -70,9 +71,9 @@ SimpleDateFormat sdf1=fc.getSqlDateFormat();
 List<Object[]>RequirementFiles=(List<Object[]>)request.getAttribute("RequirementFiles");
 Object[]ReqIntro=(Object[])request.getAttribute("ReqIntro");
 String uploadpath=(String)request.getAttribute("uploadpath");
-String projectName=PfmsInitiationList[7].toString();
+/* String projectName=PfmsInitiationList[7].toString();
 String classification=PfmsInitiationList[5].toString();
-String projectshortName=PfmsInitiationList[6].toString();
+String projectshortName=PfmsInitiationList[6].toString(); */
 List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");
 List<Object[]>ParaDetails=(List<Object[]>)request.getAttribute("ParaDetails");
 String labImg=(String)request.getAttribute("LabImage");
@@ -99,7 +100,13 @@ String HeaderFontWeight="Bold";
 String SubHeaderFontweight="Bold";
 String SuperHeaderFontWeight="Bold";
 String FontFamily="Times New Roman";
+List<Object[]>VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
+List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
+
+String projectShortName =(String)request.getAttribute("projectShortName");
 %>
+
+
 <style>
     /* Define header and footer styles */
  .static-header {
@@ -150,7 +157,7 @@ td {
 }
 @
 top-right {
-	content: "Project : <%=PfmsInitiationList[6].toString() %>";
+
 	margin-top: 30px;
 	margin-right: 10px;
 }
@@ -159,7 +166,7 @@ top-left {
 	margin-top: 30px;
 	margin-left: 10px;
 	content:
-		"<%if(reqStatus!=null && reqStatus[3]!=null){%><%=reqStatus[3].toString()%><%}else{%><%}%>";
+	
 }
 @
 top-left {
@@ -172,13 +179,13 @@ top-left {
 top-center {
 	font-size: 13px;
 	margin-top: 30px;
-	content: "<%=PfmsInitiationList[5].toString()%>";
+	
 }
 @
 bottom-center {
 	font-size: 13px;
 	margin-bottom: 30px;
-	content: "<%=PfmsInitiationList[5].toString()%>";
+	
 }
 .border-black {
 	border: 1px solid black !important;
@@ -304,18 +311,8 @@ span {
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
 				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM REQUIREMENTS</h4>
-				<h4 style="font-size: 15pt;font-family: <%= FontFamily %>;">For</h4>
-				<h4 style="font-size: 18pt;font-family: <%= FontFamily %>;">
-					Project:
-					<%=PfmsInitiationList[7].toString()%><br> <br>
-					<%="(" + PfmsInitiationList[6].toString() + ")"%>
-				</h4>
-				<h4 style="font-size: 18px; text-decoration: underline;font-family: <%= FontFamily %>;">Requirement
-					No.</h4>
-				<h4 style="font-family: <%= FontFamily %>;">
-					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
-					<%} else {%>-<%}%>
-				</h4>
+			
+				
 					<div align="center" >
 						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
 							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
@@ -351,6 +348,7 @@ span {
    </div>
 			</div>
 			<br>
+			<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
 		<!------------------------ page 2 -------Starts----------------------->
   <div class="heading-container" style="text-align: center; position: relative;">
     <h6 class="heading-color top-center" style="font-family: <%= FontFamily %>;font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
@@ -493,26 +491,10 @@ span {
           <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>; width: 100px;"><span class="text-dark"></span></td>
           <td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>; width: 100px;"><span class="text-dark"></span></td>
         </tr>
-				</tbody>
-<!--   <script>
-    // JavaScript loop to generate 10 blank rows
-    for (let i = 0; i < 15; i++) {
-      document.getElementById('blankRowsBody').innerHTML += `
-        <tr>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black; width: 100px;"><span class="text-dark"></span></td>
-          <td class="text-dark" style="border:1px solid black; width: 100px;"><span class="text-dark"></span></td>
-        </tr>
-      `;
-    }
-  </script> -->
-					</table>
-						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
-						<div class="heading-container" style="text-align: center; position: relative;">
+		</tbody>
+		</table>
+		<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<div class="heading-container" style="text-align: center; position: relative;">
   <h6 class="heading-color top-center" style="font-family: <%= FontFamily %>;font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-weight: normal;">RESTRICTED</h6>
 </div>
 				<div align="center">
@@ -565,7 +547,7 @@ span {
 					</tr>
 					<tr >
 					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-dark">System Requirements Document</span></td>
-					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-dark"><%=classification %></span></td>
+					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-dark"></span></td>
 					</tr>
 				    <tr >
 					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:</td>
@@ -580,7 +562,7 @@ span {
 				</td>
 					</tr>
 				     <tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project Number and Project Name: <span class="text-dark"><%=projectName %> (<%= projectshortName %>) </span></td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Pro Project Name: <%=projectShortName %><span class="text-dark"> </span></td>
 					</tr>
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
@@ -713,21 +695,18 @@ span {
 			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix C - Requirements Traceablity Matrices</h4>
 			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix B - Test Verification Matrices</h4> --%>
 			<p style="text-align: center; page-break-before: always;font-family: <%= FontFamily %>;">&nbsp;</p>
-						<%if(ReqIntro!=null) {%>
+					
 			<div style="page-break-before: always"></div>
 						<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-color">
     <%= ++maincount %>.&nbsp;SCOPE
 </h1>
-
-				<hr style="width: 100%;">
-					<%if(ReqIntro!=null){ %>
 			<div>
 				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>; font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>1
 					&nbsp;System Identification
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 				 
-					<%if(ReqIntro[1]!=null) {%><%=ReqIntro[1]%>
+					<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=ReqIntro[1]%>
 					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
 					<%} %>
 					
@@ -738,7 +717,7 @@ span {
 					&nbsp;System Block Diagram
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>">
-					<%if(ReqIntro[2]!=null) {%><%=ReqIntro[2]%>
+					<%if(ReqIntro!=null && ReqIntro[2]!=null) {%><%=ReqIntro[2]%>
 					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
@@ -748,7 +727,7 @@ span {
 					&nbsp;System Overview
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>">
-					<%if(ReqIntro[3]!=null) {%><%=ReqIntro[3]%>
+					<%if(ReqIntro!=null && ReqIntro[3]!=null) {%><%=ReqIntro[3]%>
 					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
 					<%} %>
 				</div>
@@ -758,7 +737,7 @@ span {
 					&nbsp;Document Overview
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify;  font-weight:<%=ParaFontWeight%>">
-					<%if(ReqIntro[4]!=null) {%><%=ReqIntro[4]%>
+					<%if(ReqIntro!=null && ReqIntro[4]!=null) {%><%=ReqIntro[4]%>
 					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
@@ -768,18 +747,244 @@ span {
 					&nbsp;Applicable Standards
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify;  font-weight:<%=ParaFontWeight%>">
-					<%if(ReqIntro[5]!=null) {%><%=ReqIntro[5]%>
+					<%if(ReqIntro!=null && ReqIntro[5]!=null) {%><%=ReqIntro[5]%>
 					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
 			</div>
-			<%}else{ %>
-			<div align="center" style="margin-top: 350px">
-				<h4 style="font-family: <%= FontFamily %>;">No Data Available !</h4>
-			</div>
-			<%}} %>
+	
+			
 
-			 <%if(!RequirementList.isEmpty()){ %>
+<h1 style="font-family: <%= FontFamily %>;font-size: <%= fontSize%>pt; font-weight:<%=HeaderFontWeight%>;color: black;" class="heading-color">
+<br><%=++maincount %>.&nbsp;&nbsp;Requirements
+</h1>
+<%if(!RequirementList.isEmpty()) {
+List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+int mainReqCount=0;
+for(Object[]obj:mainReqList){
+%>
+<div style="padding:none;"><h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++mainReqCount) %>  &nbsp;<%=obj[3].toString() %></h2></div>
+<%if(obj[4]!=null) {%><div style="padding:0px;"><%=obj[4].toString()%></div><%}else{ %><span></span><%} %>
+<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());%>
+<%
+String ReqName="";
+int subReqCount=0;
+for(Object[]obj1:subMainReqList) {
+int snCount=0;
+%>
+<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
+<h3 style="padding:0px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt ;" ><%=maincount+"."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3].toString() %></h3>
+<%} %>
+
+<br>
+<table class=""
+					style="margin-left: 20px;;width: 650px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+					<thead>
+						<tr>
+							<th class="border-black"
+								style="width: 20px;  border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black"
+								style="width: 130px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Attribute</th>
+							<th class="border-black"
+								style=" border: 1px solid black; border-collapse: collapse;">Content</th>
+						</tr>
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">ID</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj1[1].toString() %></td>
+						</tr>
+						
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> QR Para </td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								
+								<%if(obj1[12]!=null) {
+									String [] a=obj1[12].toString().split(", ");
+									for(String s:a){
+								%> 
+								
+								 <%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining("")) %> <br>
+								<%}}else{ %>
+								-
+								<%} %>
+								
+								</td>
+						</tr>
+						
+						<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Priority</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[5]!=null) {%> <%if(obj1[5].toString().equalsIgnoreCase("L")){%>Low<%} %>
+								<%if(obj1[5].toString().equalsIgnoreCase("H")){%>High<%} %> <%if(obj1[5].toString().equalsIgnoreCase("M")){%>Medium<%} %>
+								<%}else{%>-<%} %>
+							</td>
+						</tr>
+						
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; font-weight: 600; border: 1px solid black; border-collapse: collapse;">Type</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[6]!=null) {%> <%if(obj1[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %>
+								<%if(obj1[6].toString().equalsIgnoreCase("E")) {%>Essential<%} %> <%}else {%>-<%} %>
+							</td>
+						</tr>
+						<tr>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Description</td>
+							<td class="border-black"
+								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+								<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
+							</td>
+						</tr>
+						<tr>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Remarks</td>
+							<td class="border-black"
+								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+								<%if(obj1[7]!=null){ %> <%=obj1[7].toString() %> <%}else{ %>-<%} %>
+							</td>
+						</tr>
+						<tr>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Constraints</td>
+							<td class="border-black"
+								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+								<%if(obj1[9]!=null){ %> <%=obj1[9].toString() %> <%}else{ %>-<%} %>
+							</td>
+						</tr>
+						
+						
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Demonstration</td>
+								<td class="border-black" style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								
+								<%if(obj1[16]!=null) {
+								List<Object[]>DemonList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+								String [] a=obj1[16].toString().split(", ");
+								for(int i=0;i<a.length;i++){
+								%>
+								
+								<%=	a[i] +" . "+ DemonList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+								<%} %>
+								<%}else{%>-<%} %>
+							   
+							</td>
+						</tr>
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style="text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Test</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[17]!=null) {
+									List<Object[]>TestList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
+									String [] a=obj1[17].toString().split(", ");
+									for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+							</td>
+						</tr>
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Design/Analysis</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[18]!=null) {
+									List<Object[]>AnalysisList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("3")).collect(Collectors.toList());
+									String [] a=obj1[18].toString().split(", ");
+									for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+							</td>
+						</tr>
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Inspection</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[19]!=null) {
+									List<Object[]>InspectionList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("4")).collect(Collectors.toList());
+									String [] a=obj1[19].toString().split(", ");
+								for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+							</td>
+						</tr>
+						
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Special Methods</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[20]!=null) {
+									List<Object[]>specialList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("5")).collect(Collectors.toList());
+									String [] a=obj1[20].toString().split(", ");
+									for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+							</td>
+						</tr>
+					</thead>
+					
+</table>
+
+<%
+ReqName=obj1[3].toString();
+} %>
+<%}} %>
+
+
+
+<%-- 			 <%if(!RequirementList.isEmpty()){ %>
 			<div style="page-break-before: always;"></div>
 			<div>
 				<!-- <div align="center"> -->
@@ -951,8 +1156,12 @@ span {
 				<div align="center" style="margin-top: 350px">
 					<h4 style="font-family: <%= FontFamily %>;">No Data Available !</h4>
 				</div>
-				<%} }%> 
-						<h1 style="font-family: <%= FontFamily %>;margin-left: 10px; font-size: <%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>">
+				<%} }%>  --%>
+							
+				
+				
+				
+<%-- <h1 style="font-family: <%= FontFamily %>;margin-left: 10px; font-size: <%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>">
 <br><%=++maincount %>.&nbsp;
 APPLICABLE DOCUMENTS</h1>
 	<hr style="width: 100%;">
@@ -962,14 +1171,14 @@ APPLICABLE DOCUMENTS</h1>
 				
 				<%if(!OtherRequirements.isEmpty()){ %>
 				<div style="page-break-before: always;font-family: <%= FontFamily %>;"></div>
-				<%-- <div >
+				<div >
 					<h2 style="font-size: 20px !important; color:;"
 						class="heading-color">
 						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 						<br><%=++maincount %>.&nbsp;		
 						Other System Requirements
 					</h2>
-				</div> --%>
+				</div>
 				<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>"><%=++maincount %>. &nbsp;REQUIREMENTS</h1>
 				<hr style="width: 100%;">
 						<%int i=0;
@@ -1000,7 +1209,7 @@ APPLICABLE DOCUMENTS</h1>
 				<div style="margin-top: 300px" align="center">
 					<h4>No Data Available !</h4>
 				</div>
-				<%}} %>
+				<%}} %> --%>
 				
 			<%--	<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
 				<div style="page-break-before: always"></div>
@@ -1114,11 +1323,11 @@ APPLICABLE DOCUMENTS</h1>
 				<%}%> --%>
 				<div >
 				<h1 style="font-family: <%= FontFamily %>;font-size: <%= fontSize%>pt; font-weight:<%=HeaderFontWeight%>;color: black !important;" class="heading-color">
-    <br><%=++maincount %>. Verification Provisions
+    			<br><%=++maincount %>. Verification Provisions
 			</h1>
 				<h2 style="font-family: <%= FontFamily %>;font-size:<%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>;margin-left: 20px;"><%=maincount %>.1	Verification Methods</h2>
 				</div>
-				<%if(!Verifications.isEmpty()) {
+				<%if(Verifications!= null &&   !Verifications.isEmpty()) {
 				int verificationCount=1;
 				int j=0;
 				for(Object[]obj:Verifications){
@@ -1134,144 +1343,70 @@ APPLICABLE DOCUMENTS</h1>
 						<%}%>
 					</div>
 				<br>
-				<% if(obj[1].toString().equalsIgnoreCase("Test")){%>
-						<div style="text-align: center; padding-bottom: 30px;">
-    <span style="font-size: 14px; font-weight: bold; text-decoration: underline;font-family: <%= FontFamily %>">Table A</span>
-</div>
-					<table class="border-black"
-					style="width: 650px; margin-top: 20px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+
+									<%}} %>
+									
+							<table class="border-black"
+					style="width: 650px; margin-left: 20px; margin-top: 10px; margin-bottom: 5px;font-family: <%=FontFamily%>;font-size: <%=ParaFontSize%>pt">
 					<thead>
 						<tr>
 							<th class="border-black"
 								style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
 							<th class="border-black"
-								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">Verification
-								Method</th>
+								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">Verification Method</th>
 							<th class="border-black"
-								style="padding: 5px; border: 1px solid black; border-collapse: collapse;">Type
-								of Test</th>
+								style="width: 180px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">Type of Test</th>
 							<th class="border-black"
-								style="padding: 5px; border: 1px solid black; border-collapse: collapse;">Purpose</th>
+								style="width: 150px; border: 1px solid black;text-align: center; border-collapse: collapse;">Purpose</th>
 						</tr>
 					</thead>
 					<tbody>
+				
+					 <%
+		
+					 int countSN=0;
+					 int SN=0;
+					 String data="";
+					 int subcount=0;
+	                   	for(Object[]obj:VerificationDataList){
+	                   	++SN;
+	                   	%>
 						<tr>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">1.</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">Demonstration</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								<div>D1.Sorties with DGPS Instrumented Aircraft</div>
-								<div>D2.Sorties</div>
-								<div>&nbsp;&nbsp;a) Aircraft</div>
-								<div>&nbsp;&nbsp;b) Helicopter</div>
-								<div>D3.Opportune targets</div>
-								<div>D4.Ballon Sortie</div>
-								<div>D5.Sorties with ECCM Exercise</div>
-								<div>D6.Data communication within system and between
-									system</div>
-								<div>D7.Maintainability</div>
-								<div>D8.Roadability</div>
+						<td class="border-black" 
+						<%if(SN==VerificationDataList.size()) {%>style="padding: 5px; text-align: center; border: 1px solid black;border-top:none; border-collapse: collapse;"<%} %>
+						  <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> style="padding: 5px; text-align: center; border: 1px solid black; border-bottom:none; border-collapse: collapse;"<%}else{ %>
+						    style="padding: 5px; text-align: center; border-right:1px solid black; border-left:1px solid black; border-collapse: collapse;" <%} %>>
+							 <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=++countSN %><%} %>
 							</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								Detection Range, System Accuracy , System Resolution , Angular
-								Coverage capability, Detected Target RCS, Manoeuvring Target
-								Tracking ECCM capability and other performance and functional
-								capabilities , measuring of mean time to replace LRUs(MTTR)
-								except for mechanical assemblies, mother boards , TWT, Drivers
-								and so on, Mobility of the vehicle along with the system during
-								transportaion</td>
+							<td class="border-black"   
+							<%if(SN==VerificationDataList.size()) {%>style="padding: 5px; text-align: center; border: 1px solid black;border-top:none; border-collapse: collapse;"<%} %>
+							  <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> style="padding: 5px; text-align: center; border: 1px solid black;   border-bottom:none;    border-collapse: collapse;"<%}else{ %>
+							    style="padding: 5px; text-align: center; border-right:1px solid black;   border-left:1px solid black;    border-collapse: collapse;" <%} %>>
+							   <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=obj[2] %><%} %>
+							 </td>
+							<%if(!data.equalsIgnoreCase(obj[2].toString())){
+								subcount=0;
+							} %> 
+							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;">  <%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %></td>
+							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;"><%=obj[4]%></td>
 						</tr>
-						<tr>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">2.</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">TEST</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								<div>T1.RF BITE</div>
-								<div>T2.Field BITE</div>
-								<div>T3.Radar Environment Simulator(RES)</div>
-								<div>T4.HMI Tests</div>
-								<div>T5.ECCM Test with noise Jammer</div>
-								<div>T6.Built IN Self Test(BIST)</div>
-							</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								System MDS level,Revisit Time, Target Sampling Rate , Multi-Beam
-								Test, System sensitivity, Range Velocity coverage, side lobe
-								blanking , Probability of Detection etc should be proven</td>
-						</tr>
-						<tr>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">3.</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">Design
-								/ Analysis</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								<div>A1. Design Analysis</div>
-								<div>A2. Data recording & Analysis for S/W & F/W</div>
-								<div>A3. Design Calculations and Analysis</div>
-								<div>A4. Reliability Availability Maintainability (RAM)
-									analysis</div>
-							</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								Track capacity, System Reliability, System Maintainability,
-								System Availability</td>
-						</tr>
-						<tr>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">4.</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">Inspection</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								<div>I1.Visual Examination</div>
-								<div>I2.Mechanical Inspection</div>
-							</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								Visual check for correctness of item and workmanship defects
-								/physical damages , Mechanical checks for paint quality
-								dimensions, weight</td>
-						</tr>
-						<tr>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">5.</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">Special
-								Verification Methods</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								<div>S1.HASS Test</div>
-								<div>S2.ESS Test</div>
-								<div>S3.EMI-EMC Test</div>
-								<div>S4.ATP</div>
-								<div>S5.QTP Test</div>
-								<div>S6.Calibration</div>
-							</td>
-							<td
-								style="border: 1px solid black; vertical-align: top; padding: 3px">
-								HASS/ESS to remove infant mortal failures , EMI /EMC com</td>
-						</tr>
+					 <%
+					 data = obj[2].toString();
+	                 } %>
 					</tbody>
-				</table>
-							<%} %>
-									<%}} %>
+				</table>				
+									
+									
 				<h1 style="font-family: <%= FontFamily %>;font-size:<%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>;margin-left: 5px;"><%=++maincount %>.	REQUIREMENTS TRACEABILITY</h1>	
 		<!-- traceability -->			
-						<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
+	<%-- 					<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
 				<div style="page-break-before: always"></div>
-				<%-- <div align="center">
+				<div align="center">
 					<h3 style="font-size: 16px !important; margin-left: 50px;"
 						class="heading-color">
 						<br><%=++maincount %>. Traceability
 					</h3>
-				</div --%>
+				</div
 				<div align="left">
 					<h2 style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black !important;margin-left: 20px" class="heading-color">
     <br><%= maincount %>.1 Forward Traceability Matrix
@@ -1371,9 +1506,58 @@ APPLICABLE DOCUMENTS</h1>
 						<%}%>
 					</tbody>
 				</table>
-				<%}%>		
+				<%}%>		 --%>
+					
+			<% if(RequirementList!=null && ProjectParaDetails!=null && !ProjectParaDetails.isEmpty()&&!RequirementList.isEmpty()) {   
+				List<Object[]>subList= RequirementList.stream().filter(e->!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+			%>		
+								<div align="left">
+					<h2 style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black !important;margin-left: 20px" class="heading-color">
+   		 <br><%= maincount %>.1 Forward Traceability Matrix
+		</h2>
+				</div>
+				<table class="border-black"
+					style="width: 650px; margin-left: 20px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+					<thead>
+						<tr>
+							<th class="border-black"
+								style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black"
+								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">RequirementId</th>
+							<th class="border-black"
+								style="width: 180px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">QR
+								 No</th>
+						</tr>
+					</thead>
+					<tbody>
+					<%int snCount=0;	
+					for(Object[]objs:subList) {
+					%>
+					<%if(objs[12]!=null) {%>
+					<tr>
+					<td style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;" ><%=++snCount %></td>
+					<td style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;"><%=objs[1].toString() %></td>
+					<td style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;" >
 					
 					
+								<%if(objs[12]!=null) {
+									String [] a=objs[12].toString().split(", ");
+									for(String s:a){
+								%> 
+								
+								 <%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining(",")) %><br> 
+								<%}}else{ %>
+								-
+								<%} %>
+					</td>
+					</tr>
+					<%} %>
+					<%} %>					
+					</tbody>
+					</table>
+					
+				
+				<%} %>
 									
 									
 				<h1 style="font-family: <%= FontFamily %>;font-weight:<%=HeaderFontWeight%>;font-size:<%= fontSize%>pt"><%=++maincount %>. APPEDNDIX SECTION</h1>
@@ -1430,8 +1614,8 @@ This appendix contains acronyms and provides standard definitions for terminolog
                 <td style="border: 1px solid black; padding-left: 10px;text-align:center"><%= "-"+plist[2] +"-"%></td>
             </tr>
             <% 
-   }} 
-%>
+   }}%> 
+		
         </tbody>
     </table>
 			<h4 style="font-family: <%= FontFamily %>;margin-left: 20px; font-weight: normal; text-align: justify;font-size: <%= ParaFontSize%>pt">Guidance:
@@ -1439,18 +1623,62 @@ This appendix contains acronyms and provides standard definitions for terminolog
     Sample Key performance Parameters / Key System Attributes are shown above. Modify the Key performance Parameters / Key System Atributes based on your specific project constraints. 
 </h4>
 
-			<h2 style="font-family: <%= FontFamily %>;margin-left: 20px;font-size: <%=SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.3	Appendix C - Requirements Traceability Matrices
+		<%-- 	<h2 style="font-family: <%= FontFamily %>;margin-left: 20px;font-size: <%=SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.3	Appendix C - Requirements Traceability Matrices
 </h2>	
-			<h4 style="font-family: <%= FontFamily %>;margin-left: 20px ;font-weight:normal;font-size: <%= ParaFontSize%>pt">  The Traceability to next level should be provided in - SSS Type A. Traceability to OR already provided in Sec 5.1</h4>
-	<h2 style="font-family: <%= FontFamily %>; margin-left: 20px; font-size: <%= SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.4	Appendix D - Test Verification Matrices</h2>			
+			<h4 style="font-family: <%= FontFamily %>;margin-left: 20px ;font-weight:normal;font-size: <%= ParaFontSize%>pt">  The Traceability to next level should be provided in - SSS Type A. Traceability to OR already provided in Sec 5.1</h4> --%>
+	<h2 style="font-family: <%= FontFamily %>; margin-left: 20px; font-size: <%= SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.3	Appendix D - Test Verification Matrices</h2>			
 			<div style="font-family: <%= FontFamily %>;">
-			${htmlContent}
+			
+			 <table style="font-family: <%= FontFamily %>;width: 650px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: 20px margin-right: auto;font-size: <%= ParaFontSize%>pt">
+			 <thead>
+            <tr>
+                <th class="text-dark" style="border: 1px solid black; width: 120px; text-align: center;"><span class="text-dark">Verification method</span></th>
+                <th class="text-dark" style="border: 1px solid black; padding: 5px; width:120px;"><span class="text-dark">Demonstration</span></th>
+                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 120px;"><span class="text-dark">Test</span></th>
+                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 120px;"><span class="text-dark">Analysis</span></th>
+                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 120px;"><span class="text-dark">Inspection</span></th>
+                <th class="text-dark" style="border: 1px solid black; text-align: center; width: 120px;"><span class="text-dark">Special Verification Method</span></th>
+           </tr>
+           
+        </thead>
+			<tbody>
+        <%
+           if(!RequirementList.isEmpty()){
+        	   List<Object[]>mainReqList=RequirementList.stream().filter(k->k[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+        	   for(Object []obj:mainReqList){
+        		   
+        		   List<Object[]>submainReqList=RequirementList.stream().filter(k->k[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+        %>
+        <%if(submainReqList.size()>0){%>
+           <tr>
+           <td style="border: 1px solid black; width: 120px; text-align: left;" colspan="6"><%=obj[3].toString() %>:-</td>
+           
+           </tr>
+           <%
+           String ReqName="";
+           for(Object[]obj1:submainReqList){ %>
+           <%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
+				<tr>
+				<td style="border: 1px solid black; width: 120px; text-align: left;" colspan="6"><%=obj1[3].toString() %></td>			</tr>	
+				<%} %>
+           
+           <tr>
+           <td style="border: 1px solid black; width: 120px; text-align: left;" ><%=obj1[1].toString() %></td>
+           <td style="border: 1px solid black; width: 120px; text-align: left;"><%if(obj1[16]!=null) {%><%=obj1[16].toString() %> <%}else{ %>-<%} %></td>
+           <td style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[17]!=null) {%><%=obj1[17].toString() %> <%}else{ %>-<%} %></td>
+           <td style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[18]!=null) {%><%=obj1[18].toString() %> <%}else{ %>-<%} %></td>
+           <td style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[19]!=null) {%><%=obj1[19].toString() %> <%}else{ %>-<%} %></td>
+           <td style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[20]!=null) {%><%=obj1[20].toString() %> <%}else{ %>-<%} %></td>
+           </tr>
+           <%
+           ReqName=obj1[3].toString();
+           } %>
+           <%} %>
+           <%}} %>
+           </tbody>
+			</table>
 			</div>
-		<h4 style="font-family: <%= FontFamily %>;margin-left: 20px ;font-weight:normal;text-align: justify;font-size: <%= ParaFontSize%>pt"> 	Guidance:
-This appendix contains tabularized verification method for every system or subsystem requirement.  If not known, pre contract award, the verification method is to be included in the resultant system or subsystem specification.
-Sample Test verification Matrix are shown above. Modify the Verification matrix based on your specific project constraints. 
-			<%=SuperHeaderFontWeight%>
-			</h4>
+
 			</div>
 		</div>
 			</div>
