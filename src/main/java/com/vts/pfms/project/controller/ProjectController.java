@@ -121,6 +121,7 @@ import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -140,6 +141,9 @@ public class ProjectController
 	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
+	
+	@Autowired
+	RequirementService reqService;
 	
 	private static final Logger logger=LogManager.getLogger(ProjectController.class);
 	
@@ -742,7 +746,7 @@ public class ProjectController
 	
 	
 	
-	@RequestMapping(value = "ProjectIntiationListSubmit.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "ProjectIntiationListSubmit.htm", method = {RequestMethod.POST,RequestMethod.GET})
 	public String ProjectIntiationListSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
@@ -4876,7 +4880,30 @@ public class ProjectController
 		}
 	}
 	
-	
+	@RequestMapping(value = "RiskTemplate.htm", method = RequestMethod.GET)
+	public void PPFM2016(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
+			throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside LoginPage/PPFMDoc2016.htm "+UserId);	
+		String path = req.getServletContext().getRealPath("/UserManual/" + "RiskManagementPlan.pdf");
+
+		res.setContentType("application/pdf");
+		res.setHeader("Content-Disposition", String.format("inline; filename=PPFM-2016.pdf"));
+
+		File my_file = new File(path);
+
+		OutputStream out = res.getOutputStream();
+		FileInputStream in = new FileInputStream(my_file);
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = in.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+		in.close();
+		out.flush();
+		out.close();
+	}
 	@RequestMapping(value = "ProjectRiskDataSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectRiskDataSubmit(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
@@ -6193,7 +6220,7 @@ public class ProjectController
 		String LabCode =(String ) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId);
 		try {
-			String ProjectId="0";
+			
 			Object[] DocTempAttributes =null;
 			
 			DocTempAttributes=service.DocTempAttributes();
@@ -6201,38 +6228,55 @@ public class ProjectController
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 			
 			String initiationid=req.getParameter("initiationid");
-			Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+			String ProjectId=req.getParameter("projectId");
+			if(initiationid==null) {
+				initiationid="0";
+				
+				
+				String projectShortName=service.ProjectEditData1(ProjectId)[4].toString();
+				req.setAttribute("projectShortName", projectShortName);
+			}
+		
+			if(ProjectId==null) {
+				ProjectId="0";
+		
+				String projectShortName=service.ProjectEditData(initiationid).get(0)[6].toString();
+				req.setAttribute("projectShortName", projectShortName);
+			}
+			Object[] PfmsInitiationList= null;
 			String filename="ProjectRequirement";
 			String path=req.getServletContext().getRealPath("/view/temp");
 		  	req.setAttribute("path",path);
 		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
-		  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+		  	//req.setAttribute("PfmsInitiationList", PfmsInitiationList);
 		  	req.setAttribute("LabList", service.LabListDetails(LabCode));
-		  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
-		  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
-		  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
+		  	//req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
+		  	req.setAttribute("RequirementList", reqService.RequirementList(initiationid,ProjectId));
+		  	//req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
 		  	req.setAttribute("uploadpath", uploadpath);
-		  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
+		  	//req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
 		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid, ProjectId));
-		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
-		  	req.setAttribute("Verifications", service.getVerificationList(initiationid));
+//		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
+//		  	req.setAttribute("Verifications", service.getVerificationList(initiationid));
 		  	req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
 		 	req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid, ProjectId));
-	
+			req.setAttribute("ProjectParaDetails", reqService.getProjectParaDetails(initiationid,ProjectId));
 		  	List<Object[]>AcronymsList= service.AcronymsList(initiationid, ProjectId);
 			req.setAttribute("AcronymsList", AcronymsList);
 			req.setAttribute("PerformanceList", service.getPerformanceList(initiationid, ProjectId));;
+			req.setAttribute("VerificationDataList", reqService.getVerificationMethodList("0", "0"));;
 		
 		  	req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(initiationid, ProjectId));
-			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid,ProjectId);
-			File my_file=null;
-			my_file=new File(uploadpath+VerificationExcelData[1]+File.separator+VerificationExcelData[2]);
-			
-			if(my_file!=null) {
-				String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
-		        req.setAttribute("htmlContent", htmlContent);
-			}
+		  	req.setAttribute("Verifications", reqService.getVerifications(initiationid,ProjectId));
+//			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid,ProjectId);
+//			File my_file=null;
+//			my_file=new File(uploadpath+VerificationExcelData[1]+File.separator+VerificationExcelData[2]);
+//			
+//			if(my_file!=null) {
+//				String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
+//		        req.setAttribute("htmlContent", htmlContent);
+//			}
 		
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
@@ -9018,12 +9062,13 @@ public class ProjectController
 				  if(count>0) {
 					  if(initiationid!="0") {
 				    	redir.addAttribute("project",project);
+				    	redir.addAttribute("initiationid",initiationid);
 				    	redir.addAttribute("result","Members Added Successfully for Document Distribution");
 				    	return "redirect:/ProjectOverAllRequirement.htm";
 				    	
 				    }else{
 				    	redir.addAttribute("projectId",ProjectId);
-				    	redir.addAttribute("resultfail","Members Add unsuccessful for Document Distribution");
+				    	redir.addAttribute("result","Members Added Successfully for Document Distribution");
 				    	return "redirect:/Requirements.htm";
 				    }
 				  }else{
