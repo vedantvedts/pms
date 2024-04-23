@@ -230,6 +230,8 @@ if(ses1!=null){
 										Assigned
 									<%}else if(issuedatalist.get(i)[3].toString().equals("C")){  %>
 										Closed
+								<%}else if(issuedatalist.get(i)[3].toString().equals("F")){  %>
+									Forwarded
 										<%} %>
 								</td>
 								<td><%if(issuedatalist!=null && issuedatalist.size()>0 && issuedatalist.get(i)[8]!=null){ %>
