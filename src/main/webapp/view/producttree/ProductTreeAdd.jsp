@@ -332,7 +332,7 @@ if(ses1!=null){	%>
 	        
 	  		<ul>
 				<li>      
-	
+	              
 						 <div class="member-view-box action-view-box">
 			                    
 			                         <div class=" action-box" style="border:-1px;" > 
@@ -355,7 +355,11 @@ if(ses1!=null){	%>
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
 			           <ul class="active">
 			           	                
-			                <% for(Object[] level1 : ProductTreeList){
+			                <% 
+			                int count=1;
+		                	 int countA=1;
+			                for(Object[] level1 : ProductTreeList){
+			                	
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
 			              
 			                	<li>	 		    
@@ -412,8 +416,12 @@ if(ses1!=null){	%>
 											
 								<!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->
 						                <ul  <% if(Level1!=null && Level1.size()>0){%> class="active" <%}%> >	
-						                <%for(Object[] level2 : ProductTreeList){
-						                  if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString()))
+						                <%
+						                
+						                int countB=1;
+						                for(Object[] level2 : ProductTreeList){
+						                	 if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString()))
+						                		 
 							                { %>
 							             
 												<li>	
@@ -773,7 +781,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#7#<%=level6[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#7#<%=level6[0]%>#<%=count%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -803,7 +811,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#6#<%=level5[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#6#<%=level5[0]%>#<%=count%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -832,7 +840,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>#<%=count%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -862,7 +870,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>##<%=count%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													                  
@@ -893,7 +901,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#3#<%=level2[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#3#<%=level2[0]%>#<%=count%>.<%=countA%>.<%=countB%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													          
@@ -911,7 +919,7 @@ if(ses1!=null){	%>
 										    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
 												
 								 	 </li>
-								 <% } %>
+								 <% countB++;} %>
                 	        <% } %>
                 	        
                 	        <%---------------------------------------Level 2 Add---------------------------------------------------------%>
@@ -922,7 +930,7 @@ if(ses1!=null){	%>
 											
 											<form action="LevelNameAdd.htm" method="get">
 									            <input type="text" name="LevelName" required >
-									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#2#<%=level1[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#2#<%=level1[0]%>#<%=count%>.<%=countA%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 									         </form>    
 									          
@@ -938,7 +946,8 @@ if(ses1!=null){	%>
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
 						 		    
                 		 </li>
-                	   <% } %>
+                	   <%  countA++;
+                	   count++;} %>
                 	<% } %>
 					
 			<%----------------------------------------------------------------------Level 1 Add---------------------------------------------------------%>
@@ -948,7 +957,7 @@ if(ses1!=null){	%>
 							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 					            <form action="LevelNameAdd.htm" method="get">
 						            <input type="text" name="LevelName" required>
-						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#1" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 							   </form>    
 					             
@@ -963,7 +972,7 @@ if(ses1!=null){	%>
                 
                          
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->        
-			           		
+			   	
 						
 	        		</li>
 	        		

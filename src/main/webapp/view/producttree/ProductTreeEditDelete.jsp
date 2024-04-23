@@ -231,7 +231,7 @@ if(ses1!=null){	%>
                                                           
 														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
 															for(Object[] level2: ProductTreeList){
-																 if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString())){%>
+																 if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString())){ %>
 	
 																
 														<tr class="collapse row<%=count %>" id="rowcollapse<%=count%>" >

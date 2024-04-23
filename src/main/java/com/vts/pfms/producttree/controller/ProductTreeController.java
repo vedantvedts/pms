@@ -154,6 +154,7 @@ public class ProductTreeController {
 	        String ProjectId=arr[0];
 	        String LevelId=arr[1];
 	        String ParentLevelId=arr[2];
+	        String SubLevelId=arr[3];
 	        
 	        
 	        String LevelName=req.getParameter("LevelName");
@@ -163,6 +164,7 @@ public class ProductTreeController {
 	        dto.setProjectId(Long.parseLong(ProjectId));
 	        dto.setParentLevelId(Long.parseLong(ParentLevelId));
 	        dto.setLevelId(LevelId);
+	        dto.setSubLevelId(SubLevelId);
 	        dto.setLevelName(LevelName);
 	        dto.setCreatedBy(UserId);
 	        

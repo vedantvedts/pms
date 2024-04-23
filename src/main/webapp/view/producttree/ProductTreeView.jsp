@@ -365,7 +365,7 @@ table,td{
 																			 
 																			 );" >
 												
-										             <span  style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;"> 
+										             <span  style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;"> 
 										                  <%=level1[3] %>
 										                
 										             </span>  
@@ -416,7 +416,7 @@ table,td{
 																			 
 																			 );" >
 														
-															       <span style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;"> 
+															       <span style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;"> 
 			                          			                              <%=level2[3] %>
 			                          			                   </span>
 			                          			                   
@@ -472,7 +472,7 @@ table,td{
                                                                       
 																			 
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
 			                          			                                <%=level3[3] %>
 			                          			                                
@@ -533,7 +533,7 @@ table,td{
 																			 );" >
 																		 
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
 			                          			                                <%=level4[3] %>
 			                          			                                
@@ -590,7 +590,7 @@ table,td{
 																			 );" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
 			                          			                                <%=level5[3] %>
 			                          			                                
@@ -648,7 +648,7 @@ table,td{
 																			 );" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
 			                          			                                <%=level6[3] %>
 			                          			                                
@@ -706,7 +706,7 @@ table,td{
 																			 );" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
 			                          			                                <%=level7[3] %>
 			                          			                                

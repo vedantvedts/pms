@@ -36,6 +36,7 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		prod.setProjectId(dto.getProjectId());
 		prod.setParentLevelId(dto.getParentLevelId());
 		prod.setLevelId(dto.getLevelId());
+		prod.setSubLevelId(dto.getSubLevelId());
 		prod.setLevelName(dto.getLevelName());
 		prod.setCreatedBy(dto.getCreatedBy());
 		prod.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
