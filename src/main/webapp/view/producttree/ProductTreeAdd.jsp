@@ -332,7 +332,7 @@ if(ses1!=null){	%>
 	        
 	  		<ul>
 				<li>      
-	              
+	             <% int count1=0; %> 
 						 <div class="member-view-box action-view-box">
 			                    
 			                         <div class=" action-box" style="border:-1px;" > 
@@ -974,7 +974,7 @@ if(ses1!=null){	%>
 							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 					            <form action="LevelNameAdd.htm" method="get">
 						            <input type="text" name="LevelName" required>
-						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#1" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#<%=count1+=1%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 							   </form>    
 					             
