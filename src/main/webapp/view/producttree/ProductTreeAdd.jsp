@@ -357,7 +357,7 @@ if(ses1!=null){	%>
 			           	                
 			                <% 
 			                int count=1;
-		                	 int countA=1;
+		                	 //int countA=1;
 			                for(Object[] level1 : ProductTreeList){
 			                	
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
@@ -418,7 +418,7 @@ if(ses1!=null){	%>
 						                <ul  <% if(Level1!=null && Level1.size()>0){%> class="active" <%}%> >	
 						                <%
 						                
-						                int countB=1;
+						                int countA=1;
 						                for(Object[] level2 : ProductTreeList){
 						                	 if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString()))
 						                		 
@@ -473,8 +473,12 @@ if(ses1!=null){	%>
 												   <% List<Object[]> Level2 =ProductTreeList.stream().filter(e-> level2[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 												    
 												    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->
-										             <ul <% if(Level2!=null && Level2.size()>0){%> class="active" <%}%> >	                
-										                	  <%for(Object[] level3 : ProductTreeList){
+										             <ul <% if(Level2!=null && Level2.size()>0){%> class="active" <%}%> >
+										             
+										              <%
+										                  int countB=1;	        
+										                	  
+										                	  for(Object[] level3 : ProductTreeList){
 										                 if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) )
 										                
 										                  { %>
@@ -535,7 +539,11 @@ if(ses1!=null){	%>
 										                <%------------------------------------------------------LEVEL 4 -------------------------------------------------------%>
 										                
 										               <ul <% if(Level3!=null && Level3.size()>0){%> class="active" <%}%> >	                
-										                	 <%for(Object[] level4 : ProductTreeList){
+										                	 <%
+										                	 
+										                	 int countC=1;
+										                	 
+										                	 for(Object[] level4 : ProductTreeList){
 															                 
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
 										                     { %>    
@@ -598,7 +606,10 @@ if(ses1!=null){	%>
 																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
 																	
 														 <ul <% if(Level4!=null && Level4.size()>0){%> class="active" <%}%> >	                
-										                	<%for(Object[] level5 : ProductTreeList){%>
+										                	<%
+										                	
+										                	 int countD=1;
+										                	for(Object[] level5 : ProductTreeList){%>
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
 								                             {%> 
 																  <li>      
@@ -657,7 +668,10 @@ if(ses1!=null){	%>
 																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
 																	
 																	 <ul <% if(Level5!=null && Level5.size()>0){%> class="active" <%}%> >	                
-													                	<%for(Object[] level6 : ProductTreeList){%>
+													                	<%
+													                	
+													                	 int countE=1;
+													                	for(Object[] level6 : ProductTreeList){%>
 											                        	  <% if(level6[2].toString().equalsIgnoreCase("6") && level5[0].toString().equalsIgnoreCase(level6[1].toString()) )
 											                             { %> 
 																  <li>      
@@ -717,7 +731,10 @@ if(ses1!=null){	%>
 																	<%--------------------------------------------------------------------------------LEVEL 7 ---------------------------------------------%>
 																	
 																	 <ul <% if(Level6!=null && Level6.size()>0){%> class="active" <%}%> >	                
-													                	<%for(Object[] level7 : ProductTreeList){ %>
+													                	<%
+													                	
+													                	int countF=1;
+													                	for(Object[] level7 : ProductTreeList){ %>
 											                        	  <% if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString()) )
 											                             { %> 
 																  <li>      
@@ -770,7 +787,7 @@ if(ses1!=null){	%>
 																	</div>
 																	
 																</li>
-															<%} %>
+															<%  countF++;} %>
 														<%} %>	
 														
 															 <%---------------------------------------Level 7 Add---------------------------------------------------------%>
@@ -781,7 +798,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#7#<%=level6[0]%>#<%=count%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#7#<%=level6[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -798,7 +815,7 @@ if(ses1!=null){	%>
 														  <%---------------------------------------Level 7 ---------------------------------------------------------%>		
 																   </li>
 															
-														    <% } %>
+														    <%  countE++;} %>
 														<% } %>
 														
 														
@@ -811,7 +828,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#6#<%=level5[0]%>#<%=count%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#6#<%=level5[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -828,7 +845,7 @@ if(ses1!=null){	%>
 																   
 																   </li>
 															
-														    <% } %>
+														    <%  countD++;} %>
 														<% } %>
 														
 														
@@ -840,7 +857,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>#<%=count%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -858,7 +875,7 @@ if(ses1!=null){	%>
 																    
 														 </li>
 															
-												    <% } %>
+												    <% countC++;} %>
 												<% } %>
 														
 														
@@ -870,7 +887,7 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>##<%=count%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													                  
@@ -889,7 +906,7 @@ if(ses1!=null){	%>
 															 
 							                		    </li>
 												
-													    <% } %>
+													    <% countB++;} %>
 													<% } %>
 											
 											
@@ -919,7 +936,7 @@ if(ses1!=null){	%>
 										    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
 												
 								 	 </li>
-								 <% countB++;} %>
+								 <% countA++;} %>
                 	        <% } %>
                 	        
                 	        <%---------------------------------------Level 2 Add---------------------------------------------------------%>
@@ -946,7 +963,7 @@ if(ses1!=null){	%>
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
 						 		    
                 		 </li>
-                	   <%  countA++;
+                	   <%  
                 	   count++;} %>
                 	<% } %>
 					
