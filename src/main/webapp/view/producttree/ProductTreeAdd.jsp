@@ -267,6 +267,12 @@ height:18px;
 		  										<button type="submit" class="btn btn-sm btn-link" name="view_mode" value="Y" formtarget="blank" title="Product Tree View" data-toggle="tooltip" data-placement="top"  >
 												            <img src="view/images/tree.png">
 												</button> 
+												
+												<button type="submit" class="btn btn-sm btn-link" name="view_mode" value="V" formtarget="blank" title="Product Tree View V" data-toggle="tooltip" data-placement="top"  >
+												            <img src="view/images/tree.png">
+												</button> 
+												
+												
 		                                       
 		                                       <button name="action" class="btn btn-sm back" name ="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevise.htm" style="background-color: green;color: white; border: 0" type="submit" value="revise"  onclick="return confirm('Are You Sure To Submit')">SET BASE LINE  ( <%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1) %> )</button>
                                                    <input type="hidden" name="REVCount" value="<%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1)%>" >

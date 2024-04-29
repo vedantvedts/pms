@@ -121,7 +121,13 @@ public class ProductTreeController {
 				 
 				 return "producttree/ProductTreeView";
 			 }
+			 else if(viewmode!=null && viewmode.toString().equalsIgnoreCase("V")) {
+				 
+				 return "producttree/ProductTreeViewH";
+			 }
+			 
 			 else {
+				 
 				 return "producttree/ProductTreeAdd";
 				 
 			 }

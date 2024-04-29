@@ -267,6 +267,12 @@ hr{
 #select2-LabCode-container,#select2-approverEmpId-container{
 	text-align: left;
 }
+
+.page-link{
+
+color:black;
+
+}
 </style>
 </head>
 <body>
@@ -351,7 +357,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
              			  style="color: white!important;float: right;">Back</a>
              		</h4>
              		<hr style="margin: -8px 0px !important;">
-             		<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+             		<%-- <ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
 
             			<li class="nav-item" id="nav-chlistdetails">
              				<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("1")){ %> 
@@ -362,7 +368,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                					
                 	         	Check List
               			 		</a>
-            			</li>
+            			</li> --%>
 
             			<%-- <li class="nav-item" id="nav-chlistforward">
             	     		<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("2")){ %>
@@ -374,7 +380,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
               					</a>
             			</li> --%>
             			
-              		</ul>
+              		<!-- </ul> -->
          		</div>
          		
          		<!-- This is for Tab Panes -->
@@ -407,7 +413,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 							        	</form>	
 							        
 							        		
-												<div class="card-body" style="overflow:auto;max-height:25rem;">
+												<div class="card-body" style="overflow:auto;">
 								        		
 								        <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data" id="firstpagesubmit">		
 								        		<div class="" id="firstpage" >
@@ -703,20 +709,34 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																
 																	
 																	<div class="pagination">
-																			<div class="page-item">
+																			<!-- <div class="page-item">
 																				
 																					 <button type="button" class="page-link" id="" >Previous</button>
 																				
-																			</div>
+																			</div> -->
+																			
+																			
 																			<div class="page-item">
-																				<input class="page-link" type="button" value="1" disabled/>
+																				<button class="page-link" type="button" id="firstpage1" >1</button>
 																			</div>
+																			
+																			
 																			<div class="page-item">
+																				<button class="page-link" type="button" id="firstpage2" >2</button>
+																			</div>
+																			
+																			<div class="page-item">
+																				<button class="page-link" type="button" id="firstpage3" >3</button>
+																			</div>
+																			
+																			
+																			
+																			<!-- <div class="page-item">
 																				
 																					   <button type="button" class="page-link" id="firstpagechanges" >Next</button>
-																						<!-- <input type="hidden" name="pagination" value=/> -->
+																						<input type="hidden" name="pagination" value=/>
 																				
-																			</div>
+																			</div> -->
 																		</div>
 																 </div>  
 												    
@@ -1089,21 +1109,34 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																
 																	
 																	<div class="pagination">
-																			<div class="page-item">
+																			<!-- <div class="page-item">
 																				
 																					<button type="button" class="page-link" id="backtofirstpages">Previous</button>
 																				
-																			</div>
+																			</div> -->
+																			<!-- <div class="page-item">
+																				<button class="page-link" type="button" >2</button>
+																			</div> -->
+																			
+																			
 																			<div class="page-item">
-																				<input class="page-link" type="button" value="2" disabled/>
+																				<button class="page-link" type="button" id="secondpage1"  color:black;>1</button>
 																			</div>
+																			
+																			
 																			<div class="page-item">
-																				
-																					
-																						<button type="button" class="page-link" id="secondpagechanges">Next</button>
-																						
-																				
+																				<button class="page-link" type="button" id="secondpage2" >2</button>
 																			</div>
+																			
+																			<div class="page-item">
+																				<button class="page-link" type="button" id="secondpage3" >3</button>
+																			</div>
+																			
+																			
+																			<!-- <div class="page-item">
+																				
+																				     <button type="button" class="page-link" id="secondpagechanges">Next</button>
+																			</div> -->
 																			
 																	</div>
 																
@@ -1464,18 +1497,34 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 																
 																	
 																	<div class="pagination">
-																			<div class="page-item">
+																			<!-- <div class="page-item">
 																			
 																				<button class="page-link"  type="button" id="backtosecondpages" >Previous</button>
 																				
+																			</div> -->
+																			
+																		<!-- 	<div class="page-item">
+																				<input class="page-link" type="button" value="3" disabled/>
+																			</div>
+																			 -->
+																			
+																			
+																			<div class="page-item">
+																				<button class="page-link" type="button" id="thirdpage1" >1</button>
+																			</div>
+																			
+																			
+																			<div class="page-item">
+																				<button class="page-link" type="button" id="thirdpage2" >2</button>
 																			</div>
 																			
 																			<div class="page-item">
-																				<input class="page-link" type="button" value="3" disabled/>
+																				<button class="page-link" type="button" id="thirdpage3" >3</button>
 																			</div>
-																			<div class="page-item">
+																			
+																			<!-- <div class="page-item">
 																				   <button class="page-link" type="button"  >Next</button>
-																			</div>
+																			</div> -->
 																			
 																	</div>
 															</div> 
@@ -1735,6 +1784,7 @@ $(document).ready(function() {
 	
 	$('#secondpage').hide();
 	$('#thirdpage').hide();
+	$('#firstpage1').css('background-color', '#40A2E3');
 	
 /* 	$("#firstpagechange,#firstpagechanges").on('click', function() {
 		
@@ -1748,37 +1798,41 @@ $(document).ready(function() {
 	}); */
 	
 	
-$("#firstpagechanges").on('click', function() {
+$("#firstpage2,#thirdpage2").on('click', function() {
 		
 		
 		$('#firstpage').hide();
 		$('#secondpage').show();
 		$('#thirdpage').hide();
+		$('#secondpage2').css('background-color', '#40A2E3');
 		
 		
 	});
 	
-     $("#secondpagechanges").on('click', function() {
+     $("#firstpage3,#secondpage3").on('click', function() {
 		
 			$('#firstpage').hide();
 			$('#secondpage').hide();
 			$('#thirdpage').show();
+			$('#thirdpage3').css('background-color', '#40A2E3');
 		
 	});
      
      
-     $("#backtofirstpage,#backtofirstpages").on('click', function() {
+     $("#secondpage1,#thirdpage1").on('click', function() {
     	 
     	 
 		   	    $('#firstpage').show();
 				$('#secondpage').hide();
 				$('#thirdpage').hide();
+				$('#firstpage1').css('background-color', '#40A2E3');
+				
     	 
     	 
  	}); 
 	
 	
-     $("#backtosecondpage,#backtosecondpages").on('click', function() {
+ /*     $("#backtosecondpage,#backtosecondpages").on('click', function() {
     	 
     	 
 	   	    $('#firstpage').hide();
@@ -1786,7 +1840,7 @@ $("#firstpagechanges").on('click', function() {
 			$('#thirdpage').hide();
 	 
 	 
-}); 
+});  */
      
      
 	
