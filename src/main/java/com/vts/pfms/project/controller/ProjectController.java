@@ -415,7 +415,8 @@ public class ProjectController
 			req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
 			req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid,ProjectId ));
 		
-			
+			req.setAttribute("ApplicableDocumentList", reqService.ApplicableDocumentList(initiationid,ProjectId));
+			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(initiationid,ProjectId));
 			
 			}else {
 				if(projectList.size()>0) {
@@ -435,7 +436,10 @@ public class ProjectController
 					req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid,ProjectId));
 					req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
 					req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid, ProjectId));
+					
 					String ProjectType=req.getParameter("ismain");
+					req.setAttribute("ApplicableDocumentList", reqService.ApplicableDocumentList(initiationid,ProjectId));
+					req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(initiationid,ProjectId));
 				
 				
 				}
@@ -3494,7 +3498,10 @@ public class ProjectController
 			// this is for add
 			count=service.ReqIntroSubmit(initiationid,ProjectId,attributes,Details,UserId);
 		}else {
-//			this is for edit 
+			
+				System.out.println("attributes---"+attributes);
+				System.out.println("Details--"+Details);
+			
 			count=service.reqIntroUpdate(initiationid,ProjectId,attributes,Details,UserId);
 			if (count > 0) {
 				redir.addAttribute("result", attributes+" updated Successfully");
@@ -6123,93 +6130,104 @@ public class ProjectController
 		Gson json = new Gson();
 		return json.toJson(count);
 	}
-	//Requirement Pdf
-//	@RequestMapping(value = "RequirementDocumentDownlod.htm" )
-//	public String RequirementDocumentDownlod(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
-//	{
-//		String UserId = (String) ses.getAttribute("Username");
-//		String LabCode =(String ) ses.getAttribute("labcode");
-//		logger.info(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId);
-//		try {
-//			
-//			Object[] DocTempAttributes =null;
-//			
-//			DocTempAttributes=service.DocTempAttributes();
-//			
-//			req.setAttribute("DocTempAttributes", DocTempAttributes);
-//			
-//			String initiationid=req.getParameter("initiationid");
-//			Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-//			String filename="ProjectRequirement";
-//			String path=req.getServletContext().getRealPath("/view/temp");
-//		  	req.setAttribute("path",path);
-//		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
-//		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
-//		  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
-//		  	req.setAttribute("LabList", service.LabListDetails(LabCode));
-//		  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
-//		  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
-//		  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
-//		  	req.setAttribute("uploadpath", uploadpath);
-//		  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
-//		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
+
+	/* Requirement Pdf */
+	@RequestMapping(value = "RequirementDocumentDownlodPdf.htm" )
+	public void RequirementDocumentDownlodPdf(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId);
+		try {
+			
+	Object[] DocTempAttributes =null;
+			
+			DocTempAttributes=service.DocTempAttributes();
+			
+			req.setAttribute("DocTempAttributes", DocTempAttributes);
+			
+			String initiationid=req.getParameter("initiationid");
+			String ProjectId=req.getParameter("projectId");
+			if(initiationid==null) {
+				initiationid="0";
+				
+				
+				String projectShortName=service.ProjectEditData1(ProjectId)[4].toString();
+				req.setAttribute("projectShortName", projectShortName);
+			}
+		
+			if(ProjectId==null) {
+				ProjectId="0";
+		
+				String projectShortName=service.ProjectEditData(initiationid).get(0)[6].toString();
+				req.setAttribute("projectShortName", projectShortName);
+			}
+			Object[] PfmsInitiationList= null;
+			String filename="ProjectRequirement";
+			String path=req.getServletContext().getRealPath("/view/temp");
+		  	req.setAttribute("path",path);
+		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
+		  	//req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+		  	req.setAttribute("LabList", service.LabListDetails(LabCode));
+		  	//req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
+		  	req.setAttribute("RequirementList", reqService.RequirementList(initiationid,ProjectId));
+		  	//req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
+		  	req.setAttribute("uploadpath", uploadpath);
+		  	//req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
+		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid, ProjectId));
 //		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
 //		  	req.setAttribute("Verifications", service.getVerificationList(initiationid));
-//		  	req.setAttribute("MemberList", service.reqMemberList(initiationid));
-//		 	req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
-//			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-//			//req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
-//			String html = customResponse.getOutput();
-//		  	List<Object[]>AcronymsList= service.AcronymsList(initiationid);
-//			req.setAttribute("AcronymsList", AcronymsList);
-//			req.setAttribute("PerformanceList", service.getPerformanceList(initiationid));;
-//		  	req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(initiationid));
-//			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid);
-//			File my_file=null;
-//			my_file=new File(uploadpath+VerificationExcelData[1]+File.separator+VerificationExcelData[2]);
-//			
-//			if(my_file!=null) {
-//				String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
-//		        req.setAttribute("htmlContent", htmlContent);
-//			}
-//			
-////			ConverterProperties converterProperties = new ConverterProperties();
-////	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-////	    	converterProperties.setFontProvider(dfp);
-////
-////			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
-////			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-////			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-////			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-////			pdfDocument.close();
-////			pdf1.close();	       
-////	        pdfw.close();
-////			res.setContentType("application/pdf");
-////	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-////	        File f=new File(path+"/"+filename+".pdf");
-////	      
-////	        OutputStream out = res.getOutputStream();
-////			FileInputStream in = new FileInputStream(f);
-////			byte[] buffer = new byte[4096];
-////			int length;
-////			while ((length = in.read(buffer)) > 0) {
-////				out.write(buffer, 0, length);
-////			}
-////			in.close();
-////			out.flush();
-////			out.close();
-////			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
-////	        Files.delete(pathOfFile2);	
-//			
-//			
-//		}catch(Exception e) {
-//			e.printStackTrace(); 
-//			logger.error(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId,e);
-//		}
-//		
-//		return "print/RequirementDownload";
-//
-//	}
+		  	req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
+		 	req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid, ProjectId));
+			req.setAttribute("ProjectParaDetails", reqService.getProjectParaDetails(initiationid,ProjectId));
+		  	List<Object[]>AcronymsList= service.AcronymsList(initiationid, ProjectId);
+			req.setAttribute("AcronymsList", AcronymsList);
+			req.setAttribute("PerformanceList", service.getPerformanceList(initiationid, ProjectId));;
+			req.setAttribute("VerificationDataList", reqService.getVerificationMethodList("0", "0"));;
+			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(initiationid,ProjectId));
+		  	req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(initiationid, ProjectId));
+		  	req.setAttribute("Verifications", reqService.getVerifications(initiationid,ProjectId));
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/requirements/RequirementPDFDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+			
+			ConverterProperties converterProperties = new ConverterProperties();
+	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+	    	converterProperties.setFontProvider(dfp);
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+	        pdfw.close();
+			res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	        File f=new File(path+"/"+filename+".pdf");
+	      
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+		in.close();
+			out.flush();
+			out.close();
+		Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile2);	
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId,e);
+		}
+		
+		
+	}
 	
 	
 	
@@ -6266,7 +6284,7 @@ public class ProjectController
 			req.setAttribute("AcronymsList", AcronymsList);
 			req.setAttribute("PerformanceList", service.getPerformanceList(initiationid, ProjectId));;
 			req.setAttribute("VerificationDataList", reqService.getVerificationMethodList("0", "0"));;
-		
+			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(initiationid,ProjectId));
 		  	req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(initiationid, ProjectId));
 		  	req.setAttribute("Verifications", reqService.getVerifications(initiationid,ProjectId));
 //			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid,ProjectId);
@@ -9178,6 +9196,7 @@ public class ProjectController
 				rs.setDistribution(req.getParameter("distribution"));
 				rs.setApprover(Long.parseLong(req.getParameter("Approver")));;
 				rs.setReviewer(Long.parseLong(req.getParameter("Reviewer")));
+				rs.setPreparedBy(req.getParameter("preparer"));;
 				rs.setCreatedBy(UserId);
 				rs.setCreatedDate(sdf1.format(new Date()));
 				rs.setIsActive(1);				

@@ -39,6 +39,7 @@ import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestPlanSummary;
@@ -118,6 +119,9 @@ private static final Logger logger=LogManager.getLogger(ProjectController.class)
 			req.setAttribute("MemberList", service.reqMemberList(initiationid,projectId));
 			req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid,projectId));
 			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid, projectId));
+			req.setAttribute("ApplicableDocumentList", reqService.ApplicableDocumentList(initiationid,projectId));
+			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(initiationid,projectId));
+			
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside Requirements.htm "+UserId, e);
@@ -1570,6 +1574,7 @@ public static String convertExcelToHtml(InputStream inputStream) throws Exceptio
 					pir.setConstraints(req.getParameter("Constraints"));
 					pir.setRemarks(req.getParameter("remarks"));
 					pir.setLinkedPara(LinkedPara);
+					pir.setCriticality(req.getParameter("criticality"));
 					long count =0;
 					count=reqService.addPfmsInititationRequirement(pir);
 					
@@ -1592,5 +1597,137 @@ public static String convertExcelToHtml(InputStream inputStream) throws Exceptio
 				 }
 				 return "redirect:/RequirementList.htm";
 			 }
+	   
+	   @RequestMapping(value ="RequirementUpdate.htm",method = {RequestMethod.POST,RequestMethod.GET})
+		 public String RequirementUpdate( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception{
+			 
+			 String UserId=(String)ses.getAttribute("Username");
+			 String LabCode =(String) ses.getAttribute("labcode");
+			 logger.info(new Date() +"Inside RequirementSubAdd.htm "+UserId);
+			 try {
+				String projectId=req.getParameter("projectId");
+				String initiationid = req.getParameter("initiationid");
+				String project = req.getParameter("project");
+				String InitiationReqId = req.getParameter("InitiationReqId");
+				String MainInitiationReqId = req.getParameter("MainInitiationReqId");
+				String description= req.getParameter("description");
+				String priority = req.getParameter("priority");
+				String needtype  = req.getParameter("needtype");
+				
+				String Demonstration = null;
+				
+				if(req.getParameterValues("Demonstration")!=null) {
+					Demonstration = Arrays.asList(req.getParameterValues("Demonstration")).toString().replace("[","").replace("]", "");
+				}
+				
+				String TestPlan = null;
+				if(req.getParameterValues("TestPlan")!=null) {
+					TestPlan = Arrays.asList(req.getParameterValues("TestPlan")).toString().replace("[","").replace("]", "");
+				}
+				
+				String Analysis = null;
+				if(req.getParameterValues("Analysis")!=null) {
+					Analysis = Arrays.asList(req.getParameterValues("Analysis")).toString().replace("[","").replace("]", "");
+				}
+				
+				String Inspection = null;
+				if(req.getParameterValues("Inspection")!=null) {
+					Inspection = Arrays.asList(req.getParameterValues("Inspection")).toString().replace("[","").replace("]", "");
+				}
+					
+				String specialMethods = null;
+						
+				if(req.getParameterValues("specialMethods")!=null) {
+					specialMethods = Arrays.asList(req.getParameterValues("specialMethods")).toString().replace("[","").replace("]", "");
+				}
+				
+				String LinkedPara= null;
+				
+				if(req.getParameterValues("LinkedPara")!=null) {
+					LinkedPara=Arrays.asList(req.getParameterValues("LinkedPara")).toString().replace("[","").replace("]", "");
+				}
+				
+				System.out.println("LinkedPara  "+req.getParameterValues("LinkedPara"));
+				
+				PfmsInititationRequirement pir = new PfmsInititationRequirement();
+				pir.setRequirementDesc(description);
+				pir.setNeedType(needtype);
+				pir.setPriority(priority);
+				pir.setModifiedBy(UserId);
+				pir.setDemonstration(Demonstration);
+				pir.setTest(TestPlan);
+				pir.setAnalysis(Analysis);
+				pir.setInspection(Inspection);
+				pir.setSpecialMethods(specialMethods);
+				pir.setConstraints(req.getParameter("Constraints"));
+				pir.setRemarks(req.getParameter("remarks"));
+				pir.setLinkedPara(LinkedPara);
+				pir.setCriticality(req.getParameter("criticality"));
+				pir.setInitiationReqId(Long.parseLong(InitiationReqId));
+				long count =0;
+				count=reqService.UpdatePfmsInititationRequirement(pir);
+				
+				if(count>0) {
+					redir.addAttribute("result","Requirements Updated successfully");
+				}else {
+					redir.addAttribute("resultfail","Requirements Updated  unsuccessful");
+				}
+				
+				redir.addAttribute("initiationid", initiationid);
+				redir.addAttribute("project", project);
+				redir.addAttribute("projectId", projectId);
+				redir.addAttribute("InitiationReqId",MainInitiationReqId );
+				redir.addAttribute("subId",InitiationReqId);
+				
+			 }
+			 catch(Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +"Inside RequirementUpdate.htm "+UserId,e);
+			 }
+			 return "redirect:/RequirementList.htm";
+		 }
+ 
+	   @RequestMapping(value ="AddDocs.htm",method = {RequestMethod.POST,RequestMethod.GET})
+			public @ResponseBody String AddDocs(RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses) throws Exception {
+				logger.info(new Date() +"Inside AddDocs.htm ");
+				List<Object[]>ReqMainList= null;
+				long count=0;
+				try {
+				
+					System.out.println("checkedValues"+req.getParameter("checkedValues"));
+					String chkValue=req.getParameter("checkedValues");
+					String []values=chkValue.split(",");
+					
+					String projectId = req.getParameter("projectId");
+					String initiationId= req.getParameter("initiationid");
+					
+					if(projectId==null)projectId="0";
+					if(initiationId==null)initiationId="0";
+					
+					
+					
+					List<ReqDoc>list= new ArrayList<>();
+					
+					for(int i=0;i<values.length;i++) {
+						ReqDoc rc= new ReqDoc();
+						
+						rc.setDocId(Long.parseLong(values[i]));
+						rc.setInitiationId(Long.parseLong(initiationId));
+						rc.setProjectId(Long.parseLong(projectId));
+						rc.setIsActive(1);
+						list.add(rc);
+					}
+					
+					count = reqService.addDocs(list);
+					
+					
+				}
+				catch(Exception e){
+					e.printStackTrace();
+					logger.error(new Date() +" Inside", e);
+				}
+				Gson json = new Gson();
+				return json.toJson(count);
+			}
 	   
 }

@@ -16,6 +16,7 @@ import com.vts.pfms.project.dao.ProjectDaoImpl;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestPlanSummary;
@@ -31,7 +32,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	EntityManager manager;
 	
 	
-	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,a.ProjectId,a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods FROM pfms_initiation_req a WHERE initiationid=:initiationid AND ProjectId=:ProjectId AND isActive='1' ORDER BY ReqMainId";
+	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,a.ProjectId,a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality FROM pfms_initiation_req a WHERE initiationid=:initiationid AND ProjectId=:ProjectId AND isActive='1' ORDER BY ReqMainId";
 	@Override
 	public List<Object[]> RequirementList(String intiationId,String projectId) throws Exception {
 		// TODO Auto-generated method stub
@@ -408,5 +409,57 @@ public long RequirementUpdate(PfmsInititationRequirement pir) throws Exception {
 			query.setParameter("projectId", projectId);
 			List<Object[]> verificationList=(List<Object[]>)query.getResultList();
 			return verificationList;
+		}
+		
+		private static final String REQEDITDATA="UPDATE pfms_initiation_req SET requirementdesc=:requirementdesc,priority=:priority,needtype=:needtype,remarks=:remarks,Constraints=:Constraints,linkedPara=:linkedPara,Demonstration=:Demonstration,Test=:Test,Analysis=:Analysis,Inspection=:Inspection,SpecialMethods=:SpecialMethods,criticality=:criticality,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE InitiationReqId=:InitiationReqId";
+		@Override
+		public long UpdatePfmsInititationRequirement(PfmsInititationRequirement pir) throws Exception {
+			Query query=manager.createNativeQuery(REQEDITDATA);
+			query.setParameter("requirementdesc",pir.getRequirementDesc());
+			query.setParameter("priority",pir.getPriority());
+			query.setParameter("needtype",pir.getNeedType());
+			query.setParameter("remarks",pir.getRemarks());
+			query.setParameter("Constraints",pir.getConstraints());
+			query.setParameter("linkedPara",pir.getLinkedPara());
+			query.setParameter("Demonstration",pir.getDemonstration());
+			query.setParameter("Test",pir.getTest());
+			query.setParameter("Analysis",pir.getAnalysis());
+			query.setParameter("Inspection",pir.getInspection());
+			query.setParameter("SpecialMethods",pir.getSpecialMethods());
+			query.setParameter("criticality",pir.getCriticality());
+			query.setParameter("ModifiedBy",pir.getModifiedBy());
+			query.setParameter("ModifiedDate",pir.getModifiedDate());
+			query.setParameter("InitiationReqId",pir.getInitiationReqId());
+			return query.executeUpdate();
+		}
+		private static final String APPDOCDATA="SELECT docid,DocumentName FROM project_req_doc WHERE docid NOT IN  (SELECT docid FROM pfms_req_initiation_linkeddocs WHERE projectid=:projectId AND initiationId=:initiationId AND isactive='1')";
+		@Override
+		public List<Object[]> ApplicableDocumentList(String initiationid, String projectId) throws Exception {
+			// TODO Auto-generated method stub
+			Query query=manager.createNativeQuery(APPDOCDATA);
+			query.setParameter("projectId",projectId);
+			query.setParameter("initiationId",initiationid);
+			return (List<Object[]>)query.getResultList();
+		}
+		private static final String APPDOCDATAS="SELECT a.LinkedId,b.DocumentName FROM pfms_req_initiation_linkeddocs a , project_req_doc b WHERE a.projectid=:projectid AND a.initiationId=:initiationId AND a.docid=b.docId AND isactive='1'";
+		@Override
+		public List<Object[]> ApplicableTotalDocumentList(String initiationId, String projectid) throws Exception {
+			Query query=manager.createNativeQuery(APPDOCDATAS);
+			query.setParameter("projectid",projectid);
+			query.setParameter("initiationId",initiationId);
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		@Override
+		public long addDocs(List<ReqDoc> list) throws Exception {
+			
+			long count=0;
+			for(ReqDoc rc:list) {
+				manager.persist(rc);
+				manager.flush();
+				count++;
+			}
+			
+			return count;
 		}
 }

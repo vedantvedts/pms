@@ -8,6 +8,7 @@ import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestPlanSummary;
@@ -59,4 +60,12 @@ public interface RequirementService {
 	public List<Object[]> getProjectParaDetails(String initiationid, String projectId) throws Exception;
 
 	public List<Object[]> getVerifications(String initiationid, String projectId) throws Exception;
+
+	long UpdatePfmsInititationRequirement(PfmsInititationRequirement pir) throws Exception;
+
+	List<Object[]> ApplicableDocumentList(String initiationid, String projectId)throws Exception;
+
+	List<Object[]> ApplicableTotalDocumentList(String initiationid, String projectId)throws Exception;
+
+	long addDocs(List<ReqDoc> list) throws Exception;
 }

@@ -2206,7 +2206,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		public long ProjectRequirementDelete(long initiationReqId) throws Exception {
 			return 0;
 		}
-		private static final String REQUIREMENTS="SELECT a.InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
+		private static final String REQUIREMENTS="SELECT a.InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.criticality  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
 		@Override
 		public Object[] Requirement(long InitiationReqId) throws Exception {
 			Query query=manager.createNativeQuery(REQUIREMENTS);
@@ -3456,7 +3456,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		System.out.println(details);
 		if(details.equalsIgnoreCase("Introduction")) {
 			System.out.println("a");
-		 String INTROUPDATE="UPDATE pfms_initiation_req_intro SET Introduction=:Introduction,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid AND  ProjectId=:projectId,";
+		 String INTROUPDATE="UPDATE pfms_initiation_req_intro SET Introduction=:Introduction,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid AND  ProjectId=:projectId";
 		 Query query=manager.createNativeQuery(INTROUPDATE);
 		 query.setParameter("Introduction", pr.getIntroduction());
 		 query.setParameter("ModifiedBy", pr.getModifiedBy());
@@ -3797,7 +3797,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		}
 		
 		//private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid FROM pfms_initiation_req_summary a WHERE a.InitiationId =:InitiationId AND a.isactive='1'";
-		private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid FROM pfms_initiation_req_summary a WHERE a.InitiationId =:InitiationId AND ProjectId =:ProjectId AND a.isactive='1'";
+		private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid,a.preparedby,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1' FROM pfms_initiation_req_summary a WHERE a.InitiationId =:InitiationId AND ProjectId =:ProjectId AND a.isactive='1'";
 		@Override
 		public List<Object[]> getDocumentSummary(String initiationid,String ProjectId) throws Exception {
 
@@ -3810,7 +3810,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		}
 		
 		
-		private static final String DOCSUMUPD="UPDATE pfms_initiation_req_summary SET AdditionalInformation=:AdditionalInformation,Abstract=:Abstract,Keywords=:Keywords,Distribution=:Distribution , reviewer=:reviewer,approver=:approver,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE SummaryId=:SummaryId AND isactive='1'";
+		private static final String DOCSUMUPD="UPDATE pfms_initiation_req_summary SET AdditionalInformation=:AdditionalInformation,Abstract=:Abstract,Keywords=:Keywords,Distribution=:Distribution , reviewer=:reviewer,approver=:approver,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,PreparedBy=:PreparedBy WHERE SummaryId=:SummaryId AND isactive='1'";
 
 		
 		@Override
@@ -3825,6 +3825,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			query.setParameter("ModifiedBy", rs.getModifiedBy());			
 			query.setParameter("ModifiedDate", rs.getModifiedDate());			
 			query.setParameter("SummaryId", rs.getSummaryId());	
+			query.setParameter("PreparedBy", rs.getPreparedBy());	
 			
 			
 			return query.executeUpdate();

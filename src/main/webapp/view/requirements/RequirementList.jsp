@@ -495,24 +495,35 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 
 									</div> -->
 
-									<div class="col-md-5" style="">
+									<div class="col-md-4" style="">
 										<div class="row">
-											<div class="col-md-7">
+											<div class="col-md-4">
 												<h5 style="font-size: 22px; color: #005086;" id="priority">Priority
 													:</h5>
 											</div>
-											<p id="Prioritytext" style="font-size: 18px;"></p>
+										<div class="col-md-6"><p id="Prioritytext" style="font-size: 18px;"></p>
+										</div>
+										</div>
+									</div>
+									<div class="col-md-3" style="">
+										<div class="row">
+											<div class="col-md-6">
+												<h5 style="font-size: 22px; color: #005086;" id="priority">Criticality
+													:</h5>
+											</div>
+										<div class="col-md-6"><p id="CriticalityText" style="font-size: 18px;"></p>
+										</div>
 										</div>
 									</div>
 									<hr>
-									<div class="col-md-5">
+									<div class="col-md-4">
 										<div class="row">
-											<div class="col-md-7"
+											<div class="col-md-5"
 												style="padding-left: 0px; padding-right: 0px;">
 												<h5 style="font-size: 22px; color: #005086;" id="priority">Need
 													Type :</h5>
 											</div>
-											<p id="needtypetext" style="font-size: 18px;"></p>
+										<div class="col-md-5">	<p id="needtypetext" style="font-size: 18px;"></p></div>
 										</div>
 									</div>
 
@@ -545,7 +556,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 							</div>
 						
 
-			<!-- 					<div class="col-md-12">
+			 					<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-2" style="margin-top: 1%">
 											<h5
@@ -558,7 +569,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 										</div>
 
 									</div>
-								</div> -->
+								</div> 
 				<!-- 				<hr>
 								<div class="col-md-12">
 									<div class="row">
@@ -717,7 +728,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 		<!-- Modal for edit Sub Requirements  -->
 		
 		
-				<form class="form-horizontal" role="form"action="#" method="POST" id="myform2">
+				<form class="form-horizontal" role="form"action="RequirementUpdate.htm" method="POST" id="myform2">
 			<div class="modal fade bd-example-modal-lg" id="AddReqModal1"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
@@ -782,31 +793,50 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 												class="form-control selectpicker" data-width="80%"
 												data-live-search="true" style="margin-top: 5%">
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
-												<option value="L">Low</option>
-												<option value="M">Medium</option>
-												<option value="H">High</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
 											</select>
 										</div>
 										
-										<div class="col-md-2">
+											
+													<div class="col-md-4 mt-3">
 												<label
-													style="font-size: 17px; margin-top: 5%; color: #07689f">Need
+													style="font-size: 17px;  color: #07689f">Need
 													Type<span class="mandatory" style="color: red;">*</span>
 												</label>
-											</div>
-											
-												<div class="col-md-3">
-												<select  id="needtypeedit" name="needtype"
-													class="form-control selectpicker" data-width="80%"
-													data-live-search="true" style="margin-top: 5%">
-													<option disabled="disabled" value="" selected="selected">Choose..</option>
-													<option value="E">Essential</option>
-													<option value="D">Desirable</option>
-												</select>
+												&nbsp;&nbsp;<input name="needtype"  type="radio" value="E" id="essentialRadio">&nbsp;&nbsp; Essential&nbsp;&nbsp;
+												&nbsp;&nbsp;<input name="needtype" type="radio" value="D" id="desirableRadio">&nbsp;&nbsp; Desirable&nbsp;&nbsp;
 											</div>
 										
 									</div>
 									</div>
+									
+								<div class="col-md-12">	
+									<div class="row">
+																	<div class=col-md-3>
+											<label
+												style="font-size: 17px; margin-top: 7%;  color: #07689f;">Criticality<span
+												class="mandatory" style="color: red;">*</span></label>
+										</div>
+									<div class=col-md-2>
+											<select  name="criticality" id="criticalityedit"
+												class="form-control selectpicker" data-width="80%"
+												data-live-search="true" style="margin-top: 5%">
+												<option disabled="disabled" value="" selected="selected">Choose..</option>
+												<option value="very Low">Very Low</option>
+												<option value="Low">Low</option>
+												<option value="Medium">Medium</option>
+												<option value="High">High</option>
+												<option value="Very High">Very High</option>
+											</select>
+										</div>
+									</div>
+									</div>
+									
+									
 									<div class="col-md-12" style="margin-top: 1%">
 									<div class="row">
 									<div class="col-md-3">
@@ -1016,7 +1046,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 						
 										<div class=col-md-12>
 										<div class="row">
-											<div class="col-md-4">
+											<div class="col-md-3">
 												<label
 													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
 													<span class="mandatory" style="color: red;">*</span>
@@ -1025,7 +1055,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 											<div class="col-md-8" style="margin-top: 10px">
 												<div class="form-group">
 													<input type="text" name="remarks" class="form-control"
-														id="remarks" maxlength="255" required="required"
+														id="remarksedit" maxlength="255" required="required"
 														placeholder="Maximum 250 Chararcters">
 												</div>
 											</div>
@@ -1044,6 +1074,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 								<input type="hidden" name="initiationid" value=<%=initiationid %>>
 								<input type="hidden" name="project" value=<%=project %>>
 								<input type="hidden" id="InitiationReqIdedit" name="InitiationReqId" value="">
+								<input type="hidden" id="InitiationtempId" name="MainInitiationReqId" value="">
 									</div>
 								</div>
 							</div>
@@ -1129,7 +1160,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 													style="font-size: 17px;  color: #07689f">Need
 													Type<span class="mandatory" style="color: red;">*</span>
 												</label>
-												&nbsp;&nbsp;<input name="needtype"  type="radio" value="E">&nbsp;&nbsp; Essential&nbsp;&nbsp;
+												&nbsp;&nbsp;<input name="needtype"  type="radio" value="E" checked>&nbsp;&nbsp; Essential&nbsp;&nbsp;
 												&nbsp;&nbsp;<input name="needtype" type="radio" value="D">&nbsp;&nbsp; Desirable&nbsp;&nbsp;
 											</div>
 								
@@ -1138,7 +1169,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 									<div class="row mt-2">
 										<div class=col-md-3>
 											<label
-												style="font-size: 17px; margin-top: 7%;  color: #07689f">Priority<span
+												style="font-size: 17px; margin-top: 7%;  color: #07689f;">Priority<span
 												class="mandatory" style="color: red;">*</span></label>
 										</div>
 										<div class=col-md-2>
@@ -1146,28 +1177,28 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 												class="form-control selectpicker" data-width="80%"
 												data-live-search="true" style="margin-top: 5%">
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
-												<option value="L">Low</option>
-												<option value="M">Medium</option>
-												<option value="H">High</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
 											</select>
 										</div>
-										
-									<!-- 	<div class="col-md-2">
-												<label
-													style="font-size: 17px; margin-top: 5%; color: #07689f">Need
-													Type<span class="mandatory" style="color: red;">*</span>
-												</label>
-											</div>
-											
-												<div class="col-md-3">
-												<select  id="needtypeadd" name="needtype"
-													class="form-control selectpicker" data-width="80%"
-													data-live-search="true" style="margin-top: 5%">
-													<option disabled="disabled" value="" selected="selected">Choose..</option>
-													<option value="E">Essential</option>
-													<option value="D">Desirable</option>
-												</select>
-											</div> -->
+											<div class=col-md-2>
+											<label style="font-size: 17px; margin-top: 7%;  color: #07689f;float:right;">Criticality</label>
+										</div>
+									<div class=col-md-2>
+											<select id="" name="criticality"
+												class="form-control selectpicker" data-width="80%"
+												data-live-search="true" style="margin-top: 5%">
+												<option disabled="disabled" value="" selected="selected">Choose..</option>
+												<option value="Very Low">Very Low</option>
+												<option value="Low">Low</option>
+												<option value="Medium">Medium</option>
+												<option value="High">High</option>
+												<option value="Very High">Very High</option>
+											</select>
+										</div>
 										
 									</div>
 									</div>
@@ -1209,7 +1240,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Demonstration:</label>
 									</div>
 									
-											<div class="col-md-7" style="margin-top: 1%;">
+											<div class="col-md-9" style="margin-top: 1%;">
 												<div class="form-group">
 
 													
@@ -1243,7 +1274,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Test:</label>
 									</div>
 									
-											<div class="col-md-7" style="margin-top: 1%;">
+											<div class="col-md-9" style="margin-top: 1%;">
 												<div class="form-group">
 
 													
@@ -1278,7 +1309,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Analysis:</label>
 									</div>
 									
-											<div class="col-md-7" style="margin-top: 1%;">
+											<div class="col-md-9" style="margin-top: 1%;">
 												<div class="form-group">
 
 												
@@ -1311,8 +1342,8 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 									<div class="col-md-3">
 									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Inspection:</label>
 									</div>
-									
-											<div class="col-md-7" style="margin-top: 1%;">
+								
+											<div class="col-md-9" style="margin-top: 1%;">
 												<div class="form-group">
 
 													
@@ -1347,7 +1378,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Special Methods:</label>
 									</div>
 									
-											<div class="col-md-7" style="margin-top: 1%;">
+											<div class="col-md-9" style="margin-top: 1%;">
 												<div class="form-group">
 
 													
@@ -1531,7 +1562,7 @@ function showDetails(InitiationReqId,type){
 				}else {
 					$('#description').html(ajaxresult[3]);
 				}
-		$('#editreq').html('<button type="button"  class="btn btn-sm" onclick="edit('+ajaxresult[7]+')"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" ><i class="fa fa-pencil-square-o fa-lg" style="color:orange" aria-hidden="true"></i></button> <button class="btn btn-sm submit ml-2" onclick="openSubReqModal('+ReqMainId+','+InitiationReqId+')">ADD REQUIREMENTS</button>');
+		$('#editreq').html('<button type="button"  class="btn btn-sm" onclick="edit('+ajaxresult[7]+')"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" ><i class="fa fa-pencil-square-o fa-lg" style="color:orange" aria-hidden="true"></i></button> ');
 			}
 		})
 	$('#subDivs').hide();
@@ -1554,17 +1585,25 @@ function showDetailss(subId,Id){
 			 console.log(ajaxresult)
 			$('#brief').html(ajaxresult[2]+" (" +ajaxresult[4]+" )");
 			
-			if(ajaxresult[5]==null){
-				$('#Prioritytext').html("-");
+			if(ajaxresult[5]!=null){
+				$('#Prioritytext').html(ajaxresult[5]);
 			}else{
-			if(ajaxresult[5]==="L"){
-				$('#Prioritytext').html("Low");
-				 }else if(ajaxresult[5]==="M"){
-						$('#Prioritytext').html("Medium"); 
-				 }else{
-					 $('#Prioritytext').html("High"); 
-				 }
+				$('#Prioritytext').html("-");
 			}
+			
+		
+			if(ajaxresult[19]!=null){
+				$('#CriticalityText').html(ajaxresult[19]);
+			}else{
+				$('#CriticalityText').html("-");
+			}
+			
+			if(ajaxresult[9]!=null){
+				$('#remarksshow').html(ajaxresult[9]);
+			}else{
+				$('#remarksshow').html("-");
+			}
+			
 			
 			if(ajaxresult[8]==="E"){
 				$('#needtypetext').html("Essential");
@@ -1608,6 +1647,7 @@ function edit(InitiationReqId){
 function edit1(InitiationReqId){
 	$('#AddReqModal1').modal('show');
 	$('#InitiationReqIdedit').val(InitiationReqId);
+	$('#InitiationtempId').val(tempVal);
 	console.log("InitiationReqId"+InitiationReqId)
 	$.ajax({
 			url:'RequirementJsonValue.htm',
@@ -1621,8 +1661,16 @@ function edit1(InitiationReqId){
 				 $('#descriptionedit').val(ajaxresult[3])
 				 $('#needtypeedit').val(ajaxresult[8])
 				 $('#priorityedit').val(ajaxresult[5])
+				 $('#remarksedit').val(ajaxresult[9])
 				 $('#Constraintsedit').val(ajaxresult[12])
+				 $('#criticalityedit').val(ajaxresult[19])
 				 
+				 if(ajaxresult[8]==="E"){
+					 $('#essentialRadio').prop('checked', true);
+				 }else if(ajaxresult[8]==="D"){
+					  $('#desirableRadio').prop('checked', true);
+				 }
+				
 				 if(ajaxresult[13]!=null){
 					 var para = ajaxresult[13].toString().split(", ");
 					 console.log(para);
@@ -1726,6 +1774,7 @@ $( document ).ready(function() {
 <%}%>
 <%if(InitiationReqId!=null && subId!=null){%>
 $( document ).ready(function() {
+<%-- 	showDetails(<%=InitiationReqId%>,'M') --%>
 	showDetailss(<%=InitiationReqId%>,<%=subId%>)
 });
 <%}%>

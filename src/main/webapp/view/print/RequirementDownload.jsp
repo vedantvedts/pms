@@ -102,7 +102,7 @@ String SuperHeaderFontWeight="Bold";
 String FontFamily="Times New Roman";
 List<Object[]>VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
 List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
-
+List<Object[]>ApplicableTotalDocumentList=(List<Object[]>)request.getAttribute("ApplicableTotalDocumentList");
 String projectShortName =(String)request.getAttribute("projectShortName");
 %>
 
@@ -543,7 +543,7 @@ span {
 			</table> -->
 				<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">1.&nbsp; Title: <span class="text-dark">System Requirements Document Template</span></td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">1.&nbsp; Title: <span class="text-dark">System Requirements Document </span></td>
 					</tr>
 					<tr >
 					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-dark">System Requirements Document</span></td>
@@ -600,7 +600,7 @@ span {
 					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:</td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
 					</tr>
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
@@ -707,12 +707,15 @@ span {
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 				 
 					<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=ReqIntro[1]%>
-					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
+					<%}else {%><div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;">
+					Guidance: 
+					This paragraph should contain a full identification of the system to which this document applies.  
+					</div>
 					<%} %>
 					
 				</div>
 			</div>
-			<div>
+			<%-- <div>
 				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>2
 					&nbsp;System Block Diagram
 				</h2>
@@ -721,28 +724,35 @@ span {
 					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
-			</div>
+			</div> --%>
 			<div>
-				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>3
+				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>2
 					&nbsp;System Overview
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>">
 					<%if(ReqIntro!=null && ReqIntro[3]!=null) {%><%=ReqIntro[3]%>
-					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
+					<%}else {%>
+					<div style="text-align:justify;font-family: <%= FontFamily %>;font-weight:200;">
+					Guidance:  
+					This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites.
+					</div>
 					<%} %>
 				</div>
 			</div>
 			<div>
-				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>4
+				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>3
 					&nbsp;Document Overview
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify;  font-weight:<%=ParaFontWeight%>">
 					<%if(ReqIntro!=null && ReqIntro[4]!=null) {%><%=ReqIntro[4]%>
-					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
+					<%}else {%>
+					<div style="font-family: <%= FontFamily %>;text-align: justify;ffont-weight:200;">
+					This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. 
+					</div>
 					<%} %>
 				</div>
 			</div>
-			<div>
+		<%-- 	<div>
 				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>5
 					&nbsp;Applicable Standards
 				</h2>
@@ -751,21 +761,29 @@ span {
 					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
-			</div>
-	
-			
+			</div> --%>
+	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-color">
+    <%= ++maincount %>.&nbsp;Applicable Documents</h1>
+	<%if(ApplicableTotalDocumentList!=null && ApplicableTotalDocumentList.size()>0) {
+    int snCOunt=0;
+    	for(Object[]obj:ApplicableTotalDocumentList){
+    %>
+    <div style="font-size: 12pt;"> <%=++snCOunt %>.<%=obj[1].toString() %></div>
+    
+    
+    <%}} %>
 
 <h1 style="font-family: <%= FontFamily %>;font-size: <%= fontSize%>pt; font-weight:<%=HeaderFontWeight%>;color: black;" class="heading-color">
 <br><%=++maincount %>.&nbsp;&nbsp;Requirements
 </h1>
 <%if(!RequirementList.isEmpty()) {
-List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
 int mainReqCount=0;
 for(Object[]obj:mainReqList){
 %>
 <div style="padding:none;"><h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++mainReqCount) %>  &nbsp;<%=obj[3].toString() %></h2></div>
 <%if(obj[4]!=null) {%><div style="padding:0px;"><%=obj[4].toString()%></div><%}else{ %><span></span><%} %>
-<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());%>
+<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());%>
 <%
 String ReqName="";
 int subReqCount=0;
@@ -788,6 +806,8 @@ int snCount=0;
 							<th class="border-black"
 								style=" border: 1px solid black; border-collapse: collapse;">Content</th>
 						</tr>
+						</thead>
+						<tbody>
 							<tr>
 							<td class="border-black"
 								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
@@ -826,13 +846,22 @@ int snCount=0;
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Priority</td>
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[5]!=null) {%> <%if(obj1[5].toString().equalsIgnoreCase("L")){%>Low<%} %>
-								<%if(obj1[5].toString().equalsIgnoreCase("H")){%>High<%} %> <%if(obj1[5].toString().equalsIgnoreCase("M")){%>Medium<%} %>
+								<%if(obj1[5]!=null) {%> <%=obj1[5].toString() %>
 								<%}else{%>-<%} %>
 							</td>
 						</tr>
 						
-						
+						<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Criticality</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[21]!=null) {%> <%=obj1[21].toString() %>
+								<%}else{%>-<%} %>
+							</td>
+						</tr>
 							<tr>
 							<td class="border-black"
 								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
@@ -973,14 +1002,48 @@ int snCount=0;
 										<%}else{%>-<%} %>
 							</td>
 						</tr>
-					</thead>
+					</tbody>
 					
 </table>
 
 <%
 ReqName=obj1[3].toString();
 } %>
-<%}} %>
+<%}%>
+
+
+<%
+List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null && !e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+%>
+<%if(nonMainReqList!=null && !nonMainReqList.isEmpty()) { %>
+<div style="padding:none;"><h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++mainReqCount) %>  &nbsp; Precedence and Criticality of Requirements</h2></div>
+<table class=""style="margin-left: 20px;;width: 400px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+					<thead>
+						<tr>
+							<th class="border-black"style="width: 10px;  border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black"style="width: 150px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Requirement ID</th>
+							<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Priority</th>
+							<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Criticality</th>
+						
+						</tr>
+						</thead>
+						<tbody>
+						<%int rcount=0;
+						for(Object[]obj:nonMainReqList) {
+						if(obj[21]!=null){
+						%>
+						<tr>
+						<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%=++rcount %></td>
+							<td style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %></td>
+							<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
+							<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[21]!=null) {%> <%=obj[21].toString() %>
+								<%}else{%>-<%} %></td>
+						</tr>
+						<%}} %>
+						</tbody>
+						</table>
+<% } %>
+<%} %>
 
 
 
@@ -1509,7 +1572,7 @@ APPLICABLE DOCUMENTS</h1>
 				<%}%>		 --%>
 					
 			<% if(RequirementList!=null && ProjectParaDetails!=null && !ProjectParaDetails.isEmpty()&&!RequirementList.isEmpty()) {   
-				List<Object[]>subList= RequirementList.stream().filter(e->!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+				List<Object[]>subList= RequirementList.stream().filter(e->e[15]!=null && !e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
 			%>		
 								<div align="left">
 					<h2 style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black !important;margin-left: 20px" class="heading-color">
@@ -1525,7 +1588,7 @@ APPLICABLE DOCUMENTS</h1>
 							<th class="border-black"
 								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">RequirementId</th>
 							<th class="border-black"
-								style="width: 180px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">QR
+								style="width: 180px; padding: 20px; text-align: center; border: 1px solid black; border-collapse: collapse;">QR
 								 No</th>
 						</tr>
 					</thead>
@@ -1644,10 +1707,10 @@ This appendix contains acronyms and provides standard definitions for terminolog
 			<tbody>
         <%
            if(!RequirementList.isEmpty()){
-        	   List<Object[]>mainReqList=RequirementList.stream().filter(k->k[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+        	   List<Object[]>mainReqList=RequirementList.stream().filter(k->k[15]!=null && k[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
         	   for(Object []obj:mainReqList){
         		   
-        		   List<Object[]>submainReqList=RequirementList.stream().filter(k->k[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+        		   List<Object[]>submainReqList=RequirementList.stream().filter(k->k[15]!=null && k[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
         %>
         <%if(submainReqList.size()>0){%>
            <tr>

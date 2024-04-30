@@ -27,6 +27,7 @@ import com.vts.pfms.project.service.ProjectServiceImpl;
 import com.vts.pfms.requirements.dao.RequirementDao;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestPlanSummary;
@@ -299,6 +300,11 @@ public class RequirementServiceImpl implements RequirementService {
 		return prodao.ProjectRequirementAdd(pir);
 	}
 	@Override
+	public long UpdatePfmsInititationRequirement(PfmsInititationRequirement pir) throws Exception {
+		pir.setModifiedDate(sdf1.format(new Date()));
+		return dao.UpdatePfmsInititationRequirement(pir);
+	}
+	@Override
 	public long RequirementUpdate(PfmsInititationRequirement pir) throws Exception {
 		return dao.RequirementUpdate(pir);
 	}
@@ -323,4 +329,19 @@ public class RequirementServiceImpl implements RequirementService {
 	public List<Object[]> getVerifications(String initiationid, String projectId) throws Exception {
 		return dao.getVerifications(initiationid,projectId);
 	}
+	@Override
+	public List<Object[]> ApplicableDocumentList(String initiationid, String projectId) throws Exception {
+		return dao.ApplicableDocumentList(initiationid,projectId);
+	}
+	@Override
+	public List<Object[]> ApplicableTotalDocumentList(String initiationid, String projectId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.ApplicableTotalDocumentList(initiationid,projectId);
+	}
+	@Override
+	public long addDocs(List<ReqDoc> list) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.addDocs(list);
+	}
+	
 }

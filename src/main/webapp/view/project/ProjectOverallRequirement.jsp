@@ -952,6 +952,8 @@
 	}
 	
 	String projectType = (String)request.getAttribute("ProjectType");
+	List<Object[]>ApplicableDocumentList=(List<Object[]>)request.getAttribute("ApplicableDocumentList");
+	List<Object[]>ApplicableTotalDocumentList=(List<Object[]>)request.getAttribute("ApplicableTotalDocumentList");
 
 	%>
 <style type="text/css">
@@ -1083,6 +1085,8 @@
 					<div class="row" style="display: inline">
 					<div class="requirementid mt-2 ml-2">
 				    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Requirement Document</span> 
+			       					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDocPDF()"><img alt="" src="view/images/pdf.png" >&nbsp;Requirement Document</span> 
+	
 			       	<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
 			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
 			         		<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
@@ -1090,7 +1094,8 @@
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
 <!-- 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" >&nbsp;System Requirements</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Additional Requirements</span>  -->
-												<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showReq()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirements</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showApplicableDoc()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Applicable Document</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showReq()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirements</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showVerification()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAppendices()"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
@@ -1113,6 +1118,14 @@
 			<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
 			</form>
 			<!-- End -->
+			
+				<form action="#">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<button class="btn bg-transparent" id="Downloadbtnpdf" formaction="RequirementDocumentDownlodPdf.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" style="display:none;">
+			<i class="fa fa-download text-success" aria-hidden="true"></i></button>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+			</form>
 			<!-- IntroductionPage -->
 	  			<form action="#">
 	   			<input type="hidden" name="project" value="<%=ProjectDetailes[0] + "/" + ProjectDetailes[6] + "/" + ProjectDetailes[7]%>">
@@ -1193,7 +1206,7 @@
 					<td  class="text-primary" colspan="2">14.&nbsp; Revision:</td>
 					</tr>
 					<tr>
-					<td  class="text-primary" colspan="2">15.&nbsp; Prepared by: <span class="text-dark"></span> </td>
+					<td  class="text-primary" colspan="2">15.&nbsp; Prepared by: <%if(DocumentSummary!=null && DocumentSummary[10]!=null) {%> <span class="text-dark"><%=DocumentSummary[10]%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
 					</tr>
 					<tr>
 					<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: <%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=DocumentSummary[7]%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
@@ -1397,6 +1410,72 @@
 		</div>
 		</div>
 	<%} %>
+	
+	<!--ApplicableDoc  -->	
+	<div class="modal fade" id="docs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Applicable Document</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+      <table class="table table-bordered table-hover table-striped table-condensed" >
+      <thead>
+      <tr>
+      <td>SN</td>
+      <td>Document Name</td>
+      <td>Action</td>
+      </tr>
+      </thead>
+      
+      <tbody>
+      <%if(ApplicableTotalDocumentList!=null && ApplicableTotalDocumentList.size()>0) {
+      int snCount=0;
+    for(Object[]obj:ApplicableTotalDocumentList){
+      %>
+      <tr>
+      <td style="text-align: center"><%=++snCount %></td>
+      <td><%=obj[1].toString() %></td>
+      <td></td>
+      </tr>
+      <%}}else{ %>
+      <tr><td colspan="3" style="text-align: center">No Documents Merged!</tr>
+      <%} %>
+      </tbody>
+      </table>
+<hr>
+      <div>
+      	<%if(ApplicableDocumentList!=null && ApplicableDocumentList.size()>0) {
+      	for(Object[]obj:ApplicableDocumentList){
+      	%>
+      
+      	<div>
+      	<input class="form-control" name="addDoc" type="checkbox" value="<%=obj[0].toString()%>"style="width:50%;display:inline">
+      	
+      	<span><%=obj[1].toString() %></span>
+      	</div>
+      
+      <%}} %>
+      </div>
+      	<%if(ApplicableDocumentList!=null && ApplicableDocumentList.size()>0) {%>
+      <div align="center" class="mt-2" onclick="getValues()">
+      <button class="btn btn-sm submit">SUBMIT</button>
+      </div>
+      <%} %>
+      
+      </div>
+    
+    </div>
+  </div>
+</div>
+	
+	<!--  -->
+	
+	
 	<!-- Modal for Document summary  -->
 	
   <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="SummaryModal">
@@ -1454,7 +1533,22 @@
 				 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=DocumentSummary[3]%><%}else{%><%}%>">
    			</div>
    			</div>
-   			
+   				<div class="row mt-2">
+   			<div class="col-md-2">
+			   	 <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By:</label>
+			   	</div>
+			   <div class="col-md-4">
+	   		<select class="form-control selectdee"name="preparer" id=""data-width="100%" data-live-search="true"  required>
+	          <option value="" selected>--SELECT--</option>
+	        <%for(Object[]obj:TotalEmployeeList){ %>
+	        <option value="<%=obj[0].toString()%>"
+	        <%if(DocumentSummary!=null && DocumentSummary[9]!=null && DocumentSummary[9].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
+	        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+	        <%} %>
+	        </select>
+   				
+   				</div>
+   			</div>
    			<div class="row mt-2">
 			   	<div class="col-md-2">
 			   	 <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
@@ -1901,6 +1995,44 @@ $("#projectType").on('change', function() {
 
 function showReq(){
 	$('#reqList').click();
+}
+
+function DownloadDocPDF(){
+$('#Downloadbtnpdf').click();
+}
+			
+function showApplicableDoc(){
+$('#docs').modal('show');
+}
+
+
+function getValues(){
+    var checkboxes = document.getElementsByName("addDoc");
+    var checkedValues = [];
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            checkedValues.push(checkboxes[i].value);
+        }
+    }
+
+    $.ajax({
+		url:'AddDocs.htm',
+		datatype:'json',
+		data:{
+			checkedValues:checkedValues.toString(),
+			initiationid:<%=initiationid%>
+		},
+		success:function(result){
+			var ajaxresult=JSON.parse(result);
+			console.log("ajaxresult---"+ajaxresult)
+			if(ajaxresult>0){
+				alert("Applicable Dcouments Linked successfully !");
+			}
+			location.reload();
+		}
+
+    })
 }
 </script>
 	

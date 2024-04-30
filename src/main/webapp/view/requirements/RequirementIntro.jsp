@@ -286,7 +286,7 @@ float: right;
 						</div>
 
 						 <!--  -->
-						<div class="panel panel-info" style="margin-top: 10px;">
+						<!-- <div class="panel panel-info" style="margin-top: 10px;">
 							<div class="panel-heading ">
 								<h4 class="panel-title">
 									<span class="ml-2" style="font-size: 14px"> 2. System
@@ -297,13 +297,13 @@ float: right;
 									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 								</button>
 							</div>
-						</div>
+						</div> -->
 						<!--  -->
 						<!--  -->
 						<div class="panel panel-info" style="margin-top: 10px;">
 							<div class="panel-heading ">
 								<h4 class="panel-title">
-									<span class="ml-2" style="font-size: 14px"> 3. System
+									<span class="ml-2" style="font-size: 14px"> 2. System
 										Overview</span>
 								</h4>
 								<button class="btn bg-transparent buttonEd" type="button"
@@ -317,7 +317,7 @@ float: right;
 						<div class="panel panel-info" style="margin-top: 10px;">
 							<div class="panel-heading ">
 								<h4 class="panel-title">
-									<span class="ml-2" style="font-size: 14px"> 4. Document
+									<span class="ml-2" style="font-size: 14px"> 3. Document
 										Overview</span>
 								</h4>
 								<button class="btn bg-transparent buttonEd" type="button"
@@ -328,7 +328,7 @@ float: right;
 						</div>
 						
 						<!--  -->
-								<div class="panel panel-info" style="margin-top: 10px;">
+							<!-- 	<div class="panel panel-info" style="margin-top: 10px;">
 								<div class="panel-heading ">
 								<h4 class="panel-title">
 								<span class="ml-2" style="font-size: 14px">5. Applicable Standards</span>
@@ -338,7 +338,7 @@ float: right;
 									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 								</button>
 								</div>
-								</div>
+								</div> -->
 								<!--  -->
 					<%-- 			<div class="panel panel-info" style="margin-top: 10px;">
 								<div class="panel-heading ">
@@ -552,47 +552,59 @@ float: right;
 					projectId:<%=projectId%>,
 				},
 				success:function(result){
-					var ajaxresult=JSON.parse(result);
+		var ajaxresult=JSON.parse(result);
 					
 					if(ajaxresult!=null){
 						$('#btn1').show();
 						$('#btn2').hide();
-					if(x==="introduction" && ajaxresult[1]!=null){
+					if(x==="introduction"){
+						if(ajaxresult[1]!=null){
 						$('#btn2').show();$('#btn1').hide();
 						html=ajaxresult[1];
-						/* CKEDITOR.instances['Editor'].setData(ajaxresult[1]); */
-					}/* else if(x==="introduction" && ajaxresult[1]==null){
-						CKEDITOR.instances['Editor'].setData("");
-					} */
+						}else{
+						html="Guidance:This paragraph should contain a full identification of the system to which this document applies.";	
+						}
+		
+					}
 					else if(x==="block diagram" && ajaxresult[2]!=null){
 						$('#btn2').show();$('#btn1').hide();
 						html=ajaxresult[2];
-						/* CKEDITOR.instances['Editor'].setData(ajaxresult[2]); */
-					}/* else if(x==="block diagram" && ajaxresult[2]==null){
-						CKEDITOR.instances['Editor'].setData("");
-					} */
-					else if(x==="system overview" && ajaxresult[3]!=null){
+						
+					}
+					else if(x==="system overview" ){
+						if(ajaxresult[3]!=null){
 						$('#btn2').show();$('#btn1').hide();
 						html=ajaxresult[3];
-						/* CKEDITOR.instances['Editor'].setData(ajaxresult[3]); */
-					}/* else if(x==="system overview" && ajaxresult[3]==null){
-						CKEDITOR.instances['Editor'].setData("");
-					} */
-					else if(x==="document overview" && ajaxresult[4]!=null){
+						}else{
+						html="Guidance:This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites."	
+						}
+						
+					}
+					else if(x==="document overview" ){
+						if(ajaxresult[4]!=null){
 						$('#btn2').show();$('#btn1').hide();
 						html=ajaxresult[4];
-						/* CKEDITOR.instances['Editor'].setData(ajaxresult[4]); */
-					}/* else if(x==="document overview" && ajaxresult[4]==null){
-						CKEDITOR.instances['Editor'].setData("");
-					} */
+						}else{
+							html="This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes";
+						}
+					
+					}
 					else if(x==="applicable standards" && ajaxresult[5]!=null){
 						$('#btn2').show();$('#btn1').hide();
 						html=ajaxresult[5];
-						/* CKEDITOR.instances['Editor'].setData(ajaxresult[5]); */
-					}/* else if(x==="applicable standards" && ajaxresult[5]==null){
-						CKEDITOR.instances['Editor'].setData("");
-					} */
+						
+					}
 					}else{
+						if(x==="introduction"){
+							html="Guidance:This paragraph should contain a full identification of the system to which this document applies.";	
+						}
+						else if(x==="system overview" ){
+							html="Guidance:This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites."	
+						}
+						else if(x==="document overview" ){
+							html="This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes";
+						}
+						
 						$('#btn1').show();
 						$('#btn2').hide();
 					}

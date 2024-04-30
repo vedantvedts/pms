@@ -49,4 +49,5 @@ public class PfmsInititationRequirement implements Serializable {
 	private String Analysis;
 	private String Inspection;
 	private String SpecialMethods;
+	private String Criticality;
 }

@@ -30,4 +30,5 @@ public class RequirementSummary {
     private String ModifiedDate;
 	private int IsActive;
 	private Long ProjectId;
+	private String PreparedBy;
 }
