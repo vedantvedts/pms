@@ -338,7 +338,7 @@ if(ses1!=null){	%>
 	        
 	  		<ul>
 				<li>      
-	             <% int count1=0; %> 
+	           
 						 <div class="member-view-box action-view-box">
 			                    
 			                         <div class=" action-box" style="border:-1px;" > 
@@ -362,6 +362,8 @@ if(ses1!=null){	%>
 			           <ul class="active">
 			           	                
 			                <% 
+			                
+			                
 			                int count=1;
 		                	 //int countA=1;
 			                for(Object[] level1 : ProductTreeList){
@@ -969,10 +971,10 @@ if(ses1!=null){	%>
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
 						 		    
                 		 </li>
-                	   <%  
+                	    <%  
                 	   count++;} %>
-                	<% } %>
-					
+                	
+					<% } %>
 			<%----------------------------------------------------------------------Level 1 Add---------------------------------------------------------%>
                     <li>
                 
@@ -980,16 +982,16 @@ if(ses1!=null){	%>
 							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 					            <form action="LevelNameAdd.htm" method="get">
 						            <input type="text" name="LevelName" required>
-						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#<%=count1+=1%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#<%=count %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 							   </form>    
-					             
-					               
-					                
+					                 
 					        </span> 	
 					    </div> 
                 
                     </li>
+                    
+                   
                 	<%---------------------------------------Level 1 Add------------------------------------------------------------%>
 				 </ul> 
                 
@@ -1110,7 +1112,7 @@ if(ses1!=null){	%>
         	
         	<input type="hidden" id="Mainid" name="Mainid" value="" >
         	 <input type="hidden" id="" name="Action" value="TE" > 
-        	<input type="hidden" id="" name="ProjectId" value="<%=ProjectId %>" >
+        	<input type="hidden" id="" name="ProjectId" value="<%=ProjectId%>" >
         	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
         </form>
       </div>

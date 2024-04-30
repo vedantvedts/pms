@@ -222,7 +222,7 @@ p,td,th
 
 <div align="center">
 		<h5 style="font-weight: bold;margin-top: -0.5rem;">
-			CHECK-LIST FOR ADMINISTRATIVE CLOSURE REPORT FOR Project Name & No.
+			CHECK-LIST FOR ADMINISTRATIVE CLOSURE REPORT FOR <%=projectMaster.getProjectName()%> & <%=projectMaster.getProjectDescription()%>
 			
 		</h5>
 		
