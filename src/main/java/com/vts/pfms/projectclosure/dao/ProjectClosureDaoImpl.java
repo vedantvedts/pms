@@ -22,6 +22,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
 
@@ -639,6 +640,37 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO editProjectClosureCheckList "+e);
 			return 0L;
+		}
+	}
+
+	@Override
+	public long AddIssue(ProjectClosureTechnical tech) throws Exception {
+		
+		try {
+			manager.persist(tech);
+			manager.flush();
+			return tech.getTechnicalClosureId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO AddIssue "+e);
+			return 0L;
+		}
+	}
+
+	private static final String TECHNICALCLOSURERECORDLIST="SELECT * FROM  pfms_closure_technical WHERE isActive='1' AND ClosureId=:closureId";
+	@Override
+	public List<Object[]> getTechnicalClosureRecord(String closureId) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(TECHNICALCLOSURERECORDLIST);
+			query.setParameter("closureId", closureId);
+			
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getTechnicalClosureRecord " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
 		}
 	}
 }

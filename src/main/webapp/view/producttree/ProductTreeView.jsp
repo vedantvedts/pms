@@ -330,7 +330,10 @@ table,td{
 			           <ul class="active">
 			           	          
 			           	           <div class="firstchildafter"></div>      
-			                <%int i=1; for(Object[] level1 : ProductTreeList){
+			                <%int i=1; 
+			                
+			                int count=1;
+			                for(Object[] level1 : ProductTreeList){
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
 			              
 			                	<li >
@@ -366,7 +369,7 @@ table,td{
 																			 );" >
 												
 										             <span  style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;"> 
-										                  <%=level1[3] %>
+										                <%=count%> <br> <%=level1[3] %>
 										                
 										             </span>  
 										            
@@ -385,7 +388,10 @@ table,td{
 								<!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->
 						                <ul  <% if(Level1!=null && Level1.size()>0){%> class="active" <%}%> >	
 						                  <div class="firstchildafter"></div>     
-						                <% int j=1;for(Object[] level2 : ProductTreeList){
+						                <% int j=1;
+						                int countA=1;
+						                
+						                for(Object[] level2 : ProductTreeList){
 						                  if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString()))
 							                { %>
 							             
@@ -417,7 +423,7 @@ table,td{
 																			 );" >
 														
 															       <span style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;"> 
-			                          			                              <%=level2[3] %>
+			                          			                         <%=count%>.<%=countA%> <br> <%=level2[3] %>
 			                          			                   </span>
 			                          			                   
 			                          			                <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
@@ -434,7 +440,9 @@ table,td{
 												    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->
 										             <ul <% if(Level2!=null && Level2.size()>0){%> class="active" <%}%> >
 										              <div class="firstchildafter"></div>    	                
-										                	  <% int k=1;for(Object[] level3 : ProductTreeList){
+										                	  <% int k=1;
+										                	  int countB=1;	    
+										                	  for(Object[] level3 : ProductTreeList){
 										                 if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) )
 										                
 										                  { %>
@@ -474,7 +482,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level3[3] %>
+			                          			                                <%=count%>.<%=countA%>.<%=countB%>  <br><%=level3[3] %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -494,15 +502,14 @@ table,td{
 										                
 										               <ul <% if(Level3!=null && Level3.size()>0){%> class="active" <%}%> >	
 										                <div class="firstchildafter"></div>                    
-										                	 <% int l=1;for(Object[] level4 : ProductTreeList){
+										                	 <% int l=1;
+										                	 int countC=1;
+										                	 for(Object[] level4 : ProductTreeList){
 															                 
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
 										                     { %>    
 																  <li> 
 																  
-																  
-																  
-																 
 																   <div class="before" <%if(l==1) {%> style="border:none;" <%} %> ></div> 
 																   
 																  
@@ -535,7 +542,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level4[3] %>
+			                          			                                <%=count%>.<%=countA%>.<%=countB%>.<%=countC%> <br><%=level4[3] %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -555,7 +562,9 @@ table,td{
 																	
 														 <ul <% if(Level4!=null && Level4.size()>0){%> class="active" <%}%> >	
 														  <div class="firstchildafter"></div>                    
-										                	<% int m=1;for(Object[] level5 : ProductTreeList){%>
+										                	<% int m=1;
+										                	int countD=1;
+										                	for(Object[] level5 : ProductTreeList){%>
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
 								                             {%> 
 																  <li> 
@@ -592,7 +601,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level5[3] %>
+			                          			                               <%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%> <br> <%=level5[3] %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -613,7 +622,9 @@ table,td{
 																		<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
 																		 <ul <% if(Level5!=null && Level5.size()>0){%> class="active" <%}%> >	
 														  <div class="firstchildafter"></div>                    
-										                	<% int n=1;for(Object[] level6 : ProductTreeList){%>
+										                	<% int n=1;
+										                	int countE=1;
+										                	for(Object[] level6 : ProductTreeList){%>
 								                        	  <% if(level6[2].toString().equalsIgnoreCase("6") && level5[0].toString().equalsIgnoreCase(level6[1].toString()) )
 								                             {%> 
 																  <li> 
@@ -650,7 +661,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level6[3] %>
+			                          			                               <%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%> <br> <%=level6[3] %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -671,7 +682,9 @@ table,td{
 																		
 																		 <ul <% if(Level6!=null && Level6.size()>0){%> class="active" <%}%> >	
 														  <div class="firstchildafter"></div>                    
-										                	<% int o=1;for(Object[] level7: ProductTreeList){%>
+										                	<% int o=1;
+										                	int countF=1;
+										                	for(Object[] level7: ProductTreeList){%>
 								                        	  <% if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString()) )
 								                             {%> 
 																  <li> 
@@ -708,7 +721,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level7[3] %>
+			                          			                                <%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%> <br><%=level7[3] %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -729,7 +742,9 @@ table,td{
 																	   
 																   </li>
 															
-														    <%o++; } %>
+														    <%o++; 
+														    
+														    countF++;} %>
 														<% } %>
 														
 														
@@ -743,7 +758,8 @@ table,td{
 																	   
 																   </li>
 															
-														    <%n++; } %>
+														    <%n++; 
+														    countE++;} %>
 														<% } %>
 														
 														
@@ -756,7 +772,9 @@ table,td{
 																	   
 																   </li>
 															
-														    <%m++; } %>
+														    <%m++; 
+														    
+														    countD++;} %>
 														<% } %>
 														
 														
@@ -766,7 +784,8 @@ table,td{
 															<div class="after" <% if(l==Level3.size()) {%> style="border-top:none;" <%} %> ></div> 		    
 														 </li>
 															
-												    <%l++; } %>
+												    <%l++;
+												    countC++;} %>
 												<% } %>
 														
 													 </ul>     
@@ -778,7 +797,9 @@ table,td{
 															 
 							                		    </li>
 												
-													    <%k++; } %>
+													    <%k++;
+													    countB++;
+													    } %>
 													<% } %>
 											
 											
@@ -790,7 +811,8 @@ table,td{
 										    <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->  
 										<div class="after" <% if(j==Level1.size()) {%> style="border-top:none;" <%} %> ></div> 	  	
 								 	 </li>
-								 <%j++; } %>
+								 <%j++;
+								 countA++;} %>
                 	        <% } %>
                 	        
                 	       
@@ -799,7 +821,8 @@ table,td{
 						        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->    
 						 	 <div class="after" <% if(i==L1.size()) {%> style="border-top:none;" <%} %> ></div>  			
                 		 </li>
-                	   <%i++; } %>
+                	   <%i++;
+                	   count++; } %>
                 	<% } %>
 					
 			

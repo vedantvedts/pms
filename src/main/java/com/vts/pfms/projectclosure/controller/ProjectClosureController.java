@@ -73,6 +73,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.service.ProjectClosureService;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -1617,7 +1618,7 @@ public class ProjectClosureController {
 		String Username = (String) ses.getAttribute("Username");
 		//String Client_name = (ses.getAttribute("client_name")).toString();
 		String labcode = (String) ses.getAttribute("labcode");
-		System.out.println("labcode---"+labcode);
+	
 	    logger.info(new Date() + "Inside ProjectDetailsAllotExp.htm " + Username);
 		try {
 		String ProjectIdsel=req.getParameter("ProjectIdSel");
@@ -2202,6 +2203,54 @@ public class ProjectClosureController {
 		}
 			
 		return null;
+	}
+	
+	
+	@RequestMapping(value="TechClosureList.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String TechClosureList(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside TechClosureList.htm "+UserId);
+		try {
+				
+			
+			String closureId = req.getParameter("closureId");
+			
+			if("Add".equalsIgnoreCase(req.getParameter("Action"))){
+				
+			ProjectClosureTechnical tech=new ProjectClosureTechnical();
+			
+			tech.setParticulars(req.getParameter("Particulars"));
+			tech.setRevisionNo("0");
+			tech.setIssueDate(sdtf.format(new Date()));
+			tech.setStatus("INI");
+			tech.setCreatedBy(EmpId);
+			tech.setCreatedDate(sdtf.format(new Date()));
+			tech.setIsActive(1);;
+			
+			long save=service.AddIssue(tech);
+			
+			if (save > 0) {
+				redir.addAttribute("result", "Technical Closure Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Technical Closure Add Unsuccessful");
+			}
+			
+			}
+			
+			List<Object[]> TechnicalClosureRecord=service.getTechnicalClosureRecord(closureId);
+			req.setAttribute("TechnicalClosureRecord", TechnicalClosureRecord);
+			
+			return "project/ProjectTechClosureList";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside TechClosureList.htm "+UserId, e);
+			return "static/Error";			
+		}
+
 	}
 	
 		

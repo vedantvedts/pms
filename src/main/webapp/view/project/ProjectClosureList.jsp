@@ -550,6 +550,19 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 																	</div>
 												    			</button>
 												    			
+												    			
+												    			<button class="editable-clicko" name="closureId" value="<%=obj[14] %>" formaction="TechClosureList.htm" formmethod="post"  data-toggle="tooltip" data-placement="top" title="Technical Project Closure Report">
+																	<div class="cc-rockmenu">
+																		<div class="rolling">
+																			<figure class="rolling_icon">
+																				<img src="view/images/clipboard.png" style="width: 22px !important;">
+																			</figure>
+																			<span>TPCR</span>
+																		</div>
+																	</div>
+												    			</button>
+												    			
+												    			
 												    			<%} %>
 												    			
 												    			

@@ -11,6 +11,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
 public interface ProjectClosureDao {
@@ -53,5 +54,7 @@ public interface ProjectClosureDao {
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId)  throws Exception;
 	public long addProjectClosureCheckList(ProjectClosureCheckList clist)throws Exception;
 	public long editProjectClosureCheckList(ProjectClosureCheckList clist) throws Exception;
+	public long AddIssue(ProjectClosureTechnical tech)throws Exception;
+	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
 
 }
