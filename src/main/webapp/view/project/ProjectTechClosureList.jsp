@@ -1,5 +1,6 @@
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -132,11 +133,15 @@ font-weight: bold;
 <body>
 <%
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+FormatConverter fc = new FormatConverter();
+
+List<Object[]> list=(List<Object[]>)request.getAttribute("TechnicalClosureRecord");
+
+String closureId=(String)request.getAttribute("closureId");
 
 String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
+	if(ses1!=null){%>
 	
 	
 	<div align="center">
@@ -153,6 +158,9 @@ String ses=(String)request.getParameter("result");
     </div>
     <%}%>
 <br>	
+
+	
+	
 	
 <div class="container-fluid">		
 	<div class="row">
@@ -165,12 +173,13 @@ String ses=(String)request.getParameter("result");
 			   <div class="col-md-10" align="right">
 			  
 				</div>
-			</div></div>
+			</div>
+			</div>
 				<div class="card-body"> 
 		              
 					 <div class="data-table-area mg-b-15">
 			            <div class="container-fluid">
-			                
+			                <form action="##" method="get" >
 			                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			                        <div class="sparkline13-list">
 			                            <div class="sparkline13-graph">
@@ -180,19 +189,53 @@ String ses=(String)request.getParameter("result");
 			                      <thead>
 			                                         
 			                           	<tr>
+			                           	
 				                            <th style=" text-align: center;" >SN</th>
 				                            <th style=" text-align: center;" >Particulars </th>
-		                                    <th style=" text-align: center;" >From</th>
-		                                    <th style=" text-align: center;" >To</th>
+		                                    <th style=" text-align: center;" >Revision No</th>
 		                                    <th style=" text-align: center;" >Issue Date </th>
 		                                    <th style=" text-align: center;" >Status</th>
-		                                     <th style=" text-align: center;" >Action</th>
+		                                    <th style=" text-align: center;" >Action</th>
 		                                    
-		                                    
-	                                    </tr>      
+		                                 </tr>      
 			        
 			                          </thead>
 			                    <tbody>
+			                    
+			                    <% 
+			                    int count=0;
+			                    for(Object[] obj:list) {%>
+			                    
+			                    <tr>
+			                            <td><%=++count%></td>
+			                            <td><%=obj[1]%></td>
+			                           
+			                            <td><%=obj[2]%></td>
+			                            <td><%=fc.SqlToRegularDate(obj[3].toString())%></td>
+			                            
+			                            <td>
+			                            <button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectTechClosureTransStatus.htm value="<%=closureId %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style="font-weight: 600;" formtarget="_blank">
+							    				<%=obj[5] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+							    			</button>
+			                            </td>
+			                            
+			                            <td>
+			                            
+			                            <button class="editable-clicko" name="TechnicalClosureId" value="<%=obj[0] %>" formaction="TechClosureContent.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Content Add">
+											<div class="cc-rockmenu">
+												<div class="rolling">
+													<figure class="rolling_icon">
+														<img src="view/images/documentedit.png" style="width:25px;">
+													</figure>
+													<span>Content</span>
+												</div>
+											</div>
+						    			</button>
+						    			
+									 </td>
+			                    </tr>
+			                    
+			              <%}%>
 	                                
 	                             </tbody>
 				    				
@@ -203,8 +246,11 @@ String ses=(String)request.getParameter("result");
 			                 </div>
 			                </div>
 			             </div>
+			             </form>
 			          </div>
 			        </div>
+			      
+			        
 	 <div align="center">
 	     		 <button type="submit" class="btn btn-primary btn-sm add" onclick="AddIssue()" >ADD ISSUE</button>&nbsp;&nbsp;  
 		  <a class="btn btn-info btn-sm  back"   href="ProjectClosureList.htm">Back</a>
@@ -258,6 +304,7 @@ String ses=(String)request.getParameter("result");
         	</table>
         	
         	<input type="hidden" name="Action" value="Add">
+        	<input type="hidden" name="closureId" value="<%=closureId%>">
         	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
         </form>
       </div>

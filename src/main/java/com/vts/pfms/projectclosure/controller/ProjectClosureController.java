@@ -2218,11 +2218,12 @@ public class ProjectClosureController {
 			
 			String closureId = req.getParameter("closureId");
 			
-			if("Add".equalsIgnoreCase(req.getParameter("Action"))){
+			if("Add".equalsIgnoreCase(req.getParameter("Action"))) {
 				
 			ProjectClosureTechnical tech=new ProjectClosureTechnical();
 			
 			tech.setParticulars(req.getParameter("Particulars"));
+			tech.setClosureId(Long.parseLong(closureId));
 			tech.setRevisionNo("0");
 			tech.setIssueDate(sdtf.format(new Date()));
 			tech.setStatus("INI");
@@ -2238,8 +2239,9 @@ public class ProjectClosureController {
 				redir.addAttribute("resultfail", "Technical Closure Add Unsuccessful");
 			}
 			
-			}
+		}
 			
+			req.setAttribute("closureId", closureId);
 			List<Object[]> TechnicalClosureRecord=service.getTechnicalClosureRecord(closureId);
 			req.setAttribute("TechnicalClosureRecord", TechnicalClosureRecord);
 			
@@ -2252,6 +2254,51 @@ public class ProjectClosureController {
 		}
 
 	}
+	
+	
+	
+	@RequestMapping(value="TechClosureContent.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String TechClosureContent(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside TechClosureContent.htm "+UserId);
+		try {
+				
+			String TechnicalClosureId=req.getParameter("TechnicalClosureId");
+			
+			
+			return "project/ProjectTechClosureContent";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside TechClosureContent.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
+	
+	
+	
+	@RequestMapping(value = "ProjectTechClosureTransStatus.htm" , method={RequestMethod.POST,RequestMethod.GET})
+	public String ProjectTechClosureTransStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	{
+		String Username = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectTechClosureTransStatus.htm "+Username);
+		try {
+			String closureId = req.getParameter("closureId");
+			req.setAttribute("TransactionList", service.projectClosureTransListByType(closureId, "T", "T")) ;
+			req.setAttribute("TransFlag", "T");
+			req.setAttribute("closureId", closureId);
+			return "project/ProjectClosureTransStatus";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectTechClosureTransStatus.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
 	
 		
 }

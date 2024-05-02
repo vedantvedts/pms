@@ -657,7 +657,9 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 
-	private static final String TECHNICALCLOSURERECORDLIST="SELECT * FROM  pfms_closure_technical WHERE isActive='1' AND ClosureId=:closureId";
+	private static final String TECHNICALCLOSURERECORDLIST="SELECT  a.TechnicalClosureId,a.Particulars,a.RevisionNo,a.IssueDate,a.Status,b.ClosureStatus\r\n"
+			+ " FROM  pfms_closure_technical a ,pfms_closure_approval_status b WHERE b.ClosureStatusCode=a.Status AND \r\n"
+			+ " a.isActive='1' AND a.ClosureId=:closureId ";
 	@Override
 	public List<Object[]> getTechnicalClosureRecord(String closureId) throws Exception {
 		

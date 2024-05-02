@@ -555,7 +555,7 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 																	<div class="cc-rockmenu">
 																		<div class="rolling">
 																			<figure class="rolling_icon">
-																				<img src="view/images/clipboard.png" style="width: 22px !important;">
+																				<img src="view/images/bookpen.png" style="width: 22px !important;">
 																			</figure>
 																			<span>TPCR</span>
 																		</div>
