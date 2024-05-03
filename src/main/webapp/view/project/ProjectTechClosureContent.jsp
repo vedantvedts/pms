@@ -7,15 +7,29 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+<spring:url value="/resources/richtexteditor/richtexteditor.js" var="richtexteditorjs" />
+<spring:url value="/resources/richtexteditor/richtexteditor.css" var="richtexteditorcss" />
+<spring:url value="/resources/richtexteditor/plugins/all_plugins.js" var="allpluginsjs" />
+
+
+
+
 
 <title>COMMITTEE SCHEDULE MINUTES</title>
 
- <script src="${ckeditor}"></script>
- <link href="${contentCss}" rel="stylesheet" />
 
-  <style>
+<script src="${ckeditor}"></script>
+<script src="${richtexteditorjs}"></script>
+<script src="${allpluginsjs}"></script>
+
+
+ <link href="${contentCss}" rel="stylesheet" />
+ <link href="${richtexteditorcss}" rel="stylesheet" />
+
+   <style>
     .bs-example{
         margin: 20px;
     }
@@ -208,34 +222,108 @@ display: inline-block;
     border-color: #7B1FA2;
     background-color: red;
 }
-@keyframes blink {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+.inputx{
+width:50%;
+display:inline;
+}
+.fa-plus{
+color:green;
+}
+.fa-minus{
+color:red;
+}
+.fa-pencil{
+color:blue;
+}
+.fa-times{
+color:red;
+}
+input[type=checkbox] {
+	accent-color: green;
+}
+.spansub{
+    width: 49px;
+    height: 24px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: justify;
+    display: inline-block;
+}
+#ModalReq::after{
+  content: "Add Chapter";
+  display: none;
+  opacity:0;
+}
+#ModalReq:hover::after{
+display:inline-block;
+animation: fade-in 1s ease forwards;
 }
 
-.blink {
-    animation: blink 1.5s infinite;
-}
- .spinner {
-    position: fixed;
-    top: 40%;
-    left: 20%;
-    margin-left: -50px; /* half width of the spinner gif */
-    margin-top: -50px; /* half height of the spinner gif */
-    text-align:center;
-    z-index:1234;
-    overflow: auto;
-    width: 1000px; /* width of the spinner gif */
-    height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px; 
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+} 
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+.modal-dialog-jump {
+  animation: jumpIn 1.5s ease;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 	</style>
 </head>
 <body>
@@ -257,11 +345,10 @@ String specname=(String)request.getAttribute("specname");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 
+String closureId=(String)request.getAttribute("closureId");
+
+
 %>
-
-
-
-
 
 
 
@@ -298,7 +385,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	
 	<form class="form-inline" method="GET" action=""  name="myfrm" id="myfrm"> 
 		
-		<input type="hidden" name="" value="">
+		<input type="hidden" name="closureId" value="<%=closureId%>">
 		<button  class="btn  btn-sm back" formaction="TechClosureList.htm" style=" font-size:12px;" >BACK</button>
 					
 	</form>
@@ -308,123 +395,195 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   
   
   
- <div class="container-fluid" id="main2">          
+  
+  <div class="container-fluid">          
 <div class="row"> 
 <div class="col-md-5" >
 	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-    	<div class="card-body" style="margin-top: -8px" >
-         <div class="panel panel-info" style="margin-top: 10px;" >
-      	
-      		<div class="panel-heading">
-        		
-        		<h4 class="panel-title">
-                	<span  style="font-size:14px">1. EXECUTIVE SUMMARY</span> 
-                </h4>
-       
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse" > <i class="fa fa-plus" style="color:orange" id="5Out" ></i></a></div>
-           		</div>
-           		
-  			
-			
-			<div class="panel-heading">
-        		
-        		<h4 class="panel-title">
-                	<span  style="font-size:14px">2. PROJECT PERFORMANCE</span> 
-                </h4>
-       
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse" > <i class="fa fa-plus" style="color:orange" id="5Out" ></i></a></div>
-           		</div>
-           		
-           		
-           		<div class="panel-heading">
-        		
-        		<h4 class="panel-title">
-                	<span  style="font-size:14px">3. LESSONS LEARNT</span> 
-                </h4>
-       
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse" > <i class="fa fa-plus" style="color:orange" id="5Out" ></i></a></div>
-           		</div>
-           		
-           		
-           		
-           		<div class="panel-heading">
-        		
-        		<h4 class="panel-title">
-                	<span  style="font-size:14px">4. SUMMARY OF RECOMMENDATIONS</span> 
-                </h4>
-       
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse" > <i class="fa fa-plus" style="color:orange" id="5Out" ></i></a></div>
-           		</div>
-           		
-           		
-           		
-           		<div class="panel-heading">
-        		
-        		<h4 class="panel-title">
-                	<span  style="font-size:14px">5. TOT /PRODUCTION ORDER DETAILS</span> 
-                </h4>
-       
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse" > <i class="fa fa-plus" style="color:orange" id="5Out" ></i></a></div>
-           		</div>
-           		
-           		
-           			<div class="panel-heading">
-        		
-        		<h4 class="panel-title">
-                	<span  style="font-size:14px">6. WAY FORWARD</span> 
-                </h4>
-       
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse" > <i class="fa fa-plus" style="color:orange" id="5Out" ></i></a></div>
-           		</div>
-           		
-           		
-           			<div class="panel-heading">
-        		
-        		<h4 class="panel-title">
-                	<span  style="font-size:14px">7. APPENDICES</span> 
-                </h4>
-       
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse" > <i class="fa fa-plus" style="color:orange" id="5Out" ></i></a></div>
-           		</div>
-           		
-           		<!-- 	<div class="panel-heading">
-        		
-        		<h4 class="panel-title">
-                	<span  style="font-size:14px">2. PROJECT PERFORMANCE</span> 
-                </h4>
-       
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse" > <i class="fa fa-plus" style="color:orange" id="5Out" ></i></a></div>
-           		</div> -->
-           		
-           		
-           		<div id="collapse" class="panel-collapse in collapse "></div>
-			
-			
-			
-			
-			
-			</div>
-			
-			
-			</div>
-		 </div> 
-	 </div>
-   </div>
-</div>
+    <div class="card-body" id="scrollclass" style="height:500px;overflow-y:scroll " >
+  
+  <%--   <form action="#">
+      <div class="panel panel-info" style="margin-top: 10px;" id="">
+      	<div class="panel-heading ">
+        <h4 class="panel-title">
+        <span class="ml-2" style="font-size:14px"> </span>  
+        </h4>
+         	<div   style="float: right !important; margin-top:-32px; ;" id="tablediv" >
+		 		<table style="text-align: right;" >
+     				<thead>
+	             		<tr>
+	                 		<th ><input type="hidden" id="subspan" value=""></th>
+	             		</tr>
+	         		</thead>
+	         		
+	         		<tbody>
+	         		<tr>
+         		<td>
+	         		<span id="">
+	         		<button class="btn btn-sm bg-transparent"  id="" onclick="showSubpoint()"><i class="fa fa-plus" aria-hidden="true"></</button>
+	         		</span>
+	         		</td><td>
+	         		<!-- <input class="btn btn-success btn-sm ml-3" type="submit"  value="ADD" style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;margin-top: -10%;display:inline-block;"> -->
+	         		<button class="btn bg-transparent buttuonEd"  type="button" id="btnEditor" onclick="showEditor('')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+	         		</td> 
+	         		</tr>
+	         		</tbody>
+	         		</table>
+	         		</div>
+	         		</div>
+	         		<div id="" style="display: none;">
+	         		<!--  -->
+	         		<!--  -->
+	         		</div>
+	         	    <div class="row" id="inputDiv" style="display: none;">  
+   					<div class="col-md-11 mt-1"  align="left"  style="margin-left: 10px;">
+					<div class="panel panel-info">
+					<div class="panel-heading">
+	    			<h4 class="panel-title">
+	    			<input type="hidden" id="Mainid" name="Mainid" value="">
+	    			<input type="hidden" id="ReqName" name="ReqName" value="">
+	    			
+	    			<input type="hidden" name="projectId" value="<">
+	    			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+	           		<input class="form-control inputx" id="inputx" name="subreqName" style="padding:0px; line-height: 0px;" maxlength="255 characters">
+	           		<button class="btn btn-success btn-sm ml-3" type="submit"  onclick="subPointSubmit()"
+	           		formaction="ProjectOtherReqAdd.htm" formmethod="POST" formnovalidate="formnovalidate" 
+	           		style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;display:inline-block;"
+	           		>ADD</button>
+	       		    </h4>
+	        		</div>
+	        		</div>
+	        		</div>
+	        		</div>
+	         		</div>
+	         		</form> --%>
+	    			
+			<br>
+	    			<button type="button"  class="btn btn-sm  ml-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq" style="color:#31708f;"><i class="fa fa-arrow-right text-primary" aria-hidden="true"></i>&nbsp; </button>
+          </div>
+	         		</div>
+	         		</div>
 
+	         	<div class="col-md-7">
+	         	<form action="OtherRequirementDetailsAdd.htm" method="POST" id="myfrm">
+	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
+	      			<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;"></h5><hr>
+					<div class="card-body" style="margin-top: -8px" >
+					<div class="row">	
+					<div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
+					<!-- <div id="Editor" class="center"></div> -->
+					<div id="div_editor1">
+		
+					</div>
+					
+					<textarea name="Details" style="display: none;"></textarea>
+					<div class="mt-2" align="center" id="detailsSubmit">
+					<span id="EditorDetails">
+					<input type='hidden' name='MainId' value=>
+					<input type='hidden' name='ReqName' value=>
+					<input type='hidden' name='ReqParentId' value=>
+					<input type='hidden' id='RequirementId' name='RequirementId' value=>
+					</span>
+				    
+	    			<input type="hidden" name="projectId" value="">
+					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+					<span id="Editorspan">
+					<button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button></span>
+					</div>
+					</div>
+					</div>
+					</div>
+	         		</div> 
+         		</form>
+	         	</div>
+
+			</div>
+			</div>
+			
+			
+			
+			
+<form action="AddProjectOtherReq.htm" method="POST">	         	  	
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-jump" role="document">
+    <div class="modal-content mt-5" style="width:120%; margin-left:-10%;">
+      <div class="modal-header p-1 pl-3" style="background: #C4DDFF">
+        <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Chapter</h5>
+        <button type="button" class="close text-danger mr-1" data-dismiss="modal" aria-label="Close">
+          <span class="font-weight-bolder" aria-hidden="true" style="opacity:1;">&times;</span>
+        </button>
+      </div>
+        
+     
+       <div class="modal-body" style="display:flex;justify-content: center;align-items:center;">
+       <div>
+   
+   
+     <table class="table table-bordered table-hover table-striped table-condensed" style="border:1px solid black;">
+        
+        <tr style="border:1px solid black;">
+            <td align="center" style="border:1px solid black;width:10%;">Select</td>
+            
+            <td align="center" style="border:1px solid black;width:50%;">Chapter</td>
+            
+         </tr>
+         
+          <tr style="border:1px solid black;">
+            <td style="border:1px solid black;"><input name="" type="checkbox" value=""></td>
+            
+            <td style="border:1px solid black;"></td>
+            
+         </tr>
+         
+     </table>
+      
+      <br>
+     
+        
+       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="AddnewButton" onclick="AddNew()" >ADD NEW </button>
+		
+		
+		<div style="display: none" id="newchapter">
+		
+		<input type="text" name="NewChapter" value="">
+		
+		
+		</div>
+		
+       </div>
+       
+   </div>
+   		
+    
+      <div class="p-2" align="center">
+      		
+	    			<input type="hidden" name="projectId" value=""> 
+					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+        			<!-- <button type="submit" class="btn btn-sm btn-success submit" onclick="EditorValueSubmit()">SUBMIT</button> -->
+      </div>
+    </div>
+  </div>
+</div>   	
+  </form> 
+			
+  
 
 
 
 
 <script type="text/javascript">
+
+
+
+
+function AddNew(){
+	
+	$('#Addnewshow').show();
+	$('#AddnewButton').hide();
+	
+	
+	
+}
 
 $(document).ready(function(){
     // Add minus icon for collapse element which is open by default
@@ -457,26 +616,13 @@ $(document).ready(function(){
 
 </script>
 
-<script type="text/javascript">
-
-
-
-
-</script>
-
-
-
-
-		<script type="text/javascript">
-						
-			   
-		</script>
-						
+	
 
 
 
 <script>
-  
+
+
     $(document).ready(function(){
         // Add minus icon for collapse element which is open by default
         $(".collapse.show").each(function(){
@@ -508,807 +654,53 @@ $(document).ready(function(){
   
     
 
-    var regex = /\d+/g;
-    var matches = unitt.match(regex);
-    
-	if(matches!=null){
-		if("5"==matches){
-			$("#OutCome5").click();	
-		}else{
-			
-			$("#agendaclick").click();	
-			unitt=unitt.slice(1);
-			$("."+unitt).click();
-			$("#"+unitt+'5').click();
-		}
-	}   
-    
-	
-	function checklength(id){
-		
-		$('#'+id).on('change', function() { 
-	        if($(this).is(':checked')) 
-	        {
-	        	var data =CKEDITOR.instances['summernote'].getData();
-	        	if(data.length>1024){
-	        		alert('Maximum number of characters for Action, Issue and Risk is 1024 . Characters entered by you is ' + data.length + '.');
-					$(this).prop("checked", false);
-				}
-	        	
-	        }
-	    });
-	}
-	
-
- 
-</script>
-	
-
- <script type="text/javascript">
-	 
-	
-	  $('#specadd').submit(function() {
-		  
-		  var data =CKEDITOR.instances['summernote'].getData();
-		  $('textarea[name=NoteText]').val(data);
-
-		  if($('#issue').is(':checked')) 
-		    {
-				var data =CKEDITOR.instances['summernote'].getData();
-				if(data.length>1024){
-					alert('Maximum number of characters for Action, Issue and Risk is 1024 . Characters entered by you is ' + data.length+ '.');
-					event.preventDefault();
-				}
-				
-			}
-			if($('#risk').is(':checked')) 
-		    {
-				var data =CKEDITOR.instances['summernote'].getData();
-				if(data.length>1024){
-					alert('Maximum number of characters for Action, Issue and Risk is 1024 . Characters entered by you is ' + data.length+ '.');
-					event.preventDefault();
-				}
-				
-			}
-			if($('#action').is(':checked')) 
-		    {
-				var data =CKEDITOR.instances['summernote'].getData();
-				if(data.length>1024){
-					alert('Maximum number of characters for Action, Issue and Risk is 1024 . Characters entered by you is ' + data.length+ '.');
-					event.preventDefault();
-				}
-				
-			}
-			
-
-			    if ( $('input:radio', this).is(':checked')) {
-			  
-			    } else {
-			        
-			    	alert('Kindly select a action item !');
-			        
-			        return false;
-			    }
-			
-		  
-      });
-	  
-	  
-	  function FormNameB(formId) {
-    	  $("#"+formId).submit(function(event){
-    		    event.preventDefault();
-    		    $('#editingair').hide();
-    		    $('#deletingair').hide();
-    		    $('#addingair').show();
-    		    $('#specadd').hide();
-    		    $('#specair').show();
-    		    $('#OutComeDiv').hide();
-    		    $('#PresDiscHeader').hide();
-    		    var minutesidadd = $("input[name='minutesid']",this).val();
-    		    var specnameadd= $("input[name='specname']",this).val();
-    		    var agendasubidadd= $("input[name='agendasubid']",this).val();
-    		    var scheduleagendaidadd= $("input[name='scheduleagendaid']",this).val();
-    		    var formnameadd= $("input[name='formname']",this).val();
-    		    var type=$("#OutComesId",this).val();
-    		    var unit1idadd= $("input[name='unit1']",this).val();
-    		 
-    		    $("#minutesidair").val(minutesidadd);
-    		    $("#specnameair").val(specnameadd);
-    		    $("#agendasubidair").val(agendasubidadd);
-    		    $("#scheduleagendaidair").val(scheduleagendaidadd);
-    		    $("#formnameair").val(formnameadd);
-    		    $("#unit1idair").val(unit1idadd);
-    		    $.ajax({
-    				type : "GET",
-    				url : "CommitteeMinutesSpecAdd.htm",
-    				data : {
-    					
-    					minutesid : minutesidadd,
-    					specname:specnameadd,
-    					agendasubid:agendasubidadd,
-    					scheduleagendaid:scheduleagendaidadd,
-    					formname:formnameadd,
-    					
-    				},
-    				datatype : 'json',
-    				success : function(result) {
-    					
-    					var result = JSON.parse(result);
-    					var values = Object.keys(result).map(function(e) {
-    						  return result[e]
-    						});
-
-    						if(scheduleagendaidadd==0){
-    						document.getElementById('iditemsubspecofsubair').innerHTML = "" ;
-        					}	
-    						
-							if(scheduleagendaidadd!=0){
-    						document.getElementById('iditemsubspecofsubair').innerHTML = " / " + values[4]; 
-        					}
-							
-		
-							if(agendasubidadd==0){
-	    						
-	    						document.getElementById('iditemsubspecair').innerHTML = "";
-	        				}
-    						if(agendasubidadd!=0){
-    						
-    						document.getElementById('iditemsubspecair').innerHTML = " / " + values[3]; 
-        					}
-    						
-    						
-    					document.getElementById('iditemspecair').innerHTML = values[1];
-
-    					$("#remarksair").val('');
-    					$("#OutComeAirHead").val(type);
-    					$("#editorair").val('');
-    					$("#OutComeAir").val('C');
-    					document.getElementById('outcomeair').innerHTML = " / "+type;
-     					
-
-      	  		         	 
-    				}
-    			});
-    		   
-    		  });
-    	  
-
-    }  
-
-	  function FormNameA(formId) {
-	
-		  
-    	  $("#"+formId).submit(function(event){
-    		    event.preventDefault();
-    		    $('#editingair').hide();
-    		    $('#deletingair').hide();
-    		    $('#addingair').show();
-    		    $('#specadd').hide();
-    		    $('#specair').show();
-    		    $('#OutComeDiv').hide();
-    		    $('#PresDiscHeader').hide();
-    		    var minutesidadd = $("input[name='minutesid']",this).val();
-    		    var specnameadd= $("input[name='specname']",this).val();
-    		    var agendasubidadd= $("input[name='agendasubid']",this).val();
-    		    var scheduleagendaidadd= $("input[name='scheduleagendaid']",this).val();
-    		    var formnameadd= $("input[name='formname']",this).val();
-    		    var type=$("select[name='OutComesId']",this).val();
-    		    var unit1idadd= $("input[name='unit1']",this).val();
-    		 
-    		    $("#minutesidair").val(minutesidadd);
-    		    $("#specnameair").val(specnameadd);
-    		    $("#agendasubidair").val(agendasubidadd);
-    		    $("#scheduleagendaidair").val(scheduleagendaidadd);
-    		    $("#formnameair").val(formnameadd);
-    		    $("#unit1idair").val(unit1idadd);
-    		    $.ajax({
-    				type : "GET",
-    				url : "CommitteeMinutesSpecAdd.htm",
-    				data : {
-    					
-    					minutesid : minutesidadd,
-    					specname:specnameadd,
-    					agendasubid:agendasubidadd,
-    					scheduleagendaid:scheduleagendaidadd,
-    					formname:formnameadd,
-    					
-    				},
-    				datatype : 'json',
-    				success : function(result) {
-    					
-    					var result = JSON.parse(result);
-    					var values = Object.keys(result).map(function(e) {
-    						  return result[e]
-    						});
-
-    						if(scheduleagendaidadd==0){
-    						document.getElementById('iditemsubspecofsubair').innerHTML = "" ;
-        					}	
-    						
-							if(scheduleagendaidadd!=0){
-    						document.getElementById('iditemsubspecofsubair').innerHTML = " / " + values[4]; 
-        					}
-							
-		
-							if(agendasubidadd==0){
-	    						
-	    						document.getElementById('iditemsubspecair').innerHTML = "";
-	        				}
-    						if(agendasubidadd!=0){
-    						
-    						document.getElementById('iditemsubspecair').innerHTML = " / " + values[3]; 
-        					}
-    						
-    						
-    					document.getElementById('iditemspecair').innerHTML = values[1];
-
-    					$("#remarksair").val('');
-    					$("#OutComeAir").val(type);
-    					$("#editorair").val('');
-    					if(type=="D"){
-    						document.getElementById('outcomeair').innerHTML = " / Decision";
-     					}
-     					else if(type=="A"){
-     						document.getElementById('outcomeair').innerHTML = " / Action";
-     	  		        }
-     					else if(type=="R"){
-     						document.getElementById('outcomeair').innerHTML = " / Recommendation";
-     					}
-     					else if(type=="C"){
-     						document.getElementById('outcomeair').innerHTML = " / Comment";
-     					}
-     					else if(type=="I"){
-     						document.getElementById('outcomeair').innerHTML = " / Issue";
-     					}
-     					else if(type=="K"){
-     						document.getElementById('outcomeair').innerHTML = " / Risk";
-     					}
-
-      	  		         	 
-    				}
-    			});
-    		   
-    		  });
-    	  
-
-    }  
-
-    function FormName(formId) {
-    	  $("#"+formId).submit(function(event){
-    		    event.preventDefault();
-    		    $('#editing').hide();
-    		    $('#adding').show();
-    		    $('#specadd').show();
-    		    $('#specair').hide();
-    		    var minutesidadd = $("input[name='minutesid']",this).val();
-    		    var specnameadd= $("input[name='specname']",this).val();
-    		    var agendasubidadd= $("input[name='agendasubid']",this).val();
-    		    var scheduleagendaidadd= $("input[name='scheduleagendaid']",this).val();
-    		    var unit1idadd= $("input[name='unit1id']",this).val();
-    		    var formnameadd= $("input[name='formname']",this).val();
-    		    
-    		    $("#minutesidadd").val(minutesidadd);
-    		    $("#specnameadd").val(specnameadd);
-    		    $("#agendasubidadd").val(agendasubidadd);
-    		    $("#scheduleagendaidadd").val(scheduleagendaidadd);
-    		    $("#unit1idadd").val(unit1idadd);
-    		    $("#formnameadd").val(formnameadd);
-    		    
-    		    $.ajax({
-    				type : "GET",
-    				url : "CommitteeMinutesSpecAdd.htm",
-    				data : {
-    					
-    					minutesid : minutesidadd,
-    					specname:specnameadd,
-    					agendasubid:agendasubidadd,
-    					scheduleagendaid:scheduleagendaidadd,
-    					unit1:unit1idadd,
-    					formname:formnameadd,
-    					
-    				},
-    				datatype : 'json',
-    				success : function(result) {
-    					
-    					var result = JSON.parse(result);
-    					var values = Object.keys(result).map(function(e) {
-    						  return result[e]
-    						});
-
-    						if(scheduleagendaidadd==0){
-    						document.getElementById('iditemsubspecofsub').innerHTML = "" ;
-        					}	
-    						
-							if(scheduleagendaidadd!=0){
-    						document.getElementById('iditemsubspecofsub').innerHTML = " / " + values[4]; 
-        					}
-							
-		
-							if(agendasubidadd==0){
-	    						
-	    						document.getElementById('iditemsubspec').innerHTML = "";
-	        				}
-    						if(agendasubidadd!=0){
-    						
-    						document.getElementById('iditemsubspec').innerHTML = " / " + values[3]; 
-        					}
-    						
-    					document.getElementById('iditemspec').innerHTML = values[1];
-    			
-    					
-    					CKEDITOR.instances['summernote'].setData();
-    					$("#remarks").val('');
-    					/* drcdiv */
-    					
-      						 $("#decision").prop("checked", false);
-      	  			         $("#recommendation").prop("checked", false);
-      	  		             $("#comments").prop("checked", true); 
-      	  		         	 $("#drcdiv").hide();
-      	  		        
-      	  		         	 
-      	  		         if(formId=="myForm34" || formId=="myForm35" || formId=="myForm36"){
-      	  	  				CKEDITOR.instances['summernote'].setReadOnly(true);
-      	   	  		        }else{
-      	   	  		       CKEDITOR.instances['summernote'].setReadOnly(false);
-      	   	  		        }    
-				
-    				}
-    			});
-    		   
-    		  });
-    	  
-
-    }  
-    
-    
-    function FormNameEditB(formId, AgendaSubHead) {
-  	  $("#"+formId).submit(function(event){
-  		    event.preventDefault();
-  		  $('#addingair').hide();
-  		 $('#editingair').show();
-  		 $('#deletingair').show();
-  		 $('#specadd').hide();
-	       $('#specair').show();
-	       $('#OutComeDiv').hide();
-	       $('#PresDiscHeader').show();
-	       
-  		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
-  		 	var specnameadd= $("input[name='specname']",this).val();
-  		 	var formnameadd= $("input[name='formname']",this).val();
-  		 	var unit1idadd= $("input[name='unit1']",this).val();
-		 	
-  		 	
-  		 	$("#specnameair").val(specnameadd);
-  		 	$("#formnameair").val(formnameadd);
-  		 	$("#unit1idair").val(unit1idadd);
-  		 	
-  		    $.ajax({
-  				type : "GET",
-  				url : "CommitteeMinutesSpecEdit.htm",
-  				data : {
-  					scheduleminutesid : itemidadd,
-  					specname:specnameadd,
-  					forname:formnameadd,
-  					
-  				},
-  				datatype : 'json',
-  				success : function(result) {
-  					
-  					var result = JSON.parse(result);
-  					var values = Object.keys(result).map(function(e) {
-  						  return result[e]
-  						});
-  					
-  					$("#scheduleideditair").val(values[2]);	
-   		  			$("#minutesideditair").val(values[0]);
-   		  		    $("#scheduleminutesideditair").val(values[3]);
-   		  		    
-   		  			if(values[6]==0){
-					document.getElementById('iditemsubspecofsubair').innerHTML = ""; 
-					}	
-					if(values[6]!=0){
-					document.getElementById('iditemsubspecofsubair').innerHTML = " / " + values[8]; 
-					}	
-   		  		    
-					if(values[5]==0){	
-					document.getElementById('iditemsubspecair').innerHTML = "";
-					}
-
-					if(values[5]!=0){
-					document.getElementById('iditemsubspecair').innerHTML = " / " + values[7]; 
-					}
-
-  					
-  					document.getElementById('iditemspecair').innerHTML = values[4];
-	
-  					
-  					$("#remarksair").val(values[9]);
-  					$("#OutComeAir").val(values[10]);
-  					$("#editorair").val(values[1]);
-  					$("#PresDiscHeaderVal").val(AgendaSubHead);
-  					document.getElementById('outcomeair').innerHTML = " / "+AgendaSubHead;
-  	  			
-  				}
-  			});
-  		    
-  		  });
-  	  
-
-  } 
-    
-    function FormNameEditA(formId) {
-    	  $("#"+formId).submit(function(event){
-    		    event.preventDefault();
-    		  $('#addingair').hide();
-    		 $('#editingair').show();
-    		 $('#deletingair').show();
-    		 $('#specadd').hide();
-  	         $('#specair').show();
-  	       $('#OutComeDiv').show();
-  	     $('#PresDiscHeader').hide();
-    		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
-    		 	var specnameadd= $("input[name='specname']",this).val();
-    		 	var formnameadd= $("input[name='formname']",this).val();
-    		 	var unit1idadd= $("input[name='unit1']",this).val();
-     		    $("#unit1idair").val(unit1idadd);
-    		 	
-    		 	$("#specnameair").val(specnameadd);
-    		 	$("#formnameair").val(formnameadd);
-    		 	$("#unit1idair").val(unit1idadd);
-    		 	
-    		    $.ajax({
-    				type : "GET",
-    				url : "CommitteeMinutesSpecEdit.htm",
-    				data : {
-    					scheduleminutesid : itemidadd,
-    					specname:specnameadd,
-    					forname:formnameadd,
-    					
-    				},
-    				datatype : 'json',
-    				success : function(result) {
-    					
-    					var result = JSON.parse(result);
-    					var values = Object.keys(result).map(function(e) {
-    						  return result[e]
-    						});
-    					
-    					$("#scheduleideditair").val(values[2]);	
-     		  			$("#minutesideditair").val(values[0]);
-     		  		    $("#scheduleminutesideditair").val(values[3]);
-     		  		    
-     		  			if(values[6]==0){
-  					document.getElementById('iditemsubspecofsubair').innerHTML = ""; 
-  					}	
-  					if(values[6]!=0){
-  					document.getElementById('iditemsubspecofsubair').innerHTML = " / " + values[8]; 
-  					}	
-     		  		    
-  					if(values[5]==0){	
-  					document.getElementById('iditemsubspecair').innerHTML = "";
-  					}
-
-  					if(values[5]!=0){
-  					document.getElementById('iditemsubspecair').innerHTML = " / " + values[7]; 
-  					}
-  					
-
-    					
-    					document.getElementById('iditemspecair').innerHTML = values[4];
-    					
-
-    					
-    					$("#remarksair").val(values[9]);
-    					$("#OutComeAir").val(values[10]);
-    					$("#editorair").val(values[1]);
-    					
-    					
-    	  			    
-    					if(values[10]=="D"){
-    						document.getElementById('outcomeair').innerHTML = " / Decision";
-     					}
-     					else if(values[10]=="A"){
-     						document.getElementById('outcomeair').innerHTML = " / Action";
-     	  		        }
-     					else if(values[10]=="R"){
-     						document.getElementById('outcomeair').innerHTML = " / Recommendation";
-     					}
-     					else if(values[10]=="C"){
-     						document.getElementById('outcomeair').innerHTML = " / Comment";
-     					}
-     					else if(values[10]=="I"){
-     						document.getElementById('outcomeair').innerHTML = " / Issue";
-     					}
-     					else if(values[10]=="K"){
-     						document.getElementById('outcomeair').innerHTML = " / Risk";
-     					}
-    	  			
-    				}
-    			});
-    		    
-    		  });
-    	  
-
-    } 
-   
-    function FormNameEdit(formId) {
-  	  $("#"+formId).submit(function(event){
-  		    event.preventDefault();
-  		  $('#adding').hide();
-  		 $('#editing').show();
-  		$('#specadd').show();
-	    $('#specair').hide();
-  		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
-  		 	var specnameadd= $("input[name='specname']",this).val();
-  		 	var formnameadd= $("input[name='formname']",this).val();
-  		 	
-  		 	
-  		 	$("#specnameadd").val(specnameadd);
-  		 	$("#formnameadd").val(formnameadd);
-  		 	
-  		    $.ajax({
-  				type : "GET",
-  				url : "CommitteeMinutesSpecEdit.htm",
-  				data : {
-  					scheduleminutesid : itemidadd,
-  					specname:specnameadd,
-  					forname:formnameadd,
-  					
-  				},
-  				datatype : 'json',
-  				success : function(result) {
-  					
-  					var result = JSON.parse(result);
-  					var values = Object.keys(result).map(function(e) {
-  						  return result[e]
-  						});
-  					
-  					$("#scheduleidedit").val(values[2]);	
-   		  			$("#minutesidedit").val(values[0]);
-   		  		    $("#scheduleminutesidedit").val(values[3]);
-   		  		    
-   		  			if(values[6]==0){
-					document.getElementById('iditemsubspecofsub').innerHTML = ""; 
-					}	
-					if(values[6]!=0){
-					document.getElementById('iditemsubspecofsub').innerHTML = " / " + values[8]; 
-					}	
-   		  		    
-					if(values[5]==0){	
-					document.getElementById('iditemsubspec').innerHTML = "";
-					}
-
-					if(values[5]!=0){
-					document.getElementById('iditemsubspec').innerHTML = " / " + values[7]; 
-					}
-					
-
-  					
-  					document.getElementById('iditemspec').innerHTML = values[4];
-  					
-  					CKEDITOR.instances['summernote'].setData(values[1]);
-  					
-  					$("#remarks").val(values[9]);
-  					
-  					if(values[10]=="D"){
- 						 $("#decision").prop("checked", true);
- 					}
- 					else if(values[10]=="R"){
- 						$("#recommendation").prop("checked", true);
- 					}
- 					else if(values[10]=="C"){
- 						$("#comments").prop("checked",true);
- 					}
-  					$("#drcdiv").hide();
-  	  			    
-  	  			   if(formId=="myForm34" || formId=="myForm35" || formId=="myForm36"){
-  	  				CKEDITOR.instances['summernote'].setReadOnly(true);
-   	  		        }else{
-   	  		       CKEDITOR.instances['summernote'].setReadOnly(false);
-   	  		        }
-  	  			
-  				}
-  			});
-  		    
-  		  });
-  	  
-
-  } 
- 
-   	
-  
-    </script>
-   
-   <script>
-CKEDITOR.replace( 'summernote', {
-	
-	
-toolbar: [{
-          name: 'clipboard',
-          items: ['PasteFromWord', '-', 'Undo', 'Redo']
-        },
-        {
-          name: 'basicstyles',
-          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
-        },
-        {
-          name: 'links',
-          items: ['Link', 'Unlink']
-        },
-        {
-          name: 'paragraph',
-          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
-        },
-        {
-          name: 'insert',
-          items: ['Image', 'Table']
-        },
-        {
-          name: 'editing',
-          items: ['Scayt']
-        },
-        '/',
-
-        {
-          name: 'styles',
-          items: ['Format', 'Font', 'FontSize']
-        },
-        {
-          name: 'colors',
-          items: ['TextColor', 'BGColor', 'CopyFormatting']
-        },
-        {
-          name: 'align',
-          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
-        },
-        {
-          name: 'document',
-          items: ['Print', 'PageBreak', 'Source']
-        }
-      ],
-     
-    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-
-	customConfig: '',
-
-	disallowedContent: 'img{width,height,float}',
-	extraAllowedContent: 'img[width,height,align]',
-
-	height: 380,
-
-	
-	contentsCss: [CKEDITOR.basePath +'mystyles.css' ],
-
-	
-	bodyClass: 'document-editor',
-
-	
-	format_tags: 'p;h1;h2;h3;pre',
-
-	
-	removeDialogTabs: 'image:advanced;link:advanced',
-
-	stylesSet: [
-	
-		{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
-		{ name: 'Cited Work', element: 'cite' },
-		{ name: 'Inline Quotation', element: 'q' },
-
-		
-		{
-			name: 'Special Container',
-			element: 'div',
-			styles: {
-				padding: '5px 10px',
-				background: '#eee',
-				border: '1px solid #ccc'
-			}
-		},
-		{
-			name: 'Compact table',
-			element: 'table',
-			attributes: {
-				cellpadding: '5',
-				cellspacing: '0',
-				border: '1',
-				bordercolor: '#ccc'
-			},
-			styles: {
-				'border-collapse': 'collapse'
-			}
-		},
-		{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-		{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } }
-	]
-} );
-
- 
-    
-   
-
-</script>
 
 
-<script type='text/javascript'> 
-function submitForm(formname)
-{ 
-  document.getElementById(formname).submit(); 
-} 
+var editor1 = new RichTextEditor("#div_editor1");
 
+function showEditor(a,b,c,d){
+	 $('#editorHeading').html(a);
+	 $('#Editor').html(a);
+	var x="<input type='hidden' name='MainId' value='"+b+"'><input type='hidden' name='ReqName' value='"+a+"'><input type='hidden' name='ReqParentId' value='"+c+"'><input type='hidden' id='RequirementId' name='RequirementId' value='"+d+"'>"
+	$('#EditorDetails').html(x);
 
-
-
-
-function showModal(a){
-	document.getElementById('filltext').innerHTML=a;
-	$('#myModal').modal('show');
-}
-
-function sendEmail(a){
-	  $('body').css("filter", "blur(1.0px)");
-	 $('#spinner').show();
-	 $('#main1').hide();
-	 $('#main2').hide();
-	var committeescheduleid= a;
-	
- 	$.ajax({
+	$.ajax({
 		type:'GET',
-		url:'SendMinutes.htm',
-		data:{
-			committeescheduleid:committeescheduleid,
-		},
+		url:'OtherRequirementsData.htm',
 		datatype:'json',
-		
-		success:function (result){
-				
-			console.log( result);
-
-			if(result.length>0){
-				 $('#main1').show();
-				 $('#main2').show();
-				 $('#spinner').hide();
-				 $('body').css("filter", "none");
-				 console.log("Email Sent");
-				 alert("MoM sent to the Participating members")
-			}
-			
+		data:{
+			MainId:b,
+			ReqParentId:c,
+			RequirementId:d,
+			projectId:'',
+		},
+		success:function(result){
+		var ajaxresult=JSON.parse(result);
+		console.log(ajaxresult);
+		if(ajaxresult[5]==null){
+		console.log(ajaxresult[5])
+		ajaxresult[5]=""
+		$('#Editorspan').html('<button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button>');
+		}else{
+		$('#Editorspan').html('<button type="submit" class="btn btn-sm btn-warning mt-2 edit" onclick=EditorValueSubmit()>UPDATE</button>');
 		}
-	}) 
-	
-}
-
-
-function sendEmails(a){
-	  $('body').css("filter", "blur(1.0px)");
-		 $('#spinner').show();
-		 $('#main1').hide();
-		 $('#main2').hide();
-		var committeescheduleid= a;
-
-		$.ajax({
-			type:'GET',
-			url:'SendNonProjectMinutes.htm',
-			data:{
-				committeescheduleid:committeescheduleid,
-			},
-			datatype:'json',
-			
-			success:function (result){
-					
-				console.log( typeof result);
-				console.log(result)
-				if(result.length>0){
-					 $('#main1').show();
-					 $('#main2').show();
-					 $('#spinner').hide();
-					 $('body').css("filter", "none");
-					 console.log("Email Sent");
-					 alert("MoM sent to the Participating members")
-				}
-				
-			}
-		}) 
-}
+		editor1.setHTMLCode(ajaxresult[5]);
+		}
+	})
+	}
+$('#myfrm').submit(function() {
+	 var data =editor1.getHTMLCode();
+	 $('textarea[name=Details]').val(data);
+	 });
+	 
+function EditorValueSubmit(){
+	if(confirm("Are you sure you want to submit?")){
+	return true;
+	}else{
+	event.preventDefault();
+	return false;
+	}
+	}
 </script>
 
 </body>

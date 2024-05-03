@@ -213,14 +213,15 @@ String ses=(String)request.getParameter("result");
 			                            <td><%=obj[2]%></td>
 			                            <td><%=fc.SqlToRegularDate(obj[3].toString())%></td>
 			                            
-			                            <td>
-			                            <button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectTechClosureTransStatus.htm value="<%=closureId %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style="font-weight: 600;" formtarget="_blank">
+			                            <td >
+			                            <button type="submit" class="btn btn-sm btn-link  btn-status" formaction=ProjectTechClosureTransStatus.htm value="<%=closureId %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style="font-weight: 600;" formtarget="_blank">
 							    				<%=obj[5] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 							    			</button>
 			                            </td>
 			                            
 			                            <td>
 			                            
+			                            <input type="hidden" name="ClosureId" value="<%=closureId %>">
 			                            <button class="editable-clicko" name="TechnicalClosureId" value="<%=obj[0] %>" formaction="TechClosureContent.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Content Add">
 											<div class="cc-rockmenu">
 												<div class="rolling">

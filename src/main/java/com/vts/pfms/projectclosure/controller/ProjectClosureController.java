@@ -2267,8 +2267,10 @@ public class ProjectClosureController {
 		try {
 				
 			String TechnicalClosureId=req.getParameter("TechnicalClosureId");
+			String closureId = req.getParameter("ClosureId"); 
 			
 			
+			req.setAttribute("closureId", closureId);
 			return "project/ProjectTechClosureContent";
 			
 		} catch (Exception e) {
