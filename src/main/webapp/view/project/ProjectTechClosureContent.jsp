@@ -402,7 +402,7 @@ String closureId=(String)request.getAttribute("closureId");
 	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
     <div class="card-body" id="scrollclass" style="height:500px;overflow-y:scroll " >
   
-  <%--   <form action="#">
+    <form action="#">
       <div class="panel panel-info" style="margin-top: 10px;" id="">
       	<div class="panel-heading ">
         <h4 class="panel-title">
@@ -456,7 +456,7 @@ String closureId=(String)request.getAttribute("closureId");
 	        		</div>
 	        		</div>
 	         		</div>
-	         		</form> --%>
+	         		</form>
 	    			
 			<br>
 	    			<button type="button"  class="btn btn-sm  ml-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq" style="color:#31708f;"><i class="fa fa-arrow-right text-primary" aria-hidden="true"></i>&nbsp; </button>
@@ -503,10 +503,10 @@ String closureId=(String)request.getAttribute("closureId");
 			
 			
 			
-<form action="AddProjectOtherReq.htm" method="POST">	         	  	
+<form action="AddSection.htm" method="POST">	         	  	
   <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-jump" role="document">
-    <div class="modal-content mt-5" style="width:120%; margin-left:-10%;">
+    <div class="modal-content mt-5" style="margin-left:-10%;">
       <div class="modal-header p-1 pl-3" style="background: #C4DDFF">
         <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Chapter</h5>
         <button type="button" class="close text-danger mr-1" data-dismiss="modal" aria-label="Close">
@@ -515,23 +515,23 @@ String closureId=(String)request.getAttribute("closureId");
       </div>
         
      
-       <div class="modal-body" style="display:flex;justify-content: center;align-items:center;">
-       <div>
+       <div class="modal-body" style="justify-content: center;align-items:center;">
+       
    
    
      <table class="table table-bordered table-hover table-striped table-condensed" style="border:1px solid black;">
         
-        <tr style="border:1px solid black;">
-            <td align="center" style="border:1px solid black;width:10%;">Select</td>
+        <tr style="border:1px solid black;background-color:#055C9D;">
+            <td align="center" style="border:1px solid black;width:10%;color:#FFFF">Select</td>
             
-            <td align="center" style="border:1px solid black;width:50%;">Chapter</td>
+            <td align="center" style="border:1px solid black;width:80%;color:#FFFF">Chapter</td>
             
          </tr>
          
           <tr style="border:1px solid black;">
-            <td style="border:1px solid black;"><input name="" type="checkbox" value=""></td>
+            <td align="center" style="border:1px solid black;"><!-- <input name="" type="checkbox" value=""> --></td>
             
-            <td style="border:1px solid black;"></td>
+            <td align="center" style="border:1px solid black;"></td>
             
          </tr>
          
@@ -539,28 +539,25 @@ String closureId=(String)request.getAttribute("closureId");
       
       <br>
      
-        
-       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="AddnewButton" onclick="AddNew()" >ADD NEW </button>
-		
-		
-		<div style="display: none" id="newchapter">
-		
-		<input type="text" name="NewChapter" value="">
-		
-		
+        <div style="text-align:center;">
+               <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="AddnewButton" onclick="AddNew()" >ADD NEW </button>
 		</div>
 		
-       </div>
-       
-   </div>
+		<div align="center" style="display: none" id="newchapter">
+		
+		 <input class="form-control" type="text" name="NewChapter" value="">
+		 <br>
+		 <button type="submit" class="btn btn-success" data-toggle="modal" id="AddnewButton" onclick="AddSection()" >Submit </button>
+		  <button type="button" class="btn btn-danger" data-toggle="modal" id="CloseButton" onclick="Close()" >Close </button>
+		
+		</div>
+	 </div>
    		
-    
-      <div class="p-2" align="center">
-      		
 	    			<input type="hidden" name="projectId" value=""> 
+	    				<input type="hidden" name="closureId" value="<%=closureId%>"> 
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
         			<!-- <button type="submit" class="btn btn-sm btn-success submit" onclick="EditorValueSubmit()">SUBMIT</button> -->
-      </div>
+     
     </div>
   </div>
 </div>   	
@@ -573,17 +570,21 @@ String closureId=(String)request.getAttribute("closureId");
 
 <script type="text/javascript">
 
-
-
-
 function AddNew(){
 	
-	$('#Addnewshow').show();
 	$('#AddnewButton').hide();
-	
-	
+	$('#newchapter').show();
 	
 }
+
+function Close(){
+	
+	$('#AddnewButton').show();
+	//$('#CloseButton').hide();
+	$('#newchapter').hide();
+	
+}
+
 
 $(document).ready(function(){
     // Add minus icon for collapse element which is open by default
@@ -613,6 +614,30 @@ $(document).ready(function(){
     });
 });
 
+
+
+
+function AddSection(){
+	
+	
+	$.ajax({
+		type:'GET',
+		url:'AddSection.htm',
+		datatype:'json',
+		data:{
+			MainId:b,
+			ReqParentId:c,
+			RequirementId:d,
+			projectId:'',
+		},
+		success:function(result){
+			var ajaxresult=JSON.parse(result);
+			console.log(ajaxresult);
+			
+			editor1.setHTMLCode(ajaxresult[5]);
+			}
+	 })
+}
 
 </script>
 

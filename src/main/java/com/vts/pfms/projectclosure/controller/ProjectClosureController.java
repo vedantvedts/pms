@@ -41,6 +41,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -51,6 +52,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+import com.google.gson.Gson;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
@@ -65,6 +67,7 @@ import com.vts.pfms.master.dto.ProjectFinancialDetails;
 
 import com.vts.pfms.pfts.controller.JasperJdbcConnection;
 import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.project.dto.ProjectOtherReqDto;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
@@ -2300,6 +2303,24 @@ public class ProjectClosureController {
 			return "static/Error";
 		}
 	}
+	
+	@RequestMapping(value="AddSection.htm",method = RequestMethod.GET)
+	public @ResponseBody String OtherRequirementsData(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside AddSection.htm "+UserId);
+			Object[] AddSection=null;
+		try {
+			
+		
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside AddSection.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(AddSection);
+	}
+	
 	
 	
 		
