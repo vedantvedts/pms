@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
+import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -17,6 +18,8 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 
 public interface ProjectClosureService {
 
@@ -60,5 +63,10 @@ public interface ProjectClosureService {
 	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach, MultipartFile equipBoughtOnChargeAttach, MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach, MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception;
 	public long AddIssue(ProjectClosureTechnical tech) throws Exception;
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
+	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
+	public List<Object[]> getSectionList()throws Exception;
+	public List<Object[]> getChapterList() throws Exception;
+	public long ChapterAdd(ProjectClosureTechnicalChaptersDto dto) throws Exception;
+	
 	
 }

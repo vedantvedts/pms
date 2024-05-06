@@ -24,11 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
+import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.projectclosure.dao.ProjectClosureDao;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
+import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -38,6 +40,8 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
 
@@ -1144,5 +1148,48 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	public List<Object[]> getTechnicalClosureRecord(String closureId) throws Exception {
 		
 		return dao.getTechnicalClosureRecord(closureId);
+	}
+
+	@Override
+	public long AddSection(ProjectClosureTechnicalSection sec) throws Exception {
+		
+		
+		return dao.AddSection(sec);
+		
+	}
+
+	@Override
+	public List<Object[]> getSectionList() throws Exception {
+		
+		return dao.getSectionList();
+	}
+
+	@Override
+	public List<Object[]> getChapterList() throws Exception {
+		
+		return dao.getChapterList();
+	}
+
+	@Override
+	public long ChapterAdd(ProjectClosureTechnicalChaptersDto dto) throws Exception {
+	try {
+			
+			for(int i=0;i<Long.toString(dto.getChapterId()).length();i++) {
+				
+				System.out.println("aaaaaa----"+Long.toString(dto.getChapterId()).length());
+				
+				ProjectClosureTechnicalChapters chapters = new ProjectClosureTechnicalChapters();
+				chapters.setChapterParentId(0);
+				chapters.setSectionId(Long.parseLong(dto.getSectionId().toString()));
+				chapters.setChapterName(dto.getChapterName().toString());
+				
+			    dao.ChapterAdd(chapters);
+			}
+			return 1;
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ChapterAdd "+e);
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

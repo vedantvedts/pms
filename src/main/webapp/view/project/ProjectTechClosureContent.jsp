@@ -346,7 +346,7 @@ SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 
 String closureId=(String)request.getAttribute("closureId");
-
+List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 
 %>
 
@@ -385,7 +385,7 @@ String closureId=(String)request.getAttribute("closureId");
 	
 	<form class="form-inline" method="GET" action=""  name="myfrm" id="myfrm"> 
 		
-		<input type="hidden" name="closureId" value="<%=closureId%>">
+		<input type="hidden" name="closureId" value="<%=closureId%>" >
 		<button  class="btn  btn-sm back" formaction="TechClosureList.htm" style=" font-size:12px;" >BACK</button>
 					
 	</form>
@@ -401,12 +401,14 @@ String closureId=(String)request.getAttribute("closureId");
 <div class="col-md-5" >
 	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
     <div class="card-body" id="scrollclass" style="height:500px;overflow-y:scroll " >
-  
+   <%	int i=0;
+   if(ChapterList!=null && ChapterList.size()>0){
+    for(Object[]obj:ChapterList) { %>
     <form action="#">
       <div class="panel panel-info" style="margin-top: 10px;" id="">
       	<div class="panel-heading ">
         <h4 class="panel-title">
-        <span class="ml-2" style="font-size:14px"> </span>  
+        <span class="ml-2" style="font-size:14px">1.EXECUTIVE SUMMARY </span>  
         </h4>
          	<div   style="float: right !important; margin-top:-32px; ;" id="tablediv" >
 		 		<table style="text-align: right;" >
@@ -424,7 +426,7 @@ String closureId=(String)request.getAttribute("closureId");
 	         		</span>
 	         		</td><td>
 	         		<!-- <input class="btn btn-success btn-sm ml-3" type="submit"  value="ADD" style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;margin-top: -10%;display:inline-block;"> -->
-	         		<button class="btn bg-transparent buttuonEd"  type="button" id="btnEditor" onclick="showEditor('')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+	         		<button class="btn bg-transparent"  type="button" id="btnEditor" onclick="showEditor('')"><i class="fa fa-file-text" aria-hidden="true" style="color:orange"></i></button>
 	         		</td> 
 	         		</tr>
 	         		</tbody>
@@ -457,6 +459,7 @@ String closureId=(String)request.getAttribute("closureId");
 	        		</div>
 	         		</div>
 	         		</form>
+	         		<%}} %>
 	    			
 			<br>
 	    			<button type="button"  class="btn btn-sm  ml-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq" style="color:#31708f;"><i class="fa fa-arrow-right text-primary" aria-hidden="true"></i>&nbsp; </button>
@@ -503,9 +506,9 @@ String closureId=(String)request.getAttribute("closureId");
 			
 			
 			
-<form action="AddSection.htm" method="POST">	         	  	
-  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-jump" role="document">
+<form action="ChapterAdd.htm" method="POST" id="myform">          	  	
+ <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-jump" role="document">
     <div class="modal-content mt-5" style="margin-left:-10%;">
       <div class="modal-header p-1 pl-3" style="background: #C4DDFF">
         <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Chapter</h5>
@@ -516,74 +519,145 @@ String closureId=(String)request.getAttribute("closureId");
         
      
        <div class="modal-body" style="justify-content: center;align-items:center;">
-       
-   
-   
-     <table class="table table-bordered table-hover table-striped table-condensed" style="border:1px solid black;">
-        
-        <tr style="border:1px solid black;background-color:#055C9D;">
-            <td align="center" style="border:1px solid black;width:10%;color:#FFFF">Select</td>
-            
-            <td align="center" style="border:1px solid black;width:80%;color:#FFFF">Chapter</td>
-            
-         </tr>
+         <table class="table table-bordered table-hover table-striped table-condensed" style="border:1px solid black;">
+            <thead> 
+	           <tr style="border:1px solid black;background-color:#055C9D;">
+	           
+		            <td align="center" style="border:1px solid black;width:10%;color:#FFFF">Select</td>
+		            <td align="center" style="border:1px solid black;width:80%;color:#FFFF">Chapter</td>
+	          </tr>
+	         
+	       </thead>
          
-          <tr style="border:1px solid black;">
-            <td align="center" style="border:1px solid black;"><!-- <input name="" type="checkbox" value=""> --></td>
-            
-            <td align="center" style="border:1px solid black;"></td>
-            
-         </tr>
+         <tbody  id="modal_table_body" ></tbody>
          
-     </table>
-      
-      <br>
+       </table>
+     
+     <div align="center" id="chaptersubmit"></div>
+     
+ <br>
      
         <div style="text-align:center;">
-               <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="AddnewButton" onclick="AddNew()" >ADD NEW </button>
+               <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="AddNewSection" onclick="AddSection()">ADD NEW </button>
 		</div>
 		
-		<div align="center" style="display: none" id="newchapter">
+		<div align="center" style="display: none" id="SubmitButton">
 		
-		 <input class="form-control" type="text" name="NewChapter" value="">
-		 <br>
-		 <button type="submit" class="btn btn-success" data-toggle="modal" id="AddnewButton" onclick="AddSection()" >Submit </button>
-		  <button type="button" class="btn btn-danger" data-toggle="modal" id="CloseButton" onclick="Close()" >Close </button>
+			  <input class="form-control" type="text" name="SectionName" placeholder="Enter New Chapter" >
+			  <br>
+			  <button type="button" class="btn btn-success" data-toggle="modal"  onclick="SectionSubmit()" >Submit </button>
+			  <button type="button" class="btn btn-danger" data-toggle="modal"  onclick="CloseButton()" >Close </button>
 		
 		</div>
-	 </div>
+     </div>
    		
 	    			<input type="hidden" name="projectId" value=""> 
-	    				<input type="hidden" name="closureId" value="<%=closureId%>"> 
+	    			<input type="hidden" name="closureId" value="<%=closureId%>"> 
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-        			<!-- <button type="submit" class="btn btn-sm btn-success submit" onclick="EditorValueSubmit()">SUBMIT</button> -->
+        			
      
-    </div>
-  </div>
-</div>   	
-  </form> 
-			
-  
-
-
+			    </div>
+			</div>
+	    </div>   	
+   </form> 
 
 
 <script type="text/javascript">
 
-function AddNew(){
+function AddSection(){
 	
-	$('#AddnewButton').hide();
-	$('#newchapter').show();
+	$('#AddNewSection').hide();
+	$('#SubmitButton').show();
+}
+
+function CloseButton(){
+	
+	$('#AddNewSection').show();
+	$('#SubmitButton').hide();
 	
 }
 
-function Close(){
+// to show the existing sections list
+$(document).ready(function() {
 	
-	$('#AddnewButton').show();
-	//$('#CloseButton').hide();
-	$('#newchapter').hide();
+    
+    $.ajax({
+        type: 'GET',
+        url: 'AddSection.htm', 
+        dataType: 'json',
+        data:{
+        	closureId:<%=closureId%>,
+        	ExistingSection:'Y',
+        },
+        success: function(existingData) {
+            
+            if (existingData.length > 0) {
+                var htmlStr = '';
+                
+                for (var i = 0; i <existingData.length; i++) {
+                    htmlStr += '<tr>';
+                    htmlStr += '<td class="tabledata" style="text-align: center;" ><input type="checkbox" name="SectionId"  value="' + existingData[i][0] + '" ></td>';
+                    htmlStr += '<td class="tabledata" style="text-align: left;" >' + existingData[i][2] + '</td>';
+                    htmlStr += '</tr>';
+                    htmlStr += '</tr>';
+                }
+                $('#chaptersubmit').html('<button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=ChapterAdd()>SUBMIT</button>');
+                
+                $('#modal_table_body').html(htmlStr);
+                
+            }
+        },
+       
+    });
+});
+
+
+function SectionSubmit(){
 	
+	
+	$.ajax({
+		type:'GET',
+		url:'AddSection.htm',
+		datatype:'json',
+		data:{
+			closureId:<%=closureId%>,
+			SectionName:$('input[name="SectionName"]').val(),
+		},
+		success:function(result){
+			var result=JSON.parse(result);
+			var htmlStr='';
+			
+			if(result.length>0){
+				
+			var lastResult = result[result.length - 1];
+			
+			htmlStr += '<tr>';
+			htmlStr += '<td class="tabledata" style="text-align: center;" ><input type="checkbox" class="" name="SectionId" value='+lastResult[0]+' ></td>';
+			htmlStr += '<td class="tabledata" style="text-align: left;" >'+ lastResult[2] + '</td>';
+		    htmlStr += '</tr>';
+		    
+			$('#modal_table_body').append(htmlStr);
+				
+			$('input[name="SectionName"]').val('');
+			
+			}
+		},
+		
+	 })
+	 
 }
+
+
+function ChapterAdd(){
+	
+	if(confirm("Are you sure you want to submit?")){
+	    return true;
+	}else{
+	   event.preventDefault();
+	   return false;
+	  }
+	}
+
 
 
 $(document).ready(function(){
@@ -614,70 +688,11 @@ $(document).ready(function(){
     });
 });
 
-
-
-
-function AddSection(){
-	
-	
-	$.ajax({
-		type:'GET',
-		url:'AddSection.htm',
-		datatype:'json',
-		data:{
-			MainId:b,
-			ReqParentId:c,
-			RequirementId:d,
-			projectId:'',
-		},
-		success:function(result){
-			var ajaxresult=JSON.parse(result);
-			console.log(ajaxresult);
-			
-			editor1.setHTMLCode(ajaxresult[5]);
-			}
-	 })
-}
-
 </script>
-
-	
 
 
 
 <script>
-
-
-    $(document).ready(function(){
-        // Add minus icon for collapse element which is open by default
-        $(".collapse.show").each(function(){
-        	$(this).prev(".panel-heading").find(".fa").addClass("fa-minus").removeClass("fa-plus");
-        });
-        
-        // Toggle plus minus icon on show hide of collapse element
-        $(".collapse").on('show.bs.collapse', function(){
-        	$(this).prev(".panel-heading").find(".fa").removeClass("fa-plus").addClass("fa-minus");
-        }).on('hide.bs.collapse', function(){
-        	$(this).prev(".panel-heading").find(".fa").removeClass("fa-minus").addClass("fa-plus");
-        });
-    });
-    
-    $(document).ready(function(){
-        // Add minus icon for collapse element which is open by default
-        $(".collapse.show").each(function(){
-        	$(this).prev(".panel-heading").find(".btn").addClass("btn-danger btn-sm").removeClass("btn-info btn-sm");
-        });
-        
-        // Toggle plus minus icon on show hide of collapse element
-        $(".collapse").on('show.bs.collapse', function(){
-        	$(this).prev(".panel-heading").find(".btn").removeClass("btn-info btn-sm").addClass("btn-danger btn-sm");
-        }).on('hide.bs.collapse', function(){
-        	$(this).prev(".panel-heading").find(".btn").removeClass("btn-danger btn-sm").addClass("btn-info btn-sm");
-        });
-    });
-   
-  
-    
 
 
 
@@ -720,6 +735,7 @@ $('#myfrm').submit(function() {
 	 
 function EditorValueSubmit(){
 	if(confirm("Are you sure you want to submit?")){
+		 $('#myForm').submit();
 	return true;
 	}else{
 	event.preventDefault();

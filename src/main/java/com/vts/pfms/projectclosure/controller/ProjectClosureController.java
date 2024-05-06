@@ -72,11 +72,14 @@ import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
+import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.service.ProjectClosureService;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -2273,6 +2276,9 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("ClosureId"); 
 			
 			
+			List<Object[]> ChapterList=service.getChapterList();
+			
+			
 			req.setAttribute("closureId", closureId);
 			return "project/ProjectTechClosureContent";
 			
@@ -2305,13 +2311,31 @@ public class ProjectClosureController {
 	}
 	
 	@RequestMapping(value="AddSection.htm",method = RequestMethod.GET)
-	public @ResponseBody String OtherRequirementsData(HttpServletRequest req, HttpSession ses) throws Exception {
+	public @ResponseBody String AddSectionData(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside AddSection.htm "+UserId);
-			Object[] AddSection=null;
+		
+		List<Object[]> AddSection=null;
+		
 		try {
 			
-		
+			String closureId=req.getParameter("closureId");
+			String SectionName=req.getParameter("SectionName");
+			String ExistingSection=req.getParameter("ExistingSection");
+			
+			//if existing sections are present ,list is shown on opening the modal
+			if(ExistingSection!=null) {
+				AddSection=service.getSectionList();
+			}
+			else {
+				ProjectClosureTechnicalSection sec=new ProjectClosureTechnicalSection();
+				sec.setClosureId(Long.parseLong(closureId));
+				sec.setSectionName(SectionName);			
+			
+				long save=service.AddSection(sec);
+				AddSection=service.getSectionList();
+			}
+			
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -2323,5 +2347,50 @@ public class ProjectClosureController {
 	
 	
 	
-		
+	@RequestMapping(value="ChapterAdd.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String ChapterAdd(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside TechClosureContent.htm "+UserId);
+		try {
+			
+			String closureId = req.getParameter("ClosureId"); 
+			
+			ProjectClosureTechnicalChaptersDto dto=new ProjectClosureTechnicalChaptersDto();
+			dto.setChapterParentId(req.getParameterValues("0"));
+			dto.setSectionId(req.getParameterValues("SectionId"));
+			dto.setChapterName(req.getParameterValues("ChapterName"));
+			dto.setUserid(UserId);
+			
+			
+             long save =service.ChapterAdd(dto);
+			
+			if (save > 0) {
+				redir.addAttribute("result", "Chapter Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Chapter Add Unsuccessful");
+			}
+			
+			
+			req.setAttribute("closureId", closureId);
+			return "project/ProjectTechClosureContent";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside TechClosureContent.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
 }

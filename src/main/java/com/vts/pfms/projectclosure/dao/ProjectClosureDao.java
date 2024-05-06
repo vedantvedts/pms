@@ -3,6 +3,7 @@ package com.vts.pfms.projectclosure.dao;
 import java.util.List;
 
 import com.vts.pfms.project.model.ProjectMaster;
+import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -12,6 +13,8 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
 public interface ProjectClosureDao {
@@ -56,5 +59,9 @@ public interface ProjectClosureDao {
 	public long editProjectClosureCheckList(ProjectClosureCheckList clist) throws Exception;
 	public long AddIssue(ProjectClosureTechnical tech)throws Exception;
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
+	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
+	public List<Object[]> getSectionList() throws Exception;
+	public List<Object[]> getChapterList() throws Exception;
+	public long ChapterAdd(ProjectClosureTechnicalChapters chapters) throws Exception;
 
 }

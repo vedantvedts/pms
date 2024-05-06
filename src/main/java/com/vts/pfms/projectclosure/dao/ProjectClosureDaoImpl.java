@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.project.model.ProjectMaster;
+import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -23,6 +24,8 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
 
@@ -673,6 +676,69 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			logger.error(new Date()  + "Inside DAO getTechnicalClosureRecord " + e);
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
+		}
+	}
+
+	@Override
+	public long AddSection(ProjectClosureTechnicalSection sec) throws Exception {
+		
+		try {
+			manager.persist(sec);
+			manager.flush();
+			return sec.getSectionId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO AddSection "+e);
+			return 0L;
+		}
+	}
+
+	private static final String TECHNICALCLOSURESECTIONLIST="SELECT SectionId,ClosureId,SectionName FROM pfms_closure_technical_sections";
+	@Override
+	public List<Object[]> getSectionList() throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(TECHNICALCLOSURESECTIONLIST);
+			
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getSectionList" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	
+	private static final String TECHNICALCLOSURECHAPTERLIST="select * from pfms_closure_technical_chapters";
+	@Override
+	public List<Object[]> getChapterList() throws Exception {
+	
+		
+		try {			
+			Query query= manager.createNativeQuery(TECHNICALCLOSURECHAPTERLIST);
+			
+			
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getChapterList" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	@Override
+	public long ChapterAdd(ProjectClosureTechnicalChapters chapters) throws Exception {
+		
+		try {
+			manager.persist(chapters);
+			manager.flush();
+			return chapters.getChapterId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO ChapterAdd "+e);
+			return 0L;
 		}
 	}
 }
