@@ -122,5 +122,6 @@ public interface PrintService {
 	public List<Object[]> getBriefingRemarks(String sheduleId)throws Exception;
 	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode, String Date)throws Exception;
 	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String Date) throws Exception;
+	public List<Object[]> GetFreezingHistory(String projectid)throws Exception;
 
 }

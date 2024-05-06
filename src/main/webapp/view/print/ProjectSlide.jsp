@@ -56,10 +56,11 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 %>
 <div class="container-fluid">
 	<div class="card shadow-nohover" style="border-radius: 36px;border-color: green; border-width: 6px;">
-		<h4 class="card-title" align="center" style="color: #c72626;margin-top: 5px;"> <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%></h4>
+		<h4 class="card-title" align="center" style="color: #c72626;margin-top: 5px;height:"> <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%></h4>
 		<div class="card-body" style="padding: 0.25rem;">
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-7">
+				<div class="row"><div class="col">
 					<table class="table meeting">
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>
@@ -73,7 +74,16 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Cost Rs.:</td>
 							<td><%=nfc.convert(cost/10000000)%> (In Cr)</td>
 						</tr>
+						
 						<tr>
+							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Application :</td>
+							<td><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
+						</tr>
+					</table>
+					</div>
+					<div class="col">
+					<table class="table meeting">
+					<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">User :</td>
 							<td><%=enduser%></td>
 						</tr>
@@ -85,24 +95,22 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">PDC :</td>
 							<td><%=sdf.format(projectdata[4]) %></td>
 						</tr>
-						<tr>
-							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Application :</td>
-							<td><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
-						</tr>
 					</table>
+					</div>
+					</div>
 				</div>
-				<div class="col-md-8">
+				<div class="col-md-4">
 					<table class="table meeting">
 						<tr>
-							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Objectives :</td>
+							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Objectives :</td>
 							<td style="width: 740px;"><%=projectdata[7]%></td>
 						</tr>
 						<tr>
-							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Scope :</td>
+							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Scope :</td>
 							<td style="width: 720px;"><%if(projectdata!=null && projectdata[9]!=null){%><%=projectdata[9]%><%}else{%> -- <%}%></td>
 						</tr>
 						<tr>
-							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Deliverables :</td>
+							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Deliverables :</td>
 							<td style="width: 720px;"><%=projectdata[8]%></td>
 						</tr>
 					</table>
@@ -111,48 +119,58 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 			<hr style="margin: 0px 0px !important;">	
 			<form action="AddProjectSlides.htm" method="post" enctype="multipart/form-data" id="formslide">	
 			 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			 <input type="radio" name="silde" value="1"  />
+			 <input type="radio" name="silde" value="2"  />
 			<div class="card" style="margin-top: 5px;">
 				 <div class="card-body">
-						<div class="form-check form-check-inline">
-									<label class="form-check-label" for="Status"> <b>Status : </b> <span class="mandatory">*</span></label>
+				 <div class="container-fluid" >
+				 	<div class="row" >
+				 		<div class="col" >
+				 			<div class="form-check form-check-inline">
+									<label class="form-check-label" for="Status"> <b>Current Status : </b> <span class="mandatory">*</span></label>
 						</div>
 						<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"  required="required"></textarea>
-						<div class="row" style="margin-top: 10px;"> 
-                    		<div class="col-md-2">
-                        		<div class="form-group">
-                            		<label >  <b>Slide 1 :</b> <span class="mandatory">*</span>
-	                              		<input type="radio" name="silde" value="1">
-	                              		<img src="view/images/Slide1.png" alt="Option 1" style="height: 70px; width: 80px;" />
-	  								</label>
-                        		</div>
-                    		</div>		
-                    		<div class="col-md-2">
-                        		<div class="form-group">
-                            		<label  > <b>Slide 2 : </b><span class="mandatory">*</span>
-	                              		<input type="radio" name="silde" value="2">
-	                              		<img src="view/images/Slide2.png" alt="Option 2" style="height: 70px; width: 80px;" />
-  									</label>
-                        		</div>
-                    		</div>
-                    		<div class="col-md-3">
-                        		<div class="form-group">
-                            		<label  ><b> Image : </b></label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control"  type="file" name="Attachment1" id="Attachment1" accept="image/png, image/jpeg" required="required" maxlength="3" style="font-size: 15px;"> 
-                        		</div>
-                    		</div>
-                    		<div class="col-md-3">
-                        		<div class="form-group">
-                            		<label  ><b> Attachment : </b></label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control"  type="file" name="Attachment2" id="Attachment2" accept="application/pdf, application/vnd.ms-excel" required="required" maxlength="3" style="font-size: 15px;"> 
-                        		</div>
-                    		</div>
-                    	</div>
-						<hr>
+				 		</div>
+				 		<div class="col" >
+				 			<div class="container-fluid" >
+				 				<div class="row" >
+				 					<div class="col" >
+														<div class="form-group">
+															<label><b> Image : </b></label><span class="mandatory">*</span>
+															<input class="form-control form-control" type="file"
+																name="Attachment1" id="Attachment1"
+																accept="image/png, image/jpeg" required="required"
+																maxlength="3" style="font-size: 15px;">
+														</div>
+												</div>
+												<div class="col">
+														<div class="form-group">
+															<label><b> Attachment : </b></label><span
+																class="mandatory">*</span> <input
+																class="form-control form-control" type="file"
+																name="Attachment2" id="Attachment2"
+																accept="application/pdf, application/vnd.ms-excel"
+																required="required" maxlength="3"
+																style="font-size: 15px;">
+														</div>
+												</div>
+											</div>
+											<div class="row" >
+											<div class="col" >
 						<div align="center">
 							<input type="hidden" name="projectid" value="<%=projectdata[0]%>">
 							<button type="button" style="margin-top: 10px;" class="btn btn-primary btn-sm add"  onclick="return checkData()">Submit </button>
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						</div>
+						</div>
+						</div>
+				 			</div>
+				 		</div>
+				 		
+				 	</div>
+				 	<hr>
+				 </div>
+						
 				</div>
 			</div>
 			</form>
@@ -261,6 +279,8 @@ CKEDITOR.replace('ckeditor1', editor_config );
 
 
 function checkData(){
+	$("input[name='silde']")[0].checked= true;
+	$("input[name='silde']")[1].checked= false;
 	var silde = $("input[name='silde']").serializeArray();
 	var status = CKEDITOR.instances['ckeditor1'].getData();
 	var attachment  = $("#Attachment1").val();

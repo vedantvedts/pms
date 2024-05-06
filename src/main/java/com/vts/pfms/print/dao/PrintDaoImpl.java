@@ -931,7 +931,7 @@ public class PrintDaoImpl implements PrintDao {
 			 }
 			return result;
 		}
-		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription , a.projectcode FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
+		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription , a.projectcode, a.projectshortname FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
 		@Override
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
@@ -1020,15 +1020,28 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
-		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate , b.projectcode FROM pfms_project_slides_freeze a , project_master b WHERE a.projectid = b.projectid ORDER BY a.freezeid DESC";
+		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate , b.projectcode FROM pfms_project_slides_freeze a , project_master b WHERE a.projectid = :projectid  AND a.reviewdate = (SELECT MAX(a.reviewdate) FROM pfms_project_slides_freeze a WHERE a.projectid = :projectid) GROUP BY a.projectid";
 		@Override
-		public List<Object[]> GetAllProjectSildedata()throws Exception
+		public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(ALLPROJECTSLIDEDATA);
+			query.setParameter("projectid", projectid);
 			
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
+		
+		public static final String GetFreezingHistoryQuery = "SELECT empid, Reviewby, reviewdate,path,  AttachName , freezeid FROM `pfms_project_slides_freeze` WHERE projectid=:projectid order by reviewdate desc";
+		@Override
+		public List<Object[]> GetFreezingHistory(String projectid)throws Exception
+		{
+			Query query=manager.createNativeQuery(GetFreezingHistoryQuery);
+			query.setParameter("projectid", projectid);
+			
+			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
+			return RiskTypes;
+		}
+		
 		private static final String TODATFREEZEDSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate FROM pfms_project_slides_freeze a WHERE a.projectid=:projectid AND a.reviewdate=CURRENT_DATE ORDER BY a.freezeid DESC";
 		@Override
 		public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception

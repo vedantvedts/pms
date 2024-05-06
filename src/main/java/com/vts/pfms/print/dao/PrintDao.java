@@ -99,7 +99,7 @@ public interface PrintDao {
 	public List<Object[]> RiskTypes() throws Exception;
 	public List<Object[]> getProjectSlideList(String projectid)throws Exception;
 	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception;
-	public List<Object[]> GetAllProjectSildedata()throws Exception;
+	public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception;
 	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
 	public List<Object[]> CostDetailsListSummary(String initiationId)throws Exception;
 	public int ProjectImageDelete(String techImagesId)throws Exception;
@@ -125,5 +125,6 @@ public interface PrintDao {
 	public List<Object[]> getBriefingRemarks(String sheduleId)throws Exception;
 	public List<Object[]> Milestones(String projectid, String committeeCode, String date)throws Exception;
 	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String date) throws Exception;
+	public List<Object[]> GetFreezingHistory(String projectid)throws Exception;
 
 }

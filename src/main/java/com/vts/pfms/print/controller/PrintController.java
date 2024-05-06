@@ -49,6 +49,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -86,6 +87,7 @@ import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.cars.service.CARSService;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
@@ -137,6 +139,9 @@ public class PrintController {
 	
 	@Autowired
 	PMSLogoUtil LogoUtil;
+	
+	@Autowired
+	CARSService CarsService;
 	
 	
 	private static final Logger logger=LogManager.getLogger(PrintController.class);
@@ -3751,14 +3756,25 @@ public class PrintController {
 					redir.addAttribute("resultfail", "Refresh Not Allowed!");
 					return "redirect:/MainDashBoard.htm";
 				}
+				
 				if(projectslidedata!=null) {
+					if(projectslidedata[1]==null)projectslidedata[1]=1;
 					List<Object[]> getTodatfreezedSlidedata= service.GetTodayFreezedSlidedata(projectid);
 					List<Object[]> getAllProjectSlidedata= service.GetAllProjectSildedata(projectid);
+					List<Object[]> getFreezingData = service.GetFreezingHistory(projectid);
+					if(getFreezingData.size()>0)
+						for(int i=0;i<getFreezingData.size();i++){if(getFreezingData.get(i)[0]!=null)
+						getFreezingData.get(i)[0]=CarsService.getEmpDetailsByEmpId(getFreezingData.get(i)[0].toString())[1];
+						else {
+							getFreezingData.get(i)[0]="-";
+						}
+					}
+					req.setAttribute("FreezingData", getFreezingData);
 					req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
 					req.setAttribute("freezedSlidedata", getTodatfreezedSlidedata);
 					req.setAttribute("filepath", ApplicationFilesDrive);
 					req.setAttribute("projectslidedata", projectslidedata);
-					//return "print/ProjectSlideFreeze";
+					
 					return "print/ProjectSlideEditView";
 				}
 				return "print/ProjectSlide";
@@ -4096,19 +4112,48 @@ public class PrintController {
 				}
 		 }
 		 
-		 @RequestMapping(value = "GetAllProjectSlide.htm")
+		 @RequestMapping(value = "GetAllProjectSlide.htm" , method = RequestMethod.POST)
 		 public String GetAllProjectSlide(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
 		 {
 			 String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside GetAllProjectSlide.htm "+UserId);	
+			 logger.info(new Date() +"Inside GetAllProjectSlide.htm "+UserId);
+			 String[] a = req.getParameterValues("projectlist");
+			 
+			 List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+			 List<Object[]> getAllProjectdata = new ArrayList<>();
+			 List<Object[]> getAllProjectSlidesdata = new ArrayList<>();
+			 if(a!=null && a.length>0)
+			 for (String id : a) {
+				List<Object[]> getoneProjectSlidedata= service.GetAllProjectSildedata(id);
+				
+				Object[] projectslidedata = (Object[])service.GetProjectSildedata(id);
+				getAllProjectSlidesdata.add(projectslidedata);
+				Object[] projectdata = (Object[])service.GetProjectdata(id);
+				getAllProjectdata.add(projectdata);
+				
+				if(getoneProjectSlidedata.size()>0) {
+				 for (Object[] objects : getoneProjectSlidedata) {
+					getAllProjectSlidedata.add(objects);
+				}}
+				else
+				{
+					getAllProjectSlidedata.add(null);
+				}
+			}
+			 if(a!=null && a.length==0) {
+				 redir.addAttribute("resultfail", "could not open empty slideshow");
+					return "redirect:/MainDashBoard.htm";
+			 }
 			 try {
-				 String labcode = ses.getAttribute("labcode").toString();
+				String labcode = ses.getAttribute("labcode").toString();
+				req.setAttribute("getAllProjectdata", getAllProjectdata);
 				req.setAttribute("labInfo", service.LabDetailes(labcode));
 			    req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
 			    req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
-				List<Object[]> getAllProjectSlidedata= service.GetAllProjectSildedata("All");
 				req.setAttribute("filepath", ApplicationFilesDrive);
+//				Collections.reverse(getAllProjectSlidedata);
 				req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
+				req.setAttribute("getAllProjectSlidesdata", getAllProjectSlidesdata);
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() +" Inside GetAllProjectSlide.htm "+UserId, e);
@@ -4342,5 +4387,315 @@ public class PrintController {
 			   	
 			return json.toJson(rfaRemarkData);
 			}
+
+			@RequestMapping(value = "SlidefileShow.htm", method = RequestMethod.GET)
+
+			public void SlideShow(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception
+
+			{
+
+				String UserId = (String) ses.getAttribute("Username");
+
+				logger.info(new Date() + "Inside SlidefileShow.htm " + UserId);
+
+				try {
+
+					List<Object[]> getFreezingData = service.GetFreezingHistory(req.getParameter("projectid"));
+
+					String freezingid = req.getParameter("freezeid").toString();
+
+					int j = 0;
+
+					for (int i = 0; i < getFreezingData.size(); i++)
+
+					{
+						j = i;
+
+						if (getFreezingData.get(i)[5].toString().equals(freezingid))
+
+							break;
+
+					}
+
+					String filename = (java.lang.String) getFreezingData.get(j)[4];
+
+					res.setContentType("Application/octet-stream");
+
+					File my_file = null;
+
+					my_file = new File(ApplicationFilesDrive + getFreezingData.get(j)[3] + filename);
+
+					res.setHeader("Content-disposition", "inline; filename=" + filename);
+
+					OutputStream out = res.getOutputStream();
+
+					FileInputStream in = new FileInputStream(my_file);
+
+					byte[] buffer = new byte[4096];
+
+					int length;
+
+					while ((length = in.read(buffer)) > 0) {
+
+						out.write(buffer, 0, length);
+
+					}
+
+					in.close();
+
+					out.flush();
+
+					out.close();
+
+				}
+
+				catch (Exception e) {
+
+					e.printStackTrace();
+
+					logger.error(new Date() + " Inside SlideAttachDownload.htm " + UserId, e);
+
+				}
+
+			}
+			 public String PrintCoverSlide(Map<String,String> details, HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+
+			 {
+
+				 String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside SlideFreezeSubmit.htm "+UserId);
+				String pathForPdf="";
+				 try {
+					 String LabCode = (String) ses.getAttribute("labcode");
+					 req.setAttribute("labInfo", service.LabDetailes(LabCode));
+					 Long EmpId = (Long) ses.getAttribute("EmpId");
+
+					 String review = req.getParameter("review");
+
+					 String reviewdate = req.getParameter("reviewdate");
+
+					 String projectid = req.getParameter("ProjectId");
+
+					 
+
+							String Reviewer = details.get("reviewedby");
+
+							String ReviewDate = details.get("ReviewDate");
+
+							req.setAttribute("reviewby", Reviewer==null?"Reviewed by Person":Reviewer);
+
+							req.setAttribute("ReviewDate", ReviewDate==null?"Reviewed on Date":ReviewDate);
+
+						 
+
+						    String filename="ProjectProposal";	
+
+					    	String path=req.getServletContext().getRealPath("/view/temp");
+
+							req.setAttribute("path",path);
+
+							CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+
+							req.getRequestDispatcher("/view/print/CoverSlide.jsp").forward(req, customResponse);
+
+							String html = customResponse.getOutput();
+
+							
+
+
+
+							ConverterProperties converterProperties = new ConverterProperties();
+
+					    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+
+					    	converterProperties.setFontProvider(dfp);
+
+					    	
+
+							HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+
+
+
+					        File f=new File(path+"/"+filename+".pdf");
+
+
+
+							FileInputStream in = new FileInputStream(f);
+
+							Timestamp instant = Timestamp.from(Instant.now());
+
+							String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+
+					       String filesname="SlideFreeze"+timestampstr+".pdf";
+
+							String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
+
+							
+
+					        Path uploadPath = Paths.get(Path);
+
+					        if (!Files.exists(uploadPath)) {
+
+					            Files.createDirectories(uploadPath);
+
+					        }
+
+							 Path filePath = uploadPath.resolve(filesname);
+
+					         Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
+
+							in.close();
+
+							Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+
+					        Files.delete(pathOfFile2);
+
+					        
+
+					        pathForPdf = filePath.toString();
+
+			    				redir.addAttribute("result", "Project Slide Freezed Successfully");
+
+					        redir.addFlashAttribute("projectid", projectid);
+
+				}catch (Exception e){
+
+					e.printStackTrace();
+
+					logger.error(new Date() +" Inside SlideFreezeSubmit.htm "+UserId, e);
+
+				}
+
+					return pathForPdf;
+
+			 }
+			 @RequestMapping(value = "DownloadSelectedSlides.htm/{ProjectIds}", method = RequestMethod.GET)
+
+			 public String SelectedFreezedSlidesInpdf(@PathVariable String[] ProjectIds,HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+
+			 {
+
+				 String UserId = (String) ses.getAttribute("Username");
+
+				logger.info(new Date() +"Inside DownloadSelectedSlides.htm "+UserId);
+
+				 try {
+
+					 	List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+
+					 	for (String id : ProjectIds) {
+
+						List<Object[]> getoneProjectSlidedata= service.GetAllProjectSildedata(id);
+
+						if(getoneProjectSlidedata.size()>0)
+
+							 for (Object[] objects : getoneProjectSlidedata) {
+
+								getAllProjectSlidedata.add(objects);
+
+							}
+						else {
+							redir.addAttribute("resultfail","Selected slide has not been Freezed");
+							 redir.addAttribute("result",null);
+							return "redirect:/MainDashBoard.htm";
+						}
+
+					 	}
+
+					 	Map<String,String> details = new HashMap<>();
+
+					 	
+
+					 	
+
+					 	for(int i=getAllProjectSlidedata.size()-1;i>=0;i--)
+
+					 	{
+
+					 		if(getAllProjectSlidedata.get(i)[0]!=null)
+
+					 		{
+
+					 			details.put("reviewedby",getAllProjectSlidedata.get(i)[4].toString() );
+
+							 	details.put("ReviewDate",getAllProjectSlidedata.get(i)[5].toString() );
+
+					 		}
+
+					 	}
+					 	String pathToPdf = PrintCoverSlide(details, req, redir, res, ses);
+					 	String pathToThankYou = "";
+
+						 String path=req.getServletContext().getRealPath("/view/temp");
+
+						 PDFMergerUtility utility = new PDFMergerUtility();
+
+						 utility.setDestinationFileName(path +File.separator+ "merged.pdf");
+
+						 File file = new File(pathToPdf);
+
+					        utility.addSource(file);
+
+						 for(Object[] obj : getAllProjectSlidedata)
+
+						 {
+
+
+							file = new File(ApplicationFilesDrive+ obj[1].toString()+obj[2].toString());
+
+					        utility.addSource(file);
+
+					        pathToThankYou=obj[1].toString();
+
+						 }
+
+						 if(pathToThankYou.equals("")) {
+							 
+							 redir.addAttribute("resultfail","Selected slide has not been Freezed");
+							 redir.addAttribute("result",null);
+							return "redirect:/MainDashBoard.htm";
+
+						 }
+						 
+						 pathToThankYou =ApplicationFilesDrive+ pathToThankYou+"SlideFreezeTHANKYOU.pdf";
+
+						 utility.addSource(pathToThankYou);
+
+						 utility.mergeDocuments();
+
+					        res.setContentType("application/pdf");
+
+					        res.setHeader("Content-disposition","attachment; filename=FreezedProjectSlides.pdf");
+
+					        File f=new File(path +File.separator+ "merged.pdf");
+
+
+
+						        OutputStream out = res.getOutputStream();
+
+								FileInputStream in = new FileInputStream(f);
+
+								byte[] buffer = new byte[4096];
+
+								int length;
+
+								while ((length = in.read(buffer)) > 0) {
+
+									out.write(buffer, 0, length);
+
+								}
+
+								in.close();
+
+								out.close();
+
+				} catch (Exception e) {
+
+					e.printStackTrace();
+
+				}
+				return "";
+
+			 } 
 		
 }

@@ -810,9 +810,9 @@ public class PrintServiceImpl implements PrintService{
 	public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception
 	{
 		if(projectid.equalsIgnoreCase("All")) {
-			return dao.GetAllProjectSildedata();
+			return dao.GetAllProjectSildedata(projectid);
 		}else {
-			return dao.GetAllProjectSildedata().stream().filter(e->e[3].toString().equalsIgnoreCase(projectid)).collect(Collectors.toList());
+			return dao.GetAllProjectSildedata(projectid);
 		}
 	}
 	@Override
@@ -1061,6 +1061,12 @@ public class PrintServiceImpl implements PrintService{
 	@Override
 	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String Date) throws Exception {
 		return dao.LastPMRCActions(projectid,committeeid,Date);
+	}
+
+	@Override
+	public List<Object[]> GetFreezingHistory(String projectid) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.GetFreezingHistory(projectid);
 	}
 	
 }

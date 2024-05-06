@@ -2928,8 +2928,45 @@ if(ses!=null){ %>
 													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 												</td>
 												<td class="tableprojectnametd" style="width:12%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
-												<td style="width:2%"><div data-toggle="tooltip" title="View All"><a style="cursor: pointer;" href="GetAllProjectSlide.htm" target="_blank"  ><img src="view/images/silde.png" style="width: 25px;"/></a></div></td>
-												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
+												<td style="width:2%"><div data-toggle="tooltip" title="Master Slide"><a style="cursor: pointer;"   target="_blank"  ><div type="button" data-toggle="modal" data-target="#selectProjectsForSlideShowModal"><img src="view/images/silde.png" style="width: 25px;"/></div></a></div></td>
+												<!-- Button trigger modal -->
+												<!-- Modal -->
+												<div class="modal fade bd-example-modal-lg" id="selectProjectsForSlideShowModal" style="width: 90%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+												  <div class="modal-dialog modal-lg " role="document">
+												  <form action="GetAllProjectSlide.htm" target="_blank" onsubmit="return checkslideinput()" method="post">
+												  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+												    <div class="modal-content">
+												      <div class="modal-header">
+												        <h5 class="modal-title" id="exampleModalLabel">Select Projects for SlideShow</h5>
+												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												          <span aria-hidden="true">&times;</span>
+												        </button>
+												      </div>
+												      
+												      <div class="modal-body" >
+												      <div class="container-fluid">
+												        	<%int c=0;for(Object[] obj : ProjectHealthData){
+												
+												if(ProjectList!=null){  for(Object[] obj2 : ProjectList) 
+												{
+													if(obj[2].equals(obj2[0]))
+													{
+											%><%if(c==4||c==0) {c=0; %><div class="row"><%} %>
+											<div class="col-3" >
+											<div style="text-align: left;">
+											<input  name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/><label for="<%=obj[2]%>"><%=obj[46] %></label></div>	</div>
+											<%if(c==3&&c!=0) { %></div><%}%><%}}}c++;}%>
+												      </div>
+												      </div>
+												      <div class="modal-footer">
+												      <div class="align-left" ><p style="text-align: left"><span style="color: red">Note</span>: Master slide is the combination of latest Data of selected project</p></div>
+												        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+												        <button type="submit"  class="btn btn-primary">Slide Show</button>
+												      </div>
+												    </div>
+												   </form>
+												  </div>
+												</div>												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
@@ -5281,7 +5318,17 @@ $projectid=value;
 
 }
 
-
+function checkslideinput()	
+{
+	var checkboxes = document.getElementsByName("projectlist");
+	var checked = false;
+	for(let i=0;i<checkboxes.length;i++)
+		{
+			if(checkboxes[i].checked)checked = true;
+		}
+	if(!checked)alert("Please select a project for Slideshow");
+	return checked;
+}
 
 </script>
 
