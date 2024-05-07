@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
-import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
+
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -65,8 +65,10 @@ public interface ProjectClosureService {
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
 	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
 	public List<Object[]> getSectionList()throws Exception;
-	public List<Object[]> getChapterList() throws Exception;
-	public long ChapterAdd(ProjectClosureTechnicalChaptersDto dto) throws Exception;
+	public List<Object[]> getChapterList(String closureId) throws Exception;
+	public long ChapterAdd(ProjectClosureTechnicalChapters chapter) throws Exception;
+	
+	public ProjectClosureTechnicalSection getProjectClosureTechnicalSectionById(String id)throws Exception;
 	
 	
 }

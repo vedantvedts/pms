@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.project.model.ProjectMaster;
-import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
+
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -710,13 +710,14 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	}
 
 	
-	private static final String TECHNICALCLOSURECHAPTERLIST="select * from pfms_closure_technical_chapters";
+	private static final String TECHNICALCLOSURECHAPTERLIST="SELECT a.ChapterId, a.ChapterParentId, a.SectionId, a.ChapterName, a.ChapterContent  FROM  pfms_closure_technical_chapters a ,pfms_closure_technical_sections b WHERE a.SectionId=b.SectionId AND b.ClosureId=:closureId";
 	@Override
-	public List<Object[]> getChapterList() throws Exception {
+	public List<Object[]> getChapterList(String closureId) throws Exception {
 	
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHNICALCLOSURECHAPTERLIST);
+			query.setParameter("closureId", closureId);
 			
 			
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
@@ -729,16 +730,31 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	}
 
 	@Override
-	public long ChapterAdd(ProjectClosureTechnicalChapters chapters) throws Exception {
+	public long ChapterAdd(ProjectClosureTechnicalChapters chapter) throws Exception {
 		
 		try {
-			manager.persist(chapters);
+			manager.persist(chapter);
 			manager.flush();
-			return chapters.getChapterId();
+			return chapter.getChapterId();
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO ChapterAdd "+e);
 			return 0L;
 		}
+	}
+
+	@Override
+	public ProjectClosureTechnicalSection getProjectClosureTechnicalSectionById(String id) throws Exception {
+		
+		try {
+			return manager.find(ProjectClosureTechnicalSection.class, Long.parseLong(id));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getProjectClosureTechnicalSectionById "+e);
+			return null;
+		}
+		
+		
+		
 	}
 }

@@ -30,7 +30,7 @@ import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.projectclosure.dao.ProjectClosureDao;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
-import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
+
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -1165,31 +1165,21 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public List<Object[]> getChapterList() throws Exception {
+	public List<Object[]> getChapterList(String closureId) throws Exception {
 		
-		return dao.getChapterList();
+		return dao.getChapterList(closureId);
 	}
 
 	@Override
-	public long ChapterAdd(ProjectClosureTechnicalChaptersDto dto) throws Exception {
-	try {
+	public long ChapterAdd(ProjectClosureTechnicalChapters chapter) throws Exception {
+		
+	return dao.ChapterAdd(chapter);
 			
-			for(int i=0;i<Long.toString(dto.getChapterId()).length();i++) {
-				
-				System.out.println("aaaaaa----"+Long.toString(dto.getChapterId()).length());
-				
-				ProjectClosureTechnicalChapters chapters = new ProjectClosureTechnicalChapters();
-				chapters.setChapterParentId(0);
-				chapters.setSectionId(Long.parseLong(dto.getSectionId().toString()));
-				chapters.setChapterName(dto.getChapterName().toString());
-				
-			    dao.ChapterAdd(chapters);
-			}
-			return 1;
-		}catch (Exception e) {
-			logger.error(new Date() +" Inside ChapterAdd "+e);
-			e.printStackTrace();
-			return 0;
-		}
+	}
+
+	@Override
+	public ProjectClosureTechnicalSection getProjectClosureTechnicalSectionById(String id) throws Exception {
+		
+		return dao.getProjectClosureTechnicalSectionById(id);
 	}
 }

@@ -72,7 +72,7 @@ import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
-import com.vts.pfms.projectclosure.dto.ProjectClosureTechnicalChaptersDto;
+
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
@@ -2108,11 +2108,10 @@ public class ProjectClosureController {
 			}
 				
 				
-				System.out.println("REAmount---"+REAmount);
-				System.out.println("FEAmount---"+FEAmount);
-				System.out.println("ProjectExpenditureCardList----"+ProjectExpenditureCardList.size());
 				
-				System.out.println("itemTypeCode---"+itemTypeCode);
+				
+				
+				
 				if(ProjectExpenditureCardList!=null && ProjectExpenditureCardList.size()>0) 
 				{
 					if("A".equals(itemTypeCode)) 
@@ -2129,30 +2128,7 @@ public class ProjectClosureController {
 				{
 					fileName = "/jasperReports/projectExpenditureCard1.jrxml";
 			    }
-			
 	
-			//else 
-			//{
-				 //ProjectExpenditureCardList=reportService.ProjectExpenditureCardList(ProjectId,FromDate1,ToDate1,BudgetHeadIdSel1,itemTypeCode,Client_name);
-//				 if(ProjectExpenditureCardList!=null) 
-//				 {
-//					 if ("A".equals(itemTypeCode)) 
-//					 {
-//						 System.out.println("Inside **** projectExpenditureCard1");
-//						fileName = "/jasperReports/projectExpenditureCard1.jrxml";
-//					 } 
-//					 else 
-//					 {
-//						fileName = "/jasperReports/ProjectExpenditureCardWithItemTypeAndHead.jrxml";
-//						System.out.println("Inside **** ProjectExpenditureCardWithItemTypeAndHead");
-//					 } 
-//				 }
-//				 else 
-//				 {
-//					fileName = "/jasperReports/projectExpenditureCardForNoData.jrxml";
-//				 }
-			//}
-			
 				
 			InputStream ProjectExpenditureCardStream = getClass().getResourceAsStream(fileName);
 			JasperReport jasperDesign = JasperCompileManager.compileReport(ProjectExpenditureCardStream);
@@ -2216,7 +2192,6 @@ public class ProjectClosureController {
 	public String TechClosureList(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside TechClosureList.htm "+UserId);
 		try {
@@ -2267,17 +2242,13 @@ public class ProjectClosureController {
 	public String TechClosureContent(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		String labcode = (String) ses.getAttribute("labcode");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		logger.info(new Date() +"Inside TechClosureContent.htm "+UserId);
+	    logger.info(new Date() +"Inside TechClosureContent.htm "+UserId);
 		try {
 				
-			String TechnicalClosureId=req.getParameter("TechnicalClosureId");
+			
 			String closureId = req.getParameter("ClosureId"); 
-			
-			
-			List<Object[]> ChapterList=service.getChapterList();
-			
+			List<Object[]> ChapterList=service.getChapterList(closureId);
+			req.setAttribute("ChapterList", ChapterList);
 			
 			req.setAttribute("closureId", closureId);
 			return "project/ProjectTechClosureContent";
@@ -2351,46 +2322,71 @@ public class ProjectClosureController {
 	public String ChapterAdd(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		String labcode = (String) ses.getAttribute("labcode");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		logger.info(new Date() +"Inside TechClosureContent.htm "+UserId);
+		
+		logger.info(new Date() +"Inside ChapterAdd.htm "+UserId);
 		try {
 			
 			String closureId = req.getParameter("ClosureId"); 
-			
-			ProjectClosureTechnicalChaptersDto dto=new ProjectClosureTechnicalChaptersDto();
-			dto.setChapterParentId(req.getParameterValues("0"));
-			dto.setSectionId(req.getParameterValues("SectionId"));
-			dto.setChapterName(req.getParameterValues("ChapterName"));
-			dto.setUserid(UserId);
-			
-			
-             long save =service.ChapterAdd(dto);
-			
+			String sectionid[]=req.getParameterValues("SectionId");
+			for(String id:sectionid) {
+				
+			    ProjectClosureTechnicalSection sec=service.getProjectClosureTechnicalSectionById(id);
+				ProjectClosureTechnicalChapters chapter=new ProjectClosureTechnicalChapters();
+				chapter.setChapterParentId(0);
+				chapter.setSectionId(sec.getSectionId());
+				chapter.setChapterName(sec.getSectionName());
+				
+	             long save =service.ChapterAdd(chapter);
+		
 			if (save > 0) {
 				redir.addAttribute("result", "Chapter Added Successfully");
 			} else {
 				redir.addAttribute("resultfail", "Chapter Add Unsuccessful");
 			}
-			
-			
-			req.setAttribute("closureId", closureId);
-			return "project/ProjectTechClosureContent";
+		}
+			redir.addAttribute("ClosureId", closureId);
+			return "redirect:/TechClosureContent.htm";
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside TechClosureContent.htm "+UserId, e);
+			logger.error(new Date() +" Inside ChapterAdd.htm "+UserId, e);
+			return "static/Error";			
+		}
+     }
+	
+	@RequestMapping(value="SubChapterAdd.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String SubChapterAdd(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		
+		logger.info(new Date() +"Inside SubChapterAdd.htm "+UserId);
+		try {
+			
+			String ClosureId=req.getParameter("ClosureId");
+			
+			ProjectClosureTechnicalChapters chapter=new ProjectClosureTechnicalChapters();
+				chapter.setChapterParentId(Long.parseLong(req.getParameter("ChapterParentId")));
+				chapter.setSectionId(Long.parseLong(req.getParameter("SectionId")));
+				chapter.setChapterName(req.getParameter("ChapterName"));
+			
+             long save =service.ChapterAdd(chapter);
+		
+			
+			if (save > 0) {
+				redir.addAttribute("result", "Sub-Chapter Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Sub-Chapter Add Unsuccessful");
+			}
+			
+		    redir.addAttribute("ClosureId", ClosureId);
+			return "redirect:/TechClosureContent.htm";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside SubChapterAdd.htm "+UserId, e);
 			return "static/Error";			
 		}
 
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
 }
