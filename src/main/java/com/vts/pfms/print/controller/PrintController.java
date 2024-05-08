@@ -3774,6 +3774,7 @@ public class PrintController {
 					req.setAttribute("freezedSlidedata", getTodatfreezedSlidedata);
 					req.setAttribute("filepath", ApplicationFilesDrive);
 					req.setAttribute("projectslidedata", projectslidedata);
+					req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
 					
 					return "print/ProjectSlideEditView";
 				}

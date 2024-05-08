@@ -43,6 +43,7 @@ import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 import com.vts.pfms.project.dto.ProjectSlideDto;
+import com.vts.pfms.project.model.PfmsProjectData;
 
 
 @Service
@@ -1067,6 +1068,12 @@ public class PrintServiceImpl implements PrintService{
 	public List<Object[]> GetFreezingHistory(String projectid) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.GetFreezingHistory(projectid);
+	}
+
+	@Override
+	public PfmsProjectData getPfmsProjectDataById(String projectId) throws Exception {
+		
+		return dao.getPfmsProjectDataById(projectId);
 	}
 	
 }

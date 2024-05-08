@@ -61,7 +61,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 			<div class="row">
 				<div class="col-md-7">
 				<div class="row"><div class="col">
-					<table class="table meeting">
+					<table >
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>
 							<td style="width: 310px;"><%=projectdata[11]%></td>

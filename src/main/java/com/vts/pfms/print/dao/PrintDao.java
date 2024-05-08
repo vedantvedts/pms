@@ -17,6 +17,7 @@ import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
+import com.vts.pfms.project.model.PfmsProjectData;
 
 public interface PrintDao {
 
@@ -126,5 +127,6 @@ public interface PrintDao {
 	public List<Object[]> Milestones(String projectid, String committeeCode, String date)throws Exception;
 	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String date) throws Exception;
 	public List<Object[]> GetFreezingHistory(String projectid)throws Exception;
+	public PfmsProjectData getPfmsProjectDataById(String projectId) throws Exception;
 
 }

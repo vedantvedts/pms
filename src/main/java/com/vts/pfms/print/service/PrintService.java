@@ -16,6 +16,7 @@ import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 import com.vts.pfms.project.dto.ProjectSlideDto;
+import com.vts.pfms.project.model.PfmsProjectData;
 
 public interface PrintService {
 
@@ -123,5 +124,6 @@ public interface PrintService {
 	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode, String Date)throws Exception;
 	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String Date) throws Exception;
 	public List<Object[]> GetFreezingHistory(String projectid)throws Exception;
-
+	public PfmsProjectData getPfmsProjectDataById(String projectId) throws Exception;
+	
 }

@@ -39,6 +39,7 @@ import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
+import com.vts.pfms.project.model.PfmsProjectData;
 
 
 
@@ -931,7 +932,7 @@ public class PrintDaoImpl implements PrintDao {
 			 }
 			return result;
 		}
-		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription , a.projectcode, a.projectshortname FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
+		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription , a.projectcode, a.projectshortname, (SELECT d.ProjectStage FROM pfms_project_data c ,pfms_project_stage d WHERE c.ProjectId=:projectid AND c.CurrentStageId=d.ProjectStageId LIMIT 1) AS ProjectStage FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
 		@Override
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
@@ -1336,4 +1337,15 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
 			return LastPMRCActions;
 		}
+		
+		@Override
+		public PfmsProjectData getPfmsProjectDataById(String projectId) throws Exception {
+			try {
+				return manager.find(PfmsProjectData.class, Long.parseLong(projectId));
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
 	}

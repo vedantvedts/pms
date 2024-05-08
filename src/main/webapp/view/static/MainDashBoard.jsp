@@ -2931,8 +2931,8 @@ if(ses!=null){ %>
 												<td style="width:2%"><div data-toggle="tooltip" title="Master Slide"><a style="cursor: pointer;"   target="_blank"  ><div type="button" data-toggle="modal" data-target="#selectProjectsForSlideShowModal"><img src="view/images/silde.png" style="width: 25px;"/></div></a></div></td>
 												<!-- Button trigger modal -->
 												<!-- Modal -->
-												<div class="modal fade bd-example-modal-lg" id="selectProjectsForSlideShowModal" style="width: 90%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-												  <div class="modal-dialog modal-lg " role="document">
+												<div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+												  <div class="modal-dialog modal-lg " style="max-width: 1800px" role="document">
 												  <form action="GetAllProjectSlide.htm" target="_blank" onsubmit="return checkslideinput()" method="post">
 												  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 												    <div class="modal-content">
@@ -2954,12 +2954,18 @@ if(ses!=null){ %>
 											%><%if(c==4||c==0) {c=0; %><div class="row"><%} %>
 											<div class="col-3" >
 											<div style="text-align: left;">
-											<input  name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/><label for="<%=obj[2]%>"><%=obj[46] %></label></div>	</div>
+											<input checked  name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/><label for="<%=obj[2]%>">
+											<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+														  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
+														  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
+														  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
+														  	</span> 	
+											</label></div>	</div>
 											<%if(c==3&&c!=0) { %></div><%}%><%}}}c++;}%>
 												      </div>
 												      </div>
 												      <div class="modal-footer">
-												      <div class="align-left" ><p style="text-align: left"><span style="color: red">Note</span>: Master slide is the combination of latest Data of selected project</p></div>
+												      <div class="d-flex align-items-start" style=" padding-right: 900px;" ><p style="text-align: left"><span style="color: red">Note</span>: Master slide is the combination of latest Data of selected project</p></div>
 												        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 												        <button type="submit"  class="btn btn-primary">Slide Show</button>
 												      </div>

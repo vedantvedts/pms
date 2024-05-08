@@ -15,11 +15,12 @@
 <style type="text/css">
 td{
 height:15px;
+color: #00416A ;
 }
 </style>
 
 </head>
-<body class="slides-container" id="slides-container">
+<body class="slides-container" id="slides-container" style="background-color: #F9F2DF66">
 <%
 LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 String lablogo = (String)request.getAttribute("lablogo");
@@ -46,11 +47,11 @@ NFormatConvertion nfc=new NFormatConvertion();
 					
 					<div class="firstpage"  > 
 
-						<div align="center" style="margin-top: 85px"><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h2></div>
+						<div align="center"><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h2></div>
 						<div align="center" ><h3 style="color: #145374 !important">of</h3></div>
 							
 						<div align="center" >
-							<h3 style="color: #4C9100 !important" >  Projects of <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%><%} %></h3>
+							<h3 style="color: #4C9100 !important" >  <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%><%} %> Projects</h3>
 				   		</div>
 						
 						<div align="center" ><h3 style="color: #4C9100 !important"></h3></div>
@@ -65,51 +66,23 @@ NFormatConvertion nfc=new NFormatConvertion();
 							</table>	
 						
 						<br>
-						<% Boolean f = true;
-						for(int i=0;i<freezedproject.size();i++)
-								 {if(freezedproject.get(i)!=null)
-									if (freezedproject.get(i)[4] != null ) {f=false;
-								%><div align="center">
-									<b>Review By :- </b><%=freezedproject.get(i)[4]%>
-									&nbsp;&nbsp;&nbsp; <b>Review date :- </b><%=sdf.format(freezedproject.get(i)[5])%></div>
-								<%break;}
-									}if(f){
-									%>
-								<div align="center">
-									<b>Review By :- </b>Reviewed by Person
-									&nbsp;&nbsp;&nbsp; <b>Review date :- </b>Reviewed On Date</div>
-								<%} %>
-						
-						<table style="margin-top:35px;" class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
+						<br><br><br><br><br><br><br><br>
+						<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
 						<% if(labInfo!=null){ %>
-						<tr>
-												<td style="height: 25px"></td>
-												</tr>	
 						<tr>
 							<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
 						</tr>
-						
 						<%}%>
-						<tr>
-												<td style="height: 25px"></td>
-												</tr>
 						<tr>
 							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
 						</tr>
 						<tr>
-												<td style="height: 25px"></td>
-												</tr>
-						<tr>
 							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
 						</tr>
 						<tr>
-												<td style="height: 25px"></td>
-												</tr>
-						<tr>
 							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> </th>
 						</tr>
-						
-						</table>			
+						</table>		
 						
 						
 					</div>
@@ -127,26 +100,9 @@ NFormatConvertion nfc=new NFormatConvertion();
 							if(FreezedSlide.get(i)[1]!=null ){if(FreezedSlide.get(i)[1].toString().equals("2")){%>
 							<div class="carousel-item " >
 				<div class="container-fluid" >
-					<div class="container-fluid"  ><div class="card shadow-nohover" id="slide2"
-								style="border: 6px solid green;border-radius: 5px !important;height:93vh !important;padding-top: 15px;">
-								<%
-								if (freezedproject.size() > 0 && (freezedproject.size()-1)>=i) {
-									if(freezedproject.get(i)!=null){
-								%><div align="center">
-									<b>Review By :- </b><%=freezedproject.get(i)[4]%>
-									&nbsp;&nbsp;&nbsp; <b>Review date :- </b><%=sdf.format(freezedproject.get(i)[5])%></div>
-								<%}else{%>
-								<div align="center">
-									<b>Review By :- </b>Reviewerd Name
-									&nbsp;&nbsp;&nbsp; <b>Review date :- </b>Reviewed Date</div>
-									
-									<% }}else{%>
+					<div class="container-fluid"  ><div id="slide2" >
 								
-								<div align="center">
-									<b>Review By :- </b>Reviewed Name
-									&nbsp;&nbsp;&nbsp; <b>Review date :- </b>Reviewed Date</div>
-									
-									<%}
+								<%
 								double cost = Double.parseDouble(projects.get(i)[3].toString());
 								String enduser = "--";
 								if (projects != null && projects.get(i)[6] != null && projects.get(i)[6].toString().equalsIgnoreCase("IA")) {
@@ -163,54 +119,61 @@ NFormatConvertion nfc=new NFormatConvertion();
 								enduser = "Others";
 								}
 								%>
-								<h4 class="card-title" align="center"
-									style="color: #c72626; margin-top: 5px;">
+								
+								<div class="content-header row " style="margin-top: 10px; padding: 10px" > 
+ 					
+	 						<div class="col-md-1" align="left" style="padding-top:5px;" >
+								<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							</div>
+								<h4 class="card-title col-md-10" align="center">
 									<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-									%><%=projects.get(i)[1]%>
+									%><%=projects.get(i)[1]%> ( <%=projects.get(i)[12]%> )
 									<%}%>
 								</h4>
-								<hr style="margin-top: -5px;">
-								<div class="card-body"
-									style="padding: 0.25rem; margin-top: -14px;" align="center">
-									<div class="row">
+	 						<div class="col-md-1" align="right" style="padding-top:5px;" >
+	 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+	 						</div>
+						</div>
+								<div class="card-body shadow-nohover"
+									style="padding: 0.25rem;;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;" align="center">
+									<div class="row" >
 										<div class="col-md-4">
 											<div class="row">
 												<div class="col">
-													<table style="margin-top:35px;" class="table meeting">
+													<table style="width: 100%;font-weight: bold;">
 														<tr>
-															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; width: 150px;height: 41.6px;">Project
+															<td style="font-size: 1.02rem; font-weight: bold; color: #212529; width: 150px;height: 41.6px;">Project
 																No :</td>
 															<td style="width: 286px;"><%=projects.get(i)[11]%></td>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; width: 80px;">User
+																style="font-size: 1.02rem; font-weight: bold; color: #212529; width: 80px;">User
 																:</td>
 															<td style="width: 150px;"><%=enduser%></td>
 														</tr>
 														<tr>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9;">Category
+																style="font-size: 1.02rem; font-weight: bold; color: #212529;">Category
 																:</td>
 															<td><%=projects.get(i)[2]%></td>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9;">DoS
+																style="font-size: 1.02rem; font-weight: bold; color: #212529;">DoS
 																:</td>
 															<td><%=sdf.format(projects.get(i)[5])%></td>
 														</tr>
 														<tr>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9;">Cost
+																style="font-size: 1.02rem; font-weight: bold; color: #212529;">Cost
 																Rs.:</td>
 															<td><%=nfc.convert(cost / 10000000)%> (In Cr)</td>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9;">PDC
+																style="font-size: 1.02rem; font-weight: bold; color: #212529;">PDC
 																:</td>
 															<td><%=sdf.format(projects.get(i)[4])%></td>
 														</tr>
 
 														<tr>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9;">Application
+																style="font-size: 1.02rem; font-weight: bold; color: #212529;">Application
 																:</td>
 															<td colspan="4">
 																<%if (projects.get(i) != null && projects.get(i)[10] != null) {
@@ -223,11 +186,14 @@ NFormatConvertion nfc=new NFormatConvertion();
 											</div>
 										</div>
 										<div class="col-md-6">
-											<table style="margin-top:45px;" class="table meeting">
+											<table style="width: 100%;font-weight: bold;">
 												<tr>
 													<td><b
-														style="font-size: 1.09rem; font-weight: bold; color: #115bc9;">Objectives
-															: </b> <%
+														style="font-size: 1.09rem; font-weight: bold; color: #212529;">Objectives
+															: </b>
+															</td>
+															<td>
+															 <%
 														 if (projects.get(i)[7] != null && projects.get(i)[7].toString().length() > 320) {
  															%>
 														<%=projects.get(i)[7].toString().substring(0, 280)%><span
@@ -240,8 +206,9 @@ NFormatConvertion nfc=new NFormatConvertion();
 												</tr>
 												<tr>
 													<td><b
-														style="font-size: 1.09rem; font-weight: bold; color: #115bc9;">Scope
+														style="font-size: 1.09rem; font-weight: bold; color: #212529;">Scope
 															: </b>
+															</td><td>
 														<%
 														if (projects.get(i)[9] != null && projects.get(i)[9].toString().length() > 320) {
 														%>
@@ -255,8 +222,10 @@ NFormatConvertion nfc=new NFormatConvertion();
 												</tr>
 												<tr>
 													<td><b
-														style="font-size: 1.09rem; font-weight: bold; color: #115bc9;">Deliverables
-															: </b> <% if (projects.get(i)[8] != null && projects.get(i)[8].toString().length() > 320) {%>
+														style="font-size: 1.09rem; font-weight: bold; color: #212529;">Deliverables
+															: </b> 
+															</td><td>
+															<% if (projects.get(i)[8] != null && projects.get(i)[8].toString().length() > 320) {%>
 														<%=projects.get(i)[8].toString().substring(0, 280)%><span
 														onclick="ViewInModel('D')"
 														style="color: #1176ab; font-size: 14px; cursor: pointer;"><b>
@@ -265,26 +234,34 @@ NFormatConvertion nfc=new NFormatConvertion();
 														} else {
 														%> <%=projects.get(i)[8]%> <% } %></td>
 												</tr>
+												<tr>
+													<td style="font-size: 1.09rem; font-weight: bold; color: #212529;">
+														Current Stage
+													</td>
+													<td>
+														<%if(projects.get(i)[14]!=null){%><%=projects.get(i)[14]%>
+														<%}else{%>
+														--
+														<%}%>
+													</td>
+												</tr>
+												<tr>
+													<td style="font-size: 1.09rem; font-weight: bold; color: #212529;">
+														Brief
+													</td>
+													<td style="font-size: 1.09rem;">
+														<%if(FreezedSlide.get(i)[0]!=null && FreezedSlide.get(i)[0].toString().length()>300){%>
+														<%=FreezedSlide.get(i)[0].toString().substring(0,250)%><span
+															onclick="ViewInModel('Status')"
+															style="color: #1176ab; font-size: 12px; cursor: pointer;"><b>
+																...View More </b></span>
+														<%}else{%>
+														<%=FreezedSlide.get(i)[0]%>
+														<%}%>
+													</td>
+												</tr>
+												
 											</table>
-										
-										<div class="col" align="left">
-								<div class="row" align="left" >
-								<div class="col-3" align="center">
-								<label style="font-size: 1.02rem;font-weight: bold;color: #115bc9;"> Current Status:</label>
-
-								</div>
-								<div class="col" align="left">
-<%if(FreezedSlide.get(i)[0]!=null && FreezedSlide.get(i)[0].toString().length()>300){%>
-											<%=FreezedSlide.get(i)[0].toString().substring(0,250)%><span
-												onclick="ViewInModel('Status')"
-												style="color: #1176ab; font-size: 14px; cursor: pointer;"><b>
-													...View More </b></span>
-											<%}else{%>
-											<%=FreezedSlide.get(i)[0]%>
-											<%}%>
-								</div>
-								</div>
-							</div>
 										</div>
 									</div>
 									<div class="row">
@@ -320,17 +297,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 					<div class="carousel-item " >
 				<div class="container-fluid" >
 					<div>
-					<div class="container-fluid"  ><div class="card shadow-nohover" id="slide1" style="border: 6px solid green;border-radius: 5px !important;height:93vh !important;padding-top: 15px;">
-					<%if ((freezedproject.size()-1)>=i){if(freezedproject!=null && freezedproject.size()>0) if(freezedproject.get(i)!=null){%><div align="center"> 
-					<b>Review By :- </b> <%=freezedproject.get(i)[4]%> &nbsp;&nbsp;&nbsp;<b>Review date :- 
-					</b><%=sdf.format(freezedproject.get(i)[5]) %></div><%}%>
-					<% }else{ %>
-					<div align="center">
-									<b>Review By :- </b>Reviewer Name
-									&nbsp;&nbsp;&nbsp; <b>Review date :- </b>Reviewed Date</div>
-					<%} %>
-					
-					
+					<div class="container-fluid"  ><div  id="slide1">
 					<%	double cost = Double.parseDouble(projects.get(i)[3].toString());
 						 String enduser="--";
 						if(projects!=null && projects.get(i)[6]!=null && projects.get(i)[6].toString().equalsIgnoreCase("IA")){
@@ -347,63 +314,84 @@ NFormatConvertion nfc=new NFormatConvertion();
 							enduser="Others";
 						}
 						%>
-					<h4 class="card-title" align="center" style="color: #c72626;margin-top: 5px;"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=projects.get(i)[1]%> <%}%></h4>
-						<hr>
-					<div class="card-body" style="padding: 0.25rem;margin-top: -14px;" align="center">
-						<div class="row">
+<div class="content-header row " style="margin-top: 10px; padding: 10px" > 
+ 					
+	 						<div class="col-md-1" align="left" style="padding-top:5px;" >
+								<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							</div>
+					<h4 class="card-title col-md-10" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=projects.get(i)[1]%> ( <%=projects.get(i)[12]%> ) <%}%></h4>
+	 						<div class="col-md-1" align="right" style="padding-top:5px;" >
+	 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+	 						</div>
+						</div>
+					<div class="card-body" style="padding: 0.25rem;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;" align="center">
+						<div class="row" style="height: 100%">
 							<div class="col-md-5">
 							<div class="row"><div class="col">
-							<table style="margin-top:35px;" class="table meeting" style="margin-bottom: -11px;">
+							<table style="margin-bottom: 11px;margin-top: 11px;width: 100%;font-weight: bold;">
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;width: 150px;height: 41.6px;">Project No :</td>
+										<td style="font-size: 1.02rem;font-weight: bold; color: #212529;width: 150px;height: 41.6px;">Project No :</td>
 										<td style="width: 286px;"><%=projects.get(i)[11]%></td>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;height: 41.6px; width: 80px;">User :</td>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #212529;height: 41.6px; width: 80px;">User :</td>
 										<td style="width: 150px;"><%=enduser%></td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;height: 41.6px;">Category :</td>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #212529;height: 41.6px;">Category :</td>
 										<td><%=projects.get(i)[2]%></td>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;height: 41.6px;">DoS :</td>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #212529;height: 41.6px;">DoS :</td>
 										<td><%=sdf.format(projects.get(i)[5]) %></td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;height: 41.6px;">Cost Rs.:</td>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #212529;height: 41.6px;">Cost Rs.:</td>
 										<td><%=nfc.convert(cost/10000000)%> (In Cr)</td>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;height: 41.6px;">PDC :</td>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #212529;height: 41.6px;">PDC :</td>
 										<td><%=sdf.format(projects.get(i)[4]) %></td>
 									</tr>
 									
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;height: 41.6px;">Application :</td>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #212529;height: 41.6px;">Application :</td>
 										<td colspan="4"><%if(projects.get(i)!=null && projects.get(i)[10]!=null){%><%=projects.get(i)[10]%><%}else{%> -- <%}%></td>
 									</tr>
 								</table>
 										</div>
-										<div>
-										</div>
 										</div>
 								  	<br>
-								  	 	<table style="margin-top:45px;" class="table meeting">
-											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Objectives : </b> <%if(projects.get(i)[7]!=null && projects.get(i)[7].toString().length()>320){%> <%=projects.get(i)[7].toString().substring(0,280)%><span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> <%}%></td></tr>
-											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b> <%if(projects.get(i)[9]!=null && projects.get(i)[9].toString().length()>320){%> <%=projects.get(i)[9].toString().substring(0,280)%><span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[9]==null?"--":projects.get(i)[9]%> <%}%> </td></tr>
-											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b> <%if(projects.get(i)[8]!=null && projects.get(i)[8].toString().length()>320){%> <%=projects.get(i)[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> <%}%></td></tr>
-										</table>
-								<div class="row">
-									<div class="col-md-12" align="left">
-									<div class="row" align="left" >
-								<div class="col-3" align="left">
-								<label style="font-size: 1.02rem;font-weight: bold;color: #115bc9;"> Current Status:</label>
-
-								</div>
-								<div class="col" align="left">
-<%if(FreezedSlide.get(i)[0]!=null && FreezedSlide.get(i)[0].toString().length()>300){%>
+								  	 	<table style="margin-bottom: 11px;width: 100%;font-weight: bold;">
+											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Objectives : </b></td><td> <%if(projects.get(i)[7]!=null && projects.get(i)[7].toString().length()>320){%> <%=projects.get(i)[7].toString().substring(0,280)%><span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> <%}%></td></tr>
+											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Scope : </b></td><td> <%if(projects.get(i)[9]!=null && projects.get(i)[9].toString().length()>320){%> <%=projects.get(i)[9].toString().substring(0,280)%><span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[9]==null?"--":projects.get(i)[9]%> <%}%> </td></tr>
+											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Deliverables : </b></td><td> <%if(projects.get(i)[8]!=null && projects.get(i)[8].toString().length()>320){%> <%=projects.get(i)[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> <%}%></td></tr>
+											<tr>
+													<td style="font-size: 1.09rem; font-weight: bold; color: #212529;">
+														Current Stage
+													</td>
+													<td>
+														<%if(projects.get(i)[14]!=null){%><%=projects.get(i)[14]%>
+														<%}else{%>
+														--
+														<%}%>
+													</td>
+												</tr>
+											<tr>
+											<td><label style="font-size: 1.09rem;font-weight: bold;color: #212529;"> Brief:</label></td>
+											<td style="font-size: 1.09rem;"><%if(FreezedSlide.get(i)[0]!=null && FreezedSlide.get(i)[0].toString().length()>300){%>
 											<%=FreezedSlide.get(i)[0].toString().substring(0,250)%><span
 												onclick="ViewInModel('Status')"
 												style="color: #1176ab; font-size: 14px; cursor: pointer;"><b>
 													...View More </b></span>
 											<%}else{%>
 											<%=FreezedSlide.get(i)[0]%>
-											<%}%>
+											<%}%></td>
+											</tr>
+										</table>
+								<div class="row">
+									<div class="col-md-12" align="left">
+									<div class="row" align="left" >
+								<div class="col-3" style="padding: 20px" align="left">
+								
+
+								</div>
+								<div class="col" align="left">
+								
 								</div>
 								</div>
 								
@@ -431,7 +419,6 @@ NFormatConvertion nfc=new NFormatConvertion();
 							</div>
 						</div>	
 					</div>
-					<hr>
 				</div>
 					
 					
@@ -445,50 +432,57 @@ NFormatConvertion nfc=new NFormatConvertion();
 		<div class="carousel-item " >
 				<div class="container-fluid" >
 					<div>
-					<div class="container-fluid"  ><div class="card shadow-nohover" id="slide1" style="border: 6px solid green;border-radius: 5px !important;height:93vh !important;padding-top: 15px;">
-					<div align="center"> <b>Review By :- </b> &nbsp;&nbsp;&nbsp;Reviewed Name <b>Review date :- </b>Reviewed Date</div>
-					<h4 class="card-title" align="center" style="color: #c72626;margin-top: 5px;"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=projects.get(i)[1]%> <%}%></h4>
-						<hr style="margin-top: -5px;">
-					<div class="card-body" style="padding: 0.25rem;margin-top: -14px;" align="center">
+					<div class="container-fluid"  ><div class="card shadow-nohover" id="slide1" >
+						<div class="content-header row " style="margin-top: 10px; padding: 10px" > 
+ 					
+	 						<div class="col-md-1" align="left" style="padding-top:5px;" >
+								<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							</div>
+					<h4 class="card-title col-md-10" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%>  <%=projects.get(i)[1]%> ( <%=projects.get(i)[12]%> ) <%}%></h4>
+	 						<div class="col-md-1" align="right" style="padding-top:5px;" >
+	 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+	 						</div>
+						</div>
+					<div class="card-body" style="padding: 0.25rem;margin-top: -14px;border: 6px solid green;border-radius: 5px !important;height:93vh !important;padding-top: 15px;" align="center">
 									<div class="row inline">
 										<div class="col-md-5">
 											<div class="row">
 												<div class="col">
-													<table style="margin-top: 35px;" class="table meeting"
+													<table style="margin-top: 35px;" 
 														style="margin-bottom: -11px;">
 														<tr>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; width: 150px; height: 41.6px;">Project
+																style="font-size: 1.02rem; font-weight: bold; color: #212529; width: 150px; height: 41.6px;">Project
 																No :</td>
 															<td style="width: 286px;"><%=projects.get(i)[11]%></td>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; height: 41.6px; width: 80px;">User
+																style="font-size: 1.02rem; font-weight: bold; color: #212529; height: 41.6px; width: 80px;">User
 																:</td>
 															<td style="width: 150px;">user</td>
 														</tr>
 														<tr>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; height: 41.6px;">Category
+																style="font-size: 1.02rem; font-weight: bold; color: #212529; height: 41.6px;">Category
 																:</td>
 															<td><%=projects.get(i)[2]%></td>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; height: 41.6px;">DoS
+																style="font-size: 1.02rem; font-weight: bold; color: #212529; height: 41.6px;">DoS
 																:</td>
 															<td><%=sdf.format(projects.get(i)[5]) %></td>
 														</tr>
 														<tr>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; height: 41.6px;">Cost
+																style="font-size: 1.02rem; font-weight: bold; color: #212529; height: 41.6px;">Cost
 																Rs.:</td>
 															<td>cost (In Cr)</td>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; height: 41.6px;">PDC
+																style="font-size: 1.02rem; font-weight: bold; color: #212529; height: 41.6px;">PDC
 																:</td>
 															<td><%=sdf.format(projects.get(i)[4]) %></td>
 														</tr>
 														<tr>
 															<td
-																style="font-size: 1.02rem; font-weight: bold; color: #115bc9; height: 41.6px;">Application
+																style="font-size: 1.02rem; font-weight: bold; color: #212529; height: 41.6px;">Application
 																:</td>
 															<td colspan="4">
 																<%if(projects.get(i)!=null && projects.get(i)[10]!=null){%><%=projects.get(i)[10]%>
@@ -500,17 +494,17 @@ NFormatConvertion nfc=new NFormatConvertion();
 												<div></div>
 											</div>
 											<br>
-											<table style="margin-top: 45px;" class="table meeting">
+											<table style="margin-top: 45px;max-width: 100%">
 											
-											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Objectives : </b> <%if(projects.get(i)[7]!=null && projects.get(i)[7].toString().length()>320){%> <%=projects.get(i)[7].toString().substring(0,280)%><span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> <%}%></td></tr>
-											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b> <%if(projects.get(i)[9]!=null && projects.get(i)[9].toString().length()>320){%> <%=projects.get(i)[9].toString().substring(0,280)%><span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[9]==null?"--":projects.get(i)[9]%> <%}%> </td></tr>
-											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b> <%if(projects.get(i)[8]!=null && projects.get(i)[8].toString().length()>320){%> <%=projects.get(i)[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> <%}%></td></tr>
+											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Objectives :</b></td><td>  <%if(projects.get(i)[7]!=null && projects.get(i)[7].toString().length()>320){%> <%=projects.get(i)[7].toString().substring(0,280)%><span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> <%}%></td></tr>
+											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Scope : </b></td><td> <%if(projects.get(i)[9]!=null && projects.get(i)[9].toString().length()>320){%> <%=projects.get(i)[9].toString().substring(0,280)%><span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[9]==null?"--":projects.get(i)[9]%> <%}%> </td></tr>
+											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Deliverables : </b></td><td> <%if(projects.get(i)[8]!=null && projects.get(i)[8].toString().length()>320){%> <%=projects.get(i)[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> <%}%></td></tr>
 										
 										</table>
 											<div class="row">
 												<div class="col-md-12" align="left">
 													<label
-														style="font-size: 1.02rem; font-weight: bold; color: #115bc9; height: 41.6px; margin-top: 40px">
+														style="font-size: 1.02rem; font-weight: bold; color: #212529; height: 41.6px; margin-top: 40px">
 														Current Status :</label> Current Status <br> <a
 														target="_blank" title="PDF File"><b>Linked File</b>
 														Downloadables</a>
