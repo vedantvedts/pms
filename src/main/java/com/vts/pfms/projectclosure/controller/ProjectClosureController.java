@@ -2388,5 +2388,59 @@ public class ProjectClosureController {
 		}
 
 	}
+	
+	@RequestMapping(value="SubChapterEdit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String SubChapterEdit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		
+		logger.info(new Date() +"Inside SubChapterEdit.htm "+UserId);
+		try {
+			
+				String ClosureId=req.getParameter("ClosureId");
+				String ChapterId=req.getParameter("ChapterId");
+				String ChapterName=req.getParameter("ChapterName");
+			    String ChapterContent=req.getParameter("ChapterContent");
+				
+			    long update =service.ChapterEdit(ChapterId,ChapterName,ChapterContent);
+		
+			
+			if (update > 0) {
+				redir.addAttribute("result", "Chapter Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Chapter Updated Unsuccessful");
+			}
+			
+		    redir.addAttribute("ClosureId", ClosureId);
+			return "redirect:/TechClosureContent.htm";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside SubChapterEdit.htm "+UserId, e);
+			return "static/Error";			
+		}
 
+	}
+	
+	
+	@RequestMapping(value="ChapterContent.htm",method = RequestMethod.GET)
+	public @ResponseBody String OtherRequirementsData(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ChapterContent.htm "+UserId);
+			Object[]ChapterContent=null;
+		try {
+			
+		     String ChapterId=req.getParameter("ChapterId");
+		     ChapterContent=service.getChapterContent(ChapterId);
+		    
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ChapterContent.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(ChapterContent);
+	}
+	
+	
 }

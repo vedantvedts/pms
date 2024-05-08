@@ -1182,4 +1182,16 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.getProjectClosureTechnicalSectionById(id);
 	}
+
+	@Override
+	public long ChapterEdit(String chapterId, String chapterName,String ChapterContent) throws Exception {
+		
+		return dao.ChapterEdit(chapterId,chapterName,ChapterContent);
+	}
+
+	@Override
+	public Object[] getChapterContent(String chapterId) throws Exception {
+		
+		return dao.getChapterContent(chapterId);
+	}
 }

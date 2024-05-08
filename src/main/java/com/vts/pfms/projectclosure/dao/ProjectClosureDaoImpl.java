@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.milestone.model.FileRepMaster;
 import com.vts.pfms.project.model.ProjectMaster;
 
 import com.vts.pfms.projectclosure.model.ProjectClosure;
@@ -754,7 +755,41 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return null;
 		}
 		
+	}
+
+	@Override
+	public long ChapterEdit(String chapterId, String chapterName,String ChapterContent) throws Exception {
 		
+		ProjectClosureTechnicalChapters chapter=manager.find(ProjectClosureTechnicalChapters.class,Long.parseLong(chapterId));	
+		chapter.setChapterName(chapterName);
+		chapter.setChapterContent(ChapterContent);
+		chapter=manager.merge(chapter);
+		if(chapter!=null) {
+			return 1;
+		}else
+		{
+			return 0;
+		}
 		
+	}
+
+	private static final String TECHNICALCLOSURECHAPTERCONTENT="SELECT chapterid,chaptercontent FROM pfms_closure_technical_chapters WHERE chapterid=:chapterId";
+	@Override
+	public Object[] getChapterContent(String chapterId) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(TECHNICALCLOSURECHAPTERCONTENT);
+			query.setParameter("chapterId", chapterId);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getChapterContent " + e);
+			e.printStackTrace();
+			return null;
+		}		
 	}
 }

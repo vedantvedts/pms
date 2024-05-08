@@ -14,10 +14,6 @@
 <spring:url value="/resources/richtexteditor/richtexteditor.css" var="richtexteditorcss" />
 <spring:url value="/resources/richtexteditor/plugins/all_plugins.js" var="allpluginsjs" />
 
-
-
-
-
 <title>COMMITTEE SCHEDULE MINUTES</title>
 
 
@@ -324,6 +320,49 @@ animation: fade-in 1s ease forwards;
     opacity: 1;
   }
 }
+
+.editbtn
+{
+	background-color: green;
+	width:auto; 
+	height: 22px; 
+	font-size:10px;
+	font-weight: bold;
+	text-align: justify; 
+	margin-top : -9px;
+	padding: 0px 3px 1px 3px; 
+}
+
+
+.hiddeninput
+{
+	width:50%;
+	height: 25px;
+	
+	font-size: 1rem;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	padding: 2px;
+	
+}
+
+ .btnx
+{
+	width:22px; 
+	height: 22px;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	
+}
+
+.fa-lg
+{
+	margin-left: -5px;
+	vertical-align: 0%;
+	font-size: 1.4rem;
+} 
+
+
 	</style>
 </head>
 <body>
@@ -417,12 +456,12 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 	         		<tr>
          		      <td>
 			         		<span id="">
- 			         		     <a data-toggle="collapse" data-parent="#accordion" href="#collapse1<%=Sub0Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %>"></i></a>
+ 			         		     <a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %>"></i></a>
  			         		 </span>
 	                  </td>
 	                  
 	         		   <td>
-	         		       <button class="btn bg-transparent"  type="button" id="btnEditor<%=obj[0].toString()%>" onclick="showEditor('<%=obj[3].toString()%>',<%=obj[0].toString()%>,0,<%=obj[2].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true" style="color:orange"></i></button>
+	         		       <button class="btn bg-transparent"  type="button" id="btnEditor<%=obj[0].toString()%>" onclick="showEditor('<%=obj[3].toString()%>',<%=obj[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true" style="color:orange"></i></button>
 	         		  </td> 
 	         		</tr>
 	         	</tbody>
@@ -430,7 +469,8 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 	        </div>
 	     </div>
 	         
-	        <div id="collapse1<%=Sub0Count%>" class="panel-collapse collapse in"> 
+	        <%-----------------------------------Level-1 Start--------------------------------------%> 
+	        <div id="collapse55B<%=Sub0Count%>" class="panel-collapse collapse in"> 
 	        
 	        <%
 		  	int Sub1Count=1;
@@ -445,21 +485,108 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 					        	
 						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %>" action="" method="post">
 						 
-									<span  style="font-size:14px" ><%=Sub0Count %>.<%=Sub1Count %></span>
-									<span  style="font-size:14px" id="span_<%=obj1[0]%>"><%=obj1[3]%>  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1[0] %>')"></i> </span>	
-						          	<input type="text" name="levelname" class="hiddeninput" id="input_<%=obj1[0]%>" value="<%=obj1[3] %>" style="display: none;" maxlength="255">
-						          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj1[0]%>" formaction="" formmethod="post" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-						          	      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										<span  style="font-size:14px" ><%=Sub0Count %>.<%=Sub1Count %></span>
+										<span  style="font-size:14px" id="span_<%=obj1[0]%>"><%=obj1[3]%>  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1[0] %>')"></i> </span>	
+							          	<input type="text" name="ChapterName" class="hiddeninput" id="input_<%=obj1[0]%>" value="<%=obj1[3] %>" style="display: none;" maxlength="255">
+							          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj1[0]%>" formaction="SubChapterEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Update ? ');">UPDATE</button>
+							          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj1[0] %>" onclick="moduleeditdisable('<%=obj1[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
+							          	
+							          	<input type="hidden" name="ChapterId" value="<%=obj1[0]%>" >
+							          	<input type="hidden" name="ClosureId" value="<%=closureId%>">
+							          	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						          	
 						          	</form>
 					       	  </h4>
 					       	  
-					       		<div style="float: right !important; margin-top:-20px; " > 
-					       			<a data-toggle="collapse" data-parent="#accordion" href="#collapse55<%=Sub0Count %><%=Sub1Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %>"></i></a>
+					       		<div style="float: right !important; margin-top:-24px; " > 
+					       			<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %>"> <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %>"></i></a>
+					       		    <button class="btn bg-transparent"  type="button" id="btnEditor<%=obj1[0].toString()%>" onclick="showEditor('<%=obj1[3].toString()%>',<%=obj1[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true" style="color:orange"></i></button>
+					       			
+					       			
 					       		</div>
 					      </div>
 					      
-					   </div>
-					</div>
+					      
+					      
+					     <%-----------------------------------Level-2 Start--------------------------------------%> 
+					      <div id="collapse55B<%=Sub0Count %><%=Sub1Count %>" class="panel-collapse collapse in">
+					  			
+					  			<%
+						  			int Sub2Count=1; 
+						  	  	 	for(Object[] obj2:ChapterList){
+						  	  		if(obj1[0].toString().equalsIgnoreCase(obj2[1].toString()) ){
+					  			%>
+					  			
+					               <div class="row">  
+								    <div class="col-md-11"  align="left"  style="margin-left: 20px;">
+							          <div class="panel panel-info">
+									     <div class="panel-heading">
+									        <h4 class="panel-title">
+					        	
+									           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" action="" method="post">
+									 
+													
+									          		<span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %> </span>
+									          		<span  style="font-size:14px" id="span_<%=obj2[0]%>"> <%=obj2[3] %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2[0] %>')"></i> </span>
+									          		<input type="text" name="ChapterName" class="hiddeninput" id="input_<%=obj2[0]%>" value="<%=obj2[3] %>" style="display: none;" maxlength="255">
+										          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj2[0]%>" formaction="SubChapterEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Update ? ');">UPDATE</button>
+										          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj2[0] %>" onclick="moduleeditdisable('<%=obj2[0]%>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
+										          	
+										          	 <input type="hidden" name="ChapterId" value="<%=obj2[0]%>" >
+							          	             <input type="hidden" name="ClosureId" value="<%=closureId%>">     
+										          	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									          		
+									          </form>
+					       		            </h4>
+									       		 <div style="float: right !important; margin-top:-28px; " > 
+									       		      <button class="btn bg-transparent"  type="button" id="btnEditor<%=obj2[0].toString()%>" onclick="showEditor('<%=obj2[3].toString()%>',<%=obj2[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true" style="color:orange"></i></button>
+									       		</div>
+									       		 
+									      </div>
+									   </div>
+									 </div>  
+					              </div> 
+					    
+					   <%Sub2Count++;}} %>    
+					      
+					     <%------------------------Level-2 Chapter Add ---------------------------------------%>
+					         
+			             <div class="row">  
+				             <div class="col-md-11"  align="left"  style="margin-left: 20px;">
+				                  <div class="panel panel-info">
+								      <div class="panel-heading">
+								        <h4 class="panel-title">
+					        	
+						                   <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" action="SubChapterAdd.htm" method="post">
+						 
+						 
+						                       <input type="hidden" name="SectionId" value="<%=obj1[2]%>">				
+											   <input type="hidden" name="ChapterParentId" value="<%=obj1[0]%>">
+											   <input type="hidden" name="ClosureId" value="<%=closureId%>">
+						                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						                       
+						                       <span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %></span>
+						          		
+								          		<div style="margin-top:-20px; margin-left:35px;">
+								          		      <input class="form-control" type="text" name="ChapterName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
+								          		</div>
+								          		
+								          		<div style="margin-top:-22px; margin-left: 200px;">
+								          		     <input type="submit" name="sub" class="btn btn-info btn-sm"  form="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+								          		</div>
+						          	        </form>
+					       		          </h4>
+					       		     </div>
+					              </div>
+					          </div>
+	  			          </div>
+	  			        <%------------------------Level-2 Chapter Add End ---------------------------------------%>    
+	  			            
+	  			</div>
+	  			<%-------------------------Level 2 End ------------------------------------------------------------%>
+	  			  
+			 </div>
+		</div>
 					
 					      <%Sub1Count++;}} %>
 					      
@@ -477,6 +604,7 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 													<input type="hidden" name="ChapterParentId" value="<%=obj[0]%>">
 													<input type="hidden" name="ClosureId" value="<%=closureId%>">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+													
 									          		<span style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %></span>
 									          		
 									          		<div style="margin-top:-20px; margin-left:55px;">
@@ -511,8 +639,8 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 
         <%-------------------  RichText Editor -------------------------------------%>
                   
-	         	<div class="col-md-7">
-	         	<form action="OtherRequirementDetailsAdd.htm" method="POST" id="myfrm">
+	          <div class="col-md-7">
+	         	<form action="SubChapterEdit.htm" method="POST" id="myfrm1">
 	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
 	      			<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;display:none;"></h5><hr>
 	      			<h5 class="heading ml-4 mt-3" id="editorHeading1" style="font-weight:500;color: #31708f;"><%if(ChapterList != null && ChapterList.size()>0){ %> <%=ChapterList.get(0)[3] %><%} %> </h5><hr>
@@ -522,16 +650,14 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 					             <div id="div_editor1">
 		                     </div>
 					
-					         <textarea name="Details" style="display: none;"></textarea>
+					         <textarea name="ChapterContent" style="display: none;"></textarea>
 					          <div class="mt-2" align="center" id="detailsSubmit">
-					             <span id="EditorDetails">  
-										<input type='hidden' name='MainId' value=>
-										<input type='hidden' name='ReqName' value=>
-										<input type='hidden' name='ReqParentId' value=>
-										<input type='hidden' id='RequirementId' name='RequirementId' value=>
-					              </span>
+					             <span id="EditorDetails"></span>
 				    
-					    			<input type="hidden" name="projectId" value="">
+					    			<input type="hidden"  id='chapterid' name='ChapterId' value="">
+					    			<input type="hidden" name="ClosureId" value="<%=closureId%>" >
+					    			<input type="hidden" id="chaptername" name="ChapterName" value="" >
+					    			
 									<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 					                   <span id="Editorspan">
 					                      <button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button>
@@ -594,9 +720,7 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 		
 		</div>
       </div>
-   		
-	    			<input type="hidden" name="projectId" value=""> 
-	    			<input type="hidden" name="closureId" value="<%=closureId%>"> 
+   		            <input type="hidden" name="closureId" value="<%=closureId%>"> 
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
         			
      
@@ -704,60 +828,86 @@ function ChapterAdd(){
 	  }
 	}
 
-
-
-function showSubpoint(a) { 
-	 $('#subdiv'+a).css("display","block");
-	 $('#inputDiv'+a).css("display","block");
-	 $('#span'+a).html('<button class="btn btn-sm bg-transparent" id="btn'+a+'" onclick="hideSubpoint('+a+')"><i class="fa fa-minus" aria-hidden="true"></</button>');
-	// to disabled the checkbox when subdivs are open
-	 var checkboxes = document.getElementsByName('check-1');
-	
-	var subspan = $('#subspan'+a).val();
-	
-	 var Mainid=$('#Mainid'+a).val();
-	 document.getElementById('subdiv'+a).innerHTML="";
-<%-- 	 $.ajax({
-		 type:'GET',
-		 url:'', //
-		 datatype:'json',
-		 data:{
-			 Mainid:Mainid,
-			 projectId:'',
-		 },
-		 success:function(result){
-			 var ajaxresult=JSON.parse(result);
-			 
-			  var x=document.getElementById('subdiv'+a).innerHTML
-			  
-			 var html="";
-			 for(var i=1;i<ajaxresult.length;i++){
-			 //onclick to get edit button
-			  var spanHidden='<span id="subSpan'+ajaxresult[i][0]+'" style="display:none;"><button class="btn btn-sm btn-info spansub" type="submit" formaction="ProjectOtherReqNameEdit.htm" formmethod="POST" formnovalidate="formnovalidate" onclick="reqNameUpdate('+ajaxresult[i][0]+')">Update</button><button class="btn bg-transparent" type="button" onclick="hideUpdateSpan('+ajaxresult[i][0]+')"><i class="fa fa-times" aria-hidden="true"></i></button></span>';
-			  var inputHidden="<input type='hidden' name='Mainid' value='"+ajaxresult[i][2]+"'><input type='hidden' name='projectId' value='"+<%=projectId%>+"'><input type='hidden' name='RequirementId' value='"+ajaxresult[i][0]+"'><input type='hidden' name='${_csrf.parameterName}'	value='${_csrf.token}' />"
-			  var inputHeading="<input type='text' class='form-control' readonly value='"+ajaxresult[i][4]+"' name='RequirementName' id='inputSub"+ajaxresult[i][0]+"'style='width:50%;display:inline; padding:0px;' maxlength='255 charecters'>"
-			 html=html+'<div class="row"><div class="col-md-11 mt-1"  align="left"  style="margin-left: 10px;"><div class="panel panel-info"><div class="panel-heading"><form action="#"><h4 class="panel-title">'+subspan+"."+''+(i+".")+'&nbsp;'+inputHeading+''+inputHidden+'<button class="btn btn-sm bg-transparent" type="button" onclick="EditSubRequirement('+ajaxresult[i][0]+')" id="subbtn'+ajaxresult[i][0]+'"><i class="fa fa-pencil" aria-hidden="true"></i></button>'+spanHidden+'<button class="btn bg-transparent" onclick="showEditor('+"'"+''+ajaxresult[i][4]+''+"'"+','+ajaxresult[i][2]+','+ajaxresult[i][3]+','+ajaxresult[i][0]+')"style="float:right" type="button" "><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></h4></form></div></div></div> </div>'; 
-			 }
-			 html=html+x;
-			 $('#subdiv'+a).html(html);
-		 }
-	 }); --%>
+function moduleeditenable(moduleid)
+{
+	$('#span_'+moduleid).hide();
+	$('#input_'+moduleid).show();
+	$('#btn_'+moduleid).show();	
+	$('#btnx_'+moduleid).show();
 }
 
+function moduleeditdisable(moduleid)
+{
+	$('#span_'+moduleid).show();
+	$('#input_'+moduleid).hide();
+	$('#btn_'+moduleid).hide();	
+	$('#btnx_'+moduleid).hide();
+}
+
+var editor1 = new RichTextEditor("#div_editor1");
+
+function showEditor(a,b){
+	
+	 $('#editorHeading').show();
+	 $('#editorHeading1').hide();
+	 $('#editorHeading').html(a);
+	 $('#Editor').html(a);
+	 $('#chapterid').val(b);
+	 $('#chaptername').val(a);
+
+	$.ajax({
+		type:'GET',
+		url:'ChapterContent.htm',
+		datatype:'json',
+		data:{
+			ChapterId:b,
+		},
+		success:function(result){
+		var ajaxresult=JSON.parse(result);
+		
+		if(ajaxresult[1]==null){
+		
+		    ajaxresult[1]=""
+		    $('#Editorspan').html('<button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button>');
+		}else{
+		    $('#Editorspan').html('<button type="submit" class="btn btn-sm btn-warning mt-2 edit" onclick=EditorValueSubmit()>UPDATE</button>');
+		}
+		    editor1.setHTMLCode(ajaxresult[1]);
+		}
+	 })
+	}
+	
+$('#myfrm1').submit(function() {
+	 var data =editor1.getHTMLCode();
+	 $('textarea[name=ChapterContent]').val(data);
+	 });
+	 
+function EditorValueSubmit(){
+	if(confirm("Are you sure you want to submit?")){
+		
+	return true;
+	}else{
+	event.preventDefault();
+	return false;
+	}
+	}
+
+</script>
 
 
+<script type="text/javascript">
 
 $(document).ready(function(){
     // Add minus icon for collapse element which is open by default
     $(".collapse.show").each(function(){
-    	$(this).prev(".panel-heading").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+    	$(this).prev(".panel-heading").find(".faplus").addClass("fa-minus").removeClass("fa-plus");
     });
     
     // Toggle plus minus icon on show hide of collapse element
     $(".collapse").on('show.bs.collapse', function(){
-    	$(this).prev(".panel-heading").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+    	$(this).prev(".panel-heading").find(".faplus").removeClass("fa-plus").addClass("fa-minus");
     }).on('hide.bs.collapse', function(){
-    	$(this).prev(".panel-heading").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+    	$(this).prev(".panel-heading").find(".faplus").removeClass("fa-minus").addClass("fa-plus");
     });
 });
 
@@ -772,64 +922,9 @@ if(FormName!=null){
 %>
       $('#<%=IdName%>').click();
 <%}}%>
-
-
-
-
-
-
-var editor1 = new RichTextEditor("#div_editor1");
-
-function showEditor(a,b,c,d){
-	
-	 $('#editorHeading').show();
-	 $('#editorHeading1').hide();
-	 $('#editorHeading').html(a);
-	 $('#Editor').html(a);
-	var x="<input type='hidden' name='MainId' value='"+b+"'><input type='hidden' name='ReqName' value='"+a+"'><input type='hidden' name='ReqParentId' value='"+c+"'><input type='hidden' id='RequirementId' name='RequirementId' value='"+d+"'>"
-	$('#EditorDetails').html(x);
-
-	$.ajax({
-		type:'GET',
-		url:'',
-		datatype:'json',
-		data:{
-			MainId:b,
-			ReqParentId:c,
-			RequirementId:d,
-			projectId:'',
-		},
-		success:function(result){
-		var ajaxresult=JSON.parse(result);
-		console.log(ajaxresult);
-		if(ajaxresult[5]==null){
-		console.log(ajaxresult[5])
-		ajaxresult[5]=""
-		$('#Editorspan').html('<button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button>');
-		}else{
-		$('#Editorspan').html('<button type="submit" class="btn btn-sm btn-warning mt-2 edit" onclick=EditorValueSubmit()>UPDATE</button>');
-		}
-		editor1.setHTMLCode(ajaxresult[5]);
-		}
-	})
-	}
-	
-$('#myfrm').submit(function() {
-	 var data =editor1.getHTMLCode();
-	 $('textarea[name=Details]').val(data);
-	 });
-	 
-function EditorValueSubmit(){
-	if(confirm("Are you sure you want to submit?")){
-		
-	return true;
-	}else{
-	event.preventDefault();
-	return false;
-	}
-	}
-
 </script>
+
+
 </body>
 </html>
 

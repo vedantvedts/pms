@@ -64,5 +64,7 @@ public interface ProjectClosureDao {
 	public List<Object[]> getChapterList(String closureId) throws Exception;
 	public long ChapterAdd(ProjectClosureTechnicalChapters chapter) throws Exception;
 	public ProjectClosureTechnicalSection getProjectClosureTechnicalSectionById(String id)throws Exception;
+	public long ChapterEdit(String chapterId, String chapterName,String ChapterContent)throws Exception;
+	public Object[] getChapterContent(String chapterId)throws Exception;
 
 }
