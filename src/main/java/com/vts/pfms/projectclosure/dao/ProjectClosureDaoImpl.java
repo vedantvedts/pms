@@ -694,12 +694,19 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 
-	private static final String TECHNICALCLOSURESECTIONLIST="SELECT SectionId,ClosureId,SectionName FROM pfms_closure_technical_sections";
+	private static final String TECHNICALCLOSURESECTIONLIST="SELECT  SectionId,ClosureId,SectionName ,'S' AS 'selected' FROM pfms_closure_technical_sections \r\n"
+			+ "WHERE sectionid IN (SELECT sectionid FROM `pfms_closure_technical_chapters`) AND closureid=:closureId\r\n"
+			+ "\r\n"
+			+ "UNION \r\n"
+			+ "\r\n"
+			+ "SELECT  SectionId,ClosureId,SectionName, 'N' AS 'selected' FROM pfms_closure_technical_sections\r\n"
+			+ "WHERE sectionid NOT IN (SELECT sectionid FROM `pfms_closure_technical_chapters`) AND closureid=:closureId";
 	@Override
-	public List<Object[]> getSectionList() throws Exception {
+	public List<Object[]> getSectionList(String closureId) throws Exception {
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHNICALCLOSURESECTIONLIST);
+			query.setParameter("closureId", closureId);
 			
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;

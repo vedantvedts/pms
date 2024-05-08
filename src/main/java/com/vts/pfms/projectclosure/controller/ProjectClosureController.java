@@ -2296,7 +2296,7 @@ public class ProjectClosureController {
 			
 			//if existing sections are present ,list is shown on opening the modal
 			if(ExistingSection!=null) {
-				AddSection=service.getSectionList();
+				AddSection=service.getSectionList(closureId);
 			}
 			else {
 				ProjectClosureTechnicalSection sec=new ProjectClosureTechnicalSection();
@@ -2304,7 +2304,7 @@ public class ProjectClosureController {
 				sec.setSectionName(SectionName);			
 			
 				long save=service.AddSection(sec);
-				AddSection=service.getSectionList();
+				AddSection=service.getSectionList(closureId);
 			}
 			
 		}

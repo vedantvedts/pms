@@ -60,7 +60,7 @@ public interface ProjectClosureDao {
 	public long AddIssue(ProjectClosureTechnical tech)throws Exception;
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
 	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
-	public List<Object[]> getSectionList() throws Exception;
+	public List<Object[]> getSectionList(String closureId) throws Exception;
 	public List<Object[]> getChapterList(String closureId) throws Exception;
 	public long ChapterAdd(ProjectClosureTechnicalChapters chapter) throws Exception;
 	public ProjectClosureTechnicalSection getProjectClosureTechnicalSectionById(String id)throws Exception;

@@ -676,7 +676,7 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 			
 			
 			
-<form action="ChapterAdd.htm" method="POST" id="myform">          	  	
+<form action="ChapterAdd.htm" method="POST" id="myform2">          	  	
  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
    <div class="modal-dialog modal-dialog-jump" role="document">
     <div class="modal-content mt-5" style="margin-left:-10%;">
@@ -720,7 +720,7 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 		
 		</div>
       </div>
-   		            <input type="hidden" name="closureId" value="<%=closureId%>"> 
+   		            <input type="hidden" name="ClosureId" value="<%=closureId%>"> 
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
         			
      
@@ -764,7 +764,12 @@ $(document).ready(function() {
                 
                 for (var i = 0; i <existingData.length; i++) {
                     htmlStr += '<tr>';
-                    htmlStr += '<td class="tabledata" style="text-align: center;" ><input type="checkbox" name="SectionId"  value="' + existingData[i][0] + '" ></td>';
+                    if (existingData[i][3] === 'S') {
+                        htmlStr += '<td class="tabledata" style="text-align: center;"><button type="button" class="tick-btn" disabled style="color:#008000;font-size:20px;">&#10004;</button></td>';
+                    } else {
+                        htmlStr += '<td class="tabledata" style="text-align: center;"><input type="checkbox" name="SectionId" value="' + existingData[i][0] + '"></td>';
+                    }
+                    //htmlStr += '<td class="tabledata" style="text-align: center;" ><input type="checkbox" name="SectionId"  value="' + existingData[i][0] + '" ></td>';
                     htmlStr += '<td class="tabledata" style="text-align: left;" >' + existingData[i][2] + '</td>';
                     htmlStr += '</tr>';
                     htmlStr += '</tr>';
@@ -820,7 +825,7 @@ function ChapterAdd(){
 	
 	if(confirm("Are you sure you want to submit?")){
 		
-		 $('#myForm').submit();
+		 $('#myForm2').submit();
 	    return true;
 	}else{
 	   event.preventDefault();

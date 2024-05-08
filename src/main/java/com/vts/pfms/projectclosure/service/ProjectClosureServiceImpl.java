@@ -1159,9 +1159,9 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public List<Object[]> getSectionList() throws Exception {
+	public List<Object[]> getSectionList(String closureId) throws Exception {
 		
-		return dao.getSectionList();
+		return dao.getSectionList(closureId);
 	}
 
 	@Override
