@@ -279,8 +279,8 @@ CKEDITOR.replace('ckeditor1', editor_config );
 
 
 function checkData(){
-	$("input[name='silde']")[0].checked= true;
-	$("input[name='silde']")[1].checked= false;
+	$("input[name='silde']")[0].checked= false;
+	$("input[name='silde']")[1].checked= true;
 	var silde = $("input[name='silde']").serializeArray();
 	var status = CKEDITOR.instances['ckeditor1'].getData();
 	var attachment  = $("#Attachment1").val();
