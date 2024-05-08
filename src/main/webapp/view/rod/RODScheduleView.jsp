@@ -159,16 +159,16 @@
 					 
 					 <div class="card-body">					
 							
-					 <%if(useraccess>=1 && Integer.parseInt(rodscheduleeditdata[10].toString())<5){%>	 
+					 <%if( Integer.parseInt(rodscheduleeditdata[10].toString())<5){%>	 
 					 <form action="RODScheduleDelete.htm"  method="post" ><%} %>
 			   			<h5 style="color:#07689f">Schedule (Meeting Id : <%=rodscheduleeditdata[11]%>)
-			   			<%if(useraccess>=1 && Integer.parseInt(rodscheduleeditdata[10].toString())<5){%>	 
+			   			<%if(Integer.parseInt(rodscheduleeditdata[10].toString())<5){%>	 
 				   				<button class="fa fa-trash btn btn-danger" type="submit" style="background-color: white;border-color: white;"  onclick="return confirm('Are You Sure To Delete this Meeting?');" ></button>				   					   				
 				   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 				   				<input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6]%>">
 				   		<%} %>	
 			   			</h5>
-			   		 <%if(useraccess>=1 && Integer.parseInt(rodscheduleeditdata[10].toString())<5){%>	 
+			   		 <%if( Integer.parseInt(rodscheduleeditdata[10].toString())<5){%>	 
 					 </form><%} %>
 			   		
 			   		
@@ -194,10 +194,10 @@
 		       							<td><input  class="form-control" type="text" id="starttime" name="committeetime"  readonly="readonly" required="required"  value="<%=rodscheduleeditdata[3] %>"></td>
 		                        	
 										<th style="padding-left: 40px;">
-											 <%if(useraccess>=1){ %>
+											 <%-- <%if(useraccess>=1){ %> --%>
 									 			 <input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6]%>">							 	
 						   							<%					   		
-						   							if(Integer.parseInt(rodscheduleeditdata[10].toString())<6 && (userview==null || userview.equalsIgnoreCase("CS") || userview.equalsIgnoreCase("CC") )) { %>
+						   							if(Integer.parseInt(rodscheduleeditdata[10].toString())<6 ) { %>
 						   								<input type="submit" id="update"  class="btn  btn-sm submit"  value="SUBMIT" onclick="Add(myfrm)">	
 						   							<%}else{ %>
 						   									<script type="text/javascript">
@@ -206,7 +206,7 @@
 						   									</script>
 						   							<%} %>	
 						   						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 	
-						   					<%} %>			   			
+						   					<%-- <%} %>	 --%>		   			
 					   					</th>		 
 				   				</tr>
 				   			</table>						 	  
@@ -246,7 +246,7 @@
 		                  				</tr>
 		                  				<tr >
 		                  					<td colspan="4"  align="center"   >
-		                  					 <%if(useraccess>=1){ %>	
+		                  					 <%-- <%if(useraccess>=1){ %>	 --%>
 							             			<%if(Integer.parseInt(rodscheduleeditdata[10].toString())<6) { %>
 							             			
 								             			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -264,14 +264,14 @@
 							             				</script>
 							             				
 							             			<%} %>	
-						             		<%}else{ %>
+						             		<%-- <%}else{ %>
 						             			<script type="text/javascript">
 						             				$('#venue').prop('readonly','readonly');
 						             				$('#isconfidential').attr('disabled',true);
 						             				$('#reference').prop('readonly','readonly');
 						             				$('#decisions').prop('readonly','readonly');
 						             			</script>
-						             		<%} %>
+						             		<%} %> --%>
 						             			
 						             		</td>
 		             					</tr>
@@ -342,13 +342,13 @@
 			        	<div class="form-group" align="center" style="margin-top: 25px">		        			     		
 									<%	if(Integer.parseInt(rodscheduleeditdata[10].toString())<6 && (userview==null || userview.equalsIgnoreCase("CS") || userview.equalsIgnoreCase("CC") )) { %>
 					   					 <%if(!rodagendalist.isEmpty()){%>
-												 <%if(useraccess>1){ %>		 
+												 <%-- <%if(useraccess>1){ %>	 --%>	 
 													 <form action="RODScheduleAgenda.htm" method="post">
 														<input type="hidden"  name="scheduleid" value="<%=rodscheduleeditdata[6] %>" >
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 														<button type="submit" class="btn  btn-sm  edit"  style="padding:2px 13px !important;margin-right: 5%" >EDIT</button>
 													</form>
-												<%} %>
+												<%-- <%} %> --%>
 										
 											<%} else if(!rodscheduleeditdata[4].toString().equalsIgnoreCase("MAA") && useraccess>=1){%>											
 												<form action="RODScheduleAgenda.htm" method="post">
