@@ -61,7 +61,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 			<div class="row">
 				<div class="col-md-7">
 				<div class="row"><div class="col">
-					<table >
+					<table class="table meeting" style="font-weight: bold;" >
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>
 							<td style="width: 310px;"><%=projectdata[11]%></td>
@@ -82,8 +82,8 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					</table>
 					</div>
 					<div class="col">
-					<table class="table meeting">
-					<tr>
+					<table class="table meeting" style="font-weight: bold;" >
+						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">User :</td>
 							<td><%=enduser%></td>
 						</tr>
@@ -100,7 +100,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					</div>
 				</div>
 				<div class="col-md-4">
-					<table class="table meeting">
+					<table class="table meeting" style="font-weight: bold;" >
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Objectives :</td>
 							<td style="width: 740px;"><%=projectdata[7]%></td>
@@ -126,10 +126,10 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				 <div class="container-fluid" >
 				 	<div class="row" >
 				 		<div class="col" >
-				 			<div class="form-check form-check-inline">
-									<label class="form-check-label" for="Status"> <b>Current Status : </b> <span class="mandatory">*</span></label>
+				 			<div class="form-check form-check-inline" style="text-align: center;width: 100%">
+									<label class="form-check-label" style="margin: auto;"  for="Status"> <b>Brief : </b> </label>
 						</div>
-						<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"  required="required"></textarea>
+						<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"></textarea>
 				 		</div>
 				 		<div class="col" >
 				 			<div class="container-fluid" >
@@ -145,12 +145,12 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 												</div>
 												<div class="col">
 														<div class="form-group">
-															<label><b> Attachment : </b></label><span
-																class="mandatory">*</span> <input
+															<label><b> Attachment : </b></label>
+																<input
 																class="form-control form-control" type="file"
 																name="Attachment2" id="Attachment2"
 																accept="application/pdf, application/vnd.ms-excel"
-																required="required" maxlength="3"
+																 maxlength="3"
 																style="font-size: 15px;">
 														</div>
 												</div>
@@ -286,24 +286,12 @@ function checkData(){
 	var attachment  = $("#Attachment1").val();
 	var attachment2  = $("#Attachment2").val();
 	
-	if(status=='' || status=='null' || status==null){
-		alert("Please Enter the Status Data!");
-		  event.preventDefault();
-		  return false;
-	} else if(status.length>5000){
-		alert("Status Data is Too Long!");
-		  event.preventDefault();
-		  return false;
-	}else if (silde.length === 0){
+	 if (silde.length === 0){
 		  alert("Please Select Atleast One Silde!");
 		  event.preventDefault();
 		  return false;
 	 }else if(attachment=='' || attachment=='null' || attachment==null){
 		 alert("Please Select Image !");
-		  event.preventDefault();
-		  return false;
-	 }else if(attachment2=='' || attachment2=='null' || attachment2==null){
-		 alert("Please Select PDF File!");
 		  event.preventDefault();
 		  return false;
 	 }else{

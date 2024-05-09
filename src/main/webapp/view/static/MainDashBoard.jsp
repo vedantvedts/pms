@@ -2937,7 +2937,13 @@ if(ses!=null){ %>
 												  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 												    <div class="modal-content">
 												      <div class="modal-header">
-												        <h5 class="modal-title" id="exampleModalLabel">Select Projects for SlideShow</h5>
+												        <h5 class="modal-title" id="exampleModalLabel">
+												        	Select Projects for SlideShow
+												        	<br>
+												        	<input type="checkbox" id="selectall" checked style="margin-left: -58%;width: 20px;height: 20px;"> 
+												        	<span style="font-size: 1.2rem;">Select All</span> 
+												        	
+												        </h5>
 												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												          <span aria-hidden="true">&times;</span>
 												        </button>
@@ -2947,21 +2953,21 @@ if(ses!=null){ %>
 												      <div class="container-fluid">
 												        	<%int c=0;for(Object[] obj : ProjectHealthData){
 												
-												if(ProjectList!=null){  for(Object[] obj2 : ProjectList) 
-												{
-													if(obj[2].equals(obj2[0]))
-													{
+												//if(ProjectList!=null){  for(Object[] obj2 : ProjectList) 
+												//{
+												//	if(obj[2].equals(obj2[0]))
+												//	{
 											%><%if(c==4||c==0) {c=0; %><div class="row"><%} %>
 											<div class="col-3" >
 											<div style="text-align: left;">
-											<input checked  name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/><label for="<%=obj[2]%>">
+											<input checked class="projectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/><label for="<%=obj[2]%>">
 											<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
 														  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
 														  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
 														  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
 														  	</span> 	
 											</label></div>	</div>
-											<%if(c==3&&c!=0) { %></div><%}%><%}}}c++;}%>
+											<%if(c==3&&c!=0) { %></div><%}%><%c++;}%>
 												      </div>
 												      </div>
 												      <div class="modal-footer">
@@ -5428,6 +5434,17 @@ window.onclick = function(event) {
     	});
 </script> 
 
+<script type="text/javascript">
+$("#selectall").click(function(){
+	var selectall =  $('#selectall').val();
+	if(selectall=="on"){
+		 $('.projectlist').prop('checked', this.checked);
+	}else{
+		 $('.projectlist').prop('checked', this.unchecked);
+	}
+	
+});
+</script>
 
 </body>
 

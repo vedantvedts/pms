@@ -3740,6 +3740,7 @@ public class PrintController {
 		public String ProjectSlides(Model model, RedirectAttributes redir , HttpServletRequest req , HttpSession ses)throws Exception
 		{
 			String UserId = (String) ses.getAttribute("Username");
+			String labcode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside PfmsProjectSlides.htm "+UserId);	
 			try {
 				String projectid = (String)req.getParameter("projectid");
@@ -3775,6 +3776,7 @@ public class PrintController {
 					req.setAttribute("filepath", ApplicationFilesDrive);
 					req.setAttribute("projectslidedata", projectslidedata);
 					req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+					req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
 					
 					return "print/ProjectSlideEditView";
 				}
@@ -3787,7 +3789,7 @@ public class PrintController {
 		}
 		
 		@RequestMapping(value="AddProjectSlides.htm" , method = RequestMethod.POST)
-		public String AddProjectSlideData(HttpServletRequest req , RedirectAttributes redir, HttpSession ses , @RequestParam("Attachment1")MultipartFile imageattch , @RequestParam("Attachment2")MultipartFile pdfattach)throws Exception
+		public String AddProjectSlideData(HttpServletRequest req , RedirectAttributes redir, HttpSession ses , @RequestParam(name="Attachment1", required = false)MultipartFile imageattch , @RequestParam(name="Attachment2", required = false)MultipartFile pdfattach)throws Exception
 		{
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside AddProjectSlides.htm.htm "+UserId);	
