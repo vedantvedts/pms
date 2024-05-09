@@ -516,7 +516,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            
 												            <div class="col-md-5" style="">
 												        		<div class="form-group">
-												                	<label class="control-label">List of non-consumable items required (at least costing more than Rs. 10 lakhs) </label><span class="mandatory">*</span>
+												                	<label class="control-label">List of non-consumable items required (at least costing more than Rs.10 lacs) </label><span class="mandatory">*</span>
 												                   <%if(chlist!=null && chlist.getQARNCItems()!=null){ %>
                             					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="QARNCItemsfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">

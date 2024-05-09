@@ -185,7 +185,7 @@ a:hover {
 								</div>
 
 								<div class="col-sm-4" align="left"  >
-									<label > Type : 
+									<label > Project: 
 									</label><br>
 									<select class="form-control selectdee "  name="Project"  id="Project" required="required"   data-live-search="true" id="projectid" <%if(ActionData!=null && ActionData[5]!=null){%>disabled <%}%>>                                                     
 										
