@@ -2207,7 +2207,7 @@ public class ProjectClosureController {
 			tech.setClosureId(Long.parseLong(closureId));
 			tech.setRevisionNo("0");
 			tech.setIssueDate(sdtf.format(new Date()));
-			tech.setStatus("INI");
+			tech.setStatus("TIN");
 			tech.setCreatedBy(EmpId);
 			tech.setCreatedDate(sdtf.format(new Date()));
 			tech.setIsActive(1);;
