@@ -25,6 +25,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
@@ -798,5 +799,35 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			e.printStackTrace();
 			return null;
 		}		
+	}
+
+	private static final String APPENDICESDOCLIST="SELECT AppndMasterId,AppndDocName FROM pfms_closure_appendices";
+	@Override
+	public List<Object[]> getAppndDocList() throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(APPENDICESDOCLIST);
+			
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getAppndDocList" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	@Override
+	public long ProjectClosureAppendixDocSubmit(ProjectClosureTechnicalAppendices appnd) throws Exception {
+		
+		try {
+			manager.persist(appnd);
+			manager.flush();
+			return appnd.getAppendicesId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO ProjectClosureAppendixDocSubmit "+e);
+			return 0L;
+		}
 	}
 }

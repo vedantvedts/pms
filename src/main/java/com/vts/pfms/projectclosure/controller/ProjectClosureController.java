@@ -71,6 +71,7 @@ import com.vts.pfms.project.dto.ProjectOtherReqDto;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
+import com.vts.pfms.projectclosure.dto.ProjectClosureAppendixDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
 
 import com.vts.pfms.projectclosure.model.ProjectClosure;
@@ -2248,7 +2249,11 @@ public class ProjectClosureController {
 			
 			String closureId = req.getParameter("ClosureId"); 
 			List<Object[]> ChapterList=service.getChapterList(closureId);
+			List<Object[]> AppndDocList=service.getAppndDocList();
+			
+			
 			req.setAttribute("ChapterList", ChapterList);
+			req.setAttribute("AppndDocList", AppndDocList);
 			
 			req.setAttribute("closureId", closureId);
 			return "project/ProjectTechClosureContent";
@@ -2443,4 +2448,44 @@ public class ProjectClosureController {
 	}
 	
 	
+	
+	@RequestMapping(value="ProjectClosureAppendixDocSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String ProjectClosureAppendixDocSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
+		@RequestPart(name="attachment", required = false) MultipartFile[] attachment) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date()+ " Inside ProjectClosureAppendixDocSubmit.htm "+UserId);	
+		try {
+			String closureId = req.getParameter("ClosureId");
+			String chapterid = req.getParameter("ChapterId");
+			String DocumentName[] = req.getParameterValues("DocumentName");
+			String action = req.getParameter("Action");
+		
+			ProjectClosureAppendixDto dto = new ProjectClosureAppendixDto();
+		
+			dto.setChapterId(Long.parseLong(chapterid));			
+			dto.setDocumentName(DocumentName);
+			dto.setAttatchmentName(req.getParameterValues("attatchmentname"));
+			dto.setAppendix(req.getParameterValues("Appendix"));
+			dto.setAttachment(attachment);
+			dto.setUserId(UserId);
+			
+			long result = service.ProjectClosureAppendixDocSubmit(dto);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Appendices Details "+action+"ed Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "Appendices Details "+action+" Unsuccessful");	
+			}	
+			
+			redir.addAttribute("closureId", closureId);
+		    return "redirect:/TechClosureContent.htm";
+			
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProjectClosureAppendixDocSubmit.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+		
 }

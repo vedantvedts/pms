@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
+import com.vts.pfms.projectclosure.dto.ProjectClosureAppendixDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
 
 import com.vts.pfms.projectclosure.model.ProjectClosure;
@@ -71,6 +72,8 @@ public interface ProjectClosureService {
 	public ProjectClosureTechnicalSection getProjectClosureTechnicalSectionById(String id)throws Exception;
 	public long ChapterEdit(String chapterId, String chapterName,String ChapterContent)throws Exception;
 	public Object[] getChapterContent(String chapterId) throws Exception;
+	public List<Object[]> getAppndDocList()throws Exception;
+	public long ProjectClosureAppendixDocSubmit(ProjectClosureAppendixDto dto) throws Exception;
 	
 	
 }

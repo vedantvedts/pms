@@ -29,6 +29,7 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.projectclosure.dao.ProjectClosureDao;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
+import com.vts.pfms.projectclosure.dto.ProjectClosureAppendixDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
 
 import com.vts.pfms.projectclosure.model.ProjectClosure;
@@ -40,6 +41,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
@@ -619,7 +621,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				Timestamp instant = Timestamp.from(Instant.now());
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-				String path = "Project-Closure\\ACP\\Trial-Results\\";
+				String path = "Project-Closure\\TPCR\\Appendices\\";
 
 				// To upload file path for monitoringCommitteeAttach
 				if (!dto.getAttachment()[i].isEmpty()) {
@@ -1193,5 +1195,49 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	public Object[] getChapterContent(String chapterId) throws Exception {
 		
 		return dao.getChapterContent(chapterId);
+	}
+
+	@Override
+	public List<Object[]> getAppndDocList() throws Exception {
+		
+		return dao.getAppndDocList();
+	}
+
+	@Override
+	public long ProjectClosureAppendixDocSubmit(ProjectClosureAppendixDto dto) throws Exception {
+	try {
+		for(int i=0;i<dto.getAttachment().length ;i++) {
+			
+				ProjectClosureTechnicalAppendices appnd = new ProjectClosureTechnicalAppendices();
+				
+				appnd.setDocumentName(dto.getDocumentName()[i]);
+				appnd.setAppendix(dto.getAppendix()[i]);;
+				
+				Timestamp instant = Timestamp.from(Instant.now());
+				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+
+				String path = "Project-Closure\\TPCR\\  -Results\\";
+
+				
+				if (!dto.getAttachment()[i].isEmpty()) {
+					appnd.setDocumentAttachment("TrialResult-" + timestampstr + "."
+							+ FilenameUtils.getExtension(dto.getAttachment()[i].getOriginalFilename()));
+					saveFile(uploadpath + path, appnd.getDocumentAttachment(), dto.getAttachment()[i]);
+				}else {
+					appnd.setDocumentAttachment(dto.getAttatchmentName()[i]);
+				}
+				
+				appnd.setCreatedBy(dto.getUserId());
+				appnd.setCreatedDate(sdtf.format(new Date()));
+				appnd.setIsActive(1);
+				
+				dao.ProjectClosureAppendixDocSubmit(appnd);
+			}
+			return 1;
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProjectClosureServiceImpl ProjectClosureAppendixDocSubmit "+e);
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

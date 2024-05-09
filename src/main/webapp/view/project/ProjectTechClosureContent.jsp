@@ -386,6 +386,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 
 String closureId=(String)request.getAttribute("closureId");
 List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
+List<Object[]> AppndDocList=(List<Object[]>)request.getAttribute("AppndDocList");
 
 %>
 
@@ -639,7 +640,7 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 
         <%-------------------  RichText Editor -------------------------------------%>
                   
-	          <div class="col-md-7">
+	          <div class="col-md-7" id="richtexteditor" >
 	         	<form action="SubChapterEdit.htm" method="POST" id="myfrm1">
 	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
 	      			<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;display:none;"></h5><hr>
@@ -647,8 +648,7 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 					  <div class="card-body" style="margin-top: -8px" >
 					    <div class="row">	
 					        <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
-					             <div id="div_editor1">
-		                     </div>
+					          <div id="div_editor1"></div>
 					
 					         <textarea name="ChapterContent" style="display: none;"></textarea>
 					          <div class="mt-2" align="center" id="detailsSubmit">
@@ -669,10 +669,82 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 		         		</div> 
 	         		</form>
 		        </div>
+		       
+		  <%-----------------------------------  RichText Editor -------------------------------------%> 
+		  
+		  
+		   <%-----------------------------------  Appendices Cloning -------------------------------------%> 
+		   
+		      <div class="col-md-7" id="DocumentTable" style="display:none;">
+	         	<form action="ProjectClosureAppendixDocSubmit.htm" method="GET" id="">
+	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
+	      			<h5 class="heading ml-4 mt-3" id="" style="font-weight:500;color: #31708f;">Appendices</h5><hr>
+	      			
+					  <div class="card-body" style="margin-top: -8px" >
+					    <div class="row">
+					       <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
+					          <div class="row">
+                      		    <div class="col-md-12" align="left">
+									<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
+										     <b style="font-family: 'Lato',sans-serif;font-size: large;">Attachments</b>
+									</label>
+							    </div>
+				              </div>
+				             <table style="width: 94%;margin-left: 3%;" id="trialresultstable">
+								<thead style = "background-color: #055C9D; color: white;text-align: center;">
+									<tr>
+									    <th style="width: 10%;padding: 0px 5px 0px 5px;">Appendix</th>
+								    	<th style="width: 40%;padding: 0px 5px 0px 5px;">Document Name</th>
+								    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Attachment</th>
+								    	<td style="width: 5%;">
+											<button type="button" class=" btn btn_add_trialresults "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+										</td>
+									</tr>
+								</thead>
+								 <tbody>
+									<tr class="tr_clone_trialresults">
+												
+									    <td style="width: 20%;padding: 10px 5px 0px 5px;" >
+											  <input type="text" class="form-control item" name="Appendix" id="appendix" value="Appendix-A">
+										</td>
+													
+										   <td style="width: 40%;padding: 10px 5px 0px 5px;" >
+												<select class="form-control" name="DocumentName">
+												    <option value="0"  selected disabled>Select</option>
+													    <%for(Object[] obj:AppndDocList){ %>
+													          <option value="<%=obj[0] %>" ><%=obj[1] %></option>
+													     <%}%>
+												</select>
+											</td>
+												
+											<td style="width: 25%;padding: 10px 5px 0px 5px;">
+												  <input type="file" class="form-control item" name="attachment" accept=".pdf" required>
+											</td>
+												
+											<td style="width: 5% ; ">
+												 <button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+											</td>
+										</tr>
+								    </tbody>
+				               </table>
+				             
+				                 <div align="center">
+				                     <button type="submit" class="btn btn-sm btn-success submit mt-2 " name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')" >SUBMIT</button>
+				              </div>
+				            </div>
+	                     </div>
+		             </div>
+                  </div> 
+                  <input type="hidden"  id='chapterids' name='ChapterId' value="">
+				  <input type="hidden" name="ClosureId" value="<%=closureId%>" >
+               </form>
+             </div>
+             
+              <%-----------------------------------  Appendices Cloning -------------------------------------%> 
+       
+   </div>
+ </div>
 
-			</div>
-	   </div>
-			
 			
 			
 			
@@ -715,7 +787,7 @@ List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 		
 			  <input class="form-control" type="text" name="SectionName" placeholder="Enter New Chapter" >
 			  <br>
-			  <button type="button" class="btn btn-success" data-toggle="modal"  onclick="SectionSubmit()" >Submit </button>
+			  <button type="button" class="btn btn-primary" data-toggle="modal"  onclick="SectionSubmit()" >Add </button>
 			  <button type="button" class="btn btn-danger" data-toggle="modal"  onclick="CloseButton()" >Close </button>
 		
 		</div>
@@ -820,7 +892,6 @@ function SectionSubmit(){
 	 
 }
 
-
 function ChapterAdd(){
 	
 	if(confirm("Are you sure you want to submit?")){
@@ -858,8 +929,22 @@ function showEditor(a,b){
 	 $('#editorHeading').html(a);
 	 $('#Editor').html(a);
 	 $('#chapterid').val(b);
+	 $('#chapterids').val(b);
 	 $('#chaptername').val(a);
-
+	 
+	 if(a==='APPENDICES'){
+		 
+		 $('#richtexteditor').hide();
+		 $('#editorHeading').hide();
+		 $('#editorHeading1').hide();
+		 $('#DocumentTable').show();
+		 
+	 }else{
+		 
+		 $('#richtexteditor').show();
+		 $('#DocumentTable').hide();
+	  }
+	
 	$.ajax({
 		type:'GET',
 		url:'ChapterContent.htm',
@@ -869,7 +954,6 @@ function showEditor(a,b){
 		},
 		success:function(result){
 		var ajaxresult=JSON.parse(result);
-		
 		if(ajaxresult[1]==null){
 		
 		    ajaxresult[1]=""
@@ -889,13 +973,12 @@ $('#myfrm1').submit(function() {
 	 
 function EditorValueSubmit(){
 	if(confirm("Are you sure you want to submit?")){
-		
-	return true;
+		return true;
 	}else{
-	event.preventDefault();
-	return false;
+	   event.preventDefault();
+	   return false;
 	}
-	}
+  }
 
 </script>
 
@@ -927,8 +1010,61 @@ if(FormName!=null){
 %>
       $('#<%=IdName%>').click();
 <%}}%>
-</script>
 
+
+//Appendices Document Attachment Cloning
+
+$(document).ready(function() {
+    var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    $("#trialresultstable").on('click','.btn_add_trialresults' ,function() {
+        var $tr = $('.tr_clone_trialresults').last('.tr_clone_trialresults');
+        var $clone = $tr.clone();
+
+        $tr.after($clone);
+
+        var milestoneno = $clone.find("#appendix").val();
+        var lastChar = milestoneno.charAt(milestoneno.length - 1);
+        var index = alphabet.indexOf(lastChar);
+        var nextChar = alphabet[index + 1];
+
+        if (nextChar) {
+            $clone.find("#appendix").val("Appendix-" + nextChar);
+        } else {
+            // Handle if we reach the end of the alphabet
+            // For simplicity, let's reset to 'A', you can modify this logic as per your requirement
+            $clone.find("#appendix").val("Appendix-A");
+        }
+
+        // Clear input and textarea fields
+        //$clone.find("input, textarea").val("");
+    });
+
+    $("#trialresultstable").on('click','.btn_rem_trialresults' ,function() {
+        var $rows = $('.tr_clone_trialresults');
+
+        if ($rows.length > 1) {
+            var $rowToRemove = $(this).closest('.tr_clone_trialresults');
+            var indexToRemove = $rows.index($rowToRemove);
+
+            // Remove the row
+            $rowToRemove.remove();
+
+            // Update the milestoneno2 values for the remaining rows
+            $('.tr_clone_trialresults').each(function(index, row) {
+                var $currentRow = $(row);
+                var newChar = alphabet.charAt(index);
+                $currentRow.find("#appendix").val("Appendix-" + newChar);
+            });
+        }
+    });
+});
+
+
+
+
+
+</script>
 
 </body>
 </html>
