@@ -670,7 +670,6 @@ FormatConverter fc = new FormatConverter();
 															</tbody>
 														</table>
 													</div>
-									
 												</div>
 								
 											</div>
