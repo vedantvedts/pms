@@ -20,7 +20,7 @@ color: #00416A ;
 }
 
 span {
-	font-size: 1.09rem !important;
+	font-size: 1.2rem !important;
 	font-weight: bold !important;
 }
 </style>
@@ -105,14 +105,14 @@ FormatConverter fc = new FormatConverter();
 				<div class="card-body shadow-nohover" >
 					<div class="">
 						<div class="">
-							<table style="width: 75%;">
+							<table style="width: 100%;">
 								<thead style="background-color: maroon;color: white;">
 									<tr>
-										<th style="width: 10%;">SN</th>
-										<th style="width: 55%;">Project</th>
-										<th style="width: 15%;">Cost (In Cr, &#8377)</th>
-										<th style="width: 10%;">DOS</th>
-										<th style="width: 10%;">PDC</th>
+										<th style="width: 5%;">SN</th>
+										<th style="width: 60%;">Project</th>
+										<th style="width: 12%;">Cost (In Cr, &#8377)</th>
+										<th style="width: 12%;">DOS</th>
+										<th style="width: 12%;">PDC</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -123,7 +123,7 @@ FormatConverter fc = new FormatConverter();
 										<tr>
 											<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 											<td style="font-weight: bold;">
-												<a data-target="#presentation-slides" data-slide-to="<%=2+i%>"  class="carousel-indicator btn" data-toggle="tooltip" data-placement="top" title="">
+												<a data-target="#presentation-slides" data-slide-to="<%=2+i%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 												<b>
 													<%if (projects.get(i) != null )
 														if(projects.get(i)[1] != null) { %><%=projects.get(i)[1]%> (<%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%>)
@@ -164,6 +164,7 @@ FormatConverter fc = new FormatConverter();
 
 
 		<!-- ----------------------------------------  Freezed Project Slide ----------------------------------------------------- -->
+		<!-- ----------------------------------------- Slide Two ------------------------------------------------------------ -->
 		<%if(projects!=null && projects.size()>0 && FreezedSlide!=null){
 				for(int i=0;i<projects.size();i++ ){
 					if(FreezedSlide.get(i)!=null && projects.get(i)!=null && freezedproject != null){
@@ -200,95 +201,106 @@ FormatConverter fc = new FormatConverter();
 													</div>
 													<h4 class="card-title col-md-10" align="center">
 														<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-														%><%=projects.get(i)[1]%> ( <%=projects.get(i)[12]%> )
+														%><%=projects.get(i)[1]%> (<%=projects.get(i)[12]%>)
 														<%}%>
 													</h4>
 							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
 							 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							 						</div>
 												</div>
-												<div class="content shadow-nohover" style="padding: 0.25rem;;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;" align="center">
+												<div class="content shadow-nohover" style="padding: 0.25rem;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;overflow-x: hidden;" align="center">
 													<div class="row" >
 														<div class="col-md-12">
 												
-															<table style="width: 100%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;">
+															<table style="width: 99%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.2rem;">
 																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;width: 10%;">Project No :</td>
-																	<td colspan="1" style="width: 25%;"><%=projects.get(i)[11]%></td>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;width: 15%;">User:</td>
-																	<td colspan="1" style="width: 10%;"><%=enduser%></td>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;width: 15%;">Category:</td>
-																	<td colspan="1" style="width: 25%;"><%=projects.get(i)[2]%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 10%;">Project No :</td>
+																	<td colspan="1" style="width: 25%;color: black;"><%=projects.get(i)[11]%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 8%">User :</td>
+																	<td colspan="1" style="width: 17%;color: black;"><%=enduser%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 8%;">Category :</td>
+																	<td colspan="1" style="width: 32%;color: black;"><%=projects.get(i)[2]%></td>
 																</tr>
 																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">DoS :</td>
-																	<td colspan="1"><%=sdf.format(projects.get(i)[5])%></td>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">Cost Rs.:</td>
-																	<td colspan="1"><%=nfc.convert(cost / 10000000)%> (In Cr)</td>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">PDC:</td>
-																	<td colspan="1"><%=sdf.format(projects.get(i)[4])%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">DoS :</td>
+																	<td colspan="1" style="color: black;"><%=sdf.format(projects.get(i)[5])%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr) :</td>
+																	<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%> </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC :</td>
+																	<td colspan="1" style="color: black;"><%=sdf.format(projects.get(i)[4])%></td>
 																</tr>
 		
 																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">Brief:</td>
-																	<td colspan="5" style="font-size: 1.09rem;">
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;vertical-align: top;">Brief :</td>
+																	<td colspan="5" style="font-size: 1.2rem;color: black;">
 																		<%if(FreezedSlide.get(i)[0]!=null){%>
-																		<%=FreezedSlide.get(i)[0]%>
+																			<%=FreezedSlide.get(i)[0]%>
 																		<%}else{%>
-																		--
+																			--
 																		<%}%>
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="1"><b style="font-size: 1.09rem; font-weight: bold; color: #212529;">Objectives: </b></td>
-																	<td colspan="5">
-																	 <%
-																		 if (projects.get(i)[7] != null && projects.get(i)[7].toString().length() > 320) {
-				 															%>
-																		<%=projects.get(i)[7].toString().substring(0, 280)%>
-																		<%
-																		} else {
-																		%> <%=projects.get(i)[7]%> <%}%>
+																	<td colspan="1"><b style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Objectives : </b></td>
+																	<td colspan="5"style="color: black;">
+																		<%if(projects.get(i)[7] != null && projects.get(i)[7].toString().length() > 320) {%>
+																			<%=projects.get(i)[7].toString().substring(0, 280)%>
+																		<%} else {%>
+																			<%if(projects.get(i)[7]!=null) {%>
+																				<%=projects.get(i)[7]%> 
+																			<%} else{%>
+																				--
+																			<%} %>
+																		<%}%>
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="1"><b style="font-size: 1.09rem; font-weight: bold; color: #212529;">Scope: </b></td>
-																	<td colspan="5">
-																		<%
-																		if (projects.get(i)[9] != null && projects.get(i)[9].toString().length() > 320) {
-																		%>
-																		<%=projects.get(i)[9].toString().substring(0, 280)%>
-																		<%
-																		} else {
-																		%> <%=projects.get(i)[9]%> <%}%>
-																	</td>
-																</tr>
-																
-																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">Application:</td>
-																	<td colspan="5">
-																		<%if (projects.get(i) != null && projects.get(i)[10] != null) {
-																		%><%=projects.get(i)[10]%>
-																		<%} else {%> -- <%}%>
+																	<td colspan="1"><b style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Scope : </b></td>
+																	<td colspan="5"style="color: black;">
+																		<%if (projects.get(i)[9] != null && projects.get(i)[9].toString().length() > 600) {%>
+																			<%=projects.get(i)[9].toString().substring(0, 600)%>
+																		<%} else {%> 
+																			<%if(projects.get(i)[9]!=null) {%> 
+																				<%=projects.get(i)[9]%> 
+																			<%} else{%>
+																				--
+																			<%} %>
+																		<%}%>
 																	</td>
 																</tr>
 																
 																<tr>
-																	<td colspan="1"><b style="font-size: 1.09rem; font-weight: bold; color: #212529;">Deliverables: </b> </td>
-																	<td colspan="5">
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application :</td>
+																	<td colspan="5"style="color: black;">
+																		<%if (projects.get(i) != null && projects.get(i)[10] != null) {%>
+																			<%=projects.get(i)[10]%>
+																		<%} else {%> 
+																			--
+																		 <%}%>
+																	</td>
+																</tr>
+																
+																<tr>
+																	<td colspan="1"><b style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Deliverables : </b> </td>
+																	<td colspan="5"style="color: black;">
 																		<% if (projects.get(i)[8] != null && projects.get(i)[8].toString().length() > 320) {%>
-																		<%=projects.get(i)[8].toString().substring(0, 280)%>
-																		<%
-																		} else {
-																		%> <%=projects.get(i)[8]%> <% } %>
+																			<%=projects.get(i)[8].toString().substring(0, 280)%>
+																		<%} else {%> 
+																			<%if(projects.get(i)[8]!=null) {%>
+																				<%=projects.get(i)[8]%> 
+																			<%} else{%>
+																				--
+																			<%} %>
+																		<% } %>
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">Current Stage</td>
-																	<td colspan="5">
-																		<%if(projects.get(i)[14]!=null){%><%=projects.get(i)[14]%>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage : </td>
+																	<td colspan="5"style="color: black;">
+																		<%if(projects.get(i)[14]!=null){%>
+																			<%=projects.get(i)[14]%>
 																		<%}else{%>
-																		--
+																			--
 																		<%}%>
 																	</td>
 																</tr>
@@ -318,7 +330,7 @@ FormatConverter fc = new FormatConverter();
 																</tr>
 																<tr>
 																	<td style="text-align: right;">
-																		<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[4]%>" target="_blank" title="PDF File"><b>Show more</b></a>
+																		<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=FreezedSlide.get(i)[4]%>" target="_blank" title="PDF File"><b>Show more</b></a>
 																	</td>
 																</tr>
 															</tbody>
@@ -336,6 +348,7 @@ FormatConverter fc = new FormatConverter();
 										</div>
 									</div>
 								</div>
+								<!-- ----------------------------------------- Slide One ------------------------------------------------------------ -->
 							<%}} if(FreezedSlide.get(i)!=null && projects.get(i)!=null)if(FreezedSlide.get(i)[1].toString().equals("1")){ %> 
 								<div class="carousel-item " >
 									<div class="container-fluid" >
@@ -363,70 +376,103 @@ FormatConverter fc = new FormatConverter();
 							 						<div class="col-md-1" align="left" style="padding-top:5px;" >
 														<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 													</div>
-													<h4 class="card-title col-md-10" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=projects.get(i)[1]%> ( <%=projects.get(i)[12]%> ) <%}%></h4>
+													<h4 class="card-title col-md-10" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=projects.get(i)[1]%> (<%=projects.get(i)[12]%>)  <%}%></h4>
 							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
 							 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							 						</div>
 												</div>
 												
-												<div class="content" style="padding: 0.25rem;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;" align="center">
+												<div class="content" style="padding: 0.25rem;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;overflow-x: hidden;" align="center">
 													<div class="row" style="">
 														<div class="col-md-6">
 															<div class="row"><div class="col">
-																<table style="width: 100%;font-weight: bold;margin-left: 1%;">
+																<table style="width: 100%;font-weight: bold;margin-left: 1%;font-size: 1.2rem">
 																	<tr>
-																		<td style="font-size: 1.09rem;font-weight: bold; color: #212529;width: 150px;height: 41.6px;">Project No :</td>
-																		<td style="width: 200px;"><%=projects.get(i)[11]%></td>
-																		<td style="font-size: 1.09rem;font-weight: bold;color: #212529;height: 41.6px; width: 80px;">User :</td>
-																		<td style="width: 150px;"><%=enduser%></td>
+																		<td style="font-size: 1.2rem;font-weight: bold; color: #021B79;">Project No :</td>
+																		<td style="color: black;"><%=projects.get(i)[11]%></td>
+																		<td style="font-size: 1.2rem;width: 8%;font-weight: bold;color: #021B79;">User :</td>
+																		<td style="color: black;"><%=enduser%></td>
 																	</tr>
 																	<tr>
-																		<td style="font-size: 1.09rem;font-weight: bold;color: #212529;height: 41.6px;">Category :</td>
-																		<td><%=projects.get(i)[2]%></td>
-																		<td style="font-size: 1.09rem;font-weight: bold;color: #212529;height: 41.6px;">DoS :</td>
-																		<td><%=sdf.format(projects.get(i)[5]) %></td>
+																		<td style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Category :</td>
+																		<td style="color: black;"><%=projects.get(i)[2]%></td>
+																		<td style="font-size: 1.2rem;font-weight: bold;color: #021B79;">DoS :</td>
+																		<td style="color: black;"><%=sdf.format(projects.get(i)[5]) %></td>
 																	</tr>
 																	<tr>
-																		<td style="font-size: 1.09rem;font-weight: bold;color: #212529;height: 41.6px;">Cost Rs.:</td>
-																		<td><%=nfc.convert(cost/10000000)%> (In Cr)</td>
-																		<td style="font-size: 1.09rem;font-weight: bold;color: #212529;height: 41.6px;">PDC :</td>
-																		<td><%=sdf.format(projects.get(i)[4]) %></td>
+																		<td style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Cost (In Cr):</td>
+																		<td style="color: black;"><%=nfc.convert(cost/10000000)%></td>
+																		<td style="font-size: 1.2rem;font-weight: bold;color: #021B79;">PDC :</td>
+																		<td style="color: black;"><%=sdf.format(projects.get(i)[4]) %></td>
 																	</tr>
 																	
 																	<tr>
 																		<td style="border-top: none;width: 22.6%;vertical-align: top;">
-																			<b style="font-size: 1.09rem;font-weight: bold;color: #212529;"> Brief:</b>
+																			<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;"> Brief:</b>
 																		</td>
-																		<td colspan="3" style="font-size: 1.09rem;border-top: none;width: 77.4%;vertical-align: top;">
-																		<%if(FreezedSlide.get(i)[0]!=null){%>
-																			<%=FreezedSlide.get(i)[0]%>
+																		<td colspan="3" style="font-size: 1.2rem;border-top: none;vertical-align: top;color: black;">
+																			<%if(FreezedSlide.get(i)[0]!=null){%>
+																				<%=FreezedSlide.get(i)[0]%>
 																			<%}else{%>
-																			--
+																				--
 																			<%}%>
 																		</td>
 																	</tr>
 																	<tr>
-																		<td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Objectives : </b></td>
-																		<td colspan="3"> <%if(projects.get(i)[7]!=null && projects.get(i)[7].toString().length()>320){%> <%=projects.get(i)[7].toString().substring(0,280)%><%}else{%> <%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> <%}%></td></tr>
+																		<td>
+																			<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Objectives : </b>
+																		</td>
+																		<td colspan="3" style="color: black;"> 
+																			<%if(projects.get(i)[7]!=null && projects.get(i)[7].toString().length()>320){%> 
+																				<%=projects.get(i)[7].toString().substring(0,280)%>
+																			<%}else{%> 
+																				<%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> 
+																			<%}%>
+																		</td>
+																	</tr>
 																	<tr>
-																		<td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Scope : </b></td>
-																		<td colspan="3"> <%if(projects.get(i)[9]!=null && projects.get(i)[9].toString().length()>320){%> <%=projects.get(i)[9].toString().substring(0,280)%><%}else{%> <%=projects.get(i)[9]==null?"--":projects.get(i)[9]%> <%}%> </td></tr>
+																		<td>
+																			<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Scope : </b>
+																		</td>
+																		<td colspan="3" style="color: black;"> 
+																			<%if(projects.get(i)[9]!=null && projects.get(i)[9].toString().length()>600){%> 
+																				<%=projects.get(i)[9].toString().substring(0,600)%>
+																			<%}else{%> 
+																				<%=projects.get(i)[9]==null?"--":projects.get(i)[9]%> 
+																			<%}%> 
+																		</td>
+																	</tr>
 																	<tr>
-																		<td style="font-size: 1.09rem;font-weight: bold;color: #212529;">Application :</td>
-																		<td colspan="3"><%if(projects.get(i)!=null && projects.get(i)[10]!=null){%><%=projects.get(i)[10]%><%}else{%> -- <%}%></td>
+																		<td style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Application :</td>
+																		<td colspan="3" style="color: black;">
+																		<%if(projects.get(i)!=null && projects.get(i)[10]!=null){%>
+																			<%=projects.get(i)[10]%>
+																		<%}else{%> 
+																			-- 
+																		<%}%></td>
 																	</tr>
 																			
 																	<tr>
-																		<td><b style="font-size: 1.09rem;font-weight: bold;color: #212529;">Deliverables : </b></td>
-																		<td colspan="3"> <%if(projects.get(i)[8]!=null && projects.get(i)[8].toString().length()>320){%> <%=projects.get(i)[8].toString().substring(0,280)%><%}else{%> <%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> <%}%></td></tr>
+																		<td>
+																			<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Deliverables : </b>
+																		</td>
+																		<td colspan="3" style="color: black;"> 
+																			<%if(projects.get(i)[8]!=null && projects.get(i)[8].toString().length()>320){%> 
+																				<%=projects.get(i)[8].toString().substring(0,280)%>
+																			<%}else{%> 
+																				<%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> 
+																			<%}%>
+																		</td>
+																	</tr>
 																	<tr>
-																		<td style="font-size: 1.09rem; font-weight: bold; color: #212529;">
+																		<td style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
 																			Current Stage
 																		</td>
-																		<td colspan="3">
-																			<%if(projects.get(i)[14]!=null){%><%=projects.get(i)[14]%>
+																		<td colspan="3" style="color: black;">
+																			<%if(projects.get(i)[14]!=null){%>
+																				<%=projects.get(i)[14]%>
 																			<%}else{%>
-																			--
+																				--
 																			<%}%>
 																		</td>
 																	</tr>
@@ -445,7 +491,7 @@ FormatConverter fc = new FormatConverter();
 																	<tr >
 																		<td style="border-bottom: none;">
 																			<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2]).exists()){%>
-																			<img class=" d-flex justify-content-center mx-auto d-block" data-enlargable style="max-height: 300px; max-width: 1200px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
+																			<img class=" d-flex justify-content-center mx-auto d-block" data-enlargable style="max-height: 600px; max-width: 1600px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
 																			<%} else{%>image<%}%>
 																		</td>
 																
@@ -456,8 +502,8 @@ FormatConverter fc = new FormatConverter();
 																		</td>
 																	</tr>
 																</tbody>
-																</table>
-																<br>
+															</table>
+															<br>
 							
 														</div>
 														
@@ -470,7 +516,7 @@ FormatConverter fc = new FormatConverter();
 									</div>
 								</div>
 							</div>	
-			
+						<!-- ----------------------------------------- Slide Three ------------------------------------------------------------ -->
 						<%}}else{%>
 							
 							<div class="carousel-item " >
@@ -503,91 +549,92 @@ FormatConverter fc = new FormatConverter();
 													</div>
 													<h4 class="card-title col-md-10" align="center">
 														<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-														%><%=projects.get(i)[1]%> ( <%=projects.get(i)[12]%> )
+														%><%=projects.get(i)[1]%> (<%=projects.get(i)[12]%>)
 														<%}%>
 													</h4>
 							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
 							 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							 						</div>
 												</div>
-												<div class="content shadow-nohover" style="padding: 0.25rem;;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;" align="center">
+												<div class="content shadow-nohover" style="padding: 0.25rem;;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;overflow-x: hidden;" align="center">
 													<div class="row" >
 														<div class="col-md-12">
 												
-															<table style="width: 100%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;">
+															<table style="width: 100%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.2rem;">
 																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;width: 10%;">Project No :</td>
-																	<td colspan="1" style="width: 25%;"><%=projects.get(i)[11]%></td>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;width: 15%;">User:</td>
-																	<td colspan="1" style="width: 10%;"><%=enduser%></td>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;width: 15%;">Category:</td>
-																	<td colspan="1" style="width: 25%;"><%=projects.get(i)[2]%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 10%;">Project No :</td>
+																	<td colspan="1" style="width: 25%;color: black;"><%=projects.get(i)[11]%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 8%;">User :</td>
+																	<td colspan="1" style="width: 27%;color: black;"><%=enduser%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 8%;">Category :</td>
+																	<td colspan="1" style="width: 32%;color: black;"><%=projects.get(i)[2]%></td>
 																</tr>
 																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">DoS :</td>
-																	<td colspan="1"><%=sdf.format(projects.get(i)[5])%></td>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">Cost Rs.:</td>
-																	<td colspan="1"><%=nfc.convert(cost / 10000000)%> (In Cr)</td>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">PDC:</td>
-																	<td colspan="1"><%=sdf.format(projects.get(i)[4])%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">DoS :</td>
+																	<td colspan="1" style="color: black;"><%=sdf.format(projects.get(i)[5])%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr):</td>
+																	<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%> </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC :</td>
+																	<td colspan="1" style="color: black;"><%=sdf.format(projects.get(i)[4])%></td>
 																</tr>
 		
 																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">Brief:</td>
-																	<td colspan="5" style="font-size: 1.09rem;">
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Brief :</td>
+																	<td colspan="5" style="font-size: 1.2rem;color: black;">
 																		--
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="1"><b style="font-size: 1.09rem; font-weight: bold; color: #212529;">Objectives: </b></td>
-																	<td colspan="5">
-																	 <%
-																		 if (projects.get(i)[7] != null && projects.get(i)[7].toString().length() > 320) {
-				 															%>
+																	<td colspan="1"><b style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Objectives : </b></td>
+																	<td colspan="5" style="color: black;">
+																	 <%if(projects.get(i)[7] != null && projects.get(i)[7].toString().length() > 320) {%>
 																		<%=projects.get(i)[7].toString().substring(0, 280)%>
-																		<%
-																		} else {
-																		%> <%=projects.get(i)[7]%> <%}%>
+																	<%} else {%> 
+																		<%=projects.get(i)[7]!=null?projects.get(i)[7]:"--"%> 
+																	<%}%>
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="1"><b style="font-size: 1.09rem; font-weight: bold; color: #212529;">Scope: </b></td>
-																	<td colspan="5">
-																		<%
-																		if (projects.get(i)[9] != null && projects.get(i)[9].toString().length() > 320) {
-																		%>
-																		<%=projects.get(i)[9].toString().substring(0, 280)%>
-																		<%
-																		} else {
-																		%> <%=projects.get(i)[9]%> <%}%>
+																	<td colspan="1">
+																		<b style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Scope : </b>
 																	</td>
-																</tr>
-																
-																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">Application:</td>
-																	<td colspan="5">
-																		<%if (projects.get(i) != null && projects.get(i)[10] != null) {
-																		%><%=projects.get(i)[10]%>
-																		<%} else {%> -- <%}%>
+																	<td colspan="5" style="color: black;">
+																		<%if (projects.get(i)[9] != null && projects.get(i)[9].toString().length() > 600) {%>
+																			<%=projects.get(i)[9].toString().substring(0, 600)%>
+																		<%} else {%> 
+																			<%=projects.get(i)[9]!=null?projects.get(i)[9]:"--"%> 
+																		<%}%>
 																	</td>
 																</tr>
 																
 																<tr>
-																	<td colspan="1"><b style="font-size: 1.09rem; font-weight: bold; color: #212529;">Deliverables: </b> </td>
-																	<td colspan="5">
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application :</td>
+																	<td colspan="5" style="color: black;">
+																		<%if (projects.get(i) != null && projects.get(i)[10] != null) {%>
+																			<%=projects.get(i)[10]%>
+																		<%} else {%>
+																			-- 
+																		<%}%>
+																	</td>
+																</tr>
+																
+																<tr>
+																	<td colspan="1"><b style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Deliverables : </b> </td>
+																	<td colspan="5" style="color: black;">
 																		<% if (projects.get(i)[8] != null && projects.get(i)[8].toString().length() > 320) {%>
-																		<%=projects.get(i)[8].toString().substring(0, 280)%>
-																		<%
-																		} else {
-																		%> <%=projects.get(i)[8]%> <% } %>
+																			<%=projects.get(i)[8].toString().substring(0, 280)%>
+																		<%} else {%> 
+																			<%=projects.get(i)[8]!=null?projects.get(i)[8]:"--"%> 
+																		<% } %>
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="1" style="font-size: 1.09rem; font-weight: bold; color: #212529;">Current Stage</td>
-																	<td colspan="5">
-																		<%if(projects.get(i)[14]!=null){%><%=projects.get(i)[14]%>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage :</td>
+																	<td colspan="5" style="color: black;">
+																		<%if(projects.get(i)[14]!=null){%>
+																			<%=projects.get(i)[14]%>
 																		<%}else{%>
-																		--
+																			--
 																		<%}%>
 																	</td>
 																</tr>
@@ -602,7 +649,7 @@ FormatConverter fc = new FormatConverter();
 															<tbody style="border: none;" >
 																
 																<tr style="border-style: hidden;">
-																	<td class="align-middle" style="border-style: hidden;text-align: center;vertical-align: middle;">
+																	<td class="align-middle" style="border-style: hidden;text-align: center;vertical-align: middle;color: red;">
 																		Image
 																	</td>
 																</tr>
@@ -616,7 +663,7 @@ FormatConverter fc = new FormatConverter();
 																<tr style="border-style: hidden;"><td></td></tr>
 																<tr style="border-style: hidden;"><td></td></tr>
 																<tr style="border-style: hidden;">
-																	<td style="text-align: right;vertical-align: bottom;">
+																	<td style="text-align: right;vertical-align: bottom;color: red;">
 																		Show more
 																	</td>
 																</tr>

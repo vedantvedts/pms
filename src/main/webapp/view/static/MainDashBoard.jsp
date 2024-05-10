@@ -2928,10 +2928,19 @@ if(ses!=null){ %>
 													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 												</td>
 												<td class="tableprojectnametd" style="width:12%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
-												<td style="width:2%"><div data-toggle="tooltip" title="Master Slide"><a style="cursor: pointer;"   target="_blank"  ><div type="button" data-toggle="modal" data-target="#selectProjectsForSlideShowModal"><img src="view/images/silde.png" style="width: 25px;"/></div></a></div></td>
+												<td style="width:2%">
+													<div data-toggle="tooltip" title="Master Slide">
+														<a style="cursor: pointer;"   target="_blank"  >
+															<div type="button" data-toggle="modal" data-target="#selectProjectsForSlideShowModal">
+																<img src="view/images/silde.png" style="width: 25px;"/>
+															</div>
+														</a>
+													</div>
+												</td>
 												<!-- Button trigger modal -->
 												<!-- Modal -->
-												<div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+												<jsp:include page="../print/ProjectsSlideShowSelection.jsp"></jsp:include>
+												<%-- <div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
 												  <div class="modal-dialog modal-lg " style="max-width: 1800px" role="document">
 												  <form action="GetAllProjectSlide.htm" target="_blank" onsubmit="return checkslideinput()" method="post">
 												  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -2939,7 +2948,7 @@ if(ses!=null){ %>
 												      <div class="modal-header">
 												        <h5 class="modal-title" id="exampleModalLabel">
 												        	Select Projects for SlideShow
-												        	<br>
+												        	<br><br>
 												        	<input type="checkbox" id="selectall" checked style="margin-left: -58%;width: 20px;height: 20px;"> 
 												        	<span style="font-size: 1.2rem;">Select All</span> 
 												        	
@@ -2950,25 +2959,69 @@ if(ses!=null){ %>
 												      </div>
 												      
 												      <div class="modal-body" >
-												      <div class="container-fluid">
-												        	<%int c=0;for(Object[] obj : ProjectHealthData){
-												
-												//if(ProjectList!=null){  for(Object[] obj2 : ProjectList) 
-												//{
-												//	if(obj[2].equals(obj2[0]))
-												//	{
-											%><%if(c==4||c==0) {c=0; %><div class="row"><%} %>
-											<div class="col-3" >
-											<div style="text-align: left;">
-											<input checked class="projectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/><label for="<%=obj[2]%>">
-											<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-														  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
-														  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
-														  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
-														  	</span> 	
-											</label></div>	</div>
-											<%if(c==3&&c!=0) { %></div><%}%><%c++;}%>
-												      </div>
+												      	<div class="container-fluid">
+												        	<% List<Object[]> mainProjectList =  ProjectHealthData!=null && ProjectHealthData.size()>0 ? (ProjectHealthData.stream().filter(e-> e[51]!=null && e[51].toString().equals("1")).collect(Collectors.toList())): new ArrayList<Object[]>();
+												        	   List<Object[]> subProjectList =  ProjectHealthData!=null && ProjectHealthData.size()>0 ? (ProjectHealthData.stream().filter(e-> e[51]!=null && e[51].toString().equals("0")).collect(Collectors.toList())): new ArrayList<Object[]>();
+												        	%>
+												        	<div class="row">
+												        		<div class="col-md-12">
+												        			<div align="left">
+												        				Main Projects:
+												        			</div>
+														        	<hr>
+														        	<%int c=0;
+														        		if(mainProjectList!=null && mainProjectList.size()>0) { 
+														        		for(Object[] obj : mainProjectList){%>
+														        	<%if(c==4||c==0) {c=0; %>
+														        	<div class="row">
+														        	<%} %>
+																		<div class="col-3" >
+																			<div style="text-align: left;">
+																				<input checked class="projectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
+																				<label for="<%=obj[2]%>">
+																					<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+																					  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
+																					  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
+																					  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
+																				  	</span> 	
+																				</label>
+																			</div>
+																		</div>
+																	<%if(c==3&&c!=0) { %>
+																	</div><%}%>
+																	<%c++;} }%>
+												        		</div>
+												        	</div> 
+												        	<div class="row">
+												        		<div class="col-md-12">
+												        			<div align="left">
+												        				Sub Projects:
+												        			</div>
+												        			<hr>
+														        	<%int c1=0;
+														        		if(subProjectList!=null && subProjectList.size()>0) { 
+														        		for(Object[] obj : subProjectList){%>
+														        	<%if(c1==4||c1==0) {c1=0; %>
+														        	<div class="row">
+														        	<%} %>
+																		<div class="col-3" >
+																			<div style="text-align: left;">
+																				<input checked class="projectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
+																				<label for="<%=obj[2]%>">
+																					<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+																					  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
+																					  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
+																					  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
+																				  	</span> 	
+																				</label>
+																			</div>
+																		</div>
+																	<%if(c1==3&&c1!=0) { %>
+																	</div><%}%>
+																	<%c1++;} }%>
+												        		</div>
+												        	</div>
+												      	</div>
 												      </div>
 												      <div class="modal-footer">
 												      <div class="d-flex align-items-start" style=" padding-right: 900px;" ><p style="text-align: left"><span style="color: red">Note</span>: Master slide is the combination of latest Data of selected project</p></div>
@@ -2978,7 +3031,7 @@ if(ses!=null){ %>
 												    </div>
 												   </form>
 												  </div>
-												</div>												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
+												</div> --%>	<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
