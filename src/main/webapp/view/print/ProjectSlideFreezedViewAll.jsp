@@ -560,7 +560,7 @@ FormatConverter fc = new FormatConverter();
 													<div class="row" >
 														<div class="col-md-12">
 												
-															<table style="width: 100%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.2rem;">
+															<table style="width: 99%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.2rem;">
 																<tr>
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 10%;">Project No :</td>
 																	<td colspan="1" style="width: 25%;color: black;"><%=projects.get(i)[11]%></td>
