@@ -8,6 +8,7 @@ import lombok.Data;
 
 public class ProjectClosureAppendixDto {
 	
+	
 	private long ChapterId;
 	private String UserId;
 	private String[] Appendix;

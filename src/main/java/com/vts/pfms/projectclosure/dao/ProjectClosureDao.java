@@ -69,5 +69,8 @@ public interface ProjectClosureDao {
 	public Object[] getChapterContent(String chapterId)throws Exception;
 	public List<Object[]> getAppndDocList()throws Exception;
 	public long ProjectClosureAppendixDocSubmit(ProjectClosureTechnicalAppendices appnd) throws Exception;
+	public List<Object[]>  getAppendicesList(String closureId)throws Exception;
+	public ProjectClosureTechnicalAppendices getProjectClosureTechnicalAppendicesById(String attachmentfile)throws Exception;
+	public int removeProjectClosureProjectClosureAppendixDoc(long chapterId)throws Exception;
 
 }
