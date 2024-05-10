@@ -1206,6 +1206,9 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long ProjectClosureAppendixDocSubmit(ProjectClosureAppendixDto dto) throws Exception {
 	try {
+		
+		dao.removeProjectClosureProjectClosureAppendixDoc(dto.getChapterId());
+		
 		for(int i=0;i<dto.getAttachment().length ;i++) {
 			
 				ProjectClosureTechnicalAppendices appnd = new ProjectClosureTechnicalAppendices();
@@ -1216,17 +1219,18 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				Timestamp instant = Timestamp.from(Instant.now());
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-				String path = "Project-Closure\\TPCR\\  -Results\\";
+				String path = "Project-Closure\\TPCR\\";
 
 				
 				if (!dto.getAttachment()[i].isEmpty()) {
-					appnd.setDocumentAttachment("TrialResult-" + timestampstr + "."
+					appnd.setDocumentAttachment("TPCR-" + timestampstr + "."
 							+ FilenameUtils.getExtension(dto.getAttachment()[i].getOriginalFilename()));
 					saveFile(uploadpath + path, appnd.getDocumentAttachment(), dto.getAttachment()[i]);
 				}else {
 					appnd.setDocumentAttachment(dto.getAttatchmentName()[i]);
 				}
 				
+				appnd.setChapterId(dto.getChapterId());
 				appnd.setCreatedBy(dto.getUserId());
 				appnd.setCreatedDate(sdtf.format(new Date()));
 				appnd.setIsActive(1);
@@ -1239,5 +1243,20 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+	
+
+	@Override
+	public List<Object[]>  getAppendicesList(String closureId) throws Exception {
+		
+		return dao.getAppendicesList(closureId);
+	}
+
+	@Override
+	public ProjectClosureTechnicalAppendices getProjectClosureTechnicalAppendicesById(String attachmentfile)
+			throws Exception {
+		
+		return dao.getProjectClosureTechnicalAppendicesById(attachmentfile);
 	}
 }

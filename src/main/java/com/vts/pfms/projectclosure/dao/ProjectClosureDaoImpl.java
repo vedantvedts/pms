@@ -830,4 +830,53 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return 0L;
 		}
 	}
+
+	private static final String APPENDICESLIST="SELECT AppendicesId,Appendix,DocumentName,DocumentAttachment FROM pfms_closure_technical_appendices a,\r\n"
+			+ "pfms_closure_technical_chapters  b, pfms_closure_technical_sections c WHERE a.isActive='1' AND a.ChapterId=b.ChapterId AND \r\n"
+			+ "c.SectionId=b.SectionId AND c.ClosureId=:closureId";
+	@Override
+	public List<Object[]>  getAppendicesList(String closureId) throws Exception {
+		
+		
+		try {			
+			Query query= manager.createNativeQuery(APPENDICESLIST);
+			query.setParameter("closureId", closureId);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getAppndDocList" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	@Override
+	public ProjectClosureTechnicalAppendices getProjectClosureTechnicalAppendicesById(String attachmentfile)
+			throws Exception {
+		
+		try {
+			return manager.find(ProjectClosureTechnicalAppendices.class, Long.parseLong(attachmentfile));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getProjectClosureTechnicalAppendicesById "+e);
+			return null;
+		}
+	}
+
+	private static final String REMOVEPROJECTCLOSUREAPPENDIXDOC="UPDATE pfms_closure_technical_appendices SET isActive=:IsActive WHERE ChapterId=:chapterId";
+	@Override
+	public int removeProjectClosureProjectClosureAppendixDoc(long chapterId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(REMOVEPROJECTCLOSUREAPPENDIXDOC);
+			query.setParameter("IsActive", "0");
+			query.setParameter("chapterId", chapterId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO removeProjectClosureACPTrialResultsDetails "+e);
+			return 0;
+		}
+		
+		
+	}
 }

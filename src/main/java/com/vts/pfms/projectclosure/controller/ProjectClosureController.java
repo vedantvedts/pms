@@ -79,6 +79,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.service.ProjectClosureService;
@@ -2250,8 +2251,10 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("ClosureId"); 
 			List<Object[]> ChapterList=service.getChapterList(closureId);
 			List<Object[]> AppndDocList=service.getAppndDocList();
+		    List<Object[]> AppendicesList=service.getAppendicesList(closureId);
 			
 			
+		    req.setAttribute("AppendicesList",AppendicesList);
 			req.setAttribute("ChapterList", ChapterList);
 			req.setAttribute("AppndDocList", AppndDocList);
 			
@@ -2429,10 +2432,11 @@ public class ProjectClosureController {
 	
 	
 	@RequestMapping(value="ChapterContent.htm",method = RequestMethod.GET)
-	public @ResponseBody String OtherRequirementsData(HttpServletRequest req, HttpSession ses) throws Exception {
+	public @ResponseBody String ChapterContent(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ChapterContent.htm "+UserId);
-			Object[]ChapterContent=null;
+			Object[] ChapterContent=null;
+			
 		try {
 			
 		     String ChapterId=req.getParameter("ChapterId");
@@ -2447,7 +2451,7 @@ public class ProjectClosureController {
 		return json.toJson(ChapterContent);
 	}
 	
-	
+
 	
 	@RequestMapping(value="ProjectClosureAppendixDocSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
 	public String ProjectClosureAppendixDocSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
@@ -2458,10 +2462,12 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("ClosureId");
 			String chapterid = req.getParameter("ChapterId");
 			String DocumentName[] = req.getParameterValues("DocumentName");
+			
 			String action = req.getParameter("Action");
-		
+		    
 			ProjectClosureAppendixDto dto = new ProjectClosureAppendixDto();
 		
+			
 			dto.setChapterId(Long.parseLong(chapterid));			
 			dto.setDocumentName(DocumentName);
 			dto.setAttatchmentName(req.getParameterValues("attatchmentname"));
@@ -2478,7 +2484,7 @@ public class ProjectClosureController {
 				redir.addAttribute("resultfail", "Appendices Details "+action+" Unsuccessful");	
 			}	
 			
-			redir.addAttribute("closureId", closureId);
+			redir.addAttribute("ClosureId", closureId);
 		    return "redirect:/TechClosureContent.htm";
 			
 		}catch (Exception e) {
@@ -2487,5 +2493,40 @@ public class ProjectClosureController {
 			return "static/Error";
 		} 
 	}
+	
+	
+	@RequestMapping(value = {"AppendicesDocumentDownload.htm"}, method = { RequestMethod.POST, RequestMethod.GET })
+	public void AppendicesDocumentDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside AppendicesDocumentDownload.htm "+UserId);
+		try
+		{
+			String attachmentfile=req.getParameter("attachmentfile");
+			ProjectClosureTechnicalAppendices result = service.getProjectClosureTechnicalAppendicesById(attachmentfile);
+			res.setContentType("Application/octet-stream");	
+			
+			File my_file=null;
+			String file = result.getDocumentAttachment();
+			my_file = new File(LabLogoPath+"Project-Closure\\TPCR\\"+File.separator+file); 
+	        res.setHeader("Content-disposition","attachment; filename="+file); 
+	        OutputStream out = res.getOutputStream();
+	        FileInputStream in = new FileInputStream(my_file);
+	        byte[] buffer = new byte[4096];
+	        int length;
+	        while ((length = in.read(buffer)) > 0){
+	           out.write(buffer, 0, length);
+	        }
+	        in.close();
+	        out.flush();
+	        out.close();
+	        
+		}catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +"Inside AppendicesDocumentDownload.htm "+UserId,e);
+		}
+	}
+	
+	
 		
 }

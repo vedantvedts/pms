@@ -2,6 +2,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"   pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@page import="com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -388,6 +389,8 @@ String closureId=(String)request.getAttribute("closureId");
 List<Object[]> ChapterList=(List<Object[]>)request.getAttribute("ChapterList");
 List<Object[]> AppndDocList=(List<Object[]>)request.getAttribute("AppndDocList");
 
+List<Object[]>  AppendicesList=(List<Object[]>)request.getAttribute("AppendicesList");
+
 %>
 
 
@@ -676,13 +679,13 @@ List<Object[]> AppndDocList=(List<Object[]>)request.getAttribute("AppndDocList")
 		   <%-----------------------------------  Appendices Cloning -------------------------------------%> 
 		   
 		      <div class="col-md-7" id="DocumentTable" style="display:none;">
-	         	<form action="ProjectClosureAppendixDocSubmit.htm" method="GET" id="">
+	         	<form action="ProjectClosureAppendixDocSubmit.htm" method="POST"  enctype="multipart/form-data">
 	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
 	      			<h5 class="heading ml-4 mt-3" id="" style="font-weight:500;color: #31708f;">Appendices</h5><hr>
 	      			
 					  <div class="card-body" style="margin-top: -8px" >
 					    <div class="row">
-					       <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
+					       <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;" >
 					          <div class="row">
                       		    <div class="col-md-12" align="left">
 									<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
@@ -696,12 +699,47 @@ List<Object[]> AppndDocList=(List<Object[]>)request.getAttribute("AppndDocList")
 									    <th style="width: 10%;padding: 0px 5px 0px 5px;">Appendix</th>
 								    	<th style="width: 40%;padding: 0px 5px 0px 5px;">Document Name</th>
 								    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Attachment</th>
+								    	 <%if(AppendicesList!=null && AppendicesList.size()>0) {%>
+								    	 
+									    <th style="width: 10%;padding: 0px 5px 0px 5px;">Action</th>
+									    	
+										<%} %>
 								    	<td style="width: 5%;">
-											<button type="button" class=" btn btn_add_trialresults "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+											<button type="button" class="btn btn_add_trialresults "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
 										</td>
 									</tr>
 								</thead>
+								
 								 <tbody>
+								 <%if(AppendicesList !=null && AppendicesList.size()>0) {
+									for(Object[] obj :AppendicesList) {%>
+									<tr class="tr_clone_trialresults">
+										<td style="width: 20%;padding: 10px 5px 0px 5px;" >
+										    <input type="text" class="form-control item" name="Appendix"  value="<%if(obj[1]!=null) {%><%=obj[1].toString() %><%} %>">
+										</td>	
+										
+										<td style="width: 40%;padding: 10px 5px 0px 5px;" >
+										     <input type="text" class="form-control item" name="DocumentName"  value="<%if(obj[2]!=null) {%><%=obj[2].toString() %><%} %>">
+										</td>
+										
+										<td style="width: 25%;padding: 10px 5px 0px 5px;">
+											<input type="file" class="form-control item" name="attachment" accept=".pdf">
+											<input type="hidden" name="attatchmentname" value="<%if(obj[3]!=null && !obj[3].toString().isEmpty()) {%><%=obj[3] %><%} %>">
+										</td>
+										<td style="width: 10%;padding: 10px 5px 0px 5px;" id="actiontd">
+											<%if(obj[3]!=null && !obj[3].toString().isEmpty()) {%>
+												<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
+ 		  				 							 value="<%=obj[0] %>" formaction="AppendicesDocumentDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Attatchment Download">
+ 														<i class="fa fa-download fa-lg"></i>
+ 											   </button>
+											<%} %>
+										</td>	
+										<td style="width: 5% ; ">
+											<button type="button" class="btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+										</td>									
+									</tr>
+								<%} } else {%>
+								 
 									<tr class="tr_clone_trialresults">
 												
 									    <td style="width: 20%;padding: 10px 5px 0px 5px;" >
@@ -712,7 +750,7 @@ List<Object[]> AppndDocList=(List<Object[]>)request.getAttribute("AppndDocList")
 												<select class="form-control" name="DocumentName">
 												    <option value="0"  selected disabled>Select</option>
 													    <%for(Object[] obj:AppndDocList){ %>
-													          <option value="<%=obj[0] %>" ><%=obj[1] %></option>
+													          <option value="<%=obj[1] %>" ><%=obj[1] %></option>
 													     <%}%>
 												</select>
 											</td>
@@ -725,18 +763,29 @@ List<Object[]> AppndDocList=(List<Object[]>)request.getAttribute("AppndDocList")
 												 <button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
 											</td>
 										</tr>
+										<%} %>
 								    </tbody>
 				               </table>
 				             
 				                 <div align="center">
-				                     <button type="submit" class="btn btn-sm btn-success submit mt-2 " name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')" >SUBMIT</button>
+				                 
+				                 <%if(AppendicesList!=null && AppendicesList.size()>0) {%>
+				                 
+									<button type="submit" class="btn btn-sm btn-warning btn-sm edit btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to Update?');" >UPDATE</button>
+										
+								<%} else{%>
+										    <button type="submit" class="btn btn-sm btn-success submit mt-2 " name="Action" value="Add" onclick="return confirm('Are You Sure To Submit')" >SUBMIT</button>
+				                     <%} %>
 				              </div>
 				            </div>
-	                     </div>
+				            
+				            	
+				       </div>
 		             </div>
                   </div> 
                   <input type="hidden"  id='chapterids' name='ChapterId' value="">
 				  <input type="hidden" name="ClosureId" value="<%=closureId%>" >
+				  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                </form>
              </div>
              
@@ -938,6 +987,7 @@ function showEditor(a,b){
 		 $('#editorHeading').hide();
 		 $('#editorHeading1').hide();
 		 $('#DocumentTable').show();
+
 		 
 	 }else{
 		 
@@ -964,6 +1014,7 @@ function showEditor(a,b){
 		    editor1.setHTMLCode(ajaxresult[1]);
 		}
 	 })
+	 
 	}
 	
 $('#myfrm1').submit(function() {

@@ -19,6 +19,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 
@@ -74,6 +75,8 @@ public interface ProjectClosureService {
 	public Object[] getChapterContent(String chapterId) throws Exception;
 	public List<Object[]> getAppndDocList()throws Exception;
 	public long ProjectClosureAppendixDocSubmit(ProjectClosureAppendixDto dto) throws Exception;
+	public List<Object[]>  getAppendicesList(String closureId) throws Exception;
+	public ProjectClosureTechnicalAppendices getProjectClosureTechnicalAppendicesById(String attachmentfile)throws Exception;
 	
 	
 }
