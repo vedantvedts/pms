@@ -793,10 +793,14 @@ List<Object[]>  AppendicesList=(List<Object[]>)request.getAttribute("AppendicesL
        
    </div>
  </div>
-
+<br>
 			
-			
-			
+<form>			
+	<div align="center">
+	      <button type="submit" class="btn btn-sm " style="background-color: purple;border: none;color: white;font-weight: bold;" formaction="TechnicalClosureReportDownload.htm" formtarget="_blank">Print Technical Closure Report</button>
+	</div>
+</form>	
+		
 <form action="ChapterAdd.htm" method="POST" id="myform2">          	  	
  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
    <div class="modal-dialog modal-dialog-jump" role="document">

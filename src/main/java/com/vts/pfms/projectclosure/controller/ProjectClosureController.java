@@ -83,6 +83,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.service.ProjectClosureService;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -133,6 +134,9 @@ public class ProjectClosureController {
 	
 	@Autowired
 	Environment env;
+	
+	@Autowired
+	PMSLogoUtil LogoUtil;
 	
 	@RequestMapping(value = "ProjectClosureList.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String projectClosureList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -2527,6 +2531,58 @@ public class ProjectClosureController {
 		}
 	}
 	
-	
+	@RequestMapping(value="TechnicalClosureReportDownload.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public void TechnicalClosureReportDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside TechnicalClosureReportDownload.htm "+UserId);		
+		try {
+			
+			
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
+		  	req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
+		  	req.setAttribute("RecordOfAmendments", service.getTechnicalClosureRecord("3"));
+		  	
+		  	
+			String filename="Technical Closure Report";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/ProjectTechClosureDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside TechnicalClosureReportDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
 		
 }
