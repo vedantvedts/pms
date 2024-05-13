@@ -877,6 +877,24 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return 0;
 		}
 		
+	}
+
+	private static final String TECHCLOSURECONTENT="SELECT a.ChapterId,a.ChapterParentId,a.SectionId,a.ChapterName,a.ChapterContent FROM \r\n"
+			+ "pfms_closure_technical_chapters a,\r\n"
+			+ "pfms_closure_technical_sections b,pfms_closure_technical c WHERE \r\n"
+			+ "a.SectionId=b.SectionId AND b.ClosureId=c.ClosureId AND c.ClosureId=:closureId ORDER BY ChapterParentId";
+	@Override
+	public List<Object[]> getTechnicalClosureContent(String closureId) throws Exception {
 		
+		try {			
+			Query query= manager.createNativeQuery(TECHCLOSURECONTENT);
+			query.setParameter("closureId", closureId);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getTechnicalClosureContent" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
 	}
 }

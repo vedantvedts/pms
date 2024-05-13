@@ -1259,4 +1259,10 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.getProjectClosureTechnicalAppendicesById(attachmentfile);
 	}
+
+	@Override
+	public List<Object[]> getTechnicalClosureContent(String closureId) throws Exception {
+		
+		return dao.getTechnicalClosureContent(closureId);
+	}
 }

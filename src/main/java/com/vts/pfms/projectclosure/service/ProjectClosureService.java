@@ -77,6 +77,7 @@ public interface ProjectClosureService {
 	public long ProjectClosureAppendixDocSubmit(ProjectClosureAppendixDto dto) throws Exception;
 	public List<Object[]>  getAppendicesList(String closureId) throws Exception;
 	public ProjectClosureTechnicalAppendices getProjectClosureTechnicalAppendicesById(String attachmentfile)throws Exception;
+	public List<Object[]> getTechnicalClosureContent(String closureId)throws Exception;
 	
 	
 }

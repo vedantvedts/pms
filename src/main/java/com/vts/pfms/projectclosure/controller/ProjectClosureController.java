@@ -2538,11 +2538,12 @@ public class ProjectClosureController {
 		logger.info(new Date() +"Inside TechnicalClosureReportDownload.htm "+UserId);		
 		try {
 			
-			
+			String closureId=req.getParameter("ClosureId");
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 		  	req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
-		  	req.setAttribute("RecordOfAmendments", service.getTechnicalClosureRecord("3"));
+		  	req.setAttribute("RecordOfAmendments", service.getTechnicalClosureRecord(closureId));
+		  	req.setAttribute("TechnicalClosureContent", service.getTechnicalClosureContent(closureId));
 		  	
 		  	
 			String filename="Technical Closure Report";	
