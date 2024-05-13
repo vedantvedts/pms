@@ -185,6 +185,7 @@ margin-left:8px;
 #table1{
 margin-left:15x;
 }
+
 </style>
 </head>
 <body>
@@ -469,7 +470,7 @@ margin-left:15x;
 				if(obj2[1].toString().equalsIgnoreCase(obj1[0].toString())){ %>
 			
 			            <h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"class="heading-colors">
-					&nbsp; <%=maincount%>. <%=++level1count%>. <%=++level2count%>&nbsp;<%=obj2[3].toString() %>
+					&nbsp; <%=maincount%>. <%=level1count%>. <%=++level2count%>&nbsp;<%=obj2[3].toString() %>
 				       </h2>
              <div>
 				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
