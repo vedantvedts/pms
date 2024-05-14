@@ -8,19 +8,16 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+@Data
+@Entity
+@Table(name="pfms_closure_technical_docsumary")
 public class ProjectClosureTechnicalDocSumary {
-
-
-	@Data
-	@Entity
-	@Table(name="pfms_closure_technical_docsumary")
-	public class RequirementSummary {
 
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Long SummaryId;
-		private Long InitiationId;
+		private Long ClosureId;
 		private String AdditionalInformation;
 		private String Abstract;
 		private String Keywords;
@@ -34,8 +31,9 @@ public class ProjectClosureTechnicalDocSumary {
 		private int IsActive;
 		private Long ProjectId;
 		private String PreparedBy;
+		
 	}
 
 	
 
-}
+

@@ -27,6 +27,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
@@ -888,6 +889,65 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHCLOSURECONTENT);
+			query.setParameter("closureId", closureId);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getTechnicalClosureContent" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	@Override
+	public long addDocSummary(ProjectClosureTechnicalDocSumary rs) throws Exception {
+		
+		try {
+			manager.persist(rs);
+			manager.flush();
+			return rs.getSummaryId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addDocSummary "+e);
+			return 0L;
+		}
+	}
+
+	private static final String DOCSUMUPD="UPDATE pfms_closure_technical_docsumary SET AdditionalInformation=:AdditionalInformation,Abstract=:Abstract,Keywords=:Keywords,Distribution=:Distribution , reviewer=:reviewer,approver=:approver,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,PreparedBy=:PreparedBy WHERE SummaryId=:SummaryId AND isactive='1'";
+
+	
+	@Override
+	public long editDocSummary(ProjectClosureTechnicalDocSumary rs) throws Exception {
+		
+		Query query = manager.createNativeQuery(DOCSUMUPD);
+		query.setParameter("AdditionalInformation", rs.getAdditionalInformation());			
+		query.setParameter("Abstract", rs.getAbstract());			
+		query.setParameter("Keywords", rs.getKeywords());			
+		query.setParameter("Distribution", rs.getDistribution());			
+		query.setParameter("reviewer", rs.getReviewer());			
+		query.setParameter("approver", rs.getApprover());			
+		query.setParameter("ModifiedBy", rs.getModifiedBy());			
+		query.setParameter("ModifiedDate", rs.getModifiedDate());			
+		query.setParameter("SummaryId", rs.getSummaryId());	
+		query.setParameter("PreparedBy", rs.getPreparedBy());	
+		
+		
+		return query.executeUpdate();
+	}
+
+	private static final String TECHCLOSUREDOCUMENTSUMMARY="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,\r\n"
+			+ "(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',\r\n"
+			+ "(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',\r\n"
+			+ "a.summaryid,a.preparedby,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM \r\n"
+			+ "employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1' FROM \r\n"
+			+ "pfms_closure_technical_docsumary a WHERE \r\n"
+			+ " a.ClosureId =:closureId AND a.isactive='1'";
+	
+	@Override
+	public List<Object[]> getDocumentSummary(String closureId) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(TECHCLOSUREDOCUMENTSUMMARY);
 			query.setParameter("closureId", closureId);
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;

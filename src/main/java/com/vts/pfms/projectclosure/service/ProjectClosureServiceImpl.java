@@ -43,6 +43,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
 
@@ -1264,5 +1265,23 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	public List<Object[]> getTechnicalClosureContent(String closureId) throws Exception {
 		
 		return dao.getTechnicalClosureContent(closureId);
+	}
+
+	@Override
+	public long addDocSummary(ProjectClosureTechnicalDocSumary rs) throws Exception {
+		
+		return dao.addDocSummary(rs);
+	}
+
+	@Override
+	public long editDocSummary(ProjectClosureTechnicalDocSumary rs) throws Exception{
+		
+		return dao.editDocSummary(rs);
+	}
+
+	@Override
+	public List<Object[]> getDocumentSummary(String closureId) throws Exception {
+		
+		return dao.getDocumentSummary(closureId);
 	}
 }

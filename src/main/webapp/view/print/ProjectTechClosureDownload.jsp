@@ -30,11 +30,8 @@ SimpleDateFormat sdf1=fc.getSqlDateFormat();
 List<Object[]>RequirementFiles=(List<Object[]>)request.getAttribute("RequirementFiles");
 Object[]ReqIntro=(Object[])request.getAttribute("ReqIntro");
 String uploadpath=(String)request.getAttribute("uploadpath");
-/* String projectName=PfmsInitiationList[7].toString();
-String classification=PfmsInitiationList[5].toString();
-String projectshortName=PfmsInitiationList[6].toString(); */
-List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");
-List<Object[]>ParaDetails=(List<Object[]>)request.getAttribute("ParaDetails");
+
+
 String labImg=(String)request.getAttribute("LabImage");
 List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
 List<Object[]>AcronymsList=(List<Object[]>)request.getAttribute("AcronymsList");
@@ -62,8 +59,9 @@ String FontFamily="Times New Roman";
 List<Object[]>VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
 List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
 List<Object[]> RecordOfAmendments=(List<Object[]>)request.getAttribute("RecordOfAmendments");
-
+List<Object[]> AppendicesList=(List<Object[]>)request.getAttribute("AppendicesList");
 String projectShortName =(String)request.getAttribute("projectShortName");
+
 %>
 <style>
     /* Define header and footer styles */
@@ -343,6 +341,7 @@ margin-left:15x;
          
      <%}}%>
 			</table>
+			</div>
 			
 				<p style="font-family: <%= FontFamily %>;text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 				<div class="heading-container" style="text-align: center; position: relative;"></div>
@@ -354,11 +353,11 @@ margin-left:15x;
 				<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 				
 				<tr>
-					  <td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Requirements Document Template</span></td>
+					  <td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">Technical Project Closure Report </span></td>
 			   </tr>
 			   
 				<tr>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Requirements Document</span></td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks"></span></td>
 					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"></span></td>
 			   </tr>
 			   
@@ -445,6 +444,42 @@ margin-left:15x;
 				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><% if(obj[4]!=null){%><%=obj[4]%><%} %></div>
 					</div>
+					
+				<% if(obj[3].toString().equalsIgnoreCase("APPENDICES")) { %>
+			
+			
+					<table style="width: 650px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+						
+						<tbody id=""></tbody>
+						
+			           <% 
+					    if (AppendicesList != null) {
+					        int i = 1;
+					        for (Object[] alist : AppendicesList) { %>
+					        
+			        <tr>
+			               <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%=i+++"."%></td>
+			               <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><% if(alist[1]!=null){ %><%=alist[1] %><%}%></td>
+			               <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><% if(alist[2]!=null){ %><%=alist[2] %><%}%></td>
+			               <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;">
+			               
+			                <%if(alist[3]!=null && !alist[3].toString().isEmpty()) {%>
+								<a  class="btn btn-sm" style="padding: 5px 8px;" href="AppendicesDocumentDownload.htm?attachmentfile=<%=alist[0]%>" >
+									Download</a>
+ 											    
+								<%}%>
+								
+			               </td>
+			        </tr>
+			        
+			      <%}}%>
+			      
+					</table>
+			
+			<%} %>	
+					
+					
+					
 			</div>
 			
 			<% 
@@ -459,10 +494,8 @@ margin-left:15x;
 				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><% if(obj1[4]!=null){%><%=obj1[4] %><%} %></div>
 					</div>
-			</div>
-			
-			
-			
+					
+		</div>
 			
 			<% 
 			int level2count=0;
@@ -477,6 +510,10 @@ margin-left:15x;
 					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><% if(obj2[4]!=null){%><%=obj2[4] %><%} %></div>
 					</div>
 			</div>
+			
+		
+			
+			
 			
 		<%}}%>	
 			

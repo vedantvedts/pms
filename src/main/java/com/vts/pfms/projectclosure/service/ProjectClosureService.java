@@ -21,6 +21,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 
 public interface ProjectClosureService {
@@ -78,6 +79,9 @@ public interface ProjectClosureService {
 	public List<Object[]>  getAppendicesList(String closureId) throws Exception;
 	public ProjectClosureTechnicalAppendices getProjectClosureTechnicalAppendicesById(String attachmentfile)throws Exception;
 	public List<Object[]> getTechnicalClosureContent(String closureId)throws Exception;
+	public long addDocSummary(ProjectClosureTechnicalDocSumary rs) throws Exception;
+	public long editDocSummary(ProjectClosureTechnicalDocSumary rs)throws Exception;
+	public List<Object[]> getDocumentSummary(String closureId)throws Exception;
 	
 	
 }
