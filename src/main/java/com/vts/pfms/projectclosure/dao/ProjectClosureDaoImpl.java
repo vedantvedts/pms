@@ -957,4 +957,30 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return new ArrayList<Object[]>();
 		}
 	}
+
+	@Override
+	public ProjectClosureTechnical getProjectClosureTechnicalById(String closureId) throws Exception {
+		
+		try {
+			return manager.find(ProjectClosureTechnical.class, Long.parseLong(closureId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getProjectClosureTechnicalById "+e);
+			return null;
+		}
+	}
+
+	@Override
+	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn) throws Exception {
+		
+		try {
+			manager.merge(techn);
+			manager.flush();
+			return techn.getTechnicalClosureId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO UpdateProjectClosureTechnical "+e);
+			return 0L;
+		}
+	}
 }

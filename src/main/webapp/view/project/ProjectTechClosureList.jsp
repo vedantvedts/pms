@@ -256,7 +256,19 @@ String ses=(String)request.getParameter("result");
 						    			</button>
 						    			
 						    			
-									 </td>
+						    			
+						    			<input type="hidden" name="TechnicalClsoureId" value="<%=obj[0]%>">
+						    			 <button type="submit" class="editable-clicko" name="Action" value="Forward"  formaction="TechClosureList.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Submit')">
+											<div class="cc-rockmenu">
+												<div class="rolling" >
+													<figure class="rolling_icon">
+														<img src="view/images/forward1.png" style="width:25px;">
+													</figure>
+													<span>Forward</span>
+												</div>
+											</div>
+						    			</button>
+						    		</td>
 			                    </tr>
 			                    
 			              <%}%>
@@ -270,6 +282,7 @@ String ses=(String)request.getParameter("result");
 			                 </div>
 			                </div>
 			             </div>
+			              
 			             </form>
 			          </div>
 			        </div>

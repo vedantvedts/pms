@@ -77,5 +77,7 @@ public interface ProjectClosureDao {
 	public long addDocSummary(ProjectClosureTechnicalDocSumary rs)throws Exception;
 	public long editDocSummary(ProjectClosureTechnicalDocSumary rs) throws Exception;
 	public List<Object[]> getDocumentSummary(String closureId)throws Exception;
+	public ProjectClosureTechnical getProjectClosureTechnicalById(String closureId) throws Exception;
+	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn)throws Exception;
 
 }

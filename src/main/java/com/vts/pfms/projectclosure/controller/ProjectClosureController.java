@@ -1653,7 +1653,7 @@ public class ProjectClosureController {
 			 InRupeeValue = 100000;
 		 } else if (Amount.equalsIgnoreCase("C")) {
 			 InRupeeValue = 10000000;
-	}
+	    }
 			
 		 
 		 final String localUri2=uri+"/pfms_serv/GetBudgetDetails.htm?projectId="+ProjectId+"&inRuppes="+100000;
@@ -2214,6 +2214,8 @@ public class ProjectClosureController {
 				
 			ProjectClosureTechnical tech=new ProjectClosureTechnical();
 			
+			
+				
 			tech.setParticulars(req.getParameter("Particulars"));
 			tech.setClosureId(Long.parseLong(closureId));
 			tech.setRevisionNo("0");
@@ -2221,8 +2223,8 @@ public class ProjectClosureController {
 			tech.setStatus("TIN");
 			tech.setCreatedBy(EmpId);
 			tech.setCreatedDate(sdtf.format(new Date()));
-			tech.setIsActive(1);;
-			
+			tech.setIsActive(1);
+				
 			long save=service.AddIssue(tech);
 			
 			if (save > 0) {
@@ -2230,8 +2232,24 @@ public class ProjectClosureController {
 			} else {
 				redir.addAttribute("resultfail", "Technical Closure Add Unsuccessful");
 			}
+		}	
 			
-		}
+//		else if("Forward".equalsIgnoreCase(req.getParameter("Action"))) {
+//				
+//				//ProjectClosureTechnical techn=service.getProjectClosureTechnicalById(req.getParameter("TechnicalClsoureId"));
+//				
+//			    tech.setStatus("FWD");
+//				
+//				long update=service.UpdateProjectClosureTechnical(tech);
+//				
+//				if (update > 0) {
+//					redir.addAttribute("result", "Technical Closure Forwarded Successfully");
+//				} else {
+//					redir.addAttribute("resultfail", "Technical Closure Forward Unsuccessful");
+//				}
+//			}
+			
+			
             req.setAttribute("DocumentSummary",service.getDocumentSummary(closureId));
 			req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(LabCode));
 			req.setAttribute("closureId", closureId);
@@ -2650,4 +2668,73 @@ public class ProjectClosureController {
 		
 	       }
 		}
+	
+	@RequestMapping(value="projectTechClosureApprovalSubmit.htm", method = {RequestMethod.POST,RequestMethod.GET})
+	public String projectTechClosureApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside projectTechClosureApprovalSubmit.htm "+UserId);
+		try {
+			String closureId = req.getParameter("closureId");
+			String action = req.getParameter("Action");
+			
+			ProjectClosure closure = service.getProjectClosureById(closureId);
+			String statusCode = closure.getClosureStatusCode();
+			
+			ProjectClosureApprovalForwardDTO dto = new ProjectClosureApprovalForwardDTO();
+//			dto.setClosureSoCId(Long.parseLong(closureSoCId));
+			dto.setClosureId(closureId);
+			dto.setAction(action);
+			dto.setEmpId(EmpId);
+			dto.setRemarks(req.getParameter("remarks"));
+			dto.setLabcode(labcode);
+			dto.setApproverLabCode(req.getParameter("LabCode"));
+			dto.setApproverEmpId(req.getParameter("approverEmpId"));
+			dto.setApprovalDate(req.getParameter("approvalDate"));
+			
+			long result = service.projectClosureSoCApprovalForward(dto);
+			
+			List<String> forwardstatus = Arrays.asList("SIN","SRG","SRA","SRP","SRD","SRC","SRV");
+			List<String> approvestatus = Arrays.asList("SAP","SAD");
+			
+			if(action.equalsIgnoreCase("A")) {
+				if(forwardstatus.contains(statusCode)) {
+					if(result!=0) {
+						redir.addAttribute("result","Project Technical Closure forwarded Successfully");
+					}else {
+						redir.addAttribute("resultfail","Project Technical Closure forward Unsuccessful");
+					}
+				}else if(approvestatus.contains(statusCode)) {
+					if(result!=0) {
+						redir.addAttribute("result","Project Technical Closure Approved Successfully");
+					}else {
+						redir.addAttribute("resultfail","Project Technical Closure Approve Unsuccessful");
+					}
+					return "redirect:/ProjectClosureApprovals.htm";
+				}else {
+					if(result!=0) {
+						redir.addAttribute("result","Project Technical Closure Recommended Successfully");
+					}else {
+						redir.addAttribute("resultfail","Project Technical Closure Recommend Unsuccessful");
+					}
+					return "redirect:/ProjectClosureApprovals.htm";
+				}
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if(result!=0) {
+					redir.addAttribute("result",action.equalsIgnoreCase("R")?"Project Technical Closure Returned Successfully":"Project Technical Closure Disapproved Successfully");
+				}else {
+					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"Project Technical Closure Return Unsuccessful":"Project Technical Closure Disapprove Unsuccessful");
+				}
+				return "redirect:/ProjectClosureApprovals.htm";
+			}
+			return "redirect:/TechClosureList.htm";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside projectTechClosureApprovalSubmit.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	
     }
+}

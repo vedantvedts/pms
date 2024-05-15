@@ -1284,4 +1284,16 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.getDocumentSummary(closureId);
 	}
+
+	@Override
+	public ProjectClosureTechnical getProjectClosureTechnicalById(String closureId) throws Exception {
+		
+		return dao.getProjectClosureTechnicalById(closureId);
+	}
+
+	@Override
+	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn) throws Exception {
+		
+		return dao.UpdateProjectClosureTechnical(techn);
+	}
 }
