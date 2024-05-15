@@ -1324,7 +1324,7 @@ public class ProjectClosureController {
 		try {
 			
 			String closureId = req.getParameter("closureId");
-			//System.out.println("closureId----"+closureId);
+			
 			String socTabId = req.getParameter("chlistTabId");
 //			String isApproval = req.getParameter("isApproval");
 //			
@@ -1474,7 +1474,9 @@ public class ProjectClosureController {
 			clist.setCWDeviation(req.getParameter("CWDeviation")!=null?"Yes":"No");
 			clist.setCWExpenditure(req.getParameter("CWExpenditure")!=null?"Yes":"No");
 			clist.setNoOfVehicleSanctioned(req.getParameter("NoOfVehicleSanctioned"));
+			clist.setVehicleType(req.getParameter("VehicleType"));
 			clist.setVehicleAvgRun(req.getParameter("VehicleAvgRun"));
+			
 			clist.setVehicleAvgFuel(req.getParameter("VehicleAvgFuel"));
 			clist.setProjectClosedDate(sdf.format(rdf.parse(req.getParameter("ProjectClosedDate"))));
 			clist.setReportDate(sdf.format(rdf.parse(req.getParameter("ReportDate"))));

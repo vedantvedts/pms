@@ -87,6 +87,7 @@ public class ProjectClosureCheckList implements Serializable {
 	private   String CWDeviation;
 	private   String CWExpenditure; 
 	private   String NoOfVehicleSanctioned;
+	private   String VehicleType;
 	private   String VehicleAvgRun;
 	private   String VehicleAvgFuel;
 	private   String ProjectClosedDate;

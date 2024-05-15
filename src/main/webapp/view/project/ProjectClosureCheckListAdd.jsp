@@ -704,8 +704,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 														</div> 
 											<!-- </form> --> 
 											   
+											   <br>
 												   
-												   <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
+												   <div class="pagin" style="display: flex; justify-content: center;padding-bottom:10px;"> 
 																
 																	
 																	<div class="pagination">
@@ -1104,8 +1105,10 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 	            							             
 	            							        
 												   <!--   </form>  -->
+												   
+												   <br>
 												    
-												     <div class="pagin" style="display: flex;justify-content: right;padding-bottom:10px;"> 
+												     <div class="pagin" style="display: flex;justify-content: center;padding-bottom:10px;"> 
 																
 																	
 																	<div class="pagination">
@@ -1315,14 +1318,25 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        <br> 
 												      
 												         <div class="row" style="margin-left: 2%;margin-right: 2%;">      
-												          <div class="col-md-5" style="">
+												          <div class="col-md-3" style="">
 												                 <div class="form-group">
-												                	<label class="control-label">No. of vehicles sanctioned in the project (With types).</label><span class="mandatory">*</span>
+												                	<label class="control-label">No. of vehicles sanctioned in the project </label><span class="mandatory">*</span>
 												                    <input class="form-control " type="text" name="NoOfVehicleSanctioned"  placeholder="No Of Vehicle Sanctioned" 
-												                    value="<% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null) {%><%=chlist.getNoOfVehicleSanctioned() %><%} %>" >
+												                    value="<% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null) {%><%=chlist.getNoOfVehicleSanctioned()%><%} %>" >
 												                    
 												                </div>
 												          </div> 
+												          
+												          <div class="col-md-2" style="">
+												                 <div class="form-group">
+												                	<label class="control-label">Vehicle type.</label><span class="mandatory">*</span>
+												                    <input class="form-control " type="text" name="VehicleType"  placeholder="Enter Vehicle Type" 
+												                    value="<% if(chlist!=null && chlist.getVehicleType()!=null) {%><%=chlist.getVehicleType()%><%}%>" >
+												                    
+												                </div>
+												          </div> 
+												          
+												          
 												          
 												          <div class="col-md-3" style="">
 												                 <div class="form-group">
@@ -1492,8 +1506,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 													
 												    </form> 
 												    
+												    <br>
 												    
-												    <div class="pagin" style="display: flex; justify-content: right;padding-bottom:10px;"> 
+												    <div class="pagin" style="display: flex; justify-content: center;padding-bottom:10px;"> 
 																
 																	
 																	<div class="pagination">
