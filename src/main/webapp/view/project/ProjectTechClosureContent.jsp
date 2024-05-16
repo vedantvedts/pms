@@ -9,22 +9,34 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
-<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
-<spring:url value="/resources/richtexteditor/richtexteditor.js" var="richtexteditorjs" />
+<%-- <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<spring:url value="/resources/ckeditor/contents.css" var="contentCss" /> --%>
+<%-- <spring:url value="/resources/richtexteditor/richtexteditor.js" var="richtexteditorjs" />
 <spring:url value="/resources/richtexteditor/richtexteditor.css" var="richtexteditorcss" />
-<spring:url value="/resources/richtexteditor/plugins/all_plugins.js" var="allpluginsjs" />
+<spring:url value="/resources/richtexteditor/plugins/all_plugins.js" var="allpluginsjs" /> --%>
+
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+ <spring:url value="/resources/font/summernote.woff" var="Summernotewoff" /> 
+<spring:url value="/resources/font/summernote.ttf" var="Summernotettf" /> 
+<spring:url value="/resources/font/summernote.eot" var="Summernoteeot" />
 
 <title>COMMITTEE SCHEDULE MINUTES</title>
 
 
-<script src="${ckeditor}"></script>
+<%-- <script src="${ckeditor}"></script>
 <script src="${richtexteditorjs}"></script>
-<script src="${allpluginsjs}"></script>
+<script src="${allpluginsjs}"></script> --%>
+
+ <script src="${SummernoteJs}"></script>
+ <link href="${SummernoteCss}" rel="stylesheet" />
+ <script src="${Summernotettf}"></script>
+  <script src="${Summernotettf}"></script>
+   <script src="${Summernoteeot}"></script>
 
 
- <link href="${contentCss}" rel="stylesheet" />
- <link href="${richtexteditorcss}" rel="stylesheet" />
+ <%-- <link href="${contentCss}" rel="stylesheet" />
+ <link href="${richtexteditorcss}" rel="stylesheet" /> --%>
 
    <style>
     .bs-example{
@@ -363,7 +375,10 @@ animation: fade-in 1s ease forwards;
 	font-size: 1.4rem;
 } 
 
+.note-editing-area{
 
+   height:320px;
+} 
 	</style>
 </head>
 <body>
@@ -641,7 +656,7 @@ List<Object[]>  AppendicesList=(List<Object[]>)request.getAttribute("AppendicesL
 	    </div>
 	 </div>
 
-        <%-------------------  RichText Editor -------------------------------------%>
+        <%-------------------  SummerNote Editor -------------------------------------%>
                   
 	          <div class="col-md-7" id="richtexteditor" >
 	         	<form action="SubChapterEdit.htm" method="POST" id="myfrm1">
@@ -651,9 +666,13 @@ List<Object[]>  AppendicesList=(List<Object[]>)request.getAttribute("AppendicesL
 					  <div class="card-body" style="margin-top: -8px" >
 					    <div class="row">	
 					        <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
-					          <div id="div_editor1"></div>
-					
-					         <textarea name="ChapterContent" style="display: none;"></textarea>
+					          <div id="summernote" style="height: 500;">
+					                
+					           </div>
+					           
+					          
+					         
+					         <textarea name="ChapterContent" id="" style="display:none;"></textarea>
 					          <div class="mt-2" align="center" id="detailsSubmit">
 					             <span id="EditorDetails"></span>
 				    
@@ -666,6 +685,7 @@ List<Object[]>  AppendicesList=(List<Object[]>)request.getAttribute("AppendicesL
 					                      <button type="submit" class="btn btn-sm btn-success submit mt-2 " onclick=EditorValueSubmit()>SUBMIT</button>
 					                  </span>
 						          </div>
+						      
 						      </div>
 						   </div>
 						  </div>
@@ -673,7 +693,7 @@ List<Object[]>  AppendicesList=(List<Object[]>)request.getAttribute("AppendicesL
 	         		</form>
 		        </div>
 		       
-		  <%-----------------------------------  RichText Editor -------------------------------------%> 
+		  <%-----------------------------------  SummerNote Editor -------------------------------------%> 
 		  
 		  
 		   <%-----------------------------------  Appendices Cloning -------------------------------------%> 
@@ -975,9 +995,10 @@ function moduleeditdisable(moduleid)
 	$('#btnx_'+moduleid).hide();
 }
 
-var editor1 = new RichTextEditor("#div_editor1");
 
-function showEditor(a,b){
+
+
+ function showEditor(a,b){
 	
 	 $('#editorHeading').show();
 	 $('#editorHeading1').hide();
@@ -986,6 +1007,9 @@ function showEditor(a,b){
 	 $('#chapterid').val(b);
 	 $('#chapterids').val(b);
 	 $('#chaptername').val(a);
+	 
+	 
+	 
 	 
 	 if(a==='APPENDICES'){
 		 
@@ -1017,16 +1041,19 @@ function showEditor(a,b){
 		}else{
 		    $('#Editorspan').html('<button type="submit" class="btn btn-sm btn-warning mt-2 edit" onclick=EditorValueSubmit()>UPDATE</button>');
 		}
-		    editor1.setHTMLCode(ajaxresult[1]);
+		  
+		    $('#summernote').summernote('code', ajaxresult[1]);
+		    
+		   
 		}
 	 })
 	 
-	}
+	} 
 	
-$('#myfrm1').submit(function() {
+/* $('#myfrm1').submit(function() {
 	 var data =editor1.getHTMLCode();
 	 $('textarea[name=ChapterContent]').val(data);
-	 });
+	 }); */
 	 
 function EditorValueSubmit(){
 	if(confirm("Are you sure you want to submit?")){
@@ -1117,6 +1144,31 @@ $(document).ready(function() {
     });
 });
 
+
+
+ $(document).ready(function() {
+	 $('#summernote').summernote({
+		  width: 900,   //don't use px
+		
+		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+		 
+	      lineHeights: ['0.5']
+	
+	 });
+
+$('#summernote').summernote({
+      
+       tabsize: 2,
+       height: 1000
+     });
+
+ $('#myfrm1').submit(function() {
+    
+	  var codeee=$('#summernote').summernote('code');
+	 // codeee=codeee.replace(/<\/?[^>]+(>|$)/g, "")
+	  $('textarea[name=ChapterContent]').val($('#summernote').summernote('code'));
+ });
+}); 
 
 
 

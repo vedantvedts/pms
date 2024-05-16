@@ -145,6 +145,21 @@ bottom-center {
 	margin-right:20px;
 	content:"This information given in this document is not to be published or communicated either directly or indirectly , to the press  or to any personnel not authorized to recieve it."
 }
+
+/*  .table-bordered{
+ 
+    border:1px solid black;
+	
+	
+
+} */
+
+table {
+	border : 1px solid black;
+}
+ 
+ 
+ 
 .border-black {
 	border: 1px solid black !important;
 	border-collapse: collapse !important;
@@ -182,7 +197,11 @@ margin-left:8px;
 
 #table1{
 margin-left:15x;
-}
+}  
+
+
+
+
 
 </style>
 </head>

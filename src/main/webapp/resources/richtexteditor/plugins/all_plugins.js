@@ -6,9 +6,9 @@ if (!RTE_DefaultConfig.svgCode_html2pdf) {
 
 RTE_DefaultConfig.plugin_html2pdf = RTE_Plugin_Html2PDF;
 
-function RTE_Plugin_Html2PDF() { 
+function RTE_Plugin_Html2PDF() {
 
-	//var scripturl = "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js";
+	var scripturl = "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js";
 
 	var obj = this;
 
@@ -966,10 +966,10 @@ function RTE_Plugin_InsertGallery() {
 			}
         }
 
-		/*for (var i = 0; i < config.galleryImages.length; i++) {
+		for (var i = 0; i < config.galleryImages.length; i++) {
 			var item = config.galleryImages[i];
 			CreateDiv(item);
-        }*/
+        }
 
 	}
 }
