@@ -242,6 +242,14 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 		  <section id="page" class="body-wrapper clearfix" style="">
 		    	<!-- Blue Border for Login Page -->  
 		    <div class="support-row clearfix" id="swapper-border" style="">
+		      <div class="marquee-container" onmouseover="stopMarquee()" onmouseout="startMarquee()">
+        <marquee behavior="scroll" direction="left" scrollamount="10" id="marquee">
+            <p style="font-size: 20px; color: white; line-height: 1.5em;">SMS Abbreviation  :  PMS SMS will be sent every morning at 7:20 AM, 
+            AI - P  : ActionItem Pending,  AI - D : ActionItem Delay, AI - T : ActionItem Today, 
+            MS - P : MileStone Actions Pending, MS - D : MileStone Actions Delay, MS - T : MileStone Actions Today, 
+            MT - P : Meeting Actions Pending, MT - D : Meeting Actions Delay, MT - T : Meeting Actions Today </p>
+        </marquee>
+    </div>
 		      	<div class="widget-guide clearfix">
 		        </div>
 		    </div> 
@@ -307,5 +315,15 @@ $("#myTable1,#myTable2,#myTable3").DataTable({
 });
 
 </script>
+<script>
+        var marquee = document.getElementById('marquee');
 
+        function stopMarquee() {
+            marquee.stop();
+        }
+
+        function startMarquee() {
+            marquee.start();
+        }
+    </script>
 </html>
