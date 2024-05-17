@@ -23,6 +23,10 @@ span {
 	font-size: 1.2rem !important;
 	font-weight: bold !important;
 }
+td.clickable:hover{
+cursor:pointer;
+background-color: rgba(247,236,208);
+}
 </style>
 
 </head>
@@ -108,11 +112,16 @@ FormatConverter fc = new FormatConverter();
 							<table style="width: 100%;">
 								<thead style="background-color: maroon;color: white;">
 									<tr>
-										<th style="width: 5%;">SN</th>
-										<th style="width: 60%;">Project</th>
-										<th style="width: 12%;">Cost (In Cr, &#8377)</th>
-										<th style="width: 12%;">DOS</th>
-										<th style="width: 12%;">PDC</th>
+										<th style="width: 2%;">SN</th>
+										<th style="width: 44%;">Projects</th>
+										<!-- <th style="width: 12%;">Cost (In Cr, &#8377)</th> -->
+										<th style="width: 8%;">DOS</th>
+										<th style="width: 8%;">PDC</th>
+										<th style="width: 6%;">Sanction Cost<br>(In Cr, &#8377)</th>
+										<th style="width: 6%;">Expenditure<br>(In Cr, &#8377)</th>
+										<th style="width: 6%;">Out Commitment<br>(In Cr, &#8377)</th>
+										<th style="width: 6%;">Dipl<br>(In Cr, &#8377)</th>
+										<th style="width: 6%;">Balance<br>(In Cr, &#8377)</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -122,22 +131,18 @@ FormatConverter fc = new FormatConverter();
 										for(int i=0;i<projects.size();i++ ){ %>
 										<tr>
 											<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
-											<td style="font-weight: bold;">
-												<a data-target="#presentation-slides" data-slide-to="<%=2+i%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
-												<b>
+											<td style="font-weight: bold;" class="clickable " data-target="#presentation-slides" data-slide-to="<%=2+i%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 													<%if (projects.get(i) != null )
-														if(projects.get(i)[1] != null) { %><%=projects.get(i)[1]%> (<%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%>)
+														if(projects.get(i)[1] != null) { %><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
 													<%}%>
 												</b>
-												</a>
-												
 											</td>
-											<td style="font-weight: bold;text-align: right;">
+											<%-- <td style="font-weight: bold;text-align: right;">
 												<%if (projects.get(i) != null )
 													if(projects.get(i)[3]!= null) { %>
 													<%=String.format("%.2f", Double.parseDouble(projects.get(i)[3].toString())/10000000) %>
 												<%}%>
-											</td>
+											</td> --%>
 											<td style="font-weight: bold;text-align: center;">
 												<%if (projects.get(i) != null )
 													if(projects.get(i)[5]!= null) { %>
@@ -148,6 +153,36 @@ FormatConverter fc = new FormatConverter();
 												<%if (projects.get(i) != null )
 													if(projects.get(i)[4]!= null) { %>
 													<%=fc.SqlToRegularDate(projects.get(i)[4].toString())%>
+												<%}%>
+											</td>
+											<td style="font-weight: bold;text-align: right;">
+												<%if (projects.get(i) != null )
+													if(projects.get(i)[3]!= null) { %>
+													<%=String.format("%.2f", Double.parseDouble(projects.get(i)[3].toString())/10000000)%>
+												<%}%>
+											</td>
+											<td style="font-weight: bold;text-align: right;">
+												<%if (projects.get(i) != null )
+													if(projects.get(i)[16]!= null) { %>
+													<%=String.format("%.2f", Double.parseDouble(projects.get(i)[16].toString())/10000000)%>
+												<%}%>
+											</td>
+											<td style="font-weight: bold;text-align: right;">
+												<%if (projects.get(i) != null )
+													if(projects.get(i)[17]!= null) { %>
+													<%=String.format("%.2f", Double.parseDouble(projects.get(i)[17].toString())/10000000)%>
+												<%}%>
+											</td>
+											<td style="font-weight: bold;text-align: right;">
+												<%if (projects.get(i) != null )
+													if(projects.get(i)[18]!= null) { %>
+													<%=String.format("%.2f", Double.parseDouble(projects.get(i)[18].toString())/10000000)%>
+												<%}%>
+											</td>
+											<td style="font-weight: bold;text-align: right;">
+												<%if (projects.get(i) != null )
+													if(projects.get(i)[19]!= null) { %>
+													<%=String.format("%.2f", Double.parseDouble(projects.get(i)[19].toString())/10000000)%>
 												<%}%>
 											</td>
 										</tr>
@@ -195,13 +230,15 @@ FormatConverter fc = new FormatConverter();
 												%>
 								
 												<div class="content-header row " style="margin-top: 10px; padding: 10px" > 
-	 					
 							 						<div class="col-md-1" align="left" style="padding-top:5px;" >
 														<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 													</div>
 													<h4 class="card-title col-md-10" align="center">
 														<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-														%><%=projects.get(i)[1]%> (<%=projects.get(i)[12]%>)
+														%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
+														
+														
+														
 														<%}%>
 													</h4>
 							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
@@ -216,7 +253,7 @@ FormatConverter fc = new FormatConverter();
 																<tr>
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 10%;">Project No :</td>
 																	<td colspan="1" style="width: 25%;color: black;"><%=projects.get(i)[11]%></td>
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 8%">User :</td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 10%">User :</td>
 																	<td colspan="1" style="width: 17%;color: black;"><%=enduser%></td>
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 8%;">Category :</td>
 																	<td colspan="1" style="width: 32%;color: black;"><%=projects.get(i)[2]%></td>
@@ -323,8 +360,14 @@ FormatConverter fc = new FormatConverter();
 																<tr  style="border-style: hidden;">
 																	<td class="align-middle" style="border-style: hidden;">
 																		<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2]).exists()){%>
-																		<img class=" d-flex justify-content-center" data-enlargable style="max-height: 300px; max-width: 1200px; margin-bottom: 5px;margin: auto;" 
-																		src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
+																		<div style="max-height: 300px; max-width: 600px;margin: auto;">
+																			<a  href="SlidePdfOpenAttachDownload.htm?slideId=<%=FreezedSlide.get(i)[4]%>" target="_blank" title="PDF File">
+																			
+																				<img class=" d-flex justify-content-center" data-enlargable style="max-height: 300px; max-width: 600px; margin-bottom: 5px;margin: auto;" 
+																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
+																			
+																			</a>
+																		</div>
 																		<%} else{ %>image<%} %>
 																	</td>
 																</tr>
@@ -376,7 +419,7 @@ FormatConverter fc = new FormatConverter();
 							 						<div class="col-md-1" align="left" style="padding-top:5px;" >
 														<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 													</div>
-													<h4 class="card-title col-md-10" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=projects.get(i)[1]%> (<%=projects.get(i)[12]%>)  <%}%></h4>
+													<h4 class="card-title col-md-10" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)  <%}%></h4>
 							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
 							 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							 						</div>
@@ -390,7 +433,7 @@ FormatConverter fc = new FormatConverter();
 																	<tr>
 																		<td style="font-size: 1.2rem;font-weight: bold; color: #021B79;">Project No :</td>
 																		<td style="color: black;"><%=projects.get(i)[11]%></td>
-																		<td style="font-size: 1.2rem;width: 8%;font-weight: bold;color: #021B79;">User :</td>
+																		<td style="font-size: 1.2rem;width: 10%;font-weight: bold;color: #021B79;">User :</td>
 																		<td style="color: black;"><%=enduser%></td>
 																	</tr>
 																	<tr>
@@ -491,7 +534,9 @@ FormatConverter fc = new FormatConverter();
 																	<tr >
 																		<td style="border-bottom: none;">
 																			<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2]).exists()){%>
+																			<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=FreezedSlide.get(i)[4]%>" style="max-height: 600px; max-width: 1600px;" target="_blank" title="PDF File">
 																			<img class=" d-flex justify-content-center mx-auto d-block" data-enlargable style="max-height: 600px; max-width: 1600px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
+																			</a>
 																			<%} else{%>image<%}%>
 																		</td>
 																

@@ -35,6 +35,7 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.dao.PrintDao;
 import com.vts.pfms.print.dto.PfmsBriefingFwdDto;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
+import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.PfmsBriefingTransaction;
@@ -717,6 +718,7 @@ public class PrintServiceImpl implements PrintService{
 		ProjectSlides slide = new ProjectSlides();
 		String Path = LabCode + "\\ProjectSlide\\";
 		slide.setStatus(slidedata.getStatus());
+		slide.setSlide(slidedata.getBrief());
 		slide.setSlide(slidedata.getSlide());
 		slide.setProjectId(slidedata.getProjectId());
 		slide.setPath(Path);
@@ -746,6 +748,7 @@ public class PrintServiceImpl implements PrintService{
 		ProjectSlides slide = new ProjectSlides();
 		slide.setSlideId(slidedata.getSlideId());
 		slide.setSlide(slidedata.getSlide());
+		slide.setBrief(slidedata.getBrief());System.out.println(slidedata.getBrief());
 		slide.setStatus(slidedata.getStatus());
 		slide.setModifiedBy(slidedata.getModifiedBy());
 		slide.setModifiedDate(sdf1.format(new Date()));
@@ -1074,6 +1077,24 @@ public class PrintServiceImpl implements PrintService{
 	public PfmsProjectData getPfmsProjectDataById(String projectId) throws Exception {
 		
 		return dao.getPfmsProjectDataById(projectId);
+	}
+	
+	@Override
+	public Long saveFavouriteSlides(FavouriteSlidesModel fSM)throws Exception
+	{
+		return dao.saveFavouriteSlides(fSM);
+	}
+	
+	@Override
+	public List<Object[]> GETFavouriteSlides()throws Exception
+	{
+		return dao.GETFavouriteSlides();
+	}
+
+	@Override
+	public Long EditFavouriteSlides(FavouriteSlidesModel fSM) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.EditFavouriteSlides(fSM);
 	}
 	
 }

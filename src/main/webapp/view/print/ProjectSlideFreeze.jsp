@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="ISO-8859-1"/>
 <style type="text/css">
   
 @page {             
@@ -44,11 +44,13 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
+  /*  border: 1px solid #dddddd;  */
 }
 
 th, td {
   text-align: left;
   padding: 5px;
+   /* border: 1px solid #dddddd;  */
 }
 span{
 margin: auto;
@@ -84,90 +86,83 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 <div >
 			<%if(projectslidedata[0]!=null && projectslidedata[1].toString().equalsIgnoreCase("2")){%>
 				<div align="center" style="padding: 10px" >
-					<h2 style="margin-top: -5px; color: #c72626;;font-family: 'Muli'"><%if(projectdata!=null && projectdata[13]!=null){%><%=projectdata[13]%>(<%=projectdata[12]%>) <%}%> 
+					<h2 style=" color: #c72626;font-family: 'Muli'">
+						<%if(projectdata!=null && projectdata[13]!=null){%>
+							<%=projectdata[13]%><%=projectdata[12]!=null?"("+projectdata[12]+")":""%> 
+						<%}%> 
 					</h2>
 				</div>
 				<div style="position: relative;">
-					<div style="float: left;width: 50%;position: relative;">
+					<div style="float: left;width: 100%;position: relative;">
 						<table style="font-weight: bold;width: 100%;height: 50%;position: relative;" >
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 25%">Project No :</td>
-								<td style="width: 286px;"><%=projectdata[11]%></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color: #021B79;width: 10%">Project No :</td>
+								<td style="width: 20%;color:#212529 "><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 10%">User :</td>
+								<td style="width: 20%;color:#212529 "><%=enduser!=null?enduser:"--"%></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 10%">Category :</td>
+								<td style="color:#212529 "><%=projectdata[2]!=null?projectdata[2]:"--"%></td>
 							</tr>
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Category :</td>
-								<td><%=projectdata[2]%></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">DoS :</td>
+								<td style="color:#212529 "><%=sdf.format(projectdata[5]) %></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Cost Rs.:</td>
+								<td style="color:#212529 "><%=nfc.convert(cost/10000000)%> (In Cr)</td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">PDC :</td>
+								<td style="color:#212529 "><%=sdf.format(projectdata[4]) %></td>
 							</tr>
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Cost Rs.:</td>
-								<td><%=nfc.convert(cost/10000000)%> (In Cr)</td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Application :</td>
+								<td colspan="5" style="color:#212529 "><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
 							</tr>
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">User :</td>
-								<td><%=enduser%></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color: #021B79;">
+									<b style="font-size: 1.09rem;font-weight: bold;color:#021B79  ;">Objectives : </b> 
+								</td>
+								<td colspan="5" style="color:#212529 ">
+									<%if(projectdata[7]!=null && projectdata[7].toString().length()>150){%> <%=projectdata[7].toString().substring(0,150)%><b>...</b>   <%}else{%> <%=projectdata[7]!=null?projectdata[7]:"--"%> <%}if(projectdata[7]==null){%>--<%} %> 
+								</td>
 							</tr>
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">DoS :</td>
-								<td><%=sdf.format(projectdata[5]) %></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color: #021B79;">
+										<b style="font-size: 1.09rem;font-weight: bold;color:#021B79 ;">Scope : </b>
+								</td>
+								<td colspan="5" style="color:#212529 "> <%if(projectdata[9]!=null && projectdata[9].toString().length()>150){%> <%=projectdata[9].toString().substring(0,150)%><b>...</b>   <%}else{%> <%=projectdata[9]!=null?projectdata[9]:"--"%> <%}if(projectdata[9]==null){%>--<%} %> 
+								</td>
 							</tr>
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">PDC :</td>
-								<td><%=sdf.format(projectdata[4]) %></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+							   		<b style="font-size: 1.09rem;font-weight: bold;color:#021B79 ;">Deliverables : </b>
+							   	</td>
+							   	<td colspan="5" style="color:#212529 "> 
+							   		<%if(projectdata[8]!=null && projectdata[8].toString().length()>150){%> 
+							   			<%=projectdata[8].toString().substring(0,150)%><b>...</b>   <%}else{%> <%=projectdata[8]%> 
+							   		<%}if(projectdata[8]==null){%>--<%} %>
+						   		</td>
 							</tr>
+							<tr >
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Stage
+								</td >
+								<td colspan="5" style="color:#212529 ">
+									 <%if(projectdata[14]!=null && projectdata[14].toString().length()>150){%>
+									 	<%=projectdata[14].toString().substring(0, 150)%>  <%}else{%> <%=projectdata[14]!=null?150:"--" %> 
+									 <%}%>
+								</td> 
+							</tr>	
+			
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Application :</td>
-								<td><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Brief :
+								</td>
+								<td colspan="5" style="color:#212529 ">
+									<%if(projectslidedata[0]!=null && projectslidedata[0].toString().length()>150){%>  <%=projectslidedata[0].toString().substring(0,150)%>
+									<b>...</b> 
+									<%}else{%> <%=projectslidedata[0]!=null?projectslidedata[0]:"--"%> <%}%>
+								</td>
 							</tr>
 						</table>
 					</div>
-					<div style="float: right;width: 50%;">
-						<table style="font-weight: bold;width: 100%;height: 50%">
-						<tr>
-							<td style="width: 25%">
-								<b style="font-size: 1.09rem;font-weight: bold;color:  #115bc9;">Objectives : </b> 
-							</td>
-							<td>
-								<%if(projectdata[7]!=null && projectdata[7].toString().length()>350){%> <%=projectdata[7].toString().substring(0,300)%>  <%}else{%> <%=projectdata[7]%> <%}if(projectdata[7]==null){%>--<%} %> 
-							</td>
-						</tr>
-						<tr>
-							<td>
-									<b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b>
-							</td>
-							<td> <%if(projectdata[9]!=null && projectdata[9].toString().length()>350){%> <%=projectdata[9].toString().substring(0,300)%>  <%}else{%> <%=projectdata[9]%> <%}if(projectdata[9]==null){%>--<%} %> 
-							</td>
-						</tr>
-						<tr>
-							<td>
-						   		<b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b>
-						   	</td>
-						   	<td> 
-						   		<%if(projectdata[8]!=null && projectdata[8].toString().length()>350){%> <%=projectdata[8].toString().substring(0,300)%>  <%}else{%> <%=projectdata[8]%> <%}if(projectdata[8]==null){%>--<%} %>
-					   		</td>
-						</tr>
-						<tr >
-							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Current Stage
-							</td>
-							<td >
-								 <%if(projectdata[14]!=null){%><%=projectdata[14]%>  <%}else{%> -- <%}%>
-							</td> 
-						</tr>	
-		
-						<tr>
-							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Brief :
-							</td>
-							<td>
-								<%if(projectslidedata[0]!=null && projectslidedata[0].toString().length()>400){%>  <%=projectslidedata[0].toString().substring(0,350)%>
-								<b>...See more</b> 
-								<%}else{%> <%=projectslidedata[0]%> <%}%>
-							</td>
-						</tr>
-					</table>
-					</div>
 				</div>
-				
-				
-				<table style="width:100%;height: 40%;">
+				<table style="width:100%;height: 40%;font-weight: bold;">
 					<tbody class=" d-inline-flex justify-content-center" style="width:100% ; display: grid;place-items: center; ">
 						<tr class=" d-inline-flex justify-content-center" style="width:100%  ">
 							<td>
@@ -180,137 +175,103 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						</tr>
 					</tbody>
 				</table>
-				<p style="width: 286px;font-size: 1.02rem;font-weight: bold; color: #115bc9;padding: 3px;position: relative;margin: 0px 0px 0px 0px;">
+				<p style="font-size: 1.02rem;font-weight: bold; color: #021B79;padding: 3px;position: relative;margin: 0px 0px 0px 0px;text-align: right;">
 					<a href="<%=filePath +projectslidedata[3]+projectslidedata[5]%>"  target="_blank" title="PDF File">
-						<b>Show More</b>
+						Show More
 					</a> 
 				</p>
 				<%}else{%>
-				<div align="center" style="padding: 3px" ><h2 style="margin-bottom:5px; margin-top: -5px; color: #c72626;;font-family: 'Muli'">
+				<div align="center" style="padding: 3px;display: block;" ><h2 style="margin-bottom:5px; margin-top: -5px; color: #c72626;;font-family: 'Muli'">
 					<%if(projectdata!=null && projectdata[13]!=null){%><%=projectdata[13]%>(<%=projectdata[12]%>) <%}%> 
 					</h2>
 				</div>
-				
-				<div style="float: left;width: 50%;height: 100%">
-						<table class="table meeting" style="margin-top: -10px; align-items: flex-end;height: 100%">
+				<div style="float: left;width: 50%;height: 100%;display: block;">
+						<table style="margin-top: -10px; align-items: flex-end;height: 100%;font-weight: bold;">
 							<tr >
-								<td style="width:15% ;   font-size: 1.02rem;font-weight: bold; color: #115bc9;padding-top: 12px; padding-bottom: 12px">Project No :</td>
-								<td colspan="4" style="width:20% ; text-align: left;"><%=projectdata[11]%></td>
-								
-								
+								<td style="width:7% ;   font-size: 1.02rem;font-weight: bold; color:#021B79 ;padding-top: 6px; padding-bottom: 6px">Project No :</td>
+								<td colspan="4" style="width:20% ; text-align: left;color:#212529 "><%=projectdata[11]%></td>
 							</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">Category :</td>
-								<td colspan="4" style="text-align: left;"><%=projectdata[2]%></td>
-								
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">Category :</td>
+								<td colspan="4" style="text-align: left;color:#212529 "><%=projectdata[2]%></td>
 							</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">Cost Rs.:</td>
-								<td colspan="4" style="text-align: left;"><%=nfc.convert(cost/10000000)%> (In Cr)</td>
-								
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">Cost Rs.:</td>
+								<td colspan="4" style="text-align: left;color:#212529 "><%=nfc.convert(cost/10000000)%> (In Cr)</td>
 							</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">Application :</td>
-								<td colspan="7" style="text-align: left;"><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">Application :</td>
+								<td colspan="7" style="text-align: left;color:#212529 "><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
 							</tr>
 							 <tr>
-							 <td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">User :</td>
-								<td colspan="7" style="text-align: left;"><%=enduser%></td>
+							 <td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">User :</td>
+								<td colspan="7" style="text-align: left;color:#212529 "><%=enduser%></td>
 							 </tr>
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">DoS :</td>
-								<td colspan="7" style="text-align: left;"><%=sdf.format(projectdata[5]) %></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">DoS :</td>
+								<td colspan="7" style="text-align: left;color:#212529 "><%=sdf.format(projectdata[5]) %></td>
 							</tr>
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">PDC :</td>
-								<td colspan="7" style="text-align: left;"><%=sdf.format(projectdata[4]) %></td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">PDC :</td>
+								<td colspan="7" style="text-align: left;color:#212529 "><%=sdf.format(projectdata[4]) %></td>
 							</tr>
-						<tr>
-							<td>
-									<b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b>
-							</td>
-							<td> <%if(projectdata[9]!=null && projectdata[9].toString().length()>350){%> <%=projectdata[9].toString().substring(0,300)%>  <%}else{%> <%=projectdata[9]%> <%}if(projectdata[9]==null){%>--<%} %> 
-							</td>
-						</tr>
-						<tr>
-							<td>
-						   		<b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b>
-						   	</td>
-						   	<td> 
-						   		<%if(projectdata[8]!=null && projectdata[8].toString().length()>350){%> <%=projectdata[8].toString().substring(0,300)%>  <%}else{%> <%=projectdata[8]%> <%}if(projectdata[8]==null){%>--<%} %>
-					   		</td>
-						</tr>
-						<tr >
-							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Current Stage
-							</td>
-							<td >
-								 <%if(projectdata[14]!=null){%><%=projectdata[14]%>  <%}else{%> -- <%}%>
-							</td> 
-						</tr>	
-		
-						<tr>
-							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Brief :
-							</td>
-							<td>
-								<%if(projectslidedata[0]!=null && projectslidedata[0].toString().length()>400){%>  <%=projectslidedata[0].toString().substring(0,350)%>
-								<b>...See more</b> 
-								<%}else{%> <%=projectslidedata[0]%> <%}%>
-							</td>
-						</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">
 									Objectives :
 								</td>
-								<td>
-									<%if(projectdata[7]!=null && projectdata[7].toString().length()>350){%> <%=projectdata[7].toString().substring(0,300)%>  <%}else{%> <%=projectdata[7]%> <%}if(projectdata[7]==null){%>--<%} %> 
+								<td colspan="7" style="text-align: left;color:#212529 ">
+									<%if(projectdata[7]!=null && projectdata[7].toString().length()>150){%> 
+										<%=projectdata[7].toString().substring(0,150)%><b>...</b>   <%}else{%> <%=projectdata[7]!=null?projectdata[7]:"--"%> 
+									<%}if(projectdata[7]==null){%>--<%} %> 
 								</td>
 							</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">Scope : 
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">Scope :
 								</td>
-								<td colspan="7" style="text-align: left;">
-								<%if(projectdata[9]!=null && projectdata[9].toString().length()>350){%>
-								 <%=projectdata[9].toString().substring(0,300)%> 
-								 <%}else{%> -- <%}%> 
-							   	</td>
+								<td colspan="7" style="text-align: left;color:#212529 "> 
+									<%if(projectdata[9]!=null && projectdata[9].toString().length()>150){%> 
+										<%=projectdata[9].toString().substring(0,150)%><b>...</b>   <%}else{%> <%=projectdata[9]!=null?projectdata[9]:"--"%> 
+									<%}if(projectdata[9]==null){%>--<%} %> 
+								</td>
 						   	</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">Deliverables : 
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">Deliverables : 
 								</td>
-								<td colspan="7" style="text-align: left;">
-								<%if(projectdata[8]!=null && projectdata[8].toString().length()>350){%> <%=projectdata[8].toString().substring(0,300)%> <%}else{%> -- <%}%>
-								</td>
+								<td colspan="7" style="text-align: left;color:#212529 "> 
+						   		<%if(projectdata[8]!=null && projectdata[8].toString().length()>150){%> <%=projectdata[8].toString().substring(0,150)%><b>...</b>   <%}else{%> <%=projectdata[8]!=null?projectdata[8]:"--"%> <%}if(projectdata[8]==null){%>--<%} %>
+					   			</td>
 							</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">
-									Current Status :
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">
+									Current Stage :
 									</td>
-									<td colspan="7" style="text-align: left;"><p>
+									<td colspan="7" style="text-align: left;color:#212529 "><p>
 								 <%if(projectdata[14]!=null){%><%=projectdata[14]%>  <%}else{%> -- <%}%>
 								</p></td>
 							</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;padding-top: 12px; padding-bottom: 12px">
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px">
 									Brief :
-									</td>
-									<td colspan="6"><p>
-								<%if(projectslidedata[0]!=null && projectslidedata[0].toString().length()>400){%> <%=projectslidedata[0].toString().substring(0,350)%> <%=projectslidedata[0]%> <%}else{%> -- <%}%>
-								</p></td> 
-									
-							</tr>
-							<tr >
-								<td style="padding-top: 12px; padding-bottom: 12px"><p><a href="<%=filePath +projectslidedata[3]+projectslidedata[5]%>"  target="_blank" title="PDF File">
-									<b>Show More</b></a></p></td>
+								</td>
+								<td colspan="6" style="color:#212529 ">
+									<p>
+										<%if(projectslidedata[0]!=null && projectslidedata[0].toString().length()>150){%> <%=projectslidedata[0].toString().substring(0,150)%><b>...</b>  <%}else{%> <%=projectslidedata[0]!=null?projectslidedata[0]:"--"%> <%}%>
+									</p>
+								</td>
 							</tr>
 						</table>
-						
-						</div>
-						<div style="float: right;width: 50%;">
-							<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
-								<img  style="max-height: 300px; max-width: 1200px; margin: auto;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">	
-							<%}%>
-						</div>
-				<%}%>			
+					</div>
+					<div style="float: right;width: 50%;margin: auto;">
+						<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
+							<img  style=" max-height: 350px; width: 575px; margin: auto;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">	
+						<%}%>
+					</div>
+					<p style="text-align: right;font-weight: bold;color: #021B79;position: relative;">
+						<a href="<%=filePath +projectslidedata[3]+projectslidedata[5]%>"  target="_blank" title="PDF File">
+							Show More
+						</a>
+					</p>
+				<%}%>
 </div>
 </body>
 </html>

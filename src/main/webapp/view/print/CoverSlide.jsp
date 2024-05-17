@@ -76,7 +76,7 @@ String enduser="--";
 						<% if(labInfo!=null){ %>
 						<tr>
 												<td style="height: 25px"></td>
-												</tr>	
+												</tr>
 						<tr>
 							<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
 						</tr>

@@ -123,47 +123,46 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 			 <input type="radio" name="silde" value="2"  />
 			<div class="card" style="margin-top: 5px;">
 				 <div class="card-body">
-				 <div class="container-fluid" >
+				 <div class="container-fluid">
 				 	<div class="row" >
-				 		<div class="col" >
-				 			<div class="form-check form-check-inline" style="text-align: center;width: 100%">
-									<label class="form-check-label" style="margin: auto;"  for="Status"> <b>Brief : </b> </label>
-						</div>
+				 		<div class="col" ><p>Current Status : </p>
 						<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"></textarea>
+						<p>Brief : </p>
+						<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Brief" id="ckeditor1" rows="5" cols="20" maxlength="5"></textarea>
 				 		</div>
 				 		<div class="col" >
 				 			<div class="container-fluid" >
 				 				<div class="row" >
 				 					<div class="col" >
-														<div class="form-group">
-															<label><b> Image : </b></label><span class="mandatory">*</span>
-															<input class="form-control form-control" type="file"
-																name="Attachment1" id="Attachment1"
-																accept="image/png, image/jpeg" required="required"
-																maxlength="3" style="font-size: 15px;">
-														</div>
-												</div>
-												<div class="col">
-														<div class="form-group">
-															<label><b> Attachment : </b></label>
-																<input
-																class="form-control form-control" type="file"
-																name="Attachment2" id="Attachment2"
-																accept="application/pdf, application/vnd.ms-excel"
-																 maxlength="3"
-																style="font-size: 15px;">
-														</div>
-												</div>
+										<div class="form-group">
+											<label><b> Image : </b></label><span class="mandatory">*</span>
+											<input class="form-control form-control" type="file"
+												name="Attachment1" id="Attachment1"
+												accept="image/png, image/jpeg" required="required"
+												maxlength="3" style="font-size: 15px;">
+										</div>
+									</div>
+									<div class="col">
+											<div class="form-group">
+												<label><b> Attachment : </b></label>
+													<input
+													class="form-control form-control" type="file"
+													name="Attachment2" id="Attachment2"
+													accept="application/pdf, application/vnd.ms-excel"
+													 maxlength="3"
+													style="font-size: 15px;">
 											</div>
-											<div class="row" >
-											<div class="col" >
-						<div align="center">
-							<input type="hidden" name="projectid" value="<%=projectdata[0]%>">
-							<button type="button" style="margin-top: 10px;" class="btn btn-primary btn-sm add"  onclick="return checkData()">Submit </button>
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						</div>
-						</div>
-						</div>
+									</div>
+								</div>
+								<div class="row" >
+									<div class="col" >
+										<div align="center">
+											<input type="hidden" name="projectid" value="<%=projectdata[0]%>">
+											<button type="button" style="margin-top: 10px;" class="btn btn-primary btn-sm add"  onclick="return checkData()">Submit </button>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										</div>
+									</div>
+								</div>
 				 			</div>
 				 		</div>
 				 		

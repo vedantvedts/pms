@@ -27,7 +27,8 @@
 
 .meeting thead tr td{
 	font-family: 'Muli',sans-serif;
-	font-size: 16px !important
+	font-size: 16px !important;
+	color: #00416A;
 }
 table{
 border: 1px solid #fff;
@@ -130,231 +131,248 @@ if(ses1!=null){
 	 						<div class="col-md-1" align="left" style="padding-top:5px;" >
 								<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							</div>
-	 						<h4 class="card-title col-md-10" align="center" > <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%></h4>
+	 						<h4 class="card-title col-md-10" align="center" > <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%=projectdata[13]!=null?projectdata[13]:"--"%> (<%=projectdata[12]!=null?projectdata[12]:"--"%>) <%}%></h4>
 	 						<div class="col-md-1" align="right" style="padding-top:5px;" >
 	 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 	 						</div>
 						</div>
 					
 					<div class="card shadow-nohover" id="slide2">						
-					<div class="card-body" style="padding: 0.25rem;border: 6px solid green;border-radius: 5px !important;height:90vh !important;" align="center">
-						<div class="row">
-							<div class="col-md-5" align="left">
-							
+					<div class="content" align="center" style=" border: 6px solid green;background-color: #F9F2DF66;border-radius: 5px !important;height:85vh !important;padding-top: 15px;">
+						
 								<table style="font-weight: bold;width: 100%;">
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;width: 150px;">Project No :</td>
-										<td style="width: 286px;font-weight: bold;"><%=projectdata[11]%></td>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; width: 80px;">User :</td>
-										<td style="width: 150px;font-weight: bold;"><%=enduser%></td>
+										<td style="font-size: 1.02rem;font-weight: bold; color:#021B79 ;width: 10%">Project No :</td>
+										<td style="width: 25%;font-weight: bold;color:#212529 "><%=projectdata[11]%></td>
+										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; width: 8%;">User :</td>
+										<td style="width: 27%;font-weight: bold;color:#212529 "><%=enduser%></td>
+										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 8%">Category :</td>
+										<td style="font-weight: bold;widows: 25%;color:#212529 "><%=projectdata[2]%></td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Category :</td>
-										<td style="font-weight: bold;"><%=projectdata[2]%></td>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">DoS :</td>
-										<td style="font-weight: bold;"><%=sdf.format(projectdata[5]) %></td>
+										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">DoS :</td>
+										<td style="font-weight: bold;color:#212529 "><%=sdf.format(projectdata[5]) %></td>
+										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Cost (In Cr):</td>
+											<td style="font-weight: bold;color:#212529 "><%=nfc.convert(cost/10000000)%> </td>
+										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">PDC :</td>
+										<td style="font-weight: bold;color:#212529 "><%=sdf.format(projectdata[4]) %></td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Cost Rs.:</td>
-										<td style="font-weight: bold;"><%=nfc.convert(cost/10000000)%> (In Cr)</td>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">PDC :</td>
-										<td style="font-weight: bold;"><%=sdf.format(projectdata[4]) %></td>
 									</tr>
-									
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Application :</td>
-										<td colspan="4" style="font-weight: bold;"><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
+										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Application :</td>
+										<td colspan="5" style="font-weight: bold;color:#212529 "><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
 									</tr>
-								</table>
-								
-							</div>
-							<div class="col-md-7" align="left">
-								<table style="font-weight: bold;width: 100%;">
 									<tr>
-										<td style="width: 20%;"><b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Brief : </b>  </td>
-										<td style="width: 80%;">
-											<%if(projectslidedata!=null && projectslidedata[0]!=null) {%>
-											<%=projectslidedata[0]%>
-											<%} else{%>-<%} %> 
+										<td style="font-size: 1.02rem;font-weight: bold;color:#212529 ;">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										Brief : </b>  </td>
+										<td colspan="5" style="font-weight: bold;color:#212529 ">
+											<%=projectdata[15]!=null?projectdata[15]:"--"%>
 										</td>
 									</tr>
 									<tr>
-										<td>
-											<b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
+											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
 												Objectives :
-											</b> 
-											
+											</b>
 										</td>
-										<td>
+										<td colspan="5" style="font-weight: bold;color:#212529 ">
 											<%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> 
 												<%=projectdata[7].toString().substring(0,280)%>
 												<span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;">
 													<b> ...View More </b>
 												</span>
-											<%}else{%> <%=projectdata[7]%> <%}%>
+											<%}else{%> <%=projectdata[7]!=null?projectdata[7]:"--"%> <%}%>
 										</td>
 									</tr>
 									<tr>
-										<td>
-											<b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Scope : </b>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
+											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Scope : </b>
 										</td>
-										<td>
+										<td colspan="5" style="font-weight: bold;color:#212529 ">
 											<%if(projectdata[9]!=null && projectdata[9].toString().length()>320){%> <%=projectdata[9].toString().substring(0,280)%>
 											<span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b>
-											</span><%}else{%> <%=projectdata[9]%> <%}%>
+											</span><%}else{%> <%=projectdata[9]!=null?projectdata[9]:"--"%> <%}%>
 										</td>
 									</tr>
 									<tr>
-										<td>
-											<b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Deliverables : </b> 
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
+											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Deliverables : </b> 
 										</td>
-										<td>
-											<%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projectdata[8]%> <%}%>
+										<td colspan="5" style="font-weight: bold;color:#212529 ">
+											<%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span>
+											<%}else{%> <%=projectdata[8]!=null?projectdata[8]:"--"%> <%}%>
 										</td>
 									</tr>
 									<tr>
-										<td>
-											<b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Current Stage : </b> 
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
+											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Stage : </b> 
 										</td>
-										<td>
+										<td colspan="5" style="font-weight: bold;color:#212529 ">
 											<%if(projectdata!=null && projectdata[14]!=null) {%>
-												<%=projectdata[14]%>
+												<%=projectdata[14]!=null?projectdata[14]:"--"%>
 											<%} else{%>
 												--
 											<%} %>
 										</td>
 									</tr>
+									<tr>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;vertical-align: top;" >
+											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Status : </b> 
+										</td>
+										<td colspan="5" style="font-weight: bold;color:#212529 ">
+										<%if(projectslidedata!=null && projectslidedata[0]!=null) {%>
+												<%=projectslidedata[0]%>
+											<%} else{%>-<%} %> 
+										</td>
+									</tr>
 								</table>
 							
-							</div>
-						</div>	
 						
-						
-							<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
-								<img data-enlargable style="max-height:300px; max-width:1200px; margin: 15px;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
-								<hr>
-							<%}%>
+							<div class="col">
+								<table style="width: 100%;height: 100%;border-style: hidden;">
+									<tbody >
+										<tr style="border-style: hidden;">
+											<td  style="border-style: hidden;width:100%; ">
+												<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
+												<div style="max-height: 300px; max-width: 600px;margin: auto;">
+												<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="PDF File">
+													<img data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+												</a>
+												</div>
+													<hr>
+												<%}%>
+											</td>
+										</tr>
+										<tr>
+											<td style="text-align: right;">
+												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="PDF File">Show more</a></p>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>						
+
+
+
+							
 						
 							
-						<div class="row">
-							<div class="col-md-2" align="left" style="margin-top: 15%;">
-								  <a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File"><b>Show more</b></a>
 							</div>
-						</div>	
-					</div>
 				</div>
 					<div  id="slide1" style="border-radius: 5px !important;">
 			
 						
-						<div class="card shadow-nohover" style="border: 6px solid green;" >
+						<div class="content" align="center" style=" border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 10px;" >
 							<div class="card-body" style="padding: 0.25rem;" align="center">
-								<div class="row">
-									<div class="col-md-5">
-										<div class="row">
-											<div class="col-md-12">
+								<div class="row" style="height: 80%">
+									<div class="col-md-6">
 												<table  style="width: 100%;font-weight: bold;">
 														<tr>
-															<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;width: 150px;">Project No :</td>
-															<td style="width: 286px;"><%=projectdata[11]%></td>
-															<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; width: 80px;">User :</td>
-															<td style="width: 150px;"><%=enduser%></td>
+															<td style="font-size: 1.02rem;font-weight: bold; color:#021B79 ;width: 150px;">Project No :</td>
+															<td style="width: 286px;color:#212529 "><%=projectdata[11]%></td>
+															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; width: 9%;">User :</td>
+															<td style="width: 150px;color:#212529 "><%=enduser%></td>
 														</tr>
 														<tr>
-															<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Category :</td>
-															<td><%=projectdata[2]%></td>
-															<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">DoS :</td>
-															<td><%=sdf.format(projectdata[5]) %></td>
+															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Category :</td>
+															<td style="color:#212529 "><%=projectdata[2]%></td>
+															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">DoS :</td>
+															<td style="color:#212529 "><%=sdf.format(projectdata[5]) %></td>
 														</tr>
 														<tr>
-															<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Cost Rs.:</td>
-															<td><%=nfc.convert(cost/10000000)%> (In Cr)</td>
-															<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">PDC :</td>
-															<td><%=sdf.format(projectdata[4]) %></td>
+															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Cost Rs.:</td>
+															<td style="color:#212529 "><%=nfc.convert(cost/10000000)%> (In Cr)</td>
+															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">PDC :</td>
+															<td style="color:#212529 "><%=sdf.format(projectdata[4]) %></td>
 														</tr>
-														
 														<tr>
-															<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Application :</td>
-															<td colspan="4"><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
+															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Application :</td>
+															<td colspan="4" style="color:#212529 "><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
 														</tr>
-														
-														
-														
-												</table>
-										
-										
-										  	 	<table  style="width: 100%;font-weight: bold;">
-													<tr>
-														<td style="width: 22.5%;border-top: none;"><b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Brief : </b>  </td>
-														<td style="width: 77.5%;border-top: none;">
+														<tr>
+															<td style="border-top: none;vertical-align: top;">
+															<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;vertical-align: top;">Brief : </b>  </td>
+															<td colspan="4" style="color:#212529 ">
+															<%=projectdata[15]!=null?projectdata[15]:"--"%>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+																	Objectives :
+																</b>
+															</td>
+															<td colspan="4" style="color:#212529 ">
+																<%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> 
+																	<%=projectdata[7].toString().substring(0,280)%>
+																	<span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;">
+																		<b> ...View More </b>
+																	</span>
+																<%}else{%> <%=projectdata[7]!=null?projectdata[7]:"--"%> <%}%>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Scope : </b>
+															</td>
+															<td colspan="4" style="color:#212529 ">
+																<%if(projectdata[9]!=null && projectdata[9].toString().length()>320){%> <%=projectdata[9].toString().substring(0,280)%>
+																<span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b>
+																</span><%}else{%> <%=projectdata[9]!=null?projectdata[9]:"--"%> <%}%>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Deliverables : </b> 
+															</td>
+															<td colspan="4" style="color:#212529 ">
+																<%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%>
+																<span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;">
+																<b> ...View More </b></span><%}else{%> <%=projectdata[8]!=null?projectdata[7]:"--"%> <%}%>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Stage : </b> 
+															</td>
+															<td colspan="4" style="color:#212529 ">
+																<%if(projectdata!=null && projectdata[14]!=null) {%>
+																	<%=projectdata[14]%>
+																<%} else{%>
+																	--
+																<%} %>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Status : </b> 
+															</td>
+															<td colspan="4" style="color:#212529 ">
 															<%if(projectslidedata!=null && projectslidedata[0]!=null) {%>
-															<%=projectslidedata[0]%>
-															<%} else{%>-<%} %> 
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
-																Objectives :
-															</b> 
-															
-														</td>
-														<td>
-															<%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> 
-																<%=projectdata[7].toString().substring(0,280)%>
-																<span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;">
-																	<b> ...View More </b>
-																</span>
-															<%}else{%> <%=projectdata[7]%> <%}%>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Scope : </b>
-														</td>
-														<td>
-															<%if(projectdata[9]!=null && projectdata[9].toString().length()>320){%> <%=projectdata[9].toString().substring(0,280)%>
-															<span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b>
-															</span><%}else{%> <%=projectdata[9]%> <%}%>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Deliverables : </b> 
-														</td>
-														<td>
-															<%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projectdata[8]%> <%}%>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<b style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Current Stage : </b> 
-														</td>
-														<td>
-															<%if(projectdata!=null && projectdata[14]!=null) {%>
-																<%=projectdata[14]%>
-															<%} else{%>
-																--
-															<%} %>
-														</td>
-													</tr>
+																	<%=projectslidedata[0]%>
+																<%} else{%>-<%} %> 
+															</td>
+														</tr>
 												</table>
-											</div>
-										</div>
-												
-										<div class="row" style="margin-top: 60%;" >
-											<div class="col-md-12" align="left">
-												<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File"><b>Show more</b></a>
-											</div>
-										</div>	
 								</div>
-								<div class="col-md-7">
+								<div class="col-md-6">
 										<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
-											<img data-enlargable style="max-height: 75%; max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+										<div style="max-height: 300px; max-width: 600px;margin: auto;">
+										<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File">
+											<img data-enlargable height="600" style=" max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+										</a>
+										</div>
 										<%}%>
+										
 								</div>
-						</div>	
+											
+										
+						</div>	<div  align="right" style="text-align: right;">
+												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File">Show more</a></p>
+											</div>
 					</div>
-					<hr>
 					</div>
 				</div>			
 			</div>	
@@ -385,9 +403,9 @@ if(ses1!=null){
 		
 		<!-- ----------------------------------------  Edit  Div ----------------------------------------------------- -->
 		 <div class="carousel-item " >
-			<div class="container-fluid" style="margin-top:8%" >
+			<div class="container-fluid" style="margin:auto;" >
 				<div class="card shadow-nohover" style="border-radius: 36px;border-color: green; border-width: 6px;">
-					<h4 class="card-title" align="center" style="color: #c72626;margin-top: 5px;"> <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%></h4>
+					<h4 class="card-title" align="center" style="color: #c72626;margin-top: 5px;"> <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%=projectdata[13]!=null?projectdata[13]:"--"%> (<%=projectdata[12]!=null?projectdata[12]:"--"%>) <%}%></h4>
 					<hr style="margin-top: -5px;">
 					<div class="card-body" style="padding: 0.25rem;margin-top: -5px;">
 					<br>
@@ -442,9 +460,9 @@ if(ses1!=null){
 								</div>
 								<div class="col">
 								<table style="font-weight: bold;width: 100%">
-										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Objectives : </b> <%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> <%=projectdata[7].toString().substring(0,280)%><span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projectdata[7]%> <%}%></td></tr>
-										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b><%if(projectdata[9]!=null && projectdata[9].toString().length()>320){%> <%=projectdata[9].toString().substring(0,280)%><span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=projectdata[9]%> <%}%></td></tr>
-										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b> <%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=projectdata[8]%> <%}%></td></tr>
+										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Objectives : </b> <%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> <%=projectdata[7].toString().substring(0,280)%><span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projectdata[7]!=null?projectdata[7]:"--"%> <%}%></td></tr>
+										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b><%if(projectdata[9]!=null && projectdata[9].toString().length()>320){%> <%=projectdata[9].toString().substring(0,280)%><span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=projectdata[9]!=null?projectdata[9]:"--"%> <%}%></td></tr>
+										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b> <%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=projectdata[8]!=null?projectdata[8]:"--"%> <%}%></td></tr>
 								</table>
 							</div>
 						</div>	
@@ -457,66 +475,64 @@ if(ses1!=null){
 						
 						
 						 <form action="EditProjectSlides.htm" method="post" enctype="multipart/form-data" id="formslide">	
-						 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						 <input type="radio" name="silde" value="1" <%if(projectslidedata!=null && projectslidedata[1]!=null)if( projectslidedata[1].toString().equalsIgnoreCase("1")){%> checked="checked" <%}%> />
-						 <input type="radio" name="silde" value="2" <%if(projectslidedata!=null && projectslidedata[1]!=null)if( projectslidedata[1].toString().equalsIgnoreCase("2")){%> checked="checked" <%}%> />
-						 
-						<div class="card" style="border-radius: 30px" >
-							 <div class="card-body">
-							 <div class="container-fluid">
-							 	<div class="row" >
-									<div class="col">
-										<div class="form-check form-check-inline" >
-										<!-- Brief here is current status -->
-													<label class="form-check-label" for="Status"> <b>Brief </b></label>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<input type="radio" name="silde" value="1" <%if(projectslidedata!=null && projectslidedata[1]!=null)if( projectslidedata[1].toString().equalsIgnoreCase("1")){%> checked="checked" <%}%> />
+							<input type="radio" name="silde" value="2" <%if(projectslidedata!=null && projectslidedata[1]!=null)if( projectslidedata[1].toString().equalsIgnoreCase("2")){%> checked="checked" <%}%> />
+							<div class="card" style="border-radius: 30px" >
+								 <div class="card-body">
+								 <div class="container-fluid">
+								 	<div class="row" >
+										<div class="col">
+											<p style="font-weight: bold;">Current Status </p>
+											<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"   > </textarea>
 										</div>
-										<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"   > </textarea>
-									</div>
-									<div class="col">
-									
-									<div class="container-fluid" >
-										<div class="row">				                    		
-				                    		<div class="col">
-				                        		<div class="form-group">
-				                        		<div class="col" >		
-		                            				<label  ><b> Image : </b></label><span class="mandatory">*</span><a href="SlideAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+										<div class="col">
+											<p style="font-weight: bold;">Brief </p>
+											<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Brief" id="ckeditor2" rows="5" cols="20" maxlength="5"   > </textarea>
+										</div>							 	
+								 	</div>
+								 	<div class="container-fluid" >
+											<div class="row">				                    		
+					                    		<div class="col-md-3">
+					                        		<div class="form-group">
+						                        		<div class="col" >		
+				                            				<label  ><b> Image : </b></label><span class="mandatory">*</span><a href="SlideAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+														</div>
+						                        		<div class="col" >
+						                              		<input  class="form-control form-control"  type="file"  name="Attachment1" accept="image/png, image/jpeg" id="Attachment1" required="required" maxlength="3" style="font-size: 15px;"> 
+														</div>
+					                        		</div>
+					                    		</div>
+						                        <div class="col-md-3">
+					                        		<div class="form-group">
+						                        		<div class="col" >
+															<label  ><b> Attachment : </b></label>
+															<a href="SlidePdfAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+		
+														</div>
+						                        		<div class="col">
+															<input  class="form-control form-control"  type="file" name="Attachment2" id="Attachment2" accept="application/pdf, application/vnd.ms-excel"  maxlength="3" style="font-size: 15px;"> 
+														</div>
+					                        		</div>
+			                    				</div>
+			                    				<div class="col-lg" style="align-items: center;">
+			                    					<div style="margin-top: 5%;">
+				                    					<button type="button"  class="btn btn-primary btn-sm add"  onclick="return checkData()">SUBMIT </button>
+				                    					<%if(freezedslide!=null && freezedslide.size()==0){ %>
+														<button type="button" class="btn btn-sm prints my-2 my-sm-0" data-toggle="modal" data-target="#newfilemodal">FREEZE </button>
+														<%}%>
+													</div>
 												</div>
-				                        		<div class="col" >
-				                              		<input  class="form-control form-control"  type="file"  name="Attachment1" accept="image/png, image/jpeg" id="Attachment1" required="required" maxlength="3" style="font-size: 15px;"> 
-												</div>
-				                        		</div>
-				                    		</div>
-					                        <div class="col">
-				                        		<div class="form-group">
-				                        		<div class="col" >
-													<label  ><b> Attachment : </b></label><span class="mandatory">*</span>
-													<a href="SlidePdfAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
-
-												</div>
-				                        		<div class="col">
-													<input  class="form-control form-control"  type="file" name="Attachment2" id="Attachment2" accept="application/pdf, application/vnd.ms-excel"  maxlength="3" style="font-size: 15px;"> 
-												</div>
-					                        
-				                        		</div>
-		                    				</div>
-				                    	</div>
-				                    </div>
-				                    	
-				                    	<br><br><br><br>
-				                    	<button type="button"  class="btn btn-primary btn-sm add"  onclick="return checkData()">SUBMIT </button>
-										<%if(freezedslide!=null && freezedslide.size()==0){ %>
-										<button type="button"  class="btn btn-sm prints my-2 my-sm-0"  data-toggle="modal" data-target="#newfilemodal">FREEZE </button>
-										<%}%>
-									</div>							 	
-							 	</div>
-							 </div>
-									<div align="center">
-										<input type="hidden" name="ProjectslideId" value="<%=projectslidedata[4]%>">
-										<input type="hidden" name="ProjectId" value="<%=projectdata[0]%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-									</div>
+					                    	</div>
+					                    </div>											
+								 </div>
+										<div align="center">
+											<input type="hidden" name="ProjectslideId" value="<%=projectslidedata[4]%>">
+											<input type="hidden" name="ProjectId" value="<%=projectdata[0]%>">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										</div>
+								</div>
 							</div>
-						</div>
 						</form> 
 					</div>
 				</div>			
@@ -526,7 +542,7 @@ if(ses1!=null){
 		<div class="carousel-item" >
 			<div class="container-fluid">
 			<%List<Object[]> FreezingHistory = (List<Object[]>)request.getAttribute("FreezingData");%>
-				<div class="card shadow-nohover" id="slide2" style="border: 6px solid green;border-radius: 5px !important;height:90vh !important;">
+				<div class="card shadow-nohover" id="slide2" style="border: 6px solid green;background-color: #F9F2DF66;border-radius: 5px !important;height:90vh !important;">
 				<p class="h1 mx-auto">Freezing History</p>
 				
 			<table  class="table table-bordered table-hover table-striped table-condensed" id="myTable">
@@ -657,6 +673,7 @@ function AjaxForStatus() {
 		success : function(results){
 			var result = JSON.parse(results);
 			CKEDITOR.instances['ckeditor1'].setData(result.Status);
+			CKEDITOR.instances['ckeditor2'].setData(result.Brief);
 		}
 	});
 }
@@ -758,6 +775,7 @@ var editor_config = {
 			]
 	} ;
 CKEDITOR.replace('ckeditor1', editor_config );
+CKEDITOR.replace('ckeditor2', editor_config );
 
 
 function onclickslide(slidenum)

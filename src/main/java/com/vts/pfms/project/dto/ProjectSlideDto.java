@@ -12,6 +12,7 @@ public class ProjectSlideDto {
 	private Long SlideId;
 	private Long ProjectId;
 	private String Status;
+	private String Brief;
 	private String Slide;
 	private MultipartFile ImageAttach;
 	private MultipartFile PdfAttach;

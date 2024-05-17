@@ -9,6 +9,7 @@ import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.dto.PfmsBriefingFwdDto;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
+import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
@@ -125,5 +126,8 @@ public interface PrintService {
 	public List<Object[]> LastPMRCActions(String projectid, String committeeid, String Date) throws Exception;
 	public List<Object[]> GetFreezingHistory(String projectid)throws Exception;
 	public PfmsProjectData getPfmsProjectDataById(String projectId) throws Exception;
+	public Long saveFavouriteSlides(FavouriteSlidesModel fSM)throws Exception;
+	public List<Object[]> GETFavouriteSlides() throws Exception;
+	public Long EditFavouriteSlides(FavouriteSlidesModel fSM)throws Exception;
 	
 }

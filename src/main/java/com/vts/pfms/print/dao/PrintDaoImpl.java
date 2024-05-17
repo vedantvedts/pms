@@ -32,6 +32,7 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
+import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.PfmsBriefingTransaction;
@@ -932,7 +933,7 @@ public class PrintDaoImpl implements PrintDao {
 			 }
 			return result;
 		}
-		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription , a.projectcode, a.projectshortname, (SELECT d.ProjectStage FROM pfms_project_data c ,pfms_project_stage d WHERE c.ProjectId=:projectid AND c.CurrentStageId=d.ProjectStageId LIMIT 1) AS ProjectStage FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
+		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription , a.projectcode, a.projectshortname, (SELECT d.ProjectStage FROM pfms_project_data c ,pfms_project_stage d WHERE c.ProjectId=:projectid AND c.CurrentStageId=d.ProjectStageId LIMIT 1) AS ProjectStage, (SELECT a.Brief FROM pfms_project_slides a JOIN project_master b ON a.projectid=b.projectid WHERE a.projectid=:projectid) AS Brief, (SELECT a.Expenditure from project_health a WHERE a.projectid=:projectid) as Expenditure, (SELECT OutCommitment from project_health a WHERE a.projectid=:projectid) as OutCommitment, (SELECT a.Dipl from project_health a WHERE a.projectid=:projectid) as Dipl, (SELECT Balance from project_health a WHERE a.projectid=:projectid) as Balance FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
 		@Override
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
@@ -954,7 +955,7 @@ public class PrintDaoImpl implements PrintDao {
 			return slide.getSlideId();
 		}
 		
-		private static final String UPDATEPROJECTSLIDE="UPDATE pfms_project_slides SET Status=:Status , Slide=:Slide , AttachmentName=:AttachmentName ,Imagename=:ImageName  ,  Path=:Path , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE SlideId=:SlideId";
+		private static final String UPDATEPROJECTSLIDE="UPDATE pfms_project_slides SET Status=:Status , Brief=:Brief, Slide=:Slide , AttachmentName=:AttachmentName ,Imagename=:ImageName  ,  Path=:Path , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE SlideId=:SlideId";
 		@Override
 		public Long EditProjectSlideData(ProjectSlides slide)throws Exception
 		{
@@ -962,6 +963,7 @@ public class PrintDaoImpl implements PrintDao {
 				query.setParameter("SlideId", slide.getSlideId());
 				query.setParameter("Slide", slide.getSlide());
 				query.setParameter("Status", slide.getStatus());
+				query.setParameter("Brief", slide.getBrief());
 				query.setParameter("Path", slide.getPath());
 				query.setParameter("ImageName", slide.getImageName());
 				query.setParameter("AttachmentName", slide.getAttachmentName());
@@ -1346,6 +1348,58 @@ public class PrintDaoImpl implements PrintDao {
 				e.printStackTrace();
 				return null;
 			}
+		}
+		@Override
+		public Long saveFavouriteSlides(FavouriteSlidesModel fSM)throws Exception
+		{
+			try {
+				manager.persist(fSM);
+				return fSM.getFavouriteSlidesId();
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			return null;
+		}
+		
+		@Override
+		public List<Object[]> GETFavouriteSlides()throws Exception
+		{
+			try {
+				Query query=manager.createNativeQuery("SELECT FavouriteSlidesId, FavouriteSlidesTitle, ProjectIds FROM pfms_favourite_slides");	
+				List<Object[]> result =(List<Object[]>)query.getResultList();
+				return result;
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			return null;
+		}
+
+		private static final String UpdateFavSlides = "UPDATE pfms_favourite_slides SET FavouriteSlidesTitle=:title, ProjectIds=:projectIds, ModifiedDate = :date, modifiedBy=:by WHERE FavouriteSlidesId=:id";
+
+		@Override
+		public Long EditFavouriteSlides(FavouriteSlidesModel fSM) throws Exception {
+			try {
+				Query query=manager.createNativeQuery(UpdateFavSlides);	
+				query.setParameter("title", fSM.getFavouriteSlidesTitle());
+				query.setParameter("projectIds", fSM.getProjectIds());
+				query.setParameter("date", fSM.getModifiedDate());
+				query.setParameter("by", fSM.getModifiedBy());
+				query.setParameter("id", fSM.getFavouriteSlidesId());
+				int result;
+				try {
+					result = query.executeUpdate();
+				}catch (Exception e) {
+					// TODO: handle exception
+					System.out.println("error in executing update");
+					result = 0;
+				}
+				
+				return Long.getLong(String.valueOf(result));
+			}catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("there is an error bruh");
+			}
+			return null;
 		}
 		
 	}

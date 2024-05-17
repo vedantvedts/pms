@@ -95,6 +95,7 @@ import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.dto.PfmsBriefingFwdDto;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
+import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.PfmsBriefingTransaction;
@@ -3798,10 +3799,12 @@ public class PrintController {
 				String LabCode = (String) ses.getAttribute("labcode");
 				String projectid = req.getParameter("projectid");
 				String status = req.getParameter("Status");
+				String brief = req.getParameter("Brief");
 				String slide = req.getParameter("silde");
 				ProjectSlideDto slidedata = new ProjectSlideDto();
 					slidedata.setProjectId(Long.parseLong(projectid));
 					slidedata.setStatus(status);
+					slidedata.setBrief(brief);
 					slidedata.setSlide(slide);
 					slidedata.setLabcode(LabCode);
 					slidedata.setImageAttach(imageattch);
@@ -3835,11 +3838,13 @@ public class PrintController {
 				String LabCode = (String) ses.getAttribute("labcode");
 				String ProjectslideId = req.getParameter("ProjectslideId");
 				String status = req.getParameter("Status");
+				String brief = req.getParameter("Brief");
 				String slide = req.getParameter("silde");
 				
 				ProjectSlideDto slidedata = new ProjectSlideDto();
 				slidedata.setSlideId(Long.parseLong(ProjectslideId));
 				slidedata.setStatus(status);
+				slidedata.setBrief(brief);
 				slidedata.setSlide(slide);
 				slidedata.setLabcode(LabCode);
 				slidedata.setImageAttach(imageattch);
@@ -3959,7 +3964,7 @@ public class PrintController {
 		 public @ResponseBody String GetSlidedata(HttpServletRequest req , HttpSession ses) throws Exception
 		 {
 			 String UserId = (String) ses.getAttribute("Username");
-				logger.info(new Date() +"Inside SlideAttachDownload.htm "+UserId);		
+				logger.info(new Date() +"Inside GetSlidedata.htm "+UserId);		
 				ProjectSlides attach=null;
 				try {
 					 attach=service.SlideAttachmentDownload(req.getParameter("slideid"));
@@ -4128,16 +4133,15 @@ public class PrintController {
 			 if(a!=null && a.length>0)
 			 for (String id : a) {
 				List<Object[]> getoneProjectSlidedata= service.GetAllProjectSildedata(id);
-				
 				Object[] projectslidedata = (Object[])service.GetProjectSildedata(id);
 				getAllProjectSlidesdata.add(projectslidedata);
 				Object[] projectdata = (Object[])service.GetProjectdata(id);
 				getAllProjectdata.add(projectdata);
-				
 				if(getoneProjectSlidedata.size()>0) {
 				 for (Object[] objects : getoneProjectSlidedata) {
 					getAllProjectSlidedata.add(objects);
-				}}
+				 }
+				}
 				else
 				{
 					getAllProjectSlidedata.add(null);
@@ -4597,12 +4601,6 @@ public class PrintController {
 								getAllProjectSlidedata.add(objects);
 
 							}
-						else {
-							redir.addAttribute("resultfail","Selected slide has not been Freezed");
-							 redir.addAttribute("result",null);
-							return "redirect:/MainDashBoard.htm";
-						}
-
 					 	}
 
 					 	Map<String,String> details = new HashMap<>();
@@ -4700,5 +4698,74 @@ public class PrintController {
 				return "";
 
 			 } 
+			 
+			 @RequestMapping(value = "saveFavSlides.htm", method = RequestMethod.POST)
+			 public @ResponseBody String favoriteSlidesAddSubmit(HttpServletRequest req ,HttpSession ses, RedirectAttributes redir, HttpServletResponse res)throws Exception
+			 {
+				 try {
+					
+				
+					 FavouriteSlidesModel FSM = new FavouriteSlidesModel();
+					 String[] a = req.getParameterValues("projectlist");
+					 
+					 String Title = req.getParameter("name").toString();
+					 System.out.println(Title);
+					 String projectlist = "";
+					 for (String string : a) {
+						System.out.print(string+" ");
+						projectlist+=string+",";
+					};
+					projectlist = projectlist.substring(0, projectlist.length()-1);
+					System.out.println(projectlist);
+					FSM.setCreatedBy(ses.getAttribute("Username").toString());
+					FSM.setCreatedDate(new Date().toString());
+					FSM.setProjectIds(projectlist);
+					FSM.setFavouriteSlidesTitle(Title);
+					FSM.setIsActive(1);
+					Long saved = service.saveFavouriteSlides(FSM);
+					redir.addAttribute("result", "Favourite Slides Added Succesfully");
+					return "Success";
+				} catch (Exception e) {
+					// TODO: handle exception
+					return "Failure";
+				}
+			 }
+			 
+			 @RequestMapping(value = "EditFavSlides.htm", method = RequestMethod.POST)
+			 public @ResponseBody String favoriteSlidesEditSubmit(HttpServletRequest req ,HttpSession ses, RedirectAttributes redir, HttpServletResponse res)throws Exception
+			 {
+				 try {
+					
+				
+					 FavouriteSlidesModel FSM = new FavouriteSlidesModel();
+					 String Title = req.getParameter("name").toString();
+					 String projectlist = "";
+					projectlist = req.getParameter("projectlist").toString();
+					System.out.println(Long.parseLong(req.getParameter("FavouritId").toString()));
+					FSM.setFavouriteSlidesId(Long.parseLong(req.getParameter("FavouritId").toString()));
+					FSM.setCreatedDate(new Date().toString());
+					FSM.setProjectIds(projectlist);
+					FSM.setFavouriteSlidesTitle(Title);
+					FSM.setModifiedBy(ses.getAttribute("Username").toString());
+					FSM.setModifiedDate(new Date().toString());
+					FSM.setIsActive(1);
+					Long saved = service.EditFavouriteSlides(FSM);
+					redir.addAttribute("result", "Favourite Slides Edited Succesfully");
+					return "Success";
+				} catch (Exception e) {
+					// TODO: handle exception
+					System.out.println("EditFavSlides.htm error");
+					redir.addAttribute("result", "Favourite Slides Edit Failed");
+					return "Failed";
+				}
+			 }
+			 
+			 @RequestMapping(value = "GetFavSlides.htm", method = RequestMethod.GET)
+			 public @ResponseBody String favoriteSlidesGET(HttpServletRequest req ,HttpSession ses, RedirectAttributes redir, HttpServletResponse res)throws Exception
+			 {
+				 List<Object[]> favsSlideData = service.GETFavouriteSlides();
+				Gson json = new Gson();
+				return json.toJson(favsSlideData);
+			 }
 		
 }

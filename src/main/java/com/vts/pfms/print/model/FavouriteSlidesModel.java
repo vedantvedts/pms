@@ -1,4 +1,9 @@
+/**
+ * 
+ */
 package com.vts.pfms.print.model;
+
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,24 +14,26 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+/**
+ * @author vts11
+ *
+ */
 @Getter
+@Setter
+
 @Entity
-@Table(name ="pfms_project_slides")
-public class ProjectSlides {
+@Table(name = "Pfms_Favourite_Slides")
+public class FavouriteSlidesModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long SlideId;
-	private Long ProjectId;
-	private String Status;
-	private String Brief;
-	private String Slide;
-	private String Path;
-	private String ImageName;
-	private String AttachmentName;
-	private int IsActive;
+	private Long FavouriteSlidesId;
+	private String FavouriteSlidesTitle;
+	private String ProjectIds;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	private Integer IsActive;
+	
+
 }
