@@ -224,7 +224,7 @@ String ses=(String)request.getParameter("result");
 			                            <td><%=fc.SqlToRegularDate(obj[3].toString())%></td>
 			                            
 			                            <td >
-			                            <button type="submit" class="btn btn-sm btn-link  btn-status" formaction=ProjectTechClosureTransStatus.htm value="<%=closureId %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style="font-weight: 600;" formtarget="_blank">
+			                            <button type="submit" class="btn btn-sm btn-link  btn-status" formaction="ProjectTechClosureTransStatus.htm" value="<%=obj[0] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style="font-weight: 600;" formtarget="_blank">
 							    				<%=obj[5] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 							    			</button>
 			                            </td>
@@ -258,7 +258,9 @@ String ses=(String)request.getParameter("result");
 						    			
 						    			
 						    			<input type="hidden" name="TechnicalClsoureId" value="<%=obj[0]%>">
-						    			 <button type="submit" class="editable-clicko" name="Action" value="Forward"  formaction="TechClosureList.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Submit')">
+						    			 <input type="hidden" name="ClosureId" value="<%=closureId %>">
+						    			 <input type="hidden" name="Action" value="A">
+						    			 <button type="submit" class="editable-clicko" name="" value=""  formaction="projectTechClosureApprovalSubmit.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Submit')">
 											<div class="cc-rockmenu">
 												<div class="rolling" >
 													<figure class="rolling_icon">

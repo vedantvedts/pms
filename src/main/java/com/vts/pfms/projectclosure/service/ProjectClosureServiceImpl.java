@@ -1141,9 +1141,24 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public long AddIssue(ProjectClosureTechnical tech) throws Exception {
+	public long AddIssue(ProjectClosureTechnical tech,String EmpId) throws Exception {
 		
-		return dao.AddIssue(tech);
+		
+		
+		 dao.AddIssue(tech);
+		
+		ProjectClosureTrans trans=new ProjectClosureTrans();
+		
+		trans.setClosureId(tech.getTechnicalClosureId());
+		trans.setClosureForm("T");
+		trans.setClosureStatusCode("TIN");;
+		trans.setLabCode("MTRDC");
+		trans.setActionBy(Long.parseLong(EmpId));
+		trans.setActionDate(sdtf.format(new Date()));
+		
+		return dao.addProjectClosureTransaction(trans);
+		
+		
 		
 	}
 
@@ -1295,5 +1310,177 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn) throws Exception {
 		
 		return dao.UpdateProjectClosureTechnical(techn);
+	}
+
+	@Override
+	public long projectTechClosureApprovalForward(ProjectClosureApprovalForwardDTO dto) throws Exception {
+		
+		try {
+//			long closureSoCId = dto.getClosureSoCId();
+			String TechclosureId = dto.getTechclosureId();
+			String ClosureId=dto.getClosureId();
+//			String projectId = dto.getProjectId();
+			String action = dto.getAction();
+			String EmpId = dto.getEmpId();
+			String UserId = dto.getUserId();
+			String remarks = dto.getRemarks();
+			String labcode = dto.getLabcode();
+			String approverLabCode = dto.getApproverLabCode();
+			String approverEmpId = dto.getApproverEmpId();
+			String approvalDate = dto.getApprovalDate();
+
+			ProjectClosure closur = dao.getProjectClosureById(ClosureId);
+			
+			ProjectClosureTechnical closure = dao.getProjectClosureTechnicalById(TechclosureId);
+			String projectId = closur.getProjectId()+"";
+			String statusCode = closure.getStatusCode();
+			String statusCodeNext = closure.getStatusCodeNext();
+			
+			Object[] PD = carsdao.getEmpPDEmpId(projectId);
+			Object[] GD = dao.getEmpGDDetails(PD!=null?PD[1].toString():"0");
+
+			List<String> forwardstatus = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TGD","TRV");
+
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(forwardstatus.contains(statusCode)) {
+					
+					if(statusCode.equalsIgnoreCase("TIN")) {
+						//closure.setForwardedBy(PD!=null?PD[1].toString():"0");
+						//closure.setForwardedDate(sdf.format(new Date()));
+					}
+					
+					closure.setStatusCode("TFW");
+					if(PD!=null && PD[1].toString().equalsIgnoreCase(GD!=null? GD[0].toString():"0")) {
+						closure.setStatusCodeNext("TAA");
+					}
+					else {
+						closure.setStatusCodeNext("TAG");
+					}
+					
+				}else {
+					closure.setStatusCode(statusCodeNext);
+					if(statusCodeNext.equalsIgnoreCase("TAG")) {
+						closure.setStatusCodeNext("TAA");
+					}else if(statusCodeNext.equalsIgnoreCase("TAA")) {
+						closure.setStatusCodeNext("TAP");
+					}else if(statusCodeNext.equalsIgnoreCase("TAP")) {
+						closure.setStatusCodeNext("TAD");
+					}else if(statusCodeNext.equalsIgnoreCase("TAD")) {
+						closure.setStatusCodeNext("TDG");
+					}else if(statusCodeNext.equalsIgnoreCase("TDG")) {
+						closure.setStatusCodeNext("TDG");
+						//closure.setApprStatus("A");
+					}
+				}
+				dao.UpdateProjectClosureTechnical(closure);
+			}
+			// This is for return the application form to the user
+			else if(action.equalsIgnoreCase("R")) {
+				// Setting StatusCode
+				if(statusCodeNext.equalsIgnoreCase("TAG")) {
+					closure.setStatusCode("TRG");	
+				}else if(statusCodeNext.equalsIgnoreCase("TAA")) {
+					closure.setStatusCode("TRA");	
+				}else if(statusCodeNext.equalsIgnoreCase("TAP")) {
+					closure.setStatusCode("TRP");	
+				}else if(statusCodeNext.equalsIgnoreCase("TAD")) {
+					closure.setStatusCode("TRD");	
+				}else if(statusCodeNext.equalsIgnoreCase("TDG")) {
+					closure.setStatusCode("TGD");	
+				}
+
+				// Setting StatusCode Next
+				closure.setStatusCodeNext("TFW");
+
+				dao.UpdateProjectClosureTechnical(closure);
+			}
+
+			// Transaction
+			ProjectClosureTrans transaction = ProjectClosureTrans.builder()
+											  .ClosureId(Long.parseLong(TechclosureId))
+											  .ClosureForm("T")
+											  .ClosureStatusCode(closure.getStatusCode())
+											  .Remarks(remarks)
+											  .LabCode(approverLabCode!=null?approverLabCode:labcode)
+											  .ActionBy(Long.parseLong(approverEmpId!=null? approverEmpId:EmpId))
+											  .ActionDate(approvalDate!=null?fc.RegularToSqlDate(approvalDate):sdtf.format(new Date()))
+											  .build();
+			dao.addProjectClosureTransaction(transaction);
+			
+			// Approval Authority Data to send notifications
+			Object[] AD = carsdao.getApprAuthorityDataByType(labcode, "AD");
+			Object[] GDDPandC = carsdao.getApprAuthorityDataByType(labcode, "DO-RTMD");
+			Object[] Director = carsdao.getLabDirectorData(labcode);
+			
+			long PDEmpId = PD!=null?Long.parseLong(PD[1].toString()):0;
+			// Notification
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A")) {
+				notification.setEmpId(PDEmpId);
+				notification.setNotificationUrl("ProjectClosureList.htm");
+				notification.setNotificationMessage("Technical Closure request approved");
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				carsdao.addNotifications(notification);
+			}
+			else if(action.equalsIgnoreCase("A")) {
+				
+				if(closure.getStatusCodeNext().equalsIgnoreCase("TAG")) {
+					notification.setEmpId(Long.parseLong(GD[0].toString()));
+				}
+				
+				else if(closure.getStatusCodeNext().equalsIgnoreCase("TAA")) {
+					notification.setEmpId(Long.parseLong(AD[0].toString()));
+				}
+				else if(closure.getStatusCodeNext().equalsIgnoreCase("TAP")) {
+					notification.setEmpId(Long.parseLong(GDDPandC[0].toString()));
+				}
+				else if(closure.getStatusCodeNext().equalsIgnoreCase("TAD")) {
+					notification.setEmpId(Long.parseLong(Director[0].toString()));
+				}
+				else if(closure.getStatusCodeNext().equalsIgnoreCase("TDG")) {
+					notification.setEmpId(PDEmpId);
+				}
+				
+				notification.setNotificationUrl("ProjectClosureApprovals.htm");
+				notification.setNotificationMessage("Project Technical Closure  forwarded by "+PD[2].toString());
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+			
+				carsdao.addNotifications(notification);
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
+				notification.setEmpId(PDEmpId);
+				notification.setNotificationUrl("ProjectClosureList.htm");
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"Project Technical Closure Request Returned":"Project Technical Closure Request Disapproved");
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+			
+				carsdao.addNotifications(notification);
+			}			
+			return 1;
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProjectClosureServiceImpl projectTechClosureApprovalForward "+e);
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm) throws Exception {
+		
+		return dao.projectTechClosureTransListByType(techClosureId,closureStatusFor,closureForm);
 	}
 }

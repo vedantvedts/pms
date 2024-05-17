@@ -6,6 +6,7 @@ import lombok.Data;
 public class ProjectClosureApprovalForwardDTO {
 
 //	private long closureSoCId;
+	private String techclosureId;
 	private String projectId;
 	private String closureId;
 	private String action;

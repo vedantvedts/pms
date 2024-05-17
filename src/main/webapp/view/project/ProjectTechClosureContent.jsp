@@ -735,7 +735,7 @@ List<Object[]>  AppendicesList=(List<Object[]>)request.getAttribute("AppendicesL
 									for(Object[] obj :AppendicesList) {%>
 									<tr class="tr_clone_trialresults">
 										<td style="width: 20%;padding: 10px 5px 0px 5px;" >
-										    <input type="text" class="form-control item" name="Appendix"  value="<%if(obj[1]!=null) {%><%=obj[1].toString() %><%} %>">
+										    <input type="text" class="form-control item" name="Appendix"  id="appendix" value="<%if(obj[1]!=null) {%><%=obj[1].toString() %><%} %>">
 										</td>	
 										
 										<td style="width: 40%;padding: 10px 5px 0px 5px;" >
@@ -1133,6 +1133,8 @@ $(document).ready(function() {
 
             // Remove the row
             $rowToRemove.remove();
+            
+         
 
             // Update the milestoneno2 values for the remaining rows
             $('.tr_clone_trialresults').each(function(index, row) {

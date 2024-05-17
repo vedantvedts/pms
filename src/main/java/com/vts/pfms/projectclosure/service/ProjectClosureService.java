@@ -64,7 +64,7 @@ public interface ProjectClosureService {
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception;
 	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach, MultipartFile equipBoughtOnChargeAttach, MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach, MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception;
 	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach, MultipartFile equipBoughtOnChargeAttach, MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach, MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception;
-	public long AddIssue(ProjectClosureTechnical tech) throws Exception;
+	public long AddIssue(ProjectClosureTechnical tech,String EmpId) throws Exception;
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
 	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
 	public List<Object[]> getSectionList(String closureId)throws Exception;
@@ -84,6 +84,8 @@ public interface ProjectClosureService {
 	public List<Object[]> getDocumentSummary(String closureId)throws Exception;
 	public ProjectClosureTechnical getProjectClosureTechnicalById(String closureId) throws Exception;
 	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn) throws Exception;
+	public long projectTechClosureApprovalForward(ProjectClosureApprovalForwardDTO dto) throws Exception;
+	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm) throws Exception;
 	
 	
 }

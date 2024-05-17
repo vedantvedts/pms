@@ -2213,19 +2213,18 @@ public class ProjectClosureController {
 			if("Add".equalsIgnoreCase(req.getParameter("Action"))) {
 				
 			ProjectClosureTechnical tech=new ProjectClosureTechnical();
-			
-			
 				
 			tech.setParticulars(req.getParameter("Particulars"));
 			tech.setClosureId(Long.parseLong(closureId));
 			tech.setRevisionNo("0");
 			tech.setIssueDate(sdtf.format(new Date()));
-			tech.setStatus("TIN");
+			tech.setStatusCode("TIN");
+			tech.setStatusCodeNext("TIN");
 			tech.setCreatedBy(EmpId);
 			tech.setCreatedDate(sdtf.format(new Date()));
 			tech.setIsActive(1);
 				
-			long save=service.AddIssue(tech);
+			long save=service.AddIssue(tech,EmpId);
 			
 			if (save > 0) {
 				redir.addAttribute("result", "Technical Closure Added Successfully");
@@ -2305,10 +2304,10 @@ public class ProjectClosureController {
 		String Username = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectTechClosureTransStatus.htm "+Username);
 		try {
-			String closureId = req.getParameter("closureId");
-			req.setAttribute("TransactionList", service.projectClosureTransListByType(closureId, "T", "T")) ;
+			String TechClosureId = req.getParameter("TechClosureId");
+			req.setAttribute("TransactionList", service.projectTechClosureTransListByType(TechClosureId, "T", "T")) ;
 			req.setAttribute("TransFlag", "T");
-			req.setAttribute("closureId", closureId);
+			req.setAttribute("closureId", TechClosureId);
 			return "project/ProjectClosureTransStatus";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -2676,14 +2675,16 @@ public class ProjectClosureController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside projectTechClosureApprovalSubmit.htm "+UserId);
 		try {
-			String closureId = req.getParameter("closureId");
+			String techclosureId = req.getParameter("TechnicalClsoureId");
+			String closureId=req.getParameter("ClosureId");
 			String action = req.getParameter("Action");
 			
-			ProjectClosure closure = service.getProjectClosureById(closureId);
-			String statusCode = closure.getClosureStatusCode();
+			ProjectClosureTechnical closure = service.getProjectClosureTechnicalById(techclosureId);
+			String statusCode = closure.getStatusCode();
 			
 			ProjectClosureApprovalForwardDTO dto = new ProjectClosureApprovalForwardDTO();
 //			dto.setClosureSoCId(Long.parseLong(closureSoCId));
+			dto.setTechclosureId(techclosureId);
 			dto.setClosureId(closureId);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
@@ -2693,10 +2694,10 @@ public class ProjectClosureController {
 			dto.setApproverEmpId(req.getParameter("approverEmpId"));
 			dto.setApprovalDate(req.getParameter("approvalDate"));
 			
-			long result = service.projectClosureSoCApprovalForward(dto);
+			long result = service.projectTechClosureApprovalForward(dto);
 			
-			List<String> forwardstatus = Arrays.asList("SIN","SRG","SRA","SRP","SRD","SRC","SRV");
-			List<String> approvestatus = Arrays.asList("SAP","SAD");
+			List<String> forwardstatus = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TRC","TRV");
+			List<String> approvestatus = Arrays.asList("TAP","TAD");
 			
 			if(action.equalsIgnoreCase("A")) {
 				if(forwardstatus.contains(statusCode)) {
@@ -2727,8 +2728,11 @@ public class ProjectClosureController {
 				}else {
 					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"Project Technical Closure Return Unsuccessful":"Project Technical Closure Disapprove Unsuccessful");
 				}
+				
 				return "redirect:/ProjectClosureApprovals.htm";
 			}
+			
+			redir.addAttribute("closureId", closureId);
 			return "redirect:/TechClosureList.htm";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside projectTechClosureApprovalSubmit.htm "+UserId, e);

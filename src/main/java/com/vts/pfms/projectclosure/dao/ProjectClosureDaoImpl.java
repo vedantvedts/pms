@@ -277,6 +277,8 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	public List<Object[]> projectClosureTransListByType(String closureId, String closureStatusFor, String closureForm) throws Exception {
 
 		try {
+			
+			
 			Query query = manager.createNativeQuery(PROJECTCLOSURESOCTRANSLISTBYTYPE);
 			query.setParameter("ClosureId", Long.parseLong(closureId));
 			query.setParameter("ClosureStatusFor", closureStatusFor);
@@ -663,8 +665,8 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 
-	private static final String TECHNICALCLOSURERECORDLIST="SELECT  a.TechnicalClosureId,a.Particulars,a.RevisionNo,a.IssueDate,a.Status,b.ClosureStatus\r\n"
-			+ " FROM  pfms_closure_technical a ,pfms_closure_approval_status b WHERE b.ClosureStatusCode=a.Status AND \r\n"
+	private static final String TECHNICALCLOSURERECORDLIST="SELECT  a.TechnicalClosureId,a.Particulars,a.RevisionNo,a.IssueDate,a.StatusCode,b.ClosureStatus\r\n"
+			+ " FROM  pfms_closure_technical a ,pfms_closure_approval_status b WHERE b.ClosureStatusCode=a.StatusCode AND \r\n"
 			+ " a.isActive='1' AND a.ClosureId=:closureId ";
 	@Override
 	public List<Object[]> getTechnicalClosureRecord(String closureId) throws Exception {
@@ -971,16 +973,41 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	}
 
 	@Override
-	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn) throws Exception {
+	public long UpdateProjectClosureTechnical(ProjectClosureTechnical closure) throws Exception {
 		
 		try {
-			manager.merge(techn);
+			manager.merge(closure);
 			manager.flush();
-			return techn.getTechnicalClosureId();
+			return closure.getTechnicalClosureId();
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO UpdateProjectClosureTechnical "+e);
 			return 0L;
+		}
+	}
+
+	private static String PROJECTCTECHLOSURETRANSLISTBYTYPE="SELECT a.ClosureTransId,c.EmpId,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ClosureStatus,\r\n"
+			+ "b.ClosureStatusColor FROM pfms_closure_trans a,pfms_closure_approval_status b,employee c,\r\n"
+			+ "employee_desig d,pfms_closure_technical e WHERE e.TechnicalClosureId = a.ClosureId AND\r\n"
+			+ " a.ClosureStatusCode = b.ClosureStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId \r\n"
+			+ "AND b.ClosureStatusFor=:ClosureStatusFor AND a.ClosureForm=:ClosureForm AND e.TechnicalClosureId=:techClosureId\r\n"
+			+ "ORDER BY a.ClosureTransId DESC";
+	@Override
+	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm)
+			throws Exception {
+		
+		 try {
+			
+			
+			Query query = manager.createNativeQuery(PROJECTCTECHLOSURETRANSLISTBYTYPE);
+			query.setParameter("techClosureId", Long.parseLong(techClosureId));
+			query.setParameter("ClosureStatusFor", closureStatusFor);
+			query.setParameter("ClosureForm", closureForm);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.info(new Date()+"Inside DAO projectClosureTransListByType "+e);
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

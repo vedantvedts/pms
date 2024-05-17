@@ -78,6 +78,8 @@ public interface ProjectClosureDao {
 	public long editDocSummary(ProjectClosureTechnicalDocSumary rs) throws Exception;
 	public List<Object[]> getDocumentSummary(String closureId)throws Exception;
 	public ProjectClosureTechnical getProjectClosureTechnicalById(String closureId) throws Exception;
-	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn)throws Exception;
+	public long UpdateProjectClosureTechnical(ProjectClosureTechnical closure)throws Exception;
+	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm)throws Exception;
+	
 
 }

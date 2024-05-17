@@ -27,7 +27,8 @@ public class ProjectClosureTechnical implements Serializable {
 	private String Particulars;
     private String RevisionNo; 
 	private String IssueDate;
-	private String Status;
+	private String StatusCode;
+	private String StatusCodeNext;
 	private String CreatedBy;
 	private String CreatedDate;
 	private int isActive;
