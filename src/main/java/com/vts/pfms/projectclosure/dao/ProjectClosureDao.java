@@ -80,6 +80,7 @@ public interface ProjectClosureDao {
 	public ProjectClosureTechnical getProjectClosureTechnicalById(String closureId) throws Exception;
 	public long UpdateProjectClosureTechnical(ProjectClosureTechnical closure)throws Exception;
 	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm)throws Exception;
+	public List<Object[]> projectTechClosurePendingList(String empId, String labcode)throws Exception;
 	
 
 }

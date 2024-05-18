@@ -86,6 +86,7 @@ public interface ProjectClosureService {
 	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn) throws Exception;
 	public long projectTechClosureApprovalForward(ProjectClosureApprovalForwardDTO dto) throws Exception;
 	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm) throws Exception;
+	public List<Object[]> projectTechClosurePendingList(String empId, String labcode) throws Exception;
 	
 	
 }

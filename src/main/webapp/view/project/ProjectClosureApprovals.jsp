@@ -95,6 +95,10 @@ List<Object[]> SoCPendingList =(List<Object[]>)request.getAttribute("SoCPendingL
 List<Object[]> SoCApprovedList =(List<Object[]>)request.getAttribute("SoCApprovedList");
 List<Object[]> ACPPendingList =(List<Object[]>)request.getAttribute("ACPPendingList");
 List<Object[]> ACPApprovedList =(List<Object[]>)request.getAttribute("ACPApprovedList");
+List<Object[]> TechClosurePendingList=(List<Object[]>)request.getAttribute("TechClosurePendingList");
+
+System.out.println("TechClosurePendingList--"+TechClosurePendingList.size());
+
 String fromdate = (String)request.getAttribute("fromdate");
 String todate   = (String)request.getAttribute("todate");
 
@@ -141,10 +145,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		    						<div class="nav-link active" style="text-align: center;" id="pills-mov-property-tab" data-toggle="pill" data-target="#pills-mov-property" role="tab" aria-controls="pills-mov-property" aria-selected="true">
 			   							<span>Pending</span> 
 										<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 					<%if((SoCPendingList.size() + ACPPendingList.size() )>99 ){ %>
+				   		 					<%if((SoCPendingList.size() + ACPPendingList.size() + TechClosurePendingList.size())>99 ){ %>
 				   								99+
 				   							<%}else{ %>
-				   								<%=SoCPendingList.size() + ACPPendingList.size() %>
+				   								<%=SoCPendingList.size() + ACPPendingList.size() + TechClosurePendingList.size() %>
 											<%} %>			   			
 				  						</span> 
 		    						</div>
@@ -265,7 +269,54 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																	
 						 										</td>
                         									</tr>
-                       									<%} }%>	
+                       									<%} }%>
+                       									
+                       									<!-- Technical Closure Pending List -->
+                       									<% 
+					   										if(TechClosurePendingList!=null && TechClosurePendingList.size()>0){
+					   											
+                         							 			for(Object[] form:TechClosurePendingList ){
+                      							 		%>
+                        									<tr>
+                            									<td style="text-align: center;width: 2%;"><%=++SN%></td>
+                            									<td style="width: 10%;"><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            									<td style="text-align: center;width: 5%;"><%=form[8]+" ("+form[9]+")"%></td>
+                            									<td style="text-align: center;width: 5%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td style="text-align: center;width: 5%;"><%=form[7]%></td>
+                            									<td style="text-align: center;width: 20%;">
+                            									
+                            									
+                            									
+                            											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            											<div class="d-flex w-100">
+                            												<div class="w-70">
+                            													<textarea rows="2" cols="70" class="form-control" name="remarks" maxlength="200" placeholder="Enter remarks here( max 250 characters )" style="width:98%;"></textarea>
+                            												</div>
+																			<div class="w-30">
+																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate"
+																				 style="font-weight: 500" onclick="return confirm('Are You Sure To Recommend );">
+																						 Recommend
+								                                               </button>
+								                                               
+																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate" style="font-weight: 500"
+																					onclick="return confirm('Are You Sure To Return');"> Return
+																				</button>
+																			</div>
+																			<input type="hidden" name="TechnicalClsoureId" value="<%=form[10]%>">
+															    			 <input type="hidden" name="ClosureId" value="<%=form[4]%>">
+															    			 <input type="hidden" name="Action" value="A">
+																			
+																			
+																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+								   										            <i class="fa fa-download"></i>
+								   									             </button> 
+																				
+																		</div>
+																	
+						 										</td>
+                        									</tr>
+                       									<%} }%>
+                       										
                  									</tbody>  
             									</table>
           									</div>

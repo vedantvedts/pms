@@ -1010,4 +1010,21 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return null;
 		}
 	}
+
+	private static String TECHCLOSUREPENDINGLIST="CALL pfms_closure_technical_tcr_pending(:EmpId,:LabCode)";
+	@Override
+	public List<Object[]> projectTechClosurePendingList(String empId, String labcode) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(TECHCLOSUREPENDINGLIST);
+			query.setParameter("EmpId", empId);
+			query.setParameter("LabCode", labcode);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO projectTechClosurePendingList" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
 }

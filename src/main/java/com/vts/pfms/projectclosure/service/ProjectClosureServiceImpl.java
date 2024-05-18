@@ -1483,4 +1483,10 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.projectTechClosureTransListByType(techClosureId,closureStatusFor,closureForm);
 	}
+
+	@Override
+	public List<Object[]> projectTechClosurePendingList(String empId, String labcode) throws Exception {
+		
+		return dao.projectTechClosurePendingList(empId,labcode);
+	}
 }
