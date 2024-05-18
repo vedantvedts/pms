@@ -434,7 +434,7 @@ public class ProjectClosureController {
 
 			req.setAttribute("SoCPendingList", service.projectClosureSoCPendingList(EmpId, labcode));
 			req.setAttribute("TechClosurePendingList", service.projectTechClosurePendingList(EmpId, labcode));
-			//req.setAttribute("SoCApprovedList", service.projectClosureSoCApprovedList(EmpId,fromdate,todate));
+			req.setAttribute("TechClosureApprovedList", service.projectTechClosureApprovedList(EmpId,fromdate,todate));
 			req.setAttribute("SoCApprovedList", service.projectClosureSoCApprovedList(EmpId,fromdate,todate));
 			req.setAttribute("ACPPendingList", service.projectClosureACPPendingList(EmpId, labcode));
 			req.setAttribute("ACPApprovedList", service.projectClosureACPApprovedList(EmpId,fromdate,todate));

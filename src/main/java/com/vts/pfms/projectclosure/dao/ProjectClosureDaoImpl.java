@@ -1027,4 +1027,22 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return new ArrayList<Object[]>();
 		}
 	}
+
+	private static String TECHCLOSUREAPPROVEDLIST="CALL pfms_closure_tcr_approved(:EmpId,:FromDate,:ToDate)";
+	@Override
+	public List<Object[]> projectTechClosureApprovedList(String empId, String fromdate, String todate) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(TECHCLOSUREAPPROVEDLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("FromDate", fromdate);
+			query.setParameter("ToDate", todate);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO projectTechClosureApprovedList" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
 }

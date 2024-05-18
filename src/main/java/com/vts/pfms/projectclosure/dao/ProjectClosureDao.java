@@ -81,6 +81,7 @@ public interface ProjectClosureDao {
 	public long UpdateProjectClosureTechnical(ProjectClosureTechnical closure)throws Exception;
 	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm)throws Exception;
 	public List<Object[]> projectTechClosurePendingList(String empId, String labcode)throws Exception;
+	public List<Object[]> projectTechClosureApprovedList(String empId, String fromdate, String todate)throws Exception;
 	
 
 }
