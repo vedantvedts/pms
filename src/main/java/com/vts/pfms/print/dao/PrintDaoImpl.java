@@ -1402,4 +1402,15 @@ public class PrintDaoImpl implements PrintDao {
 			return null;
 		}
 		
+		public static final String EDITTECHIMAGE="UPDATE pfms_tech_images SET ImageName=:ImageName,CreatedBy=:CreatedBy,CreatedDate=:CreatedDate WHERE TechImagesId=:TechImagesId";
+		@Override
+		public int editTechImage(TechImages image) throws Exception {
+			Query query=manager.createNativeQuery(EDITTECHIMAGE);	   
+			query.setParameter("ImageName", image.getImageName());
+			query.setParameter("CreatedBy", image.getCreatedBy());
+			query.setParameter("CreatedDate", image.getCreatedDate());
+			query.setParameter("TechImagesId", image.getTechImagesId());
+			return query.executeUpdate();
+		}
+		
 	}

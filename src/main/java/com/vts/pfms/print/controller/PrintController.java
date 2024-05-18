@@ -4767,5 +4767,30 @@ public class PrintController {
 				Gson json = new Gson();
 				return json.toJson(favsSlideData);
 			 }
+			 
+			 
+			 @RequestMapping(value="TechImagesEdit.htm",method = {RequestMethod.POST,RequestMethod.GET})
+			    public String TechImagesEdit(@RequestParam("FileAttach") MultipartFile file,HttpSession ses,HttpServletRequest req,RedirectAttributes redir)throws Exception
+			    {
+			   	 String UserId = (String) ses.getAttribute("Username");
+		    	 String LabCode= (String) ses.getAttribute("labcode");
+					logger.info(new Date() +"Inside TechImagesEdit.htm "+UserId);
+		    	try {
+		    		String TechImageId=req.getParameter("TechImageId");
+		    		int count=service.TechImagesEdit(file,TechImageId,env.getProperty("ApplicationFilesDrive"),req.getUserPrincipal().getName(),LabCode);
+		    	    if(count>0) {  
+		                redir.addAttribute("result", "Tech Image Update Successfully");
+		      		}else {
+		      			redir.addAttribute("resultfail", "Tech Image Update Unsuccessful");
+		      		}
+		    		
+		    	}catch(Exception e) {
+		    		e.printStackTrace();
+		    	}
+			    	
+		    	redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));
+				redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
+		        return "redirect:/ProjectBriefingPaper.htm";
+			    }
 		
 }

@@ -132,5 +132,6 @@ public interface PrintDao {
 	public Long saveFavouriteSlides(FavouriteSlidesModel fSM)throws Exception;
 	public List<Object[]> GETFavouriteSlides() throws Exception;
 	public Long EditFavouriteSlides(FavouriteSlidesModel fSM)throws Exception;
+	public int editTechImage(TechImages image)throws Exception;
 
 }

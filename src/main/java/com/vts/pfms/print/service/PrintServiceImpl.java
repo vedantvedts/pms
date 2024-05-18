@@ -1097,4 +1097,33 @@ public class PrintServiceImpl implements PrintService{
 		return dao.EditFavouriteSlides(fSM);
 	}
 	
+	@Override
+	public int TechImagesEdit(MultipartFile file,String techImageId, String path,String userName, String labCode)
+			throws Exception {
+		
+		 logger.info(new Date()  +"Inside SERVICE TechImagesEdit ");
+		 
+		    TechImages image=new TechImages();
+		    image.setTechImagesId(Long.parseLong(techImageId));
+	     	image.setImageName(file.getName()+"."+FilenameUtils.getExtension(file.getOriginalFilename()));
+		    image.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		    image.setCreatedBy(userName);
+		    dao.editTechImage(image);
+	 
+	        // Construct the file path based on the ID
+	        String fileName = techImageId + "_FileAttach.png";
+	        String Path= path+labCode+"\\TechImages\\";
+	        String filePath = Path + fileName;
+	        // Create a File object representing the file to be deleted
+	        File fileAttach = new File(filePath);
+	        // Check if the file exists
+	        if (fileAttach.exists()) {
+	            // Attempt to delete the file
+	        	fileAttach.delete();
+	        }
+	        
+			int result=saveFile(Path, techImageId+"_"+file.getName()+"."+FilenameUtils.getExtension(file.getOriginalFilename()), file);
+			return result;
+	}
+	
 }

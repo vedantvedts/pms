@@ -540,22 +540,26 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									</td>
 									
 									<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank">
+										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank"
+										 data-toggle="tooltip" data-placement="top" title="Briefing Papaer pdf" >
 											<i class="fa fa-download fa-lg" aria-hidden="true"></i>
 										</button>
 									</td>
 									<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="ProjectBriefingFreeze.htm" onclick="return confirm('Are You Sure To Freeze Briefing Paper for Next Scheduled Meeting ?')" title="Freeze" style="border: 0 ;border-radius: 3px;">
+										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="ProjectBriefingFreeze.htm" onclick="return confirm('Are You Sure To Freeze Briefing Paper for Next Scheduled Meeting ?')" title="Freeze" style="border: 0 ;border-radius: 3px;"
+										data-toggle="tooltip" data-placement="top">
 											<i class="fa fa-certificate fa-lg" style="color:red; " aria-hidden="true"></i>
 										</button>
 									</td>
 									<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="BriefingPresentation.htm" formtarget="_blank" title="Presentation" style="border: 0 ;border-radius: 3px;">
+										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="BriefingPresentation.htm" formtarget="_blank" title="Presentation" style="border: 0 ;border-radius: 3px;"
+										data-toggle="tooltip" data-placement="top" >
 											<img alt="" src="view/images/presentation.png" style="width:19px !important">
 										</button>
 									</td>
 										<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" name="text" value="p" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank">
+										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" name="text" value="p" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank"
+										data-toggle="tooltip" data-placement="top" title="Presentation pdf">
 											<img alt="" src="view/images/presentation.png" style="width:19px !important"><i class="fa fa-download" aria-hidden="true" style="margin-left:6px;"></i>
 										</button>
 									</td>
@@ -3242,12 +3246,23 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 							<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
 								<img style="max-width:20cm;max-height:14cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
 									<%} %>
+									<button class="btn btn-sm" id="TechImagesId1" value="" onclick="openEditDiv(<%=imges.getTechImagesId()%>)" style="background-color: transparent;font-size: 2.5rem"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 									<form action="#" style="display: inline">
 									<button class="btn btn-danger" name="TechImagesId" value="<%=imges.getTechImagesId()%>" formaction="ProjectImageDelete.htm" formmethod="POST" onclick="return confirm('Are you sure, you want to remove this?')"><i class="fa fa-trash" aria-hidden="true" style="color:white" ></i></button>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									<input type="hidden" name="committeeid" value="<%=committeeid%>">
 									<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
-									</form>									
+									</form>
+									<form action="TechImagesEdit.htm" method="post" style="display: inline" enctype="multipart/form-data">
+									<label for="FileAttach" id="filelabel<%=imges.getTechImagesId()%>" style="margin-left: 20px; display: none;">
+										<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
+										<button type="submit" class="btn btn-sm back">Upload</button>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+										<input type="hidden" name="committeeid" value="<%=committeeid%>">
+										<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
+										<input type="hidden" name="TechImageId"  value="<%=imges.getTechImagesId()%>"> 
+								    </label>
+								    </form>										
 									</td>
 								<%-- 	<td style="border:0;"> 
 									<%if(i==0){  %>
@@ -3799,8 +3814,8 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 	      		
 	      	</div>
 	      </div>
-	      <div class="modal-footer">
-	        
+	      <div class="modal-footer" style="color: red">
+	        Note : Upto Selected Milestone Levels Are Showing in Breifing Paper 5, 6 and 9 points.
 	      </div>
 	    </div>
 	  </div>
@@ -5044,11 +5059,23 @@ function RecDecremove(a){
 		return false;
 	}
 }
+
+$('.btn[data-toggle="tooltip"]').tooltip({
+    animated: 'fade',
+    placement: 'top',
+    html : true,
+    boundary: 'window'
+});
+
+function openEditDiv(a){
+    var label = document.getElementById("filelabel"+a);
+    if (label.style.display === "none") {
+        label.style.display = "inline-block";
+    } else {
+        label.style.display = "none";
+    }
+}
 </script>
-
-
-
-
 
 
 </body>
