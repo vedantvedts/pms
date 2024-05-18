@@ -62,6 +62,7 @@ import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeInvitation;
+import com.vts.pfms.committee.model.CommitteeLetter;
 import com.vts.pfms.committee.model.CommitteeMain;
 import com.vts.pfms.committee.model.CommitteeMeetingApproval;
 import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
@@ -146,7 +147,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeModel.setCreatedBy(committeeDto.getCreatedBy());
 		committeeModel.setCreatedDate(sdf1.format(new Date()));
 		committeeModel.setIsActive(1);
-		
 		count = dao.CommitteeNewAdd(committeeModel);
 		
 		return count;
@@ -244,9 +244,11 @@ public class CommitteeServiceImpl implements CommitteeService{
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		LocalDate fromDate = LocalDate.parse(committeemaindto.getValidFrom(), formatter);
-		LocalDate toDate=fromDate.plusYears(5).minusDays(1);
 		
-		committeemain.setValidFrom(java.sql.Date.valueOf(fromDate));
+		LocalDate formationDate = LocalDate.parse(committeemaindto.getFormationDate(),formatter);
+		LocalDate toDate=formationDate.plusYears(5).minusDays(1);
+		
+		committeemain.setValidFrom(java.sql.Date.valueOf(formationDate));
 		committeemain.setValidTo(java.sql.Date.valueOf(toDate));
 		committeemain.setCreatedBy(committeemaindto.getCreatedBy());
 		committeemain.setCreatedDate(sdf1.format(new Date()));
@@ -255,6 +257,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeemain.setInitiationId(Long.parseLong(committeemaindto.getInitiationId()));
 		committeemain.setDivisionId(Long.parseLong(committeemaindto.getDivisionId()));
 		committeemain.setPreApproved(committeemaindto.getPreApproved());
+		committeemain.setReferenceNo(committeemaindto.getReferenceNo());
+		committeemain.setFormationDate(java.sql.Date.valueOf(formationDate));;
 		if(committeemaindto.getPreApproved().equalsIgnoreCase("N")) {
 			committeemain.setStatus("P");
 			committeemain.setIsActive(0);
@@ -2259,11 +2263,20 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto) throws Exception {	
+	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto,CommitteeMainDto cmd) throws Exception {	
 		logger.info(new Date() +"Inside SERVICE CommitteeMainMemberUpdate ");
 		
 		int ret=0;
 		// Update Chairperson
+		CommitteeMainDto cmdd=new CommitteeMainDto();
+		
+		cmdd.setCommitteeMainId(dto.getCommitteemainid());
+		
+		cmdd.setReferenceNo(cmd.getReferenceNo());
+		cmdd.setFormationDate(cmd.getFormationDate());
+		int count=dao.ReformationDate(cmdd);
+		
+		
 		CommitteeMember model=new CommitteeMember();
 		model.setModifiedBy(dto.getModifiedBy());
 		model.setModifiedDate(sdf1.format(new Date()));
@@ -2914,7 +2927,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		}
 		LocalDate futureDay=LocalDate.parse(todayDate).plusDays(180);
 		if(subList.size()!=0) {
-		actionList=subList.stream().filter(i ->i[26].toString().equalsIgnoreCase("0")|| LocalDate.parse(i[8].toString()).isBefore(futureDay)).collect(Collectors.toList());
+		actionList=subList.stream().filter(i ->i[26].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
 		}
 		return actionList;
 		
@@ -3314,4 +3327,71 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		return dao.IndustryPartnerRepListInvitationsMainMembers(industryPartnerId, committeemainid);
 	}
 	/* ------------------ end ----------------------- */
+	@Override
+	public List<Object[]> ConstitutionApprovalFlowData(String committeemainid) throws Exception {
+		return dao.ConstitutionApprovalFlowData(committeemainid);
+	}
+	
+	@Override
+	public int MemberSerialNoUpdate(String[] newslno, String[] memberId) throws Exception {
+		
+		int ret=0;
+		for(int i=0;i<memberId.length;i++)
+		{
+			dao.MemberSerialNoUpdate(memberId[i],newslno[i]);
+		}
+		return ret;
+	}
+	@Override
+	public long saveCommitteeLetter(CommitteeLetter committeeLetter) throws Exception {
+		
+		String LabCode= committeeLetter.getLabCode();
+		Timestamp instant= Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+		
+		String Path = LabCode+"\\CommitteeInvitationLetter\\";
+		
+		committeeLetter.setFilePath(Path);
+		committeeLetter.setAttachmentName(committeeLetter.getLetter().getOriginalFilename());
+		committeeLetter.setCreatedBy(committeeLetter.getCreatedBy());
+		committeeLetter.setCreatedDate(sdf1.format(new Date()));		
+		
+		long count=0;
+		if(!committeeLetter.getLetter().isEmpty()) {
+			committeeLetter.setAttachmentName(committeeLetter.getLetter().getOriginalFilename());
+			saveFile(uploadpath+Path,committeeLetter.getAttachmentName(),committeeLetter.getLetter());
+			count=dao.saveCommitteeLetter(committeeLetter);
+		}
+		
+		
+		return count;
+	}
+	
+	@Override
+	public List<Object[]> getcommitteLetters(String commmitteeId, String projectId, String divisionId,
+			String initiationId) throws Exception {
+	
+		return dao.getcommitteLetters(commmitteeId,projectId,divisionId,initiationId);
+	}
+	@Override
+	public Object[] getcommitteeLetter(String letterId) throws Exception {
+		return dao.getcommitteeLetter(letterId);
+	}
+	@Override
+	public long UpdateCommitteLetter(String letterId) throws Exception {
+		return dao.UpdateCommitteLetter(letterId);
+	}
+	
+	//prakarsh
+	@Override
+	public List<Object[]> MeettingList(String projectId, String committeeId) throws Exception {
+		
+		return dao.MeettingList(projectId,committeeId);
+	}
+
+	@Override
+	public List<Object[]> MeettingList(String projectid) {
+		// TODO Auto-generated method stub
+		return dao.MeettingList(projectid);
+	}
 }

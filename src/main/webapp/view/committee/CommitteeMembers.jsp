@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -136,6 +137,8 @@ String CpLabCode = chairperson[9].toString();
 /* --------- start -------------- */
 List<IndustryPartner> industryPartnerList = (List<IndustryPartner>)request.getAttribute("industryPartnerList");
 /* --------- end -------------- */
+List<Object[]> constitutionapprovalflow=(List<Object[]>)request.getAttribute("constitutionapprovalflow");
+
 %>
 
 <%
@@ -156,10 +159,11 @@ String ses=(String)request.getParameter("result");
 
     <br />
    
-    
+
 <div class="container-fluid" style="margin-top: -2%;">
 	<div class="row">
 		<div class="col-md-12">	
+		   
 			<div class="card shadow-nohover">	
 						
 					<div class="card-header">						
@@ -294,7 +298,29 @@ String ses=(String)request.getParameter("result");
 				  						<%}%> 
 									</div>
 								</div>	
-			</div>								
+							</div>
+						
+									<!-- prakarsh -->
+							<div class="row">
+							
+							<div class="col-md-3">
+							<div class="form-group">
+							<label class="control-label">Reference No.</label>
+							
+												
+							<input type="text" class="form-control"   name="Reference No." value="<%= committeedata[11] != null ? committeedata[11] : "--" %>" >
+							
+							</div>
+							</div>
+						
+							<div class="col-md-4">
+				         	<div class="form-group">
+				            	<label class="control-label" >Formation Date</label>
+				  				<input type="date" class="form-control"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates"  value="<%= committeedata[12] != null ? committeedata[12] : '-' %>"  >
+				        	</div>
+				        </div>
+							
+							</div> 
 							<div class="row">			
 								<div class="col-md-12" align="center">
 					              	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                  	
@@ -307,10 +333,96 @@ String ses=(String)request.getParameter("result");
 						</form>
 				<br>
 <!-- 	------------------------------------------------------------------------------- internal and Expert Members----------------------------------------------------------
- -->			<%if(committeemembersall.size()>0 ){ %>
+ -->			
+ 	<%
+ 				List<Object[]>tempcommitteemembersall=new ArrayList<>();
+ 				List<String>memberTypes=Arrays.asList("CC","CS","PS","CH");
+ 				if(committeemembersall.size()>0) 
+ 				{
+ 					tempcommitteemembersall=committeemembersall.stream()
+ 												.filter(i->!memberTypes.contains(i[8].toString())).collect(Collectors.toList());
+ 					tempcommitteemembersall=tempcommitteemembersall.stream()
+ 													.sorted(Comparator.comparingInt(e -> Integer.parseInt(e[11].toString()))).collect(Collectors.toList());
+ 				}
+ 				%>
+ 
+ <%if(tempcommitteemembersall.size()>0 ){ %>
  					<hr  style="padding-top: 5px;padding-bottom: 5px;">
  				<%} %>
-				<div class="row">
+ 				 <%if(tempcommitteemembersall.size()>0 ){ %>
+ 		<div class="row">
+ 		<div class="col-md-2"></div>
+ 			<div class="col-md-7">
+ 	<form action="MemberSerialNoUpdate.htm" method="POST">
+ 		<table  class="table table-bordered table-hover table-striped table-condensed ">
+			            	<thead>
+			               		<tr>
+			               			
+			               			<th style="width:170px;text-align: center"> Sl No.</th>
+			               			<th >Participants</th>			                    	
+			                    	<th>Member Type</th>
+			                    	<th>Action</th>
+			                    </tr>
+			              	</thead>
+			              	<tbody>
+			              	<%int count=0;
+			              	for(Object[]obj:tempcommitteemembersall){%>
+			              	<tr>
+			              	<td style="display: flex;justify-content: center;align-items: center;">
+			            <input type="number" class="form-control" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
+			              	<input type="hidden" name="memberId" value="<%=obj[0].toString() %>">
+			              	</td>
+			              	<td><%=obj[2].toString() %>,<%=obj[4].toString() %></td>
+			              	<td> 
+										<%  if(obj[8].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
+											else if(obj[8].toString().equalsIgnoreCase("CS") ){	 %> Member Secretary<%}
+											else if(obj[8].toString().equalsIgnoreCase("CH") ){	 %> Co-Chairperson<%}
+											else if(obj[8].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
+											else if(obj[8].toString().equalsIgnoreCase("CI")){   %> Internal<%}
+											else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[9] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[9]%>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
+											else if(obj[8].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
+											else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[9] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[9] %>)<%}
+										    // Prudhvi - 27/03/2024 start
+											else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[9] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[9] %>)<%}
+										%>
+										
+									</td>
+									<td>
+
+														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+												        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">
+												      <%--   <input type="hidden" name="committeememberid" value="<%=obj[0] %>" /> --%> 
+												        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
+														<button class="fa fa-trash btn btn-danger " type="submit" style="background-color: white;border-color: white;"
+															formaction="CommitteeMemberDelete.htm" formmethod="POST" name="committeememberid" value="<%=obj[0] %>"
+														  onclick="return confirm('Are You Sure To Delete this Member?');" ></button>
+														<%} %>
+									
+									
+									</td>
+			              	</tr>
+			              	<%}%>
+			              	<tr>
+			              	<td colspan=1 style="display: flex;justify-content: center;align-items: center">
+			              	<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
+			              	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+			              	<button class="btn btn-sm edit" onclick="return slnocheck('serialnoupdate');">UPDATE</button>
+			              	</td>
+			              	<td colspan=3></td>
+			              	</tr>
+			              	</tbody>
+			              	</table>
+			              	</form>
+			              	</div>
+			              	
+ 		</div>	
+ 				<%} %>
+ 				
+<%-- 				<div class="row">
 								<div  class="col-md-4">
 									<%if(committeemembersall.size()>0){ %>
 										<h5 style="color: #FF5733"> Internal Members</h5> 
@@ -462,7 +574,7 @@ String ses=(String)request.getParameter("result");
 					</div>
 					<%} %>
 					<!-- end -->
-				</div>		
+				</div>	 --%>	
 						
 			
 						
@@ -487,7 +599,7 @@ String ses=(String)request.getParameter("result");
 									</td>
 									<td>
 										<form  method="post" action="CommitteeConstitutionLetterDownload.htm" target="_blank" >
-											<button  type="submit" class="btn btn-sm edit"  ><i class="fa fa-download" style="   font-size: 0.90rem; " ></i></button>
+											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download" style="   font-size: 0.90rem; " ></i></button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />    												
 											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 										</form>
@@ -574,10 +686,83 @@ String ses=(String)request.getParameter("result");
 										<%} %>	
 									</td>	
 								</tr>
-							</table>			
+							</table>	
+							
+								</div> 
+							 	<div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
+				                <table  align="center" >
+				                	<tr>
+				                		<td class="trup" style="background: #B5EAEA;">
+				                			Constituted By
+				                		</td>
+				                		<td rowspan="2">
+				                			 <b>----------&gt;</b>
+				                		</td >
+				                		
+				                		<td class="trup" style="background: #C6B4CE;">
+				                			Group Head
+				                		</td>
+				                		<td rowspan="2">
+				                			 <b>----------&gt;</b>
+				                		</td>
+				                		
+				                		<td class="trup" style="background: #E8E46E;">
+				                			P&C DO
+				                		</td>
+				                		<td rowspan="2">
+				                			 <b>----------&gt;</b>
+				                		</td>
+				                		
+				                		<td class="trup" style="background: #FBC7F7;" >
+				                			Director
+				                		</td>
+				                			                		
+				                	</tr>			   
+				                	
+				                	<tr>
+				                		<td class="trdown" style=" background:#B5EAEA; " >	
+				                			<%if(constitutionapprovalflow.size()>0){ %>
+								                     <%for(Object[] obj : constitutionapprovalflow){ %>
+								                     	<%if(obj[3].toString().equals("Constituted By") ){ %>
+								                     		<%=obj[1] %>,<%=obj[2] %>
+								                     	<%} %>
+								                     <%} %>
+								               <%} %>
+				                		</td>
+				                		<td class="trdown"  style="background: #C6B4CE;" >	
+				                			 <%if(constitutionapprovalflow.size()>0){ %>
+								                     <%for(Object[] obj : constitutionapprovalflow){ %>
+								                     	<%if(obj[3].toString().equals("Group Head") ){ %>
+								                     		<%=obj[1] %>,<%=obj[2] %>
+								                     	<%} %>
+								                     <%} %>
+								               <%} %>   
+				                		</td>
+				                		<td class="trdown" style="background: #E8E46E;" >	
+				                			<%if(constitutionapprovalflow.size()>0){ %>
+								                     <%for(Object[] obj : constitutionapprovalflow){ %>
+								                     	<%if(obj[3].toString().equals("DO-RTMD") ){ %>
+								                     		<%=obj[1] %>,<%=obj[2] %>
+								                     	<%} %>
+								                     <%} %>
+								               <%} %>    
+				                		</td>
+				                		<td class="trdown" style="background: #FBC7F7;" >	
+				                			 <%if(constitutionapprovalflow.size()>0){ %>
+								                     <%for(Object[] obj : constitutionapprovalflow){ %>
+								                     	<%if(obj[3].toString().equals("Director") ){ %>
+								                     		<%=obj[1] %>,<%=obj[2] %>
+								                     	<%} %>
+								                     <%} %>
+								               <%} %>
+				                		</td>
+				                	</tr>             	
+				                </table>			             
+						 	</div>			
+									
 						<%} %>
 																
-		 			</div> 	
+		 			
 	 				
 		      
 <!-- ------------------------------------- add new members ---------------------------------------------------------------- -->
@@ -1199,7 +1384,7 @@ function industrypartnerrepname(){
 									industryPartnerId : $industryPartnerId,
 									committeemainid : '<%=committeemainid %>' 	
 									   },
-								datatype : 'json',
+										datatype : 'json',
 								success : function(result) {
 
 								var result = JSON.parse(result);
@@ -1228,6 +1413,37 @@ function industrypartnerrepname(){
 
 }
 	}
+	
+function slnocheck(formid) {
+	
+	 var arr = document.getElementsByName("newslno");
+
+	var arr1 = [];
+	for (var i=0;i<arr.length;i++){
+		arr1.push(arr[i].value);
+	}		 
+	 
+    let result = false;
+  
+    const s = new Set(arr1);
+    
+    if(arr.length !== s.size){
+       result = true;
+    }
+    if(result) {
+   	event.preventDefault();
+       alert('Serial No contains duplicate Values');
+       return false;
+    } else {
+   	 return confirm('Are You Sure to Update?');
+    }
+  }
+$( document ).ready(function() {
+	var formationDate=new Date(<%=committeedata[12]%>)
+	console.log("formationDate --- "+formationDate)
+	console.log("hiii")
+});
+
 </script>
 <!-- Prudhvi 27/03/2024 end -->	
 </body>

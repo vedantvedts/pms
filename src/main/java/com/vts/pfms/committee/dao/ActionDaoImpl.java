@@ -1855,4 +1855,23 @@ public class ActionDaoImpl implements ActionDao{
 		return (List<Object[]>)query.getResultList();
 	}
 	
+	private static String ACTIONMAINIDS=" SELECT aas.actionMainId,aas.ActionAssignId,aas.ActionNo FROM action_assign aas,action_main am WHERE am.scheduleminutesid=:scheduleMinutesId AND am.ActionMainId=aas.ActionMainId AND aas.isactive='1' ORDER BY aas.ActionAssignId  DESC";
+
+	@Override
+	public List<Object[]> getMainIds(String scheduleMinutesId) throws Exception {
+		
+		
+		Query query = manager.createNativeQuery(ACTIONMAINIDS);
+		query.setParameter("scheduleMinutesId", scheduleMinutesId);
+		
+		List<Object[]>main = new ArrayList<>();
+	
+		 try {
+			main=(List<Object[]>)query.getResultList();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return main;
+	}
 }

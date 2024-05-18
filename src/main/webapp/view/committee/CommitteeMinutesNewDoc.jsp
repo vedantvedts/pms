@@ -482,8 +482,8 @@ for(Object[] temp : invitedlist){
 				</table>	
 <br>
 				<div align="left" style="font-weight: 600;margin-top:10px;">4.Status of major sub system and sub projects  (Annexure - A)</div>
-				<div align="left" style="font-weight: 600;margin-top:10px;">5.Details of procurements items envisaged in the projects (Annexure - B)</div>
-				<div align="left" style="font-weight: 600;margin-top:10px;">6.Financial Status presented during the review (Annexure - C)</div>
+				<div align="left" style="font-weight: 600;margin-top:10px;">5.Financial Status presented during the review  (Annexure - B)</div>
+				<div align="left" style="font-weight: 600;margin-top:10px;">6.Details of procurements items envisaged in the projects(Annexure - C)</div>
 				<div align="left" style="font-weight: 600;margin-top:10px;">7.Major milestones proposed to be completed in next 06 months along with financial outlay (Annexure - D)</div>
 				<div align="left" style="font-weight: 600">8.Other relevant Points:</div>
 

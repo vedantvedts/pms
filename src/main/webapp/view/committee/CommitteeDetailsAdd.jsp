@@ -154,12 +154,14 @@ String LabCode = (String)request.getAttribute("LabCode");
 	
 		            <%} %>
 <!-- 	 --------------------------------------------------------------------------------------------- -->
-						  <div class="col-md-4 ">
+						   <div class="col-md-4 " style="display:none;">
 	                        <div class="form-group">
 	                            <label class="control-label">From Date<span class="mandatory" style="color: red;">*</span></label>
-	       							<input  class="form-control form-control"  data-date-format="dd/mm/yyyy" id="startdate" name="Fromdate"  required="required"  style="margin-bottom: -10px; margin-top: -5px;" >
+	       							<input  class="form-control form-control"  data-date-format="dd/mm/yyyy" id="startdate" name="Fromdate"  requ   style="margin-bottom: -10px; margin-top: -5px;" >
 	                        </div>
 	                    </div>
+	                    
+	                    
 					</div>
 					
 					<div class="row">	
@@ -276,6 +278,14 @@ String LabCode = (String)request.getAttribute("LabCode");
 				        	</div>
 				     	</div>         
 	                 
+	                 		<div class="col-md-4">
+				         	<div class="form-group">
+				            	<label class="control-label" style="margin-bottom: 4px !important">Formation Date</label>
+				  				<input  class="form-control"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates"    style="margin-bottom: -10px; margin-top: -5px;" >
+				        	</div>
+				        </div>
+	                 
+	                 
                 	</div>
                 	
                 	<div class="row">
@@ -302,9 +312,16 @@ String LabCode = (String)request.getAttribute("LabCode");
 								</select>			  					
 				        	</div>
 				        </div>
+				        <div class="col-md-4">
+				         	<div class="form-group">
+				            	<label class="control-label" style="margin-bottom: 4px !important">Reference No.</label>
+				  				 <input type="text" class="form-control" name="refNo">					
+				        	</div>
+				        </div>
                 	
                 	</div>
-                	
+                
+                	</div>
 				       <div class="form-group" align="center">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							<%if(Long.parseLong(projectid)>0){ %>
@@ -598,6 +615,23 @@ $('#startdate').daterangepicker({
 		format : 'DD-MM-YYYY'
 	}
 });
+
+$('#Formationdate').daterangepicker({
+	"singleDatePicker" : true,
+	"linkedCalendars" : false,
+	"showCustomRangeLabel" : true,
+	/* "minDate" :new Date(), */
+	"startDate" : new Date(),
+
+	"cancelClass" : "btn-default",
+	showDropdowns : true,
+	locale : {
+		format : 'DD-MM-YYYY'
+	}
+});
+
+
+
 var aYearFromNow = new Date();
 aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
  
@@ -627,10 +661,9 @@ $('#startdate').change(function () {
    var newdateObject = newdateMomentObject.toDate();
     newdateObject = newdateObject.setFullYear(newdateObject.getFullYear() + 1)
 
-
 });
  
- 
+
 </script>
 
 

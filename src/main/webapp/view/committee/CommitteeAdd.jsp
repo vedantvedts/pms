@@ -170,6 +170,19 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 
 							</div>
 						</div>
+						
+						
+			<!-- 		<div class="row">
+					<div class="col-md-3">
+					<div class="form-group">
+					<label class="control-label">Reference No.<span class="mandatory" style="color: red;">*</span></label>
+					<input type="text" class="form-control" name="refno">
+					</div>
+					</div>
+					</div> -->
+						
+						
+						
 						<div class="row">
 							<div class="col-md-6">
 								
@@ -188,7 +201,9 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 
 							</div>
 						</div>
-					</div>
+						
+						
+					
 					<div class="row" ><div class="col-md-5"></div>
 						<div class="col-md-3">
 							<div class="form-group">

@@ -191,6 +191,206 @@ public class ActionServiceImpl implements ActionService {
 		return success;
 	}
 	
+//	@Override
+//	public long ActionMainInsert(ActionMainDto main , ActionAssignDto assign) throws Exception 
+//	{
+//		try {
+//			logger.info(new Date() +"Inside SERVICE ActionMainInsert ");
+//			long success=1;
+//			long unsuccess=0;
+//			Object[] lab=null;
+//			int count=0;
+//			String ProjectCode=null;
+//			try
+//			{
+//				lab=dao.LabDetails();
+//				count=dao.ActionGenCount(main.getProjectId(),main.getType());
+//				if(!main.getProjectId().equalsIgnoreCase("0"))
+//				{
+//					ProjectCode=dao.ProjectCode(main.getProjectId());
+//				}
+//			}
+//			catch (Exception e) 
+//			{	
+//				logger.info(new Date() +"Inside SERVICE ActionMainInsert ",e);	
+//				return unsuccess;
+//			}
+//			String Project=null;
+//			
+//			if(!main.getProjectId().equalsIgnoreCase("0")) {
+//				if(main.getActionType().equalsIgnoreCase("S")) 
+//				{
+//					Object[] comishortname=dao.CommitteeShortName(main.getScheduleMinutesId());
+//					Project="/"+ProjectCode+"/"+comishortname[1]+"/";
+//				}
+//				// Prudhvi - 13/03/2024
+//				else if(main.getActionType().equalsIgnoreCase("R")) {
+//					Object[] rodshortname=dao.rodShortName(main.getScheduleMinutesId());
+//					Project="/"+ProjectCode+"/"+rodshortname[2]+"/";
+//					main.setActionType("S");
+//				}
+//				else if(main.getActionType().equalsIgnoreCase("N")) {
+//					Project="/"+ProjectCode+"/";
+//					
+//				}else {
+//					Project="/"+ProjectCode+"/MIL/";
+//				}
+//			}else{
+//				Project="/GEN/";
+//			}
+//			ActionMain actionmain=new ActionMain();
+//			
+//			if(main.getActionLinkId()!="" && main.getActionLinkId()!=null) {
+//				actionmain.setActionLinkId(Long.parseLong(main.getActionLinkId()));
+//			}else {
+//				actionmain.setActionLinkId(unsuccess);
+//			}
+//			if(main.getMainId()!="" && main.getMainId()!=null ) {
+//				if("0".equalsIgnoreCase(main.getMainId())) {
+//					actionmain.setMainId(Long.parseLong(main.getActionParentId()));
+//				}else {
+//					actionmain.setMainId(Long.parseLong(main.getMainId()));
+//				}
+//				
+//			}else {
+//				actionmain.setMainId(0l);
+//			}
+//			actionmain.setActivityId(Long.parseLong(main.getActivityId()));
+//			actionmain.setActionType(main.getActionType());
+//			actionmain.setType(main.getType());
+//			actionmain.setActionItem(main.getActionItem());
+//			actionmain.setActionDate(java.sql.Date.valueOf(main.getMeetingDate()));
+//			actionmain.setCategory(main.getCategory());
+//			actionmain.setPriority(main.getPriority());
+//			//actionmain.setActionStatus(main.getActionStatus());
+//			actionmain.setProjectId(Long.parseLong(main.getProjectId()));
+//			actionmain.setScheduleMinutesId(Long.parseLong(main.getScheduleMinutesId()));
+//			actionmain.setCreatedBy(main.getCreatedBy());
+//			actionmain.setCreatedDate(sdf1.format(new Date()));
+//			actionmain.setIsActive(1);
+//			if(main.getActionParentId()!="" && main.getActionParentId()!=null) {
+//				actionmain.setParentActionId(Long.parseLong(main.getActionParentId()));
+//			}else{
+//				actionmain.setParentActionId(0l);
+//			}
+//			actionmain.setActionLevel(main.getActionLevel());
+//			long result=dao.ActionMainInsert(actionmain);
+//			//changed on 06-11
+//			if(assign.getMultipleAssigneeList().size()>0) {
+//				for(int i=0;i<assign.getMultipleAssigneeList().size();i++) {
+//					ActionAssign actionassign = new ActionAssign();
+//						
+//					//count=count+1;
+//					String actionCount=(count+1)+"-"+(i+1);
+//
+//					if(lab!=null && main.getLabName()!=null) {
+//				    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
+//
+//					     actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+actionCount);
+//					}else {
+//						return unsuccess;
+//					}
+//					
+//					actionassign.setActionMainId(result);
+//					actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+//					actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+//					actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
+//					actionassign.setAssignee(Long.parseLong(assign.getMultipleAssigneeList().get(i)));
+//					actionassign.setAssignorLabCode(assign.getAssignorLabCode());
+//					actionassign.setAssignor(assign.getAssignor());
+//					actionassign.setRevision(0);
+////					actionassign.setActionFlag("N");		
+//					actionassign.setActionStatus("A");
+//					actionassign.setCreatedBy(main.getCreatedBy());
+//					actionassign.setCreatedDate(sdf1.format(new Date()));
+//					actionassign.setIsActive(1);
+//					actionassign.setProgress(0);
+//					long assignid=  dao.ActionAssignInsert(actionassign);
+//					System.out.println("assignid---"+assignid);
+//					if(result>0) {
+//						Object[] data=dao.ActionNotification(String.valueOf(result) ,String.valueOf(assignid)).get(0);
+//						PfmsNotification notification=new PfmsNotification();
+//						notification.setEmpId(Long.parseLong(data[2].toString()));
+//						notification.setNotificationby(Long.parseLong(data[5].toString()));
+//						notification.setNotificationDate(sdf1.format(new Date()));
+//						notification.setScheduleId(unsuccess);
+//						notification.setCreatedBy(main.getCreatedBy());
+//						notification.setCreatedDate(sdf1.format(new Date()));
+//						notification.setIsActive(1);
+//						if("I".equalsIgnoreCase(actionmain.getType())) {
+//							notification.setNotificationUrl("ActionIssue.htm");
+//							 notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+//						} else {
+//							notification.setNotificationUrl("AssigneeList.htm");
+//							notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+//						}
+//						notification.setStatus("MAR");
+//			            dao.ActionNotificationInsert(notification);
+//					}else {
+//					return unsuccess;
+//					}
+//					}	
+//		
+//			}
+//			//end
+//			/*
+//			 * if(assign.getAssigneeList()!=null) { for(int
+//			 * i=0;i<assign.getAssigneeList().length;i++) { ActionAssign actionassign = new
+//			 * ActionAssign();
+//			 * 
+//			 * count=count+1;
+//			 * 
+//			 * if(lab!=null && main.getLabName()!=null) { Date meetingdate= new
+//			 * SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
+//			 * 
+//			 * actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).
+//			 * toString().toUpperCase().replace("-", "")+"/"+count); }else { return
+//			 * unsuccess; }
+//			 * 
+//			 * 
+//			 * actionassign.setActionMainId(result);
+//			 * actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.
+//			 * getPDCOrg()))));
+//			 * actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.
+//			 * getPDCOrg()))));
+//			 * actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
+//			 * actionassign.setAssignee(Long.parseLong(assign.getAssigneeList()[i]));
+//			 * actionassign.setAssignorLabCode(assign.getAssignorLabCode());
+//			 * actionassign.setAssignor(assign.getAssignor()); actionassign.setRevision(0);
+//			 * // actionassign.setActionFlag("N"); actionassign.setActionStatus("A");
+//			 * actionassign.setCreatedBy(main.getCreatedBy());
+//			 * actionassign.setCreatedDate(sdf1.format(new Date()));
+//			 * actionassign.setIsActive(1); actionassign.setProgress(0); long assignid=
+//			 * dao.ActionAssignInsert(actionassign); if(result>0) { Object[]
+//			 * data=dao.ActionNotification(String.valueOf(result)
+//			 * ,String.valueOf(assignid)).get(0); PfmsNotification notification=new
+//			 * PfmsNotification();
+//			 * notification.setEmpId(Long.parseLong(data[2].toString()));
+//			 * notification.setNotificationby(Long.parseLong(data[5].toString()));
+//			 * notification.setNotificationDate(sdf1.format(new Date()));
+//			 * notification.setScheduleId(unsuccess);
+//			 * notification.setCreatedBy(main.getCreatedBy());
+//			 * notification.setCreatedDate(sdf1.format(new Date()));
+//			 * notification.setIsActive(1); if("I".equalsIgnoreCase(actionmain.getType())) {
+//			 * notification.setNotificationUrl("ActionIssue.htm");
+//			 * notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "
+//			 * +data[3]+", "+data[4]+"."); } else {
+//			 * notification.setNotificationUrl("AssigneeList.htm");
+//			 * notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "
+//			 * +data[3]+", "+data[4]+"."); } notification.setStatus("MAR");
+//			 * dao.ActionNotificationInsert(notification); }else { return unsuccess; } } }
+//			 */
+//			return success;
+//		} catch (Exception e) {
+//			logger.info(new Date() +"Inside SERVICE ActionMainInsert "+ e);	
+//			e.printStackTrace();
+//			return 0;
+//		}
+//	}
+
+	
+	
+
 	@Override
 	public long ActionMainInsert(ActionMainDto main , ActionAssignDto assign) throws Exception 
 	{
@@ -200,11 +400,35 @@ public class ActionServiceImpl implements ActionService {
 			long unsuccess=0;
 			Object[] lab=null;
 			int count=0;
+			int subcount=0;
 			String ProjectCode=null;
+			long mainid=0l;
 			try
 			{
 				lab=dao.LabDetails();
-				count=dao.ActionGenCount(main.getProjectId(),main.getType());
+				
+				if(!main.getScheduleMinutesId().equalsIgnoreCase("0")) {
+					List<Object[]>mainIds = dao.getMainIds(main.getScheduleMinutesId());
+					
+					if(mainIds.size()>0) {
+						mainid=Long.parseLong(mainIds.get(0)[0].toString());
+					String[] xyz=	mainIds.get(0)[2].toString().split("/");
+						String []abc=xyz[xyz.length-1].split("-");
+						
+						if(abc.length>1) {
+							
+							count=Integer.parseInt(abc[0]);
+							subcount=Integer.parseInt(abc[1]);
+						}else {
+							count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
+						}
+						
+					}else {
+						count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
+					}
+				}else {
+				count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
+				}
 				if(!main.getProjectId().equalsIgnoreCase("0"))
 				{
 					ProjectCode=dao.ProjectCode(main.getProjectId());
@@ -274,14 +498,23 @@ public class ActionServiceImpl implements ActionService {
 				actionmain.setParentActionId(0l);
 			}
 			actionmain.setActionLevel(main.getActionLevel());
-			long result=dao.ActionMainInsert(actionmain);
+			
+			
+			long result=0l;
+			if(mainid>0) {
+				result=mainid;
+			}else {
+			result=	dao.ActionMainInsert(actionmain);
+			}
+			
+			
 			//changed on 06-11
 			if(assign.getMultipleAssigneeList().size()>0) {
 				for(int i=0;i<assign.getMultipleAssigneeList().size();i++) {
 					ActionAssign actionassign = new ActionAssign();
 						
 					//count=count+1;
-					String actionCount=(count+1)+"-"+(i+1);
+					String actionCount=(count)+"-"+(subcount+i+1);
 
 					if(lab!=null && main.getLabName()!=null) {
 				    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
@@ -387,7 +620,6 @@ public class ActionServiceImpl implements ActionService {
 			return 0;
 		}
 	}
-
 	@Override
 	public List<Object[]> AssigneeList(String EmpId) throws Exception {
 		dao.AssigneeSeenUpdate(EmpId);

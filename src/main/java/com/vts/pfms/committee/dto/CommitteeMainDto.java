@@ -29,6 +29,7 @@ public class CommitteeMainDto {
 	private String PreApproved;
 	
 	private String msLabCode;
-	
+	private String ReferenceNo;
+	private String FormationDate;
 	
 }

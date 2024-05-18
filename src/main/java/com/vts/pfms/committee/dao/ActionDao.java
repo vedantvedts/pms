@@ -183,4 +183,6 @@ public interface ActionDao {
 	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate);
 	public int CommitteActionEdit(ActionAssignDto actionAssign)throws Exception;
 	public List<Object[]> RfaPendingCount(String empId)throws Exception;
+	
+	public List<Object[]> getMainIds(String scheduleMinutesId)throws Exception;
 }

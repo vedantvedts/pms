@@ -24,7 +24,7 @@ public class CommitteeDto {
 	private String IsGlobal;
 	
 	private String LabCode;
-	
+	private String ReferenceNo;
 	
 	
 }

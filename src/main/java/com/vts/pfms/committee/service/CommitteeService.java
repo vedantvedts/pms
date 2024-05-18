@@ -23,6 +23,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
+import com.vts.pfms.committee.model.CommitteeLetter;
 import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
@@ -194,7 +195,7 @@ public interface CommitteeService {
 	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception;
 	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception;
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception;
-	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto) throws Exception;
+	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto,CommitteeMainDto cmd) throws Exception;
 	public Object[] CommitteMainData(String committeemainid) throws Exception;
 	public Long LastCommitteeId(String CommitteeId, String projectid, String divisionid,String initiationid) throws Exception;
 	public long InitiationCommitteeAdd(String initiation, String[] Committee, String UserId) throws Exception;
@@ -269,8 +270,16 @@ public interface CommitteeService {
 	// Prudhvi 27/03/2024
 	/* ------------------ start ----------------------- */
 	List<Object[]> IndustryPartnerRepListInvitationsMainMembers(String industryPartnerId, String committeemainid) throws Exception;
-	/* ------------------ end ----------------------- */	
+	/* ------------------ end ----------------------- */
+	public List<Object[]> ConstitutionApprovalFlowData(String committeemainid)throws Exception;
+	public int MemberSerialNoUpdate(String[] newslno, String[] memberId) throws Exception;
+	public long saveCommitteeLetter(CommitteeLetter committeeLetter) throws Exception;
+	public List<Object[]> getcommitteLetters(String commmitteeId, String projectId, String divisionId, String initiationId) throws Exception;
+	public Object[] getcommitteeLetter(String letterId) throws Exception;
+	public long UpdateCommitteLetter(String letterId) throws Exception;	
 	
-    
+	//Prakarsh---
+	public List<Object[]> MeettingList(String projectId, String committeeId) throws Exception;
+	public List<Object[]> MeettingList(String projectid);
 }
 

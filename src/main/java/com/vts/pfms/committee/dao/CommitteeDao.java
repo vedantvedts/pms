@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
+import com.vts.pfms.committee.dto.CommitteeMainDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
@@ -13,6 +14,7 @@ import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeInvitation;
+import com.vts.pfms.committee.model.CommitteeLetter;
 import com.vts.pfms.committee.model.CommitteeMain;
 import com.vts.pfms.committee.model.CommitteeMeetingApproval;
 import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
@@ -293,8 +295,17 @@ public interface CommitteeDao {
 	/* ------------------ start ----------------------- */
 	List<Object[]> IndustryPartnerRepListInvitationsMainMembers(String industryPartnerId, String committeemainid) throws Exception;
 	/* ------------------ end ----------------------- */
+	public List<Object[]> ConstitutionApprovalFlowData(String committeemainid) throws Exception;
+	public int MemberSerialNoUpdate(String memberId, String SerialNo);
+	public long saveCommitteeLetter(CommitteeLetter committeeLetter) throws Exception;
+	public List<Object[]> getcommitteLetters(String commmitteeId, String projectId, String divisionId,String initiationId) throws Exception;
+	public Object[] getcommitteeLetter(String letterId) throws Exception;
+	public long UpdateCommitteLetter(String letterId) throws Exception;
+	public int ReformationDate(CommitteeMainDto cmdd)throws Exception;
 	
-	
+	//prakarsh
+	public List<Object[]> MeettingList(String projectId, String committeeId) throws Exception;
+	public List<Object[]> MeettingList(String projectid);
 
 
 }

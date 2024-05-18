@@ -57,7 +57,7 @@ p{
 @page {             
           size: 790px 1120px;
           margin-top: 49px;
-          margin-left: 72px;
+          margin-left: 39px;
           margin-right: 39px;
           margin-buttom: 49px; 	
           border: 1px solid black;    
@@ -505,7 +505,7 @@ for(Object[] temp : invitedlist){
 							<td colspan="8" style="text-align: center ;padding: 5px;">Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation</td>
 						</tr>
 					</table>
-					<table style="margin-top: 0px; margin-left: 5px;width: 650px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ">
+					<table style="margin-top: 0px; margin-left: 10px;width: 670px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ">
 					<tbody>
 						<tr>
 							<th  class="sth" style=" max-width: 30px"> SN</th>
@@ -515,10 +515,18 @@ for(Object[] temp : invitedlist){
 						</tr>
 						
 							<% int count=0;
+							String agenda="";
 							for(int i=0;i<speclists.size();i++)
 							{ 
 								if(Integer.parseInt(speclists.get(i)[3].toString())>=3&&Integer.parseInt(speclists.get(i)[3].toString())<6){
-								count++; %>
+								count++; %>					
+					<%if(!speclists.get(i)[10].toString().equalsIgnoreCase(agenda)){ %>
+					<tr>
+						<td colspan="4" class="std"
+							style="text-align: center; border: 1px solid black;padding:7px;font-weight: bold"><%=speclists.get(i)[10].toString()%>
+						</td>
+					</tr>
+					<%} %>
 							<tr>
 								<td class="std" style="text-align :center;border:1px solid black;"  > <%=count%></td>
 								<td class="std" style="text-align :center;border:1px solid black; padding: 5px 5px 5px 5px ; vertical-align: top;" >							
@@ -532,7 +540,9 @@ for(Object[] temp : invitedlist){
 								<td  class="std" style="border:1px solid black;padding:  5px 5px 5px 5px ;width: 600px;text-align: justify;"><%=speclists.get(i)[1]%></td>
 								<td class="std" style="text-align :center;border:1px solid black;padding:  5px 5px 5px 5px;"  > <%if( speclists.get(i)[8]!=null && !speclists.get(i)[8].toString().equalsIgnoreCase("nil")){ %> <%= speclists.get(i)[8]%> <%}else{ %> - <%} %></td>
 							</tr>
-							<%} 
+							<%
+							agenda=speclists.get(i)[10].toString();
+ 						} 
 							}%>
 							<% if(count==0){%>
 								<tr>
@@ -551,9 +561,9 @@ for(Object[] temp : invitedlist){
 							<th colspan="8" style="text-align: left; font-weight: 700;">6. &nbsp;&nbsp;Final Recommendation & Conclusion</th>
 						</tr>
 			 </table>
-			
+			<br>
 			<div align="center">
-				<table style="margin-top: -10px; width: 650px; font-size: 16px; border-collapse: collapse;">
+				<table style="margin-top: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
 					<tbody>
 						<% for (Object[] speclist : speclists)
 						{
@@ -576,7 +586,7 @@ for(Object[] temp : invitedlist){
 			</div>
 				
 	<%}%>
-	
+	<br>
 	<div >
 		<div style="width: 650px;margin-left: 15px; ">
 			<div align="left" >

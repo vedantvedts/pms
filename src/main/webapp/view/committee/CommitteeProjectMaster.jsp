@@ -253,6 +253,7 @@ if(ses1!=null){
 														<th class="header" scope="col">Periodic Duration</th>
 														<th class="header" scope="col">Scheduled</th>
 														<th class="header" scope="col">Constitute</th>
+														<th class="header" scope="col">Upload</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -287,6 +288,13 @@ if(ses1!=null){
 															<%}else{ %>
 																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: green !important; font-size: 12px;" >Constitute</button>
 															<%} %>
+														</td>
+														<td style="text-align: center;cursor: pointer;">
+														<%if(checkcount<=0) {%><button type="button" class="btn btn-sm bg-transparent"
+														onclick="showModal(<%=obj[2].toString() %>,<%=projectid %>,<%=initiationid %>,<%=divisionid %>)"
+														><img src="view/images/preview3.png"/>
+														</button>
+														<%}else{ %><%} %>
 														</td>															
 													</tr>
 													<%
@@ -334,10 +342,63 @@ if(ses1!=null){
 	
 </div>
 
+<!-- Modal for signed committee letter Upload -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalcontent">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width:150%;margin-left:-25%">
+       <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Committee Formation Letters</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="CommitteeLettersUpload.htm" method="post" enctype="multipart/form-data">
+      <div class="row">
+     
+      <div class="col-md-4" >
+     <label class="control-label" style="margin-bottom: 4px !important">Upload Signed Committee Letter<span class="mandatory" style="color: red;">*</span></label>
+      </div>
+    	<div class="col-md-5">
+    	   <input class="form-control" type="file" id="pdf-upload" name="pdf-file" accept=".pdf">
+    	</div>
+    <div class="col-md-2" align="center">
+    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+											<input type="hidden" name="projectid" value="<%=projectid%>"/>
+											<input type="hidden" name="initiationid" value="<%=initiationid %>"/>
+											<input type="hidden" name="divisionid" value="<%=divisionid%>"/>
+											<input type="hidden" name="committeeid" id="committeeidHidden" value="">
+    <button type="submit" class="btn btn-sm submit" onclick="return confirm ('Are you sure to submit?')">SUBMIT</button>
+    </div>
+      </div>
+      </form>
+		
+		<div id="tableDiv">
+		<div class="mt-3 p-2 bg-info text-light font-weight-bold mb-2" align="center"> Uploaded Signed Committee Formation Letters</div>      
+     	 </div>
+     	 <table class="table table-bordered " style="width: 100%;margin-top:1%;"
+										id="MyTable1">
+										<thead>
+											<tr>
+												<th style="width: 4.8889px; text-align: center;">SN</th>
+												<th style="text-align: center;">Name</th>
+												<th style="text-align: center;">UpdateOn</th>
+												<th style="text-align: center;">Action</th>
+											</tr>
+										</thead>
+										<tbody id="listtbody">
 
+										</tbody>
+									</table>
+     	 
+      
+      </div>
+      
+    </div>
+  </div>
+</div>
 
-
-
+<!--  -->
 <script type='text/javascript'> 
 function submitForm()
 { 
@@ -480,6 +541,81 @@ function Add(myfrm1){
 	}) 
 }	
    
+function showModal(committeeId,projectId,initiationId,divisionId){
+	
+	$('#modalcontent').modal('show');
+	$('#committeeidHidden').val(committeeId);
+	 $("#MyTable1").DataTable().destroy();
+	$.ajax({
+		type:'GET',
+		url:'findCommitteeMainId.htm',
+		data:{
+			committeeId:committeeId,
+			projectId:projectId,
+			divisionId:divisionId,
+			initiationId:initiationId
+		},
+		datatype:'json',
+		success:function(result){
+			var ajaxresult = JSON.parse(result); 
+			console.log(ajaxresult);
+			var html="";
+			for(var i=0;i<ajaxresult.length;i++){
+			
+				var form='<form action="UploadedCommitteLetterDownload.htm" method="GET"><button class="btn btn-sm ml-4" type="submit" formtarget="_blank" name="letterid" value="'+ajaxresult[i][0]+'"><i class="fa fa-download" style="font-size: 0.90rem; "></i></button><button class="btn btn-sm ml-4" type="button" onclick="deleteDoc('+ajaxresult[i][0]+')"><i class="fa fa-trash" style="font-size: 0.90rem; "></i></button></form>'
+				
+				html = html +
+						"<tr><td style='text-align:center;width:10%;'>"+(i+1)+"</td><td>"+ajaxresult[i][2]+"</td><td style='text-align:center'>"+ajaxresult[i][3]+"</td><td>"+form+"</td> </tr>"
+			}
+			
+			
+			$('#listtbody').html(html);
+			 $("#MyTable1").DataTable({		 
+					 "lengthMenu": [5,10,25, 50, 75, 100 ],
+					 "pagingType": "simple",
+					 "pageLength": 5,
+					 "language": {
+					      "emptyTable": "No attachments Added"
+					    }
+				});
+		}
+	})
+} 
+$("#MyTable1").DataTable({		 
+	 "lengthMenu": [5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 5,
+	 "language": {
+	      "emptyTable": "Files not Found"
+	    }
+});
+   
+   
+   function deleteDoc(letterid){
+	   
+	   if(confirm('Are you sure you want to remove it?')){
+		   $.ajax({
+				type:'GET',
+				url:'findCommitteeMainId.htm',
+				data:{
+					letterId:letterid
+				},
+				datatype:'json',
+				success:function(result){
+					var ajaxresult = JSON.parse(result); 
+					console.log(ajaxresult);
+					if(ajaxresult){
+						alert("Committee Letter removed successfully !")
+						window.location.reload();
+					}
+				}
+		   });  
+	   }else{
+		   event.preventDefault();
+	   }
+	   
+	
+   }
 </script>
 
 

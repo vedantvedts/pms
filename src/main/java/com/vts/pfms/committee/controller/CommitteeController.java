@@ -87,6 +87,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
@@ -152,6 +153,7 @@ import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
+import com.vts.pfms.committee.model.CommitteeLetter;
 import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeMomAttachment;
@@ -287,6 +289,7 @@ public class CommitteeController {
 				committeeDto.setDescription(req.getParameter("description").trim());
 				committeeDto.setTermsOfReference(req.getParameter("TOR").trim());
 				committeeDto.setIsGlobal(projectid);
+				committeeDto.setReferenceNo(req.getParameter("refno"));
 				if(req.getParameter("periodic").equalsIgnoreCase("P"))
 				{
 					committeeDto.setPeriodicDuration(req.getParameter("periodicduration"));
@@ -592,6 +595,12 @@ public class CommitteeController {
 			// new line//
 			committeemaindto.setMsLabCode(req.getParameter("msLabCode"));
 			committeemaindto.setCo_Chairperson(req.getParameter("cochairperson"));
+			committeemaindto.setReferenceNo(req.getParameter("refNo"));
+			committeemaindto.setFormationDate(req.getParameter("Formationdates"));;
+			
+			System.out.println(req.getParameter("Formationdates")+"--FormationDates");
+			System.out.println(req.getParameter("Fromdate")+"--sadsadFromdate");
+			
 			
 			long mainid =service.CommitteeDetailsSubmit(committeemaindto);
 			
@@ -709,7 +718,6 @@ public class CommitteeController {
 					chairperson=committeemembersall.get(i);
 				}
 			}
-			System.out.println(committeemainid+"committeemainid");
 			req.setAttribute("committeemembersall",committeemembersall);
 			req.setAttribute("committeerepnotaddedlist", service.CommitteeRepNotAddedList(committeemainid));
 			req.setAttribute("committeeMemberreplist", service.CommitteeMemberRepList(committeemainid));
@@ -721,6 +729,7 @@ public class CommitteeController {
 			req.setAttribute("divisionid", divisionid);
 			req.setAttribute("proposedcommitteemainid",proposedcommitteemainid );
 			req.setAttribute("committeeapprovaldata",service.CommitteeMainApprovalData(committeemainid));
+			req.setAttribute("constitutionapprovalflow",service.ConstitutionApprovalFlow(committeemainid));
 			req.setAttribute("clusterlist", service.ClusterList());
 			// Prudhvi - 27/03/2024
 			/* ------------------ start ----------------------- */
@@ -1429,6 +1438,8 @@ public class CommitteeController {
 		try
 		{		
 			CommitteeMembersEditDto dto=new CommitteeMembersEditDto();
+			
+			CommitteeMainDto cmd=new CommitteeMainDto(); // added by praksh
 			dto.setChairperson(req.getParameter("chairperson"));
 			dto.setSecretary(req.getParameter("Secretary"));
 			dto.setProxysecretary(req.getParameter("proxysecretary"));
@@ -1442,7 +1453,9 @@ public class CommitteeController {
 			dto.setCo_chairperson(req.getParameter("co_chairperson"));
 			dto.setComemberid(req.getParameter("comemberid"));
 			dto.setMsLabCode(req.getParameter("msLabCode"));
-			long count =service.CommitteeMainMemberUpdate(dto);		
+			cmd.setFormationDate(req.getParameter("Formationdates"));
+			cmd.setReferenceNo(req.getParameter("Reference No."));
+			long count =service.CommitteeMainMemberUpdate(dto,cmd);			
 			
 //			CommitteeMainDto committeemaindto=new CommitteeMainDto();
 //			committeemaindto.setProxySecretary(req.getParameter("proxysecretary"));
@@ -2665,10 +2678,14 @@ public class CommitteeController {
 			String committeeId=scheduleeditdata[0].toString();
 			String scheduledate=scheduleeditdata[2].toString();
 					
+			
 			List<Object[]>ActionDetails=service.actionDetailsForNonProject(committeeId,scheduledate);
 			List<Object[]>actionSubDetails=new ArrayList();
 			if(ActionDetails.size()>0) {
 				actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+				if(actionSubDetails.size()>0) {
+					actionSubDetails=actionSubDetails.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid)).collect(Collectors.toList());
+				}
 			}
 			Set<Integer>committeeCount=new TreeSet<>();
 			for(Object[]obj:ActionDetails) {
@@ -2682,7 +2699,7 @@ public class CommitteeController {
 			
 			req.setAttribute("committeeCountMap", committeeCountMap);
 			req.setAttribute("ActionDetails", actionSubDetails);
-			
+			req.setAttribute("flagforView", "M");
 			req.setAttribute("meetingcount",service.MeetingNo(scheduleeditdata));
 			
 			String filename=scheduleeditdata[11].toString().replace("/", "-");
@@ -3656,6 +3673,7 @@ public class CommitteeController {
 			req.setAttribute("projectid",projectid);		
 			req.setAttribute("labdetails", service.LabDetails(labCode));
 			req.setAttribute("email","N");
+			req.setAttribute("constitutionapprovalflow",service.ConstitutionApprovalFlowData (committeemainid));
 			return "committee/CommitteeConstitutionLetter" ;
 		}
 		catch (Exception e) {
@@ -3706,9 +3724,9 @@ public class CommitteeController {
 		req.setAttribute("projectid",projectid);		
 		req.setAttribute("labdetails", service.LabDetails(committeeedata[13].toString()));
 		req.setAttribute("email","N");
-		
-		
-		String filename=committeeedata[1]+" Formation Letter";		
+		req.setAttribute("flag", "Y");
+		req.setAttribute("constitutionapprovalflow",service.ConstitutionApprovalFlowData (committeemainid));
+		String filename=committeeedata[1]+" Formation Letter"+"("+  (committeemaindata[12]!=null?committeemaindata[12].toString():committeemaindata[5].toString())+ ")";		
 		
 		String path=req.getServletContext().getRealPath("/view/temp");
 		req.setAttribute("path",path); 
@@ -3728,7 +3746,7 @@ public class CommitteeController {
 	    HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
 	    document.close();
 	    res.setContentType("application/pdf");
-	    res.setHeader("Content-disposition","attachment;filename="+filename+".pdf"); 
+	    res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 	    File f=new File(path+"/"+filename+".pdf");
 	    FileInputStream fis = new FileInputStream(f);
 	    DataOutputStream os = new DataOutputStream(res.getOutputStream());
@@ -4043,10 +4061,10 @@ public class CommitteeController {
 			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 			req.setAttribute("labInfo", service.LabDetailes(LabCode));
-			
+			req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
 			String filename=committeescheduleeditdata[11].toString().replace("/", "-");
 			
-			
+			req.setAttribute("flagforView", "M");			
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			
@@ -4359,7 +4377,8 @@ public class CommitteeController {
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("labdetails", service.LabDetails(committeeedata[13].toString()));
 			req.setAttribute("email","Y");
-			
+			req.setAttribute("constitutionapprovalflow",service.ConstitutionApprovalFlowData (committeemainid));
+
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/committee/CommitteeConstitutionLetter.jsp").forward(req, customResponse);
 			String Message= customResponse.getOutput();
@@ -4596,9 +4615,6 @@ public class CommitteeController {
 		 return "redirect:/CommitteeInvitations.htm";
 		 }
 	
-	
-	
-	
 	@RequestMapping(value = "TotalMeetingReport.htm", method = {RequestMethod.GET })
 	public String TotalMeetingReport(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
 	{
@@ -4606,105 +4622,160 @@ public class CommitteeController {
 		String LoginType =(String)ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String LabCode =(String) ses.getAttribute("labcode");
+		String projectid = req.getParameter("projectid");
+		String committeeid=req.getParameter("committeeid");
 		logger.info(new Date() +"Inside TotalMeetingReport.htm "+UserId);
+	
 		try {
 		
-		FormatConverter fc=new FormatConverter();
-		SimpleDateFormat sdf=fc.getRegularDateFormat();
-		SimpleDateFormat sdf1=fc.getSqlDateFormat();
-		
-		String fdate=req.getParameter("fdate");
-		String tdate=req.getParameter("tdate");
-		String Emp=req.getParameter("EmpId");
-		String Project=req.getParameter("Project");
-		if(fdate==null)
-		{
-			fdate=LocalDate.now().toString();
-			Emp="A";
-			Project="";
-		}else
-		{
-			fdate=sdf1.format(sdf.parse(fdate));
-		}		
-		if(tdate==null)
-		{
-			tdate=LocalDate.now().plusMonths(1).toString();
-		}
-		else 
-		{	
-			tdate=sdf1.format(sdf.parse(tdate));				
-		}
-		req.setAttribute("tdate",tdate);
-		req.setAttribute("fdate",fdate);
-		
+	
 		String loginid= ses.getAttribute("LoginId").toString();
-		req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
-		req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
-		req.setAttribute("Project",Project);
-		req.setAttribute("Employee", Emp);
-		req.setAttribute("EmpId", EmpId);
-		req.setAttribute("LoginType", LoginType);
-		List<Object[]> TotalMeetingReportListAll= service.MeetingReportListAll(fdate,tdate,Project);
-		req.setAttribute("TotalMeetingReportListAll", TotalMeetingReportListAll );
+		List<Object[]> projectdetailslist = service.LoginProjectDetailsList(EmpId, LoginType, LabCode);
+		req.setAttribute("ProjectList", projectdetailslist);
+		if(committeeid==null)
+		{
+			committeeid="A";
+		}
+
+		if(projectid==null || projectid.equals("null"))
+				{
+					projectid=projectdetailslist.get(0)[0].toString();
+					
+				}
+		
+		if(committeeid==null || committeeid.equals("A"))
+		{		
+			req.setAttribute("meetinglistAll", service.MeettingList( projectid));
+		} 
+		else {
+			
+			 List<Object[]> meetinglist = service.MeettingList(committeeid, projectid);
+				req.setAttribute("meetinglist", meetinglist);
+				List<String>list=new ArrayList<String>();
+					if(meetinglist.size()>0) {
+						list=meetinglist.stream().map(i -> i[0].toString()).collect(Collectors.toList());
+					}
+		}
+		List<Object[]> projapplicommitteelist = service.ProjectApplicableCommitteeList(projectid);
+	    req.setAttribute("projapplicommitteelist", projapplicommitteelist);
+	
+		req.setAttribute("projectid", projectid);
+		req.setAttribute("committeeid", committeeid);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside TotalMeetingReport.htm "+UserId, e);
 		}
 		return "committee/TotalMeetingReport";
-	}
+	}	
 	
-	@RequestMapping(value = "TotalMeetingReport.htm", method = { RequestMethod.POST})
-	public String TotalMeetingReportSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-			throws Exception {
-		String UserId =(String)ses.getAttribute("Username");
-		String LoginType =(String)ses.getAttribute("LoginType");
-		String LabCode =(String) ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside TotalMeetingReport.htm "+UserId);		
-		try {
-		
-		FormatConverter fc=new FormatConverter();
-		SimpleDateFormat sdf=fc.getRegularDateFormat();
-		SimpleDateFormat sdf1=fc.getSqlDateFormat();
-		
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		String fdate=req.getParameter("fdate");
-		String tdate=req.getParameter("tdate");
-		String Emp=req.getParameter("EmpId");
-		String Project=req.getParameter("Project");
-		
-		fdate=sdf1.format(sdf.parse(fdate));
-
-		tdate=sdf1.format(sdf.parse(tdate));				
 	
-		req.setAttribute("tdate",tdate);
-		req.setAttribute("fdate",fdate);
-		
-		String loginid= ses.getAttribute("LoginId").toString();
-		req.setAttribute("ProjectList", service.LoginProjectDetailsList(loginid,LoginType,LabCode));
-		req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
-		req.setAttribute("Project",Project);
-		req.setAttribute("Employee", Emp);
-		req.setAttribute("EmpId", EmpId);
-		req.setAttribute("LoginType", LoginType);
-		
-		List<Object[]> TotalMeetingReportListAll= service.MeetingReportListAll(fdate,tdate,Project);
-		req.setAttribute("TotalMeetingReportListAll", TotalMeetingReportListAll );
-		
-		if(!Emp.toString().equalsIgnoreCase("A")) {
-			
-			TotalMeetingReportListAll= service.MeetingReportListEmp(fdate,tdate,Project,Emp);
-			
-			req.setAttribute("TotalMeetingReportListAll", TotalMeetingReportListAll );
-		}
-
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside TotalMeetingReport.htm "+UserId, e);
-		}
-		return "committee/TotalMeetingReport";
-	}
+//	@RequestMapping(value = "TotalMeetingReport.htm", method = {RequestMethod.GET })
+//	public String TotalMeetingReport(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+//	{
+//		String UserId =(String)ses.getAttribute("Username");
+//		String LoginType =(String)ses.getAttribute("LoginType");
+//		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//		String LabCode =(String) ses.getAttribute("labcode");
+//		logger.info(new Date() +"Inside TotalMeetingReport.htm "+UserId);
+//		try {
+//		
+//		FormatConverter fc=new FormatConverter();
+//		SimpleDateFormat sdf=fc.getRegularDateFormat();
+//		SimpleDateFormat sdf1=fc.getSqlDateFormat();
+//		
+//		String fdate=req.getParameter("fdate");
+//		String tdate=req.getParameter("tdate");
+//		String Emp=req.getParameter("EmpId");
+//		String Project=req.getParameter("Project");
+//		if(fdate==null)
+//		{
+//			fdate=LocalDate.now().toString();
+//			Emp="A";
+//			Project="";
+//		}else
+//		{
+//			fdate=sdf1.format(sdf.parse(fdate));
+//		}		
+//		if(tdate==null)
+//		{
+//			tdate=LocalDate.now().plusMonths(1).toString();
+//		}
+//		else 
+//		{	
+//			tdate=sdf1.format(sdf.parse(tdate));				
+//		}
+//		req.setAttribute("tdate",tdate);
+//		req.setAttribute("fdate",fdate);
+//		
+//		String loginid= ses.getAttribute("LoginId").toString();
+//		req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
+//		req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
+//		req.setAttribute("Project",Project);
+//		req.setAttribute("Employee", Emp);
+//		req.setAttribute("EmpId", EmpId);
+//		req.setAttribute("LoginType", LoginType);
+//		List<Object[]> TotalMeetingReportListAll= service.MeetingReportListAll(fdate,tdate,Project);
+//		req.setAttribute("TotalMeetingReportListAll", TotalMeetingReportListAll );
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() +" Inside TotalMeetingReport.htm "+UserId, e);
+//		}
+//		return "committee/TotalMeetingReport";
+//	}
+//	
+//	@RequestMapping(value = "TotalMeetingReport.htm", method = { RequestMethod.POST})
+//	public String TotalMeetingReportSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+//			throws Exception {
+//		String UserId =(String)ses.getAttribute("Username");
+//		String LoginType =(String)ses.getAttribute("LoginType");
+//		String LabCode =(String) ses.getAttribute("labcode");
+//		logger.info(new Date() +"Inside TotalMeetingReport.htm "+UserId);		
+//		try {
+//		
+//		FormatConverter fc=new FormatConverter();
+//		SimpleDateFormat sdf=fc.getRegularDateFormat();
+//		SimpleDateFormat sdf1=fc.getSqlDateFormat();
+//		
+//		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//		String fdate=req.getParameter("fdate");
+//		String tdate=req.getParameter("tdate");
+//		String Emp=req.getParameter("EmpId");
+//		String Project=req.getParameter("Project");
+//		
+//		fdate=sdf1.format(sdf.parse(fdate));
+//
+//		tdate=sdf1.format(sdf.parse(tdate));				
+//	
+//		req.setAttribute("tdate",tdate);
+//		req.setAttribute("fdate",fdate);
+//		
+//		String loginid= ses.getAttribute("LoginId").toString();
+//		req.setAttribute("ProjectList", service.LoginProjectDetailsList(loginid,LoginType,LabCode));
+//		req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
+//		req.setAttribute("Project",Project);
+//		req.setAttribute("Employee", Emp);
+//		req.setAttribute("EmpId", EmpId);
+//		req.setAttribute("LoginType", LoginType);
+//		
+//		List<Object[]> TotalMeetingReportListAll= service.MeetingReportListAll(fdate,tdate,Project);
+//		req.setAttribute("TotalMeetingReportListAll", TotalMeetingReportListAll );
+//		
+//		if(!Emp.toString().equalsIgnoreCase("A")) {
+//			
+//			TotalMeetingReportListAll= service.MeetingReportListEmp(fdate,tdate,Project,Emp);
+//			
+//			req.setAttribute("TotalMeetingReportListAll", TotalMeetingReportListAll );
+//		}
+//
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() +" Inside TotalMeetingReport.htm "+UserId, e);
+//		}
+//		return "committee/TotalMeetingReport";
+//	}
 
 	
 	@RequestMapping(value = "ExternalEmployeeListFormation.htm", method = RequestMethod.GET)
@@ -5496,6 +5567,44 @@ public class CommitteeController {
 				return "static/Error";
 			}
 	}
+	@RequestMapping(value="MemberSerialNoUpdate.htm",method=RequestMethod.POST)
+	public String MemberSerialNoUpdate(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside InvitationSerialNoUpdate.htm "+UserId);
+		try
+		{
+			String committeemainid = req.getParameter("committeemainid");
+			
+			
+			String[] newslno=req.getParameterValues("newslno");
+			String[] memberId=req.getParameterValues("memberId");
+			
+			Set<String> s = new HashSet<String>(Arrays.asList(newslno));
+			
+			if (s.size() == newslno.length) 
+			{
+				service.MemberSerialNoUpdate(newslno, memberId);
+				redir.addAttribute("result", "Serial No Updated Successfully");
+				
+			} else {
+				redir.addAttribute("resultfail", "Agenda Priority Updated UnSuccessfull");
+				
+			}	
+			redir.addAttribute("committeemainid", committeemainid);
+
+			
+			return "redirect:/CommitteeMainMembers.htm";
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside InvitationSerialNoUpdate.htm "+UserId,e);
+			return "static/Error";
+		}
+	}
+	
+	
 	
 	
 	 @RequestMapping(value = "CommitteeMemberRepDelete.htm", method = RequestMethod.GET)
@@ -6134,8 +6243,6 @@ public class CommitteeController {
 								    	req.setAttribute("mapEB", mapEB);
 								    	
 								    	Object[]momAttachment=service.MomAttachmentFile(committeescheduleid);
-								    
-								    	
 								    	 req.setAttribute("tableactionlist",  actionsdata);
 									 	 //
 									 	 String filename=committeescheduleeditdata[11].toString().replace("/", "-");
@@ -6226,13 +6333,21 @@ public class CommitteeController {
 								        	}
 								        	}
 								        }
+								        CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+								        req.getRequestDispatcher("/view/committee/ActionDetailsTable.jsp").forward(req, customResponse1);
+										String html1 = customResponse1.getOutput();        
+								        HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
 								        
-									 	
-
+								        PdfMerger merger1 = new PdfMerger(pdfDocument);
+								        PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+								        PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+								        merger1.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+								        
 								        pdfDocument.close();
 								        merger.close();
-
-								        pdf1.close();	       
+								        pdf2.close();
+								        pdf1.close();
+								        merger1.close();
 								        pdfw.close();
 								        res.setContentType("application/pdf");
 								        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
@@ -8753,7 +8868,7 @@ public class CommitteeController {
 		{
 			String UserId=(String)ses.getAttribute("Username");
 			String LabCode =(String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside CommitteeMinutesViewAllDownload.htm "+UserId);
+			logger.info(new Date() +"Inside SendNonProjectMinutes.htm "+UserId);
 			int mailcount=0;
 			
 			try
@@ -8831,6 +8946,7 @@ public class CommitteeController {
 				String filename=scheduleeditdata[11].toString().replace("/", "-");
 				String path=req.getServletContext().getRealPath("/view/temp");
 				req.setAttribute("path",path);
+				
 				CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 				req.getRequestDispatcher("/view/committee/CommitteeMinutesViewAll.jsp").forward(req, customResponse);
 				String html = customResponse.getOutput();
@@ -9022,4 +9138,106 @@ public class CommitteeController {
 			return json.toJson(industryPartnerRepList);	
 		}
 		/* ------------------ end ----------------------- */
+		@RequestMapping(value = "findCommitteeMainId.htm", method = RequestMethod.GET)
+		public @ResponseBody String findCommitteeMainId(HttpServletRequest req,HttpSession ses) throws Exception
+		{
+			String UserId = (String)ses.getAttribute("Username");
+			logger.info(new Date() +" Inside findCommitteeMainId.htm"+ UserId);
+			
+		
+			 List<Object[]>committeLetters=new ArrayList<>();
+			try {
+				String letterId=req.getParameter("letterId");
+				
+				if(letterId!=null) {
+				long count=service.UpdateCommitteLetter(letterId);
+				if(count==1) {
+					Gson json = new Gson();
+					return json.toJson(true);
+				}
+					
+				}else {
+				committeLetters = service.getcommitteLetters(req.getParameter("committeeId"),req.getParameter("projectId"),req.getParameter("divisionId"), req.getParameter("initiationId"));
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			 
+			 
+			Gson json = new Gson();
+			return json.toJson(committeLetters);	
+		}
+		
+		 @RequestMapping(value="CommitteeLettersUpload.htm", method = {RequestMethod.GET,RequestMethod.POST})
+			public String CommitteeLettersUpload(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "pdf-file")MultipartFile letter)	throws Exception 
+			{
+		    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		    	String UserId = (String) ses.getAttribute("Username");
+		    	String LabCode =(String) ses.getAttribute("labcode");
+				logger.info(new Date() +"Inside CommitteeLettersUpload.htm "+UserId);
+				
+				try {
+					String projectid = req.getParameter("projectid");
+					String initiationid = req.getParameter("initiationid");
+					String divisionid = req.getParameter("divisionid");
+					String committeeid = req.getParameter("committeeid");
+					
+					CommitteeLetter committeeLetter=CommitteeLetter.builder()
+										.ProjectId(Long.parseLong(projectid))
+										.InitiationId(Long.parseLong(initiationid))
+										.DivisionId(Long.parseLong(divisionid))
+										.CommitteId(Long.parseLong(committeeid))
+										.LabCode(LabCode)
+										.letter(letter)
+										.CreatedBy(UserId)
+										.build();
+					
+					long count = service.saveCommitteeLetter(committeeLetter);
+					if (count > 0) {
+						redir.addAttribute("result", "Committee Invitation Letter added Successfully");
+					} else {
+						redir.addAttribute("resultfail", "Committee Invitation Letter Add Unsuccessful");
+					}
+					
+					redir.addFlashAttribute("projectid",projectid);
+					redir.addFlashAttribute("divisionid",divisionid);
+					redir.addFlashAttribute("initiationid",initiationid);	
+					
+				}catch (Exception e) {
+				e.printStackTrace();
+				} 
+				
+				return "redirect:/ProjectMaster.htm";
+			}
+		 
+			@RequestMapping(value = "UploadedCommitteLetterDownload.htm")
+			public void UploadedCommitteLetterDownload(HttpServletRequest req, HttpSession ses,
+					RedirectAttributes redir, HttpServletResponse res) throws Exception {
+				String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() + "Inside UploadedCommitteLetterDownload.htm " + UserId);
+				try {
+					String letterId= req.getParameter("letterid");
+					System.out.println("letterId -- "+letterId);
+					Object[]committeeLetter=service.getcommitteeLetter(letterId);
+					
+					File my_file=null;
+					my_file=new File(uploadpath+committeeLetter[1]+File.separator+committeeLetter[2]);
+					res.setContentType("Application/pdf");	
+					res.setHeader("Content-disposition","inline; filename="+committeeLetter[2].toString()); 
+					OutputStream out = res.getOutputStream();
+			        FileInputStream in = new FileInputStream(my_file);
+			        byte[] buffer = new byte[4096];
+			        int length;
+			        while ((length = in.read(buffer)) > 0){   
+			           out.write(buffer, 0, length);
+			        }
+			        in.close();
+			        out.flush();
+			        out.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() + "Inside UploadedCommitteLetterDownload.htm " + UserId, e);
+				}
+
+			}
 }

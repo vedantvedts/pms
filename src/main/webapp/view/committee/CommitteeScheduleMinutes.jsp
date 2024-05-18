@@ -1407,7 +1407,7 @@ scheduleId=committeescheduleeditdata[6].toString();
      </div>   <!-- Agenda collapse end -->     
  </div><!-- Agenda Panel end --> 
 
-<%if(SplCommitteeCodes.contains(committeecode.trim())) { %>
+<%-- <%if(SplCommitteeCodes.contains(committeecode.trim())) { %>
 <div class="panel panel-info">
 	
 	<div class="panel-heading">
@@ -1424,7 +1424,7 @@ scheduleId=committeescheduleeditdata[6].toString();
         </div>
         </div>
 
-<%} %>
+<%} %> --%>
 <!--  New code end-->
 
 <!-- Modal for Attachment -->

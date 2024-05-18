@@ -1,7 +1,10 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.util.*"%>
+	<%@page import="java.text.SimpleDateFormat"%>
+	<%@page import="com.vts.pfms.FormatConverter"%>
 
 <%
 String email=(String)request.getAttribute("email");  
@@ -57,7 +60,23 @@ Object[] committeemaindata = (Object[]) request.getAttribute("committeemaindata"
 String projectid=committeemaindata[2].toString() ;
 String divisionid=committeemaindata[3].toString() ;
 String initiationid=committeemaindata[4].toString() ;
+List<Object[]> constitutionapprovalflow=(List<Object[]>)request.getAttribute("constitutionapprovalflow");
+String flag = (String)request.getAttribute("flag");
 
+FormatConverter fc = new FormatConverter();
+SimpleDateFormat sdf = fc.getRegularDateFormat();
+SimpleDateFormat sdf1 = fc.getSqlDateFormat();
+SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
+SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+List<String>memtypes=Arrays.asList("CH","PS","CS");
+List<Object[]>committeeallmemberslistwithoutMs=committeeallmemberslist.stream().filter(i->!memtypes.contains(i[8].toString())).collect(Collectors.toList());
+List<Object[]>committeeallmemberslistwithMs=committeeallmemberslist.stream().filter(i->memtypes.contains(i[8].toString())).collect(Collectors.toList());
+committeeallmemberslistwithoutMs=committeeallmemberslistwithoutMs.stream()
+	.sorted(Comparator.comparingInt(e -> Integer.parseInt(e[11].toString()))).collect(Collectors.toList());
+List<Object[]>tempList=new ArrayList<>();
+tempList.addAll(committeeallmemberslistwithoutMs);
+tempList.addAll(committeeallmemberslistwithMs);
 %>
 
 
@@ -90,12 +109,20 @@ String initiationid=committeemaindata[4].toString() ;
 	<br><br>
 	<!-- -------------------------------------------members-------------------------------- -->
 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
+	<thead>
+	<tr >
+	<td style="text-align: left">Reference No. : <%if(committeemaindata[11]!=null) {%> <%=committeemaindata[11].toString()%><%}else{ %> -<%} %> </td>
+	<td style="text-align: right">Date: <%if(committeemaindata[12]!=null){ %>  <%=sdf.format(sdf1.parse(committeemaindata[12].toString()))%><%} %></td>
+	</tr>
+	</thead>
+	</table>
+	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
 		<tr >
 			<td colspan="5" style="text-align: center;padding-bottom:15px; ">Director,<%=labdetails[1].toString() %> has constituted the  following committee </td>
 		</tr>
 		
 		<% int i=0;
-			for(Object[] member : committeeallmemberslist){
+			for(Object[] member : tempList){
 				i++; %>
 			<tr>				
 				<td  style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px "><%=i %> .&nbsp;</td>
@@ -141,9 +168,36 @@ String initiationid=committeemaindata[4].toString() ;
 	</table>
 	</div>
 </div>
-
-
-<%if(!email.equals("Y")){ %>
+					 	<div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
+				                <table  align="center" <%if(flag!=null && flag.equalsIgnoreCase("Y")) {%>  style="float:right" <%}else{ %> style="margin-left:55%;"<%} %>>
+				                	<tr>
+				                		<td class="trup" style="">
+				                			Constituted By
+				                		</td>
+				                	
+				                			                		
+				                	</tr>			   
+				                	
+				                	<tr>
+				                		<td class="trdown" style=" " >	
+				                			<%if(constitutionapprovalflow.size()>0){ %>
+								                     <%for(Object[] obj : constitutionapprovalflow){ %>
+								                     
+								                     		<%=obj[0] %>,<%=obj[1] %>
+								                     	
+								                     <%} %>
+								               <%} %>
+				                		</td>
+				                	</tr>             	
+				                </table>			             
+						 	</div>
+	<div class="row " style="text-align: left; padding-top: 10px;margin-top:10px;">
+	<div style="margin-top:30px;margin-left:10px;">Recommended Officer :- </div>
+	<div style="margin-top:10px;margin-left:10px;">Approving Officer :-</div>
+	</div>
+	<%
+	if (!email.equals("Y")) {
+	%>
 
 </body>
 </html>

@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+@Data
 @Entity
 @Table(name="committee_main")
 public class CommitteeMain implements Serializable {
@@ -31,6 +33,8 @@ public class CommitteeMain implements Serializable {
 	private long DivisionId;
 	private long InitiationId;
 	private String Status;
+	private String ReferenceNo;
+	private Date FormationDate;
 	
 	
 	public long getCommitteeMainId() {
