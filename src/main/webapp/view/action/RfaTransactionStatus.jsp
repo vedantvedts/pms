@@ -186,15 +186,17 @@
 <body>
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("RfaTransactionList");
-
+String rfaNo = statuslist.get(0)[1].toString();
 List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgnoreCase("AV"))
 									.map(e->e[10].toString())
 									.distinct() 
 									.collect(Collectors.toList());
 	
 %>
-
-<div class="page card dashboard-card" style="height:80vh;overflow:auto" id="scrollclass">
+<div>
+	    <h3 align="center" style="color: #9C27B0;font-weight: 600">RFA Transaction of <%=rfaNo %></h3>
+	</div>
+<div class="page card dashboard-card" style="height:80vh;overflow:auto;" id="scrollclass;">
 	<section id="timeline">
 		<% int count=1;
 	       	 SimpleDateFormat month=new SimpleDateFormat("MMM");
@@ -209,7 +211,7 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 					 }
 		%>
 	      <article>
-		  	<div class="inner">
+		  	<div class="inner" style="box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;">
 				<span class="date">
 					<span class="day"><%=day.format(object[5]) %></span>
 					<span class="month"><%=month.format(object[5]) %></span>

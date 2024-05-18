@@ -3227,7 +3227,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 								<div class="row">
 									<form action="ProjectTechImages.htm" method="post" style="float: left;margin-top:5px;" enctype="multipart/form-data" >
 										<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
-										<button type="submit" class="btn btn-sm back">Upload</button>
+										<button type="submit" class="btn btn-sm back"  onclick="return confirm('Are you sure to submit this?')">Upload</button>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 										<input type="hidden" name="committeeid" value="<%=committeeid%>">
 										<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
@@ -3256,7 +3256,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									<form action="TechImagesEdit.htm" method="post" style="display: inline" enctype="multipart/form-data">
 									<label for="FileAttach" id="filelabel<%=imges.getTechImagesId()%>" style="margin-left: 20px; display: none;">
 										<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
-										<button type="submit" class="btn btn-sm back">Upload</button>
+										<button type="submit" class="btn btn-sm back"  onclick="return confirm('Are you sure, you want to edit this?')">Upload</button>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 										<input type="hidden" name="committeeid" value="<%=committeeid%>">
 										<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
