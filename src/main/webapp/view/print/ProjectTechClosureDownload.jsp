@@ -185,14 +185,14 @@ margin-left:8px;
 margin-left:15x;
 }  
 
-.table.tablebordered{
+.table.table-bordered{
 
 border:1px solid black;
 border-collapse:collapse;
 
 }
 
-.tablebordered th,td{
+.table-bordered th,td{
 
   border:1px solid black;
   padding: 8px;
