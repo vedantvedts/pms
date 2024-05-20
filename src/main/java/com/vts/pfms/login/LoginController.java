@@ -33,6 +33,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,6 +59,14 @@ import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.Notice;
 import com.vts.pfms.pfmsserv.feign.PFMSServeFeignClient;
 import com.vts.pfms.service.RfpMainService;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Controller
@@ -185,6 +194,18 @@ public class LoginController {
 			e.printStackTrace();
 			logger.error(new Date() + " Inside login.htm " + e);
 		}
+		
+		// License Expiration Validation 
+ 		boolean expstatus;
+ 		try {
+ 			Jws<Claims> claims = Jwts.parser().setSigningKey("vts-123").parseClaimsJws(env.getProperty("license"));
+ 			expstatus = true;
+ 		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+ 			expstatus = false;
+ 		} catch (ExpiredJwtException ex) {
+ 			expstatus = false;
+ 		}
+ 		req.setAttribute("expstatus", expstatus);
 		return "static/login";
 	}
     
@@ -802,8 +823,9 @@ public class LoginController {
     @RequestMapping(value = {"/accessdenied"}, method = RequestMethod.GET)
     public String accessdenied(Model model,HttpServletRequest req,HttpSession ses) {
     	
-        return "accessdenied";
+        return "static/accessdeniederror";
     }
+
     
     
 	/////////Rajat Changes//Notice

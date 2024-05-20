@@ -27,6 +27,7 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.vts.pfms.login.CustomLogoutHandler;
+import com.vts.pfms.login.LoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -36,7 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	 @Autowired
 	 private UserDetailsService userDetailsService;
 
-
+	 @Autowired
+     private LoginSuccessHandler successHandler;
 	 
 	 @Override
 	 @Bean
@@ -68,12 +70,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		  
 		  .and()
 		    .formLogin().loginPage("/login").defaultSuccessUrl("/welcome", true).failureUrl("/login?error").permitAll()
-		    .usernameParameter("username").passwordParameter("password")
+		    .usernameParameter("username").passwordParameter("password").successHandler(successHandler)
 		  .and()
 		    .logout().logoutSuccessUrl("/login?logout").addLogoutHandler(logoutSuccessHandler())
 
 		   .and()
-		   .exceptionHandling().accessDeniedPage("/login")
+		   .exceptionHandling().accessDeniedPage("/accessdenied")
 		 
 		    
 		    .and()

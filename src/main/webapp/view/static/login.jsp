@@ -231,6 +231,15 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 			
 		</div>
 	</div>	
+	
+	<div class="credentials-info-container" style="margin-top: 50px;margin-bottom: -6px">
+    	<%
+        	boolean expstatus = (boolean)request.getAttribute("expstatus");
+       		if(!expstatus) {%>
+				<marquee  class="news-scroll" behavior="scroll" direction="left" scrollamount="7" onmouseover="this.stop();" onmouseout="this.start();" style="color: red;font-weight: bold;">Your License has been Expired..!</marquee>
+		<%} %>
+	</div>
+	
 	</div>
 
 </div>	
