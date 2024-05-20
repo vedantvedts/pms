@@ -96,8 +96,9 @@ List<Object[]> SoCApprovedList =(List<Object[]>)request.getAttribute("SoCApprove
 List<Object[]> ACPPendingList =(List<Object[]>)request.getAttribute("ACPPendingList");
 List<Object[]> ACPApprovedList =(List<Object[]>)request.getAttribute("ACPApprovedList");
 List<Object[]> TechClosurePendingList=(List<Object[]>)request.getAttribute("TechClosurePendingList");
+List<Object[]> TechClosureApprovedList=(List<Object[]>)request.getAttribute("TechClosureApprovedList");
 
-System.out.println("TechClosurePendingList--"+TechClosurePendingList.size());
+
 
 String fromdate = (String)request.getAttribute("fromdate");
 String todate   = (String)request.getAttribute("todate");
@@ -157,10 +158,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		    						<div class="nav-link" style="text-align: center;" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
 		    	 						<span>Approved</span> 
 		    	 						<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 					<%if((SoCApprovedList.size() + ACPApprovedList.size() )>99){ %>
+				   		 					<%if((SoCApprovedList.size() + ACPApprovedList.size() + TechClosureApprovedList.size())>99){ %>
 				   								99+
 				   							<%}else{ %>
-				   								<%=SoCApprovedList.size() + ACPApprovedList.size()%>
+				   								<%=SoCApprovedList.size() + ACPApprovedList.size()+TechClosureApprovedList.size()%>
 											<%} %>			   			
 				  						</span> 
 		    						</div>
@@ -271,7 +272,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                         									</tr>
                        									<%} }%>
                        									
-                       									<!-- Technical Closure Pending List -->
+                       									<!-- Technical Closure Report Pending List -->
                        									<% 
 					   										if(TechClosurePendingList!=null && TechClosurePendingList.size()>0){
 					   											
@@ -450,6 +451,34 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						 												</td>
                         											</tr>
                        												<%} }%>
+                       												
+                       												<%---------------Technical Closure Report Approved List---------------------%>
+                       												
+                       												<%	
+                      													if(TechClosureApprovedList!=null && TechClosureApprovedList.size()>0) {
+                          													for(Object[] form:TechClosureApprovedList ) {
+                       												%>
+                        											<tr>
+                            											<td style="text-align: center;width: 5%;"><%=++SNA%></td>
+                            											<td style="text-align: left;width: 22%;"><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
+                            											<td style="text-align: center;width: 10%;"><%=form[13]+" ("+form[14]+")"%></td>
+                            											<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            											<td style="text-align: center;width: 25%;">
+                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectTechClosureTransStatus.htm" value="<%=form[15] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    											<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    										</button>
+						 												</td>
+						 												<td style="text-align: center;width: 20%;">
+						 													
+																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+								   										            <i class="fa fa-download"></i>
+								   									             </button> 	
+																			
+						 												</td>
+                        											</tr>
+                       												<%} }%>
+                       												
                    												</tbody>
                  											</table>
                 										</div> 

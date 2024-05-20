@@ -89,9 +89,9 @@ String projectShortName =(String)request.getAttribute("projectShortName");
     /* Your existing styles... */
 </style>
 <style>
-td {
+/* td {
 	padding: -13px 5px;
-}
+} */
 #pageborder {
 	position: fixed;
 	left: 0;
@@ -146,20 +146,6 @@ bottom-center {
 	content:"This information given in this document is not to be published or communicated either directly or indirectly , to the press  or to any personnel not authorized to recieve it."
 }
 
-/*  .table-bordered{
- 
-    border:1px solid black;
-	
-	
-
-} */
-
-table {
-	border : 1px solid black;
-}
- 
- 
- 
 .border-black {
 	border: 1px solid black !important;
 	border-collapse: collapse !important;
@@ -199,6 +185,18 @@ margin-left:8px;
 margin-left:15x;
 }  
 
+.table.tablebordered{
+
+border:1px solid black;
+border-collapse:collapse;
+
+}
+
+.tablebordered th,td{
+
+  border:1px solid black;
+  padding: 8px;
+}
 
 
 
@@ -449,20 +447,52 @@ margin-left:15x;
 				</tr>
 				
 			</table>
-					
-			<div style="page-break-before: always"></div>
-			
-			<% 
-			int maincount=0;
-			for(Object[] obj:Content){
-				if(obj[1].toString().equalsIgnoreCase("0")){ %>
-			            <h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
+
+
+		<%-- 	<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
+				
+					<tr>
+						<td class="text-darks"  style="border:1px solid black;font-family: <%= FontFamily %>;">fedger</td>
+						<td class="text-darks"  style="border:1px solid black;font-family: <%= FontFamily %>;">rfgrgrgreg</td>
+					</tr>
+					<tr>
+						<td class="text-darks"  style="border:1px solid black;font-family: <%= FontFamily %>;">grgrhrh</td>
+						<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">rghrhrhjth</td>
+					</tr>
+				
+			</table> --%>
+
+	<div style="page-break-before: always"></div>
+
+	<%
+	int maincount = 0;
+	for (Object[] obj : Content) {
+		if (obj[1].toString().equalsIgnoreCase("0")) {
+	%>
+	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
                                  <%=++maincount%>.&nbsp;<%=obj[3].toString() %>
                        </h1>
              <div>
-				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
-					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><% if(obj[4]!=null){%><%=obj[4]%><%} %></div>
+				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt;font-weight:<%=ParaFontWeight%>" >
+					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><%if(obj[4]!=null) {%><%=obj[4]%><%}%>
+				<!-- <table >
+					<tbody>
+						<tr>
+							<td>fedger</td>
+							<td>rfgrgrgreg</td>
+						</tr>
+						<tr>
+							<td>grgrhrh</td>
+							<td>rghrhrhjth</td>
+						</tr>
+					</tbody>
+				</table> -->
+				
+					     </div>
 					</div>
+			</div>		
+					
+					
 					
 				<% if(obj[3].toString().equalsIgnoreCase("APPENDICES")) { %>
 			
@@ -499,7 +529,7 @@ margin-left:15x;
 					
 					
 					
-			</div>
+			
 			
 			<% 
 			int level1count=0;

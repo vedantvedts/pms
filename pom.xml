@@ -299,6 +299,14 @@
 		  <groupId>org.springframework.cloud</groupId>
 		  <artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
+		
+		
+		
+		<dependency>
+    <groupId>org.webjars.bower</groupId>
+    <artifactId>summernote</artifactId>
+    <version>0.8.12</version>
+</dependency>
     	
     			
 <dependency>
