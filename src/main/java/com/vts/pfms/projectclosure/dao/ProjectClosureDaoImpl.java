@@ -27,6 +27,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocDistrib;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
@@ -1041,6 +1042,40 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return list;
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DAO projectTechClosureApprovedList" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	@Override
+	public long AddDocDistribMembers(ProjectClosureTechnicalDocDistrib r) throws Exception {
+		
+		try {
+			manager.persist(r);
+			manager.flush();
+			return r.getDistrubtionId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO AddDocDistribMembers "+e);
+			return 0L;
+		}
+	}
+
+	private static final String TECHCLOSUREDOCDISTRIBLIST=" SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,\r\n"
+			+ " b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,\r\n"
+			+ " pfms_closure_technical_docdistr c WHERE a.isactive='1' AND a.DesigId=b.DesigId \r\n"
+			+ " AND  a.empid = c.empid AND c.TechnicalClosureId =:techClosureId AND c.isactive =1 ORDER BY b.desigid ASC";
+	@Override
+	public List<Object[]> getDocSharingMemberList(String techClosureId) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(TECHCLOSUREDOCDISTRIBLIST);
+			query.setParameter("techClosureId", Long.parseLong(techClosureId));
+			
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getDocSharingMemberList" + e);
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
 		}

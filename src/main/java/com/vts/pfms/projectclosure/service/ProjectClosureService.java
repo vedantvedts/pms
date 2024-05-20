@@ -21,6 +21,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocDistrib;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 
@@ -88,6 +89,8 @@ public interface ProjectClosureService {
 	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm) throws Exception;
 	public List<Object[]> projectTechClosurePendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectTechClosureApprovedList(String empId, String fromdate, String todate)throws Exception;
+	public long AddTCRMembers(ProjectClosureTechnicalDocDistrib dist) throws Exception;
+	public List<Object[]>  getDocSharingMemberList(String techClosureId)throws Exception;
 	
 	
 }

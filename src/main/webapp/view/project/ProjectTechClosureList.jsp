@@ -143,6 +143,10 @@ Object[]  DocumentSummary =(null);
 
 List<Object[]> TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
 
+List<Object[]> MemberList=(List<Object[]>)request.getAttribute("DocSharingMemberList");
+
+List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
+
 String closureId=(String)request.getAttribute("closureId");
 
 if(DocumentSummaryList!=null && DocumentSummaryList.size()>0){
@@ -256,6 +260,20 @@ String ses=(String)request.getParameter("result");
 						    			</button>
 						    			
 						    			
+						    			<%-- <input type="hidden" name="TechClosureId" value="<%=obj[0]%>">
+						    			 <input type="hidden" name="ClosureId" value="<%=closureId %>"> --%>
+						    			<button type="button" class="editable-clicko" name="" value=""  onclick="DocumentDistribution('<%=obj[0]%>','<%=closureId %>')" data-toggle="tooltip" data-placement="top" title="Document Distribution" >
+											<div class="cc-rockmenu">
+												<div class="rolling" >
+													<figure class="rolling_icon">
+														<img src="view/images/docdistrib.png" style="width:25px;">
+													</figure>
+													<span>Doc Distrib</span>
+												</div>
+											</div>
+						    			</button>
+						    			
+						    			
 						    			
 						    			<input type="hidden" name="TechnicalClsoureId" value="<%=obj[0]%>">
 						    			 <input type="hidden" name="ClosureId" value="<%=closureId %>">
@@ -270,51 +288,38 @@ String ses=(String)request.getParameter("result");
 												</div>
 											</div>
 						    			</button>
-						    			
 						    		</td>
 			                    </tr>
-			                    
-			              <%}%>
+			               <%}%>
 	                                
-	                             </tbody>
-				    				
-				    
-			                     </table>
-			                      
-			                   </div>
-			                 </div>
-			                </div>
+	                         </tbody>
+				    		</table>
+			               </div>
 			             </div>
-			              
-			             </form>
-			          </div>
-			        </div>
+			           </div>
+			         </div>
+			       </form>
+			      </div>
+			    </div>
 			      
 			        
 	 <div align="center">
 	     		 <button type="submit" class="btn btn-primary btn-sm add" onclick="AddIssue()" >ADD ISSUE</button>&nbsp;&nbsp;  
-		  <a class="btn btn-info btn-sm  back"   href="ProjectClosureList.htm">Back</a>
-		  
-   </div>	
+		              <a class="btn btn-info btn-sm  back"   href="ProjectClosureList.htm">Back</a>
+	</div>	
 
  	<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
 
 
-     </div>
-  
-        
-	
-	</div>
-
-</div> 
-	
-</div>	
-	
-	</div>
+		     </div>
+		  </div>
+		</div> 
+	</div>	
+</div>
 	
 	
 	
-	<div class="modal" id="AddIsuueModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal" id="AddIsuueModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -361,124 +366,181 @@ String ses=(String)request.getParameter("result");
   <div class="modal-dialog modal-dialog-jump modal-lg ">
     <div class="modal-content" style="width:137%;margin-left:-21%;">
          <div class="modal-header" id="ModalHeader">
-        <h5 class="modal-title" id="exampleModalLabel">Document Summary</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+            <h5 class="modal-title" id="exampleModalLabel">Document Summary</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+               </button>
+          </div>
       
       
    		<div class="modal-body">
-   			<form action="DocSummaryAdd.htm" method="post">
-   			<div class="row">
-   			<div class="col-md-4">
-   			<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Additional Information:</label>
-   			</div>
+   		 <form action="DocSummaryAdd.htm" method="post">
+   		   <div class="row">
+   			  <div class="col-md-4">
+   			       <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Additional Information:</label>
+   			  </div>
    			 <div class="col-md-8">
-   				<textarea required="required" name="information"
-				class="form-control" id="additionalReq" maxlength="4000"
+   				<textarea required="required" name="information"class="form-control" id="additionalReq" maxlength="4000"
 				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=DocumentSummary[0]%><%}else{%><%}%></textarea>
-   			</div> 
-   			</div>
-   			<div class="row mt-2">
-   			<div class="col-md-4">
-   			<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Abstract:</label>
-   			</div>
-   			 <div class="col-md-8">
-   				<textarea required="required" name="abstract"
-				class="form-control" id="" maxlength="4000"
-				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=DocumentSummary[1]%><%}else{%><%}%></textarea>
-   			</div> 
+   			 </div> 
    			</div>
    			
-   				<div class="row mt-2">
+   			<div class="row mt-2">
+   			   <div class="col-md-4">
+   			       <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Abstract:</label>
+   			   </div>
+	   			<div class="col-md-8">
+	   				<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
+					rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=DocumentSummary[1]%><%}else{%><%}%></textarea>
+	   			</div> 
+   			</div>
+   			
+   		<div class="row mt-2">
    			<div class="col-md-4">
-   			<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Keywords:</label>
+   			      <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Keywords:</label>
    			</div>
    			<div class="col-md-8">
    				<textarea required="required" name="keywords"
 				class="form-control" id="" maxlength="4000"
 				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=DocumentSummary[2]%><%}else{%><%}%></textarea>
    			</div> 
-   			</div>
+   		</div>
    			
-   		    <div class="row mt-2">
-   			<div class="col-md-4">
-   			<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Distribution:</label>
-   			</div>
+   		<div class="row mt-2">
+   			   <div class="col-md-4">
+   			         <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Distribution:</label>
+   			   </div>
    			<div class="col-md-8">
-   				<input required="required" name="distribution"
-				class="form-control" id="" maxlength="255"
+   				<input required="required" name="distribution" class="form-control" id="" maxlength="255"
 				 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=DocumentSummary[3]%><%}else{%><%}%>">
    			</div> 
-   			</div>
+   		</div>
    				<div class="row mt-2">
-   			<div class="col-md-2">
-			   	 <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By:</label>
-			   	</div>
-			   <div class="col-md-4">
-	   		<select class="form-control selectdee"name="preparer" id=""data-width="100%" data-live-search="true"  required>
-	          <option value="" selected>--SELECT--</option>
-	        <%for(Object[]obj:TotalEmployeeList){ %>
-	        <option value="<%=obj[0].toString()%>"
-	        <%if(DocumentSummary!=null && DocumentSummary[9]!=null && DocumentSummary[9].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
-	        <%} %> 
-	        </select>
-   				
-   				</div>
-   			</div>
+   			       <div class="col-md-2">
+			   	       <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By:</label>
+			   	   </div>
+				   <div class="col-md-4">
+		   		       <select class="form-control selectdee"name="preparer" id=""data-width="100%" data-live-search="true"  required>
+				          <option value="" selected>--SELECT--</option>
+				           <%for(Object[]obj:TotalEmployeeList){ %>
+				            <option value="<%=obj[0].toString()%>"
+				                <%if(DocumentSummary!=null && DocumentSummary[9]!=null && DocumentSummary[9].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
+				                      <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+				                <%} %> 
+		                 </select>
+	   				</div>
+   			     </div>
    			<div class="row mt-2">
-			   	<div class="col-md-2">
-			   	 <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
-			   	</div>	
-   				<div class="col-md-4">
-	   		<select class="form-control selectdee"name="Reviewer" id=""data-width="100%" data-live-search="true"  required>
-	          <option value="" selected>--SELECT--</option>
-	        <%for(Object[]obj:TotalEmployeeList){ %>
-	        <option value="<%=obj[0].toString()%>"
-	        <%if(DocumentSummary!=null && DocumentSummary[4]!=null && DocumentSummary[4].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
-	        <%} %> 
-	        </select>
+			   <div class="col-md-2">
+			   	        <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
+			   </div>
+			 <div class="col-md-4">
+	   		     <select class="form-control selectdee"name="Reviewer" id=""data-width="100%" data-live-search="true"  required>
+			          <option value="" selected>--SELECT--</option>
+				        <%for(Object[]obj:TotalEmployeeList){ %>
+				        <option value="<%=obj[0].toString()%>"
+				        <%if(DocumentSummary!=null && DocumentSummary[4]!=null && DocumentSummary[4].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
+				        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+			           <%} %> 
+	             </select>
    				
-   				</div>
+   			</div>
    				
    				<div class="col-md-2">
-			   	<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Approver:</label>
+			   	      <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Approver:</label>
 			   	</div>	
    				<div class="col-md-4">
-		   				<select class="form-control selectdee"name="Approver" id=""data-width="100%" data-live-search="true"  required>
-		       <option value="" selected>--SELECT--</option>
-		        <%for(Object[]obj:TotalEmployeeList){ %>
-		        <option value="<%=obj[0].toString()%>"
-		        <%if(DocumentSummary!=null && DocumentSummary[5]!=null && DocumentSummary[5].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-		        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
-		        <%} %> 
-		        </select>
-   				
+		   			<select class="form-control selectdee"name="Approver" id=""data-width="100%" data-live-search="true"  required>
+				       <option value="" selected>--SELECT--</option>
+					        <%for(Object[]obj:TotalEmployeeList){ %>
+					        <option value="<%=obj[0].toString()%>"
+					        <%if(DocumentSummary!=null && DocumentSummary[5]!=null && DocumentSummary[5].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
+					        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+				        <%} %> 
+		            </select>
    				</div>
    			</div>
    			
-   	<div class="mt-2" align="center">
-    <%if(DocumentSummaryList!=null && DocumentSummaryList.size()>0) {%>
-   <button class="btn btn-sm edit" value="edit" name="btn" onclick="return confirm ('Are you sure to submit?')">UPDATE</button>
-   	<input type="hidden" name="summaryid" value="<%=DocumentSummary[8]%>"> 
-   <%}else{ %>
-   	<button class="btn btn-sm submit" name="btn" value="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
-   
-   	<%} %> 
-   	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-	<input type="hidden" name="closureId" value="<%=closureId%>">
-
-   			
-   			</div>
-   			</form>
-  	 	</div>
+		   	<div class="mt-2" align="center">
+		      <%if(DocumentSummaryList!=null && DocumentSummaryList.size()>0) {%>
+		           <button class="btn btn-sm edit" value="edit" name="btn" onclick="return confirm ('Are you sure to submit?')">UPDATE</button>
+		   	       <input type="hidden" name="summaryid" value="<%=DocumentSummary[8]%>"> 
+		   <%}else{ %>
+		   	<button class="btn btn-sm submit" name="btn" value="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+		   <%} %> 
+		   	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+			<input type="hidden" name="closureId" value="<%=closureId%>">
+		  </div>
+      </form>
+     </div>
     </div>
   </div>
 </div> 
-	
+
+
+
+<!--------------------------------------------------------------------------------- modal for Document Distribution --------------------------------------------------------------->
+<div class="modal fade" id="DistributionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
+    <div class="modal-content">
+      <div class="modal-header" id="ModalHeader" style="background: #055C9D ;color:white;">
+        <h5 class="modal-title" >Document Sent to</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+         <%if(MemberList!=null && MemberList.size()>0) { %>
+            <div class="row mb-2">
+		       <div class="col-md-12">
+				<table class="table table-bordered" id="myTables">
+					<thead>
+						<tr>
+							<th style="text-align: center;">SN</th>
+							<th style="text-align: center;">Name</th>
+							<th style="text-align: center;">Designation</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% 
+						int rowCount = 0;
+						for (Object[] obj : MemberList) {%>
+						<tr>
+							<td style="text-align: center; width: 10%;"><%=++rowCount%></td>
+							<td style="width: 50%; margin-left: 10px;"><%=obj[1].toString()%></td>
+							<td style="width: 40%; margin-left: 10px;"><%=obj[2].toString() %></td>
+						</tr>
+						<%} %>
+					</tbody>
+				</table>
+		   </div>      
+      </div>
+      <%} %>
+					<form action="DocDistribMemberSubmit.htm" method="post">
+						<div class="row">
+							<div class="col-md-10">
+								<select class="form-control selectdee" name="Assignee"
+									id="Assignee" data-width="100%" data-live-search="true"
+									multiple required>
+									<% for (Object[] obj : EmployeeList) { %>
+									    <option value="<%=obj[0].toString()%>"><%=obj[1].toString()%>,<%=(obj[2].toString())%></option>
+									<%}%>
+								</select>
+							</div>
+							<div class="col-md-1" align="center">
+								<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+								<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+
+								<button type="submit" class="btn btn-sm submit" onclick="return confirm ('Are you sure to submit?')">SUBMIT</button>
+							</div>
+						</div>
+							<input type="hidden" name="TechClosureId" id="techclosureid" value="">
+						<input type="hidden" name="ClosureId" value="<%=closureId%>">
+					</form>
+				</div>
+		    </div>
+		  </div>
+		</div>
 
 
 <script type="text/javascript">
@@ -488,11 +550,82 @@ function AddIssue(){
 $('#AddIsuueModal').modal('toggle');
 
 }
-function DocSummary(){
+function DocSummary(techclosureid,closureid){
 
-$('#SummaryModal').modal('toggle');
+     $('#SummaryModal').modal('toggle');
 
 }
+
+
+function DocumentDistribution(techclosureid,closureid){
+	
+	$('#techclosureid').val(techclosureid);
+	
+	$.ajax({
+		type:'GET',
+		url:'DocDistributionList.htm',
+		datatype:'json',
+		data:{
+			TechClosureId:techclosureid,
+		},
+		success:function(result){
+		var ajaxresult=JSON.parse(result);
+		
+		var htmlStr='';
+		
+		
+		
+		if(result.length>0){
+			
+		for(var v=0;v<result.length;v++)
+	    {
+		
+		
+		htmlStr += '<tr>';
+		
+		htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) +  '</td>';
+		htmlStr += '<td class="tabledata" style="text-align: left;" >'+ result[v][1] + '</td>';
+		htmlStr += '<td class="tabledata" style="text-align: left;" >'+ result[v][2] + ' </td>';
+		if(YN=='yes'){
+	    htmlStr += '<td class="tabledata" style="text-align: center;" >'+ result[v][3] + ' </td>';
+	    $('#div').show();
+		}
+		else{
+			  $('#div').hide();
+		}
+		
+		
+		htmlStr += '</tr>';
+		}
+
+		
+		}
+		else
+		{
+			
+		htmlStr += '<tr>';
+		
+		htmlStr += '<td colspan="4" style="text-align: center;"> No Record Found </td>';
+		
+		htmlStr += '</tr>';
+		
+		}
+		setModalDataTable();
+		$('#modal_table_body').html(htmlStr);
+		    
+		    
+		   
+		}
+	 })
+	
+	
+	
+	
+	$('#DistributionModal').modal('toggle');
+	
+}
+
+
 
 $(document).ready(function(){
 	  $("#myTable").DataTable({

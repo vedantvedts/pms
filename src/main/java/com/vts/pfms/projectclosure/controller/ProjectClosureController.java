@@ -69,6 +69,7 @@ import com.vts.pfms.pfts.controller.JasperJdbcConnection;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.ProjectOtherReqDto;
 import com.vts.pfms.project.model.ProjectMaster;
+import com.vts.pfms.project.model.RequirementMembers;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
@@ -82,6 +83,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocDistrib;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.service.ProjectClosureService;
@@ -2212,6 +2214,7 @@ public class ProjectClosureController {
 			
 			String closureId = req.getParameter("closureId");
 			
+			
 			if("Add".equalsIgnoreCase(req.getParameter("Action"))) {
 				
 			ProjectClosureTechnical tech=new ProjectClosureTechnical();
@@ -2253,6 +2256,7 @@ public class ProjectClosureController {
 			
             req.setAttribute("DocumentSummary",service.getDocumentSummary(closureId));
 			req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(LabCode));
+			
 			req.setAttribute("closureId", closureId);
 			List<Object[]> TechnicalClosureRecord=service.getTechnicalClosureRecord(closureId);
 			req.setAttribute("TechnicalClosureRecord", TechnicalClosureRecord);
@@ -2741,6 +2745,73 @@ public class ProjectClosureController {
 			e.printStackTrace();
 			return "static/Error";
 		}
-	
-    }
-}
+		
+	}	
+		
+		@RequestMapping(value="DocDistribMemberSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+		public String RequirementMemberSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+		{
+
+			String UserId=(String)ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			String Logintype= (String)ses.getAttribute("LoginType");
+
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			logger.info(new Date() +"Inside DocDistribMemberSubmit.htm "+UserId);
+			try {
+				
+				String TechClosureId =req.getParameter("TechClosureId");
+				String closureid=req.getParameter("ClosureId");
+				String [] Assignee = req.getParameterValues("Assignee");
+
+			
+				ProjectClosureTechnicalDocDistrib dist = new ProjectClosureTechnicalDocDistrib();
+				
+				dist.setTechnicalClosureId(Long.parseLong(TechClosureId));			
+				dist.setCreatedBy(UserId);
+				dist.setCreatedDate(sdtf.format(new Date()));
+				dist.setEmps(Assignee);
+
+				long count = service.AddTCRMembers(dist);
+				if(count>0) {
+					
+						redir.addAttribute("closureId",closureid);
+						redir.addAttribute("result","Members Added Successfully for Document Distribution");
+						return "redirect:/TechClosureList.htm";
+			   }
+
+			}catch (Exception e) {
+				e.printStackTrace();
+
+				logger.info(new Date() +"Inside DocDistribMemberSubmit.htm "+UserId);
+			}
+			return "static/Error";
+         }
+		
+		
+		@RequestMapping(value="DocDistributionList.htm",method = RequestMethod.GET)
+		public @ResponseBody String DocDistributionList(HttpServletRequest req, HttpSession ses) throws Exception {
+			String UserId = (String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside DocDistributionList.htm "+UserId);
+				List<Object[]> DocDistributionList=null;
+				
+			try {
+				
+			     String TechClosureId=req.getParameter("TechClosureId");
+			     DocDistributionList=service.getDocSharingMemberList(TechClosureId);
+			    
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside DocDistributionList.htm"+UserId, e);
+			}
+			Gson json = new Gson();
+			return json.toJson(DocDistributionList);
+		}
+		
+		
+		
+		
+		
+     }
+

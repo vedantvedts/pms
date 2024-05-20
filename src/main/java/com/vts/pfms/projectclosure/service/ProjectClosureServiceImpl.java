@@ -27,6 +27,7 @@ import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.project.model.ProjectMaster;
+import com.vts.pfms.project.model.RequirementMembers;
 import com.vts.pfms.projectclosure.dao.ProjectClosureDao;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureAppendixDto;
@@ -43,6 +44,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
+import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocDistrib;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
@@ -1494,5 +1496,36 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	public List<Object[]> projectTechClosureApprovedList(String empId, String fromdate, String todate) throws Exception {
 		
 		return dao.projectTechClosureApprovedList(empId,fromdate,todate);
+	}
+
+	@Override
+	public long AddTCRMembers(ProjectClosureTechnicalDocDistrib dist) throws Exception {
+		
+		
+		int numberOfPersons= dist.getEmps().length; 
+		
+		String []assignee= dist.getEmps();
+		long count=0;
+		for(int i=0;i<numberOfPersons;i++) {
+			ProjectClosureTechnicalDocDistrib r = new ProjectClosureTechnicalDocDistrib();
+
+			r.setTechnicalClosureId(dist.getTechnicalClosureId());		
+			r.setCreatedBy(dist.getCreatedBy());
+			r.setCreatedDate(dist.getCreatedDate());
+			r.setEmpId(Long.parseLong(assignee[i]));
+			r.setIsActive(1);
+			
+			count=dao.AddDocDistribMembers(r);
+			
+		}
+		
+		return count;
+		
+	}
+
+	@Override
+	public List<Object[]> getDocSharingMemberList(String techClosureId) throws Exception {
+		
+		return dao.getDocSharingMemberList(techClosureId);
 	}
 }
