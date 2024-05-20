@@ -126,8 +126,7 @@ if(ses1!=null){
 		<div class="col-lg">
 						</div>
 			<div class="container-fluid"  >
-						<div class="content-header row " style="margin-top: 10px; padding: 10px" > 
- 					
+						<div class="content-header row " style="margin-top: 10px; padding: 10px" >
 	 						<div class="col-md-1" align="left" style="padding-top:5px;" >
 								<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							</div>
@@ -136,18 +135,17 @@ if(ses1!=null){
 	 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 	 						</div>
 						</div>
-					
 					<div class="card shadow-nohover" id="slide2">						
 					<div class="content" align="center" style=" border: 6px solid green;background-color: #F9F2DF66;border-radius: 5px !important;height:85vh !important;padding-top: 15px;">
 						
 								<table style="font-weight: bold;width: 100%;">
 									<tr>
 										<td style="font-size: 1.02rem;font-weight: bold; color:#021B79 ;width: 10%">Project No :</td>
-										<td style="width: 25%;font-weight: bold;color:#212529 "><%=projectdata[11]%></td>
+										<td style="width: 25%;font-weight: bold;color:#212529 "><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
 										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; width: 8%;">User :</td>
 										<td style="width: 27%;font-weight: bold;color:#212529 "><%=enduser%></td>
 										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 8%">Category :</td>
-										<td style="font-weight: bold;widows: 25%;color:#212529 "><%=projectdata[2]%></td>
+										<td style="font-weight: bold;widows: 25%;color:#212529 "><%=projectdata[2]!=null?projectdata[2]:"--"%></td>
 									</tr>
 									<tr>
 										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">DoS :</td>
@@ -161,10 +159,11 @@ if(ses1!=null){
 									</tr>
 									<tr>
 										<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Application :</td>
-										<td colspan="5" style="font-weight: bold;color:#212529 "><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
+										<td colspan="5" style="font-weight: bold;color:#212529 ">
+										<%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color:#212529 ;">
+										<td style="font-size: 1.02rem;font-weight: bold;color:#212529 ; vertical-align: top;">
 										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
 										Brief : </b>  </td>
 										<td colspan="5" style="font-weight: bold;color:#212529 ">
@@ -172,41 +171,30 @@ if(ses1!=null){
 										</td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
-											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; vertical-align: top;">
+											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
 												Objectives :
 											</b>
 										</td>
-										<td colspan="5" style="font-weight: bold;color:#212529 ">
-											<%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> 
-												<%=projectdata[7].toString().substring(0,280)%>
-												<span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;">
-													<b> ...View More </b>
-												</span>
-											<%}else{%> <%=projectdata[7]!=null?projectdata[7]:"--"%> <%}%>
+										<td colspan="5" style="font-weight: bold;color:#212529 "><%=projectdata[7]!=null?projectdata[7]:"--"%>
 										</td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
-											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Scope : </b>
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; vertical-align: top;">
+											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Scope : </b>
 										</td>
-										<td colspan="5" style="font-weight: bold;color:#212529 ">
-											<%if(projectdata[9]!=null && projectdata[9].toString().length()>320){%> <%=projectdata[9].toString().substring(0,280)%>
-											<span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b>
-											</span><%}else{%> <%=projectdata[9]!=null?projectdata[9]:"--"%> <%}%>
+										<td colspan="5" style="font-weight: bold;color:#212529 "><%=projectdata[9]!=null?projectdata[9]:"--"%>
 										</td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
-											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Deliverables : </b> 
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; vertical-align: top;">
+											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Deliverables : </b> 
 										</td>
-										<td colspan="5" style="font-weight: bold;color:#212529 ">
-											<%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span>
-											<%}else{%> <%=projectdata[8]!=null?projectdata[8]:"--"%> <%}%>
+										<td colspan="5" style="font-weight: bold;color:#212529 "><%=projectdata[8]!=null?projectdata[8]:"--"%>
 										</td>
 									</tr>
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">
+										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; vertical-align: top;">
 											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Stage : </b> 
 										</td>
 										<td colspan="5" style="font-weight: bold;color:#212529 ">
@@ -271,13 +259,13 @@ if(ses1!=null){
 												<table  style="width: 100%;font-weight: bold;">
 														<tr>
 															<td style="font-size: 1.02rem;font-weight: bold; color:#021B79 ;width: 150px;">Project No :</td>
-															<td style="width: 286px;color:#212529 "><%=projectdata[11]%></td>
+															<td style="width: 286px;color:#212529 "><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
 															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; width: 9%;">User :</td>
 															<td style="width: 150px;color:#212529 "><%=enduser%></td>
 														</tr>
 														<tr>
 															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Category :</td>
-															<td style="color:#212529 "><%=projectdata[2]%></td>
+															<td style="color:#212529 "><%=projectdata[2]!=null?projectdata[2]:"--"%></td>
 															<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">DoS :</td>
 															<td style="color:#212529 "><%=sdf.format(projectdata[5]) %></td>
 														</tr>
@@ -299,43 +287,31 @@ if(ses1!=null){
 															</td>
 														</tr>
 														<tr>
-															<td>
-																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+															<td style="border-top: none;vertical-align: top;">
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
 																	Objectives :
 																</b>
 															</td>
-															<td colspan="4" style="color:#212529 ">
-																<%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> 
-																	<%=projectdata[7].toString().substring(0,280)%>
-																	<span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;">
-																		<b> ...View More </b>
-																	</span>
-																<%}else{%> <%=projectdata[7]!=null?projectdata[7]:"--"%> <%}%>
+															<td colspan="4" style="color:#212529 "> <%=projectdata[7]!=null?projectdata[7]:"--"%>
 															</td>
 														</tr>
 														<tr>
-															<td>
-																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Scope : </b>
+															<td style="border-top: none;vertical-align: top;">
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Scope : </b>
 															</td>
-															<td colspan="4" style="color:#212529 ">
-																<%if(projectdata[9]!=null && projectdata[9].toString().length()>320){%> <%=projectdata[9].toString().substring(0,280)%>
-																<span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b>
-																</span><%}else{%> <%=projectdata[9]!=null?projectdata[9]:"--"%> <%}%>
+															<td colspan="4" style="color:#212529 "><%=projectdata[9]!=null?projectdata[9]:"--"%> 
 															</td>
 														</tr>
 														<tr>
-															<td>
-																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Deliverables : </b> 
+															<td style="border-top: none;vertical-align: top;">
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Deliverables : </b> 
 															</td>
-															<td colspan="4" style="color:#212529 ">
-																<%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%>
-																<span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;">
-																<b> ...View More </b></span><%}else{%> <%=projectdata[8]!=null?projectdata[7]:"--"%> <%}%>
+															<td colspan="4" style="color:#212529 "><%=projectdata[8]!=null?projectdata[7]:"--"%>
 															</td>
 														</tr>
 														<tr>
-															<td>
-																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Stage : </b> 
+															<td style="border-top: none;vertical-align: top;">
+																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Current Stage : </b> 
 															</td>
 															<td colspan="4" style="color:#212529 ">
 																<%if(projectdata!=null && projectdata[14]!=null) {%>
@@ -346,7 +322,7 @@ if(ses1!=null){
 															</td>
 														</tr>
 														<tr>
-															<td>
+															<td style="border-top: none;vertical-align: top;">
 																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Status : </b> 
 															</td>
 															<td colspan="4" style="color:#212529 ">
@@ -417,7 +393,7 @@ if(ses1!=null){
 												<tr>
 													<td
 														style="font-size: 1.02rem; font-weight: bold; color: #115bc9; width: 150px;">Project
-														Name :</td>
+														No :</td>
 													<td style="width: 286px;"><%=projectdata[11]%></td>
 													<td
 														style="font-size: 1.02rem; font-weight: bold; color: #115bc9; width: 80px;">User
@@ -518,9 +494,9 @@ if(ses1!=null){
 			                    				<div class="col-lg" style="align-items: center;">
 			                    					<div style="margin-top: 5%;">
 				                    					<button type="button"  class="btn btn-primary btn-sm add"  onclick="return checkData()">SUBMIT </button>
-				                    					<%if(freezedslide!=null && freezedslide.size()==0){ %>
+				                    					
 														<button type="button" class="btn btn-sm prints my-2 my-sm-0" data-toggle="modal" data-target="#newfilemodal">FREEZE </button>
-														<%}%>
+														
 													</div>
 												</div>
 					                    	</div>

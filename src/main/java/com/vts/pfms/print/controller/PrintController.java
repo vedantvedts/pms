@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -4001,6 +4002,8 @@ public class PrintController {
 						req.setAttribute("projectdata", projectdata);
 						req.setAttribute("review", review);
 						req.setAttribute("reviewdate", reviewdate);
+						req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+						req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
 					 
 					    String filename="ProjectProposal";	
 				    	String path=req.getServletContext().getRealPath("/view/temp");
@@ -4123,48 +4126,122 @@ public class PrintController {
 		 @RequestMapping(value = "GetAllProjectSlide.htm" , method = RequestMethod.POST)
 		 public String GetAllProjectSlide(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
 		 {
+
 			 String UserId = (String) ses.getAttribute("Username");
+
 			 logger.info(new Date() +"Inside GetAllProjectSlide.htm "+UserId);
-			 String[] a = req.getParameterValues("projectlist");
-			 
+
+			 String[] IdsInput = req.getParameterValues("projectlist");
+
+
+
 			 List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+
 			 List<Object[]> getAllProjectdata = new ArrayList<>();
+
 			 List<Object[]> getAllProjectSlidesdata = new ArrayList<>();
-			 if(a!=null && a.length>0)
-			 for (String id : a) {
-				List<Object[]> getoneProjectSlidedata= service.GetAllProjectSildedata(id);
-				Object[] projectslidedata = (Object[])service.GetProjectSildedata(id);
-				getAllProjectSlidesdata.add(projectslidedata);
-				Object[] projectdata = (Object[])service.GetProjectdata(id);
-				getAllProjectdata.add(projectdata);
-				if(getoneProjectSlidedata.size()>0) {
-				 for (Object[] objects : getoneProjectSlidedata) {
-					getAllProjectSlidedata.add(objects);
-				 }
-				}
-				else
-				{
-					getAllProjectSlidedata.add(null);
-				}
-			}
-			 if(a!=null && a.length==0) {
+
+			 if(IdsInput!=null && IdsInput.length>0)
+
+				 for (String id : IdsInput) {
+
+					 List<Object[]> getoneProjectSlidedata= service.GetAllProjectSildedata(id);
+
+					 Object[] projectslidedata = (Object[])service.GetProjectSildedata(id);
+
+					 getAllProjectSlidesdata.add(projectslidedata);
+
+					 Object[] projectdata = (Object[])service.GetProjectdata(id);
+
+					 getAllProjectdata.add(projectdata);
+
+					 if(getoneProjectSlidedata.size()>0) {System.out.println(getoneProjectSlidedata.get(0)[0]);
+
+						 for (Object[] objects : getoneProjectSlidedata) {
+
+							 getAllProjectSlidedata.add(objects);
+
+						 }
+
+					 }
+
+					 else
+
+					 {
+
+						 //getAllProjectSlidedata.add(null);
+
+					 }
+
+				 } 
+
+				// Comparator to compare dates
+
+			        Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
+
+			            @Override
+
+			            public int compare(Object[] o1, Object[] o2) {
+
+			                Date date1 = (Date) o1[5];
+
+			                Date date2 = (Date) o2[5];
+
+			                return date2.compareTo(date1);
+
+			            }
+
+			        };
+
+
+
+			        // Sort the list
+
+			       
+
+				 
+
+			    // Print the sorted list
+
+		        for (Object[] projectData : getAllProjectSlidedata) {
+
+		            System.out.println(Arrays.toString(projectData));
+
+		        }
+
+				 if(IdsInput!=null && IdsInput.length==0) {
 				 redir.addAttribute("resultfail", "could not open empty slideshow");
 					return "redirect:/MainDashBoard.htm";
 			 }
 			 try {
-				String labcode = ses.getAttribute("labcode").toString();
-				req.setAttribute("getAllProjectdata", getAllProjectdata);
-				req.setAttribute("labInfo", service.LabDetailes(labcode));
-			    req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
-			    req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
-				req.setAttribute("filepath", ApplicationFilesDrive);
-//				Collections.reverse(getAllProjectSlidedata);
-				req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
-				req.setAttribute("getAllProjectSlidesdata", getAllProjectSlidesdata);
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.error(new Date() +" Inside GetAllProjectSlide.htm "+UserId, e);
-			}
+
+				 if(getAllProjectSlidedata.size()>1)Collections.sort(getAllProjectSlidedata, dateComparator);
+
+				 String labcode = ses.getAttribute("labcode").toString();
+
+				 req.setAttribute("getAllProjectdata", getAllProjectdata);
+
+				 req.setAttribute("labInfo", service.LabDetailes(labcode));
+
+				 req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+
+				 req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+
+				 req.setAttribute("filepath", ApplicationFilesDrive);
+
+				 //				Collections.reverse(getAllProjectSlidedata);
+
+				 req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
+
+				 req.setAttribute("getAllProjectSlidesdata", getAllProjectSlidesdata);
+
+			 } catch (Exception e) {
+
+				 e.printStackTrace();
+
+				 logger.error(new Date() +" Inside GetAllProjectSlide.htm "+UserId, e);
+
+			 }
 			 return "print/ProjectSlideFreezedViewAll"; 
 		 } 
 	

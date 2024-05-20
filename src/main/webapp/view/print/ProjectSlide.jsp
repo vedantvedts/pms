@@ -64,11 +64,11 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					<table class="table meeting" style="font-weight: bold;" >
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>
-							<td style="width: 310px;"><%=projectdata[11]%></td>
+							<td style="width: 310px;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Category :</td>
-							<td><%=projectdata[2]%></td>
+							<td><%=projectdata[2]!=null?projectdata[2]:"--"%></td>
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Cost Rs.:</td>
@@ -89,11 +89,11 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">DoS :</td>
-							<td><%=sdf.format(projectdata[5]) %></td>
+							<td><%=projectdata[5]!=null?sdf.format(projectdata[5]):"--" %></td>
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">PDC :</td>
-							<td><%=sdf.format(projectdata[4]) %></td>
+							<td><%=projectdata[4]!=null?sdf.format(projectdata[4]):"--" %></td>
 						</tr>
 					</table>
 					</div>
@@ -103,7 +103,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					<table class="table meeting" style="font-weight: bold;" >
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Objectives :</td>
-							<td style="width: 740px;"><%=projectdata[7]%></td>
+							<td style="width: 740px;"><%=projectdata[7]!=null?projectdata[7]:"--"%></td>
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Scope :</td>
@@ -111,7 +111,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Deliverables :</td>
-							<td style="width: 720px;"><%=projectdata[8]%></td>
+							<td style="width: 720px;"><%=projectdata[8]!=null?projectdata[8]:"--"%></td>
 						</tr>
 					</table>
 				</div>
@@ -125,17 +125,23 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				 <div class="card-body">
 				 <div class="container-fluid">
 				 	<div class="row" >
-				 		<div class="col" ><p>Current Status : </p>
-						<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"></textarea>
-						<p>Brief : </p>
-						<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Brief" id="ckeditor1" rows="5" cols="20" maxlength="5"></textarea>
+				 		<div class="col" >
+				 			<p>Current Status : </p>
+							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"></textarea>
+						</div>
+						<div class="col" >
+							<p>Brief : </p>
+							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Brief" id="ckeditor2" rows="5" cols="20" maxlength="5"></textarea>
 				 		</div>
+			 		</div>
+			 		<div class="row" >
 				 		<div class="col" >
 				 			<div class="container-fluid" >
 				 				<div class="row" >
 				 					<div class="col" >
 										<div class="form-group">
-											<label><b> Image : </b></label><span class="mandatory">*</span>
+											<label><b> Image : </b></label>
+											<span class="mandatory">*</span>
 											<input class="form-control form-control" type="file"
 												name="Attachment1" id="Attachment1"
 												accept="image/png, image/jpeg" required="required"
@@ -169,7 +175,6 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				 	</div>
 				 	<hr>
 				 </div>
-						
 				</div>
 			</div>
 			</form>
@@ -233,7 +238,7 @@ var editor_config = {
 		extraAllowedContent: 'img[width,height,align]',
 
 		height: 150,
-		
+
 		 contentsCss: [CKEDITOR.basePath +'mystyles.css' ], 
 
 		bodyClass: 'document-editor',
@@ -275,6 +280,7 @@ var editor_config = {
 			]
 	} ;
 CKEDITOR.replace('ckeditor1', editor_config );
+CKEDITOR.replace('ckeditor2', editor_config );
 
 
 function checkData(){
