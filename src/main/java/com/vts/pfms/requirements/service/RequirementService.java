@@ -9,13 +9,14 @@ import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.ReqDoc;
+import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 
 public interface RequirementService {
 
-	List<Object[]> RequirementList(String initiationid, String projectId)throws Exception;
+	List<Object[]> RequirementList(String reqInitiationId)throws Exception;
 
 	long ProjectRequirementAdd(PfmsInitiationRequirementDto prd, String userId, String labCode)throws Exception;
 
@@ -45,7 +46,7 @@ public interface RequirementService {
 	public long addAbbreviations(List<Abbreviations> iaList) throws Exception;
 
 
-	List<Object[]> requirementTypeList(String initiationid, String projectId) throws Exception;
+	List<Object[]> requirementTypeList(String reqInitiationId) throws Exception;
 
 	long addPfmsInititationRequirement(PfmsInititationRequirement pir) throws Exception;
 
@@ -55,17 +56,32 @@ public interface RequirementService {
 
 	List<Object[]> getreqTypeList(String reqMainId, String initiationReqId) throws Exception;
 
-	public List<Object[]> getVerificationMethodList(String projectId, String initiationId)throws Exception;
+	public List<Object[]> getVerificationMethodList()throws Exception;
 
-	public List<Object[]> getProjectParaDetails(String initiationid, String projectId) throws Exception;
+	public List<Object[]> getProjectParaDetails(String reqInitiationId) throws Exception;
 
-	public List<Object[]> getVerifications(String initiationid, String projectId) throws Exception;
+	public List<Object[]> getVerifications(String reqInitiationId) throws Exception;
 
 	long UpdatePfmsInititationRequirement(PfmsInititationRequirement pir) throws Exception;
 
-	List<Object[]> ApplicableDocumentList(String initiationid, String projectId)throws Exception;
+	List<Object[]> ApplicableDocumentList(String reqInitiationId)throws Exception;
 
-	List<Object[]> ApplicableTotalDocumentList(String initiationid, String projectId)throws Exception;
+	List<Object[]> ApplicableTotalDocumentList(String reqInitiationId)throws Exception;
 
 	long addDocs(List<ReqDoc> list) throws Exception;
+	
+	public List<Object[]> productTreeListByProjectId(String projectId) throws Exception;
+	public List<Object[]> initiationReqList(String projectId, String mainId, String initiationId) throws Exception;
+	public List<Object[]> getPreProjectList(String loginType, String labcode, String empId) throws Exception;
+	
+	public long addRequirementInitiation(RequirementInitiation requirementInitiation) throws Exception;
+	public RequirementInitiation getRequirementInitiationById(String reqInitiationId) throws Exception;
+	public PfmsInititationRequirement getPfmsInititationRequirementById(String InitiationReqId) throws Exception;
+	public Long addOrUpdatePfmsInititationRequirement(PfmsInititationRequirement pfmsInititationRequirement) throws Exception;
+	public Long requirementInitiationAddHandling(String initiationId, String projectId, String productTreeMainId, String empId,String username) throws Exception;
+	public List<Object[]> projectRequirementTransList(String reqInitiationId) throws Exception;
+	public long projectRequirementApprovalForward(String reqInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception;
+	public List<Object[]> projectRequirementPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> projectRequirementApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	
 }

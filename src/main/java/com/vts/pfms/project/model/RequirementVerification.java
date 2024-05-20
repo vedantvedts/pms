@@ -17,10 +17,11 @@ public class RequirementVerification {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long VerificationId;
 	private String Provisions;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String ProvisionsDetails;
     private String CreatedBy;
     private String CreatedDate;
 	private int IsActive;
-	private Long ProjectId ;
+//	private Long ProjectId ;
+	private Long ReqInitiationId;
 }

@@ -20,11 +20,12 @@ public class RequirementMembers {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ReqMemeberId;
 	private Long EmpId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String CreatedBy;
 	private String CreatedDate;
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
+	private Long ReqInitiationId;
 	
 	@Transient
 	private String[] emps;

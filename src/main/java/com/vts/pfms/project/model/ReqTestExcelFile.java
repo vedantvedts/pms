@@ -19,13 +19,14 @@ public class ReqTestExcelFile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long TestVerificationId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String FileName;
 	private String FilePath;
 	private String CreatedDate;
 	private String CreatedBy;
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
+	private Long ReqInitiationId;
 	
 	@Transient
 	private MultipartFile file;

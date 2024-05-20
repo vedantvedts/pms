@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -234,27 +235,34 @@ float: right;
 </head>
 <body>
 	<%
-	String initiationid = (String) request.getAttribute("initiationid");
+	String initiationId = (String) request.getAttribute("initiationId");
+	String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 	String project = (String) request.getAttribute("project");
 	String attributes=(String)request.getAttribute("attributes");
+	
+	//RequirementInitiation reqInitiation = (RequirementInitiation)request.getAttribute("reqInitiation");
+	//String status = reqInitiation!=null?reqInitiation.getReqStatusCode():"RIN";
+	//List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
 	%>
-		<nav class="navbar navbar-light bg-light justify-content-between" style="margin-top: -1%">
-			<a class="navbar-brand"> 
+	<nav class="navbar navbar-light bg-light justify-content-between" style="margin-top: -1%">
+		<a class="navbar-brand"> 
 			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
-			<span style="color: #31708f">Requirement Introduction for Project </span>
-			<span style="color: #31708f; font-size: 19px">  <%=project.split("/")[1].toString() %></span>
+				<span style="color: #31708f">Requirement Introduction for Project </span>
+				<span style="color: #31708f; font-size: 19px">  <%=project.split("/")[1].toString() %></span>
 			</b>
-			</a>
-			<form action="#">
+		</a>
+		<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 			<input type="hidden" name="project" value="<%=project%>"> 
-			<input type="hidden" name="initiationid" value="<%=initiationid%>">
+			<input type="hidden" name="initiationId" value="<%=initiationId%>">
+			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
 			<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectOverAllRequirement.htm" formmethod="get" formnovalidate="formnovalidate" style="float: right;">BACK</button>
-			</form>
-		</nav>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
+		</form>
+	</nav>
+		
+	<%String ses=(String)request.getParameter("result"); 
+ 	String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
 	<div align="center" class="mt-2">
@@ -269,6 +277,7 @@ float: right;
 		</div>
 	</div>
 	<%}%>
+	
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-5">
@@ -369,13 +378,14 @@ float: right;
 									<div id="Editor" class="center"></div>
 									<textarea name="Details" style="display: none;"></textarea>
 									<div class="mt-2" align="center" id="detailsSubmit">
-										<span id="EditorDetails"></span> <input type="hidden"
-											name="project" value="<%=project%>"> <input
-											type="hidden" name="initiationid" value="<%=initiationid%>">
+										<span id="EditorDetails"></span> 
+										<input type="hidden" name="project" value="<%=project%>"> 
+											<input type="hidden" name="initiationId" value="<%=initiationId%>">
+											<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
 											<input type="hidden" id="attributes" name="attributes" value="Introduction">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <span id="Editorspan">
-											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button></span>
-											<span id="btn2" style="display: none;"><button type="submit"class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure you want to submit?')">UPDATE</button></span>
+											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2 btn-req" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button></span>
+											<span id="btn2" style="display: none;"><button type="submit"class="btn btn-sm btn-warning edit mt-2 btn-req" onclick="return confirm('Are you sure you want to submit?')">UPDATE</button></span>
 										</span>
 									</div>
 								</div>
@@ -408,7 +418,7 @@ float: right;
 											<form action="PreProjectFileUpload.htm">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 											<input type="hidden" name="project" value="<%=project%>"> 
-											<button type="submit"class="btn btn-sm btn-info mt-2" id="adddoc">Add Documents</button>
+											<button type="submit"class="btn btn-sm btn-info mt-2 btn-req" id="adddoc">Add Documents</button>
 											</form>
 			</div>
 			<!-- editor ends  -->
@@ -554,7 +564,7 @@ float: right;
 				url:'RequirementIntro.htm',
 				datatype:'json',
 				data:{
-					initiationid:<%=initiationid%>,
+					initiationId:<%=initiationId%>,
 				},
 				success:function(result){
 					
@@ -641,7 +651,7 @@ float: right;
 			  datatype:'json',
 			  data:{
 				  stepid:1,
-				  initiationid:<%=initiationid%>,
+				  initiationId:<%=initiationId%>,
 			  },
 			  success:function(result){
 				  var ajaxresult=JSON.parse(result);
@@ -698,5 +708,14 @@ float: right;
 				});
 
 	</script>
+	
+<%-- <script type="text/javascript">
+	<%if(reqforwardstatus.contains(status)) {%>
+		$('.btn-req').prop('disabled',false);
+	<%} else{%>
+	    $('.btn-req').prop('disabled',true);
+	<%} %>
+</script>	 --%>
+	
 </body>
 </html>

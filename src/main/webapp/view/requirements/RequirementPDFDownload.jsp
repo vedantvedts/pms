@@ -250,7 +250,7 @@ margin-left:15x;
 				<div align="center">
 					<h4 style="font-size: 20px;font-family: <%= FontFamily %>;">
 				<%
-				if(LabList[1] != null) {
+				if(LabList!=null && LabList[1] != null) {
 				%>
 				<%=LabList[1].toString()+"("+LabList[0].toString()+")"%>
 				<%
@@ -265,7 +265,7 @@ margin-left:15x;
 					</h4>
 				</div>
 				<h4 style="font-family: <%= FontFamily %>;">
-					<%if(LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
+					<%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
 					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
 					<%}else{ %>
 					-
@@ -391,7 +391,7 @@ margin-left:15x;
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">12.&nbsp; Organization and address:
 						<span class="text-darks" style="font-family: <%= FontFamily %>;">		<%
-										if (LabList[1] != null) {
+										if (LabList!=null && LabList[1] != null) {
 										%><%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
 										<%
 										} else {
@@ -401,7 +401,7 @@ margin-left:15x;
 																	Government of India, Ministry of Defence,Defence
 										Research & Development Organization
 										<%
-									if (LabList[2] != null && LabList[3] != null && LabList[5] != null) {
+									if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) {
 									%>
 									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
 									<%}else{ %>

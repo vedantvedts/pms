@@ -275,18 +275,21 @@ FormatConverter fc = new FormatConverter();
 						<h4>ASP List</h4>
 					</div>
 				</div>
-				<%-- <br>
+				<br>
 					<div align="center">
 	                	<form action="#" id="myform" method="post">
 	                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                        <button  class="btn btn-sm add" type="submit" name="Action" value="Add" formaction="RoadMapDetails.htm" formnovalidate="formnovalidate" style="border: none;">Add</button>
 	                 		<%if(roadMapASPList!=null && roadMapASPList.size()>0) {%>
-	                 		<button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Road Map Report Download" style="background-color: purple;border: none;color: white;font-weight: 600;" onclick="openModal()">
+	                 		<!-- <button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Road Map Report Download" style="background-color: purple;border: none;color: white;font-weight: 600;" onclick="openModal()">
 	                 			GENERATE REPORT
+	                 		</button> -->
+	                 		<button type="submit" class="btn btn-sm" formaction="RoadMapDetailsMoveBackToRoadMap.htm" data-toggle="tooltip" data-placement="top" title="Move Back to Road Map" style="background-color: #cd153a;border: none;color: white;font-weight: 600;" onclick="moveBackToRoadMapCheck()">
+	                 			<i class="fa fa-arrow-circle-left" style="padding: 0px;" aria-hidden="true"></i>
+	                 			MOVE BACK TO ROAD MAP 
 	                 		</button>
 	                 		<%} %>
 	                 	</form>
-	              	</div> --%>
+	              	</div>
 	            <br>  	
 				<%if(roadMapASPList!=null && roadMapASPList.size()>0) {%>
 				<!-- search box -->
@@ -311,6 +314,9 @@ FormatConverter fc = new FormatConverter();
 									
 										<div class="container">
 				  							<div class="row">
+				  								<div class="col-" style="margin-top: 0.5rem;">
+													<input form="myform" type="checkbox" class="form-control" name="roadMapId" value="<%=obj[0] %>">
+				  								</div>
 					  							<div class="col-lg">
 													<h4 class="card-title" ><%=obj[6] %></h4>
 												</div>
@@ -411,7 +417,7 @@ FormatConverter fc = new FormatConverter();
 																		</div>
 													    			</button> --%>
 		                                        				
-			                                        				<button class="editable-clicko" name="roadMapId" value="<%=obj[0] %>" formaction="RoadMapDetailsMoveBackToRoadMap.htm" onclick="return confirm('Are You Sure to Move Back to Road Map?')" data-toggle="tooltip" data-placement="top" title="Move Back to Road Map">
+			                                        				<%-- <button class="editable-clicko" name="roadMapId" value="<%=obj[0] %>" formaction="RoadMapDetailsMoveBackToRoadMap.htm" onclick="return confirm('Are You Sure to Move Back to Road Map?')" data-toggle="tooltip" data-placement="top" title="Move Back to Road Map">
 																		<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -420,7 +426,7 @@ FormatConverter fc = new FormatConverter();
 																				<span>To Road Map</span>
 																			</div>
 																		</div>
-													    			</button>
+													    			</button> --%>
 											    			<%} %>
 		                                        		</form>
 													</div>
@@ -603,6 +609,28 @@ function changedatepicker2(){
 	 var year1=Number(startDate);
 	 
 	 document.getElementById("datepicker2").value = year1+4;
+}
+</script>
+
+<script type="text/javascript">
+function moveBackToRoadMapCheck(){
+	var roadMapId = $("input[name='roadMapId']").serializeArray();
+	 
+	if (roadMapId.length === 0) {
+		alert("Please Select Atleast One ASP..!");
+
+		event.preventDefault();
+		return false;
+	}else {
+		if(confirm('Are You Sure to Move Back to Road Map?')){
+			return true;
+		}else{
+			event.preventDefault();
+			return false;
+		}
+		
+	}
+	return true;
 }
 </script>
 </body>

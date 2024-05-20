@@ -257,7 +257,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 /* List<Object[]>ReqTypeList=(List<Object[]>)request.getAttribute("reqTypeList");
 List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList"); */
 List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
-Object[]SQRFile=(Object[])request.getAttribute("SQRFile");
+//Object[]SQRFile=(Object[])request.getAttribute("SQRFile");
 %>
 
 
@@ -587,7 +587,7 @@ Object[]SQRFile=(Object[])request.getAttribute("SQRFile");
 							 
 							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank" formmethod="GET" >Print Project Proposal</button>&nbsp;&nbsp;
 							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectSanction.htm"  style="background:brown;border:none;"  data-toggle="tooltip" data-placement="top" style="background:" title="Project SOC"><img alt="" src="view/images/requirement.png" style="width:19px !important">&nbsp;SOC</button>
-							<button type="button"  class="btn btn-sm prints bg-secondary" style="border:white;" onclick="showsqrModal()">SQR</button>
+							<!-- <button type="button"  class="btn btn-sm prints bg-secondary" style="border:white;" onclick="showsqrModal()">SQR</button> -->
 							<input type="hidden" name="project" value="<%=ProjectDetailes[0]+"/"+ProjectDetailes[6]+"/"+ProjectDetailes[7]%>">
 						</div>	 	
 					
@@ -2242,7 +2242,7 @@ Object[]SQRFile=(Object[])request.getAttribute("SQRFile");
 				</div>
 			</div>
 		</div>
-	<div class="modal fade bd-example-modal-lg" id="sqrModal"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<%-- <div class="modal fade bd-example-modal-lg" id="sqrModal"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content" style="margin-left:-10%;width:120%;">
         <div class="modal-header" style="background: antiquewhite;">
@@ -2366,7 +2366,8 @@ Object[]SQRFile=(Object[])request.getAttribute("SQRFile");
       </div>
     </div>
   </div>
-</div>		
+</div>	
+</div>	 --%>
 <script type="text/javascript">
 
 

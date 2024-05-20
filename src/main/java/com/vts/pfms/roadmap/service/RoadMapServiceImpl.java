@@ -104,6 +104,8 @@ public class RoadMapServiceImpl implements RoadMapService{
 			roadMap.setAimObjectives(dto.getAimObjectives());
 			roadMap.setScope(dto.getScope());
 			roadMap.setReference(dto.getReference());
+			roadMap.setOtherReference(dto.getOtherReference());
+			roadMap.setProjectCost(dto.getProjectCost());
 			
 			// Remove Previously added Road Map Annual Targets
 			dao.removeRoadMapAnnualTargets(dto.getRoadMapId());

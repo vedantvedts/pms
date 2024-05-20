@@ -236,6 +236,8 @@ float: right;
 	<%
 	String projectId =(String)request.getAttribute("projectId");
 	String attributes=(String)request.getAttribute("attributes");
+	String reqInitiationId = (String)request.getAttribute("reqInitiationId");
+	String productTreeMainId = (String)request.getAttribute("productTreeMainId");
 	%>
 		<nav class="navbar navbar-light bg-light justify-content-between" style="margin-top: -1%">
 			<a class="navbar-brand"> 
@@ -247,7 +249,9 @@ float: right;
 			<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 			<input type="hidden" name="projectId" value="<%=projectId%>">
-			<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="Requirements.htm" formmethod="get" formnovalidate="formnovalidate" style="float: right;">BACK</button>
+			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+			<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectRequirementDetails.htm" formmethod="get" formnovalidate="formnovalidate" style="float: right;">BACK</button>
 			</form>
 		</nav>
 <%String ses=(String)request.getParameter("result"); 
@@ -367,8 +371,9 @@ float: right;
 									<textarea name="Details" style="display: none;"></textarea>
 									<div class="mt-2" align="center" id="detailsSubmit">
 										<span id="EditorDetails"></span> 
-										 <input
-											type="hidden" name="projectId" value="<%=projectId%>">
+										 <input type="hidden" name="projectId" value="<%=projectId%>">
+										 <input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+										 <input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 											<input type="hidden" id="attributes" name="attributes" value="Introduction">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <span id="Editorspan">
 											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button></span>
@@ -403,7 +408,9 @@ float: right;
 											</div>
 											<form action="PreProjectFileUpload.htm">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									type="hidden" name="projectId" value="<%=projectId%>">
+											<input type="hidden" name="projectId" value="<%=projectId%>" /> 
+											<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>" /> 
+											<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>" /> 
 											<button type="submit"class="btn btn-sm btn-info mt-2" id="adddoc">Add Documents</button>
 											</form>
 			</div>
@@ -550,6 +557,7 @@ float: right;
 				datatype:'json',
 				data:{
 					projectId:<%=projectId%>,
+					reqInitiationId:<%=reqInitiationId%>,
 				},
 				success:function(result){
 		var ajaxresult=JSON.parse(result);
@@ -632,6 +640,7 @@ float: right;
 			  data:{
 				  stepid:1,
 				  projectId:<%=projectId%>,
+				  reqInitiationId:<%=reqInitiationId%>,
 			  },
 			  success:function(result){
 				  var ajaxresult=JSON.parse(result);

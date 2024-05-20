@@ -1,4 +1,4 @@
-<%@page import="com.vts.pfms.roadmap.model.RoadMap"%>
+<%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Road Map Transaction</title>
+<title>Requirement Transaction</title>
 <style>
 
 .break{
@@ -113,7 +113,7 @@ p,td,th
 <body>
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("transactionList");
-RoadMap roadMap = (RoadMap)request.getAttribute("roadMapDetails"); 
+RequirementInitiation reqInitiation = (RequirementInitiation)request.getAttribute("requirementInitiationDetails"); 
 
 SimpleDateFormat month=new SimpleDateFormat("MMM");
 SimpleDateFormat day=new SimpleDateFormat("dd");
@@ -123,7 +123,7 @@ SimpleDateFormat time=new SimpleDateFormat("HH:mm");
 
 <table id="tabledata">
 	<tr>
-		<td colspan="2" style="text-align: center;"><%=roadMap.getProjectTitle()%> </td>
+		<td colspan="2" style="text-align: center;">v<%=reqInitiation.getReqVersion()%> </td>
 	</tr>
 	<%if(statuslist!=null && statuslist.size()>0) {
 		for(Object[] obj : statuslist){

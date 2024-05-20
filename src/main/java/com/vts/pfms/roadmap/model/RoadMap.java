@@ -59,6 +59,10 @@ public class RoadMap implements Serializable{
 	private long Duration;
 	@Column(name = "Reference")
 	private String Reference;
+	@Column(name = "OtherReference")
+	private String OtherReference;
+	@Column(name = "ProjectCost")
+	private String ProjectCost;
 	@Column(name = "Scope")
 	private String Scope;
 	@Column(name = "MovedToASP")

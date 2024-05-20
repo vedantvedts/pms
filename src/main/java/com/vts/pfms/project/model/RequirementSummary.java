@@ -17,7 +17,7 @@ public class RequirementSummary {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long SummaryId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String AdditionalInformation;
 	private String Abstract;
 	private String Keywords;
@@ -29,6 +29,7 @@ public class RequirementSummary {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
 	private String PreparedBy;
+	private Long ReqInitiationId;
 }

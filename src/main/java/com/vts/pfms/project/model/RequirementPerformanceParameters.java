@@ -22,10 +22,11 @@ public class RequirementPerformanceParameters {
 	
 	private String KeyValues;
 	
-	private Long InitiationId;
+//	private Long InitiationId;
 	
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
+	private Long ReqInitiationId;
 	
 	
 }

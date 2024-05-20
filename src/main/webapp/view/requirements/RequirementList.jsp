@@ -1,4 +1,5 @@
- <%@page import="com.vts.pfms.NFormatConvertion"%>
+ <%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
+<%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.Month"%>
@@ -327,9 +328,11 @@ float: right;
 </head>
 <body>
 <%
-String initiationid = (String)request.getAttribute("initiationid");
+String initiationId = (String)request.getAttribute("initiationId");
 String project = (String)request.getAttribute("project");
 String projectId = (String)request.getAttribute("projectId");
+String productTreeMainId = (String)request.getAttribute("productTreeMainId");
+String reqInitiationId = (String)request.getAttribute("reqInitiationId");
 
 String subId=(String)request.getAttribute("subId");
 
@@ -363,25 +366,26 @@ if(VerificationMethodList!=null && !VerificationMethodList.isEmpty()){
 }
 List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
 
+//RequirementInitiation reqInitiation = (RequirementInitiation)request.getAttribute("reqInitiation");
+//String status = reqInitiation!=null?reqInitiation.getReqStatusCode():"RIN";
+//List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
+	<%String ses=(String)request.getParameter("result"); 
+ 	String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){ %>
+		<div align="center">
 	
-
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
+			<div class="alert alert-danger" role="alert">
+				<%=ses1 %>
+			</div>
 		</div>
-	</div>
 	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
+		<div align="center">
+			<div class="alert alert-success" role="alert">
+				<%=ses %>
+			</div>
 		</div>
-	</div>
 	<%} %>
 	<div id="reqmain" class="card-slider">
 
@@ -389,23 +393,24 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card shadow-nohover" style="margin-top: -0px;">
-						<div class="row card-header"
-							style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
+						<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 							<div class="col-md-9" id="projecthead">
 								<h5 style="margin-left: 1%;">
 									Requirements
 								</h5>
-								</div>
-								<div class="col-md-3" id="addReqButton">
+							</div>
+							<div class="col-md-3" id="addReqButton">
 								<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 								<button class="btn btn-success btn-sm submit" style=""
 										type="button" onclick='showdata()' data-toggle="tooltip"
 										data-placement="top" data-original-data=""
 										title="Link REQUIREMENTS">ADD HEADINGS</button>
-								<%if(!initiationid.equalsIgnoreCase("0")){ %>
+								<%if(!initiationId.equalsIgnoreCase("0")){ %>
 								<form action="#">
-										<input type="hidden" name="project"
-										value="<%=project%>">
+										<input type="hidden" name="project" value="<%=project%>">
+										<input type="hidden" name="initiationId" value=<%=initiationId %>>
+										<input type="hidden" name="reqInitiationId" value=<%=reqInitiationId %>>
+										<input type="hidden" name="productTreeMainId" value=<%=productTreeMainId %>>
 										<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 										<button class="btn btn-info btn-sm  back ml-2"
 										formaction="ProjectOverAllRequirement.htm" formmethod="get"
@@ -417,54 +422,53 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 								<form action="#">
 									
 									<input type="hidden" name="projectId" value=<%=projectId %>>
+									<input type="hidden" name="productTreeMainId" value=<%=productTreeMainId %>>
+									<input type="hidden" name="reqInitiationId" value=<%=reqInitiationId %>>
 										<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 									<button class="btn btn-info btn-sm  back ml-2"
-										formaction="Requirements.htm" formmethod="get"
+										formaction="ProjectRequirementDetails.htm" formmethod="get"
 										formnovalidate="formnovalidate" style="margin-top: -3%;">BACK</button>
 								</form>
 								<%} %>
 								
 							</div>	
 								
-								
-								</div>
-								</div>
-								</div>
-								</div>
-								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<%if((subReqList!=null) &&(!subReqList.isEmpty())){ %>
-		<div class="requirementid"
-			style="display:block;<%if(subReqList.size()>9){%>height:500px;<%}%>">
+		<div class="requirementid" style="display:block;<%if(subReqList.size()>9){%>height:500px;<%}%>">
 
 			<%int count=0;
-			for(Object []obj:subReqList) {%>
-			<button  type="button" class="btn btn-secondary viewbtn mt-2" style="width:88%"
-				id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')"> <%=(++count)+". "+ obj[3] %> </button>
-				<button style="width:10%;background: white;" class="btn btn-sm" onclick="openSubReqModal(<%=obj[14].toString()%>,<%=obj[0].toString()%>)"   data-toggle="tooltip"
-										data-placement="bottom" data-original-data=""
-										title="ADD REQ"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
-			<div class="col-md-10 subDiv" id="subDiv<%=obj[0].toString()%>" style="display:none;" >
-			<%
-			List<Object[]>subList=RequirementList.stream().filter(e->e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
-			if(subList!=null && subList.size()>0){
-				subList = subList.stream().sorted(Comparator.comparingInt(e -> Integer.parseInt(e[14].toString()))).collect(Collectors.toList());
-				int subcount=0;
-			for(Object[] obj1:subList){
-			%>	
+				for(Object []obj:subReqList) {%>
+					<button  type="button" class="btn btn-secondary viewbtn mt-2" style="width:88%" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
+						 <%=(++count)+". "+ obj[3] %>
+					</button>
+					<button style="width:10%;background: white;" class="btn btn-sm" onclick="openSubReqModal(<%=obj[14].toString()%>,<%=obj[0].toString()%>)" data-toggle="tooltip" data-placement="bottom" data-original-data="" title="ADD REQ">
+						<i class="fa fa-plus-square" aria-hidden="true"></i>
+					</button>
+					<div class="col-md-10 subDiv" id="subDiv<%=obj[0].toString()%>" style="display:none;" >
+					
+						<% List<Object[]>subList=RequirementList.stream().filter(e->e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+							if(subList!=null && subList.size()>0){
+								subList = subList.stream().sorted(Comparator.comparingInt(e -> Integer.parseInt(e[14].toString()))).collect(Collectors.toList());
+								int subcount=0;
+									for(Object[] obj1:subList){
+						%>	
 			
 				
-			<button type="button" class="btn btn-secondary viewbtn mt-2" id="<%=obj1[0] %>" value="<%=obj1[0]%>"  onclick="showDetailss(<%=obj1[0].toString()%>,<%=obj[0].toString()%>)" >
-			<i class="fa fa-caret-right" aria-hidden="true" style="color:white;"></i> &nbsp;  
-			<%=count+"."+(++subcount)+". "+  obj1[1] %></button>
-				
-				
-			
-			<%} }%>
-				</div>
+							<button type="button" class="btn btn-secondary viewbtn mt-2" id="<%=obj1[0] %>" value="<%=obj1[0]%>"  onclick="showDetailss(<%=obj1[0].toString()%>,<%=obj[0].toString()%>)" >
+								<i class="fa fa-caret-right" aria-hidden="true" style="color:white;"></i> &nbsp;  
+								<%=count+"."+(++subcount)+". "+  obj1[1] %>
+							</button>
+						<%} }%>
+					</div>
 			<%} %>
 		</div>	
 		
-					<div class="container" id="container">
+		<div class="container" id="container">
 			<div class="row">
 				<div class="col-md-12" id="reqdiv">
 					<div class="card-body" id="cardbody">
@@ -481,7 +485,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 								</h5>
 
 							</div>
-						<div class="col-md-3" style="" id="editreq"></div>
+							<div class="col-md-3" style="" id="editreq"></div>
 							<div class="col-md-12" style="">
 								<p id="brief" style="font-size: 18px;"></p>
 								<hr>
@@ -501,8 +505,8 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 												<h5 style="font-size: 22px; color: #005086;" id="priority">Priority
 													:</h5>
 											</div>
-										<div class="col-md-6"><p id="Prioritytext" style="font-size: 18px;"></p>
-										</div>
+											<div class="col-md-6"><p id="Prioritytext" style="font-size: 18px;"></p>
+											</div>
 										</div>
 									</div>
 									<div class="col-md-3" style="">
@@ -511,8 +515,8 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 												<h5 style="font-size: 22px; color: #005086;" id="priority">Criticality
 													:</h5>
 											</div>
-										<div class="col-md-6"><p id="CriticalityText" style="font-size: 18px;"></p>
-										</div>
+											<div class="col-md-6"><p id="CriticalityText" style="font-size: 18px;"></p>
+											</div>
 										</div>
 									</div>
 									<hr>
@@ -523,11 +527,9 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 												<h5 style="font-size: 22px; color: #005086;" id="priority">Need
 													Type :</h5>
 											</div>
-										<div class="col-md-5">	<p id="needtypetext" style="font-size: 18px;"></p></div>
+											<div class="col-md-5">	<p id="needtypetext" style="font-size: 18px;"></p></div>
 										</div>
 									</div>
-
-
 								</div>
 								<hr>
 							</div>
@@ -546,30 +548,27 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 							</div> -->
 
 							<div class="col-md-12" style="">
-								<h5 style="font-size: 22px; color: #005086; width: fit-content">Description
-								</h5>
-
+								<h5 style="font-size: 22px; color: #005086; width: fit-content">Description</h5>
 							</div>
 							<div class="col-md-12" style="">
 								<p id="description" style="font-size: 18px;"></p>
 								<hr>
 							</div>
-						
 
-			 					<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-2" style="margin-top: 1%">
-											<h5
-												style="font-size: 20px; color: #005086; width: fit-content">Remarks:
-											</h5>
-										</div>
-
-										<div class="col-md-10" style="margin-top: 1%;">
-											<p id="remarksshow" style="font-size: 18px;"></p>
-										</div>
-
+		 					<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Remarks:
+										</h5>
 									</div>
-								</div> 
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="remarksshow" style="font-size: 18px;"></p>
+									</div>
+
+								</div>
+							</div> 
 				<!-- 				<hr>
 								<div class="col-md-12">
 									<div class="row">
@@ -590,99 +589,94 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 			</div>
 			<%} %>		
 								
-</div>
-								
-								
-								
-								</div>
+		</div>
+	</div>
 
 
-<!--  Modal for Selecting Requirements -->
-<form action="#" method="POST">	         	  	
-  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-jump" role="document">
-    <div class="modal-content mt-5" style="width:120%; margin-left:-10%;">
-      <div class="modal-header p-1 pl-3" style="background: #C4DDFF">
-        <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Requirements</h5>
-        <button type="button" class="close text-danger mr-1" data-dismiss="modal" aria-label="Close">
-          <span class="font-weight-bolder" aria-hidden="true" style="opacity:1;">&times;</span>
-        </button>
-      </div>
-         <hr class="mt-2">
-     <%if(!requirementTypeList.isEmpty()){ %>
-       <div class="modal-body" style="display:flex;justify-content: center;align-items:center;"><div>
-    <%for(Object[]obj:requirementTypeList){ %>
-       <input name="ReqValue" type="checkbox" value="<%=obj[0].toString()+"/"+obj[1].toString()+"/"+obj[3].toString()%>">
-       <input name="ReqNames" type="hidden" value="<%=obj[1].toString()%>">
-       <span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1].toString() %></span><br>
-       <%}%>
+	<!--  Modal for Selecting Requirements -->
+	<form action="#" method="POST">	         	  	
+  		<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  			<div class="modal-dialog modal-dialog-jump" role="document">
+    			<div class="modal-content mt-5" style="width:120%; margin-left:-10%;">
+      				<div class="modal-header p-1 pl-3" style="background: #C4DDFF">
+        				<h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Requirements</h5>
+				        <button type="button" class="close text-danger mr-1" data-dismiss="modal" aria-label="Close">
+				          <span class="font-weight-bolder" aria-hidden="true" style="opacity:1;">&times;</span>
+				        </button>
+      				</div>
+         			<hr class="mt-2">
+     				<%if(!requirementTypeList.isEmpty()){ %>
+       					<div class="modal-body" style="display:flex;justify-content: center;align-items:center;">
+       						<div>
+    							<%for(Object[]obj:requirementTypeList){ %>
+						       		<input name="ReqValue" type="checkbox" value="<%=obj[0].toString()+"/"+obj[1].toString()+"/"+obj[3].toString()%>">
+						       		<input name="ReqNames" type="hidden" value="<%=obj[1].toString()%>">
+						       		<span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1].toString() %></span><br>
+       							<%}%>
        
-      <!--  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  		ADD NEW
-		</button> -->
-       </div>
-    	</div>
-   		<%}else{ %>
-        <div class="modal-body" style="display:flex;justify-content: center;align-items:center;">
-       <span class="text-primary">No system requirements to Add</span>
-         </div>
-       <%} %>
-      <hr class="mb-2">
-      <div class="p-2" align="center">
-      			    <input type="hidden" name="project" value="<%=project%>">
-	    			<input type="hidden" name="initiationid" value="<%=initiationid%>">
-	    			<input type="hidden" name="projectId" value="<%=projectId%>">
-					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-        		<%if(!requirementTypeList.isEmpty()){ %>	<button type="button" class="btn btn-sm btn-success submit" onclick="reqSubmit()">SUBMIT</button><%} %>
-      </div>
-    </div>
-  </div>
-</div>   	
-  </form> 
+						      	<!--  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+						  			ADD NEW
+								</button> -->
+       						</div>
+    					</div>
+   					<%}else{ %>
+        				<div class="modal-body" style="display:flex;justify-content: center;align-items:center;">
+       						<span class="text-primary">No system requirements to Add</span>
+         				</div>
+       				<%} %>
+      				<hr class="mb-2">
+      				<div class="p-2" align="center">
+	      			    <input type="hidden" name="project" value="<%=project%>">
+		    			<input type="hidden" name="initiationId" value="<%=initiationId%>">
+		    			<input type="hidden" name="projectId" value="<%=projectId%>">
+		    			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+		    			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+        				<%if(!requirementTypeList.isEmpty()){ %>	
+        					<button type="button" class="btn btn-sm btn-success submit btn-req" onclick="reqSubmit()">SUBMIT</button>
+        				<%} %>
+      				</div>
+				</div>
+			</div>
+		</div>   	
+	</form> 
 
 
 
-<!-- modal for Description Edit  -->
+	<!-- modal for Description Edit  -->
 
-		<form class="form-horizontal" role="form"
-			action="RequirementEdit.htm" method="POST" id="myform1">
-			<div class="modal fade bd-example-modal-lg" id="AddReqModal"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-jump">
-					<div class="modal-content addreq" style="width: 150%;">
-						<div class="modal-header" id="modalreqheader">
-							<h5 class="modal-title" id="exampleModalLabel">Requirements</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
+	<form class="form-horizontal" role="form" action="RequirementEdit.htm" method="POST" id="myform1">
+		<div class="modal fade bd-example-modal-lg" id="AddReqModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-jump">
+				<div class="modal-content addreq" style="width: 150%;">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Requirements</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
 				
-							<div class="modal-body">
-					
-		
-
-									<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-6">
-												<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
-													Description:<span class="mandatory" style="color: red;">*</span>
-												</label>
-											</div>
-										</div>
+					<div class="modal-body">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6">
+									<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
+										Description:<span class="mandatory" style="color: red;">*</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-12" id="textarea" style="">
+									<div class="form-group">
+										<textarea  name="description"
+											class="form-control" id="descriptionadd" maxlength="4000"
+											rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 									</div>
-									<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-12" id="textarea" style="">
-												<div class="form-group">
-													<textarea  name="description"
-														class="form-control" id="descriptionadd" maxlength="4000"
-														rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
-												</div>
-											</div>
-										</div>
-									</div>
+								</div>
+							</div>
+						</div>
 <!-- 				
 								<!-- 	<div class=col-md-12>
 										<div class="row">
@@ -704,744 +698,616 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 		
 
 							
-									<div class="form-group" align="center" style="margin-top: 3%;">
-										<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" />
-										<button type="submit" class="btn btn-primary btn-sm edit"
-											id="add" name="action" value="SUBMIT"
-											onclick="return confirm('Are you sure to submit?');">UPDATE</button>
-								<input type="hidden" name="projectId" value=<%=projectId %>>
-								<input type="hidden" name="initiationid" value=<%=initiationid %>>
-								<input type="hidden" name="project" value=<%=project %>>
-								<input type="hidden" id="InitiationReqId" name="InitiationReqId" value="">
+						<div class="form-group" align="center" style="margin-top: 3%;">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button type="submit" class="btn btn-primary btn-sm edit btn-req" id="add" name="action" value="SUBMIT" onclick="return confirm('Are you sure to submit?');">UPDATE</button>
+							<input type="hidden" name="projectId" value=<%=projectId %>>
+							<input type="hidden" name="initiationId" value=<%=initiationId %>>
+							<input type="hidden" name="project" value=<%=project %>>
+							<input type="hidden" id="InitiationReqId" name="InitiationReqId" value="">
+							<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+							<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+				<!-- </div> -->
+		
+	</form>
+
+
+	<!-- Modal for edit Sub Requirements  -->
+		
+	<form class="form-horizontal" role="form"action="RequirementUpdate.htm" method="POST" id="myform2">
+		<div class="modal fade bd-example-modal-lg" id="AddReqModal1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-jump">
+				<div class="modal-content addreq" style="width: 150%;">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Requirements</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				
+					<div class="modal-body">
+						<div style="height: 550px; overflow: auto;" id="scrollclass">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-3">
+										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+											Linked Para
+										</label>
+									</div>
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<%if ((ProjectParaDetails != null) && (!ProjectParaDetails.isEmpty())) {%>
+												<select class="form-control selectdee" name="LinkedPara" id="LinkedParaEdit" data-width="80%" data-live-search="true" multiple onchange="">
+													<option value="" disabled="disabled">---Choose----</option>
+													<%for (Object[] obj : ProjectParaDetails) {%>
+														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+													<%}%>
+												</select>
+											<%} else {%>
+												<input class="form-control" name=""id="LinkedParaEdit" readonly placeholder="No para specified for Project">
+											<%} %>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-
-				</div>
-		
-		</form>
-
-
-		<!-- Modal for edit Sub Requirements  -->
-		
-		
-				<form class="form-horizontal" role="form"action="RequirementUpdate.htm" method="POST" id="myform2">
-			<div class="modal fade bd-example-modal-lg" id="AddReqModal1"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-jump">
-					<div class="modal-content addreq" style="width: 150%;">
-						<div class="modal-header" id="modalreqheader">
-							<h5 class="modal-title" id="exampleModalLabel">Requirements</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-				
-							<div class="modal-body">
-								<div style="height: 550px; overflow: auto;" id="scrollclass">
-																<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-3">
-												<label
-													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
-													Para</label>
-											</div>
-											<div class="col-md-7" style="margin-top: 1%;">
-												<div class="form-group">
-													<%
-													if ((ProjectParaDetails != null) && (!ProjectParaDetails.isEmpty())) {
-													%>
-													<select class="form-control selectdee" name="LinkedPara"
-														id="LinkedParaEdit" data-width="80%" data-live-search="true"
-														multiple onchange="">
-														<option value="" disabled="disabled">---Choose----</option>
-														<%
-														for (Object[] obj : ProjectParaDetails) {
-														%>
-														<option value="<%=obj[0]%>"><%=obj[3]%></option>
-														<%
-														}
-														%>
-													</select>
-													<%
-													} else {
-													%>
-													<input class="form-control" name=""
-														id="LinkedParaEdit"  readonly
-														placeholder="No para specified for Project">
-													<%} %>
-												</div>
-											</div>
-										</div>
+							
+							<div class="col-md-12">
+								<div class="row">
+									<div class=col-md-3>
+										<label style="font-size: 17px; margin-top: 7%;  color: #07689f">
+											Priority<span class="mandatory" style="color: red;">*</span>
+										</label>
 									</div>
-							
-							
-								<div class="col-md-12">
-									<div class="row">
-										<div class=col-md-3>
-											<label
-												style="font-size: 17px; margin-top: 7%;  color: #07689f">Priority<span
-												class="mandatory" style="color: red;">*</span></label>
-										</div>
-										<div class=col-md-3>
-											<select id="priorityedit" name="priority"
-												class="form-control selectpicker" data-width="80%"
-												data-live-search="true" style="margin-top: 5%">
-												<option disabled="disabled" value="" selected="selected">Choose..</option>
-												<option value="1">1</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-												<option value="4">4</option>
-												<option value="5">5</option>
-											</select>
-										</div>
+									<div class=col-md-3>
+										<select id="priorityedit" name="priority" class="form-control selectpicker" data-width="80%" data-live-search="true" style="margin-top: 5%">
+											<option disabled="disabled" value="" selected="selected">Choose..</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+										</select>
+									</div>
 										
 											
-													<div class="col-md-4 mt-3">
-												<label
-													style="font-size: 17px;  color: #07689f">Need
-													Type<span class="mandatory" style="color: red;">*</span>
-												</label>
-												&nbsp;&nbsp;<input name="needtype"  type="radio" value="E" id="essentialRadio">&nbsp;&nbsp; Essential&nbsp;&nbsp;
-												&nbsp;&nbsp;<input name="needtype" type="radio" value="D" id="desirableRadio">&nbsp;&nbsp; Desirable&nbsp;&nbsp;
-											</div>
+									<div class="col-md-4 mt-3">
+										<label style="font-size: 17px;  color: #07689f">
+											Need Type<span class="mandatory" style="color: red;">*</span>
+										</label>
+										&nbsp;&nbsp;<input name="needtype"  type="radio" value="E" id="essentialRadio">&nbsp;&nbsp; Essential&nbsp;&nbsp;
+										&nbsp;&nbsp;<input name="needtype" type="radio" value="D" id="desirableRadio">&nbsp;&nbsp; Desirable&nbsp;&nbsp;
+									</div>
 										
-									</div>
-									</div>
+								</div>
+							</div>
 									
-								<div class="col-md-12">	
-									<div class="row">
-																	<div class=col-md-3>
-											<label
-												style="font-size: 17px; margin-top: 7%;  color: #07689f;">Criticality<span
-												class="mandatory" style="color: red;">*</span></label>
-										</div>
+							<div class="col-md-12">	
+								<div class="row">
+									<div class=col-md-3>
+										<label style="font-size: 17px; margin-top: 7%;  color: #07689f;">
+											Criticality<span class="mandatory" style="color: red;">*</span>
+										</label>
+									</div>
 									<div class=col-md-2>
-											<select  name="criticality" id="criticalityedit"
-												class="form-control selectpicker" data-width="80%"
-												data-live-search="true" style="margin-top: 5%">
-												<option disabled="disabled" value="" selected="selected">Choose..</option>
-												<option value="very Low">Very Low</option>
-												<option value="Low">Low</option>
-												<option value="Medium">Medium</option>
-												<option value="High">High</option>
-												<option value="Very High">Very High</option>
-											</select>
-										</div>
+										<select  name="criticality" id="criticalityedit" class="form-control selectpicker" data-width="80%" data-live-search="true" style="margin-top: 5%">
+											<option disabled="disabled" value="" selected="selected">Choose..</option>
+											<option value="very Low">Very Low</option>
+											<option value="Low">Low</option>
+											<option value="Medium">Medium</option>
+											<option value="High">High</option>
+											<option value="Very High">Very High</option>
+										</select>
 									</div>
-									</div>
+								</div>
+							</div>
 									
-									
-									<div class="col-md-12" style="margin-top: 1%">
-									<div class="row">
+							<div class="col-md-12" style="margin-top: 1%">
+								<div class="row">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Constraints :<span class="mandatory" style="color: red;">*</span></label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Constraints :<span class="mandatory" style="color: red;">*</span>
+										</label>
 									</div>
 									<div class="col-md-7">  
-									<input type="text" class="form-control" name="Constraints"  id="Constraintsedit" required maxlength="255" placeholder="max 255 characters">
+										<input type="text" class="form-control" name="Constraints"  id="Constraintsedit" required maxlength="255" placeholder="max 255 characters">
 									</div>
-									</div>
-									</div>
+								</div>
+							</div>
 									
 									
-												<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-6">
-												<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
-													Description:<span class="mandatory" style="color: red;">*</span>
-												</label>
-											</div>
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-6">
+										<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
+											Description:<span class="mandatory" style="color: red;">*</span>
+										</label>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12" id="textarea" style="">
+										<div class="form-group">
+											<textarea  name="description" class="form-control" id="descriptionedit" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 										</div>
 									</div>
-									<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-12" id="textarea" style="">
-												<div class="form-group">
-													<textarea  name="description"
-														class="form-control" id="descriptionedit" maxlength="4000"
-														rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
-												</div>
-											</div>
-										</div>
-									</div>
+								</div>
+							</div>
 									
-									<div class="col-md-12">
-									<div class="row">
+							<div class="col-md-12">
+								<div class="row">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Demonstration:<span class="mandatory" style="color: red;">*</span></label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Demonstration:<span class="mandatory" style="color: red;">*</span>
+										</label>
 									</div>
 									
-											<div class="col-md-7" style="margin-top: 1%;">
-												<div class="form-group">
-
-													
-													<select class="form-control selectdee" 
-														name="Demonstration" id="Demonstrationedit"
-														data-width="80%" data-live-search="true" multiple
-														>
-														<option value="" disabled="disabled">---Choose----</option>
-														<!-- <option value="0">NA ( Not Applicable )</option> -->
-														<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
-														int count=0;
-														%>
-														<%for(Object[] obj:DemonstrationList){ %>
-														<option value="<%="D"+(++count) %>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-														<%}%>
-													</select>
-													
-												
-												</div>
-											</div>
-									
-									
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="Demonstration" id="Demonstrationedit" data-width="80%" data-live-search="true" multiple>
+												<option value="" disabled="disabled">---Choose----</option>
+													<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
+													int count=0;
+													for(Object[] obj:DemonstrationList){ %>
+													<option value="<%="D"+(++count) %>" title=<%=obj[3] %>><%=obj[3]%></option>
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>
+								</div>
+							</div>
 								
 					
-														<div class="col-md-12">
-									<div class="row ">
+							<div class="col-md-12">
+								<div class="row ">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Test:<span class="mandatory" style="color: red;">*</span></label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Test:<span class="mandatory" style="color: red;">*</span>
+										</label>
 									</div>
 									
-											<div class="col-md-7" style="margin-top: 1%;">
-												<div class="form-group">
-
-													
-													<select class="form-control selectdee" 
-														name="TestPlan" id="TestPlanedit"
-														data-width="80%" data-live-search="true" multiple
-														>
-														
-														<option value="" disabled="disabled">---Choose----</option>
-														<!-- <option value="0">NA ( Not Applicable )</option> -->
-														<%if((TestList!=null) &&(!TestList.isEmpty())){
-														int count=0;
-														%>
-														<%for(Object[] obj:TestList){ %>
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="TestPlan" id="TestPlanedit" data-width="80%" data-live-search="true" multiple>
+												<option value="" disabled="disabled">---Choose----</option>
+													<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<%if((TestList!=null) &&(!TestList.isEmpty())){
+													int count=0;
+													for(Object[] obj:TestList){ %>
 														<option value="T<%=++count %>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-														<%}%>
-													</select>
-													
-													
-												</div>
-											</div>
-									
-									
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>	
+								</div>
+							</div>	
 									
-									
-													<div class="col-md-12">
-									<div class="row">
+							<div class="col-md-12">
+								<div class="row">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Analysis:<span class="mandatory" style="color: red;">*</span></label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Analysis:<span class="mandatory" style="color: red;">*</span>
+										</label>
 									</div>
 									
-											<div class="col-md-7" style="margin-top: 1%;">
-												<div class="form-group">
-
-												
-													<select class="form-control selectdee" 
-														name="Analysis" id="Analysisedit"
-														data-width="80%" data-live-search="true" multiple 
-														>
-														<option value="" disabled="disabled">---Choose----</option>
-													<!-- 	<option value="0">NA ( Not Applicable )</option> -->
-														<%if((DesignList!=null) &&(!DesignList.isEmpty())){
-														int count=0;
-														%>
-														<%for(Object[] obj:DesignList){ %>
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="Analysis" id="Analysisedit" data-width="80%" data-live-search="true" multiple>
+												<option value="" disabled="disabled">---Choose----</option>
+												<!-- 	<option value="0">NA ( Not Applicable )</option> -->
+												<%if((DesignList!=null) &&(!DesignList.isEmpty())){
+													int count=0;
+													for(Object[] obj:DesignList){ %>
 														<option value="A<%=++count%>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-													    <%}%>
-													</select>
-											
-												
-												</div>
-											</div>
-									
-									
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>
+									
+								</div>
+							</div>
 									
 						
-															<div class="col-md-12">
-									<div class="row ">
+							<div class="col-md-12">
+								<div class="row ">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Inspection:<span class="mandatory" style="color: red;">*</span></label>
+									<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+										Inspection:<span class="mandatory" style="color: red;">*</span>
+									</label>
 									</div>
 									
-											<div class="col-md-7" style="margin-top: 1%;">
-												<div class="form-group">
-
-													
-													<select class="form-control selectdee" 
-														name="Inspection" id="Inspectionedit"
-														data-width="80%" data-live-search="true" multiple
-														>
-														<option value="" disabled="disabled">---Choose----</option>
-														<!-- <option value="0">NA ( Not Applicable )</option> -->
-														<%if((InspectionList!=null) &&(!InspectionList.isEmpty())){
-														int count=0;
-														%>
-														
-														<%for(Object[] obj:InspectionList){ %>
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="Inspection" id="Inspectionedit" data-width="80%" data-live-search="true" multiple>
+												<option value="" disabled="disabled">---Choose----</option>
+												<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<%if((InspectionList!=null) &&(!InspectionList.isEmpty())){
+													int count=0;
+													for(Object[] obj:InspectionList){ %>
 														<option value="I<%=++count%>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-														<%}%>
-													</select>
-													
-													 
-												</div>
-											</div>
-									
-									
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>	
+								</div>
+							</div>	
 						
-						
-									<div class="col-md-12">
-									<div class="row ">
+							<div class="col-md-12">
+								<div class="row ">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Special Methods:<span class="mandatory" style="color: red;">*</span></label>
+									<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+										Special Methods:<span class="mandatory" style="color: red;">*</span>
+									</label>
 									</div>
-									
-											<div class="col-md-7" style="margin-top: 1%;">
-												<div class="form-group">
-
-													
-													<select class="form-control selectdee" 
-														name="specialMethods" id="specialMethodsedit"
-														data-width="80%" data-live-search="true" multiple onchange="checkValue('specialMethods')"
-														>
-														<option value="" disabled="disabled">---Choose----</option>
-														<!-- <option value="0">NA ( Not Applicable )</option> -->
-														<%if((specialMethods!=null) &&(!specialMethods.isEmpty())){
+										<div class="col-md-7" style="margin-top: 1%;">
+											<div class="form-group">
+												<select class="form-control selectdee" name="specialMethods" id="specialMethodsedit" data-width="80%" data-live-search="true" multiple onchange="checkValue('specialMethods')">
+													<option value="" disabled="disabled">---Choose----</option>
+													<!-- <option value="0">NA ( Not Applicable )</option> -->
+													<%if((specialMethods!=null) &&(!specialMethods.isEmpty())){
 														int count=0;
-														%>
-														<%for(Object[] obj:specialMethods){ %>
-														<option value="S<%=++count%>" title=<%=obj[3] %>><%=obj[3]%></option>
+														for(Object[] obj:specialMethods){ %>
+															<option value="S<%=++count%>" title=<%=obj[3] %>><%=obj[3]%></option>
 														<%}%>
-												       <%}%>
-													</select>
-												
-												
-												</div>
-											</div>
-									
-									
-									</div>
-									</div>
-									
-									
-				
-						
-										<div class=col-md-12>
-										<div class="row">
-											<div class="col-md-3">
-												<label
-													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
-													<span class="mandatory" style="color: red;">*</span>
-												</label>
-											</div>
-											<div class="col-md-8" style="margin-top: 10px">
-												<div class="form-group">
-													<input type="text" name="remarks" class="form-control"
-														id="remarksedit" maxlength="255" required="required"
-														placeholder="Maximum 250 Chararcters">
-												</div>
+											       <%}%>
+												</select>
 											</div>
 										</div>
-									</div> 
+								</div>
+							</div>
+									
+							<div class=col-md-12>
+								<div class="row">
+									<div class="col-md-3">
+										<label style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">
+											Remarks <span class="mandatory" style="color: red;">*</span>
+										</label>
+									</div>
+									<div class="col-md-8" style="margin-top: 10px">
+										<div class="form-group">
+											<input type="text" name="remarks" class="form-control" id="remarksedit" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
+										</div>
+									</div>
+								</div>
+							</div> 
 						</div>
 	
 							
-									<div class="form-group" align="center" style="margin-top: 3%;">
-										<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" />
-										<button type="submit" class="btn btn-primary btn-sm edit"
-											id="add" name="action" value="SUBMIT"
-											onclick="return confirm('Are you sure to submit?');">UPDATE</button>
-								<input type="hidden" name="projectId" value=<%=projectId %>>
-								<input type="hidden" name="initiationid" value=<%=initiationid %>>
-								<input type="hidden" name="project" value=<%=project %>>
-								<input type="hidden" id="InitiationReqIdedit" name="InitiationReqId" value="">
-								<input type="hidden" id="InitiationtempId" name="MainInitiationReqId" value="">
+						<div class="form-group" align="center" style="margin-top: 3%;">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button type="submit" class="btn btn-primary btn-sm edit btn-req" id="add" name="action" value="SUBMIT" onclick="return confirm('Are you sure to submit?');">UPDATE</button>
+							<input type="hidden" name="projectId" value=<%=projectId %>>
+							<input type="hidden" name="initiationId" value=<%=initiationId %>>
+							<input type="hidden" name="project" value=<%=project %>>
+							<input type="hidden" id="InitiationReqIdedit" name="InitiationReqId" value="">
+							<input type="hidden" id="InitiationtempId" name="MainInitiationReqId" value="">
+							<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+							<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</form>
+		
+		
+	<!--  -->
+	<form class="form-horizontal" role="form" action="RequirementSubAdd.htm" method="POST" id="">
+		<div class="modal fade bd-example-modal-lg" id="subModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-jump">
+				<div class="modal-content addreq" style="width: 150%;">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Requirements</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				
+					<div class="modal-body">
+						<div style="height: 550px; overflow: auto;" id="scrollclass">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-3">
+										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+											Linked Para
+										</label>
+									</div>
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<%if ((ProjectParaDetails != null) && (!ProjectParaDetails.isEmpty())) {%>
+												<select class="form-control selectdee" name="LinkedPara" id="LinkedPara" data-width="80%" data-live-search="true" multiple onchange="">
+													<option value="" disabled="disabled">---Choose----</option>
+													<%for (Object[] obj : ProjectParaDetails) {%>
+														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+													<%}%>
+												</select>
+											<%} else {%>
+												<input class="form-control" name="" id="LinkedPara"  readonly placeholder="No para specified for Project">
+											<%} %>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-
-		
-		
-		</form>
-		
-		
-		<!--  -->
-		<form class="form-horizontal" role="form"
-			action="RequirementSubAdd.htm" method="POST" id="">
-			<div class="modal fade bd-example-modal-lg" id="subModal"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-jump">
-					<div class="modal-content addreq" style="width: 150%;">
-						<div class="modal-header" id="modalreqheader">
-							<h5 class="modal-title" id="exampleModalLabel">Requirements</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-				
-							<div class="modal-body">
-								<div style="height: 550px; overflow: auto;" id="scrollclass">
-																<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-3">
-												<label
-													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
-													Para</label>
-											</div>
-											<div class="col-md-7" style="margin-top: 1%;">
-												<div class="form-group">
-													<%
-													if ((ProjectParaDetails != null) && (!ProjectParaDetails.isEmpty())) {
-													%>
-													<select class="form-control selectdee" name="LinkedPara"
-														id="LinkedPara" data-width="80%" data-live-search="true"
-														multiple onchange="">
-														<option value="" disabled="disabled">---Choose----</option>
-														<%
-														for (Object[] obj : ProjectParaDetails) {
-														%>
-														<option value="<%=obj[0]%>"><%=obj[3]%></option>
-														<%
-														}
-														%>
-													</select>
-													<%
-													} else {
-													%>
-													<input class="form-control" name=""
-														id="LinkedPara"  readonly
-														placeholder="No para specified for Project">
-													<%} %>
-												</div>
-											</div>
-										</div>
-									</div>
 								
-								
-								
-								
-								<div class="col-md-12">
+							<div class="col-md-12">
 								<div class="row mt-2">
-								<div class=col-md-3>
-											<label
-												style="font-size: 17px; margin-top: 7%;  color: #07689f">Requirement Type:<span
-												class="mandatory" style="color: red;">*</span></label>
-										</div>
-								<div class="col-md-4">
-										<select required="required"  class="form-control selectpicker" data-width="100%" id="reqType" name="reqType" >
-										
-										</select>
-								</div>
-								<div class="col-md-4">
-												<label
-													style="font-size: 17px;  color: #07689f">Need
-													Type<span class="mandatory" style="color: red;">*</span>
-												</label>
-												&nbsp;&nbsp;<input name="needtype"  type="radio" value="E" checked>&nbsp;&nbsp; Essential&nbsp;&nbsp;
-												&nbsp;&nbsp;<input name="needtype" type="radio" value="D">&nbsp;&nbsp; Desirable&nbsp;&nbsp;
-											</div>
-								
+									<div class=col-md-3>
+										<label style="font-size: 17px; margin-top: 7%;  color: #07689f">
+											Requirement Type:<span class="mandatory" style="color: red;">*</span>
+										</label>
+									</div>
+									<div class="col-md-4">
+										<select required="required"  class="form-control selectpicker" data-width="100%" id="reqType" name="reqType" ></select>
+									</div>
+									<div class="col-md-4">
+										<label style="font-size: 17px;  color: #07689f">
+											Need Type<span class="mandatory" style="color: red;">*</span>
+										</label>
+										&nbsp;&nbsp;<input name="needtype"  type="radio" value="E" checked>&nbsp;&nbsp; Essential&nbsp;&nbsp;
+										&nbsp;&nbsp;<input name="needtype" type="radio" value="D">&nbsp;&nbsp; Desirable&nbsp;&nbsp;
+									</div>
 								
 								</div>
-									<div class="row mt-2">
-										<div class=col-md-3>
-											<label
-												style="font-size: 17px; margin-top: 7%;  color: #07689f;">Priority<span
-												class="mandatory" style="color: red;">*</span></label>
-										</div>
-										<div class=col-md-2>
-											<select id="priorityAdd" name="priority"
-												class="form-control selectpicker" data-width="80%"
-												data-live-search="true" style="margin-top: 5%">
-												<option disabled="disabled" value="" selected="selected">Choose..</option>
-												<option value="1">1</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-												<option value="4">4</option>
-												<option value="5">5</option>
-											</select>
-										</div>
-											<div class=col-md-2>
-											<label style="font-size: 17px; margin-top: 7%;  color: #07689f;float:right;">Criticality</label>
-										</div>
+								
+								<div class="row mt-2">
+									<div class=col-md-3>
+										<label style="font-size: 17px; margin-top: 7%;  color: #07689f;">
+											Priority<span class="mandatory" style="color: red;">*</span>
+										</label>
+									</div>
 									<div class=col-md-2>
-											<select id="" name="criticality"
-												class="form-control selectpicker" data-width="80%"
-												data-live-search="true" style="margin-top: 5%">
-												<option disabled="disabled" value="" selected="selected">Choose..</option>
-												<option value="Very Low">Very Low</option>
-												<option value="Low">Low</option>
-												<option value="Medium">Medium</option>
-												<option value="High">High</option>
-												<option value="Very High">Very High</option>
-											</select>
-										</div>
+										<select id="priorityAdd" name="priority" class="form-control selectpicker" data-width="80%" data-live-search="true" style="margin-top: 5%">
+											<option disabled="disabled" value="" selected="selected">Choose..</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+										</select>
+									</div>
+									<div class=col-md-2>
+										<label style="font-size: 17px; margin-top: 7%;  color: #07689f;float:right;">
+											Criticality
+										</label>
+									</div>
+									<div class=col-md-2>
+										<select id="" name="criticality" class="form-control selectpicker" data-width="80%" data-live-search="true" style="margin-top: 5%">
+											<option disabled="disabled" value="" selected="selected">Choose..</option>
+											<option value="Very Low">Very Low</option>
+											<option value="Low">Low</option>
+											<option value="Medium">Medium</option>
+											<option value="High">High</option>
+											<option value="Very High">Very High</option>
+										</select>
+									</div>
 										
-									</div>
-									</div>
-									<div class="col-md-12" style="margin-top: 1%">
-									<div class="row">
+								</div>
+							</div>
+							
+							<div class="col-md-12" style="margin-top: 1%">
+								<div class="row">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Constraints :<span class="mandatory" style="color: red;">*</span></label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Constraints :<span class="mandatory" style="color: red;">*</span>
+										</label>
 									</div>
 									<div class="col-md-7">  
-									<input type="text" class="form-control" name="Constraints" required maxlength="255" placeholder="max 255 characters">
+										<input type="text" class="form-control" name="Constraints" required maxlength="255" placeholder="max 255 characters">
 									</div>
-									</div>
-									</div>
+								</div>
+							</div>
 									
-										<div class="col-md-12 mt-2">
-										<div class="row mt-2">
-											<div class="col-md-6">
-												<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
-													Description:<span class="mandatory" style="color: red;">*</span>
-												</label>
-											</div>
+							<div class="col-md-12 mt-2">
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label style="margin: 0px; font-size: 17px; color: #07689f">
+											Requirement Description:<span class="mandatory" style="color: red;">*</span>
+										</label>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12" id="textarea" style="">
+										<div class="form-group">
+											<textarea  name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 										</div>
 									</div>
-									<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-12" id="textarea" style="">
-												<div class="form-group">
-													<textarea  name="description"
-														class="form-control" id="descriptionadd" maxlength="4000"
-														rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
-												</div>
-											</div>
-										</div>
-									</div>
+								</div>
+							</div>
 									
-									<div class="col-md-12">
-									<div class="row">
+							<div class="col-md-12">
+								<div class="row">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Demonstration:</label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Demonstration:
+										</label>
 									</div>
 									
-											<div class="col-md-9" style="margin-top: 1%;">
-												<div class="form-group">
-
-													
-													<select class="form-control selectdee" 
-														name="Demonstration" id="Demonstration"
-														data-width="80%" data-live-search="true" multiple
-														>
-														<option value="" disabled="disabled">---Choose----</option>
-														<!-- <option value="0">NA ( Not Applicable )</option> -->
-														<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
-														int count=0;
-														%>
-														<%for(Object[] obj:DemonstrationList){ %>
+									<div class="col-md-9" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="Demonstration" id="Demonstration" data-width="80%" data-live-search="true" multiple>
+												<option value="" disabled="disabled">---Choose----</option>
+												<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
+													int count=0;
+													for(Object[] obj:DemonstrationList){ %>
 														<option value="<%="D"+(++count) %>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-														<%}%>
-													</select>
-													
-												
-												</div>
-											</div>
-									
-									
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>
+								</div>
+							</div>
 								
 					
-														<div class="col-md-12">
-									<div class="row ">
+							<div class="col-md-12">
+								<div class="row ">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Test:</label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Test:
+										</label>
 									</div>
 									
-											<div class="col-md-9" style="margin-top: 1%;">
-												<div class="form-group">
-
-													
-													<select class="form-control selectdee" 
-														name="TestPlan" id="TestPlan"
-														data-width="80%" data-live-search="true" multiple
-														>
-														
-														<option value="" disabled="disabled">---Choose----</option>
-														<!-- <option value="0">NA ( Not Applicable )</option> -->
-														<%if((TestList!=null) &&(!TestList.isEmpty())){
-														int count=0;
-														%>
-														<%for(Object[] obj:TestList){ %>
+									<div class="col-md-9" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="TestPlan" id="TestPlan" data-width="80%" data-live-search="true" multiple>
+												<option value="" disabled="disabled">---Choose----</option>
+												<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<%if((TestList!=null) &&(!TestList.isEmpty())){
+													int count=0;
+													for(Object[] obj:TestList){ %>
 														<option value="T<%=++count %>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-														<%}%>
-													</select>
-													
-													
-												</div>
-											</div>
-									
-									
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>	
+									
+								</div>
+							</div>	
 									
 									
-													<div class="col-md-12">
-									<div class="row">
+							<div class="col-md-12">
+								<div class="row">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Analysis:</label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Analysis:
+										</label>
 									</div>
 									
-											<div class="col-md-9" style="margin-top: 1%;">
-												<div class="form-group">
-
-												
-													<select class="form-control selectdee" 
-														name="Analysis" id="Analysis"
-														data-width="80%" data-live-search="true" multiple 
-														>
-														<option value="" disabled="disabled">---Choose----</option>
-													<!-- 	<option value="0">NA ( Not Applicable )</option> -->
-														<%if((DesignList!=null) &&(!DesignList.isEmpty())){
-														int count=0;
-														%>
-														<%for(Object[] obj:DesignList){ %>
+									<div class="col-md-9" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="Analysis" id="Analysis" data-width="80%" data-live-search="true" multiple >
+												<option value="" disabled="disabled">---Choose----</option>
+												<!-- 	<option value="0">NA ( Not Applicable )</option> -->
+												<%if((DesignList!=null) &&(!DesignList.isEmpty())){
+													int count=0;
+													for(Object[] obj:DesignList){ %>
 														<option value="A<%=++count%>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-													    <%}%>
-													</select>
-											
-												
-												</div>
-											</div>
-									
-									
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>
+									
+								</div>
+							</div>
 									
 						
-															<div class="col-md-12">
-									<div class="row ">
+							<div class="col-md-12">
+								<div class="row ">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Inspection:</label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Inspection:
+										</label>
 									</div>
 								
-											<div class="col-md-9" style="margin-top: 1%;">
-												<div class="form-group">
-
-													
-													<select class="form-control selectdee" 
-														name="Inspection" id="Inspection"
-														data-width="80%" data-live-search="true" multiple
-														>
-														<option value="" disabled="disabled">---Choose----</option>
-														<!-- <option value="0">NA ( Not Applicable )</option> -->
-														<%if((InspectionList!=null) &&(!InspectionList.isEmpty())){
-														int count=0;
-														%>
-														
-														<%for(Object[] obj:InspectionList){ %>
+									<div class="col-md-9" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="Inspection" id="Inspection" data-width="80%" data-live-search="true" multiple>
+												<option value="" disabled="disabled">---Choose----</option>
+												<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<%if((InspectionList!=null) &&(!InspectionList.isEmpty())){
+													int count=0;
+													for(Object[] obj:InspectionList){ %>
 														<option value="I<%=++count%>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-														<%}%>
-													</select>
-													
-													 
-												</div>
-											</div>
-									
-									
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>	
+									
+									
+								</div>
+							</div>	
 						
 						
-									<div class="col-md-12">
-									<div class="row ">
+							<div class="col-md-12">
+								<div class="row ">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Special Methods:</label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Special Methods:
+										</label>
 									</div>
 									
-											<div class="col-md-9" style="margin-top: 1%;">
-												<div class="form-group">
-
-													
-													<select class="form-control selectdee" 
-														name="specialMethods" id="specialMethods"
-														data-width="80%" data-live-search="true" multiple onchange="checkValue('specialMethods')"
-														>
-														<option value="" disabled="disabled">---Choose----</option>
-														<!-- <option value="0">NA ( Not Applicable )</option> -->
-														<%if((specialMethods!=null) &&(!specialMethods.isEmpty())){
-														int count=0;
-														%>
-														<%for(Object[] obj:specialMethods){ %>
+									<div class="col-md-9" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="specialMethods" id="specialMethods" data-width="80%" data-live-search="true" multiple onchange="checkValue('specialMethods')">
+												<option value="" disabled="disabled">---Choose----</option>
+												<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<%if((specialMethods!=null) &&(!specialMethods.isEmpty())){
+													int count=0;
+													for(Object[] obj:specialMethods){ %>
 														<option value="S<%=++count%>" title=<%=obj[3] %>><%=obj[3]%></option>
-														<%}%>
-												       <%}%>
-													</select>
-												
-												
-												</div>
-											</div>
-									
-									
+													<%}%>
+												<%}%>
+											</select>
+										</div>
 									</div>
-									</div>
+									
+								</div>
+							</div>
 								
 									
-										<div class="col-md-12" style="margin-top: 1%">
-									<div class="row">
+							<div class="col-md-12" style="margin-top: 1%">
+								<div class="row">
 									<div class="col-md-3">
-									<label style="margin-top: 15px; font-size: 17px; color: #07689f">Remarks :<span class="mandatory" style="color: red;">*</span></label>
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Remarks :<span class="mandatory" style="color: red;">*</span>
+										</label>
 									</div>
 									<div class="col-md-7">  
-									<input type="text" class="form-control" name="remarks" required maxlength="255" placeholder="max 255 characters">
-									</div>
-									</div>
-									</div>
-</div>
-
-							
-									<div class="form-group" align="center" style="margin-top: 3%;">
-										<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" />
-										<button type="submit" class="btn btn-primary btn-sm submit"
-											id="add" name="action" value="SUBMIT"
-											onclick="return confirm('Are you sure to submit?');">SUBMIT</button>
-								<input type="hidden" name="projectId" value=<%=projectId %>>
-								<input type="hidden" name="initiationid" value=<%=initiationid %>>
-								<input type="hidden" name="project" value=<%=project %>>
-								<input type="hidden" id="InitiationReqIdAdd" name="InitiationReqId" value="">
-								
+										<input type="text" class="form-control" name="remarks" required maxlength="255" placeholder="max 255 characters">
 									</div>
 								</div>
 							</div>
 						</div>
+
+							
+						<div class="form-group" align="center" style="margin-top: 3%;">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button type="submit" class="btn btn-primary btn-sm submit btn-req" id="add" name="action" value="SUBMIT" onclick="return confirm('Are you sure to submit?');">SUBMIT</button>
+							<input type="hidden" name="projectId" value=<%=projectId %>>
+							<input type="hidden" name="initiationId" value=<%=initiationId %>>
+							<input type="hidden" name="project" value=<%=project %>>
+							<input type="hidden" id="InitiationReqIdAdd" name="InitiationReqId" value="">
+							<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+							<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						</div>
 					</div>
-
 				</div>
+			</div>
+		</div>
 		
-		</form>
+	</form>
 
 
-
+	<form action="RequirementAddList.htm" id="reqlist">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<input type="hidden" name="projectId" value=<%=projectId %>>
+		<input type="hidden" name="initiationId" value=<%=initiationId %>>
+		<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+		<input type="hidden" name="project" value=<%=project %>>
+		<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+		<input type="hidden" name="selectedValues" id="selectedValues" value="">
+	</form>
 
 
 
@@ -1461,15 +1327,18 @@ function reqSubmit(){
 	            selectedValues.push(checkbox.value);
 	        }
 	    });
-	    console.log(typeof selectedValues);
-	    console.log(selectedValues.toString());
 	    
-	    $.ajax({
+	    $('#selectedValues').val(selectedValues.toString());
+	    
+	    $('#reqlist').submit();
+	    <%-- $.ajax({
 	    	url:'RequirementAddList.htm',
 	    	datatype:'json',
 	    	data:{
 	    		projectId:<%=projectId%>,
-	    		initiationid:<%=initiationid%>,
+	    		initiationId:<%=initiationId%>,
+	    		productTreeMainId:<%=productTreeMainId%>,
+	    		reqInitiationId:<%=reqInitiationId%>,
 	    		selectedValues:selectedValues.toString(),
 	    	},
 	    	success:function (result){
@@ -1484,7 +1353,7 @@ function reqSubmit(){
 			    	
 	    	
 	    	
-	    })
+	    }) --%>
 	    
 	    
 	   
@@ -1787,5 +1656,14 @@ $( document ).ready(function() {
 <%}%>
 
 </script>
+
+<%-- <script type="text/javascript">
+	<%if(reqforwardstatus.contains(status)) {%>
+		$('.btn-req').prop('disabled',false);
+	<%} else{%>
+	    $('.btn-req').prop('disabled',true);
+	<%} %>
+</script> --%>
+
 </body>
 </html>

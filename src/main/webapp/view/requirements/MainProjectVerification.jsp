@@ -298,6 +298,8 @@ keyframes blinker { 50% {
 	String selected="";
 
 	String verificationId=(String)request.getAttribute("verificationId");
+	String reqInitiationId = (String)request.getAttribute("reqInitiationId");
+	String productTreeMainId = (String)request.getAttribute("productTreeMainId");
 	%>
 	<nav class="navbar navbar-light bg-light justify-content-between"
 		style="margin-top: -1%">
@@ -322,10 +324,12 @@ keyframes blinker { 50% {
  		
  		<%} %> --%>
 			<button class="btn btn-info btn-sm  back ml-2 mt-1"
-				formaction="Requirements.htm" formmethod="get"
+				formaction="ProjectRequirementDetails.htm" formmethod="get"
 				formnovalidate="formnovalidate" style="float: right;">BACK</button>
-			<input type="hidden" name="projectId" value=<%=projectId%>> <input
-				type="hidden" name="projectShortName">
+			<input type="hidden" name="projectId" value=<%=projectId%>> 
+			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+			<input type="hidden" name="projectShortName">
 
 		</form>
 	</nav>
@@ -367,20 +371,15 @@ keyframes blinker { 50% {
 							<div class="panel panel-info" style="margin-top: 10px;">
 								<div class="panel-heading ">
 									<h4 class="panel-title">
-										<span class="ml-2" style="font-size: 14px"><%=++count%>
-											&nbsp;&nbsp;&nbsp; <input type="hidden"
-											id="verificationcount<%=obj[0].toString()%>" name="verificationcount"
-											value="<%=count%>"> 
-											<input type="hidden"
-											name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-											<input
-											type="hidden" name="projectId" value="<%=projectId%>">
-											<input type="text" class="form-control inputx"
-											id="input<%=obj[0].toString()%>" name="Provisions"
-											maxlength="250 characters" placeholder="Enter Text"
-											value="<%=obj[1].toString()%>" readonly style="width: 40%">
-											<input type="hidden" name="VerificationId"
-											value=<%=obj[0].toString()%>>
+										<span class="ml-2" style="font-size: 14px">
+											<%=++count%>&nbsp;&nbsp;&nbsp; 
+											<input type="hidden" id="verificationcount<%=obj[0].toString()%>" name="verificationcount" value="<%=count%>"> 
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+											<input type="hidden" name="projectId" value="<%=projectId%>">
+											<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+											<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+											<input type="text" class="form-control inputx" id="input<%=obj[0].toString()%>" name="Provisions" maxlength="250 characters" placeholder="Enter Text" value="<%=obj[1].toString()%>" readonly style="width: 40%">
+											<input type="hidden" name="VerificationId" value=<%=obj[0].toString()%>>
 											<button class="btn btn-sm ml-1 bg-transparent" type="button"
 												id="btns<%=obj[0].toString()%>"
 												style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;"
@@ -390,11 +389,10 @@ keyframes blinker { 50% {
 												data-original-title="EDIT Provisions">
 												<i class="fa fa-lg fa-pencil" aria-hidden="true"
 													style="color: blue;"></i>
-											</button> <span id="spans<%=obj[0].toString()%>"
-											style="display: none">
+											</button> 
+											<span id="spans<%=obj[0].toString()%>" style="display: none">
 												<button class="btn btn-sm btn-info spansub" type="submit"
-													formaction="VerificationProvisionEdit.htm" formmethod="POST"
-													formnovalidate="formnovalidate"
+													formaction="VerificationProvisionEdit.htm" formmethod="POST" formnovalidate="formnovalidate"
 													onclick="return confirm('Are you sure you want to update?')">Update</button>
 												<button class="btn bg-transparent" type="button"
 													onclick="hideUpdateSpan(<%=obj[0].toString()%>)">
@@ -405,9 +403,8 @@ keyframes blinker { 50% {
 
 										</span>
 									</h4>
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" />   <input
-										type="hidden" name="projectId" value="<%=projectId%>">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />   
+									<input type="hidden" name="projectId" value="<%=projectId%>">
 									<button class="btn bg-transparent buttonEd" type="button"
 										style="display: block;" id="btnEditor<%=count%>"
 										onclick="showEditor(<%=obj[0].toString()%>,'<%=obj[1].toString()%>')"
@@ -428,20 +425,20 @@ keyframes blinker { 50% {
 							<div class="panel-heading ">
 								<form action="#">
 									<h4 class="panel-title">
-										<span class="ml-2" style="font-size: 14px"> <input
-											type="text" class="form-control inputx" name="Provisions"
-											maxlength="250 characters" placeholder="Enter Text"
-											id="ParaNOid">
+										<span class="ml-2" style="font-size: 14px"> 
+											<input type="text" class="form-control inputx" name="Provisions" maxlength="250 characters" placeholder="Enter Text" id="ParaNOid">
 											<button class="btn btn-success btn-sm ml-3" type="submit"
 												formaction="RequirementVerificationAdd.htm" formmethod="POST"
 												formnovalidate="formnovalidate"
 												style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;"
-												onclick="submitForm()">ADD</button>
+												onclick="submitForm()">ADD
+											</button>
 										</span>
 									</h4>
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" />  <input
-										type="hidden" name="projectId" value="<%=projectId%>">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  
+									<input type="hidden" name="projectId" value="<%=projectId%>">
+									<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+									<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 									<button class="btn bg-transparent buttonEd" type="button"
 										style="display: none;" id="btnEditor1" onclick="">
 										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -468,17 +465,21 @@ keyframes blinker { 50% {
 									<div id="Editor" class="center"></div>
 									<textarea name="Details" style="display: none;"></textarea>
 									<div class="mt-2" align="center" id="detailsSubmit">
-										<span id="EditorDetails"></span> <input type="hidden"
-											id="verificationcountDetails " name="verificationcount" value=""> <input
-											type="hidden" name="Provisions" id="Provisionss" value=""> <input
-											type="hidden" name="VerificationId" id="VerificationIds" value="">  <input
-											type="hidden" name="projectId" value="<%=projectId%>">
-										<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" /> <span id="Editorspan"> <span
-											id="btn1" style="display:none;">
-											<button type="submit" class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button></span>
-											<span id="btn2" style="display: none;"><button type="submit" class="btn btn-sm btn-warning edit mt-2"
-													onclick="return confirm('Are you sure you want to update?')">UPDATE</button></span>
+										<span id="EditorDetails"></span>
+										<input type="hidden" id="verificationcountDetails " name="verificationcount" value=""> 
+										<input type="hidden" name="Provisions" id="Provisionss" value="">
+										<input type="hidden" name="VerificationId" id="VerificationIds" value="">  
+										<input type="hidden" name="projectId" value=<%=projectId%>> 
+										<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+										<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+										<span id="Editorspan"> 
+											<span id="btn1" style="display:none;">
+												<button type="submit" class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button>
+											</span>
+											<span id="btn2" style="display: none;">
+												<button type="submit" class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure you want to update?')">UPDATE</button>
+											</span>
 										</span>
 									</div>
 								</div>
@@ -495,6 +496,7 @@ keyframes blinker { 50% {
 	<script>
 	var inputValue; 
 	function showSpan(a){
+		console.log(a+"***********");
 		$('#btns'+a).hide();
 		$('#spans'+a).show();
 		inputValue=document.getElementById("input"+a).value;
@@ -645,7 +647,7 @@ keyframes blinker { 50% {
 			url:'VerificationProvisionDetails.htm',
 			datatype:'json',
 			data:{
-				projectId:<%=projectId%>,
+				reqInitiationId:<%=reqInitiationId%>,
 			},
 			success:function(result){
 				var ajaxresult=JSON.parse(result);

@@ -238,6 +238,9 @@ public class RoadMapController {
 			dto.setAimObjectives(req.getParameter("aimObjectives"));
 			dto.setScope(req.getParameter("scope"));
 			dto.setReference(req.getParameter("references"));
+			dto.setOtherReference(req.getParameter("otherReference"));
+			dto.setProjectCost(req.getParameter("projectCost"));
+			
 			
 			String[] annualYearList = req.getParameterValues("annualYear");
 			
@@ -296,7 +299,12 @@ public class RoadMapController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + "Inside RoadMapDetailsMoveToASP.htm"+UserId);
 		try {
-			long result = service.roadMapDetailsMoveToASP(req.getParameter("roadMapId"), UserId, EmpId);
+			String[] roadMapIds = req.getParameterValues("roadMapId");
+			long result = 0;
+			for(String roadMapId: roadMapIds) {
+				result = service.roadMapDetailsMoveToASP(roadMapId, UserId, EmpId);
+			}
+			
 			if(result!=0) {
 				redir.addAttribute("result", "Road Map details have been successfully moved to the ASP.");
 			}else {
@@ -705,7 +713,11 @@ public class RoadMapController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + "Inside RoadMapDetailsMoveBackToRoadMap.htm"+UserId);
 		try {
-			long result = service.roadMapDetailsMoveBackToRoadMap(req.getParameter("roadMapId"), UserId, EmpId);
+			String[] roadMapIds = req.getParameterValues("roadMapId");
+			long result = 0;
+			for(String roadMapId: roadMapIds) {
+				result = service.roadMapDetailsMoveBackToRoadMap(roadMapId, UserId, EmpId);
+			}
 			if(result!=0) {
 				redir.addAttribute("result", "ASP have been successfully move back to the Road Map.");
 			}else {
@@ -886,8 +898,9 @@ public class RoadMapController {
 //							cell.setCellStyle(t_body_style);
 //						}
 						int size = roadMapAnnualTargetDetails.size()/2;
-						if(size!=5) {
-							for(int i=1;i<=5-size;i++) {
+						int nasize = (endYear-startYear)+1;
+						if(size!=nasize) {
+							for(int i=1;i<=nasize-size;i++) {
 								cell= t_body_row.createCell(++slnoyrs); 
 								cell.setCellValue("NA"); 
 								cell.setCellStyle(t_body_style2);

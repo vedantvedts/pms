@@ -370,9 +370,11 @@ opacity
 }
 </style>
 <%
-String initiationid=(String)request.getAttribute("initiationid");
+String initiationId = (String)request.getAttribute("initiationId");
+String reqInitiationId =(String)request.getAttribute("reqInitiationId");
+String paracounts = (String) request.getAttribute("paracounts");
 String project=(String)request.getAttribute("project");
-String[]projectDetails=project.split("/");
+String[]projectDetails=project!=null?project.split("/"):null;
 List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");
 String selected="";
 if(!Verifications.isEmpty()){
@@ -380,6 +382,7 @@ if(!Verifications.isEmpty()){
 }
 
 String verificationId=(String)request.getAttribute("verificationId");
+
 %>
 </head>
 
@@ -390,14 +393,15 @@ String verificationId=(String)request.getAttribute("verificationId");
 		<a class="navbar-brand"> <b
 			style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left"><span
 				style="color: #31708f">Verification Provisions for Project </span> <span
-				style="color: #31708f; font-size: 19px"> <%=projectDetails[1].toString() %></span></b>
+				style="color: #31708f; font-size: 19px"> <%=projectDetails!=null?projectDetails[1].toString():"-" %></span></b>
 		</a>
 		<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" /> <input type="hidden"
-				name="${_csrf.parameterName}" value="${_csrf.token}" /> <input
-				type="hidden" name="project" value="<%=project%>"> <input
-				type="hidden" name="initiationid" value="<%=initiationid%>">
+				name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+				<input type="hidden" name="project" value="<%=project%>"> 
+				<input type="hidden" name="initiationId" value="<%=initiationId%>">
+				<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
 			<!-- 		<button type="button" class="btn btn-sm btn-success font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq">Other Requirements</button> 
  -->
 			<button class="btn btn-info btn-sm  back ml-2 mt-1"
@@ -439,21 +443,24 @@ String verificationId=(String)request.getAttribute("verificationId");
 
 									<h4 class="panel-title">
 										<span class="ml-2" style="font-size: 14px"> <%=++count%>.
-											<input type="text" readonly
-											class="form-control inputx inputs"
-											id="inputs<%=obj[0].toString() %>"
-											value="<%=obj[1].toString() %>">
-											<button class="btn btn-sm bg-transparent btns"
+											<input type="text" readonly class="form-control inputx inputs" id="input<%=obj[0].toString() %>" value="<%=obj[1].toString() %>">
+											<button class="btn btn-sm ml-1 bg-transparent" type="button"
 												id="btns<%=obj[0].toString()%>"
-												onclick="updateData(<%=obj[0].toString()%>)">
+												style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;"
+												onclick="showSpan(<%=obj[0].toString()%>)"
+												data-toggle="tooltip" data-placement="right"
+												data-original-data="" title=""
+												data-original-title="EDIT Provisions">
 												<i class="fa fa-lg fa-pencil" aria-hidden="true"
 													style="color: blue;"></i>
-											</button> <span style="display: none" id="spans<%=obj[0].toString()%>">
-												<button type="button" class="btn btn-sm btn-info spansub"
-													onclick="Edit(<%=obj[0].toString()%>)">update</button>
-												<button type="button" class="btn btn-sm bg-transparent btns"
-													onclick=showEdit( <%=obj[0].toString() %> )>
-													<i class="fa fa-lg fa-times" aria-hidden="true"></i>
+											</button> 
+											<span id="spans<%=obj[0].toString()%>" style="display: none">
+												<button class="btn btn-sm btn-info spansub" type="submit"
+													formaction="VerificationProvisionEdit.htm" formmethod="POST" formnovalidate="formnovalidate"
+													onclick="return confirm('Are you sure you want to update?')">Update</button>
+												<button class="btn bg-transparent" type="button"
+													onclick="hideUpdateSpan(<%=obj[0].toString()%>)">
+													<i class="fa fa-times" aria-hidden="true"></i>
 												</button>
 										</span>
 										</span>
@@ -467,10 +474,12 @@ String verificationId=(String)request.getAttribute("verificationId");
 											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 										</button>
 									</h4>
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> <input type="hidden" name="project"
-										value="<%=project%>"> <input type="hidden"
-										name="initiationid" value="<%=initiationid%>">
+									<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+									<input type="hidden" name="project" value="<%=project%>"> 
+									<input type="hidden" name="initiationId" value="<%=initiationId%>">
+									<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+									<input type="hidden" name="VerificationId" value=<%=obj[0].toString()%>>
+									<input type="hidden" id="verificationcount<%=obj[0].toString()%>" name="verificationcount" value="<%=count%>"> 
 								</div>
 							</div>
 						</form>
@@ -481,19 +490,17 @@ String verificationId=(String)request.getAttribute("verificationId");
 							<div class="panel-heading ">
 								<form action="RequirementVerificationAdd.htm" method="POST">
 									<h4 class="panel-title">
-										<span class="ml-2" style="font-size: 14px"> <input
-											type="text" class="form-control inputx" name="Provisions"
-											maxlength="250 characters"
-											placeholder="Maximum 250 characters" required id="Provisions">
+										<span class="ml-2" style="font-size: 14px"> 
+										<input type="text" class="form-control inputx" name="Provisions" maxlength="250 characters" placeholder="Enter Text" id="ParaNOid">
 											<button class="btn btn-success btn-sm ml-3" type="submit"
 												style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;"
-												onclick="return confirm('Are you sure to submit?')">ADD</button>
+												onclick="submitForm()">ADD</button>
 										</span>
 									</h4>
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> <input type="hidden" name="project"
-										value="<%=project%>"> <input type="hidden"
-										name="initiationid" value="<%=initiationid%>">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+									<input type="hidden" name="project" value="<%=project%>"> 
+									<input type="hidden" name="initiationId" value="<%=initiationId%>">
+									<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
 									<button class="btn bg-transparent buttonEd" type="button"
 										style="display: none;" id="btnEditor1" onclick="">
 										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -507,7 +514,7 @@ String verificationId=(String)request.getAttribute("verificationId");
 					</div>
 				</div>
 			</div>
-			<%if(!Verifications.isEmpty()){ %>
+			<%-- <%if(!Verifications.isEmpty()){ %>
 			<div class="col-md-7" style="display: block" id="col1">
 				<form action="RequirementProvisionDetailsUpdate.htm" method="POST"
 					id="myfrm">
@@ -522,9 +529,10 @@ String verificationId=(String)request.getAttribute("verificationId");
 									<div id="Editor" class="center"></div>
 									<textarea name="Details" style="display: none;"></textarea>
 									<div class="mt-2" align="center" id="detailsSubmit">
-										<span id="EditorDetails"></span> <input type="hidden"
-											name="project" value="<%=project%>"> <input
-											type="hidden" name="initiationid" value="<%=initiationid%>">
+										<span id="EditorDetails"></span> 
+										<input type="hidden" name="project" value="<%=project%>"> 
+										<input type="hidden" name="initiationId" value="<%=initiationId%>">
+										<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
 										<input type="hidden" id="verificationId" name="verificationId"
 											value=""> <input type="hidden"
 											name="${_csrf.parameterName}" value="${_csrf.token}" /> <span
@@ -544,33 +552,84 @@ String verificationId=(String)request.getAttribute("verificationId");
 					</div>
 				</form>
 			</div>
-			<%} %>
+			<%} %> --%>
+			<!-- Editor -->
+			<div class="col-md-7" style="display: block" id="col1">
+				<form action="VerificationProvisionEdit.htm" method="POST" id="myfrm">
+					<div class="card" style="border-color: #00DADA; margin-top: 2%;">
+						<h5 class="heading ml-4 mt-3" id="editorHeading"
+							style="font-weight: 500; color: #31708f;"></h5>
+						<hr>
+						<div class="card-body" style="margin-top: -8px">
+							<div class="row">
+								<div class="col-md-12 " align="left"
+									style="margin-left: 0px; width: 100%;">
+									<div id="Editor" class="center"></div>
+									<textarea name="Details" style="display: none;"></textarea>
+									<div class="mt-2" align="center" id="detailsSubmit">
+										<span id="EditorDetails"></span>
+										<input type="hidden" id="verificationcountDetails " name="verificationcount" value=""> 
+										<input type="hidden" name="Provisions" id="Provisionss" value="">
+										<input type="hidden" name="VerificationId" id="VerificationIds" value="">  
+										<input type="hidden" name="initiationId" value="<%=initiationId%>">
+										<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+										<input type="hidden" name="project" value="<%=project%>"> 
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+										<span id="Editorspan"> 
+											<span id="btn1" style="display:none;">
+												<button type="submit" class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button>
+											</span>
+											<span id="btn2" style="display: none;">
+												<button type="submit" class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure you want to update?')">UPDATE</button>
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 	<script>
-var realValue;
-function updateData(a){
-	realValue=$('#inputs'+a).val();
-	document.getElementById("inputs"+a).readOnly=false
+// var realValue;
+//function updateData(a){
+//	realValue=$('#inputs'+a).val();
+//	document.getElementById("inputs"+a).readOnly=false
+//	$('#btns'+a).hide();
+//	$('#spans'+a).show();
+//
+//}
+
+//function showEdit(a){
+//	$('#btns'+a).show();
+//	$('#spans'+a).hide();
+//	document.getElementById("inputs"+a).value=realValue;
+//	document.getElementById("inputs"+a).readOnly=true;
+//} 
+
+var inputValue; 
+function showSpan(a){
 	$('#btns'+a).hide();
 	$('#spans'+a).show();
-
+	inputValue=document.getElementById("input"+a).value;
+	document.getElementById("input"+a).readOnly=false;
 }
-
-function showEdit(a){
+function hideUpdateSpan(a){
 	$('#btns'+a).show();
 	$('#spans'+a).hide();
-	document.getElementById("inputs"+a).value=realValue;
-	document.getElementById("inputs"+a).readOnly=true;
+	document.getElementById("input"+a).value=inputValue;
+	document.getElementById("input"+a).readOnly=true;
 }
 
-function Edit(a){
-	var value=$('#inputs'+a).val();
+
+/* function Edit(a){
+var value=$('#inputs'+a).val();
 	
 
-	console.log(Verification)
 	var isUpdate=true;
-	if(value===realValue){
+	if(value===inputValue){
 		alert("previous and new values both are same");
 		isUpdate=false;
 	}
@@ -606,8 +665,8 @@ function Edit(a){
 	}
 	
 	console.log(value);
-	console.log(realValue)
-}
+	console.log(inputValue)
+} */
 
 /*for Editor  */
 
@@ -730,9 +789,9 @@ function Edit(a){
 		};
 		CKEDITOR.replace('Editor', editor_config);
 		
-		function showEditor(VerificationId,Provisions){
+		<%-- function showEditor(VerificationId,Provisions){
 			document.getElementById('verificationId').value=VerificationId;
-			var Verification=<%=request.getAttribute("Verification")%>;
+			var Verification=<%=request.getAttribute("Verifications")%>;
 			$('#editorHeading').text(Provisions);
 		var html;
 		 for(var i=0;i<Verification.length;i++){
@@ -762,7 +821,77 @@ function Edit(a){
 			  }else{
 			  $('#btnEditor'+id).click();
 			  }
+			}); --%>
+		   
+		   
+		
+		   
+		   $( document ).ready(function() {
+				
+				var paracounts=<%=paracounts%>;
+				$('#btnEditor'+paracounts).click();
+				var editorHeading=document.getElementById('editorHeading').innerHTML;
+				if(editorHeading.length>0){
+				console.log("---")
+				}		
+				});
+			function showEditor(VerificationId,Provisions){
+			document.getElementById('VerificationIds').value=VerificationId;
+			document.getElementById('Provisionss').value=Provisions;
+			var verificationcount=$('#verificationcount'+VerificationId).val();
+			document.getElementById('verificationcountDetails ').value=verificationcount;
+			document.getElementById('editorHeading').innerHTML=Provisions;
+			$.ajax({
+				type:'GET',
+				url:'VerificationProvisionDetails.htm',
+				datatype:'json',
+				data:{
+					reqInitiationId:<%=reqInitiationId%>,
+				},
+				success:function(result){
+					var ajaxresult=JSON.parse(result);
+					console.log(ajaxresult+"------")
+					var html="";
+					for(var i=0;i<ajaxresult.length;i++){
+						if(ajaxresult[i][0]===VerificationId && ajaxresult[i][3]!=null){
+							html=ajaxresult[i][3];
+						}
+					}
+					CKEDITOR.instances['Editor'].setData(html);
+					
+					if(html.length>1){ // if list [i][5] is empty show update button else submit button
+					$('#btn1').hide();
+					$('#btn2').show();
+					}else{
+						$('#btn2').hide();
+						$('#btn1').show();
+					}
+				}
+			})
+			}
+		   $('#myfrm').submit(function() {
+			 var data =CKEDITOR.instances['Editor'].getData();
+			 $('textarea[name=Details]').val(data);
 			});
+			$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+			})
+				function submitForm(){
+				var ParaNOid=$('#ParaNOid').val().trim();
+				console.log(ParaNOid+"---")
+				if(ParaNOid.length==0){
+					alert("The field is empty!")
+					event.preventDefault();
+					return false;
+				}else{
+					if(confirm("Are you sure you want to submit?")){
+						return true;
+						}else{
+						event.preventDefault();
+						return false;	
+						}
+				}
+				}   
 </script>
 
 </body>

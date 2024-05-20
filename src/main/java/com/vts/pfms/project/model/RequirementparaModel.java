@@ -18,7 +18,7 @@ public class RequirementparaModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ParaId;
 	private Long SqrId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String ParaNo;
 	private String ParaDetails;
     private String CreatedBy;
@@ -26,5 +26,6 @@ public class RequirementparaModel {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
+	private Long ReqInitiationId;
 }

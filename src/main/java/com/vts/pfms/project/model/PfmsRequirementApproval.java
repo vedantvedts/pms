@@ -17,10 +17,11 @@ public class PfmsRequirementApproval implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private Long ReqApprovalId;
-	 private Long InitiationId;
+//	 private Long InitiationId;
 	 private String EmpId;
 	 private String Remarks;
 	 private String ReqStatus;
 	 private String ActionBy;
 	 private String ActionDate;
+	 private Long ReqInitiationId;
 }

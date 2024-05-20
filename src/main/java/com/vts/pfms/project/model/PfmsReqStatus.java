@@ -15,7 +15,7 @@ public class PfmsReqStatus {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long StatusId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String Status;
 	private Long ApprovalId;
 	private String RequirementNumber;
@@ -25,4 +25,5 @@ public class PfmsReqStatus {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
+	private Long ReqInitiationId;
 }

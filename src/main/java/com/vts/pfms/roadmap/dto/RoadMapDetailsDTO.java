@@ -4,6 +4,7 @@ package com.vts.pfms.roadmap.dto;
 
 import java.util.List;
 
+
 import lombok.Data;
 
 @Data
@@ -20,6 +21,8 @@ public class RoadMapDetailsDTO {
 	private String EndDate;
 	private String Reference;
 	private String Scope;
+	private String OtherReference;
+	private String ProjectCost;
 	
 	private String[] AnnualYear;
 	private List<String[]> annualTargetList;

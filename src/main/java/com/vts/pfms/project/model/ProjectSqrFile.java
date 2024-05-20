@@ -18,10 +18,13 @@ public class ProjectSqrFile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long SqrId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private  String User;
 	private String RefNo;
 	private String SqrNo;
+	private String PreviousSqrNo;
+	private String MeetingReference;
+	private String PriorityDevelopment;
 	private String Authority;
 	private String FileName;
 	private String FilePath;
@@ -29,5 +32,6 @@ public class ProjectSqrFile {
 	private String CreatedDate;
 	private String CreatedBy;
 	private int IsActive;
+	private Long ReqInitiationId;
 	
 }

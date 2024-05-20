@@ -19,7 +19,8 @@ public class ReqDoc {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long LinkedId;
 	private Long DocId;
-	private Long InitiationId;
-	private Long ProjectId;
+//	private Long InitiationId;
+//	private Long ProjectId;
+	private Long ReqInitiationId;
 	private int IsActive;
 }

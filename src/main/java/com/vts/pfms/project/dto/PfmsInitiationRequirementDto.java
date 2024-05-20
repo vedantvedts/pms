@@ -8,7 +8,7 @@ import lombok.Data;
 public class PfmsInitiationRequirementDto {
 
 	private Long InitiationReqId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String RequirementId;
 	private Long ReqTypeId;
 	private String RequirementBrief;
@@ -22,5 +22,6 @@ public class PfmsInitiationRequirementDto {
 	private String Constraints;
 	private String LinkedDocuments;
 	private String LinkedPara;
-	private Long ProjectId;
+//	private Long ProjectId;
+	private Long ReqInitiationId;
 }

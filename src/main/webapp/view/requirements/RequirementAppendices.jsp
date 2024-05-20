@@ -314,7 +314,9 @@ animation: fade-in 1s ease forwards;
 </head>
 <body>
 <%
-String ProjectId=(String)request.getAttribute("projectId");
+String ProjectId = (String)request.getAttribute("projectId");
+String productTreeMainId =(String)request.getAttribute("productTreeMainId");
+String reqInitiationId =(String)request.getAttribute("reqInitiationId");
 List<Object[]>AppendixList= (List<Object[]>)request.getAttribute("AppendixList");
 List<Object[]>AcronymsList= (List<Object[]>)request.getAttribute("AcronymsList");
 List<Object[]>PerformanceList= (List<Object[]>)request.getAttribute("PerformanceList");
@@ -329,226 +331,232 @@ List<Object[]>PerformanceList= (List<Object[]>)request.getAttribute("Performance
 		<form action="#">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<input type="hidden" name="projectId" value="<%=ProjectId%>"> 
-     	<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="Requirements.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
+		<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
+		<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 
+     	<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectRequirementDetails.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
 		</form>
 </nav>
  <%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
+ 	  String ses1=(String)request.getParameter("resultfail");
+	  if(ses1!=null){
 	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
+	<div align="center">
+
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</div>
 	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
-<div class="container-fluid">
-<div class="row">
-<div class="col-md-6">
-<div  class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-		
-		<!-- panel 1 -->
-		<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
-		<div class="panel-heading ">
-		<h4 class="panel-title" >
-		<span class="ml-2" style="font-size:16px">1.&nbsp;Acronyms and Definition</span>  
-	<%if(AcronymsList.size()>0) {%>	<button class="btn btn-sm " style="float:right;margin-top: -1%; margin-left: 1%;" onclick="showTable1()"><i class="fa fa-eye text-primary" aria-hidden="true"></i></button><%} %>
-		<button class="btn btn-sm btn-info spansub" style="float:right" onclick="showAcronyms()">UPLOAD</button>
-		</h4>
-		</div>
-		</div>
-		
-		<!-- panel 2-->
-		<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
-		<div class="panel-heading ">
-		<h4 class="panel-title" >
-		<span class="ml-2" style="font-size:16px">2.&nbsp;Key performance parameters/key system attributes</span>  
-		<%if(PerformanceList.size()>0){ %>		<button class="btn btn-sm " style="float:right;margin-top: -1%; margin-left: 1%;" onclick="showTable2()"><i class="fa fa-eye text-primary" aria-hidden="true"></i></button><%} %>
-		<button class="btn btn-sm btn-info spansub" style="float:right" onclick="showperformance()">UPLOAD</button>
-		</h4>
-		</div>
-		</div>
-				<!-- panel 3  -->
-		<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
-		<div class="panel-heading ">
-		<h4 class="panel-title" >
-		<span class="ml-2" style="font-size:16px">3.&nbsp;Requirements Traceability Matrices</span>  
-		</h4>
-		</div>
-		</div>
-		
-		<!-- panel 4  -->
-		<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
-		<div class="panel-heading ">
-		<h4 class="panel-title" >
-		<span class="ml-2" style="font-size:16px" >4.&nbsp;Test Verification Matrices</span>  
-				<button class="btn btn-sm btn-info spansub" style="float:right" onclick="showTest()">UPLOAD</button>
-		</h4>
-		</div>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
 		</div>
 
-		
-
-</div>
-</div>
-<div class="col-md-6 mt-2 bg-light" <%if(AcronymsList.size()==0 && PerformanceList.size()==0) {%> style="display:none;"<%}else{ %> style="display:block;" <%} %>>
-<div class="row p-2">
-<div class="col-md-12" id="myDiv1" >
-<div  class="bg-info text-light p-2 mb-2" align="center" style="font-size:16px">Acronyms and Definition </div>
-<table class="table table-bordered mt-2" id="myTable1" >
-<thead>
-<tr>
-<td style="width:10%;text-align: center;">SN</td>
-<td style="width:40%;text-align: center;">Acronyms</td>
-<td style="width:50%;text-align: center;">Definition</td>
-</tr>
-</thead>
-<tbody>
-<%if(AcronymsList.size()>0){
-int row=0;
-	for(Object[] obj:AcronymsList){
-	%>
-<tr>
-<td style="text-align: center"><%=++row  %> </td>
-<td style="text-align: center"><%=obj[1].toString() %></td>
-<td style="text-align: justify;padding-left: 5px;"><%=obj[2].toString() %></td>
-</tr>
-<%}} %>
-</tbody>
-</table>
-</div>
-
-<!-- table2 -->
-<div class="col-md-12" id="myDiv2" >
-<div class="bg-info text-light p-2 mb-2" align="center" style="font-size:16px">Key performance parameters/key system attributes </div>
-<table class="table table-bordered mt-2" id="myTable2" >
-<thead>
-<tr>
-<td style="width:10%;text-align: center;">SN</td>
-<td style="width:40%;text-align: center;">Key MOE's</td>
-<td style="width:50%;text-align: center;">Values</td>
-</tr>
-</thead>
-<tbody>
-<%if(PerformanceList.size()>0){
-int row=0;
-	for(Object[] obj:PerformanceList){
-	%>
-<tr>
-<td style="text-align: center"><%=++row  %> </td>
-<td style="text-align: center"><%=obj[1].toString() %></td>
-<td style="text-align: justify;padding-left: 5px;"><%=obj[2].toString() %></td>
-</tr>
-<%}} %>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!--  AcronymsModal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="AcronymsModal" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-   <div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
-        <h5 class="modal-title" >Upload Acronyms</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" class="text-light">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <form action="AccronymsExcelUpload.htm" method="post" enctype="multipart/form-data">
-      <div class="row">
-      <div class="col-md-8">
-      <input class="form-control" type="file" id="excel_fileA" name="filenameA" required="required" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-      </div>
-      <div class="col-md-4">
-	<span class="text-primary">Download format</span>
-	<button class="btn btn-sm" type="submit" name="Action" value="GenerateExcel" formaction="AccronymsExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button>
 	</div>
-    <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
-    <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
-	<input type="hidden" name="projectId" value="<%=ProjectId%>"> 					
-      </div>
-      <div align="center" class="mt-2" id="uploadDivA" style="display:none;">
-	<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
-      </div>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
+	<%} %>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6">
+				<div  class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
+		
+					<!-- panel 1 -->
+					<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
+						<div class="panel-heading ">
+							<h4 class="panel-title" >
+								<span class="ml-2" style="font-size:16px">1.&nbsp;Acronyms and Definition</span>  
+								<%if(AcronymsList.size()>0) {%>	<button class="btn btn-sm " style="float:right;margin-top: -1%; margin-left: 1%;" onclick="showTable1()"><i class="fa fa-eye text-primary" aria-hidden="true"></i></button><%} %>
+								<button class="btn btn-sm btn-info spansub" style="float:right" onclick="showAcronyms()">UPLOAD</button>
+							</h4>
+						</div>
+					</div>
+		
+					<!-- panel 2-->
+					<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
+						<div class="panel-heading ">
+							<h4 class="panel-title" >
+								<span class="ml-2" style="font-size:16px">2.&nbsp;Key performance parameters/key system attributes</span>  
+								<%if(PerformanceList.size()>0){ %>		<button class="btn btn-sm " style="float:right;margin-top: -1%; margin-left: 1%;" onclick="showTable2()"><i class="fa fa-eye text-primary" aria-hidden="true"></i></button><%} %>
+								<button class="btn btn-sm btn-info spansub" style="float:right" onclick="showperformance()">UPLOAD</button>
+							</h4>
+						</div>
+					</div>
+					<!-- panel 3  -->
+					<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
+						<div class="panel-heading ">
+							<h4 class="panel-title" >
+								<span class="ml-2" style="font-size:16px">3.&nbsp;Requirements Traceability Matrices</span>  
+							</h4>
+						</div>
+					</div>
+		
+					<!-- panel 4  -->
+					<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
+						<div class="panel-heading ">
+							<h4 class="panel-title" >
+								<span class="ml-2" style="font-size:16px" >4.&nbsp;Test Verification Matrices</span>  
+								<button class="btn btn-sm btn-info spansub" style="float:right" onclick="showTest()">UPLOAD</button>
+							</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 mt-2 bg-light" <%if(AcronymsList.size()==0 && PerformanceList.size()==0) {%> style="display:none;"<%}else{ %> style="display:block;" <%} %>>
+				<div class="row p-2">
+					<div class="col-md-12" id="myDiv1" >
+						<div  class="bg-info text-light p-2 mb-2" align="center" style="font-size:16px">Acronyms and Definition </div>
+							<table class="table table-bordered mt-2" id="myTable1" >
+								<thead>
+									<tr>
+										<td style="width:10%;text-align: center;">SN</td>
+										<td style="width:40%;text-align: center;">Acronyms</td>
+										<td style="width:50%;text-align: center;">Definition</td>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(AcronymsList.size()>0){
+										int row=0;
+										for(Object[] obj:AcronymsList){%>
+										<tr>
+											<td style="text-align: center"><%=++row  %> </td>
+											<td style="text-align: center"><%=obj[1].toString() %></td>
+											<td style="text-align: justify;padding-left: 5px;"><%=obj[2].toString() %></td>
+										</tr>
+									<%}} %>
+								</tbody>
+							</table>
+						</div>
+
+						<!-- table2 -->
+						<div class="col-md-12" id="myDiv2" >
+							<div class="bg-info text-light p-2 mb-2" align="center" style="font-size:16px">Key performance parameters/key system attributes </div>
+							<table class="table table-bordered mt-2" id="myTable2" >
+								<thead>
+									<tr>
+										<td style="width:10%;text-align: center;">SN</td>
+										<td style="width:40%;text-align: center;">Key MOE's</td>
+										<td style="width:50%;text-align: center;">Values</td>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(PerformanceList.size()>0){
+										int row=0;
+										for(Object[] obj:PerformanceList){
+										%>
+									<tr>
+										<td style="text-align: center"><%=++row  %> </td>
+										<td style="text-align: center"><%=obj[1].toString() %></td>
+										<td style="text-align: justify;padding-left: 5px;"><%=obj[2].toString() %></td>
+									</tr>
+									<%}} %>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--  AcronymsModal -->
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="AcronymsModal" aria-hidden="true">
+ 				<div class="modal-dialog modal-lg">
+   				<div class="modal-content">
+  						<div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
+				        <h5 class="modal-title" >Upload Acronyms</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true" class="text-light">&times;</span>
+				        </button>
+     					</div>
+     					<div class="modal-body">
+     						<form action="AccronymsExcelUpload.htm" method="post" enctype="multipart/form-data">
+     							<div class="row">
+     								<div class="col-md-8">
+     									<input class="form-control" type="file" id="excel_fileA" name="filenameA" required="required" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+     								</div>
+     								<div class="col-md-4">
+									<span class="text-primary">Download format</span>
+									<button class="btn btn-sm" type="submit" name="Action" value="GenerateExcel" formaction="AccronymsExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button>
+								</div>
+							    <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
+							    <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+								<input type="hidden" name="projectId" value="<%=ProjectId%>"> 	
+								<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
+								<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 				
+     							</div>
+     							<div align="center" class="mt-2" id="uploadDivA" style="display:none;">
+								<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
+     							</div>
+     						</form>
+     					</div>
+   				</div>
+ 				</div>
+		</div>
 
 
-<!-- System Atrributes -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="PerformanceModal" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-   <div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
-        <h5 class="modal-title" >Upload Performance parameters</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" class="text-light">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <form action="PerformanceExcelUpload.htm" method="post" enctype="multipart/form-data">
-      <div class="row">
-      <div class="col-md-8">
-      <input class="form-control" type="file" id="excel_fileB" name="filenameB" required="required" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-      </div>
-      <div class="col-md-4">
-	<span class="text-primary">Download format</span>
-	<button class="btn btn-sm" type="submit" name="Action" value="GenerateExcel" formaction="PerformanceExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button>
-	</div>
-    <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
-    <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
-	<input type="hidden" name="projectId" value="<%=ProjectId%>"> 					
-	
-      </div>
-      <div align="center" class="mt-2" id="uploadDivB" style="display:none;">
-	<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
-      </div>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
+		<!-- System Atrributes -->
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="PerformanceModal" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+		    	<div class="modal-content">
+		   			<div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
+				        <h5 class="modal-title" >Upload Performance parameters</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true" class="text-light">&times;</span>
+				        </button>
+		      		</div>
+		      		<div class="modal-body">
+		      			<form action="PerformanceExcelUpload.htm" method="post" enctype="multipart/form-data">
+		      				<div class="row">
+		      					<div class="col-md-8">
+		      						<input class="form-control" type="file" id="excel_fileB" name="filenameB" required="required" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+		      					</div>
+		      					<div class="col-md-4">
+									<span class="text-primary">Download format</span>
+									<button class="btn btn-sm" type="submit" name="Action" value="GenerateExcel" formaction="PerformanceExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button>
+								</div>
+							    <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
+							    <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+								<input type="hidden" name="projectId" value="<%=ProjectId%>"> 					
+								<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
+								<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 
+		      				</div>
+		      				<div align="center" class="mt-2" id="uploadDivB" style="display:none;">
+								<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
+		      				</div>
+		      			</form>
+		      		</div>
+		    	</div>
+		  	</div>
+		</div>
 
-<!-- Test Verification Modal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="tesModal" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-   <div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
-       <h5 class="modal-title" >Upload Test Verification Matrices</h5>
-       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-         <span aria-hidden="true" class="text-light">&times;</span>
-       </button>
-      </div>
-     <div class="modal-body">
-     <form action="TestVerificationUpload.htm" method="post" enctype="multipart/form-data">
-     <div class="row">
-     <div class="col-md-12">
-     <input class="form-control" type="file" id="excel_fileC" name="filenameC" required="required" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required="required">
-    </div>
-  
-    <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
-	<input type="hidden" name="projectId" value="<%=ProjectId%>"> 					
-	
-     </div>
-     <div align="center" class="mt-2" id="uploadDivC" >
-	  <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
-	<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
-      </div>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
+		<!-- Test Verification Modal -->
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="tesModal" aria-hidden="true">
+ 				<div class="modal-dialog modal-lg">
+   				<div class="modal-content">
+  						<div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
+      						<h5 class="modal-title" >Upload Test Verification Matrices</h5>
+				       	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				         	<span aria-hidden="true" class="text-light">&times;</span>
+				       	</button>
+     					</div>
+					<div class="modal-body">
+						<form action="TestVerificationUpload.htm" method="post" enctype="multipart/form-data">
+							<div class="row">
+								<div class="col-md-12">
+									<input class="form-control" type="file" id="excel_fileC" name="filenameC" required="required" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required="required">
+								</div>
+							 
+								<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+								<input type="hidden" name="projectId" value="<%=ProjectId%>"> 					
+								<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
+								<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 
+							</div>
+								<div align="center" class="mt-2" id="uploadDivC" >
+								<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
+								<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
+							</div>
+						</form>
+     					</div>
+   				</div>
+ 				</div>
+		</div>
 
 
 <script>

@@ -192,7 +192,7 @@ public interface ProjectService {
 	public long IntiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
 	public List<Object[]> RiskTypeList() throws Exception;
 	public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId,String LabCode, String shortName) throws  Exception;
-	public List<Object[]> RequirementList(String intiationId) throws Exception;
+	public List<Object[]> RequirementList(String reqInitiationId) throws Exception;
 	public long ProjectRequirementDelete(long initiationReqId) throws Exception;
 	public Object[] Requirement(long InitiationReqId) throws Exception ;
 	public long RequirementUpdate(PfmsInitiationRequirementDto prd, String userId, String initiationReqId)throws Exception;
@@ -279,68 +279,71 @@ public interface ProjectService {
 	public long BriefCostsBenefitsEdit(ProjectMactroDetailsBrief pmb)throws Exception;
 	public long BriefProjectManagementEdit(ProjectMactroDetailsBrief pmb)throws Exception;
 	public long BriefPERTEdit(ProjectMactroDetailsBrief pmb)throws Exception;
-	public Object[] reqStatus(Long initiationId)throws Exception;
+	public Object[] reqStatus(Long reqInitiationId)throws Exception;
 	public int ProjectRequirementStatusUpdate(String initiationid, String projectcode, String userId,String Status, String Empid,String Remarks, String action)throws Exception;
 	public List<Object[]> DocumentApprovalFlowData(String labCode, String initiationid)throws Exception;
-	public List<Object[]> RequirementApprovalList(String empId) throws Exception;
-	public List<Object[]> RequirementTrackingList(String initiationid) throws Exception;
+//	public List<Object[]> RequirementApprovalList(String empId) throws Exception;
+//	public List<Object[]> RequirementTrackingList(String initiationid) throws Exception;
 	public List<Object[]> projecOtherRequirements(String initiationid,String projectId)throws Exception;//changed
 	public long AddOtherRequirement(ProjectOtherReqDto pd, String subreqName)throws Exception;
-	public List<Object[]> OtherRequirementList(String initiationid,String projectId, String mainid)throws Exception;
+	public List<Object[]> OtherRequirementList(String reqInitiationId, String reqMainId)throws Exception;
 	public long UpdateOtherRequirementName(ProjectOtherReqDto pd)throws Exception;
 	public long UpdateOtherRequirementDetails(ProjectOtherReqDto pd, String requirementId)throws Exception;
 	public Object[] OtherSubRequirementsDetails(ProjectOtherReqDto pd, String requirementId) throws Exception;
-	public long AddOtherRequirementDetails(String[] reqNames, String[] reqValue,String initiationid,String projectId)throws Exception;//chnaged
+	public long AddOtherRequirementDetails(String[] reqNames, String[] reqValue,String reqInitiationId)throws Exception;//chnaged
 //	public long AddOtherRequirementDetails(String[] reqNames, String[] reqValue,String initiationid)throws Exception;
 	//public List<Object[]> otherProjectRequirementList(String initiationid) throws Exception;
 	public List<Object[]> otherProjectRequirementList(String initiationid,String projectId) throws Exception;
 	public List<Object[]> getAllOtherrequirementsByInitiationId(String initiationid)throws Exception;
 	public Object[] LabListDetails(String labCode)throws Exception;
-	public Object[] RequirementIntro(String initiationid, String ProjectId) throws Exception;//method for intro
-	public long ReqIntroSubmit(String initiationid,String ProjectId, String attributes, String details,String UserId)throws Exception;
-	public long reqIntroUpdate(String initiationid,String Project, String attributes, String details, String userId) throws Exception;
+	public Object[] RequirementIntro(String reqInitiationId) throws Exception;//method for intro
+	public long ReqIntroSubmit(String reqInitiationId, String attributes, String details,String UserId)throws Exception;
+	public long reqIntroUpdate(String reqInitiationId, String attributes, String details, String userId) throws Exception;
 //	public Object[] RequirementIntro(String initiationid) throws Exception;
 //	public long ReqIntroSubmit(String initiationid, String attributes, String details,String UserId)throws Exception;
 //	public long reqIntroUpdate(String initiationid, String attributes, String details, String userId) throws Exception;
 	public Long ReqForwardProgress(String initiationid)throws Exception;
 	public long ProjectSqrSubmit(ProjectSqrFile psf, MultipartFile fileAttach, String userId,String LabCode)throws Exception;
-	public Object[] SqrFiles(String intiationId)throws Exception;
+	public Object[] SqrFiles(String reqInitiationId)throws Exception;
 	public long RequirementParaSubmit(RequirementparaModel rpm)throws Exception;
-	public List<Object[]> ReqParaDetails(String initiationid)throws Exception;
+	public List<Object[]> ReqParaDetails(String reqInitiationId)throws Exception;
 	public long RequirementParaEdit(RequirementparaModel rpm) throws Exception;
 	public Long insertRequirement(PfmsOtherReq pr)throws Exception;
 	public Long insertReqType(ProjectRequirementType pt) throws Exception;
-	public List<Object[]> getVerificationList(String initiationid)throws Exception;
+	public List<Object[]> getVerificationList(String reqInitiationId)throws Exception;
 	public long insertRequirementVerification(RequirementVerification rv)throws Exception;
 	public Long updateRequirementVerification(RequirementVerification rv)throws Exception;
 	public long updateRequirementVerificationDetails(RequirementVerification rv)throws Exception;
 	//public List<Object[]> getAbbreviationDetails(String initiationid) throws Exception;
-	public List<Object[]> getAbbreviationDetails(String initiationid, String ProjectId) throws Exception;
+	public List<Object[]> getAbbreviationDetails(String reqInitiationId) throws Exception;
 	public long addAbbreviation(List<InitiationAbbreviations> iaList)throws Exception;
 	public long addReqAppendix(PfmsInitiationAppendix pia)throws Exception;
 	public List<Object[]> AppendixList(String initiationid)throws Exception;
 	public long addReqAcronyms(List<RequirementAcronyms> raList) throws Exception;
 //	public List<Object[]> AcronymsList(String initiationid) throws Exception;
-	public List<Object[]> AcronymsList(String initiationid,String ProjectId) throws Exception;
+	public List<Object[]> AcronymsList(String reqInitiationId) throws Exception;
 	public long addReqPerformanceParameters(List<RequirementPerformanceParameters> raList)throws Exception;
-	public List<Object[]> getPerformanceList(String initiationid,String ProjectId)throws Exception;
+	public List<Object[]> getPerformanceList(String reqInitiationId)throws Exception;
 	//public List<Object[]> getPerformanceList(String initiationid)throws Exception;
 	public long insertTestVerificationFile(ReqTestExcelFile re,String LabCode) throws Exception;
 //	public Object[] getVerificationExcelData(String initiationid) throws Exception;
 	public Object[] getVerificationExcelData(String initiationid,String ProjectId) throws Exception;
 	//public List<Object[]> EmployeeList(String labCode, String initiationid) throws Exception;
-	public List<Object[]> EmployeeList(String labCode, String initiationid,String ProjectId) throws Exception;
+	public List<Object[]> EmployeeList(String labCode, String reqInitiationId) throws Exception;
 	public long AddreqMembers(RequirementMembers rm) throws Exception;
 	//public List<Object[]> reqMemberList(String initiationid) throws Exception;
-	public List<Object[]> reqMemberList(String initiationid, String ProjectId) throws Exception;
+	public List<Object[]> reqMemberList(String reqInitiationId) throws Exception;
 	public long addReqSummary(RequirementSummary rs)throws Exception;
 	//public List<Object[]> getDocumentSummary(String initiationid)throws Exception;
-	public List<Object[]> getDocumentSummary(String initiationid,String ProjectId)throws Exception;
+	public List<Object[]> getDocumentSummary(String reqInitiationId)throws Exception;
 	public long editreqSummary(RequirementSummary rs) throws Exception;
 	public Object[] DocTempAttributes()throws Exception;
-	public List<Object[]> ReqParaDetailsMain(String ProjectId) throws Exception;
-	public List<Object[]> getVerificationListMain(String ProjectId)throws Exception;
-	public List<Object[]> VPDetails(String initiationid, String projectId) throws Exception;
+	public List<Object[]> ReqParaDetailsMain(String reqInitiationId) throws Exception;
+	public List<Object[]> getVerificationListMain(String reqInitiationId)throws Exception;
+	public List<Object[]> VPDetails(String reqInitiationId) throws Exception;
 	public List<Object[]> EmployeeList1(String labCode, String initiationid, String ProjectId) throws Exception;
 
+	public Object[] getProjectDetails(String labcode, String projectId, String projectType) throws Exception;
+	
+	
 }

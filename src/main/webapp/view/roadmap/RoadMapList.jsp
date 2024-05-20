@@ -284,6 +284,10 @@ FormatConverter fc = new FormatConverter();
 	                 		<button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Road Map Report Download" style="background-color: purple;border: none;color: white;font-weight: 600;" onclick="openModal()">
 	                 			GENERATE REPORT
 	                 		</button>
+	                 		<button type="submit" class="btn btn-sm" formaction="RoadMapDetailsMoveToASP.htm" data-toggle="tooltip" data-placement="top" title="Move to ASP" style="background-color: #157ecd;border: none;color: white;font-weight: 600;" onclick="moveToASPCheck()">
+	                 			MOVE TO ASP 
+									<i class="fa fa-arrow-circle-right" style="padding: 0px;" aria-hidden="true"></i>
+	                 		</button>
 	                 		<%} %>
 	                 	</form>
 	              	</div>
@@ -311,8 +315,16 @@ FormatConverter fc = new FormatConverter();
 									
 										<div class="container">
 				  							<div class="row">
+				  								<div class="col-" style="margin-top: 0.5rem;">
+				  									<%if(obj[17]!=null && (obj[17].toString().equalsIgnoreCase("RAD") )) {%>
+														<input form="myform" type="checkbox" class="form-control" name="roadMapId" value="<%=obj[0] %>">
+													<%} %>
+				  								</div>
 					  							<div class="col-lg">
-													<h4 class="card-title" ><%=obj[6] %></h4>
+													<h4 class="card-title" >
+														
+														<%=obj[6] %>
+													</h4>
 												</div>
 												<div class="col-">
 													<p> 
@@ -424,18 +436,7 @@ FormatConverter fc = new FormatConverter();
 																		</div>
 													    			</button>
 												    			<%} %>
-												    			<%if(obj[17]!=null && (obj[17].toString().equalsIgnoreCase("RAD") )) {%>
-			                                        				<button class="editable-clicko" name="roadMapId" value="<%=obj[0] %>" formaction="RoadMapDetailsMoveToASP.htm" onclick="return confirm('Are You Sure to Move to ASP?')" data-toggle="tooltip" data-placement="top" title="Move to ASP">
-																		<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<i class="fa fa-arrow-circle-right" style="padding: 0px;color: #157ecd;font-size: 25px;" aria-hidden="true"></i>
-																				</figure>
-																				<span>To ASP</span>
-																			</div>
-																		</div>
-													    			</button>
-												    			<%} %>
+												    			
 											    			<%} %>
 		                                        		</form>
 													</div>
@@ -528,11 +529,11 @@ FormatConverter fc = new FormatConverter();
 						        			<div class="form-inline">
 						        				<div class="form-group w-50">
 						               				<label>Start Year : &nbsp;&nbsp;&nbsp;</label> 
-						              	 			<input class="form-control date" data-date-format="yyyy-mm-dd" id="datepicker1" name="startYear" value="<%=LocalDate.now().getYear() %>" required="required" onchange="changedatepicker2()">
+						              	 			<input class="form-control date" id="startYear" name="startYear" required="required" readonly style="background: #fff;">
 						      					</div>
 						        				<div class="form-group w-50">
 						               				<label>End Year : &nbsp;&nbsp;&nbsp;</label> 
-						              	 			<input class="form-control date" data-date-format="yyyy-mm-dd" id="datepicker2" name="endYear" required="required" readonly style="background: #fff;">
+						              	 			<input class="form-control date" id="endYear" name="endYear" required="required" readonly style="background: #fff;">
 						      					</div>
 						      				</div>
 						      			</div>
@@ -540,9 +541,9 @@ FormatConverter fc = new FormatConverter();
 						        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						        		<!-- Modal footer -->
 						        		<div class="modal-footer" style="justify-content: center;">
-						        			<button type="submit" class="btn btn-sm" formaction="RoadMapReportDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Road Map Report Pdf Download" style="background-color: purple;border: none;color: white;font-weight: 600;">
+						        			<!-- <button type="submit" class="btn btn-sm" formaction="RoadMapReportDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Road Map Report Pdf Download" style="background-color: purple;border: none;color: white;font-weight: 600;">
 				            					GENERATE PDF
-				            				</button> 
+				            				</button> --> 
 						        			<button type="submit" class="btn btn-sm" formaction="RoadMapReportExcelDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Road Map Report Excel Download" style="background-color: purple;border: none;color: white;font-weight: 600;">
 				            					GENERATE EXCEL
 				            				</button> 
@@ -590,7 +591,7 @@ $(function () {
 	$('[data-toggle="tooltip"]').tooltip()
 });	
 
-$(document).ready(function() {
+/* $(document).ready(function() {
   
 $("#datepicker1").datepicker({
 	
@@ -609,6 +610,60 @@ function changedatepicker2(){
 	 var year1=Number(startDate);
 	 
 	 document.getElementById("datepicker2").value = year1+4;
+} */
+</script>
+
+<script>
+  $(document).ready(function() {
+    // Initialize datepickers
+    $("#startYear").datepicker({
+      autoclose: true,
+      format: 'yyyy',
+      viewMode: "years",
+      minViewMode: "years",
+      startDate: '<%=LocalDate.now().getYear() %>', // Set default start year
+      endDate: '+10y' // Allow selection up to 10 years from start year
+    }).on('changeDate', function(selected) {
+      var minDate = new Date(selected.date.valueOf());
+      $('#endYear').datepicker('setStartDate', minDate);
+      var startYear = $('#startYear').val();
+      $('#endYear').val(startYear);
+      $('#startYear').val(selected.date.getFullYear()); // Update start year input value
+    });
+
+    $("#endYear").datepicker({
+      autoclose: true,
+      format: 'yyyy',
+      viewMode: "years",
+      minViewMode: "years",
+      startDate: '<%=LocalDate.now().getYear() %>', // Set default start year
+      endDate: '+10y' // Allow selection up to 10 years from start year
+    });
+    
+    $('#startYear').val('<%=LocalDate.now().getYear() %>');
+    $('#endYear').val('<%=LocalDate.now().getYear() %>');
+  });
+</script>
+
+<script type="text/javascript">
+function moveToASPCheck(){
+	var roadMapId = $("input[name='roadMapId']").serializeArray();
+	 
+	if (roadMapId.length === 0) {
+		alert("Please Select Recommended Road Maps..!");
+
+		event.preventDefault();
+		return false;
+	}else {
+		if(confirm('Are You Sure to Move to ASP?')){
+			return true;
+		}else{
+			event.preventDefault();
+			return false;
+		}
+		
+	}
+	return true;
 }
 </script>
 </body>

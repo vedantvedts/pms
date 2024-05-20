@@ -22,7 +22,7 @@ public class PfmsInititationRequirement implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long InitiationReqId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String RequirementId;
 	private Long ReqTypeId;
 	private String RequirementBrief;
@@ -41,7 +41,7 @@ public class PfmsInititationRequirement implements Serializable {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
 	private Long ReqMainId;
 	private Long ParentId;
 	private String Demonstration;
@@ -50,4 +50,5 @@ public class PfmsInititationRequirement implements Serializable {
 	private String Inspection;
 	private String SpecialMethods;
 	private String Criticality;
+	private Long ReqInitiationId;
 }

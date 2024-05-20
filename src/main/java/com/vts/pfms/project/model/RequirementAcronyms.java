@@ -21,8 +21,10 @@ public class RequirementAcronyms {
 	
 	private String Definition;
 	
-	private Long InitiationId;
+//	private Long InitiationId;
 	
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
+	private Long ReqInitiationId;
+	
 }

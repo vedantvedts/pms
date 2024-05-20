@@ -314,7 +314,8 @@ animation: fade-in 1s ease forwards;
 </head>
 <body>
 <%
-String initiationid=(String)request.getAttribute("initiationid");
+String initiationId = (String)request.getAttribute("initiationId");
+String reqInitiationId =(String)request.getAttribute("reqInitiationId");
 String project=(String)request.getAttribute("project");
 String[]projectDetails=project.split("/");
 List<Object[]>AppendixList= (List<Object[]>)request.getAttribute("AppendixList");
@@ -332,24 +333,29 @@ List<Object[]>PerformanceList= (List<Object[]>)request.getAttribute("Performance
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<input type="hidden" name="project" value="<%=project%>">
-		<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+		<input type="hidden" name="initiationid" value="<%=initiationId%>"> 
+		<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 
      	<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectOverAllRequirement.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
 		</form>
 </nav>
  <%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
+ 	  String ses1=(String)request.getParameter("resultfail");
+	  if(ses1!=null){
 	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
+	<div align="center">
+
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</div>
 	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
+
+	</div>
+	<%} %>
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-6">
@@ -532,7 +538,8 @@ int row=0;
     <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
     <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
 	<input type="hidden" name="project" value="<%=project%>">
-	<input type="hidden" name="initiationid" value="<%=initiationid%>"> 					
+	<input type="hidden" name="initiationId" value="<%=initiationId%>"> 					
+	<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 					
       </div>
       <div align="center" class="mt-2" id="uploadDivA" style="display:none;">
 	<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
@@ -567,7 +574,8 @@ int row=0;
     <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
     <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
 	<input type="hidden" name="project" value="<%=project%>">
-	<input type="hidden" name="initiationid" value="<%=initiationid%>"> 					
+	<input type="hidden" name="initiationId" value="<%=initiationId%>"> 					
+	<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 					
 	
       </div>
       <div align="center" class="mt-2" id="uploadDivB" style="display:none;">
@@ -599,7 +607,8 @@ int row=0;
   
     <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
 	<input type="hidden" name="project" value="<%=project%>">
-	<input type="hidden" name="initiationid" value="<%=initiationid%>"> 					
+	<input type="hidden" name="initiationId" value="<%=initiationId%>"> 					
+	<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 					
 	
      </div>
      <div align="center" class="mt-2" id="uploadDivC" >

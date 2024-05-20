@@ -185,21 +185,39 @@ FormatConverter fc = new FormatConverter();
 														<th colspan="1">
 															<label class="control-label">Scope</label><span class="mandatory" style="color: red;">*</span>
 														</th>
-														<td colspan="3">
+														<td colspan="7">
 															<input class="form-control" type="text" name="scope" id="scope" maxlength="1000" placeholder="Enter Maximum 1000 characters"
 															<%if(roadMap!=null && roadMap.getScope()!=null) {%>value="<%=roadMap.getScope() %>"<%} %> required >	
 														</td>
+														
+													</tr>
+													<tr>
 														<th colspan="1">
 															<label class="control-label">Reference</label><span class="mandatory" style="color: red;">*</span>
 														</th>
-														<td colspan="3">
-															<select class="form-control selectdee" id="references" name="references" data-live-search="true" required style="width: 50%;">
+														<td colspan="1">
+															<select class="form-control selectdee" id="references" name="references" data-live-search="true" required style="width: 50%;" onchange="otherReferenceHandle()">
 					   											<option value="" disabled="disabled" selected="selected">--Select--</option>
 					   											<% for (String ref : referencesList) {%>
 																	<option value="<%=ref%>" <%if(roadMap!=null && roadMap.getReference()!=null && roadMap.getReference().equalsIgnoreCase(ref)) {%>selected<%} %> ><%=ref%></option>
 																<%} %>
 					  										</select>
 														</td>
+														<th colspan="1" class="othersreftd">
+															<label class="control-label">Others</label><span class="mandatory" style="color: red;">*</span>
+														</th>
+														<td colspan="1" class="othersreftd">
+															<input class="form-control" type="text" name="otherReference" id="otherReference" maxlength="1000" placeholder="Enter Other Reference"
+															<%if(roadMap!=null && roadMap.getOtherReference()!=null) {%>value="<%=roadMap.getOtherReference() %>"<%} %> >
+														</td>
+														<th colspan="1">
+															<label class="control-label">Cost</label><span class="mandatory" style="color: red;">*</span>
+														</th>
+														<td colspan="1">
+															<input class="form-control" type="text" name="projectCost" id="projectCost" maxlength="15" placeholder="Enter Cost in rupees"
+															<%if(roadMap!=null && roadMap.getProjectCost()!=null) {%>value="<%=roadMap.getProjectCost() %>"<%} %> required >	
+														</td>
+														<td colspan="5"></td>
 													</tr>
 												</thead>
 											</table>
@@ -455,10 +473,10 @@ function getProjectDetails(){
 			$('#divisionId').val(values[4]);
 			$('#aimObjectives').val(values[7]);
 			$('#scope').val(values[8]);
-			$('#references').val(values[9]);
-			
+			/* $('#references').val(values[9]); */
+			$('#projectCost').val(values[10]);
 			$('#divisionId').select2();
-			$('#references').select2();
+			/* $('#references').select2(); */
 			
 		}
 	});
@@ -470,6 +488,8 @@ function getProjectDetails(){
 
 $(document).ready(function() {
 
+	otherReferenceHandle();
+	
 	<%if(roadMap==null) {%>
 		validateRoadMapType('Add');
 	<%} else{%>
@@ -688,6 +708,19 @@ function othersCheckHandle(annualYear) {
 		}
 		
 	}
+</script>
+<script type="text/javascript">
+function otherReferenceHandle(){
+	var references = $('#references').val();
+
+	if(references==='Others'){
+		$('.othersreftd').show();
+		$('#otherReference').prop('required',true);
+	}else{
+		$('.othersreftd').hide();
+		$('#otherReference').prop('required',false);
+	}
+}
 </script>
 </body>
 </html>

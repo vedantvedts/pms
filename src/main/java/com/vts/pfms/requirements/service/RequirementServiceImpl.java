@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -20,14 +22,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.cars.dao.CARSDao;
+import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.project.dao.ProjectDao;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
+import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.service.ProjectServiceImpl;
 import com.vts.pfms.requirements.dao.RequirementDao;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.ReqDoc;
+import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.RequirementsTrans;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestPlanSummary;
@@ -57,16 +64,19 @@ public class RequirementServiceImpl implements RequirementService {
 	@Autowired
 	ProjectDao prodao;
 	
+	@Autowired
+	CARSDao carsdao;
+	
 	@Override
-	public List<Object[]> RequirementList(String initiationid, String projectId) throws Exception {
-		return dao.RequirementList(initiationid,projectId);
+	public List<Object[]> RequirementList(String reqInitiationId) throws Exception {
+		return dao.RequirementList(reqInitiationId);
 	}
 	@Override
 	public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd, String userId, String labCode)
 			throws Exception {
 		// TODO Auto-generated method stub
 		PfmsInititationRequirement pir=new PfmsInititationRequirement();
-		pir.setInitiationId(prd.getInitiationId());
+//		pir.setInitiationId(prd.getInitiationId());
 		pir.setReqTypeId(prd.getReqTypeId());
 		pir.setRequirementBrief(prd.getRequirementBrief());
 		pir.setRequirementDesc(prd.getRequirementDesc());
@@ -83,7 +93,8 @@ public class RequirementServiceImpl implements RequirementService {
 		pir.setCreatedBy(userId);
 		pir.setCreatedDate(sdf1.format(new Date()));
 		pir.setIsActive(1);
-		pir.setProjectId(prd.getProjectId());
+//		pir.setProjectId(prd.getProjectId());
+		pir.setReqInitiationId(prd.getReqInitiationId());
 		return prodao.ProjectRequirementAdd(pir);
 	}
 	
@@ -290,8 +301,8 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.addAbbreviations(iaList);
 	}
 	@Override
-	public List<Object[]> requirementTypeList(String initiationid, String projectId) throws Exception {
-		return dao.requirementTypeList(initiationid,projectId);
+	public List<Object[]> requirementTypeList(String reqInitiationId) throws Exception {
+		return dao.requirementTypeList(reqInitiationId);
 	}
 	@Override
 	public long addPfmsInititationRequirement(PfmsInititationRequirement pir) throws Exception {
@@ -317,31 +328,226 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.getreqTypeList(reqMainId,initiationReqId);
 	}
 	@Override
-	public List<Object[]> getVerificationMethodList(String projectId, String initiationId) throws Exception {
-		return dao.getVerificationMethodList(projectId,initiationId);
+	public List<Object[]> getVerificationMethodList() throws Exception {
+		return dao.getVerificationMethodList();
 	}
 	@Override
-	public List<Object[]> getProjectParaDetails(String initiationid, String projectId) throws Exception {
+	public List<Object[]> getProjectParaDetails(String reqInitiationId) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.getProjectParaDetails(initiationid,projectId);
+		return dao.getProjectParaDetails(reqInitiationId);
 	}
 	@Override
-	public List<Object[]> getVerifications(String initiationid, String projectId) throws Exception {
-		return dao.getVerifications(initiationid,projectId);
+	public List<Object[]> getVerifications(String reqInitiationId) throws Exception {
+		return dao.getVerifications(reqInitiationId);
 	}
 	@Override
-	public List<Object[]> ApplicableDocumentList(String initiationid, String projectId) throws Exception {
-		return dao.ApplicableDocumentList(initiationid,projectId);
+	public List<Object[]> ApplicableDocumentList(String reqInitiationId) throws Exception {
+		return dao.ApplicableDocumentList(reqInitiationId);
 	}
 	@Override
-	public List<Object[]> ApplicableTotalDocumentList(String initiationid, String projectId) throws Exception {
+	public List<Object[]> ApplicableTotalDocumentList(String reqInitiationId) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.ApplicableTotalDocumentList(initiationid,projectId);
+		return dao.ApplicableTotalDocumentList(reqInitiationId);
 	}
 	@Override
 	public long addDocs(List<ReqDoc> list) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.addDocs(list);
+	}
+
+	@Override
+	public List<Object[]> productTreeListByProjectId(String projectId) throws Exception {
+		
+		return dao.productTreeListByProjectId(projectId);
+	}
+
+	@Override
+	public List<Object[]> initiationReqList(String projectId, String mainId, String initiationId) throws Exception {
+		
+		return dao.initiationReqList(projectId, mainId, initiationId);
+	}
+	
+	@Override
+	public List<Object[]> getPreProjectList(String loginType, String labcode, String empId) throws Exception {
+		
+		return dao.getPreProjectList(loginType, labcode, empId);
+	}
+	
+	@Override
+	public long addRequirementInitiation(RequirementInitiation requirementInitiation) throws Exception {
+		
+		return dao.addRequirementInitiation(requirementInitiation);
+	}
+	
+	@Override
+	public RequirementInitiation getRequirementInitiationById(String reqInitiationId) throws Exception {
+		
+		return dao.getRequirementInitiationById(reqInitiationId);
+	}
+
+	@Override
+	public PfmsInititationRequirement getPfmsInititationRequirementById(String InitiationReqId) throws Exception {
+		
+		return dao.getPfmsInititationRequirementById(InitiationReqId);
+	}
+
+	@Override
+	public Long addOrUpdatePfmsInititationRequirement(PfmsInititationRequirement pfmsInititationRequirement) throws Exception {
+		
+		return dao.addOrUpdatePfmsInititationRequirement(pfmsInititationRequirement);
+	}
+	
+	@Override
+	public Long requirementInitiationAddHandling(String initiationId,String projectId, String productTreeMainId,String empId, String username) throws Exception {
+		try {
+			RequirementInitiation reqInitiation = RequirementInitiation.builder()
+					  							  .InitiationId(Long.parseLong(initiationId))
+					  							  .ProjectId(Long.parseLong(projectId))
+					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
+					  							  .ReqVersion(1)
+					  							  .InitiatedBy(Long.parseLong(empId))
+					  							  .InitiatedDate(sdf2.format(new Date()))
+					  							  .ReqStatusCode("RIN")
+					  							  .ReqStatusCodeNext("RIN")
+					  							  .CreatedBy(username)
+					  							  .CreatedDate(sdf1.format(new Date()))
+					  							  .IsActive(1)
+					  							  .build();
+			long reqInitiationId = dao.addRequirementInitiation(reqInitiation);
+			
+			// Handling Transaction
+			requirementTransAddHandling(reqInitiationId, null, "RIN", empId);
+			
+			return reqInitiationId;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	@Override
+	public List<Object[]> projectRequirementTransList(String reqInitiationId) throws Exception {
+		
+		return dao.projectRequirementTransList(reqInitiationId);
+	}
+	
+	public Long requirementTransAddHandling(long reqInitiationId, String remarks, String reqStatusCode, String empId) throws Exception {
+		try {
+			
+			RequirementsTrans transaction = RequirementsTrans.builder()
+											.ReqInitiationId(reqInitiationId)
+											.Remarks(remarks)
+											.ReqStatusCode(reqStatusCode)
+											.ActionBy(empId)
+											.ActionDate(sdf1.format(new Date()))
+											.build();
+			
+			return dao.addRequirementTransaction(transaction);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	@Override
+	public long projectRequirementApprovalForward(String reqInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception {
+		try {
+			
+			RequirementInitiation req = dao.getRequirementInitiationById(reqInitiationId);
+			String reqStatusCode = req.getReqStatusCode();
+			String reqStatusCodeNext = req.getReqStatusCodeNext();
+			
+			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(reqforwardstatus.contains(reqStatusCode)) {
+					req.setReqStatusCode("RFW");
+					req.setReqStatusCodeNext("RFR");
+				}else {
+					req.setReqStatusCode(reqStatusCodeNext);
+					if(reqStatusCodeNext.equalsIgnoreCase("RFR")) {
+						req.setReqStatusCodeNext("RFA");
+					}else if(reqStatusCodeNext.equalsIgnoreCase("RFA")) {
+						req.setReqStatusCodeNext("RFA");
+					}
+				}
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(reqStatusCodeNext.equalsIgnoreCase("RFR")) {
+					req.setReqStatusCode("RRR");	
+				}else if(reqStatusCodeNext.equalsIgnoreCase("RFA")) {
+					req.setReqStatusCode("RRA");	
+				}
+				
+				// Setting StatusCode Next
+				req.setReqStatusCodeNext("RFW");
+			}
+			
+			dao.addRequirementInitiation(req);
+			
+			// Handling Transaction
+			requirementTransAddHandling(Long.parseLong(reqInitiationId), remarks, req.getReqStatusCode(), empId);
+			
+			// Handling Notification
+			RequirementSummary summary = dao.getRequirementSummaryByReqInitiationId(reqInitiationId);
+			
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A")) {
+				String reqStatusCode2 = req.getReqStatusCode();
+				if(reqStatusCode2.equalsIgnoreCase("RFW")) {
+					notification.setEmpId(summary.getReviewer());
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("Requirement Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFR")) {
+					notification.setEmpId(summary.getApprover());
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("Requirement Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
+					notification.setEmpId(Long.parseLong(summary.getPreparedBy()));
+					notification.setNotificationUrl("Requirements.htm?projectId="+req.getProjectId()+"&initiationId="+req.getInitiationId()+"&productTreeMainId="+req.getProductTreeMainId()+"&projectType="+(req.getProjectId()!=0?"M":"I") );
+					notification.setNotificationMessage("Requirement Doc Approved");
+				}
+				
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdf1.format(new Date()));
+
+				carsdao.addNotifications(notification);
+				
+			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
+				notification.setEmpId(Long.parseLong(summary.getPreparedBy()));
+				notification.setNotificationUrl("Requirements.htm?projectId="+req.getProjectId()+"initiationId="+req.getInitiationId()+"productTreeMainId="+req.getProductTreeMainId()+"projectType="+(req.getProjectId()!=0?"M":"I") );
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"Requirement Doc Request Returned":"Requirement Doc Request Disapproved");
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdf1.format(new Date()));
+			
+				carsdao.addNotifications(notification);
+			}
+			
+			return 1L;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
+	}
+	@Override
+	public List<Object[]> projectRequirementPendingList(String empId, String labcode) throws Exception {
+		
+		return dao.projectRequirementPendingList(empId, labcode);
+	}
+	@Override
+	public List<Object[]> projectRequirementApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		return dao.projectRequirementApprovedList(empId, FromDate, ToDate);
 	}
 	
 }
