@@ -39,6 +39,9 @@ h6{
   z-index: 5;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
+.pdfimage{
+height: 50px;
+}
 </style>
 </head>
 <body>
@@ -116,8 +119,23 @@ String projectid = (String)request.getAttribute("projectid");
 		   					</div>
 		   				</div>	   							
 					</div>
-			<form action="#">		
-			<div class="card-body">
+			    <form action="#">		
+			        <div class="card-body">
+							<div align="right">
+								<button class="pdf" formaction="RfaActionReportPdf.htm" 
+									formmethod="get" formnovalidate="formnovalidate" name="rfaid"
+									value="" formtarget="_blank" data-toggle="tooltip"
+									data-placement="top" data-original-title="RFA Report pdf"
+									style="border: none;background: transparent;margin-bottom: 7px;">
+									<div>
+										<img class="pdfimage" src="view/images/pdf1.png">
+									</div>
+								</button>
+								<input type="hidden" name="fdate" value="<%=fdate%>">
+								<input type="hidden" name="tdate" value="<%=tdate%>">
+								<input type="hidden" name="rfatypeid" value="<%=rfatypeid%>">
+								<input type="hidden" name="projectid" value="<%=projectid%>">
+							</div>
 							<div class="table-responsive">
 								<table
 									class="table table-bordered table-hover table-striped table-condensed "
@@ -180,7 +198,7 @@ String projectid = (String)request.getAttribute("projectid");
 													<td style="text-align: center;">
 													   <button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
-													formnovalidate="formnovalidate" name="rfaid" value="<%=obj[0]%>/<%=obj[1] %>" 
+													formnovalidate="formnovalidate" name="rfaid" value="<%=obj[0]%>,<%=obj[1] %>" 
 													style="margin-left:10%;" formtarget="_blank"   data-toggle="tooltip" data-placement="top"  data-original-title="VIEW DOCUMENT">
 													<div class="cc-rockmenu">
 														<div class="rolling">

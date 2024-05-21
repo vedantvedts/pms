@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -3300,10 +3301,11 @@ public class ActionController {
 		try {
 			
 		        String rfaData=req.getParameter("rfaid");
-		        String[] rfadetails = rfaData.split("/");
+		        String[] rfadetails = rfaData.split(",");
 		        String rfaid=rfadetails[0];
 //		        String printname=rfadetails[1]+"/"+rfadetails[2]+"/"+rfadetails[3]+"/"+rfadetails[4];
 		        String printname=rfadetails[1];
+		        String result=printname.replace('/', '-');
 			    Object[] RfaPrintData = service.RfaPrintData(rfaid);
 			  
 				req.setAttribute("RfaPrint", RfaPrintData);
@@ -3322,7 +3324,7 @@ public class ActionController {
 			    
 			 Object[]attachmentData=service.RfaAttachmentDownload(rfaid);
 			    
-			String filename="RFA Attachment "+ printname;
+			String filename=result;
 			
 			String path=req.getServletContext().getRealPath("/view/temp");
 		  	req.setAttribute("path",path);
@@ -4367,7 +4369,7 @@ public class ActionController {
     					projectid=	ProjectList.get(0)[0].toString(); // if project Id null selecet the first project as Default
     				}
     				if(rfatypeid==null) {
-    					rfatypeid = ""; // if rfatype is null selected the firstone default
+    					rfatypeid = "-"; // if rfatype is null selected the firstone default
     				}
     				 LocalDate currentDate = LocalDate.now();
     				if(fdate==null)
@@ -4452,5 +4454,68 @@ public class ActionController {
 					e.printStackTrace();
 				}
         		return null;
+        	}
+            
+            
+            @RequestMapping(value = "RfaActionReportPdf.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public void RfaActionReportPdf(Model model,HttpServletRequest req,HttpServletResponse res ,HttpSession ses, RedirectAttributes redir)throws Exception
+        	{
+            	String UserId = (String) ses.getAttribute("Username");
+        		String LabCode = (String) ses.getAttribute("labcode");
+        		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+    			String LoginType=(String)ses.getAttribute("LoginType");
+        		logger.info(new Date() +"Inside RfaActionReportPdf.htm "+UserId);
+        		try {
+        			
+        			FormatConverter fc=new FormatConverter();
+					SimpleDateFormat sdf=fc.getRegularDateFormat();
+					SimpleDateFormat sdf1=fc.getSqlDateFormat();
+        			
+        			String projectid= req.getParameter("projectid");
+        			String rfatypeid=req.getParameter("rfatypeid");
+        			String fdate = req.getParameter("fdate");
+        			String tdate = req.getParameter("tdate");
+        			
+        			List<Object[]> ProjectList = service.LoginProjectDetailsList(EmpId, LoginType, LabCode);
+        			List<Object[]>RfaActionReportList = service.rfaTotalActionList(projectid,rfatypeid,fdate,tdate);
+        			
+        			req.setAttribute("RfaActionReportList", RfaActionReportList);
+        			req.setAttribute("ProjectList", ProjectList);
+        			req.setAttribute("projectid", projectid);
+    				req.setAttribute("rfatypeid", rfatypeid);
+    				req.setAttribute("fdate", fdate);
+    				req.setAttribute("tdate", tdate);
+    				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+    				
+        			
+    			String filename="RFA Report From "+sdf.format(sdf1.parse(fdate))+" To "+sdf.format(sdf1.parse(tdate))+"";
+    			String path=req.getServletContext().getRealPath("/view/temp");
+    		  	req.setAttribute("path",path);
+    			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+    			req.getRequestDispatcher("/view/action/RfaActionReportPdf.jsp").forward(req, customResponse);
+    			String html = customResponse.getOutput();
+		        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")) ; 
+		        res.setContentType("application/pdf");
+		        res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+		        File f=new File(path +File.separator+ filename+".pdf");
+		        FileInputStream fis = new FileInputStream(f);
+		        DataOutputStream os = new DataOutputStream(res.getOutputStream());
+		        res.setHeader("Content-Length",String.valueOf(f.length()));
+		        byte[] buffer = new byte[1024];
+		        int len = 0;
+		        while ((len = fis.read(buffer)) >= 0) {
+		            os.write(buffer, 0, len);
+		        } 
+		        os.close();
+		        fis.close();
+		        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
+		        Files.delete(pathOfFile);
+    			
+     		
+    	 	}catch (Exception e) {
+    			e.printStackTrace();
+    			logger.error(new Date() +" Inside RfaActionReportPdf.htm "+UserId, e);
+    		}
+        		
         	}
 }
