@@ -153,6 +153,9 @@ if(DocumentSummaryList!=null && DocumentSummaryList.size()>0){
 	DocumentSummary=DocumentSummaryList.get(0);
 }
 
+List<String> status = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TRC","TRV");
+
+
 String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){%>
@@ -236,6 +239,10 @@ String ses=(String)request.getParameter("result");
 			                            <td>
 			                            
 			                            <input type="hidden" name="ClosureId" value="<%=closureId %>">
+			                            
+			                             <%if (obj[4]!=null  && status.contains(obj[4].toString())){ %>
+			                             
+			                              
 			                            <button class="editable-clicko" name="TechnicalClosureId" value="<%=obj[0] %>" formaction="TechClosureContent.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Content Add">
 											<div class="cc-rockmenu">
 												<div class="rolling">
@@ -260,8 +267,7 @@ String ses=(String)request.getParameter("result");
 						    			</button>
 						    			
 						    			
-						    			<%-- <input type="hidden" name="TechClosureId" value="<%=obj[0]%>">
-						    			 <input type="hidden" name="ClosureId" value="<%=closureId %>"> --%>
+						    	
 						    			<button type="button" class="editable-clicko" name="" value=""  onclick="DocumentDistribution('<%=obj[0]%>','<%=closureId %>')" data-toggle="tooltip" data-placement="top" title="Document Distribution" >
 											<div class="cc-rockmenu">
 												<div class="rolling" >
@@ -278,6 +284,7 @@ String ses=(String)request.getParameter("result");
 						    			<input type="hidden" name="TechnicalClsoureId" value="<%=obj[0]%>">
 						    			 <input type="hidden" name="ClosureId" value="<%=closureId %>">
 						    			 <input type="hidden" name="Action" value="A">
+						    			
 						    			 <button type="submit" class="editable-clicko" name="" value=""  formaction="projectTechClosureApprovalSubmit.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Submit')">
 											<div class="cc-rockmenu">
 												<div class="rolling" >
@@ -288,6 +295,13 @@ String ses=(String)request.getParameter("result");
 												</div>
 											</div>
 						    			</button>
+						    			<%}else{ %>
+						    				
+						    				<input type="hidden" name="TechClosureId" value="<%=obj[0] %>" >
+											<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=closureId %>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+  										            <i class="fa fa-download"></i>
+  									             </button> 	
+						    			<%}%> 
 						    		</td>
 			                    </tr>
 			               <%}%>
@@ -482,7 +496,7 @@ String ses=(String)request.getParameter("result");
 <!--------------------------------------------------------------------------------- modal for Document Distribution --------------------------------------------------------------->
 <div class="modal fade" id="DistributionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width:100%;">
       <div class="modal-header" id="ModalHeader" style="background: #055C9D ;color:white;">
         <h5 class="modal-title" >Document Sent to</h5>
            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -490,7 +504,7 @@ String ses=(String)request.getParameter("result");
           </button>
       </div>
       <div class="modal-body">
-         <%if(MemberList!=null && MemberList.size()>0) { %>
+        
             <div class="row mb-2">
 		       <div class="col-md-12">
 				<table class="table table-bordered" id="myTables">
@@ -501,8 +515,8 @@ String ses=(String)request.getParameter("result");
 							<th style="text-align: center;">Designation</th>
 						</tr>
 					</thead>
-					<tbody>
-						<% 
+					<tbody id="modal_table_body">
+					<%-- 	<% 
 						int rowCount = 0;
 						for (Object[] obj : MemberList) {%>
 						<tr>
@@ -510,15 +524,15 @@ String ses=(String)request.getParameter("result");
 							<td style="width: 50%; margin-left: 10px;"><%=obj[1].toString()%></td>
 							<td style="width: 40%; margin-left: 10px;"><%=obj[2].toString() %></td>
 						</tr>
-						<%} %>
+						<%} %> --%>
 					</tbody>
 				</table>
 		   </div>      
       </div>
-      <%} %>
+     
 					<form action="DocDistribMemberSubmit.htm" method="post">
 						<div class="row">
-							<div class="col-md-10">
+							<div class="col-md-9">
 								<select class="form-control selectdee" name="Assignee"
 									id="Assignee" data-width="100%" data-live-search="true"
 									multiple required>
@@ -527,9 +541,9 @@ String ses=(String)request.getParameter("result");
 									<%}%>
 								</select>
 							</div>
-							<div class="col-md-1" align="center">
+							<div class="col-md-1" >
 								<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
-								<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+								<!-- <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden"> -->
 
 								<button type="submit" class="btn btn-sm submit" onclick="return confirm ('Are you sure to submit?')">SUBMIT</button>
 							</div>
@@ -569,11 +583,8 @@ function DocumentDistribution(techclosureid,closureid){
 			TechClosureId:techclosureid,
 		},
 		success:function(result){
-		var ajaxresult=JSON.parse(result);
-		
+		var result=JSON.parse(result);
 		var htmlStr='';
-		
-		
 		
 		if(result.length>0){
 			
@@ -586,14 +597,6 @@ function DocumentDistribution(techclosureid,closureid){
 		htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) +  '</td>';
 		htmlStr += '<td class="tabledata" style="text-align: left;" >'+ result[v][1] + '</td>';
 		htmlStr += '<td class="tabledata" style="text-align: left;" >'+ result[v][2] + ' </td>';
-		if(YN=='yes'){
-	    htmlStr += '<td class="tabledata" style="text-align: center;" >'+ result[v][3] + ' </td>';
-	    $('#div').show();
-		}
-		else{
-			  $('#div').hide();
-		}
-		
 		
 		htmlStr += '</tr>';
 		}
@@ -605,23 +608,19 @@ function DocumentDistribution(techclosureid,closureid){
 			
 		htmlStr += '<tr>';
 		
-		htmlStr += '<td colspan="4" style="text-align: center;"> No Record Found </td>';
+		htmlStr += '<td colspan="3" style="text-align: center;"> No Record Found </td>';
 		
 		htmlStr += '</tr>';
 		
 		}
-		setModalDataTable();
+		
+		
 		$('#modal_table_body').html(htmlStr);
 		    
-		    
+		$('#DistributionModal').modal('toggle'); 
 		   
 		}
-	 })
-	
-	
-	
-	
-	$('#DistributionModal').modal('toggle');
+	 });
 	
 }
 

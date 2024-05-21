@@ -2,6 +2,8 @@ package com.vts.pfms.projectclosure.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,12 +87,15 @@ public interface ProjectClosureService {
 	public List<Object[]> getDocumentSummary(String closureId)throws Exception;
 	public ProjectClosureTechnical getProjectClosureTechnicalById(String closureId) throws Exception;
 	public long UpdateProjectClosureTechnical(ProjectClosureTechnical techn) throws Exception;
-	public long projectTechClosureApprovalForward(ProjectClosureApprovalForwardDTO dto) throws Exception;
+	public long projectTechClosureApprovalForward(ProjectClosureApprovalForwardDTO dto,HttpServletRequest req, HttpServletResponse res) throws Exception;
 	public List<Object[]> projectTechClosureTransListByType(String techClosureId, String closureStatusFor, String closureForm) throws Exception;
 	public List<Object[]> projectTechClosurePendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectTechClosureApprovedList(String empId, String fromdate, String todate)throws Exception;
 	public long AddTCRMembers(ProjectClosureTechnicalDocDistrib dist) throws Exception;
 	public List<Object[]>  getDocSharingMemberList(String techClosureId)throws Exception;
+	
+	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res, String closureId, String techclosureId)
+			throws Exception;
 	
 	
 }

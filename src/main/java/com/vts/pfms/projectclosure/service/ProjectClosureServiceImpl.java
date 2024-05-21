@@ -1,5 +1,8 @@
 package com.vts.pfms.projectclosure.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -14,6 +17,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +28,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
@@ -1315,7 +1323,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public long projectTechClosureApprovalForward(ProjectClosureApprovalForwardDTO dto) throws Exception {
+	public long projectTechClosureApprovalForward(ProjectClosureApprovalForwardDTO dto,HttpServletRequest req, HttpServletResponse res) throws Exception {
 		
 		try {
 //			long closureSoCId = dto.getClosureSoCId();
@@ -1348,8 +1356,8 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				if(forwardstatus.contains(statusCode)) {
 					
 					if(statusCode.equalsIgnoreCase("TIN")) {
-						//closure.setForwardedBy(PD!=null?PD[1].toString():"0");
-						//closure.setForwardedDate(sdf.format(new Date()));
+						closure.setForwardedBy(PD!=null?PD[1].toString():"0");
+						closure.setForwardedDate(sdf.format(new Date()));
 					}
 					
 					closure.setStatusCode("TFW");
@@ -1372,6 +1380,8 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 						closure.setStatusCodeNext("TDG");
 					}else if(statusCodeNext.equalsIgnoreCase("TDG")) {
 						closure.setStatusCodeNext("TDG");
+						
+						TCRFormFreeze(req,res,ClosureId,TechclosureId);
 						//closure.setApprStatus("A");
 					}
 				}
@@ -1528,4 +1538,76 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.getDocSharingMemberList(techClosureId);
 	}
+	
+	
+	@Override
+	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res,String ClosureId,String TechclosureId) throws Exception{
+		logger.info(new Date() +"Inside SERVICE TCRFormFreeze ");
+		try {
+			
+			//req.setAttribute("CARSInitiationData", dao.getCARSInitiationById(carsInitiationId));
+			//req.setAttribute("RSQRMajorReqr", dao.getCARSRSQRMajorReqrByCARSInitiationId(carsInitiationId));
+			//req.setAttribute("RSQRDeliverables", dao.getCARSRSQRDeliverablesByCARSInitiationId(carsInitiationId));
+			//req.setAttribute("RSQRDetails", dao.carsRSQRDetails(carsInitiationId+""));
+			//req.setAttribute("CARSSoCMilestones", dao.getCARSSoCMilestonesByCARSInitiationId(carsInitiationId));
+			
+			//req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+		  	//req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
+		  	//req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
+		  	req.setAttribute("RecordOfAmendments", dao.getTechnicalClosureRecord(ClosureId));
+		  	req.setAttribute("TechnicalClosureContent", dao.getTechnicalClosureContent(ClosureId));
+		  	req.setAttribute("AppendicesList",dao.getAppendicesList(ClosureId));
+			req.setAttribute("DocumentSummary",dao.getDocumentSummary(ClosureId));
+			req.setAttribute("MemberList", dao.getDocSharingMemberList(ClosureId));
+			
+			
+			String filename="TCR Form";
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+				        
+	        CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/ProjectTechClosureDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();                  
+	        
+	        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")) ; 
+	         
+	        File file=new File(path +File.separator+ filename+".pdf");
+	        
+	        String fname="TPCR-"+TechclosureId;
+			String filepath = "Project-Closure\\TPCR";
+			int count=0;
+			while(new File(uploadpath+filepath+"\\"+fname+".pdf").exists())
+			{
+				fname = "TPCR-"+TechclosureId;
+				fname = fname+" ("+ ++count+")";
+			}
+	        
+	        saveFile(uploadpath+filepath, fname+".pdf", file);
+	        
+	        //dao.carsRSQRFreeze(carsInitiationId, filepath+"\\"+fname+".pdf");
+	        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile);		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void saveFile(String uploadpath, String fileName, File fileToSave) throws IOException 
+	{
+	   logger.info(new Date() +"Inside SERVICE saveFile ");
+	   Path uploadPath = Paths.get(uploadpath);
+	          
+	   if (!Files.exists(uploadPath)) {
+		   Files.createDirectories(uploadPath);
+	   }
+	        
+	   try (InputStream inputStream = new FileInputStream(fileToSave)) {
+		   Path filePath = uploadPath.resolve(fileName);
+	       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	   } catch (IOException ioe) {       
+		   throw new IOException("Could not save file: " + fileName, ioe);
+	   }     
+	}
+	
 }

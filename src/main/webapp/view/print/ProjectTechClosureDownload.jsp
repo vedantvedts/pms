@@ -17,25 +17,17 @@
 <meta charset="ISO-8859-1">
 <title>Technical Closure Report</title>
 <%
-List<Object[]>OtherRequirements=(List<Object[]>)request.getAttribute("OtherRequirements");
+
 String lablogo=(String)request.getAttribute("lablogo");
-/* Object[]PfmsInitiationList=(Object[])request.getAttribute("PfmsInitiationList"); */
+
 Object[]LabList=(Object[])request.getAttribute("LabList");
-Object[]reqStatus=(Object[])request.getAttribute("reqStatus");
-List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
+
+
 FormatConverter fc=new FormatConverter(); 
 SimpleDateFormat sdf3=fc.getRegularDateFormat();
 SimpleDateFormat sdf=fc.getRegularDateFormatshort();
 SimpleDateFormat sdf1=fc.getSqlDateFormat();
-List<Object[]>RequirementFiles=(List<Object[]>)request.getAttribute("RequirementFiles");
-Object[]ReqIntro=(Object[])request.getAttribute("ReqIntro");
-String uploadpath=(String)request.getAttribute("uploadpath");
-
-
 String labImg=(String)request.getAttribute("LabImage");
-List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
-List<Object[]>AcronymsList=(List<Object[]>)request.getAttribute("AcronymsList");
-List<Object[]>PerformanceList=(List<Object[]>)request.getAttribute("PerformanceList");
 List<Object[]>MemberList=(List<Object[]>)request.getAttribute("MemberList");
 List<Object[]> DocumentSummary=(List<Object[]>)request.getAttribute("DocumentSummary");
 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
@@ -56,8 +48,8 @@ String HeaderFontWeight="Bold";
 String SubHeaderFontweight="Bold";
 String SuperHeaderFontWeight="Bold";
 String FontFamily="Times New Roman";
-List<Object[]>VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
-List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
+
+
 List<Object[]> RecordOfAmendments=(List<Object[]>)request.getAttribute("RecordOfAmendments");
 List<Object[]> AppendicesList=(List<Object[]>)request.getAttribute("AppendicesList");
 String projectShortName =(String)request.getAttribute("projectShortName");
@@ -335,10 +327,10 @@ border-collapse:collapse;
 				
 				<tr>
 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
-					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 150px;text-align: center;"><span class="text-dark">NAME</span></td>
-					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 100px;"><span class="text-dark">Designation</span></td>
-					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
-					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 80px;"><span class="text-dark">Remarks</span></td>
+					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 250px;text-align: center;"><span class="text-dark">NAME</span></td>
+					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 150px;"><span class="text-dark">Designation</span></td>
+					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black;width: 150px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
+					<%-- <td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 80px;"><span class="text-dark">Remarks</span></td> --%>
 				</tr>
 				
 				<tbody id="blankRowsBody1"></tbody>
@@ -353,7 +345,7 @@ border-collapse:collapse;
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
                  <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
-                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;">copy for Record</td>
+                 <%-- <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;">copy for Record</td> --%>
          </tr>
          
      <%}}%>

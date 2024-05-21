@@ -1012,7 +1012,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 
-	private static String TECHCLOSUREPENDINGLIST="CALL pfms_closure_technical_tcr_pending(:EmpId,:LabCode)";
+	private static String TECHCLOSUREPENDINGLIST="CALL pfms_closure_tcr_pending(:EmpId,:LabCode)";
 	@Override
 	public List<Object[]> projectTechClosurePendingList(String empId, String labcode) throws Exception {
 		

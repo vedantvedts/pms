@@ -440,6 +440,9 @@ public class ProjectClosureController {
 			req.setAttribute("SoCApprovedList", service.projectClosureSoCApprovedList(EmpId,fromdate,todate));
 			req.setAttribute("ACPPendingList", service.projectClosureACPPendingList(EmpId, labcode));
 			req.setAttribute("ACPApprovedList", service.projectClosureACPApprovedList(EmpId,fromdate,todate));
+			req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(labcode));
+			req.setAttribute("LabList", carsservice.getLabList(labcode));
+			;
 			
 			return "project/ProjectClosureApprovals";
 		}catch (Exception e) {
@@ -2237,23 +2240,7 @@ public class ProjectClosureController {
 				redir.addAttribute("resultfail", "Technical Closure Add Unsuccessful");
 			}
 		}	
-			
-//		else if("Forward".equalsIgnoreCase(req.getParameter("Action"))) {
-//				
-//				//ProjectClosureTechnical techn=service.getProjectClosureTechnicalById(req.getParameter("TechnicalClsoureId"));
-//				
-//			    tech.setStatus("FWD");
-//				
-//				long update=service.UpdateProjectClosureTechnical(tech);
-//				
-//				if (update > 0) {
-//					redir.addAttribute("result", "Technical Closure Forwarded Successfully");
-//				} else {
-//					redir.addAttribute("resultfail", "Technical Closure Forward Unsuccessful");
-//				}
-//			}
-			
-			
+		
             req.setAttribute("DocumentSummary",service.getDocumentSummary(closureId));
 			req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(LabCode));
 			
@@ -2282,6 +2269,7 @@ public class ProjectClosureController {
 				
 			
 			String closureId = req.getParameter("ClosureId"); 
+			String TechClosureId=req.getParameter("TechnicalClosureId");
 			List<Object[]> ChapterList=service.getChapterList(closureId);
 			List<Object[]> AppndDocList=service.getAppndDocList();
 		    List<Object[]> AppendicesList=service.getAppendicesList(closureId);
@@ -2292,6 +2280,7 @@ public class ProjectClosureController {
 			req.setAttribute("AppndDocList", AppndDocList);
 			
 			req.setAttribute("closureId", closureId);
+			req.setAttribute("TechClosureId", TechClosureId);
 			return "project/ProjectTechClosureContent";
 			
 		} catch (Exception e) {
@@ -2568,6 +2557,7 @@ public class ProjectClosureController {
 		try {
 			
 			String closureId=req.getParameter("ClosureId");
+			String TechClosureId=req.getParameter("TechClosureId");
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 		  	req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
@@ -2575,6 +2565,7 @@ public class ProjectClosureController {
 		  	req.setAttribute("TechnicalClosureContent", service.getTechnicalClosureContent(closureId));
 		  	req.setAttribute("AppendicesList",service.getAppendicesList(closureId));
 			req.setAttribute("DocumentSummary",service.getDocumentSummary(closureId));
+			req.setAttribute("MemberList", service.getDocSharingMemberList(TechClosureId));
 		  	
 		  	
 			String filename="Technical Closure Report";	
@@ -2675,7 +2666,7 @@ public class ProjectClosureController {
 		}
 	
 	@RequestMapping(value="projectTechClosureApprovalSubmit.htm", method = {RequestMethod.POST,RequestMethod.GET})
-	public String projectTechClosureApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+	public String projectTechClosureApprovalSubmit(HttpServletRequest req, HttpServletResponse res,HttpSession ses, RedirectAttributes redir) throws Exception{
 		String UserId = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -2689,7 +2680,7 @@ public class ProjectClosureController {
 			String statusCode = closure.getStatusCode();
 			
 			ProjectClosureApprovalForwardDTO dto = new ProjectClosureApprovalForwardDTO();
-//			dto.setClosureSoCId(Long.parseLong(closureSoCId));
+
 			dto.setTechclosureId(techclosureId);
 			dto.setClosureId(closureId);
 			dto.setAction(action);
@@ -2700,7 +2691,7 @@ public class ProjectClosureController {
 			dto.setApproverEmpId(req.getParameter("approverEmpId"));
 			dto.setApprovalDate(req.getParameter("approvalDate"));
 			
-			long result = service.projectTechClosureApprovalForward(dto);
+			long result = service.projectTechClosureApprovalForward(dto,req,res);
 			
 			List<String> forwardstatus = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TRC","TRV");
 			List<String> approvestatus = Arrays.asList("TAP","TAD");
@@ -2753,10 +2744,7 @@ public class ProjectClosureController {
 		{
 
 			String UserId=(String)ses.getAttribute("Username");
-			String LabCode = (String)ses.getAttribute("labcode");
-			String Logintype= (String)ses.getAttribute("LoginType");
-
-			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			
 			logger.info(new Date() +"Inside DocDistribMemberSubmit.htm "+UserId);
 			try {
 				
@@ -2810,6 +2798,27 @@ public class ProjectClosureController {
 		}
 		
 		
+		@RequestMapping(value="GetLabCodeEmpList.htm",method=RequestMethod.GET)
+		public  @ResponseBody String  GetLabcodeEmpList(HttpServletRequest req, HttpSession ses)throws Exception{
+			String Username=(String)ses.getAttribute("Username");
+			logger.info(new Date() + "Inside GetLabCodeEmpList.htm"+Username);
+			Gson json = new Gson();
+			List<Object[]> GetLabcodeEmpList=null;
+			try {
+				String LabCode=(String)req.getParameter("LabCode");
+				if(LabCode!=null && !LabCode.equalsIgnoreCase("@EXP")) {
+					GetLabcodeEmpList=carsservice.getEmployeeListByLabCode(LabCode);
+				}else {
+					GetLabcodeEmpList=carsservice.ExpertEmployeeList();
+				}
+				
+				} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside GetLabCodeEmpList.htm "+Username, e);
+				}
+			return json.toJson(GetLabcodeEmpList);
+
+		}
 		
 		
 		

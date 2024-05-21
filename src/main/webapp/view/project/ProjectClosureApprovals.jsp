@@ -97,6 +97,9 @@ List<Object[]> ACPPendingList =(List<Object[]>)request.getAttribute("ACPPendingL
 List<Object[]> ACPApprovedList =(List<Object[]>)request.getAttribute("ACPApprovedList");
 List<Object[]> TechClosurePendingList=(List<Object[]>)request.getAttribute("TechClosurePendingList");
 List<Object[]> TechClosureApprovedList=(List<Object[]>)request.getAttribute("TechClosureApprovedList");
+List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
+List<Object[]>  LabList=(List<Object[]>)request.getAttribute("LabList");
+
 
 
 
@@ -294,12 +297,23 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             													<textarea rows="2" cols="70" class="form-control" name="remarks" maxlength="200" placeholder="Enter remarks here( max 250 characters )" style="width:98%;"></textarea>
                             												</div>
 																			<div class="w-30">
-																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate"
+																			<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("TDG")) {%>
+																			
+																			      <button type="button" class="btn btn-sm btn-success mt-1" name="Action" value="A"  onclick="OpenApproveModal('<%=form[10] %>','<%=form[4] %>')"
+																				      style="font-weight: 500" >
+																						 Approve
+								                                                   </button>
+																			
+																			
+																			<%}else{ %>
+																				<button type="submit" class="btn btn-sm btn-success mt-1" name="Action" value="A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate"
 																				 style="font-weight: 500" onclick="return confirm('Are You Sure To Recommend );">
 																						 Recommend
 								                                               </button>
 								                                               
-																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate" style="font-weight: 500"
+								                                               <%} %>
+								                                               
+																				<button type="submit" class="btn btn-sm btn-danger mt-1" name="Action" value="R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate" style="font-weight: 500"
 																					onclick="return confirm('Are You Sure To Return');"> Return
 																				</button>
 																			</div>
@@ -471,6 +485,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						 												</td>
 						 												<td style="text-align: center;width: 20%;">
 						 													
+						 													<input type="hidden" name="TechClosureId" value="<%=form[15] %>" >
 																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
 								   										            <i class="fa fa-download"></i>
 								   									             </button> 	
@@ -496,6 +511,63 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		</div>
 	</div>
 </div>
+
+
+<div class="modal fade" id="ApprovalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
+    <div class="modal-content" style="width:100%;">
+      
+        
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="text-light" style="color:red;">&times;</span>
+          </button>
+      
+      <div class="modal-body">
+        <form action="projectTechClosureApprovalSubmit.htm" method="get" >
+            <div class="row" >
+		       <div class="col-md-8">
+				<label class="control-label">Lab</label><span class="mandatory">*</span>
+				<select class="form-control selectdee" id="LabCode" name="LabCode" onchange="LabcodeSubmit()" data-width="100%" data-live-search="true" required >
+				       <option value="0" selected disabled >Select</option>
+							<%if (LabList != null && LabList.size() > 0) {
+								for (Object[] obj : LabList) { %>
+								<option value=<%=obj[2].toString()%>><%=obj[2].toString()%></option>
+							<%}}%>
+				        <option value="@EXP">Expert</option>
+			     </select>
+			 </div>  
+			
+			 <div class="col-md-7">
+				<label class="control-label">Approval Officer</label><span class="mandatory">*</span>
+				  <select class="form-control selectdee" id="approverEmpId" name="approverEmpId" data-width="100%" data-live-search="true" required>
+						<option value="0" selected disabled >Select</option>
+				</select>
+			</div> 
+			
+			
+			 <div class="col-md-7">
+				<label class="control-label" >Approval Date</label><span class="mandatory">*</span>
+				<input type="text" class="form-control" id="approvalDate" name="approvalDate" readonly>
+			</div>
+		
+			<div class="col-md-12" align="center">
+			<br>
+		         <button  type="submit" class="btn btn-sm submit" onclick="return confirm ('Are you sure to submit?')">SUBMIT</button>
+		    </div>
+		     
+         </div>
+         
+         <input type="hidden" name="TechnicalClsoureId" id="TechClosureId" value="" >
+         <input type="hidden" name="ClosureId" id="ClosureId" value="" >
+         <input type="hidden" name="Action"  value="A" > 
+         
+      </form>
+    </div>
+  </div>
+ </div>
+</div>
+
+
 					
 <script type="text/javascript">
 
@@ -552,6 +624,66 @@ $('#fromdate').daterangepicker({
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip()
 		});	
+	
+	
+	function OpenApproveModal(TechClosureId,ClosureId){
+		
+		
+		$('#TechClosureId').val(TechClosureId);
+		$('#ClosureId').val(ClosureId);
+		
+		$('#ApprovalModal').modal('toggle');
+	}
+	
+	
+	function LabcodeSubmit() {
+		   var LabCode = document.getElementById("LabCode").value;
+		   $('#approverEmpId').empty();
+		   $.ajax({
+		       type: "GET",
+		       url: "GetLabCodeEmpList.htm",
+		       data: {
+		       	LabCode: LabCode
+		       },
+		       dataType: 'json',
+		       success: function(result) {
+		    	   if (result != null && LabCode!='@EXP') {
+		                for (var i = 0; i < result.length; i++) {
+		                    var data = result[i];
+		                    var optionValue = data[0];
+		                    var optionText = data[1].trim() + ", " + data[3]; 
+		                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
+		                    $('#approverEmpId').append(option); 
+		                }
+		                $('#approverEmpId').selectpicker('refresh');
+		                }else{
+		                	for (var i = 0; i < result.length; i++) {
+		                        var data = result[i];
+		                        var optionValue = data[0];
+		                        var optionText = data[1].trim() + ", " + data[3]; 
+		                        var option = $("<option></option>").attr("value", optionValue).text(optionText);
+		                        $('#approverEmpId').append(option); 
+		                    }
+		                    $('#approverEmpId').selectpicker('refresh');
+		                }
+		            
+		           }
+		   });
+		}
+	
+	
+	$('#approvalDate').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+		
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
+	
 	
 </script>
 
