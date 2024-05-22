@@ -107,5 +107,8 @@ public interface RequirementService {
 	public TestPlanSummary getTestPlanSummaryById(String testplanInitiation) throws Exception;
 	public TestPlanInitiation getTestPlanInitiationById(String testPlanInitiationId) throws Exception;
 	public TestDetails getTestPlanDetailsById(String testId) throws Exception;
+	public long projectTestPlanApprovalForward(String testPlanInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception;
+	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	
 }

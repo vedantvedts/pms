@@ -93,6 +93,9 @@ th{
 <%
 List<Object[]> reqPendingList =(List<Object[]>)request.getAttribute("reqPendingList");
 List<Object[]> reqApprovedList =(List<Object[]>)request.getAttribute("reqApprovedList");
+List<Object[]> testPlanPendingList =(List<Object[]>)request.getAttribute("testPlanPendingList");
+List<Object[]> testPlanApprovedList =(List<Object[]>)request.getAttribute("testPlanApprovedList");
+
 String fromdate = (String)request.getAttribute("fromdate");
 String todate   = (String)request.getAttribute("todate");
 
@@ -139,10 +142,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		    						<div class="nav-link active" style="text-align: center;" id="pills-mov-property-tab" data-toggle="pill" data-target="#pills-mov-property" role="tab" aria-controls="pills-mov-property" aria-selected="true">
 			   							<span>Pending</span> 
 										<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 					<%if((reqPendingList.size() )>99 ){ %>
+				   		 					<%if((reqPendingList.size() + testPlanPendingList.size() )>99 ){ %>
 				   								99+
 				   							<%}else{ %>
-				   								<%=reqPendingList.size()  %>
+				   								<%=reqPendingList.size() + testPlanPendingList.size() %>
 											<%} %>			   			
 				  						</span> 
 		    						</div>
@@ -151,10 +154,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		    						<div class="nav-link" style="text-align: center;" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
 		    	 						<span>Approved</span> 
 		    	 						<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 					<%if((reqApprovedList.size() )>99){ %>
+				   		 					<%if((reqApprovedList.size() + testPlanApprovedList.size() )>99){ %>
 				   								99+
 				   							<%}else{ %>
-				   								<%=reqApprovedList.size()%>
+				   								<%=reqApprovedList.size() + testPlanApprovedList.size()%>
 											<%} %>			   			
 				  						</span> 
 		    						</div>
@@ -210,7 +213,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																		<span id="downloadform">
 																			<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="RequirementDocumentDownlodPdf.htm"
 																				data-toggle="tooltip" data-placement="top" title="" data-original-title="Requirement Document">
-																				<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																				&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
 																			</button>
 																		</span>
 																	</form>
@@ -219,6 +222,84 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             										<form action="ProjectRequirementApprovalSubmit.htm">
                             											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             											<input type="hidden" name="reqInitiationId" value="<%=form[4]%>"> 
+                            											<div class="d-flex ">
+                            												<div class="">
+                            													<textarea rows="2" cols="52" class="form-control" name="remarks" maxlength="1000" placeholder="Enter remarks here( max 1000 characters )" required></textarea>
+                            												</div>
+																			<div class="ml-2" align="right">
+																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formmethod="GET" formnovalidate="formnovalidate"
+																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this Project Document?');">
+																					<%if (form[14].toString().equalsIgnoreCase("RFW")) {%>
+																						Forward
+																					<%} else {%>
+																						Approve
+																					<%}%>
+																				</button>
+																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formmethod="GET" style="font-weight: 500"
+																					onclick="return confirm('Are You Sure To return this Project Document?');">
+																					Return
+																				</button>
+																			</div>
+																		</div>
+																	</form>
+																	<%-- <button type="submit" class="btn btn-sm view-icon" formaction="ProjectClosureSoCDetails.htm" name="closureSoCApprovals" value="<%=form[4]%>/Y/2" data-toggle="tooltip" data-placement="top" title="Closure SoC" style="font-weight: 600;" >
+								   										<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/preview3.png">
+																				</figure>
+																				<span>Preview</span>
+																			</div>
+																		</div>
+																	</button> --%>
+																				
+																	<%-- <button type="submit" class="btn btn-sm" formaction="ProjectClosureSoCDownload.htm" name="closureId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 									<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/document.png">
+																				</figure>
+																				<span>SoC</span>
+																			</div>
+																		</div>
+																	</button> --%>
+																	
+						 										</td>
+                        									</tr>
+                       									<%} }%>
+                       								
+                 										<!-- Test Plan Doc Pending List -->
+                       									<% 
+					   										if(testPlanPendingList!=null && testPlanPendingList.size()>0){
+                         							 			for(Object[] form:testPlanPendingList ){
+                      							 		%>
+                        									<tr>
+                            									<td style="text-align: center;width: 3%;"><%=++SN%></td>
+                            									<td style="width: 18%;"><%=form[2]+", "+form[3]%></td>
+                            									<td style="text-align: center;width: 15%;">
+                            										<%=form[11]!=null?form[11]:form[12] %>
+                            										<%if(form[13]!=null) {%>
+                            											(<%=form[13]%>)
+                            										<%} %>
+                            									</td>
+                            									<td style="text-align: center;width: 8%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[6]%></td>
+                            									<td style="text-align: center;width: 10%;"> 
+                            										<form action="#">
+																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																		<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
+																		<span id="downloadform">
+																			<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="TestPlanDownlodPdf.htm"
+																				data-toggle="tooltip" data-placement="top" title="" data-original-title="Test Plan Document">
+																				&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																			</button>
+																		</span>
+																	</form>
+                            									</td>
+                            									<td style="text-align: center;">
+                            										<form action="ProjectTestPlanApprovalSubmit.htm">
+                            											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            											<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
                             											<div class="d-flex ">
                             												<div class="">
                             													<textarea rows="2" cols="52" class="form-control" name="remarks" maxlength="1000" placeholder="Enter remarks here( max 1000 characters )" required></textarea>
@@ -349,6 +430,69 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																				<span id="downloadform">
 																					<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="RequirementDocumentDownlodPdf.htm"
 																						data-toggle="tooltip" data-placement="top" title="" data-original-title="Requirement Document">
+																						<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																					</button>
+																				</span>
+																			</form>
+						 													<%-- <button type="submit" class="btn btn-sm view-icon" formaction="ProjectClosureSoCDetails.htm" name="closureSoCApprovals" value="<%=form[4]%>/N/2" data-toggle="tooltip" data-placement="top" title="Closure SoC" style="font-weight: 600;" >
+								   												<div class="cc-rockmenu">
+																					<div class="rolling">
+																						<figure class="rolling_icon">
+																							<img src="view/images/preview3.png">
+																						</figure>
+																						<span>Preview</span>
+																					</div>
+																				</div>
+																			</button>
+																					
+																			<button type="submit" class="btn btn-sm" formaction="ProjectClosureSoCDownload.htm" name="closureId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 											<div class="cc-rockmenu">
+																					<div class="rolling">
+																						<figure class="rolling_icon">
+																							<img src="view/images/document.png">
+																						</figure>
+																						<span>SoC</span>
+																					</div>
+																				</div>
+																			</button> --%>
+						 												</td>
+                        											</tr>
+                       												<%} }%>
+                       												
+                 													<!-- Test Plan Doc Approved List -->
+                      												<%	
+                      													if(testPlanApprovedList!=null && testPlanApprovedList.size()>0) {
+                          													for(Object[] form:testPlanApprovedList ) {
+                       												%>
+                        											<tr>
+                            											<td style="text-align: center;width: 5%;"><%=++SNA%></td>
+                            											<td style="text-align: left;width: 22%;"><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
+                            											<td style="text-align: center;width: 10%;">
+                            												<%=form[15]!=null?form[15]:form[16] %>
+		                            										<%if(form[17]!=null) {%>
+		                            											(<%=form[17]%>)
+		                            										<%} %>
+                            											</td>
+                            											<td style="text-align: center;width: 8%;"><%=form[6] %> </td>
+                            											<td style="text-align: center;width: 25%;">
+                            												<form action="#">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="docType" value="T"> 
+																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectTestPlanTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    											</button>
+																			</form>
+                            												
+						 												</td>
+						 												<td style="text-align: center;width: 20%;">
+						 													<form action="#">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
+																				<span id="downloadform">
+																					<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="TestPlanDownlodPdf.htm"
+																						data-toggle="tooltip" data-placement="top" title="" data-original-title="Test Plan Document">
 																						<i class="fa fa-download fa-lg" aria-hidden="true"></i>
 																					</button>
 																				</span>

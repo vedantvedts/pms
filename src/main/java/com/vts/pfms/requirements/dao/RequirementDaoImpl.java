@@ -811,4 +811,51 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 	}
 
+
+	@Override
+	public TestPlanSummary getTestPlanSummaryByTestPlanInitiationId(String testPlanInitiationId) throws Exception{
+		try {
+			return manager.find(TestPlanSummary.class, Long.parseLong(testPlanInitiationId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getTestPlanSummaryByTestPlanInitiationId "+e);
+			return null;
+		}
+	}
+
+	private static final String PROJECTTESTPLANPENDINGLIST  ="CALL pfms_testplan_doc_pending(:EmpId,:LabCode);";
+	@Override
+	public List<Object[]> projectTestPlanPendingList(String empId,String labcode) throws Exception {
+		try {			
+			Query query= manager.createNativeQuery(PROJECTTESTPLANPENDINGLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("LabCode", labcode);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO projectTestPlanPendingList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
+
+	private static final String PROJECTTESTPLANAPPROVEDLIST  ="CALL pfms_testplan_doc_approved(:EmpId,:FromDate,:ToDate);";
+	@Override
+	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+
+		try {			
+			Query query= manager.createNativeQuery(PROJECTTESTPLANAPPROVEDLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("FromDate", FromDate);
+			query.setParameter("ToDate", ToDate);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO projectTestPlanApprovedList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
 }

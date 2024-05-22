@@ -225,7 +225,7 @@ List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjec
 List<Object[]> productTreeList = (List<Object[]>) request.getAttribute("productTreeList");
 List<Object[]> initiationTestPlanList = (List<Object[]>) request.getAttribute("initiationTestPlanList");
 
-List<String> testplanforwardstatus = Arrays.asList("TIN","TRR","TRA");
+List<String> testplanforwardstatus = Arrays.asList("RIN","RRR","RRA");
 
 Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
@@ -367,7 +367,7 @@ FormatConverter fc = new FormatConverter();
 				                            	<input type="hidden" name="testPlanInitiationId" value="<%=obj[0] %>">
 				                            	<input type="hidden" name="docType" value="T">
 				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="ProjectTestPlanTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
-											    	<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+											    	<%=obj[10] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>
 	                                        </form>
 	                      				</td>

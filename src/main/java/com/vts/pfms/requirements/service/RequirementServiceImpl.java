@@ -701,4 +701,104 @@ public class RequirementServiceImpl implements RequirementService {
 		
 		return dao.getTestPlanDetailsById(testId);
 	}
+	
+	@Override
+	public long projectTestPlanApprovalForward(String testPlanInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception {
+		try {
+			
+			TestPlanInitiation testplan = dao.getTestPlanInitiationById(testPlanInitiationId);
+			String reqStatusCode = testplan.getReqStatusCode();
+			String reqStatusCodeNext = testplan.getReqStatusCodeNext();
+			
+			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(reqforwardstatus.contains(reqStatusCode)) {
+					testplan.setReqStatusCode("RFW");
+					testplan.setReqStatusCodeNext("RFR");
+				}else {
+					testplan.setReqStatusCode(reqStatusCodeNext);
+					if(reqStatusCodeNext.equalsIgnoreCase("RFR")) {
+						testplan.setReqStatusCodeNext("RFA");
+					}else if(reqStatusCodeNext.equalsIgnoreCase("RFA")) {
+						testplan.setReqStatusCodeNext("RFA");
+					}
+				}
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(reqStatusCodeNext.equalsIgnoreCase("RFR")) {
+					testplan.setReqStatusCode("RRR");	
+				}else if(reqStatusCodeNext.equalsIgnoreCase("RFA")) {
+					testplan.setReqStatusCode("RRA");	
+				}
+				
+				// Setting StatusCode Next
+				testplan.setReqStatusCodeNext("RFW");
+			}
+			
+			dao.addTestPlanInitiation(testplan);
+			
+			// Handling Transaction
+			requirementTransAddHandling(Long.parseLong(testPlanInitiationId), remarks, testplan.getReqStatusCode(), empId, "T");
+			
+			// Handling Notification
+			List<Object[]> summaryList = dao.getTestandSpecsDocumentSummary(testPlanInitiationId, "0");
+			
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A")) {
+				String reqStatusCode2 = testplan.getReqStatusCode();
+				if(reqStatusCode2.equalsIgnoreCase("RFW")) {
+					notification.setEmpId(Long.parseLong(summaryList!=null?summaryList.get(0)[4].toString():"0"));
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("Test Plan Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFR")) {
+					notification.setEmpId(Long.parseLong(summaryList!=null?summaryList.get(0)[5].toString():"0"));
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("Test Plan Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
+					notification.setEmpId(Long.parseLong(summaryList!=null?summaryList.get(0)[9].toString():"0"));
+					notification.setNotificationUrl("ProjectTestPlan.htm?projectId="+testplan.getProjectId()+"&initiationId="+testplan.getInitiationId()+"&productTreeMainId="+testplan.getProductTreeMainId()+"&projectType="+(testplan.getProjectId()!=0?"M":"I") );
+					notification.setNotificationMessage("Test Plan Doc Approved");
+				}
+				
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdf1.format(new Date()));
+
+				carsdao.addNotifications(notification);
+				
+			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
+				notification.setEmpId(Long.parseLong(summaryList!=null?summaryList.get(0)[9].toString():"0"));
+				notification.setNotificationUrl("ProjectTestPlan.htm?projectId="+testplan.getProjectId()+"initiationId="+testplan.getInitiationId()+"productTreeMainId="+testplan.getProductTreeMainId()+"projectType="+(testplan.getProjectId()!=0?"M":"I") );
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"Test Plan Doc Request Returned":"Test Plan Doc Request Disapproved");
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdf1.format(new Date()));
+			
+				carsdao.addNotifications(notification);
+			}
+			
+			return 1L;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
+	}
+	@Override
+	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception {
+		
+		return dao.projectTestPlanPendingList(empId, labcode);
+	}
+	@Override
+	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		return dao.projectTestPlanApprovedList(empId, FromDate, ToDate);
+	}
 }

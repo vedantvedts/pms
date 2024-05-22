@@ -2271,6 +2271,8 @@ public class RequirementsController {
 
 			req.setAttribute("reqPendingList", service.projectRequirementPendingList(EmpId, labcode));
 			req.setAttribute("reqApprovedList", service.projectRequirementApprovedList(EmpId,fromdate,todate));
+			req.setAttribute("testPlanPendingList", service.projectTestPlanPendingList(EmpId, labcode));
+			req.setAttribute("testPlanApprovedList", service.projectTestPlanApprovedList(EmpId,fromdate,todate));
 
 			return "requirements/DocumentApprovals";
 		}catch (Exception e) {
@@ -2672,6 +2674,69 @@ public class RequirementsController {
 		}catch (Exception e) {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside ProjectTestPlanTransStatus.htm "+UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="ProjectTestPlanApprovalSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String projectTestPlanApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside ProjectTestPlanApprovalSubmit.htm"+UserId);
+		try {
+			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			String action = req.getParameter("Action");
+			String remarks = req.getParameter("remarks");
+
+			TestPlanInitiation testplan = service.getTestPlanInitiationById(testPlanInitiationId);
+			String reqStatusCode = testplan.getReqStatusCode();
+
+			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+
+			long result = service.projectTestPlanApprovalForward(testPlanInitiationId,action,remarks,EmpId,labcode,UserId);
+
+			if(action.equalsIgnoreCase("A")) {
+				if(reqforwardstatus.contains(reqStatusCode)) {
+					if(result!=0) {
+						redir.addAttribute("result","Test Plan forwarded Successfully");
+					}else {
+						redir.addAttribute("resultfail","Test Plan forward Unsuccessful");
+					}
+					redir.addAttribute("projectType", req.getParameter("projectType"));
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					redir.addAttribute("initiationId", req.getParameter("initiationId"));
+					redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
+					redir.addAttribute("testPlanInitiationId", testPlanInitiationId);
+					return "redirect:/ProjectTestPlan.htm";
+				}else if(reqStatusCode.equalsIgnoreCase("RFW")) {
+					if(result!=0) {
+						redir.addAttribute("result","Test Plan Recommended Successfully");
+					}else {
+						redir.addAttribute("resultfail","Test Plan Recommend Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				}else if(reqStatusCode.equalsIgnoreCase("RFR")) {
+					if(result!=0) {
+						redir.addAttribute("result","Test Plan Approved Successfully");
+					}else {
+						redir.addAttribute("resultfail","Test Plan Approve Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				}
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if(result!=0) {
+					redir.addAttribute("result",action.equalsIgnoreCase("R")?"Test Plan Returned Successfully":"Test Plan Disapproved Successfully");
+				}else {
+					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"Test Plan Return Unsuccessful":"Test Plan Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/DocumentApprovals.htm";
+
+		}catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside ProjectTestPlanApprovalSubmit.htm "+UserId, e);
 			return "static/Error";
 		}
 	}

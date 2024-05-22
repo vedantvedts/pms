@@ -108,5 +108,8 @@ public interface RequirementDao {
 	public TestPlanSummary getTestPlanSummaryById(String summaryId) throws Exception;
 	public TestPlanInitiation getTestPlanInitiationById(String testPlanInitiationId) throws Exception;
 	public TestDetails getTestPlanDetailsById(String testId) throws Exception;
+	public TestPlanSummary getTestPlanSummaryByTestPlanInitiationId(String testPlanInitiationId) throws Exception;
+	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	
 }
