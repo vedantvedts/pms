@@ -78,7 +78,7 @@ span {
 List<Object[]> freezedslide = (List<Object[]>)request.getAttribute("freezedSlidedata");
 List<Object[]> getAllProjectSlidedata=(List<Object[]>)request.getAttribute("getAllProjectSlidedata");
 String filePath = (String)request.getAttribute("filepath");
-Object[] projectslidedata = (Object[])request.getAttribute("projectslidedata");
+Object[] projectslidedata = (Object[])request.getAttribute("projectslidedata");//a.status ,  a.slide , a.ImageName , a.path ,a.SlideId ,a.attachmentname, a.brief
 String Drdologo = (String)request.getAttribute("Drdologo");
 String lablogo = (String)request.getAttribute("lablogo");
 Object[] projectdata = (Object[])request.getAttribute("projectdata");
@@ -225,9 +225,14 @@ if(ses1!=null){
 											<td  style="border-style: hidden;width:100%; ">
 												<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
 												<div style="max-height: 300px; max-width: 600px;margin: auto;">
+												<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
 												<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="PDF File">
 													<img data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
 												</a>
+												<%}else{ %>
+													<img data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+												
+												<%} %>
 												</div>
 													<hr>
 												<%}%>
@@ -235,7 +240,9 @@ if(ses1!=null){
 										</tr>
 										<tr>
 											<td style="text-align: right;">
+											<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
 												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="PDF File">Show more</a></p>
+											<%} %>
 											</td>
 										</tr>
 									</tbody>
@@ -336,9 +343,14 @@ if(ses1!=null){
 								<div class="col-md-6">
 										<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
 										<div style="max-height: 300px; max-width: 600px;margin: auto;">
+										<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
 										<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File">
 											<img data-enlargable height="600" style=" max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
 										</a>
+										<%}else{ %>
+											<img data-enlargable height="600" style=" max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+										
+										<%} %>
 										</div>
 										<%}%>
 										
@@ -346,7 +358,9 @@ if(ses1!=null){
 											
 										
 						</div>	<div  align="right" style="text-align: right;">
+						<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
 												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File">Show more</a></p>
+											<%} %>
 											</div>
 					</div>
 					</div>
@@ -656,7 +670,7 @@ function AjaxForStatus() {
 
 var editor_config = {
 	
-	maxlength: '4000',
+	maxlength: '3500',
 	toolbar: [{
 	          name: 'clipboard',
 	          items: ['PasteFromWord', '-', 'Undo', 'Redo']

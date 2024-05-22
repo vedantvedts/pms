@@ -37,7 +37,7 @@ String lablogo = (String)request.getAttribute("lablogo");
 String Drdologo = (String)request.getAttribute("Drdologo");
 String filePath = (String)request.getAttribute("filepath");
 List<Object[]> freezedproject = (List<Object[]>)request.getAttribute("getAllProjectSlidedata");
-List<Object[]> FreezedSlide = (List<Object[]>)request.getAttribute("getAllProjectSlidesdata");
+List<Object[]> FreezedSlide = (List<Object[]>)request.getAttribute("getAllProjectSlidesdata"); //status ,  slide , ImageName , path ,SlideId ,attachmentname, brief
 List<Object[]> projects = (List<Object[]>)request.getAttribute("getAllProjectdata");
 String[] a = new String[projects.size()];
 for(int i=0;i<projects.size();i++)
@@ -270,8 +270,8 @@ FormatConverter fc = new FormatConverter();
 																<tr>
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;vertical-align: top;">Brief :</td>
 																	<td colspan="5" style="font-size: 1.2rem;color: black;">
-																		<%if(FreezedSlide.get(i)[0]!=null){%>
-																			<%=FreezedSlide.get(i)[0]%>
+																		<%if(FreezedSlide.get(i)[6]!=null){%>
+																			<%=FreezedSlide.get(i)[6]%>
 																		<%}else{%>
 																			--
 																		<%}%>
@@ -359,17 +359,25 @@ FormatConverter fc = new FormatConverter();
 																	<td class="align-middle" style="border-style: hidden;text-align: center;">
 																		<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2]).exists()){%>
 																		<div style="max-height: 300px; max-width: 600px;margin: auto;">
+																		<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[5]).exists()){%>
 																			<a  href="SlidePdfOpenAttachDownload.htm?slideId=<%=FreezedSlide.get(i)[4]%>" target="_blank" title="PDF File">
 																				<img class=" d-flex justify-content-center" data-enlargable style="max-height: 300px; max-width: 600px; margin-bottom: 5px;margin: auto;" 
 																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
 																			</a>
+																		<%}else{ %>
+																				<img class=" d-flex justify-content-center" data-enlargable style="max-height: 300px; max-width: 600px; margin-bottom: 5px;margin: auto;" 
+																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
+																			
+																			<%} %>
 																		</div>
 																		<%} else{ %>image<%} %>
 																	</td>
 																</tr>
 																<tr>
 																	<td style="text-align: right;">
+																	<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[5]).exists()){%>
 																		<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=FreezedSlide.get(i)[4]%>" target="_blank" title="PDF File"><b>Show more</b></a>
+																	<%} %>
 																	</td>
 																</tr>
 															</tbody>
@@ -450,8 +458,8 @@ FormatConverter fc = new FormatConverter();
 																			<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;"> Brief:</b>
 																		</td>
 																		<td colspan="3" style="font-size: 1.2rem;border-top: none;vertical-align: top;color: black;">
-																			<%if(FreezedSlide.get(i)[0]!=null){%>
-																				<%=FreezedSlide.get(i)[0]%>
+																			<%if(FreezedSlide.get(i)[6]!=null){%>
+																				<%=FreezedSlide.get(i)[6]%>
 																			<%}else{%>
 																				--
 																			<%}%>
@@ -528,16 +536,23 @@ FormatConverter fc = new FormatConverter();
 																	<tr >
 																		<td style="border-bottom: none;text-align: center;">
 																			<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2]).exists()){%>
+																			<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[5]).exists()){%>
 																			<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=FreezedSlide.get(i)[4]%>" style="max-height: 600px; max-width: 1600px;" target="_blank" title="PDF File">
 																			<img class=" d-flex justify-content-center mx-auto d-block" data-enlargable style="max-height: 600px; max-width: 1600px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
 																			</a>
+																			<%}else{ %>
+																			<img class=" d-flex justify-content-center mx-auto d-block" data-enlargable style="max-height: 600px; max-width: 1600px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[2])))%>">
+																			
+																			<%} %>
 																			<%} else{%>image<%}%>
 																		</td>
 																
 																	</tr>
 																	<tr>
 																		<td style="border-top: none;text-align: right;">
-																		<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=FreezedSlide.get(i)[4]%>"  target="_blank" title="PDF File"><b>Show more</b></a>
+																		<%if(new File(filePath + FreezedSlide.get(i)[3] + FreezedSlide.get(i)[5]).exists()){%>
+																			<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=FreezedSlide.get(i)[4]%>"  target="_blank" title="PDF File"><b>Show more</b></a>
+																		<%} %>
 																		</td>
 																	</tr>
 																</tbody>
@@ -765,7 +780,7 @@ FormatConverter fc = new FormatConverter();
 							<li data-target="#presentation-slides" data-slide-to="<%=i+1%>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
 							<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
 							<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>	
-							<li style="background-color:  white;width: 55px;margin-left: 20px;"><a onclick="DownloadSelected()" target="blank"><i class="fa fa-download fa-2x" style="color: green;" aria-hidden="true"></i></a>	
+							<li style="background-color:  white;width: 55px;margin-left: 20px;"><a onclick="DownloadSelected()" target="_blank" id='downloadselect'><i class="fa fa-download fa-2x" style="color: green;" aria-hidden="true"></i></a>	
 						</ol>
 	
 </div>	
@@ -776,7 +791,9 @@ s.push(<%=a[ij]%>);
 <%}%>
 console.log(s);
 function DownloadSelected(){
-		window.location.href="DownloadSelectedSlides.htm/"+s;
+	document.getElementById("downloadselect").href="DownloadSelectedSlides.htm/"+s;
+	document.getElementById("downloadselect").click();
+		//document.getElementById('submitdownloadselect').submit();
 }
 
 $('.carousel').carousel({

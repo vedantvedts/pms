@@ -718,7 +718,7 @@ public class PrintServiceImpl implements PrintService{
 		ProjectSlides slide = new ProjectSlides();
 		String Path = LabCode + "\\ProjectSlide\\";
 		slide.setStatus(slidedata.getStatus());
-		slide.setSlide(slidedata.getBrief());
+		slide.setBrief(slidedata.getBrief());
 		slide.setSlide(slidedata.getSlide());
 		slide.setProjectId(slidedata.getProjectId());
 		slide.setPath(Path);

@@ -185,7 +185,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 
 var editor_config = {
 	
-	maxlength: '4000',
+	maxlength: '3500',
 	toolbar: [{
 	          name: 'clipboard',
 	          items: ['PasteFromWord', '-', 'Undo', 'Redo']

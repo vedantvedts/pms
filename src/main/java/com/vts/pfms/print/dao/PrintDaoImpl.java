@@ -971,7 +971,7 @@ public class PrintDaoImpl implements PrintDao {
 			return (long)query.executeUpdate();
 		}		
 		
-		private static final String PROJECTSLIDEDATA="SELECT a.status ,  a.slide , a.ImageName , a.path ,a.SlideId ,a.attachmentname FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid";
+		private static final String PROJECTSLIDEDATA="SELECT a.status ,  a.slide , a.ImageName , a.path ,a.SlideId ,a.attachmentname, a.brief FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid";
 		@Override
 		public Object[] GetProjectSildedata(String projectid)throws Exception
 		{
@@ -1022,7 +1022,7 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
-		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate , b.projectcode FROM pfms_project_slides_freeze a , project_master b WHERE a.projectid = :projectid  AND a.reviewdate = (SELECT MAX(a.reviewdate) FROM pfms_project_slides_freeze a WHERE a.projectid = :projectid) GROUP BY a.projectid";
+		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate , b.projectcode FROM pfms_project_slides_freeze a , project_master b WHERE a.projectid = :projectid  AND b.projectid=a.projectid  AND a.createddate = (SELECT MAX(a.createddate) FROM pfms_project_slides_freeze a WHERE a.projectid = :projectid)";
 		@Override
 		public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception
 		{
