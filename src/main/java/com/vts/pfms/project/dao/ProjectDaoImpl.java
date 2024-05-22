@@ -3849,14 +3849,13 @@ public class ProjectDaoImpl implements ProjectDao {
 		List<Object[]>paraDetails=(List<Object[]>)query.getResultList();
 		return paraDetails;
 	}
-	private static final String EMPLISTS1=" SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_doc_members WHERE InitiationId =:InitiationId AND ProjectId=:ProjectId AND isactive = 1)ORDER BY a.srno=0,a.srno";
+	private static final String EMPLISTS1="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_doc_members WHERE TestPlanInitiationId =:TestPlanInitiationId AND isactive = 1)ORDER BY a.srno=0,a.srno";
 	@Override
-	public List<Object[]> EmployeeList1(String labCode, String initiationid, String ProjectId) throws Exception {
+	public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(EMPLISTS1);
 
 		query.setParameter("LabCode", labCode);
-		query.setParameter("InitiationId", initiationid);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
 
 
 		return (List<Object[]>)query.getResultList();

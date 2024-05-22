@@ -364,7 +364,7 @@ public interface ProjectDao {
 	public List<Object[]> ReParaDetailsMain(String reqInitiationId)throws Exception;
 	public List<Object[]> getVerificationListMain(String reqInitiationId)throws Exception;
 	public List<Object[]> VPDetails(String reqInitiationId) throws Exception;
-	public List<Object[]> EmployeeList1(String labCode, String initiationid, String ProjectId) throws Exception;
+	public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId) throws Exception;
 	public Object[] getProjectDetails(String labcode, String projectId, String projectType) throws Exception;
 
 }
