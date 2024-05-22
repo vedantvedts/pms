@@ -335,7 +335,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             												<form action="#">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="reqInitiationId" value="<%=form[4]%>"> 
-																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectRequirementTransStatus.htm" value="<%=form[4] %>" name="reqInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+																				<input type="hidden" name="docType" value="R"> 
+																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectRequirementTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
 								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>

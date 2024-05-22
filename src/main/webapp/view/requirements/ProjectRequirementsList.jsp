@@ -254,7 +254,7 @@ FormatConverter fc = new FormatConverter();
 				<div class="card shadow-nohover" style="margin-top: -0.6pc">
 					<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 						<div <%if(projectType.equalsIgnoreCase("M")){ %> class="col-md-4" <%} else{%> class="col-md-6" <%} %> id="projecthead" align="left">
-							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Requirements </h5>
+							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Requirements List</h5>
 						</div>
 						<div class="col-md-2">
             				<label class="control-label ml-4" style="font-weight: bolder;font-size: 15px;float:right;color:#07689f;">Project Type</label>
@@ -365,6 +365,7 @@ FormatConverter fc = new FormatConverter();
 	                      					<form action="#">
 				                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				                            	<input type="hidden" name="reqInitiationId" value="<%=obj[0] %>">
+				                            	<input type="hidden" name="docType" value="R">
 				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="ProjectRequirementTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
 											    	<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>

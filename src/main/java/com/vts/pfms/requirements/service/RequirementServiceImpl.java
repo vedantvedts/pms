@@ -33,7 +33,7 @@ import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
-import com.vts.pfms.requirements.model.RequirementsTrans;
+import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -429,7 +429,7 @@ public class RequirementServiceImpl implements RequirementService {
 			long reqInitiationId = dao.addRequirementInitiation(reqInitiation);
 			
 			// Handling Transaction
-			requirementTransAddHandling(reqInitiationId, null, "RIN", empId);
+			requirementTransAddHandling(reqInitiationId, null, "RIN", empId, "R");
 			
 			return reqInitiationId;
 		}catch (Exception e) {
@@ -439,16 +439,17 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	@Override
-	public List<Object[]> projectRequirementTransList(String reqInitiationId) throws Exception {
+	public List<Object[]> projectDocTransList(String docInitiationId, String docType) throws Exception {
 		
-		return dao.projectRequirementTransList(reqInitiationId);
+		return dao.projectDocTransList(docInitiationId, docType);
 	}
 	
-	public Long requirementTransAddHandling(long reqInitiationId, String remarks, String reqStatusCode, String empId) throws Exception {
+	public Long requirementTransAddHandling(long reqInitiationId, String remarks, String reqStatusCode, String empId, String docType) throws Exception {
 		try {
 			
-			RequirementsTrans transaction = RequirementsTrans.builder()
-											.ReqInitiationId(reqInitiationId)
+			DocumentTrans transaction = DocumentTrans.builder()
+											.DocInitiationId(reqInitiationId)
+											.DocType(docType)
 											.Remarks(remarks)
 											.ReqStatusCode(reqStatusCode)
 											.ActionBy(empId)
@@ -502,7 +503,7 @@ public class RequirementServiceImpl implements RequirementService {
 			dao.addRequirementInitiation(req);
 			
 			// Handling Transaction
-			requirementTransAddHandling(Long.parseLong(reqInitiationId), remarks, req.getReqStatusCode(), empId);
+			requirementTransAddHandling(Long.parseLong(reqInitiationId), remarks, req.getReqStatusCode(), empId, "R");
 			
 			// Handling Notification
 			RequirementSummary summary = dao.getRequirementSummaryByReqInitiationId(reqInitiationId);
@@ -667,8 +668,8 @@ public class RequirementServiceImpl implements RequirementService {
 					  							  .TestPlanVersion(1)
 					  							  .InitiatedBy(Long.parseLong(empId))
 					  							  .InitiatedDate(sdf2.format(new Date()))
-					  							  .ReqStatusCode("TIN")
-					  							  .ReqStatusCodeNext("TIN")
+					  							  .ReqStatusCode("RIN")
+					  							  .ReqStatusCodeNext("RIN")
 					  							  .CreatedBy(username)
 					  							  .CreatedDate(sdf1.format(new Date()))
 					  							  .IsActive(1)
@@ -676,7 +677,7 @@ public class RequirementServiceImpl implements RequirementService {
 			long testPlanInitiationId = dao.addTestPlanInitiation(testplanInitiation);
 			
 			// Handling Transaction
-//			requirementTransAddHandling(reqInitiationId, null, "RIN", empId);
+			requirementTransAddHandling(testPlanInitiationId, null, "RIN", empId, "T");
 			
 			return testPlanInitiationId;
 		}catch (Exception e) {

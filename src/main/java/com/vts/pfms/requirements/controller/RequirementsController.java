@@ -897,120 +897,95 @@ public class RequirementsController {
 		String LabCode =(String ) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId);
 		try {
-
 			Object[] DocTempAttributes =null;
-			DocTempAttributes=projectservice.DocTempAttributes();
+			DocTempAttributes= projectservice.DocTempAttributes();
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 			
-//			String initiationId=req.getParameter("initiationId");
-//			String projectId=req.getParameter("projectId");
-//			String ProjectType=req.getParameter("ProjectType");
-
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
-			TestPlanInitiation testini = service.getTestPlanInitiationById(testPlanInitiationId);
-			Object[] projectDetails = projectservice.getProjectDetails(LabCode, testini.getInitiationId()!=0?testini.getInitiationId()+"":testini.getProjectId()+"", testini.getInitiationId()!=0?"P":"E");
-			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"-");
-			req.setAttribute("projectTitle", projectDetails!=null?projectDetails[3]:"-");
-
+			
 			String filename="ProjectRequirement";
 			String path=req.getServletContext().getRealPath("/view/temp");
-			req.setAttribute("path",path);
-			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
-			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
-			req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
-			req.setAttribute("uploadpath", uploadpath);
-			req.setAttribute("TestScopeIntro",service.TestScopeIntro(testPlanInitiationId));
+		  	req.setAttribute("path",path);
+		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
+		  	req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
+		  	req.setAttribute("uploadpath", uploadpath);
+		  	req.setAttribute("TestScopeIntro",service.TestScopeIntro(testPlanInitiationId));
 			req.setAttribute("MemberList", service.DocMemberList(testPlanInitiationId, "0"));
-			req.setAttribute("DocumentSummary", service.getTestandSpecsDocumentSummary(testPlanInitiationId, "0"));
-			req.setAttribute("AbbreviationDetails",service.AbbreviationDetails(testPlanInitiationId, "0"));
-			req.setAttribute("TestContent", service.GetTestContentList(testPlanInitiationId));
-			req.setAttribute("AcceptanceTesting", service.GetAcceptanceTestingList(testPlanInitiationId));
-
-//			String projectShortName="";
-//			String projectTitle="";
-//
-//			if(Long.parseLong(initiationId)>0) {
-//				Object[]ProjectDetailes= projectservice.ProjectDetailes(Long.parseLong(initiationId)).get(0);
-//				projectShortName=ProjectDetailes[6].toString();
-//				projectTitle=ProjectDetailes[7].toString();
-//				req.setAttribute("projectShortName", projectShortName);
-//				req.setAttribute("projectTitle", projectTitle);
-//			}
-//
-//			if(Long.parseLong(projectId)>0) {
-//				Object[]ProjectEditData=projectservice.ProjectEditData1(projectId);
-//				projectShortName=ProjectEditData[3].toString();
-//				projectTitle=ProjectEditData[4].toString();
-//				req.setAttribute("projectShortName", projectShortName);
-//				req.setAttribute("projectTitle", projectTitle);
-//			}
-
-
+		  	req.setAttribute("TestDocumentSummary", service.getTestandSpecsDocumentSummary(testPlanInitiationId, "0"));
+		 	req.setAttribute("AbbreviationDetails",service.AbbreviationDetails(testPlanInitiationId, "0"));
+		 	req.setAttribute("TestContent", service.GetTestContentList(testPlanInitiationId));
+		 	req.setAttribute("AcceptanceTesting", service.GetAcceptanceTestingList(testPlanInitiationId));
+			req.setAttribute("TestSuite", service.TestTypeList());
+			req.setAttribute("TestDetailsList", service.TestDetailsList(testPlanInitiationId) );
+			req.setAttribute("TestTypeList", service.TestTypeList());
+			req.setAttribute("StagesApplicable", service.StagesApplicable(testPlanInitiationId));
+		
 			File my_file=null;
 			File my_file1=null;
 			File my_file2=null;
 			File my_file3=null;
 			File my_file4=null;
-
-			List<Object[]>list=	service.GetAcceptanceTestingList(testPlanInitiationId);
-			String TestSetUp=null;
-			String TestSetUpDiagram=null;
-			String Testingtools=null;
-			String TestVerification=null;
-			String RoleResponsibility=null;
-
-			for(Object[]obj:list) {
-				if(obj[1].toString().equalsIgnoreCase("Test Set UP")) {
-					TestSetUp=obj[2].toString();
-					my_file=new File(uploadpath+obj[4]+File.separator+obj[3]);
-					if(my_file!=null) {
-						String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
-						req.setAttribute("htmlContent", htmlContent);
-						req.setAttribute("TestSetUp", TestSetUp);
-					}
+			
+		List<Object[]>list=	service.GetAcceptanceTestingList(testPlanInitiationId);
+		String TestSetUp=null;
+		String TestSetUpDiagram=null;
+		String Testingtools=null;
+		String TestVerification=null;
+		String RoleResponsibility=null;
+		
+		for(Object[]obj:list) {
+			if(obj[1].toString().equalsIgnoreCase("Test Set UP")) {
+				TestSetUp=obj[2].toString();
+				my_file=new File(uploadpath+obj[4]+File.separator+obj[3]);
+				if(my_file!=null) {
+					String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
+					req.setAttribute("htmlContent", htmlContent);
+					req.setAttribute("TestSetUp", TestSetUp);
 				}
-				if(obj[1].toString().equalsIgnoreCase("Test Set Up Diagram")) {
-
-					TestSetUpDiagram=obj[2].toString();
-					my_file1=new File(uploadpath+obj[4]+File.separator+obj[3]);
-					if(my_file1!=null) {
-						String htmlContentTestSetUpDiagram = convertExcelToHtml(new FileInputStream(my_file1));
-						req.setAttribute("htmlContentTestSetUpDiagram", htmlContentTestSetUpDiagram);
-						req.setAttribute("TestSetUpDiagram", TestSetUpDiagram);
-
-					}
-				}
-				if(obj[1].toString().equalsIgnoreCase("Testing tools")) {
-					Testingtools=obj[2].toString();
-					req.setAttribute("Testingtools", Testingtools);
-					my_file2=new File(uploadpath+obj[4]+File.separator+obj[3]);
-					if(my_file2!=null) {
-						String htmlContentTestingtools = convertExcelToHtml(new FileInputStream(my_file2));
-						req.setAttribute("htmlContentTestingtools", htmlContentTestingtools);
-					}
-
-				}
-				if(obj[1].toString().equalsIgnoreCase("Test Verification")) {
-					TestVerification=obj[2].toString();
-					my_file3=new File(uploadpath+obj[4]+File.separator+obj[3]);
-					if(my_file3!=null) {
-						String htmlContentTestVerification = convertExcelToHtml(new FileInputStream(my_file3));
-						req.setAttribute("htmlContentTestVerification", htmlContentTestVerification);
-						req.setAttribute("TestVerification", TestVerification);
-					}
-				}
-
-				if(obj[1].toString().equalsIgnoreCase("Role & Responsibility")) {
-					RoleResponsibility=obj[2].toString();
-					my_file4=new File(uploadpath+obj[4]+File.separator+obj[3]);
-					if(my_file4!=null) {
-						String htmlContentRoleResponsibility = convertExcelToHtml(new FileInputStream(my_file4));
-						req.setAttribute("htmlContentRoleResponsibility", htmlContentRoleResponsibility);
-						req.setAttribute("RoleResponsibility", RoleResponsibility);
-					}
-				}
-
 			}
+			if(obj[1].toString().equalsIgnoreCase("Test Set Up Diagram")) {
+				
+				TestSetUpDiagram=obj[2].toString();
+				my_file1=new File(uploadpath+obj[4]+File.separator+obj[3]);
+				if(my_file1!=null) {
+					String htmlContentTestSetUpDiagram = convertExcelToHtml(new FileInputStream(my_file1));
+					req.setAttribute("htmlContentTestSetUpDiagram", htmlContentTestSetUpDiagram);
+					req.setAttribute("TestSetUpDiagram", TestSetUpDiagram);
+				
+				}
+			}
+			if(obj[1].toString().equalsIgnoreCase("Testing tools")) {
+				Testingtools=obj[2].toString();
+				my_file2=new File(uploadpath+obj[4]+File.separator+obj[3]);
+				if(my_file2!=null) {
+					String htmlContentTestingtools = convertExcelToHtml(new FileInputStream(my_file2));
+					req.setAttribute("htmlContentTestingtools", htmlContentTestingtools);
+					req.setAttribute("Testingtools", Testingtools);
+				
+				}
+			}
+			if(obj[1].toString().equalsIgnoreCase("Test Verification")) {
+				TestVerification=obj[2].toString();
+				my_file3=new File(uploadpath+obj[4]+File.separator+obj[3]);
+				if(my_file3!=null) {
+					String htmlContentTestVerification = convertExcelToHtml(new FileInputStream(my_file3));
+					req.setAttribute("htmlContentTestVerification", htmlContentTestVerification);
+					req.setAttribute("TestVerification", TestVerification);
+				}
+			}
+			if(obj[1].toString().equalsIgnoreCase("Role & Responsibility")) {
+				RoleResponsibility=obj[2].toString();
+				my_file4=new File(uploadpath+obj[4]+File.separator+obj[3]);
+				if(my_file4!=null) {
+					String htmlContentRoleResponsibility = convertExcelToHtml(new FileInputStream(my_file4));
+					req.setAttribute("htmlContentRoleResponsibility", htmlContentRoleResponsibility);
+					req.setAttribute("RoleResponsibility", RoleResponsibility);
+					System.out.println();
+				}
+			}
+			
+		}
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/print/TestPlanDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
@@ -2112,7 +2087,6 @@ public class RequirementsController {
 			}
 	}
 
-
 	@RequestMapping(value="ProjectRequirementTransStatus.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String projectRequirementTransStatus(HttpServletRequest req, HttpSession ses) throws Exception
 	{
@@ -2120,11 +2094,13 @@ public class RequirementsController {
 		logger.info(new Date()+"Inside ProjectRequirementTransStatus.htm"+UserId);
 		try {
 			String reqInitiationId = req.getParameter("reqInitiationId");
+			String docType = req.getParameter("docType");
 			if(reqInitiationId!=null) {
-				req.setAttribute("transactionList", service.projectRequirementTransList(reqInitiationId));
-				req.setAttribute("reqInitiationId", reqInitiationId);
+				req.setAttribute("transactionList", service.projectDocTransList(reqInitiationId, docType));
+				req.setAttribute("docInitiationId", reqInitiationId);
+				req.setAttribute("docType", docType);
 			}
-			return "requirements/ProjectRequirementTransStatus";
+			return "requirements/ProjectDocTransStatus";
 		}catch (Exception e) {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside ProjectRequirementTransStatus.htm "+UserId, e);
@@ -2132,28 +2108,42 @@ public class RequirementsController {
 		}
 	}
 
-
-	@RequestMapping(value="ProjectRequirementTransactionDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public void projectRequirementTransactionDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+	@RequestMapping(value="ProjectDocTransactionDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void projectDocTransactionDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside RoadMapTransactionDownload.htm "+UserId);		
+		logger.info(new Date() +"Inside ProjectDocTransactionDownload.htm "+UserId);		
 		try {
-			String reqInitiationId = req.getParameter("reqInitiationId");
+			String docInitiationId = req.getParameter("docInitiationId");
+			String docType = req.getParameter("docType");
 
-			if(reqInitiationId!=null) {
-				RequirementInitiation reqini = service.getRequirementInitiationById(reqInitiationId);
-				Object[] projectDetails = projectservice.getProjectDetails(labcode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
+			if(docInitiationId!=null) {
+				Object[] projectDetails = null;
+				long initiationId = 0L;
+				long projectId = 0L;
+				
+				if(docType!=null && docType.equalsIgnoreCase("R")) {
+					RequirementInitiation reqini = service.getRequirementInitiationById(docInitiationId);
+					initiationId = reqini.getInitiationId();
+					projectId = reqini.getProjectId();
+				}else if(docType!=null && docType.equalsIgnoreCase("S")) {
+					
+				}else if(docType!=null && docType.equalsIgnoreCase("T")) {
+					TestPlanInitiation testplan = service.getTestPlanInitiationById(docInitiationId);
+					initiationId = testplan.getInitiationId();
+					projectId = testplan.getProjectId();
+				}
+				
+				projectDetails = projectservice.getProjectDetails(labcode, initiationId!=0?initiationId+"":projectId+"", initiationId!=0?"P":"E");
 				req.setAttribute("projectDetails", projectDetails);
-				req.setAttribute("requirementInitiationDetails", service.getRequirementInitiationById(reqInitiationId));
-				req.setAttribute("transactionList", service.projectRequirementTransList(reqInitiationId));
+				req.setAttribute("transactionList", service.projectDocTransList(docInitiationId, "R"));
 			}
 
-			String filename="Req_Transaction";	
+			String filename="Doc_Transaction";	
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-			req.getRequestDispatcher("/view/print/ProjectRequirementTransactionDownload.jsp").forward(req, customResponse);
+			req.getRequestDispatcher("/view/print/ProjectDocTransactionDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
 
 			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
@@ -2184,7 +2174,7 @@ public class RequirementsController {
 
 		}
 		catch(Exception e) {	    		
-			logger.error(new Date() +" Inside ProjectRequirementTransactionDownload.htm "+UserId, e);
+			logger.error(new Date() +" Inside ProjectDocTransactionDownload.htm "+UserId, e);
 			e.printStackTrace();
 		}		
 	}
@@ -2662,6 +2652,27 @@ public class RequirementsController {
 		}catch(Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +"Inside TestPalnDocumentPdfDownlod.htm "+UserId,e);
+		}
+	}
+
+	@RequestMapping(value="ProjectTestPlanTransStatus.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String projectTestPlanTransStatus(HttpServletRequest req, HttpSession ses) throws Exception
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date()+"Inside ProjectTestPlanTransStatus.htm"+UserId);
+		try {
+			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			String docType = req.getParameter("docType");
+			if(testPlanInitiationId!=null) {
+				req.setAttribute("transactionList", service.projectDocTransList(testPlanInitiationId, docType));
+				req.setAttribute("docInitiationId", testPlanInitiationId);
+				req.setAttribute("docType", docType);
+			}
+			return "requirements/ProjectDocTransStatus";
+		}catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside ProjectTestPlanTransStatus.htm "+UserId, e);
+			return "static/Error";
 		}
 	}
 

@@ -82,7 +82,7 @@ public interface RequirementService {
 	public PfmsInititationRequirement getPfmsInititationRequirementById(String InitiationReqId) throws Exception;
 	public Long addOrUpdatePfmsInititationRequirement(PfmsInititationRequirement pfmsInititationRequirement) throws Exception;
 	public Long requirementInitiationAddHandling(String initiationId, String projectId, String productTreeMainId, String empId,String username) throws Exception;
-	public List<Object[]> projectRequirementTransList(String reqInitiationId) throws Exception;
+	public List<Object[]> projectDocTransList(String docInitiationId, String docType) throws Exception;
 	public long projectRequirementApprovalForward(String reqInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	public List<Object[]> projectRequirementPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectRequirementApprovedList(String empId, String FromDate, String ToDate) throws Exception;

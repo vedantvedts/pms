@@ -16,15 +16,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="pfms_req_trans")
-public class RequirementsTrans {
+@Table(name="pfms_doc_trans")
+public class DocumentTrans {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long ReqInitiationTransId;
+	private Long DocInitiationTransId;
 	private String ReqStatusCode;
 	private String Remarks;
 	private String ActionBy;
 	private String ActionDate;
-	private Long ReqInitiationId;
+	private String DocType;
+	private Long DocInitiationId;
 }

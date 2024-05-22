@@ -20,7 +20,7 @@ import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
-import com.vts.pfms.requirements.model.RequirementsTrans;
+import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -554,16 +554,17 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 	}
 
-	private static final String ROADMAPTRANSLIST = "SELECT a.ReqInitiationTransId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_req_trans a,pfms_req_approval_status b,employee c,employee_desig d,pfms_req_initiation e WHERE e.ReqInitiationId = a.ReqInitiationId AND a.ReqStatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND e.ReqInitiationId=:ReqInitiationId ORDER BY a.ReqInitiationTransId DESC";
+	private static final String ROADMAPTRANSLIST = "SELECT a.DocInitiationTransId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_doc_trans a,pfms_req_approval_status b,employee c,employee_desig d,pfms_req_initiation e WHERE e.ReqInitiationId = a.DocInitiationId AND a.ReqStatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND e.ReqInitiationId=:DocInitiationId AND a.DocType=:DocType ORDER BY a.DocInitiationTransId DESC";
 	@Override
-	public List<Object[]> projectRequirementTransList(String reqInitiationId) throws Exception {
+	public List<Object[]> projectDocTransList(String docInitiationId, String docType) throws Exception {
 
 		try {
 			Query query = manager.createNativeQuery(ROADMAPTRANSLIST);
-			query.setParameter("ReqInitiationId",reqInitiationId);
+			query.setParameter("DocInitiationId",docInitiationId);
+			query.setParameter("DocType", docType);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
-			logger.info(new Date()+"Inside DAO projectRequirementTransList "+e);
+			logger.info(new Date()+"Inside DAO projectDocTransList "+e);
 			e.printStackTrace();
 			return null;
 		}
@@ -571,11 +572,11 @@ public class RequirementDaoImpl implements RequirementDao {
 	}
 
 	@Override
-	public long addRequirementTransaction(RequirementsTrans transaction) throws Exception {
+	public long addRequirementTransaction(DocumentTrans transaction) throws Exception {
 		try {
 			manager.persist(transaction);
 			manager.flush();
-			return transaction.getReqInitiationTransId();
+			return transaction.getDocInitiationTransId();
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO addRequirementTransaction "+e);
