@@ -3382,6 +3382,9 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 			return dao.getProjectDetails(labcode, projectId, projectType);
 		}
 
-
+		@Override
+		public List<Object[]> ProjectDetailesData(long initiationId) throws Exception {
+			return dao.ProjectDetailesData(initiationId);
+		}
 		
 }

@@ -1,6 +1,7 @@
 package com.vts.pfms.project.service;
 
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -344,6 +345,7 @@ public interface ProjectService {
 	public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId) throws Exception;
 
 	public Object[] getProjectDetails(String labcode, String projectId, String projectType) throws Exception;
+	public List<Object[]> ProjectDetailesData(long initiationId) throws Exception;
 	
 	
 }

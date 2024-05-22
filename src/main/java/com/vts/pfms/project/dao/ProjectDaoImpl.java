@@ -3878,6 +3878,27 @@ public class ProjectDaoImpl implements ProjectDao {
 			return null;
 		}
 	}
+	
+	
+	private static final String PRODETAILSDATA="SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype AS category ,c.classification AS securityclassification,\r\n"
+			+ "a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.projecttitle AS 'initiatedproject',a.ismain,a.pcduration,a.pcremarks,a.indicativecost ,a.projecttypeid,a.User\r\n"
+			+ "FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e\r\n"
+			+ "WHERE a.initiationid=:initiationId \r\n"
+			+ "AND a.projecttypeid=b.projecttypeid \r\n"
+			+ "AND a.classificationid=c.classificationid \r\n"
+			+ "AND a.empid=d.empid \r\n"
+			+ "AND a.divisionid=e.divisionid \r\n"
+			+ "AND a.isactive='1'";
+	
+	@Override
+	public List<Object[]> ProjectDetailesData(long initiationId) throws Exception {
+		Query query = manager.createNativeQuery(PRODETAILSDATA);
+		query.setParameter("initiationId", initiationId);
+		
+		List<Object[]>result = (List<Object[]>)query.getResultList();
+		
+		return result;
+	}
 
 }
 

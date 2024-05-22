@@ -410,7 +410,7 @@ public class ProjectController
 			req.setAttribute("reqInitiationId", reqInitiationId);
 			req.setAttribute("projectshortName", projectDetails!=null?projectDetails[2].toString():"");
 			req.setAttribute("RequirementList", service.RequirementList(reqInitiationId) );
-			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationId)).get(0);
+			Object[] ProjectDetailes = service.ProjectDetailesData(Long.parseLong(initiationId)).get(0);
 			req.setAttribute("ProjectDetailes", ProjectDetailes);
 			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(reqInitiationId)));
 			req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationId));
