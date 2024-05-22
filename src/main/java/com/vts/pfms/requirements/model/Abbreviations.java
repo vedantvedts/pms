@@ -24,7 +24,9 @@ public class Abbreviations {
 	private Long AbbreviationsId;
 	private String Abbreviations;
 	private String Meaning;
-	private Long InitiationId;
-	private Long projectId;
+//	private Long InitiationId;
+//	private Long projectId;
+	private Long TestPlanInitiationId;
+	private Long SpecsInitiationId;
 	private String AbbreviationType;
 }

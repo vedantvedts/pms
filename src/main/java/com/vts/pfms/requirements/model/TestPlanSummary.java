@@ -16,7 +16,7 @@ public class TestPlanSummary {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long SummaryId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String AdditionalInformation;
 	private String Abstract;
 	private String Keywords;
@@ -27,6 +27,9 @@ public class TestPlanSummary {
     private String CreatedDate;
     private String ModifiedBy;
     private String ModifiedDate;
-    private long ProjectId;
+//  private long ProjectId;
 	private int IsActive;
+	private String PreparedBy;
+	private Long TestPlanInitiationId;
+	private Long SpecsInitiationId;
 }
