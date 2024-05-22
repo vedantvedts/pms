@@ -315,9 +315,11 @@ animation: fade-in 1s ease forwards;
 </head>
 <body>
 <%
+String initiationId = (String)request.getAttribute("initiationId");
 String projectId = (String)request.getAttribute("projectId");
-String initiationid = (String)request.getAttribute("initiationId");
-String ProjectType =(String)request.getAttribute("ProjectType"); 	
+String productTreeMainId = (String)request.getAttribute("productTreeMainId");
+String testPlanInitiationId = (String)request.getAttribute("testPlanInitiationId");
+
 String attributes=(String)request.getAttribute("attributes");
 List<Object[]>AcceptanceTesting= (List<Object[]>)request.getAttribute("AcceptanceTesting");
 
@@ -354,196 +356,186 @@ String jsonArray = objectMapper.writeValueAsString(AcceptanceTesting);
 %>
 </head>
 <body>
-<nav class="navbar navbar-light bg-light justify-content-between"  style="margin-top: -1%">
+	<nav class="navbar navbar-light bg-light justify-content-between"  style="margin-top: -1%">
 		<a class="navbar-brand">
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f">ACCEPTANCE TESTING </span> <span style="color:#31708f;font-size: 19px"> </span></b>
+			<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f">ACCEPTANCE TESTING </span> <span style="color:#31708f;font-size: 19px"> </span></b>
 		</a>
 		<form action="#">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		<input type="hidden" name="projectId" value="<%=projectId%>">
-		<input type="hidden" name="initiationId" value="<%=initiationid%>">
-		<input type="hidden" name="ProjectType" value="<%=ProjectType%>"> 
-     	<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectTestPlan.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="projectId" value="<%=projectId%>">
+			<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+			<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">
+	     	<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectTestPlanDetails.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
 		</form>
-</nav>
- <%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
+	</nav>
+ 	<%String ses=(String)request.getParameter("result"); 
+ 	  String ses1=(String)request.getParameter("resultfail");
+	  if(ses1!=null){
 	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
+	<div align="center">
+
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</div>
 	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
 
-<div class="container-fluid">
+	</div>
+	<%} %>
+
+	<div class="container-fluid">
 		<div class="row">
-<div class="col-md-5">
-    <div class="card" style="border-color: #00DADA; margin-top: 2%;">
-        <div class="card-body" id="scrollclass" style="height: 30.5rem;">
-            <div class="panel panel-info" style="margin-top: 10px;">
-                <div class="panel-heading d-flex align-items-center justify-content-between">
-                    <h4 class="panel-title mb-0" style="font-size: 14px;">1. Test Set Up</h4>
-                    <div class="d-inline-flex">
-                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor1" onclick="showEditor('Test Set Up')">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </button>
-                        <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
-                            <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Test Set Up')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateExcel" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="TEST SET UP Excel Format">
-                                <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
-            <div class="panel panel-info" style="margin-top: 10px;">
-                <div class="panel-heading d-flex align-items-center justify-content-between">
-                    <h4 class="panel-title mb-0" style="font-size: 14px;">2. Test Set Up Diagram</h4>
-                    <div class="d-inline-flex">
-                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor2" onclick="showEditor('Test Set Up Diagram')">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </button>
-                         <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
-                        <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Test Set Up')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateExcelDiagram" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="TEST DIAGRAM Excel Format">
-                            <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
-                        </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
-            <div class="panel panel-info" style="margin-top: 10px;">
-                <div class="panel-heading d-flex align-items-center justify-content-between">
-                    <h4 class="panel-title mb-0" style="font-size: 14px;">3. Testing tools</h4>
-                    <div class="d-inline-flex">
-                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor3" onclick="showEditor('Testing tools')">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </button>
-                         <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
-                        <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Test Set Up')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateExcelTestingTools" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="TESTING TOOLS Format">
-                            <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
-                        </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-             <!--  -->
-            <div class="panel panel-info" style="margin-top: 10px;">
-                <div class="panel-heading d-flex align-items-center justify-content-between">
-                    <h4 class="panel-title mb-0" style="font-size: 14px;">4. Test Verification Table</h4>
-                    <div class="d-inline-flex">
-                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor4" onclick="showEditor('Test Verification')">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </button>
-                         <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
-                        <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Test Verification')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateTestVerificationTable" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="TEST VERIFICATION Excel Format">
-                            <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
-                        </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
+			<div class="col-md-5">
+    			<div class="card" style="border-color: #00DADA; margin-top: 2%;">
+        			<div class="card-body" id="scrollclass" style="height: 30.5rem;">
+			            <!-- <div class="panel panel-info" style="margin-top: 10px;">
+			                <div class="panel-heading d-flex align-items-center justify-content-between">
+			                    <h4 class="panel-title mb-0" style="font-size: 14px;">1. Test Set Up</h4>
+			                    <div class="d-inline-flex">
+			                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor1" onclick="showEditor('Test Set Up')">
+			                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+			                        </button>
+			                        <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
+			                            <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Test Set Up')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateExcel" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="TEST SET UP Excel Format">
+			                                <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
+			                            </button>
+			                        </form>
+			                    </div>
+			                </div>
+			            </div> -->
+			            <!--  -->
+			            <div class="panel panel-info" style="margin-top: 10px;">
+			                <div class="panel-heading d-flex align-items-center justify-content-between">
+			                    <h4 class="panel-title mb-0" style="font-size: 14px;">1. Test Set Up Diagram</h4>
+			                    <div class="d-inline-flex">
+			                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor2" onclick="showEditor('Test Set Up Diagram')">
+			                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+			                        </button>
+			                         <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
+			                        <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Test Set Up Diagram')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateExcelDiagram" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="TEST DIAGRAM Excel Format">
+			                            <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
+			                        </button>
+			                        </form>
+			                    </div>
+			                </div>
+			            </div>
+            			<!--  -->
+			            <!-- <div class="panel panel-info" style="margin-top: 10px;">
+			                <div class="panel-heading d-flex align-items-center justify-content-between">
+			                    <h4 class="panel-title mb-0" style="font-size: 14px;">3. Testing tools</h4>
+			                    <div class="d-inline-flex">
+			                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor3" onclick="showEditor('Testing tools')">
+			                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+			                        </button>
+			                         <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
+			                        <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Test Set Up')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateExcelTestingTools" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="TESTING TOOLS Format">
+			                            <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
+			                        </button>
+			                        </form>
+			                    </div>
+			                </div>
+			            </div> -->
+			             <!--  -->
+			            <!-- <div class="panel panel-info" style="margin-top: 10px;">
+			                <div class="panel-heading d-flex align-items-center justify-content-between">
+			                    <h4 class="panel-title mb-0" style="font-size: 14px;">2. Test Verification Table</h4>
+			                    <div class="d-inline-flex">
+			                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor4" onclick="showEditor('Test Verification')">
+			                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+			                        </button>
+			                         <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
+			                        <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Test Verification')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateTestVerificationTable" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="TEST VERIFICATION Excel Format">
+			                            <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
+			                        </button>
+			                        </form>
+			                    </div>
+			                </div>
+			            </div> -->
+			            <!--  -->
             
-             <!--  -->
-            <div class="panel panel-info" style="margin-top: 10px;">
-                <div class="panel-heading d-flex align-items-center justify-content-between">
-                    <h4 class="panel-title mb-0" style="font-size: 14px;">5. Test Objective</h4>
-                    <div class="d-inline-flex">
-                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor5" onclick="showEditor('Test Objective')">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
+			             <!--  -->
+			            <div class="panel panel-info" style="margin-top: 10px;">
+			                <div class="panel-heading d-flex align-items-center justify-content-between">
+			                    <h4 class="panel-title mb-0" style="font-size: 14px;">2. Test Objective</h4>
+			                    <div class="d-inline-flex">
+			                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor5" onclick="showEditor('Test Objective')">
+			                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+			                        </button>
+			                    </div>
+			                </div>
+			            </div>
+			            <!--  -->
             
-                <div class="panel panel-info" style="margin-top: 10px;">
-                <div class="panel-heading d-flex align-items-center justify-content-between">
-                    <h4 class="panel-title mb-0" style="font-size: 14px;"> 6. Role & Responsibility</h4>
-                    <div class="d-inline-flex">
-                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor6" onclick="showEditor('Role & Responsibility')">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </button>
-                  <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
-                        <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Role & Responsibility')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateTestRoleResponsibility" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="Role & Responsibility Excel Format">
-                            <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
-                        </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                		<div class="panel panel-info" style="margin-top: 10px;">
+			                <div class="panel-heading d-flex align-items-center justify-content-between">
+			                    <h4 class="panel-title mb-0" style="font-size: 14px;">3. Role & Responsibility</h4>
+			                    <div class="d-inline-flex">
+			                        <button class="btn bg-transparent buttonEd" type="button" id="btnEditor6" onclick="showEditor('Role & Responsibility')">
+			                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+			                        </button>
+			                  <form action="TestSetUp.htm" method="post" enctype="multipart/form-data">
+			                        <button class="btn btn-sm ml-1 bg-transparent" type="submit" onclick="showEditor('Role & Responsibility')" style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;" name="Action" value="GenerateTestRoleResponsibility" formaction="TestSetUp.htm" formmethod="GET" formnovalidate="formnovalidate" data-toggle="tooltip" title="Role & Responsibility Excel Format">
+			                            <i class="fa fa-file-excel-o" aria-hidden="true" style="color: green; font-size: 20px; padding-right: 5px;"></i>
+			                        </button>
+			                        </form>
+			                    </div>
+			                </div>
+           	 			</div>
+        			</div>
+    			</div>
+			</div>
 
 
-						<!--div for Editor-->
+			<!--div for Editor-->
 			<div class="col-md-7" style="display: block" id="col1">
-			  <form action="AcceptanceTestingUpload.htm" method="POST" id="myfrm" enctype="multipart/form-data">
+				<form action="AcceptanceTestingUpload.htm" method="POST" id="myfrm" enctype="multipart/form-data">
 					<div class="card" style="border-color: #00DADA; margin-top: 2%;">
-						<h5 class="heading ml-4 mt-3" id="editorHeading"
-							style="font-weight: 500; color: #31708f;">Test Set Up</h5>
+						<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight: 500; color: #31708f;">Test Set Up Diagram</h5>
+						
 						<hr>
+						
 						<div class="card-body" style="margin-top:-8px">
 							<div class="row">
-								<div class="col-md-12 " align="left"
-									style="margin-left: 0px; width: 100%;">
-									<div id="Editor" class="center">
-									</div>
+								<div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
+									<div id="Editor" class="center"></div>
 									<textarea name="Details" style="display: none;"></textarea>
 									<div class="mt-2" align="center" id="detailsSubmit">
-									
-									
-						<div class="row">
-						<div class="col-md-2">
-						<label> Attachment:</label>
-						</div>
-							<div class="col-md-6"> 
-					<!-- 		<div align="center" class="mt-2" id="uploadDivA" style="display:none;"> -->
-								<input class="form-control" type="file" id="excel_files" 
-									name="filenameC" required="required"
-									accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-									required="required">
-							</div>
-							<div class="col-md-4"><span class="text-primary">(Please add respective Excel Sheet.)</span></div>
-						</div>
+										<div class="row">
+											<div class="col-md-2">
+												<label> Attachment:</label>
+											</div>
+											<div class="col-md-6"> 
+												<!-- <div align="center" class="mt-2" id="uploadDivA" style="display:none;"> -->
+												<input class="form-control" type="file" id="excel_files" name="filenameC" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required="required">
+											</div>
+											<div class="col-md-4"><span class="text-primary">(Please add respective Excel Sheet.)</span></div>
+										</div>
 										<span id="EditorDetails"></span> 
-											<input type="hidden" name="projectId" value="<%=projectId%>">
-											<input type="hidden" name="initiationId" value="<%=initiationid%>"> 
-											<input type="hidden" name="ProjectType" value="<%=ProjectType%>">	
-											<input type="hidden" id="attributes" name="attributes" value="Test Set Up">
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-											<span id="Editorspan">
+										<input type="hidden" name="projectId" value="<%=projectId%>">
+										<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+										<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+										<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">	
+										<input type="hidden" id="attributes" name="attributes" value="Test Set Up Diagram">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+										<span id="Editorspan">
 											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')" name="Action" value="add">SUBMIT</button></span>
 											<span id="btn2" style="display: none;"><button type="submit"class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure you want to submit?')" name="Action" value="edit">UPDATE</button></span>
 											<input type="hidden" name="UpdateActionid" id="UpdateActionid" value="">
 										</span>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					</div>
 				</form>
 			</div>
-			
-<!-- 			<form action="#">
-			<div class="col-md-4">
-							<button type="submit" class="btn btn-sm " style="margin-left: 3rem;" id="attributes" name="filename" value="Test Set Up" formaction="TestSetupFileDownload.htm" formtarget="_blank"><i class="fa fa-download fa-lg"></i></button>
-							 <input type="hidden" name="UpdateActionid" id="UpdateActionid" value="">
-							</div>
-			</form> -->
-			<div>
-			</div>
 		</div>
-</div>
+	</div>
 
 
 
@@ -740,7 +732,7 @@ String jsonArray = objectMapper.writeValueAsString(AcceptanceTesting);
 	     		}
 	     	}
 		}
-	});
+	/* }); */
 	var msg="";
  	if(checkExcel>0){
  		msg="Upload Test Document!";
@@ -748,7 +740,7 @@ String jsonArray = objectMapper.writeValueAsString(AcceptanceTesting);
  		excel_fileA.value="";
  	}else{
  		$('#uploadDivA').show();	
- 	} */
+ 	} 
 	/* } */
 	</script>
 	

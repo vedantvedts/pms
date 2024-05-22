@@ -1,5 +1,7 @@
 package com.vts.pfms.requirements.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,27 +13,32 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-@Table(name="pfms_test_plan_contents")
-public class TestApproach {
-
+@Table(name="pfms_test_plan_initiation")
+public class TestPlanInitiation  implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long TestId;
-//	private Long projectId;
-//	private Long InitiationId;
 	private Long TestPlanInitiationId;
-	private String TestApproach;
+	private Long ProjectId;
+	private Long InitiationId;
+	private Long ProductTreeMainId;
+	private int TestPlanVersion;
+	private Long InitiatedBy;
+	private String InitiatedDate;
+	private String ReqStatusCode;
+	private String ReqStatusCodeNext;
 	private String CreatedBy;
-    private String CreatedDate;
-    private String ModifiedBy;
-    private String ModifiedDate;
+	private String CreatedDate;
+	private String ModifiedBy;
+	private String ModifiedDate;
 	private int IsActive;
-	private  String PointName;
-	private String PointDetails;
+	
+
 }

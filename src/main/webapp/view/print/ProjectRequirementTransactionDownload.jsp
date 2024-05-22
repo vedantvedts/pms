@@ -113,6 +113,7 @@ p,td,th
 <body>
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("transactionList");
+Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 RequirementInitiation reqInitiation = (RequirementInitiation)request.getAttribute("requirementInitiationDetails"); 
 
 SimpleDateFormat month=new SimpleDateFormat("MMM");
@@ -123,7 +124,9 @@ SimpleDateFormat time=new SimpleDateFormat("HH:mm");
 
 <table id="tabledata">
 	<tr>
-		<td colspan="2" style="text-align: center;">v<%=reqInitiation.getReqVersion()%> </td>
+		<td colspan="2" style="text-align: center;">
+			<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:""%> 
+		</td>
 	</tr>
 	<%if(statuslist!=null && statuslist.size()>0) {
 		for(Object[] obj : statuslist){

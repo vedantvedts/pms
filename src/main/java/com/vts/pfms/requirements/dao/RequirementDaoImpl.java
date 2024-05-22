@@ -1,5 +1,6 @@
 package com.vts.pfms.requirements.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.vts.pfms.project.dao.ProjectDaoImpl;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.requirements.model.Abbreviations;
@@ -23,8 +23,11 @@ import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.RequirementsTrans;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
+import com.vts.pfms.requirements.model.TestDetails;
+import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
+import com.vts.pfms.requirements.model.TestTools;
 
 @Transactional
 @Repository
@@ -46,12 +49,12 @@ public class RequirementDaoImpl implements RequirementDao {
 		return RequirementList;
 	}
 
-	private static final String ABBREVIATIONS="SELECT AbbreviationsId,Abbreviations,Meaning FROM pfms_abbreviations WHERE InitiationId =:InitiationId AND  ProjectId=:ProjectId and AbbreviationType='T'";		
+	private static final String ABBREVIATIONS="SELECT AbbreviationsId,Abbreviations,Meaning FROM pfms_abbreviations WHERE TestPlanInitiationId=:TestPlanInitiationId AND SpecsInitiationId=:SpecsInitiationId";		
 	@Override
-	public List<Object[]> AbbreviationDetails(String initiationId, String projectId) throws Exception {
+	public List<Object[]> AbbreviationDetails(String testPlanInitiationId, String specsInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(ABBREVIATIONS);
-		query.setParameter("InitiationId", initiationId);
-		query.setParameter("ProjectId", projectId);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		query.setParameter("SpecsInitiationId", specsInitiationId);
 		return (List<Object[]>)query.getResultList();
 	}
 	@Override
@@ -71,24 +74,21 @@ public class RequirementDaoImpl implements RequirementDao {
 
 		return r.getMemeberId();
 	}
-	private static final String DOCMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_doc_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.initiationid =:initiationid AND ProjectId=:ProjectId AND MemeberType= 'T' AND c.isactive =1 ORDER BY b.desigid ASC";
+	private static final String DOCMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_doc_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.TestPlanInitiationId =:TestPlanInitiationId AND c.SpecsInitiationId=:SpecsInitiationId AND c.isactive =1 ORDER BY b.desigid ASC";
 
 	@Override
-	public List<Object[]> DocMemberList(String initiationid, String ProjectId) throws Exception {
+	public List<Object[]> DocMemberList(String testPlanInitiationId, String specsInitiationId) throws Exception {
 
 		Query query = manager.createNativeQuery(DOCMEMLIST);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		query.setParameter("SpecsInitiationId", specsInitiationId);
 		return (List<Object[]>)query.getResultList();
 	}
-	private static final String TESTINTRO="SELECT InitiationId,Introduction,SystemIdentification,SystemOverview FROM pfms_test_scope_intro WHERE initiationid=:initiationid AND ProjectId=:ProjectId AND isactive=1";
+	private static final String TESTINTRO="SELECT TestPlanInitiationId,Introduction,SystemIdentification,SystemOverview FROM pfms_test_scope_intro WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive=1";
 	@Override
-	public Object[] TestScopeIntro(String initiationid, String ProjectId) throws Exception {
+	public Object[] TestScopeIntro(String testPlanInitiationId) throws Exception {
 		Query query=manager.createNativeQuery(TESTINTRO);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("ProjectId", ProjectId);
-		System.out.println("initiationid"+initiationid);
-		System.out.println("ProjectId"+ProjectId);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
 		Object[]ReqIntro=null;
 		try {
 			ReqIntro=(Object[])query.getSingleResult();
@@ -110,35 +110,32 @@ public class RequirementDaoImpl implements RequirementDao {
 		System.out.println(details);
 		if(details.equalsIgnoreCase("Introduction")) {
 			System.out.println("a");
-			String INTROUPDATE="UPDATE pfms_test_scope_intro SET Introduction=:Introduction,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid AND  ProjectId=:projectId";
+			String INTROUPDATE="UPDATE pfms_test_scope_intro SET Introduction=:Introduction,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE TestPlanInitiationId=:TestPlanInitiationId";
 			Query query=manager.createNativeQuery(INTROUPDATE);
 			query.setParameter("Introduction", pr.getIntroduction());
 			query.setParameter("ModifiedBy", pr.getModifiedBy());
 			query.setParameter("ModifiedDate", pr.getModifiedDate());
-			query.setParameter("initiationid", pr.getInitiationId());
-			query.setParameter("projectId",pr.getProjectId());
+			query.setParameter("TestPlanInitiationId", pr.getTestPlanInitiationId());
 			return query.executeUpdate();
 
 		}else if(details.equalsIgnoreCase("System Identification")) {
 			System.out.println("a");
-			String BLOCKUPDTE="UPDATE pfms_test_scope_intro SET SystemIdentification=:SystemIdentification, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid AND ProjectId=:projectId";
+			String BLOCKUPDTE="UPDATE pfms_test_scope_intro SET SystemIdentification=:SystemIdentification, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE TestPlanInitiationId=:TestPlanInitiationId";
 			Query query=manager.createNativeQuery(BLOCKUPDTE);
 			query.setParameter("SystemIdentification", pr.getSystemIdentification());
 			query.setParameter("ModifiedBy", pr.getModifiedBy());
 			query.setParameter("ModifiedDate", pr.getModifiedDate());
-			query.setParameter("initiationid", pr.getInitiationId());
-			query.setParameter("projectId",pr.getProjectId());
+			query.setParameter("TestPlanInitiationId", pr.getTestPlanInitiationId());
 			return query.executeUpdate();	
 
 		}else if(details.equalsIgnoreCase("System Overview")) {
 			System.out.println("a");
-			String SYSUPDATE="UPDATE pfms_test_scope_intro SET SystemOverview=:SystemOverview, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid AND ProjectId=:projectId";
+			String SYSUPDATE="UPDATE pfms_test_scope_intro SET SystemOverview=:SystemOverview, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE TestPlanInitiationId=:TestPlanInitiationId";
 			Query query=manager.createNativeQuery(SYSUPDATE);
 			query.setParameter("SystemOverview", pr.getSystemOverview());
 			query.setParameter("ModifiedBy", pr.getModifiedBy());
 			query.setParameter("ModifiedDate", pr.getModifiedDate());
-			query.setParameter("initiationid", pr.getInitiationId());
-			query.setParameter("projectId",pr.getProjectId());
+			query.setParameter("TestPlanInitiationId", pr.getTestPlanInitiationId());
 			return query.executeUpdate();
 
 		}
@@ -167,13 +164,13 @@ public class RequirementDaoImpl implements RequirementDao {
 
 		return query.executeUpdate();
 	}
-	private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid FROM pfms_test_plan_summary a WHERE a.InitiationId =:InitiationId AND ProjectId =:ProjectId AND a.isactive='1'";
+	private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid,a.preparedby,(SELECT CONCAT(IFNULL(CONCAT(e.title,''),''),e.empname)FROM employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1'FROM pfms_test_plan_summary a WHERE a.TestPlanInitiationId =:TestPlanInitiationId AND a.SpecsInitiationId=:SpecsInitiationId AND a.isactive='1'";
 	@Override
-	public List<Object[]> getTestPlanDocumentSummary(String initiationid, String ProjectId) throws Exception {
+	public List<Object[]> getTestandSpecsDocumentSummary(String testPlanInitiationId, String specsInitiationId) throws Exception {
 
 		Query query = manager.createNativeQuery(DOCSUM);
-		query.setParameter("InitiationId", initiationid);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		query.setParameter("SpecsInitiationId", specsInitiationId);
 		List<Object[]>DocumentSummary=(List<Object[]>)query.getResultList();
 
 		return DocumentSummary;
@@ -240,13 +237,12 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 		return ReqIntro;
 	}
-	private static final String TESTCONTENTLIST="SELECT PointName,PointDetails,TestId FROM pfms_test_plan_contents WHERE initiationid=:InitiationId AND ProjectId=:ProjectId AND isactive=1";
+	private static final String TESTCONTENTLIST="SELECT PointName,PointDetails,TestId FROM pfms_test_plan_contents WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive=1";
 	@Override
-	public List<Object[]> GetTestContentList(String initiationid, String projectId) throws Exception {
+	public List<Object[]> GetTestContentList(String testPlanInitiationId) throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery(TESTCONTENTLIST);
-		query.setParameter("InitiationId", initiationid);
-		query.setParameter("ProjectId", projectId);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
 		List<Object[]>GetContentList=(List<Object[]>)query.getResultList();
 		return GetContentList;
 	}
@@ -279,13 +275,12 @@ public class RequirementDaoImpl implements RequirementDao {
 		manager.flush();
 		return re.getTestId();
 	}
-	private static final String ACCEPTANCETESTING="SELECT TestId,Attributes,AttributesDetailas,FileName,FilePath FROM pfms_test_plan_acceptance WHERE initiationid=:InitiationId AND ProjectId=:ProjectId AND isactive=1";
+	private static final String ACCEPTANCETESTING="SELECT TestId,Attributes,AttributesDetailas,FileName,FilePath FROM pfms_test_plan_acceptance WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive=1";
 	@Override
-	public List<Object[]> GetAcceptanceTestingList(String initiationid, String projectId) throws Exception {
+	public List<Object[]> GetAcceptanceTestingList(String testPlanInitiationId) throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery(ACCEPTANCETESTING);
-		query.setParameter("InitiationId", initiationid);
-		query.setParameter("ProjectId", projectId);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
 		List<Object[]>GetContentList=(List<Object[]>)query.getResultList();
 		return GetContentList;
 	}
@@ -316,10 +311,9 @@ public class RequirementDaoImpl implements RequirementDao {
 	}
 	private static final String EXCELDATA="SELECT TestId,Attributes,AttributesDetailas,FileName,FilePath FROM pfms_test_plan_acceptance WHERE InitiationId =:InitiationId AND ProjectId=:ProjectId AND isactive=1";
 	@Override
-	public Object[] AcceptanceTestingExcelData(String initiationid,String ProjectId) throws Exception {
+	public Object[] AcceptanceTestingExcelData(String testPlanInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(EXCELDATA);
-		query.setParameter("InitiationId", initiationid);	
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
 		Object[] result= (Object[])query.getSingleResult();
 		return result;
 	}
@@ -385,7 +379,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			e.printStackTrace();
 			return new ArrayList<>();
 		}
-		
+
 	}
 
 	private static final String PARADETAILSMAIN="SELECT paraid,sqrid,'0',parano,paradetails FROM pfms_initiation_sqr_para WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
@@ -511,7 +505,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	@Override
 	public long addRequirementInitiation(RequirementInitiation requirementInitiation) throws Exception {
 		try {
@@ -524,7 +518,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			return 0L;
 		}
 	}
-	
+
 	@Override
 	public RequirementInitiation getRequirementInitiationById(String reqInitiationId) throws Exception{
 		try {
@@ -546,7 +540,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public Long addOrUpdatePfmsInititationRequirement(PfmsInititationRequirement pfmsInititationRequirement) throws Exception{
 		try {
@@ -559,7 +553,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			return 0L;
 		}
 	}
-	
+
 	private static final String ROADMAPTRANSLIST = "SELECT a.ReqInitiationTransId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_req_trans a,pfms_req_approval_status b,employee c,employee_desig d,pfms_req_initiation e WHERE e.ReqInitiationId = a.ReqInitiationId AND a.ReqStatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND e.ReqInitiationId=:ReqInitiationId ORDER BY a.ReqInitiationTransId DESC";
 	@Override
 	public List<Object[]> projectRequirementTransList(String reqInitiationId) throws Exception {
@@ -634,5 +628,186 @@ public class RequirementDaoImpl implements RequirementDao {
 			return new ArrayList<Object[]>();
 		}
 	}
+
+	// Test Plan Changes from Bharath
+	@Override
+	public long TestDetailsAdd(TestDetails Td) throws Exception {
+
+		manager.persist(Td);
+		manager.flush();
+		return Td.getTestId();
+	}
+
+	private static final String TESTTYPELIST="SELECT a.TestToolsId,a.TestType,a.TestTools,a.TestSetupName FROM pfms_test_plan_testingtools a";
+	@Override
+	public List<Object[]> TestTypeList() throws Exception {
+		Query query=manager.createNativeQuery(TESTTYPELIST);
+		return (List<Object[]>)query.getResultList();
+	}
+
+	private static final String STAGESAPPLICABLE="SELECT a.Id, a.TestPlanInitiationId,'0' AS ProjectId,stagesapplicableName FROM pfms_test_plan_stagesapplicable a WHERE TestPlanInitiationId=:TestPlanInitiationId";
+	@Override
+	public List<Object[]> StagesApplicable(String testPlanInitiationId) throws Exception {
+		Query query=manager.createNativeQuery(STAGESAPPLICABLE);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		List<Object[]>requirementFiles=(List<Object[]>)query.getResultList();
+		return requirementFiles;
+	}
 	
+	private static final String TESTTYPECOUNT="SELECT MAX(TestCount) FROM pfms_testdetails WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive='1'";
+	@Override
+	public long numberOfTestTypeId(String testPlanInitiationId) throws Exception {
+
+		Query query=manager.createNativeQuery(TESTTYPECOUNT);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		BigInteger x=(BigInteger)query.getSingleResult();
+
+		if(x==null) {
+			return 0;
+		}
+		return x.longValue();
+	}
+
+//	private static final String TESTUPDATE="UPDATE  pfms_testdetails SET Name=:Name, Objective=:Objective,Description=:Description,PreConditions=:PreConditions,PostConditions=:PostConditions,Constraints=:Constraints,SafetyRequirements=:SafetyRequirements,Methodology=:Methodology,ToolsSetup=:ToolsSetup,PersonnelResources=:PersonnelResources,EstimatedTimeIteration=:EstimatedTimeIteration,Iterations=:Iterations,Schedule=:Schedule,StageApplicable=:StageApplicable,Pass_Fail_Criteria=:Pass_Fail_Criteria,Remarks=:Remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,IsActive='1' WHERE TestId=:TestId";
+//	@Override
+//	public long TestDUpdate(TestDetails pir, String TestId) throws Exception {
+//
+//		Query query=manager.createNativeQuery(TESTUPDATE);
+//		query.setParameter("Name", pir.getName());
+//		query.setParameter("Objective", pir.getObjective());
+//		query.setParameter("Description", pir.getDescription());
+//		query.setParameter("PreConditions", pir.getPreConditions());
+//		query.setParameter("PostConditions", pir.getPostConditions());
+//		query.setParameter("Constraints", pir.getConstraints());
+//		query.setParameter("SafetyRequirements", pir.getSafetyRequirements());
+//		query.setParameter("Methodology", pir.getMethodology());
+//		query.setParameter("ToolsSetup", pir.getToolsSetup());
+//		query.setParameter("PersonnelResources", pir.getPersonnelResources());
+//		query.setParameter("EstimatedTimeIteration", pir.getEstimatedTimeIteration());
+//		query.setParameter("Iterations",pir.getIterations() );
+//		query.setParameter("Schedule", pir.getSchedule());
+//		query.setParameter("Pass_Fail_Criteria", pir.getPass_Fail_Criteria());
+//		query.setParameter("StageApplicable", pir.getStageApplicable());
+//		query.setParameter("Remarks", pir.getRemarks());
+//		query.setParameter("TestId", TestId);
+//		query.setParameter("ModifiedBy", pir.getModifiedBy());
+//		query.setParameter("ModifiedDate", pir.getModifiedDate());
+//		query.executeUpdate();
+//		return 1l;
+//	}
+
+	private static final String VERIFICATIONMETHODLIST="SELECT a.VerificationDataId,b.VerificationMasterId,b.VerificationName,a.TypeofTest,a.Purpose FROM pfms_initiation_verification_data a,pfms_initiation_verification_master b WHERE a.VerificationMasterId=b.VerificationMasterId AND a.IsActive='1' AND a.initiationid=:initiationId AND projectid=:projectId";
+	@Override
+	public List<Object[]> getVerificationMethodList(String projectId, String initiationId) throws Exception {
+		Query query = manager.createNativeQuery(VERIFICATIONMETHODLIST);
+
+		query.setParameter("projectId", projectId);
+		query.setParameter("initiationId", initiationId);
+		return (List<Object[]>)query.getResultList();
+	}
+
+	private final String TestType="SELECT a.TestId ,a.TestDetailsId ,a.Name ,a.Objective,a.Description,a.PreConditions ,a.PostConditions ,a.Constraints,a.SafetyRequirements,a.Methodology,a.ToolsSetup,a.PersonnelResources,a.EstimatedTimeIteration ,a.Iterations  ,a.Schedule ,a.Pass_Fail_Criteria , a.Remarks ,a. TestPlanInitiationId, '0' AS ProjectId,a.SpecificationId,a.RequirementId,a.StageApplicable,a.IsActive,b.TestSetupName  FROM pfms_testdetails a,pfms_test_plan_testingtools b WHERE b.TestToolsId=a.ToolsSetup AND TestId=:r AND a.IsActive='1'";
+	@Override
+	public 	List<Object[]> TestType(String r) throws Exception {
+
+		Query query =manager.createNativeQuery(TestType);
+		query.setParameter("r", r);
+		List<Object[]> testType=(List<Object[]>)query.getResultList();
+		return testType;
+	}
+
+	private static final String TESTDOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid FROM pfms_test_plan_summary a WHERE a.TestPlanInitiationId =:TestPlanInitiationId AND a.isactive='1'";
+	@Override
+	public List<Object[]> getDocumentSummary(String testPlanInitiationId) throws Exception {
+
+		Query query = manager.createNativeQuery(TESTDOCSUM);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		List<Object[]>DocumentSummary=(List<Object[]>)query.getResultList();
+
+		return DocumentSummary;
+	}
+
+	private static final String TESTDETAILSLIST="SELECT a.TestId ,a.TestDetailsId ,a.Name ,a.Objective,a.Description,a.PreConditions ,a.PostConditions ,a.Constraints,a.SafetyRequirements,a.Methodology,a.ToolsSetup,a.PersonnelResources,a.EstimatedTimeIteration ,a.Iterations  ,a.Schedule ,a.Pass_Fail_Criteria , a.Remarks ,a. TestPlanInitiationId, '0' AS ProjectId,a.SpecificationId,a.RequirementId,a.IsActive,a.StageApplicable FROM pfms_testdetails a WHERE TestPlanInitiationId=:TestPlanInitiationId AND a.IsActive='1'";
+	@Override
+	public List<Object[]> TestDetailsList(String testPlanInitiationId) throws Exception {
+
+		Query query=manager.createNativeQuery(TESTDETAILSLIST);
+		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		List<Object[]> TestDetailList=(List<Object[]> )query.getResultList();	
+		return TestDetailList;
+	}
+
+	@Override
+	public Long insertTestType(TestTools pt) throws Exception {
+		manager.persist(pt);
+		return pt.getTestToolsId();
+	}
+	
+	private static final String INITIATIONTESTPLANLIST = "SELECT a.TestPlanInitiationId,a.ProjectId,a.InitiationId,a.ProductTreeMainId,a.InitiatedBy,a.InitiatedDate,b.EmpName,c.Designation,a.TestPlanVersion,d.ReqStatusCode,d.ReqStatus,d.ReqStatusColor FROM pfms_test_plan_initiation a,employee b,employee_desig c,pfms_req_approval_status d WHERE a.IsActive=1 AND a.InitiatedBy=b.EmpId AND b.DesigId=c.DesigId AND a.ReqStatusCode=d.ReqStatusCode AND a.ProjectId=:ProjectId AND a.ProductTreeMainId=:ProductTreeMainId AND a.InitiationId=:InitiationId ORDER BY a.TestPlanInitiationId DESC";
+	@Override
+	public List<Object[]> initiationTestPlanList(String projectId, String mainId, String initiationId)throws Exception
+	{
+		try {
+			Query query=manager.createNativeQuery(INITIATIONTESTPLANLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", mainId);
+			query.setParameter("InitiationId", initiationId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
+
+	// Test Plan Changes from Bharath End
+	
+	@Override
+	public long addTestPlanInitiation(TestPlanInitiation testplanInitiation) throws Exception {
+		try {
+			manager.persist(testplanInitiation);
+			manager.flush();
+			return testplanInitiation.getTestPlanInitiationId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addTestPlanInitiation "+e);
+			return 0L;
+		}
+	}
+	
+	@Override
+	public TestPlanSummary getTestPlanSummaryById(String summaryId) throws Exception {
+		try {
+			
+			return manager.find(TestPlanSummary.class, Long.parseLong(summaryId)) ;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getTestPlanSummaryById "+e);
+			return null;
+		}
+	}
+
+	@Override
+	public TestPlanInitiation getTestPlanInitiationById(String testPlanInitiationId) throws Exception{
+		try {
+			return manager.find(TestPlanInitiation.class, Long.parseLong(testPlanInitiationId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getTestPlanInitiationById "+e);
+			return null;
+		}
+	}
+
+	@Override
+	public TestDetails getTestPlanDetailsById(String testId) throws Exception {
+		try {
+			
+			return manager.find(TestDetails.class, Long.parseLong(testId)) ;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getTestPlanDetailsById "+e);
+			return null;
+		}
+	}
+
 }

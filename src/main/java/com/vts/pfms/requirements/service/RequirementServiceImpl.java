@@ -28,7 +28,6 @@ import com.vts.pfms.project.dao.ProjectDao;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.RequirementSummary;
-import com.vts.pfms.project.service.ProjectServiceImpl;
 import com.vts.pfms.requirements.dao.RequirementDao;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
@@ -37,8 +36,11 @@ import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.RequirementsTrans;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
+import com.vts.pfms.requirements.model.TestDetails;
+import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
+import com.vts.pfms.requirements.model.TestTools;
 
 @Service
 public class RequirementServiceImpl implements RequirementService {
@@ -99,8 +101,9 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	@Override
-	public List<Object[]> AbbreviationDetails(String initiationId, String projectId) throws Exception {
-	return dao.AbbreviationDetails(initiationId,projectId);
+	public List<Object[]> AbbreviationDetails(String testPlanInitiationId, String specsInitiationId) throws Exception {
+		
+		return dao.AbbreviationDetails(testPlanInitiationId, specsInitiationId);
 	}
 
 
@@ -113,30 +116,32 @@ public class RequirementServiceImpl implements RequirementService {
 		long count=0;
 		for(int i=0;i<numberOfPersons;i++) {
 			DocMembers r = new DocMembers();
-			r.setInitiationId(rm.getInitiationId());
+//			r.setInitiationId(rm.getInitiationId());
 			r.setCreatedBy(rm.getCreatedBy());
 			r.setCreatedDate(rm.getCreatedDate());
 			r.setEmpId(Long.parseLong(assignee[i]));
 			r.setIsActive(1);
-			r.setProjectId(rm.getProjectId());
+//			r.setProjectId(rm.getProjectId());
 			r.setMemeberType(rm.getMemeberType());
+			r.setTestPlanInitiationId(rm.getTestPlanInitiationId());
+			r.setSpecsInitiationId(rm.getSpecsInitiationId());
 			count=dao.AddreqMembers(r);
 			
 		}
 		return count;
 	}
 	@Override
-	public List<Object[]> DocMemberList(String initiationid, String ProjectId) throws Exception {
+	public List<Object[]> DocMemberList(String testPlanInitiationId, String specsInitiationId) throws Exception {
 		
-		return dao.DocMemberList(initiationid, ProjectId);
+		return dao.DocMemberList(testPlanInitiationId, specsInitiationId);
 	}
 	@Override
-	public Object[] TestScopeIntro(String initiationid, String ProjectId) throws Exception {
+	public Object[] TestScopeIntro(String testPlanInitiationId) throws Exception {
 	
-		return dao.TestScopeIntro(initiationid, ProjectId);
+		return dao.TestScopeIntro(testPlanInitiationId);
 	}
 	@Override
-	public long TestScopeIntroSubmit(String initiationid, String ProjectId, String attributes, String details, String UserId) throws Exception {
+	public long TestScopeIntroSubmit(String testPlanInitiationId, String attributes, String details, String UserId) throws Exception {
 		
 		TestScopeIntro pr= new TestScopeIntro();
 		if(attributes.equalsIgnoreCase("Introduction")) {
@@ -146,8 +151,9 @@ public class RequirementServiceImpl implements RequirementService {
 		}else if(attributes.equalsIgnoreCase("System Overview")) {
 			pr.setSystemOverview(details);
 		}
-		pr.setProjectId(Long.parseLong(ProjectId));
-		pr.setInitiationId(Long.parseLong(initiationid));
+//		pr.setProjectId(Long.parseLong(ProjectId));
+//		pr.setInitiationId(Long.parseLong(initiationid));
+		pr.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
 		pr.setProjectType("T");
 		pr.setCreatedBy(UserId);
 		pr.setCreatedDate(sdf1.format(new Date()));
@@ -155,7 +161,7 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.TestScopeIntroSubmit(pr);
 	}
 	@Override
-	public long TestScopeUpdate(String initiationid, String ProjectId, String attributes, String details, String userId) throws Exception {
+	public long TestScopeUpdate(String testPlanInitiationId, String attributes, String details, String userId) throws Exception {
 		TestScopeIntro pr= new TestScopeIntro();
 		if(attributes.equalsIgnoreCase("Introduction")) {
 			pr.setIntroduction(details);
@@ -164,8 +170,9 @@ public class RequirementServiceImpl implements RequirementService {
 		}else if(attributes.equalsIgnoreCase("System Overview")) {
 			pr.setSystemOverview(details);
 		}
-		pr.setProjectId(Long.parseLong(ProjectId));
-		pr.setInitiationId(Long.parseLong(initiationid));
+//		pr.setProjectId(Long.parseLong(ProjectId));
+//		pr.setInitiationId(Long.parseLong(initiationid));
+		pr.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
 		pr.setModifiedBy(userId);
 		pr.setModifiedDate(sdf1.format(new Date()));
 		return dao.TestScopeUpdate(pr,attributes);
@@ -173,15 +180,18 @@ public class RequirementServiceImpl implements RequirementService {
 	
 	@Override
 	public long addTestPlanSummary(TestPlanSummary rs) throws Exception {
+		
 		return dao.addTestPlanSummary(rs);
 	}
 	@Override
 	public long editTestPlanSummary(TestPlanSummary rs) throws Exception {
+		
 		return dao.editTestPlanSummary(rs);
 	}
 	@Override
-	public List<Object[]> getTestPlanDocumentSummary(String initiationid, String ProjectId) throws Exception {
-		return dao.getTestPlanDocumentSummary(initiationid, ProjectId);
+	public List<Object[]> getTestandSpecsDocumentSummary(String testPlanInitiationId, String specsInitiationId) throws Exception {
+		
+		return dao.getTestandSpecsDocumentSummary(testPlanInitiationId, specsInitiationId);
 	}
 	@Override
 	public long addTestApproch(TestApproach rs) throws Exception {
@@ -197,13 +207,14 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	@Override
-	public long TestDocContentSubmit(String initiationid, String ProjectId, String attributes, String details, String UserId) throws Exception {
+	public long TestDocContentSubmit(String testPlanInitiationId, String attributes, String details,String userId) throws Exception {
 		TestApproach pr= new TestApproach();
 		pr.setPointName(attributes);
 		pr.setPointDetails(details);
-		pr.setProjectId(Long.parseLong(ProjectId));
-		pr.setInitiationId(Long.parseLong(initiationid));
-		pr.setCreatedBy(UserId);
+//		pr.setProjectId(Long.parseLong(ProjectId));
+//		pr.setInitiationId(Long.parseLong(initiationid));
+		pr.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
+		pr.setCreatedBy(userId);
 		pr.setCreatedDate(sdf1.format(new Date()));
 		pr.setIsActive(1);
 		return dao.TestDocContentSubmit(pr);
@@ -214,8 +225,8 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.GetTestContent(initiationid, ProjectId);
 	}
 	@Override
-	public List<Object[]> GetTestContentList(String initiationid, String ProjectId) throws Exception {
-		return dao.GetTestContentList(initiationid, ProjectId);
+	public List<Object[]> GetTestContentList(String testPlanInitiationId) throws Exception {
+		return dao.GetTestContentList(testPlanInitiationId);
 	}
 	@Override
 	public long TestDocContentUpdate(String UpdateAction, String Details, String userId) throws Exception {
@@ -242,9 +253,10 @@ public class RequirementServiceImpl implements RequirementService {
 		String Path = LabCode +"\\ACCEPTANCE\\";
 		
 		if(!re.getFile().isEmpty()) {
-			re.setFileName(re.getProjectId()+"_"+re.getInitiationId()+"_"+re.getFile().getOriginalFilename());
+			re.setFileName(re.getTestPlanInitiationId()+"_"+re.getFile().getOriginalFilename());
 			saveFile(uploadpath+Path,re.getFileName(),re.getFile());
 		}
+		
 		re.setIsActive(1);
 		re.setFilePath(Path);
 		return dao.insertTestAcceptanceFile(re);
@@ -265,8 +277,9 @@ public class RequirementServiceImpl implements RequirementService {
 		}
 	}
 	@Override
-	public List<Object[]> GetAcceptanceTestingList(String initiationid, String ProjectId) throws Exception {
-		return dao.GetAcceptanceTestingList(initiationid, ProjectId);
+	public List<Object[]> GetAcceptanceTestingList(String testPlanInitiationId) throws Exception {
+		
+		return dao.GetAcceptanceTestingList(testPlanInitiationId);
 	}
 	@Override
 	public long TestAcceptancetUpdate(String UpdateActionid, String Details, String userId, MultipartFile FileAttach,String LabCode) throws Exception {
@@ -291,13 +304,13 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.AcceptanceTestingList(Testid);
 	}
 	@Override
-	public Object[] AcceptanceTestingExcelData(String initiationId,String projectId) throws Exception {
-		return dao.AcceptanceTestingExcelData(initiationId,projectId);
+	public Object[] AcceptanceTestingExcelData(String testPlanInitiationId) throws Exception {
+		return dao.AcceptanceTestingExcelData(testPlanInitiationId);
 	}
 	
 	@Override
 	public long addAbbreviations(List<Abbreviations> iaList) throws Exception {
-		// TODO Auto-generated method stub
+
 		return dao.addAbbreviations(iaList);
 	}
 	@Override
@@ -539,15 +552,152 @@ public class RequirementServiceImpl implements RequirementService {
 		}
 		
 	}
+	
 	@Override
 	public List<Object[]> projectRequirementPendingList(String empId, String labcode) throws Exception {
 		
 		return dao.projectRequirementPendingList(empId, labcode);
 	}
+	
 	@Override
 	public List<Object[]> projectRequirementApprovedList(String empId, String FromDate, String ToDate) throws Exception {
 		
 		return dao.projectRequirementApprovedList(empId, FromDate, ToDate);
 	}
 	
+	// Test Plan Changes from Bharath
+	@Override
+	public long TestDetailsAdd(TestDetails Td) throws Exception {
+
+		return dao.TestDetailsAdd(Td);
+	}
+	
+	@Override
+	public List<Object[]> TestTypeList() throws Exception {
+		
+		return dao.TestTypeList();
+	}
+	@Override
+	public List<Object[]> StagesApplicable(String testPlanInitiationId) throws Exception {
+		return dao.StagesApplicable(testPlanInitiationId);
+	}
+	@Override
+	public Long numberOfTestTypeId(String testPlanInitiationId) throws Exception {
+	
+		return dao.numberOfTestTypeId(testPlanInitiationId);
+	}
+	@Override
+	public List<Object[]> TestDetailsList(String testPlanInitiationId) throws Exception {
+		
+		return dao.TestDetailsList(testPlanInitiationId);
+	}
+	
+//	@Override
+//	public long TestDetailasUpdate(TestDetails prd, String userId, String TestId) throws Exception {
+//		
+//		logger.info(new Date() + "Inside SERVICE TestDetailasUpdate ");
+//		TestDetails pir=new TestDetails();
+//		
+//		pir.setName(prd.getName());
+//		pir.setObjective(prd.getObjective());
+//		pir.setDescription(prd.getDescription());
+//		pir.setPreConditions(prd.getPreConditions());
+//		pir.setPostConditions(prd.getPostConditions());
+//		pir.setConstraints(prd.getConstraints());
+//		pir.setSafetyRequirements(prd.getSafetyRequirements());
+//		pir.setMethodology(prd.getMethodology());
+//		pir.setToolsSetup(prd.getToolsSetup());
+//		pir.setPersonnelResources(prd.getPersonnelResources());
+//		pir.setEstimatedTimeIteration(prd.getEstimatedTimeIteration());
+//		pir.setIterations(prd.getIterations());
+//		pir.setSchedule(prd.getSchedule());
+//		pir.setPass_Fail_Criteria(prd.getPass_Fail_Criteria());	
+//		pir.setStageApplicable(prd.getStageApplicable());
+//		pir.setRemarks(prd.getRemarks());
+//		pir.setModifiedBy(userId);
+//		pir.setModifiedDate(sdf1.format(new Date()));
+//		/* pir.setIsActive(1); */
+//		return dao.TestDUpdate(pir,TestId);
+//	
+//	}
+	
+	@Override
+	public List<Object[]> TestSuiteList() throws Exception {
+		
+		return dao.TestTypeList();
+	}
+	
+	@Override
+	public List<Object[]> getVerificationMethodList(String projectId, String initiationId) throws Exception {
+		
+		return dao.getVerificationMethodList(projectId,initiationId);
+	}
+	
+	@Override
+	public List<Object[]> TestType(String r) throws Exception {
+
+		return dao.TestType(r);
+	}
+	
+	@Override
+	public List<Object[]> getDocumentSummary(String testPlanInitiationId) throws Exception {
+		
+		return dao.getDocumentSummary(testPlanInitiationId);
+	}
+	
+	@Override
+	public Long insertTestType(TestTools pt) throws Exception {
+		
+		return dao.insertTestType(pt);
+	}
+	@Override
+	public List<Object[]> initiationTestPlanList(String projectId, String mainId, String initiationId) throws Exception {
+		
+		return dao.initiationTestPlanList(projectId, mainId, initiationId);
+	}
+	
+	// Bharath changes end
+	@Override
+	public Long testPlanInitiationAddHandling(String initiationId,String projectId, String productTreeMainId,String empId, String username) throws Exception {
+		try {
+			TestPlanInitiation testplanInitiation = TestPlanInitiation.builder()
+					  							  .InitiationId(Long.parseLong(initiationId))
+					  							  .ProjectId(Long.parseLong(projectId))
+					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
+					  							  .TestPlanVersion(1)
+					  							  .InitiatedBy(Long.parseLong(empId))
+					  							  .InitiatedDate(sdf2.format(new Date()))
+					  							  .ReqStatusCode("TIN")
+					  							  .ReqStatusCodeNext("TIN")
+					  							  .CreatedBy(username)
+					  							  .CreatedDate(sdf1.format(new Date()))
+					  							  .IsActive(1)
+					  							  .build();
+			long testPlanInitiationId = dao.addTestPlanInitiation(testplanInitiation);
+			
+			// Handling Transaction
+//			requirementTransAddHandling(reqInitiationId, null, "RIN", empId);
+			
+			return testPlanInitiationId;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	@Override
+	public TestPlanSummary getTestPlanSummaryById(String summaryId) throws Exception {
+		
+		return dao.getTestPlanSummaryById(summaryId);
+	}
+	@Override
+	public TestPlanInitiation getTestPlanInitiationById(String testPlanInitiationId) throws Exception {
+		
+		return dao.getTestPlanInitiationById(testPlanInitiationId);
+	}
+	
+	@Override
+	public TestDetails getTestPlanDetailsById(String testId) throws Exception {
+		
+		return dao.getTestPlanDetailsById(testId);
+	}
 }
