@@ -1080,4 +1080,20 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return new ArrayList<Object[]>();
 		}
 	}
+
+	private static final String TCRFreeze="UPDATE pfms_closure_technical SET TCRFreeze=:TCRFreeze WHERE TechnicalClosureId=:techclosureId AND IsActive=1";
+	@Override
+	public int TCRFreeze(String techclosureId, String filepath) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(TCRFreeze);
+			query.setParameter("techclosureId", techclosureId);
+			query.setParameter("TCRFreeze", filepath);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO TCRFreeze "+e);
+			return 0;
+		}
+	}
 }

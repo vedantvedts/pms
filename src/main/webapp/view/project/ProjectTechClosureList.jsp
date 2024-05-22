@@ -31,7 +31,7 @@ font-weight: bold;
 }
 
 .table button {
-    background-color: Transparent !important;
+   /*  background-color: Transparent !important; */
     background-repeat:no-repeat;
     border: none;
     cursor:pointer;
@@ -295,13 +295,27 @@ String ses=(String)request.getParameter("result");
 												</div>
 											</div>
 						    			</button>
-						    			<%}else{ %>
+						    			<%}else{ 
+						    			
+						    			if(obj[4].toString().equalsIgnoreCase("TDG")){ %>
 						    				
-						    				<input type="hidden" name="TechClosureId" value="<%=obj[0] %>" >
+						    				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportFreezeDownload.htm" formtarget="blank" name="TechClosureId" value="<%=obj[0] %>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+  										            <i class="fa fa-download"></i>
+  									             </button>
+  									             &nbsp;
+  									         <input type="hidden" name="closureId" value="<%=closureId %>">     
+  									       <button type="submit" class="btn btn-warning btn-sm edit" name="Action" value="Amend" formaction="TechClosureList.htm" onclick="return confirm('Are You Sure To Amend')" >AMEND</button>
+						                 	
+						    			<%}else{%>
+						    				
+						    				<input type="hidden" name="TechClosureId" value="<%=obj[0]%>" >
 											<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=closureId %>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
   										            <i class="fa fa-download"></i>
-  									             </button> 	
-						    			<%}%> 
+  									        </button> 	
+						    			
+						    			
+						    			<% }}%> 
+						    			
 						    		</td>
 			                    </tr>
 			               <%}%>
@@ -316,13 +330,14 @@ String ses=(String)request.getParameter("result");
 			      </div>
 			    </div>
 			      
-			        
-	 <div align="center">
-	     		 <button type="submit" class="btn btn-primary btn-sm add" onclick="AddIssue()" >ADD ISSUE</button>&nbsp;&nbsp;  
-		              <a class="btn btn-info btn-sm  back"   href="ProjectClosureList.htm">Back</a>
-	</div>	
+			    <% if(list!=null && list.size()==0){ %>    
+					 <div align="center">
+					     <button type="submit" class="btn btn-primary btn-sm add" onclick="AddIssue()" >ADD ISSUE</button>&nbsp;&nbsp;  
+						   <a class="btn btn-info btn-sm  back"   href="ProjectClosureList.htm">Back</a>
+					</div>
+		        <%}%>	
 
- 	<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
+ 	           <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
 
 
 		     </div>
@@ -516,15 +531,7 @@ String ses=(String)request.getParameter("result");
 						</tr>
 					</thead>
 					<tbody id="modal_table_body">
-					<%-- 	<% 
-						int rowCount = 0;
-						for (Object[] obj : MemberList) {%>
-						<tr>
-							<td style="text-align: center; width: 10%;"><%=++rowCount%></td>
-							<td style="width: 50%; margin-left: 10px;"><%=obj[1].toString()%></td>
-							<td style="width: 40%; margin-left: 10px;"><%=obj[2].toString() %></td>
-						</tr>
-						<%} %> --%>
+					
 					</tbody>
 				</table>
 		   </div>      

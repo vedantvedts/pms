@@ -31,6 +31,7 @@ public class ProjectClosureTechnical implements Serializable {
 	private String StatusCodeNext;
 	private String ForwardedBy;
 	private String ForwardedDate;
+	private String TCRFreeze;
 	private String CreatedBy;
 	private String CreatedDate;
 	private int isActive;

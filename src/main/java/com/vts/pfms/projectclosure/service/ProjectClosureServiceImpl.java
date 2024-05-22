@@ -34,6 +34,7 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.project.dao.ProjectDao;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.RequirementMembers;
 import com.vts.pfms.projectclosure.dao.ProjectClosureDao;
@@ -56,6 +57,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocDistrib;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 
 @Service
@@ -75,6 +77,13 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	
 	@Autowired
 	CARSDao carsdao;
+	
+	@Autowired
+	ProjectDao projectdao;
+	
+	
+	@Autowired
+	PMSLogoUtil LogoUtil;
 
 	public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException {
 		logger.info(new Date() + "Inside SERVICE saveFile ");
@@ -1381,8 +1390,8 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 					}else if(statusCodeNext.equalsIgnoreCase("TDG")) {
 						closure.setStatusCodeNext("TDG");
 						
-						TCRFormFreeze(req,res,ClosureId,TechclosureId);
-						//closure.setApprStatus("A");
+						
+						
 					}
 				}
 				dao.UpdateProjectClosureTechnical(closure);
@@ -1419,6 +1428,15 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 											  .ActionDate(approvalDate!=null?fc.RegularToSqlDate(approvalDate):sdtf.format(new Date()))
 											  .build();
 			dao.addProjectClosureTransaction(transaction);
+			
+			
+			if(statusCodeNext.equalsIgnoreCase("TDG")){
+				
+				
+			     TCRFormFreeze(req,res,ClosureId,TechclosureId,labcode);
+			     
+			}
+			
 			
 			// Approval Authority Data to send notifications
 			Object[] AD = carsdao.getApprAuthorityDataByType(labcode, "AD");
@@ -1541,23 +1559,17 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	
 	
 	@Override
-	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res,String ClosureId,String TechclosureId) throws Exception{
+	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res,String ClosureId,String TechclosureId,String labcode) throws Exception{
 		logger.info(new Date() +"Inside SERVICE TCRFormFreeze ");
 		try {
 			
-			//req.setAttribute("CARSInitiationData", dao.getCARSInitiationById(carsInitiationId));
-			//req.setAttribute("RSQRMajorReqr", dao.getCARSRSQRMajorReqrByCARSInitiationId(carsInitiationId));
-			//req.setAttribute("RSQRDeliverables", dao.getCARSRSQRDeliverablesByCARSInitiationId(carsInitiationId));
-			//req.setAttribute("RSQRDetails", dao.carsRSQRDetails(carsInitiationId+""));
-			//req.setAttribute("CARSSoCMilestones", dao.getCARSSoCMilestonesByCARSInitiationId(carsInitiationId));
-			
-			//req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
-		  	//req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
-		  	//req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(labcode)); 
+		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(labcode)); 
+		  	req.setAttribute("LabList",   projectdao.LabListDetails(labcode));
 		  	req.setAttribute("RecordOfAmendments", dao.getTechnicalClosureRecord(ClosureId));
 		  	req.setAttribute("TechnicalClosureContent", dao.getTechnicalClosureContent(ClosureId));
 		  	req.setAttribute("AppendicesList",dao.getAppendicesList(ClosureId));
-			req.setAttribute("DocumentSummary",dao.getDocumentSummary(ClosureId));
+			req.setAttribute("DocumentSummary",dao.getDocumentSummary(TechclosureId));
 			req.setAttribute("MemberList", dao.getDocSharingMemberList(ClosureId));
 			
 			
@@ -1573,18 +1585,18 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	         
 	        File file=new File(path +File.separator+ filename+".pdf");
 	        
-	        String fname="TPCR-"+TechclosureId;
+	        String fname="TCRFreeze-"+TechclosureId;
 			String filepath = "Project-Closure\\TPCR";
 			int count=0;
 			while(new File(uploadpath+filepath+"\\"+fname+".pdf").exists())
 			{
-				fname = "TPCR-"+TechclosureId;
+				fname = "TCRFreeze-"+TechclosureId;
 				fname = fname+" ("+ ++count+")";
 			}
 	        
 	        saveFile(uploadpath+filepath, fname+".pdf", file);
 	        
-	        //dao.carsRSQRFreeze(carsInitiationId, filepath+"\\"+fname+".pdf");
+	        dao.TCRFreeze(TechclosureId, filepath+"\\"+fname+".pdf");
 	        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
 	        Files.delete(pathOfFile);		
 			

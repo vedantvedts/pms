@@ -94,7 +94,7 @@ public interface ProjectClosureService {
 	public long AddTCRMembers(ProjectClosureTechnicalDocDistrib dist) throws Exception;
 	public List<Object[]>  getDocSharingMemberList(String techClosureId)throws Exception;
 	
-	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res, String closureId, String techclosureId)
+	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res, String closureId, String techclosureId,String labcode)
 			throws Exception;
 	
 	

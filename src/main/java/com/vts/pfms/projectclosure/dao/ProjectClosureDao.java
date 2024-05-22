@@ -85,6 +85,7 @@ public interface ProjectClosureDao {
 	public List<Object[]> projectTechClosureApprovedList(String empId, String fromdate, String todate)throws Exception;
 	public long AddDocDistribMembers(ProjectClosureTechnicalDocDistrib r)throws Exception;
 	public List<Object[]> getDocSharingMemberList(String techClosureId)throws Exception;
+	public int TCRFreeze(String techclosureId, String filepath) throws Exception;
 	
 
 }

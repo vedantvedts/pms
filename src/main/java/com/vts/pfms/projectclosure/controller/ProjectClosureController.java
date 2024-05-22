@@ -2133,7 +2133,7 @@ public class ProjectClosureController {
 				{
 					if("A".equals(itemTypeCode)) 
 					{
-						System.out.println("Inside **** projectExpenditureCard");
+						//System.out.println("Inside **** projectExpenditureCard");
 						fileName = "/jasperReports/projectExpenditureCard1.jrxml";
 					}
 					else 
@@ -2216,9 +2216,9 @@ public class ProjectClosureController {
 				
 			
 			String closureId = req.getParameter("closureId");
+			String Action=req.getParameter("Action");
 			
-			
-			if("Add".equalsIgnoreCase(req.getParameter("Action"))) {
+			if(Action!=null && (Action.equalsIgnoreCase("Add") || Action.equalsIgnoreCase("Amend"))) {
 				
 			ProjectClosureTechnical tech=new ProjectClosureTechnical();
 				
@@ -2235,9 +2235,9 @@ public class ProjectClosureController {
 			long save=service.AddIssue(tech,EmpId);
 			
 			if (save > 0) {
-				redir.addAttribute("result", "Technical Closure Added Successfully");
+				redir.addAttribute("result", "Technical Closure "+Action+"ed Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Technical Closure Add Unsuccessful");
+				redir.addAttribute("resultfail", "Technical Closure "+Action+" Unsuccessful");
 			}
 		}	
 		
@@ -2822,5 +2822,37 @@ public class ProjectClosureController {
 		
 		
 		
+		@RequestMapping(value = {"TechnicalClosureReportFreezeDownload.htm"}, method = { RequestMethod.POST, RequestMethod.GET })
+		public void TechnicalClosureReportFreezeDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside TechnicalClosureReportFreezeDownload.htm "+UserId);
+			try
+			{
+				String TechClosureId=req.getParameter("TechClosureId");
+				ProjectClosureTechnical result = service.getProjectClosureTechnicalById(TechClosureId);
+				res.setContentType("Application/octet-stream");	
+				
+				File my_file=null;
+				String file = result.getTCRFreeze();
+				my_file = new File(LabLogoPath+File.separator+file); 
+		        res.setHeader("Content-disposition","attachment; filename="+file); 
+		        OutputStream out = res.getOutputStream();
+		        FileInputStream in = new FileInputStream(my_file);
+		        byte[] buffer = new byte[4096];
+		        int length;
+		        while ((length = in.read(buffer)) > 0){
+		           out.write(buffer, 0, length);
+		        }
+		        in.close();
+		        out.flush();
+		        out.close();
+		        
+			}catch (Exception e) {
+					e.printStackTrace(); 
+					logger.error(new Date() +"Inside TechnicalClosureReportFreezeDownload.htm "+UserId,e);
+			}
+		}
+			
      }
 
