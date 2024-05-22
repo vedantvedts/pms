@@ -479,14 +479,14 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             											<td style="text-align: center;width: 10%;"><%=form[13]+" ("+form[14]+")"%></td>
                             											<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
                             											<td style="text-align: center;width: 25%;">
-                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectTechClosureTransStatus.htm" value="<%=form[15] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+                            												<button form="tcrtrans" type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectTechClosureTransStatus.htm" value="<%=form[15] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
 								    											<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    										</button>
 						 												</td>
 						 												<td style="text-align: center;width: 20%;">
 						 													
-						 													<input type="hidden" name="TechClosureId" value="<%=form[15] %>" >
-																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+						 													<input form="tcrpdf" type="hidden" name="TechClosureId" value="<%=form[15] %>" >
+																				<button form="tcrpdf" type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
 								   										            <i class="fa fa-download"></i>
 								   									             </button> 	
 																			
@@ -498,6 +498,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                  											</table>
                 										</div> 
                										</form>
+               										<form action="#" id="tcrpdf"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></form>
+               										<form action="#" id="tcrtrans"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></form>
                									</div>
                								</div>
                							</div>				
