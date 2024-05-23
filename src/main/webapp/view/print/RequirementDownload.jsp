@@ -1623,7 +1623,7 @@ APPLICABLE DOCUMENTS</h1>
 				<%} %>
 									
 									
-				<h1 style="font-family: <%= FontFamily %>;font-weight:<%=HeaderFontWeight%>;font-size:<%= fontSize%>pt"><%=++maincount %>. APPEDNDIX SECTION</h1>
+				<h1 style="font-family: <%= FontFamily %>;font-weight:<%=HeaderFontWeight%>;font-size:<%= fontSize%>pt"><%=++maincount %>. APPENDIX SECTION</h1>
 						<h2 style="font-family: <%= FontFamily %>;margin-left: 20px;font-weight:<%=SubHeaderFontweight%>;font-size:<%= SubHeaderFontsize%>pt"> <%=maincount %>.1	Appendix A - Acronyms and Definitions</h2>
 
 			
