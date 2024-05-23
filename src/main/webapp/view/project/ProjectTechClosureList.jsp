@@ -3,6 +3,7 @@
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@page import="com.vts.pfms.project.model.ProjectMaster"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
     
 <!DOCTYPE html>
@@ -128,56 +129,76 @@ font-weight: bold;
     white-space: nowrap;
 }
 
+.trup{
+	padding:6px 10px 6px 10px ;			
+	border-radius: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+.trdown{
+	padding:0px 10px 5px 10px ;			
+	border-bottom-left-radius : 5px; 
+	border-bottom-right-radius: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+
 </style>
 </head>
 <body>
+
 <%
-SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-FormatConverter fc = new FormatConverter();
-
-List<Object[]> list=(List<Object[]>)request.getAttribute("TechnicalClosureRecord");
-
-List<Object[]>DocumentSummaryList=(List<Object[]>)request.getAttribute("DocumentSummary");
-
-Object[]  DocumentSummary =(null);
-
-List<Object[]> TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
-
-List<Object[]> MemberList=(List<Object[]>)request.getAttribute("DocSharingMemberList");
-
-List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
-
-String closureId=(String)request.getAttribute("closureId");
-
-if(DocumentSummaryList!=null && DocumentSummaryList.size()>0){
-	DocumentSummary=DocumentSummaryList.get(0);
-}
-
-List<String> status = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TRC","TRV");
-
-
-String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){%>
+	SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+	FormatConverter fc = new FormatConverter();
 	
+	List<Object[]> list=(List<Object[]>)request.getAttribute("TechnicalClosureRecord");
 	
+	List<Object[]>DocumentSummaryList=(List<Object[]>)request.getAttribute("DocumentSummary");
+	
+	Object[]  DocumentSummary =(null);
+	
+	List<Object[]> TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
+	
+	List<Object[]> MemberList=(List<Object[]>)request.getAttribute("DocSharingMemberList");
+	
+	List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
+	
+	String closureId=(String)request.getAttribute("closureId");
+	
+	if(DocumentSummaryList!=null && DocumentSummaryList.size()>0){
+		DocumentSummary=DocumentSummaryList.get(0);
+	}
+	
+	List<String> status = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TRC","TRV");
+
+	
+	Object[] PDData = (Object[])request.getAttribute("PDData");
+	Object[] AD = (Object[])request.getAttribute("AD");
+	Object[] GD = (Object[])request.getAttribute("GDDetails");
+	Object[] Director = (Object[])request.getAttribute("Director");
+	Object[] GDDPandC = (Object[])request.getAttribute("GDDPandC");
+	
+	ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
+	
+
+	String ses=(String)request.getParameter("result"); 
+	 String ses1=(String)request.getParameter("resultfail");
+		if(ses1!=null){%>
+		
+		
 	<div align="center">
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
+		    <div class="alert alert-danger" role="alert"><%=ses1 %></div>
+	</div>
 	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </div>
-    <%}%>
+	
+		<div align="center">
+		      <div class="alert alert-success" role="alert" ><%=ses %> </div>
+	    </div>
+	    
+	 <%}%>
+	 
 <br>	
-
-	
-	
 	
 <div class="container-fluid">		
 	<div class="row">
@@ -186,9 +207,9 @@ String ses=(String)request.getParameter("result");
 			<div class="card shadow-nohover" >
 			<div class="card-header">
 			<div class="row">
-			   <div class="col-md-6"><h4>Technical Project Closure Record Of Amendments</h4></div>
-			   <div class="col-md-10" align="right">
-			  
+			   <div class="col-md-10"><h4>Technical Project Closure Record Of Amendments -  <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()+" ("+projectMaster.getProjectCode()+")" %> <%} %></h4></div>
+			   <div class="col-md-2" align="right">
+			   <a class="btn btn-info btn-sm  back"   href="ProjectClosureList.htm">Back</a>
 				</div>
 			</div>
 			</div>
@@ -303,13 +324,16 @@ String ses=(String)request.getParameter("result");
   										            <i class="fa fa-download"></i>
   									             </button>
   									             &nbsp;
-  									         <input type="hidden" name="closureId" value="<%=closureId %>">     
+  									         <input type="hidden" name="closureId" value="<%=closureId %>"> 
+  									          <input type="hidden" name="RevisionNo" value="<%=Integer.parseInt(obj[2].toString()) + 1%>">  
+  									          <input type="hidden" name="Particulars" value="<%=obj[1]%>">   
+  									             
   									       <button type="submit" class="btn btn-warning btn-sm edit" name="Action" value="Amend" formaction="TechClosureList.htm" onclick="return confirm('Are You Sure To Amend')" >AMEND</button>
 						                 	
 						    			<%}else{%>
 						    				
-						    				<input type="hidden" name="TechClosureId" value="<%=obj[0]%>" >
-											<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=closureId %>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+						    				
+											<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
   										            <i class="fa fa-download"></i>
   									        </button> 	
 						    			
@@ -333,18 +357,75 @@ String ses=(String)request.getParameter("result");
 			    <% if(list!=null && list.size()==0){ %>    
 					 <div align="center">
 					     <button type="submit" class="btn btn-primary btn-sm add" onclick="AddIssue()" >ADD ISSUE</button>&nbsp;&nbsp;  
-						   <a class="btn btn-info btn-sm  back"   href="ProjectClosureList.htm">Back</a>
+						  
 					</div>
 		        <%}%>	
+		        
+		        <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
 
- 	           <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
-
-
-		     </div>
+             </div>
+		  
+		     
+		     <%---------------------------------------------------------------------------Approval Flow Start------------------------------------------------------------------------------------------%>
+                            
+                                        <div class="row">
+				 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Technical Closure</b></div>
+				 	    				</div>
+				 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+			              					<table align="center"  >
+			               						<tr>
+			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+			                							PD -  <%=PDData[2] %>
+			                						</td>
+			                		
+		                        					<td rowspan="2">
+			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+			                						</td>
+			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+			                							GD - <%if(GD!=null) {%><%=GD[1] %> <%} else{%>GD<%} %>
+			                	    				</td>
+			                	    				
+			                	    				<td rowspan="2">
+			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+			                						</td>
+			                						<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
+			                							AD - <%if(AD!=null) {%><%=AD[1] %> <%} else{%>AD<%} %>
+			                	    				</td>
+			                	    				
+			                	    				<td rowspan="2">
+			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+			                						</td>
+			                						<td class="trup" style="background: linear-gradient(to top, #76ebcb 10%, transparent 115%);">
+			                							GD-DP&C - <%if(GDDPandC!=null) {%><%=GDDPandC[1] %> <%} else{%>GD-DP&C<%} %>
+			                	    				</td>
+			                	    				
+			                	    				<td rowspan="2">
+			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+			                						</td>
+			                						<td class="trup" style="background: linear-gradient(to top, #13f816 10%, transparent 115%);">
+			                							Director - <%if(Director!=null) {%><%=Director[1] %> <%} else{%>Director<%} %>
+			                	    				</td>
+			                	    				
+			                	    				<td rowspan="2">
+			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+			                						</td>
+			                						
+			                						<td class="trup" style="background: linear-gradient(to top, #00c7e4 10%, transparent 115%);">
+			                							Director General
+			                	    				</td>
+			               						</tr> 	
+			               	    			</table>			             
+					 					</div>        
+	                    			
+		     <%------------------------------------------------------------Approval Flow End ------------------------------------------------------------------------%>
+		     
+			  </div>
+			</div>		 					
 		  </div>
-		</div> 
-	</div>	
-</div>
+	   </div>              				
+	   
+	   	
+
 	
 	
 	
@@ -508,7 +589,7 @@ String ses=(String)request.getParameter("result");
 
 
 
-<!--------------------------------------------------------------------------------- modal for Document Distribution --------------------------------------------------------------->
+<!--------------------------------------------------------------------------------- modal Open for Document Distribution --------------------------------------------------------------->
 <div class="modal fade" id="DistributionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
     <div class="modal-content" style="width:100%;">
@@ -562,6 +643,12 @@ String ses=(String)request.getParameter("result");
 		    </div>
 		  </div>
 		</div>
+		<%----------------------------------------------------------Modal Close for Document Distribution ----------------------------------------------------%>
+
+
+
+
+
 
 
 <script type="text/javascript">

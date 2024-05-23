@@ -832,8 +832,8 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
     <div class="modal-content mt-5" style="margin-left:-10%;">
       <div class="modal-header p-1 pl-3" style="background: #C4DDFF">
         <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Chapter</h5>
-        <button type="button" class="close text-danger mr-1" data-dismiss="modal" aria-label="Close">
-          <span class="font-weight-bolder" aria-hidden="true" style="opacity:1;">&times;</span>
+        <button type="button" class="close text-danger mr-2" data-dismiss="modal" aria-label="Close">
+          <span class="font-weight-bolder" aria-hidden="true" style="opacity:1;"><i class="fa fa-times" aria-hidden="true"></i></span>
         </button>
       </div>
         
@@ -937,14 +937,22 @@ $(document).ready(function() {
 
 function SectionSubmit(){
 	
+	var secname=$('input[name="SectionName"]').val()
+	if(secname=='' || secname==null){
+		
+		alert('Please Enter New Chapter');
+		return false;
+		
+	}
 	
+	else{
 	$.ajax({
 		type:'GET',
 		url:'AddSection.htm',
 		datatype:'json',
 		data:{
 			closureId:<%=closureId%>,
-			SectionName:$('input[name="SectionName"]').val(),
+			SectionName:secname,
 		},
 		success:function(result){
 			var result=JSON.parse(result);
@@ -968,18 +976,37 @@ function SectionSubmit(){
 		
 	 })
 	 
+    }
 }
 
 function ChapterAdd(){
 	
-	if(confirm("Are you sure you want to submit?")){
+	/* if(confirm("Are you sure you want to submit?")){
 		
 		 $('#myForm2').submit();
 	    return true;
 	}else{
 	   event.preventDefault();
 	   return false;
-	  }
+	  } */
+	
+	  var isChecked = $('input[name="SectionId"]:checked').length > 0;
+
+	    if (!isChecked) {
+	        alert('Please select at least one chapter.');
+	        event.preventDefault(); 
+	        return false;
+	    } else {
+	       
+	        if(confirm("Are you sure you want to submit?")) {
+	            
+	            $('#myForm2').submit(); 
+	        }else{
+	     	   event.preventDefault();
+	    	   return false;
+	    	  }
+	    }
+	
 	}
 
 function moduleeditenable(moduleid)
@@ -1011,10 +1038,10 @@ function moduleeditdisable(moduleid)
 	 $('#chapterids').val(b);
 	 $('#chaptername').val(a);
 	 
+	
 	 
 	 
-	 
-	 if(a==='APPENDICES'){
+	 if(a=='APPENDICES' || a=='appendices'){
 		 
 		 $('#richtexteditor').hide();
 		 $('#editorHeading').hide();

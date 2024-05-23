@@ -942,8 +942,12 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			+ "(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',\r\n"
 			+ "(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',\r\n"
 			+ "a.summaryid,a.preparedby,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM \r\n"
-			+ "employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1' FROM \r\n"
-			+ "pfms_closure_technical_docsumary a WHERE \r\n"
+			+ "employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1',\r\n"
+			+ "(SELECT p.ProjectDescription FROM project_master p WHERE p.ProjectId=b.ProjectId) AS 'ProjectNo',\r\n"
+			+ "(SELECT p.ProjectName FROM project_master p WHERE p.ProjectId=b.ProjectId) AS 'ProjectName',\r\n"
+			+ "\r\n"
+			+ "(SELECT c.Classification FROM project_master p,pfms_security_classification c WHERE p.ProjectId=b.ProjectId AND p.ProjectCategory=c.ClassificationId) AS 'Projectcategory'\r\n"
+			+ " FROM pfms_closure_technical_docsumary a,pfms_closure b  WHERE a.ClosureId=b.ClosureId AND \r\n"
 			+ " a.ClosureId =:closureId AND a.isactive='1'";
 	
 	@Override

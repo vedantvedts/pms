@@ -540,7 +540,14 @@ public class ProjectClosureController {
 //				req.setAttribute("TransactionList", service.projectClosureTransListByType(projectId, "A", "A")) ;
 //			}
 			req.setAttribute("TransactionList", service.projectClosureTransListByType(closureId, TransFlag, TransFlag)) ;
-			ProjectClosure closure = service.getProjectClosureById(closureId);
+			
+			ProjectClosureTechnical tech=service.getProjectClosureTechnicalById(closureId);//this is technical closureid from pfms_closure_technical
+			
+			
+			String closureID=String.valueOf(tech.getClosureId());
+			
+			ProjectClosure closure = service.getProjectClosureById(TransFlag.equalsIgnoreCase("T")?closureID:closureId);
+		
 			String projectId = closure.getProjectId()+"";
 			req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
 			String filename="Closure-Transaction";	
@@ -2224,7 +2231,7 @@ public class ProjectClosureController {
 				
 			tech.setParticulars(req.getParameter("Particulars"));
 			tech.setClosureId(Long.parseLong(closureId));
-			tech.setRevisionNo("0");
+			tech.setRevisionNo(Action.equalsIgnoreCase("Amend")?req.getParameter("RevisionNo"):"0");
 			tech.setIssueDate(sdtf.format(new Date()));
 			tech.setStatusCode("TIN");
 			tech.setStatusCodeNext("TIN");
@@ -2241,9 +2248,18 @@ public class ProjectClosureController {
 			}
 		}	
 		
+			ProjectClosure closure = service.getProjectClosureById(closureId);
+			String projectId = closure.getProjectId()+"";
+			Object[] PDData = carsservice.getEmpPDEmpId(projectId);
+			req.setAttribute("PDData", PDData);
+			req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
+			req.setAttribute("Director", carsservice.getLabDirectorData(LabCode));
+			req.setAttribute("AD", carsservice.getApprAuthorityDataByType(LabCode, "AD"));
+			req.setAttribute("GDDPandC", carsservice.getApprAuthorityDataByType(LabCode, "DO-RTMD"));
+			
+			req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
             req.setAttribute("DocumentSummary",service.getDocumentSummary(closureId));
 			req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(LabCode));
-			
 			req.setAttribute("closureId", closureId);
 			List<Object[]> TechnicalClosureRecord=service.getTechnicalClosureRecord(closureId);
 			req.setAttribute("TechnicalClosureRecord", TechnicalClosureRecord);
@@ -2556,8 +2572,11 @@ public class ProjectClosureController {
 		logger.info(new Date() +"Inside TechnicalClosureReportDownload.htm "+UserId);		
 		try {
 			
-			String closureId=req.getParameter("ClosureId");
-			String TechClosureId=req.getParameter("TechClosureId");
+			String TechAndClosureId=req.getParameter("TechAndClosureId");
+			if(TechAndClosureId!=null) {
+			String[] split = TechAndClosureId.split("/");
+			String closureId=split[0];
+			String TechClosureId=split[1];
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 		  	req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
@@ -2566,7 +2585,8 @@ public class ProjectClosureController {
 		  	req.setAttribute("AppendicesList",service.getAppendicesList(closureId));
 			req.setAttribute("DocumentSummary",service.getDocumentSummary(closureId));
 			req.setAttribute("MemberList", service.getDocSharingMemberList(TechClosureId));
-		  	
+			
+			}
 		  	
 			String filename="Technical Closure Report";	
 			String path=req.getServletContext().getRealPath("/view/temp");

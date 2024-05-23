@@ -322,7 +322,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 															    			 <input type="hidden" name="Action" value="A">
 																			
 																			
-																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
 								   										            <i class="fa fa-download"></i>
 								   									             </button> 
 																				
@@ -485,8 +485,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						 												</td>
 						 												<td style="text-align: center;width: 20%;">
 						 													
-						 													<input type="hidden" name="TechClosureId" value="<%=form[15] %>" >
-																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+						 													
+																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[15]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
 								   										            <i class="fa fa-download"></i>
 								   									             </button> 	
 																			

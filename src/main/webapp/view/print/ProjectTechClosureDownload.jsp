@@ -362,12 +362,12 @@ border-collapse:collapse;
 				<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 				
 				<tr>
-					  <td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">Technical Project Closure Report </span></td>
+					  <td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">Technical Project Closure Report  - <% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[12] %><%} %></span></td>
 			   </tr>
 			   
 				<tr>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks"></span></td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"></span></td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">Technical Closure Report for  <% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[12] %><%} %></span></td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[13] %><%} %></span></td>
 			   </tr>
 			   
 			   <tr>
@@ -385,7 +385,7 @@ border-collapse:collapse;
 			   </tr>
 			   
 				<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Pro Project Name: <%=projectShortName %><span class="text-darks"> </span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project No & Name: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[11] %> - <%=DocumentSummary.get(0)[12] %><%} %> </span></td>
 				</tr>
 				
 				<tr>
@@ -441,19 +441,6 @@ border-collapse:collapse;
 			</table>
 
 
-		<%-- 	<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
-				
-					<tr>
-						<td class="text-darks"  style="border:1px solid black;font-family: <%= FontFamily %>;">fedger</td>
-						<td class="text-darks"  style="border:1px solid black;font-family: <%= FontFamily %>;">rfgrgrgreg</td>
-					</tr>
-					<tr>
-						<td class="text-darks"  style="border:1px solid black;font-family: <%= FontFamily %>;">grgrhrh</td>
-						<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">rghrhrhjth</td>
-					</tr>
-				
-			</table> --%>
-
 	<div style="page-break-before: always"></div>
 
 	<%
@@ -467,18 +454,6 @@ border-collapse:collapse;
              <div>
 				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt;font-weight:<%=ParaFontWeight%>" >
 					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><%if(obj[4]!=null) {%><%=obj[4]%><%}%>
-				<!-- <table >
-					<tbody>
-						<tr>
-							<td>fedger</td>
-							<td>rfgrgrgreg</td>
-						</tr>
-						<tr>
-							<td>grgrhrh</td>
-							<td>rghrhrhjth</td>
-						</tr>
-					</tbody>
-				</table> -->
 				
 					     </div>
 					</div>
@@ -552,17 +527,11 @@ border-collapse:collapse;
 					</div>
 			</div>
 			
-		
+		<%}}%>
 			
+	<%}}%>
 			
-			
-		<%}}%>	
-			
-			
-			
-			<%}}%>
-			
-		<%}}%> 
+<%}}%> 
 			
 			
 			
