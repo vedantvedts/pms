@@ -91,7 +91,7 @@ public interface RequirementService {
 	// Test Plan Changes from Bharath
 	public long TestDetailsAdd(TestDetails td)throws Exception;
 	public List<Object[]> TestTypeList()throws Exception;
-	public List<Object[]> StagesApplicable(String testPlanInitiationId)throws Exception;
+	public List<Object[]> StagesApplicable()throws Exception;
 	public Long numberOfTestTypeId(String testPlanInitiationId)throws Exception;
 //	public long TestDetailasUpdate(TestDetails tdedit, String userId, String testId)throws Exception;
 	public List<Object[]> TestSuiteList()throws Exception;

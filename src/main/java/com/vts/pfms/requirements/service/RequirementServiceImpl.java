@@ -580,8 +580,8 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.TestTypeList();
 	}
 	@Override
-	public List<Object[]> StagesApplicable(String testPlanInitiationId) throws Exception {
-		return dao.StagesApplicable(testPlanInitiationId);
+	public List<Object[]> StagesApplicable() throws Exception {
+		return dao.StagesApplicable();
 	}
 	@Override
 	public Long numberOfTestTypeId(String testPlanInitiationId) throws Exception {

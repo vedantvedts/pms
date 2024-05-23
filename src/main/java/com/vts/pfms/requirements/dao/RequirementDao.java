@@ -94,7 +94,7 @@ public interface RequirementDao {
 	// Test Plan Changes from Bharath
 	public long TestDetailsAdd(TestDetails Td) throws Exception;
 	public List<Object[]> TestTypeList() throws Exception;
-	public List<Object[]> StagesApplicable(String testPlanInitiationId) throws Exception;
+	public List<Object[]> StagesApplicable() throws Exception;
 	public long numberOfTestTypeId(String testPlanInitiationId) throws Exception;
 //	public long TestDUpdate(TestDetails pir, String TestId) throws Exception;
 	public List<Object[]> getVerificationMethodList(String projectId, String initiationId) throws Exception;

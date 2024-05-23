@@ -647,11 +647,10 @@ public class RequirementDaoImpl implements RequirementDao {
 		return (List<Object[]>)query.getResultList();
 	}
 
-	private static final String STAGESAPPLICABLE="SELECT a.Id, a.TestPlanInitiationId,'0' AS ProjectId,stagesapplicableName FROM pfms_test_plan_stagesapplicable a WHERE TestPlanInitiationId=:TestPlanInitiationId";
+	private static final String STAGESAPPLICABLE="SELECT a.Id, '0' AS InitiationId,'0' AS ProjectId,stagesapplicableName FROM pfms_test_plan_stagesapplicable a WHERE a.IsActive=1";
 	@Override
-	public List<Object[]> StagesApplicable(String testPlanInitiationId) throws Exception {
+	public List<Object[]> StagesApplicable() throws Exception {
 		Query query=manager.createNativeQuery(STAGESAPPLICABLE);
-		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
 		List<Object[]>requirementFiles=(List<Object[]>)query.getResultList();
 		return requirementFiles;
 	}

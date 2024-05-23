@@ -102,13 +102,13 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 	font-family: font-family : 'Muli';
 }
 
-.viewbtn:hover {
+/* .viewbtn:hover {
 	cursor: pointer !important;
 	background-color: #22c8e5 !important;
 	border: none !important;
 	box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0
 		rgba(0, 0, 0, 0.19) !important;
-}
+} */
 
 .viewbtn1 {
 	width: 100%;
@@ -421,8 +421,8 @@ margin-left: -21px;
 							<div class="cardbody" id="" style="display:block;<%if(TestDetailsList.size()>9){%>height:1000px;<%}%>">
 								<%int count=1;
 									for(Object []obj:TestDetailsList) {%>
-										<button type="button" class="btn btn-secondary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick="TestDetailsShow('<%=obj[0]%>')">
-											<%=obj[1] %>
+										<button type="button" class="btn btn-primary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick="TestDetailsShow('<%=obj[0]%>')">
+											<span style="font-weight: bold;font-size: 1.2rem;"><%=obj[1] %></span>
 										</button>
 									<%count++;} %>
 							</div>
@@ -432,7 +432,10 @@ margin-left: -21px;
 				                    $("#noDataModal").modal('show');
 				                });
 	            			</script>
-	           				<p>No Data Available</p>
+	            			<button type="button" class="btn btn-secondary viewbtn mt-2">
+								<span style="font-weight: bold;font-size: 1.2rem;">No Data Available</span>
+							</button>
+	           				
 						<%} %>
 					</div>
 					<div class="col-md-10">
@@ -651,147 +654,74 @@ margin-left: -21px;
 			
 								<div id="AddTestDetails">
 									<form class="form-horizontal" role="form" action="TestDetailsAddSubmit.htm" method="POST" id="myform1">
-										<div class="modal-body">
+										<div class="row">
 											<div class="col-md-12">
-												<div class="row" style="margin: 10px">
-													<div class="col-md-2">
-														<label style="font-size: 17px;   color: #07689f">
+												<div class="form-group row">
+													<div class="col-md-1">
+														<label style="font-size: 17px;color: #07689f">
 															Sepc ID <span class="mandatory" style="color: red;"></span>
 														</label>
 													</div>
 									
-													<div class=col-md-2>
-														<select required="required" id="select" name="SpecId" class="form-control selectpicker" data-width="80%"data-live-search="true"  readonly>
+													<div class="col-md-2">
+														<select required="required" id="select" name="SpecId" class="form-control" data-width="80%"data-live-search="true"  readonly>
 															<!-- <option disabled="disabled" value="" selected="selected">Choose..</option> -->
-															<option  value="S001">S001 </option>
+															<option  value="S001">S001</option>
 														</select>
 													</div>
-															
-													<div class=col-md-2>
+													
+													<div class="col-md-3">
+													</div>	
+														
+													<div class="col-md-1">
 														<label style="font-size: 17px;  margin-left: 0.1rem; color: #07689f">Test Name<span	class="mandatory" style="color: red;">*</span></label>
 													</div>
-													<div class=col-md-3>
-														<input type="text" name="name" class="form-control"id="NameAdd" maxlength="255" required="required"placeholder="Maximum 250 Chararcters" >
+													<div class="col-md-5">
+														<input type="text" name="name" class="form-control"id="NameAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters" >
 													</div>
-													<div class=col-md-2>
-													</div>
-													<div class=col-md-2>
-													</div>
+													
 												</div>
 										
-												<div class="col-md-12">
-													<div class="row">
-														<div class="col-md-2">
-															<label style="font-size: 17px; margin-bottom: 1%; color: #07689f">
-																Objective <span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-10">
-															<input type="text" name="Objective" class="form-control" id="ObjectiveAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters" style="line-height: 3rem !important">
-														</div>
-													</div>
-												</div>
-								
-								
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-2">
-															<label style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">
-																Description <span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-10" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="Description" class="form-control" id="DescriptionAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters" style="line-height: 3rem !important">
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-6">
-															<label style="margin: 0px; font-size: 17px; color: #07689f">
-																Pre Conditions:<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-													</div>
-												</div>
-								
-												<div class="col-md-12">
-													<div class="row">
-														<div class="col-md-12" id="textarea" style="">
-															<div id="EditorPreConditions" class="center">
-																<textarea name="PreConditions"  id="PreConditionsAdd" ></textarea>
-															</div>
-														</div>
-													</div>
-												</div>
-												
-												<br>
-												
-												<div class=col-md-12>
-													<label style="margin: 0px; font-size: 17px; color: #07689f">Post
-														Conditions:<span class="mandatory" style="color: red;">*</span>
-													</label>
-												</div>
-												<div class="col-md-12" id="textarea" style="">
-													<div id="EditorPostConditions" class="center">
-														<textarea name="PostConditions"  id="PostConditionsAdd" ></textarea>
-													</div>
-												</div>
-														
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">
-																Constraints<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="Constraints" class="form-control"
-																	id="ConstraintsAdd" maxlength="255" required="required"
-																	placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-									
-												<div class=col-md-12>
+												<div class="form-group row">
+													<div class="col-md-6">
 														<div class="row">
-															<div class="col-md-4">
-																<label
-																	style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Safety Requirements
-																	<span class="mandatory" style="color: red;">*</span>
+															<div class="col-md-2">
+																<label style="font-size: 17px; color: #07689f">
+																	Objective <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
-															<!-- <div class="col-md-8" style="margin-top: 10px">
+															<div class="col-md-10">
+																<input type="text" name="Objective" class="form-control" id="ObjectiveAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters" style="line-height: 3rem !important">
+															</div>
+														</div>
+													</div>
+									
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label style="font-size: 17px; color: #07689f;">
+																	Description <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
 																<div class="form-group">
-																	<input type="text" name="SafetyReq" class="form-control"
-																		id="SafetyReq" maxlength="255" required="required"
-																		placeholder="Maximum 250 Chararcters">
+																	<input type="text" name="Description" class="form-control" id="DescriptionAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters" style="line-height: 3rem !important">
 																</div>
-															</div> -->
-															<div class="col-md-12" id="textarea" style="">
-														<div id="EditorSafetyReq" class="center">
-															<textarea name="SafetyReq"  id="SafetyReqAdd" ></textarea>
+															</div>
 														</div>
-													</div>
-													</div>
+													</div>	
 												</div>
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Methodology
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<select required="required" class="form-control selectdee" name="Methodology" id="MethodologyAdd" data-width="100%" data-live-search="true" multiple >
+												
+												<div class="form-group row">
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label style="font-size: 17px;color: #07689f;width: 120%;">
+																		Methodology <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
+																<select class="form-control selectdee" name="Methodology" id="MethodologyAdd" data-width="100%" data-placeholder="Select Methodology" data-live-search="true" multiple  required >
 																	<option value="" disabled="disabled">---Choose----</option>
 																	<!-- <option value="0">NA ( Not Applicable )</option> -->
 																	<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
@@ -805,163 +735,184 @@ margin-left: -21px;
 															</div>
 														</div>
 													</div>
-												</div>
-									
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Test -Setup
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class=col-md-8>
-															<select required="required" id="select1" name="ToolsSetup" onchange="AddTestSetUp('select1')" class="form-control selectdee" data-width="100%"
-																data-live-search="true" style="margin-top: 5%"  data-placeholder="Choose" multiple="multiple">
-																<!-- <option disabled="disabled" value="" selected="selected">Choose..</option> -->
-																<option class="bg-success text-light" value="1"  >ADD NEW</option>
-																<%if(!TestTypeList.isEmpty()){
-																	for(Object[] obj:TestTypeList){ %>
-																		<option value="<%=obj[0]%>"><%=obj[1]%></option>
-																<%}}%>
-																
-															</select>
-														</div>
-													</div>
-												</div>
-									
-												<div class=col-md-12>
-													<div class="row">
-													
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Personnel Resources
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														
-														<div class="col-md-12" id="textarea" style="">
-															<div id="EditorPersonnelResources" class="center">
-																<textarea name="PersonnelResources"  id="PersonnelResourcesAdd" ></textarea>
+												
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label style="font-size: 17px; color: #07689f;">
+																	Test-Setup <span class="mandatory" style="color: red;">*</span>
+																</label>
 															</div>
-														</div>
-													</div>
-												</div>
-									
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Estimated Time / Iteration
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="EstimatedTimeIteration" class="form-control"
-																	id="EstimatedTimeIterationAdd" maxlength="255" required="required"
-																	placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Iterations
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="Iterations" class="form-control"
-																	id="IterationsAdd" maxlength="255" required="required"
-																	placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-									
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Schedule
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="Schedule" class="form-control"
-																	id="ScheduleAdd" maxlength="255" required="required"
-																	placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-										
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Pass-Fail Criteria
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="PassFailCriteria" class="form-control"
-																	id="PassFailCriteriaAdd" maxlength="255" required="required"
-																	placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>		
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Stage Applicable 
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-																	<div class="col-md-8" style="margin-top: 1%;">
-															<div class="form-group">
-			
-																<%if(!StagesApplicable.isEmpty()){ %>
-																<select required="required" class="form-control selectdee"	name="StageApplicable" id="StageApplicable"	data-width="100%" data-live-search="true" data-placeholder="Choose" multiple>
-																	<%for(Object[] obj:StagesApplicable){ %>
-																	<option value="<%=obj[0]%>"><%=obj[3]%></option>
-																	<%}%>
+															<div class="col-md-10">
+																<select class="form-control selectdee" id="select1" name="ToolsSetup" onchange="AddTestSetUp('select1')" data-width="100%"
+																	data-live-search="true" style=""  data-placeholder="Choose" multiple="multiple" required="required">
+																	<!-- <option disabled="disabled" value="" selected="selected">Choose..</option> -->
+																	<option class="bg-success text-light" value="0"  >ADD NEW</option>
+																	<%if(!TestTypeList.isEmpty()){
+																		for(Object[] obj:TestTypeList){ %>
+																			<option value="<%=obj[0]%>"><%=obj[1]%></option>
+																	<%}}%>
+																	
 																</select>
+															</div>
+														</div>
+													</div>
+												</div>	
+													
+												<div class="form-group row">
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label
+																	style="font-size: 17px; color: #07689f;">
+																	Constraints <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
+																<input type="text" name="Constraints" class="form-control" id="ConstraintsAdd" maxlength="255" required placeholder="Maximum 250 Chararcters">
+															</div>
+														</div>
+													</div>
+													
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label style="font-size: 17px;color: #07689f;">
+																	Est Time <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
+																<input type="text" name="EstimatedTimeIteration" class="form-control" id="EstimatedTimeIterationAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
+															</div>
+														</div>
+													</div>
+												</div>
+									
+												<div class="form-group row">	
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label style="font-size: 17px;color: #07689f;">
+																	Iterations <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
+																<input type="text" name="Iterations" class="form-control" id="IterationsAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
+															</div>
+														</div>
+													</div>
+									
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label style="font-size: 17px;color: #07689f;">
+																	Schedule <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
+																<input type="text" name="Schedule" class="form-control" id="ScheduleAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
+															</div>
+														</div>
+													</div>
+												</div>
+										
+												<div class="form-group row">
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label style="font-size: 17px; color: #07689f;">
+																	Criteria <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
+																<input type="text" name="PassFailCriteria" class="form-control" id="PassFailCriteriaAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
+															</div>
+														</div>
+													</div>		
+										
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label style="font-size: 17px;color: #07689f;">
+																	Stage <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
+				
+																<%if(!StagesApplicable.isEmpty()){ %>
+																	<select required="required" class="form-control selectdee"	name="StageApplicable" id="StageApplicable"	data-width="100%" data-live-search="true" data-placeholder="Choose" multiple>
+																		<%for(Object[] obj:StagesApplicable){ %>
+																		<option value="<%=obj[0]%>"><%=obj[3]%></option>
+																		<%}%>
+																	</select>
 																<%} else{%>
-																<input class="form-control" readonly name="StageApplicable" id="StageApplicable"	placeholder="No files found">
+																	<input class="form-control" readonly name="StageApplicable" id="StageApplicable" placeholder="No files found">
 																<%} %>
+																
 															</div>
 														</div>
 													</div>
 												</div>
 												
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
+												<div class="form-group row">
+													<div class="col-md-6">
+														<label style="font-size: 17px; color: #07689f">
+															Pre Conditions <span class="mandatory" style="color: red;">*</span>
+														</label>
+														
+														<div id="EditorPreConditions" class="center">
+															<textarea name="PreConditions"  id="PreConditionsAdd" ></textarea>
 														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="remarks" class="form-control"
-																	id="remarksAdd" maxlength="255" required="required"
-																	placeholder="Maximum 250 Chararcters">
+														
+													</div>
+													
+													<div class="col-md-6" id="textarea" style="">
+														<label style="font-size: 17px; color: #07689f">
+															Post Conditions <span class="mandatory" style="color: red;">*</span>
+														</label>
+														<div id="EditorPostConditions" class="center">
+															<textarea name="PostConditions"  id="PostConditionsAdd" ></textarea>
+														</div>
+													</div>
+												</div>
+												
+												<div class="form-group row">
+													<div class="col-md-6">
+														<label style="font-size: 17px;color: #07689f;">
+															Safety Requirements <span class="mandatory" style="color: red;">*</span>
+														</label>
+
+														<div id="EditorSafetyReq" class="center">
+															<textarea name="SafetyReq"  id="SafetyReqAdd" ></textarea>
+														</div>
+													</div>	
+													
+													<div class="col-md-6">
+														<label style="font-size: 17px;color: #07689f;">
+															Personnel Resources <span class="mandatory" style="color: red;">*</span>
+														</label>
+															
+														<div id="EditorPersonnelResources" class="center">
+															<textarea name="PersonnelResources"  id="PersonnelResourcesAdd" ></textarea>
+														</div>
+													</div>											
+												</div>	
+												
+												<div class="form-group row">
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-2">
+																<label
+																	style="font-size: 17px;color: #07689f;">
+																	Remarks <span class="mandatory" style="color: red;">*</span>
+																</label>
+															</div>
+															<div class="col-md-10" style="">
+																<input type="text" name="remarks" class="form-control" id="remarksAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
 															</div>
 														</div>
+													</div>
+													<div class="col-md-6">
 													</div>
 												</div>
 												<input type="hidden" name="projectId" value="<%=projectId%>">
@@ -970,7 +921,7 @@ margin-left: -21px;
 												<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">	 
 												<div class="form-group" align="center" style="margin-top: 3%;">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-													<button type="submit" class="btn btn-primary btn-sm submit" id="add" name="action" value="Add" onclick="return reqCheck('myform1');">SUBMIT</button>
+													<button type="submit" class="btn btn-primary btn-sm submit" id="add" name="action" value="Add" onclick="return confirm('Are You Sure to Submit?');">SUBMIT</button>
 												</div>
 											</div>
 										</div>
@@ -985,313 +936,253 @@ margin-left: -21px;
 										<form class="form-horizontal" role="form" action="TestDetailsAddSubmit.htm" method="POST" id="myform2">
 											<div class="row">
 												<div class="col-md-12">
-													<div class="row">
+													<div class="form-group row">
 														<div class="col-md-12">
-															<!-- <div class="row">
-																<div class="col-md-2" id="reqName1"></div>
-																<div class="col-md-10" style="" id=""></div>
-															</div> -->
-															
-														</div>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="row">
-									    				<div class="col-md-2">
-									       					 <label style="font-size: 17px;  color: #07689f">Spec Id<span class="mandatory" style="color: red;">*</span></label>
-									   					</div>
-									    				<div class="col-md-3">
-									    					<input type="text" name="name" class="form-control" id="editSpecId" maxlength="255" required="required" placeholder="Maximum 250 Characters"  readonly>
-									    				</div>
-									    				<div class="col-md-2">
-									        				<label style="font-size: 17px; margin-top: 7%;  color: #07689f">Test Name<span class="mandatory" style="color: red;">*</span></label>
-									    				</div>
-											   			 <div class="col-md-3">
-											        		<input type="text" name="TestName" class="form-control" id="EName" maxlength="255" required="required" placeholder="Maximum 250 Characters" >
-											    		</div>
-											    		<div class="col-md-2">
-											    		</div>
-													</div>
-												</div>
-					
-												<div class="col-md-12">
-													<div class="row">
-														<div class="col-md-2">
-															<label style="font-size: 17px; margin-top: 5%; color: #07689f">Objective
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-10">
-															<input type="text" name="Objective" class="form-control"id="EditObjective" maxlength="255" required="required" placeholder="Maximum 250 Chararcters"style="line-height: 3rem !important">
-														</div>
-													</div>
-												</div>
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-2">
-															<label style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Description
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-10" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="Description" class="form-control"id="EditDescription" maxlength="255" required="required"	placeholder="Maximum 250 Chararcters"style="line-height: 3rem !important">
+															<div class="row">
+											    				<div class="col-md-1">
+											       					 <label style="font-size: 17px;  color: #07689f">Spec Id <span class="mandatory" style="color: red;">*</span></label>
+											   					</div>
+											    				<div class="col-md-2">
+											    					<input type="text" name="name" class="form-control" id="editSpecId" maxlength="255" required="required" placeholder="Maximum 250 Characters"  readonly>
+											    				</div>
+											    				<div class="col-md-3">
+													    		</div>
+											    				<div class="col-md-1">
+											        				<label style="font-size: 17px; margin-top: 7%;  color: #07689f">Test Name <span class="mandatory" style="color: red;">*</span></label>
+											    				</div>
+													   			 <div class="col-md-5">
+													        		<input type="text" name="TestName" class="form-control" id="EName" maxlength="255" required="required" placeholder="Maximum 250 Characters" >
+													    		</div>
 															</div>
 														</div>
 													</div>
-												</div>
 												
-												<div class=col-md-12>
-													<div class="row">
+													<div class="form-group row">
 														<div class="col-md-6">
-															<label style="margin: 0px; font-size: 17px; color: #07689f">
-																Pre Conditions:<span class="mandatory" style="color: red;">*</span>
-															</label>
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px;color: #07689f">
+																		Objective <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10">
+																	<input type="text" name="Objective" class="form-control"id="EditObjective" maxlength="255" required="required" placeholder="Maximum 250 Chararcters"style="line-height: 3rem !important">
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px;color: #07689f;">
+																		Description <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="">
+																	<div class="form-group">
+																		<input type="text" name="Description" class="form-control"id="EditDescription" maxlength="255" required="required"	placeholder="Maximum 250 Chararcters"style="line-height: 3rem !important">
+																	</div>
+																</div>
+															</div>
 														</div>
 													</div>
-												</div>
+													
+													<div class="form-group row">
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px;color: #07689f;width: 120%;">
+																		Methodology <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="">
+																	<div class="form-group">
+																		<select required="required" class="form-control selectdee" name="Methodology" id="EditMethodology"data-width="100%" data-live-search="true" multiple>
+																			<option value="" disabled="disabled">---Choose----</option>
+																			<!-- <option value="0">NA ( Not Applicable )</option> -->
+																			<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
+																			int count=0;
+																			%>
+																				<%for(Object[] obj:DemonstrationList){ %>
+																					<option value="<%="D"+(++count) %>" title=<%=obj[3] %>><%=obj[3]%></option>
+																				<%}%>
+																			<%}%>
+																		</select>
+																	</div>
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px;color: #07689f;">
+																		Tool-Setup <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																								
+																<div class="col-md-10" style="">
+																	<select required="required" id="EditToolsSetup" name="ToolsSetup"
+																		onchange="AddTestSetUp('EditToolsSetup')" class="form-control selectdee" data-width="80%"
+																		data-live-search="true" style="margin-top: 5%"  multiple>
+																		 <option class="bg-success text-light" value="0">ADD NEW </option> 
+																		<%if(!TestTypeList.isEmpty()){
+																		for(Object[] obj:TestTypeList){ %>
+																		<option value="<%=obj[0]%>"><%=obj[1]%></option>
+																		<%}}%>
+																		
+																	</select>
+																</div>
+															</div>						
+														</div>
+													</div>	
+																				
+													<div class="form-group row">
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px;color: #07689f;">
+																		Constraints <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="">
+																	<input type="text" name="Constraints" class="form-control"	id="EditConstraints" maxlength="255" required="required"placeholder="Maximum 250 Chararcters">
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px;color: #07689f;">
+																		Est Time <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="">
+																	<input type="text" name="EstimatedTimeIteration" class="form-control"id="EditEstimatedTimeIteration" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
+																</div>
+															</div>
+														</div>
+													</div>	
+													
+													<div class="form-group row">
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label	style="font-size: 17px;color: #07689f;">
+																		Iterations <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="">
+																	<input type="text" name="Iterations" class="form-control"	id="EditIterations" maxlength="255" required="required"placeholder="Maximum 250 Chararcters">
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label
+																		style="font-size: 17px; color: #07689f;">
+																			Schedule <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="">
+																	<input type="text" name="Schedule" class="form-control"	id="EditSchedule" maxlength="255" required="required"	placeholder="Maximum 250 Chararcters">
+																</div>
+															</div>
+														</div>
+													</div>
 												
-												<div class="col-md-12">
-													<div class="row">
-														<div class="col-md-10" id="textarea" style="">
+													<div class="form-group row">
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px;color: #07689f;">
+																		 Criteria <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="margin-top: 10px">
+																	<input type="text" name="PassFailCriteria" class="form-control"	id="EditPassFailCriteria" maxlength="255" required="required"	placeholder="Maximum 250 Chararcters">
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px; color: #07689f;">
+																		Stage <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="">
+																	<select required="required" class="form-control selectdee" name="StageApplicable" id="StageApplicableedit"  data-width="100%" data-live-search="true" data-placeholder="Choose" multiple>
+																		<%for(Object[] obj:StagesApplicable){ %>
+																		<option value="<%=obj[0]%>"><%=obj[3]%></option>
+																		<%}%>
+																	</select>
+																</div>
+															</div>
+														</div>
+													</div>
+														
+													<div class="form-group row">
+														<div class="col-md-6">
+															<label style="margin: 0px; font-size: 17px; color: #07689f">
+																Pre Conditions <span class="mandatory" style="color: red;">*</span>
+															</label>
 															<div id="EditorPreConditionsForEdit" class="center">
 																<textarea name="PreConditions"  id="EditPreConditions" ></textarea>
 															</div>
 														</div>
-													</div>
-												</div>
-												
-												<div class=col-md-12>
-													<div class="row">
+														
 														<div class="col-md-6">
-															<label style="margin: 0px; font-size: 17px; color: #07689f">Post
-																Conditions:<span class="mandatory" style="color: red;">*</span>
+															<label style="margin: 0px; font-size: 17px; color: #07689f">
+																Post Conditions <span class="mandatory" style="color: red;">*</span>
 															</label>
-														</div>
-													</div>
-												</div>
-												
-												<br><br>
-												
-					
-												<div class="col-md-12">
-													<div class="row">
-														<div class="col-md-10" id="textarea" style="">
 															<div id="EditorPostConditionsForEdit" class="center">
 																<textarea name="PostConditions"  id="EditPostConditions" ></textarea>
 															</div>
 														</div>
 													</div>
-												</div>
-																					
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">
-																Constraints<span class="mandatory" style="color: red;">*</span>
+														
+													<div class="form-group row">
+														<div class="col-md-6">
+															<label style="font-size: 17px;color: #07689f;">
+																Safety Requirements <span class="mandatory" style="color: red;">*</span>
 															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="Constraints" class="form-control"	id="EditConstraints" maxlength="255" required="required"placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-													
-												<div class=col-md-12>
-														<div class="row">
-															<div class="col-md-6">
-															<label style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Safety Requirements
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-													</div>
-												</div>
-												
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-10" id="textarea" style="">
 															<div id="EditorSafetyReqforEdit" class="center">
 																<textarea name="SafetyReq"  id="EditSafetyRequirements" ></textarea>
 															</div>
 														</div>
-													</div>
-												</div>
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Methodology
-																<span class="mandatory" style="color: red;">*</span>
+														
+														<div class="col-md-6">
+															<label 	style="font-size: 17px;color: #07689f;">
+																Personnel Resources <span class="mandatory" style="color: red;">*</span>
 															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<select required="required" class="form-control selectdee" name="Methodology" id="EditMethodology"data-width="100%" data-live-search="true" multiple>
-																	<option value="" disabled="disabled">---Choose----</option>
-																	<!-- <option value="0">NA ( Not Applicable )</option> -->
-																	<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
-																	int count=0;
-																	%>
-																		<%for(Object[] obj:DemonstrationList){ %>
-																			<option value="<%="D"+(++count) %>" title=<%=obj[3] %>><%=obj[3]%></option>
-																		<%}%>
-																	<%}%>
-																</select>
+															<div id="EditorPersonnelResourcesForEdit" class="center">
+																<textarea name="PersonnelResources"  id="EditPersonnelResources" ></textarea>
 															</div>
 														</div>
 													</div>
-												</div>
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Tools -Setup
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-																						
-														<div class=col-md-8 style="margin-top: 10px">
-															<div class="form-group">
-																<select required="required" id="EditToolsSetup" name="ToolsSetup"
-																	onchange="AddTestSetUp('EditToolsSetup')" class="form-control selectdee" data-width="80%"
-																	data-live-search="true" style="margin-top: 5%"  multiple>
-																	 <option class="bg-success text-light" value="1">ADD NEW </option> 
-																	<%if(!TestTypeList.isEmpty()){
-																	for(Object[] obj:TestTypeList){ %>
-																	<option value="<%=obj[0]%>"><%=obj[1]%></option>
-																	<%}}%>
-																	
-																</select>
-															</div>
-														</div>
-													</div>						
-												</div>
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label 	style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Personnel Resources
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-													</div>
-												</div>
-												
-												<div class=col-md-12>
-													<div class="row">
-															<div class="col-md-10" id="textarea" style="">
-																<div id="EditorPersonnelResourcesForEdit" class="center">
-																	<textarea name="PersonnelResources"  id="EditPersonnelResources" ></textarea>
+													
+													<div class="form-group row">
+														<div class="col-md-6">
+															<div class="row">
+																<div class="col-md-2">
+																	<label style="font-size: 17px;color: #07689f;">
+																		Remarks <span class="mandatory" style="color: red;">*</span>
+																	</label>
+																</div>
+																<div class="col-md-10" style="margin-top: 10px">
+																	<input type="text" name="remarks" class="form-control" id="EditRemarks" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
 																</div>
 															</div>
-													</div>
-												</div>		
+														</div>
+														<div class="col-md-6">
+														</div>
+													</div>	
 																
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Estimated Time / Iteration
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="EstimatedTimeIteration" class="form-control"id="EditEstimatedTimeIteration" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-									
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label	style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Iterations
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="Iterations" class="form-control"	id="EditIterations" maxlength="255" required="required"placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-								
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Schedule
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="Schedule" class="form-control"	id="EditSchedule" maxlength="255" required="required"	placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-												
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Pass Fail Criteria 
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="PassFailCriteria" class="form-control"	id="EditPassFailCriteria" maxlength="255" required="required"	placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
-																
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Stage Applicable 
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-																	<div class="col-md-8" style="margin-top: 1%;">
-															<div class="form-group">
-																<select required="required" class="form-control selectdee" name="StageApplicable" id="StageApplicableedit"  data-width="100%" data-live-search="true" data-placeholder="Choose" multiple>
-																	<%for(Object[] obj:StagesApplicable){ %>
-																	<option value="<%=obj[0]%>"><%=obj[3]%></option>
-																	<%}%>
-																</select>
-															</div>
-														</div>
-													</div>
-												</div>
-										
-												<div class=col-md-12>
-													<div class="row">
-														<div class="col-md-4">
-															<label
-																style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
-																<span class="mandatory" style="color: red;">*</span>
-															</label>
-														</div>
-														<div class="col-md-8" style="margin-top: 10px">
-															<div class="form-group">
-																<input type="text" name="remarks" class="form-control"
-																	id="EditRemarks" maxlength="255" required="required"
-																	placeholder="Maximum 250 Chararcters">
-															</div>
-														</div>
-													</div>
-												</div>
 												
 												<div class="col-md-12">
 													<input type="hidden" name="projectId" value="<%=projectId%>">
@@ -1303,6 +1194,8 @@ margin-left: -21px;
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 														<button type="submit" class="btn btn-sm btn-warning edit mt-2" id="add" name="action" value="Add" onclick="return editCheck('myform2');">Update</button>
 													</div>
+												</div>
+												
 												</div>
 											</div>
 										</form>
@@ -1498,7 +1391,7 @@ function editCheck(event, frmid) {
 	 function TestDetailsShow(TestReqId)
 	 {
 		 $('.viewbtn').css("background","#055C9D");
-			$('#Test'+TestReqId).css("background","green");
+			/* $('#Test'+TestReqId).css("background","green"); */
 			var value=TestReqId;
 			$.ajax({
 				url:'TestDetailsJson.htm',
@@ -1682,7 +1575,7 @@ $(function () {
   function AddTestSetUp(Id){
 	  var value= $('#'+Id).val();
 	
-	  if(value==="1"){
+	  if(value==="0"){
 		  $('#TestTypes').val("");
 		  $('#TestTools').val("");
 		  $('#TestSetupName').val("");
@@ -1690,9 +1583,8 @@ $(function () {
 	  }
 	  
 	  var Text=$('#'+Id+' option:selected').text();
-	  if(value.includes("1"))
+	  if(value.includes("0"))
 		  {
-		  console.log("Hiii")
 		   $("#TestSetUp").modal('show');
 		  }
   }
@@ -1723,9 +1615,9 @@ $(function () {
 					  },
 					  success : function(result){
 						  var ajaxresult=JSON.parse(result);
-						  if(result!=="1"){
+						  if(ajaxresult!="-1"){
 							  var y=TestTypes;
-							  html=html+"<option value='"+y+"' selected>"+y+"</option>"
+							  html=html+"<option value='"+ajaxresult+"' selected>"+y+"</option>"
 						  /* html=html+'<option class="bg-success text-light" value="1">ADD NEW</option>' */
 						  //document.getElementById('select1').innerHTML=html; 
 							  $('#select1 option[value="1"]').prop('selected', false);

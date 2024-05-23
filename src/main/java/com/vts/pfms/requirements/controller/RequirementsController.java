@@ -935,7 +935,7 @@ public class RequirementsController {
 			req.setAttribute("TestSuite", service.TestTypeList());
 			req.setAttribute("TestDetailsList", service.TestDetailsList(testPlanInitiationId) );
 			req.setAttribute("TestTypeList", service.TestTypeList());
-			req.setAttribute("StagesApplicable", service.StagesApplicable(testPlanInitiationId));
+			req.setAttribute("StagesApplicable", service.StagesApplicable());
 		
 			File my_file=null;
 			File my_file1=null;
@@ -2309,7 +2309,7 @@ public class RequirementsController {
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
 			
 			req.setAttribute("TestTypeList", service.TestTypeList());
-			req.setAttribute("StagesApplicable", service.StagesApplicable(testPlanInitiationId));
+			req.setAttribute("StagesApplicable", service.StagesApplicable());
 			req.setAttribute("VerificationMethodList", service.getVerificationMethodList());
 			List<Object[]> TestDetailsList=service.TestDetailsList(testPlanInitiationId);
 			if(TestDetailsList!=null && TestDetailsList.size()>0)
@@ -2571,7 +2571,7 @@ public class RequirementsController {
 		Gson json=new Gson();
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date()+ "Inside insertTestType.htm"+UserId);
-		long count=1;
+		long count=-1;
 		try {
 			String TestTypes= req.getParameter("TestTypes");
 			String TestTools= req.getParameter("TestTools");
@@ -2636,7 +2636,7 @@ public class RequirementsController {
 			req.setAttribute("AcceptanceTesting", service.GetAcceptanceTestingList(testPlanInitiationId));
 			req.setAttribute("TestSuite", service.TestTypeList());
 			req.setAttribute("TestDetailsList", service.TestDetailsList(testPlanInitiationId));
-			req.setAttribute("StagesApplicable", service.StagesApplicable(testPlanInitiationId));
+			req.setAttribute("StagesApplicable", service.StagesApplicable());
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/requirements/TestPlanPDFDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
