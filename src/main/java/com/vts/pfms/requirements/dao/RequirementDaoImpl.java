@@ -20,6 +20,7 @@ import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
@@ -800,6 +801,16 @@ public class RequirementDaoImpl implements RequirementDao {
 	}
 
 	@Override
+	public SpecsInitiation getSpecsInitiationById(String specsInitiationId) throws Exception {
+		try {
+			return manager.find(SpecsInitiation.class, Long.parseLong(specsInitiationId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getSpecsInitiationById "+e);
+			return null;
+		}
+	}
+	@Override
 	public TestDetails getTestPlanDetailsById(String testId) throws Exception {
 		try {
 			
@@ -858,4 +869,9 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 	}
 
+	@Override
+	public long addSpecsInitiation(SpecsInitiation specsInitiation) throws Exception {
+		manager.persist(specsInitiation);
+		return specsInitiation.getSpecsInitiationId();
+	}
 }

@@ -375,7 +375,7 @@ FormatConverter fc = new FormatConverter();
 												
 												<%if(obj[9]!=null && reqforwardstatus.contains(obj[9].toString()) ) {%>
 													
-													<button class="editable-clicko" formaction="ProjectRequirementDetails.htm" >
+													<button class="editable-clicko" formaction="ProjectSpecificationDetails.htm" >
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -386,7 +386,7 @@ FormatConverter fc = new FormatConverter();
 														</div>
 													</button>
 													
-													<button type="submit" class="editable-clicko" formaction="ProjectRequirementApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Requirement?');">
+													<button type="submit" class="editable-clicko" formaction="" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Requirement?');">
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -400,7 +400,7 @@ FormatConverter fc = new FormatConverter();
 													
 												<%} %>
 												
-												<button class="editable-clicko" formaction="RequirementDocumentDownlod.htm" formtarget="blank" >
+												<button class="editable-clicko" formaction="" formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -411,7 +411,7 @@ FormatConverter fc = new FormatConverter();
 													</div>
 												</button>
 												
-												<button class="editable-clicko" formaction="RequirementDocumentDownlodPdf.htm" formtarget="blank" >
+												<button class="editable-clicko" formaction="" formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">

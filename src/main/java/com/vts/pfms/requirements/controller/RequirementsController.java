@@ -605,8 +605,12 @@ public class RequirementsController {
 				productTreeMainId = req.getParameter("productTreeMainId");
 
 				initiationId = initiationId!=null && !initiationId.isEmpty() ?initiationId:"0";
+				projectId = projectId!=null && !projectId.isEmpty() ?projectId:"0";
+				productTreeMainId = productTreeMainId!=null && !productTreeMainId.isEmpty() ?productTreeMainId:"0";
 			}
-
+			
+			System.out.println("projectId: "+projectId+"initiationId:"+initiationId);
+			
 			projectType = projectType==null?(projectId.equals("0")?"I":"M"):projectType;
 			
 			req.setAttribute("projectType", projectType);
@@ -617,7 +621,7 @@ public class RequirementsController {
 			
 			req.setAttribute("AbbreviationDetails",service.AbbreviationDetails(testPlanInitiationId, "0"));
 			req.setAttribute("MemberList", service.DocMemberList(testPlanInitiationId, "0"));
-			req.setAttribute("EmployeeList", projectservice.EmployeeList1(LabCode,testPlanInitiationId));
+			req.setAttribute("EmployeeList", projectservice.EmployeeList1(LabCode,testPlanInitiationId,"0"));
 			req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(LabCode));
 			req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
 			req.setAttribute("DocumentSummary", service.getTestandSpecsDocumentSummary(testPlanInitiationId, "0"));
@@ -765,25 +769,33 @@ public class RequirementsController {
 			String projectId =req.getParameter("projectId");
 			String productTreeMainId =req.getParameter("productTreeMainId");
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
-			
+			String SpecsInitiationId= req.getParameter("SpecsInitiationId");
 			if(initiationId==null) initiationId="0";
 			if(projectId==null) projectId="0";	
 			if(productTreeMainId==null) productTreeMainId="0";
-
+			
+			if(SpecsInitiationId==null) {
 			if(testPlanInitiationId.equals("0") ) {					
 				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
 			}
+			}
+			if(testPlanInitiationId==null) {
+				if(SpecsInitiationId.equals("0") ) {					
+					SpecsInitiationId = Long.toString(service.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				}
+				}
+			
 			
 			String [] Assignee = req.getParameterValues("Assignee");
 			DocMembers rm = new DocMembers();
 //			rm.setProjectId(Long.parseLong(projectId));
 //			rm.setInitiationId(Long.parseLong(initiationId));
-			rm.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
+			rm.setTestPlanInitiationId(testPlanInitiationId==null?0L:Long.parseLong(testPlanInitiationId));
 			rm.setCreatedBy(UserId);
 			rm.setCreatedDate(sdf1.format(new Date()));
 			rm.setEmps(Assignee);
 			rm.setMemeberType("T");
-			rm.setSpecsInitiationId(0L);
+			rm.setSpecsInitiationId(SpecsInitiationId==null ?0L :Long.parseLong(SpecsInitiationId));
 			long count = service.AddDocMembers(rm);
 			if(count>0) {
 				redir.addAttribute("result","Members Added Successfully for Document Distribution");
@@ -794,9 +806,13 @@ public class RequirementsController {
 			redir.addAttribute("initiationId",initiationId);
 			redir.addAttribute("projectId",projectId);
 			redir.addAttribute("productTreeMainId",productTreeMainId);
+			if(SpecsInitiationId==null) {
 			redir.addAttribute("testPlanInitiationId",testPlanInitiationId);
 			return "redirect:/ProjectTestPlanDetails.htm";
-
+			}else {
+				redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+				return "redirect:/ProjectSpecificationDetails.htm";
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
 

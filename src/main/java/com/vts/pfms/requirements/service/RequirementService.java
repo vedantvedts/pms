@@ -10,6 +10,7 @@ import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -110,5 +111,12 @@ public interface RequirementService {
 	public long projectTestPlanApprovalForward(String testPlanInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+
+	
+	//specification starts
+	public SpecsInitiation getSpecsInitiationById(String specsInitiationId) throws Exception;
+
+	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,
+			String empId, String userId);
 	
 }

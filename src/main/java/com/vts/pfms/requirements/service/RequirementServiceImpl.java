@@ -33,6 +33,7 @@ import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
@@ -685,6 +686,9 @@ public class RequirementServiceImpl implements RequirementService {
 			return 0L;
 		}
 	}
+	
+	
+	
 	@Override
 	public TestPlanSummary getTestPlanSummaryById(String summaryId) throws Exception {
 		
@@ -800,5 +804,40 @@ public class RequirementServiceImpl implements RequirementService {
 	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception {
 		
 		return dao.projectTestPlanApprovedList(empId, FromDate, ToDate);
+	}
+	
+	@Override
+	public SpecsInitiation getSpecsInitiationById(String specsInitiationId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.getSpecsInitiationById(specsInitiationId);
+	}
+	
+	@Override
+	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,
+			String empId, String userId) {
+		try {
+			SpecsInitiation specsInitiation = SpecsInitiation.builder()
+					  							  .InitiationId(Long.parseLong(initiationId))
+					  							  .ProjectId(Long.parseLong(projectId))
+					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
+					  							  .SpecsVersion(1)
+					  							  .InitiatedBy(Long.parseLong(empId))
+					  							  .InitiatedDate(sdf2.format(new Date()))
+					  							  .ReqStatusCode("RIN")
+					  							  .ReqStatusCodeNext("RIN")
+					  							  .CreatedBy(userId)
+					  							  .CreatedDate(sdf1.format(new Date()))
+					  							  .IsActive(1)
+					  							  .build();
+			long specsId = dao.addSpecsInitiation(specsInitiation);
+			
+			// Handling Transaction
+			requirementTransAddHandling(specsId, null, "RIN", empId, "S");
+			
+			return specsId;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 	}
 }

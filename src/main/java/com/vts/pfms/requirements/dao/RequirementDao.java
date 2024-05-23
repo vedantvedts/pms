@@ -8,6 +8,7 @@ import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
@@ -111,5 +112,9 @@ public interface RequirementDao {
 	public TestPlanSummary getTestPlanSummaryByTestPlanInitiationId(String testPlanInitiationId) throws Exception;
 	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+
+	// specification Starts
+	public SpecsInitiation getSpecsInitiationById(String specsInitiationId)throws Exception;
+	public long addSpecsInitiation(SpecsInitiation specsInitiation) throws Exception;
 	
 }
