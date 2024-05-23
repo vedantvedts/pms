@@ -452,7 +452,7 @@ h5,h6{
 							<% int repcount=1;
 							// Prudhvi 27/03/2024
 							/* ------------------ start ----------------------- */
-							ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CH","CI","CW","CO","P","I","W","E","CIP","IP"));
+							ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CH","CI","CW","CO","P","I","W","E","CIP","IP","SPL"));
 							/* ------------------ end ----------------------- */
 							for(int i=0;i<committeeinvitedlist.size();i++)
 							{								
@@ -695,6 +695,74 @@ h5,h6{
 						</table>
 						</div>
 				<!-- ----------------------External end------------------------------ -->
+				
+				<!--  special Member start  -->
+				
+								<div class="col-md-4">
+						
+						<%for(int i=0;i<committeeinvitedlist.size();i++)
+							{
+								if(committeeinvitedlist.get(i)[3].toString().equals("SPL"))
+								{%>		
+						<br>
+						<label class="control-label">Special Members</label>
+							
+							<%break;} %>
+							
+						<%} %>
+						
+						<table border="0">
+	
+						<% int specialCount=1; 
+							for(int i=0;i<committeeinvitedlist.size();i++)
+							{								
+								if(committeeinvitedlist.get(i)[3].toString().equals("SPL"))
+								{%>		
+										
+										<tr>
+										<td><%=extcount%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>)(<%=committeeinvitedlist.get(i)[11]%>)</td> 
+										<td style="padding-left: 30px">
+										
+										<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){ %>
+											<form action="CommitteeInvitationDelete.htm" method="Post">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="committeeinvitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
+												<button type="submit" class="btn" onclick="return confirm('Are you sure To Remove this Member?')" > <i class="fa fa-trash" aria-hidden="true" ></i> </button>
+											</form>
+										<%} %>
+											
+											
+											
+										<td>
+										
+											<form action="MeetingInvitationLetter.htm" method="Post" target="_blank">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="invitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="memberid" value="<%=committeeinvitedlist.get(i)[0]%>">
+												<input type="hidden" name="membertype" value="<%=committeeinvitedlist.get(i)[3]%>">
+												<button type="submit" class="btn"  > <i class="fa fa-eye" aria-hidden="true" ></i>  </button>
+											</form>
+										</td>
+										<td>
+											<form action="MeetingInvitationLetterDownload.htm" method="Post" target="_blank">
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<input type="hidden" name="invitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+												<input type="hidden" name="memberid" value="<%=committeeinvitedlist.get(i)[0]%>">
+												<input type="hidden" name="membertype" value="<%=committeeinvitedlist.get(i)[3]%>">
+												<button type="submit" class="btn"  > <i class="fa fa-download" aria-hidden="true" ></i>  </button>
+											</form>
+										</td>
+										</tr>				  
+								<% specialCount++;}
+							}%>
+					
+						</table>
+						</div>
+				
+				<!-- Special member end -->
 								<!-- Prudhvi - 27/03/2024 start-->
 				<!-- ---------------------- Industry Partner start------------------------------ -->
 						
@@ -1019,6 +1087,61 @@ h5,h6{
 					</form>
 	<!-- --------------------------------Industry Partner----------------------------------------------- -->
 	<!-- Prudhvi - 27/03/2024 end-->
+			<!--   Special Invitaion  -->
+					<form  action="CommitteeInvitationCreate.htm" method="POST" name="myfrm1" id="myfrm1">
+					<div class="row">	
+						
+						<div class="col-md-6">
+							
+							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="deliverablesTable2" style="margin-top: 10px;">
+								<thead>  
+									<tr id="">
+									  <th colspan="2"> Special Member</th>
+									  <th style="">
+									  <button type="button" class=" btn btn_add_deliverables2 " style=""> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+									  </th>
+									</tr>
+								</thead>
+								<tr class="tr_clone_deliverables2">
+									<td style="width:30%">							
+										<div class="input select">
+											<select class="form-control" name="specialLabCode" id="sepcialLab_1" tabindex="-1"  style=""  onchange="specialname(this)" required>
+												<option disabled="true"  selected value="">Lab Name</option>
+													<% for (Object[] obj : clusterlablist) {%>
+												<option value="<%=obj[3]%>"><%=obj[3]%></option>
+													<%}%>
+													<option value="@EXP">Expert</option>
+											</select>
+										</div>
+										
+									
+									</td>
+									<td style="width:70%">
+										<div class="input select ">
+											<select class="form-control" name="SpecialMember" id="specialMembers_1" data-live-search="true"   data-placeholder="Select Members">
+											</select>
+										</div>
+									</td>
+									<td style="width: 5% ; ">
+															<button type="button" class="btn btn_rem_deliverables2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														</td>						
+								</tr>
+							</table>				
+						</div>
+						
+						<div class="col-md-6 align-self-center">
+							
+								<button class="btn btn-primary btn-sm add" name="submit" value="submit" type="submit"  onclick="return confirm('Are you Sure to Add these Members ?');">SUBMIT</button>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
+		 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
+		 								<input type="hidden" name="rep" id="rep2" value="0" />	
+						</div>
+						
+					</div>
+					</form>
+			
+			<!--  -->
+			
 				</div>	
 			</div>		
 					
@@ -1124,7 +1247,91 @@ function employeename(){
 	}
 
 
+function specialname(ele){
 
+	
+		var LabCode = $(ele).val();
+		var id = ele.id.split("_")[1];
+		console.log(id)
+		
+ 	
+				if(LabCode!=""){
+					$('#specialMembers_'+id).html("");
+							$
+								.ajax({
+
+								type : "GET",
+								url : "SpecialEmployeeListInvitations.htm",
+								data : {
+											LabCode : LabCode,
+											scheduleid : '<%=committeescheduleid %>' 	
+									   },
+								datatype : 'json',
+								success : function(result) {
+
+								var result = JSON.parse(result);
+						
+								var values = Object.keys(result).map(function(e) {
+							 				 return result[e]
+							  
+												});
+						
+						var s = '';
+						s += '<option value="">'
+							+"--Select--"+ '</option>';
+						 for (i = 0; i < values.length; i++) {
+							
+							s += '<option value="'+values[i][0]+",SPL,"+values[i][4]+'">'
+									+values[i][1] + " (" +values[i][3]+")" 
+									+ '</option>';
+						} 
+						 
+						$('#specialMembers_'+id).html(s);
+						
+				
+						
+					}
+				});
+
+} 
+	}
+	
+	
+$("#deliverablesTable2").on('click','.btn_add_deliverables2' ,function() {
+		console.log("HIIi")
+		var $tr = $('.tr_clone_deliverables2').last('.tr_clone_deliverables2');
+		var $clone = $tr.clone();
+		$tr.after($clone);
+		var cl=$('.tr_clone_deliverables2').length;
+		
+		console.log($clone)
+		var newId="";
+		$clone.find('select').each(function() {
+			var $select = $(this);
+			var oldId = $select.attr('id');
+			var newId=oldId.split("_")[0]+"_"+cl
+			$select.attr('id', newId);
+		
+			
+		});
+		
+	
+	});
+/* Cloning (Removing) the table body rows for Deliverables2 */
+	$("#deliverablesTable2").on('click','.btn_rem_deliverables2' ,function() {
+		
+	var cl=$('.tr_clone_deliverables2').length;
+
+	if(cl>1){
+	
+	   var $tr = $(this).closest('.tr_clone_deliverables2');
+	  
+	   var $clone = $tr.remove();
+	   $tr.after($clone);
+	   
+	}
+	   
+	}); 
  
 </script>
  <script type="text/javascript">

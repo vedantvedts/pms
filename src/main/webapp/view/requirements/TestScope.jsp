@@ -236,9 +236,11 @@ float: right;
 	<%
 	String projectId =(String)request.getAttribute("projectId");
 	String initiationId =(String)request.getAttribute("initiationId");
-	String ProjectType =(String)request.getAttribute("ProjectType");
+	String productTreeMainId =(String)request.getAttribute("productTreeMainId");
+	String testPlanInitiationId =(String)request.getAttribute("testPlanInitiationId");
+
 	String attributes=(String)request.getAttribute("attributes");
-	System.out.println("attributes+@@@@@@@@@@@@@@@@@@@@@@@"+attributes);
+
 	%>
 		<nav class="navbar navbar-light bg-light justify-content-between" style="margin-top: -1%">
 			<a class="navbar-brand"> 
@@ -249,10 +251,11 @@ float: right;
 			</a>
 			<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-			<input type="hidden" name="ProjectType" value="<%=ProjectType%>">	
 			<input type="hidden" name="projectId" value="<%=projectId%>">
 			<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
-			<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectTestPlan.htm" formmethod="get" formnovalidate="formnovalidate" style="float: right;">BACK</button>
+			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+			<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">
+			<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectTestPlanDetails.htm" formmethod="get" formnovalidate="formnovalidate" style="float: right;">BACK</button>
 			</form>
 		</nav>
 <%String ses=(String)request.getParameter("result"); 
@@ -337,7 +340,8 @@ float: right;
 										<span id="EditorDetails"></span> 
 											<input type="hidden" name="projectId" value="<%=projectId%>">
 											<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
-											<input type="hidden" name="ProjectType" value="<%=ProjectType%>">	
+											<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+											<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">
 											<input type="hidden" id="attributes" name="attributes" value="Introduction">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <span id="Editorspan">
 											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button></span>
@@ -484,8 +488,7 @@ float: right;
 				url:'TestScopeIntroAjax.htm',
 				datatype:'json',
 				data:{
-					projectId:<%=projectId%>,
-					initiationId:<%=initiationId%>,
+					testPlanInitiationId:<%=testPlanInitiationId%>
 				},
 				success:function(result){
 					var ajaxresult=JSON.parse(result);

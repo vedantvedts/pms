@@ -7,7 +7,17 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Requirement Transaction</title>
+<%String docType = (String)request.getAttribute("docType"); %>
+<title>
+	<%if(docType!=null && docType.equalsIgnoreCase("R")) {%>
+		Requirement 
+	<%} else if(docType!=null && docType.equalsIgnoreCase("S")) {%>
+		Specifications
+	<%}else if(docType!=null && docType.equalsIgnoreCase("T")) {%>
+		Test Plan
+	<%} %>
+	Status
+</title>
 <style>
 
 .break{
@@ -113,7 +123,7 @@ p,td,th
 <body>
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("transactionList");
-RequirementInitiation reqInitiation = (RequirementInitiation)request.getAttribute("requirementInitiationDetails"); 
+Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 
 SimpleDateFormat month=new SimpleDateFormat("MMM");
 SimpleDateFormat day=new SimpleDateFormat("dd");
@@ -123,7 +133,9 @@ SimpleDateFormat time=new SimpleDateFormat("HH:mm");
 
 <table id="tabledata">
 	<tr>
-		<td colspan="2" style="text-align: center;">v<%=reqInitiation.getReqVersion()%> </td>
+		<td colspan="2" style="text-align: center;">
+			<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:""%> 
+		</td>
 	</tr>
 	<%if(statuslist!=null && statuslist.size()>0) {
 		for(Object[] obj : statuslist){

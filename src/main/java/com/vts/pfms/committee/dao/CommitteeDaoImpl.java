@@ -3086,5 +3086,32 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			return new ArrayList<Object[]>();
 		}
 	}
+	
+	@Override
+	public List<Object[]> SpecialEmployeeListInvitations(String labCode,String scheduleid) throws Exception {
+		
+		String sql1="  SELECT a.empid, a.empname,a.empno,b.designation, a.desigid  FROM employee a,employee_desig b WHERE labcode=:labCode AND a.desigid=b.desigid AND a.empid NOT IN \r\n"
+				+ "  (SELECT empid  FROM committee_schedules_invitation WHERE  committeescheduleid=:scheduleid AND membertype ='SPL')  ";
+		
+		String sql2 = "  SELECT a.expertid,a.expertname,a.expertno,b.designation,a.desigid FROM expert a ,employee_desig b WHERE a.desigid=b.desigid\r\n"
+				+ " AND a.expertid NOT IN  (SELECT empid  FROM committee_schedules_invitation WHERE  committeescheduleid=:scheduleid AND membertype ='SPL')  AND a.isactive='1'";
+		
+		List<Object[]>list= new ArrayList<>();
+		
+		if(!labCode.equalsIgnoreCase("@EXP")) {
+			Query query = manager.createNativeQuery(sql1);
+			query.setParameter("labCode", labCode);
+			query.setParameter("scheduleid", scheduleid);
+			list = (List<Object[]>)query.getResultList();
+			
+		}else {
+			Query query = manager.createNativeQuery(sql2);
+			query.setParameter("scheduleid", scheduleid);
+			list = (List<Object[]>)query.getResultList();
+			
+		}
+	
+		return list;
+	}
 }
 

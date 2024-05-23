@@ -281,5 +281,6 @@ public interface CommitteeService {
 	//Prakarsh---
 	public List<Object[]> MeettingList(String projectId, String committeeId) throws Exception;
 	public List<Object[]> MeettingList(String projectid);
+	public List<Object[]> SpecialEmployeeListInvitations(String labCode,String scheduleid)throws Exception;
 }
 

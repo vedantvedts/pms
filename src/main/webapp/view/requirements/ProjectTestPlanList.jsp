@@ -223,9 +223,9 @@ String productTreeMainId =(String)request.getAttribute("productTreeMainId");
 List<Object[]> ProjectList = (List<Object[]>) request.getAttribute("ProjectList");
 List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
 List<Object[]> productTreeList = (List<Object[]>) request.getAttribute("productTreeList");
-List<Object[]> initiationReqList = (List<Object[]>) request.getAttribute("initiationReqList");
+List<Object[]> initiationTestPlanList = (List<Object[]>) request.getAttribute("initiationTestPlanList");
 
-List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+List<String> testplanforwardstatus = Arrays.asList("RIN","RRR","RRA");
 
 Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
@@ -254,7 +254,7 @@ FormatConverter fc = new FormatConverter();
 				<div class="card shadow-nohover" style="margin-top: -0.6pc">
 					<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 						<div <%if(projectType.equalsIgnoreCase("M")){ %> class="col-md-4" <%} else{%> class="col-md-6" <%} %> id="projecthead" align="left">
-							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Requirements List</h5>
+							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Test Plan </h5>
 						</div>
 						<div class="col-md-2">
             				<label class="control-label ml-4" style="font-weight: bolder;font-size: 15px;float:right;color:#07689f;">Project Type</label>
@@ -268,7 +268,7 @@ FormatConverter fc = new FormatConverter();
 					    	</select>
 					    </div>
 						<div class="col-md-2" >
-							<form class="form-inline" method="POST" action="Requirements.htm">
+							<form class="form-inline" method="POST" action="ProjectTestPlan.htm">
 								<div class="row W-100" style="width: 100%; margin-top: -3.5%;">
 									<div class="col-md-4" id="div1">
 										<label class="control-label mt-2" style="font-size: 15px; color: #07689f;"><b>Project:</b></label>
@@ -308,7 +308,7 @@ FormatConverter fc = new FormatConverter();
 						</div>
 						<%if(projectType.equalsIgnoreCase("M")){ %>
 						<div class="col-md-2">
-							<form class="form-inline" method="POST" action="Requirements.htm">
+							<form class="form-inline" method="POST" action="ProjectTestPlan.htm">
 								<div class="row W-100" style="width: 100%; margin-top: -3.5%;">
 									<div class="col-md-4" id="div1">
 										<label class="control-label mt-2" style="font-size: 15px; color: #07689f;"><b>System:</b></label>
@@ -353,9 +353,9 @@ FormatConverter fc = new FormatConverter();
 	                                </tr>
 	                         	</thead>
 	                      		<tbody>
-	                      			<%if(initiationReqList!=null && initiationReqList.size()>0) {
+	                      			<%if(initiationTestPlanList!=null && initiationTestPlanList.size()>0) {
 	                      				int slno=0;
-	                      				for(Object[] obj:initiationReqList) {%>
+	                      				for(Object[] obj:initiationTestPlanList) {%>
 	                      			<tr>
 	                      				<td align="center" ><%=++slno %> </td>
 	                      				<td><%=obj[6]+", "+obj[7] %></td>
@@ -364,9 +364,9 @@ FormatConverter fc = new FormatConverter();
 	                      				<td align="center" >
 	                      					<form action="#">
 				                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				                            	<input type="hidden" name="reqInitiationId" value="<%=obj[0] %>">
-				                            	<input type="hidden" name="docType" value="R">
-				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="ProjectRequirementTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
+				                            	<input type="hidden" name="testPlanInitiationId" value="<%=obj[0] %>">
+				                            	<input type="hidden" name="docType" value="T">
+				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="ProjectTestPlanTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
 											    	<%=obj[10] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>
 	                                        </form>
@@ -374,9 +374,9 @@ FormatConverter fc = new FormatConverter();
 	                      				<td align="center" >
 	                      					<form action="#" method="POST" name="myfrm" style="display: inline">
 												
-												<%if(obj[9]!=null && reqforwardstatus.contains(obj[9].toString()) ) {%>
+												<%if(obj[9]!=null && testplanforwardstatus.contains(obj[9].toString()) ) {%>
 													
-													<button class="editable-clicko" formaction="ProjectRequirementDetails.htm" >
+													<button class="editable-clicko" formaction="ProjectTestPlanDetails.htm" >
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -387,7 +387,7 @@ FormatConverter fc = new FormatConverter();
 														</div>
 													</button>
 													
-													<button type="submit" class="editable-clicko" formaction="ProjectRequirementApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Requirement?');">
+													<button type="submit" class="editable-clicko" formaction="ProjectTestPlanApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Requirement?');">
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -401,7 +401,7 @@ FormatConverter fc = new FormatConverter();
 													
 												<%} %>
 												
-												<button class="editable-clicko" formaction="RequirementDocumentDownlod.htm" formtarget="blank" >
+												<button class="editable-clicko" formaction="TestDocumentDownlod.htm" formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -412,7 +412,7 @@ FormatConverter fc = new FormatConverter();
 													</div>
 												</button>
 												
-												<button class="editable-clicko" formaction="RequirementDocumentDownlodPdf.htm" formtarget="blank" >
+												<button class="editable-clicko" formaction="TestPlanDownlodPdf.htm" formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -428,7 +428,7 @@ FormatConverter fc = new FormatConverter();
 					                        	<input type="hidden" name="projectId" value="<%=obj[1] %>">
 					                        	<input type="hidden" name="initiationId" value="<%=obj[2] %>">
 					                        	<input type="hidden" name="productTreeMainId" value="<%=obj[3] %>">
-					                        	<input type="hidden" name="reqInitiationId" value="<%=obj[0] %>">
+					                        	<input type="hidden" name="testPlanInitiationId" value="<%=obj[0] %>">
 											</form>
 	                      				</td>
 	                      			</tr>
@@ -436,16 +436,16 @@ FormatConverter fc = new FormatConverter();
 	                            </tbody>
 	                       	</table>
 	                    </div>
-	                    <%if(initiationReqList!=null && initiationReqList.size()==0) {%>
+	                    <%if(initiationTestPlanList!=null && initiationTestPlanList.size()==0) {%>
 	                    <div style="text-align: center;">
-	                    	<form action="ProjectRequirementDetails.htm" id="myform" method="post">
+	                    	<form action="ProjectTestPlanDetails.htm" id="myform" method="post">
 	                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="addRequirementCheck()" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Add Requirement v1</button>
+	                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="addRequirementCheck()" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Add Test Plan v1</button>
 	                        	<input type="hidden" name="projectType" id="projectType11" value="<%=projectType %>">
 	                        	<input type="hidden" name="projectId" id="projectId11" value="<%=projectId %>">
 	                        	<input type="hidden" name="initiationId" id="initiationId11" value="<%=initiationId %>">
 	                        	<input type="hidden" name="productTreeMainId" id="productTreeMainId11" value="<%=productTreeMainId %>">
-	                        	<input type="hidden" name="reqInitiationId" value="0">
+	                        	<input type="hidden" name="testPlanInitiationId" value="0">
 	                 		</form>
 	                    </div>
 	                    <%} %>
@@ -455,11 +455,11 @@ FormatConverter fc = new FormatConverter();
 		</div>
 	</div>
 
-	<form action="ProjectOverAllRequirement.htm" id="form1">
+	<%-- <form action="ProjectOverAllRequirement.htm" id="form1">
 		<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
-	</form>
+	</form> --%>
 	
-	<form action="Requirements.htm" id="form2">
+	<form action="ProjectTestPlan.htm" id="form2">
 		<input type="hidden" name="projectType" id="projectType2" value="<%=projectType %>">
 		<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 	</form>

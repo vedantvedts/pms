@@ -5,7 +5,17 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Requirement Status</title>
+<%String docType = (String)request.getAttribute("docType"); %>
+<title>
+	<%if(docType!=null && docType.equalsIgnoreCase("R")) {%>
+		Requirement 
+	<%} else if(docType!=null && docType.equalsIgnoreCase("S")) {%>
+		Specifications
+	<%}else if(docType!=null && docType.equalsIgnoreCase("T")) {%>
+		Test Plan
+	<%} %>
+	Status
+</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 <style type="text/css">
@@ -146,15 +156,17 @@
 <body>
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("transactionList");
-String reqInitiationId = (String)request.getAttribute("reqInitiationId");
+String docInitiationId = (String)request.getAttribute("docInitiationId");
+
 %>
 
 	 <div class="page card dashboard-card">
 		 <div class="mt-2 mr-5" align="right">
 			<form action="#">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId %>" />
-				<button type="submit" class="btn btn-sm btn-primary" formaction="ProjectRequirementTransactionDownload.htm" formmethod="POST" formtarget="_blank" formnovalidate="formnovalidate"
+				<input type="hidden" name="docInitiationId" value="<%=docInitiationId %>" />
+				<input type="hidden" name="docType" value="<%=docType %>" />
+				<button type="submit" class="btn btn-sm btn-primary" formaction="ProjectDocTransactionDownload.htm" formmethod="POST" formtarget="_blank" formnovalidate="formnovalidate"
 				 style="font-weight: 600;text-transform: uppercase;background: darkblue;">Print &emsp; <img alt="" src="view/images/trackingPrint.png"> </button>
 			</form>
 		</div>	

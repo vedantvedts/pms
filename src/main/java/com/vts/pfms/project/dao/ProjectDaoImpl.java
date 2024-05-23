@@ -3849,13 +3849,14 @@ public class ProjectDaoImpl implements ProjectDao {
 		List<Object[]>paraDetails=(List<Object[]>)query.getResultList();
 		return paraDetails;
 	}
-	private static final String EMPLISTS1="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_doc_members WHERE TestPlanInitiationId =:TestPlanInitiationId AND isactive = 1)ORDER BY a.srno=0,a.srno";
+	private static final String EMPLISTS1="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_doc_members WHERE TestPlanInitiationId =:TestPlanInitiationId AND SpecsInitiationId=:SpecsInitiationId AND isactive = 1)ORDER BY a.srno=0,a.srno";
 	@Override
-	public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId) throws Exception {
+	public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId,String SpecsInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(EMPLISTS1);
 
 		query.setParameter("LabCode", labCode);
 		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		query.setParameter("SpecsInitiationId", SpecsInitiationId);
 
 
 		return (List<Object[]>)query.getResultList();
@@ -3900,6 +3901,22 @@ public class ProjectDaoImpl implements ProjectDao {
 		return result;
 	}
 
+	private static final String INITIATIONREQLIST = "SELECT a.SpecsInitiationId,a.ProjectId,a.InitiationId,a.ProductTreeMainId,a.InitiatedBy,a.InitiatedDate,b.EmpName,c.Designation,a.SpecsVersion,d.ReqStatusCode,d.ReqStatus,d.ReqStatusColor FROM pfms_specifications_initiation a,employee b,employee_desig c,pfms_req_approval_status d WHERE a.IsActive=1 AND a.InitiatedBy=b.EmpId AND b.DesigId=c.DesigId AND a.ReqStatusCode=d.ReqStatusCode AND a.ProjectId=:ProjectId AND a.ProductTreeMainId=:ProductTreeMainId AND a.InitiationId=:InitiationId ORDER BY a.SpecsInitiationId DESC";
+	@Override
+	public List<Object[]> initiationSpecList(String projectId, String mainId, String initiationId)throws Exception
+	{
+		try {
+			Query query=manager.createNativeQuery(INITIATIONREQLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", mainId);
+			query.setParameter("InitiationId", initiationId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
 }
 
 

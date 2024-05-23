@@ -11,20 +11,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity
-@Table(name="pfms_req_trans")
-public class RequirementsTrans {
+@Table(name="pfms_specifications_initiation")
+public class SpecsInitiation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long ReqInitiationTransId;
+	private Long SpecsInitiationId;
+	private Long ProjectId;
+	private Long InitiationId;
+	private Long ProductTreeMainId;
+	private int SpecsVersion;
+	private Long InitiatedBy;
+	private String InitiatedDate;
 	private String ReqStatusCode;
-	private String Remarks;
-	private String ActionBy;
-	private String ActionDate;
-	private Long ReqInitiationId;
+	private String ReqStatusCodeNext;
+	private String CreatedBy;
+	private String CreatedDate;
+	private String ModifiedBy;
+	private String ModifiedDate;
+	private int IsActive;
 }

@@ -2011,6 +2011,16 @@ public class CommitteeController {
 				
 				/* ------------------ end ----------------------- */
 			}
+			
+			if(req.getParameterValues("SpecialMember")!=null && req.getParameter("SpecialMember").length()!=0) {
+				String members[] =req.getParameterValues("SpecialMember");
+				System.out.println(Arrays.asList(members).toString()+" memberList");
+				emplist.addAll(Arrays.asList(members));
+				String []labs=req.getParameterValues("specialLabCode");
+				System.out.println(Arrays.asList(labs).toString()+" labs");
+				labCodelist.addAll(Arrays.asList(labs));
+			}
+			
 			CommitteeInvitationDto committeeinvitationdto = new CommitteeInvitationDto();
 
 			committeeinvitationdto.setCommitteeScheduleId(committeescheduleid);
@@ -4837,6 +4847,22 @@ public class CommitteeController {
 	 
 		Gson json = new Gson();
 		return json.toJson(ExternalEmployeeList);	
+	}
+	
+	@RequestMapping(value = "SpecialEmployeeListInvitations.htm", method = RequestMethod.GET)
+	public @ResponseBody String SpecialEmployeeListInvitations(HttpServletRequest req,HttpSession ses) throws Exception
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside SpecialEmployeeListInvitations.htm"+ UserId);
+		
+		List<Object[]> SpecialEmployeeListInvitations = new ArrayList<Object[]>();
+		
+		String LabCode =req.getParameter("LabCode");
+	
+		SpecialEmployeeListInvitations = service.SpecialEmployeeListInvitations(LabCode,req.getParameter("scheduleid"));
+	 
+		Gson json = new Gson();
+		return json.toJson(SpecialEmployeeListInvitations);	
 	}
 	
 	@RequestMapping(value = "MeetingsStatusReports.htm", method = {RequestMethod.GET,RequestMethod.POST})

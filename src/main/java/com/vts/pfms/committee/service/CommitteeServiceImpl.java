@@ -1067,7 +1067,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			}
 			
 			// Check weather this employee is already invited as committee member 
-			if(dao.CommitteeInvitationCheck(committeeinvitation).size()>0)
+			if(!MemberType[1].equalsIgnoreCase("SPL") && dao.CommitteeInvitationCheck(committeeinvitation).size()>0)
 			{
 				continue;
 			}
@@ -3393,5 +3393,9 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	public List<Object[]> MeettingList(String projectid) {
 		// TODO Auto-generated method stub
 		return dao.MeettingList(projectid);
+	}
+	@Override
+	public List<Object[]> SpecialEmployeeListInvitations(String labCode,String scheduleid) throws Exception {
+		return dao.SpecialEmployeeListInvitations(labCode,scheduleid);
 	}
 }

@@ -22,7 +22,7 @@ public class TestScopeIntro {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long IntroId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String Introduction;
 	private String SystemIdentification;
 	private String SystemOverview;
@@ -32,5 +32,6 @@ public class TestScopeIntro {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
+	private Long TestPlanInitiationId;
 }

@@ -3372,8 +3372,8 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 			return dao.VPDetails(reqInitiationId);
 		}
 		@Override
-		public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId) throws Exception {
-			return dao.EmployeeList1(labCode,testPlanInitiationId);
+		public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId,String SpecsInitiationId) throws Exception {
+			return dao.EmployeeList1(labCode,testPlanInitiationId,SpecsInitiationId);
 		}
 
 		@Override
@@ -3386,5 +3386,9 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		public List<Object[]> ProjectDetailesData(long initiationId) throws Exception {
 			return dao.ProjectDetailesData(initiationId);
 		}
-		
+		@Override
+		public List<Object[]> initiationSpecList(String projectId, String mainId, String initiationId) throws Exception {
+			
+			return dao.initiationSpecList(projectId, mainId, initiationId);
+		}
 }

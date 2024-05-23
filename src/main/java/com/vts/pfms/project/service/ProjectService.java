@@ -342,10 +342,13 @@ public interface ProjectService {
 	public List<Object[]> ReqParaDetailsMain(String reqInitiationId) throws Exception;
 	public List<Object[]> getVerificationListMain(String reqInitiationId)throws Exception;
 	public List<Object[]> VPDetails(String reqInitiationId) throws Exception;
-	public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId) throws Exception;
+	public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId,String SpecsInitiationId) throws Exception;
 
 	public Object[] getProjectDetails(String labcode, String projectId, String projectType) throws Exception;
 	public List<Object[]> ProjectDetailesData(long initiationId) throws Exception;
+	
+	//specification
+	public List<Object[]> initiationSpecList(String projectId, String productTreeMainId, String initiationId) throws Exception;
 	
 	
 }

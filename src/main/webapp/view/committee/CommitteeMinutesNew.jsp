@@ -321,6 +321,11 @@ p{
 
 int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
 int j=0;
+List<Object[]>specialMembers = new ArrayList<>();
+if(invitedlist.size()>0){
+	specialMembers=invitedlist.stream().filter(e->e[3].toString().equalsIgnoreCase("SPL")).collect(Collectors.toList());
+	 invitedlist=invitedlist.stream().filter(e->!e[3].toString().equalsIgnoreCase("SPL")).collect(Collectors.toList());
+}
 for(Object[] temp : invitedlist){
 
 	if(temp[4].toString().equals("P") &&  membertypes.contains( temp[3].toString()) )
@@ -345,6 +350,16 @@ for(Object[] temp : invitedlist){
 
 <div style="align : center;">
 <h2>ATTENDANCE</h2>
+<%if(specialMembers.size()>0) {%>
+<div align="left" style="font-weight: bold;margin-left:10px;">Special Members  </div>
+<% int i=0;
+for( Object[]obj:specialMembers){ %>
+<p style="padding: 0px;margin:0px;margin-left:10px;padding-top:7px;font-weight: 600;"><%=++i %>. <%=obj[6].toString()%>,<%=obj[7].toString()%> ( <%=obj[11].toString() %> )</p>
+<%} %>
+<p>
+
+<%} %>
+<br>
 <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse;" >	
 	
 	 <tr>
@@ -356,7 +371,10 @@ for(Object[] temp : invitedlist){
 	  <tr>
 		 <th colspan="4" style="text-align: left; font-weight: 700; border: 1px solid black; padding: 5px; padding-left: 15px">Members Present</th>
 	 </tr>
-	 <%if(memPresent > 0){ %>
+	 <%
+	
+	 
+	 if(memPresent > 0){ %>
 	 
 	 <% 
 	 	for(int i=0;i<invitedlist.size();i++)

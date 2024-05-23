@@ -19,7 +19,7 @@ public class TestAcceptance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long TestId;
-	private Long InitiationId;
+//	private Long InitiationId;
 	private String Attributes;
 	private String AttributesDetailas;
 	private String FileName;
@@ -29,7 +29,8 @@ public class TestAcceptance {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
-	private Long ProjectId;
+//	private Long ProjectId;
 	@Transient
 	private MultipartFile file;
+	private Long TestPlanInitiationId;
 }
