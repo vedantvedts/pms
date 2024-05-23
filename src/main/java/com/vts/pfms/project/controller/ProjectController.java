@@ -9455,8 +9455,88 @@ public class ProjectController
 
 	}
 
+	
+		// specification Starts	
+	
+	@RequestMapping(value="ProjectSpecification.htm")
+	public String ProjectSpecification(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
+
+	{	
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType=(String)ses.getAttribute("LoginType");
+
+		logger.info(new Date() +"Inside Requirements.htm"+UserId);
+		try {
+
+			String projectType = req.getParameter("projectType");
+			projectType = projectType!=null?projectType:"M";
+			if(projectType.equalsIgnoreCase("M")) {
+				String projectId=req.getParameter("projectId");
+				String productTreeMainId = req.getParameter("productTreeMainId");
+
+				List<Object[]> projectList = service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
+				projectId = projectId!=null?projectId: (projectList.size()>0?projectList.get(0)[0].toString():"0");
+
+				List<Object[]> productTreeList = reqService.productTreeListByProjectId(projectId);
+				//				productTreeMainId = productTreeMainId!=null?productTreeMainId: (productTreeList.size()>0?productTreeList.get(0)[0].toString():"0");
+				productTreeMainId = productTreeMainId!=null?productTreeMainId:"0";
+				req.setAttribute("projectDetails", service.getProjectDetails(LabCode, projectId, "E"));
+				req.setAttribute("ProjectList", projectList);
+				req.setAttribute("projectId", projectId);
+				req.setAttribute("productTreeList", productTreeList );
+				req.setAttribute("productTreeMainId", productTreeMainId);
+				req.setAttribute("initiationSpecList", service.initiationSpecList(projectId, productTreeMainId, "0"));
+			}else {
+				String initiationId = req.getParameter("initiationId");
+				List<Object[]> preProjectList = reqService.getPreProjectList(LoginType, LabCode, EmpId);
+				initiationId = initiationId!=null?initiationId: (preProjectList.size()>0?preProjectList.get(0)[0].toString():"0");
+				req.setAttribute("preProjectList", preProjectList);
+				req.setAttribute("initiationId", initiationId);
+				req.setAttribute("initiationSpecList", service.initiationSpecList("0", "0", initiationId));
+			}
+
+			req.setAttribute("projectType", projectType);
 
 
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside Requirements.htm "+UserId, e);
+			return "static/Error";
+		}
+		return "requirements/ProjectSpecificationList";
+	}
+
+	@RequestMapping(value="ProjectSpecificationDetails.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String  ProjectSpecifications(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType=(String)ses.getAttribute("LoginType");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProjectSpecifications.htm "+UserId);
+		try {
+		
+			String projectType=req.getParameter("projectType");
+			String projectId=req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			
+			req.setAttribute("projectType", projectType);
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
+			req.setAttribute("SpecsInitiationId", SpecsInitiationId);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		return "requirements/Specification";
+	}
 
 	//package com.vts.pfms.project.controller;
 

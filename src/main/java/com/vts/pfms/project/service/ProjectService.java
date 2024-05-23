@@ -347,5 +347,8 @@ public interface ProjectService {
 	public Object[] getProjectDetails(String labcode, String projectId, String projectType) throws Exception;
 	public List<Object[]> ProjectDetailesData(long initiationId) throws Exception;
 	
+	//specification
+	public List<Object[]> initiationSpecList(String projectId, String productTreeMainId, String initiationId) throws Exception;
+	
 	
 }

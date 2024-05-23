@@ -3386,5 +3386,9 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		public List<Object[]> ProjectDetailesData(long initiationId) throws Exception {
 			return dao.ProjectDetailesData(initiationId);
 		}
-		
+		@Override
+		public List<Object[]> initiationSpecList(String projectId, String mainId, String initiationId) throws Exception {
+			
+			return dao.initiationSpecList(projectId, mainId, initiationId);
+		}
 }

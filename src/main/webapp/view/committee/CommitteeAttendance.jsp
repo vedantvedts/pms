@@ -148,7 +148,9 @@ String LabCode=(String) request.getAttribute("LabCode");
 										    // Prudhvi - 27/03/2024 start
 											else if(obj[3].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[11] %>)<%}
 											else if(obj[3].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[11] %>)<%}
-											// Prudhvi - 27/03/2024 end
+											else if(obj[3].toString().equalsIgnoreCase("SPL") )    {%> Special Invitee<%}
+											
+										// Prudhvi - 27/03/2024 end
 											else {%> REP_<%=obj[3].toString()%> (<%=obj[11] %>)  <%}
 										%>
 										

@@ -17,117 +17,49 @@
 String projectType=(String)request.getAttribute("projectType");
 String projectId = (String)request.getAttribute("projectId");
 String initiationId=(String)request.getAttribute("initiationId");
+String productTreeMainId=(String)request.getAttribute("productTreeMainId");
+String SpecsInitiationId=(String)request.getAttribute("SpecsInitiationId");
 
-List<Object[]>MainProjectList=(List<Object[]>)request.getAttribute("MainProjectList");
-List<Object[]>InitiationProjectList=(List<Object[]>)request.getAttribute("InitiationProjectList");
+
 %>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover" style="margin-top: -0.6pc">
-
 					<div class="row card-header"
 						style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-						<div class="col-md-4" id="projecthead" align="left">
+						<div class="col-md-10" id="projecthead" align="left">
 							<h5 id="text" style="margin-left: 1%; font-weight: 600">System
 								Segment Specification</h5>
 						</div>
-						<div class="col-md-2">
-							<div class="form-group">
-								<label class="control-label"
-									style="font-weight: bolder; font-size: 15px; margin-left: 39px">Project
-									Type</label>
-							</div>
-						</div>
-						<div class="col-md-2">
-							<form method="POST" action="ProjectSpecifications.htm">
-								<select class="form-control custom-select" id="projectType"
-									name="projectType"
-									style="margin-left: -85px; margin-top: -9px;">
-									<option disabled="disabled" value="">Choose...</option>
-									<option value="M" <%if(projectType.equalsIgnoreCase("M")){ %>
-										selected="selected" <% }%>>Main Project</option>
-									<option value="I" <%if(projectType.equalsIgnoreCase("I")){ %>
-										selected="selected" <% }%>>Initiation Project</option>
-								</select> <input type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" /> <input id="submit" type="submit"
-									name="submit" value="Submit" hidden="hidden">
+						
+							<div class="col-md-2" align="right">
+							<form action="ProjectSpecification.htm" method="post">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								 <input type="hidden" name="projectType" value="<%=projectType%>">
+								 <input type="hidden" name="projectId" value="<%=projectId%>">
+								<input type="hidden" name="initiationId" value="<%=initiationId%>">
+								<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>"> 
+								<button type="submit" class="btn btn-primary btn-sm back">Back</button>
 							</form>
 						</div>
-
-						<%if(projectType.equalsIgnoreCase("M")){ %>
-						<div class="col-md-2" style="margin-left: 6%;">
-							<form class="form-inline" method="POST"
-								action="ProjectSpecifications.htm">
-								<div class="row W-100" style="width: 100%; margin-top: -3.5%;">
-									<div class="col-md-4" id="div1">
-										<label class="control-label"
-											style="font-size: 15px; color: #07689f;"><b>Project:</b></label>
-									</div>
-									<div class="col-md-4" style="" id="projectname">
-										<select class="form-control selectdee" id="project"
-											required="required" name="projectId">
-											<%
-										if(MainProjectList!=null && MainProjectList.size()>0){
-										for (Object[] obj : MainProjectList) {
-										 String projectshortName1 = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : ""; %>
-											<option value="<%=obj[0]%>"
-												<%if(projectId.equalsIgnoreCase(obj[0].toString())){ %>
-												selected <%} %>>
-												<%=obj[4]+projectshortName1 %>
-											</option>
-											<%} }%>
-										</select>
-									</div>
-								</div>
-								<input type="hidden" name="initiationId" value="0"> <input
-									type="hidden" name="projectType" value="<%=projectType%>">
-								<input type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" /> <input id="submit1" type="submit"
-									name="submit" value="Submit" hidden="hidden">
-							</form>
-						</div>
-						<%}else{ %>
-						<div class="col-md-2" style="margin-left: 9%;">
-							<form class="form-inline" method="POST"
-								action="ProjectSpecifications.htm">
-								<div class="row W-100" style="width: 100%; margin-top: -3.5%;">
-									<div class="col-md-4" id="div1">
-										<label class="control-label"
-											style="font-size: 15px; color: #07689f;"><b>Project:</b></label>
-									</div>
-									<div class="col-md-3" style="" id="projectname">
-										<select class="form-control selectdee" id="project"
-											required="required" name="initiationId">
-											<%
-								if(InitiationProjectList!=null && InitiationProjectList.size()>0){
-								for (Object[] obj : InitiationProjectList) {
-								  %>
-											<option value="<%=obj[0]%>"
-												<%if(initiationId.equalsIgnoreCase(obj[0].toString())){ %>
-												selected <%} %>>
-												<%=obj[4] %>
-											</option>
-											<%} }%>
-										</select>
-									</div>
-									<input type="hidden" name="projectId" value="0"> <input
-										type="hidden" name="projectType" value="<%=projectType%>">
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> <input id="submit1" type="submit"
-										name="submit" value="Submit" hidden="hidden">
-								</div>
-							</form>
-						</div>
-						<%} %>
-
-
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	<div class="container" id="container" style="height: 80%;">
+		<div class="row" style="display: inline;height: 90%;">
+			<div class="requirementid mt-2 ml-2" style="height: 90%;">
+				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Specification Document</span> 
+				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDocPDF()"><img alt="" src="view/images/pdf.png" >&nbsp;Specification Document</span> 
+		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
+		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
+		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
+				<span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
+			</div>
+		</div>
+		</div>
 
 <Script>
 $(document).ready(function() {

@@ -3900,6 +3900,22 @@ public class ProjectDaoImpl implements ProjectDao {
 		return result;
 	}
 
+	private static final String INITIATIONREQLIST = "SELECT a.SpecsInitiationId,a.ProjectId,a.InitiationId,a.ProductTreeMainId,a.InitiatedBy,a.InitiatedDate,b.EmpName,c.Designation,a.SpecsVersion,d.ReqStatusCode,d.ReqStatus,d.ReqStatusColor FROM pfms_specifications_initiation a,employee b,employee_desig c,pfms_req_approval_status d WHERE a.IsActive=1 AND a.InitiatedBy=b.EmpId AND b.DesigId=c.DesigId AND a.ReqStatusCode=d.ReqStatusCode AND a.ProjectId=:ProjectId AND a.ProductTreeMainId=:ProductTreeMainId AND a.InitiationId=:InitiationId ORDER BY a.SpecsInitiationId DESC";
+	@Override
+	public List<Object[]> initiationSpecList(String projectId, String mainId, String initiationId)throws Exception
+	{
+		try {
+			Query query=manager.createNativeQuery(INITIATIONREQLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", mainId);
+			query.setParameter("InitiationId", initiationId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
 }
 
 
