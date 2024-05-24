@@ -668,8 +668,8 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 					  <div class="card-body" style="margin-top: -8px" >
 					    <div class="row">	
 					        <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
-					          <div id="summernote1" style="height: 500;"><%if(ChapterList != null && ChapterList.size()>0){ %> <%=ChapterList.get(0)[4] %><%} %></div>
-					          <div id="summernote" style="height: 500;display:none;"></div>
+<!-- 					          <div id="summernote1" style="height: 500;"> </div> -->
+					          <div id="summernote" style="height: 500;"></div>
 					         
 					         
 					         <textarea name="ChapterContent" id="" style="display:none;"></textarea>
@@ -1076,6 +1076,12 @@ function moduleeditdisable(moduleid)
 	 var data =editor1.getHTMLCode();
 	 $('textarea[name=ChapterContent]').val(data);
 	 }); */
+	 
+	 <%if(ChapterList != null && ChapterList.size()>0){ %> 
+	 $(document).ready(function() {
+		 $('#summernote').summernote('code', '<%=ChapterList.get(0)[4] %>');
+	 });
+	 <%} %>
 	 
 function EditorValueSubmit(){
 	if(confirm("Are you sure you want to submit?")){
