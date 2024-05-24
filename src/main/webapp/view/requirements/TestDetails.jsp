@@ -1606,7 +1606,7 @@ $(function () {
 			  if(confirm("Are you sure to submit?")){
 			  $.ajax({
 					  type:'GET',
-					  url:'insertTestType.htm',
+					  url:'InsertTestType.htm',
 					  datatype:'json',
 					  data:{
 						  TestTypes:TestTypes,
@@ -1620,14 +1620,14 @@ $(function () {
 							  html=html+"<option value='"+ajaxresult+"' selected>"+y+"</option>"
 						  /* html=html+'<option class="bg-success text-light" value="1">ADD NEW</option>' */
 						  //document.getElementById('select1').innerHTML=html; 
-							  $('#select1 option[value="1"]').prop('selected', false);
+							  $('#select1 option[value="0"]').prop('selected', false);
 							  $('#select1').append(html);
 							  $('#TestSetUp').modal('hide');
 						  }else{
 							  alert("Please check the Test Type list carefully its already there!")
-							  html=html+'<option class="bg-success text-light" value="1">ADD NEW</option>'
+							 /*  html=html+'<option class="bg-success text-light" value="0">ADD NEW</option>'
 							  document.getElementById('select1').innerHTML=html;  
-							  $('#TestSetUp').modal('hide');
+							  $('#TestSetUp').modal('hide'); */
 						  }
 					  }
 				  })

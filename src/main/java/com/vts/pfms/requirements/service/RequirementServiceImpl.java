@@ -840,4 +840,10 @@ public class RequirementServiceImpl implements RequirementService {
 			return 0L;
 		}
 	}
+	
+	@Override
+	public int getDuplicateCountofTestType(String testType) throws Exception {
+		
+		return dao.getDuplicateCountofTestType(testType);
+	}
 }

@@ -2566,24 +2566,31 @@ public class RequirementsController {
 //	}
 	
 	// adding requirement type
-	@RequestMapping(value="insertTestType.htm",method=RequestMethod.GET)
+	@RequestMapping(value="InsertTestType.htm",method=RequestMethod.GET)
 	public @ResponseBody String insertReqType(HttpSession ses, HttpServletRequest req) throws Exception {
 		Gson json=new Gson();
 		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date()+ "Inside insertTestType.htm"+UserId);
+		logger.info(new Date()+ "Inside InsertTestType.htm"+UserId);
 		long count=-1;
 		try {
 			String TestTypes= req.getParameter("TestTypes");
 			String TestTools= req.getParameter("TestTools");
 			String TestSetupName=req.getParameter("TestSetupName");
-			List<Object[]>TestSuiteList=service.TestTypeList();
-			long result = TestSuiteList.stream()
-					.filter(i -> i.length > 1 && i[1] != null && i[1].toString().equalsIgnoreCase(TestTypes))
-					.count();
+//			List<Object[]>TestSuiteList=service.TestTypeList();
+//			long result = TestSuiteList.stream()
+//					.filter(i -> i.length > 1 && i[1] != null && i[1].toString().equalsIgnoreCase(TestTypes))
+//					.count();
+//			if(result>0) {
+//				System.out.println("result@@@@@@@"+result);
+//				return json.toJson(count);
+//			}
+			
+			int result = service.getDuplicateCountofTestType(TestTypes);
+			
 			if(result>0) {
-				System.out.println("result@@@@@@@"+result);
 				return json.toJson(count);
 			}
+			
 			TestTools pt= new TestTools();
 			pt.setTestType(TestTypes);
 			pt.setTestTools(TestTools);
@@ -2592,7 +2599,7 @@ public class RequirementsController {
 			count = service.insertTestType(pt);
 		}
 		catch(Exception e) {
-			logger.error(new Date()+"Inside insertTestType.htm"+UserId);
+			logger.error(new Date()+"Inside InsertTestType.htm"+UserId);
 			e.printStackTrace();
 		}
 		return json.toJson(count);

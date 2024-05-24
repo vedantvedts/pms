@@ -111,7 +111,7 @@ public interface RequirementService {
 	public long projectTestPlanApprovalForward(String testPlanInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception;
-
+	public int getDuplicateCountofTestType(String testType) throws Exception;
 	
 	//specification starts
 	public SpecsInitiation getSpecsInitiationById(String specsInitiationId) throws Exception;

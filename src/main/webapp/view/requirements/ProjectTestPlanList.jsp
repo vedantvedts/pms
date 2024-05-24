@@ -387,7 +387,7 @@ FormatConverter fc = new FormatConverter();
 														</div>
 													</button>
 													
-													<button type="submit" class="editable-clicko" formaction="ProjectTestPlanApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Requirement?');">
+													<button type="submit" class="editable-clicko" formaction="ProjectTestPlanApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Document?');">
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -400,7 +400,18 @@ FormatConverter fc = new FormatConverter();
 													<input type="hidden" name="Action" value="A">
 													
 												<%} %>
-												
+												<%if(obj[9]!=null && "RFA".equalsIgnoreCase(obj[9].toString()) ) {%>
+													<button type="submit" class="editable-clicko" formaction="" data-toggle="tooltip" data-placement="top" title="Amend" onclick="return confirm('Are You Sure To Amend this Document?');">
+														<div class="cc-rockmenu">
+															<div class="rolling">
+																<figure class="rolling_icon">
+																	<img src="view/images/correction.png" style="width: 28px;">
+																</figure>
+																<span>Amend</span>
+															</div>
+														</div>
+													</button>
+												<%} %>
 												<button class="editable-clicko" formaction="TestDocumentDownlod.htm" formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">

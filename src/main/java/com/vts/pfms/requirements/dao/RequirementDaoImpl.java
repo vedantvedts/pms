@@ -555,7 +555,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 	}
 
-	private static final String ROADMAPTRANSLIST = "SELECT a.DocInitiationTransId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_doc_trans a,pfms_req_approval_status b,employee c,employee_desig d,pfms_req_initiation e WHERE e.ReqInitiationId = a.DocInitiationId AND a.ReqStatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND e.ReqInitiationId=:DocInitiationId AND a.DocType=:DocType ORDER BY a.DocInitiationTransId DESC";
+	private static final String ROADMAPTRANSLIST = "SELECT a.DocInitiationTransId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_doc_trans a,pfms_req_approval_status b,employee c,employee_desig d,pfms_test_plan_initiation e WHERE e.TestPlanInitiationId = a.DocInitiationId AND a.ReqStatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND e.TestPlanInitiationId=:DocInitiationId AND a.DocType=:DocType ORDER BY a.DocInitiationTransId DESC";
 	@Override
 	public List<Object[]> projectDocTransList(String docInitiationId, String docType) throws Exception {
 
@@ -872,5 +872,21 @@ public class RequirementDaoImpl implements RequirementDao {
 	public long addSpecsInitiation(SpecsInitiation specsInitiation) throws Exception {
 		manager.persist(specsInitiation);
 		return specsInitiation.getSpecsInitiationId();
+	}
+	
+	private static final String GETDUPLICATECOUNTOFTESTTYPE = "SELECT COUNT(TestType) AS TestTypeCount FROM pfms_test_plan_testingtools WHERE IsActive=1 AND TestType=:TestType";
+	@Override
+	public int getDuplicateCountofTestType(String testType) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETDUPLICATECOUNTOFTESTTYPE);
+			query.setParameter("TestType", testType);
+			BigInteger count = (BigInteger)query.getSingleResult();
+			return count.intValue();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getDuplicateCountofTestType " + e);
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

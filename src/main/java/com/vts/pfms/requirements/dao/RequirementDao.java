@@ -116,5 +116,6 @@ public interface RequirementDao {
 	// specification Starts
 	public SpecsInitiation getSpecsInitiationById(String specsInitiationId)throws Exception;
 	public long addSpecsInitiation(SpecsInitiation specsInitiation) throws Exception;
+	public int getDuplicateCountofTestType(String testType) throws Exception;
 	
 }

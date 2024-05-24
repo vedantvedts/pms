@@ -608,7 +608,7 @@ public class CARSDaoImpl implements CARSDao{
 
 	}
 
-	private static final String LABDIRECTORDATA = "SELECT a.EmpId,a.EmpName FROM employee a,employee_desig b WHERE a.DesigId=b.DesigId AND b.Designation='Director' AND a.LabCode=:LabCode AND a.IsActive=1 LIMIT 1";
+	private static final String LABDIRECTORDATA = "SELECT a.EmpId,a.EmpName,b.Designation FROM employee a,employee_desig b WHERE a.DesigId=b.DesigId AND a.EmpId =(SELECT LabAuthorityId FROM lab_master c WHERE c.LabCode=:LabCode LIMIT 1) AND a.IsActive=1";
 	@Override
 	public Object[] getLabDirectorData(String labcode) throws Exception {
 		try {
