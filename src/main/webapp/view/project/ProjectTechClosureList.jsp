@@ -170,7 +170,7 @@ font-weight: bold;
 		DocumentSummary=DocumentSummaryList.get(0);
 	}
 	
-	List<String> status = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TRC","TRV");
+	List<String> status = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TGD","TRV");
 
 	
 	Object[] PDData = (Object[])request.getAttribute("PDData");

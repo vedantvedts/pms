@@ -668,11 +668,9 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 					  <div class="card-body" style="margin-top: -8px" >
 					    <div class="row">	
 					        <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
-					          <div id="summernote" style="height: 500;">
-					                
-					           </div>
-					           
-					          
+					          <div id="summernote1" style="height: 500;"><%if(ChapterList != null && ChapterList.size()>0){ %> <%=ChapterList.get(0)[4] %><%} %></div>
+					          <div id="summernote" style="height: 500;display:none;"></div>
+					         
 					         
 					         <textarea name="ChapterContent" id="" style="display:none;"></textarea>
 					          <div class="mt-2" align="center" id="detailsSubmit">
@@ -898,7 +896,9 @@ function CloseButton(){
 // to show the existing sections list
 $(document).ready(function() {
 	
-    
+	
+	
+	
     $.ajax({
         type: 'GET',
         url: 'AddSection.htm', 
@@ -980,16 +980,7 @@ function SectionSubmit(){
 }
 
 function ChapterAdd(){
-	
-	/* if(confirm("Are you sure you want to submit?")){
-		
-		 $('#myForm2').submit();
-	    return true;
-	}else{
-	   event.preventDefault();
-	   return false;
-	  } */
-	
+
 	  var isChecked = $('input[name="SectionId"]:checked').length > 0;
 
 	    if (!isChecked) {
@@ -1037,6 +1028,7 @@ function moduleeditdisable(moduleid)
 	 $('#chapterid').val(b);
 	 $('#chapterids').val(b);
 	 $('#chaptername').val(a);
+	 $('#summernote1').hide();
 	 
 	
 	 
@@ -1193,6 +1185,11 @@ $('#summernote').summernote({
        tabsize: 2,
        height: 1000
      });
+     
+     
+<%-- var content = '<% if(ChapterList != null && ChapterList.size()>0){ %> <%=ChapterList.get(0)[4] %><%}%>';
+$('#summernote1').summernote('code', content); --%>
+//$('#summernote').hide();
 
  $('#myfrm1').submit(function() {
     

@@ -1390,8 +1390,6 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 					}else if(statusCodeNext.equalsIgnoreCase("TDG")) {
 						closure.setStatusCodeNext("TDG");
 						
-						
-						
 					}
 				}
 				dao.UpdateProjectClosureTechnical(closure);
@@ -1446,7 +1444,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			long PDEmpId = PD!=null?Long.parseLong(PD[1].toString()):0;
 			// Notification
 			PfmsNotification notification = new PfmsNotification();
-			if(action.equalsIgnoreCase("A")) {
+			if(action.equalsIgnoreCase("A") && statusCodeNext.equalsIgnoreCase("TDG")) {
 				notification.setEmpId(PDEmpId);
 				notification.setNotificationUrl("ProjectClosureList.htm");
 				notification.setNotificationMessage("Technical Closure request approved");

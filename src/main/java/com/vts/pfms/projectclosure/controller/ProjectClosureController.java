@@ -2713,7 +2713,7 @@ public class ProjectClosureController {
 			
 			long result = service.projectTechClosureApprovalForward(dto,req,res);
 			
-			List<String> forwardstatus = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TRC","TRV");
+			List<String> forwardstatus = Arrays.asList("TIN","TRG","TRA","TRP","TRD","TGD","TRV");
 			List<String> approvestatus = Arrays.asList("TAP","TAD");
 			
 			if(action.equalsIgnoreCase("A")) {

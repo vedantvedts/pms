@@ -484,15 +484,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 								    										</button>
 						 												</td>
 						 												<td style="text-align: center;width: 20%;">
-						 													
-<<<<<<< HEAD
-						 													
-																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[15]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
-=======
-						 													<input form="tcrpdf" type="hidden" name="TechClosureId" value="<%=form[15] %>" >
-																				<button form="tcrpdf" type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="ClosureId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
->>>>>>> branch 'master' of https://susant-vedts@bitbucket.org/susant-vedts/dgecs.git
-								   										            <i class="fa fa-download"></i>
+						 													<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[15]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+                                                                                         <i class="fa fa-download"></i>
 								   									             </button> 	
 																			
 						 												</td>
@@ -503,7 +496,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                  											</table>
                 										</div> 
                										</form>
-               										<form action="#" id="tcrpdf"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></form>
+               										
                										<form action="#" id="tcrtrans"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></form>
                									</div>
                								</div>
