@@ -4568,111 +4568,75 @@ public class PrintController {
 			 @RequestMapping(value = "DownloadSelectedSlides.htm/{ProjectIds}", method = RequestMethod.GET)
 
 			 public String SelectedFreezedSlidesInpdf(@PathVariable String[] ProjectIds,HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
-
-			 {
-				 String UserId = (String) ses.getAttribute("Username");
-				 String pathtopdf = "";
-
-				logger.info(new Date() +"Inside DownloadSelectedSlides.htm "+UserId);
-
-				 try {
-
-					 	List<Object[]> getAllProjectSlidedata = new ArrayList<>();
-
-					 	for (String id : ProjectIds) {System.out.println(id);
-
-						List<Object[]> getoneProjectSlidedata= service.GetAllProjectSildedata(id);
-
-						if(getoneProjectSlidedata.size()>0)
-
-							 for (Object[] objects : getoneProjectSlidedata) {
-
+			{
+				String UserId = (String) ses.getAttribute("Username");
+				String pathtopdf = "";
+		    	 String LabCode= (String) ses.getAttribute("labcode");
+				String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
+				
+		        Path uploadPath = Paths.get(Path);
+		        if (!Files.exists(uploadPath)) {
+		            Files.createDirectories(uploadPath);
+		        }
+				logger.info(new Date() + "Inside DownloadSelectedSlides.htm " + UserId);
+				try {
+					List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+					for (String id : ProjectIds) {
+						System.out.println(id);
+						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);
+						if (getoneProjectSlidedata.size() > 0)
+							for (Object[] objects : getoneProjectSlidedata) {
 								getAllProjectSlidedata.add(objects);
-
 							}
-					 	}
-
-					 	System.out.println("got slides data");
-					 	
-					 	Map<String,String> details = new HashMap<>();
-
-					 	String pathToPdf = PrintCoverSlide(details, req, redir, res, ses);
-					 	String pathToThankYou = "";
-
-						 String path=req.getServletContext().getRealPath("/view/temp");
-
-						 PDFMergerUtility utility = new PDFMergerUtility();
-
-						 utility.setDestinationFileName(path +File.separator+ "merged.pdf");
-
-						 File file = new File(pathToPdf);
-
-					        utility.addSource(file);
-
-						 for(Object[] obj : getAllProjectSlidedata)
-
-						 {
-							file = new File(ApplicationFilesDrive+ obj[1].toString()+obj[2].toString());
-
-					        utility.addSource(file);
-
-					        pathToThankYou=obj[1].toString();
-					        
-					        System.out.print(obj[2]+" ");
-
-						 }
-						 if(pathToThankYou.equals("")) {
-							 
-							 redir.addAttribute("resultfail","Selected slide has not been Freezed");
-							 redir.addAttribute("result",null);
-
-						 }
-						 
-						 pathToThankYou =ApplicationFilesDrive+ pathToThankYou+"SlideFreezeTHANKYOU.pdf";
-
-						 utility.addSource(pathToThankYou);
-
-						 utility.mergeDocuments();
-
-					        res.setContentType("application/pdf");
-
-					        res.setHeader("Content-disposition","attachment; filename=FreezedProjectSlides.pdf");
-
-					        File f=new File(path +File.separator+ "merged.pdf");
-
-
-
-						        OutputStream out = res.getOutputStream();
-
-								FileInputStream in = new FileInputStream(f);
-
-								byte[] buffer = new byte[4096];
-
-								int length;
-
-								while ((length = in.read(buffer)) > 0) {
-
-									out.write(buffer, 0, length);
-
-								}
-
-								in.close();
-
-								out.close();
-								System.out.println("coverslide done");
-								
-								 Files.delete(Paths.get(path +File.separator+ "merged.pdf"));
-							        pathtopdf = path +File.separator+ "merged.pdf";
-							        System.out.println("path to pdf "+pathtopdf);
-
+					}
+					Map<String, String> details = new HashMap<>();
+					String pathToPdf = PrintCoverSlide(details, req, redir, res, ses);
+					String pathToThankYou = "";
+					String path = req.getServletContext().getRealPath("/view/temp");
+					PDFMergerUtility utility = new PDFMergerUtility();
+					utility.setDestinationFileName(path + File.separator + "merged.pdf");
+					File file = new File(pathToPdf);
+					utility.addSource(file);
+					boolean flag = false;
+					for (Object[] obj : getAllProjectSlidedata) {
+						System.out.println(obj[2].toString());
+						file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
+						/*
+						 * if (file.exists()) utility.addSource(file); else flag = true;
+						 */
+						pathToThankYou = obj[1].toString();
+					}
+					System.out.println(pathToThankYou+"  "+flag);
+					if (pathToThankYou.equals("") || flag) {
+						redir.addAttribute("resultfail", "Selected slide has not been Freezed");
+						redir.addAttribute("result", null);
+						return "redirect:/MainDashBoard.htm";
+					}
+					pathToThankYou = ApplicationFilesDrive + pathToThankYou + "SlideFreezeTHANKYOU.pdf";
+					
+					utility.addSource(pathToThankYou);
+					utility.mergeDocuments();
+					res.setContentType("application/pdf");
+					res.setHeader("Content-disposition", "attachment; filename=FreezedProjectSlides.pdf");
+					File f = new File(path + File.separator + "merged.pdf");
+					OutputStream out = res.getOutputStream();
+					FileInputStream in = new FileInputStream(f);
+					byte[] buffer = new byte[4096];
+					int length;
+					while ((length = in.read(buffer)) > 0) {
+						out.write(buffer, 0, length);
+					}
+					in.close();
+					out.close();
+					System.out.println("coverslide done");
+					Files.delete(Paths.get(path + File.separator + "merged.pdf"));
+					pathtopdf = path + File.separator + "merged.pdf";
+					System.out.println("path to pdf " + pathtopdf);
 				} catch (Exception e) {
-
 					e.printStackTrace();
-
 				}
-				 return "";
-
-			 } 
+				return "";
+			} 
 			 
 			 @RequestMapping(value = "saveFavSlides.htm", method = RequestMethod.POST)
 			 public @ResponseBody String favoriteSlidesAddSubmit(HttpServletRequest req ,HttpSession ses, RedirectAttributes redir, HttpServletResponse res)throws Exception
