@@ -1007,4 +1007,13 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 		
 	}
+	
+	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
+	@Override
+	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
+		
+		Query query = manager.createNativeQuery(SPECLIST);
+		query.setParameter("specsInitiationId", specsInitiationId);
+				return (List<Object[]>)query.getResultList();
+	}
 }

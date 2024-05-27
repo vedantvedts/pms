@@ -79,6 +79,9 @@ import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
+import com.vts.pfms.requirements.model.Specification;
+import com.vts.pfms.requirements.model.SpecificationContent;
+import com.vts.pfms.requirements.model.TestPlanSummary;
 
 @Transactional
 @Repository
@@ -3916,6 +3919,43 @@ public class ProjectDaoImpl implements ProjectDao {
 			return new ArrayList<Object[]>();
 		}
 
+	}
+	
+	@Override
+	public long addSpecificationContents(SpecificationContent sc) throws Exception {
+		manager.persist(sc);
+		manager.flush();
+		return sc.getContentId();
+	}
+	
+	
+	private static final String SEPCCONTENTDETAILS=" SELECT ContentId,PointName,PointDetails FROM pfms_specifications_contents WHERE SpecsInitiationId=:SpecsInitiationId";
+	@Override
+	public List<Object[]> SpecContentsDetails(String specsInitiationId) throws Exception {
+		Query query = manager.createNativeQuery(SEPCCONTENTDETAILS);
+		query.setParameter("SpecsInitiationId", specsInitiationId);	
+		List<Object[]>SpecContentsDetails= new ArrayList<>();
+		SpecContentsDetails= (List<Object[]>)query.getResultList();
+		return SpecContentsDetails;
+	}
+	
+	@Override
+	public SpecificationContent getSpecificationContent(String contentid) throws Exception {
+		try {
+
+			return manager.find(SpecificationContent.class, Long.parseLong(contentid));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside DAO SpecificationContent " + e);
+			return null;
+		}
+	}
+	
+	@Override
+	public long addSpecification(Specification specs) throws Exception {
+		manager.persist(specs);
+		manager.flush();
+		return  specs.getSpecsId();
 	}
 }
 

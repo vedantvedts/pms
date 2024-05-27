@@ -14,6 +14,29 @@
 <link href="${StyleCSS}" rel="stylesheet" />
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
+
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+<spring:url value="/resources/font/summernote.woff" var="Summernotewoff" />
+<spring:url value="/resources/font/summernote.ttf" var="Summernotettf" />
+<spring:url value="/resources/font/summernote.eot" var="Summernoteeot" />
+
+
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
+<script src="${Summernotettf}"></script>
+<script src="${Summernotettf}"></script>
+<script src="${Summernoteeot}"></script>
+
+<style>
+.note-editing-area{
+
+   height:320px;
+} 
+.note-frame{
+margin-left:5%;
+}
+</style>
 </head>
 <body>
 	<%
@@ -34,6 +57,19 @@ Month months= d.getMonth();
 int years=d.getYear();
 Object[]LabList=(Object[])request.getAttribute("LabList");
 List<Object[]>TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
+
+List<Object[]>SpecContentsDetails =(List<Object[]>)request.getAttribute("SpecContentsDetails");
+List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
+String Conclusion = null;
+String ConclusionContenId= null;
+
+for(Object[]obj:SpecContentsDetails){
+	if(obj[1].toString().equalsIgnoreCase("Conclusion")){
+		Conclusion=obj[2].toString();
+		ConclusionContenId=obj[0].toString();
+	}
+}
+
 %>
 
 	<%String ses=(String)request.getParameter("result"); 
@@ -87,8 +123,11 @@ List<Object[]>TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmplo
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDocPDF()"><img alt="" src="view/images/pdf.png" >&nbsp;Specification Document</span> 
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
+		       				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSpecification()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Specification</span>
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
+				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showTestConclusionModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Conclusion</span>
+
 			</div>
 			
 				     	<div class="mt-2" id="reqdiv">
@@ -98,10 +137,10 @@ List<Object[]>TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmplo
 							<td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td>
 						</tr>
 						<tr>
-							<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Sub System Test Plan Document Template</span></td>
+							<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Segment Specifications Document</span></td>
 						</tr>
 						<tr >
-							<td class="text-primary">2.&nbsp; Type of Document:<span class="text-dark">System Sub System Test Plan Document</span></td>
+							<td class="text-primary">2.&nbsp; Type of Document:<span class="text-dark">System Segment Specifications Document</span></td>
 							<%-- <td class="text-primary">3.&nbsp; Classification: <span class="text-dark"><%=classification %></span></td> --%>
 							<td class="text-primary">3.&nbsp; Classification: <span class="text-dark"></span></td>
 						</tr>
@@ -369,6 +408,129 @@ List<Object[]>TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmplo
     		</div>
   		</div>
 	</div>
+	<form action="SpecificaionDetails.htm" method="get">
+	<button type="submit" style="display: none;" id="specId"></button>
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" /> <input type="hidden" name="projectId"
+			value="<%=projectId%>"> <input type="hidden"
+			name="initiationId" value="<%=initiationId%>"> <input
+			type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+		<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
+
+	</form>
+
+	<!-- Conclusion Starts  -->		
+	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="Conclusion">
+  		<div class="modal-dialog modal-dialog-jump modal-lg ">
+    		<div class="modal-content" style="width:137%;margin-left:-21%;">
+         		<div class="modal-header" id="ModalHeader">
+			        <h5 class="modal-title" id="exampleModalLabel"> Conclusion</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+      			</div>
+      			
+   				<div class="modal-body">
+   					<form action="SpecsContentSubmit.htm" method="post" id="Cform">
+			   			<div class="col-md-2">
+			   				<div class="row mt-2">
+			   				</div>
+			   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f"> Conclusion:</label>
+			   			</div>
+			   			  <div id="summernote" style="height: 500;">
+					                <%if(Conclusion!=null) {%> <%=Conclusion %> <%} %>
+					           </div>
+			   			
+   						<textarea name="Details" style="display: none;"  id="ConclusionDetails"></textarea>	
+   		
+   						<div class="mt-2" align="center">
+   						<%if(ConclusionContenId!=null && Conclusion!=null) {%>
+   						<button class="btn btn-sm btn-warning edit mt-2" name="Action" value="update" onclick="confirm ('Are you sure to submit?')">UPDATE </button>
+   						<input type="hidden" name="ContentId" value="<%=ConclusionContenId%>">
+   						<%}else{ %>
+   						  <button class="btn btn-sm btn-success submit mt-2" name="Action" value="Add" onclick="confirm ('Are you sure to submit?')">SUBMIT </button>
+   						
+   					<%} %>
+   							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+							<input type="hidden" name="projectId" value="<%=projectId%>">
+							<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+							<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
+							<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>"> 
+							<input type="hidden" id="attributes" name="attributes" value="Conclusion">
+						
+						</div>
+   					</form>
+  	 			</div>
+    		</div>
+  		</div>
+	</div>
+	
+		<!-- Modal  for Abbreviations-->
+	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="AbbreviationsModal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="width:135%;margin-left:-20%;">
+				<div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
+					<h5 class="modal-title" >Upload Abbreviations</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" class="text-light">&times;</span>
+			        </button>
+				</div>
+				<div class="modal-body">
+					<form action ="AbbreviationExcelUploads.htm" method="post" id="excelForm" enctype="multipart/form-data">
+				    	<div class="row">
+							<div class="col-md-8">
+								<input class="form-control" type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">						
+							</div>
+							<div class="col-md-4">
+								<span class="text-primary">Download format</span>
+								<button class="btn btn-sm" type="submit" name="Action" value="GenerateExcel" formaction="ExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-md-12">
+								<div style="overflow-y:auto" id="myDiv">
+									<table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" style="overflow: scroll;"> </table>
+								</div>
+							</div>
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+						<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+						<input type="hidden" name="projectId" value="<%=projectId%>">
+						<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+						<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
+						<input type="hidden" name="AbbType" value="T">					
+						<div align="center" class="mt-2" id="uploadDiv" style="display:none;">
+							<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
+						</div>
+					</form>
+					
+					<div id="ExistingAbb">
+					<table class="table table-bordered table-hover table-striped table-condensed" id="myTable2" style="width:100%;">
+							<thead>
+					            <tr>
+					                <td>SN</td>
+					                <td>Abbreviations</td>
+					                <td>Meaning</td>
+					            </tr>
+							</thead>
+							<%  int counter = 1; 
+								if (AbbreviationDetails != null) {
+									for (Object[] AbbDetails : AbbreviationDetails) {%>
+										<tr>
+								            <td><%= counter %></td>
+								            <td><%= AbbDetails[1] %></td>
+								            <td><%= AbbDetails[2] %></td>
+								        </tr>
+							<% counter++;}} %>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+	
 <Script>
 $(document).ready(function() {
 	$('#projectType').on('change', function() {
@@ -389,6 +551,185 @@ function showSentModal(){
 function showSummaryModal(){
 	$('#SummaryModal').modal('show');
 }
+
+function showTestConclusionModal() {
+    $('#Conclusion').modal('show');
+}
+
+$(document).ready(function() {
+	 $('#summernote').summernote({
+		  width: 900,   //don't use px
+		
+		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+		 
+	      lineHeights: ['0.5']
+	
+	 });
+
+$('#summernote').summernote({
+     
+      tabsize: 5,
+      height: 1000
+    });
+    
+});
+
+$('#Cform').submit(function() {
+    
+	  var codeee=$('#summernote').summernote('code');
+	  $('textarea[name=Details]').val($('#summernote').summernote('code'));
+});
+
+
+function showSpecification(){
+	$('#specId').click();
+}
+
+function showAbbreviations() {
+    $('#AbbreviationsModal').modal('show');
+}
+
+
+
+const excel_file = document.getElementById('excel_file');
+
+
+excel_file.addEventListener('change', (event) => {
+   
+	$('#ExistingAbb').hide();	
+	var reader = new FileReader();
+    reader.readAsArrayBuffer(event.target.files[0]);
+
+    reader.onload = function (event){
+    
+    	var data = new Uint8Array(reader.result);
+    	
+    	var work_book = XLSX.read(data, {type:'array'});
+    	
+    	 var sheet_name = work_book.SheetNames;
+    	
+    	var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]],{header:1});
+    	
+    	const code = [];
+    	const gname = [];
+    	const abbreviationname1 = [];
+    	var checkExcel = 0;
+    	
+    	if(sheet_data.length > 0){
+    		var table_output = '<table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" style="overflow: scroll;" > '
+    		
+    		table_output +='<thead><tr><th style=" text-align: center;width:10%;">SN</th><th style="text-align:center;width:30%;">Abbreviations</th><th style="text-align:center;">Meaning</th></tr>'
+    		
+	    		for(var row = 0; row < sheet_data.length ; row ++){
+    			table_output += '<tbody><tr>'
+    			
+    			if(row>0){
+    				table_output += '<td>'+row+'</td>';}
+    				for(var cell = 0; cell <3;cell++)
+    				{
+    					
+    					if(row==0){
+    						if(cell==1 && "Abbreviation" != sheet_data[row][cell]){  checkExcel++;}
+            				if(cell==2 && "Meaning" != sheet_data[row][cell]){  checkExcel++;}
+            				console.log(sheet_data[row][cell]+cell)
+            				
+            			}	
+    				
+    				if(row>0 && cell == 2){
+    			
+    					table_output+='<td>'+sheet_data[row][cell]+'</td>';
+    					var abbreviationnames = ""+sheet_data[row][cell]+"";
+    					
+    					if(abbreviationnames.trim().length>250){
+    						gname.push(row);
+    					}
+    					if(abbreviationnames.trim()=='' || abbreviationnames.trim()=='undefined'){abbreviationname1.push(row);}	
+    					
+    				}
+    				if(row>0 && cell == 1){
+    					table_output += '<td>'+sheet_data[row][cell]+'</td>' 
+    					var x = ""+sheet_data[row][cell]+"";
+    					
+    					if(x=='' ){
+    						code.push(row)
+    					}
+    				}
+    				
+    				}
+    		
+    			
+    		}  
+    		 table_output += '</tr> <tbody></table>';
+    		 
+    		 
+    		 
+    		if(checkExcel>0){
+    			$('#uploadDiv').hide();
+    			console.log(AbbreviationDetailsList+"---")
+    			alert("Please Upload  Abbreviation Excel ");
+     			excel_file.value = '';
+     			document.getElementById('myTable1').innerHTML = "";
+    		}
+    		else{
+    			
+		 var AbbreviationDetailsList=[<%int i=0; for (Object [] obj:AbbreviationDetails ) {%> "<%= obj[1] %>"<%= i+1 < AbbreviationDetails.size() ? ",":""%><%}%>];	
+		
+		var AbbreDetails = [];
+		
+		for(var i in sheet_data){
+			AbbreDetails.push(sheet_data[i][1]+"");
+		}
+		const duplicates = AbbreDetails.filter((item,index) => index !== AbbreDetails.indexOf(item));
+		const indexval = []             
+        for(var i in duplicates){
+         indexval.push(AbbreDetails.indexOf(duplicates[i]))
+         }
+		 var dbDuplicate = [];
+		 AbbreviationDetailsList.forEach(function (item){ 
+			 var isPresent = AbbreDetails.indexOf(item);
+        	  if(isPresent !== -1){
+        		  dbDuplicate.push(isPresent); 
+        	  }
+		 });
+			var msg=""
+			 if(indexval.length>0){
+	       	 msg+="Duplicate Abbreviation Existed in Excel file at Serial No :"+ indexval+"\n";
+	 		$('#uploadDiv').hide();
+			console.log(AbbreviationDetailsList+"---")
+			alert(msg);
+ 			excel_file.value = '';
+ 			document.getElementById('myTable1').innerHTML = "";
+			 }
+			 else if(dbDuplicate.length>0){
+		       	 msg+=" Abbreviation already Existed in Excel file at Serial No :"+ dbDuplicate+"\n";
+	    	 		$('#uploadDiv').hide();
+	    			console.log(AbbreviationDetailsList+"---")
+	    			alert(msg);
+	     			excel_file.value = '';
+	     			document.getElementById('myTable1').innerHTML = "";  
+			 }
+			 
+			 else{
+				 if(sheet_data.length>20){
+		    		 var myDiv = document.getElementById("myDiv");
+		    		  myDiv.style.height = "400px";
+		    } 
+			$('#uploadDiv').show();		    			
+    		document.getElementById('myTable1').innerHTML = table_output;
+	         }
+    		}
+    	}
+    
+    }});
+    
+    
+$(document).ready(function(){
+	 $("#myTable1").DataTable({
+	 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 5
+});
+});
 </Script>
 </body>
 </html>

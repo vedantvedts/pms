@@ -2746,5 +2746,94 @@ public class MilestoneController {
 			}
 		}
 	
-		
+		//prakarsh--------------------------------------------------------------------------------
+				@RequestMapping(value = "IsActive.htm", method = RequestMethod.GET)
+				public @ResponseBody  String SetIsActive(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+					String UserId = (String) ses.getAttribute("Username");
+					logger.info(new Date() +"Inside IsActive.htm "+UserId);	
+					try {
+						String project=req.getParameter("Project");
+			           String FileParentId=req.getParameter("FileParentId");
+			           
+			           
+			           String flag=req.getParameter("Flag");
+			          
+			           if(flag.equalsIgnoreCase("B")) {
+					   service.IsActive(project, FileParentId);
+			           }else if(flag.equalsIgnoreCase("A")) {
+			        	int count=   service.IsFileInActive(project,FileParentId);
+			        	   service.IsActive(project, FileParentId);
+			           }
+					}catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+					Gson json = new Gson();
+					return json.toJson(1);
+				}
+				
+				
+			//ajax call controller
+				@RequestMapping(value = "IsActive1.htm", method = RequestMethod.GET)
+				public @ResponseBody String DocumentLinkList(HttpServletRequest req,HttpSession ses) throws Exception
+				{
+					String UserId = (String)ses.getAttribute("Username");
+					logger.info(new Date() +" Inside ExternalEmployeeListInvitations.htm"+ UserId);
+					String project=req.getParameter("Project");
+		             String FileParentId=req.getParameter("FileParentId");
+					
+					List<Object[]> DocumentLinkList = new ArrayList<Object[]>();
+					
+		            DocumentLinkList = service.FileRepUploadId(project,FileParentId);
+		            req.setAttribute("FileRepUploadId", DocumentLinkList);
+		            Gson json = new Gson();
+					return json.toJson(DocumentLinkList);	
+				}
+			
+				//document lsit edit controller
+				@RequestMapping(value = "DocumentListNameEdit.htm", method = RequestMethod.GET)
+				public String DocumentListNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+					String UserId = (String) ses.getAttribute("Username");
+					logger.info(new Date() +"Inside ProjectModuleNameEdit.htm "+UserId);		
+					try {
+					
+			          	String filerepmasterid = req.getParameter("filerepmasterid");
+			          	System.out.println("filerepmasterid--"+filerepmasterid);
+			          	String levelname = req.getParameter("levelname").trim();
+			          	System.out.println("levelname---"+levelname);
+						int count = service.DocumentListNameEdit(filerepmasterid, levelname);
+			
+						if (count > 0) {
+							redir.addAttribute("result", "Module Name Updated  Successfuly.");
+						} else {
+							redir.addAttribute("resultfail", "Module Name Update Unsuccessful");
+						}
+						
+						redir.addFlashAttribute("formname", req.getParameter("formname"));
+						redir.addFlashAttribute("projectid", req.getParameter("projectid"));
+						return "redirect:/FileListInRepo.htm";
+					}
+					catch (Exception e) 
+					{
+						e.printStackTrace();  
+						logger.error(new Date() +" Inside ProjectModuleNameEdit.htm "+UserId, e); 
+						return "static/Error";
+					}
+				}
+				
+			//filedownlaod avaialable check controller
+				@RequestMapping(value = "FileRepoSize.htm", method = RequestMethod.GET)
+				public @ResponseBody String FileDownloadAvailable(HttpServletRequest req,HttpSession ses) throws Exception
+				{
+					String UserId = (String)ses.getAttribute("Username");
+					logger.info(new Date() +" Inside FileDownloadAvailable.htm"+ UserId);
+					String repmasterid=req.getParameter("FileRepMasterId");
+				
+					List<Object[]> DocsData= service.RepMasterAllDocLists(repmasterid);
+		             
+					int DocsDatasize=DocsData.size();
+		            Gson json = new Gson();
+					return json.toJson(DocsDatasize);	
+				}	
+			
 }

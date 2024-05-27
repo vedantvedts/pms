@@ -4909,15 +4909,11 @@ $projectid=value;
 				
 				/********************************************** Milestone ****************************************************/
 
-				Highcharts.chart('containerh2', {
-				    chart: {
-				        type: 'pie',
-				        options3d: {
-				            enabled: true,
-				            alpha: 45
-				        },
-				        height: (12 / 16 * 100) + '%' 
-				    },
+			 Highcharts.chart('containerh2', {
+					 chart: {
+					        type: 'variablepie',
+					        height: (12 / 16 * 100) + '%' 
+					    },
 				    exporting: {
 				        buttons: {
 				          contextButton: {
@@ -4943,28 +4939,42 @@ $projectid=value;
 				    subtitle: {
 				        text: ''
 				    },
-				    plotOptions: {
-				        pie: {
-				            innerSize: 100,
-				            depth: 15
-				        }
-				    },
+				  
 				    colors: [
-				        '#ffc107',
-				        '#dc3545',
-				        '#28a745'
+				    	'#28a745',
+				    	'#dc3545',
+				    	'#ffc107'
 				    ],
-				    series: [{
-				        name: 'Milestone',
-				        data: miletsonedata(),
-				    
+				    tooltip: {
+				        headerFormat: '',
+				        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' 
+				        
+				    },
+				 series: [{
+				        minPointSize: 10,
+				        innerSize: '20%',
+				        zMin: 0,
+				        
+				      data: [{
+				            name: 'Completed('+(parseInt(values[8]))+')',
+				            y: parseInt(values[8]),
+				            z: 118.7
+				        }, {
+				            name: 'Delayed('+(parseInt(values[7]))+')',
+				            y: parseInt(values[7]),
+				            z: 124.6
+				        }, {
+				            name: 'Pending('+(parseInt(values[6]))+')',
+				            y: parseInt(values[6]),
+				            z: 137.5
+				        }, ]   
 				    }],
 				    credits: {
 				        enabled: false
 				    },
 				});
-				
-				function miletsonedata(){
+				 
+			/*  function miletsonedata(){
 					let miletsonedata=[];
 					
 					if(parseInt(values[9])>0){
@@ -4975,12 +4985,13 @@ $projectid=value;
 				            ]
 					}
 					
-					return miletsonedata;
-				}
+					return miletsonedata; 
+			 }  */
+				
 
 				/********************************************** Action ****************************************************/
 
-				Highcharts.chart('containerh3', {
+			/* 	Highcharts.chart('containerh3', {
 				    chart: {
 				        type: 'pie',
 				        options3d: {
@@ -5049,8 +5060,79 @@ $projectid=value;
 					}
 					
 					return actiondata;
-				}
+				} */
 				
+			 	 Highcharts.chart('containerh3', {
+					 chart: {
+					        type: 'variablepie',
+					        height: (12 / 16 * 100) + '%' 
+					    },
+				    exporting: {
+				        buttons: {
+				          contextButton: {
+				            menuItems: [
+				              'printChart',
+				              'downloadPNG',
+				              'downloadJPEG',
+				              'downloadPDF',
+				              'downloadCSV',
+				              'downloadXLS',
+				              'viewData'
+				            ]
+				          }
+				        }
+
+				      },
+				    title: {
+				        text: 'Action',
+				        style : {
+				        	fontWeight: 'bold'
+				        }
+				    },
+				    subtitle: {
+				        text: ''
+				    },
+				  
+				    colors: [
+				    	'#ffc107',
+				        '#dc3545',
+				        '#28a745',
+				        '#007bff'
+				    ],
+				    tooltip: {
+				        headerFormat: '',
+				        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' 
+				        
+				    },
+				 series: [{
+				        minPointSize: 10,
+				        innerSize: '20%',
+				        zMin: 0,
+				        
+				      data: [{
+				            name: 'Pending('+parseInt(values[11])+')',
+				            y: parseInt(values[11]),
+				            z: 137.5
+				        },
+				        {
+				            name: 'Delayed('+parseInt(values[13])+')',
+				            y: parseInt(values[13]),
+				            z: 124.6
+				        },
+				    	  {
+				            name: 'Completed('+parseInt(values[14])+')',
+				            y: parseInt(values[14]),
+				            z: 118.7
+				        }, {
+				            name: 'Forwarded('+parseInt(values[12])+')',
+				            y: parseInt(values[12]),
+				            z: 124.6
+				        },  ]   
+				    }],
+				    credits: {
+				        enabled: false
+				    },
+				}); 
 				/*************************************************************** Risk *****************************************************  */
 
 				Highcharts.chart('containerh4', {

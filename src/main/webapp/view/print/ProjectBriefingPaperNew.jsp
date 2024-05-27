@@ -1805,6 +1805,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 															<td style="text-align: center" rowspan="1">
 															<%	String actionstatus = obj[15].toString();
 																	LocalDate pdcorg = LocalDate.parse(obj[9].toString());
+																	LocalDate enddate = LocalDate.parse(obj[17].toString());
 																	LocalDate lastdate = obj[20]!=null ? LocalDate.parse(obj[20].toString()): null;
 																	LocalDate today = LocalDate.now();
 																	int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
@@ -1821,8 +1822,12 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 																	<br>
 															
 															
-																<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
-																<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
+																<%-- <% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
+																<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %> --%>
+																<%if(!pdcorg.equals(enddate)) {%>
+																<%=sdf.format(sdf1.parse(obj[17].toString()))%>
+																<%} %>
+																
 																<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 															</td>
 															
@@ -2987,6 +2992,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 													<span style="color:green;">		<%	String actionstatus = obj[9].toString();
 															int progress = obj[16]!=null ? Integer.parseInt(obj[16].toString()) : 0;
 															LocalDate pdcorg = LocalDate.parse(obj[3].toString());
+															LocalDate endDate = LocalDate.parse(obj[4].toString());
 															LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
 															LocalDate today = LocalDate.now();
 													%> 
@@ -3001,8 +3007,11 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 													<%} %>
 												
 												<br></span>
-													<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
-													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+													<%-- <% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
+													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %> --%>
+													<%if(!pdcorg.equals(endDate)){ %>
+													<%=sdf.format(sdf1.parse(obj[4].toString()))%><br>
+													<%} %>
 													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
 

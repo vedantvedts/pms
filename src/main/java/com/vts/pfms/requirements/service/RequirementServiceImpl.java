@@ -431,7 +431,8 @@ public class RequirementServiceImpl implements RequirementService {
 					  							  .InitiationId(Long.parseLong(initiationId))
 					  							  .ProjectId(Long.parseLong(projectId))
 					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
-					  							  .ReqVersion(version!=null?version:"1")
+					  							  .ReqVersion(version!=null?version:"1.0")
+					  							  .Remarks(remarks)
 					  							  .InitiatedBy(Long.parseLong(empId))
 					  							  .InitiatedDate(sdf2.format(new Date()))
 					  							  .ReqStatusCode("RIN")
@@ -1059,4 +1060,9 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.getFirstVersionReqInitiationId(initiationId, projectId, productTreeMainId);
 	}
 
+	@Override
+	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.getSpecsList(specsInitiationId);
+	}
 }

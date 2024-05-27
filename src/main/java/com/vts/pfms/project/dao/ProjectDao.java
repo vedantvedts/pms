@@ -58,6 +58,8 @@ import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
+import com.vts.pfms.requirements.model.Specification;
+import com.vts.pfms.requirements.model.SpecificationContent;
 
 public interface ProjectDao {
 
@@ -370,5 +372,9 @@ public interface ProjectDao {
 	
 	//specification
 	public List<Object[]> initiationSpecList(String projectId, String mainId, String initiationId)throws Exception;
+	public long addSpecificationContents(SpecificationContent sc) throws Exception;
+	public List<Object[]> SpecContentsDetails(String specsInitiationId) throws Exception;
+	public SpecificationContent getSpecificationContent(String contentid) throws Exception;
+	public long addSpecification(Specification specs) throws Exception;
 
 }

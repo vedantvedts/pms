@@ -79,4 +79,11 @@ public interface MilestoneService {
 	public int MilestoneRemarkUpdate(MilestoneActivityDto dto)throws Exception;
 	public int MileActivityAssignCheck(MilestoneActivityDto dto)throws Exception;
 	public long MainMilestoneDOCUpdate(String MainId, String DateOfCompletion, String UserId) throws Exception;
+
+
+	//prakarsh 
+	public void  IsActive(String project, String FileParentId);
+	public List<Object[]> FileRepUploadId(String project,String FileParentId);
+	public int IsFileInActive(String project, String fileParentId);
+	public int DocumentListNameEdit(String filerepmasterid, String levelname);
 }

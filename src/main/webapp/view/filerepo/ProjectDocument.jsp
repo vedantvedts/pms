@@ -265,7 +265,12 @@ if(ses1!=null){
 																				</span>
 																			</span>
 																			<span>
-																			
+																			<!-- prakarsh -------------------------------------------------------->
+																			<%if(obj2[5].equals("1")){ %>
+																	 	<button name="FileParentId"   type="button" id="activeButton"   class="btnx"  style="color: red;border:0px;background-color:white;font-size:16px;" formaction="IsActive.htm" value="<%=obj2[0]%>_<%=obj2[1]%>_<%=projectid%>">
+																	 	   <i class="fa fa-times" aria-hidden="true"></i></button> 
+																	 	<input type="hidden" name="projectid" value="<%=projectid%>">
+																	<%} %>
 																			
 																				<%-- <button type="button" class="btn"  style="background-color: transparent;margin: -5px 0px;"  >                    
 																					<i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i>
@@ -388,6 +393,77 @@ $(ele).css("color", "green");
 $(ele).css("font-weight", "700");
 
 }
+/* prakarsh ------------------------------------------------------------------------------------------------------*/
+
+$('.btnx').click(function () {
+        	
+        	  var $FileParentId = $(this).val();
+	       
+         $.ajax({
+                url: 'IsActive1.htm', 
+                type:'GET',
+                data:{
+                	FileParentId:$FileParentId,
+                	Project:<%=projectid%>
+                	
+                },
+                datatype : 'json',
+               success: function (result) {
+            	   var FileRepUploadId = JSON.parse(result);
+            	   
+                  if (FileRepUploadId.length > 0) {
+                    	
+                        if (confirm('Some documents is linked with this are you sure to delete?')) {
+                        
+                        	$.ajax({
+                                url: 'IsActive.htm', 
+                                type:'GET',
+                                data:{
+                                	FileParentId:$FileParentId,
+                                	Project:<%=projectid%>,
+                                	Flag:'A'
+                                	
+                                },
+                                datatype : 'json',
+                                success: function (result) {
+                                	var r = JSON.parse(result);
+                                	if(r==1){
+                                		alert("deleted successfully");
+                                		 window.location.reload();
+                                	}
+                                }
+                               
+                        	})
+                        }
+                    } else {
+                    	if(confirm('Are you sure to delete?')){
+                    			$.ajax({
+                                url: 'IsActive.htm', 
+                                type:'GET',
+                                data:{
+                                	FileParentId:$FileParentId,
+                                	Project:<%=projectid%>,
+                                	Flag:'B'
+                                	
+                                },
+                                datatype : 'json',
+                                success: function (result) {
+                                	var r = JSON.parse(result);
+                                	if(r==1){
+                                		alert("deleted successfully");
+                                		 window.location.reload();
+                                	}
+                                }
+                        	})
+                    	}
+                    }
+                },
+                error: function () {
+                    
+                    console.error('Error occurred during AJAX call');
+                }
+            });
+        });
 
 
 </script>

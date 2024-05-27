@@ -55,6 +55,8 @@ import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
+import com.vts.pfms.requirements.model.Specification;
+import com.vts.pfms.requirements.model.SpecificationContent;
 
 public interface ProjectService {
 
@@ -349,6 +351,10 @@ public interface ProjectService {
 	
 	//specification
 	public List<Object[]> initiationSpecList(String projectId, String productTreeMainId, String initiationId) throws Exception;
+	public long addSpecificationContents(SpecificationContent sc) throws Exception;
+	public List<Object[]> SpecContentsDetails(String specsInitiationId) throws Exception;
+	public SpecificationContent getSpecificationContent(String parameter) throws Exception;
+	public long addSpecification(Specification specs) throws Exception;
 	
 	
 }

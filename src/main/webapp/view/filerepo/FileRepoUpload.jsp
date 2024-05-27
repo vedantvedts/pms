@@ -925,12 +925,35 @@ function AmendZipFileDownload(fileid1)
 	$('#amendfileidzip').val(fileid1);
 	$('#amendzipdownload').submit();
 } 
-function batchdownload(fileid1)
+/* function batchdownload(fileid1)
 { 
 	$('#filerepmasterid').val(fileid1);
 	$('#batchdownloadform').submit();
-}
-
+} */
+function batchdownload(fileid1)
+{ 
+	$('#filerepmasterid').val(fileid1);
+	
+	
+	$.ajax({
+		url:'FileRepoSize.htm',
+		type:'GET',
+		data:{
+        	FileRepMasterId:fileid1,
+        },
+        datatype : 'json',
+        success: function (result) {
+        	 var DocsSize = JSON.parse(result);
+        	 console.log("DocsSize---"+DocsSize)
+        	 if(DocsSize>0){
+        		 
+        		 $('#batchdownloadform').submit(); 
+        	 }else{
+        		 alert("No file linked with this ")
+        	 }
+	}
+	
+})}
 function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
 	
 	var modelhead=project+'  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+m;

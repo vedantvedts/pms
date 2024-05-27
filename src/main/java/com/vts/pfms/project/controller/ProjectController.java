@@ -122,6 +122,8 @@ import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.Specification;
+import com.vts.pfms.requirements.model.SpecificationContent;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.service.RequirementService;
@@ -396,6 +398,8 @@ public class ProjectController
 			if(!reqInitiationId.equals("0")) {
 				reqInitiation = reqService.getRequirementInitiationById(reqInitiationId);
 				initiationId = reqInitiation.getInitiationId().toString();
+				
+				reqInitiationId = reqService.getFirstVersionReqInitiationId(initiationId, "0", "0")+"";
 			}else {
 				initiationId = req.getParameter("initiationId");
 			}
@@ -1423,7 +1427,7 @@ public class ProjectController
 			if(productTreeMainId==null) productTreeMainId="0";
 			
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 			ProjectSqrFile psf= new ProjectSqrFile();
 			psf.setUser(req.getParameter("users"));
@@ -3251,7 +3255,7 @@ public class ProjectController
 			}
 
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 			
 			RequirementparaModel rpm= new RequirementparaModel();
@@ -3603,7 +3607,7 @@ public class ProjectController
 			}
 
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling("0",projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling("0",projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 			
 			Object[]RequirementInto=service.RequirementIntro(reqInitiationId);
@@ -7963,7 +7967,7 @@ public class ProjectController
 			if(productTreeMainId==null) productTreeMainId="0";
 			
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 			
 			RequirementVerification rv = new RequirementVerification();
@@ -8315,7 +8319,7 @@ public class ProjectController
 					if(productTreeMainId==null)productTreeMainId="0";
 
 					if(reqInitiationId.equals("0") ) {					
-						reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+						reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 					}
 					
 					for (int i=1;i<=rowCount;i++) {
@@ -8699,7 +8703,7 @@ public class ProjectController
 						if(productTreeMainId==null) productTreeMainId="0";
 						
 						if(reqInitiationId.equals("0") ) {					
-							reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+							reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 						}
 						
 						for(int i=1;i<=rowCount;i++) {
@@ -8983,7 +8987,7 @@ public class ProjectController
 						if(productTreeMainId==null) productTreeMainId="0";
 
 						if(reqInitiationId.equals("0") ) {					
-							reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+							reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 						}
 						
 						for(int i=1;i<=rowCount;i++) {
@@ -9151,7 +9155,7 @@ public class ProjectController
 			}
 
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 //			re.setInitiationId(Long.parseLong(initiationid));//bharath
 //			re.setProjectId(Long.parseLong(ProjectId));
@@ -9273,7 +9277,7 @@ public class ProjectController
 			}
 
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 			
 			RequirementMembers rm = new RequirementMembers();
@@ -9404,7 +9408,7 @@ public class ProjectController
 			
 
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 
 			RequirementSummary rs = new RequirementSummary();
@@ -9556,7 +9560,8 @@ public class ProjectController
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
 			req.setAttribute("MemberList", reqService.DocMemberList("0", SpecsInitiationId));
 			req.setAttribute("EmployeeList", service.EmployeeList1(LabCode,"0",SpecsInitiationId));
-
+			req.setAttribute("SpecContentsDetails", service.SpecContentsDetails(SpecsInitiationId));
+			req.setAttribute("AbbreviationDetails",reqService.AbbreviationDetails("0", SpecsInitiationId));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -9632,8 +9637,165 @@ public class ProjectController
 	}
 	
 	
-	
+	@RequestMapping(value="SpecsContentSubmit.htm",method=RequestMethod.POST)
+	public String SpecsContentSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside SpecsContentSubmit.htm "+UserId);
+		try {
+			
+			String initiationId  = req.getParameter("initiationId");
+			String projectId =req.getParameter("projectId");
+			String productTreeMainId =req.getParameter("productTreeMainId");
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			if(initiationId==null) initiationId="0";
+			if(projectId==null) projectId="0";	
+			if(productTreeMainId==null) productTreeMainId="0";	
+			
+			if(SpecsInitiationId.equals("0") ) {					
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+			}
+			String action = req.getParameter("Action");
+			
+			SpecificationContent sc = action!=null&& action.equalsIgnoreCase("Add")?  new SpecificationContent():service.getSpecificationContent(req.getParameter("ContentId"))  ;
+			sc.setPointName(req.getParameter("attributes"));
+			sc.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
+			sc.setPointDetails(req.getParameter("Details"));
+			sc.setIsActive(1);
+			
+			long count =0l;
+			if(action.equalsIgnoreCase("ADD")) {
+				sc.setCreatedBy(UserId);
+				sc.setCreatedDate(sdf1.format(new Date()));
+				
+				}
+				else if(action.equalsIgnoreCase("Edit")) {
+				
+				sc.setContentId(Long.parseLong(req.getParameter("ContentId")));
+				sc.setModifiedBy(UserId);
+				sc.setModifiedDate(sdf1.format(new Date()));
+			}
+			count = service.addSpecificationContents(sc);
+			if(count>0){
+				redir.addAttribute("result","Specification Conclusion "+action+"ed successfully ");
+			}else{
+				redir.addAttribute("resultfail","Specification Conclusion "+action+" unsuccessful ");
+			}
+
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+			return "redirect:/ProjectSpecificationDetails.htm";
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+		return null;
+	}
+	
+	@RequestMapping(value="SpecificaionDetails.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	public String TestDetails(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) {
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside SpecificaionDetails "+UserId);
+		try {
+			String initiationId  = req.getParameter("initiationId");
+			String projectId =req.getParameter("projectId");
+			String productTreeMainId =req.getParameter("productTreeMainId");
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
+			req.setAttribute("SpecsInitiationId", SpecsInitiationId);
+			List<Object[]>RequirementList=new ArrayList<>();
+			
+			List<Object[]>initiationReqList = reqService.initiationReqList(projectId, productTreeMainId,initiationId );
+			String reqInitiationId=null;
+			if(initiationReqList!=null && initiationReqList.size()>0) {
+				reqInitiationId=initiationReqList.get(0)[0].toString();
+				RequirementList=reqService.RequirementList(reqInitiationId);
+			}
+			req.setAttribute("RequirementList", RequirementList);
+			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return "requirements/SpecsDetails";
+	}
+	
+	@RequestMapping(value="specificationAdd.htm",method=RequestMethod.POST)
+	public String specificationAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside specificationAdd.htm "+UserId);
+		try {
+			
+			String initiationId  = req.getParameter("initiationId");
+			String projectId =req.getParameter("projectId");
+			String productTreeMainId =req.getParameter("productTreeMainId");
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			if(initiationId==null) initiationId="0";
+			if(projectId==null) projectId="0";	
+			if(productTreeMainId==null) productTreeMainId="0";	
+			
+			if(SpecsInitiationId.equals("0") ) {					
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+			}
+			
+			String linkedRequirements="";
+			if(req.getParameterValues("linkedRequirements")!=null) {
+				String []linkedreq= req.getParameterValues("linkedRequirements");
+
+				for(int i=0;i<linkedreq.length;i++) {
+					linkedRequirements=linkedRequirements+linkedreq[i];
+					if(i!=linkedreq.length-1) {
+						linkedRequirements=linkedRequirements+",";
+					}
+				}
+			}
+			Specification specs= new Specification();
+			
+			specs.setLinkedRequirement(linkedRequirements);
+			specs.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
+			specs.setDescription(req.getParameter("description"));
+			specs.setCreatedBy(UserId);
+			specs.setCreatedDate(sdf1.format(new Date()));
+			specs.setIsActive(1);
+			long count = service.addSpecification(specs);
+			
+			if(count>0){
+				redir.addAttribute("result","Specification added successfully ");
+			}else{
+				redir.addAttribute("resultfail","Specification add unsuccessful ");
+			}
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+			return "redirect:/SpecificaionDetails.htm";
+			
+		}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+		
+		return null;
+		}
+	
+	
+	
+	
 	//package com.vts.pfms.project.controller;
 
 	//import java.io.ByteArrayInputStream;

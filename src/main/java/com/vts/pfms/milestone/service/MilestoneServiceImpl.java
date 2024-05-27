@@ -1515,4 +1515,38 @@ public class MilestoneServiceImpl implements MilestoneService {
 		return dao.MileActivityDetailsUpdtae(mainms);
 	}
 	
+	//PRAKARSH 
+	
+	  @Override
+	  public void IsActive(String project, String FileParentId) {
+	
+        ///List<Object[]>FileRepUploadId=dao.FileRepUploadId(project);
+      int  fileUploadMasterId=Integer.parseInt(FileParentId.split("_")[0]); //int
+   	int parentLevelid=Integer.parseInt(FileParentId.split("_")[1]); //
+   	
+   	  dao.isActive(project,fileUploadMasterId,parentLevelid);
+
+	  }
+
+	@Override
+	public List<Object[]> FileRepUploadId(String project,String FileParentId) {
+		int  documentID=Integer.parseInt(FileParentId.split("_")[0]);
+       List<Object[]>FileRepUploadId=dao.FileRepUploadId(project,documentID);
+       
+		  return FileRepUploadId;
+	}
+	//change file isActive to zero---
+	 public int IsFileInActive(String project, String FileParentId) {
+		 int  documentID=Integer.parseInt(FileParentId.split("_")[0]);
+	   int count=	dao.IsFileInActive(project,documentID);
+	   return count;
+		 
+	 }
+
+	@Override
+	public int DocumentListNameEdit(String filerepmasterid, String levelname) {
+		
+		return dao.DocumentListNameEdit(filerepmasterid,levelname);
+	}
+	
 }

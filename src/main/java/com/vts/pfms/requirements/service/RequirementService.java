@@ -130,6 +130,8 @@ public interface RequirementService {
 
 	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,String empId, String userId) throws Exception;
 
+	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception;
+
 
 
 	

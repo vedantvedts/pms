@@ -254,7 +254,7 @@ FormatConverter fc = new FormatConverter();
 				<div class="card shadow-nohover" style="margin-top: -0.6pc">
 					<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 						<div <%if(projectType.equalsIgnoreCase("M")){ %> class="col-md-3" <%} else{%> class="col-md-4" <%} %> id="projecthead" align="left">
-							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Requirements </h5>
+							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Specifications </h5>
 						</div>
 						<div class="col-md-2">
             				<label class="control-label ml-4" style="font-weight: bolder;font-size: 15px;float:right;color:#07689f;">Project Type</label>
@@ -400,7 +400,7 @@ FormatConverter fc = new FormatConverter();
 													
 												<%} %>
 												
-												<button class="editable-clicko" formaction="" formtarget="blank" >
+											<!-- 	<button class="editable-clicko" formaction="" formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -420,7 +420,7 @@ FormatConverter fc = new FormatConverter();
 															<span>Document</span>
 														</div>
 													</div>
-												</button>
+												</button> -->
 													
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="projectType" value="<%=projectType %>">

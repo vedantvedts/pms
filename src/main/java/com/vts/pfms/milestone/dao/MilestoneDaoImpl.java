@@ -101,7 +101,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String MILELEVEL="FROM MilestoneActivityLevel WHERE  ParentActivityId=:Id AND ActivityLevelId=:LevelId";
 	private static final String DOCUMENTTYPELIST="SELECT fdm.fileuploadmasterid,fdm.parentlevelid,fdm.levelid,fdm.levelname,fdm.docshortname,'1' AS 'added' FROM file_doc_master fdm, file_project_doc fpd WHERE fdm.isactive=1 AND fpd.fileuploadmasterid=fdm.fileuploadmasterid AND fpd.projectid=:projectid AND LabCode=:LabCode UNION SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docshortname,'0' AS 'added' FROM file_doc_master WHERE isactive=1  AND LabCode=:LabCode AND  fileuploadmasterid NOT IN (SELECT fileuploadmasterid FROM file_project_doc WHERE projectid=:projectid  AND LabCode=:LabCode ) ORDER BY 1 ";
 	private static final String DOCUMENTTITLELIST="CALL Pfms_FileRepo_Doc (:projectid,:sub,:LabCode)";
-	private static final String VERSIONCHECKLIST="SELECT b.filerepuploadid,b.filenameui,b.ReleaseDoc,b.filerepid, b.versionDoc FROM file_rep_new a,file_rep_upload b WHERE a.projectid=:projectid AND  a.subl1=:subsysteml1 AND a.documentid=:documenttitle  AND a.filerepid=b.filerepid ORDER BY b.filerepuploadid DESC LIMIT 1 "; 
+	//private static final String VERSIONCHECKLIST="SELECT b.filerepuploadid,b.filenameui,b.ReleaseDoc,b.filerepid, b.versionDoc FROM file_rep_new a,file_rep_upload b WHERE a.projectid=:projectid AND  a.subl1=:subsysteml1 AND a.documentid=:documenttitle  AND a.filerepid=b.filerepid ORDER BY b.filerepuploadid DESC LIMIT 1 "; 
+	private static final String VERSIONCHECKLIST="SELECT b.filerepuploadid,b.filenameui,b.ReleaseDoc,b.filerepid, b.versionDoc FROM file_rep_new a,file_rep_upload b WHERE a.projectid=:projectid AND  a.subl1=:subsysteml1 AND a.documentid=:documenttitle  AND a.filerepid=b.filerepid AND a.IsActive=1 AND b.IsActive=1 ORDER BY b.filerepuploadid DESC LIMIT 1 ";  // prakash Change
 	private static final String DOCUMENTSTAGELIST="SELECT a.fileuploadmasterid,a.parentlevelid,a.levelid,a.levelname FROM file_doc_master a WHERE a.isactive=1 AND a.levelid=:levelid AND a.parentlevelid=:documenttype";
 	private static final String FILEHISTORYLIST="SELECT fru.filerepuploadid,frn.filerepid,fdm.docid,fdm.levelname,fru.versiondoc,fru.releasedoc,CAST(DATE_FORMAT(fru.createddate,'%d-%m-%Y') AS CHAR) AS 'createddate' FROM  file_rep_new frn,file_rep_upload fru,file_doc_master fdm WHERE frn.filerepid=fru.filerepid AND frn.documentid=fdm.fileuploadmasterid AND frn.filerepid=:filerepid ORDER BY fru.versiondoc DESC,fru.releasedoc DESC ";
 	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid AND LabCode=:LabCode ORDER BY parentlevelid ";
@@ -1110,5 +1111,49 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		manager.flush();
 		return mainmile.getMilestoneActivityId();
 	}
+	//prakarsh--------------------------------------------------------------------
+		private static final String isActive="DELETE FROM file_project_doc WHERE Projectid=:Projectid  AND FileUploadMasterId=:FileUploadMasterId  AND ParentLevelid=:ParentLevelid";
+		@Override
+		public void isActive(String project, int fileUploadMasterId, int parentLevelid) {
+			// TODO Auto-generated method stub
+			Query query=manager.createNativeQuery(isActive);
+		
+			query.setParameter("Projectid", project);
+			query.setParameter("FileUploadMasterId", fileUploadMasterId);
+			query.setParameter("ParentLevelid", parentLevelid);
+			query.executeUpdate();
+		}
+		private static final String FileRepUploadId="SELECT FileRepUploadId FROM file_rep_upload WHERE FileRepId IN (SELECT FileRepId FROM file_rep_new WHERE FileRepMasterId IN (SELECT FileRepMasterId FROM file_rep_master WHERE ProjectId=:project AND IsActive=1)  AND DocumentId=:documentID AND IsActive=1) AND IsActive=1 ";
+	    @Override
+		public List<Object[]> FileRepUploadId(String project, int documentID) {
+			
+			Query query=manager.createNativeQuery(FileRepUploadId);
+			query.setParameter("project", project);
+			query.setParameter("documentID", documentID);
+			List<Object[]>FileRepUploadId=query.getResultList();
 
+			return FileRepUploadId;	
+		}
+		private static final String IsFileInActive="UPDATE file_rep_upload JOIN file_rep_new ON file_rep_upload.FileRepId = file_rep_new.FileRepId SET file_rep_upload.IsActive = 0,file_rep_new.IsActive = 0 WHERE file_rep_new.FileRepMasterId IN (SELECT FileRepMasterId FROM file_rep_master   WHERE ProjectId =:project AND IsActive = 1)AND file_rep_new.DocumentId = :documentID AND file_rep_new.IsActive=1 ";
+				
+		@Override
+		public int IsFileInActive(String project, int documentID) {
+			Query query=manager.createNativeQuery(IsFileInActive);
+			
+			query.setParameter("project", project);
+			query.setParameter("documentID", documentID);
+		  int count=query.executeUpdate();
+		  return count;
+		}
+		private static final String DocumentListNameEdit="UPDATE file_doc_master SET LevelName =:levelname WHERE FileUploadMasterId =:filerepmasterid";
+		@Override
+		public int DocumentListNameEdit(String filerepmasterid, String levelname) {
+			Query query=manager.createNativeQuery(DocumentListNameEdit);
+			query.setParameter("filerepmasterid", filerepmasterid);
+			query.setParameter("levelname", levelname);
+		  int count=query.executeUpdate();
+			return count;
+		}
+		
+		
 }

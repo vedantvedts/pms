@@ -101,6 +101,8 @@ import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.requirements.dao.RequirementDao;
+import com.vts.pfms.requirements.model.Specification;
+import com.vts.pfms.requirements.model.SpecificationContent;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -3390,5 +3392,26 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		public List<Object[]> initiationSpecList(String projectId, String mainId, String initiationId) throws Exception {
 			
 			return dao.initiationSpecList(projectId, mainId, initiationId);
+		}
+		
+		@Override
+		public long addSpecificationContents(SpecificationContent sc) throws Exception {
+			return dao.addSpecificationContents(sc);
+		}
+		
+		@Override
+		public List<Object[]> SpecContentsDetails(String specsInitiationId) throws Exception {
+			
+			return dao.SpecContentsDetails(specsInitiationId);
+		}
+		@Override
+		public SpecificationContent getSpecificationContent(String contentid) throws Exception {
+			return dao.getSpecificationContent(contentid);
+		}
+		
+		@Override
+		public long addSpecification(Specification specs) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.addSpecification(specs);
 		}
 }

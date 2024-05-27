@@ -112,5 +112,10 @@ public interface MilestoneDao {
 	public int MilestoneRemarkUpdate(MilestoneActivityDto dto)throws Exception;
 	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname, String LabCode) throws Exception;
 	public long MileActivityDetailsUpdtae(com.vts.pfms.milestone.model.MilestoneActivity mainmile) throws Exception;
-
+	
+	//prakarsh 
+	public void isActive(String project, int fileUploadMasterId, int parentLevelid);
+	public List<Object[]> FileRepUploadId(String project , int documentID);
+	public int IsFileInActive(String project, int documentID);
+	public int DocumentListNameEdit(String filerepmasterid, String levelname);
 }
