@@ -428,7 +428,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="reqInitiationId" value="<%=form[4]%>"> 
 																				<span id="downloadform">
-																					<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="RequirementDocumentDownlodPdf.htm"
+																					<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" <%if(form[10]!=null && ("RFA".equalsIgnoreCase(form[10].toString()) ||  "RAM".equalsIgnoreCase(form[10].toString()))) {%>formaction="RequirementDocumentDownlodPdfFreeze.htm"<%}else {%>formaction="RequirementDocumentDownlodPdf.htm"<%} %> 
 																						data-toggle="tooltip" data-placement="top" title="" data-original-title="Requirement Document">
 																						<i class="fa fa-download fa-lg" aria-hidden="true"></i>
 																					</button>
@@ -491,7 +491,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
 																				<span id="downloadform">
-																					<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="TestPlanDownlodPdf.htm"
+																					<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" <%if(form[10]!=null && ("RFA".equalsIgnoreCase(form[10].toString()) ||  "RAM".equalsIgnoreCase(form[10].toString()))) {%>formaction="TestPlanDownlodPdfFreeze.htm"<%}else {%>formaction="TestPlanDownlodPdf.htm"<%} %>
 																						data-toggle="tooltip" data-placement="top" title="" data-original-title="Test Plan Document">
 																						<i class="fa fa-download fa-lg" aria-hidden="true"></i>
 																					</button>

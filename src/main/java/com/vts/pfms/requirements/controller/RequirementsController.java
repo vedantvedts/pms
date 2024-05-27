@@ -1,5 +1,6 @@
 package com.vts.pfms.requirements.controller;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -62,6 +63,7 @@ import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
@@ -108,10 +110,13 @@ public class RequirementsController {
 
 			String projectType = req.getParameter("projectType");
 			projectType = projectType!=null?projectType:"M";
+			String initiationId = "0";
+			String projectId = "0";
+			String productTreeMainId = "0";
 			if(projectType.equalsIgnoreCase("M")) {
-				String projectId=req.getParameter("projectId");
-				String productTreeMainId = req.getParameter("productTreeMainId");
-
+				
+				projectId=req.getParameter("projectId");
+				productTreeMainId = req.getParameter("productTreeMainId");
 				List<Object[]> projectList = projectservice.LoginProjectDetailsList(EmpId,LoginType,LabCode);
 				projectId = projectId!=null?projectId: (projectList.size()>0?projectList.get(0)[0].toString():"0");
 
@@ -125,7 +130,7 @@ public class RequirementsController {
 				req.setAttribute("productTreeMainId", productTreeMainId);
 				req.setAttribute("initiationReqList", service.initiationReqList(projectId, productTreeMainId, "0"));
 			}else {
-				String initiationId = req.getParameter("initiationId");
+				initiationId = req.getParameter("initiationId");
 				List<Object[]> preProjectList = service.getPreProjectList(LoginType, LabCode, EmpId);
 				initiationId = initiationId!=null?initiationId: (preProjectList.size()>0?preProjectList.get(0)[0].toString():"0");
 				req.setAttribute("preProjectList", preProjectList);
@@ -134,7 +139,7 @@ public class RequirementsController {
 			}
 
 			req.setAttribute("projectType", projectType);
-
+			req.setAttribute("requirementApprovalFlowData", service.getRequirementApprovalFlowData(initiationId, projectId, productTreeMainId));
 
 		}catch (Exception e) {
 			e.printStackTrace(); 
@@ -165,13 +170,17 @@ public class RequirementsController {
 				initiationId = reqInitiation.getInitiationId().toString();
 				productTreeMainId = reqInitiation.getProductTreeMainId().toString();
 				projectType = projectId.equals("0")?"I":"M";
+				
+				reqInitiationId = service.getFirstVersionReqInitiationId(initiationId, projectId, productTreeMainId)+"";
 			}else {
 				projectType = req.getParameter("projectType");
 				projectId = req.getParameter("projectId");
 				initiationId = req.getParameter("initiationId");
 				productTreeMainId = req.getParameter("productTreeMainId");
 
-				initiationId = initiationId!=null?initiationId:"0";
+				initiationId = initiationId!=null && !initiationId.isEmpty() ?initiationId:"0";
+				projectId = projectId!=null && !projectId.isEmpty() ?projectId:"0";
+				productTreeMainId = productTreeMainId!=null && !productTreeMainId.isEmpty() ?productTreeMainId:"0";
 			}
 
 			projectType = projectType==null?(projectId.equals("0")?"I":"M"):projectType;
@@ -541,9 +550,13 @@ public class RequirementsController {
 
 			String projectType = req.getParameter("projectType");
 			projectType = projectType!=null?projectType:"M";
+			
+			String initiationId = "0";
+			String projectId = "0";
+			String productTreeMainId = "0";
 			if(projectType.equalsIgnoreCase("M")) {
-				String projectId=req.getParameter("projectId");
-				String productTreeMainId = req.getParameter("productTreeMainId");
+				projectId=req.getParameter("projectId");
+				productTreeMainId = req.getParameter("productTreeMainId");
 
 				List<Object[]> projectList = projectservice.LoginProjectDetailsList(EmpId,LoginType,LabCode);
 				projectId = projectId!=null?projectId: (projectList.size()>0?projectList.get(0)[0].toString():"0");
@@ -558,7 +571,7 @@ public class RequirementsController {
 				req.setAttribute("productTreeMainId", productTreeMainId);
 				req.setAttribute("initiationTestPlanList", service.initiationTestPlanList(projectId, productTreeMainId, "0"));
 			}else {
-				String initiationId = req.getParameter("initiationId");
+				initiationId = req.getParameter("initiationId");
 				List<Object[]> preProjectList = service.getPreProjectList(LoginType, LabCode, EmpId);
 				initiationId = initiationId!=null?initiationId: (preProjectList.size()>0?preProjectList.get(0)[0].toString():"0");
 				req.setAttribute("preProjectList", preProjectList);
@@ -568,6 +581,7 @@ public class RequirementsController {
 
 			req.setAttribute("projectType", projectType);
 
+			req.setAttribute("testPlanApprovalFlowData", service.getTestPlanApprovalFlowData(initiationId, projectId, productTreeMainId));
 
 		}catch (Exception e) {
 			e.printStackTrace(); 
@@ -598,6 +612,8 @@ public class RequirementsController {
 				initiationId = testPlanInitiation.getInitiationId().toString();
 				productTreeMainId = testPlanInitiation.getProductTreeMainId().toString();
 				projectType = projectId.equals("0")?"I":"M";
+				
+				testPlanInitiationId = service.getFirstVersionTestPlanInitiationId(initiationId, projectId, productTreeMainId)+"";
 			}else {
 				projectType = req.getParameter("projectType");
 				projectId = req.getParameter("projectId");
@@ -608,8 +624,6 @@ public class RequirementsController {
 				projectId = projectId!=null && !projectId.isEmpty() ?projectId:"0";
 				productTreeMainId = productTreeMainId!=null && !productTreeMainId.isEmpty() ?productTreeMainId:"0";
 			}
-			
-			System.out.println("projectId: "+projectId+"initiationId:"+initiationId);
 			
 			projectType = projectType==null?(projectId.equals("0")?"I":"M"):projectType;
 			
@@ -684,7 +698,7 @@ public class RequirementsController {
 					int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
 
 					if(testPlanInitiationId.equals("0") ) {					
-						testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+						testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
 					}
 					
 					for (int i=1;i<=rowCount;i++) {
@@ -776,7 +790,7 @@ public class RequirementsController {
 			
 			if(SpecsInitiationId==null) {
 			if(testPlanInitiationId.equals("0") ) {					
-				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
 			}
 			}
 			if(testPlanInitiationId==null) {
@@ -855,7 +869,7 @@ public class RequirementsController {
 			if(productTreeMainId==null) productTreeMainId="0";
 
 			if(testPlanInitiationId.equals("0") ) {					
-				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
 			}
 			
 			String attributes=req.getParameter("attributes");
@@ -918,6 +932,9 @@ public class RequirementsController {
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 			
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			
+			TestPlanInitiation testPlanInitiation = service.getTestPlanInitiationById(testPlanInitiationId);
+			testPlanInitiationId = service.getFirstVersionTestPlanInitiationId( testPlanInitiation.getInitiationId()+"", testPlanInitiation.getProjectId()+"", testPlanInitiation.getProductTreeMainId()+"")+"";
 			
 			String filename="ProjectRequirement";
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -1065,7 +1082,7 @@ public class RequirementsController {
 			if(productTreeMainId==null) productTreeMainId="0";	
 			
 			if(testPlanInitiationId.equals("0") ) {					
-				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
 			}
 			
 			String action = req.getParameter("action");
@@ -1130,7 +1147,7 @@ public class RequirementsController {
 			if(productTreeMainId==null) productTreeMainId="0";
 
 			if(testPlanInitiationId.equals("0") ) {					
-				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
 			}
 			
 			TestApproach rs = new TestApproach();
@@ -1181,7 +1198,7 @@ public class RequirementsController {
 			if(productTreeMainId==null) productTreeMainId="0";
 
 			if(testPlanInitiationId.equals("0") ) {					
-				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
 			}
 			
 			String attributes=req.getParameter("attributes");
@@ -1258,7 +1275,7 @@ public class RequirementsController {
 			if(productTreeMainId==null) productTreeMainId="0";
 
 			if(testPlanInitiationId.equals("0") ) {					
-				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
 			}
 			
 			String attributes=req.getParameter("attributes");
@@ -1616,7 +1633,7 @@ public class RequirementsController {
 				productTreeMainId="0";
 			}
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(service.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(service.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 			long count =0l;
 			List<String>values=Arrays.asList(selectedValues.split(","));
@@ -1820,7 +1837,7 @@ public class RequirementsController {
 			}
 
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(service.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(service.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 
 			PfmsInititationRequirement pir = new PfmsInititationRequirement();
@@ -2026,7 +2043,7 @@ public class RequirementsController {
 			if(productTreeMainId==null)productTreeMainId="0";
 
 			if(reqInitiationId.equals("0") ) {					
-				reqInitiationId = Long.toString(service.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				reqInitiationId = Long.toString(service.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
 
 			List<ReqDoc>list= new ArrayList<>();
@@ -2196,7 +2213,7 @@ public class RequirementsController {
 	}
 
 	@RequestMapping(value="ProjectRequirementApprovalSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String projectRequirementApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+	public String projectRequirementApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir, HttpServletResponse resp) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -2213,6 +2230,11 @@ public class RequirementsController {
 
 			long result = service.projectRequirementApprovalForward(reqInitiationId,action,remarks,EmpId,labcode,UserId);
 
+			if(result!=0 && reqInitiation.getReqStatusCode().equalsIgnoreCase("RFA") && reqInitiation.getReqStatusCodeNext().equalsIgnoreCase("RAM")) {
+				// Pdf Freeze
+				service.requirementPdfFreeze(req, resp, reqInitiationId, labcode);
+			}
+			
 			if(action.equalsIgnoreCase("A")) {
 				if(reqforwardstatus.contains(reqStatusCode)) {
 					if(result!=0) {
@@ -2344,7 +2366,7 @@ public class RequirementsController {
 			if(productTreeMainId==null) productTreeMainId="0";
 
 			if(testPlanInitiationId.equals("0") ) {					
-				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
 			}
 			
 			String action = req.getParameter("action");
@@ -2606,23 +2628,23 @@ public class RequirementsController {
 	}
 	
 	//		
-	/* Requirement Pdf */
+	/* Test Plan Pdf */
 	@RequestMapping(value = "TestPlanDownlodPdf.htm" )
 	public void TestPlanDocumentDownlodPdf(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String ) ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside TestPlanDownlodtDocumenpdftDownlod.htm "+UserId);
+		logger.info(new Date() +"Inside TestPlanDownlodPdf.htm "+UserId);
 		try {
 			Object[] DocTempAttributes =null;
 			DocTempAttributes=projectservice.DocTempAttributes();
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
 			
-			TestPlanInitiation reqini = service.getTestPlanInitiationById(testPlanInitiationId);
-			Object[] projectDetails = projectservice.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
+			TestPlanInitiation ini = service.getTestPlanInitiationById(testPlanInitiationId);
+			testPlanInitiationId = service.getFirstVersionTestPlanInitiationId(ini.getInitiationId()+"", ini.getProjectId()+"", ini.getProductTreeMainId()+"")+"";
+			Object[] projectDetails = projectservice.getProjectDetails(LabCode, ini.getInitiationId()!=0?ini.getInitiationId()+"":ini.getProjectId()+"", ini.getInitiationId()!=0?"P":"E");
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
-			
 			
 			String filename="TestPlan";
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -2702,7 +2724,7 @@ public class RequirementsController {
 	}
 
 	@RequestMapping(value="ProjectTestPlanApprovalSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String projectTestPlanApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+	public String projectTestPlanApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir, HttpServletResponse resp) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -2719,6 +2741,11 @@ public class RequirementsController {
 
 			long result = service.projectTestPlanApprovalForward(testPlanInitiationId,action,remarks,EmpId,labcode,UserId);
 
+			if(result!=0 && testplan.getReqStatusCode().equalsIgnoreCase("RFA") && testplan.getReqStatusCodeNext().equalsIgnoreCase("RAM")) {
+				// Pdf Freeze
+				service.testPlanPdfFreeze(req, resp, testPlanInitiationId, labcode);
+			}
+			
 			if(action.equalsIgnoreCase("A")) {
 				if(reqforwardstatus.contains(reqStatusCode)) {
 					if(result!=0) {
@@ -2764,4 +2791,145 @@ public class RequirementsController {
 		}
 	}
 
+	@RequestMapping(value="ProjectTestPlanAmendSubmit.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String projectTestPlanAmendSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside ProjectTestPlanAmendSubmit.htm"+UserId);
+		try {
+			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			String amendversion = req.getParameter("amendversion");
+			String remarks = req.getParameter("remarks");
+
+			TestPlanInitiation testplan = service.getTestPlanInitiationById(testPlanInitiationId);
+			
+			service.projectTestPlanApprovalForward(testPlanInitiationId, "A", remarks, EmpId, labcode, UserId);
+			
+			long result = service.testPlanInitiationAddHandling(testplan.getInitiationId()+"", testplan.getProjectId()+"", testplan.getProductTreeMainId()+"", EmpId, UserId, amendversion, remarks);
+			
+			if(result!=0) {
+				redir.addAttribute("result","Test Plan Amended Successfully");
+			}else {
+				redir.addAttribute("resultfail","Test Plan Amend Unsuccessful");
+			}
+			redir.addAttribute("testPlanInitiationId", result);
+//			redir.addAttribute("projectType", testplan.getInitiationId()!=0?"I":"M");
+//			redir.addAttribute("initiationId", testplan.getInitiationId());
+//			redir.addAttribute("projectId", testplan.getProjectId());
+//			redir.addAttribute("productTreeMainId", testplan.getProductTreeMainId());
+			
+			return "redirect:/ProjectTestPlanDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside ProjectTestPlanAmendSubmit.htm "+UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="TestPlanDownlodPdfFreeze.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void testPlanDownlodPdfFreeze(HttpServletRequest req, HttpSession ses, HttpServletResponse res, HttpServletResponse resp) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside TestPlanDownlodPdfFreeze.htm "+UserId);		
+		try {
+			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			
+			DocumentFreeze freeze = service.getDocumentFreezeByDocIdandDocType(testPlanInitiationId, "T");
+			
+			if(freeze!=null && freeze.getPdfFilePath()==null) {
+				service.testPlanPdfFreeze(req, resp, testPlanInitiationId, labcode);
+			}
+			
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition", "inline;filename= TestPlan.pdf");
+			File f = new File(uploadpath + File.separator + freeze.getPdfFilePath());
+			FileInputStream fis = new FileInputStream(f);
+			DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			res.setHeader("Content-Length", String.valueOf(f.length()));
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) >= 0) {
+				os.write(buffer, 0, len);
+			}
+			os.close();
+			fis.close();	
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside TestPlanDownlodPdfFreeze.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+	
+	@RequestMapping(value="RequirementDocumentDownlodPdfFreeze.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void requirementDocumentDownlodPdfFreeze(HttpServletRequest req, HttpSession ses, HttpServletResponse res, HttpServletResponse resp) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside RequirementDocumentDownlodPdfFreeze.htm "+UserId);		
+		try {
+			String reqInitiationId = req.getParameter("reqInitiationId");
+			
+			DocumentFreeze freeze = service.getDocumentFreezeByDocIdandDocType(reqInitiationId, "T");
+			
+			if(freeze!=null && freeze.getPdfFilePath()==null) {
+				service.requirementPdfFreeze(req, resp, reqInitiationId, labcode);
+			}
+			
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition", "inline;filename= Requirement.pdf");
+			File f = new File(uploadpath + File.separator + freeze.getPdfFilePath());
+			FileInputStream fis = new FileInputStream(f);
+			DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			res.setHeader("Content-Length", String.valueOf(f.length()));
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) >= 0) {
+				os.write(buffer, 0, len);
+			}
+			os.close();
+			fis.close();	
+			
+		}
+		catch(Exception e) {	    		
+			logger.error(new Date() +" Inside RequirementDocumentDownlodPdfFreeze.htm "+UserId, e);
+			e.printStackTrace();
+		}		
+	}
+
+	@RequestMapping(value="ProjectRequirementAmendSubmit.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String projectRequirementAmendSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside ProjectRequirementAmendSubmit.htm"+UserId);
+		try {
+			String reqInitiationId = req.getParameter("reqInitiationId");
+			String amendversion = req.getParameter("amendversion");
+			String remarks = req.getParameter("remarks");
+
+			RequirementInitiation testplan = service.getRequirementInitiationById(reqInitiationId);
+			
+			service.projectRequirementApprovalForward(reqInitiationId, "A", remarks, EmpId, labcode, UserId);
+			
+			long result = service.requirementInitiationAddHandling(testplan.getInitiationId()+"", testplan.getProjectId()+"", testplan.getProductTreeMainId()+"", EmpId, UserId, amendversion, remarks);
+			
+			if(result!=0) {
+				redir.addAttribute("result","Requirement Amended Successfully");
+			}else {
+				redir.addAttribute("resultfail","Requirement Amend Unsuccessful");
+			}
+			redir.addAttribute("reqInitiationId", result);
+//			redir.addAttribute("projectType", testplan.getInitiationId()!=0?"I":"M");
+//			redir.addAttribute("initiationId", testplan.getInitiationId());
+//			redir.addAttribute("projectId", testplan.getProjectId());
+//			redir.addAttribute("productTreeMainId", testplan.getProductTreeMainId());
+			
+			return "redirect:/ProjectRequirementDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside ProjectRequirementAmendSubmit.htm "+UserId, e);
+			return "static/Error";
+		}
+	}
 }

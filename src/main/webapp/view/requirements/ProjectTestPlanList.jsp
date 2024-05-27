@@ -185,17 +185,15 @@ background: none;border-style: none;
 	background-color: #4B0082;
 }
 
-.trup {
-	padding: 5px 10px 0px 10px;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
+.trup{
+	padding:6px 10px 6px 10px ;			
+	border-radius: 5px;
 	font-size: 14px;
 	font-weight: 600;
 }
-
-.trdown {
-	padding: 0px 10px 5px 10px;
-	border-bottom-left-radius: 5px;
+.trdown{
+	padding:0px 10px 5px 10px ;			
+	border-bottom-left-radius : 5px; 
 	border-bottom-right-radius: 5px;
 	font-size: 14px;
 	font-weight: 600;
@@ -211,8 +209,77 @@ background: none;border-style: none;
   z-index: 5;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
+
+.modal-dialog-jump {
+  animation: jumpIn 1.5s ease;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 </style>
 
+<style>
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: green;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-switch .label {
+            margin-left: 10px;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
 <%
@@ -224,6 +291,7 @@ List<Object[]> ProjectList = (List<Object[]>) request.getAttribute("ProjectList"
 List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
 List<Object[]> productTreeList = (List<Object[]>) request.getAttribute("productTreeList");
 List<Object[]> initiationTestPlanList = (List<Object[]>) request.getAttribute("initiationTestPlanList");
+Object[] testPlanApproval = (Object[]) request.getAttribute("testPlanApprovalFlowData");
 
 List<String> testplanforwardstatus = Arrays.asList("RIN","RRR","RRA");
 
@@ -401,7 +469,7 @@ FormatConverter fc = new FormatConverter();
 													
 												<%} %>
 												<%if(obj[9]!=null && "RFA".equalsIgnoreCase(obj[9].toString()) ) {%>
-													<button type="submit" class="editable-clicko" formaction="" data-toggle="tooltip" data-placement="top" title="Amend" onclick="return confirm('Are You Sure To Amend this Document?');">
+													<button type="button" class="editable-clicko" data-placement="top" title="Amend" data-toggle="modal" data-target="#myModal" onclick="setversiondata('<%=obj[8]%>','<%=obj[0]%>')">
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -412,7 +480,7 @@ FormatConverter fc = new FormatConverter();
 														</div>
 													</button>
 												<%} %>
-												<button class="editable-clicko" formaction="TestDocumentDownlod.htm" formtarget="blank" >
+												<button class="editable-clicko" <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="#"<%}else {%>formaction="TestDocumentDownlod.htm"<%} %> formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -423,7 +491,7 @@ FormatConverter fc = new FormatConverter();
 													</div>
 												</button>
 												
-												<button class="editable-clicko" formaction="TestPlanDownlodPdf.htm" formtarget="blank" >
+												<button class="editable-clicko" <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="TestPlanDownlodPdfFreeze.htm"<%}else {%>formaction="TestPlanDownlodPdf.htm"<%} %> formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -451,7 +519,7 @@ FormatConverter fc = new FormatConverter();
 	                    <div style="text-align: center;">
 	                    	<form action="ProjectTestPlanDetails.htm" id="myform" method="post">
 	                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="addRequirementCheck()" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Add Test Plan v1</button>
+	                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="addRequirementCheck()" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Add Test Plan v1.0</button>
 	                        	<input type="hidden" name="projectType" id="projectType11" value="<%=projectType %>">
 	                        	<input type="hidden" name="projectId" id="projectId11" value="<%=projectId %>">
 	                        	<input type="hidden" name="initiationId" id="initiationId11" value="<%=initiationId %>">
@@ -460,6 +528,98 @@ FormatConverter fc = new FormatConverter();
 	                 		</form>
 	                    </div>
 	                    <%} %>
+	                    
+	                    <div class="row">
+		 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Test Plan</b></div>
+		 	    		</div>
+		    			<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+		           			<table align="center"  >
+		        				<tr>
+		        					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+		         						Prepared By - <%if(testPlanApproval!=null) {%><%=testPlanApproval[0] %> <%} else{%>Prepared By<%} %>
+		         					</td>
+		             		
+		                    		<td rowspan="2">
+		             					<i class="fa fa-long-arrow-right " aria-hidden="true" style="font-size: 20px;"></i>
+		             				</td>
+		             						
+		        					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+		        						Reviewer - <%if(testPlanApproval!=null) {%><%=testPlanApproval[1] %> <%} else{%>Reviewer<%} %>
+		        	    			</td>
+		             	    				
+		                    		<td rowspan="2">
+		             					<i class="fa fa-long-arrow-right " aria-hidden="true" style="font-size: 20px;"></i>
+		             				</td>
+		             						
+		             				<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
+		             					Approver - <%if(testPlanApproval!=null) {%><%=testPlanApproval[2] %> <%} else{%>Approver<%} %>
+		             	    		</td>
+		            			</tr> 	
+		            	    </table>			             
+						</div>
+						
+						<form action="ProjectTestPlanAmendSubmit.htm" method="post">
+			                <div class="container">
+								
+								<!-- The Modal -->
+								<div class="modal" id="myModal" style="margin-top: 10%;">
+							 		<div class="modal-dialog">
+							 			<div class="modal-dialog modal-dialog-jump modal-lg modal-dialog-centered">
+								    		<div class="modal-content">
+								     
+								        		<!-- Modal Header -->
+								        		<div class="modal-header">
+								          			<h4 class="modal-title" style="color: #0587f9">Amend Document</h4>
+								          			<button type="button" class="close" data-dismiss="modal">&times;</button>
+								        		</div>
+								        		<!-- Modal body -->
+								        		<div class="modal-body">
+								        			<div class="form-inline">
+								        				<div class="form-group w-50">
+								        					<label class="form-label" style="font-size: 14px;">
+								        						Current Version : &nbsp;<span id="currentversion" style="color: green;"></span>
+								        					</label>
+								        				</div>
+								        				<div class="form-group w-50">
+								        					<label class="form-label" style="font-size: 14px;">Is New Version?</label>
+								        					&nbsp;
+								               				<label class="toggle-switch">
+														        <input type="checkbox" id="toggleSwitch" name="isNewVersion">
+														        <span class="slider"></span>
+														        <span class="label" id="toggleLabel">OFF</span>
+    														</label>
+								      					</div>
+								      				</div>
+								      				
+								      				<div class="form-inline mt-2">
+								      					<div class="form-group w-100">
+								        					<label class="form-label" style="font-size: 14px;">
+								        						Remarks :
+								        					</label>
+								        				</div>
+								      				</div>
+								      				<div class="form-inline">
+								      					<div class="form-group w-100">
+								        					<input type="text" class="w-100" name="remarks" maxlength="255" style="border-left: 0; border-top: 0; border-right: 0;">
+								        				</div>
+								      				</div>
+								      			</div>
+								      
+								        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								        		<input type="hidden" name="testPlanInitiationId" id="testPlanInitiationIdAmend">
+								        		<input type="hidden" name="amendversion" id="amendversion">
+								        		<!-- Modal footer -->
+								        		<div class="modal-footer" style="justify-content: center;">
+								        			<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Amend?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">
+								        				Add Test Plan <span id="amendversiondisplay"></span>
+								        			</button>
+								       			</div>
+								      		</div>
+							    		</div>
+							  		</div>
+							  	</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -534,5 +694,31 @@ function addRequirementCheck(){
 	}
 }
 </script>	
+
+<script>
+    $('#toggleSwitch').change(function() {
+        var version = parseFloat($('#currentversion').text());
+        if (this.checked) {
+            $('#toggleLabel').text('ON');
+            $('#amendversiondisplay').text('v' + (version + 1).toFixed(1)); // Increment by 1
+            $('#amendversion').val((version + 1).toFixed(1)); // Increment by 1
+        } else {
+            $('#toggleLabel').text('OFF');
+            $('#amendversiondisplay').text('v' + (version + 0.1).toFixed(1)); // Increment by 0.1
+            $('#amendversion').val((version + 0.1).toFixed(1)); // Increment by 0.1
+        }
+    });
+    
+    function setversiondata(version, testPlanInitiationId) {
+        console.log(version);
+        document.getElementById('currentversion').textContent = version;
+        // Set the initial value of amendversiondisplay based on the toggle state
+        var initialValue = $('#toggleSwitch').is(':checked') ? parseFloat(version) + 1 : parseFloat(version) + 0.1;
+        $('#amendversiondisplay').text('v' + initialValue.toFixed(1));
+        $('#amendversion').val(initialValue.toFixed(1));
+        $('#testPlanInitiationIdAmend').val(testPlanInitiationId);
+    }
+</script>
+
 </body>
 </html>

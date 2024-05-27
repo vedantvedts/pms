@@ -29,7 +29,8 @@ public class TestPlanInitiation  implements Serializable{
 	private Long ProjectId;
 	private Long InitiationId;
 	private Long ProductTreeMainId;
-	private int TestPlanVersion;
+	private String TestPlanVersion;
+	private String Remarks;
 	private Long InitiatedBy;
 	private String InitiatedDate;
 	private String ReqStatusCode;

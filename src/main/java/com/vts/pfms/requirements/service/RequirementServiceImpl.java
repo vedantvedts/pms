@@ -1,5 +1,8 @@
 package com.vts.pfms.requirements.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -14,6 +17,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +27,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
@@ -31,6 +39,7 @@ import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.requirements.dao.RequirementDao;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
@@ -42,6 +51,7 @@ import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 @Service
 public class RequirementServiceImpl implements RequirementService {
@@ -63,7 +73,9 @@ public class RequirementServiceImpl implements RequirementService {
 	@Autowired
 	RequirementDao dao;
 	
-
+	@Autowired
+	PMSLogoUtil LogoUtil;
+	
 	@Autowired
 	ProjectDao prodao;
 	
@@ -227,6 +239,7 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	@Override
 	public List<Object[]> GetTestContentList(String testPlanInitiationId) throws Exception {
+		
 		return dao.GetTestContentList(testPlanInitiationId);
 	}
 	@Override
@@ -412,13 +425,13 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	@Override
-	public Long requirementInitiationAddHandling(String initiationId,String projectId, String productTreeMainId,String empId, String username) throws Exception {
+	public Long requirementInitiationAddHandling(String initiationId, String projectId, String productTreeMainId, String empId,String username, String version, String remarks) throws Exception {
 		try {
 			RequirementInitiation reqInitiation = RequirementInitiation.builder()
 					  							  .InitiationId(Long.parseLong(initiationId))
 					  							  .ProjectId(Long.parseLong(projectId))
 					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
-					  							  .ReqVersion(1)
+					  							  .ReqVersion(version!=null?version:"1")
 					  							  .InitiatedBy(Long.parseLong(empId))
 					  							  .InitiatedDate(sdf2.format(new Date()))
 					  							  .ReqStatusCode("RIN")
@@ -485,7 +498,9 @@ public class RequirementServiceImpl implements RequirementService {
 					if(reqStatusCodeNext.equalsIgnoreCase("RFR")) {
 						req.setReqStatusCodeNext("RFA");
 					}else if(reqStatusCodeNext.equalsIgnoreCase("RFA")) {
-						req.setReqStatusCodeNext("RFA");
+						req.setReqStatusCodeNext("RAM");
+					}else if(reqStatusCodeNext.equalsIgnoreCase("RAM")) {
+						req.setReqStatusCodeNext("RAM");
 					}
 				}
 			}
@@ -659,14 +674,16 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	// Bharath changes end
+	
 	@Override
-	public Long testPlanInitiationAddHandling(String initiationId,String projectId, String productTreeMainId,String empId, String username) throws Exception {
+	public Long testPlanInitiationAddHandling(String initiationId,String projectId, String productTreeMainId,String empId, String username, String version, String remarks) throws Exception {
 		try {
 			TestPlanInitiation testplanInitiation = TestPlanInitiation.builder()
 					  							  .InitiationId(Long.parseLong(initiationId))
 					  							  .ProjectId(Long.parseLong(projectId))
 					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
-					  							  .TestPlanVersion(1)
+					  							  .TestPlanVersion(version!=null?version:"1")
+					  							  .Remarks(remarks)
 					  							  .InitiatedBy(Long.parseLong(empId))
 					  							  .InitiatedDate(sdf2.format(new Date()))
 					  							  .ReqStatusCode("RIN")
@@ -686,8 +703,6 @@ public class RequirementServiceImpl implements RequirementService {
 			return 0L;
 		}
 	}
-	
-	
 	
 	@Override
 	public TestPlanSummary getTestPlanSummaryById(String summaryId) throws Exception {
@@ -726,7 +741,9 @@ public class RequirementServiceImpl implements RequirementService {
 					if(reqStatusCodeNext.equalsIgnoreCase("RFR")) {
 						testplan.setReqStatusCodeNext("RFA");
 					}else if(reqStatusCodeNext.equalsIgnoreCase("RFA")) {
-						testplan.setReqStatusCodeNext("RFA");
+						testplan.setReqStatusCodeNext("RAM");
+					}else if(reqStatusCodeNext.equalsIgnoreCase("RAM")) {
+						testplan.setReqStatusCodeNext("RAM");
 					}
 				}
 			}
@@ -808,13 +825,12 @@ public class RequirementServiceImpl implements RequirementService {
 	
 	@Override
 	public SpecsInitiation getSpecsInitiationById(String specsInitiationId) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return dao.getSpecsInitiationById(specsInitiationId);
 	}
 	
 	@Override
-	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,
-			String empId, String userId) {
+	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,String empId, String userId) {
 		try {
 			SpecsInitiation specsInitiation = SpecsInitiation.builder()
 					  							  .InitiationId(Long.parseLong(initiationId))
@@ -846,4 +862,201 @@ public class RequirementServiceImpl implements RequirementService {
 		
 		return dao.getDuplicateCountofTestType(testType);
 	}
+	
+	@Override
+	public Object[] getTestPlanApprovalFlowData(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		
+		return dao.getTestPlanApprovalFlowData(initiationId, projectId, productTreeMainId);
+	}
+
+	@Override
+	public void testPlanPdfFreeze(HttpServletRequest req,HttpServletResponse res,String testPlanInitiationId, String labCode) throws Exception{
+		logger.info(new Date() +"Inside SERVICE testPlanPdfFreeze ");
+		try {
+			
+			req.setAttribute("DocTempAttributes", prodao.DocTempAttributes());
+			
+			TestPlanInitiation ini = dao.getTestPlanInitiationById(testPlanInitiationId);
+			testPlanInitiationId = dao.getFirstVersionTestPlanInitiationId( ini.getInitiationId()+"",ini.getProjectId()+"", ini.getProductTreeMainId()+"")+"";
+			Object[] projectDetails = prodao.getProjectDetails(labCode, ini.getInitiationId()!=0?ini.getInitiationId()+"":ini.getProjectId()+"", ini.getInitiationId()!=0?"P":"E");
+			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
+			
+			String filename="TestPlan";
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(labCode)); 
+			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(labCode)); 
+			req.setAttribute("LabList", prodao.LabListDetails(labCode));
+			req.setAttribute("path",path);
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(labCode)); 
+			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(labCode)); 
+			req.setAttribute("LabList", prodao.LabListDetails(labCode));
+			req.setAttribute("uploadpath", uploadpath);
+			req.setAttribute("TestScopeIntro",dao.TestScopeIntro(testPlanInitiationId));
+			req.setAttribute("MemberList", dao.DocMemberList(testPlanInitiationId, "0"));
+			req.setAttribute("DocumentSummary", dao.getTestandSpecsDocumentSummary(testPlanInitiationId, "0"));
+			req.setAttribute("AbbreviationDetails",dao.AbbreviationDetails(testPlanInitiationId, "0"));
+			req.setAttribute("TestContent", dao.GetTestContentList(testPlanInitiationId));
+			req.setAttribute("AcceptanceTesting", dao.GetAcceptanceTestingList(testPlanInitiationId));
+			req.setAttribute("TestSuite", dao.TestTypeList());
+			req.setAttribute("TestDetailsList", dao.TestDetailsList(testPlanInitiationId));
+			req.setAttribute("StagesApplicable", dao.StagesApplicable());
+				        
+	        CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/requirements/TestPlanPDFDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();                  
+	        
+	        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")) ; 
+	         
+	        File file=new File(path +File.separator+ filename+".pdf");
+	        
+	        String fname="Test_Plan-"+testPlanInitiationId;
+			String filepath = "Doc_Repo\\Test_Plan";
+			int count=0;
+			while(new File(uploadpath+filepath+"\\"+fname+".pdf").exists())
+			{
+				fname = "Test_Plan-"+testPlanInitiationId;
+				fname = fname+" ("+ ++count+")";
+			}
+	        
+	        saveFile(uploadpath+filepath, fname+".pdf", file);
+	        
+	        // Document Freeze Handling
+	        documentFreezeAddHandling(testPlanInitiationId, "T", filepath+"\\"+fname+".pdf", null);
+
+	        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile);		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void saveFile(String uploadpath, String fileName, File fileToSave) throws IOException 
+	{
+	   logger.info(new Date() +"Inside SERVICE saveFile ");
+	   Path uploadPath = Paths.get(uploadpath);
+	          
+	   if (!Files.exists(uploadPath)) {
+		   Files.createDirectories(uploadPath);
+	   }
+	        
+	   try (InputStream inputStream = new FileInputStream(fileToSave)) {
+		   Path filePath = uploadPath.resolve(fileName);
+	       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	   } catch (IOException ioe) {       
+		   throw new IOException("Could not save file: " + fileName, ioe);
+	   }     
+	} 
+	
+	@Override
+	public Long documentFreezeAddHandling(String docInitiationId, String docType, String pdfFilePath, String excelFilePath) throws Exception {
+		try {
+			DocumentFreeze freeze = dao.getDocumentFreezeByDocIdandDocType(docInitiationId, docType);
+			
+			if(freeze==null) {
+				freeze = new DocumentFreeze();
+				freeze.setDocInitiationId(Long.parseLong(docInitiationId));
+				freeze.setDocType(docType);
+				freeze.setCreatedBy("SYSTEM");
+				freeze.setCreatedDate(sdf1.format(new Date()));
+				freeze.setIsActive(1);
+			}
+		
+			if(pdfFilePath!=null) {
+				freeze.setPdfFilePath(pdfFilePath);
+			}else if(excelFilePath!=null) {
+				freeze.setExcelFilePath(excelFilePath);
+			}
+			return dao.addDocumentFreeze(freeze);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	@Override
+	public DocumentFreeze getDocumentFreezeByDocIdandDocType(String docInitiationId, String docType) throws Exception {
+		
+		return dao.getDocumentFreezeByDocIdandDocType(docInitiationId, docType);
+	}
+	@Override
+	public Long getFirstVersionTestPlanInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		
+		return dao.getFirstVersionTestPlanInitiationId(initiationId, projectId, productTreeMainId);
+	}
+	
+	@Override
+	public void requirementPdfFreeze(HttpServletRequest req,HttpServletResponse res,String reqInitiationId, String labCode) throws Exception{
+		logger.info(new Date() +"Inside SERVICE requirementPdfFreeze ");
+		try {
+			
+			req.setAttribute("DocTempAttributes", prodao.DocTempAttributes());
+
+			RequirementInitiation ini = dao.getRequirementInitiationById(reqInitiationId);
+			reqInitiationId = dao.getFirstVersionReqInitiationId( ini.getInitiationId()+"",ini.getProjectId()+"", ini.getProductTreeMainId()+"")+"";
+			Object[] projectDetails = prodao.getProjectDetails(labCode, ini.getInitiationId()!=0?ini.getInitiationId()+"":ini.getProjectId()+"", ini.getInitiationId()!=0?"P":"E");
+			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
+			
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(labCode)); 
+			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(labCode)); 
+			req.setAttribute("LabList", prodao.LabListDetails(labCode));
+			req.setAttribute("RequirementList", dao.RequirementList(reqInitiationId));
+			req.setAttribute("uploadpath", uploadpath);
+			req.setAttribute("ReqIntro", prodao.RequirementIntro(reqInitiationId));
+			req.setAttribute("MemberList", prodao.reqMemberList(reqInitiationId));
+			req.setAttribute("DocumentSummary", prodao.getDocumentSummary(reqInitiationId));
+			req.setAttribute("ProjectParaDetails", dao.getProjectParaDetails(reqInitiationId));
+			req.setAttribute("AcronymsList", prodao.getAcronymsList(reqInitiationId));
+			req.setAttribute("PerformanceList", prodao.getPerformanceList(reqInitiationId));;
+			req.setAttribute("VerificationDataList", dao.getVerificationMethodList());;
+			req.setAttribute("ApplicableTotalDocumentList", dao.ApplicableTotalDocumentList(reqInitiationId));
+			req.setAttribute("AbbreviationDetails", prodao.getAbbreviationDetails(reqInitiationId));
+			req.setAttribute("Verifications", dao.getVerifications(reqInitiationId));
+			
+			String filename="ProjectRequirement";
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+				        
+	        CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/requirements/RequirementPDFDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();                  
+	        
+	        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")) ; 
+	         
+	        File file=new File(path +File.separator+ filename+".pdf");
+	        
+	        String fname="Requirement-"+reqInitiationId;
+			String filepath = "Doc_Repo\\Requirement";
+			int count=0;
+			while(new File(uploadpath+filepath+"\\"+fname+".pdf").exists())
+			{
+				fname = "Requirement-"+reqInitiationId;
+				fname = fname+" ("+ ++count+")";
+			}
+	        
+	        saveFile(uploadpath+filepath, fname+".pdf", file);
+	        
+	        // Document Freeze Handling
+	        documentFreezeAddHandling(reqInitiationId, "R", filepath+"\\"+fname+".pdf", null);
+
+	        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile);		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	@Override
+	public Object[] getRequirementApprovalFlowData(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		
+		return dao.getRequirementApprovalFlowData(initiationId, projectId, productTreeMainId);
+	}
+	@Override
+	public Long getFirstVersionReqInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		
+		return dao.getFirstVersionReqInitiationId(initiationId, projectId, productTreeMainId);
+	}
+
 }

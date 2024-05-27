@@ -6,6 +6,7 @@ import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
@@ -112,6 +113,12 @@ public interface RequirementDao {
 	public TestPlanSummary getTestPlanSummaryByTestPlanInitiationId(String testPlanInitiationId) throws Exception;
 	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	public Object[] getTestPlanApprovalFlowData(String initiationId, String projectId, String productTreeMainId) throws Exception;
+	public DocumentFreeze getDocumentFreezeByDocIdandDocType(String docInitiationId, String docType) throws Exception;
+	public long addDocumentFreeze(DocumentFreeze freeze) throws Exception;
+	public Long getFirstVersionTestPlanInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
+	public Long getFirstVersionReqInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
+	public Object[] getRequirementApprovalFlowData(String initiationId, String projectId, String productTreeMainId)throws Exception;
 
 	// specification Starts
 	public SpecsInitiation getSpecsInitiationById(String specsInitiationId)throws Exception;

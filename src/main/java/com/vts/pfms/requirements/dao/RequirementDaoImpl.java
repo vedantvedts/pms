@@ -18,6 +18,7 @@ import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
@@ -588,7 +589,9 @@ public class RequirementDaoImpl implements RequirementDao {
 	@Override
 	public RequirementSummary getRequirementSummaryByReqInitiationId(String reqInitiationId) throws Exception{
 		try {
-			return manager.find(RequirementSummary.class, Long.parseLong(reqInitiationId));
+			Query query = manager.createQuery("FROM RequirementSummary WHERE IsActive=1 AND ReqInitiationId=:ReqInitiationId");
+			query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
+			return (RequirementSummary)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO getRequirementSummaryByReqInitiationId "+e);
@@ -825,7 +828,9 @@ public class RequirementDaoImpl implements RequirementDao {
 	@Override
 	public TestPlanSummary getTestPlanSummaryByTestPlanInitiationId(String testPlanInitiationId) throws Exception{
 		try {
-			return manager.find(TestPlanSummary.class, Long.parseLong(testPlanInitiationId));
+			Query query = manager.createQuery("FROM TestPlanSummary WHERE IsActive=1 AND TestPlanInitiationId=:TestPlanInitiationId");
+			query.setParameter("TestPlanInitiationId", Long.parseLong(testPlanInitiationId));
+			return (TestPlanSummary)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO getTestPlanSummaryByTestPlanInitiationId "+e);
@@ -888,5 +893,118 @@ public class RequirementDaoImpl implements RequirementDao {
 			e.printStackTrace();
 			return 0;
 		}
+	}
+	
+	private static final String TESTPLANAPPROVALFLOWDATA = "SELECT (SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.PreparedBy AND c.DesigId=d.DesigId) AS PreparedBy, \r\n"
+			+ "	(SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.Reviewer AND c.DesigId=d.DesigId) AS Reviewer, \r\n"
+			+ "	(SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.Approver AND c.DesigId=d.DesigId) AS Approver\r\n"
+			+ "FROM pfms_test_plan_summary a WHERE a.TestPlanInitiationId = (SELECT b.TestPlanInitiationId FROM pfms_test_plan_initiation b WHERE b.InitiationId=:InitiationId AND b.ProjectId=:ProjectId AND ProductTreeMainId=:ProductTreeMainId AND b.TestPlanVersion=1.0 AND b.IsActive=1 LIMIT 1)";
+	@Override
+	public Object[] getTestPlanApprovalFlowData(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(TESTPLANAPPROVALFLOWDATA);
+			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO projectTestPlanApprovedList " + e);
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	@Override
+	public DocumentFreeze getDocumentFreezeByDocIdandDocType(String docInitiationId, String docType) throws Exception {
+		try {
+			Query query = manager.createQuery("FROM DocumentFreeze WHERE DocInitiationId=:DocInitiationId AND DocType=:DocType AND IsActive=1");
+			query.setParameter("DocInitiationId", Long.parseLong(docInitiationId));
+			query.setParameter("DocType", docType);
+			return (DocumentFreeze)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getDocumentFreezeByDocIdandDocType " + e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public long addDocumentFreeze(DocumentFreeze freeze) throws Exception {
+		try {
+			manager.persist(freeze);
+			manager.flush();
+			return freeze.getDocFreezeId();
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO addDocumentFreeze " + e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	private static final String GETFIRSTVERSIONTESTPLANINITIATIONID = "SELECT a.TestPlanInitiationId FROM pfms_test_plan_initiation a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ProductTreeMainId=:ProductTreeMainId AND a.TestPlanVersion=1.0 AND a.IsActive=1 LIMIT 1";
+	@Override
+	public Long getFirstVersionTestPlanInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETFIRSTVERSIONTESTPLANINITIATIONID);
+			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
+			BigInteger count = (BigInteger)query.getSingleResult();
+			return count.longValue();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getFirstVersionTestPlanInitiationId " + e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	private static final String GETFIRSTVERSIONREQINITIATIONID = "SELECT a.ReqInitiationId FROM pfms_req_initiation a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ProductTreeMainId=:ProductTreeMainId AND a.ReqVersion=1.0 AND a.IsActive=1 LIMIT 1";
+	@Override
+	public Long getFirstVersionReqInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETFIRSTVERSIONREQINITIATIONID);
+			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
+			BigInteger count = (BigInteger)query.getSingleResult();
+			return count.longValue();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getFirstVersionReqInitiationId " + e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	private static final String REQUIRMENTAPPROVALFLOWDATA = "SELECT (SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.PreparedBy AND c.DesigId=d.DesigId) AS PreparedBy, \r\n"
+			+ "	(SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.Reviewer AND c.DesigId=d.DesigId) AS Reviewer, \r\n"
+			+ "	(SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.Approver AND c.DesigId=d.DesigId) AS Approver\r\n"
+			+ "FROM pfms_initiation_req_summary a WHERE a.ReqInitiationId = (SELECT b.ReqInitiationId FROM pfms_req_initiation b WHERE b.ProjectId=:ProjectId AND b.InitiationId=:InitiationId AND ProductTreeMainId=:ProductTreeMainId AND b.ReqVersion=1.0 AND b.IsActive=1 LIMIT 1)";
+	@Override
+	public Object[] getRequirementApprovalFlowData(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(REQUIRMENTAPPROVALFLOWDATA);
+			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getRequirementApprovalFlowData " + e);
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 }

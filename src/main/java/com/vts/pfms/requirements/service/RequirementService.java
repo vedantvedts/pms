@@ -2,12 +2,16 @@ package com.vts.pfms.requirements.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
+import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
@@ -82,7 +86,7 @@ public interface RequirementService {
 	public RequirementInitiation getRequirementInitiationById(String reqInitiationId) throws Exception;
 	public PfmsInititationRequirement getPfmsInititationRequirementById(String InitiationReqId) throws Exception;
 	public Long addOrUpdatePfmsInititationRequirement(PfmsInititationRequirement pfmsInititationRequirement) throws Exception;
-	public Long requirementInitiationAddHandling(String initiationId, String projectId, String productTreeMainId, String empId,String username) throws Exception;
+	public Long requirementInitiationAddHandling(String initiationId, String projectId, String productTreeMainId, String empId,String username, String version, String remarks) throws Exception;
 	public List<Object[]> projectDocTransList(String docInitiationId, String docType) throws Exception;
 	public long projectRequirementApprovalForward(String reqInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	public List<Object[]> projectRequirementPendingList(String empId, String labcode) throws Exception;
@@ -104,19 +108,29 @@ public interface RequirementService {
 
 	// Test Plan Changes from Bharath End
 	
-	public Long testPlanInitiationAddHandling(String initiationId, String projectId, String productTreeMainId, String empId, String username) throws Exception;
-	public TestPlanSummary getTestPlanSummaryById(String testplanInitiation) throws Exception;
+	public Long testPlanInitiationAddHandling(String initiationId, String projectId, String productTreeMainId, String empId, String username, String version, String remarks) throws Exception;
+	public TestPlanSummary getTestPlanSummaryById(String testPlanInitiationId) throws Exception;
 	public TestPlanInitiation getTestPlanInitiationById(String testPlanInitiationId) throws Exception;
 	public TestDetails getTestPlanDetailsById(String testId) throws Exception;
 	public long projectTestPlanApprovalForward(String testPlanInitiationId, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> projectTestPlanApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public int getDuplicateCountofTestType(String testType) throws Exception;
-	
+	public Object[] getTestPlanApprovalFlowData(String initiationId, String projectId, String productTreeMainId) throws Exception;
+	public void testPlanPdfFreeze(HttpServletRequest req, HttpServletResponse res, String testPlanInitiationId, String labCode) throws Exception;
+	public Long documentFreezeAddHandling(String docInitiationId, String docType, String pdfFilePath, String excelFilePath) throws Exception;
+	public DocumentFreeze getDocumentFreezeByDocIdandDocType(String docInitiationId, String docType) throws Exception;
+	public Long getFirstVersionTestPlanInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
+	public Long getFirstVersionReqInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
+	public void requirementPdfFreeze(HttpServletRequest req, HttpServletResponse res, String reqInitiationId, String labCode) throws Exception;
+	public Object[] getRequirementApprovalFlowData(String initiationId, String projectId, String productTreeMainId)throws Exception;
+
 	//specification starts
 	public SpecsInitiation getSpecsInitiationById(String specsInitiationId) throws Exception;
 
-	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,
-			String empId, String userId);
+	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,String empId, String userId) throws Exception;
+
+
+
 	
 }
