@@ -341,7 +341,7 @@ if(ses1!=null){	%>
 	           
 						 <div class="member-view-box action-view-box">
 			                    
-			                         <div class=" action-box" style="border:-1px;" > 
+			                         <div class="action-box" style="border:-1px;" > 
 			                         	
 			                         	<div  class="action-box-header" >
 			                         	
