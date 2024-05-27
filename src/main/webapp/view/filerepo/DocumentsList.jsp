@@ -161,59 +161,38 @@ if(ses1!=null){
 										if(obj.getLevelId()==1)
 										{%>  
 										<li >
-										
-											<form   method="get">
 											<span class="caret"  onclick="onclickchange(this);" >
 								            		<%=obj.getLevelName() %>
 								            	</span>
-								            	<span  style="font-size:14px" id="span_<%=obj.getFileUploadMasterId()%>"> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj.getFileUploadMasterId() %>')"></i> </span>	
-											     <input type="text" name="levelname" class="hiddeninput" id="input_<%=obj.getFileUploadMasterId()%>" value="<%=obj.getLevelName()%>" style="display: none;" maxlength="255" >
-											     <button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj.getFileUploadMasterId()%>" formaction="DocumentListNameEdit.htm" formmethod="get" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-											     <button type="button" class="btnx" style="color: red;border:25px;background-color:white;font-size:20px;display: none;" id="btnx_<%=obj.getFileUploadMasterId()%>" onclick="moduleeditdisable('<%=obj.getFileUploadMasterId() %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
-											     <input type="hidden" value="<%=obj.getFileUploadMasterId()%>" name="filerepmasterid">
 											 <ul  class="nested">
-											 </form>
-											
 								<!-- ----------------------------------------level 1------------------------------------- -->	
 													<%for(FileDocMaster obj1 :docmasterlist)
 													{ 
 														if(obj1.getLevelId()==2 && obj1.getParentLevelId()==obj.getFileUploadMasterId() )
 														{%>  
 														<li>
-																<form   method="get">	
+															
 																<span class="caret" onclick="onclickchange(this);" >
 								             						<%=obj1.getLevelName() %>
 								             					</span>
 																
-															<span  style="font-size:14px" id="span_<%=obj1.getFileUploadMasterId()%>">  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1.getFileUploadMasterId() %>')"></i> </span>
-															 <input type="text" name="levelname" class="hiddeninput" id="input_<%=obj1.getFileUploadMasterId()%>" value="<%=obj1.getLevelName()%>" style="display: none;" maxlength="255" >	
-														    <button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj1.getFileUploadMasterId()%>" formaction="DocumentListNameEdit.htm" formmethod="get" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-															<button type="button" class="btnx" style="color: red;border:25px;background-color:white;font-size:22px;display: none;" id="btnx_<%=obj1.getFileUploadMasterId()%>" onclick="moduleeditdisable('<%=obj1.getFileUploadMasterId() %>')">   <i class="fa fa-times" aria-hidden="true"></i></button></button>
-															<input type="hidden" value="<%=obj1.getFileUploadMasterId()%>" name="filerepmasterid">	
+															
 																<ul class="nested">
-														</form>
 												<!-- ----------------------------------------level 2------------------------------------- -->	
 														 		<%for(FileDocMaster obj2 :docmasterlist)
 																	{ %>
 																		<%if( obj2.getLevelId()==3 && obj2.getParentLevelId()==obj1.getFileUploadMasterId()) 
 																		{%>
-																		<form   method="get">
+																			<li>
 																				<span>
 																					<span class="caret-last" onclick="onclickchange(this);" >
 																						<%=obj2.getLevelName() %>(<%=obj2.getDocShortName() %>)
 																					</span>
-																					<span  style="font-size:14px" id="span_<%=obj2.getFileUploadMasterId()%>">  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2.getFileUploadMasterId() %>')"></i> </span>	
-																				      <input type="text" name="levelname" class="hiddeninput" id="input_<%=obj2.getFileUploadMasterId()%>" value="<%=obj2.getLevelName()%>" style="display: none;" maxlength="255" >
-																				    <button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj2.getFileUploadMasterId()%>" formaction="DocumentListNameEdit.htm" formmethod="get" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-																				   <button type="button" class="btnx" style="color: red;border:25px;background-color:white;font-size:20px;display: none;" id="btnx_<%=obj2.getFileUploadMasterId()%>" onclick="moduleeditdisable('<%=obj2.getFileUploadMasterId() %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
-																				   <input type="hidden" value="<%=obj2.getFileUploadMasterId()%>" name="filerepmasterid">
+																					
 																				</span>
-																				
 																			</li>	
 																		<%}
 																	} %>	
-																	
-																	</form>
 																	
 																	
 																	
@@ -466,21 +445,7 @@ $(ele).css("font-weight", "700");
 
 }
  
-function moduleeditenable(moduleid)
-{
-	$('#span_'+moduleid).hide();
-	$('#input_'+moduleid).show();
-	$('#btn_'+moduleid).show();	
-	$('#btnx_'+moduleid).show();
-}
 
-function moduleeditdisable(moduleid)
-{
-	$('#span_'+moduleid).show();
-	$('#input_'+moduleid).hide();
-	$('#btn_'+moduleid).hide();	
-	$('#btnx_'+moduleid).hide();
-}
 </script>
 </body>
 </html>
