@@ -49,6 +49,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -124,6 +125,7 @@ import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
+import com.vts.pfms.requirements.model.SpecificationIntro;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.service.RequirementService;
@@ -2419,12 +2421,11 @@ public class ProjectController
 
 
 		try {
-
+			String reqInitiationId=req.getParameter("reqInitiationId");
 			if(option.equalsIgnoreCase("SUBMIT")) 
 			{
 
 				String InitiationReqId=req.getParameter("InitiationReqId");
-				String reqInitiationId=req.getParameter("reqInitiationId");
 
 				String requirementId=req.getParameter("requirementid");
 
@@ -2485,18 +2486,18 @@ public class ProjectController
 				} else {
 					redir.addAttribute("resultfail", "Project Requirement Edited Unsuccessful");
 				}
-				redir.addFlashAttribute("ParaDetails",service.ReqParaDetails(req.getParameter("IntiationId")));
+				redir.addFlashAttribute("ParaDetails",service.ReqParaDetails(reqInitiationId));
 				redir.addFlashAttribute("initiationReqId", String.valueOf(InitiationReqId));
 				redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
-				redir.addFlashAttribute("RequirementList", service.RequirementList(req.getParameter("IntiationId")));
+				redir.addFlashAttribute("RequirementList", service.RequirementList(reqInitiationId));
 				redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
 				redir.addFlashAttribute("RequirementFiles",service.requirementFiles(req.getParameter("IntiationId"), 1));
 				return "redirect:/ProjectRequirement.htm";
 
 			} 		
-			redir.addFlashAttribute("ParaDetails",service.ReqParaDetails(req.getParameter("IntiationId")));
+			redir.addFlashAttribute("ParaDetails",service.ReqParaDetails(reqInitiationId));
 			redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
-			redir.addFlashAttribute("RequirementList", service.RequirementList(req.getParameter("IntiationId")));
+			redir.addFlashAttribute("RequirementList", service.RequirementList(reqInitiationId));
 			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
 			redir.addFlashAttribute("RequirementFiles",service.requirementFiles(req.getParameter("IntiationId"), 1));
 
@@ -9744,6 +9745,7 @@ public class ProjectController
 			String projectId =req.getParameter("projectId");
 			String productTreeMainId =req.getParameter("productTreeMainId");
 			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			String SpecsId = req.getParameter("SpecsId");
 			
 			if(initiationId==null) initiationId="0";
 			if(projectId==null) projectId="0";	
@@ -9752,6 +9754,12 @@ public class ProjectController
 			if(SpecsInitiationId.equals("0") ) {					
 				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
 			}
+			List<Object[]>specList = reqService.getSpecsList(SpecsInitiationId);
+			
+			int id= 0;
+			if(specList!=null) {
+				id=specList.size()+1;
+				}
 			
 			String linkedRequirements="";
 			if(req.getParameterValues("linkedRequirements")!=null) {
@@ -9764,20 +9772,32 @@ public class ProjectController
 					}
 				}
 			}
-			Specification specs= new Specification();
+			String action = req.getParameter("action");
+			
+			Specification specs= action!=null && action.equalsIgnoreCase("Add") ? new Specification() :service.getSpecificationData(SpecsId) ;
 			
 			specs.setLinkedRequirement(linkedRequirements);
+			
 			specs.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
 			specs.setDescription(req.getParameter("description"));
-			specs.setCreatedBy(UserId);
-			specs.setCreatedDate(sdf1.format(new Date()));
 			specs.setIsActive(1);
+			if(action.equalsIgnoreCase("Add")) {
+				specs.setSpecificationName("SPECS_"+id);
+				specs.setCreatedBy(UserId);
+				specs.setCreatedDate(sdf1.format(new Date()));
+				
+			}else if(action.equalsIgnoreCase("Edit")) {
+				specs.setModifiedBy(UserId);
+				specs.setModifiedDate(sdf1.format(new Date()));
+				specs.setSpecsId(Long.parseLong(SpecsId));
+			}
+		
 			long count = service.addSpecification(specs);
 			
 			if(count>0){
-				redir.addAttribute("result","Specification added successfully ");
+				redir.addAttribute("result","Specification " +action+ " ed successfully ");
 			}else{
-				redir.addAttribute("resultfail","Specification add unsuccessful ");
+				redir.addAttribute("resultfail","Specification "+ action +" unsuccessful ");
 			}
 			redir.addAttribute("initiationId", initiationId);
 			redir.addAttribute("projectId", projectId);
@@ -9794,8 +9814,118 @@ public class ProjectController
 		}
 	
 	
+	@RequestMapping(value="getSpecificationData.htm",method=RequestMethod.GET)
+	public @ResponseBody String getSpecificationData(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		
+		Gson json = new Gson();
+		Specification specificationData = null;
+		
+		try {
+			String SpecsId = req.getParameter("SpecsId");
+			specificationData = service.getSpecificationData(SpecsId);
+		} catch (Exception e) {
+		}
+		
+		return json.toJson(specificationData);
+	}
 	
 	
+	@RequestMapping(value="SpecificationScope.htm",method=RequestMethod.GET)
+	public  String SpecificationScope(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		try {
+			String initiationId  = req.getParameter("initiationId");
+			String projectId =req.getParameter("projectId");
+			String productTreeMainId =req.getParameter("productTreeMainId");
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
+			req.setAttribute("SpecsInitiationId", SpecsInitiationId);
+			req.setAttribute("Attributes", req.getParameter("Attributes")==null?"System Identification":req.getParameter("Attributes"));
+			req.setAttribute("SpecsIntro", service.getSpecsIntro(SpecsInitiationId));
+			
+			return "requirements/SpecificationIntro";
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return "requirements/SpecificationIntro";
+	}
+	
+	
+	@RequestMapping(value="SpecIntroSubmit.htm",method=RequestMethod.POST)
+	public  String SpecIntroSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		
+		try {
+			
+			String initiationId  = req.getParameter("initiationId");
+			String projectId =req.getParameter("projectId");
+			String productTreeMainId =req.getParameter("productTreeMainId");
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			if(SpecsInitiationId.equals("0") ) {					
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+			}
+			String action = req.getParameter("action");
+			
+			SpecificationIntro s = new SpecificationIntro();
+			s.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
+			s.setIntroName(req.getParameter("attributes"));
+			s.setIntroContent(req.getParameter("Details"));
+			s.setCreatedBy(UserId);
+			s.setCreatedDate(sdf1.format(new Date()));
+			s.setIsActive(1);
+			
+			long count =0l;
+			if(action.equalsIgnoreCase("add")) {
+			count = service.addSpecificationIntro(s);
+			}else {
+				s.setIntroductionId(Long.parseLong(req.getParameter("IntroductionId")));	
+				s.setModifiedBy(UserId);
+				s.setModifiedDate(sdf1.format(new Date()));
+				count = service.editSpecificationIntro(s);
+			}
+			
+			if(count>0) {
+				redir.addAttribute("result",req.getParameter("attributes")+" "+ action+ "ed successfully ");
+			}else {
+				redir.addAttribute("resultfail",req.getParameter("attributes")+" "+ action+" unsuccessful ");
+			}
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+			redir.addAttribute("Attributes", req.getParameter("attributes"));
+			return "redirect:/SpecificationScope.htm";
+		}catch (Exception e) {
+			
+		}
+	
+		return null;
+	}
+	
+	@RequestMapping(value="specIntro.htm",method=RequestMethod.GET)
+	public @ResponseBody  String specIntro(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+		Gson json = new Gson();
+		String SpecsInitiationId= req.getParameter("SpecsInitiationId");
+		return json.toJson(service.getSpecsIntro(SpecsInitiationId));
+	}
 	//package com.vts.pfms.project.controller;
 
 	//import java.io.ByteArrayInputStream;

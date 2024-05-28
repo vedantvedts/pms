@@ -81,6 +81,7 @@ import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
+import com.vts.pfms.requirements.model.SpecificationIntro;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 
 @Transactional
@@ -3957,6 +3958,49 @@ public class ProjectDaoImpl implements ProjectDao {
 		manager.flush();
 		return  specs.getSpecsId();
 	}
+	
+	@Override
+	public Specification getSpecificationData(String specsId) throws Exception {
+		try {
+
+			return manager.find(Specification.class, Long.parseLong(specsId));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside DAO getSpecificationData " + e);
+			return null;
+		}
+	}
+	
+	@Override
+	public long addSpecificationIntro(SpecificationIntro s) throws Exception {
+		manager.persist(s);
+		manager.flush();
+		return s.getIntroductionId();
+	}
+	private static final String SPECINTROLIST="SELECT IntroductionId,IntroName,IntroContent FROM pfms_specification_intro WHERE SpecsInitiationId=:SpecsInitiationId AND isactive='1'";
+	@Override
+	public List<Object[]> getSpecsIntro(String SpecsInitiationId) throws Exception {
+		Query query = manager.createNativeQuery(SPECINTROLIST);
+		query.setParameter("SpecsInitiationId", SpecsInitiationId);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String EDITSPECINTRO="UPDATE pfms_specification_intro SET IntroContent=:IntroContent , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE IntroductionId=:IntroductionId";
+	@Override
+	public long editSpecificationIntro(SpecificationIntro s) throws Exception {
+		
+		Query query = manager.createNativeQuery(EDITSPECINTRO);
+		query.setParameter("IntroContent", s.getIntroContent());
+		query.setParameter("ModifiedBy", s.getModifiedBy());
+		query.setParameter("ModifiedDate", s.getModifiedDate());
+		query.setParameter("IntroductionId", s.getIntroductionId());
+		
+		return (long)query.executeUpdate();
+	}
 }
+
+
+
+
 
 

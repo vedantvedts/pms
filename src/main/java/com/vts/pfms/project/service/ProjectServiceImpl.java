@@ -103,6 +103,7 @@ import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.requirements.dao.RequirementDao;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
+import com.vts.pfms.requirements.model.SpecificationIntro;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -3413,5 +3414,25 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		public long addSpecification(Specification specs) throws Exception {
 			// TODO Auto-generated method stub
 			return dao.addSpecification(specs);
+		}
+		
+		@Override
+		public Specification getSpecificationData(String specsId) throws Exception {
+			return dao.getSpecificationData(specsId);
+		}
+		@Override
+		public long addSpecificationIntro(SpecificationIntro s) throws Exception {
+			return dao.addSpecificationIntro(s);
+		}
+		
+		@Override
+		public List<Object[]> getSpecsIntro(String specsInitiationId) throws Exception {
+			return dao.getSpecsIntro(specsInitiationId);
+		}
+		
+		@Override
+		public long editSpecificationIntro(SpecificationIntro s) throws Exception {
+			
+			return dao.editSpecificationIntro(s);
 		}
 }

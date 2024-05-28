@@ -9,6 +9,7 @@
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.util.stream.Collectors"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -342,8 +343,11 @@ String SpecsInitiationId = (String)request.getAttribute("SpecsInitiationId");
 List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("RequirementList");
 List<Object[]>specsList = (List<Object[]>)request.getAttribute("specsList");
 List<Object[]>RequirementLists = new ArrayList<>();
+ObjectMapper objectMapper = new ObjectMapper();
+String jsonArray = null;;
 if(RequirementList!=null && RequirementList.size()>0){
 	RequirementLists=RequirementList.stream().filter(e->e[15]!=null && !e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+	 jsonArray = objectMapper.writeValueAsString(RequirementLists);
 }
 
 
@@ -393,7 +397,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 										<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 										<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">	
 										<button class="btn btn-success btn-sm submit" style="margin-top: -3%;"
-											type="button" onclick='showdata("Add")' data-toggle="tooltip"
+											type="button" onclick='addData()' data-toggle="tooltip"
 											data-placement="top" data-original-data=""
 											title="ADD SPECIFICATION DETAILS">ADD SPECIFICATION DETAILS</button>
 										<button class="btn btn-info btn-sm  back ml-2"
@@ -414,7 +418,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 					
 					%>
 					
-					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj[0].toString()%>)"><%="SPECS_"+(++count) %> </button>
+					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj[0].toString()%>)" id="btn<%=obj[0].toString()%>"><%=obj[1].toString() %> </button>
 					<%}}else{ %>
 					<button  type="button" class="btn btn-secondary viewbtn mt-2" style="width:100%" >
 							No Data Available
@@ -442,7 +446,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 									<div class="col-md-6" style="margin-top: 1%;">
 										<div class="form-group">
 											<%if ((RequirementLists != null) && (!RequirementLists.isEmpty())) {%>
-												<select required="required" class="form-control selectdee" name="linkedRequirements" id="linkedRequirements" data-width="80%" data-live-search="true" multiple onchange="">
+												<select  class="form-control selectdee" name="linkedRequirements" id="linkedRequirements" data-width="80%" data-live-search="true" multiple onchange="">
 													<option value="" disabled="disabled">---Choose----</option>
 													<%for (Object[] obj : RequirementLists) {%>
 														<option value="<%=obj[0]%>"><%=obj[1]%></option>
@@ -460,31 +464,141 @@ if(RequirementList!=null && RequirementList.size()>0){
 								
 								<div class="row">
 								<div class="col-md-3">
-								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description:</label>
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-9">
 								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 								</div>
 								</div>
 								<div align="center" class="mt-2">
-								<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')">SUBMIT </button>
-							<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />  <input
-								type="hidden" name="projectId" value="<%=projectId%>"> <input
+								<button id="submitbtn" type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')" name="action" value="add">SUBMIT </button>
+								<button id="editbtn" type="submit" class="btn btn-sm edit" style="display:none;" onclick="return confirm('Are you sure to submit?')" name="action" value="update">UPDATE </button>
+								<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" /> 
+								 <input type="hidden" name="projectId" value="<%=projectId%>"> <input
 								type="hidden" name="initiationId" value="<%=initiationId%>"> <input
 								type="hidden" name="productTreeMainId"
 								value="<%=productTreeMainId%>"> <input type="hidden"
 								name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
+								<input type="hidden" id="SpecsIdedit" name="SpecsId" >
 							</div>
 								
 								
 								</div>
 								</div>
 								</div>
-									</form>	
+								</form>	
 								
+								<div id="row2" style="display: none;">
 								
+								<div class="row">
+								<div class="col-md-3">
+								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Id :</label>
+								</div>
+								<div class="col-md-8">
+								
+								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specName"></p>
+								</div>
+								<div class="col-md-1">
+								<button class="btn btn-sm bg-transparent" id="btnedit" onclick="edit(this)"><i class="fa fa-pencil-square-o fa-lg" style="color:orange" aria-hidden="true"></i></button>
+								</div>
+								</div>
+								
+								<div class="row">
+								<div class="col-md-3">
+								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Linked Requirements :</label>
+								</div>
+								<div class="col-md-8">
+								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="linkedreq"></p>
+								</div>
+								</div>
+								
+								<div class="row">
+								<div class="col-md-3">
+								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Description :</label>
+								</div>
+								
+								<div class="col-md-8">
+								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="DescriptionDetails"></p>
+								</div>
+								</div>
+								
+								</div>
 							</div>
 				</div>
+				
+				
+<script>
+ function showDetails(value){
+	 $('#row1').hide();
+	 $('#row2').show();
+	 $('#btnedit').val(value);
+		$('.viewbtn').css("background","#055C9D");
+		$('#btn'+value).css("background","green");
+	 $.ajax({
+		 type:'GET',
+		 url:'getSpecificationData.htm',
+		 data:{
+			 SpecsId:value
+		 },
+		 datatype:'json',
+		 success : function(result){
+			 var Data = JSON.parse(result);
+		$('#specName').html(Data.SpecificationName);
+		$('#DescriptionDetails').html(Data.Description);
+		var LinkedRequirements = Data.LinkedRequirement.split(",");
+		var tempArray=[];
+		var jsObjectList = JSON.parse('<%= jsonArray %>');
+		for(var i =0;i<jsObjectList.length;i++){
+			
+			if(LinkedRequirements.includes(jsObjectList[i][0]+"")){
+				tempArray.push(jsObjectList[i][1]);
+			}
+		}
+		var temp =tempArray.toString();
+		
+		if(temp.length>0){
+			$('#linkedreq').html(temp);
+		}else{
+			$('#linkedreq').html("No Requirements are linked !");
+		}
+		 }
+	 })
+ }
+
+ function addData(){
+	 $('#row1').show();
+	 $('#row2').hide();
+	 $('#linkedRequirements').val(" ").trigger('change');
+	 $('#descriptionadd').val("");
+ }
+ 
+ 
+ function edit(ele){
+	 $('#row1').show();
+	 $('#row2').hide();
+	 var value=ele.value;
+	 $.ajax({
+		 type:'GET',
+		 url:'getSpecificationData.htm',
+		 data:{
+			 SpecsId:value
+		 },
+		 datatype:'json',
+		 success : function(result){
+			 var Data = JSON.parse(result);
+			 console.log(Data)
+			 var LinkedRequirements = Data.LinkedRequirement.split(",");
+			 console.log(LinkedRequirements)
+		     $('#linkedRequirements').val(LinkedRequirements).trigger('change');
+			 $('#descriptionadd').val(Data.Description);
+			 $('#submitbtn').hide();
+			 $('#editbtn').show();
+			 $('#SpecsIdedit').val(value);
+		 }
+	 })
+	 
+ }
+</script>				
 </body>
 </html>

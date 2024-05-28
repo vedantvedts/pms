@@ -289,21 +289,7 @@ float: right;
 							</div>
 						</div>
 
-						 <!--  -->
-						<!-- <div class="panel panel-info" style="margin-top: 10px;">
-							<div class="panel-heading ">
-								<h4 class="panel-title">
-									<span class="ml-2" style="font-size: 14px"> 2. System
-										Block Diagram</span>
-								</h4>
-								<button class="btn bg-transparent buttonEd" type="button"
-									id="btnEditor2" onclick="showEditor('Block Diagram')">
-									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-								</button>
-							</div>
-						</div> -->
-						<!--  -->
-						<!--  -->
+					
 						<div class="panel panel-info" style="margin-top: 10px;">
 							<div class="panel-heading ">
 								<h4 class="panel-title">
