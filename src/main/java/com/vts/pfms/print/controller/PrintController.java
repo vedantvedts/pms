@@ -4551,7 +4551,7 @@ public class PrintController {
 					 Path filePath = uploadPath.resolve(filesname);
 			         Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
 					in.close();
-					Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+					Path pathOfFile2= Paths.get( path+File.separator+"coverslide"+".pdf"); 
 			        Files.delete(pathOfFile2);
 
 			        
@@ -4576,6 +4576,7 @@ public class PrintController {
 				
 		        Path uploadPath = Paths.get(Path);
 		        if (!Files.exists(uploadPath)) {
+		        	System.out.println("creating path for pdf, upload thank you slide for full slideshow");
 		            Files.createDirectories(uploadPath);
 		        }
 				logger.info(new Date() + "Inside DownloadSelectedSlides.htm " + UserId);
@@ -4590,23 +4591,31 @@ public class PrintController {
 							}
 					}
 					Map<String, String> details = new HashMap<>();
-					String pathToPdf = PrintCoverSlide(details, req, redir, res, ses);
-					String pathToThankYou = "";
 					String path = req.getServletContext().getRealPath("/view/temp");
+					//static file thank you
+					String pathToThankYou = "";
+					String CoverSlide = "";
+					File coverslideFile = new File(path + File.separator + "coverslide.pdf");
+					if(coverslideFile.exists())
+						CoverSlide = coverslideFile.getAbsolutePath();
+					else 
+						CoverSlide = PrintCoverSlide(details, req, redir, res, ses);
+					
+						
+					
 					PDFMergerUtility utility = new PDFMergerUtility();
 					utility.setDestinationFileName(path + File.separator + "merged.pdf");
-					File file = new File(pathToPdf);
+					File file = new File(CoverSlide);
 					utility.addSource(file);
 					boolean flag = false;
 					for (Object[] obj : getAllProjectSlidedata) {
-						System.out.println(obj[2].toString());
 						file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
-						/*
-						 * if (file.exists()) utility.addSource(file); else flag = true;
-						 */
-						pathToThankYou = obj[1].toString();
+						if (file.exists()) {
+							utility.addSource(file);
+							pathToThankYou = obj[1].toString();
+//							CoverSlide = obj[1].toString();
+						}
 					}
-					System.out.println(pathToThankYou+"  "+flag);
 					if (pathToThankYou.equals("") || flag) {
 						redir.addAttribute("resultfail", "Selected slide has not been Freezed");
 						redir.addAttribute("result", null);
@@ -4628,10 +4637,8 @@ public class PrintController {
 					}
 					in.close();
 					out.close();
-					System.out.println("coverslide done");
 					Files.delete(Paths.get(path + File.separator + "merged.pdf"));
 					pathtopdf = path + File.separator + "merged.pdf";
-					System.out.println("path to pdf " + pathtopdf);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

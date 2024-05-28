@@ -748,7 +748,7 @@ public class PrintServiceImpl implements PrintService{
 		ProjectSlides slide = new ProjectSlides();
 		slide.setSlideId(slidedata.getSlideId());
 		slide.setSlide(slidedata.getSlide());
-		slide.setBrief(slidedata.getBrief());System.out.println(slidedata.getBrief());
+		slide.setBrief(slidedata.getBrief());
 		slide.setStatus(slidedata.getStatus());
 		slide.setModifiedBy(slidedata.getModifiedBy());
 		slide.setModifiedDate(sdf1.format(new Date()));
