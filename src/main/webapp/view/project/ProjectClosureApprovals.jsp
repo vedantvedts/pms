@@ -306,20 +306,18 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																			
 																			
 																			<%}else{ %>
-																				<button type="submit" class="btn btn-sm btn-success mt-1" name="Action" value="A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate"
+																				<button type="submit" class="btn btn-sm btn-success mt-1" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate"
 																				 style="font-weight: 500" onclick="return confirm('Are You Sure To Recommend );">
 																						 Recommend
 								                                               </button>
 								                                               
 								                                               <%} %>
 								                                               
-																				<button type="submit" class="btn btn-sm btn-danger mt-1" name="Action" value="R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate" style="font-weight: 500"
+																				<button type="submit" class="btn btn-sm btn-danger mt-1" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate" style="font-weight: 500"
 																					onclick="return confirm('Are You Sure To Return');"> Return
 																				</button>
 																			</div>
-																			<input type="hidden" name="TechnicalClsoureId" value="<%=form[10]%>">
-															    			 <input type="hidden" name="ClosureId" value="<%=form[4]%>">
-															    			 <input type="hidden" name="Action" value="A">
+																			
 																			
 																			
 																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
@@ -557,9 +555,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		     
          </div>
          
-         <input type="hidden" name="TechnicalClsoureId" id="TechClosureId" value="" >
+          <input type="hidden" name="TechAndClosureId"  id="TechAndclosureId" value="" > 
+         <!-- <input type="hidden" name="TechnicalClsoureId" id="TechClosureId" value="" >
          <input type="hidden" name="ClosureId" id="ClosureId" value="" >
-         <input type="hidden" name="Action"  value="A" > 
+         <input type="hidden" name="Action"  value="A" >  -->
          
       </form>
     </div>
@@ -629,8 +628,10 @@ $('#fromdate').daterangepicker({
 	function OpenApproveModal(TechClosureId,ClosureId){
 		
 		
-		$('#TechClosureId').val(TechClosureId);
-		$('#ClosureId').val(ClosureId);
+		/* $('#TechClosureId').val(TechClosureId);
+		$('#ClosureId').val(ClosureId); */
+		var combinedValue = ClosureId + '/' + TechClosureId + '/A';
+		$('#TechAndclosureId').val(combinedValue);
 		
 		$('#ApprovalModal').modal('toggle');
 	}
