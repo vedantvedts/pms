@@ -4539,7 +4539,7 @@ public class PrintController {
 					FileInputStream in = new FileInputStream(f);
 					Timestamp instant = Timestamp.from(Instant.now());
 					String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
-			       String filesname="SlideFreeze"+timestampstr+".pdf";
+			       String filesname="coverslide.pdf";
 					String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
 
 					
@@ -4595,9 +4595,9 @@ public class PrintController {
 					//static file thank you
 					String pathToThankYou = "";
 					String CoverSlide = "";
-					File coverslideFile = new File(path + File.separator + "coverslide.pdf");
+					File coverslideFile = new File(Path + "coverslide.pdf");
 					if(coverslideFile.exists())
-						CoverSlide = coverslideFile.getAbsolutePath();
+						CoverSlide = Path + "coverslide.pdf";
 					else 
 						CoverSlide = PrintCoverSlide(details, req, redir, res, ses);
 					
