@@ -126,5 +126,8 @@ public interface RequirementDao {
 	public long addSpecsInitiation(SpecsInitiation specsInitiation) throws Exception;
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception;
 	public Long getFirstVersionSpecsInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
+
+
+	public List<Object[]> getSpecsPlanApprovalFlowData(String projectId, String initationId, String productTreeMainId)throws Exception;
 	
 }

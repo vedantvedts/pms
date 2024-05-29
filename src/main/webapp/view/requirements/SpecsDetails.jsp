@@ -340,6 +340,7 @@ String initiationId = (String)request.getAttribute("initiationId");
 String projectId = (String)request.getAttribute("projectId");
 String productTreeMainId = (String)request.getAttribute("productTreeMainId");
 String SpecsInitiationId = (String)request.getAttribute("SpecsInitiationId"); 
+String SpecsId = (String)request.getAttribute("SpecsId"); 
 List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("RequirementList");
 List<Object[]>specsList = (List<Object[]>)request.getAttribute("specsList");
 List<Object[]>RequirementLists = new ArrayList<>();
@@ -457,8 +458,20 @@ if(RequirementList!=null && RequirementList.size()>0){
 											<%} %>
 										</div>
 									</div>
-								
-								
+								</div>
+								<div class="row"> 
+								<div class="col-md-3">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Parameter: <span class="mandatory" style="color: red;">*</span></label>
+								</div>
+								<div class="col-md-2">
+								<input type="text" class="form-control" name="specParameter" id="specParameter" required="required">
+								</div>
+								<div class="col-md-3">
+								<label style="font-size: 17px; margin-top: 5%;float:right; color: #07689f">Specification Unit: <span class="mandatory" style="color: red;">*</span></label>
+								</div>
+								<div class="col-md-2">
+								<input type="text" class="form-control" name="specUnit" id="specUnit" required="required">
+								</div>
 								</div>
 								
 								
@@ -470,6 +483,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 								</div>
 								</div>
+							
 								<div align="center" class="mt-2">
 								<button id="submitbtn" type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')" name="action" value="add">SUBMIT </button>
 								<button id="editbtn" type="submit" class="btn btn-sm edit" style="display:none;" onclick="return confirm('Are you sure to submit?')" name="action" value="update">UPDATE </button>
@@ -513,6 +527,23 @@ if(RequirementList!=null && RequirementList.size()>0){
 								</div>
 								</div>
 								
+								<div class="row">
+								<div class="col-md-3">
+								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Parameter :</label>
+								</div>
+								<div class="col-md-8">
+								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specparam"></p>
+								</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-md-3">
+								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Unit :</label>
+								</div>
+								<div class="col-md-8">
+								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specUnits"></p>
+								</div>								
+								</div>
 								<div class="row">
 								<div class="col-md-3">
 								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Description :</label>
@@ -562,6 +593,22 @@ if(RequirementList!=null && RequirementList.size()>0){
 		}else{
 			$('#linkedreq').html("No Requirements are linked !");
 		}
+		
+		 if(Data.SpecsParameter!==undefined){
+			 console.log(Data.SpecsParameter)
+			 $('#specparam').html(Data.SpecsParameter);
+		 }else{
+			 $('#specparam').html("-");
+		 }
+		 
+		 if(Data.SpecsUnit!==undefined){
+			 console.log(Data.SpecsUnit)
+			 $('#specUnits').html(Data.SpecsUnit);
+		 }else{
+			 $('#specUnits').html("-");
+		 }
+		
+		
 		 }
 	 })
  }
@@ -571,6 +618,11 @@ if(RequirementList!=null && RequirementList.size()>0){
 	 $('#row2').hide();
 	 $('#linkedRequirements').val(" ").trigger('change');
 	 $('#descriptionadd').val("");
+	 $('#specParameter').val("");
+	 $('#specUnit').val("");
+	 $('#submitbtn').show();
+	 $('#editbtn').hide();
+	 $('#SpecsIdedit').val("");
  }
  
  
@@ -587,11 +639,21 @@ if(RequirementList!=null && RequirementList.size()>0){
 		 datatype:'json',
 		 success : function(result){
 			 var Data = JSON.parse(result);
-			 console.log(Data)
+			 
 			 var LinkedRequirements = Data.LinkedRequirement.split(",");
-			 console.log(LinkedRequirements)
 		     $('#linkedRequirements').val(LinkedRequirements).trigger('change');
 			 $('#descriptionadd').val(Data.Description);
+			 if(Data.SpecsParameter!==undefined){
+				 $('#specParameter').val(Data.SpecsParameter);
+			 }else{
+				 $('#specParameter').val("");
+			 }
+			 
+			 if(Data.SpecsUnit!==undefined){
+				 $('#specUnit').val(Data.SpecsUnit);
+			 }else{
+				 $('#specUnit').val("");
+			 }
 			 $('#submitbtn').hide();
 			 $('#editbtn').show();
 			 $('#SpecsIdedit').val(value);
@@ -599,6 +661,13 @@ if(RequirementList!=null && RequirementList.size()>0){
 	 })
 	 
  }
+ 
+	$(document).ready(function() {
+		var value=<%=SpecsId.toString()%>;
+		if(value!==0){
+		showDetails(value)
+		}
+	});
 </script>				
 </body>
 </html>

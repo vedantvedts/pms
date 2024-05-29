@@ -21,6 +21,8 @@ public class Specification  {
 	private Long SpecsId;
 	private String SpecificationName;
 	private String Description;
+	private String SpecsParameter;
+	private String SpecsUnit;
 	private Long SpecsInitiationId;
 	private String LinkedRequirement;
 	private String CreatedBy;

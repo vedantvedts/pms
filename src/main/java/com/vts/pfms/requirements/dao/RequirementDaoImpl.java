@@ -1034,4 +1034,25 @@ public class RequirementDaoImpl implements RequirementDao {
 			return 0L;
 		}
 	}
+	
+	private static final String SPECSAPPROVALFLOW="SELECT (SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.PreparedBy AND c.DesigId=d.DesigId) AS PreparedBy, \r\n"
+			+ "			(SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.Reviewer AND c.DesigId=d.DesigId) AS Reviewer,\r\n"
+			+ "			(SELECT CONCAT(c.EmpName,', ',d.Designation) FROM employee c,employee_desig d WHERE c.EmpId=a.Approver AND c.DesigId=d.DesigId) AS Approver\r\n"
+			+ "			FROM pfms_test_plan_summary a WHERE a.SpecsInitiationId = (SELECT b.SpecsInitiationId FROM pfms_specifications_initiation b WHERE b.ProjectId=:ProjectId AND b.InitiationId=:InitiationId AND ProductTreeMainId=:ProductTreeMainId AND b.SpecsVersion=1.0 AND b.IsActive=1 LIMIT 1)";
+	
+	@Override
+	public List<Object[]> getSpecsPlanApprovalFlowData(String projectId, String initationId, String productTreeMainId)
+			throws Exception {
+
+		Query query = manager.createNativeQuery(SPECSAPPROVALFLOW);
+		query.setParameter("ProjectId", projectId);
+		query.setParameter("InitiationId", initationId);
+		query.setParameter("ProductTreeMainId", productTreeMainId);
+		List<Object[]> list =  (List<Object[]>)query.getResultList();
+		if(list.size()>0) {
+			return list;
+		}else {
+			return null;
+		}
+	}
 }

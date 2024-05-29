@@ -1071,4 +1071,10 @@ public class RequirementServiceImpl implements RequirementService {
 		
 		return dao.getFirstVersionSpecsInitiationId(initiationId, projectId, productTreeMainId);
 	}
+	
+	@Override
+	public List<Object[]> getSpecsPlanApprovalFlowData(String projectId, String initationId, String productTreeMainId)
+			throws Exception {
+		return dao.getSpecsPlanApprovalFlowData(projectId,initationId,productTreeMainId);
+	}
 }

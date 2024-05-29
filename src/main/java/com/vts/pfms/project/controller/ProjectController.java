@@ -9494,13 +9494,15 @@ public class ProjectController
 				req.setAttribute("projectId", projectId);
 				req.setAttribute("productTreeList", productTreeList );
 				req.setAttribute("productTreeMainId", productTreeMainId);
-				req.setAttribute("initiationSpecList", service.initiationSpecList(projectId, productTreeMainId, "0"));
+				req.setAttribute("initiationSpecList", service.initiationSpecList(projectId, "0",productTreeMainId));
+				req.setAttribute("getSpecsPlanApprovalFlowData", reqService.getSpecsPlanApprovalFlowData(projectId,"0",productTreeMainId));
 			}else {
 				String initiationId = req.getParameter("initiationId");
 				List<Object[]> preProjectList = reqService.getPreProjectList(LoginType, LabCode, EmpId);
 				initiationId = initiationId!=null?initiationId: (preProjectList.size()>0?preProjectList.get(0)[0].toString():"0");
 				req.setAttribute("preProjectList", preProjectList);
 				req.setAttribute("initiationId", initiationId);
+				req.setAttribute("getSpecsPlanApprovalFlowData", service.initiationSpecList("0", initiationId,"0"));
 				req.setAttribute("initiationSpecList", service.initiationSpecList("0", "0", initiationId));
 			}
 
@@ -9725,6 +9727,7 @@ public class ProjectController
 			}
 			req.setAttribute("RequirementList", RequirementList);
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));			
+			req.setAttribute("SpecsId", req.getParameter("SpecsId")==null?"0":req.getParameter("SpecsId") );			
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -9781,6 +9784,8 @@ public class ProjectController
 			specs.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
 			specs.setDescription(req.getParameter("description"));
 			specs.setIsActive(1);
+			specs.setSpecsParameter(req.getParameter("specParameter"));
+			specs.setSpecsUnit(req.getParameter("specUnit"));
 			if(action.equalsIgnoreCase("Add")) {
 				specs.setSpecificationName("SPECS_"+id);
 				specs.setCreatedBy(UserId);
@@ -9794,8 +9799,9 @@ public class ProjectController
 		
 			long count = service.addSpecification(specs);
 			
+			SpecsId=count+"";
 			if(count>0){
-				redir.addAttribute("result","Specification " +action+ " ed successfully ");
+				redir.addAttribute("result","Specification " +action+ "ed successfully ");
 			}else{
 				redir.addAttribute("resultfail","Specification "+ action +" unsuccessful ");
 			}
@@ -9803,6 +9809,7 @@ public class ProjectController
 			redir.addAttribute("projectId", projectId);
 			redir.addAttribute("productTreeMainId", productTreeMainId);
 			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+			redir.addAttribute("SpecsId", SpecsId);
 			return "redirect:/SpecificaionDetails.htm";
 			
 		}
@@ -9926,6 +9933,32 @@ public class ProjectController
 		String SpecsInitiationId= req.getParameter("SpecsInitiationId");
 		return json.toJson(service.getSpecsIntro(SpecsInitiationId));
 	}
+	
+	@RequestMapping(value = "SpecificationDocumentDownlod.htm" )
+	public String testDocumentDownlod(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside SpecificationDocumentDownlod.htm "+UserId);
+		try {
+			Object[] DocTempAttributes =null;
+			DocTempAttributes= service.DocTempAttributes();
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			req.setAttribute("DocTempAttributes", DocTempAttributes);
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
+			req.setAttribute("LabList", service.LabListDetails(LabCode));
+			req.setAttribute("MemberList", reqService.DocMemberList("0", SpecsInitiationId));
+			req.setAttribute("DocumentSummary", reqService.getTestandSpecsDocumentSummary("0", SpecsInitiationId));
+			req.setAttribute("AbbreviationDetails",reqService.AbbreviationDetails("0", SpecsInitiationId));
+			
+			}catch (Exception e) {
+			
+			}
+			
+		return "print/SpecsPlanDownload";
+		}
+	
 	//package com.vts.pfms.project.controller;
 
 	//import java.io.ByteArrayInputStream;

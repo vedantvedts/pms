@@ -224,7 +224,12 @@ List<Object[]> ProjectList = (List<Object[]>) request.getAttribute("ProjectList"
 List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
 List<Object[]> productTreeList = (List<Object[]>) request.getAttribute("productTreeList");
 List<Object[]> initiationSpecList = (List<Object[]>) request.getAttribute("initiationSpecList");
+List<Object[]>  getSpecsPlanApprovalFlowData = (List<Object[]> ) request.getAttribute("getSpecsPlanApprovalFlowData");
 
+Object[]tempflow=null;
+if(getSpecsPlanApprovalFlowData!=null && getSpecsPlanApprovalFlowData.size()>0){
+	tempflow=getSpecsPlanApprovalFlowData.get(0);
+}
 List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
 
 Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
@@ -448,13 +453,42 @@ FormatConverter fc = new FormatConverter();
 	                 		</form>
 	                    </div>
 	                    <%} %>
+	                     
+	              <div class="row">
+		 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Test Plan</b></div>
+		 	    		</div>
+		    			<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+		           			<table align="center"  >
+		        				<tr>
+		        					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+		         						Prepared By - <%if(tempflow!=null) {%><%=tempflow[0] %> <%} else{%>Prepared By<%} %>
+		         					</td>
+		             		
+		                    		<td rowspan="2">
+		             					<i class="fa fa-long-arrow-right " aria-hidden="true" style="font-size: 20px;"></i>
+		             				</td>
+		             						
+		        					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+		        						Reviewer - <%if(tempflow!=null) {%><%=tempflow[1] %> <%} else{%>Reviewer<%} %>
+		        	    			</td>
+		             	    				
+		                    		<td rowspan="2">
+		             					<i class="fa fa-long-arrow-right " aria-hidden="true" style="font-size: 20px;"></i>
+		             				</td>
+		             						
+		             				<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
+		             					Approver - <%if(tempflow!=null) {%><%=tempflow[2] %> <%} else{%>Approver<%} %>
+		             	    		</td>
+		            			</tr> 	
+		            	    </table>			             
+						</div> 
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<form action="ProjectOverAllRequirement.htm" id="form1">
+	<form action="" id="form1">
 		<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 	</form>
 	

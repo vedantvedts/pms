@@ -131,7 +131,7 @@ for(Object[]obj:SpecContentsDetails){
 			</div>
 			
 				     	<div class="mt-2" id="reqdiv">
-				<div style="margin-left: 5%;overflow:auto"id="scrollclass">
+				<div style="margin-left: 5%;overflow:auto">
 					<table class="table table-bordered">
 						<tr class="table-warning">
 							<td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td>
@@ -505,7 +505,7 @@ for(Object[]obj:SpecContentsDetails){
 						</div>
 					</form>
 					
-					<div id="ExistingAbb">
+					<div  id="scrollclass" class="ExistingAbb" >
 					<table class="table table-bordered table-hover table-striped table-condensed" id="myTable2" style="width:100%;">
 							<thead>
 					            <tr>
@@ -538,6 +538,19 @@ for(Object[]obj:SpecContentsDetails){
 			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 						<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
 			<button class="btn bg-transparent" id="Introbtn" formaction="SpecificationScope.htm" formmethod="get" formnovalidate="formnovalidate"  style="display:none;">
+				<i class="fa fa-download text-success" aria-hidden="true"></i>
+			</button>
+		</form>
+		<!-- Introduction form end  -->	
+		
+		<!-- IntroductionPage -->
+	  	<form action="#">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="projectId" value="<%=projectId%>">
+			<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
+			<button class="btn bg-transparent" id="docbtn" formaction="SpecificationDocumentDownlod.htm" formmethod="get" formnovalidate="formnovalidate"  style="display:none;">
 				<i class="fa fa-download text-success" aria-hidden="true"></i>
 			</button>
 		</form>
@@ -607,7 +620,7 @@ const excel_file = document.getElementById('excel_file');
 
 excel_file.addEventListener('change', (event) => {
    
-	$('#ExistingAbb').hide();	
+	$('.ExistingAbb').hide();	
 	var reader = new FileReader();
     reader.readAsArrayBuffer(event.target.files[0]);
 
@@ -745,6 +758,9 @@ $(document).ready(function(){
 
 function showIntroudction(){
 	$('#Introbtn').click();
+}
+function DownloadDoc(){
+	$('#docbtn').click();
 }
 </Script>
 </body>
