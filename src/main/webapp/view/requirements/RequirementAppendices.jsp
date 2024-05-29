@@ -320,13 +320,21 @@ String reqInitiationId =(String)request.getAttribute("reqInitiationId");
 List<Object[]>AppendixList= (List<Object[]>)request.getAttribute("AppendixList");
 List<Object[]>AcronymsList= (List<Object[]>)request.getAttribute("AcronymsList");
 List<Object[]>PerformanceList= (List<Object[]>)request.getAttribute("PerformanceList");
-
+Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 %>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light justify-content-between"  style="margin-top: -1%">
 		<a class="navbar-brand">
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f">APPENDIX SECTION </span> <span style="color:#31708f;font-size: 19px"> </span></b>
+			<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" >
+				<span style="color:#31708f">APPENDIX SECTION -</span> 
+				<span style="color:#31708f;font-size: 19px"> 
+					<%if(projectDetails!=null) {%>
+						<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+						(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+					<%} %>
+				</span>
+			</b>
 		</a>
 		<form action="#">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

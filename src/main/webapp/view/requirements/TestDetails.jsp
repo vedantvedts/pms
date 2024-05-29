@@ -353,6 +353,8 @@ margin-left: -21px;
 	
 	List<Object[]> specificationList = (List<Object[]>)request.getAttribute("specificationList");
 	
+	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
+
 %>
 <body style="background-color: white;">
 
@@ -390,7 +392,13 @@ margin-left: -21px;
 								style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 								<div class="col-md-9" id="projecthead">
 									<h5 style="margin-left: 1%;">
-										<%="Test Details" %>
+										Test Details - 
+										<small>
+											<%if(projectDetails!=null) {%>
+												<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+												(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+											<%} %>
+										</small>
 									</h5>
 								</div>
 								<div class="col-md-3" id="addReqButton">

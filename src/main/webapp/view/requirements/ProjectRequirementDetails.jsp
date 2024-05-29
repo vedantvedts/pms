@@ -138,7 +138,6 @@ if(DocumentSummaryList.size()>0){
 			<input type="hidden" name="projectId" value="<%=projectId%>"> 
 			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
 			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
-			<input type="hidden" name="projectDetails" value="<%=projectDetails%>">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<button type="submit" id="parareq" style="display:none"></button>
 		</form>

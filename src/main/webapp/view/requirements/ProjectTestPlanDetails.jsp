@@ -82,6 +82,7 @@
 	    }
 	}
 
+	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 	%>
 <style type="text/css">
 </style>
@@ -114,7 +115,15 @@
 					<div class="row card-header"
 						style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 						<div class="col-md-10" id="projecthead" align="left">
-							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Test Plan Details</h5>
+							<h5 id="text" style="margin-left: 1%; font-weight: 600">
+								Project Test Plan Details - 
+								<small>
+									<%if(projectDetails!=null) {%>
+										<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+										(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+									<%} %>
+								</small>
+							</h5>
 						</div>
 						<div class="col-md-2" align="right">
 							<form action="ProjectTestPlan.htm" method="post">
