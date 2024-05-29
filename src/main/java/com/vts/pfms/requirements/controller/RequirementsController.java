@@ -282,17 +282,19 @@ public class RequirementsController {
 	@RequestMapping(value = "RequirementParaMain.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String RequirementPara(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside RequirementParaMain.htm "+UserId);
 		try {
-			String ProjectId = req.getParameter("projectId");
+			String projectId = req.getParameter("projectId");
 			String productTreeMainId = req.getParameter("productTreeMainId");
 			String reqInitiationId = req.getParameter("reqInitiationId");
-			req.setAttribute("projectId", ProjectId);
+			req.setAttribute("projectId", projectId);
 			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("reqInitiationId", reqInitiationId);
 			req.setAttribute("ParaDetails", projectservice.ReqParaDetailsMain(reqInitiationId));
 			req.setAttribute("SQRFile", projectservice.SqrFiles(reqInitiationId)); 
 			req.setAttribute("paracounts", req.getParameter("paracounts")==null?"1":req.getParameter("paracounts"));
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
 		}catch(Exception e) {
 			logger.error(new Date() +" Inside RequirementParaMain.htm "+UserId, e);
 		}
@@ -2352,6 +2354,10 @@ public class RequirementsController {
 			{
 				req.setAttribute("TestReqId", TestDetailsList.get(0)[0].toString());
 			}
+			
+			String specsInitiationId = service.getFirstVersionSpecsInitiationId(initiationId, projectId, productTreeMainId)+"";
+			
+			req.setAttribute("specificationList", service.getSpecsList(specsInitiationId));
 			req.setAttribute("TestDetailsList", service.TestDetailsList(testPlanInitiationId) );
 			req.setAttribute("initiationId", initiationId);
 			req.setAttribute("projectId", projectId);

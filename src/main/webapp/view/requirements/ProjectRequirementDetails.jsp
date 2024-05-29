@@ -81,7 +81,15 @@ if(DocumentSummaryList.size()>0){
 					<div class="row card-header"
 						style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 						<div class="col-md-10" id="projecthead" align="left">
-							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Requirements</h5>
+							<h5 id="text" style="margin-left: 1%; font-weight: 600">
+								Project Requirements - 
+								<small>
+									<%if(projectDetails!=null) {%>
+										<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+										(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+									<%} %>
+								</small>
+							</h5>
 						</div>
 						<div class="col-md-2" align="right">
 							<form action="Requirements.htm" method="post">
@@ -130,6 +138,7 @@ if(DocumentSummaryList.size()>0){
 			<input type="hidden" name="projectId" value="<%=projectId%>"> 
 			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
 			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+			<input type="hidden" name="projectDetails" value="<%=projectDetails%>">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<button type="submit" id="parareq" style="display:none"></button>
 		</form>
@@ -157,13 +166,14 @@ if(DocumentSummaryList.size()>0){
 		</form>
 		<!--  -->
 		<!-- para -->		
-		<form action="RequirementParaMain.htm" method="GET" id="">
+		<%-- <form action="RequirementParaMain.htm" method="GET" id="">
 			<input type="hidden" name="projectId" value="<%=projectId%>"> 
 			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
 			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+			<input type="hidden" name="projectDetails" value="<%=projectDetails%>">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<button type="submit" id="parareq" style="display:none"></button>
-		</form>	
+		</form> --%>	
 		<!--  -->
 	    <form action="RequirementList.htm" method="GET" id="myStatus">
 			<input type="hidden" name="projectId" value="<%=projectId%>"> 

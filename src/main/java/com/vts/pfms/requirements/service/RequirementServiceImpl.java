@@ -1062,7 +1062,13 @@ public class RequirementServiceImpl implements RequirementService {
 
 	@Override
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
-		// TODO Auto-generated method stub
+
 		return dao.getSpecsList(specsInitiationId);
+	}
+	
+	@Override
+	public Long getFirstVersionSpecsInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		
+		return dao.getFirstVersionSpecsInitiationId(initiationId, projectId, productTreeMainId);
 	}
 }

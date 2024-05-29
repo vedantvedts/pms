@@ -350,6 +350,9 @@ margin-left: -21px;
 	ObjectMapper objectMapper = new ObjectMapper();
 	String jsonArray = objectMapper.writeValueAsString(StagesApplicable);
 	String jsonArrayTestTool =objectMapper.writeValueAsString(TestTypeList);
+	
+	List<Object[]> specificationList = (List<Object[]>)request.getAttribute("specificationList");
+	
 %>
 <body style="background-color: white;">
 
@@ -416,13 +419,13 @@ margin-left: -21px;
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-2" >
+					<div class="col-md-1" >
 						<%if((TestDetailsList!=null) &&(!TestDetailsList.isEmpty())){ %>
 							<div class="cardbody" id="" style="display:block;<%if(TestDetailsList.size()>9){%>height:1000px;<%}%>">
 								<%int count=1;
 									for(Object []obj:TestDetailsList) {%>
 										<button type="button" class="btn btn-primary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick="TestDetailsShow('<%=obj[0]%>')">
-											<span style="font-weight: bold;font-size: 1.2rem;"><%=obj[1] %></span>
+											<span style="font-weight: bold;"><%=obj[1] %></span>
 										</button>
 									<%count++;} %>
 							</div>
@@ -433,12 +436,12 @@ margin-left: -21px;
 				                });
 	            			</script>
 	            			<button type="button" class="btn btn-secondary viewbtn mt-2">
-								<span style="font-weight: bold;font-size: 1.2rem;">No Data Available</span>
+								<span style="font-weight: bold;;">No Data</span>
 							</button>
 	           				
 						<%} %>
 					</div>
-					<div class="col-md-10">
+					<div class="col-md-11">
 						<div class="card">
 							<div class="card-body mt-2" id="cardbody">
 								<div id="viewcard">
@@ -664,10 +667,16 @@ margin-left: -21px;
 													</div>
 									
 													<div class="col-md-2">
-														<select required="required" id="select" name="SpecId" class="form-control" data-width="80%"data-live-search="true"  readonly>
-															<!-- <option disabled="disabled" value="" selected="selected">Choose..</option> -->
-															<option  value="S001">S001</option>
-														</select>
+														<%if ((specificationList != null) && specificationList.size()>0 ) {%>
+															<select required="required" class="form-control selectdee" name="SpecId" id="select" data-width="80%" data-live-search="true" multiple onchange="">
+																<option value="" disabled="disabled">---Choose----</option>
+																<%for (Object[] obj : specificationList) {%>
+																	<option value="<%=obj[0]%>"><%=obj[1]%></option>
+																<%}%>
+															</select>
+														<%} else {%>
+															<input class="form-control" name="" id="linkedRequirements"  readonly placeholder="No requirements specified for Project">
+														<%} %>
 													</div>
 													
 													<div class="col-md-3">

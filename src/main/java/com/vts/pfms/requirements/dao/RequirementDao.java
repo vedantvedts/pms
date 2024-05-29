@@ -119,13 +119,12 @@ public interface RequirementDao {
 	public Long getFirstVersionTestPlanInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
 	public Long getFirstVersionReqInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
 	public Object[] getRequirementApprovalFlowData(String initiationId, String projectId, String productTreeMainId)throws Exception;
-
+	public int getDuplicateCountofTestType(String testType) throws Exception;
+	
 	// specification Starts
 	public SpecsInitiation getSpecsInitiationById(String specsInitiationId)throws Exception;
 	public long addSpecsInitiation(SpecsInitiation specsInitiation) throws Exception;
-	public int getDuplicateCountofTestType(String testType) throws Exception;
-
-
-	List<Object[]> getSpecsList(String specsInitiationId) throws Exception;
+	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception;
+	public Long getFirstVersionSpecsInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
 	
 }

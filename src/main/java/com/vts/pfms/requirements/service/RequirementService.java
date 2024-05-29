@@ -124,6 +124,7 @@ public interface RequirementService {
 	public Long getFirstVersionReqInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
 	public void requirementPdfFreeze(HttpServletRequest req, HttpServletResponse res, String reqInitiationId, String labCode) throws Exception;
 	public Object[] getRequirementApprovalFlowData(String initiationId, String projectId, String productTreeMainId)throws Exception;
+	public Long getFirstVersionSpecsInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
 
 	//specification starts
 	public SpecsInitiation getSpecsInitiationById(String specsInitiationId) throws Exception;
