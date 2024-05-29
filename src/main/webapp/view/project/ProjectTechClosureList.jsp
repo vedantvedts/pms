@@ -301,12 +301,10 @@ font-weight: bold;
 						    			</button>
 						    			
 						    			
+						    		
+						    			 
 						    			
-						    			<input type="hidden" name="TechnicalClsoureId" value="<%=obj[0]%>">
-						    			 <input type="hidden" name="ClosureId" value="<%=closureId %>">
-						    			 <input type="hidden" name="Action" value="A">
-						    			
-						    			 <button type="submit" class="editable-clicko" name="" value=""  formaction="projectTechClosureApprovalSubmit.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Submit')">
+						    			 <button type="submit" class="editable-clicko" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>/A"  formaction="projectTechClosureApprovalSubmit.htm" formmethod="get" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Submit')">
 											<div class="cc-rockmenu">
 												<div class="rolling" >
 													<figure class="rolling_icon">

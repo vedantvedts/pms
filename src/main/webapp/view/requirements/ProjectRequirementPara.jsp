@@ -298,13 +298,23 @@ keyframes blinker { 50% {
 	String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 	List<Object[]> ParaDetails = (List<Object[]>) request.getAttribute("ParaDetails");
 	String paracounts = (String) request.getAttribute("paracounts");
+	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
+	
 	%>
 	<nav class="navbar navbar-light bg-light justify-content-between"
 		style="margin-top: -1%">
-		<a class="navbar-brand"> <b
-			style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left"><span
-				style="color: #31708f">SQR para 
-			</span> <span style="color: #31708f; font-size: 19px"> <%-- <%=projectDetails[1].toString() %> --%></span></b>
+		<a class="navbar-brand"> 
+			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
+				<span style="color: #31708f">
+					SQR para -  
+				</span>
+				<span style="color: #31708f; font-size: 19px">
+					<%if(projectDetails!=null) {%>
+						<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+						(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+					<%} %>
+				</span>
+			</b>
 		</a>
 		<form action="#">
 			<button class="btn bg-transparent"
@@ -478,7 +488,15 @@ keyframes blinker { 50% {
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content" style="margin-left: -10%; width: 120%;">
 				<div class="modal-header" style="background: antiquewhite;">
-					<h5 class="modal-title" id="exampleModalLabel" style="color: #07689f !important;">Staff Qualification Requirement</h5>
+					<h5 class="modal-title" id="exampleModalLabel" style="color: #07689f !important;">
+						Staff Qualification Requirement -
+						<small>
+							<%if(projectDetails!=null) {%>
+								<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+								(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+							<%} %>
+						</small>
+					</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hidemodalbody()">
 						<span aria-hidden="true" style="color: red;">&times;</span>
 					</button>

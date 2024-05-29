@@ -240,14 +240,19 @@ float: right;
 	String testPlanInitiationId =(String)request.getAttribute("testPlanInitiationId");
 
 	String attributes=(String)request.getAttribute("attributes");
-
+	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 	%>
 		<nav class="navbar navbar-light bg-light justify-content-between" style="margin-top: -1%">
 			<a class="navbar-brand"> 
-			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
-			<span style="color: #31708f">Test Plan Introduction  </span>
-			<%-- <span style="color: #31708f; font-size: 19px">  <%=project.split("/")[1].toString() %></span> --%>
-			</b>
+				<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
+					<span style="color: #31708f">Test Plan Introduction - </span>
+					<span style="color: #31708f; font-size: 19px">
+						<%if(projectDetails!=null) {%>
+							<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+							(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+						<%} %>
+					</span>
+				</b>
 			</a>
 			<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 

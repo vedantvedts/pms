@@ -238,13 +238,19 @@ float: right;
 	String attributes=(String)request.getAttribute("attributes");
 	String reqInitiationId = (String)request.getAttribute("reqInitiationId");
 	String productTreeMainId = (String)request.getAttribute("productTreeMainId");
+	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 	%>
 		<nav class="navbar navbar-light bg-light justify-content-between" style="margin-top: -1%">
 			<a class="navbar-brand"> 
-			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
-			<span style="color: #31708f">Requirement Introduction for Project </span>
-			<%-- <span style="color: #31708f; font-size: 19px">  <%=project.split("/")[1].toString() %></span> --%>
-			</b>
+				<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
+					<span style="color: #31708f">Requirement Introduction for Project -</span>
+					<span style="color: #31708f; font-size: 19px">
+						<%if(projectDetails!=null) {%>
+							<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+							(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+						<%} %>
+					</span> 
+				</b>
 			</a>
 			<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -289,21 +295,7 @@ float: right;
 							</div>
 						</div>
 
-						 <!--  -->
-						<!-- <div class="panel panel-info" style="margin-top: 10px;">
-							<div class="panel-heading ">
-								<h4 class="panel-title">
-									<span class="ml-2" style="font-size: 14px"> 2. System
-										Block Diagram</span>
-								</h4>
-								<button class="btn bg-transparent buttonEd" type="button"
-									id="btnEditor2" onclick="showEditor('Block Diagram')">
-									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-								</button>
-							</div>
-						</div> -->
-						<!--  -->
-						<!--  -->
+					
 						<div class="panel panel-info" style="margin-top: 10px;">
 							<div class="panel-heading ">
 								<h4 class="panel-title">

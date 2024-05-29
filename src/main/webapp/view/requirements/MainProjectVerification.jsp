@@ -300,13 +300,23 @@ keyframes blinker { 50% {
 	String verificationId=(String)request.getAttribute("verificationId");
 	String reqInitiationId = (String)request.getAttribute("reqInitiationId");
 	String productTreeMainId = (String)request.getAttribute("productTreeMainId");
+	
+	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 	%>
 	<nav class="navbar navbar-light bg-light justify-content-between"
 		style="margin-top: -1%">
-		<a class="navbar-brand"> <b
-			style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left"><span
-				style="color: #31708f">Verification Provisions  
-			</span> <span style="color: #31708f; font-size: 19px"> <%-- <%=projectDetails[1].toString() %> --%></span></b>
+		<a class="navbar-brand"> 
+			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
+				<span style="color: #31708f">
+					Verification Provisions - 
+				</span> 
+				<span style="color: #31708f; font-size: 19px">
+					<%if(projectDetails!=null) {%>
+						<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+						(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+					<%} %>
+				</span>
+			</b>
 		</a>
 		<form action="#">
 	<!-- 		<button class="btn bg-transparent"

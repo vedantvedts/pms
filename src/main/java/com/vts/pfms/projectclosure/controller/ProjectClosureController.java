@@ -2692,9 +2692,17 @@ public class ProjectClosureController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside projectTechClosureApprovalSubmit.htm "+UserId);
 		try {
-			String techclosureId = req.getParameter("TechnicalClsoureId");
-			String closureId=req.getParameter("ClosureId");
-			String action = req.getParameter("Action");
+//			String techclosureId = req.getParameter("TechnicalClsoureId");
+//			String closureId=req.getParameter("ClosureId");
+//			String action = req.getParameter("Action");
+			
+			
+			String TechAndClosureId=req.getParameter("TechAndClosureId");
+			if(TechAndClosureId!=null) {
+			String[] split = TechAndClosureId.split("/");
+			String closureId=split[0];
+			String techclosureId=split[1];
+			String action=split[2];
 			
 			ProjectClosureTechnical closure = service.getProjectClosureTechnicalById(techclosureId);
 			String statusCode = closure.getStatusCode();
@@ -2750,7 +2758,9 @@ public class ProjectClosureController {
 			}
 			
 			redir.addAttribute("closureId", closureId);
+			}	
 			return "redirect:/TechClosureList.htm";
+			
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside projectTechClosureApprovalSubmit.htm "+UserId, e);
 			e.printStackTrace();

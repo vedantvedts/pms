@@ -370,6 +370,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 //String status = reqInitiation!=null?reqInitiation.getReqStatusCode():"RIN";
 //List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
 
+Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 %>
 	<%String ses=(String)request.getParameter("result"); 
  	String ses1=(String)request.getParameter("resultfail");
@@ -396,7 +397,13 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 						<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 							<div class="col-md-9" id="projecthead">
 								<h5 style="margin-left: 1%;">
-									Requirements
+									Requirements - 
+									<small>
+										<%if(projectDetails!=null) {%>
+											<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+											(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+										<%} %>
+									</small>
 								</h5>
 							</div>
 							<div class="col-md-3" id="addReqButton">
@@ -1126,7 +1133,15 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
   			<div class="modal-dialog modal-dialog-jump" role="document">
     			<div class="modal-content mt-5" style="width:120%; margin-left:-10%;">
       				<div class="modal-header p-1 pl-3" style="background: #C4DDFF">
-        				<h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Requirements</h5>
+        				<h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">
+        					Choose Requirements - 
+        					<small>
+								<%if(projectDetails!=null) {%>
+									<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
+									(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+								<%} %>
+							</small>
+        				</h5>
 				        <button type="button" class="close text-danger mr-1" data-dismiss="modal" aria-label="Close">
 				          <span class="font-weight-bolder" aria-hidden="true" style="opacity:1;">&times;</span>
 				        </button>

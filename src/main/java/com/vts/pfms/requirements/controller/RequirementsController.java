@@ -234,7 +234,8 @@ public class RequirementsController {
 			req.setAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
 			req.setAttribute("reqInitiationId", req.getParameter("reqInitiationId"));
 			req.setAttribute("AcronymsList", projectservice.AcronymsList(req.getParameter("reqInitiationId")));
-			req.setAttribute("PerformanceList", projectservice.getPerformanceList(req.getParameter("reqInitiationId")));;
+			req.setAttribute("PerformanceList", projectservice.getPerformanceList(req.getParameter("reqInitiationId")));
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, req.getParameter("projectId"), "E"));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -245,30 +246,31 @@ public class RequirementsController {
 	@RequestMapping(value="ProjectRequiremntIntroductionMain.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String ProjectReqIntroductionMain(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectRequiremntIntroductionMain.htm "+UserId);
 
 		try {
 			String initiationid = req.getParameter("initiationid");
 			String project=req.getParameter("project");
-			String ProjectId=req.getParameter("projectId");
+			String projectId=req.getParameter("projectId");
 			String productTreeMainId=req.getParameter("productTreeMainId");
 			String reqInitiationId=req.getParameter("reqInitiationId");
 			if(initiationid==null) {
 				initiationid="0";
 			}
-			if(ProjectId==null) {
-				ProjectId="0";
+			if(projectId==null) {
+				projectId="0";
 			}
 			if(productTreeMainId==null) {
 				productTreeMainId="0";
 			}
-			req.setAttribute("projectId", ProjectId);
+			req.setAttribute("projectId", projectId);
 			req.setAttribute("initiationid", initiationid);
 			req.setAttribute("project", project);
 			req.setAttribute("reqInitiationId", reqInitiationId);
 			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("attributes", req.getParameter("attributes")==null?"Introduction":req.getParameter("attributes"));
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProjectRequiremntIntroduction.htm "+UserId, e);
@@ -282,17 +284,19 @@ public class RequirementsController {
 	@RequestMapping(value = "RequirementParaMain.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String RequirementPara(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside RequirementParaMain.htm "+UserId);
 		try {
-			String ProjectId = req.getParameter("projectId");
+			String projectId = req.getParameter("projectId");
 			String productTreeMainId = req.getParameter("productTreeMainId");
 			String reqInitiationId = req.getParameter("reqInitiationId");
-			req.setAttribute("projectId", ProjectId);
+			req.setAttribute("projectId", projectId);
 			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("reqInitiationId", reqInitiationId);
 			req.setAttribute("ParaDetails", projectservice.ReqParaDetailsMain(reqInitiationId));
 			req.setAttribute("SQRFile", projectservice.SqrFiles(reqInitiationId)); 
 			req.setAttribute("paracounts", req.getParameter("paracounts")==null?"1":req.getParameter("paracounts"));
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
 		}catch(Exception e) {
 			logger.error(new Date() +" Inside RequirementParaMain.htm "+UserId, e);
 		}
@@ -323,6 +327,7 @@ public class RequirementsController {
 	public String RequirementVerify(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date()+ "Inside RequirementVerifyMain.htm"+UserId);
 		try {
 			String initiationId = req.getParameter("initiationId");
@@ -340,6 +345,7 @@ public class RequirementsController {
 			req.setAttribute("Verifications", projectservice.getVerificationListMain(reqInitiationId));
 			req.setAttribute("paracounts", req.getParameter("paracounts")==null?"1":req.getParameter("paracounts"));
 			//req.setAttribute("verificationId",req.getParameter("verificationId"));
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
 		}catch (Exception e) {
 
 		}
@@ -640,6 +646,8 @@ public class RequirementsController {
 			req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
 			req.setAttribute("DocumentSummary", service.getTestandSpecsDocumentSummary(testPlanInitiationId, "0"));
 			req.setAttribute("TestContent", service.GetTestContentList(testPlanInitiationId));
+			
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectType.equalsIgnoreCase("M")?projectId:initiationId, projectType.equalsIgnoreCase("M")?"E":"P"));
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside ProjectTestPlanDetails.htm "+UserId, e);
@@ -851,16 +859,19 @@ public class RequirementsController {
 	@RequestMapping(value="TestScope.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String ProjectReqIntroduction(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside TestScope.htm "+UserId);
 
 		try {
-			req.setAttribute("initiationId", req.getParameter("initiationId"));
-			req.setAttribute("projectId", req.getParameter("projectId"));
+			String projectId = req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("projectId", projectId);
 			req.setAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
 			req.setAttribute("testPlanInitiationId", req.getParameter("testPlanInitiationId"));
 
 			req.setAttribute("attributes", req.getParameter("attributes")==null?"Introduction":req.getParameter("attributes"));
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, !projectId.equals("0")?projectId:initiationId, !projectId.equals("0")?"E":"P"));
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside TestScope.htm "+UserId, e);
@@ -1255,13 +1266,15 @@ public class RequirementsController {
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside AccceptanceTesting.htm "+UserId);
 		try {
-
-			req.setAttribute("initiationId", req.getParameter("initiationId"));
-			req.setAttribute("projectId", req.getParameter("projectId"));
+			String initiationId = req.getParameter("initiationId");
+			String projectId = req.getParameter("projectId");
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("projectId", projectId);
 			req.setAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
 			req.setAttribute("testPlanInitiationId", req.getParameter("testPlanInitiationId"));
 
 			req.setAttribute("AcceptanceTesting", service.GetAcceptanceTestingList(req.getParameter("testPlanInitiationId")));
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, !projectId.equals("0")?projectId:initiationId, !projectId.equals("0")?"E":"P"));
 
 		}
 		catch(Exception e) {
@@ -1569,8 +1582,9 @@ public class RequirementsController {
 			req.setAttribute("subId", req.getParameter("subId"));
 			req.setAttribute("VerificationMethodList", service.getVerificationMethodList());			
 			req.setAttribute("ProjectParaDetails", service.getProjectParaDetails(reqInitiationId));
-
+			
 			req.setAttribute("reqInitiation", service.getRequirementInitiationById(reqInitiationId));
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
 		}
 
 
@@ -2337,6 +2351,7 @@ public class RequirementsController {
 	@RequestMapping(value="TestDetails.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	public String TestDetails(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) {
 		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside TestDetails "+UserId);
 		try {
 			String initiationId  = req.getParameter("initiationId");
@@ -2352,11 +2367,18 @@ public class RequirementsController {
 			{
 				req.setAttribute("TestReqId", TestDetailsList.get(0)[0].toString());
 			}
+			
+			String specsInitiationId = service.getFirstVersionSpecsInitiationId(initiationId, projectId, productTreeMainId)+"";
+			
+			req.setAttribute("specificationList", service.getSpecsList(specsInitiationId));
 			req.setAttribute("TestDetailsList", service.TestDetailsList(testPlanInitiationId) );
 			req.setAttribute("initiationId", initiationId);
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("testPlanInitiationId", testPlanInitiationId);
+			
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, !projectId.equals("0")?projectId:initiationId, !projectId.equals("0")?"E":"P"));
+			
 			return "requirements/TestDetails";
 		}catch(Exception e) {
 			e.printStackTrace();

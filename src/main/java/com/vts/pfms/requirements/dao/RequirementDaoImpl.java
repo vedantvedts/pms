@@ -1008,12 +1008,30 @@ public class RequirementDaoImpl implements RequirementDao {
 		
 	}
 	
-	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
+	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
 	@Override
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
 		
 		Query query = manager.createNativeQuery(SPECLIST);
 		query.setParameter("specsInitiationId", specsInitiationId);
 				return (List<Object[]>)query.getResultList();
+	}
+
+	private static final String GETFIRSTVERSIONSPECIFICATIONSID = "SELECT a.SpecsInitiationId FROM pfms_specifications_initiation a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ProductTreeMainId=:ProductTreeMainId AND a.SpecsVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	@Override
+	public Long getFirstVersionSpecsInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETFIRSTVERSIONSPECIFICATIONSID);
+			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
+			BigInteger count = (BigInteger)query.getSingleResult();
+			return count.longValue();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getFirstVersionSpecsInitiationId " + e);
+			e.printStackTrace();
+			return 0L;
+		}
 	}
 }

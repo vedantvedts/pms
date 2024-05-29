@@ -530,7 +530,18 @@ for(Object[]obj:SpecContentsDetails){
 		</div>
 	</div>	
 	
-	
+	<!-- IntroductionPage -->
+	  	<form action="#">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="projectId" value="<%=projectId%>">
+			<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
+			<button class="btn bg-transparent" id="Introbtn" formaction="SpecificationScope.htm" formmethod="get" formnovalidate="formnovalidate"  style="display:none;">
+				<i class="fa fa-download text-success" aria-hidden="true"></i>
+			</button>
+		</form>
+		<!-- Introduction form end  -->	
 <Script>
 $(document).ready(function() {
 	$('#projectType').on('change', function() {
@@ -730,6 +741,11 @@ $(document).ready(function(){
 	 "pageLength": 5
 });
 });
+
+
+function showIntroudction(){
+	$('#Introbtn').click();
+}
 </Script>
 </body>
 </html>
