@@ -448,4 +448,78 @@ public int sendMessage(String []Email, String subject, String msg)  {
 		}
 
 
+public int sendMessage1(String[] toEmail, String subject, String msg)  {
+	 String typeOfHost = "D";
+	MailConfigurationDto mailAuthentication;
+	try {
+		mailAuthentication = mailService.getMailConfigByTypeOfHost(typeOfHost);
+	} catch (Exception e1) {
+		e1.printStackTrace();
+		return (Integer) null;
+	}
+
+	
+	  if (mailAuthentication == null) {
+	      // Handle the case where mail configuration for the specified typeOfHost is not found
+		  System.out.println("ERRROR -3 ERROR MOT CAUGHTTTTT");
+	      return-3; // You can choose an appropriate error code
+	  }else {
+
+    		 System.out.println("URGENTDAKKKSEND @@@@@@@@@@@@@@@@@@@@@@@");
+			 System.out.println("spring.mail.host "+mailAuthentication.getHost());
+			 System.out.println("spring.mail.port "+mailAuthentication.getPort());
+			 System.out.println("spring.mail.username "+mailAuthentication.getUsername());
+			 System.out.println("spring.mail.password "+mailAuthentication.getPassword());
+  
+			  JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+			    // Set mail configuration from the database
+			    mailSender.setHost(mailAuthentication.getHost().toString());
+			    mailSender.setPort(Integer.parseInt(mailAuthentication.getPort().toString()));
+			    mailSender.setUsername(mailAuthentication.getUsername().toString());
+			    mailSender.setPassword(mailAuthentication.getPassword().toString());
+
+			    Properties properties = System.getProperties();
+				// Setup mail server
+				properties.setProperty("mail.smtp.host", mailSender.getHost());
+				//properties.put("mail.smtp.starttls.enable", "true");
+				// SSL Port
+				properties.put("mail.smtp.port", mailSender.getPort());
+				// enable authentication
+				properties.put("mail.smtp.auth", "true");
+				// SSL Factory
+				//properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			    
+				properties.put("mail.smtp.starttls.enable", "true");
+
+			    Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+					// override the getPasswordAuthentication
+					// method
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(mailSender.getUsername(), mailSender.getPassword());
+					}
+				});
+			    int mailSendresult = 0;
+	
+				try {
+					
+					MimeMessage message = new MimeMessage(session);
+					
+					message.setFrom(new InternetAddress(mailSender.getUsername()));
+					for (String ccRecipient : toEmail) {
+						message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccRecipient));
+					}
+					message.setSubject(subject);
+					message.setText(msg);
+					message.setContent(msg, "text/html");// this code is used to make the message in HTML formatting
+					
+					mailSender.send(message);
+					System.out.println("Message Sent");
+					mailSendresult++;
+				} catch (MessagingException mex) {
+					mex.printStackTrace();
+				}
+				return mailSendresult;
+		 }
+}
 }

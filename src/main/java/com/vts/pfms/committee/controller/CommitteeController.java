@@ -4397,6 +4397,7 @@ public class CommitteeController {
 
 			
 			ArrayList<String> emails= new ArrayList<String>();	
+			ArrayList<String> dronaemails= new ArrayList<String>();	
 			for(Object[] obj : committeeallmemberslist ) 
 			{				
 				if(obj[6]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW"))) 
@@ -4404,13 +4405,14 @@ public class CommitteeController {
 					emails.add(obj[6].toString());				 
 				}
 				
-//				if(obj[10]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW"))) 
-//				{				 
-//					emails.add(obj[10].toString());				 
-//				}
+				if(obj[10]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW"))) 
+				{				 
+					dronaemails.add(obj[10].toString());				 
+				}
 				
 			}
 			String [] Email = emails.toArray(new String[emails.size()]);
+			String [] DronaEmail = emails.toArray(new String[dronaemails.size()]);
 			String subject=committeemaindata[8] + " " +" Committee Formation Letter";
 			int count=0;
 //			if(Email!=null && Email.length>0){
@@ -4418,7 +4420,12 @@ public class CommitteeController {
 //			count= count +	cm.sendMessage(email, subject, Message);
 //			}
 //			}
+			if(Email.length>0) {
 			count = cm.sendMessage(Email,subject,Message);
+			}
+			if(DronaEmail.length>0) {
+			long result = cm.sendMessage1(DronaEmail,subject,Message);
+			}
 			if (count>0) 
 			{
 			redir.addAttribute("result", " Committee Formation Letter Sent Successfully !! ");
@@ -4548,6 +4555,7 @@ public class CommitteeController {
 			
 			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			ArrayList<String> emails= new ArrayList<String>();
+			ArrayList<String> dronaemails= new ArrayList<String>();
 			ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
 
 			for(Object[] obj : committeeinvitedlist) 
@@ -4558,9 +4566,9 @@ public class CommitteeController {
 						emails.add(obj[8].toString());
 					}
 					
-//					if(obj[13]!=null) {
-//						emails.add(obj[13].toString());
-//					}
+					if(obj[13]!=null) {
+						dronaemails.add(obj[13].toString());
+					}
 				}
 			}
 			
@@ -4572,6 +4580,7 @@ public class CommitteeController {
 			}
 			 
 			String [] Email = emails.toArray(new String[emails.size()]);
+			String [] DronaEmail = emails.toArray(new String[dronaemails.size()]);
 			String Message="Sir/Madam<br><p>&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + rodmessagehandle + ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
 			 		+ "<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
 			 		 + "<tr><td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Date :  </td>"
@@ -4595,6 +4604,9 @@ public class CommitteeController {
 					int count=0;
 					String subject=scheduledata[8] + " " +" Committee Invitation Letter";
 					count=cm.sendMessage(Email, subject, Message);
+					if(DronaEmail.length>0) {
+					long result=cm.sendMessage1(DronaEmail, subject, Message);
+					}
 					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
 					if(count>0) {
 						redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
