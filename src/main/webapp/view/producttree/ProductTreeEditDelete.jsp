@@ -8,8 +8,6 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
- 
-
 <title>Product Tree Edit & Delete</title>
 <style type="text/css">
 label{
@@ -93,7 +91,7 @@ input[type=checkbox] {
 <body>
   <%
   
-
+  
   
   List<Object[]> ProductTreeList=(List<Object[]>)request.getAttribute("ProductTreeList");
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");

@@ -1160,7 +1160,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public long AddIssue(ProjectClosureTechnical tech,String EmpId) throws Exception {
+	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode) throws Exception {
 		
 		
 		
@@ -1171,7 +1171,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		trans.setClosureId(tech.getTechnicalClosureId());
 		trans.setClosureForm("T");
 		trans.setClosureStatusCode("TIN");;
-		trans.setLabCode("MTRDC");
+		trans.setLabCode(LabCode);
 		trans.setActionBy(Long.parseLong(EmpId));
 		trans.setActionDate(sdtf.format(new Date()));
 		

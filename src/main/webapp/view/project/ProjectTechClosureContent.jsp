@@ -817,10 +817,8 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 			
 <form>			
 	<div align="center">
-	 <input type="hidden" name="ClosureId" value="<%=closureId%>" >
-	 <input type="hidden" name="TechClosureId" value="<%=TechClosureId%>" >
-				  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	      <button type="submit" class="btn btn-sm " style="background-color: purple;border: none;color: white;font-weight: bold;" formaction="TechnicalClosureReportDownload.htm" formtarget="_blank">Print Technical Closure Report</button>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	    <button type="submit"  class="btn btn-sm " style="background-color: purple;border: none;color: white;font-weight: bold;" name="TechAndClosureId"  value="<%=closureId%>/<%=TechClosureId%>" formaction="TechnicalClosureReportDownload.htm" formtarget="_blank">Print Technical Closure Report</button>
 	</div>
 </form>	
 		

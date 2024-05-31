@@ -2239,7 +2239,7 @@ public class ProjectClosureController {
 			tech.setCreatedDate(sdtf.format(new Date()));
 			tech.setIsActive(1);
 				
-			long save=service.AddIssue(tech,EmpId);
+			long save=service.AddIssue(tech,EmpId,LabCode);
 			
 			if (save > 0) {
 				redir.addAttribute("result", "Technical Closure "+Action+"ed Successfully");

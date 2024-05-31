@@ -67,7 +67,7 @@ public interface ProjectClosureService {
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception;
 	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach, MultipartFile equipBoughtOnChargeAttach, MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach, MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception;
 	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach, MultipartFile equipBoughtOnChargeAttach, MultipartFile budgetExpenditureAttach, MultipartFile sPActualpositionAttach, MultipartFile sPGeneralSpecificAttach, MultipartFile cRAttach) throws Exception;
-	public long AddIssue(ProjectClosureTechnical tech,String EmpId) throws Exception;
+	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode) throws Exception;
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
 	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
 	public List<Object[]> getSectionList(String closureId)throws Exception;
