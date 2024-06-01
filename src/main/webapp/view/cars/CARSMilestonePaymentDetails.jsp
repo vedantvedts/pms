@@ -442,7 +442,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 										<div class="col-md-12">
 											<div class="card shadow-nohover" >
 												<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;text-align: left;">
-								                    <b class="text-white" style=""><%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment Details: </b> 
+								                    <b class="text-white" style=""><%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment Details: </b> 
 								                    <hr>
 								                    <span class="text-white" style="float:right;font-weight: 600"> </span>
 							        			</div> 
@@ -488,7 +488,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
                               		      									<input type="file" class="form-control modals" name="attatchFlagB" <%if(mpdetails==null) {%>required<%} %> accept=".pdf">
 														                </div>
 														            </div>
-														            <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>
+														            <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 														        	<div class="col-md-3" style="">
 														        		<div class="form-group">
 														                	<label class="control-label">Flag-C</label><span class="mandatory">*</span>
@@ -509,7 +509,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 														        		<div class="form-group">
 														                	<label class="control-label">Invoice No:</label><span class="mandatory">*</span>
 														                    <input  class="form-control form-control" type="text" name="invoiceNo" id="invoiceNo" maxlength="50" placeholder="Enter Inovice No"
-														                     value="<%if(mpdetails!=null) {%><%=mpdetails.getInvoiceNo() %><%} %>" oninput="this.value=this.value.replace(/[^a-zA-Z0-9]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
+														                     value="<%if(mpdetails!=null) {%><%=mpdetails.getInvoiceNo() %><%} %>" required> 
 														                </div>
 														            </div>
 														        	<div class="col-md-3" style="">
@@ -544,7 +544,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 														        		<div class="form-group" style="width: 110%;">
 														        			<span style="color: crimson;">Flag-A : </span> <span>Reference is made to the CARS .</span> <br>
 														        			<span style="color: fuchsia;">Flag-B : </span> <span>Invoice. </span> <br>
-														        			<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>
+														        			<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 														        			<span style="color: blue;">Flag-C : </span> <span>Recommendation of CARS Review committee for releasing the proposed milestone payment is placed.</span> 
 														        			<%} %>
 														        		</div>
@@ -612,7 +612,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			               		   					<hr>
 					               		   			<div class="row">
 					               		   				<div class="col-md-12 mt-2" align="center">
-		               										<h5 style="font-weight: bold;margin-top: 1.5rem;">Approval for <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment </h5>
+		               										<h5 style="font-weight: bold;margin-top: 1.5rem;">Approval for <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment </h5>
 		               											
 		               										<span style="font-size: large;"><%=carsIni.getInitiationTitle() %> </span>
 		               									</div>
@@ -640,7 +640,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					               		   			</div>
 					               		   			<div class="row">
 					               		   				<div class="col-md-12" style="text-align: left;">
-					               		   					<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>
+					               		   					<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 					               		   						<span>
 					               		   							<%=++paymentslno %>) <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has submitted
 						               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
@@ -669,7 +669,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					               		   				</div>
 					               		   			</div>
 					               		   			
-					               		   			<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>
+					               		   			<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 					               		   			<div class="row">
 					               		   				<div class="col-md-12" style="text-align: left;">
 					               		   					<span>
@@ -886,7 +886,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			               									<%int paymentslno=0; %>
 			               									<tr>
 			               										<td><%=++paymentslno %>.</td>
-			               										<td><%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment Approval form</td>
+			               										<td><%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment Approval form</td>
 			               										<td>
 			               											<button type="submit" class="btn btn-sm" formaction="CARSMPDownload.htm"  formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="CARS Contract Signature Download" >
 																		<i class="fa fa-download fa-lg" aria-hidden="true"></i>
@@ -918,7 +918,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			               									<tr>
 			               										<td><%=++paymentslno %>.</td>
 			               										<td>
-			               											<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>
+			               											<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 							               		   						<span>
 							               		   							 <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has submitted
 								               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
@@ -946,7 +946,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 		                          					 				<%} %>
 			               										</td>
 			               									</tr>
-			               									<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>
+			               									<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 			               									<tr>
 			               										<td><%=++paymentslno %>.</td>
 			               										<td>
@@ -995,7 +995,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 						               			    		<div class="col-md-4" style="margin-left: 60px;">
 						               			     			<div class="row details">
 						                        					<div class="" style="width: 90%;border-top-left-radius: 5px;">
-						                            					 <label class="control-label">Upload <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment Approval form</label><span class="mandatory">*</span> 
+						                            					 <label class="control-label">Upload <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment Approval form</label><span class="mandatory">*</span> 
 						                            					 <%if(mpdetails!=null && mpdetails.getUploadOtherDoc()!=null) {%>
 						                            					 	<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -2rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
 						                            					 	value="fileOtherDoc" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CARS Payment Approval Download">

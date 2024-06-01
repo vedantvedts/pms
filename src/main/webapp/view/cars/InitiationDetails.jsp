@@ -998,7 +998,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<%} }else{%>
 													<tr class="tr_clone_milestones">
 														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="MIL-1" style="text-align: center;" required="required" readonly="readonly">
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="MIL-0" style="text-align: center;" required="required" readonly="readonly">
 														</td>	
 														<td style="width: 30%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
@@ -1940,7 +1940,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<%} }else{%>
 													<tr class="tr_clone_milestones2">
 														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="MIL-1" style="text-align: center;" required="required" readonly="readonly">
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="MIL-0" style="text-align: center;" required="required" readonly="readonly">
 														</td>	
 														<td style="width: 30%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
@@ -2070,7 +2070,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<%} }else{%>
 													<tr class="tr_clone_milestones">
 														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="MIL-1" style="text-align: center;" required="required" readonly="readonly">
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="MIL-0" style="text-align: center;" required="required" readonly="readonly">
 														</td>	
 														<td style="width: 30%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
@@ -3110,7 +3110,7 @@ $("#milestones").on('click', '.btn_rem_milestones', function () {
         // Update the reqId2 values for the remaining rows
         $('.tr_clone_milestones').each(function (index, row) {
             var $currentRow = $(row);
-            var newReqId = "MIL-" + (index + 1);
+            var newReqId = "MIL-" + (index);
             $currentRow.find("#milestoneno").val(newReqId);
         });
     }
@@ -3486,7 +3486,7 @@ function showEditor2(a){
   		        // Update the reqId2 values for the remaining rows
   		        $('.tr_clone_milestones2').each(function (index, row) {
   		            var $currentRow = $(row);
-  		            var newReqId = "MIL-" + (index + 1);
+  		            var newReqId = "MIL-" + (index);
   		            $currentRow.find("#milestoneno2").val(newReqId);
   		        });
   		    }

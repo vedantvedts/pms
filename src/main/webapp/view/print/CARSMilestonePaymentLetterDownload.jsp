@@ -247,7 +247,7 @@ Object[] dPandC = (Object[])request.getAttribute("DPandC");
 			<td>
 				&nbsp;&nbsp;Invoice received from <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %>,
 				 for the subject CARS is enclosed for release of
-				 <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%><%=MilestoneNo %> <%} else{%>Initial Advance<%} %>
+				 <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%><%=MilestoneNo %> <%} else{%>Initial Advance<%} %>
 				 payment and further necessary action please.
 			</td>
 		</tr>

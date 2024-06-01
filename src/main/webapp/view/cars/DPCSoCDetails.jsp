@@ -484,9 +484,9 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                              		 				 placeholder="Enter SoC Introduction" required><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %></textarea> --%>
                        								<div class="column b" style="width: 94.5%;">
 														<div id="dpcIntroductionnote" class="center"> </div>
-														<input type="hidden" id="dpcIntroductionhidden" value="<%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %>">
-													
-													<textarea name="dpcIntroduction" style="display:none;"></textarea>
+														<%-- <input type="hidden" id="dpcIntroductionhidden" value="<%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %>"> --%>
+														<textarea id="dpcIntroductionhidden" style="display:none;"><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %></textarea>
+														<textarea name="dpcIntroduction" style="display:none;"></textarea>
                        							</div>
                         					</div>
                			    				<!-- Second row of SoC Details  -->
