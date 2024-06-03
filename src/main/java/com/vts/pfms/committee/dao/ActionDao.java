@@ -185,4 +185,6 @@ public interface ActionDao {
 	public List<Object[]> RfaPendingCount(String empId)throws Exception;
 	
 	public List<Object[]> getMainIds(String scheduleMinutesId)throws Exception;
+	public List<Object[]> ActionReportsNew(String empId, String term, String position, String type, String labCode,
+			String loginType)throws Exception;
 }

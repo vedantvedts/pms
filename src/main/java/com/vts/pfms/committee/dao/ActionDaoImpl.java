@@ -1874,4 +1874,21 @@ public class ActionDaoImpl implements ActionDao{
 		
 		return main;
 	}
+	
+	private static final String ActionReportsNew="CALL Pfms_Action_Reports_new(:empid,:term,:position,:type,:loginType)";
+
+	@Override
+	public List<Object[]> ActionReportsNew(String EmpId,String Term,String Position,String Type,String LabCode,String loginType) throws Exception {
+		
+		Query query=manager.createNativeQuery(ActionReportsNew);
+		query.setParameter("empid",EmpId);
+		query.setParameter("term",Term);
+		query.setParameter("position",Position);
+		query.setParameter("type",Type);
+		query.setParameter("loginType",loginType);
+		//query.setParameter("LabCode",LabCode);
+		
+		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
+		return AssignedList;
+	}
 }

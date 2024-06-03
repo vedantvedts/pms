@@ -41,6 +41,7 @@ label {
 .note-editable {
 	line-height: 1.0;
 }
+
 .panel-info {
 	border-color: #bce8f1;
 }

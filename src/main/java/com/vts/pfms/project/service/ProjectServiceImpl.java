@@ -101,6 +101,7 @@ import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.requirements.dao.RequirementDao;
+import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
 import com.vts.pfms.requirements.model.SpecificationIntro;
@@ -3435,4 +3436,26 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 			
 			return dao.editSpecificationIntro(s);
 		}
+		
+		@Override
+		public long uploadProductTree(SpecifcationProductTree s, String LabCode) throws Exception {
+			String Path = LabCode + "\\SpecificationProducTree\\";
+			long count=0l;
+			if(!s.getFile().isEmpty()) {
+				s.setFilesPath(Path);
+				saveFile(uploadpath + Path, s.getFile().getOriginalFilename(), s.getFile());
+				s.setIsactive(1);
+				s.setImageName(s.getFile().getOriginalFilename());
+				count=dao.uploadProductTree(s);
+				}
+			
+			return count;
+		}
+		
+		@Override
+		public List<Object[]> SpecProducTreeDetails(String specsInitiationId) throws Exception {
+			return dao.SpecProducTreeDetails(specsInitiationId);
+		}
+		
+		
 }

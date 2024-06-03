@@ -58,10 +58,10 @@ int years=d.getYear();
 Object[]LabList=(Object[])request.getAttribute("LabList");
 List<Object[]>TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
 
-List<Object[]>SpecContentsDetails =(List<Object[]>)request.getAttribute("SpecContentsDetails");
 List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
 String Conclusion = null;
 String ConclusionContenId= null;
+List<Object[]>SpecContentsDetails =(List<Object[]>)request.getAttribute("SpecContentsDetails");
 
 for(Object[]obj:SpecContentsDetails){
 	if(obj[1].toString().equalsIgnoreCase("Conclusion")){
@@ -123,6 +123,7 @@ for(Object[]obj:SpecContentsDetails){
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDocPDF()"><img alt="" src="view/images/pdf.png" >&nbsp;Specification Document</span> 
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
+		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showProductTree()"><img alt="" src="view/images/tree.png" >&nbsp;&nbsp;Product Tree</span>
 		       				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSpecification()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Specification</span>
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2 btn-req" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
@@ -529,6 +530,64 @@ for(Object[]obj:SpecContentsDetails){
 			</div>
 		</div>
 	</div>	
+	<!-- Product tree Modal  -->
+	<%
+	List<Object[]>SpecProducTree=(List<Object[]>)request.getAttribute("SpecProducTree") ;
+	%>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="productModal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="width:135%;margin-left:-20%;">
+				<div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
+					<h5 class="modal-title" >Upload ProductTree</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" class="text-light">&times;</span>
+			        </button>
+				</div>
+				<div class="modal-body">
+					<form action ="SpecProductTreeUpload.htm" method="post" id="excelForm" enctype="multipart/form-data">
+				    <div class="row">
+				    <div class="col-md-3"><label style="font-size: 17px; color: #07689f;font-weight:bold">Comment 
+					</label></div>
+				    <div class="col-md-8">
+				    <textarea name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"><%if(SpecProducTree!=null && SpecProducTree.size()>0) {%> <%=SpecProducTree.get(0)[2].toString() %> <%} else{%> Guidance: 
+The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID 
+				     <%} %> </textarea>
+				    </div>
+				    </div>
+				    <div class="row mt-2">
+				    <div class="col-md-3"><label style="font-size: 17px; color: #07689f;font-weight:bold">
+				    Attachment<span class="mandatory" style="color: red;">*</span>
+				    </label>
+				    </div>
+					<div class="col-md-8">
+ 					<input class="form-control" type="file" id="imageUpload" name="image" accept="image/*" required="required">					
+					</div>
+					<%if(SpecProducTree!=null && SpecProducTree.size()>0) {%>
+					<div class="col-md-1">
+					<a class="btn" target="blank" data-toggle="tooltip" data-placement="top" data-original-data="Tooltip on Top" title="Product Tree"    href="ProductTree.htm?ProjectId=<%=projectId%>"><img alt="" src="view/images/tree.png" ></a>
+					</div>
+					<%} %>
+					</div>
+					<div  class="mt-2" align="center">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+						<%if(SpecProducTree!=null && SpecProducTree.size()>0) {%>
+						<button type="submit" class="btn btn-sm edit" onclick="return confirm('Are you sure to submit?')">UPDATE</button>
+						<%}else{ %>
+						<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+						<%} %>
+						<input type="hidden" name="projectId" value="<%=projectId%>">
+						 <input type="hidden" name="projectType" value="<%=projectType%>">
+						<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+						<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
+					</div>
+					</form>
+					</div>
+				
+				
+				</div>
+				</div>
+				</div>
 	
 	<!-- IntroductionPage -->
 	  	<form action="#">
@@ -543,18 +602,31 @@ for(Object[]obj:SpecContentsDetails){
 		</form>
 		<!-- Introduction form end  -->	
 		
-		<!-- IntroductionPage -->
+		<!-- DocDownload -->
 	  	<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<input type="hidden" name="projectId" value="<%=projectId%>">
 			<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
 			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 						<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
-			<button class="btn bg-transparent" id="docbtn" formaction="SpecificationDocumentDownlod.htm" formmethod="get" formnovalidate="formnovalidate"  style="display:none;">
+			<button class="btn bg-transparent" id="docbtn" formaction="SpecificationDocumentDownlod.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank"  style="display:none;">
 				<i class="fa fa-download text-success" aria-hidden="true"></i>
 			</button>
 		</form>
-		<!-- Introduction form end  -->	
+		<!--  -->	
+		
+			<!-- PDFDownload -->
+	  	<form action="#">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="projectId" value="<%=projectId%>">
+			<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+						<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">
+			<button class="btn bg-transparent" id="pdfbtn" formaction="SpecificationdPdf.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank"  style="display:none;">
+				<i class="fa fa-download text-success" aria-hidden="true"></i>
+			</button>
+		</form>
+		<!--  -->	
 <Script>
 $(document).ready(function() {
 	$('#projectType').on('change', function() {
@@ -611,6 +683,9 @@ function showSpecification(){
 
 function showAbbreviations() {
     $('#AbbreviationsModal').modal('show');
+}
+function showProductTree() {
+    $('#productModal').modal('show');
 }
 
 
@@ -762,6 +837,13 @@ function showIntroudction(){
 function DownloadDoc(){
 	$('#docbtn').click();
 }
+function DownloadDocPDF(){
+	$('#pdfbtn').click();
+}
+
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+	})
 </Script>
 </body>
 </html>

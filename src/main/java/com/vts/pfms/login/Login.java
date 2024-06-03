@@ -22,6 +22,7 @@ public class Login {
     private Long DivisionId;
     private Long FormRoleId;
     private String LoginType;
+    private String LoginTypeDms;
     private String Pfms;
     private int IsActive;
     private String CreatedBy;

@@ -12,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,6 +80,10 @@ public class RequirementServiceImpl implements RequirementService {
 	
 	@Autowired
 	ProjectDao prodao;
+	
+	
+	@Autowired
+	Environment env;
 	
 	@Autowired
 	CARSDao carsdao;
@@ -813,6 +819,98 @@ public class RequirementServiceImpl implements RequirementService {
 		}
 		
 	}
+	
+	@Override
+	public long projectSpecsApprovalForward(String specsInitiationId, String action, String remarks, String empId,String labcode, String userId) throws Exception {
+		SpecsInitiation specsInitiation = dao.getSpecsInitiationById(specsInitiationId);
+		String reqStatusCode = specsInitiation.getReqStatusCode();
+		List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+		String reqStatusCodeNext = specsInitiation.getReqStatusCodeNext();
+		try {
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(reqforwardstatus.contains(reqStatusCode)) {
+					specsInitiation.setReqStatusCode("RFW");
+					specsInitiation.setReqStatusCodeNext("RFR");
+				}else {
+					specsInitiation.setReqStatusCode(reqStatusCodeNext);
+					if(reqStatusCodeNext.equalsIgnoreCase("RFR")) {
+						specsInitiation.setReqStatusCodeNext("RFA");
+					}else if(reqStatusCodeNext.equalsIgnoreCase("RFA")) {
+						specsInitiation.setReqStatusCodeNext("RAM");
+					}else if(reqStatusCodeNext.equalsIgnoreCase("RAM")) {
+						specsInitiation.setReqStatusCodeNext("RAM");
+					}
+				}
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(reqStatusCodeNext.equalsIgnoreCase("RFR")) {
+					specsInitiation.setReqStatusCode("RRR");	
+				}else if(reqStatusCodeNext.equalsIgnoreCase("RFA")) {
+					specsInitiation.setReqStatusCode("RRA");	
+				}
+				
+				// Setting StatusCode Next
+				specsInitiation.setReqStatusCodeNext("RFW");
+			}
+			
+			dao.addSpecsInitiation(specsInitiation);
+			
+			// Add data in transaction Table
+			requirementTransAddHandling(Long.parseLong(specsInitiationId), remarks, specsInitiation.getReqStatusCode(), empId, "S");
+		
+			// Handling Notification
+			List<Object[]> summaryList = dao.getTestandSpecsDocumentSummary("0", specsInitiationId);
+		
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A")) {
+				String reqStatusCode2 = specsInitiation.getReqStatusCode();
+				if(reqStatusCode2.equalsIgnoreCase("RFW")) {
+					notification.setEmpId(Long.parseLong(summaryList!=null?summaryList.get(0)[4].toString():"0"));
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("SpecificationPlan Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFR")) {
+					notification.setEmpId(Long.parseLong(summaryList!=null?summaryList.get(0)[5].toString():"0"));
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("SpecificationPlan Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
+					notification.setEmpId(Long.parseLong(summaryList!=null?summaryList.get(0)[9].toString():"0"));
+					notification.setNotificationUrl("ProjectSpecification.htm?projectId="+specsInitiation.getProjectId()+"&initiationId="+specsInitiation.getInitiationId()+"&productTreeMainId="+specsInitiation.getProductTreeMainId()+"&projectType="+(specsInitiation.getProjectId()!=0?"M":"I") );
+					notification.setNotificationMessage("SpecificationPlan Doc Approved");
+				}
+				
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdf1.format(new Date()));
+
+				carsdao.addNotifications(notification);
+			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
+				notification.setEmpId(Long.parseLong(summaryList!=null?summaryList.get(0)[9].toString():"0"));
+				notification.setNotificationUrl("ProjectSpecification.htm?projectId="+specsInitiation.getProjectId()+"initiationId="+specsInitiation.getInitiationId()+"productTreeMainId="+specsInitiation.getProductTreeMainId()+"projectType="+(specsInitiation.getProjectId()!=0?"M":"I") );
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"Specification Plan Doc Request Returned":"Specification Plan Doc Request Disapproved");
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdf1.format(new Date()));
+			
+				carsdao.addNotifications(notification);
+			}
+			
+		
+		}catch (Exception e) {
+		
+		}
+		
+		
+		return 1l;
+	}
+	
+	
+	
 	@Override
 	public List<Object[]> projectTestPlanPendingList(String empId, String labcode) throws Exception {
 		
@@ -837,7 +935,7 @@ public class RequirementServiceImpl implements RequirementService {
 					  							  .InitiationId(Long.parseLong(initiationId))
 					  							  .ProjectId(Long.parseLong(projectId))
 					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
-					  							  .SpecsVersion(1)
+					  							  .SpecsVersion(1.0)
 					  							  .InitiatedBy(Long.parseLong(empId))
 					  							  .InitiatedDate(sdf2.format(new Date()))
 					  							  .ReqStatusCode("RIN")
@@ -934,6 +1032,75 @@ public class RequirementServiceImpl implements RequirementService {
 		
 	}
 
+	
+
+	
+	@Override
+	public void SpecsInitiationPdfFreeze(HttpServletRequest req, HttpServletResponse res, String specsInitiationId,
+			String labcode) throws Exception {
+		// TODO Auto-generated method stub
+		
+		logger.info(new Date() +"Inside SERVICE SpecsInitiationPdfFreeze");
+		try {
+		req.setAttribute("DocTempAttributes", prodao.DocTempAttributes());
+		req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(labcode)); 
+		req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(labcode)); 
+		req.setAttribute("LabList", prodao.LabListDetails(labcode));
+		req.setAttribute("MemberList", dao.DocMemberList( "0",specsInitiationId));
+		req.setAttribute("DocumentSummary", dao.getTestandSpecsDocumentSummary( "0",specsInitiationId));
+		req.setAttribute("AbbreviationDetails",dao.AbbreviationDetails( "0",specsInitiationId));
+		req.setAttribute("SpecContentsDetails", prodao.SpecContentsDetails(specsInitiationId));
+		req.setAttribute("SpecsIntro", prodao.getSpecsIntro(specsInitiationId));
+		req.setAttribute("SpecProducTree",prodao.SpecProducTreeDetails(specsInitiationId));
+		req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
+		
+		SpecsInitiation specsInitiation = dao.getSpecsInitiationById(specsInitiationId);
+		List<Object[]>initiationReqList = dao.initiationReqList(specsInitiation.getProjectId()+"", specsInitiation.getProductTreeMainId()+"",specsInitiation.getInitiationId()+"" );
+		String reqInitiationId=null;
+		List<Object[]>RequirementList= new ArrayList<>();
+		if(initiationReqList!=null && initiationReqList.size()>0) {
+			reqInitiationId=initiationReqList.get(0)[0].toString();
+			RequirementList=dao.RequirementList(reqInitiationId);
+		}
+		req.setAttribute("RequirementList", RequirementList);
+		req.setAttribute("specsList", dao.getSpecsList(specsInitiationId));
+		
+		String filename="ProjectSpecification";
+		String path=req.getServletContext().getRealPath("/view/temp");
+		req.setAttribute("path",path);
+		
+		
+		CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+		req.getRequestDispatcher("/view/requirements/SpecificationPDF.jsp").forward(req, customResponse);
+		String html = customResponse.getOutput();
+		
+		
+        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")) ; 
+
+        
+        File file=new File(path +File.separator+ filename+".pdf");
+        
+        String fname="Specification-"+specsInitiationId;
+		String filepath = "Doc_Repo\\Specification";
+        
+		int count=0;
+		while(new File(uploadpath+filepath+"\\"+fname+".pdf").exists())
+		{
+			fname = "Specification-"+specsInitiationId;
+			fname = fname+" ("+ ++count+")";
+		}
+		 saveFile(uploadpath+filepath, fname+".pdf", file);
+		   
+	        // Document Freeze Handling
+	        documentFreezeAddHandling(specsInitiationId, "S", filepath+"\\"+fname+".pdf", null);
+
+	        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	public void saveFile(String uploadpath, String fileName, File fileToSave) throws IOException 
 	{
 	   logger.info(new Date() +"Inside SERVICE saveFile ");
@@ -976,6 +1143,8 @@ public class RequirementServiceImpl implements RequirementService {
 			return 0L;
 		}
 	}
+	
+	
 	@Override
 	public DocumentFreeze getDocumentFreezeByDocIdandDocType(String docInitiationId, String docType) throws Exception {
 		
@@ -1049,6 +1218,10 @@ public class RequirementServiceImpl implements RequirementService {
 		}
 		
 	}
+	
+	
+	
+
 	@Override
 	public Object[] getRequirementApprovalFlowData(String initiationId, String projectId, String productTreeMainId) throws Exception {
 		
@@ -1077,4 +1250,15 @@ public class RequirementServiceImpl implements RequirementService {
 			throws Exception {
 		return dao.getSpecsPlanApprovalFlowData(projectId,initationId,productTreeMainId);
 	}
+	@Override
+	public List<Object[]> projectSpecificationApprovedList(String empId, String fromdate, String todate)throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Object[]> projectSpecificationPendingList(String empId, String labcode) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.projectSpecificationPendingList(empId,labcode);
+	}
+	
 }

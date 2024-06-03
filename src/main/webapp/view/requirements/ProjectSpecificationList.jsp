@@ -369,8 +369,9 @@ FormatConverter fc = new FormatConverter();
 	                      				<td align="center" >
 	                      					<form action="#">
 				                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				                            	<input type="hidden" name="SpecsInitiationId" value="<%=obj[0] %>">
-				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="ProjectRequirementTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
+				                            	<input type="hidden" name="testPlanInitiationId" value="<%=obj[0] %>">
+				                            	<input type="hidden" name="docType" value="S">
+				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="ProjectDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
 											    	<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>
 	                                        </form>
@@ -391,7 +392,7 @@ FormatConverter fc = new FormatConverter();
 														</div>
 													</button>
 													
-													<button type="submit" class="editable-clicko" formaction="" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Requirement?');">
+												 	<button type="submit" class="editable-clicko" formaction="SpecificationApproval.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Requirement?');">
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -400,12 +401,24 @@ FormatConverter fc = new FormatConverter();
 																<span>Forward</span>
 															</div>
 														</div>
-													</button>
+													</button> 
 													<input type="hidden" name="Action" value="A">
 													
 												<%} %>
-												
-											<!-- 	<button class="editable-clicko" formaction="" formtarget="blank" >
+													<%if(obj[9]!=null && "RFA".equalsIgnoreCase(obj[9].toString()) ) {%>
+													<button type="button" class="editable-clicko" data-placement="top" title="Amend" data-toggle="modal" data-target="#myModal" onclick="setversiondata('<%=obj[8]%>','<%=obj[0]%>')">
+														<div class="cc-rockmenu">
+															<div class="rolling">
+																<figure class="rolling_icon">
+																	<img src="view/images/correction.png" style="width: 28px;">
+																</figure>
+																<span>Amend</span>
+															</div>
+														</div>
+													</button>
+												<%} %>
+												<%if(obj[9]!=null && (!Arrays.asList("RFA","RAM").contains(obj[9].toString()))) {%>
+												<button class="editable-clicko" formaction="SpecificationDocumentDownlod.htm" formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -415,8 +428,8 @@ FormatConverter fc = new FormatConverter();
 														</div>
 													</div>
 												</button>
-												
-												<button class="editable-clicko" formaction="" formtarget="blank" >
+												<%} %>
+												<button class="editable-clicko" <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="SpecificationDownlodPdfFreeze.htm" <%}else {%> formaction="SpecificationdPdf.htm" <%} %>formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -425,7 +438,7 @@ FormatConverter fc = new FormatConverter();
 															<span>Document</span>
 														</div>
 													</div>
-												</button> -->
+												</button>
 													
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="projectType" value="<%=projectType %>">
@@ -455,7 +468,7 @@ FormatConverter fc = new FormatConverter();
 	                    <%} %>
 	                     
 	              <div class="row">
-		 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Test Plan</b></div>
+		 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow </b></div>
 		 	    		</div>
 		    			<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
 		           			<table align="center"  >

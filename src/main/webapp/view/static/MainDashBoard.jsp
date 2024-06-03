@@ -3290,8 +3290,8 @@ if(ses!=null){ %>
 		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden " align="center">
 			<div  style="margin: 5px">
 				<span class="ProjecChartCardTitle" style="color: #145374;font-size: 20px;text-decoration: underline;"></span>
-				<button class="btn btn-sm prints" style="float: right;padding: 3px 7px;margin: 0px 5px ;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
-				<button class="btn btn-sm back" style="float: right;padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Back" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+				<button class="btn btn-lg prints" style="float: left;padding: 3px 7px;margin: 0px 5px ;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+				<button class="btn btn-lg back" style="float: left;padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Close" ><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></button>
 				
 				<br>
 			</div>

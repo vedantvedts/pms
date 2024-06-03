@@ -141,12 +141,12 @@ public  class PFTSDaoImpl implements PFTSDao{
 
 	@Override
 	public Long addDemandfileOrder(PftsFileOrder pfo) throws Exception {
-		if(!pfo.getIsPresent().equalsIgnoreCase("N")) {
-		String updateOrder="UPDATE pfts_file_order SET IsActive='0' WHERE PftsFileId=:PftsFileId";
-		Query query = manager.createNativeQuery(updateOrder);
-		query.setParameter("PftsFileId", pfo.getPftsFileId());
-		query.executeUpdate();
-		}
+//		if(!pfo.getIsPresent().equalsIgnoreCase("N")) {
+//		String updateOrder="UPDATE pfts_file_order SET IsActive='0' WHERE PftsFileId=:PftsFileId";
+//		Query query = manager.createNativeQuery(updateOrder);
+//		query.setParameter("PftsFileId", pfo.getPftsFileId());
+//		query.executeUpdate();
+//		}
 		manager.persist(pfo);
 		manager.flush();
 		
@@ -275,5 +275,16 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public List<Object[]> getDemandNoList() throws Exception {
 		Query query = manager.createNativeQuery(GETDEMANDNO);
 		return (List<Object[]>)query.getResultList();
+	}
+	
+	@Override
+	public void updatePftsFileId(String fileId) throws Exception {
+		// TODO Auto-generated method stub
+		
+			String updateOrder="UPDATE pfts_file_order SET IsActive='0' WHERE PftsFileId=:PftsFileId";
+			Query query = manager.createNativeQuery(updateOrder);
+			query.setParameter("PftsFileId", fileId);
+			query.executeUpdate();
+			
 	}
 }

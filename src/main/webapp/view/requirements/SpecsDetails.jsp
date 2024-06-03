@@ -459,7 +459,16 @@ if(RequirementList!=null && RequirementList.size()>0){
 										</div>
 									</div>
 								</div>
-								<div class="row"> 
+								
+									<div class="row">
+								<div class="col-md-3">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
+								</div>
+								<div class="col-md-9">
+								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+								</div>
+								</div>
+								<div class="row mt-2"> 
 								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Parameter: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
@@ -475,14 +484,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 								</div>
 								
 								
-								<div class="row">
-								<div class="col-md-3">
-								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
-								</div>
-								<div class="col-md-9">
-								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
-								</div>
-								</div>
+							
 							
 								<div align="center" class="mt-2">
 								<button id="submitbtn" type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')" name="action" value="add">SUBMIT </button>

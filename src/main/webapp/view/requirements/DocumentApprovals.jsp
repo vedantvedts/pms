@@ -95,6 +95,7 @@ List<Object[]> reqPendingList =(List<Object[]>)request.getAttribute("reqPendingL
 List<Object[]> reqApprovedList =(List<Object[]>)request.getAttribute("reqApprovedList");
 List<Object[]> testPlanPendingList =(List<Object[]>)request.getAttribute("testPlanPendingList");
 List<Object[]> testPlanApprovedList =(List<Object[]>)request.getAttribute("testPlanApprovedList");
+List<Object[]>SpecificationPendingList= (List<Object[]>)request.getAttribute("SpecificationPendingList");
 
 String fromdate = (String)request.getAttribute("fromdate");
 String todate   = (String)request.getAttribute("todate");
@@ -320,31 +321,70 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																			</div>
 																		</div>
 																	</form>
-																	<%-- <button type="submit" class="btn btn-sm view-icon" formaction="ProjectClosureSoCDetails.htm" name="closureSoCApprovals" value="<%=form[4]%>/Y/2" data-toggle="tooltip" data-placement="top" title="Closure SoC" style="font-weight: 600;" >
-								   										<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<img src="view/images/preview3.png">
-																				</figure>
-																				<span>Preview</span>
-																			</div>
-																		</div>
-																	</button> --%>
-																				
-																	<%-- <button type="submit" class="btn btn-sm" formaction="ProjectClosureSoCDownload.htm" name="closureId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
-								  	 									<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<img src="view/images/document.png">
-																				</figure>
-																				<span>SoC</span>
-																			</div>
-																		</div>
-																	</button> --%>
+																
 																	
 						 										</td>
                         									</tr>
                        									<%} }%>
+                       								<!-- Specification Plan  -->
+                       									<% 
+					   										if(SpecificationPendingList!=null && SpecificationPendingList.size()>0){
+                         							 			for(Object[] form:SpecificationPendingList ){
+                      							 		%>
+                        									<tr>
+                            									<td style="text-align: center;width: 3%;"><%=++SN%></td>
+                            									<td style="width: 18%;"><%=form[2]+", "+form[3]%></td>
+                            									<td style="text-align: center;width: 15%;">
+                            										<%=form[11]!=null?form[11]:form[12] %>
+                            										<%if(form[13]!=null) {%>
+                            											(<%=form[13]%>)
+                            										<%} %>
+                            									</td>
+                            									<td style="text-align: center;width: 8%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[6]%></td>
+                            									<td style="text-align: center;width: 10%;"> 
+                            										<form action="#">
+																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																		<input type="hidden" name="SpecsInitiationId" value="<%=form[4]%>"> 
+																		<span id="downloadform">
+																			<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="SpecificationdPdf.htm"
+																				data-toggle="tooltip" data-placement="top" title="" data-original-title="Specification Document">
+																				&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																			</button>
+																		</span>
+																	</form>
+                            									</td>
+                            									<td style="text-align: center;">
+                            										<form action="SpecificationApproval.htm">
+                            											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            											<input type="hidden" name="SpecsInitiationId" value="<%=form[4]%>"> 
+                            											<div class="d-flex ">
+                            												<div class="">
+                            													<textarea rows="2" cols="52" class="form-control" name="remarks" maxlength="1000" placeholder="Enter remarks here( max 1000 characters )" required></textarea>
+                            												</div>
+																			<div class="ml-2" align="right">
+																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formmethod="GET" formnovalidate="formnovalidate"
+																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this Project Document?');">
+																					<%if (form[14].toString().equalsIgnoreCase("RFW")) {%>
+																						Forward
+																					<%} else {%>
+																						Approve
+																					<%}%>
+																				</button>
+																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formmethod="GET" style="font-weight: 500"
+																					onclick="return confirm('Are You Sure To return this Project Document?');">
+																					Return
+																				</button>
+																			</div>
+																		</div>
+																	</form>
+																
+																	
+						 										</td>
+                        									</tr>
+                       									<%} }%>
+                       								
+                       								
                        								
                  									</tbody>  
             									</table>
@@ -480,7 +520,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="T"> 
-																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectTestPlanTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
 								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>

@@ -45,6 +45,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -123,10 +124,12 @@ import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
 import com.vts.pfms.requirements.model.SpecificationIntro;
 import com.vts.pfms.requirements.model.SpecsInitiation;
+import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.PMSLogoUtil;
@@ -149,6 +152,13 @@ public class ProjectController
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 
+	
+	@Autowired
+	Environment env;
+	
+	@Value("${ApplicationFilesDrive}")
+	private String ApplicationFilesDrive;
+	
 	@Autowired
 	RequirementService reqService;
 
@@ -6374,8 +6384,11 @@ public class ProjectController
 //			String initiationid=req.getParameter("initiationId");
 			String reqInitiationId = req.getParameter("reqInitiationId");
 			RequirementInitiation reqini = reqService.getRequirementInitiationById(reqInitiationId);
+			if(reqini!=null) {
 			Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
+			}
+			
 //			String ProjectId=req.getParameter("projectId");
 //			if(initiationid==null) {
 //				initiationid="0";
@@ -9564,6 +9577,7 @@ public class ProjectController
 			req.setAttribute("MemberList", reqService.DocMemberList("0", SpecsInitiationId));
 			req.setAttribute("EmployeeList", service.EmployeeList1(LabCode,"0",SpecsInitiationId));
 			req.setAttribute("SpecContentsDetails", service.SpecContentsDetails(SpecsInitiationId));
+			req.setAttribute("SpecProducTree", service.SpecProducTreeDetails(SpecsInitiationId));
 			req.setAttribute("AbbreviationDetails",reqService.AbbreviationDetails("0", SpecsInitiationId));
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -9761,8 +9775,16 @@ public class ProjectController
 			
 			int id= 0;
 			if(specList!=null) {
-				id=specList.size()+1;
+				id=(specList.size()+1)*10;
 				}
+			String spid="SPEC_";
+			if (specList.size() < 9) {
+				spid = spid+ ("_000" + (id));
+			} else if (specList.size() < 99) {
+				spid = spid+ ("_00" + (id));
+			} else {
+				spid = spid+ ("_0" + (id));
+			}
 			
 			String linkedRequirements="";
 			if(req.getParameterValues("linkedRequirements")!=null) {
@@ -9787,7 +9809,7 @@ public class ProjectController
 			specs.setSpecsParameter(req.getParameter("specParameter"));
 			specs.setSpecsUnit(req.getParameter("specUnit"));
 			if(action.equalsIgnoreCase("Add")) {
-				specs.setSpecificationName("SPECS_"+id);
+				specs.setSpecificationName(spid);
 				specs.setCreatedBy(UserId);
 				specs.setCreatedDate(sdf1.format(new Date()));
 				
@@ -9933,6 +9955,7 @@ public class ProjectController
 		String SpecsInitiationId= req.getParameter("SpecsInitiationId");
 		return json.toJson(service.getSpecsIntro(SpecsInitiationId));
 	}
+
 	
 	@RequestMapping(value = "SpecificationDocumentDownlod.htm" )
 	public String testDocumentDownlod(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
@@ -9944,6 +9967,11 @@ public class ProjectController
 			Object[] DocTempAttributes =null;
 			DocTempAttributes= service.DocTempAttributes();
 			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			SpecsInitiation specsInitiation = reqService.getSpecsInitiationById(SpecsInitiationId);
+
+			
+			req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
@@ -9951,13 +9979,226 @@ public class ProjectController
 			req.setAttribute("MemberList", reqService.DocMemberList("0", SpecsInitiationId));
 			req.setAttribute("DocumentSummary", reqService.getTestandSpecsDocumentSummary("0", SpecsInitiationId));
 			req.setAttribute("AbbreviationDetails",reqService.AbbreviationDetails("0", SpecsInitiationId));
+			req.setAttribute("SpecContentsDetails", service.SpecContentsDetails(SpecsInitiationId));
+			req.setAttribute("SpecsIntro", service.getSpecsIntro(SpecsInitiationId));
+			req.setAttribute("SpecProducTree",service.SpecProducTreeDetails(SpecsInitiationId));
 			
+			List<Object[]>initiationReqList = reqService.initiationReqList(specsInitiation.getProjectId()+"", specsInitiation.getProductTreeMainId()+"",specsInitiation.getInitiationId()+"" );
+			String reqInitiationId=null;
+			List<Object[]>RequirementList= new ArrayList<>();
+			if(initiationReqList!=null && initiationReqList.size()>0) {
+				reqInitiationId=initiationReqList.get(0)[0].toString();
+				RequirementList=reqService.RequirementList(reqInitiationId);
+			}
+			req.setAttribute("RequirementList", RequirementList);
+			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));
 			}catch (Exception e) {
 			
 			}
 			
 		return "print/SpecsPlanDownload";
 		}
+	
+	@RequestMapping(value = "SpecificationdPdf.htm" )
+	public void SpecificationdPdf(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside SpecificationdPdf.htm "+UserId);
+		try {
+
+			Object[] DocTempAttributes =null;
+			DocTempAttributes= service.DocTempAttributes();
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			SpecsInitiation specsInitiation = reqService.getSpecsInitiationById(SpecsInitiationId);
+
+		
+			
+			req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
+			req.setAttribute("DocTempAttributes", DocTempAttributes);
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
+			req.setAttribute("LabList", service.LabListDetails(LabCode));
+			req.setAttribute("MemberList", reqService.DocMemberList("0", SpecsInitiationId));
+			req.setAttribute("DocumentSummary", reqService.getTestandSpecsDocumentSummary("0", SpecsInitiationId));
+			req.setAttribute("AbbreviationDetails",reqService.AbbreviationDetails("0", SpecsInitiationId));
+			req.setAttribute("SpecContentsDetails", service.SpecContentsDetails(SpecsInitiationId));
+			req.setAttribute("SpecsIntro", service.getSpecsIntro(SpecsInitiationId));
+			req.setAttribute("SpecProducTree",service.SpecProducTreeDetails(SpecsInitiationId));
+			
+			List<Object[]>initiationReqList = reqService.initiationReqList(specsInitiation.getProjectId()+"", specsInitiation.getProductTreeMainId()+"",specsInitiation.getInitiationId()+"" );
+			String reqInitiationId=null;
+			List<Object[]>RequirementList= new ArrayList<>();
+			if(initiationReqList!=null && initiationReqList.size()>0) {
+				reqInitiationId=initiationReqList.get(0)[0].toString();
+				RequirementList=reqService.RequirementList(reqInitiationId);
+			}
+			req.setAttribute("RequirementList", RequirementList);
+			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));
+			
+			
+			String filename="ProjectSpecification";
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/requirements/SpecificationPDF.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			ConverterProperties converterProperties = new ConverterProperties();
+			FontProvider dfp = new DefaultFontProvider(true, true, true);
+			converterProperties.setFontProvider(dfp);
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+			
+			
+		}
+	
+	@RequestMapping(value = "SpecProductTreeUpload.htm" , method= {RequestMethod.POST,RequestMethod.GET})
+	public String SpecProductTreeUpload(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir ,@RequestParam("image") MultipartFile FileAttach)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside SpecProductTreeUpload.htm "+UserId);
+		try {
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			String projectId = req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
+			if(SpecsInitiationId.equals("0") ) {					
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+			}
+			
+			SpecifcationProductTree s= new SpecifcationProductTree();
+			s.setSpecificationId(Long.parseLong(SpecsInitiationId));
+			s.setComment(req.getParameter("description"));;
+			s.setCreatedBy(UserId);
+			s.setFile(FileAttach);
+			s.setCreatedDate(sdf1.format(new Date()));
+			long count= service.uploadProductTree(s,LabCode);
+			
+			if(count>0) {
+				redir.addAttribute("result","productree Image added successfully ");
+			}else {
+				redir.addAttribute("result","productree Image add unsuccessful");
+			}
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+			redir.addAttribute("projectType", req.getParameter("projectType"));
+			return "redirect:/ProjectSpecificationDetails.htm";
+		}catch(Exception e) {
+			
+		}
+		return null;
+		}
+	
+	@RequestMapping(value="SpecificationApproval.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String projectTestPlanApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir, HttpServletResponse resp) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside SpecificationApproval.htm"+UserId);
+		try {
+			
+			String action = req.getParameter("Action");
+			String remarks = req.getParameter("remarks");
+
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			String projectId = req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
+			
+			SpecsInitiation specsInitiation = reqService.getSpecsInitiationById(SpecsInitiationId);
+			String reqStatusCode = specsInitiation.getReqStatusCode();
+			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			
+			long result = reqService.projectSpecsApprovalForward(SpecsInitiationId,action,remarks,EmpId,labcode,UserId);
+			if(result!=0 && specsInitiation.getReqStatusCode().equalsIgnoreCase("RFA") && specsInitiation.getReqStatusCodeNext().equalsIgnoreCase("RAM")) {
+				// Pdf Freeze
+				reqService.SpecsInitiationPdfFreeze(req, resp, SpecsInitiationId, labcode);
+			}
+			
+			
+			if(action.equalsIgnoreCase("A")) {
+				
+				if(reqforwardstatus.contains(reqStatusCode)) {
+					if(result!=0) {
+						redir.addAttribute("result","SpecificationPlan forwarded Successfully");
+					}else {
+						redir.addAttribute("resultfail","SpecificationPlan forward Unsuccessful");
+					}
+					redir.addAttribute("projectType", req.getParameter("projectType"));
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					redir.addAttribute("initiationId", req.getParameter("initiationId"));
+					redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
+					redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+					return "redirect:/ProjectSpecification.htm";
+				}
+				
+				else if(reqStatusCode.equalsIgnoreCase("RFW")) {
+					if(result!=0) {
+						redir.addAttribute("result","Specification Recommended Successfully");
+					}else {
+						redir.addAttribute("resultfail","Specification Recommend Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				}else if(reqStatusCode.equalsIgnoreCase("RFR")) {
+					if(result!=0) {
+						redir.addAttribute("result","Specification Approved Successfully");
+					}else {
+						redir.addAttribute("resultfail","Specification Approve Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				}
+			}
+			
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if(result!=0) {
+					redir.addAttribute("result",action.equalsIgnoreCase("R")?"Specification Returned Successfully":"Specification Disapproved Successfully");
+				}else {
+					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"Specification Return Unsuccessful":"Specification Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/DocumentApprovals.htm";
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+	
+	
 	
 	//package com.vts.pfms.project.controller;
 

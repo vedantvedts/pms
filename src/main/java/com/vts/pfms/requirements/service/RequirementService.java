@@ -128,13 +128,15 @@ public interface RequirementService {
 
 	//specification starts
 	public SpecsInitiation getSpecsInitiationById(String specsInitiationId) throws Exception;
-
 	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,String empId, String userId) throws Exception;
-
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception;
-
 	public List<Object[]> getSpecsPlanApprovalFlowData(String projectId, String initationId, String productTreeMainId)throws Exception;
+	public long projectSpecsApprovalForward(String specsInitiationId, String action, String remarks, String empId,String labcode, String userId)throws Exception;
+	public List<Object[]> projectSpecificationPendingList(String empId, String labcode)throws Exception;
+	public List<Object[]> projectSpecificationApprovedList(String empId, String fromdate, String todate)throws Exception;
 
+	public void SpecsInitiationPdfFreeze(HttpServletRequest req, HttpServletResponse resp, String specsInitiationId,
+			String labcode)throws Exception;
 
 
 	

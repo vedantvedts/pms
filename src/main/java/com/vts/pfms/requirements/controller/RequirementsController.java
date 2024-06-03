@@ -959,8 +959,14 @@ public class RequirementsController {
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
 
 			TestPlanInitiation testPlanInitiation = service.getTestPlanInitiationById(testPlanInitiationId);
-			testPlanInitiationId = service.getFirstVersionTestPlanInitiationId( testPlanInitiation.getInitiationId()+"", testPlanInitiation.getProjectId()+"", testPlanInitiation.getProductTreeMainId()+"")+"";
-
+			if(testPlanInitiation!=null) {
+				testPlanInitiationId = service.getFirstVersionTestPlanInitiationId( testPlanInitiation.getInitiationId()+"", testPlanInitiation.getProjectId()+"", testPlanInitiation.getProductTreeMainId()+"")+"";
+			}
+			
+			
+			
+			
+			
 			String filename="ProjectRequirement";
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
@@ -2339,6 +2345,8 @@ public class RequirementsController {
 			req.setAttribute("reqApprovedList", service.projectRequirementApprovedList(EmpId,fromdate,todate));
 			req.setAttribute("testPlanPendingList", service.projectTestPlanPendingList(EmpId, labcode));
 			req.setAttribute("testPlanApprovedList", service.projectTestPlanApprovedList(EmpId,fromdate,todate));
+			req.setAttribute("SpecificationPendingList", service.projectSpecificationPendingList(EmpId, labcode));
+			req.setAttribute("SpecificationApprovedList", service.projectSpecificationApprovedList(EmpId,fromdate,todate));
 
 			return "requirements/DocumentApprovals";
 		}catch (Exception e) {
@@ -2738,11 +2746,11 @@ public class RequirementsController {
 		}
 	}
 
-	@RequestMapping(value="ProjectTestPlanTransStatus.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value="ProjectDocTransStatus.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String projectTestPlanTransStatus(HttpServletRequest req, HttpSession ses) throws Exception
 	{
 		String UserId = (String)ses.getAttribute("Username");
-		logger.info(new Date()+"Inside ProjectTestPlanTransStatus.htm"+UserId);
+		logger.info(new Date()+"Inside ProjectDocTransStatus.htm"+UserId);
 		try {
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
 			String docType = req.getParameter("docType");
@@ -2754,7 +2762,7 @@ public class RequirementsController {
 			return "requirements/ProjectDocTransStatus";
 		}catch (Exception e) {
 			e.printStackTrace();  
-			logger.error(new Date() +" Inside ProjectTestPlanTransStatus.htm "+UserId, e);
+			logger.error(new Date() +" Inside ProjectDocTransStatus.htm "+UserId, e);
 			return "static/Error";
 		}
 	}
@@ -2906,7 +2914,7 @@ public class RequirementsController {
 		try {
 			String reqInitiationId = req.getParameter("reqInitiationId");
 
-			DocumentFreeze freeze = service.getDocumentFreezeByDocIdandDocType(reqInitiationId, "T");
+			DocumentFreeze freeze = service.getDocumentFreezeByDocIdandDocType(reqInitiationId, "R");
 
 			if(freeze!=null && freeze.getPdfFilePath()==null) {
 				service.requirementPdfFreeze(req, resp, reqInitiationId, labcode);
@@ -2933,6 +2941,42 @@ public class RequirementsController {
 		}		
 	}
 
+	
+	@RequestMapping(value="SpecificationDownlodPdfFreeze.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void SpecificationDownlodPdfFreeze(HttpServletRequest req, HttpSession ses, HttpServletResponse res, HttpServletResponse resp) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside RequirementDocumentDownlodPdfFreeze.htm "+UserId);		
+		try {
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+
+			DocumentFreeze freeze = service.getDocumentFreezeByDocIdandDocType(SpecsInitiationId, "S");
+
+			if(freeze!=null && freeze.getPdfFilePath()==null) {
+//				service.requirementPdfFreeze(req, resp, reqInitiationId, labcode);
+				service.SpecsInitiationPdfFreeze(req, resp, SpecsInitiationId, labcode);
+			}
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition", "inline;filename= Specification.pdf");
+			File f = new File(uploadpath + File.separator + freeze.getPdfFilePath());
+			FileInputStream fis = new FileInputStream(f);
+			DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			res.setHeader("Content-Length", String.valueOf(f.length()));
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) >= 0) {
+				os.write(buffer, 0, len);
+			}
+			os.close();
+			fis.close();	
+
+		}
+		catch(Exception e) {	    		
+			logger.error(new Date() +" Inside SpecificationDownlodPdfFreeze.htm "+UserId, e);
+			e.printStackTrace();
+		}		
+	}
 	@RequestMapping(value="ProjectRequirementAmendSubmit.htm", method= {RequestMethod.POST, RequestMethod.GET})
 	public String projectRequirementAmendSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");

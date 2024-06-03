@@ -25,7 +25,7 @@ public class SpecsInitiation {
 	private Long ProjectId;
 	private Long InitiationId;
 	private Long ProductTreeMainId;
-	private int SpecsVersion;
+	private Double SpecsVersion;
 	private Long InitiatedBy;
 	private String InitiatedDate;
 	private String ReqStatusCode;

@@ -55,9 +55,11 @@ import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
+import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
 import com.vts.pfms.requirements.model.SpecificationIntro;
+import com.vts.pfms.requirements.model.SpecsInitiation;
 
 public interface ProjectService {
 
@@ -360,6 +362,8 @@ public interface ProjectService {
 	public long addSpecificationIntro(SpecificationIntro s) throws Exception;
 	public List<Object[]> getSpecsIntro(String specsInitiationId)throws Exception;
 	public long editSpecificationIntro(SpecificationIntro s)throws Exception;
-	
+	public long uploadProductTree(SpecifcationProductTree s,String LabCode) throws Exception;
+	public List<Object[]> SpecProducTreeDetails(String specsInitiationId) throws Exception;
+
 	
 }

@@ -32,4 +32,5 @@ public interface PFTSDao {
 	public long ManualOrderSubmit(PftsFileOrder order, String orderid)throws Exception;
 	public long manualDemandEditSubmit(PFTSFileDto pftsDto)throws Exception;
 	public List<Object[]> getDemandNoList()throws Exception;
+	public void updatePftsFileId(String fileId)throws Exception;
 }

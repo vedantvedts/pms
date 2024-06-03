@@ -154,4 +154,7 @@ public interface ActionService {
 	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate);
 	public int CommitteActionEdit(ActionAssignDto actionAssign)throws Exception;
 	public List<Object[]> RfaPendingCount(String empId)throws Exception;
+	//prakarsh
+	public  List<Object[]>  ActionReportsNew(String empId, String string, String string2, String string3, String labCode,
+			String logintype)throws Exception;
 }
