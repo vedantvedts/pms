@@ -649,14 +649,17 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 							+ FilenameUtils.getExtension(dto.getAttachment()[i].getOriginalFilename()));
 					saveFile(uploadpath + path, results.getAttachment(), dto.getAttachment()[i]);
 				}else {
-					results.setAttachment(dto.getAttatchmentName()[i]);
+					results.setAttachment(dto.getAttatchmentName()!=null?dto.getAttatchmentName()[i]:null);
 				}
 				
 				results.setCreatedBy(dto.getUserId());
 				results.setCreatedDate(sdtf.format(new Date()));
 				results.setIsActive(1);
 				
-				dao.addProjectClosureACPTrialResults(results);
+				if(results.getAttachment()!=null && !results.getAttachment().isEmpty()) {
+					dao.addProjectClosureACPTrialResults(results);
+				}
+				
 			}
 			return 1;
 		}catch (Exception e) {
