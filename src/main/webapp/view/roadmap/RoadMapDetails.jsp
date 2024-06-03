@@ -108,8 +108,8 @@ FormatConverter fc = new FormatConverter();
 											 <td >
 												<select class="form-control" required="required" id="roadMapType" name="roadMapType" onchange="validateRoadMapType('Add')" style="width: 60%;">
 													<option value="N" <%if(roadMap!=null && roadMap.getRoadMapType()!=null && roadMap.getRoadMapType().equalsIgnoreCase("N")) {%>selected<%} %> >New Project</option>
-													<option value="E" <%if(roadMap!=null && roadMap.getRoadMapType()!=null && roadMap.getRoadMapType().equalsIgnoreCase("E")) {%>selected<%} %>>Existing Project</option>
-													<option value="P" <%if(roadMap!=null && roadMap.getRoadMapType()!=null && roadMap.getRoadMapType().equalsIgnoreCase("P")) {%>selected<%} %>>Pre-Project</option>
+													<%-- <option value="E" <%if(roadMap!=null && roadMap.getRoadMapType()!=null && roadMap.getRoadMapType().equalsIgnoreCase("E")) {%>selected<%} %>>Existing Project</option>
+													<option value="P" <%if(roadMap!=null && roadMap.getRoadMapType()!=null && roadMap.getRoadMapType().equalsIgnoreCase("P")) {%>selected<%} %>>Pre-Project</option> --%>
 												</select>
 											</td>
 											<th id="existingprojectth" >

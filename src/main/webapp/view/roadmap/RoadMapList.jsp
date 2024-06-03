@@ -317,7 +317,7 @@ FormatConverter fc = new FormatConverter();
 				  							<div class="row">
 				  								<div class="col-" style="margin-top: 0.5rem;">
 				  									<%if(obj[17]!=null && (obj[17].toString().equalsIgnoreCase("RAD") )) {%>
-														<input form="myform" type="checkbox" class="form-control" name="roadMapId" value="<%=obj[0] %>">
+														<input form="myform" type="checkbox" class="form-control" name="roadMapId" value="<%=obj[0] %>" style="transform: scale(1.5);">
 													<%} %>
 				  								</div>
 					  							<div class="col-lg">
