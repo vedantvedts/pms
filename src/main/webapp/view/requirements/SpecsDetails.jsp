@@ -454,7 +454,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 													<%}%>
 												</select>
 											<%} else {%>
-												<input class="form-control" name="" id="linkedRequirements"  readonly placeholder="No requirements specified for Project">
+												<input class="form-control" name="" id="linkedRequirements"  readonly placeholder="No requirements specified for this  Project">
 											<%} %>
 										</div>
 									</div>

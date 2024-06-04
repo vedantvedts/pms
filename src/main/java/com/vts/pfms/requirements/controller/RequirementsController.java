@@ -713,7 +713,7 @@ public class RequirementsController {
 					}
 					if(testPlanInitiationId==null) {
 						if(SpecsInitiationId.equals("0") ) {					
-							SpecsInitiationId = Long.toString(service.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+							SpecsInitiationId = Long.toString(service.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
 						}
 					}
 
@@ -817,7 +817,7 @@ public class RequirementsController {
 			}
 			if(testPlanInitiationId==null) {
 				if(SpecsInitiationId.equals("0") ) {					
-					SpecsInitiationId = Long.toString(service.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+					SpecsInitiationId = Long.toString(service.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
 				}
 			}
 
@@ -2686,7 +2686,12 @@ public class RequirementsController {
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
 
 			TestPlanInitiation ini = service.getTestPlanInitiationById(testPlanInitiationId);
+			
+			if(ini!=null) {
 			testPlanInitiationId = service.getFirstVersionTestPlanInitiationId(ini.getInitiationId()+"", ini.getProjectId()+"", ini.getProductTreeMainId()+"")+"";
+			}else {
+				testPlanInitiationId="0";
+			}
 			Object[] projectDetails = projectservice.getProjectDetails(LabCode, ini.getInitiationId()!=0?ini.getInitiationId()+"":ini.getProjectId()+"", ini.getInitiationId()!=0?"P":"E");
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
 

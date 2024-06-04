@@ -9551,6 +9551,7 @@ public class ProjectController
 				initiationId = specsInitiation.getInitiationId().toString();
 				productTreeMainId = specsInitiation.getProductTreeMainId().toString();
 				projectType = projectId.equals("0")?"I":"M";
+				SpecsInitiationId = reqService.getFirstVersionSpecsInitiationId(initiationId,projectId,productTreeMainId)+"";
 			}else {
 				projectType = req.getParameter("projectType");
 				projectId = req.getParameter("projectId");
@@ -9607,7 +9608,7 @@ public class ProjectController
 			if(productTreeMainId==null) productTreeMainId="0";	
 			
 			if(SpecsInitiationId.equals("0") ) {					
-				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
 			}
 			
 			String action = req.getParameter("action");
@@ -9674,7 +9675,7 @@ public class ProjectController
 			if(productTreeMainId==null) productTreeMainId="0";	
 			
 			if(SpecsInitiationId.equals("0") ) {					
-				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
 			}
 			String action = req.getParameter("Action");
 			
@@ -9769,7 +9770,7 @@ public class ProjectController
 			if(productTreeMainId==null) productTreeMainId="0";	
 			
 			if(SpecsInitiationId.equals("0") ) {					
-				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
 			}
 			List<Object[]>specList = reqService.getSpecsList(SpecsInitiationId);
 			
@@ -9909,7 +9910,7 @@ public class ProjectController
 			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
 			
 			if(SpecsInitiationId.equals("0") ) {					
-				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
 			}
 			String action = req.getParameter("action");
 			
@@ -10094,7 +10095,7 @@ public class ProjectController
 			String initiationId = req.getParameter("initiationId");
 			String productTreeMainId = req.getParameter("productTreeMainId");
 			if(SpecsInitiationId.equals("0") ) {					
-				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
+				SpecsInitiationId = Long.toString(reqService.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
 			}
 			
 			SpecifcationProductTree s= new SpecifcationProductTree();
@@ -10198,7 +10199,40 @@ public class ProjectController
 		return null;
 	}	
 	
-	
+	@RequestMapping(value="SpecificationAmendSubmit.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String projectRequirementAmendSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside SpecificationAmendSubmit.htm"+UserId);
+		try {
+			
+			String amendversion = req.getParameter("amendversion");
+			String remarks = req.getParameter("remarks");
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			SpecsInitiation specsInitiation = reqService.getSpecsInitiationById(SpecsInitiationId);
+
+			reqService.projectSpecsApprovalForward(SpecsInitiationId,"A",remarks,EmpId,labcode,UserId);
+
+			long result = reqService.SpecificationInitiationAddHandling(specsInitiation.getInitiationId()+"", specsInitiation.getProjectId()+"", specsInitiation.getProductTreeMainId()+"", EmpId, UserId, amendversion, remarks);
+			//long result=0l;
+			 
+			if(result!=0) {
+				redir.addAttribute("result","Specification Amended Successfully");
+			}else {
+				redir.addAttribute("resultfail","Specification Amend Unsuccessful");
+			}
+			redir.addAttribute("SpecsInitiationId", result+"");
+
+			return "redirect:/ProjectSpecificationDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside SpecificationAmendSubmit.htm "+UserId, e);
+			return "static/Error";
+		}
+	}
+
 	
 	//package com.vts.pfms.project.controller;
 

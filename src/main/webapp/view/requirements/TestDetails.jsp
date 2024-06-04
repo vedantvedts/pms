@@ -670,7 +670,7 @@ margin-left: -21px;
 												<div class="form-group row">
 													<div class="col-md-1">
 														<label style="font-size: 17px;color: #07689f">
-															Sepc ID <span class="mandatory" style="color: red;"></span>
+															Spec ID <span class="mandatory" style="color: red;"></span>
 														</label>
 													</div>
 									
