@@ -4811,7 +4811,7 @@ $projectid=value;
 				Highcharts.chart('containerh', {
 				    chart: {
 				        type: 'bar',
-				        height: (12 / 16 * 100) + '%' 
+				        height: (16 / 16 * 100) + '%' 
 				    },
 				    exporting: {
 				        buttons: {
@@ -4912,7 +4912,7 @@ $projectid=value;
 			 Highcharts.chart('containerh2', {
 					 chart: {
 					        type: 'variablepie',
-					        height: (12 / 16 * 100) + '%' 
+					        height: (16 / 16 * 100) + '%' 
 					    },
 				    exporting: {
 				        buttons: {
@@ -5065,7 +5065,7 @@ $projectid=value;
 			 	 Highcharts.chart('containerh3', {
 					 chart: {
 					        type: 'variablepie',
-					        height: (12 / 16 * 100) + '%' 
+					        height: (16 / 16 * 100) + '%' 
 					    },
 				    exporting: {
 				        buttons: {
@@ -5138,7 +5138,7 @@ $projectid=value;
 				Highcharts.chart('containerh4', {
 				    chart: {
 				        type: 'column',
-				        height: (12 / 16 * 100) + '%' 
+				        height: (16 / 16 * 100) + '%' 
 				    },
 				    exporting: {
 				        buttons: {
@@ -5248,7 +5248,7 @@ $projectid=value;
 				Highcharts.chart('containerh5', {
 				    chart: {
 				        type: 'pie',
-				        height: (12 / 16 * 100) + '%' 
+				        height: (16 / 16 * 100) + '%' 
 				    },
 				    exporting: {
 				        buttons: {
@@ -5377,7 +5377,7 @@ $projectid=value;
 			Highcharts.chart('containerh6', {
 			    chart: {
 			        type: 'variablepie',
-			        height: (12 / 16 * 100) + '%' 
+			        height: (16 / 16 * 100) + '%' 
 			    },
 			    title: {
 			        text: 'Document Statistics',

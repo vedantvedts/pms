@@ -929,17 +929,18 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	@Override
-	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,String empId, String userId) {
+	public long SpecificationInitiationAddHandling(String initiationId, String projectId, String productTreeMainId,String empId, String userId,String version, String remarks) {
 		try {
 			SpecsInitiation specsInitiation = SpecsInitiation.builder()
 					  							  .InitiationId(Long.parseLong(initiationId))
 					  							  .ProjectId(Long.parseLong(projectId))
 					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
-					  							  .SpecsVersion(1.0)
+					  							  .SpecsVersion(version!=null ?version:"0")
 					  							  .InitiatedBy(Long.parseLong(empId))
 					  							  .InitiatedDate(sdf2.format(new Date()))
 					  							  .ReqStatusCode("RIN")
 					  							  .ReqStatusCodeNext("RIN")
+					  							  .Remarks(remarks)
 					  							  .CreatedBy(userId)
 					  							  .CreatedDate(sdf1.format(new Date()))
 					  							  .IsActive(1)

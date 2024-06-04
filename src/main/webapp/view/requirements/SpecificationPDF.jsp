@@ -266,7 +266,7 @@ margin-left:15x;
 	<div style="text-align: center; margin-top: 75px;">
 		<h4
 			style="font-size: 18pt;;font-family:<%=FontFamily%>; !important;"
-			class="heading-color ">SYSTEM REQUIREMENTS</h4>
+			class="heading-color ">SYSTEM  SPECIFICATIONS</h4>
 
 
 		<div align="center">
@@ -618,7 +618,6 @@ The product Tree shall comprises the complete physical products / subsystems of 
 			<br>
 		<%}} %>	
 		
-	<p style="text-align: center; page-break-before: always;font-family: <%= FontFamily %>;"></p>
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
     <%= ++maincount %>.&nbsp;Specifications Traceability
     </h1>
