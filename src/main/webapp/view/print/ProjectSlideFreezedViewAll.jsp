@@ -795,9 +795,12 @@ function DownloadSelected(){
 		//document.getElementById('submitdownloadselect').submit();
 }
 
+
 $('.carousel').carousel({
-	  interval: false,
+	  interval: true, 
 	  keyboard: true,
+	  slidesToScroll: 1,
+	  interval: 5000
 	})
 	
 	  function onTryItClick() {
