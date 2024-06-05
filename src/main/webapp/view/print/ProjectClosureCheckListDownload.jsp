@@ -363,7 +363,7 @@ p,td,th
 			<a href="http://192.168.1.14:8085/ibas/FinancialPerformancePdf.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&Date=<%=fc.SqlToRegularDate(currentDate.toString())%>&Amount=Rupees&rupeevalue=1" >
 			Annexure-<%=++a %>
 			
-			</a>  -- (From IBAS)
+			</a>  
 			
 			
 			</td>
@@ -444,7 +444,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Quantum/ revised PDC </td>
-			<td><%if(chlist!=null && chlist.getPDCRevised()>0) {%><%=chlist.getPDCRevised() %><%} %></td>
+			<td><%if(chlist!=null && chlist.getPDCRevised()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRevised()) %><%} %></td>
 		</tr>
 		
 		
@@ -494,7 +494,7 @@ p,td,th
 		      
 		       <a href="http://192.168.1.14:8085/ibas/ProjectExpenditureReportPrint.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&BudgetHeadIdSel=0%23All&ItemTypeSel=A%23ALL&FromDate=<%=fc.SqlToRegularDate(firstDayOfPreviousMonth.toString())%>&toDate=<%=fc.SqlToRegularDate(currentDate.toString())%>&action=pdf" target="_blank" title="PEC Download">
 			        Annexure-<%=++a %>
-		       </a>   --(From IBAS) 
+		       </a>   
 		      
 			</td>
 		</tr>
@@ -522,7 +522,7 @@ p,td,th
 			
 			  Annexure-<%=++a %>
 			
-			</a>   --(From IBAS) 
+			</a>    
 			
 			</td>
 		</tr>
@@ -674,10 +674,10 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">v. Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </td>
 			<td><% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null ){%><%=chlist.getEquipBoughtOnCharge() %><%} %>
 			
-		 <%if(chlist!=null && chlist.getEquipBoughtOnChargeAttach()!=null){ %>
-			<a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=EquipBoughtOnChargefile&closureId=<%=closureId %>" target="_blank" title="EquipBoughtOnCharge Download">
+		 <%if(chlist!=null && chlist.getEquipBoughtOnChargeReason()!=null){ %><%=chlist.getEquipBoughtOnChargeReason() %>
+			<%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=EquipBoughtOnChargefile&closureId=<%=closureId %>" target="_blank" title="EquipBoughtOnCharge Download">
 			       Annexure-<%=++a %>
-		     </a>
+		     </a> --%>
 		     
 			<%} %>
 			
@@ -699,7 +699,7 @@ p,td,th
 			
 			<a href="http://192.168.1.14:8085/ibas/ProjectDetailsAllotExp.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&Amount=L" target="_blank" title="Budget Yearly BreakUp Download">
 			       Annexure-<%=++a %>
-		     </a> --(From IBAS) 
+		     </a> 
 			
 			</td>
 		</tr>
@@ -723,11 +723,11 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Mention, if expenditure under any head exceeded the respective allocation </td>
 			<td>
 			
-			 <%if(chlist!=null && chlist.getBudgetExpenditureAttach()!=null){ %>
+			 <%if(chlist!=null && chlist.getBudgetExpenditure()!=null){ %><%=chlist.getBudgetExpenditure() %>
 			 
-			 <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=BudgetExpenditurefile&closureId=<%=closureId %>" target="_blank" title="BudgetExpenditure Download">
+			 <%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=BudgetExpenditurefile&closureId=<%=closureId %>" target="_blank" title="BudgetExpenditure Download">
 			       Annexure-<%=++a %>
-		     </a>
+		     </a> --%>
 			
 			<%} %>
 			
@@ -793,11 +793,11 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Actual position-held </td>
 			<td>
-			 <%if(chlist!=null && chlist.getSPActualpositionAttach()!=null){ %>
+			 <%if(chlist!=null && chlist.getSPActualposition()!=null){ %><%=chlist.getSPActualposition() %>
 			
-			<a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=SPActualpositionfile&closureId=<%=closureId %>" target="_blank" title="SPActualposition Download">
+			<%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=SPActualpositionfile&closureId=<%=closureId %>" target="_blank" title="SPActualposition Download">
 			       Annexure-<%=++a %>
-		     </a>
+		     </a> --%>
 			
 			
 			<%} %>
@@ -809,14 +809,14 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. General Specific (Category wise) </td>
 			<td>
-			 <%if(chlist!=null && chlist.getSPGeneralSpecificAttach()!=null){ %>
+			 <%if(chlist!=null && chlist.getSPGeneralSpecific()!=null){ %><%=chlist.getSPGeneralSpecific()%><%} %>
 			
 			
-			<a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=SPGeneralSpecificfile&closureId=<%=closureId %>" target="_blank" title="SPGeneralSpecific Download">
+			<%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=SPGeneralSpecificfile&closureId=<%=closureId %>" target="_blank" title="SPGeneralSpecific Download">
 			       Annexure-<%=++a %>
-		     </a>
+		     </a> --%>
 			
-			<%} %>
+			
 			
 			</td>
 		</tr>
@@ -978,15 +978,12 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vii. How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary) </td>
 			<td>
-			  <%if(chlist!=null && chlist.getCRAttach()!=null){ %>
+			  <%if(chlist!=null && chlist.getManPowerSanctioned()!=null){ %><%=chlist.getManPowerSanctioned()%><%}%>
 			  
-			  <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=CRAttachfile&closureId=<%=closureId %>" target="_blank" title="CRAttachfile Download">
+			  <%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=CRAttachfile&closureId=<%=closureId %>" target="_blank" title="CRAttachfile Download">
 				          Annexure-<%=++a %>
-			     </a>
-			     
-			   <%} %>
-			
-			
+			     </a> --%>
+			 
 			</td>
 		</tr>
 		
