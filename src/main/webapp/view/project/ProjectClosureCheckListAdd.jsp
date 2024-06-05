@@ -432,8 +432,6 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<br>
 												    	<br>
 												    	
-												  
-												   
 												    	<div class="row" style="margin-left: 2%;margin-right: 2%;">
 												    		
 												        	<div class="col-md-2" style="">
