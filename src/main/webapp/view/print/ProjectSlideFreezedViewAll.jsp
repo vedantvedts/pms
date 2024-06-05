@@ -114,7 +114,6 @@ FormatConverter fc = new FormatConverter();
 									<tr>
 										<th style="width: 2%;">SN</th>
 										<th style="width: 44%;">Projects</th>
-										<!-- <th style="width: 12%;">Cost (In Cr, &#8377)</th> -->
 										<th style="width: 8%;">DOS</th>
 										<th style="width: 8%;">PDC</th>
 										<th style="width: 6%;">Sanction Cost<br>(In Cr, &#8377)</th>
@@ -796,9 +795,12 @@ function DownloadSelected(){
 		//document.getElementById('submitdownloadselect').submit();
 }
 
+
 $('.carousel').carousel({
-	  interval: false,
+	  interval: true, 
 	  keyboard: true,
+	  slidesToScroll: 1,
+	  interval: 5000
 	})
 	
 	  function onTryItClick() {

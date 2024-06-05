@@ -129,7 +129,7 @@
 						   				<form method="post" action="ActionGraph.htm" name="ststusform" id="ststusform">
 	                                         <select class="form-control selectdee " name="projectid" id="projectid" required="required"  data-live-search="true"  onchange="this.form.submit()">
 	                                            <option value="A" <%if(projectid.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>All</option>	
-	                                             <option value="0" <%if(projectid.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
+	              
 	                                               <%for(Object[] obj:projectslist){
 	                                            	   String projectshortName=(obj[12]!=null)?" ( "+obj[12].toString()+" ) ":"";
 	                                            	   %>
@@ -204,9 +204,9 @@ Highcharts.chart('container', {
 	  },
 	  legend: {
 	    align: 'left',
-	    x: 70,
+	    x: -10,
 	    verticalAlign: 'top',
-	    y: 70,
+	    y: -10,
 	    floating: true,
 	    backgroundColor:
 	      Highcharts.defaultOptions.legend.backgroundColor || 'white',

@@ -315,7 +315,7 @@ FormatConverter fc = new FormatConverter();
 										<div class="container">
 				  							<div class="row">
 				  								<div class="col-" style="margin-top: 0.5rem;">
-													<input form="myform" type="checkbox" class="form-control" name="roadMapId" value="<%=obj[0] %>">
+													<input form="myform" type="checkbox" class="form-control" name="roadMapId" value="<%=obj[0] %>" style="transform: scale(1.5);">
 				  								</div>
 					  							<div class="col-lg">
 													<h4 class="card-title" ><%=obj[6] %></h4>

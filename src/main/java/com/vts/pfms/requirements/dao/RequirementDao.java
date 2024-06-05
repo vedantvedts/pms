@@ -129,5 +129,8 @@ public interface RequirementDao {
 
 
 	public List<Object[]> getSpecsPlanApprovalFlowData(String projectId, String initationId, String productTreeMainId)throws Exception;
+
+
+	public List<Object[]> projectSpecificationPendingList(String empId, String labcode) throws Exception;
 	
 }

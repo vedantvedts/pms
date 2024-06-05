@@ -2122,7 +2122,7 @@ public class CARSController {
 			return "cars/CARSOtherDocsList";
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside CARSOtherDocsDetails.htm "+Username, e);
+			logger.error(new Date() +" Inside CARSOtherDocsList.htm "+Username, e);
 			return "static/Error";
 		}
 	}
@@ -2132,7 +2132,7 @@ public class CARSController {
 		String Username = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		logger.info(new Date() + " Inside CARSOtherDocsDetails.htm "+Username);
+		logger.info(new Date() + " Inside CARSContractSignatureDetails.htm "+Username);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String csDocsTabId = req.getParameter("csDocsTabId");
@@ -2179,7 +2179,7 @@ public class CARSController {
 			return "cars/CARSContractSignatureDetails";
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside CARSOtherDocsDetails.htm "+Username, e);
+			logger.error(new Date() +" Inside CARSContractSignatureDetails.htm "+Username, e);
 			return "static/Error";
 		}
 	}
@@ -2192,7 +2192,7 @@ public class CARSController {
 		String Username = (String)ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		logger.info(new Date() + " Inside CARSOtherDocsDetails.htm "+Username);
+		logger.info(new Date() + " Inside CARSCSDocDetailsSubmit.htm "+Username);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String Action = req.getParameter("Action");
@@ -2239,7 +2239,7 @@ public class CARSController {
 			return "redirect:/CARSContractSignatureDetails.htm";
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside CARSOtherDocsDetails.htm "+Username, e);
+			logger.error(new Date() +" Inside CARSCSDocDetailsSubmit.htm "+Username, e);
 			return "static/Error";
 		}
 	}

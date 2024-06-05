@@ -686,6 +686,18 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				
 						                				<!-- Sub-Projects Add / Edit -->
 						                				<form action="ProjectClosureACPProjectDetailsSubmit.htm" method="POST" name="myform2" id="myform2">
+						                					<div class="row">
+							                					<div class="col-md-2" align="left">
+								                            		<h4 style="font-family: 'Lato',sans-serif;color: #005086">
+								                            			<b>List of Sub-Projects : </b>
+								                            		</h4>
+								                            	</div>
+								                            	<div class="col-md-2">
+								                            		<div style="float: left;;margin-top: 0.5rem;margin-left: -2rem;transform: scale(1.5);">
+								                            			<input type="checkbox" class="form-control" id="subprojectscheck" checked>
+								                            		</div>
+								                            	</div>
+								                            </div>
 						                					<table style="width:100%; " id="subprojectstable">
 																<thead style = "background-color: #055C9D; color: white;text-align: center;border: none !important;">
 																	<tr>
@@ -756,7 +768,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															<div align="center" style="margin-top: 15px;">
 																
 																<%if(subprojects!=null && subprojects.size()>0) {%>
-																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
+																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp btn-subproject" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
 																	
 																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;margin-top: 0.5%;" onclick="CloseEdit('subprojects')"
 																	 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
@@ -764,7 +776,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	</button>
 																	
 																<%} else{%> 
-																	<button type="submit" class="btn btn-sm submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+																	<button type="submit" class="btn btn-sm submit btn-acp btn-subproject" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 																<%} %>
 																<input type="hidden" name="closureId" value="<%=closureId%>">
 																<input type="hidden" name="details" value="subprojects" />
@@ -800,8 +812,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	<tr>
 																		<th style="width: 5%;">SN</th>
 																    	<th style="width: 5%;">CARS / CAPSI</th>
-																    	<th style="width: 20%;">CARS / CAPSI Name</th>
-																    	<th style="width: 10%;">CARS / CAPSI No</th>
+																    	<th style="width: 20%;">Name</th>
+																    	<th style="width: 10%;">No</th>
 																    	<th style="width: 15%;">Agency</th>
 																    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
 																    	<th style="width: 15%;">Status</th>
@@ -834,14 +846,26 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															
 						                				</div>
 						                				
-						                				<!-- Sub-Projects Add / Edit -->
+						                				<!-- CARS / CAPSI Add / Edit -->
 						                				<form action="ProjectClosureACPProjectDetailsSubmit.htm" method="POST" name="myform3" id="myform3">
+						                					<div class="row">
+							                					<div class="col-md-2" align="left">
+								                            		<h4 style="font-family: 'Lato',sans-serif;color: #005086">
+								                            			<b>List of CARS / CAPSI : </b>
+								                            		</h4>
+								                            	</div>
+								                            	<div class="col-md-2">
+								                            		<div style="float: left;;margin-top: 0.5rem;margin-left: -2rem;transform: scale(1.5);">
+								                            			<input type="checkbox" class="form-control" id="carscapsicheck" checked>
+								                            		</div>
+								                            	</div>
+								                            </div>
 						                					<table style="width:100%; " id="carscapsitable">
 																<thead style = "background-color: #055C9D; color: white;text-align: center;">
 																	<tr>
 																    	<th style="width: ;padding: 0px 5px 0px 5px;">CARS / CAPSI</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">CARS / CAPSI Name</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">CARS / CAPSI No</th>
+																    	<th style="width: ;padding: 0px 5px 0px 5px;">Name</th>
+																    	<th style="width: ;padding: 0px 5px 0px 5px;">No</th>
 																    	<th style="width: ;padding: 0px 5px 0px 5px;">Agency</th>
 																    	<th style="width: ;padding: 0px 5px 0px 5px;">Cost (&#8377;)</th>
 																    	<th style="width: ;padding: 0px 5px 0px 5px;">Status</th>
@@ -862,10 +886,10 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				</select>
 																			</td>
 																			<td style="width: ;padding: 10px 5px 0px 5px;" >
-																				<input type="text" class="form-control item" name="acpProjectName" value="<%if(carscapsi.getACPProjectName()!=null) {%><%=carscapsi.getACPProjectName() %><%} %>" placeholder="Enter Sub-Project Name" maxlength="1000" required="required" >
+																				<input type="text" class="form-control item" name="acpProjectName" value="<%if(carscapsi.getACPProjectName()!=null) {%><%=carscapsi.getACPProjectName() %><%} %>" placeholder="Enter Project Name" maxlength="1000" required="required" >
 																			</td>	
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
-																				<input type="text" class="form-control item" name="acpProjectNo" value="<%if(carscapsi.getACPProjectNo()!=null) {%><%=carscapsi.getACPProjectNo() %><%} %>" placeholder="Enter Sub-Project No." maxlength="200" required="required" >
+																				<input type="text" class="form-control item" name="acpProjectNo" value="<%if(carscapsi.getACPProjectNo()!=null) {%><%=carscapsi.getACPProjectNo() %><%} %>" placeholder="Enter Project No." maxlength="200" required="required" >
 																			</td>	
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
 																				<input type="text" class="form-control item" name="projectAgency" value="<%if(carscapsi.getProjectAgency()!=null) {%><%=carscapsi.getProjectAgency() %><%} %>" placeholder="Enter Agency Details" maxlength="1000" required="required" >
@@ -892,10 +916,10 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				</select>
 																			</td>
 																			<td style="width: ;padding: 10px 5px 0px 5px;" >
-																				<input type="text" class="form-control item" name="acpProjectName" maxlength="1000" placeholder="Enter Sub-Project Name" required="required" >
+																				<input type="text" class="form-control item" name="acpProjectName" maxlength="1000" placeholder="Enter Project Name" required="required" >
 																			</td>	
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
-																				<input type="text" class="form-control item" name="acpProjectNo" maxlength="200" placeholder="Enter Sub-Project No." required="required" >
+																				<input type="text" class="form-control item" name="acpProjectNo" maxlength="200" placeholder="Enter Project No." required="required" >
 																			</td>	
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
 																				<input type="text" class="form-control item" name="projectAgency" maxlength="1000" placeholder="Enter Agency Details" required="required" >
@@ -919,7 +943,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															<div align="center" style="margin-top: 15px;">
 																
 																<%if(carscapsiprojects!=null && carscapsiprojects.size()>0) {%>
-																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
+																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp btn-carscapsi" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
 																	
 																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;margin-top: 0.5%;" onclick="CloseEdit('carscapsi')"
 																	 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
@@ -927,7 +951,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	</button>
 																	
 																<%} else{%> 
-																	<button type="submit" class="btn btn-sm submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+																	<button type="submit" class="btn btn-sm submit btn-acp btn-carscapsi" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 																<%} %>
 																<input type="hidden" name="closureId" value="<%=closureId%>">
 																<input type="hidden" name="details" value="carscapsi" />
@@ -987,6 +1011,18 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				
 						                				<!-- Consultancies Add / Edit -->
 						                				<form action="ProjectClosureACPConsultancyDetailsSubmit.htm" method="POST" name="myform4" id="myform4">
+						                					<div class="row">
+							                					<div class="col-md-2" align="left">
+								                            		<h4 style="font-family: 'Lato',sans-serif;color: #005086">
+								                            			<b>List of Consultancies : </b>
+								                            		</h4>
+								                            	</div>
+								                            	<div class="col-md-2">
+								                            		<div style="float: left;;margin-top: 0.5rem;margin-left: -2rem;transform: scale(1.5);">
+								                            			<input type="checkbox" class="form-control" id="consultanciescheck" checked>
+								                            		</div>
+								                            	</div>
+								                            </div>
 						                					<table style="width:100%; " id="consultanciestable">
 																<thead style = "background-color: #055C9D; color: white;text-align: center;">
 																	<tr>
@@ -1043,7 +1079,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															<div align="center" style="margin-top: 15px;">
 																
 																<%if(consultancies !=null && consultancies.size()>0) {%>
-																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
+																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp btn-consultancies" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
 																	
 																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;margin-top: 0.5%;" onclick="CloseEdit('consultancies')"
 																	 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
@@ -1051,7 +1087,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	</button>
 																	
 																<%} else{%> 
-																	<button type="submit" class="btn btn-sm submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+																	<button type="submit" class="btn btn-sm submit btn-acp btn-consultancies" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 																<%} %>
 																<input type="hidden" name="closureId" value="<%=closureId%>">
 																<input type="hidden" name="details" value="consultancies" />
@@ -1244,7 +1280,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		</div>
 																		<div class="card-body">
 																	    	<div class="row"  style="margin-left: 3%;margin-right: 2%;">
-																	 			<label class="control-label">Attachments: </label><span class="mandatory">*</span>
+																	 			<label class="control-label">Attachments: </label>
 																	 		</div>
 																	 		
 																	 		<table style="width: 94%;margin-left: 3%;" id="trialresultstable">
@@ -1289,7 +1325,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																								<input type="text" class="form-control item" name="description" placeholder="Enter maximum 2000 charecters" maxlength="2000" >
 																							</td>	
 																							<td style="width: 25%;padding: 10px 5px 0px 5px;">
-																								<input type="file" class="form-control item" name="attachment" accept=".pdf" required>
+																								<input type="file" class="form-control item" name="attachment" accept=".pdf" >
 																							</td>	
 																							<td style="width: 5% ; ">
 																								<button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
@@ -1763,9 +1799,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						        <div style="display: flex;justify-content: space-between;">
                						<div></div>
 		               				<div class="navigation_btn"  style="text-align: center;">
-		               					<%if( (subprojects!=null && subprojects.size()>0) && (carscapsiprojects!=null && carscapsiprojects.size()>0) && (consultancies!=null && consultancies.size()>0) &&
-		                 						  (trialresults!=null && trialresults.size()>0) && (achievements!=null && achievements.size()>0) &&
-		                   						  (acp!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getTechReportNo()!=null) ){ %>
+		               					<%if( (achievements!=null && achievements.size()>0) && (acp!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getTechReportNo()!=null) ){ %>
 				               				<form action="#">
 				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosureACPDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Administrative closure Download" 
 				               					 style="background-color: purple;border: none;color: white;font-weight: bold;">
@@ -1794,9 +1828,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
          				<%}else{ %>
               				<div class="tab-pane " id="acpforward" role="tabpanel">
                			<%} %>
-               					<%if( (subprojects!=null && subprojects.size()>0) && (carscapsiprojects!=null && carscapsiprojects.size()>0) && (consultancies!=null && consultancies.size()>0) &&
-               						  (trialresults!=null && trialresults.size()>0) && (achievements!=null && achievements.size()>0) &&
-               						  (acp!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getTechReportNo()!=null) ) {%>
+               					<%if( (achievements!=null && achievements.size()>0) && (acp!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getTechReportNo()!=null) ) {%>
                					
                						<div class="col-md-8 mt-2">
                							<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%; <%if(isApproval==null) {%>max-height: 600px;<%} else{%>max-height: 700px;<%} %>  overflow-y: auto;">
@@ -1979,117 +2011,120 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">List of sub-projects</td>
-												    		<td>: </td>
+												    		<td style="width: 40%;font-weight: 600;">List of Sub-Projects</td>
+												    		<td>: <%if( (subprojects==null) || (subprojects!=null && subprojects.size()==0)) { %>NA<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
-												    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																	<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
-																		<tr>
-																			<th style="width: 5%;">SN</th>
-																	    	<th style="width: 15%;">Projects Name</th>
-																	    	<th style="width: 10%;">Project No</th>
-																	    	<th style="width: 15%;">Agency</th>
-																	    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
-																	    	<th style="width: 20%;">Status</th>
-																	    	<th style="">Achievement</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<%if(subprojects!=null && subprojects.size()>0) {
-																			int subprojectslno = 0;
-																			for(ProjectClosureACPProjects sub :subprojects) {%>
+												    			<%if(subprojects!=null && subprojects.size()>0) {%>
+													    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
+																		<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
 																			<tr>
-																				<td style="width: 5%;text-align: center;"><%=++subprojectslno %></td>
-																				<td style="width: 15%;"><%=sub.getACPProjectName() %> </td>
-																				<td style="width: 10%;text-align: center;"><%=sub.getACPProjectNo() %> </td>
-																				<td style="width: 15%;"><%=sub.getProjectAgency() %> </td>
-																				<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
-																				<td style="width: 20%;"><%=sub.getProjectStatus() %> </td>
-																				<td style=""><%=sub.getProjectAchivements() %> </td>
+																				<th style="width: 5%;">SN</th>
+																		    	<th style="width: 15%;">Projects Name</th>
+																		    	<th style="width: 10%;">Project No</th>
+																		    	<th style="width: 15%;">Agency</th>
+																		    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
+																		    	<th style="width: 20%;">Status</th>
+																		    	<th style="">Achievement</th>
 																			</tr>
-																		<%} }%>	
-																	</tbody>
-																</table>
+																		</thead>
+																		<tbody>
+																			<%  int subprojectslno = 0;
+																				for(ProjectClosureACPProjects sub :subprojects) {%>
+																				<tr>
+																					<td style="width: 5%;text-align: center;"><%=++subprojectslno %></td>
+																					<td style="width: 15%;"><%=sub.getACPProjectName() %> </td>
+																					<td style="width: 10%;text-align: center;"><%=sub.getACPProjectNo() %> </td>
+																					<td style="width: 15%;"><%=sub.getProjectAgency() %> </td>
+																					<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
+																					<td style="width: 20%;"><%=sub.getProjectStatus() %> </td>
+																					<td style=""><%=sub.getProjectAchivements() %> </td>
+																				</tr>
+																			<%}%>	
+																		</tbody>
+																	</table>
+																<%} %>
 												    		</td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;font-weight: 600;">List of CARS / CAPSI</td>
-												    		<td>: </td>
+												    		<td>: <%if( (carscapsiprojects==null) || (carscapsiprojects !=null && carscapsiprojects.size()==0)) { %>NA<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
-												    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																	<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
-																		<tr>
-																			<th style="width: 5%;">SN</th>
-																	    	<th style="width: 5%;">CARS / CAPSI</th>
-																	    	<th style="width: 15%;">CARS / CAPSI Name</th>
-																	    	<th style="width: 10%;">CARS / CAPSI No</th>
-																	    	<th style="width: 15%;">Agency</th>
-																	    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
-																	    	<th style="width: 15%;">Status</th>
-																	    	<th style="width: 15%;">Achievement</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<%if(carscapsiprojects !=null && carscapsiprojects.size()>0) {
-																			int carscapsiprojectslno = 0;
-																			for(ProjectClosureACPProjects carscapsi :carscapsiprojects) {%>
+												    			<%if(carscapsiprojects!=null && carscapsiprojects.size()>0) { %>
+													    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
+																		<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
 																			<tr>
-																				<td style="width: 5%;text-align: center;"><%=++carscapsiprojectslno %></td>
-																				<td style="width: 5%;">
-																					<%if(carscapsi.getACPProjectType()!=null && carscapsi.getACPProjectType().equalsIgnoreCase("R")) {%>
-																						CARS
-																					<%} else{%>
-																						CAPSI
-																					<%} %>
-																				</td>
-																				<td style="width: 15%;"><%=carscapsi.getACPProjectName() %> </td>
-																				<td style="width: 10%;text-align: center;"><%=carscapsi.getACPProjectNo() %> </td>
-																				<td style="width: 15%;"><%=carscapsi.getProjectAgency() %> </td>
-																				<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(carscapsi.getProjectCost())/10000000) %> </td>
-																				<td style="width: 20%;"><%=carscapsi.getProjectStatus() %> </td>
-																				<td style="width: 15%;"><%=carscapsi.getProjectAchivements() %> </td>
+																				<th style="width: 5%;">SN</th>
+																		    	<th style="width: 5%;">CARS / CAPSI</th>
+																		    	<th style="width: 15%;">Name</th>
+																		    	<th style="width: 10%;">No</th>
+																		    	<th style="width: 15%;">Agency</th>
+																		    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
+																		    	<th style="width: 15%;">Status</th>
+																		    	<th style="width: 15%;">Achievement</th>
 																			</tr>
-																		<%} }%>	
-																	</tbody>
-																</table>
+																		</thead>
+																		<tbody>
+																			<%  int carscapsiprojectslno = 0;
+																				for(ProjectClosureACPProjects carscapsi :carscapsiprojects) {%>
+																				<tr>
+																					<td style="width: 5%;text-align: center;"><%=++carscapsiprojectslno %></td>
+																					<td style="width: 5%;">
+																						<%if(carscapsi.getACPProjectType()!=null && carscapsi.getACPProjectType().equalsIgnoreCase("R")) {%>
+																							CARS
+																						<%} else{%>
+																							CAPSI
+																						<%} %>
+																					</td>
+																					<td style="width: 15%;"><%=carscapsi.getACPProjectName() %> </td>
+																					<td style="width: 10%;text-align: center;"><%=carscapsi.getACPProjectNo() %> </td>
+																					<td style="width: 15%;"><%=carscapsi.getProjectAgency() %> </td>
+																					<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(carscapsi.getProjectCost())/10000000) %> </td>
+																					<td style="width: 20%;"><%=carscapsi.getProjectStatus() %> </td>
+																					<td style="width: 15%;"><%=carscapsi.getProjectAchivements() %> </td>
+																				</tr>
+																			<%}%>	
+																		</tbody>
+																	</table>
+																<%} %>
 												    		</td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;font-weight: 600;">List of Consultancies</td>
-												    		<td>: </td>
+												    		<td>: <%if( (consultancies==null) || (consultancies!=null && consultancies.size()==0)) { %>NA<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
-												    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
-																	<tr>
-																		<th style="width: 5%;">SN</th>
-																    	<th style="width: 35%;">Aim</th>
-																    	<th style="width: 25%;">Agency</th>
-																    	<th style="width: 20%;">Amount in Cr (&#8377;)</th>
-																    	<th style="width: 10%;">Date</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<%if(consultancies !=null && consultancies.size()>0) {
-																		int consultancieslno = 0;
-																		for(ProjectClosureACPConsultancies consultancy :consultancies) {%>
-																		<tr>
-																			<td style="width: 5%;text-align: center;"><%=++consultancieslno %></td>
-																			<td style="width: 35%;"><%=consultancy.getConsultancyAim() %> </td>
-																			<td style="width: 25%;"><%=consultancy.getConsultancyAgency() %> </td>
-																			<td style="width: 20%;text-align: right;"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost())/10000000) %> </td>
-																			<td style="width: 10%;text-align: center;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
-																		</tr>
-																	<%} }%>	
-																</tbody>
-															</table>
+												    			<%if( consultancies!=null && consultancies.size()>0) { %>
+													    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
+																		<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+																			<tr>
+																				<th style="width: 5%;">SN</th>
+																		    	<th style="width: 35%;">Aim</th>
+																		    	<th style="width: 25%;">Agency</th>
+																		    	<th style="width: 20%;">Amount in Cr (&#8377;)</th>
+																		    	<th style="width: 10%;">Date</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<%  int consultancieslno = 0;
+																				for(ProjectClosureACPConsultancies consultancy :consultancies) {%>
+																				<tr>
+																					<td style="width: 5%;text-align: center;"><%=++consultancieslno %></td>
+																					<td style="width: 35%;"><%=consultancy.getConsultancyAim() %> </td>
+																					<td style="width: 25%;"><%=consultancy.getConsultancyAgency() %> </td>
+																					<td style="width: 20%;text-align: right;"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost())/10000000) %> </td>
+																					<td style="width: 10%;text-align: center;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
+																				</tr>
+																			<%} %>	
+																		</tbody>
+																	</table>
+																<%} %>	
 												    		</td>
 												    	</tr>
 												    	<tr>
@@ -2211,8 +2246,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Certified that objectives set for the project have been met as per Technical Report No.</td>
-												    		<td>: <%if(acp.getTechReportNo()!=null) {%><%=acp.getTechReportNo() %><%} %> </td>
+												    		<td  colspan="2" style="font-weight: 600;">Certified that objectives set for the project have been met as per Technical Report No. <span style="text-decoration: underline;font-weight: 500;"><%if(acp.getTechReportNo()!=null) {%><%=acp.getTechReportNo() %><%} %></span></td>
 												    	</tr>
 												    </table>
 												    
@@ -2221,7 +2255,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			               		   					<!-- Signature and timestamp of PD -->
 			               		   					
 													<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-		               								 	<div style="font-size: 15px;">Project Director</div>
+		               								 	<div style="font-size: 15px;">Programme / Project Director</div>
 						               					<%for(Object[] apprInfo : acpApprovalEmpData){ %>
 						   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AFW")){ %>
 						   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
@@ -2270,8 +2304,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		<td colspan="2" style="">
 												    			It is certified that the project
 												    			<%if(projectMaster!=null) {%>
-												    				<%if(projectMaster.getProjectName()!=null) {%><%=projectMaster.getProjectName() %><%} %>
-												    				(<%if(projectMaster.getProjectShortName()!=null) {%><%=projectMaster.getProjectShortName() %> <%} %>)
+												    				"<%if(projectMaster.getProjectName()!=null) {%><%=projectMaster.getProjectName() %><%} %>
+												    				(<%if(projectMaster.getProjectShortName()!=null) {%><%=projectMaster.getProjectShortName() %>" <%} %>)
 												    			
 												    			 No. <%if(projectMaster.getSanctionNo()!=null) {%><%=projectMaster.getSanctionNo() %> <%} %>
 												    			 has incurred the expenditure of 
@@ -2297,7 +2331,10 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			               		   					<!-- Signature and timestamp of Lab Accounts Officer -->
 			               		   					
 													<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-		               								 	<div style="font-size: 15px;">(Lab Accounts Officer or equivalent)</div>
+		               								 	<div style="font-size: 15px;">
+		               								 		(Lab Accounts Officer or equivalent) <br><br>
+		               								 		<span>(Signature with name and office seal)</span>
+		               								 	</div>
 						               					<%for(Object[] apprInfo : acpApprovalEmpData){ %>
 						   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AAL")){ %>
 						   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
@@ -2965,24 +3002,33 @@ function LabcodeSubmit() {
 	       },
 	       dataType: 'json',
 	       success: function(result) {
-	    	   for (var i = 0; i < result.length; i++) {
-                   var data = result[i];
-                   var optionValue = data[0];
-                   var optionText = data[1].trim() + ", " + data[3]; 
-                   var option = $("<option></option>").attr("value", optionValue).text(optionText);
-                   $('#approverEmpId').append(option); 
-               }
-               $('#approverEmpId').selectpicker('refresh');
-               }else{
-               	for (var i = 0; i < result.length; i++) {
-                       var data = result[i];
-                       var optionValue = data[0];
-                       var optionText = data[1].trim() + ", " + data[3]; 
-                       var option = $("<option></option>").attr("value", optionValue).text(optionText);
-                       $('#approverEmpId').append(option); 
-                   }
-                   $('#approverEmpId').selectpicker('refresh');
-               }
+	    	   if (result != null && LabCode!='@EXP') {
+	                for (var i = 0; i < result.length; i++) {
+	                    var data = result[i];
+	                    var optionValue = data[0];
+	                    var optionText = data[1].trim() + ", " + data[3]; 
+	                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
+	                    $('#approverEmpId').append(option); 
+	                }
+	                $('#approverEmpId').selectpicker('refresh');
+	                }else{
+	                	for (var i = 0; i < result.length; i++) {
+	                        var data = result[i];
+	                        var optionValue = data[0];
+	                        var optionText = data[1].trim() + ", " + data[3]; 
+	                        var option = $("<option></option>").attr("value", optionValue).text(optionText);
+	                        $('#approverEmpId').append(option); 
+	                    }
+	                    $('#approverEmpId').selectpicker('refresh');
+	                }
+	               /* 	for (var i = 0; i < result.length; i++) {
+	                       var data = result[i];
+	                       var optionValue = data[0];
+	                       var optionText = data[1].trim() + ", " + data[3]; 
+	                       var option = $("<option></option>").attr("value", optionValue).text(optionText);
+	                       $('#approverEmpId').append(option); 
+	                   }
+	                   $('#approverEmpId').selectpicker('refresh'); */
 	               
 	           }
 	   });
@@ -3478,6 +3524,37 @@ if(cl>1){
    
 }
    
+});
+</script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+	/* List of Sub-Projects required / not required Handling with checkbox */
+	$("#subprojectscheck").click(function(){
+		if ($(this).is(':checked')) {
+            $('#subprojectstable,.btn-subproject').show();
+        } else if (!$('#releaseToggleSwitch').is(':checked')) {
+            $('#subprojectstable,.btn-subproject').hide();
+        }
+	});
+	
+	/* List of CARS / CAPSI required / not required Handling with checkbox */
+	$("#carscapsicheck").click(function(){
+		if ($(this).is(':checked')) {
+            $('#carscapsitable,.btn-carscapsi').show();
+        } else if (!$('#releaseToggleSwitch').is(':checked')) {
+            $('#carscapsitable,.btn-carscapsi').hide();
+        }
+	});
+	
+	/* List of CARS / CAPSI required / not required Handling with checkbox */
+	$("#consultanciescheck").click(function(){
+		if ($(this).is(':checked')) {
+            $('#consultanciestable,.btn-consultancies').show();
+        } else if (!$('#releaseToggleSwitch').is(':checked')) {
+            $('#consultanciestable,.btn-consultancies').hide();
+        }
+	});
 });
 </script>
 </body>

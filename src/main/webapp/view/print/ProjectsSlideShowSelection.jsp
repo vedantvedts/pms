@@ -205,7 +205,7 @@ List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("project
 				                       </div>
 				                   <% } %>
 		                   		<% c++; } } %>
-                   		<% if (c <3 && c>0 ) { %>
+                   		<% if (c <4 && c>0 ) { %>
 							</div>
 						<% } %>
     				</div>
@@ -241,7 +241,7 @@ List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("project
 						<%if(c1 == 3 ) { %>
 						</div><%}%>
 						<%c1++;} }%>
-						<% if (c1 <3 && c1>0 ) { %>
+						<% if (c1 <4 && c1>0 ) { %>
 							</div>
 						<% } %>
 	        		</div>
@@ -319,7 +319,7 @@ List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("project
 									</div>
 									<% } %>
 									<% c++; } } %>
-									<% if (c <3 ) { %>
+									<% if (c <4 && c>0 ) { %>
 									</div>
 									<% } %>
 								</div>
@@ -357,7 +357,7 @@ List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("project
 									</div>
 									<%}%>
 									<%c1++;} }%>
-									<% if (c1 <3 ) { %>
+									<% if (c1 <3 && c1>0 ) { %>
 									</div>
 									<% } %>
 								</div>

@@ -2384,5 +2384,9 @@ public int CommitteActionEdit(ActionAssignDto actionAssign) throws Exception {
 public List<Object[]> RfaPendingCount(String empId) throws Exception {
 	return dao.RfaPendingCount(empId);
 }
-
+@Override
+public List<Object[]> ActionReportsNew(String EmpId, String Term, String Position,String Type,String LabCode,String loginType ) throws Exception {
+	
+	return dao.ActionReportsNew(EmpId, Term, Position,Type,LabCode,loginType);
+}
 }

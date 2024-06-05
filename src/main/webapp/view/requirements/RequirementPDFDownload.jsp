@@ -223,18 +223,7 @@ margin-left:15x;
     	        
   <div class="heading-container" style="text-align: center; position: relative;">
 </div>
-<%-- <div style="text-align: right;margin-top:20px;font-weight:bold">
-  				<%
-				if(LabList[0] != null) {
-				%>
-				<%=LabList[0].toString()%>:SyRD:....................</h4>
-  						<h6 style="margin: 0; padding: 0;font-family: <%= FontFamily %>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6>
-						<%
-				}else {
-				%>-<%
-				}
-				%>
-</div> --%>
+
 <br><br><br><br><br><br><br><br><br><br><br><br>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
@@ -324,10 +313,9 @@ margin-left:15x;
 						<table style="width: 650px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 					<tr >
 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
-					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 150px;text-align: center;"><span class="text-dark">NAME</span></td>
+					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 250px;text-align: center;"><span class="text-dark">NAME</span></td>
 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 100px;"><span class="text-dark">Designation</span></td>
-					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
-					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 80px;"><span class="text-dark">Remarks</span></td>
+					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black;width: 200px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
 					</tr>
 				<tbody id="blankRowsBody1"></tbody>
             <% 
@@ -340,7 +328,6 @@ margin-left:15x;
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
                  <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
-                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;">copy for Record</td>
                              </tr>
  <% 
    }} 

@@ -79,6 +79,7 @@ import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
+import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
 import com.vts.pfms.requirements.model.SpecificationIntro;
@@ -3996,6 +3997,28 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("IntroductionId", s.getIntroductionId());
 		
 		return (long)query.executeUpdate();
+	}
+	
+	@Override
+	public long uploadProductTree(SpecifcationProductTree s) throws Exception {
+		String sql = "UPDATE pfms_specification_producttree SET Isactive='0' WHERE SpecificationId=:SpecificationId";
+		
+		Query query = manager.createNativeQuery(sql);
+		query.setParameter("SpecificationId", s.getSpecificationId());
+		query.executeUpdate();
+		
+		manager.persist(s);
+		manager.flush();
+		return s.getProjectDataId();
+	}
+	private static final String PRODUCTTREE="SELECT a.ProjectDataId,a.FilesPath,a.comment,a.imageName FROM pfms_specification_producttree a WHERE a.SpecificationId=:SpecificationId AND isactive='1'";
+	
+	@Override
+	public List<Object[]> SpecProducTreeDetails(String specsInitiationId) throws Exception {
+		Query query = manager.createNativeQuery(PRODUCTTREE);
+		query.setParameter("SpecificationId", specsInitiationId);
+		
+		return (List<Object[]>)query.getResultList();
 	}
 }
 

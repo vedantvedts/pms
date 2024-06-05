@@ -232,7 +232,7 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 	<hr>
 	<div class="row">
 		<div align="center">
-			<h5 style="font-weight: bold;margin-top: 1.5rem;">Approval for <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment </h5>
+			<h5 style="font-weight: bold;margin-top: 1.5rem;">Approval for <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment </h5>
 		    <span style="font-size: large;"><%=carsIni.getInitiationTitle() %> </span>
 		</div>
 	</div>
@@ -256,7 +256,7 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 	
 	<div  style="line-height: 20px;margin-top: 10px;">
 		<div class="col-md-12" style="text-align: left;">
-			<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>
+			<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 				<span>
 					<%=++paymentslno %>) <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has submitted
 					invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
@@ -282,7 +282,7 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 		</div>
 	</div>
 	
-	<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-1")) {%>
+	<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 	<div  style="line-height: 20px;margin-top: 10px;">
 		<div class="col-md-12" style="text-align: left;">
 			<span>

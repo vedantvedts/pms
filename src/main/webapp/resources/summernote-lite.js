@@ -4134,7 +4134,7 @@
           var cell = dom.ancestor(rng.commonAncestor(), dom.isCell);
           var currentTr = $$1(cell).closest('tr');
           var trAttributes = this.recoverAttributes(currentTr);
-          var html = $$1('<tr' + trAttributes + '></tr>');
+          var html = $$1('<tr style="border:1px solid black;"' + trAttributes + '></tr>');
           var vTable = new TableResultAction(cell, TableResultAction.where.Row, TableResultAction.requestAction.Add, $$1(currentTr).closest('table')[0]);
           var actions = vTable.getActionList();
           for (var idCell = 0; idCell < actions.length; idCell++) {
@@ -4358,7 +4358,7 @@
           var tds = [];
           var tdHTML;
           for (var idxCol = 0; idxCol < colCount; idxCol++) {
-              tds.push('<td>' + dom.blank + '</td>');
+              tds.push('<td style="border:1px solid black;">' + dom.blank + '</td>');
           }
           tdHTML = tds.join('');
           var trs = [];
@@ -4367,7 +4367,7 @@
               trs.push('<tr>' + tdHTML + '</tr>');
           }
           trHTML = trs.join('');
-          var $table = $$1('<table>' + trHTML + '</table>');
+          var $table = $$1('<table style=" border: 1px solid black !important;border-collapse: collapse;width:600px">' + trHTML + '</table>');
           if (options && options.tableClassName) {
               $table.addClass(options.tableClassName);
           }

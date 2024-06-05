@@ -106,6 +106,7 @@ public class AdminServiceImpl implements AdminService{
 		login.setCreatedDate(sdf1.format(new Date()));
 		login.setIsActive(1);
 		login.setLoginType(UserManageAdd.getLoginType());
+		login.setLoginTypeDms("U");
 		if(UserManageAdd.getEmployee()!=null) {
 		login.setEmpId(Long.parseLong(UserManageAdd.getEmployee()));
 		}else {

@@ -1158,7 +1158,8 @@ public class ActionController {
 					req.setAttribute("Type", "A");
 					req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
 					req.setAttribute("StatusList", service.ActionReports(EmpId,"N","A","A", LabCode));	
-					
+					//req.setAttribute("StatusList", service.ActionReportsNew(EmpId, "N", "A", "A", LabCode,Logintype));
+
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -1230,6 +1231,9 @@ public class ActionController {
 				String term=req.getParameter("Term");
 				
 				List<Object[]>StatusList=service.ActionReports(EmpId,req.getParameter("Term"),Project,Type,LabCode);
+				
+				//List<Object[]> StatusList = service.ActionReportsNew(EmpId, req.getParameter("Term"), Project, Type, LabCode,Logintype);
+
 				if(term.equalsIgnoreCase("I") && StatusList.size()>0) {
 					StatusList=StatusList.stream().filter(i -> Integer.parseInt(i[12].toString())>0).collect(Collectors.toList());
 				}
@@ -2914,7 +2918,8 @@ public class ActionController {
 					}
 					req.setAttribute("projectslist",projectlist );
 				}
-				req.setAttribute("ActionList", service.ActionReports(EmpId,"N",projectid,"A", LabCode));	
+				//req.setAttribute("ActionList", service.ActionReports(EmpId,"N",projectid,"A", LabCode));	
+				req.setAttribute("ActionList", service.ActionReportsNew(EmpId, "N", projectid, "A", LabCode,Logintype));
 				req.setAttribute("projectid",projectid);
 			} catch (Exception e) {
 				e.printStackTrace();

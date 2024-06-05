@@ -765,7 +765,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    		</tr>
 							    		<% for(int i=1;i<milestones.size()-1;i++) { %>
 							    		<tr>
-							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i+1) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
 							    			<%-- <td style="text-align : center;vertical-align: top;"><%=milestones.get((i)).getMilestoneNo() %> </td> --%>
 							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
 							    			<td style="text-align : center;vertical-align: top;">

@@ -61,10 +61,10 @@
 
  @page  {             
           size: 790px 1120px;
-          margin-top: 100px;
-          margin-left: 39px;
-          margin-right: 39px;
-          margin-buttom: 49px; 	
+          margin-top: 50px;
+          margin-left: 10px;
+          margin-right: 10px;
+          margin-buttom: 20px; 	
           /* border: 1px solid black;  */
           
           @bottom-left {          		
@@ -81,7 +81,7 @@
           }
            @top-right {
              content: "DRDO.DPFM.FF.14";
-             margin-top: 30px;
+             margin-top: 10px;
              font-size: 13px;
           }
           
@@ -221,6 +221,9 @@ String labcode = (String)session.getAttribute("labcode");
 
 long closureId = closure!=null? closure.getClosureId():0;
 
+int isMain = projectMaster.getIsMainWC();
+Double sanctionCost = projectMaster.getTotalSanctionCost();
+
 FormatConverter fc = new FormatConverter();
 
 DecimalFormat df = new DecimalFormat("#.####");
@@ -231,13 +234,13 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 %>
 
 	<div align="center">
-		<h5 style="font-weight: bold;margin-top: -0.5rem;">
+		<h5 style="font-weight: bold;margin-top: -0.1rem;">
 			AUDIT OF STATEMENT OF ACCOUNTS (EXPENDITURE) AND ADMINISTRATIVE CLOSURE OF PROJECT / PROGRAMME
 		</h5>
-		<h5 style="font-weight: bold;margin-top: -1.5rem;">Part - I</h5>
+		<h5 style="font-weight: bold;margin-top: -1rem;">Part - I</h5>
 	</div>
 	<%int slno=0; %>
-    <table id="tabledata" style="margin-top: -2rem;">
+    <table id="tabledata" style="margin-top: -1rem;">
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
 			<td style="width: 35%;text-align: left !important;font-weight: 600;">Name of Lab</td>
@@ -403,119 +406,125 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     	<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
     		<td style="width: 35%;font-weight: 600;">List of sub-projects</td>
-    		<td>: </td>
+    		<td>: <%if( (subprojects==null) || (subprojects!=null && subprojects.size()==0)) { %>NA<%} %></td>
 		</tr>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td colspan="2">
-				<table id="projectdatatablep" style="width: 100%;" >
-					<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
-						<tr>
-							<th style="width: 5%;">SN</th>
-					    	<th style="width: 15%;">Projects Name</th>
-					    	<th style="width: 10%;">Project No</th>
-					    	<th style="width: 15%;">Agency</th>
-					    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
-					    	<th style="width: 20%;">Status</th>
-					    	<th style="width: 25%;">Achievement</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%if(subprojects!=null && subprojects.size()>0) {
-							int subprojectslno = 0;
-							for(ProjectClosureACPProjects sub :subprojects) {%>
+				<%if( subprojects!=null && subprojects.size()>0) { %>
+					<table id="projectdatatablep" style="width: 100%;" >
+						<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
 							<tr>
-								<td style="width: 5%;text-align: center !important;"><%=++subprojectslno %></td>
-								<td style="width: 15%;"><%=sub.getACPProjectName() %> </td>
-								<td style="width: 10%;text-align: center !important;"><%=sub.getACPProjectNo() %> </td>
-								<td style="width: 15%;"><%=sub.getProjectAgency() %> </td>
-								<td style="width: 10%;text-align: right !important;"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
-								<td style="width: 20%;"><%=sub.getProjectStatus() %> </td>
-								<td style="width: 25%;"><%=sub.getProjectAchivements() %> </td>
+								<th style="width: 5%;">SN</th>
+						    	<th style="width: 15%;">Projects Name</th>
+						    	<th style="width: 10%;">Project No</th>
+						    	<th style="width: 15%;">Agency</th>
+						    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
+						    	<th style="width: 20%;">Status</th>
+						    	<th style="width: 25%;">Achievement</th>
 							</tr>
-						<%} }%>	
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							<%
+								int subprojectslno = 0;
+								for(ProjectClosureACPProjects sub :subprojects) {%>
+								<tr>
+									<td style="width: 5%;text-align: center !important;"><%=++subprojectslno %></td>
+									<td style="width: 15%;"><%=sub.getACPProjectName() %> </td>
+									<td style="width: 10%;text-align: center !important;"><%=sub.getACPProjectNo() %> </td>
+									<td style="width: 15%;"><%=sub.getProjectAgency() %> </td>
+									<td style="width: 10%;text-align: right !important;"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
+									<td style="width: 20%;"><%=sub.getProjectStatus() %> </td>
+									<td style="width: 25%;"><%=sub.getProjectAchivements() %> </td>
+								</tr>
+							<%}%>	
+						</tbody>
+					</table>
+				<%} %>	
 			</td>
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
     		<td style="width: 35%;font-weight: 600;">List of CARS / CAPSI</td>
-    		<td>: </td>
+    		<td>: <%if( (carscapsiprojects==null) || (carscapsiprojects!=null && carscapsiprojects.size()==0)) { %>NA<%} %></td>
 		</tr>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td colspan="2">
-    			<table id="projectdatatablep" style="width: 100%;" >
-					<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
-						<tr>
-							<th style="width: 5%;">SN</th>
-					    	<th style="width: 5%;">CARS / CAPSI</th>
-					    	<th style="width: 15%;">CARS / CAPSI Name</th>
-					    	<th style="width: 10%;">CARS / CAPSI No</th>
-					    	<th style="width: 15%;">Agency</th>
-					    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
-					    	<th style="width: 15%;">Status</th>
-					    	<th style="width: 20%;">Achievement</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%if(carscapsiprojects !=null && carscapsiprojects.size()>0) {
-							int carscapsiprojectslno = 0;
-							for(ProjectClosureACPProjects carscapsi :carscapsiprojects) {%>
+				<%if(carscapsiprojects !=null && carscapsiprojects.size()>0) { %>
+	    			<table id="projectdatatablep" style="width: 100%;" >
+						<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
 							<tr>
-								<td style="width: 5%;text-align: center !important;"><%=++carscapsiprojectslno %></td>
-								<td style="width: 5%;">
-									<%if(carscapsi.getACPProjectType()!=null && carscapsi.getACPProjectType().equalsIgnoreCase("R")) {%>
-										CARS
-									<%} else{%>
-										CAPSI
-									<%} %>
-								</td>
-								<td style="width: 15%;"><%=carscapsi.getACPProjectName() %> </td>
-								<td style="width: 10%;text-align: center !important;"><%=carscapsi.getACPProjectNo() %> </td>
-								<td style="width: 15%;"><%=carscapsi.getProjectAgency() %> </td>
-								<td style="width: 10%;text-align: right !important;"><%=df.format(Double.parseDouble(carscapsi.getProjectCost())/10000000) %> </td>
-								<td style="width: 20%;"><%=carscapsi.getProjectStatus() %> </td>
-								<td style="width: 20%;"><%=carscapsi.getProjectAchivements() %> </td>
+								<th style="width: 5%;">SN</th>
+						    	<th style="width: 5%;">CARS / CAPSI</th>
+						    	<th style="width: 15%;">Name</th>
+						    	<th style="width: 10%;">No</th>
+						    	<th style="width: 15%;">Agency</th>
+						    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
+						    	<th style="width: 15%;">Status</th>
+						    	<th style="width: 20%;">Achievement</th>
 							</tr>
-						<%} }%>	
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							<%
+								int carscapsiprojectslno = 0;
+								for(ProjectClosureACPProjects carscapsi :carscapsiprojects) {%>
+								<tr>
+									<td style="width: 5%;text-align: center !important;"><%=++carscapsiprojectslno %></td>
+									<td style="width: 5%;">
+										<%if(carscapsi.getACPProjectType()!=null && carscapsi.getACPProjectType().equalsIgnoreCase("R")) {%>
+											CARS
+										<%} else{%>
+											CAPSI
+										<%} %>
+									</td>
+									<td style="width: 15%;"><%=carscapsi.getACPProjectName() %> </td>
+									<td style="width: 10%;text-align: center !important;"><%=carscapsi.getACPProjectNo() %> </td>
+									<td style="width: 15%;"><%=carscapsi.getProjectAgency() %> </td>
+									<td style="width: 10%;text-align: right !important;"><%=df.format(Double.parseDouble(carscapsi.getProjectCost())/10000000) %> </td>
+									<td style="width: 20%;"><%=carscapsi.getProjectStatus() %> </td>
+									<td style="width: 20%;"><%=carscapsi.getProjectAchivements() %> </td>
+								</tr>
+							<%}%>	
+						</tbody>
+					</table>
+				<%} %>		
 			</td>
 		</tr>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
     		<td style="width: 35%;font-weight: 600;">List of Consultancies</td>
-    		<td>: </td>
+    		<td>: <%if( (consultancies==null) || (consultancies!=null && consultancies.size()==0)) { %>NA<%} %></td>
 		</tr>
     	<tr>
     		<td style="width: 5%;"></td>
     		<td colspan="2">
-    			<table id="projectdatatablep" style="width: 100%;" >
-				<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
-					<tr>
-						<th style="width: 5%;">SN</th>
-				    	<th style="width: 35%;">Aim</th>
-				    	<th style="width: 25%;">Agency</th>
-				    	<th style="width: 20%;">Amount in Cr (&#8377;)</th>
-				    	<th style="width: 15%;">Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<%if(consultancies !=null && consultancies.size()>0) {
-						int consultancieslno = 0;
-						for(ProjectClosureACPConsultancies consultancy :consultancies) {%>
+    			<%if(consultancies !=null && consultancies.size()>0) { %>
+	    			<table id="projectdatatablep" style="width: 100%;" >
+					<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
 						<tr>
-							<td style="width: 5%;text-align: center !important;"><%=++consultancieslno %></td>
-							<td style="width: 35%;"> <span class="editor-text"><%=new String(consultancy.getConsultancyAim().getBytes("ISO-8859-1"), "UTF-8") %></span> </td>
-							<td style="width: 25%;"><%=consultancy.getConsultancyAgency() %> </td>
-							<td style="width: 20%;text-align: right !important;"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost())/10000000) %> </td>
-							<td style="width: 15%;text-align: center !important;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
+							<th style="width: 5%;">SN</th>
+					    	<th style="width: 35%;">Aim</th>
+					    	<th style="width: 25%;">Agency</th>
+					    	<th style="width: 20%;">Amount in Cr (&#8377;)</th>
+					    	<th style="width: 15%;">Date</th>
 						</tr>
-					<%} }%>	
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						<%
+							int consultancieslno = 0;
+							for(ProjectClosureACPConsultancies consultancy :consultancies) {%>
+							<tr>
+								<td style="width: 5%;text-align: center !important;"><%=++consultancieslno %></td>
+								<td style="width: 35%;"> <span class="editor-text"><%=new String(consultancy.getConsultancyAim().getBytes("ISO-8859-1"), "UTF-8") %></span> </td>
+								<td style="width: 25%;"><%=consultancy.getConsultancyAgency() %> </td>
+								<td style="width: 20%;text-align: right !important;"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost())/10000000) %> </td>
+								<td style="width: 15%;text-align: center !important;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
+							</tr>
+						<%}%>	
+					</tbody>
+				</table>
+			<%} %>
     		</td>
     	</tr>
     	<tr>
@@ -539,36 +548,38 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     			<span><%if(acp.getTrialResults()!=null) {%><%=acp.getTrialResults() %><%} %></span>
     		</td>
     	</tr>
-    	<tr>
-    		<td colspan="1"></td>
-    		<td colspan="2">
-    			<table id="projectdatatablep" style="width: 100%;" >
-					<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
-						<tr>
-							<th style="width: 5%;">SN</th>
-					    	<th style="width: 70%;">Description</th>
-					    	<th style="width: 20%;">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%if(trialresults!=null && trialresults.size()>0) {
-							int trialresultsslno = 0;
-							for(ProjectClosureACPTrialResults results :trialresults) {%>
+    	<%if(trialresults!=null && trialresults.size()>0) { %>
+	    	<tr>
+	    		<td colspan="1"></td>
+	    		<td colspan="2">
+	    			<table id="projectdatatablep" style="width: 100%;" >
+						<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
 							<tr>
-								<td style="width: 5%;text-align: center;"><%=++trialresultsslno %></td>
-								
-								<td style="width: 70%;"><%=results.getDescription() %> </td>
-								<td style="width: 25%;text-align: center !important;">
-									<%if(results.getAttachment()!=null && !results.getAttachment().isEmpty()) {%>
-										<a href="ProjectClosureACPTrialResultsFileDownload.htm?attachmentfile=<%=results.getTrialResultsId()%>" target="_blank">Download</a>
-									<%} %>
-								</td>
+								<th style="width: 5%;">SN</th>
+						    	<th style="width: 70%;">Description</th>
+						    	<th style="width: 20%;">Action</th>
 							</tr>
-						<%} }%>	
-					</tbody>
-				</table>
-    		</td>
-		</tr>
+						</thead>
+						<tbody>
+							<%
+								int trialresultsslno = 0;
+								for(ProjectClosureACPTrialResults results :trialresults) {%>
+								<tr>
+									<td style="width: 5%;text-align: center;"><%=++trialresultsslno %></td>
+									
+									<td style="width: 70%;"><%=results.getDescription() %> </td>
+									<td style="width: 25%;text-align: center !important;">
+										<%if(results.getAttachment()!=null && !results.getAttachment().isEmpty()) {%>
+											<a href="ProjectClosureACPTrialResultsFileDownload.htm?attachmentfile=<%=results.getTrialResultsId()%>" target="_blank">Appendix-<%=trialresultsslno %></a>
+										<%} %>
+									</td>
+								</tr>
+							<%}%>	
+						</tbody>
+					</table>
+	    		</td>
+			</tr>
+		<%} %>
 		<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
     		<td style="width: 35%;font-weight: 600;">Achievements</td>
@@ -611,7 +622,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     			<span>
     				<%if(acp.getMonitoringCommittee()!=null) {%><%=acp.getMonitoringCommittee() %><%} %>
     				<%if(acp!=null && acp.getMonitoringCommitteeAttach()!=null){ %>
-                     	<a href="ProjectClosureACPFileDownload.htm?closureId=<%=closureId%>&filename=monitoringcommitteefile" target="_blank">Minutes of Meeting</a>					
+                     	<a href="ProjectClosureACPFileDownload.htm?closureId=<%=closureId%>&filename=monitoringcommitteefile" target="_blank">Annexure-I</a>					
                   	<%} %>
     			</span>
     		</td>
@@ -624,21 +635,20 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     		<td colspan="1"></td>
     		<td colspan="2">
     			<%if(acp!=null && acp.getCertificateFromLab()!=null){ %>
-                 	<a href="ProjectClosureACPFileDownload.htm?closureId=<%=closureId%>&filename=certificatefromlabfile" target="_blank">Certificate from lab MMG/Store Section </a>				 				
+                 	<a href="ProjectClosureACPFileDownload.htm?closureId=<%=closureId%>&filename=certificatefromlabfile" target="_blank">Annexure-II </a>				 				
                 <%} %>
     		</td>
     	</tr>
     	<tr>
     		<td style="width: 5%;"><%=++slno %>.</td>
-    		<td style="width: 35%;font-weight: 600;">Certified that objectives set for the project have been met as per Technical Report No.</td>
-    		<td>: <%if(acp.getTechReportNo()!=null) {%><%=acp.getTechReportNo() %><%} %> </td>
+    		<td colspan="2" style="font-weight: 600;">Certified that objectives set for the project have been met as per Technical Report No. <span style="text-decoration: underline;font-weight: 500;"><%if(acp.getTechReportNo()!=null) {%><%=acp.getTechReportNo() %><%} %></span></td>
     	</tr>
 	</table>
 	
 	<!-- Signature and timestamp of PD -->
 			               		   					
-	<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 18px;margin-top: 20px;">
-    	<div style="font-size: 15px;">Project Director</div>
+	<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 18px;margin-top: 60px;">
+    	<div style="font-size: 15px;">(Programme / Project Director)</div>
          <%for(Object[] apprInfo : acpApprovalEmpData){ %>
  			<%if(apprInfo[8].toString().equalsIgnoreCase("AFW")){ %>
 				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
@@ -647,8 +657,9 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
     	<%break;}} %>  
 	</div>
    
-	<br>
+	<h1 class="break"></h1>
 	<hr style="height: 1px;background-color: black;">
+	
 	<!-- <br> -->
 							            			
 	<div class="" align="center">
@@ -663,8 +674,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 	   			
 	   			It is certified that the project
 	   			<%if(projectMaster!=null) {%>
-	   				<%if(projectMaster.getProjectName()!=null) {%><%=projectMaster.getProjectName() %><%} %>
-	   				(<%if(projectMaster.getProjectShortName()!=null) {%><%=projectMaster.getProjectShortName() %> <%} %>)
+	   				"<%if(projectMaster.getProjectName()!=null) {%><%=projectMaster.getProjectName() %><%} %>
+	   				(<%if(projectMaster.getProjectShortName()!=null) {%><%=projectMaster.getProjectShortName() %>" <%} %>)
 	   			
 	   			 No. <%if(projectMaster.getSanctionNo()!=null) {%><%=projectMaster.getSanctionNo() %> <%} %>
 	   			 has incurred the expenditure of 
@@ -691,8 +702,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			               		   					
 	<!-- Signature and timestamp of Lab Accounts Officer -->
 			               		   					
-	<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 18px;margin-top: 30px;">
-		<div style="font-size: 15px;">(Lab Accounts Officer or equivalent)</div>
+	<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 18px;margin-top: 50px;">
+		<div style="font-size: 15px;">
+			(Lab Accounts Officer or equivalent) <br>
+		    <span>(Signature with name and office seal)</span>
+		</div>
 		<%for(Object[] apprInfo : acpApprovalEmpData){ %>
 			<%if(apprInfo[8].toString().equalsIgnoreCase("AAL")){ %>
 				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
@@ -706,7 +720,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 	
 	<div class="" align="center">
 		<h5 style="font-weight: bold;">Part - III</h5>
-		<h5 style="font-weight: bold;margin-top: -1.5rem;">The Statement of Accounts (Expenditure) of the project has been audited and reconciled.</h5>
+		<h5 style="margin-top: -1.5rem;">The Statement of Accounts (Expenditure) of the project has been audited and reconciled.</h5>
 	</div>
 			               							
 	<br><br><br>
@@ -717,10 +731,97 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 	</div>	
 	
 	<hr style="height: 1px;background-color: black;">
-							            			
+	
+	<div class="" align="center">
+		<h5 style="font-weight: bold;">Recommendation of the Lab Director</h5>
+	</div>
+	
 	<!-- Signature and timestamp of Approving officers -->
 	<%for(Object[] apprInfo : acpApprovalEmpData) {%>
-		<div style="width: 96%;text-align: left;margin-left: 10px;line-height: 18px;margin-top: 50px;margin-left: 40px;">
+		
+		<div style="width: 96%;text-align: center;margin-left: 10px;line-height: 18px;margin-top: 50px;margin-left: 40px;">
+			<%if(apprInfo[8].toString().equalsIgnoreCase("AAD")){ %>
+				<div style="font-size: 15px;"> Signature of Director</div>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+				<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+			<%} %>
+		</div>	
+	<%} %>	
+	
+	
+	<%if(isMain!=0 && sanctionCost<=10000000) {
+			                							
+	}else if(isMain!=0 && (sanctionCost>10000000 && sanctionCost<=750000000)) {
+			                							
+	}else {%>
+		<hr style="height: 1px;background-color: black;">
+		
+		<div class="" align="center">
+			<h5 style="font-weight: bold;">Approval of O/o DG (ECS)</h5>
+		</div>
+		
+		<%for(Object[] apprInfo : acpApprovalEmpData) {%>
+			<div style="width: 96%;text-align: center;margin-left: 10px;line-height: 18px;margin-top: 50px;margin-left: 40px;">
+				<% if(apprInfo[8].toString().equalsIgnoreCase("AAO")) {%> 
+					<div style="font-size: 15px;"> Signature of O/o DG (ECS)</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
+				<%} %>
+			</div>	
+		<%} %>
+
+	<%} %>
+	
+	<%if(isMain==0 && sanctionCost>750000000) {%>
+	
+		<hr style="height: 1px;background-color: black;">
+		
+		<div class="" align="center">
+			<h5 style="font-weight: bold;">Approval of DG (Nodal))</h5>
+		</div>
+			                	    				
+		<%for(Object[] apprInfo : acpApprovalEmpData) {%>
+			<div style="width: 96%;text-align: center;margin-left: 10px;line-height: 18px;margin-top: 50px;margin-left: 40px;">
+				<% if(apprInfo[8].toString().equalsIgnoreCase("AAN")) {%> 
+					<div style="font-size: 15px;"> Signature of DG (Nodal)</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>	
+				<%} %>
+			</div>	
+		<%} %>
+            	    				
+	<%} %>
+			                	    				
+	<%if(!(isMain!=0 && sanctionCost<=10000000)) {%>
+		<hr style="height: 1px;background-color: black;">
+		
+		<div class="" align="center">
+			<h5 style="font-weight: bold;">Approval of CFA</h5>
+		</div>
+	
+		<!-- Signature and timestamp of Approving officers -->
+		<%for(Object[] apprInfo : acpApprovalEmpData) {%>
+			
+			<div style="width: 96%;text-align: center;margin-left: 10px;line-height: 18px;margin-top: 50px;margin-left: 40px;">
+				<%  if(apprInfo[8].toString().equalsIgnoreCase("AAC")) {%> 
+					<div style="font-size: 15px;"> Signature of CFA</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
+				<%} %>
+			</div>	
+		<%} %>	
+
+	<%} %>
+			                	    						                	    				
+	
+	<!-- Signature and timestamp of Approving officers -->
+	<%-- <%for(Object[] apprInfo : acpApprovalEmpData) {%>
+		
+		<div style="width: 96%;text-align: center;margin-left: 10px;line-height: 18px;margin-top: 50px;margin-left: 40px;">
 			<%if(apprInfo[8].toString().equalsIgnoreCase("AAD")){ %>
 				<div style="font-size: 15px;"> Signature of Director</div>
 				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
@@ -743,7 +844,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
 			<%} %>
 		</div>	
-	<%} %>	
+	<%} %>	 --%>
 	
 	<h1 class="break"></h1>
 	<%-- <table id="tabledata">

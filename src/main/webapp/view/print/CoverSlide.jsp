@@ -49,7 +49,7 @@ String enduser="--";
 			<div class="carousel-item active">
 
 				<div class="content" align="center"
-					style="border-radius: 5px !important; height: 93vh !important; padding-top: 15px;">
+					style="border-radius: 5px !important; height: 93vh !important; padding-top: 5px;">
 
 					<div class="firstpage">
 
@@ -65,21 +65,19 @@ String enduser="--";
 							<h3 style="color: #4C9100 !important">
 								Projects of
 								<%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%>
-								<%} %>
+								<%}%>
 							</h3>
 						</div>
 
 						<div align="center">
 							<h3 style="color: #4C9100 !important"></h3>
 						</div>
-
 						<table style="margin-top: 35px;" class="executive home-table"
 							style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;">
 							<tr>
 								<th colspan="8" style="text-align: center; font-weight: 700;">
-									<img class="logo" style="width: 120px; height: 120px;"
-									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
-									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>> <br>
+									<img class="logo" style="width:120px;height: 120px;x"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
+									<br>
 								</th>
 							</tr>
 						</table>

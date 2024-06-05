@@ -556,7 +556,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 	}
 
-	private static final String ROADMAPTRANSLIST = "SELECT a.DocInitiationTransId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_doc_trans a,pfms_req_approval_status b,employee c,employee_desig d,pfms_test_plan_initiation e WHERE e.TestPlanInitiationId = a.DocInitiationId AND a.ReqStatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND e.TestPlanInitiationId=:DocInitiationId AND a.DocType=:DocType ORDER BY a.DocInitiationTransId DESC";
+	private static final String ROADMAPTRANSLIST = "SELECT a.DocInitiationTransId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_doc_trans a,pfms_req_approval_status b,employee c,employee_desig d WHERE  a.ReqStatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND a.DocInitiationId=:DocInitiationId AND a.DocType=:DocType ORDER BY a.DocInitiationTransId ";
 	@Override
 	public List<Object[]> projectDocTransList(String docInitiationId, String docType) throws Exception {
 
@@ -1054,5 +1054,24 @@ public class RequirementDaoImpl implements RequirementDao {
 		}else {
 			return null;
 		}
+	}
+
+	
+	
+	private static final String PROJECTSPECSPENDINGLIST  ="CALL pfms_specification_doc_pending(:EmpId,:LabCode);";
+	@Override
+	public List<Object[]> projectSpecificationPendingList(String empId,String labcode) throws Exception {
+		try {			
+			Query query= manager.createNativeQuery(PROJECTSPECSPENDINGLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("LabCode", labcode);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO projectSpecificationPendingList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
 	}
 }
