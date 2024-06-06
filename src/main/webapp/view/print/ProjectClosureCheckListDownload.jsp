@@ -240,20 +240,20 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Project Appraisal Letter (QAR)</td>
+			<td colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Project Appraisal Letter (PAR)</td>
 			
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Sent by the Lab to HQrs</td>
-			<td><%if(chlist!=null && chlist.getQARHQrsSentDate()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARHQrsSentDate()) %><%} %></td>
+			<td><%if(chlist!=null && chlist.getQARHQrsSentDate()!=null && !chlist.getQARHQrsSentDate().toString().equalsIgnoreCase("NA")) {%><%=fc.SqlToRegularDate(chlist.getQARHQrsSentDate()) %><%} else{%> NA <%}%></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.When sent to the CFA </td>
-			<td><%if(chlist!=null && chlist.getQARSentDate()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARSentDate()) %><%} %></td>
+			<td><%if(chlist!=null && chlist.getQARSentDate()!=null && !chlist.getQARSentDate().toString().equalsIgnoreCase("NA")) {%><%=fc.SqlToRegularDate(chlist.getQARSentDate()) %><%} else{%> NA <%} %></td>
 		</tr>
 		
 		

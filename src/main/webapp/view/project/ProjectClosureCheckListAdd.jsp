@@ -436,18 +436,19 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    		
 												        	<div class="col-md-2" style="">
 												        		<div class="form-group">
-												        		<input type="checkbox" id="hqrssenddate" >
+												        		<input type="checkbox" id="hqrssenddate" <%if(chlist!=null && chlist.getQARHQrsSentDate()!=null && !chlist.getQARHQrsSentDate().toString().equalsIgnoreCase("NA")) {%> checked <%} %> >
 												                	<label class="control-label">Sent by the Lab to HQrs :</label><span class="mandatory">*</span>
 												                    <input  class="form-control" type="text" name="QARHQrsSentDate" id="HQrsSentDate" readonly="readonly"
-												                     value="<%if(chlist!=null && chlist.getQARHQrsSentDate()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARHQrsSentDate()) %><%} %>" > 
+												                     value="<%if(chlist!=null && chlist.getQARHQrsSentDate()!=null && !chlist.getQARHQrsSentDate().toString().equalsIgnoreCase("NA")){%><%=fc.SqlToRegularDate(chlist.getQARHQrsSentDate())%><%} %>" > 
 												                </div>
 												            </div>
 												            
 												            <div class="col-md-2" style="">
 												        		<div class="form-group">
-												                	<label class="control-label">When sent to the CFA :</label><input type="checkbox" id="CFASend" >
+												        		<input type="checkbox" id="CFASend" <%if(chlist!=null && chlist.getQARSentDate()!=null && !chlist.getQARSentDate().toString().equalsIgnoreCase("NA")) {%> checked <%} %> >
+												                	<label class="control-label">When sent to the CFA :</label>
 												                	 <input  class="form-control" type="text" name="QARSentDate" id="CFASendDate"  readonly="readonly"
-												                     value="<%if(chlist!=null && chlist.getQARSentDate()!=null) {%><%=fc.SqlToRegularDate(chlist.getQARSentDate()) %><%} %>" > 
+												                     value="<%if(chlist!=null && chlist.getQARSentDate()!=null && !chlist.getQARHQrsSentDate().toString().equalsIgnoreCase("NA")){%><%=fc.SqlToRegularDate(chlist.getQARSentDate()) %><%} %>" > 
 												                    
 												                </div>
 												            </div>
@@ -494,7 +495,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Proposed Cost (in rupees)</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="number" min="0" name="QARProposedCost"  maxlength="15"
-												                     value="<%if(chlist!=null && chlist.getQARProposedCost()>=0) {%><%=chlist.getQARProposedCost() %><%} %>" > 
+												                     value="<%if(chlist!=null && chlist.getQARProposedCost()>=0) {%><%=chlist.getQARProposedCost() %><%} else{ %> 0 <%} %>" > 
 												                </div>
 												            </div> 
 												            
@@ -1505,21 +1506,22 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												      
 												      <hr>
 												      
-												      <div class="col-md-4" style="">
+												      <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">14.Vehicles</label>
+												                	<label class="control-label" style="color:black">14.Vehicles &emsp; <input type="checkbox" id="vehicle" name="VehicleChecked" <%if (chlist!=null && !chlist.getNoOfVehicleSanctioned().isEmpty()){ %> checked <%} %> ></label>
+												                	
 												                </div>
 												        </div> 
 												            
 												        <br>
 												        <br> 
 												      
-												         <div class="row" style="margin-left: 2%;margin-right: 2%;">      
+												         <div class="row" style="margin-left: 2%;margin-right: 2%;" id="selectall">      
 												          <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">No. of vehicles sanctioned in the project </label><span class="mandatory">*</span>
-												                    <input class="form-control " type="text" name="NoOfVehicleSanctioned"  placeholder="No Of Vehicle Sanctioned" 
-												                    value="<% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null) {%><%=chlist.getNoOfVehicleSanctioned()%><%} %>" >
+												                    <input class="form-control" type="text" name="NoOfVehicleSanctioned"  placeholder="No Of Vehicle Sanctioned" id="NoOfVehicleSanctioned"
+												                    value="<% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null) {%><%=chlist.getNoOfVehicleSanctioned()%><%}%>" >
 												                    
 												                </div>
 												          </div> 
@@ -1527,7 +1529,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-2" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Vehicle type.</label><span class="mandatory">*</span>
-												                    <input class="form-control " type="text" name="VehicleType"  placeholder="Enter Vehicle Type" 
+												                    <input class="form-control" type="text" name="VehicleType"  placeholder="Enter Vehicle Type"  id="VehicleType"
 												                    value="<% if(chlist!=null && chlist.getVehicleType()!=null) {%><%=chlist.getVehicleType()%><%}%>" >
 												                    
 												                </div>
@@ -1538,7 +1540,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-3" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly run of each vehicle.</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="VehicleAvgRun"  placeholder="Enter Average monthly run of each vehicle" 
+												                    <input  class="form-control" type="text" name="VehicleAvgRun"  placeholder="Enter Average monthly run of each vehicle"  
 												                     value="<% if(chlist!=null && chlist.getVehicleAvgRun()!=null){ %><%=chlist.getVehicleAvgRun() %><%} %>" >
 												                    
 												                </div>
@@ -1548,7 +1550,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												          <div class="col-md-4" style="">
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly fuel consumption of each vehicle.</label><span class="mandatory">*</span>
-                                                                     <input  class="form-control " type="text" name="VehicleAvgFuel" id="" placeholder="Enter Average monthly fuel consumption of each vehicle" 
+                                                                     <input  class="form-control" type="text" name="VehicleAvgFuel" id="VehicleAvgFuel" placeholder="Enter Average monthly fuel consumption of each vehicle" 
 												                     value="<% if(chlist!=null && chlist.getVehicleAvgFuel()!=null){ %> <%=chlist.getVehicleAvgFuel() %><%} %>" >
 										                    
 												                </div>
@@ -1793,7 +1795,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 	
 
 
-$('#PDCDate,#PDCRevised,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted,#ProjectClosedDate,#ClosureReportDate,#PDCRequested,#PDCGranted').daterangepicker({
+$('#PDCDate,#HQrsSentDate,#CFASendDate,#PDCRevised,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted,#ProjectClosedDate,#ClosureReportDate,#PDCRequested,#PDCGranted').daterangepicker({
 	"singleDatePicker" : true,
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
@@ -2070,20 +2072,12 @@ if ($("#cwincluded").val() == 'Yes') {
 $('#hqrssenddate').change(function() {
     if ($(this).is(':checked')) {
     	
-    	 $('#HQrsSentDate').prop('disabled', false); 
-    	$('#HQrsSentDate').daterangepicker({
-    		"singleDatePicker" : true,
-    		"linkedCalendars" : false,
-    		"showCustomRangeLabel" : true,
-    		/* "minDate" :datearray,   */
-    		 /* "startDate" : new Date(), */
-    		 //"maxDate" : new Date(), 
-    		"cancelClass" : "btn-default",
-    		showDropdowns : true,
-    		locale : {
-    			format : 'DD-MM-YYYY'
-    		}
-    	});	
+    	 
+    	 $('#HQrsSentDate').prop('disabled', false);
+         $('#HQrsSentDate').data('daterangepicker').setStartDate(moment());
+         $('#HQrsSentDate').data('daterangepicker').setEndDate(moment());
+         $('#HQrsSentDate').val(moment().format('DD-MM-YYYY'));
+    	 
         
     	$('#HQrsSentDate').val(moment().format('DD-MM-YYYY'));
         //$('#HQrsSentDate').val(currentDate);
@@ -2098,13 +2092,79 @@ $('#hqrssenddate').change(function() {
 	if (!$('#hqrssenddate').is(':checked')) {
 	
 	 $('#HQrsSentDate').val('NA');
+	 $('#HQrsSentDate').prop('disabled', true);
+	 
+	}else{
+		
+		$('#hqrssenddate').prop('checked', true);
+		$('#HQrsSentDate').prop('disabled', false);
+		
+	}
 	
-}
-  
-  
-  
-  
-  
+	 
+	 $('#CFASend').change(function() {
+		    if ($(this).is(':checked')) {
+		    	
+		    	 
+		    	 $('#CFASendDate').prop('disabled', false);
+		         $('#CFASendDate').data('daterangepicker').setStartDate(moment());
+		         $('#CFASendDate').data('daterangepicker').setEndDate(moment());
+		         $('#CFASendDate').val(moment().format('DD-MM-YYYY'));
+		    	 
+		        
+		    	$('#CFASendDate').val(moment().format('DD-MM-YYYY'));
+		        //$('#HQrsSentDate').val(currentDate);
+		    } else {
+		        // If the checkbox is not checked, set the input field to 'NA'
+		        $('#CFASendDate').val('NA');
+		        $('#CFASendDate').prop('disabled', true);
+		    }
+		});
+	 
+	 
+	 if (!$('#CFASend').is(':checked')) {
+			
+		 $('#CFASendDate').val('NA');
+		 $('#CFASendDate').prop('disabled', true);
+		 
+		}else{
+			
+			$('#CFASend').prop('checked', true);
+			$('#CFASendDate').prop('disabled', false);
+			
+		}
+	 
+	 
+	 $('#vehicle').change(function() {
+		    if ($(this).is(':checked')) {
+		    	
+		    	$('#selectall').show();
+		    	
+		        
+		    	
+		    } else {
+		        
+		    	$('#selectall').hide();
+		    	//$('#NoOfVehicleSanctioned').val('NA');
+		        
+		    }
+		});
+	 
+	 if (!$('#vehicle').is(':checked')) {
+			
+		    $('#selectall').hide();
+		    
+		 //$('#NoOfVehicleSanctioned').val('NA');
+		 
+		}else{
+			
+			$('#selectall').show();
+			
+			
+		}
+	 
+	 
+	 
 });
 
 

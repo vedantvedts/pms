@@ -1424,8 +1424,10 @@ public class ProjectClosureController {
 			ProjectClosure projectClosure = service.getProjectClosureById(closureId);
 			clist.setProjectClosure(projectClosure);
 			//clist.setCl
-			clist.setQARHQrsSentDate(req.getParameter("QARHQrsSentDate")!="NA"?sdf.format(rdf.parse(req.getParameter("QARHQrsSentDate"))):"NA");
-			clist.setQARSentDate(req.getParameter("QARSentDate")!="NA"?sdf.format(rdf.parse(req.getParameter("QARSentDate"))):"NA");
+			String QARHQrsSentDate=req.getParameter("QARHQrsSentDate");
+			clist.setQARHQrsSentDate(QARHQrsSentDate!=null?sdf.format(rdf.parse(QARHQrsSentDate)):"NA");
+			String QARSentDate=req.getParameter("QARSentDate");
+			clist.setQARSentDate(QARSentDate!=null?sdf.format(rdf.parse(QARSentDate)):"NA");
 			clist.setQARObjective(req.getParameter("QARObjective"));
 			//clist.setQARMilestone(req.getParameter("QARMilestone"));
 			clist.setQARPDCDate(sdf.format(rdf.parse(req.getParameter("QARPDCDate"))));
@@ -1489,11 +1491,14 @@ public class ProjectClosureController {
 			clist.setCWRevenueWorks(req.getParameter("CWRevenueWorks"));
 			clist.setCWDeviation(req.getParameter("CWDeviation"));
 			clist.setCWExpenditure(req.getParameter("CWExpenditure"));
-			clist.setNoOfVehicleSanctioned(req.getParameter("NoOfVehicleSanctioned"));
-			clist.setVehicleType(req.getParameter("VehicleType"));
-			clist.setVehicleAvgRun(req.getParameter("VehicleAvgRun"));
+			clist.setCWExpenditure(req.getParameter("CWExpenditure"));
 			
-			clist.setVehicleAvgFuel(req.getParameter("VehicleAvgFuel"));
+			String VehicleChecked=req.getParameter("VehicleChecked");
+			clist.setNoOfVehicleSanctioned(VehicleChecked!=null?req.getParameter("NoOfVehicleSanctioned"):"NA");
+			clist.setVehicleType(VehicleChecked!=null?req.getParameter("VehicleType"):"NA");
+			clist.setVehicleAvgRun(VehicleChecked!=null?req.getParameter("VehicleAvgRun"):"NA");
+			
+			clist.setVehicleAvgFuel(VehicleChecked!=null?req.getParameter("VehicleAvgFuel"):"NA");
 			clist.setProjectClosedDate(sdf.format(rdf.parse(req.getParameter("ProjectClosedDate"))));
 			clist.setReportDate(sdf.format(rdf.parse(req.getParameter("ReportDate"))));
 			clist.setDelayReason(req.getParameter("ProjectDelayReason"));
