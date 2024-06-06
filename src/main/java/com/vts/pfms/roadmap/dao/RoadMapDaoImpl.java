@@ -65,7 +65,7 @@ public class RoadMapDaoImpl implements RoadMapDao{
 		
 	}
 	
-	private static final String PROJECTLIST = "SELECT ProjectId,ProjectCode,ProjectShortName,ProjectName FROM project_master WHERE IsActive=1 AND LabCode=:LabCode";
+	private static final String PROJECTLIST = "SELECT ProjectId,ProjectCode,ProjectShortName,ProjectName,Objective,TIMESTAMPDIFF(MONTH,SanctionDate,PDC) AS Duration FROM project_master WHERE IsActive=1 AND LabCode=:LabCode";
 	@Override
 	public List<Object[]> getProjectList(String labCode) throws Exception {
 		try {
@@ -80,7 +80,7 @@ public class RoadMapDaoImpl implements RoadMapDao{
 		
 	}
 	
-	private static final String GETPREPROJECTLIST = "SELECT a.InitiationId,a.ProjectProgramme,a.ProjectShortName,a.ProjectTitle FROM pfms_initiation a WHERE a.IsActive AND a.LabCode=:LabCode";
+	private static final String GETPREPROJECTLIST = "SELECT a.InitiationId,a.ProjectProgramme,a.ProjectShortName,a.ProjectTitle,'' AS Objective,ProjectDuration FROM pfms_initiation a WHERE a.IsActive AND a.LabCode=:LabCode";
 	@Override
 	public List<Object[]> getPreProjectList(String labcode) throws Exception {
 		try {
@@ -348,5 +348,34 @@ public class RoadMapDaoImpl implements RoadMapDao{
 			logger.error(new Date()+" Inside DAO addAnnualTargets "+e);
 			return 0L;
 		}
+	}
+	
+	private static final String PROJECTMILESTONEACTIVITYLIST = "SELECT a.ProjectId,b.ActivityName,b.StartDate,b.EndDate FROM project_master a,milestone_activity b WHERE a.ProjectId=b.ProjectId AND a.IsActive=1 AND b.IsActive=1 AND a.LabCode=:LabCode ORDER BY b.StartDate";
+	@Override
+	public List<Object[]> getProjectMilestoneActivityList(String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PROJECTMILESTONEACTIVITYLIST);
+			query.setParameter("LabCode", labCode);
+			return (List<Object[]>) query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getProjectMilestoneActivityList "+e);
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	private static final String PREPROJECTMILESTONEACTIVITYLIST = "SELECT InitiationId,MilestoneActivity,StartDate,EndDate FROM pfms_initiation_schedule WHERE IsActive=1 ORDER BY StartDate";
+	@Override
+	public List<Object[]> getPreProjectMilestoneActivityList() throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PREPROJECTMILESTONEACTIVITYLIST);
+			return (List<Object[]>) query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getPreProjectMilestoneActivityList "+e);
+			return new ArrayList<>();
+		}
+		
 	}
 }

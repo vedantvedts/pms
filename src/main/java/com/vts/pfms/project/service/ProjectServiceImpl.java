@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -231,7 +232,8 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiation.setIndicativeCost(Double.parseDouble(pfmsinitiationdto.getIndicativeCost()));
 		pfmsinitiation.setPCRemarks(pfmsinitiationdto.getPCRemarks());
 		pfmsinitiation.setPCDuration(Long.parseLong(pfmsinitiationdto.getDuration()));
-
+		pfmsinitiation.setStartDate(pfmsinitiationdto.getStartDate()!=null?fc.RegularToSqlDate(pfmsinitiationdto.getStartDate()):null);
+		
 		notification.setEmpId(Long.parseLong(pfmsinitiationdto.getEmpId()));
 		notification.setNotificationby(Long.parseLong(EmpId));
 		notification.setNotificationDate(sdf1.format(new Date()));
@@ -480,6 +482,7 @@ public class ProjectServiceImpl implements ProjectService {
 		int count = dao.ProjectMileStoneNo(InitiationId) + 1;
 		int count1 = 0;
 
+		PfmsInitiation initiation = dao.getPfmsInitiationById(InitiationId);
 		for (String str : MilestoneActivity) {
 			PfmsInitiationSchedule pfmsinitiationschedule = new PfmsInitiationSchedule();
 			pfmsinitiationschedule.setInitiationId(Long.parseLong(InitiationId));
@@ -489,6 +492,8 @@ public class ProjectServiceImpl implements ProjectService {
 			pfmsinitiationschedule.setMilestoneRemark(MilestoneRemark[count1]);
 			pfmsinitiationschedule.setMilestoneTotalMonth(MilestoneTotalMonth); 
 			pfmsinitiationschedule.setMilestonestartedfrom(Milestonestartedfrom);
+			pfmsinitiationschedule.setStartDate(initiation.getStartDate());
+			pfmsinitiationschedule.setEndDate(initiation.getStartDate()!=null?LocalDate.parse(initiation.getStartDate()).plusMonths(pfmsinitiationschedule.getMilestoneMonth()).toString():null);
 			pfmsinitiationschedule.setCreatedBy(UserId);
 			pfmsinitiationschedule.setCreatedDate(sdf1.format(new Date()));
 			pfmsinitiationschedule.setIsActive(1);
@@ -585,7 +590,8 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiation.setPCDuration(Long.parseLong(pfmsinitiationdto.getDuration()));
 		pfmsinitiation.setPCRemarks(pfmsinitiationdto.getPCRemarks());
 		pfmsinitiation.setIndicativeCost(Double.parseDouble(pfmsinitiationdto.getIndicativeCost()));
-
+		pfmsinitiation.setStartDate(pfmsinitiationdto.getStartDate()!=null?fc.RegularToSqlDate(pfmsinitiationdto.getStartDate()):null);
+		
 		ret = dao.ProjectIntiationEdit(pfmsinitiation);
 
 		List<Object[]> SubProjectList = dao.SubProjectList(pfmsinitiationdto.getInitiationId());
@@ -604,7 +610,8 @@ public class ProjectServiceImpl implements ProjectService {
 			pfmsinitiation.setPCDuration(Long.parseLong(pfmsinitiationdto.getDuration()));
 			pfmsinitiation.setPCRemarks(pfmsinitiationdto.getPCRemarks());
 			pfmsinitiation.setIndicativeCost(Double.parseDouble(pfmsinitiationdto.getIndicativeCost()));
-
+			pfmsinitiation.setStartDate(pfmsinitiationdto.getStartDate()!=null?fc.RegularToSqlDate(pfmsinitiationdto.getStartDate()):null);
+			
 			ret = dao.ProjectIntiationEdit(pfmsinitiation);
 		}
 
@@ -669,11 +676,14 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		PfmsInitiation pfmsinitiation = new PfmsInitiation();
 		PfmsInitiationSchedule schedule = dao.getInitiationSchedule(projectscheduledto.getInitiationScheduleId());
+		PfmsInitiation initiation = dao.getPfmsInitiationById(projectscheduledto.getInitiationId());
 		int tempMonths= schedule.getMilestoneMonth();
 		
 		schedule.setMilestoneActivity(projectscheduledto.getMileStoneActivity());
 		schedule.setMilestonestartedfrom(projectscheduledto.getMilestonestartedfrom());
 		schedule.setMilestoneMonth(Integer.parseInt(projectscheduledto.getMileStoneMonth()));
+		schedule.setStartDate(initiation.getStartDate());
+		schedule.setEndDate(initiation.getStartDate()!=null?LocalDate.parse(initiation.getStartDate()).plusMonths(schedule.getMilestoneMonth()).toString():null);
 		schedule.setMilestoneRemark(projectscheduledto.getMileStoneRemark());
 		schedule.setModifiedBy(projectscheduledto.getModifiedBy());
 		schedule.setModifiedDate(sdf1.format(new Date()));

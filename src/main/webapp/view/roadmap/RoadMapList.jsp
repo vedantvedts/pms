@@ -276,21 +276,21 @@ FormatConverter fc = new FormatConverter();
 					</div>
 				</div>
 				<br>
-					<div align="center">
-	                	<form action="#" id="myform" method="post">
-	                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                        <button  class="btn btn-sm add" type="submit" name="Action" value="Add" formaction="RoadMapDetails.htm" formnovalidate="formnovalidate" style="border: none;">Add</button>
-	                 		<%if(roadMapList!=null && roadMapList.size()>0) {%>
-	                 		<button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Road Map Report Download" style="background-color: purple;border: none;color: white;font-weight: 600;" onclick="openModal()">
-	                 			GENERATE REPORT
-	                 		</button>
-	                 		<button type="submit" class="btn btn-sm" formaction="RoadMapDetailsMoveToASP.htm" data-toggle="tooltip" data-placement="top" title="Move to ASP" style="background-color: #157ecd;border: none;color: white;font-weight: 600;" onclick="moveToASPCheck()">
-	                 			MOVE TO ASP 
-									<i class="fa fa-arrow-circle-right" style="padding: 0px;" aria-hidden="true"></i>
-	                 		</button>
-	                 		<%} %>
-	                 	</form>
-	              	</div>
+				<div align="center">
+                	<form action="#" id="myform" method="post">
+                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        <button  class="btn btn-sm add" type="submit" name="Action" value="Add" formaction="RoadMapDetails.htm" formnovalidate="formnovalidate" style="border: none;">Add</button>
+                 		<%if(roadMapList!=null && roadMapList.size()>0) {%>
+                 		<button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Road Map Report Download" style="background-color: purple;border: none;color: white;font-weight: 600;" onclick="openModal()">
+                 			GENERATE REPORT
+                 		</button>
+                 		<button type="submit" class="btn btn-sm" formaction="RoadMapDetailsMoveToASP.htm" data-toggle="tooltip" data-placement="top" title="Move to ASP" style="background-color: #157ecd;border: none;color: white;font-weight: 600;" onclick="moveToASPCheck()">
+                 			MOVE TO ASP 
+								<i class="fa fa-arrow-circle-right" style="padding: 0px;" aria-hidden="true"></i>
+                 		</button>
+                 		<%} %>
+                 	</form>
+              	</div>
 	            <br>  	
 				<%if(roadMapList!=null && roadMapList.size()>0) {%>
 				<!-- search box -->
@@ -621,7 +621,7 @@ function changedatepicker2(){
       format: 'yyyy',
       viewMode: "years",
       minViewMode: "years",
-      startDate: '<%=LocalDate.now().getYear() %>', // Set default start year
+      <%-- startDate: '<%=LocalDate.now().getYear() %>', // Set default start year --%>
       endDate: '+10y' // Allow selection up to 10 years from start year
     }).on('changeDate', function(selected) {
       var minDate = new Date(selected.date.valueOf());

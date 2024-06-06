@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -107,6 +108,8 @@ public class RoadMapServiceImpl implements RoadMapService{
 			roadMap.setOtherReference(dto.getOtherReference());
 			roadMap.setProjectCost(dto.getProjectCost());
 			
+			System.out.println("dto.getAnnualYear().length: "+dto.getAnnualYear().length);
+
 			// Remove Previously added Road Map Annual Targets
 			dao.removeRoadMapAnnualTargets(dto.getRoadMapId());
 			
@@ -116,17 +119,20 @@ public class RoadMapServiceImpl implements RoadMapService{
 			for(int i=0;i<dto.getAnnualYear().length;i++) {
 				List<String[]> annualTargetList = dto.getAnnualTargetList();
 				String[] annualTargets = annualTargetList.get(i);
-				for(int j=0;j<annualTargets.length;j++) {
-					RoadMapAnnualTargets targets = new RoadMapAnnualTargets();
-					AnnualTargets at = dao.getAnnualTargetsById(annualTargets[j]);
-					targets.setAnnualYear(dto.getAnnualYear()[i]);
-					targets.setAnnualTargets(at);
-					targets.setRoadMap(roadMap);
-					targets.setCreatedBy(dto.getUsername());
-					targets.setCreatedDate(sdtf.format(new Date()));
-					targets.setIsActive(1);
-					roadMapAnnualTargets.add(targets);
+				if(annualTargets!=null && annualTargets.length>0) {
+					for(int j=0;j<annualTargets.length;j++) {
+						RoadMapAnnualTargets targets = new RoadMapAnnualTargets();
+						AnnualTargets at = dao.getAnnualTargetsById(annualTargets[j]);
+						targets.setAnnualYear(dto.getAnnualYear()[i]);
+						targets.setAnnualTargets(at);
+						targets.setRoadMap(roadMap);
+						targets.setCreatedBy(dto.getUsername());
+						targets.setCreatedDate(sdtf.format(new Date()));
+						targets.setIsActive(1);
+						roadMapAnnualTargets.add(targets);
+					}
 				}
+				
 //				targets.setAnnualTarget(dto.getAnnualTarget()[i]);
 //				targets.setOthers(dto.getOthers()[i]);
 				
@@ -366,5 +372,17 @@ public class RoadMapServiceImpl implements RoadMapService{
 	public Long addAnnualTargets(AnnualTargets targets) throws Exception {
 		
 		return dao.addAnnualTargets(targets);
+	}
+
+	@Override
+	public List<Object[]> getProjectMilestoneActivityList(String labCode) throws Exception {
+		
+		return dao.getProjectMilestoneActivityList(labCode);
+	}
+	
+	@Override
+	public List<Object[]> getPreProjectMilestoneActivityList() throws Exception {
+
+		return dao.getPreProjectMilestoneActivityList();
 	}
 }

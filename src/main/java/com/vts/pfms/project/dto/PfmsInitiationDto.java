@@ -30,5 +30,6 @@ public class PfmsInitiationDto {
     private String IndicativeCost;
     private String PDD;
     private String PCRemarks;
-	
+ // newlyadded after 04-06-2024//
+ 	private String StartDate;
 }

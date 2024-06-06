@@ -384,5 +384,7 @@ public interface ProjectDao {
 	public long editSpecificationIntro(SpecificationIntro s)throws Exception;
 	public long uploadProductTree(SpecifcationProductTree s)throws Exception;
 	public List<Object[]> SpecProducTreeDetails(String specsInitiationId)throws Exception;
+	
+	public PfmsInitiation getPfmsInitiationById(String initiationId) throws Exception;
 
 }

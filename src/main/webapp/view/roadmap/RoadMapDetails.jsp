@@ -225,7 +225,7 @@ FormatConverter fc = new FormatConverter();
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" id="annualtagertsdiv">
 								<div class="col-md-6">
 									<div class="tables">
 	  									<div class="table-responsive">
@@ -254,7 +254,7 @@ FormatConverter fc = new FormatConverter();
 																<input type="text" class="form-control" name="annualYear" value="<%=target.getAnnualYear() %>" required readonly style="text-align: center;">
 															</td>
 															<td>
-																<select class="form-control selectdee annualTargets" id="annualTargets<%=target.getAnnualYear() %>" name="annualTargets<%=target.getAnnualYear() %>" data-live-search="true" onchange="othersCheckHandle(<%=target.getAnnualYear() %>)" multiple="multiple" required>
+																<select class="form-control selectdee annualTargets" id="annualTargets<%=target.getAnnualYear() %>" name="annualTargets<%=target.getAnnualYear() %>" data-placeholder="Select Annual Targets" data-live-search="true" onchange="othersCheckHandle(<%=target.getAnnualYear() %>)" multiple="multiple">
 																		<option value="Others">Others</option>
 																		<% for(AnnualTargets annualTarget : annualTargetsList) {%>
 																			
@@ -277,7 +277,8 @@ FormatConverter fc = new FormatConverter();
             												
 														</tr>
 														<%} %>
-													<%TempAnnualYear=OrigAnnualYear;} } %>
+													<%TempAnnualYear=OrigAnnualYear;} %>
+													<%} %>
 												</tbody>
 											</table>
 										</div>
@@ -387,7 +388,11 @@ function validateRoadMapType(action){
 			}
 		});
 		
-		
+		<%if(roadMap!=null) {%>
+			$('#annualtagertsdiv').show();
+		<%} else {%>
+			$('#annualtagertsdiv').hide();
+		<%}%>
 		
 	}else if(roadMapType=='P'){
 		$('#existingprojectth').hide();
@@ -425,6 +430,11 @@ function validateRoadMapType(action){
 			}
 		});
 		
+		<%if(roadMap!=null) {%>
+			$('#annualtagertsdiv').show();
+		<%} else {%>
+			$('#annualtagertsdiv').hide();
+		<%}%>
 		
 	}else{
 		$('#existingprojectth').hide();
@@ -520,7 +530,7 @@ $('#endDate').daterangepicker({
 	}
 });
 
-<%if(roadMap==null) {%>
+<%if(roadMap==null || (roadMap!=null && (roadMapAnnualTargetDetails==null || (roadMapAnnualTargetDetails!=null && roadMapAnnualTargetDetails.size()==0)) )) {%>
 	populateAnnualTargets();
 <%}%>
 
@@ -575,7 +585,7 @@ function populateAnnualTargets() {
             // Row does not exist, create new row
             rows += '<tr>';
             rows += '<td style="text-align: center;"><input type="text" class="form-control" name="annualYear" value="' + i + '" required readonly style="text-align: center;"></td>';
-            rows += '<td><select class="form-control selectdee annualTargets" id="annualTargets' + i + '" name="annualTargets' + i + '" data-live-search="true" onchange="othersCheckHandle('+i+')" multiple required><option value="Others">Others</option>';
+            rows += '<td><select class="form-control selectdee annualTargets" id="annualTargets' + i + '" name="annualTargets' + i + '" data-live-search="true" data-placeholder="Select Annual Targets" onchange="othersCheckHandle('+i+')" multiple ><option value="Others">Others</option>';
             // Append options
             <% for(AnnualTargets annualTarget : annualTargetsList) {%>
             rows += '<option value="<%=annualTarget.getAnnualTargetId() %>" ><%=annualTarget.getAnnualTarget()%></option>';

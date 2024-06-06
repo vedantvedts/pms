@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -42,6 +43,7 @@ List<Object[]> NodalLabList=(List<Object[]>) request.getAttribute("NodalLabList"
 List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList");
 String LoginType = (String) session.getAttribute("LoginType");
 
+FormatConverter fc = new FormatConverter();
 %>
 
 
@@ -237,6 +239,16 @@ String LoginType = (String) session.getAttribute("LoginType");
 
                 		</div>
           
+		        		<hr>
+		         		
+		         		<div class="row">
+		         			<div class="col-md-3">
+		         				<div class="form-group">
+			                    	<label class="control-label">Probable Start Date</label><span class="mandatory" style="color: #cd0a0a;">*</span>
+									<input type="text" class="form-control" required="required" id="startDate" name="startDate" <% if (ProjectEditData[22]!=null){ %>  value="<%=fc.SqlToRegularDate(ProjectEditData[22].toString())%>" <%} %>>
+			                    </div>
+		         			</div>
+		         		</div>
          				<hr>
          
         				<div class="form-group" align="center">
@@ -311,6 +323,17 @@ $('#myfrm').on('submit', function() {
 });
 
 
+$('#startDate').daterangepicker({
+	"singleDatePicker" : true,
+	"linkedCalendars" : false,
+	"showCustomRangeLabel" : true,	
+	"cancelClass" : "btn-default",
+	/* "minDate" : tomorrow, */
+	showDropdowns : true,
+	locale : {
+		format : 'DD-MM-YYYY'
+	}
+});
 
 </script>
 </body>

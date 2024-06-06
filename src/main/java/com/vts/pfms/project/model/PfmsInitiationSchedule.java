@@ -8,9 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
 import lombok.ToString;
 
 @ToString
+@Data
 @Entity
 @Table(name = "pfms_initiation_schedule")
 public class PfmsInitiationSchedule implements Serializable {
@@ -30,97 +32,13 @@ public class PfmsInitiationSchedule implements Serializable {
 	private int IsActive;
 	private String MilestoneRemark;
 	
-   private int Milestonestartedfrom;
-  // private int MonthExtendedBy;
-   private int MilestoneTotalMonth;
+	private int Milestonestartedfrom;
+	// private int MonthExtendedBy;
+	private int MilestoneTotalMonth;
 
-	/*
-	 * public int getMonthExtendedBy() { return MonthExtendedBy; } public void
-	 * setMonthExtendedBy(int monthExtendedBy) { MonthExtendedBy = monthExtendedBy;
-	 * }
-	 */
-	public int getMilestonestartedfrom() {
-	return Milestonestartedfrom;
-}
-public void setMilestonestartedfrom(int milestonestartedfrom) {
-	Milestonestartedfrom = milestonestartedfrom;
-}
+	private String StartDate;
+	private String EndDate;
 
-
-  public int getMilestoneTotalMonth() { return MilestoneTotalMonth; } public
-  void setMilestoneTotalMonth(int milestoneTotalMonth) { MilestoneTotalMonth =
-  milestoneTotalMonth; }
-
-	public String getMilestoneRemark() {
-		return MilestoneRemark;
-	}
-	public void setMilestoneRemark(String milestoneRemark) {
-		MilestoneRemark = milestoneRemark;
-	}
-	public Long getInitiationScheduleId() {
-		return InitiationScheduleId;
-	}
-	public void setInitiationScheduleId(Long initiationScheduleId) {
-		InitiationScheduleId = initiationScheduleId;
-	}
-	public Long getInitiationId() {
-		return InitiationId;
-	}
-	public void setInitiationId(Long initiationId) {
-		InitiationId = initiationId;
-	}
-	
-	public int getMilestoneNo() {
-		return MilestoneNo;
-	}
-	public void setMilestoneNo(int milestoneNo) {
-		MilestoneNo = milestoneNo;
-	}
-	public String getMilestoneActivity() {
-		return MilestoneActivity;
-	}
-	public void setMilestoneActivity(String milestoneActivity) {
-		MilestoneActivity = milestoneActivity;
-	}
-	public int getMilestoneMonth() {
-		return MilestoneMonth;
-	}
-	public void setMilestoneMonth(int milestoneMonth) {
-		MilestoneMonth = milestoneMonth;
-	}
-	public String getCreatedBy() {
-		return CreatedBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		CreatedBy = createdBy;
-	}
-	public String getCreatedDate() {
-		return CreatedDate;
-	}
-	public void setCreatedDate(String createdDate) {
-		CreatedDate = createdDate;
-	}
-	public String getModifiedBy() {
-		return ModifiedBy;
-	}
-	public void setModifiedBy(String modifiedBy) {
-		ModifiedBy = modifiedBy;
-	}
-	public String getModifiedDate() {
-		return ModifiedDate;
-	}
-	public void setModifiedDate(String modifiedDate) {
-		ModifiedDate = modifiedDate;
-	}
-	public int getIsActive() {
-		return IsActive;
-	}
-	public void setIsActive(int isActive) {
-		IsActive = isActive;
-	}
-	
-	
-	
     
 	
 }

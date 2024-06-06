@@ -221,6 +221,7 @@ public class RoadMapController {
 	@RequestMapping(value="RoadMapDetailSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String roadMapDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId=(String)ses.getAttribute("Username");
+		String labcode=(String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + "Inside RoadMapDetailSubmit.htm"+UserId);
 		try {
@@ -257,6 +258,8 @@ public class RoadMapController {
 			dto.setUsername(UserId);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
+			
+			dto.setLabCode(labcode);
 			
 			long result = service.addRoadMapDetails(dto);
 			
@@ -734,6 +737,7 @@ public class RoadMapController {
 	@RequestMapping(value="RoadMapReportExcelDownload.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public void roadMapReportExcelDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res) throws Exception {
 		String UserId=(String)ses.getAttribute("Username");
+		String labcode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() + "Inside RoadMapReportExcelDownload.htm"+UserId);
 		try {
 			List<RoadMap> roadMapList = service.getRoadMapList();
@@ -749,7 +753,8 @@ public class RoadMapController {
 			sheet.setColumnWidth(1, 10000);
 			sheet.setColumnWidth(2, 20000);
 			sheet.setColumnWidth(3, 5000);
-			int slnoyrs = 3;
+			sheet.setColumnWidth(4, 3000);
+			int slnoyrs = 4;
 			for(int i=startYear;i<=endYear;i++) {
 				sheet.setColumnWidth(++slnoyrs, 10000);
 			}
@@ -826,13 +831,171 @@ public class RoadMapController {
 			cell.setCellValue("Duration (in months)"); 
 			cell.setCellStyle(t_header_style);
 			
-			slnoyrs=3;
+			cell= t_header_row.createCell(4); 
+			cell.setCellValue("Project Type"); 
+			cell.setCellStyle(t_header_style);
+			
+			slnoyrs=4;
 			for(int i=startYear;i<=endYear;i++) {
 				cell= t_header_row.createCell(++slnoyrs); 
 				cell.setCellValue(i); 
 				cell.setCellStyle(t_header_style);
 			}
 			
+			// Existing Project Annual Targets
+			List<Object[]> projectList = service.getProjectList(labcode);
+			List<Object[]> projectMilestoneActivityList = service.getProjectMilestoneActivityList(labcode);
+			if(projectList!=null && projectList.size()>0) {
+				int slno=0;
+				for(Object[] obj : projectList) {
+					List<Object[]> annualTargetsDetails = projectMilestoneActivityList!=null && projectMilestoneActivityList.size()>0? projectMilestoneActivityList.stream()
+														  .filter(e -> (Long.parseLong(e[0].toString())==Long.parseLong(obj[0].toString())) && (Integer.parseInt(e[2].toString().substring(0,4))>=startYear) &&  (Integer.parseInt(e[3].toString().substring(0,4))<=endYear) )
+														  .collect(Collectors.toList()) : new ArrayList<Object[]>();
+							
+					if(annualTargetsDetails.size()>0) {
+						Row t_body_row = sheet.createRow(rowNo++);
+						cell= t_body_row.createCell(0); 
+						cell.setCellValue(++slno); 
+						cell.setCellStyle(t_body_style2);
+
+						cell= t_body_row.createCell(1); 
+						cell.setCellValue(obj[3]!=null?obj[3].toString():"-"); 
+						cell.setCellStyle(t_body_style);
+
+						cell= t_body_row.createCell(2); 
+						cell.setCellValue(obj[4]!=null?obj[4].toString():"-"); 
+						cell.setCellStyle(t_body_style);
+
+						cell= t_body_row.createCell(3); 
+						cell.setCellValue(obj[5]!=null?obj[5].toString():"-"); 
+						cell.setCellStyle(t_body_style2);
+						
+						cell= t_body_row.createCell(4); 
+						cell.setCellValue("E"); 
+						cell.setCellStyle(t_body_style2);
+
+
+						slnoyrs=4;
+
+
+						int origAnnualYear=0,tempAnnualYear=0;
+						for(Object[] target : annualTargetsDetails) {
+
+							origAnnualYear = Integer.parseInt(target[2].toString().substring(0,4));
+
+							List<String> targetsList =  annualTargetsDetails.stream()
+													    .filter(e-> Long.parseLong(e[2].toString().substring(0,4))==Long.parseLong(target[2].toString().substring(0,4)) )
+													    .map(e -> e[1].toString())
+													    .collect(Collectors.toList());
+
+							if(origAnnualYear!=tempAnnualYear){ 
+								int count=1; 
+								String annualTarget = "";
+								for(String targets : targetsList) {
+									if(count==1) {
+										annualTarget += targets;
+									} else{
+										annualTarget += ", "+targets;
+									} 
+									count++;
+								} 
+								cell= t_body_row.createCell(++slnoyrs); 
+								cell.setCellValue(annualTarget); 
+								cell.setCellStyle(t_body_style);
+							} 
+							tempAnnualYear = origAnnualYear;
+						} 
+
+						int size = annualTargetsDetails.size()/2;
+						int nasize = (endYear-startYear)+1;
+						if(size!=nasize) {
+							for(int i=1;i<=nasize-size;i++) {
+								cell= t_body_row.createCell(++slnoyrs); 
+								cell.setCellValue("NA"); 
+								cell.setCellStyle(t_body_style2);
+							}
+						}
+					}
+				}
+			}
+			
+			// Pre Project Annual Targets
+			List<Object[]> preProjectList = service.getPreProjectList(labcode);
+			List<Object[]> preProjectMilestoneActivityList = service.getPreProjectMilestoneActivityList();
+			if(preProjectList!=null && preProjectList.size()>0) {
+				int slno=0;
+				for(Object[] obj : preProjectList) {
+					List<Object[]> annualTargetsDetails = preProjectMilestoneActivityList!=null && preProjectMilestoneActivityList.size()>0? preProjectMilestoneActivityList.stream()
+							.filter(e -> (Integer.parseInt(e[0].toString())==Integer.parseInt(obj[0].toString())) && (Integer.parseInt(e[2].toString().substring(0,4))>=startYear) &&  (Integer.parseInt(e[3].toString().substring(0,4))<=endYear) )
+							.collect(Collectors.toList()) : new ArrayList<Object[]>();
+							
+							if(annualTargetsDetails.size()>0) {
+								Row t_body_row = sheet.createRow(rowNo++);
+								cell= t_body_row.createCell(0); 
+								cell.setCellValue(++slno); 
+								cell.setCellStyle(t_body_style2);
+								
+								cell= t_body_row.createCell(1); 
+								cell.setCellValue(obj[3]!=null?obj[3].toString():"-"); 
+								cell.setCellStyle(t_body_style);
+								
+								cell= t_body_row.createCell(2); 
+								cell.setCellValue(obj[4]!=null?obj[4].toString():"-"); 
+								cell.setCellStyle(t_body_style);
+								
+								cell= t_body_row.createCell(3); 
+								cell.setCellValue(obj[5]!=null?obj[5].toString():"-"); 
+								cell.setCellStyle(t_body_style2);
+								
+								cell= t_body_row.createCell(4); 
+								cell.setCellValue("P"); 
+								cell.setCellStyle(t_body_style2);
+								
+								
+								slnoyrs=4;
+								
+								int origAnnualYear=0,tempAnnualYear=0;
+								for(Object[] target : annualTargetsDetails) {
+									
+									origAnnualYear = Integer.parseInt(target[2].toString().substring(0,4));
+									
+									List<String> targetsList =  annualTargetsDetails.stream()
+											.filter(e-> Integer.parseInt(e[2].toString().substring(0,4))==Integer.parseInt(target[2].toString().substring(0,4)) )
+											.map(e -> e[1].toString())
+											.collect(Collectors.toList());
+									
+									if(origAnnualYear!=tempAnnualYear){ 
+										int count=1; 
+										String annualTarget = "";
+										for(String targets : targetsList) {
+											if(count==1) {
+												annualTarget += targets;
+											} else{
+												annualTarget += ", "+targets;
+											} 
+											count++;
+										} 
+										cell= t_body_row.createCell(++slnoyrs); 
+										cell.setCellValue(annualTarget); 
+										cell.setCellStyle(t_body_style);
+									} 
+									tempAnnualYear = origAnnualYear;
+								} 
+								
+								int size = annualTargetsDetails.size()/2;
+								int nasize = (endYear-startYear)+1;
+								if(size!=nasize) {
+									for(int i=1;i<=nasize-size;i++) {
+										cell= t_body_row.createCell(++slnoyrs); 
+										cell.setCellValue("NA"); 
+										cell.setCellStyle(t_body_style2);
+									}
+								}
+							}
+				}
+			}
+			
+			// New Project Annual Targets
 			if(roadMapList!=null) {
 				int slno=0;
 				for(RoadMap roadMap : roadMapList) {
@@ -859,8 +1022,11 @@ public class RoadMapController {
 						cell.setCellValue(roadMap.getDuration()); 
 						cell.setCellStyle(t_body_style2);
 
-
-						slnoyrs=3;
+						cell= t_body_row.createCell(4); 
+						cell.setCellValue("N"); 
+						cell.setCellStyle(t_body_style2);
+						
+						slnoyrs=4;
 
 						if(roadMapAnnualTargetDetails!=null) { 
 							int origAnnualYear=0,tempAnnualYear=0;
@@ -868,7 +1034,7 @@ public class RoadMapController {
 
 								origAnnualYear = Integer.parseInt(target.getAnnualYear());
 								
-								List<String> targetssList =  roadMapAnnualTargetDetails.stream()
+								List<String> targetsList =  roadMapAnnualTargetDetails.stream()
 															 .filter(e-> e.getAnnualYear().equalsIgnoreCase(target.getAnnualYear()))
 															 .map(e -> e.getAnnualTargets().getAnnualTarget())
 															 .collect(Collectors.toList());
@@ -876,7 +1042,7 @@ public class RoadMapController {
 								if(origAnnualYear!=tempAnnualYear){ 
 									int count=1; 
 									String annualTarget = "";
-									for(String targets : targetssList) {
+									for(String targets : targetsList) {
 										if(count==1) {
 											annualTarget += targets;
 										} else{

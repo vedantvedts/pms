@@ -1025,6 +1025,7 @@ public class ProjectController
 			}else{
 				pfmsinitiationdto.setMainId(req.getParameter("initiationid"));
 			}
+			pfmsinitiationdto.setStartDate(req.getParameter("startDate"));
 			Long count = service.ProjectIntiationAdd(pfmsinitiationdto, UserId,EmpId,EmpName);
 			if(count>0){
 				redir.addAttribute("result", "Project Initiated Successfully");
@@ -1099,7 +1100,7 @@ public class ProjectController
 				pfmsinitiationdto.setPCRemarks(req.getParameter("PCRemarks"));
 				pfmsinitiationdto.setIndicativeCost(req.getParameter("IndicativeCost"));
 				pfmsinitiationdto.setDuration(req.getParameter("PCDuration"));
-
+				pfmsinitiationdto.setStartDate(req.getParameter("startDate"));
 				int count = service.ProjectIntiationEdit(pfmsinitiationdto, UserId);
 
 				if (count > 0) {

@@ -54,5 +54,6 @@ public class PfmsInitiation implements Serializable {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
-    
+	// newlyadded after 04-06-2024//
+	private String StartDate;
 }

@@ -29,5 +29,7 @@ public interface RoadMapDao {
 	public List<AnnualTargets> getAnnualTargetsFromMaster() throws Exception;
 	public Long addAnnualTargets(AnnualTargets targets) throws Exception;
 	public AnnualTargets getAnnualTargetsById(String annualTargetId) throws Exception;
+	public List<Object[]> getProjectMilestoneActivityList(String labCode) throws Exception;
+	public List<Object[]> getPreProjectMilestoneActivityList() throws Exception;
 
 }

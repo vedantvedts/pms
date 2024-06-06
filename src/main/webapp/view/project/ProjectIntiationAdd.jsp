@@ -269,7 +269,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                    <div class="col-md-4">
 						<div class="form-group"> 
 						<label class="control-label">Deliverable</label>
-							<select class="form-control spermission" name="Deliverables" id="DeliverablesOutput" multiple>
+							<select class="form-control selectdee" name="Deliverables" id="DeliverablesOutput" multiple>
 												<option>Prototype</option>
 												<option>Limited Series Production</option>
 												<option>Technology</option>
@@ -336,7 +336,18 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
                 </div>
           
         		<hr>
-         
+         		
+         		<div class="row">
+         			<div class="col-md-3">
+         				<div class="form-group">
+	                    	<label class="control-label">Probable Start Date</label><span class="mandatory" style="color: #cd0a0a;">*</span>
+							<input type="text" class="form-control" required="required" id="startDate" name="startDate" >
+	                    </div>
+         			</div>
+         		</div>
+         		
+         		<hr>
+         		
 		        <div class="form-group" align="center" >
 					 <input type="submit" class="btn btn-primary btn-sm submit " onclick="Add(myfrm)" value="SUBMIT"> 
 					 <a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" >Back</a>
@@ -612,7 +623,17 @@ onChange: function(option, checked) {
 
 
 
-
+$('#startDate').daterangepicker({
+	"singleDatePicker" : true,
+	"linkedCalendars" : false,
+	"showCustomRangeLabel" : true,	
+	"cancelClass" : "btn-default",
+	/* "minDate" : tomorrow, */
+	showDropdowns : true,
+	locale : {
+		format : 'DD-MM-YYYY'
+	}
+});
 
 </script>
 </body>

@@ -103,13 +103,19 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTITEMLIST="SELECT a.initiationcostid,a.initiationid,c.budgetheaddescription,b.headofaccounts,a.itemdetail,a.itemcost ,b.refe , CONCAT (b.majorhead,'-',b.minorhead,'-',b.subhead) AS headcode FROM pfms_initiation_cost a,budget_item_sanc b,budget_head c WHERE a.initiationid=:initiationid AND a.budgetsancid=b.sanctionitemid AND a.budgetheadid=c.budgetheadid AND a.isactive='1' ORDER BY a.budgetheadid ASC";
 	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname,b.labcode from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
 	private static final String BUDEGTHEADLIST="select budgetheadid,budgetheaddescription from budget_head where isproject='Y' order by budgetheaddescription asc ";
-	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
+	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth,StartDate,EndDate from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTSCHEDULETOTALMONTHLIST="select MilestoneTotalMonth,milestoneno,Milestonestartedfrom from pfms_initiation_schedule where initiationid=:initiationid and isactive='1' " ;
 	/*L.A*/private static final String MILESTONENOTOTALMONTHS="SELECT milestoneno,MilestoneTotalMonth,Milestonestartedfrom FROM pfms_initiation_schedule WHERE isactive='1' AND initiationid=:InitiationId AND milestonestartedfrom=:milestonestartedfrom ";
 	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitigation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario,a.ReqBrief,a.ObjBrief,a.ScopeBrief,a.MultiLabBrief,a.EarlierWorkBrief,a.CompentencyBrief,a.NeedOfProjectBrief,a.TechnologyBrief,a.RiskMitigationBrief,a.ProposalBrief,a.RealizationBrief,a.WorldScenarioBrief FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
 	private static final String PROJECTCOSTLIST="SELECT b.budgetheaddescription,c.headofaccounts,a.itemdetail,a.itemcost,c.refe,c.sanctionitemid  FROM pfms_initiation_cost a,budget_head b,budget_item_sanc c WHERE a.budgetheadid=b.budgetheadid AND a.budgetsancid=c.sanctionitemid AND a.initiationid=:initiationid ORDER BY sanctionitemid ";
-	private static final String PROJECTINTIEDITDATA="SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.classificationid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,a.projecttitle AS 'initiatedproject',a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a WHERE a.initiationid=:initiationid  AND a.isactive='1' AND a.mainid=0 UNION SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.classificationid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,b.projecttitle ,a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a ,pfms_initiation b WHERE a.initiationid=:initiationid AND a.isactive='1' AND a.mainid=b.initiationid";
-	private static final String PROJECTINTIEDITUPDATE="update pfms_initiation set projectprogramme=:projectprogramme,projecttypeid=:projecttypeid,classificationid=:classificationid,projecttitle=:projecttitle,isplanned=:isplanned,ismultilab=:ismultilab,deliverable=:deliverable,modifiedby=:modifiedby,modifieddate=:modifieddate,nodallab=:nodallab,remarks=:remarks,empid=:empid,pcduration=:pcduration,pcremarks=:pcremarks,indicativecost=:indicativecost where initiationid=:initiationid and isactive='1'";
+	private static final String PROJECTINTIEDITDATA="SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.classificationid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,a.projecttitle AS 'initiatedproject',a.pcduration,a.indicativecost,a.pcremarks,a.StartDate  \r\n"
+			+ "FROM pfms_initiation a \r\n"
+			+ "WHERE a.initiationid=:initiationid  AND a.isactive='1' AND a.mainid=0 \r\n"
+			+ "UNION \r\n"
+			+ "SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.classificationid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,b.projecttitle ,a.pcduration,a.indicativecost,a.pcremarks,a.StartDate \r\n"
+			+ "FROM pfms_initiation a ,pfms_initiation b \r\n"
+			+ "WHERE a.initiationid=:initiationid AND a.isactive='1' AND a.mainid=b.initiationid";
+	private static final String PROJECTINTIEDITUPDATE="update pfms_initiation set projectprogramme=:projectprogramme,projecttypeid=:projecttypeid,classificationid=:classificationid,projecttitle=:projecttitle,isplanned=:isplanned,ismultilab=:ismultilab,deliverable=:deliverable,modifiedby=:modifiedby,modifieddate=:modifieddate,nodallab=:nodallab,remarks=:remarks,empid=:empid,pcduration=:pcduration,pcremarks=:pcremarks,indicativecost=:indicativecost,StartDate=:StartDate where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTINTITOTALCOST="select sum(ItemCost) from pfms_initiation_cost where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTINTICOSTDATA="select initiationcostid,initiationid,budgetheadid,budgetsancid,itemdetail,itemcost from pfms_initiation_cost where initiationcostid=:initiationcostid and isactive='1'";
 	private static final String PROJECTINTICOSTUPDATE="update pfms_initiation_cost set budgetsancid=:budgetitemid,itemdetail=:itemdetail,itemcost=:itemcost,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationcostid=:initiationcostid and isactive='1'";
@@ -505,7 +511,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("pcduration", pfmsinitiation.getPCDuration());
 		query.setParameter("indicativecost", pfmsinitiation.getIndicativeCost());
 		query.setParameter("pcremarks", pfmsinitiation.getPCRemarks());
-
+		query.setParameter("StartDate", pfmsinitiation.getStartDate());
 
 		return query.executeUpdate();
 	}
@@ -4019,6 +4025,16 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("SpecificationId", specsInitiationId);
 		
 		return (List<Object[]>)query.getResultList();
+	}
+	
+	@Override
+	public PfmsInitiation getPfmsInitiationById(String initiationId) throws Exception {
+		try {
+			return manager.find(PfmsInitiation.class, Long.parseLong(initiationId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
 

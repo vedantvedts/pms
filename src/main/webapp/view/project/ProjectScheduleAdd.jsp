@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -53,6 +54,7 @@ Integer ProjectScheduleMonth=(Integer) request.getAttribute("ProjectScheduleMont
 List<Object[]>MilestoneTotalMonth=(List<Object[]>)request.getAttribute("MilestoneTotalMonth");
 Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths");
 
+FormatConverter fc = new FormatConverter();
 %>
 
 
@@ -105,12 +107,13 @@ Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths"
                                         <thead>
                                          
                                             <tr>
-                                                <th >Milestone</th>
-                                                <th >Milestone Activity</th>
-                                                <th> Started from</th>
-                                                <th >Milestone Month</th>
-                                                 <th >Remarks</th>
-                                              <th >Link</th> 
+                                                <th>Milestone</th>
+                                                <th>Milestone Activity</th>
+                                                <th>Started from</th>
+                                                <th>Period</th>
+                                                <th>Milestone Month</th>
+                                                <th>Remarks</th>
+                                              	<th>Link</th> 
                                             </tr>
                                         </thead>
                                        <%} %>
@@ -139,6 +142,11 @@ Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths"
 										 	</select>  --%>
 										 	 MIL-<%=obj[5] %> 
 									 		 <input type="hidden" name="MilestoneFrom" value="<%=obj[5]%>"> 
+									 	</td>
+									 	<td>
+									 		<%=obj[7]!=null?fc.SqlToRegularDate(obj[7].toString()):"" %>
+									 		-
+									 		<%=obj[8]!=null?fc.SqlToRegularDate(obj[8].toString()):"" %>
 									 	</td>
 									   	<td style="width: 200px;"><input type="number" class="form-control " name="MilestoneMonthEdit" min="0" required="required" value="<%=obj[2] %>"></td>
 									   	<td><input type="text" class="form-control " name="MilestoneRemarkEdit"  required="required" value="<%=obj[4]%>"></td>

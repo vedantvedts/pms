@@ -31,4 +31,6 @@ public class RoadMapDetailsDTO {
 	private String Username;
 	private String Action;
 	private String EmpId;
+	
+	private String LabCode;
 }

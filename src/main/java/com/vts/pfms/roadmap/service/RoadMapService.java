@@ -33,5 +33,7 @@ public interface RoadMapService {
 	public long roadMapDetailsMoveBackToRoadMap(String roadMapId, String userId, String empId) throws Exception;
 	public List<AnnualTargets> getAnnualTargetsFromMaster() throws Exception;
 	public Long addAnnualTargets(AnnualTargets targets) throws Exception;
+	public List<Object[]> getProjectMilestoneActivityList(String labCode) throws Exception;
+	public List<Object[]> getPreProjectMilestoneActivityList() throws Exception;
 	
 }
