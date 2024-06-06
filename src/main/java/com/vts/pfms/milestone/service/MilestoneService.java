@@ -86,4 +86,6 @@ public interface MilestoneService {
 	public List<Object[]> FileRepUploadId(String project,String FileParentId);
 	public int IsFileInActive(String project, String fileParentId);
 	public int DocumentListNameEdit(String filerepmasterid, String levelname);
+	//Ms project
+	public List<Object[]> getMsprojectTaskList(String projectId)throws Exception;
 }

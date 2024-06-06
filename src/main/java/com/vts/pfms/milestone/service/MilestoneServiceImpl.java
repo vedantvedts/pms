@@ -1548,5 +1548,8 @@ public class MilestoneServiceImpl implements MilestoneService {
 		
 		return dao.DocumentListNameEdit(filerepmasterid,levelname);
 	}
-	
+	@Override
+	public List<Object[]> getMsprojectTaskList(String projectId) throws Exception {
+		return dao.getMsprojectTaskList(projectId);
+	}
 }

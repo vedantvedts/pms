@@ -72,6 +72,7 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.committee.service.ActionService;
+import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
@@ -152,6 +153,9 @@ public class ProjectController
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 
+	
+	@Autowired 
+	MilestoneService MilService;
 	
 	@Autowired
 	Environment env;
@@ -10234,6 +10238,52 @@ public class ProjectController
 		}
 	}
 
+	
+	
+	
+	//project charter
+	
+		@RequestMapping(value="ProjectCharter.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	    public String ProjectCharter(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception  {
+		   
+			String Logintype = (String) ses.getAttribute("LoginType");
+			String UserId = (String) ses.getAttribute("Username");
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String LabCode = (String) ses.getAttribute("labcode");
+			logger.info(new Date() + "Inside ProjectCharter.htm " + UserId);
+			try {
+			List<Object[]> proList = service.LoginProjectDetailsList(EmpId, Logintype, LabCode);
+	         req.setAttribute("proList", proList);
+		    String projectid=req.getParameter("projectid");
+		    
+		    if(projectid==null || projectid.equals("null"))
+			{
+				projectid=proList.get(0)[0].toString();
+			}
+		
+	  	req.setAttribute("ProjectId", projectid);
+	  	req.setAttribute("ProjectEditData1", service.ProjectEditData1(projectid));   //this is for the project director
+	 	req.setAttribute("ProjectAssignList", service.ProjectAssignList(projectid));
+
+	  	Object[] projectattribute = serv.ProjectAttributes(projectid);//this is for the project basic details
+	  	req.setAttribute("ProjectEditData", projectattribute);
+	  	
+	  	//data for risk--
+	  	List<Object[]> riskdatalist=service.ProjectRiskDataList(projectid, LabCode);
+	  	req.setAttribute("riskdatalist", riskdatalist);
+	 
+	  	//milestones
+	  	List<Object[]> main=MilService.MilestoneActivityList(projectid);
+		req.setAttribute("MilestoneActivityList",main );
+
+			}catch (Exception e) {
+				e.printStackTrace();
+			} 
+		    
+		    
+			return "project/ProjectCharter";
+		}
+			
 	
 	//package com.vts.pfms.project.controller;
 

@@ -107,6 +107,7 @@ import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.ProjectSlideDto;
+import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 import feign.Request;
@@ -146,6 +147,9 @@ public class PrintController {
 	@Autowired
 	CARSService CarsService;
 	
+	
+	@Autowired
+	ProjectService prservice;
 	
 	private static final Logger logger=LogManager.getLogger(PrintController.class);
 
@@ -4855,4 +4859,81 @@ public class PrintController {
 		        return "redirect:/ProjectBriefingPaper.htm";
 			    }
 		
+			 
+			 @RequestMapping(value = "ProjectCharterDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+				public void ProjectCharterDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
+						throws Exception {
+					String Logintype = (String) ses.getAttribute("LoginType");
+					String UserId = (String) ses.getAttribute("Username");
+					String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+					String LabCode = (String) ses.getAttribute("labcode");
+					logger.info(new Date() + "Inside ProjectCharterDownload.htm " + UserId);
+
+					try {
+			           
+						List<Object[]> proList = service.LoginProjectDetailsList(EmpId, Logintype, LabCode);
+				         req.setAttribute("proList", proList);
+					    String projectid=req.getParameter("projectid");
+					    
+					    if(projectid==null || projectid.equals("null"))
+						{
+							projectid=proList.get(0)[0].toString();
+						}
+					
+				  	req.setAttribute("ProjectId", projectid);
+				  	req.setAttribute("ProjectEditData1", prservice.ProjectEditData1(projectid));   //this is for the project director
+				 	req.setAttribute("ProjectAssignList", prservice.ProjectAssignList(projectid));
+
+				  	Object[] projectattribute = service.ProjectAttributes(projectid);//this is for the project basic details
+				  	req.setAttribute("ProjectEditData", projectattribute);
+				  	
+				  	//data for risk--
+				  	List<Object[]> riskdatalist=prservice.ProjectRiskDataList(projectid, LabCode);
+				  	req.setAttribute("riskdatalist", riskdatalist);
+				  //milestones
+					
+				  	List<Object[]> main=milservice.MilestoneActivityList(projectid);
+					req.setAttribute("MilestoneActivityList",main );
+
+						String filename = "ProjectCharterPdf";
+						String path = req.getServletContext().getRealPath("/view/temp");
+						req.setAttribute("path", path);
+						CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+						req.getRequestDispatcher("/view/print/ProjectCharterPdf.jsp").forward(req, customResponse);
+						String html = customResponse.getOutput();
+
+						HtmlConverter.convertToPdf(html, new FileOutputStream(path + File.separator + filename + ".pdf"));
+						PdfWriter pdfw = new PdfWriter(path + File.separator + "merged.pdf");
+						PdfReader pdf1 = new PdfReader(path + File.separator + filename + ".pdf");
+						PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+						pdfDocument.close();
+						pdf1.close();
+						pdfw.close();
+
+						res.setContentType("application/pdf");
+						res.setHeader("Content-disposition", "inline;filename=" + filename + ".pdf");
+						File f = new File(path + "/" + filename + ".pdf");
+
+						OutputStream out = res.getOutputStream();
+						FileInputStream in = new FileInputStream(f);
+						byte[] buffer = new byte[4096];
+						int length;
+						while ((length = in.read(buffer)) > 0) {
+							out.write(buffer, 0, length);
+						}
+						in.close();
+						out.flush();
+						out.close();
+
+						Path pathOfFile2 = Paths.get(path + File.separator + filename + ".pdf");
+						Files.delete(pathOfFile2);
+
+					} catch (Exception e) {
+						logger.error(new Date() +"ProjectSummaryPrint.htm" + UserId, e);
+						e.printStackTrace();
+					}
+
+				}
+				
+			 
 }

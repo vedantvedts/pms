@@ -118,4 +118,5 @@ public interface MilestoneDao {
 	public List<Object[]> FileRepUploadId(String project , int documentID);
 	public int IsFileInActive(String project, int documentID);
 	public int DocumentListNameEdit(String filerepmasterid, String levelname);
+	public List<Object[]> getMsprojectTaskList(String projectId)throws Exception;
 }

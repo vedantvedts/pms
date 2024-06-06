@@ -2835,5 +2835,58 @@ public class MilestoneController {
 		            Gson json = new Gson();
 					return json.toJson(DocsDatasize);	
 				}	
-			
+				@RequestMapping(value = "MSProjectMilestone.htm", method = {RequestMethod.GET,RequestMethod.POST})
+				public String MSProjectMilestone(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+				{
+					
+					
+					String UserId = (String) ses.getAttribute("Username");
+					String Logintype= (String)ses.getAttribute("LoginType");
+					String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+					String LabCode = (String)ses.getAttribute("labcode");
+					logger.info(new Date() +"Inside MSProjectMilestone.htm "+UserId);
+					
+					try {
+						
+						   String ProjectId=req.getParameter("ProjectId");
+					     
+					        List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+					        
+					        if(projlist.size()==0) 
+					        {				
+								redir.addAttribute("resultfail", "No Project is Assigned to you.");
+								return "redirect:/MainDashBoard.htm";
+							}
+					        
+					        
+					        
+					        if(ProjectId==null) {
+					        	try {
+					        		Object[] pro=projlist.get(0);
+					        		ProjectId=pro[0].toString();
+					        	}catch (Exception e) {
+									
+								}
+					        }
+					        
+					        List<Object[]>mstaskList = service.getMsprojectTaskList(ProjectId);
+					        
+					        System.out.println(mstaskList!=null ?"mstaskList --- "+ mstaskList.size():ProjectId);
+					    	req.setAttribute("ProjectList",projlist);
+							req.setAttribute("ProjectId", ProjectId);
+							req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
+							req.setAttribute("mstaskList",mstaskList);
+					        
+					        
+					}catch (Exception e) {
+						e.printStackTrace(); 
+						logger.error(new Date() +" Inside MSProjectMilestone.htm "+UserId, e); 
+						return "static/Error";
+					}
+					
+					
+					return "milestone/MSprojectMilestone";
+				}
+				
+				
 }

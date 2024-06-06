@@ -5187,7 +5187,7 @@ function ActionDetails(InAssignId)
 				ActionAssignid : InAssignId
 			},
 			datatype : 'json',
-			function :  success(result) {
+			success :  function(result) {
 				var result = JSON.parse(result);
 				
 				

@@ -1156,4 +1156,38 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		}
 		
 		
+		private static final String MSPROJECTLIST= "SELECT a.MilestoneId,a.SampleTableId,a.ProjectUID,a.ProjectId,e.EmpName,d.designation,a.TaskUID,a.TaskParentUID,a.TaskOutlineLevel,a.TaskOutlineNumber,\r\n"
+				+ "a.TaskName,a.StartDate,a.FinishDate,a.ActualStartDate,a.ActualFinishDate,a.TaskProgress FROM pfms_milestone_msprojectdata a,\r\n"
+				+ "employee e , employee_desig d WHERE a.projectid=:projectid AND e.empno = a.empno AND e.desigid = d.desigid ORDER BY \r\n"
+				+ "    CAST(SUBSTRING_INDEX(TaskOutlineNumber, '.', 1) AS UNSIGNED),\r\n"
+				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 2), '.', -1) AS UNSIGNED),\r\n"
+				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 3), '.', -1) AS UNSIGNED),\r\n"
+				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 4), '.', -1) AS UNSIGNED),\r\n"
+				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 5), '.', -1) AS UNSIGNED),\r\n"
+				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 6), '.', -1) AS UNSIGNED),\r\n"
+				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 7), '.', -1) AS UNSIGNED)";
+		
+		
+		@Override
+		public List<Object[]> getMsprojectTaskList(String ProjectId) throws Exception {
+
+			try {
+				System.out.println("ProjectId  "+ProjectId);
+				Query query = manager.createNativeQuery(MSPROJECTLIST);
+				query.setParameter("projectid", Long.parseLong(ProjectId));
+				
+				List<Object[]>mstaskList=query.getResultList();
+				
+				System.out.println("mstaskList  ,"+mstaskList.size());
+				
+				return mstaskList;
+				
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				return null;
+			}
+			
+	
+		}
 }
