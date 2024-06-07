@@ -753,7 +753,7 @@ public class RoadMapController {
 			sheet.setColumnWidth(1, 10000);
 			sheet.setColumnWidth(2, 20000);
 			sheet.setColumnWidth(3, 5000);
-			sheet.setColumnWidth(4, 3000);
+			sheet.setColumnWidth(4, 5000);
 			int slnoyrs = 4;
 			for(int i=startYear;i<=endYear;i++) {
 				sheet.setColumnWidth(++slnoyrs, 10000);
@@ -871,50 +871,28 @@ public class RoadMapController {
 						cell.setCellStyle(t_body_style2);
 						
 						cell= t_body_row.createCell(4); 
-						cell.setCellValue("E"); 
+						cell.setCellValue("Existing"); 
 						cell.setCellStyle(t_body_style2);
 
 
 						slnoyrs=4;
 
 
-						int origAnnualYear=0,tempAnnualYear=0;
-						for(Object[] target : annualTargetsDetails) {
-
-							origAnnualYear = Integer.parseInt(target[2].toString().substring(0,4));
-
+						for(int i=startYear;i<=endYear;i++) {
+							Integer year = i;
 							List<String> targetsList =  annualTargetsDetails.stream()
-													    .filter(e-> Long.parseLong(e[2].toString().substring(0,4))==Long.parseLong(target[2].toString().substring(0,4)) )
-													    .map(e -> e[1].toString())
-													    .collect(Collectors.toList());
+														.filter(e-> year>=(Integer.parseInt(e[2].toString().substring(0,4))) && (year<=Integer.parseInt(e[3].toString().substring(0,4))) )
+														.map(e -> e[1].toString())
+														.collect(Collectors.toList());
 
-							if(origAnnualYear!=tempAnnualYear){ 
-								int count=1; 
-								String annualTarget = "";
-								for(String targets : targetsList) {
-									if(count==1) {
-										annualTarget += targets;
-									} else{
-										annualTarget += ", "+targets;
-									} 
-									count++;
-								} 
-								cell= t_body_row.createCell(++slnoyrs); 
-								cell.setCellValue(annualTarget); 
-								cell.setCellStyle(t_body_style);
-							} 
-							tempAnnualYear = origAnnualYear;
-						} 
+							String annualTarget = targetsList.isEmpty() ? "NA" : String.join(", ", targetsList);
 
-						int size = annualTargetsDetails.size()/2;
-						int nasize = (endYear-startYear)+1;
-						if(size!=nasize) {
-							for(int i=1;i<=nasize-size;i++) {
-								cell= t_body_row.createCell(++slnoyrs); 
-								cell.setCellValue("NA"); 
-								cell.setCellStyle(t_body_style2);
-							}
+							cell = t_body_row.createCell(++slnoyrs);
+							cell.setCellValue(annualTarget);
+							cell.setCellStyle(targetsList.isEmpty() ? t_body_style2 : t_body_style);
+
 						}
+						
 					}
 				}
 			}
@@ -948,51 +926,30 @@ public class RoadMapController {
 								cell.setCellStyle(t_body_style2);
 								
 								cell= t_body_row.createCell(4); 
-								cell.setCellValue("P"); 
+								cell.setCellValue("Initiation"); 
 								cell.setCellStyle(t_body_style2);
 								
 								
 								slnoyrs=4;
 								
-								int origAnnualYear=0,tempAnnualYear=0;
-								for(Object[] target : annualTargetsDetails) {
-									
-									origAnnualYear = Integer.parseInt(target[2].toString().substring(0,4));
-									
+								for(int i=startYear;i<=endYear;i++) {
+
+									Integer year = i;
 									List<String> targetsList =  annualTargetsDetails.stream()
-											.filter(e-> Integer.parseInt(e[2].toString().substring(0,4))==Integer.parseInt(target[2].toString().substring(0,4)) )
-											.map(e -> e[1].toString())
-											.collect(Collectors.toList());
+															    .filter(e-> year>=(Integer.parseInt(e[2].toString().substring(0,4))) && (year<=Integer.parseInt(e[3].toString().substring(0,4))) )
+															    .map(e -> e[1].toString())
+															    .collect(Collectors.toList());
 									
-									if(origAnnualYear!=tempAnnualYear){ 
-										int count=1; 
-										String annualTarget = "";
-										for(String targets : targetsList) {
-											if(count==1) {
-												annualTarget += targets;
-											} else{
-												annualTarget += ", "+targets;
-											} 
-											count++;
-										} 
-										cell= t_body_row.createCell(++slnoyrs); 
-										cell.setCellValue(annualTarget); 
-										cell.setCellStyle(t_body_style);
-									} 
-									tempAnnualYear = origAnnualYear;
-								} 
-								
-								int size = annualTargetsDetails.size()/2;
-								int nasize = (endYear-startYear)+1;
-								if(size!=nasize) {
-									for(int i=1;i<=nasize-size;i++) {
-										cell= t_body_row.createCell(++slnoyrs); 
-										cell.setCellValue("NA"); 
-										cell.setCellStyle(t_body_style2);
-									}
+									String annualTarget = targetsList.isEmpty() ? "NA" : String.join(", ", targetsList);
+
+								    cell = t_body_row.createCell(++slnoyrs);
+								    cell.setCellValue(annualTarget);
+								    cell.setCellStyle(targetsList.isEmpty() ? t_body_style2 : t_body_style);
+								    
 								}
+								
 							}
-				}
+					}
 			}
 			
 			// New Project Annual Targets
@@ -1023,55 +980,26 @@ public class RoadMapController {
 						cell.setCellStyle(t_body_style2);
 
 						cell= t_body_row.createCell(4); 
-						cell.setCellValue("N"); 
+						cell.setCellValue("New"); 
 						cell.setCellStyle(t_body_style2);
 						
 						slnoyrs=4;
 
-						if(roadMapAnnualTargetDetails!=null) { 
-							int origAnnualYear=0,tempAnnualYear=0;
-							for(RoadMapAnnualTargets target :roadMapAnnualTargetDetails) {
+						for(int i=startYear;i<=endYear;i++) {
+							Integer year = i;
+							
+							List<String> targetsList =  roadMapAnnualTargetDetails.stream()
+									 					.filter(e-> year==Integer.parseInt(e.getAnnualYear()))
+									 					.map(e -> e.getAnnualTargets().getAnnualTarget())
+									 					.collect(Collectors.toList());
+							
+							String annualTarget = targetsList.isEmpty() ? "NA" : String.join(", ", targetsList);
 
-								origAnnualYear = Integer.parseInt(target.getAnnualYear());
-								
-								List<String> targetsList =  roadMapAnnualTargetDetails.stream()
-															 .filter(e-> e.getAnnualYear().equalsIgnoreCase(target.getAnnualYear()))
-															 .map(e -> e.getAnnualTargets().getAnnualTarget())
-															 .collect(Collectors.toList());
-
-								if(origAnnualYear!=tempAnnualYear){ 
-									int count=1; 
-									String annualTarget = "";
-									for(String targets : targetsList) {
-										if(count==1) {
-											annualTarget += targets;
-										} else{
-											annualTarget += ", "+targets;
-										} 
-										count++;
-									} 
-									cell= t_body_row.createCell(++slnoyrs); 
-									cell.setCellValue(annualTarget); 
-									cell.setCellStyle(t_body_style);
-								} 
-								tempAnnualYear = origAnnualYear;} } 
-
-
-
-//						for(RoadMapAnnualTargets targets : roadMapAnnualTargetDetails) {
-//							cell= t_body_row.createCell(++slnoyrs); 
-//							cell.setCellValue(""); 
-//							cell.setCellStyle(t_body_style);
-//						}
-						int size = roadMapAnnualTargetDetails.size()/2;
-						int nasize = (endYear-startYear)+1;
-						if(size!=nasize) {
-							for(int i=1;i<=nasize-size;i++) {
-								cell= t_body_row.createCell(++slnoyrs); 
-								cell.setCellValue("NA"); 
-								cell.setCellStyle(t_body_style2);
-							}
+						    cell = t_body_row.createCell(++slnoyrs);
+						    cell.setCellValue(annualTarget);
+						    cell.setCellStyle(targetsList.isEmpty() ? t_body_style2 : t_body_style);
 						}
+						
 					}
 				}
 			}
