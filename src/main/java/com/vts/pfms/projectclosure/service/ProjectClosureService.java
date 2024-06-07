@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.project.model.ProjectMaster;
+import com.vts.pfms.projectclosure.dto.ProjectCheckListRevDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureAppendixDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
@@ -19,6 +20,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
+import com.vts.pfms.projectclosure.model.ProjectClosureCheckListRev;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
@@ -65,8 +67,8 @@ public interface ProjectClosureService {
 	public Object[] projectExpenditureDetails(String projectId) throws Exception;
 	public long projectClosureACPRevoke(String closureId, String userId, String empId, String labcode) throws Exception;
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception;
-	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach) throws Exception;
-	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach) throws Exception;
+	public long addProjectClosureCheckList(ProjectClosureCheckList clist,ProjectCheckListRevDto dto, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach) throws Exception;
+	public long editProjectClosureCheckList(ProjectClosureCheckList clist,ProjectCheckListRevDto dto, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach) throws Exception;
 	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode) throws Exception;
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
 	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
@@ -96,6 +98,7 @@ public interface ProjectClosureService {
 	
 	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res, String closureId, String techclosureId,String labcode)
 			throws Exception;
+	public List<Object[]> getProjectClosureCheckListRevByClosureId(String closureId) throws Exception;
 	
 	
 }

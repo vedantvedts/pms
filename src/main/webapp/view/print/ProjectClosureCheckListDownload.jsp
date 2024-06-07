@@ -216,6 +216,9 @@ p,td,th
      
      String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
 
+     DecimalFormat df = new DecimalFormat("#.####");
+     
+     
    
 
 %>
@@ -409,7 +412,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. How much/ revised cost </td>
-			<td><%if(chlist!=null && chlist.getSCRevisionCost()>=0){%><%=chlist.getSCRevisionCost() %><%} %></td>
+			<td><%if(chlist!=null && chlist.getSCRevisionCost()>=0){%><%=df.format(chlist.getSCRevisionCost()) %><%} %></td>
 		</tr>
 		
 		

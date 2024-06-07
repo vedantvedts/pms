@@ -72,6 +72,7 @@ import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.RequirementMembers;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.projectclosure.dto.ProjectCheckListRevDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureAppendixDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
@@ -1261,7 +1262,7 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("closureId");
 			String closureCategory = req.getParameter("closureCategory");
 			
-			System.out.println("closureId: "+closureId+"  projectId: "+projectId);
+			
 			ProjectClosure closure = closureId.equalsIgnoreCase("0") ? new ProjectClosure(): service.getProjectClosureById(closureId);
 			closure.setProjectId(Long.parseLong(projectId));
 			closure.setClosureCategory(closureCategory);
@@ -1363,6 +1364,7 @@ public class ProjectClosureController {
 				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
 				req.setAttribute("ProjectClosureCheckListData", service.getProjectClosureCheckListByProjectId(closureId));
+				req.setAttribute("ProjectClosureCheckListRev", service.getProjectClosureCheckListRevByClosureId(closureId));;
 				Object[] PDData = carsservice.getEmpPDEmpId(projectId);
 				req.setAttribute("PDData", PDData);
 				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
@@ -1417,7 +1419,8 @@ public class ProjectClosureController {
 		try {
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
-			//System.out.println("action---"+action);
+			
+			ProjectCheckListRevDto dto=new ProjectCheckListRevDto();
 			
 			ProjectClosureCheckList clist = (action!=null && action.equalsIgnoreCase("Add"))?new ProjectClosureCheckList() : service.getProjectClosureCheckListByProjectId(closureId);
 			
@@ -1431,15 +1434,19 @@ public class ProjectClosureController {
 			clist.setQARObjective(req.getParameter("QARObjective"));
 			//clist.setQARMilestone(req.getParameter("QARMilestone"));
 			clist.setQARPDCDate(sdf.format(rdf.parse(req.getParameter("QARPDCDate"))));
-			
-			clist.setQARProposedCost(Double.parseDouble(req.getParameter("QARProposedCost")));
+			String QARProposedCost=req.getParameter("QARProposedCost");
+			clist.setQARProposedCost(!QARProposedCost.isEmpty()?Double.parseDouble(QARProposedCost):0);
 			//clist.setQARCostBreakup(req.getParameter("QARCostBreakup"));
-			clist.setSCRequested(sdf.format(rdf.parse(req.getParameter("SCRequested"))));
-			clist.setSCGranted(sdf.format(rdf.parse(req.getParameter("SCGranted"))));
+			//clist.setSCRequested(sdf.format(rdf.parse(req.getParameter("SCRequested"))));
+			//clist.setSCGranted(sdf.format(rdf.parse(req.getParameter("SCGranted"))));
+			dto.setRequestedDate(req.getParameterValues("SCRequested"));
+			dto.setGrantedDate(req.getParameterValues("SCGranted"));
+			dto.setRevisionCost(req.getParameterValues("SCRevisionCost"));
+			dto.setReason(req.getParameterValues("SCReason"));
 			
-			String SCRevisionCost=req.getParameter("SCRevisionCost");
-			clist.setSCRevisionCost(Double.parseDouble(SCRevisionCost!=null && !SCRevisionCost.isEmpty()? SCRevisionCost:"0"));
-			clist.setSCReason(req.getParameter("SCReason"));
+			//String SCRevisionCost=req.getParameter("SCRevisionCost");
+			//clist.setSCRevisionCost(Double.parseDouble(SCRevisionCost!=null && !SCRevisionCost.isEmpty()? SCRevisionCost:"0"));
+			//clist.setSCReason(req.getParameter("SCReason"));
 			clist.setPDCRequested(sdf.format(rdf.parse(req.getParameter("PDCRequested"))));
 			clist.setPDCGranted(sdf.format(rdf.parse(req.getParameter("PDCGranted"))));
 		
@@ -1520,13 +1527,13 @@ public class ProjectClosureController {
 				clist.setCreatedDate(sdtf.format(new Date()));
 				clist.setIsActive(1);
 				
-				result = service.addProjectClosureCheckList(clist,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach);
+				result = service.addProjectClosureCheckList(clist,dto,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach);
 				
 			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
 				clist.setModifiedBy(UserId);
 				clist.setModifiedDate(sdtf.format(new Date()));
 				
-				result = service.editProjectClosureCheckList(clist,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach);
+				result = service.editProjectClosureCheckList(clist,dto,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach);
 				
 				if (result > 0) {
 					redir.addAttribute("result", "Closure CheckList Details Updated Successfully");
@@ -1597,7 +1604,6 @@ public class ProjectClosureController {
 			
 			if(closureId!=null) {
 				req.setAttribute("ProjectClosureCheckListData", service.getProjectClosureCheckListByProjectId(closureId));
-				
 				req.setAttribute("closureId", closureId);
 				
 				ProjectClosure closure = service.getProjectClosureById(closureId);

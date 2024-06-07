@@ -11,6 +11,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
+import com.vts.pfms.projectclosure.model.ProjectClosureCheckListRev;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
@@ -86,6 +87,9 @@ public interface ProjectClosureDao {
 	public long AddDocDistribMembers(ProjectClosureTechnicalDocDistrib r)throws Exception;
 	public List<Object[]> getDocSharingMemberList(String techClosureId)throws Exception;
 	public int TCRFreeze(String techclosureId, String filepath) throws Exception;
+	public long AddProjectClosureCheckListRev(ProjectClosureCheckListRev rev) throws Exception;
+	public long removeProjectClosureCheckListRev(long closureid)throws Exception;
+	public List<Object[]> getProjectClosureCheckListRevByClosureId(String closureId)throws Exception;
 	
 
 }

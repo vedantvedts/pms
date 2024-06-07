@@ -6,6 +6,7 @@
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.project.model.ProjectMaster"%>
+<%@page import="com.vts.pfms.projectclosure.model.ProjectClosureCheckListRev"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -318,6 +319,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 DecimalFormat df = new DecimalFormat("#.####");
 df.setMinimumFractionDigits(4); 
 String statuscode = closure!=null?closure.getClosureStatusCode():null;
+
+
+List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckListRev");
+
 %>
 
 <% String ses=(String)request.getParameter("result"); 
@@ -541,8 +546,9 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												         <br>
 												         <br>  
 												          
-												      <div class="row" style="margin-left: 2%;margin-right: 2%;">      
-												          <div class="col-md-2" style="">
+												      <div class="row" style="margin-left: 2%;margin-right: 2%;"> 
+												         <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;" >     
+												          <%-- <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">When requested</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="SCRequested" id="SCRequested" placeholder="Enter Requested Date" 
@@ -575,9 +581,116 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												                    <textarea class="form-control form-control" name="SCReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
                               		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getSCReason()!=null){ %><%=chlist.getSCReason() %><%} %></textarea>  
 												                </div>
-												            </div> 
+												            </div>  --%>
 												            
+												            </div>
 												          </div>  
+												          
+												          
+		                  <table style="width: 94%;margin-left: 3%;" id="tablesancrev">
+								<thead style = "background-color: #055C9D; color: white;text-align: center;">
+									<tr>
+									    <th style="width: 5%;padding: 0px 5px 0px 5px;">When requested</th>
+								    	<th style="width: 5%;padding: 0px 5px 0px 5px;">When granted</th>
+								    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Revised cost (in rupees)</th>
+								    	<th style="width: 15%;padding: 0px 5px 0px 5px;">Any reason specified</th>
+									    <td style="width: 5%;">
+											<button type="button" class="btn btn_add_sancrev "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+										</td>
+									</tr>
+								</thead>
+								
+								 <tbody>
+								  <% if(Rev !=null && Rev.size()>0) {
+									  for(Object[] obj : Rev) { %>
+								 
+									<tr class="tr_clone_trialresults">
+										<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+										    <input type="text" class="form-control item" name="SCRequested" value="<%=fc.SqlToRegularDate(obj[2].toString())%>" id="SCRequested">
+										</td>	
+										
+										<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+										     <input type="text" class="form-control item" name="SCGranted"  value="<%=fc.SqlToRegularDate(obj[3].toString())%>" id="SCGranted">
+										</td>
+										
+										<td style="width: 5%;padding: 10px 5px 0px 5px;">
+											<input type="number" class="form-control item" name="SCRevisionCost"  value="<%=df.format(obj[4])%>" >
+										</td>
+										
+										<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+										
+										    <input type="text" class="form-control item" name="SCReason"  value="<%=obj[6] %>" placeholder="Enter Reason">
+										    
+										</td>
+											
+											
+										<td style="width: 5%;">
+											 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+										</td>									
+									</tr>
+									
+									<%} } else{ %>
+									
+									
+									<tr class="tr_clone_trialresults">
+										<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+										    <input type="text" class="form-control item" name="SCRequested" value="" id="SCRequested">
+										</td>	
+										
+										<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+										     <input type="text" class="form-control item" name="SCGranted"  value="" id="SCGranted">
+										</td>
+										
+										<td style="width: 5%;padding: 10px 5px 0px 5px;">
+											<input type="number" class="form-control item" name="SCRevisionCost"  value="" >
+										</td>
+										
+										<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+										
+										    <input type="text" class="form-control item" name="SCReason"  value="" placeholder="Enter Reason">
+										    
+										</td>
+											
+											
+										<td style="width: 5%;">
+											 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+										</td>									
+									</tr>
+									
+									<%} %>
+								
+								 
+									<%-- <tr class="tr_clone_trialresults">
+												
+									    <td style="width: 20%;padding: 10px 5px 0px 5px;" >
+											  <input type="text" class="form-control item" name="Appendix" id="appendix" value="Appendix-A">
+										</td>
+													
+										   <td style="width: 40%;padding: 10px 5px 0px 5px;" >
+												<select class="form-control" name="DocumentName">
+												    <option value="0"  selected disabled>Select</option>
+													    <%for(Object[] obj:AppndDocList){ %>
+													          <option value="<%=obj[1] %>" ><%=obj[1] %></option>
+													     <%}%>
+												</select>
+											</td>
+												
+											<td style="width: 25%;padding: 10px 5px 0px 5px;">
+												  <input type="file" class="form-control item" name="attachment" accept=".pdf" required>
+											</td>
+												
+											<td style="width: 5% ; ">
+												 <button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+											</td>
+										</tr> --%>
+										
+								    </tbody>
+				               </table>
+				            </div>
+	                      </div>  
+												          
+								<br>				          
+												           
 												          
 												          <hr>
 												          
@@ -1787,7 +1900,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                		</div>
                	</div>
               </div>
-           </div>
+          
          		
 	
 
@@ -1795,7 +1908,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 	
 
 
-$('#PDCDate,#HQrsSentDate,#CFASendDate,#PDCRevised,#ProposedDate,#CFASendDate,#SCRequested,#SCGranted,#ProjectClosedDate,#ClosureReportDate,#PDCRequested,#PDCGranted').daterangepicker({
+$('#PDCDate,#HQrsSentDate,#CFASendDate,#PDCRevised,#ProposedDate,#CFASendDate,#ProjectClosedDate,#ClosureReportDate,#PDCRequested,#PDCGranted').daterangepicker({
 	"singleDatePicker" : true,
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
@@ -2260,8 +2373,59 @@ $('.btn-chlist').prop('disabled',true);
    $('.navigation_btn').hide();
    $('#nav-chlistdetails').hide();
 <%} %>
-</script>
 
+
+
+
+$(document).ready(function() {
+	
+	
+	
+	
+	<%-- ----------------cloning for Revision in sanctioned cost -------------------------------------%>
+    
+
+    $("#tablesancrev").on('click','.btn_add_sancrev' ,function() {
+        var $tr = $('.tr_clone_trialresults').last('.tr_clone_trialresults');
+        var $clone = $tr.clone();
+        
+        $clone.find("input").val("").end();
+    	$clone.find('#SCRequested,#SCGranted').daterangepicker({
+    		"singleDatePicker" : true,
+    		"linkedCalendars" : false,
+    		"showCustomRangeLabel" : true,
+    		"cancelClass" : "btn-default",
+    		showDropdowns : true,
+    		locale : {
+    			format : 'DD-MM-YYYY'
+    		}
+    	});
+        
+
+        $tr.after($clone);
+
+    });
+
+    $("#tablesancrev").on('click','.btn_rem_sancrev' ,function() {
+        var $rows = $('.tr_clone_trialresults');
+
+        if ($rows.length > 1) {
+            var $rowToRemove = $(this).closest('.tr_clone_trialresults');
+            var indexToRemove = $rows.index($rowToRemove);
+
+            
+            $rowToRemove.remove();
+            
+            $('.tr_clone_trialresults').each(function(index, row) {
+                var $currentRow = $(row);
+             });
+        }
+    });
+});
+
+
+
+</script>
 
 </body>
 </html>

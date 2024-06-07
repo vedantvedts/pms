@@ -23,6 +23,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
+import com.vts.pfms.projectclosure.model.ProjectClosureCheckListRev;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
@@ -1099,5 +1100,57 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			logger.error(new Date()+" Inside DAO TCRFreeze "+e);
 			return 0;
 		}
+	}
+
+	@Override
+	public long AddProjectClosureCheckListRev(com.vts.pfms.projectclosure.model.ProjectClosureCheckListRev rev)
+			throws Exception {
+		
+		try {
+			manager.persist(rev);
+			manager.flush();
+			return rev.getRevisionId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO AddDocDistribMembers "+e);
+			return 0L;
+		}
+	}
+
+	
+	private static final String REMOVEPROJECTCLOSURECHECKLISTREV="UPDATE pfms_closure_checklist_rev SET isActive=:IsActive WHERE ClosureId=:ClosureId";
+	@Override
+	public long removeProjectClosureCheckListRev(long closureid) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(REMOVEPROJECTCLOSURECHECKLISTREV);
+			query.setParameter("IsActive", "0");
+			query.setParameter("ClosureId", closureid);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO removeProjectClosureCheckListRev "+e);
+			return 0;
+		}
+	}
+
+	
+	private static final String CHECHLISTREVISION="SELECT ClosureId,RevisionType,RequestedDate,GrantedDate,RevisionCost,RevisionPDC,Reason FROM pfms_closure_checklist_rev WHERE isActive='1' AND ClosureId=:closureId";
+	@Override
+	public List<Object[]> getProjectClosureCheckListRevByClosureId(String closureId) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(CHECHLISTREVISION);
+			query.setParameter("closureId", Long.parseLong(closureId));
+			
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO getProjectClosureCheckListRevByClosureId" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+		
+		
 	}
 }

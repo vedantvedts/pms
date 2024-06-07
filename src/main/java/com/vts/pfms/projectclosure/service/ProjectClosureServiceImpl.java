@@ -38,6 +38,7 @@ import com.vts.pfms.project.dao.ProjectDao;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.RequirementMembers;
 import com.vts.pfms.projectclosure.dao.ProjectClosureDao;
+import com.vts.pfms.projectclosure.dto.ProjectCheckListRevDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureAppendixDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
@@ -49,6 +50,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
+import com.vts.pfms.projectclosure.model.ProjectClosureCheckListRev;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
@@ -71,6 +73,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	private SimpleDateFormat sdf = fc.getSqlDateFormat();
+	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	
 	@Autowired
 	ProjectClosureDao dao;
@@ -80,6 +83,8 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	
 	@Autowired
 	ProjectDao projectdao;
+	
+	
 	
 	
 	@Autowired
@@ -963,10 +968,9 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public long addProjectClosureCheckList(ProjectClosureCheckList clist, String empId,
+	public long addProjectClosureCheckList(ProjectClosureCheckList clist, ProjectCheckListRevDto dto,String empId,
 			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach,MultipartFile qARNCItemsAttach,
-			MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach
-			) throws Exception {
+			MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach ) throws Exception {
 		
 		
 		Timestamp instant = Timestamp.from(Instant.now());
@@ -1073,11 +1077,32 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 //											  .build();
 //			dao.addProjectClosureTransaction(transaction);
 //		}
-		return dao.addProjectClosureCheckList(clist);
+		
+		 long result=dao.addProjectClosureCheckList(clist);
+		 
+		 
+		 for(int i=0;i<dto.getReason().length ;i++) {
+				
+				ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
+				
+				rev.setClosureId(clist.getProjectClosure().getClosureId());
+				rev.setRequestedDate(dto.getRequestedDate()[i]);
+				rev.setGrantedDate(dto.getGrantedDate()[i]);
+				rev.setRevisionCost(dto.getRevisionCost()[i]);
+				rev.setReason(dto.getReason()[i]);
+				rev.setCreatedBy(clist.getCreatedBy());	
+				rev.setCreatedDate(clist.getCreatedDate());	
+				rev.setIsActive(1);				
+				
+				 dao.AddProjectClosureCheckListRev(rev);
+			
+			}
+			return result;
+		
 	}
 
 	@Override
-	public long editProjectClosureCheckList(ProjectClosureCheckList clist, String empId,
+	public long editProjectClosureCheckList(ProjectClosureCheckList clist, ProjectCheckListRevDto dto,String empId,
 			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach
 			,MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach
 			) throws Exception {
@@ -1154,7 +1179,31 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 //		} 
 		
 		
-		return dao.editProjectClosureCheckList(clist);
+		long result = dao.editProjectClosureCheckList(clist);
+		
+		
+		dao.removeProjectClosureCheckListRev(clist.getProjectClosure().getClosureId());
+		
+		for(int i=0;i<dto.getReason().length ;i++) {
+			
+			ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
+			
+			
+			
+			rev.setClosureId(clist.getProjectClosure().getClosureId());
+			rev.setRequestedDate(sdf.format(rdf.parse(dto.getRequestedDate()[i])));
+			rev.setGrantedDate(sdf.format(rdf.parse(dto.getGrantedDate()[i])));
+			rev.setRevisionCost(dto.getRevisionCost()[i]);
+			rev.setReason(dto.getReason()[i]);
+			rev.setCreatedBy(clist.getCreatedBy());	
+			rev.setCreatedDate(clist.getCreatedDate());	
+			rev.setIsActive(1);		
+			
+		    dao.AddProjectClosureCheckListRev(rev);
+		
+		}
+		return result;
+		
 	}
 
 	@Override
@@ -1616,6 +1665,12 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	   } catch (IOException ioe) {       
 		   throw new IOException("Could not save file: " + fileName, ioe);
 	   }     
+	}
+
+	@Override
+	public List<Object[]> getProjectClosureCheckListRevByClosureId(String closureId) throws Exception {
+		
+		return dao.getProjectClosureCheckListRevByClosureId(closureId);
 	}
 	
 }
