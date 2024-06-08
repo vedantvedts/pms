@@ -1103,7 +1103,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	}
 
 	@Override
-	public long AddProjectClosureCheckListRev(com.vts.pfms.projectclosure.model.ProjectClosureCheckListRev rev)
+	public long AddProjectClosureCheckListRev(ProjectClosureCheckListRev rev)
 			throws Exception {
 		
 		try {

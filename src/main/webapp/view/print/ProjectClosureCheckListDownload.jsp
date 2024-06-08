@@ -5,6 +5,7 @@
     <%@page import="com.vts.pfms.project.model.ProjectMaster"%>
     <%@page import="java.time.LocalDate"%>
     <%@page import="com.ibm.icu.text.DecimalFormat"%>
+    <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
  
 <!DOCTYPE html>
@@ -134,7 +135,7 @@
  margin-left : 30px;
  border-collapse : collapse;
  border : 1px solid black; 
- width : 98.5%;
+
 }
 #tabledata th{
  text-align : center;
@@ -218,7 +219,7 @@ p,td,th
 
      DecimalFormat df = new DecimalFormat("#.####");
      
-     
+     List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckListRev");
    
 
 %>
@@ -234,23 +235,23 @@ p,td,th
 	  int a=0;
 	%>
 	
-	 <table id="tabledata" style="margin-top: -2rem;">
+	 <table id="tabledata" style="margin-top: -2rem;" style="width:100%;">
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
 			<td style="width: 35%;text-align: left !important;font-weight: 600;">Name of the Lab</td>
-			<td><%=labcode %></td>
+			<td ><%=labcode %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Project Appraisal Letter (PAR)</td>
+			<td  colspan="2" style="width: 20%;text-align: left !important;font-weight: 600;">Project Appraisal Letter (PAR)</td>
 			
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Sent by the Lab to HQrs</td>
-			<td><%if(chlist!=null && chlist.getQARHQrsSentDate()!=null && !chlist.getQARHQrsSentDate().toString().equalsIgnoreCase("NA")) {%><%=fc.SqlToRegularDate(chlist.getQARHQrsSentDate()) %><%} else{%> NA <%}%></td>
+			<td  ><%if(chlist!=null && chlist.getQARHQrsSentDate()!=null && !chlist.getQARHQrsSentDate().toString().equalsIgnoreCase("NA")) {%><%=fc.SqlToRegularDate(chlist.getQARHQrsSentDate()) %><%} else{%> NA <%}%></td>
 		</tr>
 		
 		<tr>
@@ -393,9 +394,47 @@ p,td,th
 			<td colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Revision in sanctioned cost if any </td>
 			
 		</tr>
+		</table>
 		
+	<table id="tabledata" style="margin-top: 0rem;border-top:none;border-bottom:none;border:0;width:100%;">
 		
 		<tr>
+			
+			<th style="width: 5%;text-align: center !important;">SN</th>
+			<th style="text-align: center !important;">When requested</th>
+			<th style="text-align: center !important;">When granted</th>
+			<th style="text-align: center !important;">Revised cost</th>
+			<th style="text-align: center !important;">Reason</th> 
+			
+		</tr>
+		
+		
+		<% 
+		int sl=0;
+		if(Rev !=null && Rev.size()>0) {
+		for(Object[] obj:Rev){
+			if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("SANC")){%>
+		
+		 <tr>
+		
+		     <td style="width: 2%;text-align: center !important;"><%=++sl %></td>
+		     <td style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[2].toString())%></td>
+			 <td  style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[3].toString())%></td>
+			 <td style="width: 10%;text-align: right !important;font-weight: 400;"><%=df.format(obj[4])%></td>
+			 <td style="width: 10%;text-align: left !important;font-weight: 400;"><%= obj[6] != null ? obj[6] : "" %></td> 
+		
+		
+		</tr>
+		<%}}} %>
+		
+		
+		</table>
+		
+		
+		 <table id="tabledata" style="margin-top: -2rem;" style="width:100%;">
+		
+		
+		<%-- <tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	When requested </td>
 			<td><%if(chlist!=null && chlist.getSCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCRequested()) %><%} %></td>
@@ -421,7 +460,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Any reason specified </td>
 			<td><%if(chlist!=null && chlist.getSCReason()!=null){ %><%=chlist.getSCReason() %><%} %></td>
 		</tr>
-		
+		 --%>
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
@@ -429,8 +468,46 @@ p,td,th
 			
 		</tr>
 		
+		</table>
+		
+		
+		<table id="tabledata" style="margin-top: -2rem;border-top:none !important;border-bottom:none !important;" style="width:100%;">
 		
 		<tr>
+			
+			<th style="width: 5%;text-align: center !important;">SN</th>
+			<th style="text-align: center !important;">When requested</th>
+			<th style="text-align: center !important;">When granted</th>
+			<th style="text-align: center !important;">Revised cost</th>
+			<th style="text-align: center !important;">Reason</th> 
+			
+		</tr>
+		
+		
+		<% 
+		int sl1=0;
+		if(Rev !=null && Rev.size()>0) {
+		for(Object[] obj:Rev){
+			if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("PDC")){%>
+		
+		 <tr>
+		
+		     <td style="width: 2%;text-align: center !important;"><%=++sl1 %></td>
+		     <td style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[2].toString())%></td>
+			 <td  style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[3].toString())%></td>
+			 <td style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[5].toString())%></td>
+			 <td style="width: 10%;text-align: left !important;font-weight: 400;"><%= obj[6] != null ? obj[6] : "" %></td> 
+		
+		
+		</tr>
+		<%}}} %>
+		
+		
+		</table>
+		
+		
+		 <table id="tabledata" style="margin-top: -2rem;" style="width:100%;">
+	<%-- 	<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	When requested </td>
 			<td><%if(chlist!=null && chlist.getPDCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRequested()) %><%} %></td>
@@ -455,7 +532,7 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Any reason specified </td>
 			<td><%if(chlist!=null && chlist.getPDCReason()!=null){ %><%=chlist.getPDCReason() %><%} %></td>
-		</tr>
+		</tr> --%>
 		
 		
 		

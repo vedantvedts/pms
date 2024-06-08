@@ -9,11 +9,14 @@ public class ProjectCheckListRevDto {
 	
 	private long ClosureId;
 	private String[] RevisionType;
-	private String[] RequestedDate;
-	private String[] GrantedDate;
-	private String[] RevisionCost;
-	private String[] RevisionPDC;
-	private String[] Reason;
+	private String[] SCRequestedDate;
+	private String[] SCGrantedDate;
+	private String[] SCRevisionCost;
+	private String[] SCReason;
+	private String[] PDCRequestedDate;
+	private String[] PDCGrantedDate;
+	private String[] PDCRevised;
+	private String[] PDCReason;
 	
 
 }

@@ -1066,30 +1066,19 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 //			clist.setCRAttach(null);
 //		}
 		
-//		long closuresocid = dao.addProjectClosureSoC(soc);
-//		if(closuresocid!=0) {
-//			ProjectClosureTrans transaction = ProjectClosureTrans.builder()
-//											  .ClosureId(soc.getClosureId())
-//											  .ClosureForm("S")
-//											  .ClosureStatusCode("SIN")
-//											  .ActionBy(Long.parseLong(EmpId))
-//											  .ActionDate(sdtf.format(new Date()))
-//											  .build();
-//			dao.addProjectClosureTransaction(transaction);
+
 //		}
 		
-		 long result=dao.addProjectClosureCheckList(clist);
-		 
-		 
-		 for(int i=0;i<dto.getReason().length ;i++) {
+		 for(int i=0;i<dto.getSCRequestedDate().length ;i++) {
 				
 				ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
 				
 				rev.setClosureId(clist.getProjectClosure().getClosureId());
-				rev.setRequestedDate(dto.getRequestedDate()[i]);
-				rev.setGrantedDate(dto.getGrantedDate()[i]);
-				rev.setRevisionCost(dto.getRevisionCost()[i]);
-				rev.setReason(dto.getReason()[i]);
+				rev.setRevisionType("SANC");	
+				rev.setRequestedDate(dto.getSCRequestedDate()[i]);
+				rev.setGrantedDate(dto.getSCGrantedDate()[i]);
+				rev.setRevisionCost(dto.getSCRevisionCost()[i]);
+				rev.setReason(dto.getSCReason()[i]);
 				rev.setCreatedBy(clist.getCreatedBy());	
 				rev.setCreatedDate(clist.getCreatedDate());	
 				rev.setIsActive(1);				
@@ -1097,7 +1086,25 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				 dao.AddProjectClosureCheckListRev(rev);
 			
 			}
-			return result;
+		 
+		 for(int i=0;i<dto.getPDCRequestedDate().length ;i++) {
+				
+				ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
+				
+				rev.setClosureId(clist.getProjectClosure().getClosureId());
+				rev.setRevisionType("PDC");	
+				rev.setRequestedDate(dto.getPDCRequestedDate()[i]);
+				rev.setGrantedDate(dto.getPDCGrantedDate()[i]);
+				rev.setRevisionPDC(dto.getPDCRevised()[i]);
+				rev.setReason(dto.getPDCReason()[i]);
+				rev.setCreatedBy(clist.getCreatedBy());	
+				rev.setCreatedDate(clist.getCreatedDate());	
+				rev.setIsActive(1);				
+				
+				 dao.AddProjectClosureCheckListRev(rev);
+			}
+		 
+		 return dao.addProjectClosureCheckList(clist);
 		
 	}
 
@@ -1179,37 +1186,51 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 //		} 
 		
 		
-		long result = dao.editProjectClosureCheckList(clist);
-		
-		
 		dao.removeProjectClosureCheckListRev(clist.getProjectClosure().getClosureId());
 		
-		for(int i=0;i<dto.getReason().length ;i++) {
+		for(int i=0;i<dto.getSCRequestedDate().length ;i++) {
 			
 			ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
 			
-			
-			
 			rev.setClosureId(clist.getProjectClosure().getClosureId());
-			rev.setRequestedDate(sdf.format(rdf.parse(dto.getRequestedDate()[i])));
-			rev.setGrantedDate(sdf.format(rdf.parse(dto.getGrantedDate()[i])));
-			rev.setRevisionCost(dto.getRevisionCost()[i]);
-			rev.setReason(dto.getReason()[i]);
+			rev.setRevisionType("SANC");	
+			rev.setRequestedDate(sdf.format(rdf.parse(dto.getSCRequestedDate()[i])));
+			rev.setGrantedDate(sdf.format(rdf.parse(dto.getSCGrantedDate()[i])));
+			rev.setRevisionCost(dto.getSCRevisionCost()[i].toString());
+			rev.setReason(dto.getSCReason()[i]);
 			rev.setCreatedBy(clist.getCreatedBy());	
 			rev.setCreatedDate(clist.getCreatedDate());	
-			rev.setIsActive(1);		
+			rev.setIsActive(1);				
 			
-		    dao.AddProjectClosureCheckListRev(rev);
+			 dao.AddProjectClosureCheckListRev(rev);
 		
 		}
-		return result;
+	 
+		System.out.println("--------------"+dto.getPDCRequestedDate().length);
+		
+	     for(int j=0;j<dto.getPDCRequestedDate().length ;j++) {
+			
+			ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
+			
+			rev.setClosureId(clist.getProjectClosure().getClosureId());
+			rev.setRevisionType("PDC");
+			rev.setRequestedDate(sdf.format(rdf.parse(dto.getPDCRequestedDate()[j])));
+			rev.setGrantedDate(sdf.format(rdf.parse(dto.getPDCGrantedDate()[j])));
+			rev.setRevisionPDC(sdf.format(rdf.parse(dto.getPDCRevised()[j])));
+			rev.setReason(dto.getPDCReason()[j]);
+			rev.setCreatedBy(clist.getCreatedBy());	
+			rev.setCreatedDate(clist.getCreatedDate());	
+			rev.setIsActive(1);				
+			
+			 dao.AddProjectClosureCheckListRev(rev);
+		}
+		
+		return  dao.editProjectClosureCheckList(clist);
 		
 	}
 
 	@Override
 	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode) throws Exception {
-		
-		
 		
 		 dao.AddIssue(tech);
 		
@@ -1224,8 +1245,6 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.addProjectClosureTransaction(trans);
 		
-		
-		
 	}
 
 	@Override
@@ -1236,7 +1255,6 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 
 	@Override
 	public long AddSection(ProjectClosureTechnicalSection sec) throws Exception {
-		
 		
 		return dao.AddSection(sec);
 		
@@ -1257,7 +1275,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long ChapterAdd(ProjectClosureTechnicalChapters chapter) throws Exception {
 		
-	return dao.ChapterAdd(chapter);
+	     return dao.ChapterAdd(chapter);
 			
 	}
 

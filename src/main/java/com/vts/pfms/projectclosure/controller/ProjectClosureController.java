@@ -1364,7 +1364,7 @@ public class ProjectClosureController {
 				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
 				req.setAttribute("ProjectClosureCheckListData", service.getProjectClosureCheckListByProjectId(closureId));
-				req.setAttribute("ProjectClosureCheckListRev", service.getProjectClosureCheckListRevByClosureId(closureId));;
+				req.setAttribute("ProjectClosureCheckListRev", service.getProjectClosureCheckListRevByClosureId(closureId));
 				Object[] PDData = carsservice.getEmpPDEmpId(projectId);
 				req.setAttribute("PDData", PDData);
 				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
@@ -1439,19 +1439,27 @@ public class ProjectClosureController {
 			//clist.setQARCostBreakup(req.getParameter("QARCostBreakup"));
 			//clist.setSCRequested(sdf.format(rdf.parse(req.getParameter("SCRequested"))));
 			//clist.setSCGranted(sdf.format(rdf.parse(req.getParameter("SCGranted"))));
-			dto.setRequestedDate(req.getParameterValues("SCRequested"));
-			dto.setGrantedDate(req.getParameterValues("SCGranted"));
-			dto.setRevisionCost(req.getParameterValues("SCRevisionCost"));
-			dto.setReason(req.getParameterValues("SCReason"));
+			dto.setSCRequestedDate(req.getParameterValues("SCRequested"));
+			dto.setSCGrantedDate(req.getParameterValues("SCGranted"));
+			dto.setSCRevisionCost(req.getParameterValues("SCRevisionCost"));
+			dto.setSCReason(req.getParameterValues("SCReason"));
+			
+			
+			System.out.println("-------"+req.getParameterValues("PDCRequested"));
+			dto.setPDCRequestedDate(req.getParameterValues("PDCRequested"));
+			dto.setPDCGrantedDate(req.getParameterValues("PDCGranted"));
+			dto.setPDCRevised(req.getParameterValues("PDCRevised"));
+			dto.setPDCReason(req.getParameterValues("PDCReason"));
+			
 			
 			//String SCRevisionCost=req.getParameter("SCRevisionCost");
 			//clist.setSCRevisionCost(Double.parseDouble(SCRevisionCost!=null && !SCRevisionCost.isEmpty()? SCRevisionCost:"0"));
 			//clist.setSCReason(req.getParameter("SCReason"));
-			clist.setPDCRequested(sdf.format(rdf.parse(req.getParameter("PDCRequested"))));
-			clist.setPDCGranted(sdf.format(rdf.parse(req.getParameter("PDCGranted"))));
+			//clist.setPDCRequested(sdf.format(rdf.parse(req.getParameter("PDCRequested"))));
+			//clist.setPDCGranted(sdf.format(rdf.parse(req.getParameter("PDCGranted"))));
 		
-			clist.setPDCRevised(sdf.format(rdf.parse(req.getParameter("PDCRevised"))));
-			clist.setPDCReason(req.getParameter("PDCReason"));
+			//clist.setPDCRevised(sdf.format(rdf.parse(req.getParameter("PDCRevised"))));
+			//clist.setPDCReason(req.getParameter("PDCReason"));
 			//System.out.println("PRMaintained--"+req.getParameter("PRMaintained"));
 			clist.setPRMaintained(req.getParameter("PRMaintained"));
 			
@@ -1605,7 +1613,7 @@ public class ProjectClosureController {
 			if(closureId!=null) {
 				req.setAttribute("ProjectClosureCheckListData", service.getProjectClosureCheckListByProjectId(closureId));
 				req.setAttribute("closureId", closureId);
-				
+				req.setAttribute("ProjectClosureCheckListRev", service.getProjectClosureCheckListRevByClosureId(closureId));
 				ProjectClosure closure = service.getProjectClosureById(closureId);
 				String projectId = closure.getProjectId()+"";
 				

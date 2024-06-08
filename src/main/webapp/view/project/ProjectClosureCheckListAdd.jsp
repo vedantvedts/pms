@@ -583,116 +583,88 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												            </div>  --%>
 												            
-												            </div>
-												          </div>  
+												           </div>
+			                                             </div>  
 												          
 												          
-		                  <table style="width: 94%;margin-left: 3%;" id="tablesancrev">
-								<thead style = "background-color: #055C9D; color: white;text-align: center;">
-									<tr>
-									    <th style="width: 5%;padding: 0px 5px 0px 5px;">When requested</th>
-								    	<th style="width: 5%;padding: 0px 5px 0px 5px;">When granted</th>
-								    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Revised cost (in rupees)</th>
-								    	<th style="width: 15%;padding: 0px 5px 0px 5px;">Any reason specified</th>
-									    <td style="width: 5%;">
-											<button type="button" class="btn btn_add_sancrev "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
-										</td>
-									</tr>
-								</thead>
-								
-								 <tbody>
-								  <% if(Rev !=null && Rev.size()>0) {
-									  for(Object[] obj : Rev) { %>
-								 
-									<tr class="tr_clone_trialresults">
-										<td style="width: 5%;padding: 10px 5px 0px 5px;" >
-										    <input type="text" class="form-control item" name="SCRequested" value="<%=fc.SqlToRegularDate(obj[2].toString())%>" id="SCRequested">
-										</td>	
-										
-										<td style="width: 5%;padding: 10px 5px 0px 5px;" >
-										     <input type="text" class="form-control item" name="SCGranted"  value="<%=fc.SqlToRegularDate(obj[3].toString())%>" id="SCGranted">
-										</td>
-										
-										<td style="width: 5%;padding: 10px 5px 0px 5px;">
-											<input type="number" class="form-control item" name="SCRevisionCost"  value="<%=df.format(obj[4])%>" >
-										</td>
-										
-										<td style="width: 15%;padding: 10px 5px 0px 5px;" >
-										
-										    <input type="text" class="form-control item" name="SCReason"  value="<%=obj[6] %>" placeholder="Enter Reason">
-										    
-										</td>
-											
-											
-										<td style="width: 5%;">
-											 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
-										</td>									
-									</tr>
-									
-									<%} } else{ %>
-									
-									
-									<tr class="tr_clone_trialresults">
-										<td style="width: 5%;padding: 10px 5px 0px 5px;" >
-										    <input type="text" class="form-control item" name="SCRequested" value="" id="SCRequested">
-										</td>	
-										
-										<td style="width: 5%;padding: 10px 5px 0px 5px;" >
-										     <input type="text" class="form-control item" name="SCGranted"  value="" id="SCGranted">
-										</td>
-										
-										<td style="width: 5%;padding: 10px 5px 0px 5px;">
-											<input type="number" class="form-control item" name="SCRevisionCost"  value="" >
-										</td>
-										
-										<td style="width: 15%;padding: 10px 5px 0px 5px;" >
-										
-										    <input type="text" class="form-control item" name="SCReason"  value="" placeholder="Enter Reason">
-										    
-										</td>
-											
-											
-										<td style="width: 5%;">
-											 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
-										</td>									
-									</tr>
-									
-									<%} %>
-								
-								 
-									<%-- <tr class="tr_clone_trialresults">
-												
-									    <td style="width: 20%;padding: 10px 5px 0px 5px;" >
-											  <input type="text" class="form-control item" name="Appendix" id="appendix" value="Appendix-A">
-										</td>
-													
-										   <td style="width: 40%;padding: 10px 5px 0px 5px;" >
-												<select class="form-control" name="DocumentName">
-												    <option value="0"  selected disabled>Select</option>
-													    <%for(Object[] obj:AppndDocList){ %>
-													          <option value="<%=obj[1] %>" ><%=obj[1] %></option>
-													     <%}%>
-												</select>
-											</td>
-												
-											<td style="width: 25%;padding: 10px 5px 0px 5px;">
-												  <input type="file" class="form-control item" name="attachment" accept=".pdf" required>
-											</td>
-												
-											<td style="width: 5% ; ">
-												 <button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
-											</td>
-										</tr> --%>
-										
-								    </tbody>
-				               </table>
-				            </div>
-	                      </div>  
-												          
-								<br>				          
-												           
-												          
-												          <hr>
+									                  <table style="width: 94%;margin-left: 3%;" id="tablesancrev">
+															<thead style = "background-color: #055C9D; color: white;text-align: center;">
+																<tr>
+																    <th style="width: 5%;padding: 0px 5px 0px 5px;">When requested</th>
+															    	<th style="width: 5%;padding: 0px 5px 0px 5px;">When granted</th>
+															    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Revised cost (in rupees)</th>
+															    	<th style="width: 15%;padding: 0px 5px 0px 5px;">Any reason specified</th>
+																    <td style="width: 5%;">
+																		<button type="button" class="btn btn_add_sancrev "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																	</td>
+																</tr>
+															</thead>
+															
+															 <tbody>
+															  <% if(Rev !=null && Rev.size()>0 	) {
+																  for(Object[] obj : Rev) {
+																	  if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("SANC")){%>
+																
+																<tr class="tr_clone_trialresults">
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	    <input type="text" class="form-control item" name="SCRequested" value="<%=fc.SqlToRegularDate(obj[2].toString())%>" id="SCRequested">
+																	</td>	
+																	
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	     <input type="text" class="form-control item" name="SCGranted"  value="<%=fc.SqlToRegularDate(obj[3].toString())%>" id="SCGranted">
+																	</td>
+																	
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
+																		<input type="number" class="form-control item" name="SCRevisionCost"  value="<%=df.format(obj[4])%>" >
+																	</td>
+																	
+																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+																	
+																	    <input type="text" class="form-control item" name="SCReason"  value="<%= obj[6] != null ? obj[6] : "" %>" placeholder="Enter Reason">
+																	    
+																	</td>
+																		
+																		
+																	<td style="width: 5%;">
+																		 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																	</td>									
+																</tr>
+																
+																<%} }} else{ %>
+																
+																
+																<tr class="tr_clone_trialresults">
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	    <input type="text" class="form-control item" name="SCRequested" value="" id="SCRequested">
+																	</td>	
+																	
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	     <input type="text" class="form-control item" name="SCGranted"  value="" id="SCGranted">
+																	</td>
+																	
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
+																		<input type="number" class="form-control item" name="SCRevisionCost"  value="0" >
+																	</td>
+																	
+																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+																	
+																	    <input type="text" class="form-control item" name="SCReason"  value="" placeholder="Enter Reason">
+																	    
+																	</td>
+																		
+																		
+																	<td style="width: 5%;">
+																		 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																	</td>									
+																</tr>
+																
+																<%} %>
+															
+													          </tbody>
+									                       </table> 
+											               				          
+														   <br>				          
+												           <hr>
 												          
 												          
 												           <div class="col-md-3" style="">
@@ -708,7 +680,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												          <div class="row" style="margin-left: 2%;margin-right: 2%;">      
 												          <div class="col-md-2" style="">
-												        		<div class="form-group">
+												        		<%-- <div class="form-group">
 												                	<label class="control-label">When requested</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="PDCRequested" id="PDCRequested"
 												                     value="<%if(chlist!=null && chlist.getPDCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRequested()) %><%} %>" > 
@@ -740,11 +712,89 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                    <textarea class="form-control form-control" name="PDCReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
                               		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getPDCReason()!=null){ %><%=chlist.getPDCReason() %><%} %></textarea>  
 												                </div>
-												            </div>
+												            </div> --%>
 												             
 												           </div> 
-												          
-												          
+												           </div>
+												           
+												           <table style="width: 94%;margin-left: 3%;" id="tablepdcrev">
+															<thead style = "background-color: #055C9D; color: white;text-align: center;">
+																<tr>
+																    <th style="width: 5%;padding: 0px 5px 0px 5px;">When requested</th>
+															    	<th style="width: 5%;padding: 0px 5px 0px 5px;">When granted</th>
+															    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Quantum/Revised PDC</th>
+															    	<th style="width: 15%;padding: 0px 5px 0px 5px;">Any reason specified</th>
+																    <td style="width: 5%;">
+																		<button type="button" class="btn btn_add_pdcrev "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																	</td>
+																</tr>
+															</thead>
+															
+															 <tbody>
+															  <% if(Rev !=null && Rev.size()>0) {
+																  for(Object[] obj : Rev) { 
+																        if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("PDC")){%>
+																        
+																<tr class="tr_clone_results">
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	    <input type="text" class="form-control item" name="PDCRequested" value="<%=fc.SqlToRegularDate(obj[2].toString())%>" id="PDCRequested">
+																	</td>	
+																	
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	     <input type="text" class="form-control item" name="PDCGranted"  value="<%=fc.SqlToRegularDate(obj[3].toString())%>" id="PDCGranted">
+																	</td>
+																	
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
+																		<input type="text" class="form-control item" name="PDCRevised"  value="<%=fc.SqlToRegularDate(obj[5].toString())%>"  id="PDCRevised">
+																	</td>
+																	
+																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+																	
+																	    <input type="text" class="form-control item" name="PDCReason"  value="<%= obj[6] != null ? obj[6] : "" %>" placeholder="Enter Reason">
+																	    
+																	</td>
+																		
+																		
+																	<td style="width: 5%;">
+																		 <button type="button" class="btn btn_rem_pdcrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																	</td>									
+																</tr>
+																
+																<%} }} else{ %>
+																
+																
+																<tr class="tr_clone_results">
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	    <input type="text" class="form-control item" name="PDCRequested" id="PDCRequested">
+																	</td>	
+																	
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	     <input type="text" class="form-control item" name="PDCGranted" id="PDCGranted">
+																	</td>
+																	
+																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
+																		<input type="text" class="form-control item" name="PDCRevised" id="PDCRevised">
+																	</td>
+																	
+																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+																	
+																	    <input type="text" class="form-control item" name="PDCReason" placeholder="Enter Reason">
+																	    
+																	</td>
+																		
+																		
+																	<td style="width: 5%;">
+																		 <button type="button" class="btn btn_rem_pdcrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																	</td>									
+																</tr>
+																
+																<%} %>
+															
+															  </tbody>
+											               </table>
+											               
+											               <br>
+												           
 												        <hr>
 												          
 												          
@@ -1377,7 +1427,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																			
 																			
 																			<div class="page-item">
-																				<button class="page-link" type="button" id="secondpage1"  color:black;>1</button>
+																				<button class="page-link" type="button" id="secondpage1"  >1</button>
 																			</div>
 																			
 																			
@@ -1908,13 +1958,10 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 	
 
 
-$('#PDCDate,#HQrsSentDate,#CFASendDate,#PDCRevised,#ProposedDate,#CFASendDate,#ProjectClosedDate,#ClosureReportDate,#PDCRequested,#PDCGranted').daterangepicker({
+$('#PDCDate,#SCRequested,#SCGranted,#PDCGranted,#PDCRequested,#PDCRevised,#HQrsSentDate,#CFASendDate,#ProposedDate,#CFASendDate,#ProjectClosedDate,#ClosureReportDate').daterangepicker({
 	"singleDatePicker" : true,
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
-	/* "minDate" :datearray,   */
-	 /* "startDate" : new Date(), */
-	 //"maxDate" : new Date(), 
 	"cancelClass" : "btn-default",
 	showDropdowns : true,
 	locale : {
@@ -1934,44 +1981,31 @@ $(document).ready(function() {
     	
     	 $('#CSDrawn').hide();
     	 $('#CSReason').show();
-    	
     }
     else{
     	 $('#CSReason').hide();
     	 $('#CSDrawn').show();
-    	 
-    	
     }
      if(selectedValue=="PurchasedDirectly"){
-    	
-    	
     	$('#CSReason').attr('required', true);
     } 
-    
-    
-    });
+ });
     
     if ($("#select1").val() == 'PurchasedDirectly') {
-	
-    		 $('#CSDrawn').hide();
+	         $('#CSDrawn').hide();
         	 $('#CSReason').show();
 	
      }else if($("#select1").val() == 'ThroughMainStream'){
-    	 
     	 $('#CSReason').hide();
     	 $('#CSDrawn').show();
-    	 
-    	 
-     }
+    }
     
     
     $('#spdemand').on('change', function() {
         var selectedValue = $(this).val();
         if(selectedValue=="Yes"){
-        	
         	 $('#spactualposition').show();
         	 $('#spgeneralspecific').show();
-        	
         }
         else{
         	 $('#spactualposition').hide();
@@ -1986,12 +2020,9 @@ $(document).ready(function() {
    	    $('#spgeneralspecific').show();
 
     }else{
-			
-			 $('#spactualposition').hide();
-			 $('#spgeneralspecific').hide();
-			
+		   $('#spactualposition').hide();
+		   $('#spgeneralspecific').hide();
 		}
-     
   });
 
 
@@ -2017,7 +2048,7 @@ $(document).ready(function() {
    	  $('#NCSReason').attr('required', true);
     } 
    
-   });
+ });
    
    if ($("#select2").val() == 'PurchasedDirectly') {
 	   
@@ -2029,9 +2060,6 @@ $(document).ready(function() {
 	     $('#NCSReason').hide();
 	   	 $('#NCSDrawn').show();
    }
-   
-   
-   
  });
  
  
@@ -2040,34 +2068,23 @@ $(document).ready(function() {
 	$('#EquipReason').hide();
 	
 $("#checkbox").on('change', function() {
-	
-	
-	
-    if($(this).val()== "Yes"){
-    	
-    	 $('#EquipReason').show();
-     
-    	 //pono.setAttribute('required', '');
-    	 
+	if($(this).val()== "Yes"){
+		
+       $('#EquipReason').show();
+     	 
     }else{
-    	
     	$('#EquipReason').hide();
     }
-    
-   });
+  });
    
-if ($("#checkbox").val()== 'Yes') {
-	
-	 $('#EquipReason').show();
-	
-}else{
-	
-	$('#EquipReason').hide();
-	
-}
-   
-  
-});
+	if ($("#checkbox").val()== 'Yes') {
+		$('#EquipReason').show();
+		
+	}else{
+		$('#EquipReason').hide();
+		
+	}
+ });
 
 
 $(document).ready(function() {
@@ -2075,35 +2092,23 @@ $(document).ready(function() {
 	$('#EquipProcuredBeforePDCAttach').hide();
 	
 $("#checkbox1").on('change', function() {
-	
-	
-	
-    if($(this).val() == 'Yes'){
+	if($(this).val() == 'Yes'){
     	
     	 $('#EquipProcuredBeforePDCAttach').show();
-     
-    	 //pono.setAttribute('required', '');
-    	 
-    }else{
+     }else{
     	
     	$('#EquipProcuredBeforePDCAttach').hide();
     }
-    
-   });
+  });
    
    
 if ($("#checkbox1").val() == 'Yes') {
-	
-	
-	 $('#EquipProcuredBeforePDCAttach').show();
+	   $('#EquipProcuredBeforePDCAttach').show();
 	
 	}else{
-		
 		$('#EquipProcuredBeforePDCAttach').hide();
 	}
-   
-  
-});
+ });
 
 
 
@@ -2116,29 +2121,21 @@ $("#checkbox2").on('change', function() {
     if($(this).val() == 'Yes'){
     	
     	 $('#EquipBoughtOnChargereason').show();
-     
-    	 //pono.setAttribute('required', '');
-    	 
     }else{
     	
     	$('#EquipBoughtOnChargereason').hide();
     }
-    
-   });
+ });
    
 if ($("#checkbox2").val() == 'Yes') {
 	
+	$('#EquipBoughtOnChargereason').show();
 	
-	 $('#EquipBoughtOnChargereason').show();
-	
-	}else{
-		
-		$('#EquipBoughtOnChargereason').hide();
+}else{
+	   $('#EquipBoughtOnChargereason').hide();
 	}
-   
-   
-  
-$("#cwincluded").on('change', function() {
+	
+ $("#cwincluded").on('change', function() {
 	
     if($(this).val() == 'Yes'){
     	
@@ -2147,53 +2144,41 @@ $("#cwincluded").on('change', function() {
     	 $('#cwrevenueworks').show();
     	 $('#cwdeviation').show();
     	 $('#cwexpenditure').show();
-     
-    	 
-    	 
-    }else{
+     }else{
     	
     	$('#cwadminapp').hide();
     	$('#cwminorworks').hide();
     	$('#cwrevenueworks').hide();
-    	 $('#cwdeviation').hide();
-    	 $('#cwexpenditure').hide(); 
-    	
-    	
+    	$('#cwdeviation').hide();
+    	$('#cwexpenditure').hide(); 
     }
-    
-   });
+  });
    
 if ($("#cwincluded").val() == 'Yes') {
 	
-	$('#cwadminapp').show();
+	 $('#cwadminapp').show();
 	 $('#cwminorworks').show();
 	 $('#cwrevenueworks').show();
 	 $('#cwdeviation').show();
 	 $('#cwexpenditure').show();
 	 
-	
-	}else{
+}else{
 		
 		$('#cwadminapp').hide();
     	$('#cwminorworks').hide();
     	$('#cwrevenueworks').hide();
-    	 $('#cwdeviation').hide();
-    	 $('#cwexpenditure').hide();
+    	$('#cwdeviation').hide();
+    	$('#cwexpenditure').hide();
 	}
-  
   
 $('#hqrssenddate').change(function() {
     if ($(this).is(':checked')) {
     	
-    	 
     	 $('#HQrsSentDate').prop('disabled', false);
          $('#HQrsSentDate').data('daterangepicker').setStartDate(moment());
          $('#HQrsSentDate').data('daterangepicker').setEndDate(moment());
          $('#HQrsSentDate').val(moment().format('DD-MM-YYYY'));
-    	 
         
-    	$('#HQrsSentDate').val(moment().format('DD-MM-YYYY'));
-        //$('#HQrsSentDate').val(currentDate);
     } else {
         // If the checkbox is not checked, set the input field to 'NA'
         $('#HQrsSentDate').val('NA');
@@ -2211,21 +2196,16 @@ $('#hqrssenddate').change(function() {
 		
 		$('#hqrssenddate').prop('checked', true);
 		$('#HQrsSentDate').prop('disabled', false);
-		
 	}
 	
-	 
 	 $('#CFASend').change(function() {
 		    if ($(this).is(':checked')) {
 		    	
-		    	 
 		    	 $('#CFASendDate').prop('disabled', false);
 		         $('#CFASendDate').data('daterangepicker').setStartDate(moment());
 		         $('#CFASendDate').data('daterangepicker').setEndDate(moment());
 		         $('#CFASendDate').val(moment().format('DD-MM-YYYY'));
 		    	 
-		        
-		    	$('#CFASendDate').val(moment().format('DD-MM-YYYY'));
 		        //$('#HQrsSentDate').val(currentDate);
 		    } else {
 		        // If the checkbox is not checked, set the input field to 'NA'
@@ -2244,45 +2224,27 @@ $('#hqrssenddate').change(function() {
 			
 			$('#CFASend').prop('checked', true);
 			$('#CFASendDate').prop('disabled', false);
-			
 		}
 	 
 	 
 	 $('#vehicle').change(function() {
 		    if ($(this).is(':checked')) {
-		    	
 		    	$('#selectall').show();
-		    	
-		        
-		    	
 		    } else {
 		        
 		    	$('#selectall').hide();
-		    	//$('#NoOfVehicleSanctioned').val('NA');
-		        
 		    }
 		});
 	 
 	 if (!$('#vehicle').is(':checked')) {
 			
 		    $('#selectall').hide();
-		    
-		 //$('#NoOfVehicleSanctioned').val('NA');
-		 
+		  
 		}else{
-			
 			$('#selectall').show();
-			
-			
 		}
-	 
-	 
-	 
-});
-
-
-
-
+		 
+     });
 
 $(document).ready(function() {
 	
@@ -2305,14 +2267,12 @@ $(document).ready(function() {
 	
 $("#firstpage2,#thirdpage2").on('click', function() {
 		
-		
 		$('#firstpage').hide();
 		$('#secondpage').show();
 		$('#thirdpage').hide();
 		$('#secondpage2').css('background-color', '#40A2E3');
 		
-		
-	});
+});
 	
      $("#firstpage3,#secondpage3").on('click', function() {
 		
@@ -2326,15 +2286,11 @@ $("#firstpage2,#thirdpage2").on('click', function() {
      
      $("#secondpage1,#thirdpage1").on('click', function() {
     	 
-    	 
-		   	    $('#firstpage').show();
+    	        $('#firstpage').show();
 				$('#secondpage').hide();
 				$('#thirdpage').hide();
 				$('#firstpage1').css('background-color', '#40A2E3');
-				
-    	 
-    	 
- 	}); 
+	}); 
 	
 	
  /*     $("#backtosecondpage,#backtosecondpages").on('click', function() {
@@ -2351,9 +2307,6 @@ $("#firstpage2,#thirdpage2").on('click', function() {
 	
 });
 
-
-
-
 </script>
 
 
@@ -2361,28 +2314,22 @@ $("#firstpage2,#thirdpage2").on('click', function() {
 
 
 <script type="text/javascript">
-/* button disabling for chlist Approval */
-<%if((chlist!=null && chlistforward.contains(closure.getClosureStatusCode())) || chlist==null) {%>
-$('.btn-chlist').prop('disabled',false);
-<%} else{%>
-$('.btn-chlist').prop('disabled',true);
-<%} %>
-
-/* tabs hiding for chlist approval */
-<%if(isApproval!=null && (isApproval.equalsIgnoreCase("Y") || isApproval.equalsIgnoreCase("N"))) {%>
-   $('.navigation_btn').hide();
-   $('#nav-chlistdetails').hide();
-<%} %>
-
-
-
+		/* button disabling for chlist Approval */
+		<%if((chlist!=null && chlistforward.contains(closure.getClosureStatusCode())) || chlist==null) {%>
+		$('.btn-chlist').prop('disabled',false);
+		<%} else{%>
+		$('.btn-chlist').prop('disabled',true);
+		<%} %>
+		
+		/* tabs hiding for chlist approval */
+		<%if(isApproval!=null && (isApproval.equalsIgnoreCase("Y") || isApproval.equalsIgnoreCase("N"))) {%>
+		   $('.navigation_btn').hide();
+		   $('#nav-chlistdetails').hide();
+		<%} %>
 
 $(document).ready(function() {
 	
-	
-	
-	
-	<%-- ----------------cloning for Revision in sanctioned cost -------------------------------------%>
+	<%------------------cloning for Revision in sanctioned cost -------------------------------------%>
     
 
     $("#tablesancrev").on('click','.btn_add_sancrev' ,function() {
@@ -2400,8 +2347,7 @@ $(document).ready(function() {
     			format : 'DD-MM-YYYY'
     		}
     	});
-        
-
+    	
         $tr.after($clone);
 
     });
@@ -2421,6 +2367,48 @@ $(document).ready(function() {
              });
         }
     });
+    
+});
+
+$(document).ready(function() {
+    <%------------------cloning for Revision in PDC -------------------------------------%>
+    
+    $("#tablepdcrev").on('click','.btn_add_pdcrev' ,function() {
+        var $tr = $('.tr_clone_results').last('.tr_clone_results');
+        var $clone = $tr.clone();
+        
+        $clone.find("input").val("").end();
+    	$clone.find('#PDCRequested,#PDCGranted,#PDCRevised').daterangepicker({
+    		"singleDatePicker" : true,
+    		"linkedCalendars" : false,
+    		"showCustomRangeLabel" : true,
+    		"cancelClass" : "btn-default",
+    		showDropdowns : true,
+    		locale : {
+    			format : 'DD-MM-YYYY'
+    		}
+    	});
+    	
+        $tr.after($clone);
+
+    });
+
+    $("#tablepdcrev").on('click','.btn_rem_pdcrev' ,function() {
+        var $rows = $('.tr_clone_results');
+
+        if ($rows.length > 1) {
+            var $rowToRemove = $(this).closest('.tr_clone_results');
+            var indexToRemove = $rows.index($rowToRemove);
+
+            
+            $rowToRemove.remove();
+            
+            $('.tr_clone_results').each(function(index, row) {
+                var $currentRow = $(row);
+             });
+        }
+    });
+    
 });
 
 
