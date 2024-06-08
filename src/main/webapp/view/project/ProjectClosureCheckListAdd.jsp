@@ -750,7 +750,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	
 																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
 																	
-																	    <input type="text" class="form-control item" name="PDCReason"  value="<%= obj[6] != null ? obj[6] : "" %>" placeholder="Enter Reason">
+																	    <input type="text" class="form-control item" name="PDCReason"  value="<%=obj[6] != null ? obj[6] : "" %>" placeholder="Enter Reason">
 																	    
 																	</td>
 																		
