@@ -1275,7 +1275,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
                             					 					<%} %>
                               		      							<input type="file" class="form-control modals" name="EquipBoughtOnChargeAttach" <%if(chlist==null) {%>required<%} %> accept=".pdf"> --%>
                               		      							
-                              		      							<input  class="form-control" name="EquipBoughtOnChargeReason"   value="<% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null) {%><%=chlist.getEquipBoughtOnCharge() %><%}%>" >
+                              		      							<input  class="form-control" name="EquipBoughtOnChargeReason"   value="<% if(chlist!=null && chlist.getEquipBoughtOnChargeReason()!=null) {%><%=chlist.getEquipBoughtOnChargeReason() %><%}%>" >
 												                </div>
 												              </div>
 												              
@@ -1844,7 +1844,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
                             					 						</button>
                             					 					<%} %>
                               		      							<input type="file" class="form-control modals" name="CRAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf"> --%>
-                              		      							<input  class="form-control" name="ManPowerSanctioned"   value="<% if(chlist!=null && chlist.getManPowerSanctioned()!=null) {%><%=chlist.getManPowerSanctioned() %><%}%>" >
+                              		      							<input  class="form-control" name="ManPowerSanctioned"   value="<% if(chlist!=null && chlist.getManPowerSanctioned()!=null){%><%=chlist.getManPowerSanctioned() %><%}%>" >
                               		      							
                                                                     											                    
 												                </div>

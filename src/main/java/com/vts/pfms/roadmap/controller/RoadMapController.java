@@ -13,7 +13,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -138,6 +141,8 @@ public class RoadMapController {
 			req.setAttribute("maxpagin", p+(extra>0?1:0) );
 			req.setAttribute("EmpData", carsservice.getEmpDetailsByEmpId(EmpId));
 			req.setAttribute("Director", carsservice.getLabDirectorData(labcode));
+			req.setAttribute("existingProjectList", service.getProjectList(labcode));
+			req.setAttribute("preProjectList", service.getPreProjectList(labcode));
 			/* pagination process ends */
 
 			return "roadmap/RoadMapList";
@@ -740,9 +745,12 @@ public class RoadMapController {
 		String labcode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() + "Inside RoadMapReportExcelDownload.htm"+UserId);
 		try {
-			List<RoadMap> roadMapList = service.getRoadMapList();
+			
 			Integer startYear = Integer.parseInt(req.getParameter("startYear"));
 			Integer endYear = Integer.parseInt(req.getParameter("endYear"));
+			
+			String[] projectIds = req.getParameterValues("projectIds");
+			String[] initiationIds = req.getParameterValues("initiationIds");
 			
 			int rowNo=0;
 			// Creating a worksheet
@@ -842,11 +850,17 @@ public class RoadMapController {
 				cell.setCellStyle(t_header_style);
 			}
 			
+			int slno=0;
+			
 			// Existing Project Annual Targets
 			List<Object[]> projectList = service.getProjectList(labcode);
+			Set<String> projectIdSet = projectIds!=null?new HashSet<>(Arrays.asList(projectIds)):new HashSet<>();
+			projectList = projectList.stream().filter(e -> projectIdSet.contains(e[0].toString())).collect(Collectors.toList());
+			
 			List<Object[]> projectMilestoneActivityList = service.getProjectMilestoneActivityList(labcode);
+			
 			if(projectList!=null && projectList.size()>0) {
-				int slno=0;
+				
 				for(Object[] obj : projectList) {
 					List<Object[]> annualTargetsDetails = projectMilestoneActivityList!=null && projectMilestoneActivityList.size()>0? projectMilestoneActivityList.stream()
 														  .filter(e -> (Long.parseLong(e[0].toString())==Long.parseLong(obj[0].toString())) && (Integer.parseInt(e[2].toString().substring(0,4))>=startYear) &&  (Integer.parseInt(e[3].toString().substring(0,4))<=endYear) )
@@ -899,9 +913,12 @@ public class RoadMapController {
 			
 			// Pre Project Annual Targets
 			List<Object[]> preProjectList = service.getPreProjectList(labcode);
+			Set<String> initiationIdSet = initiationIds!=null?new HashSet<>(Arrays.asList(initiationIds)):new HashSet<>();
+			preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[0].toString())).collect(Collectors.toList());
+			
 			List<Object[]> preProjectMilestoneActivityList = service.getPreProjectMilestoneActivityList();
 			if(preProjectList!=null && preProjectList.size()>0) {
-				int slno=0;
+
 				for(Object[] obj : preProjectList) {
 					List<Object[]> annualTargetsDetails = preProjectMilestoneActivityList!=null && preProjectMilestoneActivityList.size()>0? preProjectMilestoneActivityList.stream()
 							.filter(e -> (Integer.parseInt(e[0].toString())==Integer.parseInt(obj[0].toString())) && (Integer.parseInt(e[2].toString().substring(0,4))>=startYear) &&  (Integer.parseInt(e[3].toString().substring(0,4))<=endYear) )
@@ -953,8 +970,9 @@ public class RoadMapController {
 			}
 			
 			// New Project Annual Targets
+			List<RoadMap> roadMapList = service.getRoadMapList();
 			if(roadMapList!=null) {
-				int slno=0;
+
 				for(RoadMap roadMap : roadMapList) {
 					
 					List<RoadMapAnnualTargets> roadMapAnnualTargetDetails = roadMap.getRoadMapAnnualTargets().stream()
@@ -968,11 +986,11 @@ public class RoadMapController {
 						cell.setCellStyle(t_body_style2);
 
 						cell= t_body_row.createCell(1); 
-						cell.setCellValue(roadMap.getProjectTitle()); 
+						cell.setCellValue(roadMap.getProjectTitle()!=null?roadMap.getProjectTitle():"-"); 
 						cell.setCellStyle(t_body_style);
 
 						cell= t_body_row.createCell(2); 
-						cell.setCellValue(roadMap.getAimObjectives()); 
+						cell.setCellValue(roadMap.getAimObjectives()!=null?roadMap.getAimObjectives():"-"); 
 						cell.setCellStyle(t_body_style);
 
 						cell= t_body_row.createCell(3); 
@@ -1066,5 +1084,29 @@ public class RoadMapController {
 		}
 		return json.toJson(dataList);
 
+	}
+	
+	@RequestMapping(value="RoadMapReportExcelPreview.htm", method= {RequestMethod.GET,RequestMethod.POST})
+	public String roadMapReportExcelPreview(HttpServletRequest req, HttpSession ses,HttpServletResponse res) throws Exception{
+		String UserId=(String)ses.getAttribute("Username");
+		String labcode=(String)ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside RoadMapReportExcelPreview.htm"+UserId);
+		try {
+			req.setAttribute("startYear", req.getParameter("startYear"));
+			req.setAttribute("endYear", req.getParameter("endYear"));
+			req.setAttribute("roadMapList", service.getRoadMapList());
+			req.setAttribute("projectList", service.getProjectList(labcode));
+			req.setAttribute("preProjectList", service.getPreProjectList(labcode));
+			req.setAttribute("projectMilestoneActivityList", service.getProjectMilestoneActivityList(labcode));
+			req.setAttribute("preProjectMilestoneActivityList", service.getPreProjectMilestoneActivityList());
+			req.setAttribute("projectIds", req.getParameterValues("projectId"));
+			req.setAttribute("initiationIds", req.getParameterValues("initiationId"));
+			
+			return "roadmap/RoadMapReportExcelPreview";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside RoadMapReportExcelPreview.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
 	}
 }

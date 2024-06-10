@@ -1523,7 +1523,7 @@ public class ProjectClosureController {
 			clist.setCRcostoverin(req.getParameter("CRcostoverin"));
 			clist.setNonConsumableItemsReturned(req.getParameter("NonConsumableItemsReturned"));
 			clist.setConsumableItemsReturned(req.getParameter("ConsumableItemsReturned"));
-			clist.setManPowerSanctioned("ManPowerSanctioned");
+			clist.setManPowerSanctioned(req.getParameter("ManPowerSanctioned"));
 			clist.setRemarks(req.getParameter("OverAllReason"));
 			
 			

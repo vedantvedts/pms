@@ -959,22 +959,27 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. No. of vehicles sanctioned in the project (With types).</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. No. of vehicles sanctioned in the project.</td>
 			<td> <% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null){%><%=chlist.getNoOfVehicleSanctioned() %><%} %></td>
 		</tr>
 		
 		
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.Vehicle Types .</td>
+			<td> <% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null){%><%=chlist.getVehicleType() %><%} %></td>
+		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Average  monthly run of each vehicle.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Average  monthly run of each vehicle.</td>
 			<td><% if(chlist!=null && chlist.getVehicleAvgRun()!=null){ %> <%=chlist.getVehicleAvgRun() %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Average monthly fuel consumption of each vehicle.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Average monthly fuel consumption of each vehicle.</td>
 			<td><% if(chlist!=null && chlist.getVehicleAvgFuel()!=null){ %> <%=chlist.getVehicleAvgFuel() %><%} %></td>
 		</tr>
 		

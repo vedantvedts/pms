@@ -13491,7 +13491,30 @@ public class ProjectController
 		}
 	}
 
+	@RequestMapping(value = "ProjectScheduleAllPeriodsEditSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String projectScheduleAllPeriodsEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectScheduleAllPeriodsEditSubmit.htm "+UserId);
+		try {
+			String initiationId = req.getParameter("IntiationId");
+			
+			long result = service.projectScheduleAllPeriodEditSubmit(initiationId);
+			if(result>0) {
+				redir.addAttribute("result","Project Schedule Period Updated Successfully");
+			}else {
+				redir.addAttribute("resultfail","Project Schedule Period Update Unsuccessful");
+			}
+			
+			redir.addFlashAttribute("IntiationId",initiationId);
+			return "redirect:/ProjectScheduleAdd.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectScheduleAllPeriodsEditSubmit.htm "+UserId, e);
+			return "static/Error";
+		}
 
+	}
 
 
 }
