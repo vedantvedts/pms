@@ -2300,26 +2300,26 @@ public class ProjectClosureController {
 						
 						for(Object[] obj2 : TCRChapterListByChapterParentId) {
 							
-							ProjectClosureTechnicalChapters qaqtDocChapters1 = new ProjectClosureTechnicalChapters();
-							qaqtDocChapters1.setChapterParentId(ChapterId);
-							qaqtDocChapters1.setSectionId(sec.getSectionId());
-							qaqtDocChapters1.setChapterName(obj2[3]+"");
-							qaqtDocChapters1.setChapterContent(obj2[4] != null ? obj2[4]+"" : "");
+							ProjectClosureTechnicalChapters chapt1 = new ProjectClosureTechnicalChapters();
+							chapt1.setChapterParentId(ChapterId);
+							chapt1.setSectionId(sec.getSectionId());
+							chapt1.setChapterName(obj2[3]+"");
+							chapt1.setChapterContent(obj2[4] != null ? obj2[4]+"" : "");
 							
-							Long ChapterId1 =service.ChapterAdd(qaqtDocChapters1);
+							Long ChapterId1 =service.ChapterAdd(chapt1);
 							addedChaptersIds.add(Long.parseLong(obj2[0]+""));
 							
 							
 							List<Object[]> TCRChapterListByChapterParentId1 = service.TCRTemplateChapterListByChapterParentId(obj2[0]+"");
 							
 							for(Object[] obj3 : TCRChapterListByChapterParentId1) {
-								ProjectClosureTechnicalChapters qaqtDocChapters2 = new ProjectClosureTechnicalChapters();
-								qaqtDocChapters2.setChapterParentId(ChapterId1);
-								qaqtDocChapters2.setSectionId(sec.getSectionId());
-								qaqtDocChapters2.setChapterName(obj3[3]+"");
-								qaqtDocChapters2.setChapterContent(obj3[4] != null ? obj3[4]+"" : "");
+								ProjectClosureTechnicalChapters chapt2 = new ProjectClosureTechnicalChapters();
+								chapt2.setChapterParentId(ChapterId1);
+								chapt2.setSectionId(sec.getSectionId());
+								chapt2.setChapterName(obj3[3]+"");
+								chapt2.setChapterContent(obj3[4] != null ? obj3[4]+"" : "");
 								
-								Long ChapterId2 =service.ChapterAdd(qaqtDocChapters2);
+								Long ChapterId2 =service.ChapterAdd(chapt2);
 								addedChaptersIds.add(Long.parseLong(obj3[0]+""));
 								
 							}
