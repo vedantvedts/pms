@@ -90,6 +90,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.service.ProjectClosureService;
 import com.vts.pfms.utils.PMSLogoUtil;
 
+
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -2260,6 +2261,77 @@ public class ProjectClosureController {
 			tech.setCreatedBy(EmpId);
 			tech.setCreatedDate(sdtf.format(new Date()));
 			tech.setIsActive(1);
+			
+			
+			// TO ADD TECHNICAL CLOSURE DOCUMENT TEMPLATE
+			if(Action!=null && (Action.equalsIgnoreCase("Add"))) {
+				
+			List<Object[]> TCRTemplateSectionList = service.TCRTemplateSectionList();
+			
+			for (Object[] obj:TCRTemplateSectionList) {
+				
+				ProjectClosureTechnicalSection sec=new ProjectClosureTechnicalSection();
+				sec.setClosureId(Long.parseLong(closureId));
+				sec.setSectionName(obj[1]+"");				
+				service.AddSection(sec);
+				
+				List<Long> addedChaptersIds = new ArrayList<Long>();
+				
+				List<Object[]> TCRTemplateChapterListBySectionId = service.TCRTemplateChapterListBySectionId(obj[0]+"");
+				
+				
+				for(Object[] obj1:TCRTemplateChapterListBySectionId) {
+					
+					if(!addedChaptersIds.contains(Long.parseLong(obj1[0]+""))) {
+						
+						
+						ProjectClosureTechnicalChapters chapt=new ProjectClosureTechnicalChapters();
+						chapt.setChapterParentId(Long.parseLong(obj1[1]+""));
+						chapt.setSectionId(sec.getSectionId());
+						chapt.setChapterName(obj1[3]+"");
+						chapt.setChapterContent(obj1[4] != null ? obj1[4]+"" : "");
+						
+						Long ChapterId =service.ChapterAdd(chapt);
+						addedChaptersIds.add(Long.parseLong(obj1[0]+""));
+						
+						
+						List<Object[]> TCRChapterListByChapterParentId = service.TCRTemplateChapterListByChapterParentId(obj1[0]+"");
+						
+						
+						for(Object[] obj2 : TCRChapterListByChapterParentId) {
+							
+							ProjectClosureTechnicalChapters qaqtDocChapters1 = new ProjectClosureTechnicalChapters();
+							qaqtDocChapters1.setChapterParentId(ChapterId);
+							qaqtDocChapters1.setSectionId(sec.getSectionId());
+							qaqtDocChapters1.setChapterName(obj2[3]+"");
+							qaqtDocChapters1.setChapterContent(obj2[4] != null ? obj2[4]+"" : "");
+							
+							Long ChapterId1 =service.ChapterAdd(qaqtDocChapters1);
+							addedChaptersIds.add(Long.parseLong(obj2[0]+""));
+							
+							
+							List<Object[]> TCRChapterListByChapterParentId1 = service.TCRTemplateChapterListByChapterParentId(obj2[0]+"");
+							
+							for(Object[] obj3 : TCRChapterListByChapterParentId1) {
+								ProjectClosureTechnicalChapters qaqtDocChapters2 = new ProjectClosureTechnicalChapters();
+								qaqtDocChapters2.setChapterParentId(ChapterId1);
+								qaqtDocChapters2.setSectionId(sec.getSectionId());
+								qaqtDocChapters2.setChapterName(obj3[3]+"");
+								qaqtDocChapters2.setChapterContent(obj3[4] != null ? obj3[4]+"" : "");
+								
+								Long ChapterId2 =service.ChapterAdd(qaqtDocChapters2);
+								addedChaptersIds.add(Long.parseLong(obj3[0]+""));
+								
+							}
+							
+						}
+						
+						
+					}
+					
+				}
+			}
+		}
 				
 			long save=service.AddIssue(tech,EmpId,LabCode);
 			

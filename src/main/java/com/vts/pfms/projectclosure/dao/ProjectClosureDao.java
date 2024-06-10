@@ -90,6 +90,9 @@ public interface ProjectClosureDao {
 	public long AddProjectClosureCheckListRev(ProjectClosureCheckListRev rev) throws Exception;
 	public long removeProjectClosureCheckListRev(long closureid)throws Exception;
 	public List<Object[]> getProjectClosureCheckListRevByClosureId(String closureId)throws Exception;
+	public List<Object[]> TCRTemplateSectionList() throws Exception;
+	public List<Object[]> TCRTemplateChapterListBySectionId(String sectionid) throws Exception;
+	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception;
 	
 
 }

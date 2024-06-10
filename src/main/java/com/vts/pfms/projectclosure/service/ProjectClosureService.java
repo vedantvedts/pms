@@ -96,9 +96,11 @@ public interface ProjectClosureService {
 	public long AddTCRMembers(ProjectClosureTechnicalDocDistrib dist) throws Exception;
 	public List<Object[]>  getDocSharingMemberList(String techClosureId)throws Exception;
 	
-	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res, String closureId, String techclosureId,String labcode)
-			throws Exception;
+	public void TCRFormFreeze(HttpServletRequest req, HttpServletResponse res, String closureId, String techclosureId,String labcode) throws Exception;
 	public List<Object[]> getProjectClosureCheckListRevByClosureId(String closureId) throws Exception;
+	public List<Object[]> TCRTemplateSectionList()  throws Exception;
+	public List<Object[]> TCRTemplateChapterListBySectionId(String sectionid) throws Exception;
+	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception;
 	
 	
 }

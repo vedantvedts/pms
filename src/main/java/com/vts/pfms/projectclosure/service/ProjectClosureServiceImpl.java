@@ -1690,5 +1690,23 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		return dao.getProjectClosureCheckListRevByClosureId(closureId);
 	}
+
+	@Override
+	public List<Object[]> TCRTemplateSectionList() throws Exception {
+		
+		return dao.TCRTemplateSectionList();
+	}
+
+	@Override
+	public List<Object[]> TCRTemplateChapterListBySectionId(String sectionid) throws Exception {
+		
+		return dao.TCRTemplateChapterListBySectionId(sectionid);
+	}
+
+	@Override
+	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception {
+		
+		return dao.TCRTemplateChapterListByChapterParentId(chapterparentid);
+	}
 	
 }

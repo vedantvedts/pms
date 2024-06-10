@@ -1153,4 +1153,54 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		
 	}
+
+	
+	private static final String TCRTEMPLATESECTIONLIST="SELECT sectionid,SectionName FROM pfms_closure_tech_template_sections WHERE IsActive='1'";
+	@Override
+	public List<Object[]> TCRTemplateSectionList() throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(TCRTEMPLATESECTIONLIST);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO TCRTemplateSectionList" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	private static final String TCRTEMPLATECHAPTERLISTBYSECTIONID="SELECT a.ChapterId, a.ChapterParentId, a.SectionId, a.ChapterName, a.ChapterContent FROM pfms_closure_tech_template_chapters a WHERE a.SectionId=:sectionid AND a.IsActive=1 ";
+	@Override
+	public List<Object[]> TCRTemplateChapterListBySectionId(String sectionid) throws Exception {
+		
+		
+		try {			
+			Query query= manager.createNativeQuery(TCRTEMPLATECHAPTERLISTBYSECTIONID);
+			query.setParameter("sectionid", sectionid);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO TCRTemplateChapterListBySectionId" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	private static final String TCRTEMPLATECHAPTERLISTBYCHAPTERPARENTID="SELECT a.ChapterId, a.ChapterParentId, a.SectionId, a.ChapterName, a.ChapterContent FROM pfms_closure_tech_template_chapters a WHERE a.ChapterParentId=:chapterparentid AND a.IsActive=1";
+	@Override
+	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception {
+		
+		
+		try {			
+			Query query= manager.createNativeQuery(TCRTEMPLATECHAPTERLISTBYCHAPTERPARENTID);
+			query.setParameter("chapterparentid", chapterparentid);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO TCRTemplateChapterListByChapterParentId" + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
 }
