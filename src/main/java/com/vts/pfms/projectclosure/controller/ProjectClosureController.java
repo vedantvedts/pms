@@ -1445,7 +1445,7 @@ public class ProjectClosureController {
 			dto.setSCReason(req.getParameterValues("SCReason"));
 			
 			
-			System.out.println("-------"+req.getParameterValues("PDCRequested"));
+			
 			dto.setPDCRequestedDate(req.getParameterValues("PDCRequested"));
 			dto.setPDCGrantedDate(req.getParameterValues("PDCGranted"));
 			dto.setPDCRevised(req.getParameterValues("PDCRevised"));

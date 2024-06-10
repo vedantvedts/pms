@@ -263,7 +263,7 @@ p,td,th
 		
 		<tr>
 			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii.Objective  of the  Project mentioned in the QAR</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii.Objective  of the  Project mentioned in the PAR</td>
 			<td><%if(chlist!=null && chlist.getQARObjective()!=null) {%><%=chlist.getQARObjective() %><%} %></td>
 		</tr>
 		
@@ -287,7 +287,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi.Proposed Cost</td>
-			<td><%if(chlist!=null && chlist.getQARProposedCost()>=0) {%><%=chlist.getQARProposedCost() %><%} %></td>
+			<td><%if(chlist!=null && chlist.getQARProposedCost()>=0) {%><%=df.format(chlist.getQARProposedCost()) %><%} %></td>
 		</tr>
 		
 		<tr>
