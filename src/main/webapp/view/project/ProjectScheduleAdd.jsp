@@ -113,7 +113,13 @@ FormatConverter fc = new FormatConverter();
                                                 <th>Period</th>
                                                 <th>Milestone Month</th>
                                                 <th>Remarks</th>
-                                              	<th>Link</th> 
+                                              	<th>
+                                              		<form action="ProjectScheduleAllPeriodsEditSubmit.htm" method="get">
+                                              			<input type="hidden" name="IntiationId" value="<%=IntiationId %>">
+                                              			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+                                              			Link&emsp;<button type="submit" class="fa fa-pencil-square-o btn " type="submit"  onclick="return confirm('Are You Sure To Edit All Schedules Periods?');"></button>
+                                              		</form>
+                                              	</th> 
                                             </tr>
                                         </thead>
                                        <%} %>

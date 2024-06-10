@@ -696,7 +696,6 @@ public class ProjectServiceImpl implements ProjectService {
 			List<PfmsInitiationSchedule> ScheduleList = dao.IntiationScheduleList(projectscheduledto.getInitiationId());
 			
 			
-			
 			for(PfmsInitiationSchedule milestone : ScheduleList)
 			{
 				if(milestone.getMilestonestartedfrom()>0)
@@ -3465,6 +3464,26 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		@Override
 		public List<Object[]> SpecProducTreeDetails(String specsInitiationId) throws Exception {
 			return dao.SpecProducTreeDetails(specsInitiationId);
+		}
+
+		@Override
+		public long projectScheduleAllPeriodEditSubmit(String initiationId) throws Exception {
+			try {
+				PfmsInitiation initiation = dao.getPfmsInitiationById(initiationId);
+				
+				List<PfmsInitiationSchedule> scheduleList = dao.IntiationScheduleList(initiationId);
+				for(PfmsInitiationSchedule schedule : scheduleList) {
+					schedule.setStartDate(initiation.getStartDate());
+					schedule.setEndDate(initiation.getStartDate()!=null?LocalDate.parse(initiation.getStartDate()).plusMonths(schedule.getMilestoneMonth()).toString():null);
+					
+					dao.ProjectScheduleEdit(schedule);
+				}
+				return 1L;
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0L;
+			}
+			
 		}
 		
 		

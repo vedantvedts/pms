@@ -4036,10 +4036,13 @@ public class ProjectDaoImpl implements ProjectDao {
 			return null;
 		}
 	}
+	
+	@Override
+	public long ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule) throws Exception 
+	{
+		manager.merge(pfmsinitiationschedule);
+		manager.flush();
+		return pfmsinitiationschedule.getInitiationScheduleId();
+	}
 }
-
-
-
-
-
 

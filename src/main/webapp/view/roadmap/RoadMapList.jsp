@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -239,6 +240,8 @@ background: none;border-style: none;
 <%
 
 List<Object[]> roadMapList = (List<Object[]>)request.getAttribute("roadMapList");
+List<Object[]> existingProjectList = (List<Object[]>)request.getAttribute("existingProjectList");
+List<Object[]> preProjectList = (List<Object[]>)request.getAttribute("preProjectList");
 
 Object[] Director = (Object[])request.getAttribute("Director");
 Object[] emp = (Object[])request.getAttribute("EmpData");
@@ -275,8 +278,8 @@ FormatConverter fc = new FormatConverter();
 						<h4>Road Map List</h4>
 					</div>
 				</div>
-				<br>
-				<div align="center">
+			
+				<div class="mt-3" align="center">
                 	<form action="#" id="myform" method="post">
                     	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                         <button  class="btn btn-sm add" type="submit" name="Action" value="Add" formaction="RoadMapDetails.htm" formnovalidate="formnovalidate" style="border: none;">Add</button>
@@ -291,11 +294,11 @@ FormatConverter fc = new FormatConverter();
                  		<%} %>
                  	</form>
               	</div>
-	            <br>  	
+	            	
 				<%if(roadMapList!=null && roadMapList.size()>0) {%>
 				<!-- search box -->
-					<form method="get" class="form-inline my-2 my-lg-0" style="display: flex; justify-content: center; padding-bottom:10px;">
-						<div >
+					<form method="get" class="form-inline my-2 my-lg-0 mt-2" style="display: flex; justify-content: center; padding-bottom:10px;margin-top: 1rem;">
+						<div class="mt-3">
 							<input name="search" id="search" required class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="Search" />
 							<input type="submit" class="btn btn-outline-success my-2 my-sm-0" name="clicked" value="Search" />
 							<a href="RoadMapList.htm"><button type="submit" class="btn btn-outline-danger my-2 my-sm-0" formnovalidate="formnovalidate" >Reset</button></a>
@@ -510,49 +513,145 @@ FormatConverter fc = new FormatConverter();
             	    </table>			             
 				</div>
 				
-				<form action="">
-	                <div class="container">
-						
-						<!-- The Modal -->
-						<div class="modal" id="myModal" style="margin-top: 10%;">
-					 		<div class="modal-dialog">
-					 			<div class="modal-dialog modal-dialog-jump modal-lg modal-dialog-centered">
-						    		<div class="modal-content">
-						     
-						        		<!-- Modal Header -->
-						        		<div class="modal-header">
-						          			<h4 class="modal-title">Choose Period</h4>
-						          			<button type="button" class="close" data-dismiss="modal">&times;</button>
-						        		</div>
-						        		<!-- Modal body -->
-						        		<div class="modal-body">
-						        			<div class="form-inline">
-						        				<div class="form-group w-50">
-						               				<label>Start Year : &nbsp;&nbsp;&nbsp;</label> 
-						              	 			<input class="form-control date" id="startYear" name="startYear" required="required" readonly style="background: #fff;">
-						      					</div>
-						        				<div class="form-group w-50">
-						               				<label>End Year : &nbsp;&nbsp;&nbsp;</label> 
-						              	 			<input class="form-control date" id="endYear" name="endYear" required="required" readonly style="background: #fff;">
-						      					</div>
-						      				</div>
+				<form action="RoadMapReportExcelPreview.htm" method="post">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+					<div class="modal fade bd-example-modal-xl" id="myModal" style="width: 100%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+	  					<div class="modal-dialog modal-lg modal-dialog modal-dialog-jump modal-dialog-centered modal" style="max-width: 1800px" role="document">
+	  
+	    					<div class="modal-content">
+	      						<div class="modal-header">
+	      							<div class="" style="margin-bottom: -1rem;">
+	      								<div class="form-group">
+		      								<div class="row">
+		      									<div class="col-md-12">
+		      										<h4 class="modal-title" style="width: 600px;text-align: left;" id="exampleModalLabel">
+		        										Select Projects for Road Map
+		        									</h4>
+		      									</div>
+		      								</div>
+		      							</div>
+		      							<div class="form-group">
+		      								<div class="row">
+		      									<div class="col-md-5">
+								        			<h5 style="text-align: left;">
+								        			&emsp;Select All 
+								        			&emsp;<input type="checkbox" id="selectallprojects" style="transform: scale(1.5);">
+								        			</h5>
+								        		</div>
+								        		<div class="col-md-7"></div>
+		      								</div>
+	      								</div>
+	      							</div>
+	       							
+	       							<div class="row">
+	       								<div class="col-md-12"></div>
+	       							</div>
+	       							<div class="row mt-4">
+	       								<div class="col-md-4"></div>
+      									<div class="col-md-4">
+						        			<h5>
+						        				Start Year : <input class="form-control date" id="startYear" name="startYear" required="required" readonly style="background: #fff;text-align: center;font-weight: 500;">
+						        			</h5>
 						      			</div>
-						      
-						        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						        		<!-- Modal footer -->
-						        		<div class="modal-footer" style="justify-content: center;">
-						        			<!-- <button type="submit" class="btn btn-sm" formaction="RoadMapReportDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Road Map Report Pdf Download" style="background-color: purple;border: none;color: white;font-weight: 600;">
-				            					GENERATE PDF
-				            				</button> --> 
-						        			<button type="submit" class="btn btn-sm" formaction="RoadMapReportExcelDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Road Map Report Excel Download" style="background-color: purple;border: none;color: white;font-weight: 600;">
-				            					GENERATE EXCEL
-				            				</button> 
-						       			</div>
+					        				<div class="col-md-4">
+					        					<h5>
+					        						End Year : <input class="form-control date" id="endYear" name="endYear" required="required" readonly style="background: #fff;text-align: center;font-weight: 500;">
+					        					</h5>
+					      					</div>		
+	       							</div>
+	       							
+							        <button type="button" class="close" style="width: 2%; margin: 0 0 0 0;padding: 0 0 0 0 " data-dismiss="modal" aria-label="Close">
+							       		<span aria-hidden="true">&times;</span>
+							        </button>
+	      						</div>
+	      
+	      						<div class="modal-body" >
+	      							<div class="container-fluid">
+							        	<div class="row">
+						    				<div class="col-md-12">
+										    	<div align="left">
+										        	<h5>
+										        		Sanctioned Projects&emsp;<input type="checkbox" id="selectexistingprojects" style="transform: scale(1.5);"> 
+										        	</h5> 
+										        </div>
+						       	 				<hr>
+						        				<%int   c = 0;
+						           					if (existingProjectList != null && existingProjectList.size() > 0) {
+						               					for (Object[] obj : existingProjectList) { %>
+										                   <% if (c == 4 || c == 0) { c=0;%>
+								                       <div class="row">
+										                   <% } %>
+									                       <div class="col-3">
+									                           <div style="text-align: left;">
+									                               <input checked class="existingprojectlist" name="projectId" style="text-align: left;margin: 8px;transform: scale(1.5);" value="<%=obj[0]%>" type='checkbox'/>
+									                               <label for="<%=obj[0]%>">
+									                                   <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+									                                       <% if (obj[2] != null) { %><%=obj[2] %><% } else { %>-<% } %>
+									                                       (<% if (obj[1] != null) { %><%=obj[1] %><% } else { %>-<% } %>)
+									                                   </span> 	
+									                               </label>
+									                           </div>
+									                       </div>
+										                   <% if (c == 3) { %>
+										               </div>
+										        <% } %>
+								                <% c++; } } %>
+						                   	<% if (c <4 && c>0 ) { %>
+											</div>
+											<% } %>
+						    			</div>
+									</div>
+
+	        	
+							        <div class="row" style="margin-top: 1rem;">
+							        	<div class="col-md-12">
+						        			<div align="left">
+						        				<h5>
+						        					Initiation Projects&emsp;<input type="checkbox" id="selectpreprojects" style="transform: scale(1.5);">
+						        				</h5>
+						        			</div>
+							        		<hr>
+									        <%int  c1=0;
+									        	if(preProjectList!=null && preProjectList.size()>0) { 
+									        	for(Object[] obj : preProjectList){%>
+									        		<%if(c1==4||c1==0) {c1=0; %>
+									        			<div class="row">
+									        		<%} %>
+															<div class="col-3" >
+																<div style="text-align: left;">
+																	<input checked class="preprojectlist" name="initiationId" style="text-align: left;margin: 8px;transform: scale(1.5);" value="<%=obj[0]%>" type='checkbox'/>
+																	<label for="<%=obj[0]%>">
+																		<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+																		  	<% if (obj[2] != null) { %><%= obj[2] %><% } else { %>-<% } %>
+																	  	</span> 	
+																	</label>
+																</div>
+															</div>
+													<%if(c1 == 3 ) { %>
+														</div><%}%>
+													<%c1++;} }%>
+										<% if (c1 <4 && c1>0 ) { %>
+											</div>
+										<% } %>
+							        </div>
+	        					</div>
+	      					</div>
+	      				</div>
+						<div class="modal-footer ">
+				      		<div class="row" style="width: 100%">
+				      			<div class="col">
+						      		<div class="d-flex justify-content-start" >
+						      			<p style="text-align: left"><span style="color: red">Note</span>: Road Map (New) Projects are by default selected</p>
 						      		</div>
-					    		</div>
-					  		</div>
-					  	</div>
-					</div>
+				      			</div>
+				      			<div class="col d-flex justify-content-end" >
+						        	<button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+						        	<button type="submit" class="btn btn-primary mx-1" formtarget="blank">PREVIEW</button>
+				       			</div>
+				      		</div>
+				      	</div>
+	    			</div>
+		
 				</form>
 										
 			</div>
@@ -665,6 +764,189 @@ function moveToASPCheck(){
 	}
 	return true;
 }
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    // Default: All checkboxes are checked
+    $('#selectallprojects, #selectexistingprojects, #selectpreprojects').prop('checked', true);
+
+    // Handling click event for Select All checkbox
+    $("#selectallprojects").click(function(){
+        var isChecked = $(this).prop('checked');
+        $('.existingprojectlist, .preprojectlist, #selectexistingprojects, #selectpreprojects').prop('checked', isChecked);
+    });
+    
+    // Handling click event for Main Projects checkbox
+    $("#selectexistingprojects").click(function(){
+        var isChecked = $(this).prop('checked');
+        $('.existingprojectlist').prop('checked', isChecked);
+        // Check if both Main Projects and Sub Projects are checked
+        if ($('#selectexistingprojects').prop('checked') && $('#selectpreprojects').prop('checked')) {
+            $('#selectallprojects').prop('checked', true);
+        } else {
+            $('#selectallprojects').prop('checked', false);
+        }
+    });
+    
+    // Handling click event for Sub Projects checkbox
+    $("#selectpreprojects").click(function(){
+        var isChecked = $(this).prop('checked');
+        $('.preprojectlist').prop('checked', isChecked);
+        // Check if both Main Projects and Sub Projects are checked
+        if ($('#selectexistingprojects').prop('checked') && $('#selectpreprojects').prop('checked')) {
+            $('#selectallprojects').prop('checked', true);
+        } else {
+            $('#selectallprojects').prop('checked', false);
+        }
+    });
+
+    // Handling click event for individual Main Project checkboxes
+    $(".existingprojectlist").click(function() {
+    	if (!$(this).prop('checked')) {
+            $('#selectexistingprojects').prop('checked', false);
+            $('#selectallprojects').prop('checked', false);
+        } 
+        else {
+           var allMainChecked = true;
+           $('.existingprojectlist').each(function() {
+               if (!$(this).prop('checked')) {
+                   allMainChecked = false;
+               }
+           });
+           if (allMainChecked) {
+               $('#selectexistingprojects').prop('checked', true);
+               if ($('#selectpreprojects').prop('checked')) {
+                   $('#selectallprojects').prop('checked', true);
+               }
+           }
+        }
+        var mainProjectsChecked = $('.existingprojectlist:checked').length;
+        var mainProjectsTotal = $('.existingprojectlist').length;
+        $('#selectexistingprojects').prop('checked', mainProjectsChecked === mainProjectsTotal);
+        // Check if all Main Projects are checked
+        if ($('#selectexistingprojects').prop('checked') && $('#selectpreprojects').prop('checked')) $('#selectallprojects').prop('checked', true);
+		else $('#selectallprojects').prop('checked', false);
+    });
+
+    // Handling click event for individual Sub Project checkboxes
+    $(".preprojectlist").click(function() {
+        if (!$(this).prop('checked')) {
+            $('#selectpreprojects').prop('checked', false);
+            $('#selectallprojects').prop('checked', false);
+        } else {
+            var allSubChecked = true;
+            $('.preprojectlist').each(function() {
+                if (!$(this).prop('checked')) {
+                    allSubChecked = false;
+                }
+            });
+            var subProjectsChecked = $('.preprojectlist:checked').length;
+	        var subProjectsTotal = $('.preprojectlist').length;
+	        $('#selectpreprojects').prop('checked', subProjectsChecked === subProjectsTotal);
+            if (allSubChecked && $('#selectexistingprojects').prop('checked')) $('#selectallprojects').prop('checked', true);
+            else $('#selectallprojects').prop('checked', false);
+        }
+        // Check if all Sub Projects are checked
+        if ($('#selectexistingprojects').prop('checked') && $('#selectpreprojects').prop('checked')) {
+            $('#selectallprojects').prop('checked', true);
+        } else {
+            $('#selectallprojects').prop('checked', false);
+        }
+    });
+    
+    
+    
+    
+    //--------------------This is for Favourite Project Edit---------------------
+    
+    
+    
+    $('#selectallproject, #selectmainproject, #selectsubproject').prop('checked', true);
+    
+    // Handling click event for Main Projects checkbox
+    $("#selectmainproject").click(function(){
+        var isChecked = $(this).prop('checked');
+        $('.mainprojectlis').prop('checked', isChecked);
+        // Check if both Main Projects and Sub Projects are checked
+        if ($('#selectmainproject').prop('checked') && $('#selectsubproject').prop('checked')) {
+            $('#selectallproject').prop('checked', true);
+        } else {
+            $('#selectallproject').prop('checked', false);
+        }
+    });
+    
+    // Handling click event for Sub Projects checkbox
+    $("#selectsubproject").click(function(){
+        var isChecked = $(this).prop('checked');
+        $('.subprojectlis').prop('checked', isChecked);
+        // Check if both Main Projects and Sub Projects are checked
+        if ($('#selectmainproject').prop('checked') && $('#selectsubproject').prop('checked')) {
+            $('#selectallproject').prop('checked', true);
+        } else {
+            $('#selectallproject').prop('checked', false);
+        }
+    });
+
+    // Handling click event for individual Main Project checkboxes
+    $(".mainprojectlis").click(function() {
+        if (!$(this).prop('checked')) $('#selectmainproject').prop('checked', false);
+        else {
+           var allMainChecked = true;
+           $('.mainprojectlis').each(function() {
+               if (!$(this).prop('checked')) allMainChecked = false;
+           });
+           if (allMainChecked) {
+               $('#selectmainproject').prop('checked', true);
+           }
+        }
+        var mainProjectsChecked = $('.mainprojectlis:checked').length;
+        var mainProjectsTotal = $('.mainprojectlis').length;
+        $('#selectmainproject').prop('checked', mainProjectsChecked === mainProjectsTotal);
+    });
+
+    // Handling click event for individual Sub Project checkboxes
+    $(".preprojectlist").click(function() {
+        if (!$(this).prop('checked'))  $('#selectsubproject').prop('checked', false);
+        else {
+            var allSubChecked = true;
+            $('.subprojectlis').each(function() {
+                if (!$(this).prop('checked'))  allSubChecked = false;
+            });
+            if (allSubChecked) {
+                $('#selectsubproject').prop('checked', true);
+            }
+        }
+        var subProjectsChecked = $('.subprojectlis:checked').length;
+        var subProjectsTotal = $('.subprojectlis').length;
+        $('#selectsubproject').prop('checked', subProjectsChecked === subProjectsTotal);
+    });
+
+});
+
+function checkSelectSubProject()
+{
+	var subProjectsChecked = $('.subprojectlis:checked').length;
+    var subProjectsTotal = $('.subprojectlis').length;
+    $('#selectsubproject').prop('checked', subProjectsChecked === subProjectsTotal);
+    if ($('#selectexistingprojects').prop('checked') && $('#selectpreprojects').prop('checked')) {
+        $('#selectallprojects').prop('checked', true);
+    } else {
+        $('#selectallprojects').prop('checked', false);
+    }
+}
+function checkSelectMainProject()
+{
+	var mainProjectsChecked = $('.mainprojectlis:checked').length;
+	var mainProjectsTotal = $('.existingprojectlist').length;
+	$('#selectmainproject').prop('checked', mainProjectsChecked === mainProjectsTotal);
+	if ($('#selectexistingprojects').prop('checked') && $('#selectpreprojects').prop('checked')) {
+        $('#selectallprojects').prop('checked', true);
+    } else {
+        $('#selectallprojects').prop('checked', false);
+    }
+}
+
 </script>
 </body>
 </html>

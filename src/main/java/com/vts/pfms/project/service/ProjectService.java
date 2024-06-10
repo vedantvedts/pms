@@ -364,6 +364,8 @@ public interface ProjectService {
 	public long editSpecificationIntro(SpecificationIntro s)throws Exception;
 	public long uploadProductTree(SpecifcationProductTree s,String LabCode) throws Exception;
 	public List<Object[]> SpecProducTreeDetails(String specsInitiationId) throws Exception;
+	
+	public long projectScheduleAllPeriodEditSubmit(String initiationId) throws Exception;
 
 	
 }
