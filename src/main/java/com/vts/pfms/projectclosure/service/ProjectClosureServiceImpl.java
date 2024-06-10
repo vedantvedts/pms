@@ -1075,9 +1075,9 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				
 				rev.setClosureId(clist.getProjectClosure().getClosureId());
 				rev.setRevisionType("SANC");	
-				rev.setRequestedDate(dto.getSCRequestedDate()[i]);
-				rev.setGrantedDate(dto.getSCGrantedDate()[i]);
-				rev.setRevisionCost(dto.getSCRevisionCost()[i]);
+				rev.setRequestedDate(sdf.format(rdf.parse(dto.getSCRequestedDate()[i])));
+				rev.setGrantedDate(sdf.format(rdf.parse(dto.getSCGrantedDate()[i])));
+				rev.setRevisionCost(dto.getSCRevisionCost()[i].toString());
 				rev.setReason(dto.getSCReason()[i]);
 				rev.setCreatedBy(clist.getCreatedBy());	
 				rev.setCreatedDate(clist.getCreatedDate());	
@@ -1093,9 +1093,9 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				
 				rev.setClosureId(clist.getProjectClosure().getClosureId());
 				rev.setRevisionType("PDC");	
-				rev.setRequestedDate(dto.getPDCRequestedDate()[i]);
-				rev.setGrantedDate(dto.getPDCGrantedDate()[i]);
-				rev.setRevisionPDC(dto.getPDCRevised()[i]);
+				rev.setRequestedDate(sdf.format(rdf.parse(dto.getPDCRequestedDate()[i])));
+				rev.setGrantedDate(sdf.format(rdf.parse(dto.getPDCGrantedDate()[i])));
+				rev.setRevisionPDC(sdf.format(rdf.parse(dto.getPDCRevised()[i])));
 				rev.setReason(dto.getPDCReason()[i]);
 				rev.setCreatedBy(clist.getCreatedBy());	
 				rev.setCreatedDate(clist.getCreatedDate());	
@@ -1206,7 +1206,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		}
 	 
-		System.out.println("--------------"+dto.getPDCRequestedDate().length);
+	
 		
 	     for(int j=0;j<dto.getPDCRequestedDate().length ;j++) {
 			
