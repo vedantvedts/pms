@@ -2346,6 +2346,8 @@ public class ProjectClosureController {
 			} else {
 				redir.addAttribute("resultfail", "Technical Closure "+Action+" Unsuccessful");
 			}
+			
+			
 		}	
 		
 			ProjectClosure closure = service.getProjectClosureById(closureId);
@@ -2364,7 +2366,16 @@ public class ProjectClosureController {
 			List<Object[]> TechnicalClosureRecord=service.getTechnicalClosureRecord(closureId);
 			req.setAttribute("TechnicalClosureRecord", TechnicalClosureRecord);
 			
-			return "project/ProjectTechClosureList";
+			
+			if(Action!=null && Action.equalsIgnoreCase("Add")) {
+				
+				redir.addAttribute("closureId", closureId);
+				 return "redirect:/TechClosureList.htm";
+				
+			}
+			else {
+			       return "project/ProjectTechClosureList";
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
