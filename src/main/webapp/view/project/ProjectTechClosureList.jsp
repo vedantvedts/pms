@@ -261,6 +261,7 @@ font-weight: bold;
 			                            
 			                            <input type="hidden" name="ClosureId" value="<%=closureId %>">
 			                            
+			                            
 			                             <%if (obj[4]!=null  && status.contains(obj[4].toString())){ %>
 			                             
 			                              
@@ -315,9 +316,7 @@ font-weight: bold;
 											</div>
 						    			</button>
 						    			
-						    			<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
-  										            <i class="fa fa-download"></i>
-  									        </button>
+						    			
 						    			
 						    			<%}else{ 
 						    			
@@ -331,15 +330,28 @@ font-weight: bold;
   									             
   									       <button type="submit" class="btn btn-warning btn-sm edit" name="Amend" value="<%=obj[1]%>//<%=Integer.parseInt(obj[2].toString()) + 1%>//<%=closureId %>//<%=obj[0]%>" formaction="AmendTechClosureList.htm" onclick="return confirm('Are You Sure To Amend')" >AMEND</button>
 						                 	
-						    			<%}else{%>
+						    			<%}else if(obj[4].toString().equalsIgnoreCase("TAM")) { %>
 						    				
 						    				
-											<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+											<%-- <button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
   										            <i class="fa fa-download"></i>
-  									        </button> 	
+  									        </button>  --%>
+  									        
+  									        
+  									        <button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportFreezeDownload.htm" formtarget="blank" name="TechClosureId" value="<%=obj[0] %>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+  										            <i class="fa fa-download"></i>
+  									             </button>	
 						    			
 						    			
-						    			<% }}%> 
+						    			<% }else{%>
+						    				
+						    				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+									            <i class="fa fa-download"></i>
+								        </button>
+						    			
+						    			<%}} %>
+						    			
+						    			
 						    			
 						    		</td>
 			                    </tr>

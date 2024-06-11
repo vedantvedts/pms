@@ -1632,8 +1632,8 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		  	req.setAttribute("RecordOfAmendments", dao.getTechnicalClosureRecord(ClosureId));
 		  	req.setAttribute("TechnicalClosureContent", dao.getTechnicalClosureContent(ClosureId));
 		  	req.setAttribute("AppendicesList",dao.getAppendicesList(ClosureId));
-			req.setAttribute("DocumentSummary",dao.getDocumentSummary(TechclosureId));
-			req.setAttribute("MemberList", dao.getDocSharingMemberList(ClosureId));
+			req.setAttribute("DocumentSummary",dao.getDocumentSummary(ClosureId));
+			req.setAttribute("MemberList", dao.getDocSharingMemberList(TechclosureId));
 			
 			
 			String filename="TCR Form";
