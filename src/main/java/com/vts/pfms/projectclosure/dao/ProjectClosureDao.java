@@ -93,6 +93,7 @@ public interface ProjectClosureDao {
 	public List<Object[]> TCRTemplateSectionList() throws Exception;
 	public List<Object[]> TCRTemplateChapterListBySectionId(String sectionid) throws Exception;
 	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception;
+	public int AmendTechClosureList(String techClosureId) throws Exception;
 	
 
 }

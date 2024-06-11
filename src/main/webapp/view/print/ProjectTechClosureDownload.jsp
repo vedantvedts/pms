@@ -290,8 +290,8 @@ border-collapse:collapse;
 			<table style="width: 650px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 				
 				<tr>
-					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">SL No.</span></td>
-					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Particulars of Amendment.</span></td>
+					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">SL No.</span></td>
+					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Particulars of Amendment.</span></td>
 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Revision No.</span></td>
                     <td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Issue Date</span></td>
 				</tr>

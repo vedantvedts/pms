@@ -314,6 +314,11 @@ font-weight: bold;
 												</div>
 											</div>
 						    			</button>
+						    			
+						    			<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+  										            <i class="fa fa-download"></i>
+  									        </button>
+						    			
 						    			<%}else{ 
 						    			
 						    			if(obj[4].toString().equalsIgnoreCase("TDG")){ %>
@@ -322,11 +327,9 @@ font-weight: bold;
   										            <i class="fa fa-download"></i>
   									             </button>
   									             &nbsp;
-  									         <input type="hidden" name="closureId" value="<%=closureId %>"> 
-  									          <input type="hidden" name="RevisionNo" value="<%=Integer.parseInt(obj[2].toString()) + 1%>">  
-  									          <input type="hidden" name="Particulars" value="<%=obj[1]%>">   
+  									           
   									             
-  									       <button type="submit" class="btn btn-warning btn-sm edit" name="Action" value="Amend" formaction="TechClosureList.htm" onclick="return confirm('Are You Sure To Amend')" >AMEND</button>
+  									       <button type="submit" class="btn btn-warning btn-sm edit" name="Amend" value="<%=obj[1]%>//<%=Integer.parseInt(obj[2].toString()) + 1%>//<%=closureId %>//<%=obj[0]%>" formaction="AmendTechClosureList.htm" onclick="return confirm('Are You Sure To Amend')" >AMEND</button>
 						                 	
 						    			<%}else{%>
 						    				

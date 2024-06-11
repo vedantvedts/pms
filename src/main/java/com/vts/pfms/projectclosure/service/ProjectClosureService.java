@@ -69,7 +69,7 @@ public interface ProjectClosureService {
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception;
 	public long addProjectClosureCheckList(ProjectClosureCheckList clist,ProjectCheckListRevDto dto, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach) throws Exception;
 	public long editProjectClosureCheckList(ProjectClosureCheckList clist,ProjectCheckListRevDto dto, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach) throws Exception;
-	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode) throws Exception;
+	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode,String Action) throws Exception;
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
 	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
 	public List<Object[]> getSectionList(String closureId)throws Exception;
@@ -101,6 +101,9 @@ public interface ProjectClosureService {
 	public List<Object[]> TCRTemplateSectionList()  throws Exception;
 	public List<Object[]> TCRTemplateChapterListBySectionId(String sectionid) throws Exception;
 	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception;
+	public int AmendTechClosureList(String techClosureId) throws Exception;
+	public long AddNewRevision(ProjectClosureTechnical tech, String empId, String labCode, String techClosureId)throws Exception;
+	
 	
 	
 }

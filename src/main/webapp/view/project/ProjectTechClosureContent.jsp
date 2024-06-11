@@ -9,11 +9,7 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-<%-- <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
-<spring:url value="/resources/ckeditor/contents.css" var="contentCss" /> --%>
-<%-- <spring:url value="/resources/richtexteditor/richtexteditor.js" var="richtexteditorjs" />
-<spring:url value="/resources/richtexteditor/richtexteditor.css" var="richtexteditorcss" />
-<spring:url value="/resources/richtexteditor/plugins/all_plugins.js" var="allpluginsjs" /> --%>
+
 
 <spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
@@ -660,7 +656,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 
         <%-------------------  SummerNote Editor -------------------------------------%>
                   
-	          <div class="col-md-7" id="richtexteditor" >
+	          <div class="col-md-7" id="summernoteeditor" >
 	         	<form action="SubChapterEdit.htm" method="POST" id="myfrm1">
 	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
 	      			<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;display:none;"></h5><hr>
@@ -893,10 +889,8 @@ function CloseButton(){
 
 // to show the existing sections list
 $(document).ready(function() {
-	
-	
-	
-	
+
+
     $.ajax({
         type: 'GET',
         url: 'AddSection.htm', 
@@ -1029,11 +1023,12 @@ function moduleeditdisable(moduleid)
 	 $('#summernote1').hide();
 	 
 	
+	 console.log("a---"+a);
 	 
-	 
-	 if(a=='APPENDICES' || a=='appendices'){
+	 if(a=== 'APPENDICES' || a=== 'appendices' || a=== 'Appendices'){
 		 
-		 $('#richtexteditor').hide();
+		 console.log("a--===");
+		 $('#summernoteeditor').hide();
 		 $('#editorHeading').hide();
 		 $('#editorHeading1').hide();
 		 $('#DocumentTable').show();
@@ -1041,7 +1036,7 @@ function moduleeditdisable(moduleid)
 		 
 	 }else{
 		 
-		 $('#richtexteditor').show();
+		 $('#summernoteeditor').show();
 		 $('#DocumentTable').hide();
 	  }
 	

@@ -1230,7 +1230,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	}
 
 	@Override
-	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode) throws Exception {
+	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode,String Action) throws Exception {
 		
 		 dao.AddIssue(tech);
 		
@@ -1238,7 +1238,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 		trans.setClosureId(tech.getTechnicalClosureId());
 		trans.setClosureForm("T");
-		trans.setClosureStatusCode("TIN");;
+		trans.setClosureStatusCode("TIN");
 		trans.setLabCode(LabCode);
 		trans.setActionBy(Long.parseLong(EmpId));
 		trans.setActionDate(sdtf.format(new Date()));
@@ -1707,6 +1707,43 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception {
 		
 		return dao.TCRTemplateChapterListByChapterParentId(chapterparentid);
+	}
+
+	@Override
+	public int AmendTechClosureList(String techClosureId) throws Exception {
+		
+		return dao.AmendTechClosureList(techClosureId);
+	}
+
+	@Override
+	public long AddNewRevision(ProjectClosureTechnical tech, String empId, String labCode, String techClosureId) throws Exception {
+		
+		
+		dao.AddIssue(tech);
+		
+     ProjectClosureTrans trans1=new ProjectClosureTrans();
+		
+		trans1.setClosureId(Long.parseLong(techClosureId));
+		trans1.setClosureForm("T");
+		trans1.setClosureStatusCode("TAM");
+		trans1.setLabCode(labCode);
+		trans1.setActionBy(Long.parseLong(empId));
+		trans1.setActionDate(sdtf.format(new Date()));
+		
+		 dao.addProjectClosureTransaction(trans1);
+		
+		
+       ProjectClosureTrans trans=new ProjectClosureTrans();
+		
+		trans.setClosureId(tech.getTechnicalClosureId());
+		trans.setClosureForm("T");
+		trans.setClosureStatusCode("TIN");
+		trans.setLabCode(labCode);
+		trans.setActionBy(Long.parseLong(empId));
+		trans.setActionDate(sdtf.format(new Date()));
+		
+		return dao.addProjectClosureTransaction(trans);
+		
 	}
 	
 }

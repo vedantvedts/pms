@@ -2248,7 +2248,12 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("closureId");
 			String Action=req.getParameter("Action");
 			
-			if(Action!=null && (Action.equalsIgnoreCase("Add") || Action.equalsIgnoreCase("Amend"))) {
+			
+			if(Action!=null && Action.equalsIgnoreCase("Add")) {
+				
+				
+		//ProjectClosureTechnical result = service.getProjectClosureTechnicalById(TechClosureId);
+				
 				
 			ProjectClosureTechnical tech=new ProjectClosureTechnical();
 				
@@ -2258,13 +2263,14 @@ public class ProjectClosureController {
 			tech.setIssueDate(sdtf.format(new Date()));
 			tech.setStatusCode("TIN");
 			tech.setStatusCodeNext("TIN");
+			
 			tech.setCreatedBy(EmpId);
 			tech.setCreatedDate(sdtf.format(new Date()));
 			tech.setIsActive(1);
 			
 			
 			// TO ADD TECHNICAL CLOSURE DOCUMENT TEMPLATE
-			if(Action!=null && (Action.equalsIgnoreCase("Add"))) {
+			
 				
 			List<Object[]> TCRTemplateSectionList = service.TCRTemplateSectionList();
 			
@@ -2331,9 +2337,9 @@ public class ProjectClosureController {
 					
 				}
 			}
-		}
+		
 				
-			long save=service.AddIssue(tech,EmpId,LabCode);
+			long save=service.AddIssue(tech,EmpId,LabCode,Action);
 			
 			if (save > 0) {
 				redir.addAttribute("result", "Technical Closure "+Action+"ed Successfully");
@@ -2977,6 +2983,78 @@ public class ProjectClosureController {
 					logger.error(new Date() +"Inside TechnicalClosureReportFreezeDownload.htm "+UserId,e);
 			}
 		}
+		
+		
+		@RequestMapping(value="AmendTechClosureList.htm", method= {RequestMethod.POST,RequestMethod.GET})
+		public String AmendTechClosureList(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String LabCode =(String ) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside AmendTechClosureList.htm "+UserId);
+			try {
+					
+				
+				String Action = req.getParameter("Amend");
+				if(Action!=null) {
+					String[] split = Action.split("//");
+				String Particulars=	split[0];
+				String RevisionNo=split[1];
+				String closureId=split[2];
+				String TechClosureId=split[3];
+					
+					
+			/*ProjectClosureTechnical result = service.getProjectClosureTechnicalById(TechClosureId);*/
 			
-     }
+			
+			int AmendTechClosureList =service.AmendTechClosureList(TechClosureId);
+			
+				
+				ProjectClosureTechnical tech=new ProjectClosureTechnical();
+					
+				tech.setParticulars(Particulars);
+				tech.setClosureId(Long.parseLong(closureId));
+				tech.setRevisionNo(RevisionNo);
+				tech.setIssueDate(sdtf.format(new Date()));
+				tech.setStatusCode("TIN");
+				tech.setStatusCodeNext("TIN");
+				
+				tech.setCreatedBy(EmpId);
+				tech.setCreatedDate(sdtf.format(new Date()));
+				tech.setIsActive(1);
+					
+				long save=service.AddNewRevision(tech,EmpId,LabCode,TechClosureId);
+				
+				if (save > 0) {
+					redir.addAttribute("result", "Technical Closure Amended Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Technical Closure Amend Unsuccessful");
+				}
+				
+				redir.addAttribute("closureId", closureId);
+				}	
+				return "redirect:/TechClosureList.htm";
+			
+			
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside AmendTechClosureList.htm "+UserId, e);
+				return "static/Error";			
+			}
+
+		}
+	
+    }
+
+
+
+
+
+
+
+
+
+
+
 

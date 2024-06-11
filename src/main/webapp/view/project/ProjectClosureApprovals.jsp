@@ -294,28 +294,37 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             											<div class="d-flex w-100">
                             												<div class="w-70">
-                            													<textarea rows="2" cols="70" class="form-control" name="remarks" maxlength="200" placeholder="Enter remarks here( max 250 characters )" style="width:98%;"></textarea>
+                            													<textarea rows="2" cols="70" class="form-control" name="remarks"  id="remarksarea" maxlength="2000" placeholder="Enter remarks here( max 250 characters )" style="width:98%;"></textarea>
                             												</div>
 																			<div class="w-30">
-																			<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("TDG")) {%>
+																			<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("TDG")) { %>
 																			
 																			      <button type="button" class="btn btn-sm btn-success mt-1" name="Action" value="A"  onclick="OpenApproveModal('<%=form[10] %>','<%=form[4] %>')"
 																				      style="font-weight: 500" >
 																						 Approve
 								                                                   </button>
+								                                                   
+								                                                   
+								                                                   
+								                                                   <button type="button" class="btn btn-sm btn-danger mt-1" name="Action" value="R"  onclick="OpenReturnModal('<%=form[10] %>','<%=form[4] %>')" style="font-weight: 500"
+																					        > Return
+																				</button>
 																			
 																			
 																			<%}else{ %>
-																				<button type="submit" class="btn btn-sm btn-success mt-1" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate"
+																				<button type="submit" class="btn btn-sm btn-success mt-1" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate
 																				 style="font-weight: 500" onclick="return confirm('Are You Sure To Recommend );">
 																						 Recommend
 								                                               </button>
 								                                               
-								                                               <%} %>
 								                                               
-																				<button type="submit" class="btn btn-sm btn-danger mt-1" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate" style="font-weight: 500"
+								                                               <button type="submit" class="btn btn-sm btn-danger mt-1" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate" style="font-weight: 500"
 																					onclick="return confirm('Are You Sure To Return');"> Return
 																				</button>
+								                                               
+								                                               <%} %>
+								                                               
+																				
 																			</div>
 																			
 																			
@@ -544,7 +553,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 			
 			
 			 <div class="col-md-7">
-				<label class="control-label" >Approval Date</label><span class="mandatory">*</span>
+				<label class="control-label-datetype" ></label><span class="mandatory">*</span>
 				<input type="text" class="form-control" id="approvalDate" name="approvalDate" readonly>
 			</div>
 		
@@ -556,6 +565,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
          </div>
          
           <input type="hidden" name="TechAndClosureId"  id="TechAndclosureId" value="" > 
+          <input type="hidden" name="remarks"  id="remarks" value="">
          <!-- <input type="hidden" name="TechnicalClsoureId" id="TechClosureId" value="" >
          <input type="hidden" name="ClosureId" id="ClosureId" value="" >
          <input type="hidden" name="Action"  value="A" >  -->
@@ -627,14 +637,29 @@ $('#fromdate').daterangepicker({
 	
 	function OpenApproveModal(TechClosureId,ClosureId){
 		
+		$('#remarks').val($('#remarksarea').val()); 
 		
 		/* $('#TechClosureId').val(TechClosureId);
 		$('#ClosureId').val(ClosureId); */
 		var combinedValue = ClosureId + '/' + TechClosureId + '/A';
 		$('#TechAndclosureId').val(combinedValue);
+		$('.control-label-datetype').html('Approval Date');
 		
 		$('#ApprovalModal').modal('toggle');
 	}
+	
+	function OpenReturnModal(TechClosureId,ClosureId){
+		
+		$('#remarks').val($('#remarksarea').val()); 
+		/* $('#TechClosureId').val(TechClosureId);
+		$('#ClosureId').val(ClosureId); */
+		var combinedValue = ClosureId + '/' + TechClosureId + '/R';
+		$('#TechAndclosureId').val(combinedValue);
+		$('.control-label-datetype').html('Return Date');
+		
+		$('#ApprovalModal').modal('toggle');
+	}
+	
 	
 	
 	function LabcodeSubmit() {

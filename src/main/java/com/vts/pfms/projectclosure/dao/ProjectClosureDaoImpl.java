@@ -884,7 +884,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 	}
 
-	private static final String TECHCLOSURECONTENT="SELECT a.ChapterId,a.ChapterParentId,a.SectionId,a.ChapterName,a.ChapterContent FROM \r\n"
+	private static final String TECHCLOSURECONTENT="SELECT DISTINCT a.ChapterId,a.ChapterParentId,a.SectionId,a.ChapterName,a.ChapterContent FROM \r\n"
 			+ "pfms_closure_technical_chapters a,\r\n"
 			+ "pfms_closure_technical_sections b,pfms_closure_technical c WHERE \r\n"
 			+ "a.SectionId=b.SectionId AND b.ClosureId=c.ClosureId AND c.ClosureId=:closureId ORDER BY ChapterParentId";
@@ -1201,6 +1201,23 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			logger.error(new Date()  + "Inside DAO TCRTemplateChapterListByChapterParentId" + e);
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
+		}
+	}
+
+	
+	private static final String AMENDCLOSURELIST="UPDATE pfms_closure_technical SET StatusCode='TAM',StatusCodeNext='TAM' WHERE  TechnicalClosureId=:techClosureId";
+	@Override
+	public int AmendTechClosureList(String techClosureId) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(AMENDCLOSURELIST);
+			query.setParameter("techClosureId", techClosureId);
+			return query.executeUpdate();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO AmendTechClosureList " + e);
+			e.printStackTrace();
+			return 0;
 		}
 	}
 }
