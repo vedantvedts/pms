@@ -158,7 +158,7 @@ label {
 				<div class="card shadow-nohover">
 					<div class="card-header">
 						<div class="row">
-						<div class="col-md-2"><h4>Login List</h4></div>
+						<div class="col-md-2"><h4>User Credentials List</h4></div>
 						<div class="col-md-10" align="right">
 							 <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
 							  <form action="LoginExcelUpload.htm" method="post" enctype="multipart/form-data">
@@ -200,7 +200,7 @@ label {
 						<form action="UserManager.htm" method="POST" name="frm1">
 							<div class="table-responsive">
 								<table
-									class="table table-bordered table-hover table-striped table-condensed "
+									class="table table-bordered table-hover table-striped table-condensed"
 									id="myTable">
 									<thead>
 										<tr>
@@ -271,7 +271,7 @@ label {
 function Edit(myfrm){
 	 var fields = $("input[name='Lid']").serializeArray();
 	  if (fields.length === 0){
-			alert("PLESE SELECT ONE RECORD");
+			alert("PLEASE SELECT ONE RECORD");
 	 		event.preventDefault();
 			return false;
 		}
@@ -282,11 +282,11 @@ function Delete(myfrm){
 	var fields = $("input[name='Lid']").serializeArray();
 
 	  if (fields.length === 0){
-		 alert("PLESE SELECT ONE RECORD");
+		 alert("PLEASE SELECT ONE RECORD");
 		 event.preventDefault();
 		return false;
 	}
-	  var cnf=confirm("Are U Sure To Delete!");
+	  var cnf=confirm("Are You Sure To Delete!");
 	if(cnf){
 		return true;
 	}else{
@@ -298,11 +298,11 @@ function ResetPwd(myfrm){
 	var fields = $("input[name='Lid']").serializeArray();
 
 	  if (fields.length === 0){
-		 alert("PLESE SELECT ONE RECORD");
+		 alert("PLEASE SELECT ONE RECORD");
 		 event.preventDefault();
 		return false;
 	}
-	  var cnf=confirm("Are U Sure To Reset Password!");
+	  var cnf=confirm("Are You Sure To Reset The Password!");
 	if(cnf){
 		return true;
 	}else{

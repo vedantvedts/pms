@@ -76,7 +76,7 @@ if(ses1!=null){
  			<div class="card shadow-nohover" >
 				
 				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
-                    <b class="text-white">Login Type Add</b>
+                    <b class="text-white">User Credentials Add</b>
         		</div>
         
         		<div class="card-body">

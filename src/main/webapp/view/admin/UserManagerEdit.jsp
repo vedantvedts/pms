@@ -9,7 +9,7 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-<title>LOGIN TYPE EDIT</title>
+<title>User Credentials Update</title>
 <style type="text/css">
 
 .input-group-text{
@@ -79,7 +79,7 @@ if(ses1!=null){
  			<div class="card shadow-nohover" >
 				
 				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
-                    <b class="text-white">Login  Edit</b>
+                    <b class="text-white">User Credentials Update</b>
         		</div>
         
         		<div class="card-body">
