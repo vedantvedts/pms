@@ -1569,6 +1569,8 @@ var dt = new Date(from[2], from[1] - 1, from[0]);
             formData.append("${_csrf.parameterName}", "${_csrf.token}");
     	if(Progress==0){
     		alert("Please give some progress");
+    	}else if (Progress>100){
+    		alert("progress can not be more than 100");
     	}
     	else{
     		if(confirm('Are you sure to submit progress?')){
