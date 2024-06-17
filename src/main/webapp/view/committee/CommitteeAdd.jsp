@@ -1,12 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
+<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <!DOCTYPE html>
 <html>
 
 <head>
 	<meta charset="ISO-8859-1">
 	<jsp:include page="../static/header.jsp"></jsp:include>
-
+<script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
 
 
 	<title> ADD COMMITTEE</title>
@@ -187,8 +193,12 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							<div class="col-md-6">
 								
 								<div class="form-group">
-									<label class="control-label">Description<span class="mandatory" style="color: red;">*</span></label>
-									<textarea class="form-control"  id="description" name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"></textarea>
+									<label class="control-label">Purpose<span class="mandatory" style="color: red;">*</span></label>
+									<!-- <textarea class="form-control"  id="description" name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"></textarea> -->
+									<div id="Editordescription" class="center">
+															<textarea name="description"  id="description" ></textarea>
+														</div>
+								
 								</div>
 
 							</div>
@@ -196,7 +206,10 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 								
 								<div class="form-group">
 									<label class="control-label">Terms Of Reference <span class="mandatory" style="color: red;">*</span></label>
-									<textarea class="form-control" id="TOR"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"></textarea>
+									<!-- <textarea class="form-control" id="TOR"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"></textarea> -->
+										<div id="EditorReference" class="center">
+															<textarea name="TOR"  id="TOR" ></textarea>
+														</div>
 								</div>
 
 							</div>
@@ -248,8 +261,19 @@ function committeenamecheck(frmid){
 	var periodic=$('#periodic').val();
 	var periodicduration=$('#periodicdurationfield').val().trim();
 	var guidelines=$('#guidelines').val().trim();
+	
+	
+	 var data1 =CKEDITOR.instances['Editordescription'].getData();
+	 var data2 =CKEDITOR.instances['EditorReference'].getData();
+
+	 $('#description').val(data1);
+	 $('#TOR').val(data2);
+	
 	var description=$('#description').val().trim();
 	var TOR=$('#TOR').val().trim();
+	
+	console.log("description" + description)
+	console.log("TOR" + TOR)
 	
 	$.ajax({
 
@@ -281,7 +305,7 @@ function committeenamecheck(frmid){
 			{
 				if(confirm('Are you Sure To Save ?'))
 				{
-					if(fullname==="" ||shortname==="" ||proapplicable==="" || ctype===null || technontech==="" || periodic==="" || guidelines==="" || description==="" || TOR==="" || ( periodic==="P" && ( periodicduration==="0" ||  periodicduration==="") )  ) 
+					if(fullname==="" ||shortname==="" ||proapplicable==="" || ctype===null || technontech==="" || periodic==="" || guidelines==="" || ( periodic==="P" && ( periodicduration==="0" ||  periodicduration==="") )  ) 
 					{
 						alert('Please Fill All the Fields ? ');
 						
@@ -342,9 +366,106 @@ document.getElementById('periodic').addEventListener('change', function() {
 	
 	});
 
+
+
+
 </script>		
 
-		
+	<script type="text/javascript">
+	
+	var editor_config = {
+			toolbar : [
+					{
+						name : 'paragraph',
+						items : [ 'NumberedList', 'BulletedList', '-',
+								'Outdent', 'Indent', '-', 'Blockquote' ]
+					},
+					{
+						name : 'styles',
+						items : [ 'Format', 'Font', 'FontSize' ]
+					},
+					{
+						name : 'align',
+						items : [ 'JustifyLeft', 'JustifyCenter',
+								'JustifyRight', 'JustifyBlock' ]
+					} ],
+			removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+			customConfig : '',
+			disallowedContent : 'img{width,height,float}',
+			extraAllowedContent : 'img[width,height,align]',
+			height : 120,
+			contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
+			bodyClass : 'document-editor',
+			format_tags : 'p;h1;h2;h3;pre',
+
+			removeDialogTabs : 'image:advanced;link:advanced',
+
+			stylesSet : [
+
+			{
+				name : 'Marker',
+				element : 'span',
+				attributes : {
+					'class' : 'marker'
+				}
+			}, {
+				name : 'Cited Work',
+				element : 'cite'
+			}, {
+				name : 'Inline Quotation',
+				element : 'q'
+			},
+
+			{
+				name : 'Special Container',
+				element : 'div',
+				styles : {
+					padding : '5px 10px',
+					background : '#eee',
+					border : '1px solid #ccc'
+				}
+			}, {
+				name : 'Compact table',
+				element : 'table',
+				attributes : {
+					cellpadding : '5',
+					cellspacing : '0',
+					border : '1',
+					bordercolor : '#ccc'
+				},
+				styles : {
+					'border-collapse' : 'collapse'
+				}
+			}, {
+				name : 'Borderless Table',
+				element : 'table',
+				styles : {
+					'border-style' : 'hidden',
+					'background-color' : '#E6E6FA'
+				}
+			}, {
+				name : 'Square Bulleted List',
+				element : 'ul',
+				styles : {
+					'list-style-type' : 'square'
+				}
+			}, {
+				filebrowserUploadUrl : '/path/to/upload-handler'
+			}, ]
+		};
+	CKEDITOR.replace('Editordescription', editor_config);
+	CKEDITOR.replace('EditorReference', editor_config);
+	
+	
+	
+/* 	 $('#addcommitteefrm').submit(function() {
+		 var data1 =CKEDITOR.instances['Editordescription'].getData();
+		 var data2 =CKEDITOR.instances['EditorReference'].getData();
+		 console.log(data);
+		 $('#description').val(data1);
+		 $('#TOR').val(data2);
+		 }); */
+	</script>	
 		
 </body>
 

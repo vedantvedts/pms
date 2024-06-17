@@ -151,9 +151,13 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 								<%} %>
 							</h5>
 						</div>
-						<div class="col-md-2 justify-content-end" style="float: right;">
-
-
+						<div class="col-md-2 justify-content-end">
+						<form action="MSprojectGanttChart.htm">
+						<button class="btn btn-sm btn-info" style="margin-top:-6px;">Gantt Chart</button>
+						
+						 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						 <input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+						</form>
 						</div>
 					</div>
 				</div>
@@ -164,7 +168,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 
 								<tr>
 									<th style="text-align: left; max-width: 80px;">Expand</th>
-									<th style="text-align: left; max-width: 100px;">Level.</th>
+									<th style="text-align: left; max-width: 100px;">Task no.</th>
 									<th style="text-align: center; max-width: 120px;">TaskId</th>
 									<th style="text-align: left; max-width: 270px;">Task Name</th>
 									<th style="text-align: left; max-width: 200px;">Assignee</th>
@@ -225,13 +229,13 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 														
 							 							 <tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>" style="font-weight: bold;">
                                                          <td></td>
-                                                         <td>Sub -Level</td>
+                                                         <td>Task sub-level No</td>
                                                          <td>Task Id</td>
-                                                         <td >Task Name</td>	
+                                                         <td>Task Name</td>	
 														 <td >Assignee</td>	
                                                          <td>Start Date</td>
                                                          <td>End Date</td>
-                                                          <td>Progress</td>
+                                                         <td>Progress</td>
                                                          </tr>
 														<%
 														int countA=0;
@@ -425,6 +429,59 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 															</td>
 														</tr>	
 													
+													<!--  5th level -->
+													
+																			<%
+														int countE=0;
+														if(mstaskList!=null && mstaskList.size()>0){
+															for(Object[]level6 : mstaskList){
+														 if(level6[8].toString().equalsIgnoreCase("5")  && level6[7].toString().equalsIgnoreCase(level5[6].toString())){
+														%>
+															
+																																	<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
+							<td></td>
+							<td style=""><%if(level6[9]!=null) {%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<%=level6[9].toString() %>  <%}else{ %>- <%} %></td>
+							 <td style=""><%if(level6[6]!=null) {%><%=level6[6].toString() %>  <%}else{ %>- <%} %></td>
+							 <td style=""><%if(level6[10]!=null) {%><%=level6[10].toString() %>  <%}else{ %>- <%} %></td>
+							 <td style=""><%if(level6[4]!=null) {%><%=level6[4].toString() %>  <%}else{ %>- <%} %>, <%if(level6[5]!=null ) {%> <%=level6[5].toString() %> <%}else{ %><%} %></td>
+							 <td style="">
+							 <%if(level6[13]!=null) {%><%=level6[13].toString() %>  <%}else{ %><%=level6[11].toString() %><%} %>
+							 
+							 </td>
+							 <td style="">
+							 <%if(level6[14]!=null) {%><%=level6[14].toString() %>  <%}else{ %> <%=level6[12].toString() %><%} %>
+							 
+							 </td>
+							 <td style="">
+							 
+												 <%if(Integer.parseInt(level6[15].toString())>0){ %>
+															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress-bar progress-bar-striped
+															<%if(Integer.parseInt(level6[15].toString())<=100 && Integer.parseInt(level6[15].toString())>75){ %>
+															 bg-success
+															<%} else if(Integer.parseInt(level6[15].toString())<=75 && Integer.parseInt(level6[15].toString())>50){ %>
+															  bg-info
+															<%} else if(Integer.parseInt(level6[15].toString())<=50 && Integer.parseInt(level6[15].toString())>25){ %>
+															  bg-warning
+															<%} else if(Integer.parseInt(level6[15].toString())<=25 && Integer.parseInt(level6[15].toString())>0){ %>
+															  bg-danger 
+															<%}  %>
+															" role="progressbar" style=" width: <%=level6[15].toString() %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%=level6[15].toString() %>
+															</div> 
+															</div> <%}else{ %>
+															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Not Started
+															</div>
+															</div> <%} %>
+															</td>
+														</tr>
+													
+													
+													
+													
+														<%countE++;}}} %>
 														<%countD++;}}} %>
 														<%countC++;}}} %> 
 														<%countB++;}}} %>

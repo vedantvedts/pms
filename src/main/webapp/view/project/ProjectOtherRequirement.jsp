@@ -13,9 +13,10 @@
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
 <script src="${richtexteditorjs}"></script>
 <script src="${allpluginsjs}"></script>
-<link href="${contentCss}" rel="stylesheet" />
+
 <link href="${richtexteditorcss}" rel="stylesheet" />
 
   <style>

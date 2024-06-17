@@ -2871,7 +2871,6 @@ public class MilestoneController {
 					        
 					        List<Object[]>mstaskList = service.getMsprojectTaskList(ProjectId);
 					        
-					        System.out.println(mstaskList!=null ?"mstaskList --- "+ mstaskList.size():ProjectId);
 					    	req.setAttribute("ProjectList",projlist);
 							req.setAttribute("ProjectId", ProjectId);
 							req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
@@ -2887,6 +2886,36 @@ public class MilestoneController {
 					
 					return "milestone/MSprojectMilestone";
 				}
+				
+				@RequestMapping(value = "MSprojectGanttChart.htm", method = {RequestMethod.GET,RequestMethod.POST})
+				public String MSprojectGanttChart(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+				{
+					
+					
+					String UserId = (String) ses.getAttribute("Username");
+					String Logintype= (String)ses.getAttribute("LoginType");
+					String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+					String LabCode = (String)ses.getAttribute("labcode");
+					logger.info(new Date() +"Inside MSprojectGanttChart.htm "+UserId);
+					
+					
+					try {
+						String ProjectId=req.getParameter("ProjectId");
+						 List<Object[]>mstaskList = service.getMsprojectTaskList(ProjectId);
+							req.setAttribute("ProjectId", ProjectId);
+							req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
+							req.setAttribute("mstaskList",mstaskList);
+						
+					}catch (Exception e) {
+						e.printStackTrace(); 
+						logger.error(new Date() +" Inside MSprojectGanttChart.htm "+UserId, e); 
+						return "static/Error";
+					}
+					
+					return "milestone/MsProjectGantChart";
+					
+				}
+				
 				
 				
 }

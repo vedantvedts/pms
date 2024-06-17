@@ -8,6 +8,39 @@
 
 <%
 String email=(String)request.getAttribute("email");  
+List<Object[]> committeeallmemberslist = (List<Object[]>) request.getAttribute("committeeallmemberslist");
+Object[] committeeedata = (Object[]) request.getAttribute("committeeedata");
+Object[] projectdata = (Object[]) request.getAttribute("projectdata");
+Object[] initiationdata = (Object[]) request.getAttribute("initiationdata");
+Object[] labdetails = (Object[]) request.getAttribute("labdetails"); 
+Object[] committeedescription = (Object[]) request.getAttribute("committeedescription");
+Object[] committeemaindata = (Object[]) request.getAttribute("committeemaindata");
+String projectid=committeemaindata[2].toString() ;
+String divisionid=committeemaindata[3].toString() ;
+String initiationid=committeemaindata[4].toString() ;
+List<Object[]> constitutionapprovalflow=(List<Object[]>)request.getAttribute("constitutionapprovalflow");
+String flag = (String)request.getAttribute("flag");
+
+
+String projectCode="";
+if(!projectid.equalsIgnoreCase("0")){
+	projectCode = projectdata[4].toString();
+}
+
+FormatConverter fc = new FormatConverter();
+SimpleDateFormat sdf = fc.getRegularDateFormat();
+SimpleDateFormat sdf1 = fc.getSqlDateFormat();
+SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
+SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+List<String>memtypes=Arrays.asList("CH","PS","CS");
+List<Object[]>committeeallmemberslistwithoutMs=committeeallmemberslist.stream().filter(i->!memtypes.contains(i[8].toString())).collect(Collectors.toList());
+List<Object[]>committeeallmemberslistwithMs=committeeallmemberslist.stream().filter(i->memtypes.contains(i[8].toString())).collect(Collectors.toList());
+committeeallmemberslistwithoutMs=committeeallmemberslistwithoutMs.stream()
+	.sorted(Comparator.comparingInt(e -> Integer.parseInt(e[11].toString()))).collect(Collectors.toList());
+List<Object[]>tempList=new ArrayList<>();
+tempList.addAll(committeeallmemberslistwithoutMs);
+tempList.addAll(committeeallmemberslistwithMs);
 if(!email.equals("Y")){ %>
 <!DOCTYPE html>
 <html>
@@ -35,11 +68,28 @@ p{
               margin-left: .5in;
               margin-right: .5in;
               margin-buttom: .4in;
-              border: 1px solid black;
-                       
+              /* border: 1px solid black; */
+            @bottom-left { 
+             font-size: 13px;
+	          margin-bottom: 30px;
+	          content: "Initiated By : <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%>"; 
+          } 
+          
+           @bottom-right { 
+             font-size: 13px;
+	          margin-bottom: 30px;
+	           margin-right: 60px;
+	          content: "Recommended By :- "; 
+          }               
          
  }
+ .text-black{
+ font-weight: bold;
+ }
  
+ li{
+ text-align: left;
+ }
  </style>
  <body>
 
@@ -50,86 +100,70 @@ p{
 
 
 <%
-List<Object[]> committeeallmemberslist = (List<Object[]>) request.getAttribute("committeeallmemberslist");
-Object[] committeeedata = (Object[]) request.getAttribute("committeeedata");
-Object[] projectdata = (Object[]) request.getAttribute("projectdata");
-Object[] initiationdata = (Object[]) request.getAttribute("initiationdata");
-Object[] labdetails = (Object[]) request.getAttribute("labdetails"); 
-Object[] committeedescription = (Object[]) request.getAttribute("committeedescription");
-Object[] committeemaindata = (Object[]) request.getAttribute("committeemaindata");
-String projectid=committeemaindata[2].toString() ;
-String divisionid=committeemaindata[3].toString() ;
-String initiationid=committeemaindata[4].toString() ;
-List<Object[]> constitutionapprovalflow=(List<Object[]>)request.getAttribute("constitutionapprovalflow");
-String flag = (String)request.getAttribute("flag");
 
-FormatConverter fc = new FormatConverter();
-SimpleDateFormat sdf = fc.getRegularDateFormat();
-SimpleDateFormat sdf1 = fc.getSqlDateFormat();
-SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
-SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-List<String>memtypes=Arrays.asList("CH","PS","CS");
-List<Object[]>committeeallmemberslistwithoutMs=committeeallmemberslist.stream().filter(i->!memtypes.contains(i[8].toString())).collect(Collectors.toList());
-List<Object[]>committeeallmemberslistwithMs=committeeallmemberslist.stream().filter(i->memtypes.contains(i[8].toString())).collect(Collectors.toList());
-committeeallmemberslistwithoutMs=committeeallmemberslistwithoutMs.stream()
-	.sorted(Comparator.comparingInt(e -> Integer.parseInt(e[11].toString()))).collect(Collectors.toList());
-List<Object[]>tempList=new ArrayList<>();
-tempList.addAll(committeeallmemberslistwithoutMs);
-tempList.addAll(committeeallmemberslistwithMs);
 %>
 
 
  <div style="text-align: center;" align="center">
+ <div  >
+ <span style="float: left; font-size:13px;">Ref No. - <%if(committeemaindata[11]!=null) {%><%= projectCode.length()>1?projectCode+"/ ":"" %><%=committeemaindata[11].toString()%><%}else{ %> -<%} %> </span>
+ <span style="float: right; font-size:13px;">Date :  <%if(committeemaindata[12]!=null){ %>  <%=sdf.format(sdf1.parse(committeemaindata[12].toString()))%><%} %></span>
+ </div>  
+<br>
  	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center"><%=labdetails[2]+"("+labdetails[1]+")" %> </h3></div>  
  	
-	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center"> Sub :   <u>Formulation of Committee for creating <%=committeeedata[1]%> <%if(Long.parseLong(projectid)>0) {%> for Project:<%=projectdata[4] %>    <%}else if(Long.parseLong(initiationid)>0){ %>Initiated Project: <%=initiationdata[1]%><%} %></u> </h3></div>
+	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center">Formation of Committee  <%=committeeedata[2]%> (<%=committeeedata[1].toString()%>) </h3></div>
 	<br>
 	<div  align="center">
 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
 		<tr>
 			<td>
-				<div style="text-align: center;" ><h3 style="margin-bottom: 2px; max-width: 650px;" align="center">Committee constitution </h3></div>
-			</td>
+<!-- 				<div style="text-align: center;" ><h3 style="margin-bottom: 2px; max-width: 650px;" align="center">Committee constitution </h3></div>
+ -->			</td>
 		</tr>
 		<tr>
 			<td>
 				<div style="text-align: center;" >
-					<p style="margin-bottom: 2px; max-width: 650px;text-align: justify;text-justify: inter-word;text-align: justify;text-justify: inter-word;" align="center">
+					<div style="margin-bottom: 2px; max-width: 650px;text-align: justify;text-justify: inter-word;text-align: justify;text-justify: inter-word;" align="center">
 						<%if(Long.parseLong(projectid)>0 || Long.parseLong(divisionid)>0 || Long.parseLong(initiationid)>0){ %>
 								<%if(committeedescription[1]!=null){ %><%=committeedescription[1] %> <%}else{ %>No Data <%} %>
 						<%}else { %>
 								<%if(committeeedata[10]!=null){ %><%=committeeedata[10] %> <%}else{ %>No Data <%} %>
 						<%} %>
-					</p>
+					</div>
 				</div>
 			</td>
 		</tr>
 	</table>
-	<br><br>
+	
 	<!-- -------------------------------------------members-------------------------------- -->
 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
 	<thead>
 	<tr >
-	<td style="text-align: left">Reference No. : <%if(committeemaindata[11]!=null) {%> <%=committeemaindata[11].toString()%><%}else{ %> -<%} %> </td>
-	<td style="text-align: right">Date: <%if(committeemaindata[12]!=null){ %>  <%=sdf.format(sdf1.parse(committeemaindata[12].toString()))%><%} %></td>
+<%-- 	<td style="text-align: left">Reference No. : <%if(committeemaindata[11]!=null) {%> <%=committeemaindata[11].toString()%><%}else{ %> -<%} %> </td>
+	<td style="text-align: right">Date: <%if(committeemaindata[12]!=null){ %>  <%=sdf.format(sdf1.parse(committeemaindata[12].toString()))%><%} %></td> --%>
 	</tr>
 	</thead>
 	</table>
-	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
+	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse;border:1px solid black; " >
 		<tr >
-			<td colspan="5" style="text-align: center;padding-bottom:15px; ">Director,<%=labdetails[1].toString() %> has constituted the  following committee </td>
+			<%-- <td colspan="5" style="text-align: center;padding-bottom:15px; ">Director,<%=labdetails[1].toString() %> has constituted the  following committee </td> --%>
 		</tr>
-		
+					<tr>				
+				<td class="text-black"  style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;">SN .&nbsp;</td>
+				<td class="text-black"  style="max-width: 300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;Name, Designation</td>
+				<td class="text-black"  style="max-width: 150px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;">Estt. / Agency </td>
+				<td class="text-black"  style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp; Role
+				</td>
+				</tr>
 		<% int i=0;
 			for(Object[] member : tempList){
 				i++; %>
 			<tr>				
-				<td  style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px "><%=i %> .&nbsp;</td>
-				<td style="max-width: 35px;text-align: center;padding: 5px 0px 5px 0px "> &nbsp; </td>
-				<td style="max-width: 300px;text-align: left; padding: 5px 0px 5px 0px">&nbsp;<%=member[2] %> (<%=member[4] %>) <%if(member[8].toString().equals("CW")){ %>(<%=member[9]%>)<%}  %>&nbsp;</td>
-				<td style="max-width: 20px;text-align: center;padding: 5px 0px 5px 0px">&nbsp;: &nbsp;</td>
-				<td style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px">&nbsp; 
+				<td  style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=i %> .&nbsp;</td>
+				<td style="max-width: 300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;<%=member[2] %>, <%=member[4] %> <%if(member[8].toString().equals("CW")){ %><%=member[9]%><%}  %>&nbsp;</td>
+				<td  style="max-width: 150px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=member[9]%> </td>
+				<td style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp; 
 				<%if(member[8].toString().equals("CC")){ %>Chairperson<%}
 				else if(member[8].toString().equals("CH")){ %>Co-Chairperson<%} 
 		 		else if(member[8].toString().equals("CS")){ %>Member Secretary<%} 
@@ -145,8 +179,8 @@ tempList.addAll(committeeallmemberslistwithMs);
 	<!-- -------------------------------------------members-------------------------------- -->
 		<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
 		<tr>
-			<td>				
-				<div style="text-align: center;" ><h3 style="margin-bottom: 2px; width: 650px;" align="center">Terms of Reference </h3></div>
+			<td >				
+				<h3 style="margin-bottom: 2px; width: 650px; text-align:left;" >Terms of Reference </h3>
 			</td>
 		</tr>
 		<tr>
@@ -168,12 +202,12 @@ tempList.addAll(committeeallmemberslistwithMs);
 	</table>
 	</div>
 </div>
-					 	<div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
+<%-- 					 	<div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
 				                <table  align="center" <%if(flag!=null && flag.equalsIgnoreCase("Y")) {%>  style="float:right" <%}else{ %> style="margin-left:55%;"<%} %>>
 				                	<tr>
-				                		<td class="trup" style="">
+				                		<!-- <td class="trup" style="">
 				                			Constituted By
-				                		</td>
+				                		</td> -->
 				                	
 				                			                		
 				                	</tr>			   
@@ -190,10 +224,19 @@ tempList.addAll(committeeallmemberslistwithMs);
 				                		</td>
 				                	</tr>             	
 				                </table>			             
-						 	</div>
-	<div class="row " style="text-align: left; padding-top: 10px;margin-top:10px;">
-	<div style="margin-top:30px;margin-left:10px;">Recommended Officer :- </div>
-	<div style="margin-top:10px;margin-left:10px;">Approving Officer :-</div>
+						 	</div> --%>
+	<div class="row " style="text-align: left;">
+	<br><br><br>
+	<div align="center" style="text-align: center">
+	Approved / Not Approved
+	</div>
+	<br>
+	<br>
+	<div align="center" style="text-align: center">
+	Director
+	</div>
+<!-- 	<div style="margin-top:30px;margin-left:10px;">Recommended Officer :- </div>
+	<div style="margin-top:10px;margin-left:10px;">Approving Officer :-</div> -->
 	</div>
 	<%
 	if (!email.equals("Y")) {

@@ -81,6 +81,10 @@ body {
 	text-align:center;
 }
 
+.fullname{
+margin-left:3px!important;
+text-align:left!important;
+}
 /* icon styles */
 .cc-rockmenu {
 	color: fff;
@@ -269,7 +273,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 										   			   %>
 														<tr>
 															<td><%=count1 %></td>
-															<td><%=obj[2] %></td>
+															<td class="fullname"><%=obj[2] %></td>
 															<td><%=obj[1] %></td>
 															<td>
 															<%if(obj[3].toString().equals("S")){%>Standard<%}else{ %>Adhoc<%} %>
