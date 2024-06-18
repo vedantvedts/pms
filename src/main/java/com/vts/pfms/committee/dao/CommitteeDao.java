@@ -307,6 +307,7 @@ public interface CommitteeDao {
 	public List<Object[]> MeettingList(String projectId, String committeeId) throws Exception;
 	public List<Object[]> MeettingList(String projectid);
 	public List<Object[]> SpecialEmployeeListInvitations(String labCode,String scheduleid) throws Exception;
+	public List<Object[]> allconstitutionapprovalflowData(String committeemainid)throws Exception;
 
 
 }

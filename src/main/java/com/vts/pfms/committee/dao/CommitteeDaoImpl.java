@@ -3113,5 +3113,17 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 		return list;
 	}
+	
+	
+	private static final String FLOWDATAS="SELECT e.empname,d.designation,a.ConstitutionStatus FROM committee_constitution_history a, employee e , employee_desig d WHERE a.CommitteeMainId =:CommitteeMainId  AND a.ActionByEmpid=e.empid AND e.desigid=d.desigid";
+	@Override
+	public List<Object[]> allconstitutionapprovalflowData(String CommitteeMainId) throws Exception {
+	
+		Query query  = manager.createNativeQuery(FLOWDATAS);
+		query.setParameter("CommitteeMainId", CommitteeMainId);
+		
+		
+		return (List<Object[]>)query.getResultList();
+	}
 }
 

@@ -3398,4 +3398,10 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	public List<Object[]> SpecialEmployeeListInvitations(String labCode,String scheduleid) throws Exception {
 		return dao.SpecialEmployeeListInvitations(labCode,scheduleid);
 	}
+	
+	@Override
+	public List<Object[]> allconstitutionapprovalflowData(String committeemainid) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.allconstitutionapprovalflowData(committeemainid);
+	}
 }

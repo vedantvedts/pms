@@ -9,6 +9,18 @@
 <%
 String email=(String)request.getAttribute("email");  
 List<Object[]> committeeallmemberslist = (List<Object[]>) request.getAttribute("committeeallmemberslist");
+List<Object[]> constitutionapprovalflowData = (List<Object[]>) request.getAttribute("constitutionapprovalflowData");
+
+String RecommendedBy ="";
+
+if(constitutionapprovalflowData!=null && constitutionapprovalflowData.size()>0){
+	for(Object[]obj:constitutionapprovalflowData){
+		if(obj[2].toString().equalsIgnoreCase("RDO")){
+			RecommendedBy = obj[0].toString()+", "+obj[1].toString();
+		}
+	}
+}
+
 Object[] committeeedata = (Object[]) request.getAttribute("committeeedata");
 Object[] projectdata = (Object[]) request.getAttribute("projectdata");
 Object[] initiationdata = (Object[]) request.getAttribute("initiationdata");
@@ -69,18 +81,22 @@ p{
               margin-right: .5in;
               margin-buttom: .4in;
               /* border: 1px solid black; */
-            @bottom-left { 
+         <%if(constitutionapprovalflowData!=null && constitutionapprovalflowData.size()>0){%>
+           @bottom-left { 
              font-size: 13px;
 	          margin-bottom: 30px;
 	          content: "Initiated By : <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%>"; 
-          } 
+          	} 
+          <%}%>
           
+          <%if(RecommendedBy.length()>1){%>
            @bottom-right { 
              font-size: 13px;
 	          margin-bottom: 30px;
 	           margin-right: 60px;
-	          content: "Recommended By :- "; 
+	          content: "Recommended By :- <%=RecommendedBy%>"; 
           }               
+          <%}%>
          
  }
  .text-black{

@@ -3684,6 +3684,8 @@ public class CommitteeController {
 			req.setAttribute("labdetails", service.LabDetails(labCode));
 			req.setAttribute("email","N");
 			req.setAttribute("constitutionapprovalflow",service.ConstitutionApprovalFlowData (committeemainid));
+			
+			req.setAttribute("constitutionapprovalflowData", service.allconstitutionapprovalflowData(committeemainid));
 			return "committee/CommitteeConstitutionLetter" ;
 		}
 		catch (Exception e) {
@@ -3727,7 +3729,7 @@ public class CommitteeController {
 		
 		Object[] committeeedata=service.CommitteeDetails(committeeid);		
 		List<Object[]> committeeallmemberslist=service.CommitteeAllMembers(committeemainid);
-		
+		req.setAttribute("constitutionapprovalflowData", service.allconstitutionapprovalflowData(committeemainid));
 		req.setAttribute("committeeallmemberslist",committeeallmemberslist );
 		req.setAttribute("committeemaindata", committeemaindata);
 		req.setAttribute("committeeedata",committeeedata);
