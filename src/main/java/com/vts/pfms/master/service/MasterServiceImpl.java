@@ -135,7 +135,7 @@ public class MasterServiceImpl implements MasterService {
 		employee.setIsActive(1);
 		employee.setSrNo(0l);
 		employee.setLabCode(officermasteradd.getLabCode());
-		employee.setSupervisor(officermasteradd.getSupervisor());
+		employee.setSuperiorOfficer(officermasteradd.getSuperiorOfficer());
 		return dao.OfficeMasterInsert(employee);
 	}
 	
@@ -160,7 +160,7 @@ public class MasterServiceImpl implements MasterService {
 		empExternal.setCreatedDate(sdf1.format(new Date()));
 		empExternal.setIsActive(1);
 		empExternal.setMobileNo(Long.parseLong(officermasteradd.getMobileNo()));
-		empExternal.setSupervisor(officermasteradd.getSupervisor());
+		empExternal.setSuperiorOfficer(officermasteradd.getSuperiorOfficer());
 		return dao.OfficeMasterExternalInsert(empExternal);
 	}
 	
@@ -183,7 +183,7 @@ public class MasterServiceImpl implements MasterService {
 			empExternal.setModifiedBy(UserId);
 			empExternal.setModifiedDate(sdf1.format(new Date()));
 			empExternal.setEmpId(Long.parseLong(officermasteradd.getEmpId()));
-			empExternal.setSupervisor(officermasteradd.getSupervisor());
+			empExternal.setSuperiorOfficer(officermasteradd.getSuperiorOfficer());
 			return dao.OfficerMasterUpdate(empExternal);
 		
 	}

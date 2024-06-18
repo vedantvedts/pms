@@ -35,12 +35,12 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
 	private static final String DESIGNATIONLIST="SELECT desigid, desigcode, designation, desiglimit FROM employee_desig";
 	private static final String OFFICERDIVISIONLIST="SELECT divisionid, divisionname FROM division_master where isactive='1'";
-	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo , title , salutation, Supervisor from employee  where empid=:empid";
+	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo , title , salutation, SuperiorOfficer from employee  where empid=:empid";
 	private static final String OFFICERMASTERDELETE="UPDATE employee SET srno=:srno, isactive=:isactive, modifieddate=:modifieddate, modifiedby=:modifiedby WHERE empid=:empid";
 	private static final String OFFICEREXTMASTERDELETE="UPDATE employee SET isactive=:isactive, modifieddate=:modifieddate, modifiedby=:modifiedby WHERE empid=:empid";
 	private static final String EMPNOCHECK="SELECT empno FROM employee";
 	private static final String EMPEXTNOCHECK="SELECT empno FROM employee_external";
-	private static final String OFFICERMASTERUPDATE="UPDATE employee SET title=:title, salutation=:salutation, empno=:empno, empname=:empname, desigid=:desigid, MobileNo=:mobileno, extno=:extno, email=:email, DronaEmail=:dronaemail, InternetEmail=:internetemail, divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate, Supervisor=:Supervisor WHERE empid=:empid" ;
+	private static final String OFFICERMASTERUPDATE="UPDATE employee SET title=:title, salutation=:salutation, empno=:empno, empname=:empname, desigid=:desigid, MobileNo=:mobileno, extno=:extno, email=:email, DronaEmail=:dronaemail, InternetEmail=:internetemail, divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate, SuperiorOfficer=:SuperiorOfficer WHERE empid=:empid" ;
 	private static final String CLUSTERLAB="SELECT LabId, ClusterId, LabCode FROM cluster_lab";
 	private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname', b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid ,'active',a.isactive  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  AND a.Labcode<>:labcode ORDER BY a.empid DESC";
 	private static final String EXTERNALOFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid,DronaEmail,InternetEmail,MobileNo,Labcode,title , salutation from employee  where empid=:empid";
@@ -196,7 +196,7 @@ public class MasterDaoImpl implements MasterDao {
 		query.setParameter("empid", employee.getEmpId());
 		query.setParameter("modifiedby", employee.getModifiedBy());
 		query.setParameter("modifieddate", employee.getModifiedDate());
-		query.setParameter("Supervisor", employee.getSupervisor());
+		query.setParameter("SuperiorOfficer", employee.getSuperiorOfficer());
 		
 		int count =(int)query.executeUpdate();
 

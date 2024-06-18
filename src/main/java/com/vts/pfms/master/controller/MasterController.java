@@ -229,7 +229,7 @@ public class MasterController {
 			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
 			officermasteradd.setSrNo("0");
 			officermasteradd.setLabCode(LabCode);
-			officermasteradd.setSupervisor(req.getParameter("supervisor"));
+			officermasteradd.setSuperiorOfficer(req.getParameter("superiorOfficer"));
 			
 			long count=0;
 
@@ -276,7 +276,7 @@ public class MasterController {
 			officermasteradd.setEmpId(req.getParameter("OfficerId"));
 			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
 			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
-			officermasteradd.setSupervisor(req.getParameter("supervisor"));
+			officermasteradd.setSuperiorOfficer(req.getParameter("superiorOfficer"));
 			
 			int count= service.OfficerMasterUpdate(officermasteradd, UserId);				
 

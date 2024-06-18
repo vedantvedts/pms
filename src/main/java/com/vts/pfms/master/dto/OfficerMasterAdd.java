@@ -22,5 +22,5 @@ public class OfficerMasterAdd {
 	private String DronaEmail;
 	private String InternalEmail;
 	private String LabCode;
-	private String Supervisor;
+	private String SuperiorOfficer;
 }

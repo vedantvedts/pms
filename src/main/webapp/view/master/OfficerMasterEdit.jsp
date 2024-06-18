@@ -164,8 +164,8 @@ String seslabid=(String)session.getAttribute("labid");
 
 <div class="col-md-3">
 	<div class="form-group">
-		<label >Supervisor:<span class="mandatory" style="color: red;">*</span></label>
-		<select class="form-control selectdee" name="supervisor" id="supervisor" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
+		<label >Superior Officer:<span class="mandatory" style="color: red;">*</span></label>
+		<select class="form-control selectdee" name="superiorOfficer" id="superiorOfficer" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
 			<option value="" disabled="disabled" selected="selected" hidden="true">--Select--</option>
 			<% for ( Object[]  obj :OfficerList) {%>
 				<option value="<%=obj[0] %>" <%if(OfficerEditData[12].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>><%=obj[2]+", "+obj[3] %></option>

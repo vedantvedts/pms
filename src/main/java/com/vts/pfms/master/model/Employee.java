@@ -36,5 +36,5 @@ public class Employee {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private String LabCode;
-	private String Supervisor;
+	private String SuperiorOfficer;
 }

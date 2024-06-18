@@ -283,10 +283,10 @@ FormatConverter fc = new FormatConverter();
                 	<form action="#" id="myform" method="post">
                     	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                         <button  class="btn btn-sm add" type="submit" name="Action" value="Add" formaction="RoadMapDetails.htm" formnovalidate="formnovalidate" style="border: none;">Add</button>
-                 		<%if(roadMapList!=null && roadMapList.size()>0) {%>
                  		<button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Road Map Report Download" style="background-color: purple;border: none;color: white;font-weight: 600;" onclick="openModal()">
                  			GENERATE REPORT
                  		</button>
+                 		<%if(roadMapList!=null && roadMapList.size()>0) {%>
                  		<button type="submit" class="btn btn-sm" formaction="RoadMapDetailsMoveToASP.htm" data-toggle="tooltip" data-placement="top" title="Move to ASP" style="background-color: #157ecd;border: none;color: white;font-weight: 600;" onclick="moveToASPCheck()">
                  			MOVE TO ASP 
 								<i class="fa fa-arrow-circle-right" style="padding: 0px;" aria-hidden="true"></i>
@@ -553,11 +553,11 @@ FormatConverter fc = new FormatConverter();
 						        				Start Year : <input class="form-control date" id="startYear" name="startYear" required="required" readonly style="background: #fff;text-align: center;font-weight: 500;">
 						        			</h5>
 						      			</div>
-					        				<div class="col-md-4">
-					        					<h5>
-					        						End Year : <input class="form-control date" id="endYear" name="endYear" required="required" readonly style="background: #fff;text-align: center;font-weight: 500;">
-					        					</h5>
-					      					</div>		
+				        				<div class="col-md-4">
+				        					<h5>
+				        						End Year : <input class="form-control date" id="endYear" name="endYear" required="required" readonly style="background: #fff;text-align: center;font-weight: 500;">
+				        					</h5>
+				      					</div>		
 	       							</div>
 	       							
 							        <button type="button" class="close" style="width: 2%; margin: 0 0 0 0;padding: 0 0 0 0 " data-dismiss="modal" aria-label="Close">
