@@ -528,7 +528,7 @@ public class AdminController {
 		String Userid = (String) ses.getAttribute("Username");
 		UserManageAdd UserManageAdd = new UserManageAdd();
 		UserManageAdd.setDivision(employeedata[5].toString());
-		UserManageAdd.setRole("1");
+		UserManageAdd.setRole("2");
 		UserManageAdd.setUserName(req.getParameter("UserName"));
 		UserManageAdd.setLoginType(req.getParameter("LoginType"));
 		UserManageAdd.setEmployee(req.getParameter("Employee"));

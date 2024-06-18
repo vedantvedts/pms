@@ -89,6 +89,7 @@ public class MasterController {
 			req.setAttribute("DesignationList", service.DesignationList());
 			req.setAttribute("OfficerDivisionList", adminservice.DivisionMasterList(LabCode));
 			req.setAttribute("LabList", service.LabList());
+			req.setAttribute("OfficerList", service.OfficerList());
 			return "master/OfficerMasterAdd";
 
 		}catch (Exception e){
@@ -159,6 +160,7 @@ public class MasterController {
 				req.setAttribute("DesignationList", service.DesignationList());
 				req.setAttribute("OfficerDivisionList", adminservice.DivisionMasterList(LabCode));
 				req.setAttribute("LabList", service.LabList());	
+				req.setAttribute("OfficerList", service.OfficerList());
 				return "master/OfficerMasterEdit";
 			}
 			else if(Option.equalsIgnoreCase("updateSeniority")) 
@@ -227,7 +229,8 @@ public class MasterController {
 			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
 			officermasteradd.setSrNo("0");
 			officermasteradd.setLabCode(LabCode);
-
+			officermasteradd.setSupervisor(req.getParameter("supervisor"));
+			
 			long count=0;
 
 			try {
@@ -273,7 +276,8 @@ public class MasterController {
 			officermasteradd.setEmpId(req.getParameter("OfficerId"));
 			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
 			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
-
+			officermasteradd.setSupervisor(req.getParameter("supervisor"));
+			
 			int count= service.OfficerMasterUpdate(officermasteradd, UserId);				
 
 			if(count>0) {

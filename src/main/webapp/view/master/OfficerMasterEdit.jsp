@@ -19,6 +19,7 @@ Object[] OfficerEditData=(Object[])request.getAttribute("OfficerEditData");
 List<Object[]> DesignationList=(List<Object[]>)request.getAttribute("DesignationList");
 List<Object[]> DivisionList=(List<Object[]>)request.getAttribute("OfficerDivisionList");
 List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
+List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList");
 String seslabid=(String)session.getAttribute("labid");
 
 
@@ -160,6 +161,19 @@ String seslabid=(String)session.getAttribute("labid");
 					</select> 
 				</div>
 </div>
+
+<div class="col-md-3">
+	<div class="form-group">
+		<label >Supervisor:<span class="mandatory" style="color: red;">*</span></label>
+		<select class="form-control selectdee" name="supervisor" id="supervisor" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
+			<option value="" disabled="disabled" selected="selected" hidden="true">--Select--</option>
+			<% for ( Object[]  obj :OfficerList) {%>
+				<option value="<%=obj[0] %>" <%if(OfficerEditData[12].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>><%=obj[2]+", "+obj[3] %></option>
+			<%} %>
+		</select> 
+	</div>
+</div>
+
 </div>
 <div class="row">
 <div class="col-sm-5" ></div>
