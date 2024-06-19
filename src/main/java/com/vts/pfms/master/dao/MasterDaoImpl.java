@@ -813,4 +813,15 @@ public class MasterDaoImpl implements MasterDao {
 			return new ArrayList<>();
 		}
 	}
+	
+	@Override
+	public Employee getEmployeeById(String empId) throws Exception {
+		try {
+			
+			return manager.find(Employee.class, Long.parseLong(empId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

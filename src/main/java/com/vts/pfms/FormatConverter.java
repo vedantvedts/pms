@@ -228,4 +228,30 @@ public class FormatConverter
 			return 0;
 		}
 	}
+	
+	public String rdtfTosdtf(String rdtf) {
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        LocalDateTime dateTime = LocalDateTime.parse(rdtf, inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateTime.format(outputFormatter);
+        return formattedDate;
+	}
+	
+	public String sdtfTordtf(String sqlDatetime)throws Exception
+	{
+	    // Define the source and target date-time formatters
+        DateTimeFormatter sourceFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter targetFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        // Parse the SQL datetime string using the source formatter
+        LocalDateTime dateTime = LocalDateTime.parse(sqlDatetime, sourceFormatter);
+
+        // Format the LocalDateTime using the target formatter
+        String formattedDateTime = dateTime.format(targetFormatter);
+
+        // Output the formatted date-time
+        return formattedDateTime;
+
+	}
 }

@@ -82,4 +82,5 @@ public interface MasterDao  {
 	public long addIndustryPartner(IndustryPartner partner) throws Exception;
 	public int revokeIndustryPartnerRep(String industryPartnerRepId) throws Exception;
 	public List<Object[]> industryPartnerRepDetails(String industryPartnerId, String industryPartnerRepId) throws Exception;
+	public Employee getEmployeeById(String empId) throws Exception;
 }

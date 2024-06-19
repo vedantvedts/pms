@@ -639,17 +639,17 @@
         var eventListEl = _.$elements.eventEl.find('.event-list');
         if (eventListEl.find('[data-event-index]').length === 0) eventListEl.empty();
         _.$active.events.push(event_data);
-        markup = '<div class="event-container" role="button" data-event-index="'+(event_data.id)+'">';
-        markup += '<div class="event-icon"><div class="event-bullet-'+event_data.type+'"';
+        markup = '<a href="'+event_data.url+'?scheduleid='+event_data. scheduleid+'&membertype='+event_data. membertype+'" class="btn btn-sm" style="height: 3rem"><div class="event-container" style="height: inherit;" role="button" data-event-index="'+(event_data.id)+'">';
+        markup += '<div class="event-icon" style="heigth: 0px;width: 40px;"><div  class="event-bullet-'+event_data.type+'"';
         if (event_data.color) {
-            markup += 'style="background-color:'+event_data.color+'"'
+            markup += 'style="height: 0.8rem;width: 0.8rem;background-color:'+event_data.color+'"'
         }
-        markup += '></div></div><div class="event-info"><p class="event-title">'+event_data.ComCode+' : '+event_data.time+' &nbsp;&nbsp;&nbsp;<a href="'+event_data.url+'?scheduleid='+event_data. scheduleid+'&membertype='+event_data. membertype+'" class="btn btn-sm" style="background-color:#f7be16;color:black;font-weight:bold;"> Details </a> '  ;
+        markup += '></div></div><div class="event-info"><p class="event-title">'+event_data.ComCode+'  '+(event_data.time!=""?' : '+event_data.time:"")+' '  ;
         if (event_data.badge) markup += '<span>'+event_data.badge+'</span>';
         markup += '</p>'
         if (event_data.description) markup += '<p class="event-desc">'+event_data.description+'</p>';
         markup += '</div>';
-        markup += '</div>';
+        markup += '</div></a> ';
         eventListEl.append(markup);
 
         _.$elements.eventEl.find('[data-event-index="'+(event_data.id)+'"]')
@@ -825,16 +825,43 @@
     ****************/
 
     // v1.0.0 - Build event indicator on each date
-    EvoCalendar.prototype.buildEventIndicator = function() {
+    /*EvoCalendar.prototype.buildEventIndicator = function() {
         var _ = this;
-        
+
         // prevent duplication
         _.$elements.innerEl.find('.calendar-day > day > .event-indicator').empty();
         
         for (var i = 0; i < _.options.calendarEvents.length; i++) {
             _.addEventIndicator(_.options.calendarEvents[i]);
         }
-    };
+    };*/
+    
+    EvoCalendar.prototype.buildEventIndicator = function() {
+    var _ = this;
+
+    // Clear existing event indicators
+    _.$elements.innerEl.find('.calendar-day .day').css('background-color', 'transparent');
+    _.$elements.innerEl.find('.calendar-day .day').css('color', 'black');
+
+    // Loop through calendar events and add indicators
+    for (var i = 0; i < _.options.calendarEvents.length; i++) {
+        var event = _.options.calendarEvents[i];
+
+        // Find the day element for this event's date
+        var $dayElement = _.$elements.innerEl.find('.calendar-day .day[data-date-val="' + event.date + '"]');
+
+        // Check if the day element is found
+        if ($dayElement.length > 0) {
+            // Set background color for the day element
+            $dayElement.css('background-color', event.color);
+            if(event.color && event.color!="NA"){
+				$dayElement.css('color', 'white');
+			}
+            
+        }
+    }
+	};
+
 
     // v1.0.0 - Select event
     EvoCalendar.prototype.selectEvent = function(event) {
