@@ -71,6 +71,19 @@ span {
 	font-size: 1.09rem !important;
 	font-weight: bold !important;
 }
+.content-header.row {
+background-color: #ffd8b1
+}
+.card-title.col-md-10{
+color: black;
+}
+.zoom {
+  transition: transform .4s; 
+}
+.zoom:hover {
+  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  z-index: 99999928374 !important;
+}
 </style>
 </head>
 <body style="background-color: #F9F2DF66;" class="slides-container" id="slides-container">
@@ -130,7 +143,7 @@ if(ses1!=null){
 	 						<div class="col-md-1" align="left" style="padding-top:5px;" >
 								<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							</div>
-	 						<h4 class="card-title col-md-10" align="center" > <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%=projectdata[13]!=null?projectdata[13]:"--"%> (<%=projectdata[12]!=null?projectdata[12]:"--"%>) <%}%></h4>
+	 						<h2 style="color: black;" class="col-md-10" align="center"> <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%=projectdata[13]!=null?projectdata[13]:"--"%> (<%=projectdata[12]!=null?projectdata[12]:"--"%>) <%}%></h2>
 	 						<div class="col-md-1" align="right" style="padding-top:5px;" >
 	 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 	 						</div>
@@ -227,10 +240,10 @@ if(ses1!=null){
 												<div style="max-height: 300px; max-width: 600px;margin: auto;">
 												<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
 												<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="PDF File">
-													<img data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+													<img class="zoom" data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
 												</a>
 												<%}else{ %>
-													<img data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+													<img class="zoom" data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
 												
 												<%} %>
 												</div>
@@ -242,6 +255,13 @@ if(ses1!=null){
 											<td style="text-align: right;">
 											<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
 												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="PDF File">Show more</a></p>
+											<%} %>
+											</td>
+										</tr>
+										<tr>
+											<td style="text-align: right;">
+											<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
+												<p style="font-weight: bold; text-align: right;" ><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="Video File">Video File</a></p>
 											<%} %>
 											</td>
 										</tr>
@@ -345,10 +365,10 @@ if(ses1!=null){
 										<div style="max-height: 300px; max-width: 600px;margin: auto;">
 										<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
 										<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File">
-											<img data-enlargable height="600" style=" max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+											<img class="zoom" data-enlargable height="600" style=" max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
 										</a>
 										<%}else{ %>
-											<img data-enlargable height="600" style=" max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+											<img class="zoom" data-enlargable height="600" style=" max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
 										
 										<%} %>
 										</div>
@@ -357,9 +377,15 @@ if(ses1!=null){
 								</div>
 											
 										
-						</div>	<div  align="right" style="text-align: right;">
+						</div>	
+						<div  align="right" style="text-align: right;">
 						<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
 												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File">Show more</a></p>
+											<%} %>
+											</div>
+						<div  align="right" style="text-align: right;">
+						<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
+												<p style="font-weight: bold; text-align: right;" ><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="Video File">Show Video</a></p>
 											<%} %>
 											</div>
 					</div>
@@ -486,7 +512,7 @@ if(ses1!=null){
 					                    		<div class="col-md-3">
 					                        		<div class="form-group">
 						                        		<div class="col" >		
-				                            				<label  ><b> Image : </b></label><span class="mandatory">*</span><a href="SlideAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+				                            				<label  ><b> Image : </b></label><a href="SlideAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
 														</div>
 						                        		<div class="col" >
 						                              		<input  class="form-control form-control"  type="file"  name="Attachment1" accept="image/png, image/jpeg" id="Attachment1" required="required" maxlength="3" style="font-size: 15px;"> 
@@ -505,6 +531,26 @@ if(ses1!=null){
 														</div>
 					                        		</div>
 			                    				</div>
+
+						                        <div class="col-md-3">
+					                        		<div class="form-group">
+						                        		<div class="col" >
+															<label  ><b> video : </b></label>
+															<a href="SlideVideoAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+		
+														</div>
+						                        		<div class="col">
+															<input
+															class="form-control form-control" type="file"
+															name="Attachment3" id="Attachment3"
+															accept="video/*"
+															 maxlength="3"
+															style="font-size: 15px;">
+														</div>
+					                        		</div>
+			                    				</div>
+			                    				
+			                    				
 			                    				<div class="col-lg" style="align-items: center;">
 			                    					<div style="margin-top: 5%;">
 				                    					<button type="button"  class="btn btn-primary btn-sm add"  onclick="return checkData()">SUBMIT </button>
@@ -633,7 +679,7 @@ $(document).ready(function(){
 });
 });
 
-
+console.log("projectslidedata[1].toString() is","<%=projectslidedata[1].toString()%>");
 <% if(projectslidedata[1]!=null)if(projectslidedata[1].toString().equalsIgnoreCase("1")){ %>
 		document.getElementById('slide1').style.display='block';
 		document.getElementById('slide2').style.display='none';
@@ -784,7 +830,7 @@ function onclickslide(slidenum)
 		var datastring = $("#formslide").serialize();
 		console.log(document.getElementById('silde'));
 		$('#formslide').submit();
-		event.preentDefault;
+		event.preventDefault;
 		}
 		else {
 			radio = document.getElementById("image1");radio.style.boxShadow=""

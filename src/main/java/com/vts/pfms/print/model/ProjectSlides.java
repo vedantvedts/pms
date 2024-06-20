@@ -24,6 +24,7 @@ public class ProjectSlides {
 	private String Path;
 	private String ImageName;
 	private String AttachmentName;
+	private String VideoName;
 	private int IsActive;
 	private String CreatedBy;
 	private String CreatedDate;

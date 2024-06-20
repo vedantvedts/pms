@@ -30,7 +30,7 @@ ol {
 	margin-top: -4px;
 }
 </style>
-
+<title>SlideShow</title>
 </head>
 <body style="background-color: #F9F2DF66;">
 	<%

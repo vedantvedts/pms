@@ -126,12 +126,16 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				 <div class="container-fluid">
 				 	<div class="row" >
 				 		<div class="col" >
-				 			<p>Current Status : </p>
-							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"></textarea>
+				 			<p style="font-weight: bold;">Current Status : </p>
+							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="10" maxlength="5"></textarea>
 						</div>
 						<div class="col" >
-							<p>Brief : </p>
-							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Brief" id="ckeditor2" rows="5" cols="20" maxlength="5"></textarea>
+							<p style="font-weight: bold;">Brief : </p>
+							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Brief" id="ckeditor2" rows="5" cols="10" maxlength="5"></textarea>
+				 		</div>
+						<div class="col" >
+							<p style="font-weight: bold;">Brief : </p>
+							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="wayForward" id="ckeditor3" rows="5" cols="10" maxlength="5"></textarea>
 				 		</div>
 			 		</div>
 			 		<div class="row" >
@@ -141,7 +145,6 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				 					<div class="col" >
 										<div class="form-group">
 											<label><b> Image : </b></label>
-											<span class="mandatory">*</span>
 											<input class="form-control form-control" type="file"
 												name="Attachment1" id="Attachment1"
 												accept="image/png, image/jpeg" required="required"
@@ -159,6 +162,17 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 													style="font-size: 15px;">
 											</div>
 									</div>
+									<div class="col">
+											<div class="form-group">
+												<label><b> Attachment video: </b></label>
+													<input
+													class="form-control form-control" type="file"
+													name="Attachment3" id="Attachment3"
+													accept="video/*"
+													 maxlength="3"
+													style="font-size: 15px;">
+											</div>
+									</div>
 								</div>
 								<div class="row" >
 									<div class="col" >
@@ -171,7 +185,6 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 								</div>
 				 			</div>
 				 		</div>
-				 		
 				 	</div>
 				 	<hr>
 				 </div>
@@ -192,7 +205,7 @@ var editor_config = {
 	        },
 	        {
 	          name: 'basicstyles',
-	          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
+	          items: ['Bold']
 	        },
 	        {
 	          name: 'links',
@@ -200,7 +213,7 @@ var editor_config = {
 	        },
 	        {
 	          name: 'paragraph',
-	          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+	          items: ['NumberedList', 'BulletedList']
 	        },
 	        {
 	          name: 'insert',
@@ -222,11 +235,11 @@ var editor_config = {
 	        },
 	        {
 	          name: 'align',
-	          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+	          items: ['JustifyLeft', 'JustifyCenter']
 	        },
 	        {
 	          name: 'document',
-	          items: ['Print', 'PageBreak', 'Source']
+	          items: ['Print']
 	        }
 	      ],
 	     
@@ -281,7 +294,7 @@ var editor_config = {
 	} ;
 CKEDITOR.replace('ckeditor1', editor_config );
 CKEDITOR.replace('ckeditor2', editor_config );
-
+CKEDITOR.replace('ckeditor3', editor_config );
 
 function checkData(){
 	$("input[name='silde']")[0].checked= false;
@@ -290,13 +303,10 @@ function checkData(){
 	var status = CKEDITOR.instances['ckeditor1'].getData();
 	var attachment  = $("#Attachment1").val();
 	var attachment2  = $("#Attachment2").val();
+	var attachment3  = $("#Attachment3").val();
 	
 	 if (silde.length === 0){
 		  alert("Please Select Atleast One Silde!");
-		  event.preventDefault();
-		  return false;
-	 }else if(attachment=='' || attachment=='null' || attachment==null){
-		 alert("Please Select Image !");
 		  event.preventDefault();
 		  return false;
 	 }else{

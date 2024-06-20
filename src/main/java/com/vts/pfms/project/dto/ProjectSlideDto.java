@@ -16,6 +16,7 @@ public class ProjectSlideDto {
 	private String Slide;
 	private MultipartFile ImageAttach;
 	private MultipartFile PdfAttach;
+	private MultipartFile Video;
 	private String labcode;
 	private int IsActive;
 	private String CreatedBy;

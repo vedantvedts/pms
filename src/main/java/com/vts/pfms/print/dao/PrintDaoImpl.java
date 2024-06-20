@@ -933,7 +933,8 @@ public class PrintDaoImpl implements PrintDao {
 			 }
 			return result;
 		}
-		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription , a.projectcode, a.projectshortname, (SELECT d.ProjectStage FROM pfms_project_data c ,pfms_project_stage d WHERE c.ProjectId=:projectid AND c.CurrentStageId=d.ProjectStageId LIMIT 1) AS ProjectStage, (SELECT a.Brief FROM pfms_project_slides a JOIN project_master b ON a.projectid=b.projectid WHERE a.projectid=:projectid) AS Brief, (SELECT a.Expenditure from project_health a WHERE a.projectid=:projectid) as Expenditure, (SELECT OutCommitment from project_health a WHERE a.projectid=:projectid) as OutCommitment, (SELECT a.Dipl from project_health a WHERE a.projectid=:projectid) as Dipl, (SELECT Balance from project_health a WHERE a.projectid=:projectid) as Balance,(SELECT a.Status FROM pfms_project_slides a JOIN project_master b ON a.projectid=b.projectid WHERE a.projectid=:projectid) AS CurrentStatus FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";		@Override
+		private static final String PROJECTDATA="SELECT a.projectid, a.projectname, b.projecttype, a.totalsanctioncost, a.pdc, a.sanctiondate, a.enduser, a.objective, a.deliverable, a.scope, a.application, a.ProjectDescription, a.projectcode, a.projectshortname, (SELECT d.ProjectStage FROM pfms_project_data c, pfms_project_stage d WHERE c.ProjectId=:projectid AND c.CurrentStageId=d.ProjectStageId LIMIT 1) AS ProjectStage, (SELECT a.Brief FROM pfms_project_slides a JOIN project_master b ON a.projectid=b.projectid WHERE a.projectid=:projectid) AS Brief, (SELECT a.Expenditure FROM project_health a WHERE a.projectid=:projectid) AS Expenditure, (SELECT OutCommitment FROM project_health a WHERE a.projectid=:projectid) AS OutCommitment, (SELECT a.Dipl FROM project_health a WHERE a.projectid=:projectid) AS Dipl, (SELECT Balance FROM project_health a WHERE a.projectid=:projectid) AS Balance, (SELECT a.Status FROM pfms_project_slides a JOIN project_master b ON a.projectid=b.projectid WHERE a.projectid=:projectid) AS CurrentStatus, a.IsMainWC AS 'isMain', (SELECT a.status FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.slide FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.ImageName FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.path FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.SlideId FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.attachmentname FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.brief FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.projectid FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.VideoName FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid) FROM project_master a, project_type b WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";		
+		@Override
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(PROJECTDATA);
@@ -954,7 +955,7 @@ public class PrintDaoImpl implements PrintDao {
 			return slide.getSlideId();
 		}
 		
-		private static final String UPDATEPROJECTSLIDE="UPDATE pfms_project_slides SET Status=:Status , Brief=:Brief, Slide=:Slide , AttachmentName=:AttachmentName ,Imagename=:ImageName  ,  Path=:Path , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE SlideId=:SlideId";
+		private static final String UPDATEPROJECTSLIDE="UPDATE pfms_project_slides SET Status=:Status , Brief=:Brief,VideoName=:videoName, Slide=:Slide , AttachmentName=:AttachmentName ,Imagename=:ImageName  ,  Path=:Path , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE SlideId=:SlideId";
 		@Override
 		public Long EditProjectSlideData(ProjectSlides slide)throws Exception
 		{
@@ -966,12 +967,13 @@ public class PrintDaoImpl implements PrintDao {
 				query.setParameter("Path", slide.getPath());
 				query.setParameter("ImageName", slide.getImageName());
 				query.setParameter("AttachmentName", slide.getAttachmentName());
+				query.setParameter("videoName", slide.getVideoName());
 				query.setParameter("ModifiedBy", slide.getModifiedBy());
 				query.setParameter("ModifiedDate", slide.getModifiedDate());
 			return (long)query.executeUpdate();
 		}		
 		
-		private static final String PROJECTSLIDEDATA="SELECT a.status ,  a.slide , a.ImageName , a.path ,a.SlideId ,a.attachmentname, a.brief FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid";
+		private static final String PROJECTSLIDEDATA="SELECT a.status ,  a.slide , a.ImageName , a.path ,a.SlideId ,a.attachmentname, a.brief, a.projectid FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid";
 		@Override
 		public Object[] GetProjectSildedata(String projectid)throws Exception
 		{
@@ -991,6 +993,7 @@ public class PrintDaoImpl implements PrintDao {
 			ProjectSlides Attachment= manager.find(ProjectSlides.class,Long.parseLong(achmentid));
 			return Attachment;
 		}
+
 		@Override	
 		public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception
 		{

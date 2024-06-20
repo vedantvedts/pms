@@ -104,7 +104,7 @@ public interface PrintService {
 	public List<Object[]> getProjectSlideList(String projectid)throws Exception;
 	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception;
 	public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception;
-	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
+//	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
 	public List<Object[]> CostDetailsListSummary(String initiationId)throws Exception;
 	public int ProjectImageDelete(String techImagesId) throws Exception;
 	public List<Object[]> totalProjectMilestones(String projectid)throws Exception;
@@ -130,5 +130,6 @@ public interface PrintService {
 	public List<Object[]> GETFavouriteSlides() throws Exception;
 	public Long EditFavouriteSlides(FavouriteSlidesModel fSM)throws Exception;
 	public int TechImagesEdit(MultipartFile file,String techImageId, String path,String userName, String labCode)throws Exception;
+	public ProjectSlides SlideVideoDownload(String achmentid) throws Exception;
 	
 }

@@ -402,11 +402,10 @@ public class PrintServiceImpl implements PrintService{
 	        if (!Files.exists(uploadPath)) {
 	            Files.createDirectories(uploadPath);
 	        }
-	        
 	        try (InputStream inputStream = multipartFile.getInputStream()) {
 	            Path filePath = uploadPath.resolve(fileName);
 	            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-	        } catch (IOException ioe) { 
+	        } catch (IOException ioe) {
 	        	 result=0;
 	            throw new IOException("Could not save image file: " + fileName, ioe);
 	        }   catch (Exception e) {
@@ -725,13 +724,18 @@ public class PrintServiceImpl implements PrintService{
 		slide.setIsActive(slidedata.getIsActive());
 		slide.setImageName(!slidedata.getImageAttach().isEmpty()? "SlideImage" + timestampstr + "."+slidedata.getImageAttach().getOriginalFilename().split("\\.")[1]:null);
 		slide.setAttachmentName(!slidedata.getPdfAttach().isEmpty()?"SlidePdf" + timestampstr + "."+slidedata.getPdfAttach().getOriginalFilename().split("\\.")[1]:null);
+		slide.setVideoName(!slidedata.getVideo().isEmpty()?"SlideVideo" + timestampstr + "."+slidedata.getVideo().getOriginalFilename().split("\\.")[1]:null);
 		slide.setCreatedBy(slidedata.getCreatedBy());
+		System.out.println("slidedata.getVideo().getOriginalFilename() is ---------------------------  "+slidedata.getVideo().getOriginalFilename());
 		slide.setCreatedDate(sdf1.format(new Date()));
 		if(!slidedata.getImageAttach().isEmpty()) {
 			saveFile(uploadpath + Path, slide.getImageName(),slidedata.getImageAttach());
 		}
 		if(!slidedata.getPdfAttach().isEmpty()) {
 			saveFile(uploadpath + Path, slide.getAttachmentName(),slidedata.getPdfAttach());
+		}
+		if(!slidedata.getVideo().isEmpty()) {
+			saveFile(uploadpath + Path, slide.getVideoName(),slidedata.getVideo());
 		}
 		return dao.AddProjectSlideData(slide);
 	}
@@ -776,6 +780,20 @@ public class PrintServiceImpl implements PrintService{
 		  slide.setPath(slides.getPath());	
 		  slide.setAttachmentName(slides.getAttachmentName());
 		}
+
+		if(!slidedata.getVideo().isEmpty()) {
+			slide.setPath(Path);
+			slide.setVideoName("SlideVideo" + timestampstr + "."+ slidedata.getVideo().getOriginalFilename().split("\\.")[1]);
+			File f=new File(uploadpath+slide.getPath()+slides.getVideoName());
+			if(f.exists()) {
+				f.delete();
+			}
+
+			saveFile(uploadpath + Path, slide.getVideoName(),slidedata.getVideo());
+		}else {
+			slide.setPath(slides.getPath());	
+			slide.setVideoName(slides.getVideoName());
+		}
 		return dao.EditProjectSlideData(slide);
 	}
 
@@ -789,11 +807,7 @@ public class PrintServiceImpl implements PrintService{
 	{
 		return dao.SlideAttachmentDownload(achmentid);
 	}
-	@Override
-	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception
-	{
-		return dao.FreezedSlideAttachmentDownload(achmentid);
-	}
+	
 	@Override
 	public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception
 	{
@@ -819,11 +833,11 @@ public class PrintServiceImpl implements PrintService{
 			return dao.GetAllProjectSildedata(projectid);
 		}
 	}
-	@Override
-	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception
-	{
-		return dao.GetTodayFreezedSlidedata(projectid);
-	}
+//	@Override
+//	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception
+//	{
+//		return dao.GetTodayFreezedSlidedata(projectid);
+//	}
 	@Override
 	public List<Object[]> CostDetailsListSummary(String initiationId) throws Exception {
 		// TODO Auto-generated method stub
@@ -1124,6 +1138,18 @@ public class PrintServiceImpl implements PrintService{
 	        
 			int result=saveFile(Path, techImageId+"_"+file.getName()+"."+FilenameUtils.getExtension(file.getOriginalFilename()), file);
 			return result;
+	}
+
+	@Override
+	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ProjectSlides SlideVideoDownload(String achmentid) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
