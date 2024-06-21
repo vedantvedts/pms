@@ -599,7 +599,7 @@ FormatConverter fc = new FormatConverter();
 															<div class="container-fluid">
 															<div class="row">
 															<div class="col-2">
-															<h4 style="text-align: left">
+															<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
 																		Current Status : 
 																	</h4>
 															</div>
@@ -616,7 +616,7 @@ FormatConverter fc = new FormatConverter();
 																			
 																<div class="row">
 																	<div class="col-2">
-																		<h4 style="text-align: left">
+																		<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
 																			Way Forward : 
 																		</h4>
 																	</div>
@@ -809,7 +809,7 @@ FormatConverter fc = new FormatConverter();
 																<div class="container-fluid">
 															<div class="row">
 															<div class="col-3">
-															<h4 style="text-align: left">
+															<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
 																		Current Status : 
 																	</h4>
 															</div>
@@ -826,7 +826,7 @@ FormatConverter fc = new FormatConverter();
 																			
 																<div class="row">
 																	<div class="col-3">
-																		<h4 style="text-align: left">
+																		<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
 																			Way Forward : 
 																		</h4>
 																	</div>
@@ -1017,7 +1017,7 @@ FormatConverter fc = new FormatConverter();
 															<div class="container-fluid">
 															<div class="row">
 															<div class="col-2">
-															<h4 style="text-align: left">
+															<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
 																		Current Status : 
 																	</h4>
 															</div>
