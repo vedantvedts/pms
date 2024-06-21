@@ -379,15 +379,15 @@ String ses=(String)request.getParameter("result");
 											else if(obj[8].toString().equalsIgnoreCase("CH") ){	 %> Co-Chairperson<%}
 											else if(obj[8].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 											else if(obj[8].toString().equalsIgnoreCase("CI")){   %> Internal<%}
-											else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[9] %>)<%}
-											else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[9]%>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[12] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[12]%>)<%}
 											else if(obj[8].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 											else if(obj[8].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
-											else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[9] %>)<%}
-											else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[9] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[12] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[12] %>)<%}
 										    // Prudhvi - 27/03/2024 start
-											else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[9] %>)<%}
-											else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[9] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[12] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[12] %>)<%}
 										%>
 										
 									</td>

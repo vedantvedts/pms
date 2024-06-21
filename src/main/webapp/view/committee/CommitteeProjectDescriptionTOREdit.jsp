@@ -73,7 +73,7 @@ String committeemainid=committeemaindata[0].toString();
 					<div class="card-header"
 						style=" background-color: #055C9D;margin-top: ">
 
-						<b class="text-white">Description and Terms of Reference</b>
+						<b class="text-white">Purpose and Terms of Reference</b>
 
 					</div>
 					<form action="ProjectCommitteeDescriptionTOREditSubmit.htm" method="post" name="addcommitteefrm" id="addcommitteefrm" >

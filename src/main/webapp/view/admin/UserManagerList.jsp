@@ -132,7 +132,7 @@ label {
 	%>
 	
 	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
+ 	String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%><center>
 		<div class="alert alert-danger" role="alert">
@@ -158,8 +158,8 @@ label {
 				<div class="card shadow-nohover">
 					<div class="card-header">
 						<div class="row">
-						<div class="col-md-2"><h4>User Credentials List</h4></div>
-						<div class="col-md-10" align="right">
+						<div class="col-md-5"><h4>User Credentials List</h4></div>
+						<div class="col-md-7" align="right">
 							 <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
 							  <form action="LoginExcelUpload.htm" method="post" enctype="multipart/form-data">
 								  		<table>
