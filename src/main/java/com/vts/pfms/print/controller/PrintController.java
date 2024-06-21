@@ -4254,6 +4254,8 @@ public class PrintController {
 					}
 
 				};
+				
+				
 				if (IdsInput != null && IdsInput.length == 0) {
 					redir.addAttribute("resultfail", "could not open empty slideshow");
 					return "redirect:/MainDashBoard.htm";
@@ -4262,6 +4264,9 @@ public class PrintController {
 
 					if (getAllProjectdata.size() > 1)
 						Collections.sort(getAllProjectdata, dateComparator);
+					if (getAllProjectdata.size() > 1)
+						Collections.sort(getAllProjectSlidedata, dateComparator);
+					Collections.reverse(getAllProjectSlidedata);
 					
 //					for(int i=0;i<getAllProjectSlidesdata.size();i++)
 //					{

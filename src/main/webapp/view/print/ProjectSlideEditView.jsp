@@ -223,12 +223,44 @@ if(ses1!=null){
 											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Status : </b> 
 										</td>
 										<td colspan="7" style="font-weight: bold;color:#212529 ">
-										<%if(projectslidedata!=null && projectslidedata[0]!=null) {%>
-												<%=projectslidedata[0]%>
+										<%if(projectdata!=null && projectdata[22]!=null) {%>
+												<%=projectdata[22]%>
 											<%} else{%>-<%} %> 
 										</td>
 									</tr>
 								</table>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-2">
+										<br>
+											<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+												Current Status : 
+											</h4>
+										</div>
+										<div class="col">
+											<p>
+												<%if(projectdata!=null && projectdata[20]!=null) {%>
+													<%=projectdata[20]%>
+												<%} else{%>-<%} %> 
+											</p>
+										</div>
+									</div>
+									<%if(projectdata[31]!=null && projectdata[31]!=""){%>
+									<div class="row">
+										<div class="col-2">
+										<br>
+											<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+												Way Forward : 
+											</h4>
+										</div>
+										<div class="col">
+											<p>
+											<%=projectdata[31]%>
+											</p>
+										</div>
+									</div>
+									<%}%>
+								</div>
 							
 						
 							<div class="col">
@@ -236,14 +268,14 @@ if(ses1!=null){
 									<tbody >
 										<tr style="border-style: hidden;">
 											<td  style="border-style: hidden;width:100%; ">
-												<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
+												<%if(new File(filePath + projectslidedata[3] + projectdata[24]).exists()){%>
 												<div style="max-height: 300px; max-width: 600px;margin: auto;">
-												<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
-												<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="PDF File">
-													<img class="zoom" data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+												<%if(new File(filePath + projectslidedata[3] + projectdata[27]).exists()){%>
+												<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" title="PDF File">
+													<img class="zoom" data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectdata[24])))%>">
 												</a>
 												<%}else{ %>
-													<img class="zoom" data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+													<img class="zoom" data-enlargable style="max-height:300px; margin: auto;position: relative;display: flex;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectdata[24])))%>">
 												
 												<%} %>
 												</div>
@@ -253,15 +285,15 @@ if(ses1!=null){
 										</tr>
 										<tr>
 											<td style="text-align: right;">
-											<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
-												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="PDF File">Show more</a></p>
+											<%if(new File(filePath + projectslidedata[3] + projectdata[27]).exists()){%>
+												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" title="PDF File">Show more</a></p>
 											<%} %>
 											</td>
 										</tr>
 										<tr>
 											<td style="text-align: right;">
-											<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
-												<p style="font-weight: bold; text-align: right;" ><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" style="text-align: right" title="Video File">Video File</a></p>
+											<%if(new File(filePath + projectslidedata[3] + projectdata[30]).exists()){%>
+												<p style="font-weight: bold; text-align: right;" ><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" title="Video File">Video File</a></p>
 											<%} %>
 											</td>
 										</tr>
@@ -358,12 +390,45 @@ if(ses1!=null){
 															</td>
 														</tr>
 												</table>
+												<br>
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-3">
+														<br>
+															<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+																Current Status : 
+															</h4>
+														</div>
+														<div class="col">
+															<p>
+																<%if(projectdata!=null && projectdata[20]!=null) {%>
+																	<%=projectdata[20]%>
+																<%} else{%>-<%} %> 
+															</p>
+														</div>
+													</div>
+													<%if(projectdata[31]!=null && projectdata[31]!=""){%>
+													<div class="row">
+														<div class="col-3">
+														<br>
+															<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+																Way Forward : 
+															</h4>
+														</div>
+														<div class="col">
+															<p>
+															<%=projectdata[31]%>
+															</p>
+														</div>
+													</div>
+													<%}%>
+												</div>
 								</div>
 								<div class="col-md-6">
 										<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
 										<div style="max-height: 300px; max-width: 600px;margin: auto;">
 										<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
-										<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File">
+										<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="PDF File">
 											<img class="zoom" data-enlargable height="600" style=" max-width: 75%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
 										</a>
 										<%}else{ %>
@@ -376,17 +441,17 @@ if(ses1!=null){
 								</div>
 											
 										
-						</div>	
+						</div>
 						<div  align="right" style="text-align: right;">
 						<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
-												<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="PDF File">Show more</a></p>
-											<%} %>
-											</div>
+							<p style="font-weight: bold; text-align: right;" ><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="PDF File">Show more</a></p>
+						<%} %>
+						</div>
 						<div  align="right" style="text-align: right;">
 						<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
-												<p style="font-weight: bold; text-align: right;" ><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank" title="Video File">Show Video</a></p>
-											<%} %>
-											</div>
+							<p style="font-weight: bold; text-align: right;" ><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="Video File">Show Video</a></p>
+						<%} %>
+						</div>
 					</div>
 					</div>
 				</div>			
