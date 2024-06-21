@@ -114,8 +114,8 @@ FormatConverter fc = new FormatConverter();
 						</tr>
 					</table>	
 					<br><br>
-					<h4 style="color: #145374 !important;text-align: center; font-weight: 700;">Review By - <%=freezedproject.get(0)[4] %></h4>
-					<h4 style="color: #145374 !important;text-align: center; font-weight: 700;">Review Date - <%=freezedproject.get(0)[5] %></h4>
+					<h4 style="color: #145374 !important;text-align: center; font-weight: 700;"><%if( freezedproject!=null && freezedproject.size()>0 && freezedproject.get(0)[4]!=null) {%> Review By - <%=freezedproject.get(0)[4] %>  <%} %></h4>
+					<h4 style="color: #145374 !important;text-align: center; font-weight: 700;"><%if( freezedproject!=null && freezedproject.size()>0 && freezedproject.get(0)[5]!=null) {%> Review Date - <%=freezedproject.get(0)[5] %> <%} %></h4>
 					<br><br><br>
 					<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;font-weight: bold;"  >
 						<% if(labInfo!=null){ %>
