@@ -14,6 +14,7 @@ public class ProjectSlideDto {
 	private String Status;
 	private String Brief;
 	private String Slide;
+	private String WayForward;
 	private MultipartFile ImageAttach;
 	private MultipartFile PdfAttach;
 	private MultipartFile Video;

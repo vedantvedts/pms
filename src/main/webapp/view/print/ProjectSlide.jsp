@@ -134,7 +134,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Brief" id="ckeditor2" rows="5" cols="10" maxlength="5"></textarea>
 				 		</div>
 						<div class="col" >
-							<p style="font-weight: bold;">Brief : </p>
+							<p style="font-weight: bold;">Way forward : </p>
 							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="wayForward" id="ckeditor3" rows="5" cols="10" maxlength="5"></textarea>
 				 		</div>
 			 		</div>
@@ -214,10 +214,6 @@ var editor_config = {
 	        {
 	          name: 'paragraph',
 	          items: ['NumberedList', 'BulletedList']
-	        },
-	        {
-	          name: 'insert',
-	          items: ['Image', 'Table']
 	        },
 	        {
 	          name: 'editing',

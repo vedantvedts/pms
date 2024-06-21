@@ -721,6 +721,7 @@ public class PrintServiceImpl implements PrintService{
 		slide.setSlide(slidedata.getSlide());
 		slide.setProjectId(slidedata.getProjectId());
 		slide.setPath(Path);
+		slide.setWayForward(slidedata.getWayForward());
 		slide.setIsActive(slidedata.getIsActive());
 		slide.setImageName(!slidedata.getImageAttach().isEmpty()? "SlideImage" + timestampstr + "."+slidedata.getImageAttach().getOriginalFilename().split("\\.")[1]:null);
 		slide.setAttachmentName(!slidedata.getPdfAttach().isEmpty()?"SlidePdf" + timestampstr + "."+slidedata.getPdfAttach().getOriginalFilename().split("\\.")[1]:null);
@@ -754,6 +755,7 @@ public class PrintServiceImpl implements PrintService{
 		slide.setSlide(slidedata.getSlide());
 		slide.setBrief(slidedata.getBrief());
 		slide.setStatus(slidedata.getStatus());
+		slide.setWayForward(slidedata.getWayForward());
 		slide.setModifiedBy(slidedata.getModifiedBy());
 		slide.setModifiedDate(sdf1.format(new Date()));
 		if(!slidedata.getImageAttach().isEmpty()) {

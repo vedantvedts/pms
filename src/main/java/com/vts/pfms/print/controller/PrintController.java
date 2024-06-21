@@ -3803,6 +3803,7 @@ public class PrintController {
 				String brief = req.getParameter("Brief");
 				String slide = req.getParameter("silde");
 				String wayforward = req.getParameter("wayForward");
+				System.out.println("wayforward is ===================="+wayforward);
 				ProjectSlideDto slidedata = new ProjectSlideDto();
 					slidedata.setProjectId(Long.parseLong(projectid));
 					slidedata.setStatus(status);
@@ -3812,7 +3813,7 @@ public class PrintController {
 					slidedata.setImageAttach(imageattch);
 					slidedata.setPdfAttach(pdfattach);
 					slidedata.setVideo(VideoAttach);
-					slidedata.setVideo(VideoAttach);
+					slidedata.setWayForward(wayforward);
 					slidedata.setIsActive(1);
 					slidedata.setCreatedBy(UserId);
 					long count  = service.AddProjectSlideData(slidedata );
@@ -3844,6 +3845,7 @@ public class PrintController {
 				String status = req.getParameter("Status");
 				String brief = req.getParameter("Brief");
 				String slide = req.getParameter("silde");
+				String wayforward = req.getParameter("wayForward");
 				
 				ProjectSlideDto slidedata = new ProjectSlideDto();
 				slidedata.setSlideId(Long.parseLong(ProjectslideId));
@@ -3855,6 +3857,7 @@ public class PrintController {
 				slidedata.setPdfAttach(pdfattach);
 				slidedata.setVideo(VideoFile);
 				slidedata.setModifiedBy(UserId);
+				slidedata.setWayForward(wayforward);
 				
 					long count  = service.EditProjectSlideData(slidedata);
 					if(count>0)
