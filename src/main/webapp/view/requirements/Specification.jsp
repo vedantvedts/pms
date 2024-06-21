@@ -62,14 +62,14 @@ List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("Abbrevia
 String Conclusion = null;
 String ConclusionContenId= null;
 List<Object[]>SpecContentsDetails =(List<Object[]>)request.getAttribute("SpecContentsDetails");
-
+if(SpecContentsDetails!=null && SpecContentsDetails.size()>0){
 for(Object[]obj:SpecContentsDetails){
 	if(obj[1].toString().equalsIgnoreCase("Conclusion")){
 		Conclusion=obj[2].toString();
 		ConclusionContenId=obj[0].toString();
 	}
 }
-
+}
 %>
 
 	<%String ses=(String)request.getParameter("result"); 
