@@ -1,5 +1,5 @@
-<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -314,7 +314,7 @@ FormatConverter fc = new FormatConverter();
 							</table>
 									<!-- ----------------------------------sub projects List -------------------------- -->		
 									<br><br><br>
-									<h4 style="text-align: left;">Sub Project<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a></h4>
+							<h4 style="text-align: left;">Sub Project<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a></h4>
 									<table style="width: 100%;">
 									<thead style="background-color: #ffd8b1; color: black;">
 										<tr >
@@ -469,11 +469,10 @@ FormatConverter fc = new FormatConverter();
 		<!-- ----------------------------------------  Freezed Project Slide ----------------------------------------------------- -->
 		<!-- ----------------------------------------- Slide Two ------------------------------------------------------------ -->
 		<%if(projects!=null && projects.size()>0 && FreezedSlide!=null){
-				for(int i=0;i<projects.size();i++ ){%>
-				<%
+				for(int i=0;i<projects.size();i++ ){
 					if(projects.get(i)[22]!=null || projects.get(i)[23]!=null || projects.get(i)[24]!=null ||
-						projects.get(i)[25]!=null || projects.get(i)[27]!=null || projects.get(i)[29]!=null ||
-						projects.get(i)[26]!=null || projects.get(i)[30]!=null || projects.get(i)[31]!=null){
+							projects.get(i)[25]!=null || projects.get(i)[27]!=null || projects.get(i)[29]!=null ||
+							projects.get(i)[26]!=null || projects.get(i)[30]!=null || projects.get(i)[31]!=null){
 						if(projects.get(i)[23]==null)projects.get(i)[23]="1";
 						if(projects.get(i)[23]!=null ){
 							if(projects.get(i)[23].toString().equals("2")){%>
@@ -524,33 +523,32 @@ FormatConverter fc = new FormatConverter();
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%">User :</td>
 																	<td colspan="1" style="width: 12%;color: black;"><%=enduser!=null?enduser:"--"%></td>
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Category :</td>
-																	<td colspan="1" style="width: 12%;color: black;"><%if(mainProjectList.get(i)[32]!=null){%><%=mainProjectList.get(i)[32] %><%}else {%>-<%} %></td>
+																	<td colspan="1" style="width: 12%;color: black;"><%=projects.get(i)[2]!=null?projects.get(i)[2]:"--"%></td>
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr) :</td>
 																	<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%> </td>
+																	
 																</tr>
 																<tr>
-																	
-																	
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">DoS :</td>
 																	<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projects.get(i)[5])%></td>
+																	
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC :</td>
 																	<td colspan="1" style="color: black;"><%=sdf.format(projects.get(i)[4])%></td>
+																	
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application</td>
 																	<td colspan="1" style="color: black;">
 																		<%if (projects.get(i) != null && projects.get(i)[10] != null) {%>
 																			<%=projects.get(i)[10]%>
 																		<%} else {%> 
 																			--
-																		 <%}%>
-																	</td>
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage</td>
+																		 <%}%></td>
+																		 <td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage</td>
 																	<td colspan="1" style="color: black;">
 																		<%if(projects.get(i)[14]!=null){%>
 																			<%=projects.get(i)[14]%>
 																		<%}else{%>
 																			--
-																		<%}%>
-																	</td>
+																		<%}%></td>
 																</tr>
 		
 																<tr>
@@ -585,17 +583,6 @@ FormatConverter fc = new FormatConverter();
 																</tr>
 																
 																<tr>
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application :</td>
-																	<td colspan="7"style="color: black;">
-																		<%if (projects.get(i) != null && projects.get(i)[10] != null) {%>
-																			<%=projects.get(i)[10]%>
-																		<%} else {%> 
-																			--
-																		 <%}%>
-																	</td>
-																</tr>
-																
-																<tr>
 																	<td colspan="1"><b style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Deliverables : </b> </td>
 																	<td colspan="7"style="color: black;">
 																			<%if(projects.get(i)[8]!=null) {%>
@@ -607,25 +594,24 @@ FormatConverter fc = new FormatConverter();
 																</tr>
 																
 																
-																
 															</table>
 															<br>
 															<div class="container-fluid">
-																<div class="row">
-																	<div class="col-2">
-																		<h4 style="text-align: left">
-																			Current Status : 
-																		</h4>
-																	</div>
-																	<div class="col">
-																		<p>
-																			<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
-																				<%=projects.get(i)[20]%>
-																			<%} else{%>-<%} %> 
-																		</p>
-																	</div>
-																</div>
-																<%if(projects.get(i)[31]!=null){%>
+															<div class="row">
+															<div class="col-2">
+															<h4 style="text-align: left">
+																		Current Status : 
+																	</h4>
+															</div>
+															<div class="col">
+															<p>
+																	<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
+																			<%=projects.get(i)[20]%>
+																		<%} else{%>-<%} %> 
+																	</p>
+															</div>
+															</div>
+															<%if(projects.get(i)[31]!=null){%>
 																		
 																			
 																<div class="row">
@@ -677,14 +663,14 @@ FormatConverter fc = new FormatConverter();
 																	</td>
 																</tr>
 																<tr>
-																	<td style="border-style: hidden;text-align: right;">
+																	<td style="text-align: right;">
 																	<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
 																		<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" title="PDF File"><b>Show more</b></a>
 																	<%} %>
 																	</td>
 																</tr>
 																<tr>
-																	<td style="border-style: hidden;text-align: right;">
+																	<td style="text-align: right;">
 																	<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
 																		<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" title="Video File"><b>Show Video</b></a>
 																	<%} %>
