@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.timesheet.model.TimeSheet;
 
 @Repository
@@ -24,7 +25,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	@PersistenceContext
 	EntityManager manager;
 	
-	private static final String GETEMPACTIVITYASSIGNLIST = "SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.remarks,a.actionlinkid,d.actionno ,d.actionassignid ,d.assignee ,d.assignor , a.actionlevel ,a.projectid FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND (d.assignee=:EmpId ) AND d.actionstatus IN ('I','A','B') AND d.assigneelabcode<>'@EXP' ORDER BY d.actionassignid DESC";
+	private static final String GETEMPACTIVITYASSIGNLIST = "SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.remarks,a.actionlinkid,d.actionno ,d.actionassignid ,d.assignee ,d.assignor , a.actionlevel ,a.projectid FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND CASE WHEN 'A'=:EmpId THEN 1=1 ELSE d.assignee=:EmpId END AND d.actionstatus IN ('I','A','B') AND d.assigneelabcode<>'@EXP' ORDER BY d.actionassignid DESC";
 	@Override
 	public List<Object[]> getEmpActivityAssignList(String empId) throws Exception {
 		try {
@@ -107,4 +108,34 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
+	private static final String GETEMPLOYEESOFSUPERIOROFFICER = "SELECT a.EmpId,a.Title,a.Salutation,a.SrNo,a.EmpNo,a.EmpName,b.Designation FROM employee a, employee_desig b WHERE a.DesigId=b.DesigId AND a.LabCode=:LabCode AND a.SuperiorOfficer=:SuperiorOfficer ORDER BY CASE WHEN a.SrNo=0 THEN 1 ELSE 0 END,a.SrNo";
+	@Override
+	public List<Object[]> getEmployeesofSuperiorOfficer(String superiorOfficer, String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETEMPLOYEESOFSUPERIOROFFICER);
+			query.setParameter("SuperiorOfficer", Long.parseLong(superiorOfficer));
+			query.setParameter("LabCode", labCode);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getEmployeesofSuperiorOfficer() "+e);
+			return new ArrayList<Object[]>();
+		}
+	}
+	
+	private static final String GETTIMESHEETLISTOFEMPLOYEEBYPERIOD = "FROM TimeSheet WHERE IsActive=1 AND TimeSheetStatus NOT IN ('INI') AND EmpId=:EmpId AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	@Override
+	public List<TimeSheet> getTimeSheetListofEmployeeByPeriod(String empId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createQuery(GETTIMESHEETLISTOFEMPLOYEEBYPERIOD);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<TimeSheet>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getEmployeesofSuperiorOfficer() "+e);
+			return new ArrayList<TimeSheet>();
+		}
+	}
 }

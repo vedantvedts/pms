@@ -59,4 +59,7 @@ public class TimeSheet implements Serializable {
 	@OneToMany(mappedBy = "timeSheet", cascade = CascadeType.ALL)
 	private List<TimeSheetActivity> timeSheetActivity;
 	
+	@OneToMany(mappedBy = "timeSheet", cascade = CascadeType.ALL)
+	private List<TimeSheetTrans> timeSheetTrans;
+	
 }

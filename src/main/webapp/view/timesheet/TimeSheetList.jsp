@@ -1,3 +1,8 @@
+<%@page import="java.util.Comparator"%>
+<%@page import="java.util.Optional"%>
+<%@page import="com.vts.pfms.timesheet.model.TimeSheetTrans"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.ArrayList"%>
@@ -264,12 +269,11 @@ input {
 List<Object[]> empActivityAssignList = (List<Object[]>)request.getAttribute("empActivityAssignList");
 
 TimeSheet timeSheet = (TimeSheet)request.getAttribute("timeSheetData");
+List<TimeSheetActivity> timeSheetActivityList = timeSheet!=null?timeSheet.getTimeSheetActivity():new ArrayList<TimeSheetActivity>();
+List<TimeSheetTrans> transaction = timeSheet!=null?timeSheet.getTimeSheetTrans():new ArrayList<TimeSheetTrans>();
 
-List<TimeSheetActivity> timeSheetActivityList = new ArrayList<TimeSheetActivity>();
-if(timeSheet!=null){
-	timeSheetActivityList = timeSheet.getTimeSheetActivity();
-}
 String activityDate = (String)request.getAttribute("activityDate");
+String activityDateSql = (String)request.getAttribute("activityDateSql");
 
 List<Object[]> todayScheduleList = (List<Object[]>)request.getAttribute("todayScheduleList");
 
@@ -280,8 +284,14 @@ List<Object[]> empAllTimeSheetList = (List<Object[]>)request.getAttribute("empAl
 //LocalDateTime actualPunchInTime = LocalDateTime.of(now, LocalTime.parse("08:30:00"));
 FormatConverter fc = new FormatConverter();
 
-String activityDateSql = fc.RegularToSqlDate(activityDate);
 //String status = timeSheet.getTimeSheetStatus()!=null?timeSheet.getTimeSheetStatus():"INI";
+
+Map<String, String> statusMap = new HashMap<>();
+statusMap.put("INI", "#95c8f4");
+statusMap.put("FWD", "#0383F3");
+statusMap.put("ABS", "#2B7A0B");
+statusMap.put("RBS", "#fe4e4e");
+
 %>
 <% String ses=(String)request.getParameter("result");
  	String ses1=(String)request.getParameter("resultfail");
@@ -386,20 +396,33 @@ String activityDateSql = fc.RegularToSqlDate(activityDate);
 															<%if(act.getActivityDuration()!=null) {%><%=act.getActivityDuration()%><%} %>
 														</td>
 														<td>
-															<%if(act.getRemarks()!=null) {%><%=act.getRemarks()%><%} %>
+															<%if(act.getRemarks()!=null && !act.getRemarks().isEmpty()) {%><%=act.getRemarks()%><%} else{%>-<%} %>
 														</td>
 													</tr>
 												<%} }else {%>
 													<tr>
-														<td colspan="5">No Data Available</td>
+														<td colspan="5" class="center">No Data Available</td>
 													</tr>
 												<%} %>	
 												<tr>
 													<td class="right" colspan="3" style="font-weight: bold;">Work Duration</td>
 													<td colspan="1" class="center">
-														<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=timeSheet.getTotalDuration() %><%} else{%>01:00<%} %>
+														<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=timeSheet.getTotalDuration() %><%} else{%>00:00<%} %>
 													</td>
 													<td colspan="1"></td>
+												</tr>
+												<tr>
+													<td class="right" colspan="1" style="font-weight: bold;">Remarks</td>
+													<td colspan="4">
+														<% String latestRemarks = transaction!=null && transaction.size()>0? transaction.stream()
+																				  .filter(e -> "ABS".equals(e.getTimeSheetStatusCode()) || "RBS".equals(e.getTimeSheetStatusCode()))
+																				  .sorted(Comparator.comparing(TimeSheetTrans::getActionDate).reversed())
+						            											  .map(TimeSheetTrans::getRemarks)
+						            											  .findFirst()
+						            											  .orElse("-"): "-";
+						        						%>
+						        						<%=latestRemarks %>
+													</td>
 												</tr>
 											</tbody>
 										</table>
@@ -407,7 +430,7 @@ String activityDateSql = fc.RegularToSqlDate(activityDate);
 				                </div>
 						        <div class="row mt-3">
 						        	<div class="col-md-12 center">
-						        		<%if(timeSheet!=null && timeSheet.getTimeSheetStatus()!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("INI")) {%>
+						        		<%if(timeSheet!=null && timeSheet.getTimeSheetStatus()!=null && (timeSheet.getTimeSheetStatus().equalsIgnoreCase("INI") || timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS"))) {%>
 						        		<form action="#">
 						        			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						        			<input type="hidden" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()%>">
@@ -422,7 +445,7 @@ String activityDateSql = fc.RegularToSqlDate(activityDate);
 						        		</form>
 										<%} %>
 						        	</div> 
-						        </div>        	         				
+						        </div>    
 							</div>
 							
 							<!-- Time Sheet Details Add / Edit -->
@@ -574,16 +597,6 @@ String activityDateSql = fc.RegularToSqlDate(activityDate);
 	var myEvents = [
 		<%if(empAllTimeSheetList!=null && empAllTimeSheetList.size()>0) {
 		for(Object[] obj :empAllTimeSheetList) {
-			String status = obj[10]!=null?obj[10].toString():"#95c8f4";
-			switch(status) {
-				case "FWD": status = "#0383F3";
-				break;
-				case "ABS": status = "#2B7A0B";
-				break;
-				case "RBS": status = "#ff5e5e";
-				break;
-				default: status = "#95c8f4";
-			}
 		%>
 	    {
 	        id: "required-id-1",
@@ -594,7 +607,7 @@ String activityDateSql = fc.RegularToSqlDate(activityDate);
 	        url: "#",
 	        type: "event",
 	        <%-- color: '<%=obj[10]!=null?(obj[10].toString().equalsIgnoreCase("INI")?"#4DACFF":(obj[10].toString().equalsIgnoreCase("FWD")?"#0383F3":"#2B7A0B")):"#4DACFF"%>' --%>
-	    	color: '<%=status%>'
+	    	color: "<%=statusMap.get(obj[10]!=null?obj[10].toString():"#95c8f4")%>"
 	    },
 	    <%} }%>
 	    

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
+import com.vts.pfms.timesheet.model.TimeSheet;
 import com.vts.pfms.timesheet.service.TimeSheetService;
 
 @Controller
@@ -61,6 +62,7 @@ public class TimeSheetController {
 			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
 			String activityDateSql = fc.RegularToSqlDate(activityDate);
 			req.setAttribute("activityDate", activityDate);
+			req.setAttribute("activityDateSql", activityDateSql);
 			req.setAttribute("todayScheduleList", headerservice.TodaySchedulesList(EmpId, activityDateSql));
 			req.setAttribute("timeSheetData", service.getTimeSheetByDateAndEmpId(EmpId, activityDateSql));
 			req.setAttribute("empActivityAssignList", service.getEmpActivityAssignList(EmpId));
@@ -117,26 +119,74 @@ public class TimeSheetController {
 	public String timeSheetDetailsForward(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
-		logger.info(new Date()+" Inside TimeSheetList.htm "+UserId);
+		logger.info(new Date()+" Inside TimeSheetDetailsForward.htm "+UserId);
 		try {
-			String timeSheetId = req.getParameter("timeSheetId");
+			String[] timeSheetIds = req.getParameterValues("timeSheetId");
+			String timeSheetId = timeSheetIds[0];
 			String action = req.getParameter("action");
+			String remarks = req.getParameter("remarks");
 			
-			Long result = service.timeSheetDetailsForward(timeSheetId, EmpId, action, UserId);
+			TimeSheet timeSheet = service.getTimeSheetById(timeSheetId);
+			String statusCode = timeSheet.getTimeSheetStatus();
 			
-			if(result!=0) {
-				redir.addAttribute("result","Time Sheet Details forwarded Successfully");
-			}else {
-				redir.addAttribute("resultfail","Time Sheet Details forward Unsuccessful");
+			Long result = service.timeSheetDetailsForward(timeSheetIds, EmpId, action, UserId, remarks);
+			
+			if(action.equalsIgnoreCase("A")) {
+				if(statusCode.equalsIgnoreCase("INI") || statusCode.equalsIgnoreCase("RBS") ) {
+					if(result!=0) {
+						redir.addAttribute("result","Time Sheet forwarded Successfully");
+					}else {
+						redir.addAttribute("resultfail","Time Sheet forwarded Successfully");
+					}
+					redir.addAttribute("activityDate", req.getParameter("activityDate"));
+					return "redirect:/TimeSheetList.htm";
+				}else if(statusCode.equalsIgnoreCase("FWD")) {
+					if(result!=0) {
+						redir.addAttribute("result","Time Sheet Approved Successfully");
+					}else {
+						redir.addAttribute("resultfail","Time Sheet Approve Unsuccessful");
+					}
+					return "redirect:/TimeSheetApprovals.htm";
+				}
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if(result!=0) {
+					redir.addAttribute("result",action.equalsIgnoreCase("R")?"Time Sheet Returned Successfully":"Time Sheet Rejected Successfully");
+				}else {
+					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"Time Sheet Return Unsuccessful":"Time Sheet Reject Unsuccessful");
+				}
 			}
 			
-			redir.addAttribute("activityDate", req.getParameter("activityDate"));
-			return "redirect:/TimeSheetList.htm";
+			return "redirect:/TimeSheetApprovals.htm";
 		}catch (Exception e) {
-			logger.error(new Date() +" Inside TimeSheetDetailsSubmit.htm "+UserId, e);
+			logger.error(new Date() +" Inside TimeSheetDetailsForward.htm "+UserId, e);
 			e.printStackTrace();
 			return "static/Error";
 		}
 	}
 	
+	@RequestMapping(value="TimeSheetApprovals.htm", method= {RequestMethod.GET,RequestMethod.POST})
+	public String timeSheetApprovals(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+" Inside TimeSheetApprovals.htm "+UserId);
+		try {
+			String activityWeekDate = req.getParameter("activityWeekDate");
+			activityWeekDate = activityWeekDate==null?rdf.format(new Date()):activityWeekDate;
+			String activityWeekDateSql = fc.RegularToSqlDate(activityWeekDate);
+			
+			req.setAttribute("employeesofSuperiorOfficer", service.getEmployeesofSuperiorOfficer(EmpId, labcode));
+			req.setAttribute("timesheetDataForSuperior", service.getTimesheetDataForSuperior(EmpId, labcode, activityWeekDateSql));
+			req.setAttribute("empActivityAssignList", service.getEmpActivityAssignList("A"));
+			req.setAttribute("activityWeekDate", activityWeekDate);
+			req.setAttribute("activityWeekDateSql", activityWeekDateSql);
+			
+			return "timesheet/TimeSheetApprovals";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside TimeSheetApprovals.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
 }

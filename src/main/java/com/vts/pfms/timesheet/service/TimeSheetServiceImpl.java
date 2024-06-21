@@ -1,10 +1,14 @@
 package com.vts.pfms.timesheet.service;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +24,7 @@ import com.vts.pfms.timesheet.dao.TimeSheetDao;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 import com.vts.pfms.timesheet.model.TimeSheetActivity;
+import com.vts.pfms.timesheet.model.TimeSheetTrans;
 
 @Service
 public class TimeSheetServiceImpl implements TimeSheetService {
@@ -112,6 +117,18 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 				timeSheet.setCreatedBy(dto.getUserId());
 				timeSheet.setCreatedDate(sdtf.format(new Date()));
 				timeSheet.setIsActive(1);
+				
+				// Transaction
+				List<TimeSheetTrans> transactionList = new ArrayList<TimeSheetTrans>();
+				
+				TimeSheetTrans transaction = TimeSheetTrans.builder()
+											 .timeSheet(timeSheet)
+											 .TimeSheetStatusCode("INI")
+											 .ActionBy(dto.getEmpId())
+											 .ActionDate(sdtf.format(new Date()))
+											 .build();
+				transactionList.add(transaction);
+				timeSheet.setTimeSheetTrans(transactionList);
 			}else {
 				timeSheet.setModifiedBy(dto.getUserId());
 				timeSheet.setModifiedDate(sdtf.format(new Date()));
@@ -121,59 +138,83 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 			return dao.addTimeSheet(timeSheet);
 		}catch (Exception e) {
 			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetServiceImpl timeSheetSubmit() "+e);
 			return 0L;
 		}
 		
 	}
 
 	@Override
-	public Long timeSheetDetailsForward(String timeSheetId, String empId, String action, String userId) throws Exception {
+	public Long timeSheetDetailsForward(String[] timeSheetIds, String empId, String action, String userId, String remarks) throws Exception {
 		try {
-			TimeSheet timeSheet = dao.getTimeSheetById(timeSheetId);
-			String statusCode = timeSheet.getTimeSheetStatus();
-			Employee emp = masterdao.getEmployeeById(timeSheet.getEmpId()+"");
-			
-			if(action!=null && action.equalsIgnoreCase("A")) {
-				if(statusCode.equalsIgnoreCase("INI") || statusCode.equalsIgnoreCase("RBS") ) {
-					timeSheet.setInitiationDate(sdf.format(new Date()));
-					timeSheet.setTimeSheetStatus("FWD");
-				}else {
-					timeSheet.setTimeSheetStatus("ABS");
-				}
-			}else if(action!=null && action.equalsIgnoreCase("R")) {
-				timeSheet.setTimeSheetStatus("RBS");
-			}
-			
-			dao.addTimeSheet(timeSheet);
-			
-			PfmsNotification notification = new PfmsNotification();
-			if(action.equalsIgnoreCase("A")) {
-				notification.setEmpId(Long.parseLong(emp.getSuperiorOfficer()));
-				notification.setNotificationUrl("TimeSheetApprovals.htm");
-				notification.setNotificationMessage("Time Sheet Forwarded by <br>"+emp.getEmpName());
-				notification.setNotificationby(Long.parseLong(empId));
-				notification.setNotificationDate(LocalDate.now().toString());
-				notification.setIsActive(1);
-				notification.setCreatedBy(userId);
-				notification.setCreatedDate(sdtf.format(new Date()));
+			for(int i=0;i<timeSheetIds.length;i++) {
+				TimeSheet timeSheet = dao.getTimeSheetById(timeSheetIds[i]);
+				String statusCode = timeSheet.getTimeSheetStatus();
+				Employee emp = masterdao.getEmployeeById(timeSheet.getEmpId()+"");
 				
-				carsdao.addNotifications(notification);
-			}else if(action.equalsIgnoreCase("R")){
-				notification.setEmpId(timeSheet.getEmpId());
-				notification.setNotificationUrl("TimeSheetList.htm?activityDate="+fc.SqlToRegularDate(timeSheet.getActivityFromDate()));
-				notification.setNotificationMessage("Time Sheet Returned");
-				notification.setNotificationby(Long.parseLong(empId));
-				notification.setNotificationDate(LocalDate.now().toString());
-				notification.setIsActive(1);
-				notification.setCreatedBy(userId);
-				notification.setCreatedDate(sdtf.format(new Date()));
-			
-				carsdao.addNotifications(notification);
+				if(action!=null && action.equalsIgnoreCase("A")) {
+					if(statusCode.equalsIgnoreCase("INI") || statusCode.equalsIgnoreCase("RBS") ) {
+						timeSheet.setInitiationDate(sdf.format(new Date()));
+						timeSheet.setTimeSheetStatus("FWD");
+					}else {
+						timeSheet.setTimeSheetStatus("ABS");
+					}
+				}else if(action!=null && action.equalsIgnoreCase("R")) {
+					timeSheet.setTimeSheetStatus("RBS");
+				}
+				
+				// Transaction
+				List<TimeSheetTrans> transactionList = new ArrayList<TimeSheetTrans>();
+				
+				TimeSheetTrans transaction = TimeSheetTrans.builder()
+											 .timeSheet(timeSheet)
+											 .TimeSheetStatusCode(timeSheet.getTimeSheetStatus())
+											 .Remarks(remarks)
+											 .ActionBy(empId)
+											 .ActionDate(sdtf.format(new Date()))
+											 .build();
+				transactionList.add(transaction);
+				timeSheet.setTimeSheetTrans(transactionList);
+				
+				dao.addTimeSheet(timeSheet);
+				
+				PfmsNotification notification = new PfmsNotification();
+				if(action.equalsIgnoreCase("A")) {
+					if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("FWD")) {
+						notification.setEmpId(Long.parseLong(emp.getSuperiorOfficer()));
+						notification.setNotificationUrl("TimeSheetApprovals.htm");
+						notification.setNotificationMessage("Time Sheet Forwarded by <br>"+emp.getEmpName());
+					}else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) {
+						notification.setEmpId(timeSheet.getEmpId());
+						notification.setNotificationUrl("TimeSheetList.htm?activityDate="+fc.SqlToRegularDate(timeSheet.getActivityFromDate()));
+						notification.setNotificationMessage("Time Sheet Approved");
+					}
+					
+					notification.setNotificationby(Long.parseLong(empId));
+					notification.setNotificationDate(LocalDate.now().toString());
+					notification.setIsActive(1);
+					notification.setCreatedBy(userId);
+					notification.setCreatedDate(sdtf.format(new Date()));
+					
+					carsdao.addNotifications(notification);
+				}else if(action.equalsIgnoreCase("R")){
+					notification.setEmpId(timeSheet.getEmpId());
+					notification.setNotificationUrl("TimeSheetList.htm?activityDate="+fc.SqlToRegularDate(timeSheet.getActivityFromDate()));
+					notification.setNotificationMessage("Time Sheet Returned");
+					notification.setNotificationby(Long.parseLong(empId));
+					notification.setNotificationDate(LocalDate.now().toString());
+					notification.setIsActive(1);
+					notification.setCreatedBy(userId);
+					notification.setCreatedDate(sdtf.format(new Date()));
+				
+					carsdao.addNotifications(notification);
+				}
 			}
 			
 			return 1L;
 		}catch (Exception e) {
 			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetServiceImpl timeSheetDetailsForward() "+e);
 			return 0L;
 		}
 	}
@@ -183,4 +224,48 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 		
 		return dao.getEmpAllTimeSheetList(empId, activityDate);
 	}
+	
+	@Override
+	public List<Object[]> getEmployeesofSuperiorOfficer(String superiorOfficer, String labCode) throws Exception {
+		
+		return dao.getEmployeesofSuperiorOfficer(superiorOfficer, labCode);
+	}
+	
+	@Override
+	public Map<String, Map<LocalDate, TimeSheet>> getTimesheetDataForSuperior(String superiorOfficer, String labCode, String dateofWeek) throws Exception {
+		try {
+			List<Object[]> emplist = dao.getEmployeesofSuperiorOfficer(superiorOfficer, labCode);
+			
+			Map<String, Map<LocalDate, TimeSheet>> timesheetData = new HashMap<>();
+			
+			LocalDate localdate = LocalDate.parse(dateofWeek);
+			// Get the start of the week (Sunday)
+	        LocalDate startOfWeek = localdate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+
+	        // Get the end of the week (Saturday)
+	        LocalDate endOfWeek = localdate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+	        
+	        for(Object[] obj : emplist) {
+	        	Map<LocalDate, TimeSheet> employeeTimesheet = new HashMap<>();
+	            List<TimeSheet> timesheets = dao.getTimeSheetListofEmployeeByPeriod(obj[0].toString(), startOfWeek.toString(), endOfWeek.toString());
+
+	            Map<LocalDate, TimeSheet> timeSheetMap = new HashMap<>();
+	            for (TimeSheet timesheet : timesheets) {
+	            	timeSheetMap.put(LocalDate.parse(timesheet.getActivityFromDate()), timesheet);
+	            }
+
+	            for (LocalDate date = startOfWeek; !date.isAfter(endOfWeek); date = date.plusDays(1)) {
+	                employeeTimesheet.put(date, timeSheetMap.getOrDefault(date, null));
+	            }
+
+	            timesheetData.put(obj[0].toString(), employeeTimesheet);
+	        }
+			return timesheetData;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetServiceImpl getTimesheetDataForSuperior() "+e);
+			return null;
+		}
+	}
+	
 }
