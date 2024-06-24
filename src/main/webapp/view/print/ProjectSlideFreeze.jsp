@@ -101,7 +101,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 	</div>
 	<h4 style="text-align: center;float: none; color: black;">
 		<%if(projectdata!=null && projectdata[13]!=null){%>
-			<%=projectdata[13]%><%=projectdata[12]!=null?"("+projectdata[12]+")":"-"%> 
+			<%=projectdata[1]%>&nbsp;<%=projectdata[13]%><%=projectdata[12]!=null?"("+projectdata[12]+")":"-"%> 
 		<%}%>
 	</h4>
 	<div style="margin-top: -28px;margin-right: 75px;">
@@ -216,7 +216,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 							<div style="align-content: center;">	
 								<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
 									<img data-enlargable style="max-height: 300px; display: block; margin: 0 auto;  width: 40%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
-								<%}else{%>IMAGE<% }%>
+								<%}else{%><% }%>
 								</div>
 							</td>
 						</tr>
@@ -254,6 +254,15 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				<div style="float: left;width: 50%;height: 100%;display: block;margin-top: 13px;">
 				
 						<table style="margin-top: -10px; align-items: flex-end;height: 100%;font-weight: bold;border-top: none;">
+						
+							<tr>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px;border-top: none;">
+								<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+								Brief : </b>  </td>
+								<td colspan="7" style="text-align: left;color:#212529;border-top: none; ">
+									<%=projectdata[15]!=null?projectdata[15]:"--"%>
+								</td>
+							</tr>
 							<tr >
 								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px;border-top: none;">
 									Objectives :
@@ -273,18 +282,10 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 								<td colspan="7" style="text-align: left;color:#212529 "> <%=projectdata[8]!=null?projectdata[8]:"--"%>
 					   			</td>
 							</tr>
-							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px;vertical-align: top;">
-									Current Status :
-									</td>
-									<td colspan="7" style="text-align: left;color:#212529 "><p>
-										<%=projectdata[20]!=null?projectdata[20]:"--"%>
-								</p></td>
-							</tr>
 						
 						</table>
 						<br><br>
-				<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 20%; float: left;margin: 0px; margin-top: 10px;">
+				<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 20%; float: left; margin-top: 10px;height: 15px">
 					Current Status : 
 				</h4>
 				<p style="width: 80%; float: right;margin-top: 10px;">
@@ -306,7 +307,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					<div style="float: right;width: 50%;align-content: center;">
 					<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
 									<img  data-enlargable height="500" style=" max-width: 75%; display: block; margin: 0 auto;  width: 75%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
-								<%}else{%>IMAGE<% }%>
+								<%}else{%><% }%>
 					</div>
 					<p>&nbsp;</p>
 					</div>

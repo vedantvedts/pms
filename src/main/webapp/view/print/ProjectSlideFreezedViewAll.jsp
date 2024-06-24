@@ -129,15 +129,20 @@ FormatConverter fc = new FormatConverter();
 						</tr>
 					</table>	
 					<br><br><br><br>
-					<%
+					<%Boolean flag=false;
 						for(int i=0;i<freezedproject.size();i++)
 						{
 							for(int j=0;j<projects.size();j++)
 							{
-								if(freezedproject.get(i)[3].toString().equals(projects.get(j)[0].toString()))
+								if(freezedproject.get(i)[3].toString().equals(projects.get(j)[0].toString())){
 									reviewedby=freezedproject.get(i)[4].toString();
 									reviewDate=sdf.format(freezedproject.get(i)[5]).toString();
+									flag=true;
+									break;
+								}
+								if(flag)break;
 							}
+							
 						}
 					%>
 					<h4 style="color: #145374 !important;text-align: center;"><%if( reviewedby!="" ) {%> Review By - <%=reviewedby %>  <%} %></h4>
@@ -405,7 +410,7 @@ FormatConverter fc = new FormatConverter();
 																	} else if (subProjectList != null && subProjectList.get(i)[6] != null && subProjectList.get(i)[6].toString().equalsIgnoreCase("DRDO")) {
 																		%>
 																		
-																	<li><span class="modal-span" style="color:#231955">&#11044;</span></li>
+																	<li><span class="modal-span" style="color:orange;">&#11044;</span></li>
 																		
 																		<%
 																	} else if (subProjectList != null && subProjectList.get(i)[6] != null && subProjectList.get(i)[6].toString().equalsIgnoreCase("OH")) {
@@ -543,7 +548,7 @@ FormatConverter fc = new FormatConverter();
 															<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b>Show more</b></a>
 														<%} %>
 														<br>
-								 						<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
+								 						<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
 															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
 														<%} %>
 							 						</h6>
@@ -737,7 +742,7 @@ FormatConverter fc = new FormatConverter();
 															<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b>Show more</b></a>
 														<%} %>
 														<br>
-								 						<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
+								 						<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
 															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
 														<%} %>
 							 						</h6>

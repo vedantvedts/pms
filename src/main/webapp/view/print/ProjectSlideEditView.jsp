@@ -223,16 +223,6 @@ if(ses1!=null){
 										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[8]!=null?projectdata[8]:"--"%>
 										</td>
 									</tr>
-									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;vertical-align: top;" >
-											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;">Current Status : </b> 
-										</td>
-										<td colspan="7" style="font-weight: bold;color:#212529 ">
-										<%if(projectdata!=null && projectdata[22]!=null) {%>
-												<%=projectdata[22]%>
-											<%} else{%>-<%} %> 
-										</td>
-									</tr>
 								</table>
 								<div class="container-fluid">
 									<div class="row">
@@ -362,16 +352,6 @@ if(ses1!=null){
 															</td>
 															<td style="color:#212529;">
 																<%=projectdata[8]!=null?projectdata[7]:"--"%>
-															</td>
-														</tr>
-														<tr>
-															<td style="border-top: none;vertical-align: top;">
-																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79;">Current Status:</b>
-															</td>
-															<td style="color:#212529;">
-																<%if(projectslidedata!=null && projectslidedata[0]!=null) {%>
-																	<%=projectslidedata[0]%>
-																<%} else{%>-<%} %>
 															</td>
 														</tr>
 

@@ -3803,7 +3803,6 @@ public class PrintController {
 				String brief = req.getParameter("Brief");
 				String slide = req.getParameter("silde");
 				String wayforward = req.getParameter("wayForward");
-				System.out.println("wayforward is ===================="+wayforward);
 				ProjectSlideDto slidedata = new ProjectSlideDto();
 					slidedata.setProjectId(Long.parseLong(projectid));
 					slidedata.setStatus(status);
@@ -3950,7 +3949,6 @@ public class PrintController {
 				 ProjectSlides attach=service.SlideAttachmentDownload(req.getParameter("slideId" ));
 				 
 				 File my_file=null;
-				 System.out.println("video name is "+attach.getVideoName());
 				 my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getVideoName()); 
 				 res.setHeader("Content-disposition","attachment; filename="+attach.getVideoName().toString()); 
 				 OutputStream out = res.getOutputStream();
@@ -4016,7 +4014,6 @@ public class PrintController {
 				 my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getVideoName()); 
 				 res.setContentType("video/mp4");
 				 String filename = attach.getVideoName() != null ? attach.getVideoName().toString() : "name.pdf";
-				 System.out.println("filename i s       ============       "+filename);
 //				 res.setHeader("Content-disposition", "inline; filename="+attach.getAttachmentName()!=null?attach.getAttachmentName().toString():"name"+".pdf"); 
 				 res.setHeader("Content-disposition", "inline; filename=\"" + filename + "\"");			        
 				 OutputStream out = res.getOutputStream();
@@ -4204,7 +4201,6 @@ public class PrintController {
 		 @RequestMapping(value = "GetAllProjectSlide.htm" , method = RequestMethod.POST)
 		 public String GetAllProjectSlide(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
 			{
-			 System.out.println("inside============---------------==============GetAllProjectSlide.htm");
 
 				String UserId = (String) ses.getAttribute("Username");
 
@@ -4222,12 +4218,10 @@ public class PrintController {
 
 					for (String id : IdsInput) {
 
-						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);
+						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);  // freezing data
 						Object[] projectslidedata = (Object[]) service.GetProjectSildedata(id);  //[7] id project id
-						System.out.println(projectslidedata!=null?projectslidedata[0]:"null");
-//						System.out.println("third value is "+projectslidedata[2]+" is is ===="+id);
 						getAllProjectSlidesdata.add(projectslidedata);
-						Object[] projectdata = (Object[]) service.GetProjectdata(id); //[0] is project id
+						Object[] projectdata = (Object[]) service.GetProjectdata(id); //[0] is project id ------ all vals
 						getAllProjectdata.add(projectdata);
 						if (getoneProjectSlidedata.size() > 0) {
 							for (Object[] objects : getoneProjectSlidedata) {
@@ -4262,10 +4256,10 @@ public class PrintController {
 				}
 				try {
 
-					if (getAllProjectdata.size() > 1)
+					if (getAllProjectdata.size() > 1) {
 						Collections.sort(getAllProjectdata, dateComparator);
-					if (getAllProjectdata.size() > 1)
 						Collections.sort(getAllProjectSlidedata, dateComparator);
+					}
 					Collections.reverse(getAllProjectSlidedata);
 					
 //					for(int i=0;i<getAllProjectSlidesdata.size();i++)
@@ -4617,8 +4611,6 @@ public class PrintController {
 					 req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
 				    String filename="ProjectSlideCover";	
 				    
-//				    (details.get("getAllProjectdata")).stream().map(Arrays::toString).forEach(System.out::println);
-				    
 			    	String path=req.getServletContext().getRealPath("/view/temp");
 
 					req.setAttribute("path",path);
@@ -4753,11 +4745,9 @@ public class PrintController {
 						
 						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id); // freezed
 						if (getoneProjectSlidedata.size() > 0){
-								System.out.println(id);
 								Object[] projectdata = (Object[]) service.GetProjectdata(id); // all values
 								getAllProjectdata.add(projectdata);
 							for (Object[] objects : getoneProjectSlidedata) {
-								System.out.println("objects are "+objects[0]);
 								getAllProjectSlidedata.add(objects);
 							}
 						}
@@ -4766,11 +4756,9 @@ public class PrintController {
 					List<Object[]> dataForCoverslide = new ArrayList<>();
 					for (Object[] objects : getAllProjectdata) {
 						for (Object[] objects2 : getAllProjectSlidedata) {
-							System.out.println("prjid freeze is "+objects2[3]+"-=========-"+objects2[1].toString() + objects2[2].toString());
 							File file = new File(ApplicationFilesDrive + objects2[1].toString() + objects2[2].toString());
 							if (file.exists()) {
 								if(objects2[3].toString().equals(objects[0].toString())) {
-									System.out.println("prjid allvals is "+objects2[3]+"------"+objects[0]+"=========="+objects2[3].toString().equals(objects[0].toString()));
 									dataForOutline.add(objects);
 									dataForCoverslide.add(objects2);
 								}
@@ -4806,7 +4794,6 @@ public class PrintController {
 					for (Object[] objects : getAllProjectdata) {
 						for (Object[] objects2 : getAllProjectSlidedata) {
 							if(objects2[3]==objects[0]) {
-								System.out.println(objects2[0]+" "+objects[3]);
 								temp.add(objects2);
 							}
 						}
@@ -4814,7 +4801,6 @@ public class PrintController {
 					
 					getAllProjectSlidedata = temp;
 					
-					System.out.println(ProjectIds.length>getAllProjectdata.size());
 					Map<String, List<Object[]>> details = new HashMap<>();
 					details.put("getAllProjectdata", dataForCoverslide);
 					String path = req.getServletContext().getRealPath("/view/temp");
@@ -4851,7 +4837,6 @@ public class PrintController {
 						}
 					}
 					if (pathToThankYou.equals("") || flag) {
-						System.out.println("pathToThankYou is "+pathToThankYou);
 						redir.addAttribute("resultfail", "Selected slide has not been Freezed");
 						redir.addAttribute("result", null);
 						return "redirect:/MainDashBoard.htm";
@@ -4893,14 +4878,11 @@ public class PrintController {
 					 String[] a = req.getParameterValues("projectlist");
 					 
 					 String Title = req.getParameter("name").toString();
-					 System.out.println(Title);
 					 String projectlist = "";
 					 for (String string : a) {
-						System.out.print(string+" ");
 						projectlist+=string+",";
 					};
 					projectlist = projectlist.substring(0, projectlist.length()-1);
-					System.out.println(projectlist);
 					FSM.setCreatedBy(ses.getAttribute("Username").toString());
 					FSM.setCreatedDate(new Date().toString());
 					FSM.setProjectIds(projectlist);
@@ -4925,7 +4907,6 @@ public class PrintController {
 					 String Title = req.getParameter("name").toString();
 					 String projectlist = "";
 					projectlist = req.getParameter("projectlist").toString();
-					System.out.println(Long.parseLong(req.getParameter("FavouritId").toString()));
 					FSM.setFavouriteSlidesId(Long.parseLong(req.getParameter("FavouritId").toString()));
 					FSM.setCreatedDate(new Date().toString());
 					FSM.setProjectIds(projectlist);
