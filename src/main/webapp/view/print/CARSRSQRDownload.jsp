@@ -48,7 +48,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
       right: 0;
       top: 0;
       bottom: 0;
-      border: 2px solid black;
+     /*  border: 2px solid black; */
     }     
  
 .bold{
@@ -61,7 +61,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
           margin-left: 39px;
           margin-right: 39px;
           margin-buttom: 49px; 	
-          border: 1px solid black; 
+          /* border: 1px solid black;  */
           
           @bottom-left {          		
              content: "";

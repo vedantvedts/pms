@@ -304,6 +304,7 @@ public class CARSController {
 					                   .PIMobileNo(req.getParameter("piMobileNo"))
 					                   .PIEmail(req.getParameter("piEmail"))
 					                   .PIFaxNo(req.getParameter("piFaxNo"))
+					                   .EquipmentNeed("N")
 					                   .DPCSoCForwardedBy(0)
 					                   .CARSStatusCode("INI")
 					                   .CARSStatusCodeNext("FWD")
@@ -1417,20 +1418,20 @@ public class CARSController {
 		try {
 			String AllListTabId = req.getParameter("AllListTabId");
 
-			LocalDate todaydate= LocalDate.now();
-			String fromdate = todaydate.withDayOfMonth(1).toString();
-			String todate = todaydate.toString();
+			LocalDate today= LocalDate.now();
+			String fromdate = today.getYear()+"-01-01";
+			String todate = today.getYear()+"-12-31";
 			
 			if((AllListTabId==null) || (AllListTabId!=null && AllListTabId.equalsIgnoreCase("1")) ) {
 				String rsqrfromdate = req.getParameter("rsqrfromdate");
 				String rsqrtodate = req.getParameter("rsqrtodate");
 
-				LocalDate today = LocalDate.now();
-
 				if(rsqrfromdate == null) 
 				{
-					rsqrfromdate = today.withDayOfMonth(1).toString();
-					rsqrtodate = today.toString();
+					rsqrfromdate = today.getYear()+"-01-01";
+					rsqrtodate = today.getYear()+"-12-31";
+//					rsqrfromdate = today.withDayOfMonth(1).toString();
+//					rsqrtodate = today.toString();
 
 				}else
 				{
@@ -1456,12 +1457,10 @@ public class CARSController {
 				String socfromdate = req.getParameter("socfromdate");
 				String soctodate = req.getParameter("soctodate");
 
-				LocalDate today=LocalDate.now();
-
 				if(socfromdate == null) 
 				{
-					socfromdate =today.withDayOfMonth(1).toString();
-					soctodate = today.toString();
+					socfromdate = today.getYear()+"-01-01";
+					soctodate = today.getYear()+"-12-31";
 
 				}else
 				{
@@ -1489,12 +1488,10 @@ public class CARSController {
 				String carsfromdate = req.getParameter("carsfromdate");
 				String carstodate = req.getParameter("carstodate");
 
-				LocalDate today = LocalDate.now();
-
 				if(carsfromdate == null) 
 				{
-					carsfromdate = today.withDayOfMonth(1).toString();
-					carstodate = today.toString();
+					carsfromdate = today.getYear()+"-01-01";
+					carstodate = today.getYear()+"-12-31";
 
 				}else
 				{

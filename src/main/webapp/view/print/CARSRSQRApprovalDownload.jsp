@@ -182,7 +182,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	</tr>
 	<tr>
 		<td colspan="3" style="font-size: 14px;">
-			&nbsp;<input type="checkbox"  class="TCBox" <%if(carsIni!=null && !rsqrforward.contains(carsIni.getCARSStatusCode())) {%>checked<%} %> >&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
+			&nbsp;<input type="checkbox"  class="TCBox" <%if(carsIni.getEquipmentNeed().equalsIgnoreCase("Y")) {%>checked<%} %> >&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
 		</td>
 	</tr>
 </table>

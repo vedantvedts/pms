@@ -47,6 +47,7 @@ public class CARSInitiation implements Serializable{
 	private String PIMobileNo;
 	private String PIEmail;
 	private String PIFaxNo;
+	private String EquipmentNeed;
 	private String InitiationApprDate;
 	private String InvForSoODate;
 	private String CARSStatusCode;

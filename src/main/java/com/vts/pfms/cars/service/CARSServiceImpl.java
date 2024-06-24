@@ -284,6 +284,7 @@ public class CARSServiceImpl implements CARSService{
 					if(statusCode.equalsIgnoreCase("INI")) {
 						cars.setInitiationDate(sdf.format(new Date()));
 					}
+					cars.setEquipmentNeed(req.getParameter("equipmentNeed")!=null?"Y":"N");
 					cars.setCARSStatusCode("FWD");
 					if(fundsFrom.equalsIgnoreCase("0")) {
 						cars.setCARSStatusCodeNext("AGD");
