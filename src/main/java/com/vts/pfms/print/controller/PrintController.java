@@ -4262,6 +4262,9 @@ public class PrintController {
 					}
 					Collections.reverse(getAllProjectSlidedata);
 					Collections.reverse(getAllProjectdata);
+					for (Object[] objects : getAllProjectdata) {
+						System.out.println("ids confirmation "+objects[0]);
+					}
 					
 //					for(int i=0;i<getAllProjectSlidesdata.size();i++)
 //					{
@@ -4790,17 +4793,18 @@ public class PrintController {
 					
 					if (getAllProjectdata.size() > 1)
 						Collections.sort(getAllProjectdata, dateComparator);
-					
+					System.out.println("size before is========"+getAllProjectSlidedata.size());
 					//aligning list values with the PROJids of project pdf PROJids
 					for (Object[] objects : getAllProjectdata) {
 						for (Object[] objects2 : getAllProjectSlidedata) {
-							if(objects2[3]==objects[0]) {
+							if(objects2[3].toString().equals(objects[0].toString())) {
 								temp.add(objects2);
 							}
 						}
 					}
 					
 					getAllProjectSlidedata = temp;
+					System.out.println("size after is========"+getAllProjectSlidedata.size());
 					
 					Map<String, List<Object[]>> details = new HashMap<>();
 					details.put("getAllProjectdata", dataForCoverslide);
