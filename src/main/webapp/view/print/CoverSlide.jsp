@@ -39,8 +39,11 @@ String lablogo = (String)request.getAttribute("lablogo");
 String Drdologo = (String)request.getAttribute("Drdologo");
 String filePath = (String)request.getAttribute("filepath");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+List<Object[]> getAllProjectdata = (List<Object[]>) request.getAttribute("getAllProjectdata");
 NFormatConvertion nfc=new NFormatConvertion();
 String enduser="--";
+String reviewedby="";
+String reviewDate="";
 
 %>
 	<div class="container-fluid">
@@ -50,27 +53,27 @@ String enduser="--";
 
 				<div class="content" align="center"
 					style="border-radius: 5px !important; height: 93vh !important; padding-top: 5px;">
-
+					
 					<div class="firstpage">
 
-						<div align="center" style="margin-top: 85px">
+						<div align="center" style="margin-top: 35px">
 							<h2
-								style="color: #145374 !important; font-family: 'Muli' !important">Presentation</h2>
+								style="color: #145374 !important; font-family: 'Muli' !important;margin: 5px 5px 5px 5px">Presentation</h2>
 						</div>
 						<div align="center">
-							<h3 style="color: #145374 !important">of</h3>
+							<h3 style="color: #145374 !important;margin: 5px 5px 5px 5px">of</h3>
 						</div>
 
 						<div align="center">
-							<h3 style="color: #4C9100 !important">
-								Projects of
+							<h3 style="color: #145374 !important;margin: 5px 5px 5px 5px">
+								
 								<%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%>
-								<%}%>
+								<%}%> Projects
 							</h3>
 						</div>
 
 						<div align="center">
-							<h3 style="color: #4C9100 !important"></h3>
+							<h3 style="color: #145374 !important;"></h3>
 						</div>
 						<table style="margin-top: 35px;" class="executive home-table"
 							style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;">
@@ -82,6 +85,13 @@ String enduser="--";
 							</tr>
 						</table>
 						<br>
+						<%if(getAllProjectdata!=null && getAllProjectdata.size()>0){  
+							reviewedby=getAllProjectdata.get(0)[4].toString();
+							reviewDate=sdf.format(getAllProjectdata.get(0)[5]).toString();
+						}
+						%>
+						<h4 style="color: #145374 !important;text-align: center;margin: 25px 0px 0px 0px;"><%if( reviewedby!="" ) {%> Review By - <%=reviewedby %>  <%} %></h4>
+						<h4 style="color: #145374 !important;text-align: center;margin: 0px 0px 25px 0px;"><%if( reviewDate!="" ) {%> Review Date - <%=reviewDate %> <%} %></h4>
 						<div align="center">
 
 							<table style="margin-top: 35px;" class="executive home-table"
@@ -92,7 +102,7 @@ String enduser="--";
 								</tr>
 								<tr>
 									<th colspan="8"
-										style="text-align: center; font-weight: 700; font-size: 22px">
+										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 22px;margin: 0px 5px 5px 5px">
 										<%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %>
 										<%}else{ %>LAB NAME<%} %>
 									</th>
@@ -100,27 +110,27 @@ String enduser="--";
 
 								<%}%>
 								<tr>
-									<td style="height: 25px"></td>
+									<td style="height: 5px"></td>
 								</tr>
 								<tr>
 									<th colspan="8"
-										style="text-align: center; font-weight: 700; font-size: 15px"><br>Government
+										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 15px;margin: 0px 5px 5px 5px"><br>Government
 										of India, Ministry of Defence</th>
 								</tr>
 								<tr>
-									<td style="height: 25px"></td>
+									<td style="height: 10px"></td>
 								</tr>
 								<tr>
 									<th colspan="8"
-										style="text-align: center; font-weight: 700; font-size: 15px">Defence
+										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 15px;margin: 5px 5px 5px 5px">Defence
 										Research & Development Organization</th>
 								</tr>
 								<tr>
-									<td style="height: 25px"></td>
+									<td style="height: 10px"></td>
 								</tr>
 								<tr>
 									<th colspan="8"
-										style="text-align: center; font-weight: 700; font-size: 15px">
+										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 15px;margin: 5px 5px 5px 5px">
 										<%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()%>
 										, <%=labInfo.getLabCity()%>
 										<%}else{ %>LAB ADDRESS<%} %>

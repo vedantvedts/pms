@@ -4070,7 +4070,7 @@ public class PrintController {
 					 freeze.setProjectId(Long.parseLong(projectid));
 					 freeze.setEmpId(EmpId);
 					 
-					    Object[] projectdata = (Object[])service.GetProjectdata(projectid);
+					    Object[] projectdata = (Object[])service.GetProjectdata(projectid); // all columns
 						Object[] projectslidedata = service.GetProjectSildedata(projectid);
 						req.setAttribute("filepath", ApplicationFilesDrive);
 						req.setAttribute("projectslidedata", projectslidedata);
@@ -4679,10 +4679,11 @@ public class PrintController {
 					 String LabCode = (String) ses.getAttribute("labcode");
 					 req.setAttribute("labInfo", service.LabDetailes(LabCode));
 					 req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+					 req.setAttribute("getAllProjectdata", details.get("getAllProjectdata")); 
 				    String filename="ProjectSlideCover";	
 
 			    	String path=req.getServletContext().getRealPath("/view/temp");
-
+			    	
 					req.setAttribute("path",path);
 
 					CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
@@ -4750,10 +4751,10 @@ public class PrintController {
 					for (String id : ProjectIds) {
 						
 						
-						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);
+						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id); // freezed
 						if (getoneProjectSlidedata.size() > 0){
 								System.out.println(id);
-								Object[] projectdata = (Object[]) service.GetProjectdata(id);
+								Object[] projectdata = (Object[]) service.GetProjectdata(id); // all values
 								getAllProjectdata.add(projectdata);
 							for (Object[] objects : getoneProjectSlidedata) {
 								System.out.println("objects are "+objects[0]);
@@ -4761,6 +4762,25 @@ public class PrintController {
 							}
 						}
 					}
+					List<Object[]> dataForOutline = new ArrayList<>();
+					List<Object[]> dataForCoverslide = new ArrayList<>();
+					for (Object[] objects : getAllProjectdata) {
+						for (Object[] objects2 : getAllProjectSlidedata) {
+							System.out.println("prjid freeze is "+objects2[3]+"-=========-"+objects2[1].toString() + objects2[2].toString());
+							File file = new File(ApplicationFilesDrive + objects2[1].toString() + objects2[2].toString());
+							if (file.exists()) {
+								if(objects2[3].toString().equals(objects[0].toString())) {
+									System.out.println("prjid allvals is "+objects2[3]+"------"+objects[0]+"=========="+objects2[3].toString().equals(objects[0].toString()));
+									dataForOutline.add(objects);
+									dataForCoverslide.add(objects2);
+								}
+							}
+						
+							
+						}
+						
+					} 
+					
 					List<Object[]> temp = new ArrayList<>();
 					
 					Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
@@ -4796,6 +4816,7 @@ public class PrintController {
 					
 					System.out.println(ProjectIds.length>getAllProjectdata.size());
 					Map<String, List<Object[]>> details = new HashMap<>();
+					details.put("getAllProjectdata", dataForCoverslide);
 					String path = req.getServletContext().getRealPath("/view/temp");
 					//static file thank you
 					String pathToThankYou = "";
@@ -4807,7 +4828,7 @@ public class PrintController {
 						CoverSlide = PrintCoverSlide(details, req, redir, res, ses);
 					
 					
-					details.put("getAllProjectdata", getAllProjectdata);
+					details.put("getAllProjectdata", dataForOutline);
 					File projectOutline = new File(Path + "ProjectOutline.pdf");
 					String prjOutlineSlide="";
 					if(projectOutline.exists())prjOutlineSlide=projectOutline.getPath();
