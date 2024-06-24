@@ -1026,7 +1026,7 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
-		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.CreatedDate , b.projectcode FROM pfms_project_slides_freeze a , project_master b WHERE a.projectid = :projectid  AND b.projectid=a.projectid  AND a.createddate = (SELECT MAX(a.createddate) FROM pfms_project_slides_freeze a WHERE a.projectid = :projectid)";
+		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , ReviewDate , b.projectcode FROM pfms_project_slides_freeze a , project_master b WHERE a.projectid = :projectid  AND b.projectid=a.projectid  AND a.createddate = (SELECT MAX(a.createddate) FROM pfms_project_slides_freeze a WHERE a.projectid = :projectid)";
 		@Override
 		public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception
 		{

@@ -3752,7 +3752,7 @@ public class PrintController {
 			    	projectid = (String) md.get("projectid");
 			    }
 
-				Object[] projectdata = (Object[])service.GetProjectdata(projectid);
+				Object[] projectdata = (Object[])service.GetProjectdata(projectid); // all vals
 				req.setAttribute("projectdata", projectdata);
 				Object[] projectslidedata = (Object[])service.GetProjectSildedata(projectid);
 				if(projectdata==null){
@@ -4217,7 +4217,7 @@ public class PrintController {
 				if (IdsInput != null && IdsInput.length > 0)
 
 					for (String id : IdsInput) {
-
+										
 						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);  // freezing data
 						Object[] projectslidedata = (Object[]) service.GetProjectSildedata(id);  //[7] id project id
 						getAllProjectSlidesdata.add(projectslidedata);
@@ -4261,6 +4261,7 @@ public class PrintController {
 						Collections.sort(getAllProjectSlidedata, dateComparator);
 					}
 					Collections.reverse(getAllProjectSlidedata);
+					Collections.reverse(getAllProjectdata);
 					
 //					for(int i=0;i<getAllProjectSlidesdata.size();i++)
 //					{
@@ -4742,7 +4743,7 @@ public class PrintController {
 					List<Object[]> getAllProjectdata = new ArrayList<>();
 					for (String id : ProjectIds) {
 						
-						
+						System.out.println("id is===="+id);
 						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id); // freezed
 						if (getoneProjectSlidedata.size() > 0){
 								Object[] projectdata = (Object[]) service.GetProjectdata(id); // all values

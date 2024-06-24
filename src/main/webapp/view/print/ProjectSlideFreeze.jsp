@@ -101,7 +101,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 	</div>
 	<h4 style="text-align: center;float: none; color: black;">
 		<%if(projectdata!=null && projectdata[13]!=null){%>
-			<%=projectdata[1]%>&nbsp;<%=projectdata[13]%><%=projectdata[12]!=null?"("+projectdata[12]+")":"-"%> 
+			<%=projectdata[1]%>&nbsp;-&nbsp;<%=projectdata[13]%><%=projectdata[12]!=null?"("+projectdata[12]+")":"-"%> 
 		<%}%>
 	</h4>
 	<div style="margin-top: -28px;margin-right: 75px;">

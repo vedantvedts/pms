@@ -535,8 +535,11 @@ if(ses1!=null){
 											<div class="row">				                    		
 					                    		<div class="col-md-3">
 					                        		<div class="form-group">
-						                        		<div class="col" >		
-				                            				<label  ><b> Image : </b></label><a href="SlideAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+						                        		<div class="col" >
+						                        		<label  ><b> Image : </b></label>
+														<%if(new File(filePath + projectslidedata[3] + projectdata[24]).exists()){%>
+				                            				<a href="SlideAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+				                            			<%} %>
 														</div>
 						                        		<div class="col" >
 						                              		<input  class="form-control form-control"  type="file"  name="Attachment1" accept="image/png, image/jpeg" id="Attachment1" required="required" maxlength="3" style="font-size: 15px;"> 
@@ -547,8 +550,9 @@ if(ses1!=null){
 					                        		<div class="form-group">
 						                        		<div class="col" >
 															<label  ><b> Attachment : </b></label>
-															<a href="SlidePdfAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
-		
+															<%if(new File(filePath + projectslidedata[3] + projectdata[27]).exists()){%>
+																<a href="SlidePdfAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+															<%} %>
 														</div>
 						                        		<div class="col">
 															<input  class="form-control form-control"  type="file" name="Attachment2" id="Attachment2" accept="application/pdf, application/vnd.ms-excel"  maxlength="3" style="font-size: 15px;"> 
@@ -560,8 +564,9 @@ if(ses1!=null){
 					                        		<div class="form-group">
 						                        		<div class="col" >
 															<label  ><b> video : </b></label>
-															<a href="SlideVideoAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
-		
+															<%if(new File(filePath + projectslidedata[3] + projectdata[30]).exists()){%>
+																<a href="SlideVideoAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
+															<%} %>
 														</div>
 						                        		<div class="col">
 															<input
@@ -597,7 +602,7 @@ if(ses1!=null){
 					</div>
 				</div>			
 			</div> 
-	<!-- ----------------------------------------  Edit  Close ----------------------------------------------------- -->	
+	<!-- ----------------------------------------  Edit  Ends ----------------------------------------------------- -->	
 		</div>
 		<div class="carousel-item" >
 			<div class=" d-block w-100 container-fluid">
@@ -920,11 +925,7 @@ function checkData(){
 	var status = CKEDITOR.instances['ckeditor1'].getData();
 	var attachment  = $("#Attachment").val();
 	
-	if(status=='' || status=='null' || status==null){
-		alert("Please Enter the Status Data!");
-		  event.preventDefault();
-		  return false;
-	} else if(status.length>5000){
+	if(status.length>5000){
 		alert("Status Data is Too Long!");
 		  event.preventDefault();
 		  return false;
