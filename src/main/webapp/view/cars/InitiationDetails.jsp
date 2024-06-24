@@ -1075,7 +1075,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                			<div class="col-md-8 mt-4">
                				<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;">
                					<div class="card-body mt-2 ml-4">
-               						<form action="">
+               						<form action="#">
                							<div class="mt-2" align="center">
                								<h5 style="font-weight: bold;margin-top: 1.5rem;">RSQR Approval
                									&emsp;<button type="submit" class="btn btn-sm" formaction="CARSRSQRApprovalDownload.htm" name="carsInitiationId" value="<%=carsInitiationId%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download" formnovalidate="formnovalidate">
@@ -1120,7 +1120,8 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						    				</tr>
 						    				<tr>
 						    					<td colspan="3" style="width: 100%;font-size: 14px;">
-						    						&emsp;<input type="checkbox"  class="TCBox" <%if(statuscode!=null && !rsqrforward.contains(statuscode)) {%>checked<%} %> required>&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
+						    						&emsp;<input type="checkbox" name="equipmentNeed" value="<%=carsIni.getCARSInitiationId() %>" class="TCBox" <%if(carsIni.getEquipmentNeed().equalsIgnoreCase("Y")) {%>checked<%} %> <%if(statuscode!=null && !rsqrforward.contains(statuscode)) {%>disabled<%} %> >
+						    						&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
 						    					</td>
 						    				</tr>
                							</table>
