@@ -20,6 +20,7 @@ import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.timesheet.dao.TimeSheetDao;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
@@ -80,7 +81,7 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 			List<TimeSheetActivity> timeSheetActivityList = new ArrayList<TimeSheetActivity>();
 			
 			int totalMinutes = 0;
-			
+			int ac = 0;
 			for(int i=0;i<dto.getActivityId().length;i++) {
 				
 				if(dto.getActivityId()[i].equalsIgnoreCase("0")) continue;
@@ -88,7 +89,18 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 				TimeSheetActivity activity =  new TimeSheetActivity();
 				activity.setActivityId(dto.getActivityId()[i]!=null && dto.getActivityId()[i].equalsIgnoreCase("N")?0:Long.parseLong(dto.getActivityId()[i]));
 				activity.setActivityType(activity.getActivityId()==0?"N":"A");
-				activity.setActivityName(activity.getActivityId()==0?dto.getActivityName()[i]:null);
+				if(dto.getProjectIdhidden()[i]!=null && !dto.getProjectIdhidden()[i].isEmpty()) {
+					activity.setProjectId(Long.parseLong(dto.getProjectIdhidden()[i]));
+				}else {
+					activity.setProjectId(Long.parseLong(dto.getProjectId()[i]));
+				}
+				
+				if(activity.getActivityId()==0) {
+					activity.setActivityTypeId(Long.parseLong(dto.getActivityTypeId()[ac]));
+					++ac;
+				}else {
+					activity.setActivityTypeId(0L);
+				}
 				activity.setActivityDuration(dto.getActivityDuration()[i]);
 				activity.setRemarks(dto.getRemarks()[i]);
 				activity.setCreatedBy(dto.getUserId());
@@ -136,6 +148,7 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 			}
 			
 			return dao.addTimeSheet(timeSheet);
+//			return 1L;
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside TimeSheetServiceImpl timeSheetSubmit() "+e);
@@ -266,6 +279,12 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 			logger.error(new Date()+" Inside TimeSheetServiceImpl getTimesheetDataForSuperior() "+e);
 			return null;
 		}
+	}
+
+	@Override
+	public List<MilestoneActivityType> getMilestoneActivityTypeList() throws Exception {
+		
+		return dao.getMilestoneActivityTypeList();
 	}
 	
 }

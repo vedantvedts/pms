@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.header.service.HeaderService;
+import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 import com.vts.pfms.timesheet.service.TimeSheetService;
@@ -37,6 +38,9 @@ public class TimeSheetController {
 	@Autowired
 	HeaderService headerservice;
 	
+	@Autowired
+	ProjectService projectservice;
+	
 	@RequestMapping(value="TimeSheetDashboard.htm", method= {RequestMethod.GET,RequestMethod.POST})
 	public String timeSheetDashboard(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
@@ -55,6 +59,7 @@ public class TimeSheetController {
 	public String timeSheetList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date()+" Inside TimeSheetList.htm "+UserId);
 		try {
@@ -67,6 +72,8 @@ public class TimeSheetController {
 			req.setAttribute("timeSheetData", service.getTimeSheetByDateAndEmpId(EmpId, activityDateSql));
 			req.setAttribute("empActivityAssignList", service.getEmpActivityAssignList(EmpId));
 			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(EmpId, activityDateSql));
+			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
+			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,labcode));
 			return "timesheet/TimeSheetList";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside TimeSheetList.htm "+UserId, e);
@@ -91,7 +98,9 @@ public class TimeSheetController {
 							   .ActivityFromDate(activityDate)
 							   .TotalDuration(req.getParameter("totalduration"))
 							   .ActivityId(req.getParameterValues("activityId"))
-							   .ActivityName(req.getParameterValues("activityName"))
+							   .ProjectId(req.getParameterValues("projectId"))
+							   .ProjectIdhidden(req.getParameterValues("projectIdhidden"))
+							   .ActivityTypeId(req.getParameterValues("activityName"))
 							   .ActivityDuration(req.getParameterValues("duration"))
 							   .Remarks(req.getParameterValues("remarks"))
 							   .Action(req.getParameter("Action"))
@@ -179,6 +188,8 @@ public class TimeSheetController {
 			req.setAttribute("employeesofSuperiorOfficer", service.getEmployeesofSuperiorOfficer(EmpId, labcode));
 			req.setAttribute("timesheetDataForSuperior", service.getTimesheetDataForSuperior(EmpId, labcode, activityWeekDateSql));
 			req.setAttribute("empActivityAssignList", service.getEmpActivityAssignList("A"));
+			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
+			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,"A",labcode));
 			req.setAttribute("activityWeekDate", activityWeekDate);
 			req.setAttribute("activityWeekDateSql", activityWeekDateSql);
 			

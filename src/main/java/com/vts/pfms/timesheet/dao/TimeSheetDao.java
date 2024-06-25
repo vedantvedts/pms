@@ -2,6 +2,7 @@ package com.vts.pfms.timesheet.dao;
 
 import java.util.List;
 
+import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.timesheet.model.TimeSheet;
 
 public interface TimeSheetDao {
@@ -14,5 +15,6 @@ public interface TimeSheetDao {
 	public List<Object[]> getEmpAllTimeSheetList(String empId, String activityDate) throws Exception;
 	public List<Object[]> getEmployeesofSuperiorOfficer(String superiorOfficer, String labCode) throws Exception;
 	public List<TimeSheet> getTimeSheetListofEmployeeByPeriod(String empId, String fromDate, String toDate) throws Exception;
+	public List<MilestoneActivityType> getMilestoneActivityTypeList() throws Exception;
 
 }

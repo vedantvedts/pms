@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.master.model.MilestoneActivityType"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
@@ -37,31 +38,35 @@ font-weight: bold;
 	border: 1px solid #0000002b;  
 }
 #activitytable th, #activitytable td{
-	/* border: 2px solid #216583; */
+	border: 1px solid #0000002b; 
 	padding: 20px;
 }
 #activitytable th{
 
 	vertical-align: middle;
 }
-
 #activitytable thead {
-text-align: center;
-background-color: #2883c0;
-color: white;
+	text-align: center;
+	background-color: #2883c0;
+	color: white;
 }
 
 
 #activityviewtable{
 	border-collapse: collapse;
 	width: 100%;
-	border: 1px solid #216583;
+	border: 1px solid #0000002b; 
 	padding: 10px;
 }
 
 #activityviewtable th, #activityviewtable td{
-	border: 1px solid #216583;
+	border: 1px solid #0000002b; 
 	padding: 7px;
+}
+#activityviewtable thead {
+	text-align: center;
+	background-color: #60707a;
+	color: white;
 }
 
 .highlight-week {
@@ -75,7 +80,10 @@ color: white;
 <%
 List<Object[]> employeeList = (List<Object[]>)request.getAttribute("employeesofSuperiorOfficer");
 Map<String, Map<LocalDate, TimeSheet>> timeSheetData = (Map<String, Map<LocalDate, TimeSheet>>)request.getAttribute("timesheetDataForSuperior");
+
 List<Object[]> empActivityAssignList = (List<Object[]>)request.getAttribute("empActivityAssignList");
+List<MilestoneActivityType> milestoneActivityTypeList = (List<MilestoneActivityType>)request.getAttribute("milestoneActivityTypeList");
+List<Object[]> projectList = (List<Object[]>)request.getAttribute("projectList");
 
 String activityWeekDate = (String)request.getAttribute("activityWeekDate");
 String activityWeekDateSql = (String)request.getAttribute("activityWeekDateSql");
@@ -197,7 +205,7 @@ FormatConverter fc = new FormatConverter();
 																		</span>
 																	<%} %>
 																</div>
-																<div class="col-md-8 left">
+																<div class="col-md-7 left ml-2">
 																	<span style="color: <%if(some.before(time)){%>red<%}else{%>green<%}%>"><%=timeSheet.getTotalDuration() %></span>
 																</div>
 															</div>
@@ -211,7 +219,7 @@ FormatConverter fc = new FormatConverter();
 												<td class="left">
 													<form action="TimeSheetDetailsForward.htm" method="post" id="inlineapprform<%=count%>">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-														<input form="inlineapprform<%=count%>" type="text" name="remarks" maxlength="255" placeholder="Enter Remarks" style="border-left: 0;border-top: 0;border-right: 0;width: 73%;">
+														<input form="inlineapprform<%=count%>" type="text" name="remarks" maxlength="255" placeholder="Enter Remarks" style="border-left: 0;border-top: 0;border-right: 0;width: 70%;">
 														&emsp;
 														<button type="submit" class="btn btn-sm btn-success" name="action" value="A" data-toggle="tooltip" data-placement="top" title="Approve" onclick="return approvalcheck('A', 'inlineapprform<%=count %>')" style="border-radius: 2rem;">
 															<i class="fa fa-check" aria-hidden="true"></i> 
@@ -237,10 +245,11 @@ FormatConverter fc = new FormatConverter();
 														<thead class="center">
 															<tr>
 																<th width="5%">SN</th>
-																<th width="25%">Activity No</th>
-																<th width="30%">Activity Name</th>
+																<th width="20%">Activity No</th>
+																<th width="20%">Project</th>
+																<th width="25%">Activity</th>
 																<th width="10%">Duration</th>
-																<th width="30%">Remarks</th>
+																<th width="20%">Remarks</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -254,20 +263,24 @@ FormatConverter fc = new FormatConverter();
 																<tr>
 																	<td class="center">
 																		
-																		<%if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("FWD")) {%>
+																		<%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("FWD")) {%>
 																			<input form="apprform<%=count %>" type="checkbox" class="form-control" name="timeSheetId" value="<%=timeSheet.getTimeSheetId() %>" style="transform: scale(1.5);" checked>
-																		<%} else if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")){%>
+																		<%} else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")){%>
 																			<span>
 																				<i class="fa fa-check" aria-hidden="true" style="color: green;font-size: 20px;"></i>
 																			</span>
-																		<%} else if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>
+																		<%} else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>
 																			<span>
 																				<i class="fa fa-times" aria-hidden="true" style="color: red;font-size: 20px;"></i>
 																			</span>
 																		<%} %>
 																		
 																	</td>
-																	<td colspan="4"><span style="font-weight: bold;font-size: 16px;"><%=fc.SqlToRegularDate(date.toString()) %></span></td>
+																	<td colspan="4">
+																		<span style="font-weight: bold;font-size: 16px;color: <%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) {%>green<%}else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>red<%}%> ">
+																		<%=fc.SqlToRegularDate(date.toString()) %>
+																		</span>
+																	</td>
 																</tr>
 															<%} %>
 															<%
@@ -292,8 +305,22 @@ FormatConverter fc = new FormatConverter();
 																		<%} %>
 																	</td>
 																	<td>
-																		<%if(act.getActivityType().equalsIgnoreCase("N")) {%>
-																			<%=act.getActivityName()%>
+																		<%
+																			String project = projectList!=null?projectList.stream()
+																		            .filter(e -> Long.parseLong(e[0].toString()) == act.getProjectId())
+																		            .map(e ->  e[4]+" ("+e[17]+")")
+																		            .findFirst().orElse("General"): "-";
+																			out.println(project);
+																		%>
+																	</td>
+																	<td>
+																		<%if(act.getActivityType().equalsIgnoreCase("N")) {
+																			String activityName = milestoneActivityTypeList.stream()
+																		            .filter(e -> e.getActivityTypeId() == act.getActivityTypeId())
+																		            .map(MilestoneActivityType::getActivityType)
+																		            .findFirst().orElse(null);
+																			out.println(activityName);
+																		%>
 																		<%} else{%>
 																			<%=activity!=null&&activity[5]!=null?activity[5]:"-" %>	
 																		<%} %>
@@ -340,14 +367,21 @@ FormatConverter fc = new FormatConverter();
 																		</form>
 																	</td>
 																</tr>	
+															<%} else{%>
+																<tr>
+																	<td class="center" colspan="5">No Data Available</td> 
+																</tr>
 															<%} %>
 														</tbody>
 													</table>
 													
 												</td>
 											</tr>
-										<%count++;} }%>
-										
+										<%count++;} } else{%>
+											<tr>
+												<td class="center" colspan="10">No Data Available</td>
+											</tr>
+										<%} %>
 									</tbody>
 								</table>
 							</div>

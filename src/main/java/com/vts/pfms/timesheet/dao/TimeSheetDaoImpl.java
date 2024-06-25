@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.timesheet.model.TimeSheet;
 
 @Repository
@@ -138,4 +139,17 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			return new ArrayList<TimeSheet>();
 		}
 	}
+	
+	@Override
+	public List<MilestoneActivityType> getMilestoneActivityTypeList() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM MilestoneActivityType WHERE IsActive=1");
+			return (List<MilestoneActivityType>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getMilestoneActivityTypeList() "+e);
+			return new ArrayList<MilestoneActivityType>();
+		}
+	}
+	
 }

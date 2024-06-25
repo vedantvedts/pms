@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 
@@ -17,4 +18,6 @@ public interface TimeSheetService {
 	public List<Object[]> getEmpAllTimeSheetList(String empId, String activityDate) throws Exception;
 	public List<Object[]> getEmployeesofSuperiorOfficer(String superiorOfficer, String labCode) throws Exception;
 	public Map<String, Map<LocalDate, TimeSheet>> getTimesheetDataForSuperior(String superiorOfficer, String labCode, String dateofWeek) throws Exception; 
+	public List<MilestoneActivityType> getMilestoneActivityTypeList() throws Exception;
+	
 }

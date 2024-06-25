@@ -20,8 +20,10 @@ public class TimeSheetDTO {
 	private String TotalDuration;
 	
 	private String[] ActivityId;
+	private String[] ProjectId;
+	private String[] ProjectIdhidden;
 	private String[] ActivityType;
-	private String[] ActivityName;
+	private String[] ActivityTypeId;
 	private String[] ActivityFromTime;
 	private String[] ActivityToTime;
 	private String[] ActivityDuration;

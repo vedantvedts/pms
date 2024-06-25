@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.master.model.MilestoneActivityType"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Optional"%>
 <%@page import="com.vts.pfms.timesheet.model.TimeSheetTrans"%>
@@ -278,6 +279,8 @@ String activityDateSql = (String)request.getAttribute("activityDateSql");
 List<Object[]> todayScheduleList = (List<Object[]>)request.getAttribute("todayScheduleList");
 
 List<Object[]> empAllTimeSheetList = (List<Object[]>)request.getAttribute("empAllTimeSheetList");
+List<MilestoneActivityType> milestoneActivityTypeList = (List<MilestoneActivityType>)request.getAttribute("milestoneActivityTypeList");
+List<Object[]> projectList = (List<Object[]>)request.getAttribute("projectList");
 //LocalDate now = LocalDate.now();
 
 //DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -359,10 +362,11 @@ statusMap.put("RBS", "#fe4e4e");
 											<thead class="center">
 												<tr>
 													<th width="5%">SN</th>
-													<th width="25%">Activity No</th>
-													<th width="30%">Activity Name</th>
+													<th width="20%">Activity No</th>
+													<th width="20%">Project</th>
+													<th width="25%">Activity</th>
 													<th width="10%">Duration</th>
-													<th width="30%">Remarks</th>
+													<th width="20%">Remarks</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -386,8 +390,39 @@ statusMap.put("RBS", "#fe4e4e");
 															<%} %>
 														</td>
 														<td>
-															<%if(act.getActivityType().equalsIgnoreCase("N")) {%>
-																<%=act.getActivityName()%>
+															<%
+																String project = projectList!=null?projectList.stream()
+															            .filter(e -> Long.parseLong(e[0].toString()) == act.getProjectId())
+															            .map(e ->  e[4]+" ("+e[17]+")")
+															            .findFirst().orElse("General"): "-";
+																out.println(project);
+															%>
+														</td>
+														<td>
+															<%if(act.getActivityType().equalsIgnoreCase("N")) {
+																String activityName = milestoneActivityTypeList.stream()
+															            .filter(e -> e.getActivityTypeId() == act.getActivityTypeId())
+															            .map(MilestoneActivityType::getActivityType)
+															            .findFirst().orElse(null);
+																out.println(activityName);
+															%>
+																<%-- <%if(act.getActivityNameType().equalsIgnoreCase("A")) {
+																	String activityName = milestoneActivityTypeList.stream()
+																            .filter(e -> e.getActivityTypeId() == act.getActivityNameId())
+																            .map(MilestoneActivityType::getActivityType)
+																            .findFirst().orElse(null);
+																	out.println(activityName);
+																}else if(act.getActivityNameType().equalsIgnoreCase("G")){
+																	out.println("General");
+																}else if(act.getActivityNameType().equalsIgnoreCase("P")){
+																	String activityName = projectList!=null?projectList.stream()
+																            .filter(e -> Long.parseLong(e[0].toString()) == act.getActivityNameId())
+																            .map(e ->  e[4]+" ("+e[17]+")")
+																            .findFirst().orElse(null): null;
+																	out.println(activityName);
+																}
+																%> --%>
+																
 															<%} else{%>
 																<%=activity!=null&&activity[5]!=null?activity[5]:"-" %>	
 															<%} %>
@@ -401,7 +436,7 @@ statusMap.put("RBS", "#fe4e4e");
 													</tr>
 												<%} }else {%>
 													<tr>
-														<td colspan="5" class="center">No Data Available</td>
+														<td colspan="6" class="center">No Data Available</td>
 													</tr>
 												<%} %>	
 												<tr>
@@ -411,19 +446,21 @@ statusMap.put("RBS", "#fe4e4e");
 													</td>
 													<td colspan="1"></td>
 												</tr>
+												<% String latestRemarks = transaction!=null && transaction.size()>0? transaction.stream()
+																		  .filter(e -> "ABS".equals(e.getTimeSheetStatusCode()) || "RBS".equals(e.getTimeSheetStatusCode()))
+																		  .sorted(Comparator.comparing(TimeSheetTrans::getActionDate).reversed())
+						            									  .map(TimeSheetTrans::getRemarks)
+						            									  .findFirst()
+						            									  .orElse(""): "";
+						        				%>
+						        				<%if(!latestRemarks.isEmpty()) {%>
 												<tr>
 													<td class="right" colspan="1" style="font-weight: bold;">Remarks</td>
 													<td colspan="4">
-														<% String latestRemarks = transaction!=null && transaction.size()>0? transaction.stream()
-																				  .filter(e -> "ABS".equals(e.getTimeSheetStatusCode()) || "RBS".equals(e.getTimeSheetStatusCode()))
-																				  .sorted(Comparator.comparing(TimeSheetTrans::getActionDate).reversed())
-						            											  .map(TimeSheetTrans::getRemarks)
-						            											  .findFirst()
-						            											  .orElse("-"): "-";
-						        						%>
 						        						<%=latestRemarks %>
 													</td>
 												</tr>
+												<%} %>
 											</tbody>
 										</table>
 				                	</div>
@@ -469,10 +506,11 @@ statusMap.put("RBS", "#fe4e4e");
 												<table id="activitytable" class="activitytable" >
 													<thead class="center">
 														<tr>
-															<th width="30%">Activity No</th>
-															<th width="30%">Activity Name</th>
+															<th width="20%">Activity No</th>
+															<th width="20%">Project</th>
+															<th width="25%">Activity</th>
 															<th width="10%">Duration</th>
-															<th width="30%">Remarks</th>
+															<th width="25%">Remarks</th>
 														</tr>
 													</thead>
 													<tbody id="activityTableBody">
@@ -483,7 +521,8 @@ statusMap.put("RBS", "#fe4e4e");
 														%>
 															<tr class="tr_clone_activity">
 																<td>
-																	<select class="form-control" id="activityId-<%=count %>" name="activityId" onchange="changeActivity('<%=count %>')" data-live-search="true" >
+																	<input type="hidden" name="projectIdhidden" id="projectId-input-<%=count %>">
+																	<select class="form-control selectdee" id="activityId-<%=count %>" name="activityId" onchange="changeActivity('<%=count %>')" data-live-search="true" >
 																		<option selected="selected" value="0" <%if(act.getActivityId()==Long.parseLong("0")) {%>selected<%} %> >--Select--</option>
 																		<option value="N" <%if(act.getActivityType().equalsIgnoreCase("N")) {%>selected<%} %> >Add New</option>
 																		<%
@@ -492,6 +531,8 @@ statusMap.put("RBS", "#fe4e4e");
 																			%>
 																			<option value="<%=activity[10]%>" 
 																			data-activity="<%=activity[5]%>" 
+																			data-projectid="<%=activity[14]%>" 
+																			data-actionno="<%=activity[9]%>"
 																			<%if(act.getActivityId()==Long.parseLong(activity[10].toString())) {%>selected<%} %>
 																			>
 																			<%=activity[9]%>
@@ -500,9 +541,30 @@ statusMap.put("RBS", "#fe4e4e");
 																	</select>
 																</td>
 																<td>
-																	<span id="activityName-<%=count %>"></span>
-																	<input type="text" class="form-control" name="activityName" id="activityName-input-<%=count %>" <%if(act.getActivityType().equalsIgnoreCase("N")) {%>value="<%=act.getActivityName()%>"<%} %> placeholder="Enter maximum 255 characters" maxlength="255">
+																	<span id="activityName-project-<%=count %>"></span>
+																	<select class="form-control selectdee" name="projectId" id="projectId-select-<%=count %>">
+																		<option value="0" <%if(act.getProjectId()==0) {%>selected<%} %> >General</option>
+											               				 <%
+											                				for(Object[] pro: projectList ){
+											                					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
+											                			 %>
+																			<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %>  ><%=pro[4]+projectshortName %></option>
+																		<%} %>
+																	</select>
 																</td>
+																<td>
+																	<span id="activityName-<%=count %>"></span>
+																	<select class="form-control selectdee" name="activityName" id="activityName-select-<%=count %>">
+																		<option value="" disabled="disabled" selected="selected">--Select--</option>
+																		<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+																			for(MilestoneActivityType mil : milestoneActivityTypeList) {
+																		%>
+																			<option value="<%=mil.getActivityTypeId()%>" <%if(act.getActivityTypeId()==mil.getActivityTypeId()) {%>selected<%} %> ><%=mil.getActivityType() %></option>
+																		<%} }%>
+																	</select>
+																	<!-- <input type="text" class="form-control" name="activityName" id="activityName-select-1" placeholder="Enter maximum 255 characters" maxlength="255"> -->
+																</td>
+																
 																<td class="center">
 																	<input type="text" class="form-control duration center" name="duration" id="duration" <%if(act.getActivityDuration()!=null) {%>value="<%=act.getActivityDuration()%>"<%} %> maxlength="5" onchange="calculateTotalDuration()">
 																</td>
@@ -513,7 +575,8 @@ statusMap.put("RBS", "#fe4e4e");
 														<%} }else {%>
 															<tr class="tr_clone_activity">
 																<td>
-																	<select class="form-control " id="activityId-1" name="activityId" onchange="changeActivity('1')" data-live-search="true" >
+																	<input type="hidden" name="projectIdhidden" id="projectId-input-1">
+																	<select class="form-control selectdee" id="activityId-1" name="activityId" onchange="changeActivity('1')" data-live-search="true" >
 																		<option selected="selected" value="0">--Select--</option>
 																		<option value="N">Add New</option>
 																		<%
@@ -522,6 +585,8 @@ statusMap.put("RBS", "#fe4e4e");
 																			%>
 																			<option value="<%=activity[10]%>" 
 																			data-activity="<%=activity[5]%>" 
+																			data-projectid="<%=activity[14]%>" 
+																			data-actionno="<%=activity[9]%>"
 																			>
 																			<%=activity[9]%>
 																			</option>
@@ -529,8 +594,28 @@ statusMap.put("RBS", "#fe4e4e");
 																	</select>
 																</td>
 																<td>
+																	<span id="activityName-project-1"></span>
+																	<select class="form-control selectdee" name="projectId" id="projectId-select-1">
+																		<option value="0" >General</option>
+											               				 <%
+											                				for(Object[] pro: projectList ){
+											                					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
+											                			 %>
+																			<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
+																		<%} %>
+																	</select>
+																</td>
+																<td>
 																	<span id="activityName-1"></span>
-																	<input type="text" class="form-control" name="activityName" id="activityName-input-1" placeholder="Enter maximum 255 characters" maxlength="255">
+																	<select class="form-control selectdee" name="activityName" id="activityName-select-1">
+																		<option value="" disabled="disabled" selected="selected">--Select--</option>
+																		<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+																			for(MilestoneActivityType mil : milestoneActivityTypeList) {
+																		%>
+																			<option value="<%=mil.getActivityTypeId()%>"><%=mil.getActivityType() %></option>
+																		<%} }%>
+																	</select>
+																	<!-- <input type="text" class="form-control" name="activityName" id="activityName-select-1" placeholder="Enter maximum 255 characters" maxlength="255"> -->
 																</td>
 																<td class="center">
 																	<input type="text" class="form-control duration center" name="duration" id="duration" maxlength="5" onchange="calculateTotalDuration()">
@@ -541,7 +626,7 @@ statusMap.put("RBS", "#fe4e4e");
 															</tr>
 														<%} %>
 															<tr>
-																<td class="right" colspan="2" style="font-weight: bold;">Work Duration</td>
+																<td class="right" colspan="3" style="font-weight: bold;">Work Duration</td>
 																<td colspan="1">
 																	<input type="text" class="form-control totalduration center" name="totalduration" id="totalduration" value="<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=timeSheet.getTotalDuration() %><%} else{%>01:00<%} %>" maxlength="5" readonly>
 																</td>
@@ -744,12 +829,19 @@ statusMap.put("RBS", "#fe4e4e");
     	    picker.container.find(".calendar-table").hide();
     	});	
 
-    	changeActivity('1');
+      	<%if(timeSheet==null){%>
+    		changeActivity('1');
+    	<%}%>
+    	
+    	<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
+    		int count = 0;
+    	  	for(TimeSheetActivity act : timeSheetActivityList) {
+    	%>
+    			changeActivity('<%=++count %>');
+    	<%} }%>
     	
     	calculateTotalDuration();
     	
-    	$('.selectpicker').selectpicker();
-    	$('.selectpicker').selectpicker('refresh');
     });
     
     function calculateTotalDuration(){
@@ -773,29 +865,46 @@ statusMap.put("RBS", "#fe4e4e");
 <script type="text/javascript">
 	$('#addnewaction').click(function(){
 		
-		var $tr = $('.tr_clone_activity').last('.tr_clone_activity');
-		var $clone = $tr.clone();
+		var newId = $('.tr_clone_activity').length+1;
 		
-		// Clear the values of the cloned elements
-	    $clone.find('input').val('');
-	    $clone.find('select').val('0');
-	    $clone.find('span').text('');
-	    
-	    $clone.find('.bootstrap-select').replaceWith(function() { return $('select', this); })  ;
-		$clone.find('.selectpicker').selectpicker('render');
+		var newRow = '';
+		newRow+='<tr class="tr_clone_activity">';
+		newRow+='<td><input type="hidden" name="projectIdhidden" id="projectId-input-'+newId+'"><select class="form-control selectdee" id="activityId-'+newId+'" name="activityId" onchange="changeActivity('+newId+')"  data-live-search="true" data-container="body"  >';
+		newRow+='<option selected="selected" value="0">--Select--</option> <option value="N">Add New</option>';
+		<%
+        if(empActivityAssignList!=null && empActivityAssignList.size()>0){
+        for(Object[] activity : empActivityAssignList){
+        %>
+		newRow+='<option value="<%=activity[10]%>" data-activity="<%=activity[5]%>" data-projectid="<%=activity[14]%>" data-actionno="<%=activity[9]%>"><%=activity[9]%></option>';
+		<%} }%>
+		newRow+='</select></td>';
+		newRow+='<td><span id="activityName-project-'+newId+'"></span><select class="form-control selectdee" name="projectId" id="projectId-select-'+newId+'"><option value="0" >General</option>';
+   				 <%
+    				for(Object[] pro: projectList ){
+    					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
+    			 %>
+    			 newRow+='<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>';
+				<%} %>
+		newRow+='</select></td>';
+		newRow+='<td><span id="activityName-'+newId+'"></span>';
+		newRow+='<select class="form-control selectdee" name="activityName" id="activityName-select-'+newId+'"><option value="" disabled="disabled" selected="selected">--Select--</option>';
+			<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+				for(MilestoneActivityType mil : milestoneActivityTypeList) {
+			%>
+			newRow+='<option value="<%=mil.getActivityTypeId()%>"><%=mil.getActivityType() %></option>';
+			<%} }%>
+		newRow+='</select>';
+		newRow+='</td>';
+		newRow+='<td class="center"><input type="text" class="form-control duration center" name="duration" id="duration" maxlength="5" onchange="calculateTotalDuration()"></td>';
+		newRow+='<td><input type="text" class="form-control" name="remarks" placeholder="Enter maximum 255 characters" maxlength="255"></td>';
+		newRow+='</tr>';
 		
-	 // Update the IDs and names of the cloned elements
-        var newId = $('.tr_clone_activity').length+1;
-        $clone.find('select').attr('id', 'activityId-' + newId).attr('onchange', 'changeActivity("' + newId + '")').addClass('selectdee');;
-        $clone.find('input[id^="activityName"]').attr('id', 'activityName-input-' + newId);
-        $clone.find('span[id^="activityName"]').attr('id', 'activityName-' + newId);
-        $clone.find('input[id^="duration"]').attr('id', 'duration-' + newId);
-        $clone.find('input[id^="remarks"]').attr('id', 'remarks-' + newId);
-
-	    
-	 	// Append the cloned row after the last one
-		$tr.after($clone);
-
+		 $('#activityTableBody tr:last').before(newRow);
+		
+		$('#activityId-'+newId+'').select2();
+		$('#projectId-select-'+newId+'').select2();
+		$('#activityName-select-'+newId+'').select2();
+		
 		// Initialize new start time picker
 	    $('#activityTableBody').find('.duration').last().daterangepicker({
 	    	timePicker : true,
@@ -820,28 +929,53 @@ statusMap.put("RBS", "#fe4e4e");
 </script>
 
 <script type="text/javascript">
-	function changeActivity(selectid)
+/* 	function changeActivity(selectid)
 	{
 		var activityId = $('#activityId-'+selectid).val();
 		if(activityId=='N'){
-			$('#activityName-input-'+selectid).show();
+			$('#activityName-select-'+selectid).show();
 			$('#activityName-'+selectid).hide();
 		}else if(activityId=='0'){
-			$('#activityName-input-'+selectid).hide();
+			$('#activityName-select-'+selectid).hide();
 			$('#activityName-'+selectid).hide();
 		}else{
-			$('#activityName-input-'+selectid).hide();
+			$('#activityName-select-'+selectid).hide();
 			$('#activityName-'+selectid).show();
 			$('#activityName-'+selectid).html($('#activityId-'+selectid+' option:selected').attr('data-activity'));
 		}
+	} */
+	
+	function changeActivity(selectid) {
+		console.log('selectid: '+selectid);
+	    var activityId = $('#activityId-' + selectid).val();
+	    var activitySelect2 = $('#activityName-select-' + selectid).next('.select2-container');
+	    var projectSelect2= $('#projectId-select-' + selectid).next('.select2-container');
+
+	    if (activityId == 'N') {
+	    	activitySelect2.show();
+	    	projectSelect2.show();
+	        $('#activityName-' + selectid).hide();
+	        $('#activityName-project-' + selectid).hide();
+	    } else if (activityId == '0') {
+	    	activitySelect2.hide();
+	    	projectSelect2.hide();
+	        $('#activityName-' + selectid).hide();
+	        $('#activityName-project-' + selectid).hide();
+	    } else {
+	    	activitySelect2.hide();
+	    	projectSelect2.hide();
+	        $('#activityName-' + selectid).show();
+	        $('#activityName-project-' + selectid).show();
+	        var selectedDataActivity = $('#activityId-' + selectid + ' option:selected').attr('data-activity');
+	        var selectedDataProjectId = $('#activityId-' + selectid + ' option:selected').attr('data-projectid');
+	        var selectedDataActionNo = $('#activityId-' + selectid + ' option:selected').attr('data-actionno');
+	        var actionNo = selectedDataActionNo!=null?selectedDataActionNo.split("/"):null;
+	        $('#activityName-' + selectid).html(selectedDataActivity);
+	        $('#projectId-input-' + selectid).val(selectedDataProjectId);
+	        $('#activityName-project-' + selectid).html(selectedDataProjectId==0?'General':(actionNo!=null?actionNo[1]:'-'));
+	    }
 	}
 	
-	<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
-		int count = 0;
-	  	for(TimeSheetActivity act : timeSheetActivityList) {
-	%>
-			changeActivity('<%=++count %>');
-	<%} }%>
 </script>
 
 <script type="text/javascript">

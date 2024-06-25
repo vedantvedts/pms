@@ -26,10 +26,13 @@ public class TimeSheetActivity implements Serializable {
 	private Long TimeSheetActivityId;
 	@Column(name = "ActivityId", length = 20)
 	private Long ActivityId;
+	// N=New, A=Action
 	@Column(name = "ActivityType", length = 1)
 	private String ActivityType;
-	@Column(name = "ActivityName", length = 2000)
-	private String ActivityName;
+	@Column(name = "ProjectId", length = 20)
+	private Long ProjectId;
+	@Column(name = "ActivityTypeId", length = 20)
+	private Long ActivityTypeId;
 	@Column(name = "ActivityFromTime")
 	private String ActivityFromTime;
 	@Column(name = "ActivityToTime")
