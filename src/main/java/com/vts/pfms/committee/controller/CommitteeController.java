@@ -1875,7 +1875,9 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeInvitations.htm "+UserId);
 		try
 		{
-			String committeescheduleid=req.getParameter("committeescheduleid");						
+			String committeescheduleid=req.getParameter("committeescheduleid");		
+			
+			System.out.println("committeescheduleid invite --------------"+committeescheduleid);
 			if (committeescheduleid == null) 
 			{
 				Map md = model.asMap();
@@ -4535,9 +4537,10 @@ public class CommitteeController {
 	{		
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside SendInvitationLetter.htm "+UserId);
-		
+		String committeescheduleid=req.getParameter("committeescheduleid");
+		int count=0;
 		try {
-			String committeescheduleid=req.getParameter("committeescheduleid");
+			
 			 
 			List<Object[]> committeeinvitedlist=service.CommitteeAtendance(committeescheduleid);
 			
@@ -4603,7 +4606,7 @@ public class CommitteeController {
 			if (Email.length>0) {
 				
 				try{
-					int count=0;
+					
 					String subject=scheduledata[8] + " " +" Committee Invitation Letter";
 					count=cm.sendMessage(Email, subject, Message);
 					if(DronaEmail.length>0) {
@@ -4615,12 +4618,13 @@ public class CommitteeController {
 					}
 					
 				}catch (MailAuthenticationException e) {
+					 System.out.println("committeescheduleid ---klsdjfkso "+committeescheduleid);
+					 redir.addFlashAttribute("committeescheduleid",committeescheduleid);
 					redir.addAttribute("resultfail", " Host Email Authentication Failed, Unable to Send Invitations !!");
 				}
 				
 			} 
-			 
-			 redir.addFlashAttribute("committeescheduleid",committeescheduleid);
+			
 			 
 			
 		 }
@@ -4628,7 +4632,15 @@ public class CommitteeController {
 				
 			 	e.printStackTrace(); 
 			 	logger.error(new Date() +"Inside SendInvitationLetter.htm "+UserId,e);
-			}	
+			}
+		
+		System.out.println("count ----------"+count);
+		if(count>0) {
+			redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
+		}else {
+			redir.addAttribute("resultfail", " Host Email Authentication Failed, Unable to Send Invitations !!");
+		}
+		 redir.addAttribute("committeescheduleid",committeescheduleid);
 		// Prudhvi - 05/03/2024
 		/* ------------------ start ----------------------- */
 		String rodflag = req.getParameter("rodflag");
