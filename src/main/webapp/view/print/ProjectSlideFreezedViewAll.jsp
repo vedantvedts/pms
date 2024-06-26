@@ -89,7 +89,7 @@ String lablogo = (String)request.getAttribute("lablogo");
 String Drdologo = (String)request.getAttribute("Drdologo");
 String filePath = (String)request.getAttribute("filepath");
 List<Object[]> freezedproject = (List<Object[]>)request.getAttribute("getAllProjectSlidedata");
-List<Object[]> FreezedSlide = (List<Object[]>)request.getAttribute("getAllProjectSlidesdata"); //status ,  slide , ImageName , path ,SlideId ,attachmentname, brief
+//List<Object[]> FreezedSlide = (List<Object[]>)request.getAttribute("getAllProjectSlidesdata"); //status ,  slide , ImageName , path ,SlideId ,attachmentname, brief
 List<Object[]> projects = (List<Object[]>)request.getAttribute("getAllProjectdata");
 String[] a = new String[projects.size()];
 for(int i=0;i<projects.size();i++)
@@ -134,7 +134,7 @@ projects.addAll(subProjectList);
 						</tr>
 					</table>	
 					<br><br><br><br>
-					<%Boolean flag=false;
+					<% Boolean flag=false;
 						for(int i=0;i<freezedproject.size();i++)
 						{
 							for(int j=0;j<projects.size();j++)
@@ -212,7 +212,7 @@ projects.addAll(subProjectList);
 								<tbody>
 									<% if(mainProjectList!=null && mainProjectList.size()>0) {
 										
-										for(int i=0;i<mainProjectList.size();i++ ){val=i; %>
+										for(int i=0;i<mainProjectList.size();i++ ){val=i; %><%=val%>
 										<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=2+i%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 											<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 											<td style="text-align: center;font-weight: bold;">
@@ -372,8 +372,8 @@ projects.addAll(subProjectList);
 									
 										<% if(subProjectList!=null && subProjectList.size()>0) {
 											if(val>0)val++;
-											for(int i=0;i<subProjectList.size();i++ ){ %>
-											<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=2+val%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
+											for(int i=0;i<subProjectList.size();i++ ){ %><%=val%>
+											<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=2+val+i%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 												<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 												<td style="text-align: center;font-weight: bold;">
 													<%=subProjectList.get(i)[12]!=null?subProjectList.get(i)[12]:"-" %>
@@ -506,7 +506,7 @@ projects.addAll(subProjectList);
 
 		<!-- ----------------------------------------  Freezed Project Slide ----------------------------------------------------- -->
 		<!-- ----------------------------------------- Slide Two ------------------------------------------------------------ -->
-		<%if(projects!=null && projects.size()>0 && FreezedSlide!=null){
+		<%if(projects!=null && projects.size()>0){
 				for(int i=0;i<projects.size();i++ ){
 					if(projects.get(i)[22]!=null || projects.get(i)[23]!=null || projects.get(i)[24]!=null ||
 							projects.get(i)[25]!=null || projects.get(i)[27]!=null || projects.get(i)[29]!=null ||
@@ -929,39 +929,26 @@ projects.addAll(subProjectList);
 												
 															<table style="width: 99%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.2rem;">
 																<tr>
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Project No :</td>
-																	<td colspan="1" style="width: 12%;color: black;"><%=projects.get(i)[11]!=null?projects.get(i)[11]:"--"%></td>
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%">User :</td>
-																	<td colspan="1" style="width: 12%;color: black;">
-																		<% if(projects!=null && projects.get(i)[6]!=null ){ %><%=projects.get(i)[6].toString()%> <%} %>
-																	</td>
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Category :</td>
-																	<td colspan="1" style="width: 12%;color: black;"><%=projects.get(i)[2]!=null?projects.get(i)[2]:"--"%></td>
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">DoS :</td>
-																	<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projects.get(i)[5])%></td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Project No </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">DoS </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%">User </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Category </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr) </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application </td>
+																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage </td>
 																</tr>
 																<tr>
-																	
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr) :</td>
-																	<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%> </td>
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC :</td>
+																	<td colspan="1" style="width: 12%;color: black;"><%=projects.get(i)[11]!=null?projects.get(i)[11]:"--"%></td>
+																	<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projects.get(i)[5])%></td>
 																	<td colspan="1" style="color: black;"><%=sdf.format(projects.get(i)[4])%></td>
-																	
-																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application :</td>
-																	<td colspan="1" style="color: black;">
-																		<%if (projects.get(i) != null && projects.get(i)[10] != null) {%>
-																			<%=projects.get(i)[10]%>
-																		<%} else {%>
-																			--
-																		 <%}%>
-																	 </td>
-																	 <td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage :</td>
-																	<td colspan="1" style="color: black;">
-																		<%if(projects.get(i)[14]!=null){%>
-																			<%=projects.get(i)[14]%>
-																		<%}else{%>
-																			--
-																		<%}%></td>
+																	<td colspan="1" style="width: 12%;color: black;"><%=projects.get(i)[6]!=null?projects.get(i)[6]:"--"%></td>
+																	<td colspan="1" style="width: 12%;color: black;"><%=projects.get(i)[32]!=null?projects.get(i)[32]:"--"%></td>
+																	<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%> </td>
+																	<td colspan="1" style="color: black;"> <%if (projects.get(i) != null && projects.get(i)[10] != null) {%> <%=projects.get(i)[10]%>
+																		<%} else {%> -- <%}%></td>
+																	<td colspan="1" style="color: black;"> <%if(projects.get(i)[14]!=null){%> <%=projects.get(i)[14]%>
+																		<%} else {%> -- <%}%></td>
 																</tr>
 																<tr>
 																	<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Brief :</td>
@@ -1081,7 +1068,7 @@ projects.addAll(subProjectList);
 							<li data-target="#presentation-slides" data-slide-to="0"  class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
 							<li data-target="#presentation-slides" data-slide-to="1"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="projectNamesListCorousel"><b><i class="fa fa-list" aria-hidden="true"></i></b></li>
 							<% int i=1;if(projects!=null && projects.size()>0){
-							for(Object[] obj: projects){%>
+							for(Object[] obj: projects){%><%=i%>
 							<li data-target="#presentation-slides" data-slide-to="<%=++i%>"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=i%>. <%=obj[6]%>"><b><%=i-1%></b></li>
 							<%}}%>
 							<li data-target="#presentation-slides" data-slide-to="<%=i+1%>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>

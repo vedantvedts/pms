@@ -4258,11 +4258,7 @@ public class PrintController {
 						Collections.sort(getAllProjectdata, dateComparator);
 						Collections.sort(getAllProjectSlidedata, dateComparator);
 					}
-					Collections.reverse(getAllProjectSlidedata);
 					Collections.reverse(getAllProjectdata);
-					for (Object[] objects : getAllProjectdata) {
-						System.out.println("ids confirmation "+objects[0]);
-					}
 
 					String labcode = ses.getAttribute("labcode").toString();
 

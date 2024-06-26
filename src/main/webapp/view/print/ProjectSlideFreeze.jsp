@@ -104,11 +104,11 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 	<div  style="float: right;margin-top: 30px;" >
 		<img style="width: 45px;margin-left: 5px;margin-top: -60px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%= lablogo %>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 	</div>
-	<h4 style="text-align: center;float: none; color: black;">
+	<h1 style="text-align: center;float: none; color: black;">
 		<%if(projectdata!=null && projectdata[13]!=null){%>
 			<%=projectdata[1]%>&nbsp;-&nbsp;<%=projectdata[13]%><%=projectdata[12]!=null?"("+projectdata[12]+")":"-"%> 
 		<%}%>
-	</h4>
+	</h1>
 	<div style="margin-top: -28px;margin-right: 75px;">
 		<p style="font-size: 1.02rem;font-weight: bold; color: #021B79;padding: 3px;margin: 0px 0px 0px 0px;float: right;margin-top: -35px;">
 			<%if(new File(filePath +projectdata[25]+projectdata[27]).exists()){%>
@@ -234,7 +234,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 <!-----------------------------------------------------------------------   Slide 1   ------------------------------------------------------------------------>
 
 				<div style="position: relative;" >
-				<table style="font-weight: bold;width: 100%;">
+				<table style="font-weight: bold;width: 100%;border-bottom: 1px solid black;">
 					<tr>
 						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Project No</td>
 						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">DoS</td>
@@ -245,15 +245,15 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application</td>
 						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage</td>
 					</tr>
-					<tr>
-						<td colspan="1" style="width: 12%;color: black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
-						<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projectdata[5])%></td>
-						<td colspan="1" style="color: black;"><%=sdf.format(projectdata[4])%></td>
-						<td colspan="1" style="width: 12%;color: black;"><%=projectdata[6]!=null?projectdata[6]:"--"%></td>
-						<td colspan="1" style="width: 12%;color: black;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
-						<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%></td>
-						<td colspan="1" style="color: black;"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
-						<td colspan="1" style="color: black;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
+					<tr  >
+						<td colspan="1" style="width: 12%;color: black;border-bottom: 0px solid black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
+						<td colspan="1" style="width: 12%;color: black;border-bottom: 0px solid black;"><%=sdf.format(projectdata[5])%></td>
+						<td colspan="1" style="color: black;border-bottom: 0px solid black;"><%=sdf.format(projectdata[4])%></td>
+						<td colspan="1" style="width: 12%;color: black;border-bottom: 0px solid black;"><%=projectdata[6]!=null?projectdata[6]:"--"%></td>
+						<td colspan="1" style="width: 12%;color: black;border-bottom: 0px solid black;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
+						<td colspan="1" style="color: black;border-bottom: 0px solid black;"><%=nfc.convert(cost / 10000000)%></td>
+						<td colspan="1" style="color: black;border-bottom: 0px solid black;"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
+						<td colspan="1" style="color: black;border-bottom: 0px solid black;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
 					</tr>
 				</table>
 				<div style="float: left;width: 50%;height: 100%;display: block;">
@@ -261,7 +261,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						<table style="align-items: flex-end;height: 100%;font-weight: bold;border-top: none;">
 						
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;border-top: none; padding-bottom: 6px;vertical-align: top;width: 20%">
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;border-top: none; padding-bottom: 6px;vertical-align: top;width: 24%">
 										Brief : 
 								</td>
 								<td colspan="7" style="text-align: left;color:#212529;border-top: none; ">
@@ -282,7 +282,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 								</td>
 						   	</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px;vertical-align: top;">Deliverables : 
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 0px;vertical-align: top;">Deliverables : 
 								</td>
 								<td colspan="7" style="text-align: left;color:#212529 "> <%=projectdata[8]!=null?projectdata[8]:"--"%>
 					   			</td>
@@ -310,7 +310,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						<%}%>
 				</div>
 							<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
-							<div style="float: right;width: 50%;align-content: center;">
+							<div style="float: right;width: 50%;align-content: center;margin-top: 5px">
 											<img  height="475" width="352" style=" max-width: 352px; display: block; margin: 0 auto;  width: 75%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
 							</div>
 							<%}else{%><% }%>

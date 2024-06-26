@@ -63,19 +63,19 @@ String reviewDate="";
 					<div class="firstpage">
 
 						<div align="center" style="margin-top: 35px">
-							<h2
-								style="color: #145374 !important; font-family: 'Muli' !important;margin: 5px 5px 5px 5px">Presentation</h2>
+							<h1
+								style="color: #145374 !important; font-family: 'Muli' !important;margin: 5px 5px 5px 5px">Presentation</h1>
 						</div>
 						<div align="center">
-							<h3 style="color: #145374 !important;margin: 5px 5px 5px 5px">of</h3>
+							<h2 style="color: #145374 !important;margin: 5px 5px 5px 5px">of</h2>
 						</div>
 
 						<div align="center">
-							<h3 style="color: #145374 !important;margin: 5px 5px 5px 5px">
+							<h1 style="color: #145374 !important;margin: 5px 5px 5px 5px">
 								
 								<%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%>
 								<%}%> Projects
-							</h3>
+							</h1>
 						</div>
 
 						<div align="center">
@@ -112,8 +112,8 @@ String reviewDate="";
 							
 						}
 					%>
-						<h4 style="color: #145374 !important;text-align: center;margin: 25px 0px 0px 0px;"><%if( reviewedby!="" ) {%> Review By - <%=reviewedby %>  <%} %></h4>
-						<h4 style="color: #145374 !important;text-align: center;margin: 0px 0px 25px 0px;"><%if( reviewDate!="" ) {%> Review Date - <%=reviewDate %> <%} %></h4>
+						<h3 style="color: #145374 !important;text-align: center;margin: 25px 0px 0px 0px;"><%if( reviewedby!="" ) {%> Review By - <%=reviewedby %>  <%} %></h3>
+						<h3 style="color: #145374 !important;text-align: center;margin: 0px 0px 25px 0px;"><%if( reviewDate!="" ) {%> Review Date - <%=reviewDate %> <%} %></h3>
 						<div align="center">
 
 							<table style="margin-top: 35px;" class="executive home-table"
@@ -124,7 +124,7 @@ String reviewDate="";
 								</tr>
 								<tr>
 									<th colspan="8"
-										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 22px;margin: 0px 5px 5px 5px">
+										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 24px;margin: 0px 5px 5px 5px">
 										<%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %>
 										<%}else{ %>LAB NAME<%} %>
 									</th>
@@ -136,7 +136,7 @@ String reviewDate="";
 								</tr>
 								<tr>
 									<th colspan="8"
-										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 15px;margin: 0px 5px 5px 5px"><br>Government
+										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 18px;margin: 0px 5px 5px 5px"><br>Government
 										of India, Ministry of Defence</th>
 								</tr>
 								<tr>
@@ -144,7 +144,7 @@ String reviewDate="";
 								</tr>
 								<tr>
 									<th colspan="8"
-										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 15px;margin: 5px 5px 5px 5px">Defence
+										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 18px;margin: 5px 5px 5px 5px">Defence
 										Research & Development Organization</th>
 								</tr>
 								<tr>
@@ -152,7 +152,7 @@ String reviewDate="";
 								</tr>
 								<tr>
 									<th colspan="8"
-										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 15px;margin: 5px 5px 5px 5px">
+										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 18px;margin: 5px 5px 5px 5px">
 										<%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()%>
 										, <%=labInfo.getLabCity()%>
 										<%}else{ %>LAB ADDRESS<%} %>

@@ -100,7 +100,7 @@ projects.addAll(subProjectList);
 									<tr style="background-color: #ffd8b1; color: black;" >
 										<th style="width: 2%;">SN</th>
 										<th style="width: 5%;">Code</th>
-										<th style="width: 35%;">Projects</th>
+										<th style="width: 35%;">Project Name</th>
 										<th style="width: 4%;">Category</th> 
 										<th style="width: 8%;">DOS</th>
 										<th style="width: 8%;">PDC</th>
