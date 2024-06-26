@@ -4231,8 +4231,6 @@ public class PrintController {
 
 					}
 
-				// Comparator to compare dates
-
 				Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
 
 					@Override
@@ -4265,16 +4263,6 @@ public class PrintController {
 					for (Object[] objects : getAllProjectdata) {
 						System.out.println("ids confirmation "+objects[0]);
 					}
-					
-//					for(int i=0;i<getAllProjectSlidesdata.size();i++)
-//					{
-//						for(int j=0;j<getAllProjectdata.size();j++)
-//						if(getAllProjectSlidesdata.get(i)[7].toString().equals(getAllProjectdata.get(j)[0].toString()))
-//						{
-//							Object o = new Object[28];
-//						}
-//							
-//					}
 
 					String labcode = ses.getAttribute("labcode").toString();
 
@@ -4287,8 +4275,6 @@ public class PrintController {
 					req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
 
 					req.setAttribute("filepath", ApplicationFilesDrive);
-
-					// Collections.reverse(getAllProjectSlidedata);
 
 					req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
 					req.setAttribute("getAllProjectSlidesdata", getAllProjectSlidesdata);
@@ -4611,7 +4597,7 @@ public class PrintController {
 				String pathForPdf="";
 				 try {
 					 String LabCode = (String) ses.getAttribute("labcode");
-					 req.setAttribute("getAllProjectdata", details.get("getAllProjectdata"));
+					 req.setAttribute("getAllProjectdata", details.get("dataForOutline"));
 					 req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
 				    String filename="ProjectSlideCover";	
 				    
@@ -4675,9 +4661,9 @@ public class PrintController {
 					 String LabCode = (String) ses.getAttribute("labcode");
 					 req.setAttribute("labInfo", service.LabDetailes(LabCode));
 					 req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
-					 req.setAttribute("getAllProjectdata", details.get("getAllProjectdata")); 
-				    String filename="ProjectSlideCover";	
-
+					 req.setAttribute("getAllProjectdata", details.get("getAllProjectdata"));
+					 req.setAttribute("dataForOutline", details.get("dataForOutline"));
+				    String filename="ProjectSlideCover";
 			    	String path=req.getServletContext().getRealPath("/view/temp");
 			    	
 					req.setAttribute("path",path);
@@ -4757,14 +4743,14 @@ public class PrintController {
 						}
 					}
 					List<Object[]> dataForOutline = new ArrayList<>();
-					List<Object[]> dataForCoverslide = new ArrayList<>();
+					List<Object[]> FreedDataForCover = new ArrayList<>();
 					for (Object[] objects : getAllProjectdata) {
 						for (Object[] objects2 : getAllProjectSlidedata) {
 							File file = new File(ApplicationFilesDrive + objects2[1].toString() + objects2[2].toString());
 							if (file.exists()) {
 								if(objects2[3].toString().equals(objects[0].toString())) {
 									dataForOutline.add(objects);
-									dataForCoverslide.add(objects2);
+									FreedDataForCover.add(objects2);
 								}
 							}
 						
@@ -4776,19 +4762,12 @@ public class PrintController {
 					List<Object[]> temp = new ArrayList<>();
 					
 					Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
-
 						@Override
-
 						public int compare(Object[] o1, Object[] o2) {
-
 							Date date1 = (Date) o1[5];
-
 							Date date2 = (Date) o2[5];
-
 							return date1.compareTo(date2);
-
 						}
-
 					};
 					
 					if (getAllProjectdata.size() > 1)
@@ -4807,7 +4786,8 @@ public class PrintController {
 					System.out.println("size after is========"+getAllProjectSlidedata.size());
 					
 					Map<String, List<Object[]>> details = new HashMap<>();
-					details.put("getAllProjectdata", dataForCoverslide);
+					details.put("getAllProjectdata", FreedDataForCover);
+					details.put("dataForOutline", dataForOutline);
 					String path = req.getServletContext().getRealPath("/view/temp");
 					//static file thank you
 					String pathToThankYou = "";
@@ -4819,7 +4799,6 @@ public class PrintController {
 						CoverSlide = PrintCoverSlide(details, req, redir, res, ses);
 					
 					
-					details.put("getAllProjectdata", dataForOutline);
 					File projectOutline = new File(Path + "ProjectOutline.pdf");
 					String prjOutlineSlide="";
 					if(projectOutline.exists())prjOutlineSlide=projectOutline.getPath();

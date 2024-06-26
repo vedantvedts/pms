@@ -751,6 +751,7 @@ public class PrintServiceImpl implements PrintService{
 		
 		ProjectSlides slides  =	dao.SlideAttachmentDownload(String.valueOf(slidedata.getSlideId()));
 		ProjectSlides slide = new ProjectSlides();
+		String fname = slidedata.getImageAttach().getOriginalFilename();
 		slide.setSlideId(slidedata.getSlideId());
 		slide.setSlide(slidedata.getSlide());
 		slide.setBrief(slidedata.getBrief());

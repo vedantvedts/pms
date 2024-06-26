@@ -71,7 +71,11 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 NFormatConvertion nfc=new NFormatConvertion();
 FormatConverter fc = new FormatConverter();
 String enduser="--";
-
+List<Object[]> mainProjectList =  projects!=null && projects.size()>0 ? (projects.stream().filter(e-> e[21]!=null && e[21].toString().equals("1")).collect(Collectors.toList())): new ArrayList<Object[]>();
+List<Object[]> subProjectList =  projects!=null && projects.size()>0 ? (projects.stream().filter(e-> e[21]!=null && e[21].toString().equals("0")).collect(Collectors.toList())): new ArrayList<Object[]>();
+projects.clear();
+projects.addAll(mainProjectList);
+projects.addAll(subProjectList);
 %>
 	<div class="container-fluid">
 		<div class="carousel-inner" align="center">
@@ -83,9 +87,7 @@ String enduser="--";
 					<div align="center"><h2 style="color: #145374 !important;font-family: 'Muli'!important">Project Outline</h2></div>
 					<div class="">
 						<div class="">
-						<% List<Object[]> mainProjectList =  projects!=null && projects.size()>0 ? (projects.stream().filter(e-> e[21]!=null && e[21].toString().equals("1")).collect(Collectors.toList())): new ArrayList<Object[]>();
-			        	   List<Object[]> subProjectList =  projects!=null && projects.size()>0 ? (projects.stream().filter(e-> e[21]!=null && e[21].toString().equals("0")).collect(Collectors.toList())): new ArrayList<Object[]>();
-			        	%>
+						
 			        	<%-- <% for(int i=0;i<mainProjectList.size();i++){ %><%=mainProjectList.get(i)[13] %><%} %>
 			        	<% for(int i=0;i<subProjectList.size();i++){ %><%=subProjectList.get(i)[13] %><%} %> --%>
 			        	<!-- ----------------------------------Main projects List -------------------------- -->	
@@ -122,10 +124,10 @@ String enduser="--";
 											<div class="container-fluid">
 													<div class="row">
 														<div>
-																<%if (mainProjectList.get(i) != null )
-																	if(mainProjectList.get(i)[1] != null) { %><%=mainProjectList.get(i)[1]%> - <%=mainProjectList.get(i)[13]!=null?mainProjectList.get(i)[13]:"-"%>
-																<%}%>
-															</div>
+															<%if (mainProjectList.get(i) != null )
+																if(mainProjectList.get(i)[1] != null) { %><%=mainProjectList.get(i)[1]%> - <%=mainProjectList.get(i)[13]!=null?mainProjectList.get(i)[13]:"-"%>
+															<%}%>
+														</div>
 													</div>
 												</div>										
 											</td>

@@ -185,8 +185,8 @@ if(ses1!=null){
 										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
 										<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projectdata[5])%></td>
 										<td colspan="1" style="color: black;"><%=sdf.format(projectdata[4])%></td>
-										<td colspan="1" style="width: 12%;color: black;"><%=enduser%></td>
-										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[2]!=null?projectdata[2]:"--"%></td>
+										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[6]!=null?projectdata[6]:"--"%>
+										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
 										<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%></td>
 										<td colspan="1" style="color: black;"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
 										<td colspan="1" style="color: black;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
@@ -226,34 +226,26 @@ if(ses1!=null){
 								</table>
 								<div class="container-fluid">
 									<div class="row">
-										<div class="col-2">
-										<br>
-											<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
-												Current Status : 
-											</h4>
-										</div>
 										<div class="col">
-											<p>
-												<%if(projectdata!=null && projectdata[20]!=null) {%>
-													<%=projectdata[20]%>
+										<br><p>
+											<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+												Current Status : 
+											</span>
+											<%if(projectdata!=null && projectdata[20]!=null) {%>
+													<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
 												<%} else{%>-<%} %> 
-											</p>
 										</div>
 									</div>
 									<%if(projectdata[31]!=null && projectdata[31]!=""){%>
 									<div class="row">
-										<div class="col-2">
-										<br>
-											<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
-												Way Forward : 
-											</h4>
-										</div>
 										<div class="col">
-											<p>
-											<%=projectdata[31]%>
-											</p>
+										<br><p>
+											<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+												Way Forward : 
+											</span>
+											<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
 										</div>
-									</div>
+										</div>
 									<%}%>
 								</div>
 							
@@ -358,34 +350,26 @@ if(ses1!=null){
 												</table>
 												<div class="container-fluid">
 													<div class="row">
-														<div class="col-3">
-														<br>
-															<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
-																Current Status : 
-															</h4>
-														</div>
 														<div class="col">
-															<p>
-																<%if(projectdata!=null && projectdata[20]!=null) {%>
-																	<%=projectdata[20]%>
+														<br><p>
+															<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+																Current Status : 
+															</span>
+															<%if(projectdata!=null && projectdata[20]!=null) {%>
+																	<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
 																<%} else{%>-<%} %> 
-															</p>
 														</div>
 													</div>
 													<%if(projectdata[31]!=null && projectdata[31]!=""){%>
 													<div class="row">
-														<div class="col-3">
-														<br>
-															<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
-																Way Forward : 
-															</h4>
-														</div>
 														<div class="col">
-															<p>
-															<%=projectdata[31]%>
-															</p>
+														<br><p>
+															<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+																Way Forward : 
+															</span>
+															<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
 														</div>
-													</div>
+														</div>
 													<%}%>
 												</div>
 								</div>
@@ -581,8 +565,8 @@ if(ses1!=null){
 			                    				
 			                    				
 			                    				<div class="col-lg" style="align-items: center;">
-			                    					<div style="margin-top: 5%;">
-				                    					<button type="button"  class="btn btn-primary btn-sm add"  onclick="return checkData()">SUBMIT </button>
+			                    					<div style="margin-top: 10%;">
+				                    					<button type="button"  class="btn btn-primary btn-sm submit"  onclick="return checkData()">SUBMIT </button>
 				                    					
 														<button type="button" class="btn btn-sm prints my-2 my-sm-0" data-toggle="modal" data-target="#newfilemodal">FREEZE </button>
 														

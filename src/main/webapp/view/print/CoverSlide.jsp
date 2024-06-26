@@ -40,6 +40,12 @@ String Drdologo = (String)request.getAttribute("Drdologo");
 String filePath = (String)request.getAttribute("filepath");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> getAllProjectdata = (List<Object[]>) request.getAttribute("getAllProjectdata");
+List<Object[]> dataForOutline = (List<Object[]>) request.getAttribute("dataForOutline");
+List<Object[]> mainProjectList =  dataForOutline!=null && dataForOutline.size()>0 ? (dataForOutline.stream().filter(e-> e[21]!=null && e[21].toString().equals("1")).collect(Collectors.toList())): new ArrayList<Object[]>();
+List<Object[]> subProjectList =  dataForOutline!=null && dataForOutline.size()>0 ? (dataForOutline.stream().filter(e-> e[21]!=null && e[21].toString().equals("0")).collect(Collectors.toList())): new ArrayList<Object[]>();
+dataForOutline.clear();
+dataForOutline.addAll(mainProjectList);
+dataForOutline.addAll(subProjectList);
 NFormatConvertion nfc=new NFormatConvertion();
 String enduser="--";
 String reviewedby="";
@@ -90,6 +96,22 @@ String reviewDate="";
 							reviewDate=sdf.format(getAllProjectdata.get(0)[5]).toString();
 						}
 						%>
+						<%Boolean flag=false;
+						for(int i=0;i<getAllProjectdata.size();i++)
+						{
+							for(int j=0;j<dataForOutline.size();j++)
+							{
+								if(getAllProjectdata.get(i)[3].toString().equals(dataForOutline.get(j)[0].toString())){
+									reviewedby=getAllProjectdata.get(i)[4].toString();
+									reviewDate=sdf.format(getAllProjectdata.get(i)[5]).toString();
+									flag=true;
+									break;
+								}
+								if(flag)break;
+							}
+							
+						}
+					%>
 						<h4 style="color: #145374 !important;text-align: center;margin: 25px 0px 0px 0px;"><%if( reviewedby!="" ) {%> Review By - <%=reviewedby %>  <%} %></h4>
 						<h4 style="color: #145374 !important;text-align: center;margin: 0px 0px 25px 0px;"><%if( reviewDate!="" ) {%> Review Date - <%=reviewDate %> <%} %></h4>
 						<div align="center">

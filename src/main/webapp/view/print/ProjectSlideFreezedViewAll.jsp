@@ -100,6 +100,11 @@ NFormatConvertion nfc=new NFormatConvertion();
 String reviewedby = "";
 String reviewDate = "";
 FormatConverter fc = new FormatConverter();
+List<Object[]> mainProjectList =  projects!=null && projects.size()>0 ? (projects.stream().filter(e-> e[21]!=null && e[21].toString().equals("1")).collect(Collectors.toList())): new ArrayList<Object[]>();
+List<Object[]> subProjectList =  projects!=null && projects.size()>0 ? (projects.stream().filter(e-> e[21]!=null && e[21].toString().equals("0")).collect(Collectors.toList())): new ArrayList<Object[]>();
+projects.clear();
+projects.addAll(mainProjectList);
+projects.addAll(subProjectList);
 %>
 
 <div id="presentation-slides" class="carousel slide " data-ride="carousel">
@@ -180,9 +185,7 @@ FormatConverter fc = new FormatConverter();
 				<div class="card-body shadow-nohover" >
 					<div class="">
 						<div class="">
-						<% List<Object[]> mainProjectList =  projects!=null && projects.size()>0 ? (projects.stream().filter(e-> e[21]!=null && e[21].toString().equals("1")).collect(Collectors.toList())): new ArrayList<Object[]>();
-			        	   List<Object[]> subProjectList =  projects!=null && projects.size()>0 ? (projects.stream().filter(e-> e[21]!=null && e[21].toString().equals("0")).collect(Collectors.toList())): new ArrayList<Object[]>();
-			        	%>
+						
 			        	<%-- <% for(int i=0;i<mainProjectList.size();i++){ %><%=mainProjectList.get(i)[13] %><%} %>
 			        	<% for(int i=0;i<subProjectList.size();i++){ %><%=subProjectList.get(i)[13] %><%} %> --%>
 			        	<!-- ----------------------------------Main projects List -------------------------- -->	
@@ -508,8 +511,6 @@ FormatConverter fc = new FormatConverter();
 					if(projects.get(i)[22]!=null || projects.get(i)[23]!=null || projects.get(i)[24]!=null ||
 							projects.get(i)[25]!=null || projects.get(i)[27]!=null || projects.get(i)[29]!=null ||
 							projects.get(i)[26]!=null || projects.get(i)[30]!=null || projects.get(i)[31]!=null){
-						if(projects.get(i)[23]==null)projects.get(i)[23]="1";
-						if(projects.get(i)[23]!=null ){
 							if(projects.get(i)[23].toString().equals("2")){%>
 								<div class="carousel-item " >
 									<div class="container-fluid" >
@@ -632,30 +633,29 @@ FormatConverter fc = new FormatConverter();
 															</table>
 															<br>
 															<div class="container-fluid">
-															<div class="row">
-															<div class="col-2">
-															<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
-																		Current Status : 
-																	</h4>
-															</div>
-															<div class="col">
-																	<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
-																			<%=projects.get(i)[20]%>
-																		<%} else{%>-<%} %> 
-															</div>
-															</div>
-															<%if(projects.get(i)[31]!=null && projects.get(i)[31]!=""){%>
+																<div class="row">
+																	<div class="col">
+																	<p>
+																	<span style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
+																				Current Status :</span> 
+																				<%if(projects.get(i)!=null && projects.get(i)[20]!=null && projects.get(i)[20].toString().length()>0) {%>
+																					<%=projects.get(i)[20].toString().substring(3,projects.get(i)[20].toString().length()-1 )%>
+																				<%} else{%>-<%} %>
+																	</div>
+																</div>
+																<%if(projects.get(i)[31]!=null && projects.get(i)[31]!=""){%>
 																		
 																			
 																<div class="row">
-																	<div class="col-2">
-																		<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
-																			Way Forward : 
-																		</h4>
-																	</div>
 																	<div class="col">
-																		<%=projects.get(i)[31]%>
+																	<p>
+																		<span style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
+																			Way Forward : 
+																			</span>
+																		<%=projects.get(i)[31].toString().substring(3,projects.get(i)[31].toString().length()-1 )%>
+																		
 																	</div>
+																		
 																</div>
 																<%}%>
 															</div>
@@ -709,10 +709,9 @@ FormatConverter fc = new FormatConverter();
 									</div>
 								</div>
 								<!-- ----------------------------------------- Slide One ------------------------------------------------------------ -->
-							<%}} if(projects.get(i)[23].toString().equals("1")){ %> 
+							<%}%><% if(projects.get(i)[23].toString().equals("1")){%> 
 								<div class="carousel-item " >
 									<div class="container-fluid" >
-										<div>
 											<div class="container-fluid"  >
 											<div class="" id="slide1">
 												<%	double cost = Double.parseDouble(projects.get(i)[3].toString());
@@ -795,7 +794,7 @@ FormatConverter fc = new FormatConverter();
 																		</tr>
 																		<tr>
 																			<td>
-																				<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Objectives : </b>
+																				<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;vertical-align: top;">Objectives : </b>
 																			</td>
 																			<td colspan="3" style="color: black;"> 
 																					<%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> 
@@ -803,7 +802,7 @@ FormatConverter fc = new FormatConverter();
 																		</tr>
 																		<tr>
 																			<td>
-																				<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Scope : </b>
+																				<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;vertical-align: top;">Scope : </b>
 																			</td>
 																			<td colspan="3" style="color: black;"> 
 																					<%=projects.get(i)[9]==null?"--":projects.get(i)[9]%> 
@@ -812,7 +811,7 @@ FormatConverter fc = new FormatConverter();
 																				
 																		<tr>
 																			<td>
-																				<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;">Deliverables : </b>
+																				<b style="font-size: 1.2rem;font-weight: bold;color: #021B79;vertical-align: top;">Deliverables : </b>
 																			</td>
 																			<td colspan="3" style="color: black;"> 
 																					<%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> 
@@ -820,56 +819,46 @@ FormatConverter fc = new FormatConverter();
 																		</tr>
 																					
 																	</table>
-																<br>
-																<div class="container-fluid">
-															<div class="row">
-															<div class="col-3">
-															<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
-																		Current Status : 
-																	</h4>
-															</div>
-															<div class="col" style="padding: 0px">
-																	<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
-																			<%=projects.get(i)[20]%>
-																		<%} else{%>-<%} %> 
-															</div>
-															</div>
-															<%if(projects.get(i)[31]!=null && projects.get(i)[31]!=""){%>
-																		
-																			
-																<div class="row">
-																	<div class="col-3">
-																		<h4 style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
-																			Way Forward : 
-																		</h4>
+																	<br>
+																	<div class="container-fluid">
+																	<div class="row">
+																		<div class="col">
+																			<p><span style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
+																				Current Status : 
+																			</span>
+																			<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
+																				<%=projects.get(i)[20].toString().substring(3, projects.get(i)[20].toString().length())%>
+																			<%} else{%>-<%} %> 
+																		</div>
 																	</div>
-																	<div class="col" style="padding: 0px">
-																		<%=projects.get(i)[31]%>
-																	</div>
+																	<%if(projects.get(i)[31]!=null && projects.get(i)[31]!=""){%>	
+																		<div class="row">
+																			<div class="col">
+																				<span style="text-align: left;font-size: 1.2rem; font-weight: bold; color: #021B79;">
+																					Way Forward :</span> <%=projects.get(i)[31].toString().substring(3, projects.get(i)[31].toString().length())%>
+																				
+																			</div>
+																		</div>
+																	<%}%>
 																</div>
-																<%}%>
-															</div>
+																</div>
 																
 															</div>
 														</div>
 														<br>
-															  	 	
-														
-														</div>
 														<div class="col-md-6">
 															<table style="width: 100%;height: 100%;border-style: hidden;">
 																<tbody>
 																	<tr >
 																		<td style="border-bottom: none;max-height: 300px; max-width: 600px;margin: auto;">
 																			<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[24]).exists()){%>
-																			<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
-																			<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" >
-																			<img class="zoom" data-enlargable height="600" style=" max-width: 70%; margin: auto; position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
-																			</a>
-																			<%}else{ %>
-																			<img class=" d-flex justify-content-center zoom mx-auto d-block" data-enlargable style="max-height: 600px; max-width: 600px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
-																			
-																			<%} %>
+																				<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
+																					<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" >
+																						<img class="zoom" data-enlargable height="600" style=" max-width: 70%; margin: auto; position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
+																					</a>
+																				<%}else{ %>
+																					<img class=" d-flex justify-content-center zoom mx-auto d-block" data-enlargable style="max-height: 600px; max-width: 600px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
+																				<%} %>
 																			<%} else{%>image<%}%>
 																		</td>
 																
@@ -880,16 +869,19 @@ FormatConverter fc = new FormatConverter();
 															
 							
 														</div>
+															  	 	
 														
-													</div>	
-												</div>
+														</div>
+														
+														
+												</div>	
+											</div>
 					
 											</div>
 					
-										</div>	
 									</div>
 								</div>
-							</div>	
+								
 						<!-- ----------------------------------------- Slide Three - No Data ------------------------------------------------------------ -->
 						<%}}else{%>
 							

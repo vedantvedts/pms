@@ -10,13 +10,18 @@
 <meta charset="ISO-8859-1"/>
 <style type="text/css">
   
-@page {             
-          size: 1300px 800px;
+@page {    
+	size: 1300px 800px;
+	border: 6px solid green;
+	border-radius: 5px !important;
+	padding: 10px 15px 10px 15px;         
+          /*size: 1300px 800px;
           margin: 10px 10px 10px 10px;
           border: 5px solid green;
-          /* margin-left: 50px;
-          margin-right: 50px;
-          margin-buttom: 40px; */   	
+           margin-left: 50px;
+           margin-right: 50px;*/
+           margin: 25px  50px   25px    50px; 
+           //      top, right, bottom, left
 }
 .data{
  			
@@ -147,15 +152,15 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
 										<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projectdata[5])%></td>
 										<td colspan="1" style="color: black;"><%=sdf.format(projectdata[4])%></td>
-										<td colspan="1" style="width: 12%;color: black;"><%=enduser%></td>
-										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[2]!=null?projectdata[2]:"--"%></td>
+										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[6]!=null?projectdata[6]:"--"%></td>
+										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
 										<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%></td>
 										<td colspan="1" style="color: black;"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
 										<td colspan="1" style="color: black;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
 									</tr>
 
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color:#212529 ; vertical-align: top;">
+										<td style="font-size: 1.02rem;font-weight: bold;color:#212529 ; vertical-align: top;width: 20%">
 										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
 										Brief : </b>  </td>
 										<td colspan="7" style="font-weight: bold;color:#212529 ">
@@ -189,38 +194,38 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					</div>
 				</div>
 				<br><br><br><br>
-				<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 10%; float: left;margin: 0px; margin-top: 10px;">
-					Current Status : 
-				</h4>
-				<p style="width: 90%; float: right;margin-top: 10px;">
+				<p style="width: 100%; float: left;margin-top: 10px;text-align: left;">
+					<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+						Current Status : 
+					</span>
 					<%if(projectdata!=null && projectdata[20]!=null) {%>
-						<%=projectdata[20]%>
-					<%} else{%>-<%} %> 
+						<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
+					<%} else{%>-<%} %>  
 				</p>
 				<br>
 				<%if(projectdata[31]!=null && projectdata[31]!=""){%>
 					<br>
-					<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 10%; float: left;margin: 0px;">
+					<p style="width: 100%; float: left;text-align: left;">
+					<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
 						Way Forward : 
-					</h4>
-					<p style="width: 90%; float: right;">
-						<%=projectdata[31]%>
-					</p>
+					</span>
+					<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
 				<%}%>
 				<div style="position: relative;"><p>&nbsp;</p>
-				<table style="width:100%;font-weight: bold;height: 100%;position: relative;margin: 1 1 1 1">
-				
-					<tbody style="width:100%;">
-						<tr style="width:100%;">
-							<td>
-							<div style="align-content: center;">	
-								<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
-									<img data-enlargable style="max-height: 300px; display: block; margin: 0 auto;  width: 40%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
-								<%}else{%><% }%>
+				<table style="width:100%;font-weight: bold;height: 100%;position: relative;">
+				<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
+					<tbody style="width:100%;border : none;padding: 5px;">
+						<tr style="width:100%;height: 300px;border : none;padding: 0px;">
+							<td style="border : none;padding: 0px;">
+							<div style="align-content: center;padding: 0px;">	
+								
+									<img data-enlargable style="max-height: 250px; display: block; margin: 0 auto;  width: 40%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+								
 								</div>
 							</td>
 						</tr>
 					</tbody>
+					<%}else{%><% }%>
 				</table>
 						
 				</div>
@@ -244,27 +249,27 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						<td colspan="1" style="width: 12%;color: black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
 						<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projectdata[5])%></td>
 						<td colspan="1" style="color: black;"><%=sdf.format(projectdata[4])%></td>
-						<td colspan="1" style="width: 12%;color: black;"><%=enduser%></td>
-						<td colspan="1" style="width: 12%;color: black;"><%=projectdata[2]!=null?projectdata[2]:"--"%></td>
+						<td colspan="1" style="width: 12%;color: black;"><%=projectdata[6]!=null?projectdata[6]:"--"%></td>
+						<td colspan="1" style="width: 12%;color: black;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
 						<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%></td>
 						<td colspan="1" style="color: black;"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
 						<td colspan="1" style="color: black;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
 					</tr>
 				</table>
-				<div style="float: left;width: 50%;height: 100%;display: block;margin-top: 13px;">
+				<div style="float: left;width: 50%;height: 100%;display: block;">
 				
-						<table style="margin-top: -10px; align-items: flex-end;height: 100%;font-weight: bold;border-top: none;">
+						<table style="align-items: flex-end;height: 100%;font-weight: bold;border-top: none;">
 						
 							<tr>
-								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px;border-top: none;">
-								<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
-								Brief : </b>  </td>
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;border-top: none; padding-bottom: 6px;vertical-align: top;width: 20%">
+										Brief : 
+								</td>
 								<td colspan="7" style="text-align: left;color:#212529;border-top: none; ">
 									<%=projectdata[15]!=null?projectdata[15]:"--"%>
 								</td>
 							</tr>
 							<tr >
-								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px;border-top: none;">
+								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px;vertical-align: top;">
 									Objectives :
 								</td>
 								<td colspan="7" style="text-align: left;color:#212529;border-top: none; "><%=projectdata[7]!=null?projectdata[7]:"--"%>
@@ -284,34 +289,34 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 							</tr>
 						
 						</table>
-						<br><br>
-				<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 20%; float: left; margin-top: 10px;height: 15px">
-					Current Status : 
-				</h4>
-				<p style="width: 80%; float: right;margin-top: 10px;">
-					<%if(projectdata!=null && projectdata[20]!=null) {%>
-						<%=projectdata[20]%>
-					<%} else{%>-<%} %> 
-				</p>
-				<br>
-				<%if(projectdata[31]!=null && projectdata[31]!=""){%>
-					<br>
-					<h4 style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 20%; float: left;margin: 0px;">
-						Way Forward : 
-					</h4>
-					<p style="width: 80%; float: right;">
-						<%=projectdata[31]%>
-					</p>
-				<%}%>
-					</div>
-					<div style="float: right;width: 50%;align-content: center;">
-					<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
-									<img  data-enlargable height="500" style=" max-width: 75%; display: block; margin: 0 auto;  width: 75%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
-								<%}else{%><% }%>
-					</div>
-					<p>&nbsp;</p>
-					</div>
-				<%}%>
+						<br>
+						<p style="width: 80%; float: left;">
+							<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+								Current Status : 
+							</span>
+							<%if(projectdata!=null && projectdata[20]!=null) {%>
+								<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
+							<%} else{%>-<%} %>  
+						</p>
+						<br>
+						<%if(projectdata[31]!=null && projectdata[31]!=""){%>
+							<br><br><br>
+							<p style="width: 80%; float: left;margin-top: 15px;">
+							<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 20%; float: left;margin: 0px;">
+								Way Forward : 
+							</span>
+							
+							<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%> 
+						<%}%>
+				</div>
+							<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
+							<div style="float: right;width: 50%;align-content: center;">
+											<img  height="475" width="352" style=" max-width: 352px; display: block; margin: 0 auto;  width: 75%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+							</div>
+							<%}else{%><% }%>
+								<p>&nbsp;</p>
+							</div>
+					<%}%>
 </div>
 </body>
 </html>
