@@ -190,31 +190,6 @@ font-weight: bold;
 }
 
 
-.meetingsp{
-  width:75%;
-  transition: background-color 3s ease;
-  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  transition: background-position 0.5s ease;
-  color:black;
-  padding:10px;
-  border-radius: 8px;
-  display: block;
-  font-weight: 600;
-  margin:1%;
-  margin-left:12%;
-}
-.meetingsp:hover{
- 	/*  background-color: green;
-	 background-image: linear-gradient(to right, green, blue); */
-	 color:white;
- background-position: 0 0;
- box-shadow: 3px 3px 3px gray;
-	/* background-color:red; */
-color:white;
-font-weight: 600;	
-}
 #span{
 background: blue;
 }
@@ -262,6 +237,39 @@ input {
 	padding: 40px 10px;
 }
 </style>
+
+<style>
+.div-container {
+	position: relative;
+	margin: 0.5rem;
+    border: 3px solid #216583;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+.full-width {
+    width: 100% !important;
+}
+.half-width {
+    width: 48% !important;
+}
+.more-than-half-width {
+    width: 51% !important;
+}
+.toggle-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 10;
+}
+
+/* Ensure select picker adjusts width */
+.select2-container {
+    width: 100% !important; /* Force full width */
+}
+</style>
+    
 </head>
 <body>
 
@@ -321,9 +329,9 @@ statusMap.put("RBS", "#fe4e4e");
 						<h4 class="">Time Sheet</h4>
 					</div>
 					
-					<div class="card-body" style="display: flex;justify-content: space-around;">
-						<div id="calendar" style="width: 51%;margin: 0.5rem;border: 3px solid #216583;border-radius: 5px;"></div>
-						<div id="meetings" style="width: 48%;margin: 0.5rem;border: 3px solid #216583;border-radius: 5px;">
+					<div class="card-body d-flex justify-content-around">
+						<div id="calendar" class="div-container more-than-half-width"></div>
+						<div id="timesheet" class="div-container half-width">
 							<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;background-color: #216583;height: 40px;">
 								Time Sheet Details - (<%=activityDate %>)
 							</div>
@@ -671,13 +679,43 @@ statusMap.put("RBS", "#fe4e4e");
 							</div>
 							
 						</div>
-					</div>
 						
+					</div>
+					<div class="text-center mt-3">
+			            <button class="btn btn-primary" onclick="toggleDiv('calendar')">Toggle Calendar</button>
+			            <button class="btn btn-secondary" onclick="toggleDiv('timesheet')">Toggle Time Sheet</button>
+        			</div>	
 				</div>
 			</div>
 		</div>
 	</div>
 
+<script>
+function toggleDiv(divId) {
+	const calendarDiv = $('#calendar');
+	const meetingsDiv = $('#timesheet');
+	const targetDiv = $('#' + divId);
+	const otherDiv = divId === 'calendar' ? meetingsDiv : calendarDiv;
+	
+	if (targetDiv.hasClass('full-width')) {
+	    // Reset to original sizes
+	    targetDiv.removeClass('full-width').addClass(divId === 'calendar' ? 'more-than-half-width' : 'half-width');
+	    otherDiv.removeClass('hidden').addClass(divId === 'calendar' ? 'half-width' : 'more-than-half-width').show();
+	} else if (otherDiv.hasClass('full-width')) {
+	    // If the other div is in full width, reset both to original sizes
+	    otherDiv.removeClass('full-width').addClass(divId === 'calendar' ? 'half-width' : 'more-than-half-width');
+	    targetDiv.addClass('full-width').removeClass(divId === 'calendar' ? 'more-than-half-width' : 'half-width').show();
+	} else {
+	    // Set the target div to full width and hide the other
+	    targetDiv.addClass('full-width').removeClass(divId === 'calendar' ? 'more-than-half-width' : 'half-width');
+	    otherDiv.hide();
+	}
+	
+	// Trigger select picker adjustment on toggle
+    $('.selectdee').selectpicker('refresh');
+ }
+</script>
+    
 <script type="text/javascript">
 	var myEvents = [
 		<%if(empAllTimeSheetList!=null && empAllTimeSheetList.size()>0) {

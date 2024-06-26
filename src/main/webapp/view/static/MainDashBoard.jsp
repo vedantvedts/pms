@@ -2040,8 +2040,8 @@ if(ses!=null){ %>
              <input type="hidden" name="username" value="<%=Username%>">
              <input type="hidden" name="action" value="loginFromPms">
              <!--  <input type="hidden" name="redirectVal" value="">  -->
-		  <button type="submit" class="btn External" data-toggle="tooltip" title="STATS" ><img src="view/images/stats.png" /></button>
-		  	</form>
+<!-- 		  <button type="submit" class="btn External" data-toggle="tooltip" title="STATS" ><img src="view/images/stats.png" /></button>
+ -->		  	</form>
 		  	 	
 		  	 	<form action="ProjectHealthUpdate.htm" method="get" style=" <%if (IsDG.equalsIgnoreCase("Yes") ){%> display:none   <%}%>" >
 		        	<button type="submit" class="btn btn4" data-toggle="tooltip" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
