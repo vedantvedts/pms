@@ -85,8 +85,8 @@ p{
            @bottom-left { 
              font-size: 13px;
 	          margin-bottom: 30px;
-	          content: "Initiated By : <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%>"; 
-          	} 
+<%-- 	          content: "Initiated By : <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%>"; 
+ --%>          	} 
           <%}%>
           
           <%if(RecommendedBy.length()>1){%>
@@ -94,7 +94,7 @@ p{
              font-size: 13px;
 	          margin-bottom: 30px;
 	           margin-right: 20px;
-	          content: "Recommended By :- <%=RecommendedBy%>"; 
+	       <%--    content: "Recommended By :- <%=RecommendedBy%>";  --%>
           }               
           <%}%>
          
@@ -250,6 +250,11 @@ p{
 	<br>
 	<div align="center" style="text-align: center">
 	Director
+	</div>
+	<br><br>
+	
+	<div style="text-align: left;font-size: 13px;">
+	Initiated By : <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%>"
 	</div>
 <!-- 	<div style="margin-top:30px;margin-left:10px;">Recommended Officer :- </div>
 	<div style="margin-top:10px;margin-left:10px;">Approving Officer :-</div> -->

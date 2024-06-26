@@ -363,11 +363,18 @@ String ses=(String)request.getParameter("result");
 										<tr>
 											<td>
 												<label class="control-label">Remarks</label>
+												<span style="float: right"><label class="control-label">Constitution Letter</label>
+												<button  type="submit"  class="btn btn-sm edit"  formaction="CommitteeConstitutionLetterDownload.htm" formmethod="post" formtarget="_blank"><i class="fa fa-download" style="   font-size: 0.90rem; " ></i></button>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />    												
+											<input type="hidden" name="committeemainid" value="<%=committeemainid%>"></span>
 											</td>
 										</tr>
 										<tr >
 											<td  >
-												<input class="form-control" name="remarks"  id="remarks" style="width: 100%;" maxlength="150"> <!-- style="width: 400px; height: 100px; " -->
+												<input class="form-control" name="remarks"  id="remarks" style="width: 100%;" maxlength="150">
+											
+										
+												 <!-- style="width: 400px; height: 100px; " -->
 											</td>
 										</tr>
 										
