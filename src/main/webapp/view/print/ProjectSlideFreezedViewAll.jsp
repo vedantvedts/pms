@@ -198,7 +198,7 @@ projects.addAll(subProjectList);
 									<tr >
 										<th style="width: 2%;">SN</th>
 										<th style="width: 5%;">Code</th>
-										<th style="width: 35%;">Projects</th>
+										<th style="width: 35%;">Project Name</th>
 										<th style="width: 4%;">Category</th> 
 										<th style="width: 8%;">DOS</th>
 										<th style="width: 8%;">PDC</th>
@@ -212,7 +212,7 @@ projects.addAll(subProjectList);
 								<tbody>
 									<% if(mainProjectList!=null && mainProjectList.size()>0) {
 										
-										for(int i=0;i<mainProjectList.size();i++ ){val=i; %><%=val%>
+										for(int i=0;i<mainProjectList.size();i++ ){val=i; %>
 										<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=2+i%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 											<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 											<td style="text-align: center;font-weight: bold;">
@@ -357,7 +357,7 @@ projects.addAll(subProjectList);
 										<tr >
 											<th style="width: 2%;">SN</th>
 											<th style="width: 5%;">Code</th>
-											<th style="width: 35%;">Projects</th>
+											<th style="width: 35%;">Project Name</th>
 											<th style="width: 4%;">Category</th>
 											<th style="width: 8%;">DOS</th>
 											<th style="width: 8%;">PDC</th>
@@ -372,7 +372,7 @@ projects.addAll(subProjectList);
 									
 										<% if(subProjectList!=null && subProjectList.size()>0) {
 											if(val>0)val++;
-											for(int i=0;i<subProjectList.size();i++ ){ %><%=val%>
+											for(int i=0;i<subProjectList.size();i++ ){ %>	
 											<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=2+val+i%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 												<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 												<td style="text-align: center;font-weight: bold;">
@@ -1068,7 +1068,7 @@ projects.addAll(subProjectList);
 							<li data-target="#presentation-slides" data-slide-to="0"  class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
 							<li data-target="#presentation-slides" data-slide-to="1"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="projectNamesListCorousel"><b><i class="fa fa-list" aria-hidden="true"></i></b></li>
 							<% int i=1;if(projects!=null && projects.size()>0){
-							for(Object[] obj: projects){%><%=i%>
+							for(Object[] obj: projects){%>
 							<li data-target="#presentation-slides" data-slide-to="<%=++i%>"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=i%>. <%=obj[6]%>"><b><%=i-1%></b></li>
 							<%}}%>
 							<li data-target="#presentation-slides" data-slide-to="<%=i+1%>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>

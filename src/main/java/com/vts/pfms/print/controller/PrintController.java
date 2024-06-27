@@ -4727,8 +4727,6 @@ public class PrintController {
 					List<Object[]> getAllProjectSlidedata = new ArrayList<>();
 					List<Object[]> getAllProjectdata = new ArrayList<>();
 					for (String id : ProjectIds) {
-						
-						System.out.println("id is===="+id);
 						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id); // freezed
 						if (getoneProjectSlidedata.size() > 0){
 								Object[] projectdata = (Object[]) service.GetProjectdata(id); // all values
@@ -4768,7 +4766,6 @@ public class PrintController {
 					
 					if (getAllProjectdata.size() > 1)
 						Collections.sort(getAllProjectdata, dateComparator);
-					System.out.println("size before is========"+getAllProjectSlidedata.size());
 					//aligning list values with the PROJids of project pdf PROJids
 					for (Object[] objects : getAllProjectdata) {
 						for (Object[] objects2 : getAllProjectSlidedata) {
@@ -4779,7 +4776,6 @@ public class PrintController {
 					}
 					
 					getAllProjectSlidedata = temp;
-					System.out.println("size after is========"+getAllProjectSlidedata.size());
 					
 					Map<String, List<Object[]>> details = new HashMap<>();
 					details.put("getAllProjectdata", FreedDataForCover);
@@ -4816,14 +4812,19 @@ public class PrintController {
 							pathToThankYou = obj[1].toString();
 						}
 					}
-					if (pathToThankYou.equals("") || flag) {
+					File file = new File(pathToThankYou);
+					if (pathToThankYou.equals("") || flag || !file.exists()) {
 						redir.addAttribute("resultfail", "Selected slide has not been Freezed");
+						if(!file.exists() && !pathToThankYou.equals(""))System.out.println("=================  ERROR  =============\n=======================================\n"
+								+ "=======================================\n"
+								+ "==========  ADD THANKYOU SLIDE  ==========\n"
+								+ "=======================================\n=======================================\n"
+								+ "=======================================\n");
 						redir.addAttribute("result", null);
 						return "redirect:/MainDashBoard.htm";
 					}
 					pathToThankYou = ApplicationFilesDrive + pathToThankYou + "SlideFreezeTHANKYOU.pdf";
-
-
+					
 					utility.addSource(pathToThankYou);
 					utility.mergeDocuments();
 					res.setContentType("application/pdf");
