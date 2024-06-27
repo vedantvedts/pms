@@ -139,14 +139,32 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					<div style="float: left;width: 100%;position: relative;">
 						<table style="font-weight: bold;width: 100%;">
 									<tr>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Project No</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">DoS</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%">User</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Category</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr)</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 7%;">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										Project No</b></td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 13%;">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										DoS</b></td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										PDC</b></td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 13%">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										User</b></td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 13%;">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										Category</b></td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										Cost (In Cr)
+										</b></td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										Application
+										</b></td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
+										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+										Current Stage</b></td>
 									</tr>
 									<tr>
 										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
@@ -160,7 +178,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 									</tr>
 
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color:#212529 ; vertical-align: top;width: 20%">
+										<td style="font-size: 1.02rem;font-weight: bold;color:#212529 ; vertical-align: top;width: 10%">
 										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
 										Brief : </b>  </td>
 										<td colspan="7" style="font-weight: bold;color:#212529 ">
@@ -212,21 +230,23 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
 				<%}%>
 				<div style="position: relative;"><p>&nbsp;</p>
-				<table style="width:100%;font-weight: bold;height: 100%;position: relative;">
-				<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
-					<tbody style="width:100%;border : none;padding: 5px;">
-						<tr style="width:100%;height: 300px;border : none;padding: 0px;">
-							<td style="border : none;padding: 0px;">
-							<div style="align-content: center;padding: 0px;">	
-								
-									<img data-enlargable style="max-height: 250px; display: block; margin: 0 auto;  width: 40%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
-								
-								</div>
-							</td>
-						</tr>
-					</tbody>
+					<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
+						<table style="width:100%;font-weight: bold;height: 100%;position: relative;">
+						
+							<tbody style="width:100%;border : none;padding: 5px;">
+								<tr style="width:100%;height: 300px;border : none;padding: 0px;">
+									<td style="border : none;padding: 0px;">
+									<div style="align-content: center;padding: 0px;">	
+										
+											<img data-enlargable style="max-height: 250px; display: block; margin: 0 auto;  width: 40%;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+										
+										</div>
+									</td>
+								</tr>
+							</tbody>
+							
+						</table>
 					<%}else{%><% }%>
-				</table>
 						
 				</div>
 				<%}else{%>
@@ -236,14 +256,32 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				<div style="position: relative;" >
 				<table style="font-weight: bold;width: 100%;border-bottom: 1px solid black;">
 					<tr>
-						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Project No</td>
-						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">DoS</td>
-						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC</td>
-						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%">User</td>
-						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Category</td>
-						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr)</td>
-						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application</td>
-						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage</td>
+						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 7%;">
+						<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+						Project No</b></td>
+						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 13%;">
+						<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+						DoS</b></td>
+						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
+						<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+						PDC</b></td>
+						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 13%">
+						<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+						User</b></td>
+						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 13%;">
+						<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+						Category</b></td>
+						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
+						<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+						Cost (In Cr)
+						</b></td>
+						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
+						<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+						Application
+						</b></td>
+						<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">
+						<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
+						Current Stage</b></td>
 					</tr>
 					<tr  >
 						<td colspan="1" style="width: 12%;color: black;border-bottom: 0px solid black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>

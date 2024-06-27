@@ -4751,9 +4751,9 @@ public class PrintController {
 							
 						}
 						
-					} 
+					}
 					
-					List<Object[]> temp = new ArrayList<>();
+					
 					
 					Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
 						@Override
@@ -4767,15 +4767,9 @@ public class PrintController {
 					if (getAllProjectdata.size() > 1)
 						Collections.sort(getAllProjectdata, dateComparator);
 					//aligning list values with the PROJids of project pdf PROJids
-					for (Object[] objects : getAllProjectdata) {
-						for (Object[] objects2 : getAllProjectSlidedata) {
-							if(objects2[3].toString().equals(objects[0].toString())) {
-								temp.add(objects2);
-							}
-						}
-					}
 					
-					getAllProjectSlidedata = temp;
+					
+					getAllProjectSlidedata = FreedDataForCover;
 					
 					Map<String, List<Object[]>> details = new HashMap<>();
 					details.put("getAllProjectdata", FreedDataForCover);
@@ -4805,13 +4799,38 @@ public class PrintController {
 					utility.addSource(file0);
 					
 					boolean flag = false;
-					for (Object[] obj : getAllProjectSlidedata) {
-						File file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
-						if (file.exists()) {
+//					Collections.reverse(getAllProjectSlidedata);
+					List<Object> mainProjectids =  dataForOutline!=null && dataForOutline.size()>0 ? (dataForOutline.stream().filter(e-> e[21]!=null && e[21].toString().equals("1")).map(objArray -> objArray[0]).collect(Collectors.toList())): new ArrayList<Object>();
+					List<Object> subProjectList =  dataForOutline!=null && dataForOutline.size()>0 ? (dataForOutline.stream().filter(e-> e[21]!=null && e[21].toString().equals("0")).map(objArray -> objArray[0]).collect(Collectors.toList())): new ArrayList<Object>();
+					
+					getAllProjectSlidedata.stream()
+				    .filter(obj -> new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString()).exists())
+				    .filter(obj -> mainProjectids.contains(obj[3]))
+				    .forEach(obj -> {
+				        File file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
+				        try {
 							utility.addSource(file);
-							pathToThankYou = obj[1].toString();
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
-					}
+				    });
+
+					// Process sub project ids
+					getAllProjectSlidedata.stream()
+					    .filter(obj -> new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString()).exists())
+					    .filter(obj -> subProjectList.contains(obj[3]))
+					    .forEach(obj -> {
+					        File file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
+					        try {
+								utility.addSource(file);
+							} catch (FileNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+					    });
+					pathToThankYou =getAllProjectSlidedata.size()>0?getAllProjectSlidedata.get(0)[1].toString():"";
+					
 					pathToThankYou = ApplicationFilesDrive + pathToThankYou + "SlideFreezeTHANKYOU.pdf";
 					File file = new File(pathToThankYou);
 					if (pathToThankYou.equals("") || flag || !file.exists()) {
