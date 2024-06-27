@@ -4812,10 +4812,11 @@ public class PrintController {
 							pathToThankYou = obj[1].toString();
 						}
 					}
+					pathToThankYou = ApplicationFilesDrive + pathToThankYou + "SlideFreezeTHANKYOU.pdf";
 					File file = new File(pathToThankYou);
 					if (pathToThankYou.equals("") || flag || !file.exists()) {
 						redir.addAttribute("resultfail", "Selected slide has not been Freezed");
-						if(!file.exists() && !pathToThankYou.equals(""))System.out.println("=================  ERROR  =============\n=======================================\n"
+						if(!file.exists())System.out.println("=================  ERROR  =============\n=======================================\n"
 								+ "=======================================\n"
 								+ "==========  ADD THANKYOU SLIDE  ==========\n"
 								+ "=======================================\n=======================================\n"
@@ -4823,7 +4824,7 @@ public class PrintController {
 						redir.addAttribute("result", null);
 						return "redirect:/MainDashBoard.htm";
 					}
-					pathToThankYou = ApplicationFilesDrive + pathToThankYou + "SlideFreezeTHANKYOU.pdf";
+					
 					
 					utility.addSource(pathToThankYou);
 					utility.mergeDocuments();
