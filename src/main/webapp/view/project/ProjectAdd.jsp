@@ -279,7 +279,7 @@ function validateismaincheck()
 </label>
 </th>
  <td >
- <input type="text"   name="pcode" placeholder="Ente Project Code" class="form-control" maxlength="20" required="required">
+ <input type="text"   name="pcode" placeholder="Enter Project Code" class="form-control" maxlength="20" required="required">
  
 </td>
 

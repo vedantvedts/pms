@@ -87,16 +87,16 @@ String ses1=(String)request.getParameter("resultfail");
 											<thead>
 												<tr>
 													<th><label style="margin-bottom: -10px;">Project Code: <span class="mandatory" style="color: red;">*</span></label></th>
-													<td><input type="text" name="pcode" placeholder="Ente Project Code"class="form-control" maxlength="20" required="required"></td>
+													<td><input type="text" name="pcode" placeholder="Enter Project Code"class="form-control" maxlength="20" required="required"></td>
 													<th><label style="margin-bottom: -10px;">Project Name: <span class="mandatory" style="color: red;">*</span></label></th>
-													<td><input type="text" name="pname" placeholder="Ente Project Name" class="form-control" maxlength="255" required="required"></td>
+													<td><input type="text" name="pname" placeholder="Enter Project Name" class="form-control" maxlength="255" required="required"></td>
 												</tr>
 
 												<tr>
 													<th><label style="margin-bottom: -10px;">Project Number: <span class="mandatory"style="color: red;">*</span></label></th>
-													<td><input type="text" name="desc" placeholder="Ente Project No" class="form-control" maxlength="100" required="required"></td>
+													<td><input type="text" name="desc" placeholder="Enter Project No" class="form-control" maxlength="100" required="required"></td>
 													<th><label style="margin-bottom: -10px;">Project Unit Code: <span class="mandatory" style="color: red;"></span></label></th>
-													<td><input type="text" name="unicode" placeholder="Ente Project Unit Code" class="form-control" maxlength="20" ></td>
+													<td><input type="text" name="unicode" placeholder="Enter Project Unit Code" class="form-control" maxlength="20" ></td>
 												</tr>
 												
 												<tr>
