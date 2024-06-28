@@ -223,9 +223,10 @@
 <spring:url value="/resources/js/jquery.canvasjs.min.js" var="fbegraph" />
 <script src="${fbegraph}"></script>
 
-
-<spring:url value="/resources/js/highcharts.js" var="highcharts" />
-<script src="${highcharts}"></script>
+<spring:url value="/resources/js/highcharts-gantt.js" var="highchartsgantt" />
+	<script src="${highchartsgantt}"></script>
+<%-- <spring:url value="/resources/js/highcharts.js" var="highcharts" />
+<script src="${highcharts}"></script>  --%>
 <spring:url value="/resources/js/no-data-to-display.js" var="NoDatajs" />  
 <script src="${NoDatajs}"></script>  
 <spring:url value="/resources/js/exporting.js" var="exporting" />
@@ -244,20 +245,6 @@
 <script src="${VariablePieJs}"></script>      
 
 
- <!-- ----------  selectpicker  ---------- -->
-<spring:url value="/resources/addons/selectpicker/bootstrap-select.min.js" var="selectpickerjs" />  
-<script src="${selectpickerjs}"></script> 
-
-<spring:url value="/resources/addons/selectpicker/bootstrap-select.min.css" var="selectpickercss" />     
-<link href="${selectpickercss}" rel="stylesheet" />  
-
-
- <!-- ----------  select2   ---------- -->
-<spring:url value="/resources/addons/select2/select2.min.js" var="select2js" />  
-<script src="${select2js}"></script> 
-
-<spring:url value="/resources/addons/select2/select2.min.css" var="select2css" />     
-<link href="${select2css}" rel="stylesheet" />  
  
 
 
