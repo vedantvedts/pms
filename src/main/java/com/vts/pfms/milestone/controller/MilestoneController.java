@@ -2916,6 +2916,34 @@ public class MilestoneController {
 					
 				}
 				
-				
+				@RequestMapping(value = "MSprojectCriticalPath.htm", method = {RequestMethod.GET,RequestMethod.POST})
+				public String MSprojectCriticalPath(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+				{
+					
+					
+					String UserId = (String) ses.getAttribute("Username");
+					String Logintype= (String)ses.getAttribute("LoginType");
+					String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+					String LabCode = (String)ses.getAttribute("labcode");
+					logger.info(new Date() +"Inside MSprojectCriticalPath.htm "+UserId);
+					
+					
+					try {
+						String ProjectId=req.getParameter("ProjectId");
+						 List<Object[]>mstaskList = service.getMsprojectTaskList(ProjectId);
+							req.setAttribute("ProjectId", ProjectId);
+							req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
+							Gson json = new Gson();
+							req.setAttribute("mstaskList",json.toJson(mstaskList));
+						
+					}catch (Exception e) {
+						e.printStackTrace(); 
+						logger.error(new Date() +" Inside MSprojectCriticalPath.htm "+UserId, e); 
+						return "static/Error";
+					}
+					
+					return "milestone/MsProjectCriticalPath";
+					
+				}
 				
 }

@@ -1157,7 +1157,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		
 		
 		private static final String MSPROJECTLIST= "SELECT a.MilestoneId,a.SampleTableId,a.ProjectUID,a.ProjectId,e.EmpName,d.designation,a.TaskUID,a.TaskParentUID,a.TaskOutlineLevel,a.TaskOutlineNumber,\r\n"
-				+ "a.TaskName,a.StartDate,a.FinishDate,a.ActualStartDate,a.ActualFinishDate,a.TaskProgress FROM pfms_milestone_msprojectdata a,\r\n"
+				+ "a.TaskName,a.StartDate,a.FinishDate,a.ActualStartDate,a.ActualFinishDate,a.TaskProgress,a.IsCritical FROM pfms_milestone_msprojectdata a,\r\n"
 				+ "employee e , employee_desig d WHERE a.projectid=:projectid AND e.empno = a.empno AND e.desigid = d.desigid ORDER BY \r\n"
 				+ "    CAST(SUBSTRING_INDEX(TaskOutlineNumber, '.', 1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 2), '.', -1) AS UNSIGNED),\r\n"
@@ -1178,7 +1178,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 				
 				List<Object[]>mstaskList=query.getResultList();
 				
-				System.out.println("mstaskList  ,"+mstaskList.size());
 				
 				return mstaskList;
 				
