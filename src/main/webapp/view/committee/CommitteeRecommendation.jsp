@@ -93,11 +93,12 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					</tr>
 					
 					<tr>
-					<td class="text-primary"> Subject -</td>
-					<td style="width:40%"> <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=CommitteMainEnoteList[3].toString() %><%} %></td>
-					
-					<td class="text-primary"> Comment -</td>
-					<td style="width:40%"> <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null){%><%=CommitteMainEnoteList[4].toString() %><%} %></td>
+					<td class="text-primary"> Subject :</td>
+					<td colspan="3" > <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=CommitteMainEnoteList[3].toString() %><%} %></td>
+					</tr>
+					<tr>
+					<td class="text-primary"> Comment :</td>
+					<td colspan="3"> <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null){%><%=CommitteMainEnoteList[4].toString() %><%} %></td>
 					</tr>
 					
 					<tr>
@@ -106,7 +107,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					</tr>
 					
 					<tr>
-					<td class="text-primary">Recommended Officer 1: -</td>
+					<td class="text-primary">Recommended Officer 1: </td>
 					<td colspan="3"> 
 					<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[7]!=null){
 					for(Object[] obj:employeelist){
@@ -119,7 +120,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					
 					<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[9]!=null){%>
 					<tr>
-					<td class="text-primary">Recommended Officer 2: -</td>
+					<td class="text-primary">Recommended Officer 2: </td>
 					<td colspan="3"> 
 				
 					<%for(Object[] obj:employeelist){
@@ -134,7 +135,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					
 					<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[11]!=null){%>
 					<tr>
-					<td class="text-primary">Recommended Officer 3: -</td>
+					<td class="text-primary">Recommended Officer 3: </td>
 					<td colspan="3"> 
 				
 					<%for(Object[] obj:employeelist){
@@ -148,7 +149,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					
 						<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[13]!=null){%>
 					<tr>
-					<td class="text-primary">Approving Officer : -</td>
+					<td class="text-primary">Approving Officer : </td>
 					<td colspan="3"> 
 				
 					<%for(Object[] obj:employeelist){
