@@ -46,11 +46,13 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 List<String>memtypes=Arrays.asList("CH","PS","CS");
-List<Object[]>committeeallmemberslistwithoutMs=committeeallmemberslist.stream().filter(i->!memtypes.contains(i[8].toString())).collect(Collectors.toList());
+List<Object[]>committeeallmemberslistwithCC=committeeallmemberslist.stream().filter(i->i[8].toString().equalsIgnoreCase("CC")).collect(Collectors.toList());
+List<Object[]>committeeallmemberslistwithoutMs=committeeallmemberslist.stream().filter(i->!memtypes.contains(i[8].toString()) && !i[8].toString().equalsIgnoreCase("CC")).collect(Collectors.toList());
 List<Object[]>committeeallmemberslistwithMs=committeeallmemberslist.stream().filter(i->memtypes.contains(i[8].toString())).collect(Collectors.toList());
 committeeallmemberslistwithoutMs=committeeallmemberslistwithoutMs.stream()
 	.sorted(Comparator.comparingInt(e -> Integer.parseInt(e[11].toString()))).collect(Collectors.toList());
 List<Object[]>tempList=new ArrayList<>();
+tempList.addAll(committeeallmemberslistwithCC);
 tempList.addAll(committeeallmemberslistwithoutMs);
 tempList.addAll(committeeallmemberslistwithMs);
 if(!email.equals("Y")){ %>
@@ -186,7 +188,8 @@ p{
 		 		else if(member[8].toString().equals("PS")){ %>Member Secretary (Proxy)<%} 
 		 		else if(member[8].toString().equals("CI")){ %>Internal Member<%} 
 		 		else if(member[8].toString().equals("CW")){ %>External Member<%} 
-		 		else if(member[8].toString().equals("CO")){ %>Expert Member<%}%>			
+		 		else if(member[8].toString().equals("CO")){ %>Expert Member<%}	
+		 		else if(member[8].toString().equals("CIP")){ %>Industry Partner<%}%>	
 				 &nbsp;</td>
 				
 			</tr>		
@@ -244,7 +247,12 @@ p{
 	<div class="row " style="text-align: left;">
 	<br><br><br>
 	<div align="center" style="text-align: center">
-	Approved / Not Approved
+	<%if(committeemaindata[9].toString().equalsIgnoreCase("A")){ %>
+	 Approved
+	<%}else{ %>
+	 Not Approved
+	<%} %>
+	
 	</div>
 	<br>
 	<br>
@@ -254,7 +262,7 @@ p{
 	<br><br>
 	
 	<div style="text-align: left;font-size: 13px;">
-	Initiated By : <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%>"
+	Initiated By : <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%>
 	</div>
 <!-- 	<div style="margin-top:30px;margin-left:10px;">Recommended Officer :- </div>
 	<div style="margin-top:10px;margin-left:10px;">Approving Officer :-</div> -->
