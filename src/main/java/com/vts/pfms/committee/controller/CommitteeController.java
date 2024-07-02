@@ -159,6 +159,7 @@ import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
+import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.committee.service.RODService;
 import com.vts.pfms.mail.CustomJavaMailSender;
@@ -244,7 +245,8 @@ public class CommitteeController {
 	SimpleDateFormat sdf=fc.getRegularDateFormatshort();
 	SimpleDateFormat sdf1=fc.getSqlDateFormat(); int addcount=0; 
 	Format  format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
-	
+	private  SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	private static final Logger logger=LogManager.getLogger(CommitteeController.class);
 	
 	@RequestMapping(value = "CommitteeAdd.htm")
@@ -718,6 +720,8 @@ public class CommitteeController {
 					chairperson=committeemembersall.get(i);
 				}
 			}
+			// EnoteFlow List
+			req.setAttribute("CommitteMainEnoteList", service.CommitteMainEnoteList(committeemainid,"0"));
 			req.setAttribute("committeemembersall",committeemembersall);
 			req.setAttribute("committeerepnotaddedlist", service.CommitteeRepNotAddedList(committeemainid));
 			req.setAttribute("committeeMemberreplist", service.CommitteeMemberRepList(committeemainid));
@@ -744,6 +748,8 @@ public class CommitteeController {
 			if(Long.parseLong(initiationid)>0) {
 				req.setAttribute("initiationdata", service.Initiationdetails(initiationid) );
 			}
+			
+			
 			
 			req.setAttribute("LabCode", LabCode);
 			
@@ -817,6 +823,315 @@ public class CommitteeController {
 		}
 		
 	} 
+	
+	
+	@RequestMapping(value="CommitteeFlow.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String CommitteeFlowApproval(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		String Username=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CommitteeFlow.htm "+Username);
+		try
+		{
+			String committeemainid=req.getParameter("committeemainid");
+			
+			Object[]CommitteMainEnoteList= service.CommitteMainEnoteList(committeemainid,"0");
+			req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
+			Object[] committeedata=service.CommitteMainData(committeemainid);	
+			req.setAttribute("committeedata", committeedata);
+			
+			req.setAttribute("NewApprovalList", CommitteMainEnoteList!=null ? service.NewApprovalList(CommitteMainEnoteList[0].toString()):service.NewApprovalList("0"));
+
+			String projectid=committeedata[2].toString();
+			String divisionid=committeedata[3].toString();
+			String initiationid=committeedata[4].toString();
+			if( Long.parseLong(projectid)>0) {
+				req.setAttribute("projectdata", service.projectdetails(projectid));
+			}
+			if( Long.parseLong(divisionid)>0) {
+				req.setAttribute("divisiondata", service.DivisionData(divisionid) );
+			}
+			if(Long.parseLong(initiationid)>0) {
+				req.setAttribute("initiationdata", service.Initiationdetails(initiationid) );
+			}
+			req.setAttribute("employeelist", service.EmployeeList(LabCode));
+			req.setAttribute("committeemainid", committeemainid);
+			return "committee/CommitteeFlowAdd";
+		}
+		catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +"Inside CommitteeFlow.htm "+Username,e);
+				return "static/Error";
+				
+		}
+		
+	} 
+	
+	@RequestMapping(value="CommitteeRecommendation.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String CommitteeRecommendation(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		String Username=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CommitteeRecommendation.htm "+Username);
+		
+		try {
+			String committeemainid=req.getParameter("committeemainid");
+			req.setAttribute("CommitteMainEnoteList", service.CommitteMainEnoteList(committeemainid,"0"));
+			Object[] committeedata=service.CommitteMainData(committeemainid);
+			req.setAttribute("committeemainid", committeemainid);
+			req.setAttribute("employeelist", service.EmployeeList(LabCode));
+			req.setAttribute("NewApprovalList", service.NewApprovalList(service.CommitteMainEnoteList(committeemainid,"0")[0].toString()));
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return "committee/CommitteeRecommendation";
+	}
+	@RequestMapping(value="CommitteeEnotePrint.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String CommitteeEnotePrint(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		String Username=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CommitteeEnotePrint.htm "+Username);
+		
+		try {
+			String committeemainid=req.getParameter("committeemainid");
+			req.setAttribute("CommitteMainEnoteList", service.CommitteMainEnoteList(committeemainid,"0"));
+			Object[] committeedata=service.CommitteMainData(committeemainid);
+			req.setAttribute("committeemainid", committeemainid);
+			String EnoteId=req.getParameter("EnoteId");
+			List<Object[]> EnotePrintDetails=service.EnotePrintDetails(Long.parseLong(EnoteId));
+			
+			String filename="Committee_ENote_Print";
+			
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path); 
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/committee/CommitteeEnotePrint.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+			byte[] data = html.getBytes();
+			InputStream fis1=new ByteArrayInputStream(data);
+			PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
+			
+			Document document = new Document(pdfDoc, PageSize.A4);
+			//document.setMargins(50, 100, 150, 50);
+			document.setMargins(50, 50, 50, 50);
+			ConverterProperties converterProperties = new ConverterProperties();
+			FontProvider dfp = new DefaultFontProvider(true, true, true);
+			converterProperties.setFontProvider(dfp);
+		    HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
+		    res.setContentType("application/pdf");
+		    res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+		    File f=new File(path+"/"+filename+".pdf");
+		    FileInputStream fis = new FileInputStream(f);
+		    DataOutputStream os = new DataOutputStream(res.getOutputStream());
+		    res.setHeader("Content-Length",String.valueOf(f.length()));
+		    byte[] buffer = new byte[1024];
+		    int len = 0;
+		    while ((len = fis.read(buffer)) >= 0) {
+		        os.write(buffer, 0, len);
+		    } 
+		    fis.close();
+		    os.close();
+		    
+		     
+		        
+		    Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
+		    Files.delete(pathOfFile2);		
+			
+		    	document.close();
+		
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return "committee/CommitteeEnotePrint";
+	}
+	
+	
+	@RequestMapping(value="EnoteForward.htm",method=RequestMethod.POST)
+	public String CommitteeEnoteUpdate(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		String Username=(String)ses.getAttribute("Username");
+		Long EmpId = (Long)ses.getAttribute("EmpId");
+		logger.info(new Date() +"Inside EnoteForward.htm "+Username);
+		try
+		{
+			
+			
+			String action= req.getParameter("action");
+			String flag = req.getParameter("flag");
+			String flow =req.getParameter("flow");
+			
+			System.out.println("flow" +flow);
+			
+			long flagcount=0;
+			PmsEnote pe = req.getParameter("EnoteId")!=null && req.getParameter("EnoteId").equalsIgnoreCase("0")? new PmsEnote():  service.getPmsEnote(req.getParameter("EnoteId"));
+			
+			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
+			pe.setRefNo(req.getParameter("RefNo"));
+			pe.setRefDate(pe.getRefDate()!=null ? pe.getRefDate(): java.sql.Date.valueOf(req.getParameter("RefDate")));
+			pe.setSubject(req.getParameter("subject").trim());
+			pe.setComment(req.getParameter("Comment").trim());
+			pe.setCommitteeMainId(Long.parseLong(req.getParameter("committeemainid")));
+			pe.setEnoteFrom("C");
+			pe.setEnoteStatusCode("INI");
+			pe.setEnoteStatusCodeNext("INI");
+			pe.setScheduleId(0l);
+			pe.setInitiatedBy(Long.parseLong(req.getParameter("InitiatedBy")));
+			if(req.getParameter("Recommend1")!=null) {
+				pe.setRecommend1(Long.parseLong(req.getParameter("Recommend1")));
+				pe.setRec1_Role(req.getParameter("Rec1_Role").toUpperCase());
+			}
+			if(req.getParameter("Recommend2").length()>0) {;
+			pe.setRecommend2(Long.parseLong(req.getParameter("Recommend2")));
+			pe.setRec2_Role(req.getParameter("Rec2_Role").toUpperCase());
+			}else {
+				pe.setRecommend2(null);
+				pe.setRec2_Role(null);
+			}
+			if(req.getParameter("Recommend3").length()>0) {
+			pe.setRecommend3(Long.parseLong(req.getParameter("Recommend3")));
+			pe.setRec3_Role(req.getParameter("Rec3_Role").toUpperCase());
+			}else {
+				pe.setRecommend3(null);
+				pe.setRec3_Role(null);
+			}
+			if(req.getParameter("ApprovingOfficer")!=null) {
+			pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
+			}
+			pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
+			if(pe.getCreatedBy()==null) {
+			pe.setCreatedBy(Username);	
+			pe.setCreatedDate(sdf1.format(new Date()));	
+			}else {
+			pe.setModifiedBy(Username);
+			pe.setModifiedDate(sdf1.format(new Date()));
+			}
+			pe.setIsActive(1);
+			flagcount = service.addPmsEnote(pe);
+			}
+			pe = service.getPmsEnote(req.getParameter("EnoteId"));
+			
+			if(action!=null && action.equalsIgnoreCase("UPDATE")) {
+			
+			if (flagcount > 0) {
+				redir.addAttribute("result", "Data Saved Successfully");
+			} else {
+				redir.addAttribute("resultfail", "FlowData Add Unsuccessful");	
+			}
+			redir.addAttribute("initiationid", req.getParameter("initiationid"));
+			redir.addAttribute("projectid", req.getParameter("projectid"));
+			redir.addAttribute("divisionid", req.getParameter("divisionid"));
+			redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
+			return"redirect:/CommitteeFlow.htm";
+			}
+			
+			
+			String remarks= req.getParameter("Remarks");
+			long result = service.EnoteForward(pe,remarks,EmpId,flow,Username);
+			if(flow!=null && flow.equalsIgnoreCase("REV")) {
+				if(result>0) {
+					redir.addAttribute("result", "Committee Flow Revoked Successfully");	
+				}else {
+					redir.addAttribute("resultfail", "Committee Flow Revoke Unsuccessful");	
+				}
+				redir.addAttribute("initiationid", req.getParameter("initiationid"));
+				redir.addAttribute("projectid", req.getParameter("projectid"));
+				redir.addAttribute("divisionid", req.getParameter("divisionid"));
+				redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
+				return"redirect:/CommitteeFlow.htm";
+			
+			}
+			
+			if(flow!=null && flow.equalsIgnoreCase("R")) {
+				if(result>0) {
+					redir.addAttribute("result", "Committee Flow Returned Successfully");	
+				}else {
+					redir.addAttribute("resultfail", "Committee Flow Return Unsuccessful");	
+				}
+				return"redirect:/CommitteeApprovalList.htm";
+			}
+			if(flow!=null && flow.equalsIgnoreCase("A")&& flag==null) {
+				if(result>0) {
+					redir.addAttribute("result", "Committee Flow Forwarded Successfully");	
+				}else {
+					redir.addAttribute("resultfail", "Committee Flow Forward Unsuccessful");	
+				}
+				return"redirect:/CommitteeApprovalList.htm";
+			}
+			
+			
+			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
+				if(result>0) {
+					redir.addAttribute("result", "Committee Flow Forwarded Successfully");	
+				}else {
+					redir.addAttribute("resultfail", "Committee Flow Forward Unsuccessful");	
+				}
+				redir.addAttribute("initiationid", req.getParameter("initiationid"));
+				redir.addAttribute("projectid", req.getParameter("projectid"));
+				redir.addAttribute("divisionid", req.getParameter("divisionid"));
+				redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
+				return"redirect:/CommitteeFlow.htm";
+			}
+			
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside EnoteForward.htm "+Username,e);
+		}
+		return"redirect:/CommitteeFlow.htm";
+	} 
+	
+	@RequestMapping(value = "EnoteStatusTrack.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String EnoteStatusTrack(HttpServletResponse resp, HttpServletRequest req, HttpSession ses) throws Exception {
+		
+		logger.info(new Date() +"EnoteStatusTrack.htm"+req.getUserPrincipal().getName());
+		
+		String EnoteTrackId=req.getParameter("EnoteTrackId");
+		
+		req.setAttribute("EnoteTransactionList",service.EnoteTransactionList(EnoteTrackId));
+		return "committee/EnoteTrack";
+
+	}
+	@RequestMapping(value = "CommitteeApprovalList.htm" , method = {RequestMethod.POST,RequestMethod.GET})
+	public String EnoteApprovalList(HttpServletRequest req,HttpServletResponse resp,HttpSession ses) throws Exception {
+		logger.info(new Date() +"CommitteeApprovalList.htm"+req.getUserPrincipal().getName());
+		long EmpId=(Long)ses.getAttribute("EmpId");
+		try {
+			String fromDate=(String)req.getParameter("FromDate");
+			String toDate=(String)req.getParameter("ToDate");
+			
+			String redirectedvalue=req.getParameter("redirectedvalue");
+			if(redirectedvalue!=null) {
+				req.setAttribute("redirectedvalueForward", redirectedvalue);
+			}
+			if(toDate == null) 
+			{
+				toDate=LocalDate.now().toString();
+			}else
+			{
+				fromDate=sdf2.format(rdf.parse(fromDate));
+			}
+			
+			if(fromDate==null) {
+				fromDate=LocalDate.now().minusDays(30).toString();
+			}else {
+				toDate=sdf2.format(rdf.parse(toDate));
+			}
+			List<Object[]> eNotePendingList =service.eNotePendingList(EmpId,"C");
+			List<Object[]> eNoteApprovalList=service.eNoteApprovalList(EmpId,fromDate,toDate);
+			req.setAttribute("eNoteApprovalList", eNoteApprovalList);
+			req.setAttribute("EnoteApprovalPendingList", eNotePendingList);
+			req.setAttribute("frmDt", fromDate);
+			req.setAttribute("toDt",   toDate);
+			return "committee/CommitteeApprovalList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	
 	@RequestMapping(value="CommitteeMemberDelete.htm",method=RequestMethod.POST)
@@ -3707,7 +4022,8 @@ public class CommitteeController {
 		try
 		{
 		String committeemainid=req.getParameter("committeemainid");	
-		
+		String flag=req.getParameter("flag");
+		System.out.println("flag -"+flag);
 		Object[] committeemaindata= service.CommitteMainData(committeemainid);
 		String committeeid=committeemaindata[1].toString();
 		String projectid=committeemaindata[2].toString() ;
@@ -3760,7 +4076,11 @@ public class CommitteeController {
 	    HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
 	    document.close();
 	    res.setContentType("application/pdf");
-	    res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	    if(flag!=null && flag.equalsIgnoreCase("P")) {
+	    res.setHeader("Content-disposition","attchment;filename="+filename+".pdf"); 
+	    }else {
+	    	  res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+	    }
 	    File f=new File(path+"/"+filename+".pdf");
 	    FileInputStream fis = new FileInputStream(f);
 	    DataOutputStream os = new DataOutputStream(res.getOutputStream());
@@ -4619,7 +4939,7 @@ public class CommitteeController {
 					
 				}catch (MailAuthenticationException e) {
 					 System.out.println("committeescheduleid ---klsdjfkso "+committeescheduleid);
-					 redir.addFlashAttribute("committeescheduleid",committeescheduleid);
+					 redir.addAttribute("committeescheduleid",committeescheduleid);
 					redir.addAttribute("resultfail", " Host Email Authentication Failed, Unable to Send Invitations !!");
 				}
 				

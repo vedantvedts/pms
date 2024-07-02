@@ -328,8 +328,8 @@ String rodflag=(String)request.getAttribute("rodflag");
 
 						<div class="panel panel-info" style="margin-top: 10px;">
 
-							<div class="panel-heading ">
-								<h4 class="panel-title">
+							<div class="panel-heading " id="div<%=obj[0].toString()%>">
+								<h4 class="panel-title" id="<%=obj[0].toString()%>">
 									<span style="font-size: 14px"><%=obj[7]+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
 									<input type="hidden" id="Data<%=obj[0].toString()%>" value="<%=obj[1].toString()%>">
 									<%if(obj[1].toString().length()>50) {%>
@@ -861,6 +861,15 @@ String rodflag=(String)request.getAttribute("rodflag");
 
 
     function FormName(formId) {
+    	var data = formId.substring(9);
+    	$("."+"panel-title").css('color', '#31708f');
+    	$("."+"panel-title").css('text-decoration', 'none');
+    	
+    	$('#'+data).css('color', 'green');
+    	$('#'+data).css('text-decoration', 'underline');
+    
+    	console.log("data "+data)
+    	
     	  $("#"+formId).submit(function(event){
     		    event.preventDefault();
     		    $('#adding').show();

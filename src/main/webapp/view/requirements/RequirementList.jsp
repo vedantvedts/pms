@@ -612,7 +612,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										</label>
 									</div>
 									<div class="col-md-4">
-										<select required="required"  class="form-control selectpicker" data-width="100%" id="reqType" name="reqType" ></select>
+										<select required="required"  class="form-control" data-width="100%" id="reqType" name="reqType" ></select>
 									</div>
 									<div class="col-md-6 mt-2 mb-2">
 										<label style="font-size: 17px;  color: #07689f">
@@ -631,7 +631,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										</label>
 									</div>
 									<div class=col-md-2>
-										<select id="priorityAdd" name="priority" class="form-control selectpicker" data-width="80%" data-live-search="true" style="margin-top: 5%">
+										<select id="priorityAdd" name="priority" class="form-control" data-width="80%" data-live-search="true" style="margin-top: 5%">
 											<option disabled="disabled" value="" selected="selected">Choose..</option>
 											<option value="1">1</option>
 											<option value="2">2</option>
@@ -646,7 +646,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										</label>
 									</div>
 									<div class=col-md-2>
-										<select id="" name="criticality" class="form-control selectpicker" data-width="80%" data-live-search="true" style="margin-top: 5%">
+										<select id="" name="criticality" class="form-control" data-width="80%" data-live-search="true" style="margin-top: 5%">
 											<option disabled="disabled" value="" selected="selected">Choose..</option>
 											<option value="Very Low">Very Low</option>
 											<option value="Low">Low</option>
@@ -854,6 +854,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 			</div>
 			</form>
 			<!-- body for Edit  -->
+			<form class="form-horizontal" role="form"action="RequirementUpdate.htm" method="POST" id="myform2">
 			<div class="row" id="row3" style="display:none;">
 									
 							<div class="col-md-12">
@@ -888,7 +889,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										</label>
 									</div>
 									<div class=col-md-3>
-										<select id="priorityedit" name="priority" class="form-control selectpicker" data-width="80%" data-live-search="true" style="margin-top: 5%">
+										<select id="priorityedit" name="priority" class="form-control" data-width="80%" data-live-search="true" style="margin-top: 5%">
 											<option disabled="disabled" value="" selected="selected">Choose..</option>
 											<option value="1">1</option>
 											<option value="2">2</option>
@@ -918,9 +919,9 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										</label>
 									</div>
 									<div class=col-md-2>
-										<select  name="criticality" id="criticalityedit" class="form-control selectpicker" data-width="80%" data-live-search="true" style="margin-top: 5%">
+										<select  name="criticality" id="criticalityedit" class="form-control" data-width="80%" data-live-search="true" style="margin-top: 5%">
 											<option disabled="disabled" value="" selected="selected">Choose..</option>
-											<option value="very Low">Very Low</option>
+											<option value="Very Low">Very Low</option>
 											<option value="Low">Low</option>
 											<option value="Medium">Medium</option>
 											<option value="High">High</option>
@@ -968,7 +969,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row">
 									<div class="col-md-3">
 										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
-											Demonstration:<span class="mandatory" style="color: red;">*</span>
+											Demonstration:<span class="mandatory" style="color: red;"></span>
 										</label>
 									</div>
 									
@@ -1119,7 +1120,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 							<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
 							<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 						</div>
-			
+						</div>
+				</form>
 
 			<%} %>		
 								
@@ -2138,6 +2140,7 @@ function edit1(InitiationReqId){
 function openSubReqModal(ReqMainId,InitiationReqId){
 	$('#row1').hide();
 	$('#row2').show();
+	$('#row3').hide();
 	$.ajax({
 		type:'GET',
 		url:'RequirementMainJsonValue.htm',

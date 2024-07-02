@@ -3,12 +3,14 @@
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<title>MS Project Milestone</title>
+ 	<link href="${sweetalertCss}" rel="stylesheet" />
+
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -139,7 +141,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 			<div class="col-md-12">
 				<div class="card shadow-nohover" style="margin-top: -0px;">
 					<div class="row card-header">
-						<div class="col-md-10">
+						<div class="col-md-9">
 							<h5>
 								<%if(ProjectId!=null){
 						Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
@@ -151,9 +153,18 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 								<%} %>
 							</h5>
 						</div>
-						<div class="col-md-2 justify-content-end">
+						<div class="col-md-1 ">
 						<form action="MSprojectGanttChart.htm">
 						<button class="btn btn-sm btn-info" style="margin-top:-6px;">Gantt Chart</button>
+						
+						 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						 <input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+						</form>
+						</div>
+						
+						<div class="col-md-1 ">
+						<form action="MSprojectCriticalPath.htm">
+						<button class="btn btn-sm btn-info" style="margin-top:-6px;">Critical Paths</button>
 						
 						 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						 <input type="hidden" name="ProjectId" value="<%=ProjectId%>">

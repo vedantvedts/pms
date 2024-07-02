@@ -30,6 +30,7 @@ import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
+import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
@@ -283,5 +284,16 @@ public interface CommitteeService {
 	public List<Object[]> MeettingList(String projectid);
 	public List<Object[]> SpecialEmployeeListInvitations(String labCode,String scheduleid)throws Exception;
 	public Object allconstitutionapprovalflowData(String committeemainid)throws Exception;
+	
+	//enote
+	public Object[] CommitteMainEnoteList(String committeemainid,String ScheduleId) throws Exception;
+	public PmsEnote getPmsEnote(String EnoteId)throws Exception;
+	public long addPmsEnote(PmsEnote pe)throws Exception;
+	public long EnoteForward(PmsEnote pe, String remarks, Long empId, String flow,String Username)throws Exception;
+	public List<Object[]> EnoteTransactionList(String enoteTrackId)throws Exception;
+	public List<Object[]> eNotePendingList(long empId,String Type)throws Exception;
+	public Object[] NewApprovalList(String enoteId)throws Exception;
+	public List<Object[]> eNoteApprovalList(long empId, String fromDate, String toDate)throws Exception;
+	public List<Object[]> EnotePrintDetails(long parseLong)throws Exception;
 }
 

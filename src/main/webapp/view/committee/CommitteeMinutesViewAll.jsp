@@ -598,7 +598,7 @@ th,td
 							for (Object[] agenda : agendas) 
 							{	int brcount=0;							
 						%>
-								    <table style="margin-top: 00px; width: 660px; font-size: 16px; border-collapse: collapse;border:1px solid black;">
+								    <table style="margin-top: 00px; width: 660px; font-size: 16px; border-collapse: collapse;">
 										<tr>								
 											<td colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid%>.&nbsp;&nbsp;&nbsp;<%=agenda[3]%></td>
 										</tr>

@@ -3,6 +3,7 @@ package com.vts.pfms.committee.dao;
 
 import java.math.BigInteger;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +47,12 @@ import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.committee.model.PmsEnote;
+import com.vts.pfms.committee.model.PmsEnoteTransaction;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
+import com.vts.pfms.requirements.model.TestPlanSummary;
 
 @Transactional
 @Repository
@@ -3123,6 +3127,144 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("CommitteeMainId", CommitteeMainId);
 		
 		
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	
+	//Committee Flow 
+	
+	@Override
+	public long addPmsEnote(PmsEnote pmsenote) throws Exception {
+		manager.persist(pmsenote);
+		manager.flush();
+		return pmsenote.getEnoteId();
+	}
+	
+	private static final String COMMENOTELIST = "SELECT a.EnoteId , a.RefNo , a.RefDate , a.Subject , a.Comment , a.CommitteeMainId , a.ScheduleId ,a.Recommend1,a.Rec1_Role,a.Recommend2,a.Rec2_Role , a.Recommend3, a.Rec3_Role , a.ApprovingOfficer,a.Approving_Role,a.EnoteStatusCode,a.EnoteStatusCodeNext,a.InitiatedBy,e.empname , d.designation , ds.EnoteStatus,ds.EnoteStatusColor FROM pms_enote a , employee e , employee_desig d , dak_enote_status ds WHERE a.CommitteeMainId = :CommitteeMainId AND a.EnoteStatusCode=ds.EnoteStatusCode AND a.ScheduleId=:ScheduleId AND a.InitiatedBy = e.empid AND e.desigid = d.desigid AND a.isactive ='1'";
+	@Override
+	public Object[] CommitteMainEnoteList(String CommitteeMainId,String ScheduleId) throws Exception {
+
+		Query query = manager.createNativeQuery(COMMENOTELIST);
+		query.setParameter("CommitteeMainId", CommitteeMainId);
+		query.setParameter("ScheduleId", ScheduleId);
+		Object[]CommitteMainEnoteList = null;
+		try {
+		CommitteMainEnoteList = (Object[])query.getSingleResult();
+		return CommitteMainEnoteList;
+		}catch(Exception e) {
+			
+			e.printStackTrace();
+			return CommitteMainEnoteList;
+		}
+	}
+	
+	@Override
+	public PmsEnote getPmsEnote(String enoteId) throws Exception {
+		try {
+			return manager.find(PmsEnote.class, Long.parseLong(enoteId)) ;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(LocalDate.now()+" Inside DAO getPmsEnote "+e);
+			return null;
+		}
+	}
+	
+	@Override
+	public long addEnoteTrasaction(PmsEnoteTransaction transaction) throws Exception {
+		manager.persist(transaction);
+		manager.flush();
+		return transaction.getEnoteTransId();
+	}
+	
+	private static final String ENOTETRANSACTIONLIST="SELECT tra.EnoteTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.EnoteStatus,sta.EnoteStatusColor FROM pms_enote_trans tra,dak_enote_status sta,employee emp,employee_desig des,pms_enote e WHERE e.EnoteId = tra.EnoteId AND tra.EnoteStatusCode = sta.EnoteStatusCode AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND e.EnoteId=:enoteTrackId ORDER BY tra.ActionDate";
+	@Override
+	public List<Object[]> EnoteTransactionList(String enoteTrackId) throws Exception {
+		logger.info(LocalDate.now() + "Inside EnoteTransactionList");
+		try {
+			Query query = manager.createNativeQuery(ENOTETRANSACTIONLIST);
+			query.setParameter("enoteTrackId", enoteTrackId);
+			 List<Object[]> EnoteTransactionList = (List<Object[]>) query.getResultList();
+				return EnoteTransactionList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(LocalDate.now() + "Inside DaoImpl EnoteTransactionList", e);
+			return null;
+		}
+	}
+	private static final String ENOTEPENDINGLIST="CALL Pms_ComEnote_PendingList(:EmpId,:Type)";
+	@Override
+	public List<Object[]> eNotePendingList(long empId, String type) throws Exception {
+		logger.info(LocalDate.now() + "Inside eNotePendingList");
+		try {
+			Query query = manager.createNativeQuery(ENOTEPENDINGLIST);
+			query.setParameter("EmpId", empId);
+			query.setParameter("Type", type);
+			 List<Object[]> eNotePendingList = (List<Object[]>) query.getResultList();
+				return eNotePendingList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(LocalDate.now() + "Inside DaoImpl eNotePendingList", e);
+			return null;
+		}
+		
+		
+	}
+	
+	private static final String NEWAPPROVALLIST ="SELECT \r\n"
+			+ "(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.InitiatedBy AND e.desigid=d.desigid )AS 'InitiatedByEmployee'\r\n"
+			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.Recommend1 AND e.desigid=d.desigid )AS 'Recommend1Officer'\r\n"
+			+ ",p.Rec1_Role\r\n"
+			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.Recommend2 AND e.desigid=d.desigid )AS 'Recommend2Officer'\r\n"
+			+ ",p.Rec2_Role\r\n"
+			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.Recommend3 AND e.desigid=d.desigid )AS 'Recommend3Officer'\r\n"
+			+ ",p.Recommend3\r\n"
+			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.ApprovingOfficer AND e.desigid=d.desigid )AS 'Approving Officer'\r\n"
+			+ ",p.Approving_Role\r\n"
+			+ " FROM pms_enote p WHERE p.EnoteId=:EnoteId";
+@Override
+public Object[] NewApprovalList(String EnoteId) throws Exception {
+
+	Query query = manager.createNativeQuery(NEWAPPROVALLIST);
+	query.setParameter("EnoteId", EnoteId);
+			Object[]NewApprovalList = null;
+	try {
+		NewApprovalList=(Object[])query.getSingleResult();
+		return NewApprovalList;
+	}catch (Exception e) {
+		// TODO: handle exception
+	}
+	
+	return null;
+}
+
+	private static final String ENOTEAPPROVELIST="SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,cm.CommitteeShortName,p.ProjectShortName,a.CommitteeMainId FROM pms_enote a,employee b,pms_enote_trans c,dak_enote_status d, committee_main m ,committee cm, project_master p WHERE a.InitiatedBy=b.EmpId AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND  m.CommitteeMainId=a.CommitteeMainId AND m.CommitteeId =cm.CommitteeId AND m.projectid = p.projectid AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND c.ActionBy=:empId AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate GROUP BY a.EnoteId ORDER BY a.EnoteId DESC ";
+	@Override
+	public List<Object[]> eNoteApprovalList(long empId, String fromDate, String tdate) throws Exception {
+	
+		Query query = manager.createNativeQuery(ENOTEAPPROVELIST);
+		
+		query.setParameter("empId", empId);
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("tdate", tdate);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String ENOTEPRINT=" SELECT tra.EnoteTransId,(SELECT empId FROM pms_enote_trans t ,\r\n"
+			+ " employee e  WHERE e.empid = t.Actionby AND t.EnoteStatusCode =  sta.EnoteStatusCode AND\r\n"
+			+ " t.EnoteId=par.EnoteId ORDER BY t.EnoteTransId DESC LIMIT 1) AS 'empid',\r\n"
+			+ " (SELECT empname FROM pms_enote_trans t , employee e  WHERE e.empid = t.Actionby AND t.EnoteStatusCode =  sta.EnoteStatusCode AND t.EnoteId=par.EnoteId ORDER BY t.EnoteTransId DESC LIMIT 1) AS 'empname',\r\n"
+			+ " (SELECT designation FROM pms_enote_trans t ,employee e,employee_desig des WHERE e.empid = t.Actionby AND e.desigid=des.desigid AND t.EnoteStatusCode =  sta.EnoteStatusCode AND t.EnoteId=par.EnoteId ORDER BY t.EnoteTransId DESC LIMIT 1) AS 'Designation', MAX(tra.ActionDate) AS ActionDate,(SELECT t.Remarks FROM pms_enote_trans t ,\r\n"
+			+ " employee e  WHERE e.empid = t.Actionby AND t.EnoteStatusCode =  sta.EnoteStatusCode AND t.EnoteId=par.EnoteId ORDER BY t.EnoteTransId DESC LIMIT 1) AS 'Remarks',\r\n"
+			+ " sta.EnoteStatus,sta.EnoteStatusColor,sta.EnoteStatusCode,par.InitiatedBy FROM \r\n"
+			+ " pms_enote_trans tra,dak_enote_status sta,employee emp,pms_enote par WHERE par.EnoteId=tra.EnoteId\r\n"
+			+ " AND tra.EnoteStatusCode =sta.EnoteStatusCode AND sta.EnoteStatusCode IN ('FWD','RFD','RC1','RC2','RC3','RC4','RC5','APR') \r\n"
+			+ " AND tra.Actionby=emp.EmpId AND par.EnoteId=:enoteId AND tra.EnoteFrom = 'C' GROUP BY tra.EnoteStatusCode ORDER BY ActionDate ASC";
+	
+	@Override
+	public List<Object[]> EnotePrintDetails(long enoteId) throws Exception {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery(ENOTEPRINT);
+		query.setParameter("enoteId", enoteId);
 		return (List<Object[]>)query.getResultList();
 	}
 }

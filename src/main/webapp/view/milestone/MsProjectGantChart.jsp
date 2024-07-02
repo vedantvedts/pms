@@ -4,14 +4,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
+<spring:url value="/resources/js/exporting.js" var="export" />
+<spring:url value="/resources/js/highcharts-gantt.js" var="highchartsgantt" />
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
-
+	<script src="${highchartsgantt}"></script>
+<%--  	<script src="${export}"></script> --%>
+ 	<link href="${sweetalertCss}" rel="stylesheet" />
+	<script src="${sweetalertJs}"></script>
 <title>Gantt Chart</title>
 <style type="text/css">
 label{
@@ -48,12 +54,14 @@ h6{
 <%
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> mstaskList=(List<Object[]>)request.getAttribute("mstaskList");
+ObjectMapper objectMapper = new ObjectMapper();
+String jsonArray = objectMapper.writeValueAsString(mstaskList);
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 String ProjectId=(String)request.getAttribute("ProjectId");
 %>
 
-<div class="container-fluid">
+<%-- <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
@@ -117,9 +125,14 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 		
 		</div>
 	</div>
-</div>
-
-<script>
+</div> --%>
+<div id="container"></div>
+<form method="post" action ="MSProjectMilestone.htm">
+<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+<input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+</form>
+<%-- <script>
 $('#interval').on('change',function(){
 	
 	$('#containers').empty();
@@ -564,6 +577,178 @@ function ChartPrint(){
 	  $('#containers').empty();
 	  chartprint('print',interval);
 }
+</script> --%>
+
+<script type="text/javascript">
+var today = new Date(),
+day = 1000 * 60 * 60 * 24;
+
+//Set to 00:00:00:000 today
+today.setUTCHours(0);
+today.setUTCMinutes(0);
+today.setUTCSeconds(0);
+today.setUTCMilliseconds(0);
+var dynamicData = [];
+
+<% for(Object[]obj: mstaskList){%>
+		dynamicData.push({
+			id : '<%=obj[6].toString()%>',
+			name : '<%=obj[6].toString()%>',
+			
+	
+			start: Date.UTC(2014, 10, 27),
+	        end: Date.UTC(2017, 10, 29),
+	        completed: 0.25
+		});
+
+<%}%>
+
+var   msTaskJs = <%=jsonArray%>;
+
+console.log(msTaskJs);
+
+var myData = [];
+
+for(var i =0;i<msTaskJs.length;i++){
+	 var startdate = new Date(msTaskJs[i][11]);
+	 var endDate = new Date(msTaskJs[i][12]);
+	 
+	 var year1 = startdate.getUTCFullYear();
+	 var month1 = startdate.getUTCMonth(); // Months are zero-based
+	 var day1 = startdate.getUTCDate()+1;
+	 
+	 var year2 = endDate.getUTCFullYear();
+	 var month2 = endDate.getUTCMonth();
+	 var day2 = endDate.getUTCDate()+1;
+	if(msTaskJs[i][8]===1){
+		myData.push({
+			id:msTaskJs[i][6],
+			name:msTaskJs[i][6],
+			start: Date.UTC(year1, month1, day1),
+            end: Date.UTC(year2, month2, day2),
+            completed: parseInt(msTaskJs[i][15])/100
+		})
+		/*  level 2 */
+		for(var j=0;j<msTaskJs.length;j++){
+			 var startdate1 = new Date(msTaskJs[j][11]);
+			 var endDate1 = new Date(msTaskJs[j][12]);
+			 
+			 var year3 = startdate1.getUTCFullYear();
+			 var month3 = startdate1.getUTCMonth(); // Months are zero-based
+			 var day3 = startdate1.getUTCDate()+1;
+			 
+			 var year4 = endDate1.getUTCFullYear();
+			 var month4 = endDate1.getUTCMonth();
+			 var day4 = endDate1.getUTCDate()+1;
+			
+			if(msTaskJs[j][8]===2 && msTaskJs[i][6]===msTaskJs[j][7]){
+				
+				myData.push({
+					id:msTaskJs[j][6],
+					name:msTaskJs[j][6],
+					start: Date.UTC(year3, month3, day3),
+		            end: Date.UTC(year4, month4, day4),
+		            parent: msTaskJs[j][7],
+		            completed: parseInt(msTaskJs[j][15])/100
+				})
+				
+				/* level 3  */
+				for( var k =0;k<msTaskJs.length;k++){
+					 var startdate1 = new Date(msTaskJs[k][11]);
+					 var endDate1 = new Date(msTaskJs[k][12]);
+					 
+					 var year3 = startdate1.getUTCFullYear();
+					 var month3 = startdate1.getUTCMonth(); // Months are zero-based
+					 var day3 = startdate1.getUTCDate()+1;
+					 
+					 var year4 = endDate1.getUTCFullYear();
+					 var month4 = endDate1.getUTCMonth();
+					 var day4 = endDate1.getUTCDate()+1;
+					if(msTaskJs[k][8]===3 && msTaskJs[j][6]===msTaskJs[k][7]){
+						
+						myData.push({
+							id:msTaskJs[k][6],
+							name:msTaskJs[k][6],
+							start: Date.UTC(year3, month3, day3),
+				            end: Date.UTC(year4, month4, day4),
+				            parent: msTaskJs[k][7],
+				            completed: parseInt(msTaskJs[k][15])/100
+						})
+						/* level 4  */
+						
+					for( var x=0; x<msTaskJs.length;x++){
+						
+						 var startdate1 = new Date(msTaskJs[x][11]);
+						 var endDate1 = new Date(msTaskJs[x][12]);
+						 
+						 var year3 = startdate1.getUTCFullYear();
+						 var month3 = startdate1.getUTCMonth(); // Months are zero-based
+						 var day3 = startdate1.getUTCDate()+1;
+						 
+						 var year4 = endDate1.getUTCFullYear();
+						 var month4 = endDate1.getUTCMonth();
+						 var day4 = endDate1.getUTCDate()+1;
+						
+							if(msTaskJs[x][8]===4 && msTaskJs[k][6]===msTaskJs[x][7]){
+								
+								myData.push({
+									id:msTaskJs[x][6],
+									name:msTaskJs[x][6],
+									start: Date.UTC(year3, month3, day3),
+						            end: Date.UTC(year4, month4, day4),
+						            parent: msTaskJs[x][7],
+						            completed: parseInt(msTaskJs[x][15])/100
+								})
+								
+							}
+						 
+					}	
+						
+					}
+					
+				}
+				
+				
+			}
+		}
+		
+	}
+	
+}
+
+
+
+if(myData.length>0){ 
+    Highcharts.ganttChart('container', {
+    	
+        title: {
+            text: 'Gantt Chart '
+        },
+        
+        xAxis: {
+            min: Date.UTC(2018, 1, 27),
+            max: Date.UTC(2030, 10, 29)
+        },
+        series: [{
+            name: 'MTR-16',
+            data: myData
+        }
+        ,]
+    });
+	}else{
+		Swal.fire({
+			  icon: "error",
+			  title: "Oops...",
+			  text: "No Data Found for this Project ",
+			  allowOutsideClick :false
+			});
+	}
+$('.swal2-confirm').click(function (){
+	console.log("GHagshgaj")
+	$('#submit').click(); 
+})
 </script>
+
 </body>
 </html>
+

@@ -91,5 +91,6 @@ public interface AdminService {
 	public List<Object[]> ProjectListPD(String empId) throws Exception;
 
 	public List<Object[]> ProjectListIC(String empId) throws Exception;
+	public List<Object[]> hasroleAccess(String string, String logintype)throws Exception;
 
 }

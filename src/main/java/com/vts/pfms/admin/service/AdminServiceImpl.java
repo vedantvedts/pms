@@ -821,4 +821,9 @@ public class AdminServiceImpl implements AdminService{
 			// TODO Auto-generated method stub
 			return dao.ProjectListIC(empId);
 		}
+		@Override
+		public List<Object[]> hasroleAccess(String url, String logintype) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.hasroleAccess(url,logintype);
+		}
 }

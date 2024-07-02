@@ -1096,4 +1096,18 @@ public class AdminDaoImpl implements AdminDao{
 			return 0;
 	    }
 	}
+	private static final String ROLEACCESS="SELECT a.FormDetailId,a.FormName,a.isactive,b.FormRoleAccessId FROM pfms_form_detail a, pfms_form_role_access b WHERE a.FormDetailId=b.FormDetailId AND b.LoginType=:logintype AND a.FormUrl=:FormUrl AND b.isactive='1'";
+	@Override
+	public List<Object[]> hasroleAccess(String FormUrl, String logintype) throws Exception {
+
+		Query query = manager.createNativeQuery(ROLEACCESS);
+		
+		System.out.println("FormUrl "+FormUrl +" "+logintype);
+		query.setParameter("logintype", logintype);
+		query.setParameter("FormUrl", FormUrl);
+		
+		List<Object[]>hasroleAccess = (List<Object[]>)query.getResultList();
+		
+		return hasroleAccess;
+	}
 }

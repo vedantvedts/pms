@@ -94,6 +94,9 @@ List<Object[]> committeerepnotaddedlist=(List<Object[]>)request.getAttribute("co
 List<Object[]> committeeMemberreplist=(List<Object[]>)request.getAttribute("committeeMemberreplist");
 
 String LabCode = (String)request.getAttribute("LabCode");
+
+
+Object[]CommitteMainEnoteList = (Object[])request.getAttribute("CommitteMainEnoteList");
 %>
 
 
@@ -159,7 +162,6 @@ String ses=(String)request.getParameter("result");
 
     <br />
    
-
 <div class="container-fluid" style="margin-top: -2%;">
 	<div class="row">
 		<div class="col-md-12">	
@@ -644,6 +646,18 @@ String ses=(String)request.getParameter("result");
 										</form>
 									</td>								
 								<%} %>
+								<%if(CommitteMainEnoteList!=null ) {%>
+								<td>
+									<form  method="post" action="CommitteeFlow.htm">
+												<button  type="submit" class="btn btn-sm submit" style="background: #E76F51;border-color: #E76F51"> Approval History </button>
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+												<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
+												<input type="hidden" name="projectid" value="<%=projectid %>" >	
+												<input type="hidden" name="divisionid" value="<%=divisionid%>"> 		
+												<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+								</form>	
+								</td>
+								<%} %>
 								</tr>
 							</table>
 						</div>	
@@ -664,7 +678,8 @@ String ses=(String)request.getParameter("result");
 			 						<td>				
 			 							<button class="btn btn-primary btn-sm back" type="button"  onclick="submitForm('backfrm');">BACK</button> 						
 			 						</td>
-			 						<%if(!approvaldata[5].toString().equals("CCR") ){%>
+			 						<!-- Hidden for new Flow  -->
+			 					<%-- 	<%if(!approvaldata[5].toString().equals("CCR") ){%>
 			 						<td>
 			 							<form action="ComConstitutionApprovalHistory.htm" method="POST" id="commemdel" target="_blank">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -672,18 +687,33 @@ String ses=(String)request.getParameter("result");
 											<button class="btn  btn-sm "  style="background-color: #ff8400;color:white;font-weight:800 !important;font-family: 'Montserrat', sans-serif;"  type="submit"  >History</button>
 										</form>	
 									</td>
-									<%} %>
+									<%} %> --%>
+									
 			 						<td>
-										<%if(status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) { %>
+									<%-- 	<%if(status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) { %>
 											<form  method="post" action="CommitteeMainApproval.htm">
-												<button  type="submit" class="btn btn-sm submit">Forward</button>
+												<button  type="submit" class="btn btn-sm submit">Preview</button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 												<input type="hidden" name="committeemainid" value="<%=proposedcommitteemainid[0]%>">
 												<input type="hidden" name="operation" value="approve">
 												<input type="hidden" name="approvalauthority" value="0"> 
 												<input type="hidden" name="redirect" value="1">
 											</form>		
+										<%} %>	 --%>
+										
+									<%
+									
+									if(status.equals("P") ) { %>
+									<form  method="post" action="CommitteeFlow.htm">
+												<button  type="submit" class="btn btn-sm submit">Preview</button>
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+												<input type="hidden" name="committeemainid" value="<%=proposedcommitteemainid[0]%>">
+												<input type="hidden" name="projectid" value="<%=projectid %>" >	
+												<input type="hidden" name="divisionid" value="<%=divisionid%>"> 		
+												<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+										</form>		
 										<%} %>	
+										
 									</td>	
 								</tr>
 							</table>	

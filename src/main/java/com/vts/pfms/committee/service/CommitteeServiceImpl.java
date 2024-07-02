@@ -42,6 +42,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.admin.dao.AdminDao;
+import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.dao.CommitteeDao;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeDto;
@@ -77,6 +79,8 @@ import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.committee.model.PmsEnote;
+import com.vts.pfms.committee.model.PmsEnoteTransaction;
 import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
@@ -92,6 +96,8 @@ import javax.servlet.http.HttpSession;
 public class CommitteeServiceImpl implements CommitteeService{
 
 	@Autowired CommitteeDao dao;
+	@Autowired AdminDao admindao;
+	@Autowired CARSDao carsdao;
 	
 //	@Autowired 	private JavaMailSender javaMailSender; 
 	
@@ -359,6 +365,26 @@ public class CommitteeServiceImpl implements CommitteeService{
 			approval.setConstitutedBy(Long.parseLong(committeemaindto.getCreatedByEmpid()));
 			approval.setApprovalAuthority("0");
 			dao.CommitteeConstitutionApprovalAdd(approval);
+		}
+		
+		//Pms pe
+		if(committeemaindto.getPreApproved().equalsIgnoreCase("N"))
+		{
+			PmsEnote pmsenote = new PmsEnote();
+			pmsenote.setRefNo(committeemaindto.getReferenceNo());
+			pmsenote.setRefDate(java.sql.Date.valueOf(formationDate));			
+			pmsenote.setCreatedBy(committeemaindto.getCreatedBy());
+			pmsenote.setCreatedDate(sdf1.format(new Date()));
+			
+			pmsenote.setCommitteeMainId(mainid);
+			pmsenote.setScheduleId(0l);
+			pmsenote.setEnoteFrom("C");
+			pmsenote.setIsActive(1);
+			pmsenote.setInitiatedBy(Long.parseLong(committeemaindto.getCreatedByEmpid()));
+			pmsenote.setEnoteStatusCode("INI");
+			pmsenote.setEnoteStatusCodeNext("INI");
+			
+			dao.addPmsEnote(pmsenote);
 		}
 		return mainid;
 	}
@@ -3403,5 +3429,204 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	public List<Object[]> allconstitutionapprovalflowData(String committeemainid) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.allconstitutionapprovalflowData(committeemainid);
+	}
+	@Override
+	public Object[] CommitteMainEnoteList(String committeemainid,String ScheduleId) throws Exception {
+	
+		return dao.CommitteMainEnoteList(committeemainid,ScheduleId);
+	}
+	@Override
+	public PmsEnote getPmsEnote(String EnoteId) throws Exception {
+		return dao.getPmsEnote(EnoteId);
+	}
+	@Override
+	public long addPmsEnote(PmsEnote pe) throws Exception {
+		return 	dao.addPmsEnote(pe);
+		
+	}
+	
+	@Override
+	public long EnoteForward(PmsEnote pe, String remarks, Long empId, String flow,String Username) throws Exception {
+		
+		Long ENoteId=pe.getEnoteId();
+		String EnoteStatusCode = pe.getEnoteStatusCode();
+		String EnoteStatusCodeNext = pe.getEnoteStatusCodeNext();
+		Long NotifyEmpId=0l;
+		List<String> forwardstatus = Arrays.asList("INI","RR1","RR2","RR3","RR4","RR5","RAP","REV");
+		List<String> reforwardstatus = Arrays.asList("RR1","RR2","RR3","RR4","RR5","RAP");
+		if(flow.equalsIgnoreCase("A")) {
+		if(EnoteStatusCodeNext.equalsIgnoreCase("APR")) {
+			EnoteStatusCode="APR";
+			EnoteStatusCodeNext="APR";
+			pe.setEnoteStatusCode(EnoteStatusCode);
+			pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+			//upadte committee Main
+			CommitteeConstitutionApprovalDto dto = new CommitteeConstitutionApprovalDto();
+			dto.setCommitteeMainId(pe.getCommitteeMainId()+"");
+			dto.setActionBy(Username);
+			dto.setActionDate(sdf1.format(new Date()));
+			dao.NewCommitteeMainIsActiveUpdate(dto);
+		}
+		else if(forwardstatus.contains(EnoteStatusCode)) {
+			EnoteStatusCode="FWD";
+			EnoteStatusCodeNext="RC1";
+			pe.setEnoteStatusCode(EnoteStatusCode);
+			pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+		}
+		else if(EnoteStatusCode.equalsIgnoreCase("FWD")) {
+			EnoteStatusCode="RC1";
+			if(pe.getRecommend2()!=null) {
+			EnoteStatusCodeNext="RC2";
+			}else if(pe.getRecommend3()!=null) {
+				EnoteStatusCodeNext="RC3";
+			}else {
+				EnoteStatusCodeNext="APR";
+			}
+			pe.setEnoteStatusCode(EnoteStatusCode);
+			pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+		}
+		else if(EnoteStatusCode.equalsIgnoreCase("RC1")) {
+			EnoteStatusCode="RC2";
+			if(pe.getRecommend3()!=null) {
+				EnoteStatusCodeNext="RC3";
+				}else  {
+					EnoteStatusCodeNext="APR";
+				}
+			pe.setEnoteStatusCode(EnoteStatusCode);
+			pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+		}
+		else if(EnoteStatusCode.equalsIgnoreCase("RC2")) {
+			EnoteStatusCode="RC3";
+			EnoteStatusCodeNext="APR";
+			pe.setEnoteStatusCode(EnoteStatusCode);
+			pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);	
+		}
+		
+		} 
+		else if(flow.equalsIgnoreCase("REV")) {
+			EnoteStatusCode="REV";
+			EnoteStatusCodeNext="INI";
+			pe.setEnoteStatusCode(EnoteStatusCode);
+			pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+		}else {
+			if(pe.getEnoteStatusCode().equalsIgnoreCase("FWD")) {
+				EnoteStatusCode="RR1";
+			}
+			else if(pe.getEnoteStatusCode().equalsIgnoreCase("RC1")) {
+				if(pe.getEnoteStatusCodeNext().equalsIgnoreCase("RC2")) {
+				EnoteStatusCode="RR2";
+				}else if(pe.getEnoteStatusCodeNext().equalsIgnoreCase("RC3")) {
+					EnoteStatusCode="RR3";
+				}else {
+					EnoteStatusCode="RAP";	
+				}
+			}
+			else if(pe.getEnoteStatusCode().equalsIgnoreCase("RC2")) {
+				if(pe.getEnoteStatusCodeNext().equalsIgnoreCase("RC3")) {
+					EnoteStatusCode="RR3";
+					}else if(pe.getEnoteStatusCodeNext().equalsIgnoreCase("APR")) {
+						EnoteStatusCode="RAP";
+					}
+			}
+			else if(pe.getEnoteStatusCode().equalsIgnoreCase("RC3")) {
+				EnoteStatusCode="RAP";
+			}
+			EnoteStatusCodeNext="INI";
+			pe.setEnoteStatusCode(EnoteStatusCode);
+			pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+		}
+		
+		pe.setModifiedBy(Username);
+		pe.setModifiedDate(sdf1.format(new Date()));
+		
+		dao.addPmsEnote(pe);
+		
+		
+		
+		PmsEnoteTransaction transaction= PmsEnoteTransaction.builder()
+											.EnoteId(ENoteId)
+											.EnoteStatusCode(EnoteStatusCode)
+											.Remarks(remarks)
+											.EnoteFrom("C")
+											.ActionBy(empId)
+											.ActionDate(sdf1.format(new Date()))
+											.build();
+		
+		long result =dao.addEnoteTrasaction(transaction);
+		
+		String NotificationBy= admindao.EmployeeData(empId.toString())[3].toString();
+		
+		String msg="";
+		String url ="CommitteeApprovalList.htm";
+		if(pe.getEnoteFrom().equalsIgnoreCase("C")) {
+			msg="Committee with RefNo "+pe.getRefNo()+",";
+		}else {
+			msg="MOM with RefNo "+pe.getRefNo()+",";
+		}
+		
+		PfmsNotification notification=new PfmsNotification();
+		if(flow!=null && flow.equalsIgnoreCase("A")) {
+			String  nextcode = pe.getEnoteStatusCodeNext();
+			if(nextcode.equalsIgnoreCase("RC1")) {
+				notification.setEmpId(pe.getRecommend1());
+				notification.setNotificationMessage(msg+ " Forwarded by "+NotificationBy);
+				notification.setNotificationUrl(url);
+			}else if(nextcode.equalsIgnoreCase("RC2")) {
+				notification.setEmpId(pe.getRecommend2());
+				notification.setNotificationMessage(msg+ " Recommended by "+NotificationBy);
+				notification.setNotificationUrl(url);
+			}else if(nextcode.equalsIgnoreCase("RC3")) {
+				notification.setEmpId(pe.getRecommend3());
+				notification.setNotificationMessage(msg+ "Recommended by "+NotificationBy);
+				notification.setNotificationUrl(url);
+			}
+			else if(nextcode.equalsIgnoreCase("APR")) {
+				notification.setEmpId(pe.getApprovingOfficer());
+				notification.setNotificationMessage(msg+ " Recommended by "+NotificationBy);
+				notification.setNotificationUrl(url);
+			}
+			notification.setNotificationby(empId);
+			notification.setIsActive(1);
+			notification.setCreatedBy(Username);
+			notification.setCreatedDate(sdf1.format(new Date()));
+			notification.setNotificationDate(sdf1.format(new Date()));
+			carsdao.addNotifications(notification);
+		}else {
+			notification.setEmpId(pe.getInitiatedBy());
+			notification.setNotificationMessage(msg+ " Returned by "+NotificationBy);
+			notification.setNotificationUrl("CommitteeFlow.htm?committeemainid="+pe.getCommitteeMainId().toString());
+			notification.setNotificationby(empId);
+			notification.setIsActive(1);
+			notification.setCreatedBy(Username);
+			notification.setCreatedDate(sdf1.format(new Date()));
+			notification.setNotificationDate(sdf1.format(new Date()));
+			carsdao.addNotifications(notification);
+		}
+		
+		
+		return 1l;
+	}
+	
+	@Override
+	public List<Object[]> EnoteTransactionList(String enoteTrackId) throws Exception {
+		return dao.EnoteTransactionList(enoteTrackId);
+	}
+	@Override
+	public List<Object[]> eNotePendingList(long empId, String Type) throws Exception {
+		return dao.eNotePendingList(empId,Type);
+	}
+	
+	@Override
+	public Object[] NewApprovalList(String enoteId) throws Exception {
+		return dao.NewApprovalList(enoteId);
+	}
+	@Override
+	public List<Object[]> eNoteApprovalList(long empId, String fromDate, String toDate) throws Exception {
+		return dao.eNoteApprovalList(empId,fromDate,toDate);
+	}
+	@Override
+	public List<Object[]> EnotePrintDetails(long enoteId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.EnotePrintDetails(enoteId);
 	}
 }

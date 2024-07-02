@@ -3,6 +3,8 @@
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +12,8 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <script src="./resources/js/multiselect.js"></script>
 <link href="./resources/css/multiselect.css" rel="stylesheet" />
-
+	<link href="${sweetalertCss}" rel="stylesheet" />
+	<script src="${sweetalertJs}"></script>
 
 <title>New Action</title>
 <style type="text/css">
@@ -1568,9 +1571,19 @@ var dt = new Date(from[2], from[1] - 1, from[0]);
             formData.append("ActionAssignId",ActionAssignId);
             formData.append("${_csrf.parameterName}", "${_csrf.token}");
     	if(Progress==0){
-    		alert("Please give some progress");
+    		Swal.fire({
+    			  icon: "error",
+    			  text: "Please give some progress",
+    			 
+    			});
+    		/* alert("Please give some progress"); */
     	}else if (Progress>100){
-    		alert("progress can not be more than 100");
+    		Swal.fire({
+  			  icon: "warning",
+  			  text: "Progrss should not be more than 100 !",
+  			 
+  			});
+    		/* alert("progress can not be more than 100"); */
     	}
     	else{
     		if(confirm('Are you sure to submit progress?')){
@@ -1581,9 +1594,17 @@ var dt = new Date(from[2], from[1] - 1, from[0]);
     	                contentType: false,
     	                processData: false,
     	                success:function(result){
-    	                console.log("Hii")
-    	                alert("Progress updated Succesfully")
-    	                location.reload();
+    	               
+		    	        Swal.fire({
+		    	       	title: "Success",
+		                text: "Progress Updated Successfully.",
+		                icon: "success",
+		                allowOutsideClick :false
+		         		});
+		    	        $('.swal2-confirm').click(function (){
+		    	        	console.log("hiiii")
+		    	            location.reload();
+		    	        	})
     	                }
     			
     			})
@@ -1600,6 +1621,11 @@ var dt = new Date(from[2], from[1] - 1, from[0]);
     function showModal(){
     	$('#EditModal').modal('show');
     }
+    
+    $('.swal2-confirm').click(function (){
+    	console.log("hiiii")
+        location.reload();
+    	})
 </script>
 
 </body>

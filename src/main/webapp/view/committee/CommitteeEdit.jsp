@@ -1,12 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
+<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <!DOCTYPE html>
 <html>
 
 <head>
 	<meta charset="ISO-8859-1">
 	<jsp:include page="../static/header.jsp"></jsp:include>
-
+<script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
 
 
 	<title> COMMITTEE EDIT</title>
@@ -189,18 +194,30 @@ String ses=(String)request.getParameter("result");
 								
 								<div class="form-group">
 									<label class="control-label">Description</label>
-									<textarea class="form-control"  name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"><%if(committeedetails[10]!=null){ %><%=committeedetails[10]%><%} %></textarea>
+									<%-- <textarea class="form-control"  name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"><%if(committeedetails[10]!=null){ %><%=committeedetails[10]%><%} %></textarea> --%>
+								
+									<div id="Editordescription" class="center">
+									<%if(committeedetails[10]!=null){ %><%=committeedetails[10]%><%} %>
+															<textarea name="description"  id="description" ></textarea>
+														</div>
+								
 								</div>
 
 							</div>
 							<div class="col-md-6">
-								
-								<div class="form-group">
-									<label class="control-label">Terms Of Reference </label>
-									<textarea class="form-control"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"><%if(committeedetails[11]!=null){ %><%=committeedetails[11]%><%} %></textarea>
-								</div>
 
-							</div>
+									<div class="form-group">
+										<label class="control-label">Terms Of Reference </label>
+										<%-- 									<textarea class="form-control"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"><%if(committeedetails[11]!=null){ %><%=committeedetails[11]%><%} %></textarea>
+ --%>
+										<div id="EditorReference" class="center">
+										<%if(committeedetails[11]!=null){ %><%=committeedetails[11]%><%} %>
+											<textarea name="TOR" id="TOR"></textarea>
+										</div>
+
+									</div>
+
+								</div>
 						</div>
 						
 						
@@ -214,7 +231,7 @@ String ses=(String)request.getParameter("result");
 						<div class="col-md-3">
 							<div class="form-group">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-								<button class="btn btn-primary btn-sm submit"  name="submit" value="SUBMIT"   onclick="return confirm('Are You Sure To Save ?');" >SUBMIT</button>
+								<button class="btn btn-primary btn-sm submit" type="submit"  name="submit" value="SUBMIT"   onclick="return confirm ('Are you sure to submit?')" >SUBMIT</button>
 								<input type="hidden" name="id" value="<%=committeedetails[4]%>">							
 								<button class="btn btn-primary btn-sm back" type="button"  onclick="submitForm('backfrm');">BACK</button>
 							</div>
@@ -251,12 +268,38 @@ function submitForm1(myform)
 			alert('periodic ');
 		}
 	} */
+	
+	
  	myconfirm('Are You Sure To Edit This committee ?',myform);
  	event.preventDefault();
 }
+function submitAdd(frmid){
+	
+	 var data1 =CKEDITOR.instances['Editordescription'].getData();
+	 var data2 =CKEDITOR.instances['EditorReference'].getData();
 
+	 console.log("frmid --"+frmid)
+
+	 $('#description').val(data1);
+	 $('#TOR').val(data2);
+	 
+	 if(window.confirm('Are you sure to submit?')){
+		/*  document.getElementById(a).submit();  */
+		 document.getElementById(frmid).submit(); 
+	 }else{
+		 event.preventDefault(); 
+	 }
+}
 function submitForm(frmid)
 { 
+	 var data1 =CKEDITOR.instances['Editordescription'].getData();
+	 var data2 =CKEDITOR.instances['EditorReference'].getData();
+
+	 console.log(data1)
+	 console.log(data2)
+	 
+	 $('#description').val(data1);
+	 $('#TOR').val(data2);
   document.getElementById(frmid).submit(); 
 } 
 </script>
@@ -285,6 +328,89 @@ if(this.value == "P"){
 	
 	});
 
+
+var editor_config = {
+		toolbar : [
+				{
+					name : 'paragraph',
+					items : [ 'NumberedList', 'BulletedList', '-',
+							'Outdent', 'Indent', '-', 'Blockquote' ]
+				},
+				{
+					name : 'styles',
+					items : [ 'Format', 'Font', 'FontSize' ]
+				},
+				{
+					name : 'align',
+					items : [ 'JustifyLeft', 'JustifyCenter',
+							'JustifyRight', 'JustifyBlock' ]
+				} ],
+		removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+		customConfig : '',
+		disallowedContent : 'img{width,height,float}',
+		extraAllowedContent : 'img[width,height,align]',
+		height : 120,
+		contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
+		bodyClass : 'document-editor',
+		format_tags : 'p;h1;h2;h3;pre',
+
+		removeDialogTabs : 'image:advanced;link:advanced',
+
+		stylesSet : [
+
+		{
+			name : 'Marker',
+			element : 'span',
+			attributes : {
+				'class' : 'marker'
+			}
+		}, {
+			name : 'Cited Work',
+			element : 'cite'
+		}, {
+			name : 'Inline Quotation',
+			element : 'q'
+		},
+
+		{
+			name : 'Special Container',
+			element : 'div',
+			styles : {
+				padding : '5px 10px',
+				background : '#eee',
+				border : '1px solid #ccc'
+			}
+		}, {
+			name : 'Compact table',
+			element : 'table',
+			attributes : {
+				cellpadding : '5',
+				cellspacing : '0',
+				border : '1',
+				bordercolor : '#ccc'
+			},
+			styles : {
+				'border-collapse' : 'collapse'
+			}
+		}, {
+			name : 'Borderless Table',
+			element : 'table',
+			styles : {
+				'border-style' : 'hidden',
+				'background-color' : '#E6E6FA'
+			}
+		}, {
+			name : 'Square Bulleted List',
+			element : 'ul',
+			styles : {
+				'list-style-type' : 'square'
+			}
+		}, {
+			filebrowserUploadUrl : '/path/to/upload-handler'
+		}, ]
+	};
+CKEDITOR.replace('Editordescription', editor_config);
+CKEDITOR.replace('EditorReference', editor_config);
 </script>		
 	
 		

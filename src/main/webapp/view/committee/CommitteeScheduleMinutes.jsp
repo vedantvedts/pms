@@ -235,7 +235,47 @@ display: inline-block;
     width: 1000px; /* width of the spinner gif */
     height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
 }
+.scrollclass::-webkit-scrollbar {
+	width: 5px;
+}
+.scrollclass:hover{
+cursor: pointer;
+}
+.scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0);
+	border-radius: 5px;
+}
 
+.scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px; 
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: #fff;
+} 
+
+.scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+.scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+.scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 5px;
+}
+
+.scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: #fff;
+}
+
+.scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
 	</style>
 </head>
 <body>
@@ -900,7 +940,7 @@ scheduleId=committeescheduleeditdata[6].toString();
 	    </div>
 	      
 	  	<div id="<%=collapse3%><%=collapse%>" class="panel-collapse collapse in">
-	  	
+	  	<div class="scrollclass" style="height:200px;overflow-y: auto">
 	   <%int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700;
 	   if(!dis.isEmpty()){
 			for(Object[] hlod:dis){
@@ -908,7 +948,7 @@ scheduleId=committeescheduleeditdata[6].toString();
 		
 	   %>
 	   
-	  			<div class="row">  
+	  			<div class="row" style="margin-right: 0px; margin-left: 0px;">  
 	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
@@ -966,6 +1006,8 @@ scheduleId=committeescheduleeditdata[6].toString();
 				</div>
 				
 	<%unitcount13++;countloop++;form13++;form18++;unit13++;}}}%>
+	</div>
+	
 	   			<div class="row">  
 	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
 	     				<div class="panel panel-info">
@@ -1183,7 +1225,7 @@ scheduleId=committeescheduleeditdata[6].toString();
     </div>
       
   	<div id="collapse58" class="panel-collapse collapse in">
-  	
+  	<div class="scrollclass" style="height:200px;overflow-y: auto">
    <% int unitcount1=1;  long unit1=1; String Unit1=null; int countloop1=100; int form1=545;int collapse1=140;String temp1=null; %>
 	  
 	   
@@ -1192,7 +1234,7 @@ scheduleId=committeescheduleeditdata[6].toString();
 									for(Object[] hlo:dis){
 										 if("5".equalsIgnoreCase(hlo[0].toString())){
 										       %>
-  			<div class="row">  
+  			<div class="row" style="margin-right: 0px; margin-left: 0px;">  
    				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
      				<div class="panel panel-info">
       					<div class="panel-heading">
@@ -1245,7 +1287,8 @@ scheduleId=committeescheduleeditdata[6].toString();
   					</div>
 				</div>
 			</div>
-		 <%unitcount1++;form1++;}}}%> 	
+		 <%unitcount1++;form1++;}}}%> 
+		 </div>	
 <%countloop++;%>
    
     

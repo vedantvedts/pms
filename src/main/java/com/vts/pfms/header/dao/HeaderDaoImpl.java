@@ -130,6 +130,8 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> TodaySchedulesList(String EmpId, String TodayDate) throws Exception {
 
+		System.out.println("TodayDate -----------------000000" +TodayDate);
+		
 		Query query=manager.createNativeQuery("CALL Pfms_Schedule_Today(:empid,:date)");
 		query.setParameter("empid",EmpId);
 		query.setParameter("date", TodayDate);

@@ -165,7 +165,7 @@ h6{
 								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 								    		    progressValue: "<%= Math.round((int)obj[8])%>% ",
-								    		    rowHeight: "35",
+								    		    rowHeight: "50",
 								    		  },
 								    		  <%}%>
 								    		  ];
