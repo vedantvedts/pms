@@ -254,4 +254,15 @@ public class FormatConverter
         return formattedDateTime;
 
 	}
+	
+	public String rdfTosdf(String regularDate) {
+        // Define the input date format
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        // Parse the date
+        LocalDate date = LocalDate.parse(regularDate, inputFormatter);
+        // Define the output date format
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // Format the date to the desired output format
+        return date.format(outputFormatter);
+    }
 }

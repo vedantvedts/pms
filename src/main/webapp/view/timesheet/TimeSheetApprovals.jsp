@@ -369,7 +369,7 @@ FormatConverter fc = new FormatConverter();
 																</tr>	
 															<%} else{%>
 																<tr>
-																	<td class="center" colspan="5">No Data Available</td> 
+																	<td class="center" colspan="6">No Data Available</td> 
 																</tr>
 															<%} %>
 														</tbody>

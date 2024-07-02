@@ -3,6 +3,7 @@ package com.vts.pfms.timesheet.dao;
 import java.util.List;
 
 import com.vts.pfms.master.model.MilestoneActivityType;
+import com.vts.pfms.timesheet.dto.ActionAnalyticsDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 
 public interface TimeSheetDao {
@@ -16,5 +17,12 @@ public interface TimeSheetDao {
 	public List<Object[]> getEmployeesofSuperiorOfficer(String superiorOfficer, String labCode) throws Exception;
 	public List<TimeSheet> getTimeSheetListofEmployeeByPeriod(String empId, String fromDate, String toDate) throws Exception;
 	public List<MilestoneActivityType> getMilestoneActivityTypeList() throws Exception;
+	public List<ActionAnalyticsDTO> actionAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception;
+	public List<Object[]> getAllEmployeeList(String labCode) throws Exception;
+	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> projectActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception;
+	public List<Object[]> projectActionAnalyticsList(String projectId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> getAllEmpTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> getProjectTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception;
 
 }

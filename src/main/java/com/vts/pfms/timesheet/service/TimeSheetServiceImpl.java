@@ -5,6 +5,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.timesheet.dao.TimeSheetDao;
+import com.vts.pfms.timesheet.dto.ActionAnalyticsDTO;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 import com.vts.pfms.timesheet.model.TimeSheetActivity;
@@ -286,5 +288,101 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 		
 		return dao.getMilestoneActivityTypeList();
 	}
+
+	@Override
+	public List<ActionAnalyticsDTO> empActionAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
+		
+		return dao.actionAnalyticsList(empId, fromDate, toDate, projectId);
+	}
+
+	@Override
+	public Object[] getActionAnalyticsCounts(String empId, String fromDate, String toDate, String projectId) throws Exception {
+		List<ActionAnalyticsDTO> dtoList = dao.actionAnalyticsList(empId, fromDate, toDate, projectId);
+		Integer[] count = {0,0,0,0,0,0,0,0};
+		
+		LocalDate now = LocalDate.now();
+		
+		dtoList.stream().forEach(e ->{
+			
+			// Within Time Actions
+			if(LocalDate.parse(e.getEndDate()).isAfter(now) || LocalDate.parse(e.getEndDate()).isEqual(now)) {
+				// Completed
+				if("C".equalsIgnoreCase(e.getActionStatus())) {
+					count[0] += 1;
+				}
+				// Ongoing
+				else if(Arrays.asList("I","B","F").contains(e.getActionStatus())) {
+					count[2] += 1;
+				}
+				// Not Started
+				else if("A".equalsIgnoreCase(e.getActionStatus())) {
+					count[4] += 1;
+				}
+				
+			}
+			// Delayed Actions
+			else if(LocalDate.parse(e.getEndDate()).isBefore(now)) {
+				// Completed
+				if("C".equalsIgnoreCase(e.getActionStatus())) {
+					count[1] += 1;
+				}
+				// Ongoing
+				else if(Arrays.asList("I","B","F").contains(e.getActionStatus())) {
+					count[3] += 1;
+				}
+				// Not Started
+				else if("A".equalsIgnoreCase(e.getActionStatus())) {
+					count[5] += 1;
+				}
+			}
+			
+			// On Time Action
+			if(e.getClosedDate()!=null && (LocalDate.parse(e.getClosedDate()).isBefore(LocalDate.parse(e.getEndDate())) || LocalDate.parse(e.getClosedDate()).isEqual(LocalDate.parse(e.getEndDate())) )) {
+				count[6] += 1;
+			}
+			// Missed Actions
+			else {
+				count[7] += 1;
+			}
+
+		});
+		
+		return count;
+	}
+
+	@Override
+	public List<Object[]> getAllEmployeeList(String labCode) throws Exception {
+		
+		return dao.getAllEmployeeList(labCode);
+	}
+
+	@Override
+	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate) throws Exception {
+		
+		return dao.empActivityWiseAnalyticsList(empId, fromDate, toDate);
+	}
 	
+	@Override
+	public List<Object[]> projectActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
+
+		return dao.projectActivityWiseAnalyticsList(empId, fromDate, toDate, projectId);
+	}
+
+	@Override
+	public List<Object[]> projectActionAnalyticsList(String projectId, String fromDate, String toDate) throws Exception {
+		
+		return dao.projectActionAnalyticsList(projectId, fromDate, toDate);
+	}
+	
+	@Override
+	public List<Object[]> getAllEmpTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception {
+		
+		return dao.getAllEmpTimeSheetWorkingHrsList(labCode, loginType, empId, fromDate, toDate);
+	}
+	
+	@Override
+	public List<Object[]> getProjectTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception {
+		
+		return dao.getProjectTimeSheetWorkingHrsList(labCode, loginType, empId, fromDate, toDate);
+	}
 }

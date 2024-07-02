@@ -2,7 +2,9 @@ package com.vts.pfms.timesheet.controller;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,11 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.timesheet.dto.ActionAnalyticsDTO;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 import com.vts.pfms.timesheet.service.TimeSheetService;
@@ -44,9 +49,13 @@ public class TimeSheetController {
 	@RequestMapping(value="TimeSheetDashboard.htm", method= {RequestMethod.GET,RequestMethod.POST})
 	public String timeSheetDashboard(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date()+" Inside TimeSheetDashboard.htm "+UserId);
 		try {
-			
+			req.setAttribute("empList", service.getAllEmployeeList(labcode));
+			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,labcode));
 			return "timesheet/TimeSheetDashboard";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside TimeSheetDashboard.htm "+UserId, e);
@@ -65,7 +74,7 @@ public class TimeSheetController {
 		try {
 			String activityDate = req.getParameter("activityDate");
 			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
-			String activityDateSql = fc.RegularToSqlDate(activityDate);
+			String activityDateSql = fc.rdfTosdf(activityDate);
 			req.setAttribute("activityDate", activityDate);
 			req.setAttribute("activityDateSql", activityDateSql);
 			req.setAttribute("todayScheduleList", headerservice.TodaySchedulesList(EmpId, activityDateSql));
@@ -183,7 +192,7 @@ public class TimeSheetController {
 		try {
 			String activityWeekDate = req.getParameter("activityWeekDate");
 			activityWeekDate = activityWeekDate==null?rdf.format(new Date()):activityWeekDate;
-			String activityWeekDateSql = fc.RegularToSqlDate(activityWeekDate);
+			String activityWeekDateSql = fc.rdfTosdf(activityWeekDate);
 			
 			req.setAttribute("employeesofSuperiorOfficer", service.getEmployeesofSuperiorOfficer(EmpId, labcode));
 			req.setAttribute("timesheetDataForSuperior", service.getTimesheetDataForSuperior(EmpId, labcode, activityWeekDateSql));
@@ -199,5 +208,195 @@ public class TimeSheetController {
 			e.printStackTrace();
 			return "static/Error";
 		}
+	}
+	
+	@RequestMapping(value = "EmpActionAnalyticsCount.htm", method = {RequestMethod.GET})
+	public @ResponseBody String empActionAnalyticsCount(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside EmpActionAnalyticsCount.htm "+UserId);
+		Gson json = new Gson();
+		Object[] empActionAnalyticsCounts = null;
+		try {
+			String empId = req.getParameter("empId");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			empId = empId==null?EmpId:empId;
+			
+			LocalDate today=LocalDate.now();
+			if(fromDate==null) {
+				fromDate=today.withDayOfMonth(1).toString();
+				toDate = today.toString();
+
+			}else{
+				fromDate=fc.rdfTosdf(fromDate);
+				toDate=fc.rdfTosdf(toDate);
+			}
+			
+			empActionAnalyticsCounts = service.getActionAnalyticsCounts(empId, fromDate, toDate, "A");
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside EmpActionAnalyticsCount.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		return json.toJson(empActionAnalyticsCounts);
+	}
+	
+	@RequestMapping(value = "EmpActivityWiseAnalyticsCount.htm", method = {RequestMethod.GET})
+	public @ResponseBody String empActivityWiseAnalyticsCount(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside EmpActivityWiseAnalyticsCount.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> empActivityWiseAnalyticsCount = new ArrayList<>();
+		try {
+			String empId = req.getParameter("empId");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			empId = empId==null?EmpId:empId;
+			
+			LocalDate today=LocalDate.now();
+			if(fromDate==null) {
+				fromDate=today.withDayOfMonth(1).toString();
+				toDate = today.toString();
+				
+			}else{
+				fromDate=fc.rdfTosdf(fromDate);
+				toDate=fc.rdfTosdf(toDate);
+			}
+			
+			empActivityWiseAnalyticsCount = service.empActivityWiseAnalyticsList(empId, fromDate, toDate);
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside EmpActivityWiseAnalyticsCount.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		return json.toJson(empActivityWiseAnalyticsCount);
+	}
+	
+	@RequestMapping(value = "ProjectActivityWiseAnalyticsCount.htm", method = {RequestMethod.GET})
+	public @ResponseBody String projectActivityWiseAnalyticsCount(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ProjectActivityWiseAnalyticsCount.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> projectActivityWiseAnalyticsCount = new ArrayList<>();
+		try {
+			String projectId = req.getParameter("projectId");
+			String empId = req.getParameter("empId");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			projectId = projectId == null?"0":projectId;
+			empId = empId == null?"0":empId;
+
+			LocalDate today=LocalDate.now();
+			if(fromDate==null) {
+				fromDate=today.withDayOfMonth(1).toString();
+				toDate = today.toString();
+				
+			}else{
+				fromDate=fc.rdfTosdf(fromDate);
+				toDate=fc.rdfTosdf(toDate);
+			}
+			
+			projectActivityWiseAnalyticsCount = service.projectActivityWiseAnalyticsList(empId, fromDate, toDate, projectId);
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProjectActivityWiseAnalyticsCount.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		return json.toJson(projectActivityWiseAnalyticsCount);
+	}
+	
+	@RequestMapping(value = "ProjectActionAnalyticsCount.htm", method = {RequestMethod.GET})
+	public @ResponseBody String projectActionAnalyticsCount(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ProjectActionAnalyticsCount.htm "+UserId);
+		Gson json = new Gson();
+		Object[] projectActionAnalyticsCount = null;
+		try {
+			String projectId = req.getParameter("projectId");
+			String empId = req.getParameter("empId");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			projectId = projectId == null?"0":projectId;
+			empId = empId == null?"0":empId;
+			
+			LocalDate today=LocalDate.now();
+			if(fromDate==null) {
+				fromDate=today.withDayOfMonth(1).toString();
+				toDate = today.toString();
+				
+			}else{
+				fromDate=fc.rdfTosdf(fromDate);
+				toDate=fc.rdfTosdf(toDate);
+			}
+			
+			projectActionAnalyticsCount = service.getActionAnalyticsCounts(empId, fromDate, toDate, projectId);
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProjectActionAnalyticsCount.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		return json.toJson(projectActionAnalyticsCount);
+	}
+	
+	@RequestMapping(value = "EmpTimeSheetWorkingHrsList.htm", method = {RequestMethod.GET})
+	public @ResponseBody String timeSheetEmpWorkingHrsList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType=(String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside EmpTimeSheetWorkingHrsList.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> workingHrsList = null;
+		try {
+
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+
+			LocalDate today=LocalDate.now();
+			if(fromDate==null) {
+				fromDate=today.withDayOfMonth(1).toString();
+				toDate = today.toString();
+				
+			}else{
+				fromDate=fc.rdfTosdf(fromDate);
+				toDate=fc.rdfTosdf(toDate);
+			}
+			
+			workingHrsList = service.getAllEmpTimeSheetWorkingHrsList(labcode, LoginType, EmpId, fromDate, toDate);
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside EmpTimeSheetWorkingHrsList.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		return json.toJson(workingHrsList);
+	}
+	
+	@RequestMapping(value = "ProjectTimeSheetWorkingHrsList.htm", method = {RequestMethod.GET})
+	public @ResponseBody String projectTimeSheetWorkingHrsList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType=(String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside ProjectTimeSheetWorkingHrsList.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> workingHrsList = null;
+		try {
+			String projectId = req.getParameter("projectId");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			
+			LocalDate today=LocalDate.now();
+			if(fromDate==null) {
+				fromDate=today.withDayOfMonth(1).toString();
+				toDate = today.toString();
+				
+			}else{
+				fromDate=fc.rdfTosdf(fromDate);
+				toDate=fc.rdfTosdf(toDate);
+			}
+			
+			workingHrsList = service.getProjectTimeSheetWorkingHrsList(labcode, LoginType, projectId, fromDate, toDate);
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProjectTimeSheetWorkingHrsList.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		return json.toJson(workingHrsList);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.vts.pfms.master.model.MilestoneActivityType;
+import com.vts.pfms.timesheet.dto.ActionAnalyticsDTO;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 
@@ -19,5 +20,13 @@ public interface TimeSheetService {
 	public List<Object[]> getEmployeesofSuperiorOfficer(String superiorOfficer, String labCode) throws Exception;
 	public Map<String, Map<LocalDate, TimeSheet>> getTimesheetDataForSuperior(String superiorOfficer, String labCode, String dateofWeek) throws Exception; 
 	public List<MilestoneActivityType> getMilestoneActivityTypeList() throws Exception;
-	
+	public List<ActionAnalyticsDTO> empActionAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception;
+	public Object[] getActionAnalyticsCounts(String empId, String fromDate, String toDate, String projectId) throws Exception;
+	public List<Object[]> getAllEmployeeList(String labCode) throws Exception;
+	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> projectActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception;
+	public List<Object[]> projectActionAnalyticsList(String projectId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> getAllEmpTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> getProjectTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception;
+
 }

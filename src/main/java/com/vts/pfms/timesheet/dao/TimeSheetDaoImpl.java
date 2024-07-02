@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.MilestoneActivityType;
+import com.vts.pfms.timesheet.dto.ActionAnalyticsDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 
 @Repository
@@ -149,6 +150,144 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside TimeSheetDaoImpl getMilestoneActivityTypeList() "+e);
 			return new ArrayList<MilestoneActivityType>();
+		}
+	}
+	
+	private static final String PROJECTEMPACTIONANALYTICSLIST = "SELECT * FROM pfms_action_analytics WHERE (CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE ProjectId=:ProjectId END) AND (CASE WHEN '0'=:Assignee THEN 1=1 ELSE Assignee=:Assignee END) AND ActionDate BETWEEN :FromDate AND :ToDate";
+	@Override
+	public List<ActionAnalyticsDTO> actionAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PROJECTEMPACTIONANALYTICSLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("Assignee", empId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			List<Object[]> actionList = (List<Object[]>)query.getResultList();
+			List<ActionAnalyticsDTO> dtoList = new ArrayList<>();
+			actionList.stream().forEach(e -> 
+			{
+				ActionAnalyticsDTO dto = ActionAnalyticsDTO.builder()
+										.ActionMainId(e[0]!=null?Long.parseLong(e[0].toString()):0L)
+										.EmpName(e[1]!=null?e[1].toString():null)
+										.Designation(e[2]!=null?e[2].toString():null)
+										.ActionDate(e[3]!=null?e[3].toString():null)
+										.EndDate(e[4]!=null?e[4].toString():null)
+										.ActionItem(e[5]!=null?e[5].toString():null)
+										.ActionStatus(e[6]!=null?e[6].toString():null)
+										.ActionNo(e[7]!=null?e[7].toString():null)
+										.ActionAssignId(e[8]!=null?Long.parseLong(e[8].toString()):0L)
+										.Assignee(e[9]!=null?Long.parseLong(e[9].toString()):0L)
+										.Assignor(e[10]!=null?Long.parseLong(e[10].toString()):0L)
+										.ActionLevel(e[11]!=null?Long.parseLong(e[11].toString()):0L)
+										.ProjectId(e[12]!=null?Long.parseLong(e[12].toString()):0L)
+										.ClosedDate(e[13]!=null?e[13].toString():null)
+										.build();
+				dtoList.add(dto);
+			});
+			return dtoList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl actionAnalyticsList() "+e);
+			return new ArrayList<ActionAnalyticsDTO>();
+		}
+	}
+	
+	private static final String ALLEMPLIST = "SELECT a.EmpId,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',b.Designation,a.SuperiorOfficer FROM employee a,employee_desig b WHERE a.DesigId=b.DesigId AND a.IsActive=1 AND a.LabCode=:LabCode ORDER BY CASE WHEN a.SrNo=0 THEN 1 ELSE 0 END,a.SrNo";
+	@Override
+	public List<Object[]> getAllEmployeeList(String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(ALLEMPLIST);
+			query.setParameter("LabCode", labCode);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getAllEmployeeList() "+e);
+			return new ArrayList<>();
+		}
+	}
+
+	private static final String EMPACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_emp_activity_analytics WHERE EmpId=:EmpId AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	@Override
+	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(EMPACTIVITYWISEANALYTICSLIST);
+			query.setParameter("EmpId", empId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl empActivityWiseAnalyticsList() "+e);
+			return new ArrayList<>();
+		}
+	}
+	
+	private static final String PROJECTACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_project_activity_analytics WHERE ProjectId=:ProjectId AND (CASE WHEN '0'=:EmpId THEN 1=1 ELSE EmpId=:EmpId END) AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	@Override
+	public List<Object[]> projectActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PROJECTACTIVITYWISEANALYTICSLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("EmpId", empId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl projectActivityWiseAnalyticsList() "+e);
+			return new ArrayList<>();
+		}
+	}
+	
+	private static final String PROJECTACTIONANALYTICSLIST = "SELECT * FROM pfms_action_analytics WHERE ProjectId=:ProjectId AND ActionDate BETWEEN :FromDate AND :ToDate";
+	@Override
+	public List<Object[]> projectActionAnalyticsList(String projectId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PROJECTACTIONANALYTICSLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl projectActionAnalyticsList() "+e);
+			return new ArrayList<>();
+		}
+	}
+	
+	private static final String GETALLEMPTIMESHEETWORKINGHRSLIST = "CALL pfms_timesheet_list(:LabCode, :LoginType, :EmpId, :FromDate, :ToDate)";
+	@Override
+	public List<Object[]> getAllEmpTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETALLEMPTIMESHEETWORKINGHRSLIST);
+			query.setParameter("LabCode", labCode);
+			query.setParameter("LoginType", loginType);
+			query.setParameter("EmpId", empId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getAllEmpTimeSheetWorkingHrsList() "+e);
+			return new ArrayList<>();
+		}
+	}
+	
+	private static final String GETPROJECTTIMESHEETWORKINGHRSLIST = "CALL pfms_project_timesheet(:LabCode, :LoginType, :ProjectId, :FromDate, :ToDate)";
+	@Override
+	public List<Object[]> getProjectTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPROJECTTIMESHEETWORKINGHRSLIST);
+			query.setParameter("LabCode", labCode);
+			query.setParameter("LoginType", loginType);
+			query.setParameter("ProjectId", empId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getProjectTimeSheetWorkingHrsList() "+e);
+			return new ArrayList<>();
 		}
 	}
 	
