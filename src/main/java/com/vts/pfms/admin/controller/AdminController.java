@@ -661,6 +661,7 @@ public class AdminController {
 			dto.setDesigLimit(Limit);
 			dto.setDesigSr(desigsr);
 			dto.setOldDesigSr(olddesigsr);
+			dto.setDesigCadre(req.getParameter("desigCadre"));
 			long count = service.DesignationEditSubmit(dto);
 
 			if (count > 0) {
@@ -690,6 +691,7 @@ public class AdminController {
 			dto.setDesigCode(desigcode);
 			dto.setDesignation(designation);
 			dto.setDesigLimit(Limit);
+			dto.setDesigCadre(req.getParameter("desigCadre"));
 			long count = service.DesignationAddSubmit(dto);
 			if (count > 0) {
 				redir.addAttribute("result", "Designation Added Successfully");

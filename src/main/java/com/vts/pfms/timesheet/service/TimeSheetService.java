@@ -28,5 +28,7 @@ public interface TimeSheetService {
 	public List<Object[]> projectActionAnalyticsList(String projectId, String fromDate, String toDate) throws Exception;
 	public List<Object[]> getAllEmpTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception;
 	public List<Object[]> getProjectTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> empExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> getHolidayList() throws Exception;
 
 }

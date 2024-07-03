@@ -70,9 +70,9 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String DIVISIONGROUPLIST="SELECT a.groupid,a.groupname,a.labcode FROM division_group a WHERE a.isactive=1";
 	private static final String DIVISIONHEADLIST="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',a.labcode,b.designation FROM employee a , employee_desig b WHERE  a.isactive=1 AND a.desigid=b.desigid";
 	private static final String DIVISIONEDITDATA="SELECT d.divisionid,d.divisioncode, d.divisionname, d.divisionheadid, d.groupid, d.IsActive FROM division_master d WHERE d.divisionid=:divisionid ";
-	private static final String DESIGNATIONDATA="SELECT desigid,desigcode,designation,desiglimit,DesigSr FROM employee_desig WHERE desigid=:desigid";
-	private static final String DESIGNATIONLIST="SELECT desigid,desigcode,designation,desiglimit,DesigSr FROM employee_desig ORDER BY DesigSr";
-	private static final String DESIGNATIONEDITSUBMIT="UPDATE employee_desig SET desigcode=:desigcode, designation=:designation ,desiglimit=:desiglimit WHERE  desigid=:desigid";
+	private static final String DESIGNATIONDATA="SELECT desigid,desigcode,designation,desiglimit,DesigSr,DesigCadre FROM employee_desig WHERE desigid=:desigid";
+	private static final String DESIGNATIONLIST="SELECT desigid,desigcode,designation,desiglimit,DesigSr,DesigCadre FROM employee_desig ORDER BY DesigSr";
+	private static final String DESIGNATIONEDITSUBMIT="UPDATE employee_desig SET desigcode=:desigcode, designation=:designation ,desiglimit=:desiglimit, DesigCadre=:DesigCadre WHERE  desigid=:desigid";
 	private static final String DESIGNATIONCODECHECK="SELECT COUNT(desigcode),'desigcode' FROM employee_desig WHERE desigcode=:desigcode";
 	private static final String DESIGNATIONCHECK="SELECT COUNT(designation),'designation' FROM employee_desig WHERE designation=:designation";
 	private static final String DESIGNATIONCODEEDITCHECK="SELECT COUNT(desigcode),'desigcode' FROM employee_desig WHERE desigcode=:desigcode AND desigid<>:desigid";
@@ -549,6 +549,7 @@ public class AdminDaoImpl implements AdminDao{
 		query.setParameter("desigcode",dto.getDesigCode());
 		query.setParameter("designation",dto.getDesignation());
 		query.setParameter("desiglimit",dto.getDesigLimit());
+		query.setParameter("DesigCadre",dto.getDesigCadre());
 		return query.executeUpdate();
 	}
 

@@ -12,6 +12,7 @@ import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -82,5 +83,10 @@ public interface MasterService {
 	public long addIndustryPartner(IndustryPartner partner) throws Exception;
 	public int revokeIndustryPartnerRep(String industryPartnerRepId) throws Exception;
 	public List<Object[]> industryPartnerRepDetails(String industryPartnerId, String industryPartnerRepId) throws Exception;
+	public List<Object[]> HolidayList(String yr) throws Exception;
+	public long HolidayDelete(HolidayMaster holiday, String userId) throws Exception;
+	public long HolidayAddSubmit(HolidayMaster holiday) throws Exception;
+	public long HolidayEditSubmit(HolidayMaster holiday, String userId) throws Exception;
+	public HolidayMaster getHolidayData(Long holidayid) throws Exception;
 	
 }

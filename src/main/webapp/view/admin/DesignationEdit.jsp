@@ -67,8 +67,8 @@
 							method="POST">
 
 							<div class="row">
-
-								<div class="col-md-3">
+								<div class="col-md-2"></div>
+								<div class="col-md-2">
 									<div class="form-group">
 										<label>Designation Code:<span class="mandatory"
 											style="color: red;">*</span></label> <input
@@ -80,7 +80,7 @@
 								</div>
 
 
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="form-group">
 										<label>Designation :<span class="mandatory"
 											style="color: red;">*</span></label> <input
@@ -91,7 +91,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="form-group">
 										<label>Limit :<span class="mandatory"
 											style="color: red;">*</span></label> <input
@@ -101,7 +101,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="form-group">
 										<label>SrNo :<span class="mandatory"
 											style="color: red;">*</span></label> <input
@@ -111,8 +111,20 @@
 											value="<%=designationdata[4]%>">
 									</div>
 								</div>
-								<input type="hidden" name="olddesigsr"
-									value="<%=designationdata[4]%>" />
+								
+								<div class="col-md-2">
+									<div class="form-group">
+										<label>Desig Cadre :<span class="mandatory"style="color: red;">*</span></label> 
+										<select class="form-control" name="desigCadre">
+											<option value="DRDS" <%if(designationdata[5]!=null && designationdata[5].toString().equalsIgnoreCase("DRDS")) {%>selected<%} %> >DRDS</option>
+											<option value="DRTC" <%if(designationdata[5]!=null && designationdata[5].toString().equalsIgnoreCase("DRTC")) {%>selected<%} %>>DRTC</option>
+											<option value="Others" <%if(designationdata[5]!=null && designationdata[5].toString().equalsIgnoreCase("Others")) {%>selected<%} %>>Others</option>
+										</select>
+									</div>
+								</div>
+								
+								<div class="col-md-2"></div>
+								<input type="hidden" name="olddesigsr" value="<%=designationdata[4]%>" />
 							</div>
 
 

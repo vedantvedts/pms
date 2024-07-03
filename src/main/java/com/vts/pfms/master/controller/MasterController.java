@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
-import com.vts.pfms.admin.controller.AdminController;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
@@ -39,6 +39,7 @@ import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -58,6 +59,10 @@ public class MasterController {
 	String uploadpath;
 	private static final Logger logger=LogManager.getLogger(MasterController.class);
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	FormatConverter fc = new FormatConverter();
+	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
+	private SimpleDateFormat sdf = fc.getSqlDateFormat();
+	private SimpleDateFormat rdf = new SimpleDateFormat("dd-MM-yyyy");
 	@RequestMapping(value="Officer.htm", method=RequestMethod.GET)
 	public String OfficerList(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
@@ -1521,4 +1526,151 @@ public class MasterController {
 		return json.toJson(industryPartnerRepDetails);	
 	}
 	
+	//prakarsh----Holiday Modules--------start------
+		@RequestMapping(value="HolidayList.htm", method= {RequestMethod.GET,RequestMethod.POST})
+		public String HolidayList(HttpServletRequest req,HttpSession ses) {
+			
+			try {
+				
+				String yr=req.getParameter("Year");
+				 if (yr == null || yr.isEmpty()) {
+			           
+			            yr = getCurrentYearAsString();
+			        }	
+				List<Object[]>HolidayList=service.HolidayList(yr);
+				
+				req.setAttribute("HolidayList", HolidayList);
+				req.setAttribute("yr", yr);
+			return "master/HolidayList";
+			}catch (Exception e) {
+				e.printStackTrace();
+				return "static/Error"; 
+			}
+		}
+		
+		private String getCurrentYearAsString() {
+		    Calendar calendar = Calendar.getInstance();
+		    int year = calendar.get(Calendar.YEAR);
+		    return String.valueOf(year);
+		}
+		
+		//delete functionality
+		@RequestMapping(value = "HolidayDelete.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String HolidayDelete(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside HolidayAddSubmit.htm "+UserId);		
+			try {
+				
+				HolidayMaster holiday= new HolidayMaster();
+				
+				String HolidayId=req.getParameter("HolidayId");
+				
+				holiday.setHolidayId(Long.parseLong(HolidayId));
+				
+				long save=service.HolidayDelete(holiday,UserId);
+				if(save>0) {
+					redir.addAttribute("result", "Holiday Details Delete Successfull");
+				} else {
+					redir.addAttribute("resultfail", "Holiday Details Delete Unsuccessful");
+				}
+				return "redirect:/HolidayList.htm";
+					
+			 }
+		     catch (Exception e) {
+		    	 e.printStackTrace();
+				 logger.error(new Date() +" Inside HolidayEditSumit.htm "+UserId, e);
+				 return "static/Error"; 
+
+		       }
+		}
+		@RequestMapping(value = "HolidayAddEdit.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String HolidayAddEdit(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside HolidayAddEdit.htm "+UserId);		
+			try {
+				
+				  String Action = (String) req.getParameter("Action");
+				if("edit".equalsIgnoreCase(Action)) {
+					HolidayMaster holiday= service.getHolidayData(Long.parseLong(req.getParameter("HolidayId")));
+					req.setAttribute("Holidaydata", holiday);
+					req.setAttribute("Action", Action);
+					return "master/HolidayAddEdit";
+	    	   	   
+	    	   	      
+	           }else{
+	        	   req.setAttribute("Action", Action);
+	    	   	 	  return "master/HolidayAddEdit";
+	    	   	}
+				
+		    }
+		     catch (Exception e) {
+		    	 e.printStackTrace();
+				 logger.error(new Date() +" Inside HolidayAddEdit.htm "+UserId, e);
+		       }
+		   return  "master/HolidayAddEdit";
+
+		}
+		
+		@RequestMapping(value = "HolidayAddSumit.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String HolidayAddSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside HolidayAddSubmit.htm "+UserId);		
+			try {
+				
+				HolidayMaster holiday= new HolidayMaster();
+
+				holiday.setHolidayName(req.getParameter("HoliName"));
+				holiday.setHolidayType(req.getParameter("HoliType"));
+				holiday.setHolidayDate(fc.RegularToSqlDate(req.getParameter("HoliDate")));
+			
+				holiday.setCreatedBy(UserId);
+				holiday.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				holiday.setIsActive(1);
+				
+				long save=service.HolidayAddSubmit(holiday);
+				if(save>0) {
+					redir.addAttribute("result", "Holiday Details Add Successfull");
+				} else {
+					redir.addAttribute("resultfail", "Holiday Details Add Unsuccessful");
+				}
+				return "redirect:/HolidayList.htm";
+					
+			 }catch (Exception e) {
+		    	 e.printStackTrace();
+				 logger.error(new Date() +" Inside HolidayAddSubmit.htm "+UserId, e);
+				 return "static/Error"; 
+		       }
+		}
+		
+		@RequestMapping(value = "HolidayEditSumit.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String HolidayEditSumit(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside HolidayAddSubmit.htm "+UserId);		
+			try {
+				HolidayMaster holiday= new HolidayMaster();
+				
+				String HolidayId=req.getParameter("HolidayId");
+				holiday.setHolidayId(Long.parseLong(HolidayId));
+				holiday.setHolidayName(req.getParameter("HoliName"));
+				holiday.setHolidayType(req.getParameter("HoliType"));
+				holiday.setHolidayDate(fc.RegularToSqlDate(req.getParameter("HoliDate")));
+				holiday.setCreatedBy(UserId);
+				holiday.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				holiday.setIsActive(1);
+				
+				long save=service.HolidayEditSubmit(holiday,UserId);
+				if(save>0) {
+					redir.addAttribute("result", "Holiday Details Update Successfull");
+				} else {
+					redir.addAttribute("resultfail", "Holiday Details Update Unsuccessful");
+				}
+				return "redirect:/HolidayList.htm";
+					
+			 } catch (Exception e) {
+		    	 e.printStackTrace();
+				 logger.error(new Date() +" Inside HolidayEditSumit.htm "+UserId, e);
+				 return "static/Error"; 
+
+		       }
+		}
 }

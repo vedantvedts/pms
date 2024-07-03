@@ -16,7 +16,7 @@
 	border-bottom-left-radius: 5px !important;
 }
 
-.btn2, .btn3, .btn4{
+.btn2, .btn3, .btn4, .btn5{
     border-left: 1px solid black;
 }
 
@@ -144,6 +144,7 @@
 		String sesEmpId = ((Long)session.getAttribute("EmpId")).toString();
 		List<Object[]> empList = (List<Object[]>)request.getAttribute("empList");
 		List<Object[]> projectList = (List<Object[]>)request.getAttribute("projectList");
+		List<Object[]> holidayList = (List<Object[]>)request.getAttribute("holidayList");
 		
 		if(!Arrays.asList("A","Z","Y").contains(loginType)){
 			empList = empList!=null?empList.stream()
@@ -152,7 +153,9 @@
 					  : empList;
 		}
 		LocalDate today = LocalDate.now();
-		String fromDate = today.withDayOfMonth(1).toString();
+		String fromDate = today.minusMonths(1).toString();
+		String fromDate2 = today.withDayOfMonth(1).toString();
+		String fromDate3 = today.getYear()+"-01-01";
 		String toDate = today.toString();
 		
 		FormatConverter fc = new FormatConverter();
@@ -186,13 +189,14 @@
 			        	<button class="btn btn2 font-weight-bold" style="">Individual</button>
 			        	<button class="btn btn3 font-weight-bold" style="">Others</button>
 			        	<button class="btn btn4 font-weight-bold" style="">Extra Hrs</button>
+			        	<button class="btn btn5 font-weight-bold" style="">Extra Days</button>
 			    	</div>
 			  	</div>	
 				<!-- ----------- COMMON TOGGLE BUTTONS(PROJECT, INDIVIDUAL) ENDS --------------------------- -->
 			</div>
 		</div>
 		<!-- Project Statistics -->
-		<div id="project">
+		<div id="projectstats">
 			<div class="row">
 				<div class="col-md-12">
 					<!-- ------------------------- Project ------------------------------  -->
@@ -203,13 +207,13 @@
 									<div class="col-md-12">
 										<table style="width: 100%;border-collapse: collapse;">
 											<tr>
-												<td style="width: 43%;"></td>
-												<th class="right" style="width: 3%;">From :</th>
-												<td style="width: 6%;"><input type="text" class="form-control" name="fromDate" id="aapFromDate" value="<%=fc.SqlToRegularDate(fromDate)%>"></td>
-												<th class="right" style="width: 3%;">To :</th>
-												<td style="width: 6%;"><input type="text" class="form-control" name="toDate" id="aapToDate" value="<%=fc.SqlToRegularDate(toDate)%>"></td>
+												<td style="width: 24%;"></td>
+												<th class="right" style="width: 5%;">From :</th>
+												<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aapFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+												<th class="right" style="width: 5%;">To :</th>
+												<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aapToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
 												<th class="right" style="width: 5%;">Project : </th>
-												<td style="width: 9%;">
+												<td style="width: 20%;">
 													<select class="form-control selectdee" name="projectId" id="aapProjectId">
 														<option value="0" selected >General</option>
 											            <%for(Object[] pro: projectList ){
@@ -220,7 +224,7 @@
 													</select>
 												</td>
 												<th class="right" style="width: 5%;">Employee : </th>
-												<td style="width: 10%;">
+												<td style="width: 20%;">
 													<select class="form-control selectdee" name="empId" id="aapEmpId">
 														<!-- <option value="" disabled="disabled" selected="selected">--Select--</option> -->
 														<option value="0">All</option>
@@ -264,7 +268,7 @@
 		</div>
 		
 		<!-- Individual Statistics -->
-		<div id="individual">
+		<div id="individualstats">
 			<div class="row">
 				<div class="col-md-12">
 					<!-- ------------------------- Individual ------------------------------  -->
@@ -276,13 +280,13 @@
 									<div class="col-md-6">
 										<table style="width: 100%;border-collapse: collapse;">
 											<tr>
-												<td style="width: 19%;"></td>
+												<td style="width: 15%;"></td>
 												<th class="right" style="width: 6%;">From :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="aaiFromDate" value="<%=fc.SqlToRegularDate(fromDate)%>"></td>
+												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="aaiFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
 												<th class="right" style="width: 5%;">To :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="aaiToDate" value="<%=fc.SqlToRegularDate(toDate)%>"></td>
+												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="aaiToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
 												<th class="right" style="width: 10%;">Employee : </th>
-												<td style="width: 30%;">
+												<td style="width: 39%;">
 													<select class="form-control selectdee" name="empId" id="aaiEmpId">
 														<option value="" disabled="disabled" selected="selected">--Select--</option>
 														<%
@@ -326,7 +330,7 @@
 		</div>
 		
 		<!-- Other Statistics -->
-		<div id="others">
+		<div id="othersstats">
 			<div class="row">
 				<div class="col-md-12">
 					<!-- ------------------------- Project Time Sheet ------------------------------  -->
@@ -354,9 +358,9 @@
 													</select>
 												</td>
 												<th class="right" style="width: 6%;">From :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fc.SqlToRegularDate(fromDate)%>"></td>
+												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
 												<th class="right" style="width: 5%;">To :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=fc.SqlToRegularDate(toDate)%>"></td>
+												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
 											</tr>
 										</table>
 									</div>
@@ -394,7 +398,7 @@
 		</div>
 		
 		<!-- Extra Hours Statistics -->
-		<div id="extrahrs">
+		<div id="extrahrsstats">
 			<div class="row">
 				<div class="col-md-12">
 					<!-- ------------------------- Time Sheet List -------------------------------------  -->
@@ -408,9 +412,9 @@
 											<tr>
 												<td style="width: 19%;"></td>
 												<th class="right" style="width: 6%;">From :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fc.SqlToRegularDate(fromDate)%>"></td>
+												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
 												<th class="right" style="width: 5%;">To :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=fc.SqlToRegularDate(toDate)%>"></td>
+												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
 											</tr>
 										</table>
 									</div>
@@ -418,7 +422,7 @@
 							</form>
 						</div>
 					</div>
-					<div class="row ml-1">
+					<div class="row ml-1 mr-1">
 						<div class="col-md-12 table-wrapper">
 							<table class="table view-table" id="tslcontainer">
 								<thead class="center">
@@ -448,6 +452,71 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- Extra Days Statistics -->
+		<div id="extradaysstats">
+			<div class="row">
+				<div class="col-md-12">
+					<!-- ------------------------- Time Sheet Extra Days List -------------------------------------  -->
+					<div class="row mt-2">
+						<div class="col-md-12">
+							<form action="#">
+								<div class="row">
+									<div class="col-md-6">
+										<table style="width: 100%;border-collapse: collapse;">
+											<tr>
+												<td style="width: 15%;"></td>
+												<th class="right" style="width: 6%;">From :</th>
+												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fc.sdfTordf(fromDate3)%>"></td>
+												<th class="right" style="width: 5%;">To :</th>
+												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="tsl2ToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+												<th class="right" style="width: 10%;">Employee : </th>
+												<td style="width: 39%;">
+													<select class="form-control selectdee" name="empId" id="tsl2EmpId">
+														<%
+														if(empList!=null && empList.size()>0){
+														for(Object[] obj : empList) {%>
+															<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
+														<%} }%>
+													</select>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-md-6">
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="row ml-1 mr-1">
+						<div class="col-md-6 table-wrapper">
+							<table class="table view-table" id="tslcontainer2">
+								<thead class="center">
+									<tr>
+										<th style="font-size: 16px;color: black;" colspan="4">Extra Days</th>
+									</tr>
+									<tr>
+										<th>SN</th>
+										<th>Date</th>
+										<th>Day</th>
+										<th>No of Hrs</th>
+									</tr>
+								</thead>
+								<tbody id="tslcontainer2tbody" class="center">
+								
+								</tbody>	
+							</table>
+						</div>
+						<div class="col-md-6">
+						</div>
+					</div>
+					
+					<!-- ------------------------- Time Sheet Extra Days List End ------------------------------------------  -->
+				</div>
+			</div>
+		</div>
+		
 	</div>
 
 <script type="text/javascript">
@@ -477,11 +546,15 @@ $('.btn1').click(function(){
 	$('.btn3').css('color','black');
 	$('.btn4').css('background-color','white');
 	$('.btn4').css('color','black');
+	$('.btn5').css('background-color','white');
+	$('.btn5').css('color','black');
 	
-	$('#project').show();
-	$('#individual').hide();
-	$('#others').hide();
-	$('#extrahrs').hide();
+	$('#projectstats').show();
+	$('#individualstats').hide();
+	$('#othersstats').hide();
+	$('#extrahrsstats').hide();
+	$('#extradaysstats').hide();
+	
 });
 
 $('.btn2').click(function(){
@@ -493,11 +566,15 @@ $('.btn2').click(function(){
 	$('.btn3').css('color','black');
 	$('.btn4').css('background-color','white');
 	$('.btn4').css('color','black');
+	$('.btn5').css('background-color','white');
+	$('.btn5').css('color','black');
 	
-	$('#project').hide();
-	$('#individual').show();
-	$('#others').hide();
-	$('#extrahrs').hide();
+	$('#projectstats').hide();
+	$('#individualstats').show();
+	$('#othersstats').hide();
+	$('#extrahrsstats').hide();
+	$('#extradaysstats').hide();
+	
 });
 
 $('.btn3').click(function(){
@@ -509,11 +586,15 @@ $('.btn3').click(function(){
 	$('.btn3').css('color','white');
 	$('.btn4').css('background-color','white');
 	$('.btn4').css('color','black');
+	$('.btn5').css('background-color','white');
+	$('.btn5').css('color','black');
 	
-	$('#project').hide();
-	$('#individual').hide();
-	$('#others').show();
-	$('#extrahrs').hide();
+	$('#projectstats').hide();
+	$('#individualstats').hide();
+	$('#othersstats').show();
+	$('#extrahrsstats').hide();
+	$('#extradaysstats').hide();
+	
 });
 
 $('.btn4').click(function(){
@@ -525,11 +606,33 @@ $('.btn4').click(function(){
 	$('.btn3').css('color','black');
 	$('.btn4').css('background-color','green');
 	$('.btn4').css('color','white');
+	$('.btn5').css('background-color','white');
+	$('.btn5').css('color','black');
 	
-	$('#project').hide();
-	$('#individual').hide();
-	$('#others').hide();
-	$('#extrahrs').show();
+	$('#projectstats').hide();
+	$('#individualstats').hide();
+	$('#othersstats').hide();
+	$('#extrahrsstats').show();
+	$('#extradaysstats').hide();
+});
+
+$('.btn5').click(function(){
+	$('.btn1').css('background-color','white');
+	$('.btn1').css('color','black');
+	$('.btn2').css('background-color','white');
+	$('.btn2').css('color','black');
+	$('.btn3').css('background-color','white');
+	$('.btn3').css('color','black');
+	$('.btn4').css('background-color','white');
+	$('.btn4').css('color','black');
+	$('.btn5').css('background-color','green');
+	$('.btn5').css('color','white');
+	
+	$('#projectstats').hide();
+	$('#individualstats').hide();
+	$('#othersstats').hide();
+	$('#extrahrsstats').hide();
+	$('#extradaysstats').show();
 });
 </script>
 
@@ -644,6 +747,33 @@ $(document).ready(function() {
 	});
 	
 	/* ------------------------- Time Sheet List End ------------------------------ */
+	
+	/* ------------------------- Time Sheet List2 (Extra Days) ------------------------------ */
+	$('#tsl2FromDate').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,	
+		"cancelClass" : "btn-default",
+		/* "minDate" : tomorrow, */
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
+	
+	$('#tsl2ToDate').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+		"minDate" :$('#tsl2FromDate').val(),
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
+	
+	/* ------------------------- Time Sheet List2 End (Extra Days) ------------------------------ */
 
 	getEmpActionAnalyticsCount();
 	getEmpActivityWiseAnalyticsCount();
@@ -652,7 +782,12 @@ $(document).ready(function() {
 	getProjectActivityWiseAnalyticsCount();
 	
 	getEmpTimeSheetWorkingHrsList();
+	
 	getProjectTimeSheetWorkingHrsList();
+	
+	getEmpExtraWorkingDayList();
+	
+	
 	
 	// Radialize the colors
 	Highcharts.setOptions({
@@ -673,6 +808,8 @@ $(document).ready(function() {
 	
 	
 });
+
+
 
 /* ------------------------- Action / Activitywise Analytics (Individual) ---------------------------- */
 
@@ -762,6 +899,29 @@ $( "#tslFromDate" ).change(function() {
 });
 
 /* ------------------------- Time Sheet List End ------------------------------ */
+
+/* ------------------------- Time Sheet List2 (Extra Days) ------------------------------ */
+
+$( "#tsl2FromDate" ).change(function() {
+	
+	$('#tsl2ToDate').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+		"minDate" : $('#tsl2FromDate').val(), 
+		/* "startDate" : new Date(), */
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
+	
+	getEmpExtraWorkingDayList();
+});
+
+/* ------------------------- Time Sheet List2 End (Extra Days) ------------------------------ */
+
 
 
 
@@ -1060,7 +1220,7 @@ function getEmpActivityWiseAnalyticsCount(){
 			        text: 'Activity wise Analytics'
 			    },
 			    tooltip: {
-			    	pointFormat: '{series.name}: <b>{point.y} hours</b>'
+			    	pointFormat: '{series.name}: <b>{point.y} </b>'
 			    },
 			    
 			    plotOptions: {
@@ -1069,7 +1229,7 @@ function getEmpActivityWiseAnalyticsCount(){
 			            cursor: 'pointer',
 			            dataLabels: {
 			                enabled: true,
-			                format: '<b>{point.name}</b>: {point.y} hours',
+			                format: '<b>{point.name}</b>: {point.y} ',
 			                connectorColor: 'silver'
 			                
 			            },
@@ -1526,7 +1686,7 @@ function getEmpTimeSheetWorkingHrsList(){
 
 /* ------------------------------------- Time Sheet List End ---------------------------------- */
 
-/* ------------------------------------- Time Sheet List ---------------------------------- */
+/* ------------------------------------- Project Time Sheet ---------------------------------- */
 $('#ptsToDate,#ptsProjectId').change(function(){
 	
 	var ptsProjectId = $('#ptsProjectId').val();
@@ -1543,7 +1703,7 @@ function getProjectTimeSheetWorkingHrsList(){
 	var projectId = $('#ptsProjectId').val();
 	var fromDate = $('#ptsFromDate').val();
 	var toDate = $('#ptsToDate').val();
-	console.log('fromDate: '+fromDate);
+
 	$.ajax({
 		Type:'GET',
 		url:'ProjectTimeSheetWorkingHrsList.htm',
@@ -1599,7 +1759,7 @@ function getProjectTimeSheetWorkingHrsList(){
 			$('#ptscontainertbody').html(x);
 			
 			
-			/* --------------------------- Project Time Sheet ------------------------------ */
+			/* --------------------------- Project Time Sheet (In Pie Chart) ------------------------------ */
 			
 			
 
@@ -1686,28 +1846,92 @@ function getProjectTimeSheetWorkingHrsList(){
 		        }
 			});
 			
-			/* --------------------------- Project Time Sheet End ------------------------------ */
+			/* --------------------------- Project Time Sheet End  (In Pie Chart)------------------------------ */
 		}
 	});
 }
 
-/* ------------------------------------- Time Sheet List End ---------------------------------- */
+/* ------------------------------------- Project Time Sheet End ---------------------------------- */
+
+ var holidayList = [
+		            <% for (int i = 0; i < holidayList.size(); i++) { %>
+		                [
+		                    <% Object[] array = holidayList.get(i); %>
+		                    <% for (int j = 0; j < array.length; j++) { %>
+		                        "<%= array[j] %>"
+		                        <% if (j < array.length - 1) { %>
+		                            ,
+		                        <% } %>
+		                    <% } %>
+		                ]
+		                <% if (i < holidayList.size() - 1) { %>
+		                    ,
+		                <% } %>
+		            <% } %>
+		        ];
+
+$('#tsl2ToDate,#tsl2EmpId').change(function(){
+	 getEmpExtraWorkingDayList();
+});
+
+function getEmpExtraWorkingDayList(){
+
+	$.ajax({
+		Type:'GET',
+		url:'EmpExtraWorkingDayList.htm',
+		datatype:'json',
+		data:{
+			empId : $('#tsl2EmpId').val(),
+			fromDate : $('#tsl2FromDate').val(),
+			toDate : $('#tsl2ToDate').val(),
+		},
+		success:function(result){
+			var values = JSON.parse(result);
+			var x='';
+			
+			for(var i=0;i<values.length;i++){
+				var day = getDayOfWeek(values[i][4]);
+				var holidayName = '';
+				
+				var isFound = holidayList.some(function(holiday) {
+					if(holiday[1] === values[i][4]){
+						holidayName = holiday[2];
+						return true;
+					}
+		        });
+				
+				if(day=='Saturday' || day=='Sunday' || isFound){
+					x+='<tr>';
+					x+='<td>'+(i+1)+'</td>';
+					x+='<td>'+(sqlDateToRegularDate(values[i][4]))+'</td>';
+					x+='<td class="left">'+day+''+(holidayName!=''?' ('+holidayName+')':'')+'</td>';
+					x+='<td>'+values[i][5]+'</td>';
+					x+='</tr>';
+				}
+			}
+			$('#tslcontainer2tbody').html(x);
+		}
+	});
+}
+
+
+/* -------------------------------------------------- Utility Functions ----------------------------------------------------- */
 
 
 //Function to convert time strings (e.g., "10:00:00 am") to hours
 function convertTimeStringToHours(timeString) {
- var timeParts = timeString.match(/(\d+):(\d+):(\d+) (\w+)/);
+ var timeParts = timeString.match(/(\d+):(\d+):(\d+)/);
  var hours = parseInt(timeParts[1]);
  var minutes = parseInt(timeParts[2]);
  var seconds = parseInt(timeParts[3]);
- var period = timeParts[4];
+ //var period = timeParts[4];
 
- if (period.toLowerCase() === "pm" && hours < 12) {
-     hours += 12;
- }
- if (period.toLowerCase() === "am" && hours === 12) {
-     hours = 0;
- }
+ //if (period.toLowerCase() === "pm" && hours < 12) {
+ //    hours += 12;
+ //}
+ //if (period.toLowerCase() === "am" && hours === 12) {
+ //    hours = 0;
+ //}
 
  // Convert to fractional hours
  return hours + minutes / 60 + seconds / 3600;
@@ -1735,6 +1959,20 @@ function sqlDateToRegularDate(dateString) {
     
     return formattedDate;
 }
+
+function getDayOfWeek(dateString) {
+	  // Create a new Date object from the date string
+	  const date = new Date(dateString);
+	  
+	  // Array of day names
+	  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	  
+	  // Get the day of the week as a number (0-6)
+	  const dayIndex = date.getDay();
+	  
+	  // Get the corresponding day name
+	  return daysOfWeek[dayIndex];
+	}
 </script>
 </body>
 </html>

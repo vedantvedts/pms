@@ -64,8 +64,8 @@
 							method="POST" autocomplete="off">
 
 							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-md-3">
+								<div class="col-md-2"></div>
+								<div class="col-md-2">
 									<div class="form-group">
 										<label>Designation Code: <span class="mandatory"
 											style="color: red;">*</span></label> <input
@@ -75,7 +75,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="form-group">
 										<label>Designation :<span class="mandatory"
 											style="color: red;">*</span>
@@ -85,7 +85,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="form-group">
 										<label>Limit :<span class="mandatory"
 											style="color: red;">*</span></label> <input
@@ -93,6 +93,19 @@
 											required="required" style="font-size: 15px; width: 80%;">
 									</div>
 								</div>
+
+								<div class="col-md-2">
+									<div class="form-group">
+										<label>Desig Cadre :<span class="mandatory"style="color: red;">*</span></label> 
+										<select class="form-control" name="desigCadre">
+											<option value="DRDS">DRDS</option>
+											<option value="DRTC">DRTC</option>
+											<option value="Others">Others</option>
+										</select>
+									</div>
+								</div>
+								
+								<div class="col-md-2"></div>
 							</div>
 							<div align="center">
 								<button type="button" class="btn btn-sm submit"

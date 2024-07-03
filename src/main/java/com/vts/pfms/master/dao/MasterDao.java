@@ -9,6 +9,7 @@ import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -83,4 +84,8 @@ public interface MasterDao  {
 	public int revokeIndustryPartnerRep(String industryPartnerRepId) throws Exception;
 	public List<Object[]> industryPartnerRepDetails(String industryPartnerId, String industryPartnerRepId) throws Exception;
 	public Employee getEmployeeById(String empId) throws Exception;
+	public List<Object[]> HolidayList(String yr) throws Exception;
+	public HolidayMaster getHolidayData(Long holidayid);
+	public long HolidayEditSubmit(HolidayMaster hw);
+	public long HolidayAddSubmit(HolidayMaster holiday);
 }
