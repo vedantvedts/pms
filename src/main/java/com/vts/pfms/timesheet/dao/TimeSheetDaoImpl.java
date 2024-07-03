@@ -290,5 +290,34 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			return new ArrayList<>();
 		}
 	}
+
+	private static final String EMPEXTRAWORKINGDAYSLIST = "SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.EmpName) AS 'EmpName', b.Designation, b.DesigCadre,CONCAT(c.ActivityFromDate,''),CONCAT(c.TotalDuration,'') FROM employee a, employee_desig b, pfms_timesheet c WHERE a.DesigId=b.DesigId AND a.EmpId=c.EmpId AND a.EmpId=:EmpId AND c.ActivityFromDate BETWEEN :FromDate AND :ToDate ORDER BY c.ActivityFromDate";
+	@Override
+	public List<Object[]> empExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(EMPEXTRAWORKINGDAYSLIST);
+			query.setParameter("EmpId", empId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl empExtraWorkingDaysList() "+e);
+			return new ArrayList<>();
+		}
+	}
+	
+	private static final String HOLIDAYLIST = "SELECT HolidayId,CONCAT(HolidayDate,'') as HolidayDate,HolidayName,HolidayType FROM pfms_holiday_master WHERE IsActive=1";
+	@Override
+	public List<Object[]> getHolidayList() throws Exception {
+		try {
+			Query query = manager.createNativeQuery(HOLIDAYLIST);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getHolidayList() "+e);
+			return new ArrayList<>();
+		}
+	}
 	
 }

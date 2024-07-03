@@ -165,11 +165,12 @@ label {
 											<th>SrNo</th>
 											<th>Designation Code</th>
 											<th>Designation</th>
+											<th>Desig Cadre</th>
 											<th>Limit</th>
 											<th>Action</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody style=" text-align: center;">
 										<% int count=0;
 	   	 						for(Object[] obj:designationlist){ 
 	   	 							count++; %>
@@ -178,6 +179,7 @@ label {
 											<td><%=obj[4] %></td>
 											<td><%=obj[1] %></td>
 											<td><%=obj[2] %></td>
+											<td><%=obj[5]!=null?obj[5]:"-" %></td>
 											<td><%=obj[3] %></td>
 											<td>
 

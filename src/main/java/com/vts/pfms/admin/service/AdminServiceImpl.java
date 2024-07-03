@@ -461,7 +461,7 @@ public class AdminServiceImpl implements AdminService{
 		model.setDesigCode(dto.getDesigCode());
 		model.setDesignation(dto.getDesignation());
 		model.setDesigLimit(Long.parseLong(dto.getDesigLimit()));
-
+		model.setDesigCadre(dto.getDesigCadre());
 		
 		return dao.DesignationAddSubmit(model);
 	}

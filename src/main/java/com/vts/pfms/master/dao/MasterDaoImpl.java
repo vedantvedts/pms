@@ -21,6 +21,7 @@ import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -824,4 +825,54 @@ public class MasterDaoImpl implements MasterDao {
 			return null;
 		}
 	}
+	
+	//---------------------------------------------------------------------------------------------
+	  private String HolidayList=" select a.HolidayId,a.HolidayDate,a.HolidayName,a.HolidayType from pfms_holiday_master a where  DATE_FORMAT(HolidayDate,'%Y')=:holiyear AND IsActive='1' ORDER BY HolidayDate DESC";
+		@Override
+		public List<Object[]> HolidayList(String yr) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(HolidayList);
+				query.setParameter("holiyear", yr);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		@Override
+		public HolidayMaster getHolidayData(Long holidayid) {
+			
+			try {
+				HolidayMaster holiday = manager.find(HolidayMaster.class,(holidayid));
+				return holiday ;
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+
+		@Override
+		public long HolidayEditSubmit(HolidayMaster hw) {
+			
+			manager.merge(hw);
+			manager.flush();
+			return hw.getHolidayId();
+	   }
+		
+		@Override
+	    public long HolidayAddSubmit(HolidayMaster holiday) {
+			
+			try {
+				manager.persist(holiday);
+				manager.flush();
+
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+			return holiday.getHolidayId();
+		}
+
 }

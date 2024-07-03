@@ -6,6 +6,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "employee_desig")
 public class EmployeeDesig {
@@ -17,31 +20,6 @@ public class EmployeeDesig {
 	private String DesigCode;
 	private String Designation;
 	private long DesigLimit;
+	private String DesigCadre;
 	
-	
-	public long getDesigId() {
-		return DesigId;
-	}
-	public String getDesigCode() {
-		return DesigCode;
-	}
-	public String getDesignation() {
-		return Designation;
-	}
-	public long getDesigLimit() {
-		return DesigLimit;
-	}
-	public void setDesigId(long desigId) {
-		DesigId = desigId;
-	}
-	public void setDesigCode(String desigCode) {
-		DesigCode = desigCode;
-	}
-	public void setDesignation(String designation) {
-		Designation = designation;
-	}
-	public void setDesigLimit(long desigLimit) {
-		DesigLimit = desigLimit;
-	}
-		
 }

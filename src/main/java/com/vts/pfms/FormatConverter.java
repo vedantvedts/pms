@@ -265,4 +265,15 @@ public class FormatConverter
         // Format the date to the desired output format
         return date.format(outputFormatter);
     }
+	
+	public String sdfTordf(String sqlDate) {
+		// Define the input date format
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// Parse the date
+		LocalDate date = LocalDate.parse(sqlDate, inputFormatter);
+		// Define the output date format
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		// Format the date to the desired output format
+		return date.format(outputFormatter);
+	}
 }

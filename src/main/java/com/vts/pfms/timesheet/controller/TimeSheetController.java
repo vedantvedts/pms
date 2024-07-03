@@ -56,6 +56,7 @@ public class TimeSheetController {
 		try {
 			req.setAttribute("empList", service.getAllEmployeeList(labcode));
 			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,labcode));
+			req.setAttribute("holidayList", service.getHolidayList());
 			return "timesheet/TimeSheetDashboard";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside TimeSheetDashboard.htm "+UserId, e);
@@ -225,7 +226,7 @@ public class TimeSheetController {
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
-				fromDate=today.withDayOfMonth(1).toString();
+				fromDate=today.minusMonths(1).toString();
 				toDate = today.toString();
 
 			}else{
@@ -256,7 +257,7 @@ public class TimeSheetController {
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
-				fromDate=today.withDayOfMonth(1).toString();
+				fromDate=today.minusMonths(1).toString();
 				toDate = today.toString();
 				
 			}else{
@@ -288,7 +289,7 @@ public class TimeSheetController {
 
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
-				fromDate=today.withDayOfMonth(1).toString();
+				fromDate=today.minusMonths(1).toString();
 				toDate = today.toString();
 				
 			}else{
@@ -320,7 +321,7 @@ public class TimeSheetController {
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
-				fromDate=today.withDayOfMonth(1).toString();
+				fromDate=today.minusMonths(1).toString();
 				toDate = today.toString();
 				
 			}else{
@@ -352,7 +353,7 @@ public class TimeSheetController {
 
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
-				fromDate=today.withDayOfMonth(1).toString();
+				fromDate=today.minusMonths(1).toString();
 				toDate = today.toString();
 				
 			}else{
@@ -384,7 +385,7 @@ public class TimeSheetController {
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
-				fromDate=today.withDayOfMonth(1).toString();
+				fromDate=today.minusMonths(1).toString();
 				toDate = today.toString();
 				
 			}else{
@@ -398,5 +399,35 @@ public class TimeSheetController {
 			e.printStackTrace();
 		}
 		return json.toJson(workingHrsList);
+	}
+	
+	@RequestMapping(value = "EmpExtraWorkingDayList.htm", method = {RequestMethod.GET})
+	public @ResponseBody String empExtraWorkingDayList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside EmpExtraWorkingDayList.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> extraworkingDaysList = null;
+		try {
+			String empId = req.getParameter("empId");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			empId = empId!=null?empId:EmpId;
+			LocalDate today=LocalDate.now();
+			if(fromDate==null) {
+				fromDate=today.getYear()+"-01-01";
+				toDate = today.toString();
+				
+			}else{
+				fromDate=fc.rdfTosdf(fromDate);
+				toDate=fc.rdfTosdf(toDate);
+			}
+			
+			extraworkingDaysList = service.empExtraWorkingDaysList(empId, fromDate, toDate);
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside EmpExtraWorkingDayList.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		return json.toJson(extraworkingDaysList);
 	}
 }

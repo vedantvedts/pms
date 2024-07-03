@@ -268,6 +268,40 @@ input {
 .select2-container {
     width: 100% !important; /* Force full width */
 }
+
+.timesheetform{
+	max-height: 500px;
+    min-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Firefox */
+.timesheetform {
+  scrollbar-width: thin;
+  scrollbar-color: #216583 #f8f9fa;
+}
+
+/* Chrome, Edge, and Safari */
+.timesheetform::-webkit-scrollbar {
+  width: 12px;
+}
+
+.timesheetform::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.timesheetform::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 5px;
+  border: 2px solid #f8f9fa;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3;
+}
+
 </style>
     
 </head>
@@ -337,7 +371,7 @@ statusMap.put("RBS", "#fe4e4e");
 							</div>
 							
 							<!-- Time Sheet Details View -->
-							<div id="timesheetdetailsdiv">
+							<div class="timesheetform" id="timesheetdetailsdiv">
 								<!-- <div class="row">
 							    	<div class="col-md-10" align="left">
 							        	
@@ -494,7 +528,7 @@ statusMap.put("RBS", "#fe4e4e");
 							</div>
 							
 							<!-- Time Sheet Details Add / Edit -->
-							<div class="shadow mt-2" id="timesheetformdiv">
+							<div class="shadow mt-2 timesheetform" id="timesheetformdiv">
 								<form action="TimeSheetDetailsSubmit.htm" method="post">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									<div class="form-group">
@@ -913,7 +947,7 @@ function toggleDiv(divId) {
         if(empActivityAssignList!=null && empActivityAssignList.size()>0){
         for(Object[] activity : empActivityAssignList){
         %>
-		newRow+='<option value="<%=activity[10]%>" data-activity="<%=activity[5]%>" data-projectid="<%=activity[14]%>" data-actionno="<%=activity[9]%>"><%=activity[9]%></option>';
+		newRow+="<option value='<%=activity[10]%>' data-activity='<%=activity[5]%>' data-projectid='<%=activity[14]%>' data-actionno='<%=activity[9]%>'><%=activity[9]%></option>";
 		<%} }%>
 		newRow+='</select></td>';
 		newRow+='<td><span id="activityName-project-'+newId+'"></span><select class="form-control selectdee" name="projectId" id="projectId-select-'+newId+'"><option value="0" >General</option>';

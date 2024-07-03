@@ -33,6 +33,7 @@ import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -43,7 +44,8 @@ public class MasterServiceImpl implements MasterService {
 
 	
 	private static final Logger logger=LogManager.getLogger(MasterServiceImpl.class);
-	
+
+	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	@Autowired
@@ -595,4 +597,48 @@ public class MasterServiceImpl implements MasterService {
 		
 		return dao.industryPartnerRepDetails(industryPartnerId, industryPartnerRepId);
 	}
+	
+	//-----------------------------------------------------------------------------------------
+	 //holiday lsit----
+		
+		@Override
+		public List<Object[]> HolidayList( String yr) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.HolidayList(yr);
+		}
+		
+		@Override
+		public long HolidayDelete(HolidayMaster holiday, String userId) throws Exception {
+			
+			HolidayMaster hw =dao.getHolidayData(holiday.getHolidayId());
+			hw.setIsActive(0);
+			return dao.HolidayEditSubmit(hw);
+		}
+		
+		@Override
+		public long HolidayAddSubmit(HolidayMaster holiday) throws Exception {
+			
+			return dao.HolidayAddSubmit(holiday);
+		}
+
+		@Override
+		public long HolidayEditSubmit(HolidayMaster holiday, String userId) throws Exception {
+			HolidayMaster hw =dao.getHolidayData(holiday.getHolidayId());
+			hw.setHolidayDate(holiday.getHolidayDate());
+			hw.setHolidayName(holiday.getHolidayName());
+			hw.setHolidayType(holiday.getHolidayType());
+			hw.setModifiedBy(userId);
+			hw.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+			hw.setIsActive(1);
+			
+			return dao.HolidayEditSubmit(hw);
+		}
+		
+
+		@Override
+		public HolidayMaster getHolidayData(Long holidayid) throws Exception {
+			
+			return dao.getHolidayData(holidayid);  
+		}
+		
 }
