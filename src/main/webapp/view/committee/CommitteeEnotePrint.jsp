@@ -178,7 +178,7 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 <%-- 	  <div align="right" style="font-size :12px;">[Forwarded On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %> </span>]</div>
  --%>	  <br>
 <%}}}%>
-<br><br><br><br>
+<br><br><br><br>  
 <%
 if(EnotePrintDetails!=null && EnotePrintDetails.size()>0){
        for(Object[] ad :EnotePrintDetails) {
