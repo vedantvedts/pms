@@ -283,7 +283,12 @@ String ses=(String)request.getParameter("result");
 					</div>
 					
 					<div align="center" style="margin-top:4%;">
+				<% if(CommitteMainEnoteList==null ){%>
 					
+					<button type="button" onclick="return checkOfficer('U')" class="btn btn-sm edit" name="action" value="Update"
+
+					>UPDATE</button>
+					<%} %>
 			
 				<%if(CommitteMainEnoteList!=null && forwardstatus.contains(CommitteMainEnoteList[15].toString())) {%>	
 					<button type="button" onclick="return checkOfficer('U')" class="btn btn-sm edit" name="action" value="Update"

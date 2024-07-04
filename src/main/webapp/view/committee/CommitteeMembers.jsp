@@ -667,7 +667,7 @@ String ses=(String)request.getParameter("result");
 							
 					<% if(status.equals("P") ){ %>
 							<%if(Long.parseLong(approvaldata[8].toString())>0){ %>
-								<h4 align="center"><%=approvaldata[7] %></h4>
+								<%-- <h4 align="center"><%=approvaldata[7] %></h4> --%>
 							<%} %>
 						<div class="row" >	
 						
