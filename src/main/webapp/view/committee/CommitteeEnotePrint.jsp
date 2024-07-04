@@ -140,6 +140,8 @@ background-color:DBEDC7;
 <body>
 <%
 Object[]CommitteMainEnoteList = (Object[])request.getAttribute("CommitteMainEnoteList");
+
+
 SimpleDateFormat rdf= new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdtf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 SimpleDateFormat rdtf= new SimpleDateFormat("dd-MM-yyyy hh:mm a");
@@ -182,8 +184,8 @@ String type =(String)request.getAttribute("type");
    for(Object[] ad :EnotePrintDetails) {
      if(ad[8].toString().equalsIgnoreCase("FWD")){%>
 	<div align="right" style="">&nbsp;<span class="text-blue" style="font-size :16px;"><span style="color: black;font-size: 10px;">Forwarded By</span><br><b><%=ad[2].toString().trim() %>, &nbsp; <%=ad[3].toString() %></b></span> </div>
-<%-- 	  <div align="right" style="font-size :12px;">[Forwarded On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %> </span>]</div>
- --%>	  <br>
+	  <div align="right" style="font-size :12px;">[Forwarded On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</div>
+	  <br>
 <%}}}%>
 <br><br><br><br>  
 <%
@@ -192,32 +194,32 @@ if(EnotePrintDetails!=null && EnotePrintDetails.size()>0){
 		if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RC1")){%>
 		<div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
 		<div align="left" style="margin-left:12px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;"> <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-<%-- 	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %> </span>]</div>
- --%>	    <br><br><br>
+	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</div>
+	    <br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RR1")){%>
 	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
 	   <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim()%>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-<%-- 	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %> </span>]</div>
- --%>	     <br><br><br>
+	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</div>
+	     <br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RC2")){ %>
 	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
 	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	   <%--  <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %> </span>]</div> --%>
+	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"> <%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</div>
 	      <br><br><br>
 	   <%}else if (ad[8]!=null && ad[8].toString().equalsIgnoreCase("RR2")){ %>
 	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
 	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	    <%-- <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %> </span>]</div> --%>
+	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %>  </span>]</div>
 	      <br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RC3")) {%>
 	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
 	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	  <%--   <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %> </span>]</div> --%>
+	   <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %>  </span>]</div>
 	      <br><br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RR3")){ %>
 	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
 	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	   <%--  <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %> </span>]</div> --%>
+  <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %>  </span>]</div> 
 	      <br><br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("APR")){ %>
 		<br><br>
@@ -225,7 +227,7 @@ if(EnotePrintDetails!=null && EnotePrintDetails.size()>0){
          <span style="font-weight: 600; font-size: 16px; color: green;">APPROVED</span><br>
          <span style="font-weight: 400; font-size: 12px; color: green;"><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></span><br><br>
          <span style="font-weight: 500; font-size: 14px; color: green;"><span class="text-blue" style="font-size :14px; color: green;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %></b></span></span><br><br>
-		<%--  <span style="font-weight: 400; font-size: 12px; color: green;">[Approved On :&nbsp;<span class="text-blue" style="font-size:12px; color: green;"><%=DateTimeFormatUtil.SqlToRegularDate(ad[4].toString().substring(0, 10)) +" "+ad[4].toString().substring(11,19) %></span>]</span> --%>
+  <span style="font-weight: 400; font-size: 12px; color: green;">[Approved On :&nbsp;<span class="text-blue" style="font-size:12px; color: green;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</span> 
          </div>
      <%   } } }%>
 </div>
