@@ -318,7 +318,7 @@ public interface CommitteeDao {
 	public List<Object[]> eNotePendingList(long empId, String type)throws Exception;
 	public Object[] NewApprovalList(String enoteId)throws Exception;
 	public List<Object[]> eNoteApprovalList(long empId, String fromDate, String toDate)throws Exception;
-	public List<Object[]> EnotePrintDetails(long enoteId)throws Exception;
+	public List<Object[]> EnotePrintDetails(long enoteId,String type)throws Exception;
 
 
 }

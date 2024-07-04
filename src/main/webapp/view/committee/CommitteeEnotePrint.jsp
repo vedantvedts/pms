@@ -150,8 +150,9 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 List<Object[]>EnotePrintDetails = (List<Object[]>)request.getAttribute("EnotePrintDetails");
 String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
-
+String type =(String)request.getAttribute("type");
 %>
+
 <div align="center">
 <div style="width: 100%;border: 0;text-align: center;"><h3> <b style="font-size:18px;text-decoration:underline">Note&nbsp;:&nbsp;<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%>Note_<%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%><%} %></b></h3></div>
 <div style="width: 100%;border: 0;text-align: center;"> <span style="float: left;"><b style="font-size:18px; margin-left: 14px;">Ref No&nbsp; : &nbsp;<span style="color: blue; font-size: 16px;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[1]!=null){%><%=CommitteMainEnoteList[1].toString()%><%}else{%>-<%}%></span></b></span><span style="float: right;"><b style="font-size:16px;">Date : &nbsp;<%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%></b></span> </div>
@@ -166,8 +167,14 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 	<td style="border: none;"><span style="font-size: 14px; color: blue;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null && CommitteMainEnoteList[4].toString().length()>0){%><%=CommitteMainEnoteList[4].toString().replaceAll("\n", "<br>")%><%}else{%>-<%}%></span> </td>
 	</tr>
 	<tr>
-	<td style="border: none; width:25%;"><span style=" font-size: 14px; color: blue;"><b style="margin-left:20px; color: black;">Committee Letter :</b></span></td>
-	<td style="border: none;"><span style="font-size: 14px; color: blue;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[5]!=null){%><a href="<%=path%>CommitteeConstitutionLetterDownload.htm?committeemainid=<%=CommitteMainEnoteList[5].toString()%>&flag=<%="P"%>" target="_blank">Download</a><%}else{%>No Attachment!<%}%></span> </td>
+	<td style="border: none; width:25%;"><span style=" font-size: 14px; color: blue;"><b style="margin-left:20px; color: black;">Attachment : </b></span></td>
+	<td style="border: none;"><span style="font-size: 14px; color: blue;">
+	<%if(type.equalsIgnoreCase("C")){ %>
+	<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[5]!=null){%><a href="<%=path%>CommitteeConstitutionLetterDownload.htm?committeemainid=<%=CommitteMainEnoteList[5].toString()%>&flag=<%="P"%>" target="_blank">Download</a><%}else{%>No Attachment!<%}%></span>
+	<%}else{ %>
+	<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[6]!=null){%><a href="<%=path%>CommitteeMinutesNewDownload.htm?committeescheduleid=<%=CommitteMainEnoteList[6].toString()%>&flag=<%="P"%>" target="_blank">Download</a><%}else{%>No Attachment!<%}%></span>
+	<%} %>
+	 </td>
 	</tr>
 	</table>
 	

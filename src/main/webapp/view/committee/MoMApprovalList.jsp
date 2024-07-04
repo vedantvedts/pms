@@ -75,7 +75,7 @@ display:none;
 						
 					<div class="card-header">						
 						<div class="row">										
-							<div class="col-md-12"><h3 style="color:#055C9D;margin-top:-5px;" >Committee Approval List 
+							<div class="col-md-12"><h3 style="color:#055C9D;margin-top:-5px;" >MOM Approval List 
 						</h3>
 						
 							</div>	
@@ -89,7 +89,7 @@ display:none;
 		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
 		  <li class="nav-item" style="width: 50%;"  >
 		    <div class="nav-link active" style="text-align: center;" id="eNotePendingtab" data-toggle="pill" data-target="#pills-OPD" role="tab" aria-controls="pills-OPD" aria-selected="true">
-			   <span>Committee Pending List 
+			   <span> Pending  
 				   <span class="badge badge-danger badge-counter count-badge ml-2">
 				 		<%if( EnoteApprovalPendingList!=null && EnoteApprovalPendingList.size()>99){ %>
 				   			99+
@@ -102,12 +102,12 @@ display:none;
 		  </li>
 		  <li class="nav-item"  style="width: 50%;">
 		    <div class="nav-link" style="text-align: center;" id="eNoteApprovedtab" data-toggle="pill" data-target="#pills-IPD" role="tab" aria-controls="pills-IPD" aria-selected="false">
-		    	 <span>Committee Approved List     
+		    	 <span> Approved     
 				   <span class="badge badge-danger badge-counter count-badge ml-2">
 				   	<%if(EnoteApprovedList!=null && EnoteApprovedList.size()>99){ %>
 				   		99+
 				   		<%}else{ %>
-				   		<%=EnoteApprovedList.size()%>
+				   		<%="0"%>
 						<%} %>	   			
 				   </span>  
 				</span> 
@@ -171,16 +171,17 @@ display:none;
 					<form action="CommitteeRecommendation.htm" method="post">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="committeemainid" value="<%=obj[11].toString()%>">
-					<input type="hidden" name="scheduleid" value="<%="0"%>">
-					<input type="hidden" name="type" value="<%="C"%>">
+					<input type="hidden" name="scheduleid" value="<%=obj[12].toString()%>">
+					<input type="hidden" name="type" value="S">
 					<button type="submit" class="btn btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button>
 					</form>
 					
 					
 					
 					<!-- Committee Letter -->
-					<form action="CommitteeConstitutionLetterDownload.htm" target="_blank">
-					<button type="submit" class="btn btn-sm edit" data-toggle="tooltip" data-placement="top" title="Committee Constitution Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
+					<form action="CommitteeMinutesNewDownload.htm" target="_blank">
+					<input type="hidden" name="committeescheduleid" value="<%=obj[12].toString()%>">
+					<button type="submit" class="btn btn-sm edit" data-toggle="tooltip" data-placement="top" title="MOM"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="committeemainid" value="<%=obj[11].toString()%>">
 					</form>
@@ -195,9 +196,9 @@ display:none;
 					<button type="submit" class="btn btn-sm edit" style="background: #E76F51;border-color: #E76F51" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="EnoteId" value="<%=obj[0].toString()%>">
-						<input type="hidden" name="type" value="C">
-						<input type="hidden" name="scheduleid" value="0">
 						<input type="hidden" name="committeemainid" value="<%=obj[11].toString()%>">
+						<input type="hidden" name="scheduleid" value="<%=obj[12].toString()%>">
+						<input type="hidden" name="type" value="S">
 					</form>
 					</div>
 					</td>
@@ -289,8 +290,6 @@ display:none;
 					<button type="submit" class="btn btn-sm edit" style="background: #E76F51;border-color: #E76F51" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="EnoteId" value="<%=obj[0].toString()%>">
-							<input type="hidden" name="type" value="C">
-						<input type="hidden" name="scheduleid" value="0">
 						<input type="hidden" name="committeemainid" value="<%=obj[12].toString()%>">
 					</form>
 							</div>

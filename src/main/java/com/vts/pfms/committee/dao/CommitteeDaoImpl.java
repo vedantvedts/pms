@@ -3192,11 +3192,15 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		}
 	}
 	private static final String ENOTEPENDINGLIST="CALL Pms_ComEnote_PendingList(:EmpId,:Type)";
+	private static final String MOMENOTEPENDINGLIST="CALL Pms_MomEnote_PendingList(:EmpId,:Type)";
 	@Override
 	public List<Object[]> eNotePendingList(long empId, String type) throws Exception {
 		logger.info(LocalDate.now() + "Inside eNotePendingList");
 		try {
 			Query query = manager.createNativeQuery(ENOTEPENDINGLIST);
+			if(type.equalsIgnoreCase("S")) {
+				query=manager.createNativeQuery(MOMENOTEPENDINGLIST);
+			}
 			query.setParameter("EmpId", empId);
 			query.setParameter("Type", type);
 			 List<Object[]> eNotePendingList = (List<Object[]>) query.getResultList();
@@ -3258,13 +3262,14 @@ public Object[] NewApprovalList(String EnoteId) throws Exception {
 			+ " sta.EnoteStatus,sta.EnoteStatusColor,sta.EnoteStatusCode,par.InitiatedBy FROM \r\n"
 			+ " pms_enote_trans tra,dak_enote_status sta,employee emp,pms_enote par WHERE par.EnoteId=tra.EnoteId\r\n"
 			+ " AND tra.EnoteStatusCode =sta.EnoteStatusCode AND sta.EnoteStatusCode IN ('FWD','RFD','RC1','RC2','RC3','RC4','RC5','APR') \r\n"
-			+ " AND tra.Actionby=emp.EmpId AND par.EnoteId=:enoteId AND tra.EnoteFrom = 'C' GROUP BY tra.EnoteStatusCode ORDER BY ActionDate ASC";
+			+ " AND tra.Actionby=emp.EmpId AND par.EnoteId=:enoteId AND tra.EnoteFrom =:type GROUP BY tra.EnoteStatusCode ORDER BY ActionDate ASC";
 	
 	@Override
-	public List<Object[]> EnotePrintDetails(long enoteId) throws Exception {
+	public List<Object[]> EnotePrintDetails(long enoteId,String type) throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery(ENOTEPRINT);
 		query.setParameter("enoteId", enoteId);
+		query.setParameter("type", type);
 		return (List<Object[]>)query.getResultList();
 	}
 }

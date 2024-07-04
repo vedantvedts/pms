@@ -505,16 +505,16 @@
 					
 														<%} %>
 															
-														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV")){ %>
+														<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=7){ %>
 															
 															
-															<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Minutes Approval" formaction="MeetingMinutesApproval.htm"  onclick="return confirm('Are you sure to forward the Minutes ?')" style="background-color:#0e49b5 ;color:white" /> 
+															<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Minutes Approval" formaction="MeetingMinutesApproval.htm" onclick="return confirm('Once You select confirm , you will not be able to change anything.Are you sure to submit?')"  style="background-color:#0e49b5 ;color:white" /> 
 					
 														<%} %>	
 														
-														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")){ %>
+														<%-- <%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")){ %>
 															<input type="submit" id="submit" class="btn  btn-sm view" name="sub" value="Re-Submit Minutes Approval" formaction="MeetingMinutesApproval.htm" onclick="return confirm('Are you sure to Re-submit the Minutes ?')" style="background-color:#0e49b5 	;color:white" /> 
-														<%} %>
+														<%} %> --%>
 															
 														
 															
@@ -535,9 +535,10 @@
 											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAR")){ %>
 												<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Re-Submit Agenda Approval"  onclick="checkagenda()" style="background-color:#0e49b5 	;color:white" /> 
 											<%} %>
-											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF")){ %>
+											<!-- Commented for New Flow  -->
+					<%-- 						<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF")){ %>
 												<button type="button"  class="btn  btn-sm view"  style="background-color:#0e49b5;color:white"> <i class="fa fa-forward" aria-hidden="true" style="font-size: 1.0rem"></i> Minutes Forwarded </button>
-											<%} %>
+											<%} %> --%>
 									
 									<%} %>
 									

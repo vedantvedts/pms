@@ -294,6 +294,6 @@ public interface CommitteeService {
 	public List<Object[]> eNotePendingList(long empId,String Type)throws Exception;
 	public Object[] NewApprovalList(String enoteId)throws Exception;
 	public List<Object[]> eNoteApprovalList(long empId, String fromDate, String toDate)throws Exception;
-	public List<Object[]> EnotePrintDetails(long parseLong)throws Exception;
+	public List<Object[]> EnotePrintDetails(long parseLong,String type)throws Exception;
 }
 

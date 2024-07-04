@@ -65,6 +65,8 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist");
 
+String type=(String)request.getAttribute("type");
+
 %>
 
 <div class="container-fluid" style=";">
@@ -82,7 +84,11 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 						
 						
 					<div class="col-md-8">
+					<%if(type.equalsIgnoreCase("C")) {%>
 					<form action="EnoteForward.htm" method="post">
+					<%}else{ %>
+					<form action="MomEnoteForward.htm" method="post">
+					<%} %>
 					<table class="table table-bordered" >
 					<tbody>
 					<tr>
@@ -161,6 +167,23 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					</tr>
 					<%} %>
 					<tr>
+					<td class="text-primary">Reference Document: </td>
+					<td colspan="3">
+				
+										<!-- Committee Recommendation  -->
+				
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+					<input type="hidden" name="committeemainid" value="<%=CommitteMainEnoteList[5].toString()%>">
+					<input type="hidden" name="scheduleid" value="<%=CommitteMainEnoteList[6].toString()%>">
+					<input type="hidden" name="type" value="<%=type%>">
+					<input type="hidden" name="EnoteId" value="<%=CommitteMainEnoteList!=null?CommitteMainEnoteList[0].toString():"0" %>">
+					<button type="submit" style="background: none;" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter" formaction="CommitteeEnotePrint.htm" formmethod="post" formtarget="_blank" class="btn btn-sm"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
+			
+					
+					
+					</td>
+					</tr>
+					<tr>
 					<td colspan="4">
 					<span class="text-primary" style="margin-bottom: 4px !important">Remarks :</span>
 					
@@ -173,7 +196,11 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					<button type="button" class="btn btn-sm submit" onclick="return formsubmit('A')"><%if(CommitteMainEnoteList[16].toString().equalsIgnoreCase("APR")){ %>Approve<%}else {%>Recommend <%} %></button>
 					<input type="hidden" name="EnoteId" value="<%=CommitteMainEnoteList!=null?CommitteMainEnoteList[0].toString():"0" %>">
 					<button type="button" class="btn btn-sm btn-danger" onclick="return formsubmit('R')" style="font-weight: 800;font-family: 'Montserrat', sans-serif;">RETURN</button>
+					<%if(type.equalsIgnoreCase("C")){ %>
 					<a class="btn btn-sm back" type="button" href="CommitteeApprovalList.htm">BACK</a>
+					<%} else{%>
+					<a class="btn btn-sm back" type="button" href="MoMApprovalList.htm">BACK</a>
+					<%} %>
 					</div>
 					</td>
 					</tr>
@@ -283,7 +310,9 @@ function formsubmit(value) {
 		event.preventDefault();
 	}
 }
-
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+	})
 </script>
 
 </html>

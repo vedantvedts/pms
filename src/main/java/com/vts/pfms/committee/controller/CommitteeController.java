@@ -720,8 +720,10 @@ public class CommitteeController {
 					chairperson=committeemembersall.get(i);
 				}
 			}
+			Object[]CommitteMainEnoteList = service.CommitteMainEnoteList(committeemainid,"0");
 			// EnoteFlow List
-			req.setAttribute("CommitteMainEnoteList", service.CommitteMainEnoteList(committeemainid,"0"));
+			req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
+			req.setAttribute("NewApprovalList", CommitteMainEnoteList!=null ? service.NewApprovalList(CommitteMainEnoteList[0].toString()):service.NewApprovalList("0"));
 			req.setAttribute("committeemembersall",committeemembersall);
 			req.setAttribute("committeerepnotaddedlist", service.CommitteeRepNotAddedList(committeemainid));
 			req.setAttribute("committeeMemberreplist", service.CommitteeMemberRepList(committeemainid));
@@ -876,13 +878,18 @@ public class CommitteeController {
 		
 		try {
 			String committeemainid=req.getParameter("committeemainid");
-			req.setAttribute("CommitteMainEnoteList", service.CommitteMainEnoteList(committeemainid,"0"));
+			String scheduleid=req.getParameter("scheduleid");
+			String type=req.getParameter("type");
+			req.setAttribute("CommitteMainEnoteList", service.CommitteMainEnoteList(committeemainid,scheduleid));
 			Object[] committeedata=service.CommitteMainData(committeemainid);
 			req.setAttribute("committeemainid", committeemainid);
+			req.setAttribute("type", type);
 			req.setAttribute("employeelist", service.EmployeeList(LabCode));
-			req.setAttribute("NewApprovalList", service.NewApprovalList(service.CommitteMainEnoteList(committeemainid,"0")[0].toString()));
+			req.setAttribute("NewApprovalList", service.NewApprovalList(service.CommitteMainEnoteList(committeemainid,scheduleid)[0].toString()));
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside CommitteeRecommendation.htm "+Username,e);
+			return "static/Error";
 		}
 		
 		return "committee/CommitteeRecommendation";
@@ -896,14 +903,26 @@ public class CommitteeController {
 		
 		try {
 			String committeemainid=req.getParameter("committeemainid");
-			req.setAttribute("CommitteMainEnoteList", service.CommitteMainEnoteList(committeemainid,"0"));
+			
+			String scheduleid=req.getParameter("scheduleid");
+			String type=req.getParameter("type");
+			if(scheduleid==null) {
+				scheduleid="0";
+			}
+			req.setAttribute("CommitteMainEnoteList", service.CommitteMainEnoteList(committeemainid,scheduleid));
 			Object[] committeedata=service.CommitteMainData(committeemainid);
 			req.setAttribute("committeemainid", committeemainid);
+			req.setAttribute("scheduleid", scheduleid);
+			req.setAttribute("type", type);
 			String EnoteId=req.getParameter("EnoteId");
-			List<Object[]> EnotePrintDetails=service.EnotePrintDetails(Long.parseLong(EnoteId));
-			
+			List<Object[]> EnotePrintDetails=service.EnotePrintDetails(Long.parseLong(EnoteId),type);
+			req.setAttribute("EnotePrintDetails", EnotePrintDetails);
+			req.setAttribute("EnotePrintDetails", EnotePrintDetails);
 			String filename="Committee_ENote_Print";
 			
+			if(type.equalsIgnoreCase("S")) {
+				filename="MOM_ENote_Print";
+			}
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path); 
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
@@ -975,8 +994,8 @@ public class CommitteeController {
 			pe.setComment(req.getParameter("Comment").trim());
 			pe.setCommitteeMainId(Long.parseLong(req.getParameter("committeemainid")));
 			pe.setEnoteFrom("C");
-			pe.setEnoteStatusCode("INI");
-			pe.setEnoteStatusCodeNext("INI");
+			pe.setEnoteStatusCode(pe.getEnoteStatusCode()==null?"INI":pe.getEnoteStatusCode());
+			pe.setEnoteStatusCodeNext(pe.getEnoteStatusCodeNext()==null ? "INI":pe.getEnoteStatusCodeNext());
 			pe.setScheduleId(0l);
 			pe.setInitiatedBy(Long.parseLong(req.getParameter("InitiatedBy")));
 			if(req.getParameter("Recommend1")!=null) {
@@ -1027,6 +1046,18 @@ public class CommitteeController {
 			return"redirect:/CommitteeFlow.htm";
 			}
 			
+			if(flow!=null && flow.equalsIgnoreCase("REV")) {
+			
+				if(!pe.getEnoteStatusCode().equalsIgnoreCase("FWD")) {
+					redir.addAttribute("resultfail", "It can not be Revoked!");
+					redir.addAttribute("initiationid", req.getParameter("initiationid"));
+					redir.addAttribute("projectid", req.getParameter("projectid"));
+					redir.addAttribute("divisionid", req.getParameter("divisionid"));
+					redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
+					return"redirect:/CommitteeFlow.htm";
+				}
+		
+			}
 			
 			String remarks= req.getParameter("Remarks");
 			long result = service.EnoteForward(pe,remarks,EmpId,flow,Username);
@@ -1084,6 +1115,147 @@ public class CommitteeController {
 		return"redirect:/CommitteeFlow.htm";
 	} 
 	
+	
+	
+	//MoMEnote
+	@RequestMapping(value="MomEnoteForward.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String MomEnoteForward(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		String Username=(String)ses.getAttribute("Username");
+		System.out.println("Username ---"+Username);
+		Long EmpId = (Long)ses.getAttribute("EmpId");
+		logger.info(new Date() +"Inside MomEnoteForward.htm "+Username);
+		try
+		{
+			
+			
+			String action= req.getParameter("action");
+			String flag = req.getParameter("flag");
+			String flow =req.getParameter("flow");
+			
+			System.out.println("flow" +flow);
+			
+			long flagcount=0;
+			PmsEnote pe = req.getParameter("EnoteId")!=null && req.getParameter("EnoteId").equalsIgnoreCase("0")? new PmsEnote():  service.getPmsEnote(req.getParameter("EnoteId"));
+			
+			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
+			pe.setRefNo(req.getParameter("RefNo"));
+			pe.setRefDate(pe.getRefDate()!=null ? pe.getRefDate(): java.sql.Date.valueOf(req.getParameter("RefDate")));
+			pe.setSubject(req.getParameter("subject").trim());
+			pe.setComment(req.getParameter("Comment").trim());
+			pe.setCommitteeMainId(0l);
+			pe.setEnoteFrom("S");
+			pe.setEnoteStatusCode(pe.getEnoteStatusCode()==null?"INI":pe.getEnoteStatusCode());
+			pe.setEnoteStatusCodeNext(pe.getEnoteStatusCodeNext()==null ? "INI":pe.getEnoteStatusCodeNext());
+			pe.setScheduleId(Long.parseLong(req.getParameter("scheduleid")));
+			pe.setInitiatedBy(Long.parseLong(req.getParameter("InitiatedBy")));
+			if(req.getParameter("Recommend1")!=null) {
+				pe.setRecommend1(Long.parseLong(req.getParameter("Recommend1")));
+				pe.setRec1_Role(req.getParameter("Rec1_Role").toUpperCase());
+			}
+			if(req.getParameter("Recommend2").length()>0) {;
+			pe.setRecommend2(Long.parseLong(req.getParameter("Recommend2")));
+			pe.setRec2_Role(req.getParameter("Rec2_Role").toUpperCase());
+			}else {
+				pe.setRecommend2(null);
+				pe.setRec2_Role(null);
+			}
+			if(req.getParameter("Recommend3").length()>0) {
+			pe.setRecommend3(Long.parseLong(req.getParameter("Recommend3")));
+			pe.setRec3_Role(req.getParameter("Rec3_Role").toUpperCase());
+			}else {
+				pe.setRecommend3(null);
+				pe.setRec3_Role(null);
+			}
+			if(req.getParameter("ApprovingOfficer")!=null) {
+			pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
+			}
+			pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
+			if(pe.getCreatedBy()==null) {
+			pe.setCreatedBy(Username);	
+			pe.setCreatedDate(sdf1.format(new Date()));	
+			}else {
+			pe.setModifiedBy(Username);
+			pe.setModifiedDate(sdf1.format(new Date()));
+			}
+			pe.setIsActive(1);
+			flagcount = service.addPmsEnote(pe);
+			}
+			pe = service.getPmsEnote(req.getParameter("EnoteId"));
+			
+			if(action!=null && action.equalsIgnoreCase("UPDATE")) {
+			
+			if (flagcount > 0) {
+				redir.addAttribute("result", "Data Saved Successfully");
+			} else {
+				redir.addAttribute("resultfail", "FlowData Add Unsuccessful");	
+			}
+			
+			redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			return"redirect:/MeetingMinutesApproval.htm";
+			}
+			
+			if(flow!=null && flow.equalsIgnoreCase("REV")) {
+			
+				if(!pe.getEnoteStatusCode().equalsIgnoreCase("FWD")) {
+					redir.addAttribute("resultfail", "It can not be Revoked!");
+					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+					return"redirect:/MeetingMinutesApproval.htm";
+				}
+		
+			}
+			
+			String remarks= req.getParameter("Remarks");
+			long result = service.EnoteForward(pe,remarks,EmpId,flow,Username);
+			if(flow!=null && flow.equalsIgnoreCase("REV")) {
+				if(result>0) {
+					redir.addAttribute("result", "MoM Revoked Successfully");	
+				}else {
+					redir.addAttribute("resultfail", "MoM Revoke Unsuccessful");	
+				}
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				return"redirect:/MeetingMinutesApproval.htm";
+			
+			}
+			
+			if(flow!=null && flow.equalsIgnoreCase("R")) {
+				if(result>0) {
+					redir.addAttribute("result", "MoM Returned Successfully");	
+				}else {
+					redir.addAttribute("resultfail", "MoM Flow Return Unsuccessful");	
+				}
+				return"redirect:/MoMApprovalList.htm";
+			}
+			if(flow!=null && flow.equalsIgnoreCase("A")&& flag==null) {
+				if(result>0) {
+					redir.addAttribute("result", "MoM Forwarded Successfully");	
+				}else {
+					redir.addAttribute("resultfail", "MoM Forward Unsuccessful");	
+				}
+				return"redirect:/MoMApprovalList.htm";
+			}
+			
+			
+			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
+				if(result>0) {
+					redir.addAttribute("result", "MoM Forwarded Successfully");	
+				}else {
+					redir.addAttribute("resultfail", "MoM Forward Unsuccessful");	
+				}
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				return"redirect:/MeetingMinutesApproval.htm";
+			}
+			
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside MomEnoteForward.htm "+Username,e);
+		}
+		return"redirect:/CommitteeFlow.htm";
+	} 
+	
+	
 	@RequestMapping(value = "EnoteStatusTrack.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String EnoteStatusTrack(HttpServletResponse resp, HttpServletRequest req, HttpSession ses) throws Exception {
 		
@@ -1133,7 +1305,43 @@ public class CommitteeController {
 		}
 	}
 	
-	
+	@RequestMapping(value = "MoMApprovalList.htm" , method = {RequestMethod.POST,RequestMethod.GET})
+	public String MoMApprovalList(HttpServletRequest req,HttpServletResponse resp,HttpSession ses) throws Exception {
+		logger.info(new Date() +"MoMApprovalList.htm"+req.getUserPrincipal().getName());
+		long EmpId=(Long)ses.getAttribute("EmpId");
+		try {
+			String fromDate=(String)req.getParameter("FromDate");
+			String toDate=(String)req.getParameter("ToDate");
+			
+			String redirectedvalue=req.getParameter("redirectedvalue");
+			if(redirectedvalue!=null) {
+				req.setAttribute("redirectedvalueForward", redirectedvalue);
+			}
+			if(toDate == null) 
+			{
+				toDate=LocalDate.now().toString();
+			}else
+			{
+				fromDate=sdf2.format(rdf.parse(fromDate));
+			}
+			
+			if(fromDate==null) {
+				fromDate=LocalDate.now().minusDays(30).toString();
+			}else {
+				toDate=sdf2.format(rdf.parse(toDate));
+			}
+			List<Object[]> eNotePendingList =service.eNotePendingList(EmpId,"S");
+			//List<Object[]> eNoteApprovalList=service.eNoteApprovalList(EmpId,fromDate,toDate);
+			//req.setAttribute("eNoteApprovalList", eNoteApprovalList);
+			req.setAttribute("EnoteApprovalPendingList", eNotePendingList);
+			req.setAttribute("frmDt", fromDate);
+			req.setAttribute("toDt",   toDate);
+			return "committee/MoMApprovalList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	@RequestMapping(value="CommitteeMemberDelete.htm",method=RequestMethod.POST)
 	public String CommitteeMemberDelete(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
 	{
@@ -3782,7 +3990,7 @@ public class CommitteeController {
 			    }
 
 	
-	@RequestMapping(value="MeetingMinutesApproval.htm", method=RequestMethod.POST)
+	@RequestMapping(value="MeetingMinutesApproval.htm", method=   {RequestMethod.POST,RequestMethod.GET})
 	public String MeetingMinutesApproval(HttpServletRequest req, HttpSession ses,RedirectAttributes redir) throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
@@ -3793,22 +4001,39 @@ public class CommitteeController {
 		{
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String CommitteeScheduleId=req.getParameter("committeescheduleid");
+			System.out.println("CommitteeScheduleId "+CommitteeScheduleId);
+			String LabCode =(String)ses.getAttribute("labcode");
+			if(Option!=null) {
 			int count = service.MeetingMinutesApproval(CommitteeScheduleId, UserId, EmpId,Option);
 			if (count == -1) {
 				redir.addAttribute("resultfail", "Please Assign All Actions To Forward Minutes For Approval");
+				redir.addAttribute("scheduleid", CommitteeScheduleId);
+				return "redirect:/CommitteeScheduleView.htm";
 			}
+	
 			else if (count > 0) {
-				redir.addAttribute("result", "Meeting Minutes Forwarded Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Meeting Minutes Forward Unsuccessful");
+				Object[]CommitteMainEnoteList= service.CommitteMainEnoteList("0",CommitteeScheduleId);
+				req.setAttribute("NewApprovalList", CommitteMainEnoteList!=null ? service.NewApprovalList(CommitteMainEnoteList[0].toString()):service.NewApprovalList("0"));
+				req.setAttribute("scheduleid", CommitteeScheduleId);
+				req.setAttribute("employeelist", service.EmployeeList(LabCode));
+				req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
+				return "committee/MoMFlowAdd";
 			}
-			redir.addAttribute("scheduleid", CommitteeScheduleId);
+			System.out.println("CommitteeScheduleId1 "+CommitteeScheduleId);
+			}
+			System.out.println("CommitteeScheduleId2 "+CommitteeScheduleId);
+			Object[]CommitteMainEnoteList= service.CommitteMainEnoteList("0",CommitteeScheduleId);
+			req.setAttribute("NewApprovalList", CommitteMainEnoteList!=null ? service.NewApprovalList(CommitteMainEnoteList[0].toString()):service.NewApprovalList("0"));
+			req.setAttribute("scheduleid", CommitteeScheduleId);
+			req.setAttribute("employeelist", service.EmployeeList(LabCode));
+			req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
+		
 		}
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"MeetingMinutesApproval.htm "+UserId,e);
 		}			
 		
-		return "redirect:/CommitteeScheduleView.htm";
+		return "committee/MoMFlowAdd";
 	}
 	
 //	@RequestMapping(value = "MeetingApprovalMinutes.htm", method = RequestMethod.GET)

@@ -719,7 +719,7 @@ String ses=(String)request.getParameter("result");
 							</table>	
 							
 								</div> 
-							 	<div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
+							<%--   <div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
 				                <table  align="center" >
 				                	<tr>
 				                		<td class="trup" style="background: #B5EAEA;">
@@ -789,7 +789,91 @@ String ses=(String)request.getParameter("result");
 				                	</tr>             	
 				                </table>			             
 						 	</div>			
-									
+									 --%>
+						<%Object[]NewApprovalList = (Object[])request.getAttribute("NewApprovalList"); %>
+						
+									<%if(NewApprovalList!=null ){ %>
+							 	<div class="row"  style="text-align: center;" >
+				                <table  align="center" >
+				                	<tr>
+				                	
+				                		<td class="trup" style="background: #B5EAEA;">
+				                		&nbsp;<%if(Arrays.asList("FWD","RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
+				                		<img src="view/images/check.png"><br>
+				                		<%} %>
+				                			Constituted By 
+				                			<br>
+				                			<%=NewApprovalList[0].toString() %>
+				                		</td>
+				                		<%if(NewApprovalList!=null && NewApprovalList[2]!=null){ %>
+				                		<td rowspan="2">
+				                			 <b>----------&gt;</b>
+				                		</td >
+				                		
+				                		<td class="trup" style="background: #C6B4CE;">
+				                			&nbsp;<%if(Arrays.asList("RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
+				                		<img src="view/images/check.png"><br>
+				                		<%} %>
+				                			Recommended Officer 1
+				                		
+				                			<br>
+				                			<%=NewApprovalList[1].toString() %>
+				                		</td>
+				                		
+				                		<%} %>
+				                		<%if(NewApprovalList!=null && NewApprovalList[4]!=null){ %>
+				                		<td rowspan="2">
+				                			 <b>----------&gt;</b>
+				                		</td>
+				                		
+				                		<td class="trup" style="background: #E8E46E;">
+				                			&nbsp;<%if(Arrays.asList("RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
+				                		<img src="view/images/check.png"><br>
+				                		<%} %>
+				                		
+				                		Recommended Officer 2
+				                	
+				                		<br>
+				                			<%=NewApprovalList[3].toString() %>
+				                		</td>
+				                		<%} %>
+				                		<%if(NewApprovalList!=null && NewApprovalList[6]!=null){ %>
+				                		<td rowspan="2">
+				                			 <b>----------&gt;</b>
+				                		</td>
+				                		
+				                		<td class="trup" style="background: #FBC7F7;" >
+				                			&nbsp;<%if(Arrays.asList("RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
+				                		<img src="view/images/check.png">	<br>
+				                		<%} %>
+				                	
+				                			Recommended Officer 3
+				                		
+				                			<br>
+				                			<%=NewApprovalList[5].toString() %>
+				                		</td>
+				                		<%} %>
+				                		<%if(NewApprovalList!=null && NewApprovalList[8]!=null){ %>
+				                		<td rowspan="2">
+				                			 <b>----------&gt;</b>
+				                		</td>
+				                		
+				                		<td class="trup" style="background: #F4A261;" >
+				                		&nbsp;<%if(Arrays.asList("APR").contains(CommitteMainEnoteList[15].toString())) {%>
+				                		<img src="view/images/check.png"><br>
+				                		<%} %>
+				                		
+				                			Approving Officer
+				                			<br>
+				                			<%=NewApprovalList[7].toString() %>
+				                		</td>
+				                		<%} %>
+				                			                		
+				                	</tr>	
+				                	
+				                	</table>
+				                	</div>
+					<%} %>			 
 						<%} %>
 																
 		 			
