@@ -303,31 +303,34 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 		LocalDate now = LocalDate.now();
 		
 		dtoList.stream().forEach(e ->{
-			
+			LocalDate closedDate =  e.getClosedDate()!=null? LocalDate.parse(e.getClosedDate()): null;
+			LocalDate endDate =  LocalDate.parse(e.getEndDate());
+			// Completed Within Time
+			if(e.getClosedDate()!=null && ( closedDate.isBefore(endDate) || closedDate.isEqual(endDate) ) ) {
+				count[0] += 1;
+			}
+			// Completed With Delay
+			else if(e.getClosedDate()!=null && closedDate.isAfter(endDate) ) {
+				count[1] += 1;
+			}
+
 			// Within Time Actions
 			if(LocalDate.parse(e.getEndDate()).isAfter(now) || LocalDate.parse(e.getEndDate()).isEqual(now)) {
-				// Completed
-				if("C".equalsIgnoreCase(e.getActionStatus())) {
-					count[0] += 1;
-				}
 				// Ongoing
-				else if(Arrays.asList("I","B","F").contains(e.getActionStatus())) {
+				if(Arrays.asList("I","B","F").contains(e.getActionStatus())) {
 					count[2] += 1;
 				}
 				// Not Started
 				else if("A".equalsIgnoreCase(e.getActionStatus())) {
 					count[4] += 1;
 				}
-				
+
 			}
 			// Delayed Actions
 			else if(LocalDate.parse(e.getEndDate()).isBefore(now)) {
-				// Completed
-				if("C".equalsIgnoreCase(e.getActionStatus())) {
-					count[1] += 1;
-				}
+				
 				// Ongoing
-				else if(Arrays.asList("I","B","F").contains(e.getActionStatus())) {
+				if(Arrays.asList("I","B","F").contains(e.getActionStatus())) {
 					count[3] += 1;
 				}
 				// Not Started
@@ -335,18 +338,14 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 					count[5] += 1;
 				}
 			}
-			
-			// On Time Action
-			if(e.getClosedDate()!=null && (LocalDate.parse(e.getClosedDate()).isBefore(LocalDate.parse(e.getEndDate())) || LocalDate.parse(e.getClosedDate()).isEqual(LocalDate.parse(e.getEndDate())) )) {
-				count[6] += 1;
-			}
-			// Missed Actions
-			else {
-				count[7] += 1;
-			}
 
+			
 		});
 		
+		// Total OnTime Actions
+		count[6] += count[0]+count[2]+count[4];
+		// Total Missed Actions
+		count[7] += count[1]+count[3]+count[5];
 		return count;
 	}
 
@@ -357,9 +356,9 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 	}
 
 	@Override
-	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate) throws Exception {
+	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
 		
-		return dao.empActivityWiseAnalyticsList(empId, fromDate, toDate);
+		return dao.empActivityWiseAnalyticsList(empId, fromDate, toDate, projectId);
 	}
 	
 	@Override

@@ -222,7 +222,9 @@ public class TimeSheetController {
 			String empId = req.getParameter("empId");
 			String fromDate = req.getParameter("fromDate");
 			String toDate = req.getParameter("toDate");
+			String projectId = req.getParameter("projectId");
 			empId = empId==null?EmpId:empId;
+			projectId = projectId!=null?projectId:"A";
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
@@ -234,7 +236,7 @@ public class TimeSheetController {
 				toDate=fc.rdfTosdf(toDate);
 			}
 			
-			empActionAnalyticsCounts = service.getActionAnalyticsCounts(empId, fromDate, toDate, "A");
+			empActionAnalyticsCounts = service.getActionAnalyticsCounts(empId, fromDate, toDate, projectId);
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside EmpActionAnalyticsCount.htm "+UserId, e);
 			e.printStackTrace();
@@ -253,7 +255,9 @@ public class TimeSheetController {
 			String empId = req.getParameter("empId");
 			String fromDate = req.getParameter("fromDate");
 			String toDate = req.getParameter("toDate");
+			String projectId = req.getParameter("projectId");
 			empId = empId==null?EmpId:empId;
+			projectId = projectId!=null?projectId:"A";
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
@@ -265,7 +269,7 @@ public class TimeSheetController {
 				toDate=fc.rdfTosdf(toDate);
 			}
 			
-			empActivityWiseAnalyticsCount = service.empActivityWiseAnalyticsList(empId, fromDate, toDate);
+			empActivityWiseAnalyticsCount = service.empActivityWiseAnalyticsList(empId, fromDate, toDate, projectId);
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside EmpActivityWiseAnalyticsCount.htm "+UserId, e);
 			e.printStackTrace();
@@ -276,6 +280,7 @@ public class TimeSheetController {
 	@RequestMapping(value = "ProjectActivityWiseAnalyticsCount.htm", method = {RequestMethod.GET})
 	public @ResponseBody String projectActivityWiseAnalyticsCount(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId=(String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + " Inside ProjectActivityWiseAnalyticsCount.htm "+UserId);
 		Gson json = new Gson();
 		List<Object[]> projectActivityWiseAnalyticsCount = new ArrayList<>();
@@ -285,7 +290,7 @@ public class TimeSheetController {
 			String fromDate = req.getParameter("fromDate");
 			String toDate = req.getParameter("toDate");
 			projectId = projectId == null?"0":projectId;
-			empId = empId == null?"0":empId;
+			empId = empId == null?EmpId:empId;
 
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {
@@ -317,7 +322,7 @@ public class TimeSheetController {
 			String fromDate = req.getParameter("fromDate");
 			String toDate = req.getParameter("toDate");
 			projectId = projectId == null?"0":projectId;
-			empId = empId == null?"0":empId;
+			empId = empId == null?"A":empId;
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null) {

@@ -153,7 +153,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
-	private static final String PROJECTEMPACTIONANALYTICSLIST = "SELECT * FROM pfms_action_analytics WHERE (CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE ProjectId=:ProjectId END) AND (CASE WHEN '0'=:Assignee THEN 1=1 ELSE Assignee=:Assignee END) AND ActionDate BETWEEN :FromDate AND :ToDate";
+	private static final String PROJECTEMPACTIONANALYTICSLIST = "SELECT * FROM pfms_action_analytics WHERE (CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE ProjectId=:ProjectId END) AND (CASE WHEN 'A'=:Assignee THEN 1=1 ELSE Assignee=:Assignee END) AND ActionDate BETWEEN :FromDate AND :ToDate";
 	@Override
 	public List<ActionAnalyticsDTO> actionAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
 		try {
@@ -206,14 +206,15 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 
-	private static final String EMPACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_emp_activity_analytics WHERE EmpId=:EmpId AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	private static final String EMPACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_activity_analytics WHERE EmpId=:EmpId AND (CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE ProjectId=:ProjectId END) AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
 	@Override
-	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate) throws Exception {
+	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(EMPACTIVITYWISEANALYTICSLIST);
 			query.setParameter("EmpId", empId);
 			query.setParameter("FromDate", fromDate);
 			query.setParameter("ToDate", toDate);
+			query.setParameter("ProjectId", projectId);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -222,7 +223,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
-	private static final String PROJECTACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_project_activity_analytics WHERE ProjectId=:ProjectId AND (CASE WHEN '0'=:EmpId THEN 1=1 ELSE EmpId=:EmpId END) AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	private static final String PROJECTACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_activity_analytics WHERE ProjectId=:ProjectId AND (CASE WHEN 'A'=:EmpId THEN 1=1 ELSE EmpId=:EmpId END) AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
 	@Override
 	public List<Object[]> projectActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
 		try {

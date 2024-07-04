@@ -23,7 +23,7 @@ public interface TimeSheetService {
 	public List<ActionAnalyticsDTO> empActionAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception;
 	public Object[] getActionAnalyticsCounts(String empId, String fromDate, String toDate, String projectId) throws Exception;
 	public List<Object[]> getAllEmployeeList(String labCode) throws Exception;
-	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception;
 	public List<Object[]> projectActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception;
 	public List<Object[]> projectActionAnalyticsList(String projectId, String fromDate, String toDate) throws Exception;
 	public List<Object[]> getAllEmpTimeSheetWorkingHrsList(String labCode, String loginType, String empId, String fromDate, String toDate) throws Exception;

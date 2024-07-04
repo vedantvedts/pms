@@ -1,3 +1,4 @@
+
 <%@page import="com.vts.pfms.master.model.MilestoneActivityType"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Optional"%>
@@ -946,8 +947,9 @@ function toggleDiv(divId) {
 		<%
         if(empActivityAssignList!=null && empActivityAssignList.size()>0){
         for(Object[] activity : empActivityAssignList){
+        	 String activity5 = activity[5].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"");
         %>
-		newRow+="<option value='<%=activity[10]%>' data-activity='<%=activity[5]%>' data-projectid='<%=activity[14]%>' data-actionno='<%=activity[9]%>'><%=activity[9]%></option>";
+		newRow+='<option value="<%=activity[10]%>" data-activity="<%=activity5%>" data-projectid="<%=activity[14]%>" data-actionno="<%=activity[9]%>"><%=activity[9]%></option>';
 		<%} }%>
 		newRow+='</select></td>';
 		newRow+='<td><span id="activityName-project-'+newId+'"></span><select class="form-control selectdee" name="projectId" id="projectId-select-'+newId+'"><option value="0" >General</option>';

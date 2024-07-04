@@ -89,8 +89,9 @@
 .view-table thead {
     position: sticky;
     top: 0; /* Stick the thead to the top */
-    background-color: #fff; /* Set background color for the thead */
     z-index: 1; /* Ensure thead is above tbody */
+    background-color: #007bff;
+    color: white;"
 }
 
 .view-table th, .view-table td{
@@ -99,10 +100,28 @@
 }
 
 .table-wrapper {
-    max-height: 500px; /* Set the max height for the table wrapper */
+    max-height: 400px; /* Set the max height for the table wrapper */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; 
-    max-height: 400px;
+	padding: 20px;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 5px;
+}
+.table-wrapper2 {
+    max-height: 630px; /* Set the max height for the table wrapper */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; 
+	padding: 20px;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+.table-wrapper3 {
+    max-height: 600px; /* Set the max height for the table wrapper */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; 
 	padding: 20px;
 	background-color: #f8f9fa;
 	border: 1px solid #dee2e6;
@@ -111,22 +130,22 @@
 
 
 /* Firefox */
-.table-wrapper {
+.table-wrapper, .table-wrapper2, .table-wrapper3 {
   scrollbar-width: thin;
   scrollbar-color: #007bff #f8f9fa;
 }
 
 /* Chrome, Edge, and Safari */
-.table-wrapper::-webkit-scrollbar {
+.table-wrapper::-webkit-scrollbar, .table-wrapper2::-webkit-scrollbar, .table-wrapper3::-webkit-scrollbar, {
   width: 12px;
 }
 
-.table-wrapper::-webkit-scrollbar-track {
+.table-wrapper::-webkit-scrollbar-track, .table-wrapper2::-webkit-scrollbar-track, .table-wrapper3::-webkit-scrollbar-track {
   background: #f8f9fa;
   border-radius: 5px;
 }
 
-.table-wrapper::-webkit-scrollbar-thumb {
+.table-wrapper::-webkit-scrollbar-thumb, .table-wrapper2::-webkit-scrollbar-thumb, .table-wrapper3::-webkit-scrollbar-thumb {
   background-color: #007bff;
   border-radius: 5px;
   border: 2px solid #f8f9fa;
@@ -138,7 +157,7 @@
 
 </style>
 </head>
-<body>
+<body >
 	<%
 		String loginType = (String)session.getAttribute("LoginType");
 		String sesEmpId = ((Long)session.getAttribute("EmpId")).toString();
@@ -205,38 +224,42 @@
 							<form action="#">
 								<div class="row">
 									<div class="col-md-12">
-										<table style="width: 100%;border-collapse: collapse;">
-											<tr>
-												<td style="width: 24%;"></td>
-												<th class="right" style="width: 5%;">From :</th>
-												<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aapFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
-												<th class="right" style="width: 5%;">To :</th>
-												<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aapToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
-												<th class="right" style="width: 5%;">Project : </th>
-												<td style="width: 20%;">
-													<select class="form-control selectdee" name="projectId" id="aapProjectId">
-														<option value="0" selected >General</option>
-											            <%for(Object[] pro: projectList ){
-											            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
-											            %>
-															<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
-														<%} %>
-													</select>
-												</td>
-												<th class="right" style="width: 5%;">Employee : </th>
-												<td style="width: 20%;">
-													<select class="form-control selectdee" name="empId" id="aapEmpId">
-														<!-- <option value="" disabled="disabled" selected="selected">--Select--</option> -->
-														<option value="0">All</option>
-														<%
-														if(empList!=null && empList.size()>0){
-														for(Object[] obj : empList) {%>
-															<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
-														<%} }%>
-													</select>
-												</td>
-											</tr>
-										</table>
+										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
+											<div class="card-body" style="padding: 0px !important">
+												<table style="width: 100%;border-collapse: collapse;">
+													<tr>
+														<td style="width: 24%;"></td>
+														<th class="right" style="width: 5%;">From :</th>
+														<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aapFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+														<th class="right" style="width: 5%;">To :</th>
+														<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aapToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<th class="right" style="width: 5%;">Project : </th>
+														<td style="width: 20%;">
+															<select class="form-control selectdee" name="projectId" id="aapProjectId">
+																<option value="0" selected >General</option>
+													            <%for(Object[] pro: projectList ){
+													            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
+													            %>
+																	<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
+																<%} %>
+															</select>
+														</td>
+														<th class="right" style="width: 5%;">Employee : </th>
+														<td style="width: 20%;">
+															<select class="form-control selectdee" name="empId" id="aapEmpId">
+																<!-- <option value="" disabled="disabled" selected="selected">--Select--</option> -->
+																<option value="A">All</option>
+																<%
+																if(empList!=null && empList.size()>0){
+																for(Object[] obj : empList) {%>
+																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
+																<%} }%>
+															</select>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>		
 									</div>
 								</div>
 							</form>
@@ -276,28 +299,43 @@
 						<div class="col-md-12">
 							<form action="#">
 								<div class="row">
-									<div class="col-md-6"></div>
-									<div class="col-md-6">
-										<table style="width: 100%;border-collapse: collapse;">
-											<tr>
-												<td style="width: 15%;"></td>
-												<th class="right" style="width: 6%;">From :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="aaiFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
-												<th class="right" style="width: 5%;">To :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="aaiToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
-												<th class="right" style="width: 10%;">Employee : </th>
-												<td style="width: 39%;">
-													<select class="form-control selectdee" name="empId" id="aaiEmpId">
-														<option value="" disabled="disabled" selected="selected">--Select--</option>
-														<%
-														if(empList!=null && empList.size()>0){
-														for(Object[] obj : empList) {%>
-															<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
-														<%} }%>
-													</select>
-												</td>
-											</tr>
-										</table>
+									<div class="col-md-12">
+										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
+											<div class="card-body" style="padding: 0px !important">
+												<table style="width: 100%;border-collapse: collapse;">
+													<tr>
+														<td style="width: 24%;"></td>
+														<th class="right" style="width: 5%;">From :</th>
+														<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aaiFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+														<th class="right" style="width: 5%;">To :</th>
+														<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aaiToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<th class="right" style="width: 5%;">Employee : </th>
+														<td style="width: 20%;">
+															<select class="form-control selectdee" name="empId" id="aaiEmpId">
+																<option value="" disabled="disabled" selected="selected">--Select--</option>
+																<%
+																if(empList!=null && empList.size()>0){
+																for(Object[] obj : empList) {%>
+																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
+																<%} }%>
+															</select>
+														</td>
+														<th class="right" style="width: 5%;">Project : </th>
+														<td style="width: 20%;">
+															<select class="form-control selectdee" name="projectId" id="aaiProjectId">
+																<option value="A" selected>All</option>
+																<option value="0">General</option>
+													            <%for(Object[] pro: projectList ){
+													            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
+													            %>
+																	<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
+																<%} %>
+															</select>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>		
 									</div>
 								</div>
 							</form>
@@ -338,31 +376,34 @@
 						<div class="col-md-12">
 							<form action="#">
 								<div class="row">
-									<div class="col-md-6"></div>
-									<div class="col-md-6">
-										<table style="width: 100%;border-collapse: collapse;">
-											<tr>
-												<td style="width: 19%;"></td>
-												<th class="right" style="width: 15%;">Project : </th>
-												<td style="width: 27%;">
-													<select class="form-control selectdee" name="projectId" id="ptsProjectId">
-														<option value="A" selected>All</option>
-														<option value="0">General</option>
-											            <%for(Object[] pro: projectList ){
-											            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
-											            %>
-															<option value="<%=pro[0]%>"
-															data-sancdate="<%=pro[12] %>"
-															 ><%=pro[4]+projectshortName %></option>
-														<%} %>
-													</select>
-												</td>
-												<th class="right" style="width: 6%;">From :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
-												<th class="right" style="width: 5%;">To :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
-											</tr>
-										</table>
+									<div class="col-md-12">
+										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
+											<div class="card-body" style="padding: 0px !important">
+												<table style="width: 100%;border-collapse: collapse;">
+													<tr>
+														<td style="width: 40%;"></td>
+														<th class="right" style="width: 5%;">Project : </th>
+														<td style="width: 25%;">
+															<select class="form-control selectdee" name="projectId" id="ptsProjectId">
+																<option value="A" selected>All</option>
+																<option value="0">General</option>
+													            <%for(Object[] pro: projectList ){
+													            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
+													            %>
+																	<option value="<%=pro[0]%>"
+																	data-sancdate="<%=pro[12] %>"
+																	 ><%=pro[4]+projectshortName %></option>
+																<%} %>
+															</select>
+														</td>
+														<th class="right" style="width: 5%;">From :</th>
+														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+														<th class="right" style="width: 5%;">To :</th>
+														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+													</tr>
+												</table>
+											</div>
+										</div>		
 									</div>
 								</div>
 							</form>
@@ -370,8 +411,8 @@
 					</div>
 					<div class="row ml-1">
 						<div class="col-md-8 table-wrapper">
-							<table class="table view-table" id="ptscontainer">
-								<thead class="center">
+							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="ptscontainer">
+								<thead class="center" >
 									<tr>
 										<th colspan="4" style="text-transform: uppercase;">Project Time Sheet</th>
 									</tr>
@@ -406,28 +447,31 @@
 						<div class="col-md-12">
 							<form action="#">
 								<div class="row">
-									<div class="col-md-6"></div>
-									<div class="col-md-6">
-										<table style="width: 100%;border-collapse: collapse;">
-											<tr>
-												<td style="width: 19%;"></td>
-												<th class="right" style="width: 6%;">From :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
-												<th class="right" style="width: 5%;">To :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
-											</tr>
-										</table>
+									<div class="col-md-12">
+										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
+											<div class="card-body" style="padding: 0px !important">
+												<table style="width: 100%;border-collapse: collapse;">
+													<tr>
+														<td style="width: 70%;"></td>
+														<th class="right" style="width: 5%;">From :</th>
+														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+														<th class="right" style="width: 5%;">To :</th>
+														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+													</tr>
+												</table>
+											</div>
+										</div>		
 									</div>
 								</div>
 							</form>
 						</div>
 					</div>
 					<div class="row ml-1 mr-1">
-						<div class="col-md-12 table-wrapper">
-							<table class="table view-table" id="tslcontainer">
+						<div class="col-md-12 table-wrapper2">
+							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="tslcontainer">
 								<thead class="center">
 									<tr>
-										<th style="font-size: 16px;color: black;" colspan="7">Time Sheet List</th>
+										<th style="font-size: 16px;color: white;" colspan="7">Time Sheet List</th>
 									</tr>
 									<tr>
 										<th>SN</th>
@@ -463,38 +507,46 @@
 							<form action="#">
 								<div class="row">
 									<div class="col-md-6">
-										<table style="width: 100%;border-collapse: collapse;">
-											<tr>
-												<td style="width: 15%;"></td>
-												<th class="right" style="width: 6%;">From :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fc.sdfTordf(fromDate3)%>"></td>
-												<th class="right" style="width: 5%;">To :</th>
-												<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="tsl2ToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
-												<th class="right" style="width: 10%;">Employee : </th>
-												<td style="width: 39%;">
-													<select class="form-control selectdee" name="empId" id="tsl2EmpId">
-														<%
-														if(empList!=null && empList.size()>0){
-														for(Object[] obj : empList) {%>
-															<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
-														<%} }%>
-													</select>
-												</td>
-											</tr>
-										</table>
+										
 									</div>
 									<div class="col-md-6">
+										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
+											<div class="card-body" style="padding: 0px !important">
+												<table style="width: 100%;border-collapse: collapse;">
+													<tr>
+														<td style="width: 15%;"></td>
+														<th class="right" style="width: 6%;">From :</th>
+														<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fc.sdfTordf(fromDate3)%>"></td>
+														<th class="right" style="width: 5%;">To :</th>
+														<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="tsl2ToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<th class="right" style="width: 10%;">Employee : </th>
+														<td style="width: 39%;">
+															<select class="form-control selectdee" name="empId" id="tsl2EmpId">
+																<%
+																if(empList!=null && empList.size()>0){
+																for(Object[] obj : empList) {%>
+																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
+																<%} }%>
+															</select>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>		
 									</div>
+									
 								</div>
 							</form>
 						</div>
 					</div>
 					<div class="row ml-1 mr-1">
-						<div class="col-md-6 table-wrapper">
-							<table class="table view-table" id="tslcontainer2">
+						<div class="col-md-6">
+						</div>
+						<div class="col-md-6 table-wrapper3">
+							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="tslcontainer2">
 								<thead class="center">
 									<tr>
-										<th style="font-size: 16px;color: black;" colspan="4">Extra Days</th>
+										<th style="font-size: 16px;color: white;" colspan="4">Extra Days</th>
 									</tr>
 									<tr>
 										<th>SN</th>
@@ -508,8 +560,7 @@
 								</tbody>	
 							</table>
 						</div>
-						<div class="col-md-6">
-						</div>
+						
 					</div>
 					
 					<!-- ------------------------- Time Sheet Extra Days List End ------------------------------------------  -->
@@ -520,6 +571,13 @@
 	</div>
 
 <script type="text/javascript">
+
+var tab1 = 0;
+var tab2 = 0;
+var tab3 = 0;
+var tab4 = 0;
+var tab5 = 0;
+
 $(document).ready(function(){
 	$('.btn1').click();
 });
@@ -555,6 +613,12 @@ $('.btn1').click(function(){
 	$('#extrahrsstats').hide();
 	$('#extradaysstats').hide();
 	
+	tab1+=1;
+	if(tab1<2){
+		getProjectActionAnalyticsCount();
+		getProjectActivityWiseAnalyticsCount();
+	}
+	
 });
 
 $('.btn2').click(function(){
@@ -575,6 +639,11 @@ $('.btn2').click(function(){
 	$('#extrahrsstats').hide();
 	$('#extradaysstats').hide();
 	
+	tab2+=1;
+	if(tab2<2){
+		getEmpActionAnalyticsCount();
+		getEmpActivityWiseAnalyticsCount();
+	}
 });
 
 $('.btn3').click(function(){
@@ -595,6 +664,10 @@ $('.btn3').click(function(){
 	$('#extrahrsstats').hide();
 	$('#extradaysstats').hide();
 	
+	tab3+=1;
+	if(tab3<2){
+		getProjectTimeSheetWorkingHrsList();
+	}
 });
 
 $('.btn4').click(function(){
@@ -614,6 +687,11 @@ $('.btn4').click(function(){
 	$('#othersstats').hide();
 	$('#extrahrsstats').show();
 	$('#extradaysstats').hide();
+	
+	tab4+=1;
+	if(tab4<2){
+		getEmpTimeSheetWorkingHrsList();
+	}
 });
 
 $('.btn5').click(function(){
@@ -633,6 +711,11 @@ $('.btn5').click(function(){
 	$('#othersstats').hide();
 	$('#extrahrsstats').hide();
 	$('#extradaysstats').show();
+	
+	tab5+=1;
+	if(tab5<2){
+		getEmpExtraWorkingDayList();
+	}
 });
 </script>
 
@@ -774,19 +857,6 @@ $(document).ready(function() {
 	});
 	
 	/* ------------------------- Time Sheet List2 End (Extra Days) ------------------------------ */
-
-	getEmpActionAnalyticsCount();
-	getEmpActivityWiseAnalyticsCount();
-	
-	getProjectActionAnalyticsCount();
-	getProjectActivityWiseAnalyticsCount();
-	
-	getEmpTimeSheetWorkingHrsList();
-	
-	getProjectTimeSheetWorkingHrsList();
-	
-	getEmpExtraWorkingDayList();
-	
 	
 	
 	// Radialize the colors
@@ -926,7 +996,7 @@ $( "#tsl2FromDate" ).change(function() {
 
 
 /* ------------------------------------- Action Analytics (Individual) ---------------------------------- */
-$('#aaiToDate,#aaiEmpId').change(function(){
+$('#aaiToDate,#aaiEmpId,#aaiProjectId').change(function(){
 	getEmpActionAnalyticsCount();
 	getEmpActivityWiseAnalyticsCount();
 });
@@ -940,6 +1010,7 @@ function getEmpActionAnalyticsCount(){
 			fromDate : $('#aaiFromDate').val(),
 			toDate : $('#aaiToDate').val(),
 			empId : $('#aaiEmpId').val(),
+			projectId : $('#aaiProjectId').val(),
 		},
 		success:function(result){
 			var values = JSON.parse(result);
@@ -1118,6 +1189,7 @@ function getEmpActivityWiseAnalyticsCount(){
 			fromDate : $('#aaiFromDate').val(),
 			toDate : $('#aaiToDate').val(),
 			empId : $('#aaiEmpId').val(),
+			projectId : $('#aaiProjectId').val(),
 		},
 		success:function(result){
 			var values = JSON.parse(result);
@@ -1285,20 +1357,15 @@ function getEmpActivityWiseAnalyticsCount(){
 
 function getProjectActivityWiseAnalyticsCount(){
 
-	var fromDate = $('#aapFromDate').val();
-	var toDate = $('#aapToDate').val();
-	var projectId = $('#aapProjectId').val();
-	var empId = $('#aapEmpId').val();
-	
 	$.ajax({
 		Type:'GET',
 		url:'ProjectActivityWiseAnalyticsCount.htm',
 		datatype:'json',
 		data:{
-			fromDate : fromDate,
-			toDate : toDate,
-			projectId : projectId,
-			empId : empId,
+			fromDate : $('#aapFromDate').val(),
+			toDate : $('#aapToDate').val(),
+			projectId : $('#aapProjectId').val(),
+			empId : $('#aapEmpId').val(),
 		},
 		success:function(result){
 			var values = JSON.parse(result);
@@ -1466,19 +1533,16 @@ $('#aapToDate,#aapProjectId,#aapEmpId').change(function(){
 });
 
 function getProjectActionAnalyticsCount(){
-	var fromDate = $('#aapFromDate').val();
-	var toDate = $('#aapToDate').val();
-	var projectId = $('#aapProjectId').val();
-	var empId = $('#aapEmpId').val();
+	
 	$.ajax({
 		Type:'GET',
 		url:'ProjectActionAnalyticsCount.htm',
 		datatype:'json',
 		data:{
-			fromDate : fromDate,
-			toDate : toDate,
-			projectId : projectId,
-			empId : empId,
+			fromDate : $('#aapFromDate').val(),
+			toDate : $('#aapToDate').val(),
+			projectId : $('#aapProjectId').val(),
+			empId : $('#aapEmpId').val(),
 		},
 		success:function(result){
 			var values = JSON.parse(result);
@@ -1651,34 +1715,35 @@ $('#tslToDate').change(function(){
 });
 
 function getEmpTimeSheetWorkingHrsList(){
-	var fromDate = $('#tslFromDate').val();
-	var toDate = $('#tslToDate').val();
 	
 	$.ajax({
 		Type:'GET',
 		url:'EmpTimeSheetWorkingHrsList.htm',
 		datatype:'json',
 		data:{
-			fromDate : fromDate,
-			toDate : toDate,
+			fromDate : $('#tslFromDate').val(),
+			toDate : $('#tslToDate').val(),
 		},
 		success:function(result){
 			var values = JSON.parse(result);
 			var x='';
 			
-			for(var i=0;i<values.length;i++){
-				x+='<tr>';
-				x+='<td>'+(i+1)+'</td>';
-				x+='<td class="left">'+values[i][1] +", "+values[i][2]+'</td>';
-				//x+='<td>'+values[i][3]+'</td>';
-				x+='<td>'+values[i][4]+'</td>';
-				x+='<td>'+values[i][5]+'</td>';
-				x+='<td>'+values[i][6]+'</td>';
-				x+='<td>'+values[i][7]+'</td>';
-				x+='<td>'+values[i][8]+'</td>';
-				x+='</tr>';
+			if(values.length>0){
+				for(var i=0;i<values.length;i++){
+					x+='<tr>';
+					x+='<td>'+(i+1)+'</td>';
+					x+='<td class="left">'+values[i][1] +", "+values[i][2]+'</td>';
+					//x+='<td>'+values[i][3]+'</td>';
+					x+='<td>'+values[i][4]+'</td>';
+					x+='<td>'+values[i][5]+'</td>';
+					x+='<td>'+values[i][6]+'</td>';
+					x+='<td>'+values[i][7]+'</td>';
+					x+='<td>'+values[i][8]+'</td>';
+					x+='</tr>';
+				}
+			}else{
+				x+='<tr><td class="center" colspan="7">No Data Available</td></tr>';
 			}
-			
 			$('#tslcontainertbody').html(x);
 		}
 	});
@@ -1700,62 +1765,62 @@ $('#ptsToDate,#ptsProjectId').change(function(){
 });
 
 function getProjectTimeSheetWorkingHrsList(){
-	var projectId = $('#ptsProjectId').val();
-	var fromDate = $('#ptsFromDate').val();
-	var toDate = $('#ptsToDate').val();
 
 	$.ajax({
 		Type:'GET',
 		url:'ProjectTimeSheetWorkingHrsList.htm',
 		datatype:'json',
 		data:{
-			projectId : projectId,
-			fromDate : fromDate,
-			toDate : toDate,
+			projectId : $('#ptsProjectId').val(),
+			fromDate : $('#ptsFromDate').val(),
+			toDate : $('#ptsToDate').val(),
 		},
 		success:function(result){
 			var values = JSON.parse(result);
 			var x='';
 			
-			for(var i=0;i<values.length;i++){
-				x+='<tr>';
-				x+='<td>'+(i+1)+'</td>';
-				x+='<td class="left">'+values[i][1] +", "+values[i][2]+'</td>';
-				x+='<td>'+values[i][3]+'</td>';
-				x+='<td>'+values[i][4]+'</td>';
+			if(values.length>0){
+				for(var i=0;i<values.length;i++){
+					x+='<tr>';
+					x+='<td>'+(i+1)+'</td>';
+					x+='<td class="left">'+values[i][1] +", "+values[i][2]+'</td>';
+					x+='<td>'+values[i][3]+'</td>';
+					x+='<td>'+values[i][4]+'</td>';
+					x+='</tr>';
+				}
+				
+				// Initialize counters for each type
+				var drds = 0;
+				var drtc = 0;
+				var others = 0;
+				
+				values.forEach(function(item) {
+				    var type = item[3]; // Type is at index 3
+				    var time = item[4]; // Time is at index 4
+	
+				    // Convert time from HH:mm:ss format to seconds
+				    var parts = time.split(':');
+				    var seconds = parseInt(parts[0], 10) * 3600 + parseInt(parts[1], 10) * 60 + parseInt(parts[2], 10);
+	
+				    // Sum the time based on the type
+				    if (type === 'DRDS') {
+				    	drds += seconds;
+				    } else if (type === 'DRTC') {
+				    	drtc += seconds;
+				    } else if (type === 'Others') {
+				    	others += seconds;
+				    }
+				});
+				
+				var totalseconds = drds+drtc+others;
+				var totalhm = secondsToHM(totalseconds)+":00";
+				x+='<tr>'
+				x+='<td colspan="3" class="right">Total</td>';
+				x+='<td>'+totalhm+'</td>';
 				x+='</tr>';
+			}else{
+				x+='<tr><td class="center" colspan="4">No Data Available</td></tr>';
 			}
-			
-			// Initialize counters for each type
-			var drds = 0;
-			var drtc = 0;
-			var others = 0;
-			
-			values.forEach(function(item) {
-			    var type = item[3]; // Type is at index 3
-			    var time = item[4]; // Time is at index 4
-
-			    // Convert time from HH:mm:ss format to seconds
-			    var parts = time.split(':');
-			    var seconds = parseInt(parts[0], 10) * 3600 + parseInt(parts[1], 10) * 60 + parseInt(parts[2], 10);
-
-			    // Sum the time based on the type
-			    if (type === 'DRDS') {
-			    	drds += seconds;
-			    } else if (type === 'DRTC') {
-			    	drtc += seconds;
-			    } else if (type === 'Others') {
-			    	others += seconds;
-			    }
-			});
-			
-			var totalseconds = drds+drtc+others;
-			var totalhm = secondsToHM(totalseconds)+":00";
-			x+='<tr>'
-			x+='<td colspan="3" class="right">Total</td>';
-			x+='<td>'+totalhm+'</td>';
-			x+='</tr>';
-			
 			$('#ptscontainertbody').html(x);
 			
 			
@@ -1888,26 +1953,34 @@ function getEmpExtraWorkingDayList(){
 		success:function(result){
 			var values = JSON.parse(result);
 			var x='';
-			
-			for(var i=0;i<values.length;i++){
-				var day = getDayOfWeek(values[i][4]);
-				var holidayName = '';
-				
-				var isFound = holidayList.some(function(holiday) {
-					if(holiday[1] === values[i][4]){
-						holidayName = holiday[2];
-						return true;
+			var data = 0;
+			if(values.length>0){
+				for(var i=0;i<values.length;i++){
+					var day = getDayOfWeek(values[i][4]);
+					var holidayName = '';
+					
+					var isFound = holidayList.some(function(holiday) {
+						if(holiday[1] === values[i][4]){
+							holidayName = holiday[2];
+							return true;
+						}
+			        });
+					
+					if(day=='Saturday' || day=='Sunday' || isFound){
+						x+='<tr>';
+						x+='<td>'+(++data)+'</td>';
+						x+='<td>'+(sqlDateToRegularDate(values[i][4]))+'</td>';
+						x+='<td class="left">'+day+''+(holidayName!=''?' ('+holidayName+')':'')+'</td>';
+						x+='<td>'+values[i][5]+'</td>';
+						x+='</tr>';
+						
 					}
-		        });
-				
-				if(day=='Saturday' || day=='Sunday' || isFound){
-					x+='<tr>';
-					x+='<td>'+(i+1)+'</td>';
-					x+='<td>'+(sqlDateToRegularDate(values[i][4]))+'</td>';
-					x+='<td class="left">'+day+''+(holidayName!=''?' ('+holidayName+')':'')+'</td>';
-					x+='<td>'+values[i][5]+'</td>';
-					x+='</tr>';
 				}
+				if(data==0){
+					x+='<tr><td class="center" colspan="4">No Data Available</td></tr>';
+				}
+			}else{
+				x+='<tr><td class="center" colspan="4">No Data Available</td></tr>';
 			}
 			$('#tslcontainer2tbody').html(x);
 		}
