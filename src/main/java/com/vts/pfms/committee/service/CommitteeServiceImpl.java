@@ -3658,6 +3658,21 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 			notification.setCreatedDate(sdf1.format(new Date()));
 			notification.setNotificationDate(sdf1.format(new Date()));
 			carsdao.addNotifications(notification);
+			if(pe.getEnoteFrom().equalsIgnoreCase("S")) {
+				CommitteeMeetingApproval approval=new CommitteeMeetingApproval();
+				CommitteeSchedule schedule= new CommitteeSchedule();
+				approval.setScheduleId(pe.getScheduleId());
+				approval.setEmpId(empId);
+				approval.setMeetingStatus("MMR");
+				approval.setActionBy(Username);
+				approval.setActionDate(sdf1.format(new Date()));
+				
+				schedule.setScheduleId(pe.getScheduleId());
+				schedule.setScheduleFlag("MMR");
+				schedule.setModifiedBy(Username);
+				schedule.setModifiedDate(sdf1.format(new Date()));
+				dao.MeetingMinutesApproval(approval,schedule);
+			}
 		}
 		
 		

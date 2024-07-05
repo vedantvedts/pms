@@ -508,7 +508,7 @@
 														<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=7){ %>
 															
 															
-															<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Minutes Approval" formaction="MeetingMinutesApproval.htm" onclick="return confirm('Once You select confirm , you will not be able to change anything.Are you sure to submit?')"  style="background-color:#0e49b5 ;color:white" /> 
+															<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Minutes Approval" formaction="MeetingMinutesApproval.htm"   style="background-color:#0e49b5 ;color:white" /> 
 					
 														<%} %>	
 														

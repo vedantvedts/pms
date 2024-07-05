@@ -1331,7 +1331,7 @@ public class CommitteeController {
 				toDate=sdf2.format(rdf.parse(toDate));
 			}
 			List<Object[]> eNotePendingList =service.eNotePendingList(EmpId,"S");
-			//List<Object[]> eNoteApprovalList=service.eNoteApprovalList(EmpId,fromDate,toDate);
+			List<Object[]> eNoteApprovalList=service.eNoteApprovalList(EmpId,fromDate,toDate);
 			//req.setAttribute("eNoteApprovalList", eNoteApprovalList);
 			req.setAttribute("EnoteApprovalPendingList", eNotePendingList);
 			req.setAttribute("frmDt", fromDate);

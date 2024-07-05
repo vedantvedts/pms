@@ -503,7 +503,7 @@ String ses=(String)request.getParameter("result");
 
 			        Swal.fire({
 			            title: msg,
-			            icon: 'warning',
+			            icon: 'question',
 			            showCancelButton: true,
 			            confirmButtonColor: 'green',
 			            cancelButtonColor: '#d33',
@@ -533,7 +533,7 @@ String ses=(String)request.getParameter("result");
 
 			        Swal.fire({
 			            title: 'Are you sure to revoke?',
-			            icon: 'warning',
+			            icon: 'question',
 			            showCancelButton: true,
 			            confirmButtonColor: 'green',
 			            cancelButtonColor: '#d33',

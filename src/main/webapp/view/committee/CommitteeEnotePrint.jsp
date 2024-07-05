@@ -156,7 +156,7 @@ String type =(String)request.getAttribute("type");
 %>
 
 <div align="center">
-<div style="width: 100%;border: 0;text-align: center;"><h3> <b style="font-size:18px;text-decoration:underline">Note&nbsp;:&nbsp;<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%>Note_<%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%><%} %></b></h3></div>
+<div style="width: 100%;border: 0;text-align: center;"><h3> <b style="font-size:18px;text-decoration:underline">Note&nbsp;:&nbsp;<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%>Note/<%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%><%} %></b></h3></div>
 <div style="width: 100%;border: 0;text-align: center;"> <span style="float: left;"><b style="font-size:18px; margin-left: 14px;">Ref No&nbsp; : &nbsp;<span style="color: blue; font-size: 16px;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[1]!=null){%><%=CommitteMainEnoteList[1].toString()%><%}else{%>-<%}%></span></b></span><span style="float: right;"><b style="font-size:16px;">Date : &nbsp;<%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%></b></span> </div>
 <br><br><br>
 	<table style="border-collapse: collapse;">

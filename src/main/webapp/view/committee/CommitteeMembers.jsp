@@ -671,7 +671,7 @@ String ses=(String)request.getParameter("result");
 							<%} %>
 						<div class="row" >	
 						
-							<table align="center">
+							<table align="center" class="mb-2">
 							
 								<tr>
 									
@@ -712,9 +712,17 @@ String ses=(String)request.getParameter("result");
 												<input type="hidden" name="divisionid" value="<%=divisionid%>"> 		
 												<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
 										</form>		
+										
 										<%} %>	
 										
-									</td>	
+									</td>
+									<td>
+									<form  method="post" action="CommitteeConstitutionLetterDownload.htm" target="_blank" >
+											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download" style="   font-size: 0.90rem; " ></i></button>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />    												
+											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
+										</form>
+									</td>
 								</tr>
 							</table>	
 							

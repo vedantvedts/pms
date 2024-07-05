@@ -192,7 +192,7 @@ display:none;
 
 					
 					<form action="CommitteeEnotePrint.htm" target="_blank">
-					<button type="submit" class="btn btn-sm edit" style="background: #E76F51;border-color: #E76F51" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
+					<button type="submit" class="btn btn-sm edit" style="background: #088395;border-color: #088395" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem;color:white "></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="EnoteId" value="<%=obj[0].toString()%>">
 						<input type="hidden" name="type" value="C">
@@ -286,7 +286,7 @@ display:none;
 					</form>
 							<!-- Enote Print -->
 				<form action="CommitteeEnotePrint.htm" target="_blank">
-					<button type="submit" class="btn btn-sm edit" style="background: #E76F51;border-color: #E76F51" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
+					<button type="submit" class="btn btn-sm edit" style="background: #088395;border-color: #088395" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem;color:white "></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="EnoteId" value="<%=obj[0].toString()%>">
 							<input type="hidden" name="type" value="C">
