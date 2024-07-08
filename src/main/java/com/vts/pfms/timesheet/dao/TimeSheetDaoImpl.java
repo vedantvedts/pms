@@ -206,7 +206,8 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 
-	private static final String EMPACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_activity_analytics WHERE EmpId=:EmpId AND (CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE ProjectId=:ProjectId END) AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	//private static final String EMPACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_activity_analytics WHERE EmpId=:EmpId AND (CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE ProjectId=:ProjectId END) AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	private static final String EMPACTIVITYWISEANALYTICSLIST = "CALL pfms_timesheet_activity_analytics(:EmpId,:ProjectId,:FromDate,:ToDate)";
 	@Override
 	public List<Object[]> empActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
 		try {
@@ -223,7 +224,8 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
-	private static final String PROJECTACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_activity_analytics WHERE ProjectId=:ProjectId AND (CASE WHEN 'A'=:EmpId THEN 1=1 ELSE EmpId=:EmpId END) AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	//private static final String PROJECTACTIVITYWISEANALYTICSLIST = "SELECT * FROM pfms_activity_analytics WHERE ProjectId=:ProjectId AND (CASE WHEN 'A'=:EmpId THEN 1=1 ELSE EmpId=:EmpId END) AND ActivityFromDate BETWEEN :FromDate AND :ToDate";
+	private static final String PROJECTACTIVITYWISEANALYTICSLIST = "CALL pfms_timesheet_activity_analytics(:EmpId,:ProjectId,:FromDate,:ToDate)";
 	@Override
 	public List<Object[]> projectActivityWiseAnalyticsList(String empId, String fromDate, String toDate, String projectId) throws Exception {
 		try {
@@ -292,7 +294,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 
-	private static final String EMPEXTRAWORKINGDAYSLIST = "SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.EmpName) AS 'EmpName', b.Designation, b.DesigCadre,CONCAT(c.ActivityFromDate,''),CONCAT(c.TotalDuration,'') FROM employee a, employee_desig b, pfms_timesheet c WHERE a.DesigId=b.DesigId AND a.EmpId=c.EmpId AND a.EmpId=:EmpId AND c.ActivityFromDate BETWEEN :FromDate AND :ToDate ORDER BY c.ActivityFromDate";
+	private static final String EMPEXTRAWORKINGDAYSLIST = "SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.EmpName) AS 'EmpName', b.Designation, b.DesigCadre,CONCAT(c.ActivityFromDate,''),CONCAT(c.TotalDuration,'') FROM employee a, employee_desig b, pfms_timesheet c WHERE a.DesigId=b.DesigId AND a.EmpId=c.EmpId AND a.EmpId=:EmpId AND c.ActivityFromDate BETWEEN :FromDate AND :ToDate AND ((c.ActivityFromDate IN (SELECT d.HolidayDate FROM pfms_holiday_master d)) OR (DAYOFWEEK(c.ActivityFromDate) IN (1, 7))) ORDER BY c.ActivityFromDate";
 	@Override
 	public List<Object[]> empExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception {
 		try {
@@ -321,4 +323,26 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
+	private static final String PROJECTWISEEMPEXTRAWORKINGDAYSLIST = "SELECT a.EmpId,b.ProjectId,\r\n"
+			+ "(CASE WHEN b.ProjectId='0' THEN 'General' ELSE (SELECT c.ProjectCode FROM project_master c WHERE c.ProjectId=b.ProjectId LIMIT 1) END) AS ProjectName,\r\n"
+			+ "(SELECT COALESCE(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(b.ActivityDuration))),''), '00:00:00')) AS 'Duration'\r\n"
+			+ "FROM pfms_timesheet a, pfms_timesheet_activity b\r\n"
+			+ "WHERE a.TimeSheetId=b.TimeSheetId \r\n"
+			+ "      AND ((ActivityFromDate IN (SELECT c.HolidayDate FROM pfms_holiday_master c WHERE c.HolidayType='G')) OR (DAYOFWEEK(a.ActivityFromDate) IN (1, 7)))\r\n"
+			+ "      AND a.EmpId = :EmpId AND a.ActivityFromDate BETWEEN :FromDate AND :ToDate\r\n"
+			+ "GROUP BY b.ProjectId";
+	@Override
+	public List<Object[]> projectWiseEmpExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PROJECTWISEEMPEXTRAWORKINGDAYSLIST);
+			query.setParameter("EmpId", empId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl projectWiseEmpExtraWorkingDaysList() "+e);
+			return new ArrayList<>();
+		}
+	}
 }

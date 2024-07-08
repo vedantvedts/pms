@@ -625,9 +625,10 @@ statusMap.put("RBS", "#fe4e4e");
 																		<%
 																		    if(empActivityAssignList!=null && empActivityAssignList.size()>0){
 																		    for(Object[] activity : empActivityAssignList){
+																		    	String activity5 = activity[5].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"");
 																			%>
 																			<option value="<%=activity[10]%>" 
-																			data-activity="<%=activity[5]%>" 
+																			data-activity="<%=activity5%>" 
 																			data-projectid="<%=activity[14]%>" 
 																			data-actionno="<%=activity[9]%>"
 																			>
@@ -747,7 +748,7 @@ function toggleDiv(divId) {
 	}
 	
 	// Trigger select picker adjustment on toggle
-    $('.selectdee').selectpicker('refresh');
+    $('.selectdee').select2();
  }
 </script>
     
@@ -948,8 +949,9 @@ function toggleDiv(divId) {
         if(empActivityAssignList!=null && empActivityAssignList.size()>0){
         for(Object[] activity : empActivityAssignList){
         	 String activity5 = activity[5].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"");
+        	 
         %>
-		newRow+='<option value="<%=activity[10]%>" data-activity="<%=activity5%>" data-projectid="<%=activity[14]%>" data-actionno="<%=activity[9]%>"><%=activity[9]%></option>';
+		newRow+='<option value="<%=activity[10]%>" data-activity="' + escapeHtml('<%=activity5%>') + '" data-projectid="<%=activity[14]%>" data-actionno="<%=activity[9]%>"><%=activity[9]%></option>';
 		<%} }%>
 		newRow+='</select></td>';
 		newRow+='<td><span id="activityName-project-'+newId+'"></span><select class="form-control selectdee" name="projectId" id="projectId-select-'+newId+'"><option value="0" >General</option>';
@@ -1000,6 +1002,20 @@ function toggleDiv(divId) {
 	    
 	    calculateTotalDuration();
 	});
+	
+	function escapeHtml(text) {
+	    var map = {
+	        '&': '&amp;',
+	        '<': '&lt;',
+	        '>': '&gt;',
+	        '"': '&quot;',
+	        "'": '&#039;',
+	        '/': '&#x2F;',
+	        '`': '&#x60;',
+	        '=': '&#x3D;'
+	    };
+	    return text.replace(/[&<>"'`=\/]/g, function(m) { return map[m]; });
+	}
 </script>
 
 <script type="text/javascript">
@@ -1020,7 +1036,7 @@ function toggleDiv(divId) {
 	} */
 	
 	function changeActivity(selectid) {
-		console.log('selectid: '+selectid);
+		
 	    var activityId = $('#activityId-' + selectid).val();
 	    var activitySelect2 = $('#activityName-select-' + selectid).next('.select2-container');
 	    var projectSelect2= $('#projectId-select-' + selectid).next('.select2-container');

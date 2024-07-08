@@ -412,7 +412,9 @@ public class TimeSheetController {
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + " Inside EmpExtraWorkingDayList.htm "+UserId);
 		Gson json = new Gson();
-		List<Object[]> extraworkingDaysList = null;
+		List<Object[]> extraworkingDaysList = new ArrayList<>();
+		List<Object[]> projectWiseExtraworkingDaysList = new ArrayList<>();
+		List<List<Object[]>> list = new ArrayList<>();
 		try {
 			String empId = req.getParameter("empId");
 			String fromDate = req.getParameter("fromDate");
@@ -429,10 +431,14 @@ public class TimeSheetController {
 			}
 			
 			extraworkingDaysList = service.empExtraWorkingDaysList(empId, fromDate, toDate);
+			projectWiseExtraworkingDaysList = service.projectWiseEmpExtraWorkingDaysList(empId, fromDate, toDate);
+			list.add(extraworkingDaysList);
+			list.add(projectWiseExtraworkingDaysList);
+			
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside EmpExtraWorkingDayList.htm "+UserId, e);
 			e.printStackTrace();
 		}
-		return json.toJson(extraworkingDaysList);
+		return json.toJson(list);
 	}
 }

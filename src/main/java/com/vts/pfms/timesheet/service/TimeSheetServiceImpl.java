@@ -396,4 +396,10 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 		
 		return dao.getHolidayList();
 	}
+	
+	@Override
+	public List<Object[]> projectWiseEmpExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception {
+		
+		return dao.projectWiseEmpExtraWorkingDaysList(empId, fromDate, toDate);
+	}
 }

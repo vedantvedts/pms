@@ -99,11 +99,11 @@
 	padding: 7px;
 }
 
-.table-wrapper {
+.table-wrapper{
     max-height: 400px; /* Set the max height for the table wrapper */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; 
-	padding: 20px;
+	padding: 0px;
 	background-color: #f8f9fa;
 	border: 1px solid #dee2e6;
 	border-radius: 5px;
@@ -112,17 +112,17 @@
     max-height: 630px; /* Set the max height for the table wrapper */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; 
-	padding: 20px;
+	padding: 0px;
 	background-color: #f8f9fa;
 	border: 1px solid #dee2e6;
 	border-radius: 5px;
 	margin-bottom: 10px;
 }
 .table-wrapper3 {
-    max-height: 600px; /* Set the max height for the table wrapper */
+    max-height: 400px; /* Set the max height for the table wrapper */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; 
-	padding: 20px;
+	padding: 0px;
 	background-color: #f8f9fa;
 	border: 1px solid #dee2e6;
 	border-radius: 5px;
@@ -155,6 +155,37 @@
   background-color: #0056b3;
 }
 
+</style>
+
+<style type="text/css">
+/* Style for the filter dropdown */
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.filter-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.filter-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.filter-content a:hover {background-color: #f1f1f1}
+
+.filter-dropdown:hover .filter-content {
+    display: block;
+}
 </style>
 </head>
 <body >
@@ -196,7 +227,7 @@
 		</div>
 	<%} %>
 
-	<div class="container-fluid">
+	<div class="container-fluid mb-3">
 		<div class="row">
 			<div class="col-md-9">
 			</div>
@@ -414,12 +445,22 @@
 							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="ptscontainer">
 								<thead class="center" >
 									<tr>
-										<th colspan="4" style="text-transform: uppercase;">Project Time Sheet</th>
+										<th colspan="4" style="">PROJECT TIME SHEET</th>
 									</tr>
 									<tr>
 										<th>SN</th>
 										<th>Name</th>
-										<th>Cadre</th>
+										<th>Cadre
+											<div class="filter-dropdown">
+							                    <span><i class="fa fa-filter" aria-hidden="true"></i></span>
+							                    <div class="filter-content">
+							                        <a href="#" onclick="filterTable('DRDS')">DRDS</a>
+							                        <a href="#" onclick="filterTable('DRTC')">DRTC</a>
+							                        <a href="#" onclick="filterTable('Others')">Others</a>
+							                        <a href="#" onclick="filterTable('All')">Show All</a>
+							                    </div>
+	                						</div>
+										</th>
 										<th>Total Hrs</th>
 									</tr>
 								</thead>
@@ -471,7 +512,7 @@
 							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="tslcontainer">
 								<thead class="center">
 									<tr>
-										<th style="font-size: 16px;color: white;" colspan="7">Time Sheet List</th>
+										<th style="font-size: 16px;color: white;" colspan="9">TIME SHEET LIST</th>
 									</tr>
 									<tr>
 										<th>SN</th>
@@ -482,6 +523,8 @@
 										<th>Deficit Hrs</th>
 										<th>No of Extra Hrs</th>
 										<th>Extra Hrs</th>
+										<!-- <th>Overall Count</th> -->
+										<th>Overall Hrs</th>
 									</tr>
 								</thead>
 								<tbody id="tslcontainertbody" class="center">
@@ -506,21 +549,19 @@
 						<div class="col-md-12">
 							<form action="#">
 								<div class="row">
-									<div class="col-md-6">
-										
-									</div>
-									<div class="col-md-6">
+									
+									<div class="col-md-12">
 										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
 											<div class="card-body" style="padding: 0px !important">
 												<table style="width: 100%;border-collapse: collapse;">
 													<tr>
-														<td style="width: 15%;"></td>
-														<th class="right" style="width: 6%;">From :</th>
-														<td style="width: 15%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fc.sdfTordf(fromDate3)%>"></td>
+														<td style="width: 40%;"></td>
+														<th class="right" style="width: 5%;">From :</th>
+														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fc.sdfTordf(fromDate3)%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 15%;"><input type="text" class="form-control" name="toDate" id="tsl2ToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
-														<th class="right" style="width: 10%;">Employee : </th>
-														<td style="width: 39%;">
+														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tsl2ToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<th class="right" style="width: 5%;">Employee : </th>
+														<td style="width: 25%;">
 															<select class="form-control selectdee" name="empId" id="tsl2EmpId">
 																<%
 																if(empList!=null && empList.size()>0){
@@ -535,18 +576,20 @@
 										</div>		
 									</div>
 									
+									<!-- <div class="col-md-6">
+									
+									</div> -->
 								</div>
 							</form>
 						</div>
 					</div>
-					<div class="row ml-1 mr-1">
-						<div class="col-md-6">
-						</div>
-						<div class="col-md-6 table-wrapper3">
+					<div class="row ml-1">
+						
+						<div class="col-md-8 table-wrapper3">
 							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="tslcontainer2">
 								<thead class="center">
 									<tr>
-										<th style="font-size: 16px;color: white;" colspan="4">Extra Days</th>
+										<th style="font-size: 16px;color: white;" colspan="4">EXTRA DAYS</th>
 									</tr>
 									<tr>
 										<th>SN</th>
@@ -561,6 +604,9 @@
 							</table>
 						</div>
 						
+						<div class="col-md-4">
+							<div id="tslcontainer3" style="display:block;" ></div>
+						</div>
 					</div>
 					
 					<!-- ------------------------- Time Sheet Extra Days List End ------------------------------------------  -->
@@ -877,9 +923,77 @@ $(document).ready(function() {
 	});
 	
 	
+	
 });
 
-
+var definedGradientColors = [
+    {
+        radialGradient: {
+            cx: 0.5,
+            cy: 0.3,
+            r: 0.7
+        },
+        stops: [
+            [0, '#76FF03'],
+            [1, Highcharts.color('#76FF03').brighten(-0.3).get('rgb')] // darken
+        ]
+    },
+    {
+        radialGradient: {
+            cx: 0.5,
+            cy: 0.3,
+            r: 0.7
+        },
+        stops: [
+            [0, '#4CAF50'],
+            [1, Highcharts.color('#4CAF50').brighten(-0.3).get('rgb')] // darken
+        ]
+    },
+    {
+        radialGradient: {
+            cx: 0.5,
+            cy: 0.3,
+            r: 0.7
+        },
+        stops: [
+            [0, '#FDD835'],
+            [1, Highcharts.color('#FDD835').brighten(-0.3).get('rgb')] // darken
+        ]
+    },
+    {
+        radialGradient: {
+            cx: 0.5,
+            cy: 0.3,
+            r: 0.7
+        },
+        stops: [
+            [0, '#feb204'],
+            [1, Highcharts.color('#feb204').brighten(-0.3).get('rgb')] // darken
+        ]
+    },
+    {
+        radialGradient: {
+            cx: 0.5,
+            cy: 0.3,
+            r: 0.7
+        },
+        stops: [
+            [0, '#ff7400'],
+            [1, Highcharts.color('#ff7400').brighten(-0.3).get('rgb')] // darken
+        ]
+    },
+    {
+        radialGradient: {
+            cx: 0.5,
+            cy: 0.3,
+            r: 0.7
+        },
+        stops: [
+            [0, '#FF0000'],
+            [1, Highcharts.color('#FF0000').brighten(-0.3).get('rgb')] // darken
+        ]
+    },
+];
 
 /* ------------------------- Action / Activitywise Analytics (Individual) ---------------------------- */
 
@@ -1022,24 +1136,40 @@ function getEmpActionAnalyticsCount(){
 			        /* inverted: true  */
 			    },
 			    title: {
-			        text: 'Action Analytics'
+			        text: 'Action Analytics',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    xAxis: {
-			        categories: ['Completed', 'Ongoing', 'Not Started']
+			        categories: ['Completed', 'Ongoing', 'Not Started'],
+			        labels: {
+			            style: {
+			                fontSize: '14px',
+			                fontWeight: 'bold',
+			                color: 'black',
+			            }
+			        }
 			    },
 			    yAxis: {
 			        min: 0,
 			        title: {
-			            text: 'Count'
+			            text: 'Count',
+			            style: {
+			                fontSize: '14px',
+			                fontWeight: 'bold',
+			                color: 'black',
+			            }
 			        },
 			        allowDecimals: false // Disallow decimal increments
 			    },
 			    series: [{
 			        name: 'Within time',
 			        data: [
-			            { y: values[0], color: 'green' }, // Completed
-			            { y: values[2], color: '#FDD835' }, // Ongoing
-			            { y: values[4], color: '#EF5350' }   // Not Started
+			            { y: values[0], color: definedGradientColors[0] }, // Completed
+			            { y: values[2], color: definedGradientColors[2] }, // Ongoing
+			            { y: values[4], color: definedGradientColors[4] }   // Not Started
 			        ],
 			        dataLabels: {
 			            enabled: true, // Enable data labels
@@ -1050,9 +1180,9 @@ function getEmpActionAnalyticsCount(){
 			    }, {
 			        name: 'Delayed',
 			        data: [
-			            { y: values[1], color: 'lightgreen' }, // Completed
-			            { y: values[3], color: '#feb204' },  // Ongoing
-			            { y: values[5], color: '#FF0000' }   // Not Started
+			            { y: values[1], color: definedGradientColors[1] }, // Completed
+			            { y: values[3], color: definedGradientColors[3] },  // Ongoing
+			            { y: values[5], color: definedGradientColors[5] },   // Not Started
 			        ],
 			        dataLabels: {
 			            enabled: true, // Enable data labels
@@ -1105,7 +1235,11 @@ function getEmpActionAnalyticsCount(){
 
 			    },
 			    title: {
-			        text: 'Missed Actions'
+			        text: 'Missed Actions',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    tooltip: {
 			    	pointFormat: '{series.name}: <b>{point.y} </b>'
@@ -1118,6 +1252,10 @@ function getEmpActionAnalyticsCount(){
 			            dataLabels: {
 			                enabled: true,
 			                format: '<b>{point.name}</b>: {point.y} ',
+			                style: {
+			                    fontSize: '14px',
+			                    fontWeight: 'bold'
+			                },
 			                connectorColor: 'silver'
 			                
 			            },
@@ -1203,31 +1341,63 @@ function getEmpActivityWiseAnalyticsCount(){
                 return convertTimeStringToHours(timeString);
             });
 			
+           /*  var coloredData = categories.map(function(category, index) {
+                return {
+                    name: category,
+                    y: data[index],
+                    color: Highcharts.getOptions().colors[index % Highcharts.getOptions().colors.length],
+                };
+            }); */
+            
+            var coloredData = categories.map(function(category, index) {
+                return {
+                    name: category,
+                    y: data[index],
+                	color: Highcharts.getOptions().colors[index],
+                };
+            });
+            
 			/* --------------------------- Activity Wise Analytics (In Bar Graph) (Individual)------------------------------------- */
 			Highcharts.chart('awaicontainer', {
 			    chart: {
 			        type: 'column',
 			    },
 			    title: {
-			        text: 'Activity wise Analytics'
+			        text: 'Activity wise Analytics',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    xAxis: {
-			        categories: categories
+			        categories: categories,
+			        labels : {
+			        	style:{
+			        		fontSize: '14px',
+			        		fontWeight: 'bold',
+			        		color: 'black',
+			        	},
+			        },
 			    },
 			    yAxis: {
 			        min: 0,
 			        title: {
-			            text: 'No of Hours'
+			            text: 'No of Hours',
+			            style:{
+			            	fontSize: '14px',
+			            	fontWeight: 'bold',
+			            	color: 'black',
+			            },
 			        },
 			        allowDecimals: false // Disallow decimal increments
 			    },
-			    colors: [
+			    /* colors: [
 			        '#187498',
-			    ], 
+			    ],  */
 			      series: [{
 			        type: 'column',
 			        name: 'Activities',
-			        data: data,
+			        data: coloredData,
 			        dataLabels: {
 			            enabled: true, // Enable data labels
 			            inside: false, // Position the label outside of the bar
@@ -1272,13 +1442,6 @@ function getEmpActivityWiseAnalyticsCount(){
 			
 			/* --------------------------- Activity Wise Analytics (In Pie Chart) (Individual) ------------------------------------- */
 			
-			var pieData = categories.map(function(category, index) {
-                return {
-                    name: category,
-                    y: data[index],
-                	color: Highcharts.getOptions().colors[index],
-                };
-            });
 			
 			Highcharts.chart('awaicontainer2', {
 			    chart: {
@@ -1289,7 +1452,11 @@ function getEmpActivityWiseAnalyticsCount(){
 
 			    },
 			    title: {
-			        text: 'Activity wise Analytics'
+			        text: 'Activity wise Analytics',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    tooltip: {
 			    	pointFormat: '{series.name}: <b>{point.y} </b>'
@@ -1302,6 +1469,10 @@ function getEmpActivityWiseAnalyticsCount(){
 			            dataLabels: {
 			                enabled: true,
 			                format: '<b>{point.name}</b>: {point.y} ',
+			                style: {
+			                    fontSize: '14px',
+			                    fontWeight: 'bold'
+			                },
 			                connectorColor: 'silver'
 			                
 			            },
@@ -1309,7 +1480,7 @@ function getEmpActivityWiseAnalyticsCount(){
 			    },
 			    series: [{
 			        name: 'Hours',
-			        data: pieData
+			        data: coloredData,
 			    }],
 			    credits: {
 		            enabled: false
@@ -1379,21 +1550,46 @@ function getProjectActivityWiseAnalyticsCount(){
                 return convertTimeStringToHours(timeString);
             });
 			
+
+            var coloredData = categories.map(function(category, index) {
+                return {
+                    name: category,
+                    y: data[index],
+                	color: Highcharts.getOptions().colors[index],
+                };
+            });
+            
 			/* --------------------------- Activity Wise Analytics (In Bar Graph) (Project)------------------------------------- */
 			Highcharts.chart('awapcontainer', {
 			    chart: {
 			        type: 'column',
 			    },
 			    title: {
-			        text: 'Activity wise Analytics'
+			        text: 'Activity wise Analytics',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    xAxis: {
-			        categories: categories
+			        categories: categories,
+			        labels:{
+			        	style:{
+			        		fontSize: '14px',
+			        		fontWeight: 'bold',
+			        		color: 'black',
+			        	},
+			        },
 			    },
 			    yAxis: {
 			        min: 0,
 			        title: {
-			            text: 'No of Hours'
+			            text: 'No of Hours',
+			            style:{
+			        		fontSize: '14px',
+			        		fontWeight: 'bold',
+			        		color: 'black',
+			        	},
 			        },
 			        allowDecimals: false // Disallow decimal increments
 			    },
@@ -1403,7 +1599,7 @@ function getProjectActivityWiseAnalyticsCount(){
 			      series: [{
 			        type: 'column',
 			        name: 'Activities',
-			        data: data,
+			        data: coloredData,
 			        dataLabels: {
 			            enabled: true, // Enable data labels
 			            inside: false, // Position the label outside of the bar
@@ -1448,13 +1644,13 @@ function getProjectActivityWiseAnalyticsCount(){
 			
 			/* --------------------------- Activity Wise Analytics (In Pie Chart) (Project) ------------------------------------- */
 			
-			var pieData = categories.map(function(category, index) {
+			/* var pieData = categories.map(function(category, index) {
                 return {
                     name: category,
                     y: data[index],
                 	color: Highcharts.getOptions().colors[index],
                 };
-            });
+            }); */
 			
 			Highcharts.chart('awapcontainer2', {
 			    chart: {
@@ -1465,7 +1661,11 @@ function getProjectActivityWiseAnalyticsCount(){
 
 			    },
 			    title: {
-			        text: 'Activity wise Analytics'
+			        text: 'Activity wise Analytics',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    tooltip: {
 			    	pointFormat: '{series.name}: <b>{point.y} </b>'
@@ -1478,6 +1678,10 @@ function getProjectActivityWiseAnalyticsCount(){
 			            dataLabels: {
 			                enabled: true,
 			                format: '<b>{point.name}</b>: {point.y} ',
+			                style: {
+			                    fontSize: '14px',
+			                    fontWeight: 'bold'
+			                },
 			                connectorColor: 'silver'
 			                
 			            },
@@ -1485,7 +1689,7 @@ function getProjectActivityWiseAnalyticsCount(){
 			    },
 			    series: [{
 			        name: 'Hours',
-			        data: pieData
+			        data: coloredData,
 			    }],
 			    credits: {
 		            enabled: false
@@ -1553,24 +1757,40 @@ function getProjectActionAnalyticsCount(){
 			        type: 'column',
 			    },
 			    title: {
-			        text: 'Action Analytics'
+			        text: 'Action Analytics',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    xAxis: {
-			        categories: ['Completed', 'Ongoing', 'Not Started']
+			        categories: ['Completed', 'Ongoing', 'Not Started'],
+			        labels: {
+			            style: {
+			                fontSize: '14px',
+			                fontWeight: 'bold',
+			                color: 'black',
+			            }
+			        },
 			    },
 			    yAxis: {
 			        min: 0,
 			        title: {
-			            text: 'Count'
+			            text: 'Count',
+			            style: {
+				            fontSize: '14px',
+				            fontWeight: 'bold',
+				            color: 'black',
+				        },
 			        },
-			        allowDecimals: false // Disallow decimal increments
+			        allowDecimals: false, // Disallow decimal increments
 			    },
 			    series: [{
 			        name: 'Within time',
 			        data: [
-			            { y: values[0], color: 'green' }, // Completed
-			            { y: values[2], color: '#FDD835' }, // Ongoing
-			            { y: values[4], color: '#EF5350' }   // Not Started
+			            { y: values[0], color: definedGradientColors[0]}, // Completed
+			            { y: values[2], color: definedGradientColors[2] }, // Ongoing
+			            { y: values[4], color: definedGradientColors[4] }   // Not Started
 			        ],
 			        dataLabels: {
 			            enabled: true, // Enable data labels
@@ -1581,9 +1801,9 @@ function getProjectActionAnalyticsCount(){
 			    }, {
 			        name: 'Delayed',
 			        data: [
-			            { y: values[1], color: 'lightgreen' }, // Completed
-			            { y: values[3], color: '#feb204' },  // Ongoing
-			            { y: values[5], color: '#FF0000' }   // Not Started
+			            { y: values[1], color: definedGradientColors[1] }, // Completed
+			            { y: values[3], color: definedGradientColors[3] },  // Ongoing
+			            { y: values[5], color: definedGradientColors[5] }   // Not Started
 			        ],
 			        dataLabels: {
 			            enabled: true, // Enable data labels
@@ -1636,7 +1856,11 @@ function getProjectActionAnalyticsCount(){
 
 			    },
 			    title: {
-			        text: 'Missed Actions'
+			        text: 'Missed Actions',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    tooltip: {
 			    	pointFormat: '{series.name}: <b>{point.y} </b>'
@@ -1649,6 +1873,10 @@ function getProjectActionAnalyticsCount(){
 			            dataLabels: {
 			                enabled: true,
 			                format: '<b>{point.name}</b>: {point.y} ',
+			                style: {
+			                    fontSize: '14px',
+			                    fontWeight: 'bold'
+			                },
 			                connectorColor: 'silver'
 			                
 			            },
@@ -1730,19 +1958,49 @@ function getEmpTimeSheetWorkingHrsList(){
 			
 			if(values.length>0){
 				for(var i=0;i<values.length;i++){
+					var val5 = values[i][5];
+					var val7 = values[i][7];
+					var overall = val7-val5;
+					
+					var deficithrsparts = values[i][6].split(':');
+					var extrahrsparts = values[i][8].split(':');
+					
+				    var deficitseconds = parseInt(deficithrsparts[0], 10) * 3600 + parseInt(deficithrsparts[1], 10) * 60 + parseInt(deficithrsparts[2], 10);
+				    var extraseconds = parseInt(extrahrsparts[0], 10) * 3600 + parseInt(extrahrsparts[1], 10) * 60 + parseInt(extrahrsparts[2], 10);
+				    var overallhrs = secondsToHM(extraseconds-deficitseconds)+':00';
+				    
 					x+='<tr>';
 					x+='<td>'+(i+1)+'</td>';
 					x+='<td class="left">'+values[i][1] +", "+values[i][2]+'</td>';
 					//x+='<td>'+values[i][3]+'</td>';
 					x+='<td>'+values[i][4]+'</td>';
-					x+='<td>'+values[i][5]+'</td>';
-					x+='<td>'+values[i][6]+'</td>';
-					x+='<td>'+values[i][7]+'</td>';
-					x+='<td>'+values[i][8]+'</td>';
+					if(val5>0){
+						x+='<td style="color: red;font-weight: 600;">'+val5+'</td>';
+						x+='<td style="color: red;font-weight: 600;">'+values[i][6]+'</td>';
+					}else{
+						x+='<td>'+val5+'</td>';
+						x+='<td>'+values[i][6]+'</td>';
+					}
+					
+					if(val7>0){
+						x+='<td style="color: green;font-weight: 600;">'+values[i][7]+'</td>';
+						x+='<td style="color: green;font-weight: 600;">'+values[i][8]+'</td>';
+					}else{
+						x+='<td>'+values[i][7]+'</td>';
+						x+='<td>'+values[i][8]+'</td>';
+					}
+					if(overall<0){
+						//x+='<td style="color: red;font-weight: 600;">'+(overall)+'</td>';
+						x+='<td style="color: red;font-weight: 600;">'+(overallhrs)+'</td>';
+					}else{
+						//x+='<td style="color: green;font-weight: 600;">'+(overall)+'</td>';
+						x+='<td style="color: green;font-weight: 600;">'+(overallhrs)+'</td>';
+					}
+					
 					x+='</tr>';
 				}
 			}else{
-				x+='<tr><td class="center" colspan="7">No Data Available</td></tr>';
+				x+='<tr><td class="center" colspan="8">No Data Available</td></tr>';
 			}
 			$('#tslcontainertbody').html(x);
 		}
@@ -1764,8 +2022,16 @@ $('#ptsToDate,#ptsProjectId').change(function(){
 	getProjectTimeSheetWorkingHrsList();
 });
 
-function getProjectTimeSheetWorkingHrsList(){
 
+// Initialize counters for each type
+var drds = 0;
+var drtc = 0;
+var others = 0;
+
+function getProjectTimeSheetWorkingHrsList(){
+	drds = 0;
+	drtc = 0;
+	others = 0;
 	$.ajax({
 		Type:'GET',
 		url:'ProjectTimeSheetWorkingHrsList.htm',
@@ -1789,11 +2055,6 @@ function getProjectTimeSheetWorkingHrsList(){
 					x+='</tr>';
 				}
 				
-				// Initialize counters for each type
-				var drds = 0;
-				var drtc = 0;
-				var others = 0;
-				
 				values.forEach(function(item) {
 				    var type = item[3]; // Type is at index 3
 				    var time = item[4]; // Time is at index 4
@@ -1816,7 +2077,7 @@ function getProjectTimeSheetWorkingHrsList(){
 				var totalhm = secondsToHM(totalseconds)+":00";
 				x+='<tr>'
 				x+='<td colspan="3" class="right">Total</td>';
-				x+='<td>'+totalhm+'</td>';
+				x+='<td id="totaltd">'+totalhm+'</td>';
 				x+='</tr>';
 			}else{
 				x+='<tr><td class="center" colspan="4">No Data Available</td></tr>';
@@ -1841,7 +2102,11 @@ function getProjectTimeSheetWorkingHrsList(){
 
 			    },
 			    title: {
-			        text: 'Project Time Sheet'
+			        text: 'Project Time Sheet',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
 			    },
 			    tooltip: {
 			    	pointFormat: '{series.name}: <b>{point.y} </b>'
@@ -1854,6 +2119,10 @@ function getProjectTimeSheetWorkingHrsList(){
 			            dataLabels: {
 			                enabled: true,
 			                format: '<b>{point.name}</b>: {point.y} ',
+			                style: {
+			                    fontSize: '14px',
+			                    fontWeight: 'bold'
+			                },
 			                connectorColor: 'silver'
 			                
 			            },
@@ -1916,6 +2185,36 @@ function getProjectTimeSheetWorkingHrsList(){
 	});
 }
 
+function filterTable(type) {
+    var table, rows, i, td, txtValue;
+    table = document.getElementById("ptscontainertbody");
+    rows = table.getElementsByTagName("tr");
+
+    for (i = 0; i < rows.length; i++) {
+        td = rows[i].getElementsByTagName("td")[2];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (type === "All" || txtValue === type) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+            
+            if(type=='DRDS'){
+            	document.getElementById('totaltd').textContent = secondsToHM(drds)+":00";
+            }else if(type=='DRTC'){
+            	document.getElementById('totaltd').textContent = secondsToHM(drtc)+":00";
+            }else if(type=='Others'){
+            	document.getElementById('totaltd').textContent = secondsToHM(others)+":00";
+            }else{
+            	var totalseconds = drds+drtc+others;
+				var totalhm = secondsToHM(totalseconds)+":00";
+            	document.getElementById('totaltd').textContent = totalhm;
+            }
+        }
+    }
+}
+
 /* ------------------------------------- Project Time Sheet End ---------------------------------- */
 
  var holidayList = [
@@ -1951,38 +2250,131 @@ function getEmpExtraWorkingDayList(){
 			toDate : $('#tsl2ToDate').val(),
 		},
 		success:function(result){
-			var values = JSON.parse(result);
+			var valueslist = JSON.parse(result);
+			var extradays = valueslist[0];
+			
 			var x='';
-			var data = 0;
-			if(values.length>0){
-				for(var i=0;i<values.length;i++){
-					var day = getDayOfWeek(values[i][4]);
+			if(extradays.length>0){
+				for(var i=0;i<extradays.length;i++){
+
 					var holidayName = '';
 					
-					var isFound = holidayList.some(function(holiday) {
-						if(holiday[1] === values[i][4]){
+					holidayList.some(function(holiday) {
+						if(holiday[1] === extradays[i][4]){
 							holidayName = holiday[2];
 							return true;
 						}
 			        });
 					
-					if(day=='Saturday' || day=='Sunday' || isFound){
-						x+='<tr>';
-						x+='<td>'+(++data)+'</td>';
-						x+='<td>'+(sqlDateToRegularDate(values[i][4]))+'</td>';
-						x+='<td class="left">'+day+''+(holidayName!=''?' ('+holidayName+')':'')+'</td>';
-						x+='<td>'+values[i][5]+'</td>';
-						x+='</tr>';
-						
-					}
+					x+='<tr>';
+					x+='<td>'+(i+1)+'</td>';
+					x+='<td>'+(sqlDateToRegularDate(extradays[i][4]))+'</td>';
+					x+='<td class="left">'+(getDayOfWeek(extradays[i][4]))+''+(holidayName!=''?' ('+holidayName+')':'')+'</td>';
+					x+='<td>'+extradays[i][5]+'</td>';
+					x+='</tr>';
+					
 				}
-				if(data==0){
-					x+='<tr><td class="center" colspan="4">No Data Available</td></tr>';
-				}
+			
 			}else{
 				x+='<tr><td class="center" colspan="4">No Data Available</td></tr>';
 			}
 			$('#tslcontainer2tbody').html(x);
+			
+			
+			/* --------------------------- Project Wise Extra Hrs (In Pie Chart) ------------------------------------- */
+			
+			var projectwiseextradays = valueslist[1];
+			
+			var categories = projectwiseextradays.map(function(item) {
+				return item[2] != null ? item[2] : "-";
+			});
+			
+            var data = projectwiseextradays.map(function(item) {
+                var timeString = item[3] != null ? item[3] : '00:00:00';
+                return convertTimeStringToHours(timeString);
+            });
+			
+
+            var coloredData = categories.map(function(category, index) {
+                return {
+                    name: category,
+                    y: data[index],
+                	color: Highcharts.getOptions().colors[index],
+                };
+            });
+            
+			Highcharts.chart('tslcontainer3', {
+			    chart: {
+			        plotBackgroundColor: null,
+			        plotBorderWidth: null,
+			        plotShadow: false,
+			        type: 'pie',
+
+			    },
+			    title: {
+			        text: 'Project Wise Extra Hrs',
+			        style: {
+			            fontSize: '20px',
+			            fontWeight: 'bold',
+			        },
+			    },
+			    tooltip: {
+			    	pointFormat: '{series.name}: <b>{point.y} </b>'
+			    },
+			    
+			    plotOptions: {
+			        pie: {
+			            allowPointSelect: true,
+			            cursor: 'pointer',
+			            dataLabels: {
+			                enabled: true,
+			                format: '<b>{point.name}</b>: {point.y} ',
+			                style: {
+			                    fontSize: '14px',
+			                    fontWeight: 'bold'
+			                },
+			                connectorColor: 'silver'
+			                
+			            },
+			        }
+			    },
+			    series: [{
+			        name: 'Hours',
+			        data: coloredData,
+			    }],
+			    credits: {
+		            enabled: false
+		        },
+		        responsive: {
+		            rules: [{
+		                condition: {
+		                    maxWidth: 500
+		                },
+		                // Make the labels less space demanding on mobile
+		                chartOptions: {
+		                    xAxis: {
+		                        labels: {
+		                            formatter: function () {
+		                                return this.value.charAt(0);
+		                            }
+		                        }
+		                    },
+		                    yAxis: {
+		                        labels: {
+		                            align: 'left',
+		                            x: 0,
+		                            y: -2
+		                        },
+		                        title: {
+		                            text: ''
+		                        }
+		                    }
+		                }
+		            }]
+		        }
+			});
+			
+			/* --------------------------- Project Wise Extra Hrs (In Pie Chart) End ------------------------------------- */
 		}
 	});
 }
@@ -2012,9 +2404,11 @@ function convertTimeStringToHours(timeString) {
 
 //Convert total seconds back to HH:mm format and to decimal hours
 function secondsToHM(seconds) {
+    var sign = seconds < 0 ? '-' : '';  // Determine if the seconds are negative
+    seconds = Math.abs(seconds);  // Work with the absolute value of seconds
     var h = Math.floor(seconds / 3600);
     var m = Math.floor((seconds % 3600) / 60);
-    return [h, m].map(function(val) { return val < 10 ? '0' + val : val; }).join(':');
+    return sign + [h, m].map(function(val) { return val < 10 ? '0' + val : val; }).join(':');
 }
 
 function secondsToDecimalHours(seconds) {
@@ -2047,5 +2441,7 @@ function getDayOfWeek(dateString) {
 	  return daysOfWeek[dayIndex];
 	}
 </script>
+
+
 </body>
 </html>
