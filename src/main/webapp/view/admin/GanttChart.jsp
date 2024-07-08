@@ -121,8 +121,8 @@ h6{
 										<div class="col-md-8"></div>
 										<div class="col-md-4">
 											<div style="font-weight: bold; " >
-												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #046582;  padding: 0px 15px; border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #81b214;  padding: 0px 15px;border-radius: 3px;"></span></span>
+												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #29465B;  padding: 0px 15px; border-radius: 3px;"></span></span>
+												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
 												<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
 											</div>
 										</div>
@@ -152,20 +152,27 @@ h6{
 								    		  {
 								    		    id: "<%=obj[3]%>",
 								    		    name: "<%=obj[2]%>",
-								    		    <%if(!obj[9].toString().equalsIgnoreCase("0")){%>
+								    		    <%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
 								    		   	baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>", 
-								    		    baseline: {fill: "#f25287 0.5", stroke: "0.0 #dd2c00"},
-								    		    <%}%>
-							    		   		<%-- baselineStart: "<%=obj[6]%>",
-								    		    baselineEnd: "<%=obj[7]%>",  --%>
+								    		    baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
 								    		    actualStart: "<%=obj[4]%>",
 								    		    actualEnd: "<%=obj[5]%>",
-								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
+								    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
+								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
+								    		    progressValue: "<%= Math.round((int)obj[8])%>% ", 
+								    		    <%} else{%>
+							    		   		<%-- baselineStart: "<%=obj[6]%>",
+								    		    baselineEnd: "<%=obj[7]%>",  --%>
+								    		    baselineStart: "<%=obj[4]%>",
+								    		    baselineEnd: "<%=obj[5]%>", 
+								    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
 								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-								    		    progressValue: "<%= Math.round((int)obj[8])%>% ",
-								    		    rowHeight: "50",
+								    		    progressValue: "<%= Math.round((int)obj[8])%>% ", 
+								    		    <%}%>
+								    		    rowHeight: "55",
 								    		  },
 								    		  <%}%>
 								    		  ];
@@ -177,20 +184,49 @@ h6{
 								    		chart.data(treeData);   
 								        	// set the container id
 								        	chart.container("containers");  
+								        	
+								        	
+								        	
 								        	// initiate drawing the chart
 								        	chart.draw();    
 								        	// fit elements to the width of the timeline
 								        	chart.fitAll();
 								        /* ToolTip */
-								        chart.getTimeline().tooltip().useHtml(true);    
+								        chart.getTimeline().tooltip().useHtml(true);  
+								        
+								        var timeline = chart.getTimeline();
+
+									   // configure labels of elements
+									   timeline.elements().labels().fontWeight(600);
+									   timeline.elements().labels().fontSize("14px");
+									   timeline.elements().labels().fontColor("#FF6F00");
+
 								        chart.getTimeline().tooltip().format(
-								          "<span style='font-weight:600;font-size:10pt'> Actual : " +
-								          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
-								          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-								          "<span style='font-weight:600;font-size:10pt'> Revised : " +
-								          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
-								          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-								          "Progress: {%baselineProgressValue}<br>" 
+							        		 function() {
+							        		        var actualStart = this.getData("actualStart") ? this.getData("actualStart") : this.getData("baselineStart");
+							        		        var actualEnd = this.getData("actualEnd") ? this.getData("actualEnd") : this.getData("baselineEnd");
+							        		        var reDate=this.getData("actualStart") ;
+							        		   
+							        		        var html="";
+							        		        if(reDate===undefined){
+							        		        	html="";
+							        		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+							        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+							        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+							        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+							        		        }else{
+							        		        	html="";
+							        		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+							        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+							        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+							        		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+							        		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
+							        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
+							        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+							        		        }
+							        		        
+							        		        return html;
+							        		    }
 								          
 								        ); 
 								        

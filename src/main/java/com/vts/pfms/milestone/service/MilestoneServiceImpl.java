@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
@@ -1551,5 +1552,63 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public List<Object[]> getMsprojectTaskList(String projectId) throws Exception {
 		return dao.getMsprojectTaskList(projectId);
+	}
+	
+	@Override
+	public long DocFileUploadAjax(FileUploadDto uploadDto) throws Exception {
+		
+		logger.info(new Date() +"Inside SERVICE DocFileUploadAjax ");
+		long count=0;
+	
+		 try {
+				String[] Dir=uploadDto.getPathName().split(",");
+				
+				String FullDir=uploadDto.getLabCode()+"\\docrepo\\P"+uploadDto.getProjectId()+"\\";
+				
+				String actialFullPath = FilePath+FullDir;
+				
+				for (int i = 0; i < Dir.length; i++) {
+					actialFullPath=actialFullPath.concat(Dir[i]+"\\");
+					FullDir =FullDir.concat(Dir[i]+"\\");
+					File theDir = new File(actialFullPath);
+					 if (!theDir.exists()){
+					     theDir.mkdirs();
+					 }
+				}
+			
+				Zipper zip=new Zipper();
+
+				String Pass=dao.FilePass(uploadDto.getUserId());
+				long version=Long.parseLong(uploadDto.getVer());
+				long release=Long.parseLong(uploadDto.getRel());
+				 
+				FileRepUploadNew upload=new FileRepUploadNew();
+				upload.setFileName(uploadDto.getFileNamePath());
+				upload.setFilePass(Pass);
+				upload.setReleaseDoc(release+1);
+				upload.setVersionDoc(version);
+				upload.setFileRepId(Long.parseLong(uploadDto.getFileId()));
+				upload.setFilePath(FullDir);
+				upload.setFileNameUi(uploadDto.getFileName());
+				upload.setCreatedBy(uploadDto.getUserId());
+				upload.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				upload.setIsActive(1);
+				count=dao.FileUploadInsertNew(upload);
+				 
+				Long Rev=upload.getReleaseDoc();
+				Long Ver=upload.getVersionDoc();
+				if(count>0) {
+					
+		        zip.pack(uploadDto.getFileNamePath(),uploadDto.getIS(),actialFullPath,uploadDto.getFileName()+Ver+"-"+Rev,Pass);
+		        long count1=dao.FileRepRevUpdate(uploadDto.getFileId(),upload.getReleaseDoc(),version);
+			 }
+			 
+		 }catch (Exception e) {
+			 logger.error(new Date() +"Inside SERVICE DocFileUploadAjax "+ e);
+			 e.printStackTrace();
+		   count=0;
+		}
+
+		return count;
 	}
 }

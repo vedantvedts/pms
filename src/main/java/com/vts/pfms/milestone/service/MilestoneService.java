@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.milestone.dto.FileDocAmendmentDto;
 import com.vts.pfms.milestone.dto.FileProjectDocDto;
@@ -13,6 +14,7 @@ import com.vts.pfms.milestone.dto.MilestoneActivityDto;
 import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepNew;
+import com.vts.pfms.milestone.model.FileRepUploadNew;
 
 public interface MilestoneService {
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception;
@@ -88,4 +90,5 @@ public interface MilestoneService {
 	public int DocumentListNameEdit(String filerepmasterid, String levelname);
 	//Ms project
 	public List<Object[]> getMsprojectTaskList(String projectId)throws Exception;
+	public long DocFileUploadAjax(FileUploadDto uploadDto)throws Exception;
 }

@@ -32,7 +32,10 @@
 <script src="${ckeditor}"></script>
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <link href="${contentCss}" rel="stylesheet" />
-
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+<link href="${sweetalertCss}" rel="stylesheet" />
+<script src="${sweetalertJs}"></script>
 <title>Briefing </title>
 <style type="text/css">
  
@@ -2904,8 +2907,8 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 												<div class="col-md-4"></div>
 												<div class="col-md-4">
 													<div style="font-weight: bold; " >
-														<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #046582;  padding: 0px 15px; border-radius: 3px;"></span></span>
-														<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #81b214;  padding: 0px 15px;border-radius: 3px;"></span></span>
+														<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #29465B;  padding: 0px 15px; border-radius: 3px;"></span></span>
+														<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
 														<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
 													</div>
 												</div>
@@ -3872,6 +3875,15 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>	
 
+<%-- <form method="POST" action="DocFileUpload.htm"  id="uploadform" enctype="multipart/form-data"> 
+	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+	<input type="hidden" name="projectid" id="docProiectId" value="<%=projectid%>"/>
+	<input type="hidden" name="FileRepId" id="FileRepId" value="" />
+	<input type="hidden" name="FileNameUI" id="FileNameUI" value="" />
+	<input type="hidden" name="FileVersion" id="FileVersion" value="" />
+	<input type="hidden" name="FileRelease" id="FileRelease" value="" />
+</form>
+ --%>
 
 <!--  -----------------------------------------------Tech data attachment js ---------------------------------------------- -->
 
@@ -4250,6 +4262,9 @@ function setattchidvalue(attachid, attchName)
 	$('#attachname_'+$projectid).html(attchName);
 	$('#exampleModalCenter1').modal('hide');
 	$('#attachmentmodal').modal('hide');
+	console.log("$projectid"+$projectid);
+	console.log("attachid"+attachid);
+	console.log("attchName"+attchName);
 }
 
 
@@ -4331,11 +4346,34 @@ function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
 	}
 	$('#'+divid).html(modelhead);
 }
-
+var values1="";
+var values2="";
+var values3="";
+var values4="";
+var values5="";
+var values6="";
+var values7="";
+var values8="";
+var values9="";
+var values10="";
+var values11="";
 
 function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 {
 		
+	 values1=mid;
+	 values2=mname;
+	values3=l1;
+	 values4=lname1;
+	 values5=l2;
+	 values6=lname2;
+	values7=l3;
+	 values8=lname3;
+	 values9=l4;
+	 values10=lname4;
+	 values11=lev;
+	 
+
 		var $projectid=$('#AttachProjectId').val();		
 		setmodelheader(mname,lname1,lname2,lname3,lname4,lev,$('#projectname').val(),'model-card-header');		
 		$('#amendmentbox').css('display','none');
@@ -4425,6 +4463,11 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																						str +=		' <button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;" onclick="FileDownload(\''+values[v3][4]+'\')">';                                     
 																						str += 			'<i class="fa fa-download" aria-hidden="true"></i>';
 																						str +=		'</button> ';
+																						str += '<button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+values[v3][7]+'\')"><i class="fa fa-cloud-upload" aria-hidden="true" style="color: #FF5F00;font-size:20px;"></i></button>';
+																						str += '<label for="fileInput" id="uploadlabel'+values[v3][7]+'" style="margin-left: 20px; display: none;">'
+																					    str += '<input type="file" name="docFileInput" id="fileInput'+values[v3][7]+'" required="required"  accept="application/pdf"/> '
+																					    str += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+('2'+values2[v2][0])+"/"+('3'+values[v3][0])+'\','+values[v3][7]+',\''+values[v3][5]+'\',\''+values[v3][6]+'\',\''+values[v3][8]+'\',\''+ values[v3][4] +'\', \''+values[v3][3] +'\')">Upload</button>'
+																					    str += '</label>'
 																				
 																						/* str +=		'  <button type="button" class="btn"  style="background-color: #CFFFFE;padding : 0px 5px 3px;margin: 0px -10px;border: 0.1px solid grey;" onclick="showamuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\',\''+values[v3][4]+'\')" >';                                     
 																						str  += 			' Amendment <img style="height:20px; width: 20px; " src="view/images/amendment-icon-2.png"> ';   /* <i class="fa fa-plus" style="color: #3DB2FF" aria-hidden="true"></i> <i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i> 
@@ -4528,29 +4571,29 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
  											<%for(Object[] obj : ganttchartlist.get(z)){%>
 								    		  
 								    		  {
-				<%-- 				    		    id: "<%=obj[3]%>",
-								    		    name: "<%=obj[2]%>",
-								    		    baselineStart: "<%=obj[6]%>",
-								    		    baselineEnd: "<%=obj[7]%>",
-								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-								    		    actualStart: "<%=obj[4]%>",
-								    		    actualEnd: "<%=obj[5]%>",
-								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
-								    		    progressValue: "<%=obj[8]%>%",
-								    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
-								    		    rowHeight: "35", --%>	
+				                 
 								    		    id: "<%=obj[3]%>",
 								    		    name: "<%=obj[2]%>",
+								    		    <%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
 								    		    baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>",
 								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
 								    		    actualStart: "<%=obj[4]%>",
 								    		    actualEnd: "<%=obj[5]%>",
-								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
+								    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
 								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
-								    		    rowHeight: "35",
+								    		    rowHeight: "55",
+								    		    <%}else{%>
+								    		    baselineStart: "<%=obj[4]%>",
+								    		    baselineEnd: "<%=obj[5]%>",
+								    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    rowHeight: "55",
+								    		    <%}%>
 								    		  },
 								    		  
 								    		  <%}%>
@@ -4576,16 +4619,49 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 									
 								        	// fit elements to the width of the timeline
 								        	chart.fitAll();
+								        	
+							        	   var timeline = chart.getTimeline();
+
+										   // configure labels of elements
+										   timeline.elements().labels().fontWeight(600);
+										   timeline.elements().labels().fontSize("14px");
+										   timeline.elements().labels().fontColor("#FF6F00");
 								        
 								        	 chart.getTimeline().tooltip().useHtml(true);    
 										        chart.getTimeline().tooltip().format(
-										          "<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		 function() {
+									        		        var actualStart = this.getData("actualStart") ? this.getData("actualStart") : this.getData("baselineStart");
+									        		        var actualEnd = this.getData("actualEnd") ? this.getData("actualEnd") : this.getData("baselineEnd");
+									        		        var reDate=this.getData("actualStart") ;
+									        		   
+									        		        var html="";
+									        		        if(reDate===undefined){
+									        		        	html="";
+									        		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+									        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+									        		        }else{
+									        		        	html="";
+									        		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+									        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+									        		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+									        		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
+									        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
+									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+									        		        }
+									        		        
+									        		        return html;
+									        		    }
+										        		
+										         /*  "<span style='font-weight:600;font-size:10pt'> Actual : " +
 										          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
 										          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
 										          "<span style='font-weight:600;font-size:10pt'> Revised : " +
 										          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
 										          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-										          "Progress: {%progressValue}<br>" 
+										          "Progress: {%progressValue}<br>"  */
 										        ); 
 										        
 								        
@@ -5084,7 +5160,93 @@ function openEditDiv(a){
         label.style.display = "none";
     }
 }
-</script>
 
+function fileUpload(repId){
+	 var label = document.getElementById("uploadlabel"+repId);
+
+    if (label.style.display === "none") {
+        label.style.display = "inline-block";
+    } else {
+        label.style.display = "none";
+    }
+}
+
+</script>
+<script>
+function fileSubmit(value,repid,filename,releaseDoc,version,attachid, attchName) {
+	
+	 // Clone the header content to avoid modifying the original
+    var clonedHeader = $('#exampleModalCenter1 .modal-title').clone();
+    // Remove <i> elements from the cloned content
+    clonedHeader.find('i').remove();
+    // Get the text content
+    var textNodes = clonedHeader.contents().filter(function() {
+        return this.nodeType === Node.TEXT_NODE;
+    });
+    // Join text nodes as comma-separated values
+    var modalHeaderContent = textNodes.map(function() {
+        return $(this).text().trim();
+    }).get().join(',');
+    
+    
+    var fileInput =  $("#fileInput"+repid)[0].files[0];
+    
+    console.log("fileInput"+fileInput)
+   if (fileInput === undefined) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please select a file to upload!',
+            allowOutsideClick :false
+        });
+        return;
+    }  
+    
+    if (confirm("Are you sure to submit this?")) {
+        event.preventDefault();
+        var projectid = <%= projectid %>;
+        var formData = new FormData();
+        formData.append("file", $("#fileInput"+repid)[0].files[0]);
+        formData.append("FileRepId", repid);
+        formData.append("projectid", projectid);
+        formData.append("FileNameUI", filename);
+        formData.append("FileVersion", version);
+        formData.append("FileRelease", releaseDoc);
+        formData.append("HeaderValue", modalHeaderContent);
+        formData.append("${_csrf.parameterName}", "${_csrf.token}");
+        // Use AJAX to submit the form data
+        $.ajax({
+            url: 'DocFileUpload.htm',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+            	attachid=response;
+            	  Swal.fire({
+		    	       	title: "Success",
+		                text: "File Uploaded Successfully and Click EDIT Button to Update the File",
+		                icon: "success",
+		                allowOutsideClick :false
+		         		});
+               setattchidvalue(attachid, attchName);
+            },
+            error: function(xhr, status, error) {
+            	  Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'An error occurred while uploading the file.'
+                  });
+                  console.log(xhr.responseText);
+               }
+          });
+        
+    } else {
+        event.preventDefault();
+        return false;
+    }
+}
+
+</script>
 
 </body>

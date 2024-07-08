@@ -63,8 +63,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,6 +84,7 @@ import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepMaster;
 import com.vts.pfms.milestone.model.FileRepNew;
+import com.vts.pfms.milestone.model.FileRepUploadNew;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
 
@@ -2946,4 +2949,43 @@ public class MilestoneController {
 					
 				}
 				
+		@PostMapping(value = "DocFileUpload.htm")
+		public @ResponseBody String DocFileUploadAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res,
+				    @RequestParam(name = "file", required = false) MultipartFile file,
+		            @RequestParam("FileRepId") String fileRepId,
+		            @RequestParam("projectid") String projectid,
+		            @RequestParam("FileNameUI") String fileNameUI,
+		            @RequestParam("FileVersion") String fileVersion,
+		            @RequestParam("HeaderValue") String fileValue,
+		            @RequestParam("FileRelease") String fileRelease )throws Exception 
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside DocFileUpload.htm "+UserId);
+			try {
+				
+				FileUploadDto upload = new FileUploadDto();
+				upload.setFileId(fileRepId);
+	            upload.setFileName(fileNameUI);
+	            upload.setIS(file.getInputStream());
+	            upload.setFileNamePath(file.getOriginalFilename());
+	            upload.setPathName(fileValue);
+	            upload.setRel(fileRelease);
+	            upload.setVer(fileVersion);
+	            upload.setProjectId(projectid);
+	            upload.setUserId(UserId);
+	            upload.setLabCode(LabCode);
+	            
+				long result = service.DocFileUploadAjax(upload);
+				
+				Gson json = new Gson();
+				return json.toJson(result);
+				
+			} catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside DocFileUpload.htm "+UserId, e); 
+				return "static/Error";
+			}
+		}
+		
 }

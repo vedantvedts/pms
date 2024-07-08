@@ -118,8 +118,8 @@ h6{
 										<div class="col-md-4"></div>
 										<div class="col-md-4">
 											<div style="font-weight: bold; " >
-												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #046582;  padding: 0px 15px; border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #81b214;  padding: 0px 15px;border-radius: 3px;"></span></span>
+												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #455a64;  padding: 0px 15px; border-radius: 3px;"></span></span>
+												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
 												<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
 											</div>
 										</div>
@@ -174,19 +174,25 @@ $('#ProjectId').on('change',function(){
 								    		 
 								    		    id: "<%=obj[0]%>",
 								    		    name: "<%=obj[2]%>",
-								    		    <%if(!obj[8].toString().equalsIgnoreCase("0")){%>
+								    		    <%if(!obj[8].toString().equalsIgnoreCase("0") && !obj[8].toString().equalsIgnoreCase("1")){%>
 								    		    baselineStart: "<%=obj[3]%>",
 								    		    baselineEnd: "<%=obj[4]%>",
 								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-								    		    <%}%>
-								    		    
 								    		    actualStart: "<%=obj[5]%>",
 								    		    actualEnd: "<%=obj[6]%>",
-								    		    actual: {fill: "red", stroke: "0.8 #150e56"},
+								    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
+								    		    baselineProgressValue: "<%= Math.round((int)obj[7])%>%",
+								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+								    		    progressValue: "<%= Math.round((int)obj[7])%>%", 
+								    		    <%} else{%>
+								    		    baselineStart: "<%=obj[3]%>",
+								    		    baselineEnd: "<%=obj[4]%>",
+								    		    baseline:{fill: "#455a64", stroke: "0.8 #455a64"},
 								    		    baselineProgressValue: "<%= Math.round((int)obj[7])%>%",
 								    		    progressValue: "<%= Math.round((int)obj[7])%>%",
 								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-								    		    rowHeight: "35",	
+								    		    <%}%>
+								    		    rowHeight: "55",	
 								    		
 								    		    
 								  /* ----------------------------------------------------- LEVEL A ---------------------------------------------------- */
@@ -197,21 +203,26 @@ $('#ProjectId').on('change',function(){
 								    		   			{
 											    		    id: "<%=obj[0]%>_<%=objA[0]%>",
 											    		    name: "<%=objA[2]%>",
-											    		    <%if(!objA[8].toString().equalsIgnoreCase("0")){%>
+											    		    <%if(!objA[8].toString().equalsIgnoreCase("0") && !objA[8].toString().equalsIgnoreCase("1")){%>
 											    		    baselineStart: "<%=objA[3]%>",
 											    		    baselineEnd: "<%=objA[4]%>",
 											    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-											    		    <%}%>
-											    		    
 											    		    actualStart: "<%=objA[5]%>",
 											    		    actualEnd: "<%=objA[6]%>",
-											    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
+											    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
 											    		    baselineProgressValue: "<%= Math.round((int)objA[7])%>%",
 											    		    progressValue: "<%= Math.round((int)objA[7])%>%",
 											    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-											    		    rowHeight: "35",
-											    
-											    		    
+											    		    rowHeight: "55",
+											    		    <%}else{%>
+											    		    baselineStart: "<%=objA[5]%>",
+											    		    baselineEnd: "<%=objA[6]%>",
+											    		    baseline:{fill: "#455a64", stroke: "0.8 #455a64"},
+											    		    baselineProgressValue: "<%= Math.round((int)objA[7])%>%",
+											    		    progressValue: "<%= Math.round((int)objA[7])%>%",
+											    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+											    		    rowHeight: "55",
+											    		    <%}%>
 											 		/* ----------------------------------------------------- LEVEL B ---------------------------------------------------- */
 											    		    children: [
 												    		    <% for(Object[] objB : MilestoneActivityB){ %>
@@ -220,19 +231,28 @@ $('#ProjectId').on('change',function(){
 												    		   			{
 															    		    id: "<%=objA[0]%>_<%=objB[0]%>",
 															    		    name: "<%=objB[2]%>",
-															    		    <%if(!objB[8].toString().equalsIgnoreCase("0")){%>
+															    		    <%if(!objB[8].toString().equalsIgnoreCase("0") && !objB[8].toString().equalsIgnoreCase("1")){%>
+															    		    actualStart: "<%=objB[5]%>",
+															    		    actualEnd: "<%=objB[6]%>",
+															    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
+															    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
 															    		    baselineStart: "<%=objB[3]%>",
 															    		    baselineEnd: "<%=objB[4]%>",
 															    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
+															    		    progressValue: "<%= Math.round((int)objB[7])%>%",
+															    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+															    		    rowHeight: "55",
+															    		    <%}else{%>
+															    		    baselineStart: "<%=objB[5]%>",
+															    		    baselineEnd: "<%=objB[6]%>",
+															    		    baseline: {fill: "#455a64", stroke: "0.8 #455a64"},
+															    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
+															    		    progressValue: "<%= Math.round((int)objB[7])%>%",
+															    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+															    		    rowHeight: "55",
 															    		    <%}%>
 															    		    
-															    		    actualStart: "<%=objB[5]%>",
-															    		    actualEnd: "<%=objB[6]%>",
-															    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
-															    		    progressValue: "<%= Math.round((int)objB[7])%>%",
-															    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
-															    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-															    		    rowHeight: "35",
+															    		   
 															    		    
 															  		/* ----------------------------------------------------- LEVEL C ---------------------------------------------------- */    		    
 															    		    children: [
@@ -242,19 +262,27 @@ $('#ProjectId').on('change',function(){
 																    		   			{
 																			    		    id: "<%=objB[0]%>_<%=objC[0]%>",
 																			    		    name: "<%=objC[2]%>",
-																			    		    <%if(!objC[8].toString().equalsIgnoreCase("0")){%>
+																			    		    <%if(!objC[8].toString().equalsIgnoreCase("0") && !objC[8].toString().equalsIgnoreCase("1")){%>
+																			    		    actualStart: "<%=objC[5]%>",
+																			    		    actualEnd: "<%=objC[6]%>",
+																			    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
 																			    		    baselineStart: "<%=objC[3]%>",
 																			    		    baselineEnd: "<%=objC[4]%>",
 																			    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-																			    		    <%}%>
-																			    		    
-																			    		    actualStart: "<%=objC[5]%>",
-																			    		    actualEnd: "<%=objC[6]%>",
-																			    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																			    		    progressValue: "<%= Math.round((int)objC[7])%>%",
 																			    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
 																			    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-																			    		    rowHeight: "35",
+																			    		    rowHeight: "55",
+																			    		    <%}else{%>
+																			    		    baselineStart: "<%=objC[5]%>",
+																			    		    baselineEnd: "<%=objC[6]%>",
+																			    		    baseline: {fill: "#455a64", stroke: "0.8 #dd2c00"},
+																			    		    progressValue: "<%= Math.round((int)objC[7])%>%",
+																			    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
+																			    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+																			    		    rowHeight: "55",
+																			    		    <%}%>
+																			    		  
 																			    		    
 																			/* ----------------------------------------------------- LEVEL D ---------------------------------------------------- */  		    
 																			    		    children: [
@@ -264,19 +292,26 @@ $('#ProjectId').on('change',function(){
 																				    		   			{
 																							    		    id: "<%=objC[0]%>_<%=objD[0]%>",
 																							    		    name: "<%=objD[2]%>",
-																							    		    <%if(!objD[8].toString().equalsIgnoreCase("0")){%>
+																							    		    <%if(!objD[8].toString().equalsIgnoreCase("0") && !objD[8].toString().equalsIgnoreCase("1")){%>
+																							    		    actualStart: "<%=objD[5]%>",
+																							    		    actualEnd: "<%=objD[6]%>",
+																							    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
 																							    		    baselineStart: "<%=objD[3]%>",
 																							    		    baselineEnd: "<%=objD[4]%>",
 																							    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-																							    		    <%}%>
-																							    		    
-																							    		    actualStart: "<%=objD[5]%>",
-																							    		    actualEnd: "<%=objD[6]%>",
-																							    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																							    		    progressValue: "<%= Math.round((int)objD[7])%>%",
 																							    		    baselineProgressValue: "<%= Math.round((int)objD[7])%>%",
 																							    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-																							    		    rowHeight: "35",
+																							    		    rowHeight: "55",
+																							    		    <%}else{%>
+																							    		    baselineStart: "<%=objD[5]%>",
+																							    		    baselineEnd: "<%=objD[6]%>",
+																							    		    baseline: {fill: "#455a64", stroke: "0.5 #455a64"},
+																							    		    progressValue: "<%= Math.round((int)objD[7])%>%",
+																							    		    baselineProgressValue: "<%= Math.round((int)objD[7])%>%",
+																							    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+																							    		    rowHeight: "55",
+																							    		    <%}%>
 																							    		    
 																					/* ----------------------------------------------------- LEVEL E ---------------------------------------------------- */				    		    
 																							    		    children: [
@@ -286,19 +321,27 @@ $('#ProjectId').on('change',function(){
 																								    		   			{
 																											    		    id: "<%=objD[0]%>_<%=objE[0]%>",
 																											    		    name: "<%=objE[2]%>",
-																											    		    <%if(!objE[8].toString().equalsIgnoreCase("0")){%>
+																											    		    <%if(!objE[8].toString().equalsIgnoreCase("0") && !objE[8].toString().equalsIgnoreCase("1")){%>
+																											    		    actualStart: "<%=objE[5]%>",
+																											    		    actualEnd: "<%=objE[6]%>",
+																											    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
 																											    		    baselineStart: "<%=objE[3]%>",
 																											    		    baselineEnd: "<%=objE[4]%>",
 																											    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-																											    		    <%}%>
-																											    		    
-																											    		    actualStart: "<%=objE[5]%>",
-																											    		    actualEnd: "<%=objE[6]%>",
-																											    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																											    		    progressValue: "<%= Math.round((int)objE[7])%>%",
 																											    		    baselineProgressValue: "<%= Math.round((int)objE[7])%>%",
 																											    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-																											    		    rowHeight: "35",
+																											    		    rowHeight: "55",
+																											    		    <%}else{%>
+																											    		    baselineStart: "<%=objE[5]%>",
+																											    		    baselineEnd: "<%=objE[6]%>",
+																											    		    baseline: {fill: "#455a64", stroke: "0.5 #455a64"},
+																											    		    progressValue: "<%= Math.round((int)objE[7])%>%",
+																											    		    baselineProgressValue: "<%= Math.round((int)objE[7])%>%",
+																											    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+																											    		    rowHeight: "55",
+																											    		    <%}%>
+																											    		   
 																											    		    
 																								    		   			},
 																								    		    	<%}%>
@@ -353,7 +396,6 @@ $('#ProjectId').on('change',function(){
 								    	<%}%>
 								    	
 								    	];
-								    		    
 								    		 
 								    		// create a data tree
 								    		var treeData = anychart.data.tree(data, "as-tree");
@@ -383,20 +425,54 @@ $('#ProjectId').on('change',function(){
 									
 								        	// fit elements to the width of the timeline
 								        	chart.fitAll();
-								        
+								        	
+								            var timeline = chart.getTimeline();
+
+										   // configure labels of elements
+										   timeline.elements().labels().fontWeight(600);
+										   timeline.elements().labels().fontSize("14px");
+										   timeline.elements().labels().fontColor("#FF6F00");
+							        
 								        
 								        /* ToolTip */
 								        
 								        
 								        chart.getTimeline().tooltip().useHtml(true);    
 								        chart.getTimeline().tooltip().format(
-								          "<span style='font-weight:600;font-size:10pt'> Actual : " +
+								        		
+								        		 function() {
+								        		        var actualStart = this.getData("actualStart") ? this.getData("actualStart") : this.getData("baselineStart");
+								        		        var actualEnd = this.getData("actualEnd") ? this.getData("actualEnd") : this.getData("baselineEnd");
+								        		        var reDate=this.getData("actualStart") ;
+								        		   
+								        		        var html="";
+								        		        if(reDate===undefined){
+								        		        	html="";
+								        		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+								        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+								        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+								        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+								        		        }else{
+								        		        	html="";
+								        		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+								        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+								        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+								        		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+								        		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
+								        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
+								        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+								        		        }
+								        		        
+								        		        return html;
+								        		    }		
+								        
+								       /*    "<span style='font-weight:600;font-size:10pt'> Actual : " +
 								          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
 								          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
 								          "<span style='font-weight:600;font-size:10pt'> Revised : " +
 								          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
 								          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-								          "Progress: {%baselineProgressValue}<br>" 
+								          "Progress: {%baselineProgressValue}<br>"  */
 								          
 								        ); 
 								        

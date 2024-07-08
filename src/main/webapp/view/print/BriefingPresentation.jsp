@@ -4575,11 +4575,6 @@ System.out.println(todayDate+"---");
 <!-- --------------------------------------------  Risk Types Modal   -------------------------------------------------------- -->
 <script type="text/javascript">
 
-
-
-
-
-	
 $('.content_reg_screen').hide();
 $('.content_full_screen, .content_reg_screen').on('click', function(e){
 	  
@@ -4607,9 +4602,6 @@ function contentRegScreen()
 	$('.content_full_screen').show();
 	closeFullscreen();
 }
-
-
-
 /* Get the documentElement (<html>) to display the page in fullscreen */
 var elem = document.documentElement;
 
@@ -4634,16 +4626,8 @@ function closeFullscreen() {
     document.msExitFullscreen();
   }
 }
-
-
 </script>
-
-
-
-
-
 <script type="text/javascript">
-
 $('.carousel').carousel({
 	  interval: false,
 	  keyboard: true,
@@ -4654,102 +4638,24 @@ $(function () {
 })
 
 $('#levelvalue').on('change', function(){
-	
 	$('#milestonelevelid').val($(this).find(":selected").val());
 	$('#projectid').val(<%=projectid%>);
 	$('#committeeid').val(<%=committeeid%>);
 	$('#milestonelevelform').submit();
-
 })
 
 $( document).on("click", ".milestonemodal", function () {
-    
 	var milId = $(this).data('id');
     $('.milestonemodalwhole').hide();
     $('.collapse').removeClass('show'); 
     $('#row'+milId.charAt(milId.length-1)).click();
  	$('#'+milId).show();
-
 });
-
-
-
-
-
-function milactivitychange(val){
-	
-	if(val.value=='A'){
-		
-		$('#milestonechangetableajax').hide();
-		$('#milestoneactivitychangetable').show();
-		
-		
-	}else{
-	
-	var Proid = <%=projectid%>;	
-	$('#milestoneactivitychangetable').hide();
-	
-	 $.ajax({
-		type : "GET",
-		url : "MilestoneActivityChange.htm",
-		data : {
-			projectid : Proid,
-			milactivitystatusid : val.value,			
-		},
-		datatype: 'json',
-		success : function(result)
-			{
-				var result= JSON.parse(result);
-				var values= Object.keys(result).map(function(e){
-					return result[e];
-				})	
-							
-				var s = "<table id='milestonechangetableajax' style='align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;'><tr><th  style='width: 30px !important;'>SN</th><th  style='max-width: 40px; '>MS No.</th><th  style='max-width: 230px; '>Milestones </th><th  style='max-width: 80px;'> Original PDC </th><th  style='max-width: 80px;'> Revised PDC</th>"
-							+ "<th  style='max-width: 50px; '>Progress</th><th  style='max-width: 70px;'> Status</th><th  style='max-width: 70px;'> Remarks</th></tr>";
-				
-							if(values[0].length==0){
-								
-								s+= "<tr><td colspan=8' style='text-align: center;' > Nil</td></tr>";
-								
-							}else{
-								
-								for(var i=0;i<values[0].length;i++){
-									 if(parseInt(values[0][i][12])>0){ 
-										
-										s+= "<tr><td  style='max-width: 30px;'>" +parseInt(i+1)+ "</td><td  style='max-width: 40px;'>M"+values[0][i][2]+"</td><td  style='max-width: 230px;'>"+values[0][i][3]+"</td><td  style='max-width: 80px;' >"+formatDate(values[0][i][5])+" </td><td  style='max-width: 80px;'>"+formatDate(values[0][i][7])+"</td>"
-										+"<td  style='max-width: 50px;'>"+values[0][i][12]+"</td><td  style='max-width: 70px;'>"+values[0][i][11]+"	</td><td  style='max-width: 70px;'>"+values[0][i][13]+"</td></tr>";
-
-									 } 
-
-								}
-								
-							}
-							
-										
-						
-						s+="</table>"	
-							
-				$('#milestoneactivitychange').html(s);
-
-			}
-		
-	}) 		
-	
-	}
-	
-}
-
-
 function milactivitychange6(val){
-	
 	if(val.value=='A'){
-		
 		$('#milestonechangetableajax6').hide();
 		$('#milestoneactivitychangetable6').show();
-		
-		
 	}else{
-	
 	var Proid = <%=projectid%>;	
 	$('#milestoneactivitychangetable6').hide();
 	
@@ -4779,70 +4685,42 @@ function milactivitychange6(val){
 								
 								for(var i=0;i<values[0].length;i++){
 									 if(parseInt(values[0][i][12])>0){ 
-										
 										s+= "<tr><td  style='max-width: 30px;'>" +parseInt(i+1)+ "</td><td  style='max-width: 40px;'>M"+values[0][i][2]+"</td><td  style='max-width: 230px;'>"+values[0][i][3]+"</td><td  style='max-width: 80px;' >"+formatDate(values[0][i][5])+" </td><td  style='max-width: 80px;'>"+formatDate(values[0][i][7])+"</td>"
 										+"<td  style='max-width: 50px;'>"+values[0][i][12]+"</td><td  style='max-width: 70px;'>"+values[0][i][11]+"	</td><td  style='max-width: 70px;'>"+values[0][i][13]+"</td></tr>";
-
 									 } 
-
 								}
-								
 							}
-							
-										
-						
 						s+="</table>"	
-							
 				$('#milestoneactivitychange').html(s);
-
 			}
-		
 	}) 		
-	
 	}
-	
 }
-
-
-
-
-
 	 function formatDate(date) {
 		    var d = new Date(date),
 		        month = '' + (d.getMonth() + 1),
 		        day = '' + d.getDate(),
 		        year = d.getFullYear();
-
 		    if (month.length < 2) 
 		        month = '0' + month;
 		    if (day.length < 2) 
 		        day = '0' + day;
-
 		    return [day, month, year].join('-');
 		}
-
 </script>
-
-
-
-	<script type="text/javascript">
+<script type="text/javascript">
 function FileDownload(fileid1)
 {
 	$('#FileUploadId').val(fileid1);
 	$('#downloadform').submit();
 }
-
 function FileDownload1(fileid1)
 {
 	$('#filerepid').val(fileid1);
 	$('#downloadform1').submit();
 }
-
 </script>
-
 	<script type="text/javascript">
-
-
 function setattchidvalue(attachid, attchName)
 {
 	var $projectid=$('#AttachProjectId').val();
@@ -4851,11 +4729,7 @@ function setattchidvalue(attachid, attchName)
 	$('#exampleModalCenter1').modal('hide');
 	$('#attachmentmodal').modal('hide');
 }
-
-
 </script>
-
-
 	<%
 	for (int z = 0; z < projectidlist.size(); z++) {
 	%>
@@ -4864,63 +4738,68 @@ function setattchidvalue(attachid, attchName)
 								    	  var data = [
 								    		  
  											<%for (Object[] obj : ganttchartlist.get(z)) {%>
-								    		  
 								    		  {
 								    		    id: "<%=obj[3]%>",
 								    		    name: "<%=obj[2]%>",
+								    		    <%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
 								    		    baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>",
-								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
+								    		    baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
 								    		    actualStart: "<%=obj[4]%>",
 								    		    actualEnd: "<%=obj[5]%>",
-								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
+								    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
 								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
-								    		    rowHeight: "35",					    		   
+								    		    <%} else{%>
+								    		    baselineStart: "<%=obj[4]%>",
+								    		    baselineEnd: "<%=obj[5]%>",
+								    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    <%}%>
+								    		    rowHeight: "55",
 								    		  },
-								    		  
 								    		  <%}%>
-								    	
 								    		  ];
-								    		    
-								    		 
 								    		// create a data tree
 								    		var treeData = anychart.data.tree(data, "as-tree");
-								
 								    		// create a chart
 								    		var chart = anychart.ganttProject();
-								
 								    		// set the data
 								    		chart.data(treeData);   
-								  
 								        	// set the container id
-								        	
 								        	chart.container("containers_<%=projectidlist.get(z)%>");  
-
 								        	// initiate drawing the chart
 								        	chart.draw();    
-									
 								        	// fit elements to the width of the timeline
 								        	chart.fitAll();
+								        	var timeline = chart.getTimeline();
+										    // configure labels of elements
+										    timeline.elements().labels().fontWeight(600);
+										    timeline.elements().labels().fontSize("14px");
+										    timeline.elements().labels().fontColor("#FF6F00");
 								        
 								        	 chart.getTimeline().tooltip().useHtml(true);    
 								        	 chart.getTimeline().tooltip().format(
-											          "<span style='font-weight:600;font-size:10pt'> Actual : " +
-											          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
-											          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-											          "<span style='font-weight:600;font-size:10pt'> Revised : " +
-											          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
-											          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-											          "Progress: {%baselineProgressValue}<br>" 
-											          
-											        ); 
-										        
+									        		 function() {
+									        		        var actualStart = this.getData("actualStart") ? this.getData("actualStart") : this.getData("baselineStart");
+									        		        var actualEnd = this.getData("actualEnd") ? this.getData("actualEnd") : this.getData("baselineEnd");
+									        		        var reDate=this.getData("actualStart") ;
+									        		        var html="";
+									        		        if(reDate===undefined){
+									        		        	html="";
+									        		         	html= "<span style='font-weight:600;font-size:10pt'> Actual : "+ anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " + anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" + "Progress: " + this.getData("baselineProgressValue") + "<br>"
+									        		        }else{
+									        		        	html="";
+										        		        html="<span style='font-weight:600;font-size:10pt'> Actual : "+anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +"<span style='font-weight:600;font-size:10pt'> Revised : " +anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +"Progress: " + this.getData("baselineProgressValue") + "<br>"
+									        		        }
+									        		        return html;
+									        		    }
+										        ); 
 								        
-								        
-								       
 								        /* Title */
-								        
 								        var title = chart.title();
 										title.enabled(true);
 										title.text("<%=ProjectDetail.get(z)[2]%> ( <%=ProjectDetail.get(z)[1]%> ) Gantt Chart");
@@ -4928,17 +4807,13 @@ function setattchidvalue(attachid, attchName)
 										title.fontSize(18);
 										title.fontWeight(600);
 										title.padding(5);
-								        
 										<%-- <%} %> --%>
-																	        
 								        chart.rowHoverFill("#8fd6e1 0.3");
 								        chart.rowSelectedFill("#8fd6e1 0.3");
 								        chart.rowStroke("0.5 #64b5f6");
 								        chart.columnStroke("0.5 #64b5f6");
-								        
 								        chart.defaultRowHeight(35);
 								     	chart.headerHeight(90);
-								     	
 								     	/* Hiding the middle column */
 								     	chart.splitterPosition("17.4%");
 								     	
@@ -4950,7 +4825,6 @@ function setattchidvalue(attachid, attchName)
 								     	dataGrid.columnStroke("2 #64b5f6");
 								     	dataGrid.headerFill("#64b5f6 0.2");
 								     	
-								     
 								     	/* Title */
 								     	var column_1 = chart.dataGrid().column(0);
 								     	column_1.title().enabled(false);
@@ -4960,8 +4834,6 @@ function setattchidvalue(attachid, attchName)
 								     	column_2.title().fontColor("#145374");
 								     	column_2.title().fontWeight(600);
 								     	
-								     	
-								     
 								     	if(interval==="year"){
 								     		/* Yearly */
 									     	chart.getTimeline().scale().zoomLevels([["year"]]);
@@ -5021,10 +4893,7 @@ function setattchidvalue(attachid, attchName)
 								     		
 								     	}
 								     	
-								     	
-								     	
 								     	/* chart.getTimeline().scale().fiscalYearStartMonth(4); */
-								     	
 								     	/* Header */
 								     	var header = chart.getTimeline().header();
 								     	header.level(0).fill("#64b5f6 0.2");
@@ -5049,7 +4918,6 @@ function setattchidvalue(attachid, attchName)
 								     	  }
 								     	});
 								     	
-								     	
 								    // calculate height
 								     	var traverser = treeData.getTraverser();
 								        var itemSum = 0;
@@ -5067,14 +4935,8 @@ function setattchidvalue(attachid, attchName)
 								        }
 								        }
 								        itemSum += chart.headerHeight();
-								        
-								       
 								        var menu = chart.contextMenu();
-								        
-
 									} 
-								  
-	
 		
 		 $( document ).ready(function(){
 	    	  
@@ -5097,13 +4959,9 @@ function setattchidvalue(attachid, attchName)
 					
 				})
 		
-
-		
 		</script>
 	<% } %>
-
 <script type="text/javascript">
-
 function ActionDetails(InAssignId)
 {
 		$("#modal_progress_table").DataTable().destroy();
@@ -5159,7 +5017,6 @@ function ActionDetails(InAssignId)
 				if(result[4]!=null){
 					InProgress=result[4]+'';
 				}
-				
 				
 				if(InProgress.trim() === '0')
 				{
@@ -5235,13 +5092,10 @@ function ActionDetails(InAssignId)
 		});
 	}
 	
-	
 	function ListOfMilestones(){
 		var totalMilestones=[];
 		var totalCompletedMilestones=[];
 		var totalProgressedMilestones=[];
-		
-	
 		}
 	
 </script>
