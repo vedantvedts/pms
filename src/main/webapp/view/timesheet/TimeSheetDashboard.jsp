@@ -1,3 +1,4 @@
+<%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.Arrays"%>
@@ -195,6 +196,9 @@
 		List<Object[]> empList = (List<Object[]>)request.getAttribute("empList");
 		List<Object[]> projectList = (List<Object[]>)request.getAttribute("projectList");
 		List<Object[]> holidayList = (List<Object[]>)request.getAttribute("holidayList");
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonholidayList = objectMapper.writeValueAsString(holidayList);
 		
 		if(!Arrays.asList("A","Z","Y").contains(loginType)){
 			empList = empList!=null?empList.stream()
@@ -406,23 +410,25 @@
 					<div class="row">
 						<div class="col-md-12">
 							<form action="#">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<div class="row">
 									<div class="col-md-12">
 										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
 											<div class="card-body" style="padding: 0px !important">
 												<table style="width: 100%;border-collapse: collapse;">
 													<tr>
-														<td style="width: 40%;"></td>
+														<td style="width: 35%;"></td>
 														<th class="right" style="width: 5%;">Project : </th>
 														<td style="width: 25%;">
 															<select class="form-control selectdee" name="projectId" id="ptsProjectId">
-																<option value="A" selected>All</option>
-																<option value="0">General</option>
+																<option value="A" selected data-projectname="All">All</option>
+																<option value="0" data-projectname="General">General</option>
 													            <%for(Object[] pro: projectList ){
 													            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 													            %>
 																	<option value="<%=pro[0]%>"
 																	data-sancdate="<%=pro[12] %>"
+																	data-projectname="<%=pro[4]+projectshortName %>"
 																	 ><%=pro[4]+projectshortName %></option>
 																<%} %>
 															</select>
@@ -431,12 +437,23 @@
 														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
 														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<td style="width: 5%;" class="center">
+															<button type="submit" class="btn btn-sm" name="" formaction="ProjectTimeSheetPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
+																<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+														  	</button>
+															<button type="submit" class="btn btn-sm" name="" formaction="ProjectTimeSheetExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
+																<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+														  	</button>
+														</td>
 													</tr>
 												</table>
 											</div>
 										</div>		
 									</div>
 								</div>
+								<input type="hidden" name="totalHrs" id="totalHrs">
+								<input type="hidden" name="cadreType" id="cadreType">
+								<input type="hidden" name="projectName" id="projectName">
 							</form>
 						</div>
 					</div>
@@ -484,20 +501,29 @@
 			<div class="row">
 				<div class="col-md-12">
 					<!-- ------------------------- Time Sheet List -------------------------------------  -->
-					<div class="row mt-2">
+					<div class="row">
 						<div class="col-md-12">
 							<form action="#">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<div class="row">
 									<div class="col-md-12">
 										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
 											<div class="card-body" style="padding: 0px !important">
 												<table style="width: 100%;border-collapse: collapse;">
 													<tr>
-														<td style="width: 70%;"></td>
+														<td style="width: 65%;"></td>
 														<th class="right" style="width: 5%;">From :</th>
 														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
 														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<td style="width: 5%;" class="center">
+															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetListPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
+																<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+														  	</button>
+															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetListExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
+																<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+														  	</button>
+														</td>
 													</tr>
 												</table>
 											</div>
@@ -545,9 +571,10 @@
 			<div class="row">
 				<div class="col-md-12">
 					<!-- ------------------------- Time Sheet Extra Days List -------------------------------------  -->
-					<div class="row mt-2">
+					<div class="row">
 						<div class="col-md-12">
 							<form action="#">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<div class="row">
 									
 									<div class="col-md-12">
@@ -555,7 +582,7 @@
 											<div class="card-body" style="padding: 0px !important">
 												<table style="width: 100%;border-collapse: collapse;">
 													<tr>
-														<td style="width: 40%;"></td>
+														<td style="width: 35%;"></td>
 														<th class="right" style="width: 5%;">From :</th>
 														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fc.sdfTordf(fromDate3)%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
@@ -566,9 +593,19 @@
 																<%
 																if(empList!=null && empList.size()>0){
 																for(Object[] obj : empList) {%>
-																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
+																	<option value="<%=obj[0]%>" 
+																	data-employee="<%=obj[1]+", "+obj[2] %>"
+																	<%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
 																<%} }%>
 															</select>
+														</td>
+														<td style="width: 5%;" class="center">
+															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetExtraDaysPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
+																<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+														  	</button>
+															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetExtraDaysExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
+																<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+														  	</button>
 														</td>
 													</tr>
 												</table>
@@ -580,6 +617,7 @@
 									
 									</div> -->
 								</div>
+								<input type="hidden" name="employeeName" id="employeeName">
 							</form>
 						</div>
 					</div>
@@ -2019,6 +2057,9 @@ $('#ptsToDate,#ptsProjectId').change(function(){
 		$('#ptsFromDate').val(regularsancDate);
 	}
 	
+	var projectName = $('#ptsProjectId option:selected').attr('data-projectname');
+	$('#projectName').val(projectName);
+	
 	getProjectTimeSheetWorkingHrsList();
 });
 
@@ -2079,6 +2120,8 @@ function getProjectTimeSheetWorkingHrsList(){
 				x+='<td colspan="3" class="right">Total</td>';
 				x+='<td id="totaltd">'+totalhm+'</td>';
 				x+='</tr>';
+				$('#totalHrs').val(totalhm);
+				$('#cadreType').val('All');
 			}else{
 				x+='<tr><td class="center" colspan="4">No Data Available</td></tr>';
 			}
@@ -2201,15 +2244,26 @@ function filterTable(type) {
             }
             
             if(type=='DRDS'){
-            	document.getElementById('totaltd').textContent = secondsToHM(drds)+":00";
+            	var totaldrdsseconds = secondsToHM(drds)+":00";
+            	document.getElementById('totaltd').textContent = totaldrdsseconds;
+            	$('#totalHrs').val(totaldrdsseconds);
+				$('#cadreType').val(type);
             }else if(type=='DRTC'){
-            	document.getElementById('totaltd').textContent = secondsToHM(drtc)+":00";
+            	var totaldrtcseconds = secondsToHM(drtc)+":00";
+            	document.getElementById('totaltd').textContent = totaldrtcseconds;
+            	$('#totalHrs').val(totaldrtcseconds);
+				$('#cadreType').val(type);
             }else if(type=='Others'){
-            	document.getElementById('totaltd').textContent = secondsToHM(others)+":00";
+            	var totalotherseconds = secondsToHM(others)+":00";
+            	document.getElementById('totaltd').textContent = totalotherseconds;
+            	$('#totalHrs').val(totalotherseconds);
+				$('#cadreType').val(type);
             }else{
             	var totalseconds = drds+drtc+others;
 				var totalhm = secondsToHM(totalseconds)+":00";
             	document.getElementById('totaltd').textContent = totalhm;
+            	$('#totalHrs').val(totalhm);
+				$('#cadreType').val('All');
             }
         }
     }
@@ -2217,29 +2271,18 @@ function filterTable(type) {
 
 /* ------------------------------------- Project Time Sheet End ---------------------------------- */
 
- var holidayList = [
-		            <% for (int i = 0; i < holidayList.size(); i++) { %>
-		                [
-		                    <% Object[] array = holidayList.get(i); %>
-		                    <% for (int j = 0; j < array.length; j++) { %>
-		                        "<%= array[j] %>"
-		                        <% if (j < array.length - 1) { %>
-		                            ,
-		                        <% } %>
-		                    <% } %>
-		                ]
-		                <% if (i < holidayList.size() - 1) { %>
-		                    ,
-		                <% } %>
-		            <% } %>
-		        ];
+ var holidayList = JSON.parse('<%=jsonholidayList %>');
 
 $('#tsl2ToDate,#tsl2EmpId').change(function(){
 	 getEmpExtraWorkingDayList();
 });
 
 function getEmpExtraWorkingDayList(){
-
+	
+	var employee = $('#tsl2EmpId option:selected').attr('data-employee');
+	console.log(employee);
+	$('#employeeName').val(employee);
+	
 	$.ajax({
 		Type:'GET',
 		url:'EmpExtraWorkingDayList.htm',
@@ -2270,7 +2313,7 @@ function getEmpExtraWorkingDayList(){
 					x+='<td>'+(i+1)+'</td>';
 					x+='<td>'+(sqlDateToRegularDate(extradays[i][4]))+'</td>';
 					x+='<td class="left">'+(getDayOfWeek(extradays[i][4]))+''+(holidayName!=''?' ('+holidayName+')':'')+'</td>';
-					x+='<td>'+extradays[i][5]+'</td>';
+					x+='<td>'+(extradays[i][5]+":00")+'</td>';
 					x+='</tr>';
 					
 				}
