@@ -116,7 +116,7 @@ List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("project
 %>
 <body>
 <!-- Modal -->
-	<div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+	<div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%;display: none;" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg " style="max-width: 1800px" role="document">
 	  <form action="GetAllProjectSlide.htm" target="_blank" onsubmit="return checkslidesinput()" method="post" id="slideshowForm">
 	  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -257,7 +257,7 @@ List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("project
 	      	</div>
 	      	<div class="col d-flex justify-content-end" >
 	        	<button type="button mx-1" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        	<button onclick="checkslideinput()" class="btn btn-primary mx-1">Slide Show</button>
+	        	<button onclick="checkslideinput()" class="btn btn-primary mx-1" id="slideshowsDiv">Slide Show</button>
 	       </div>
 	      </div>
 	      </div>
@@ -802,6 +802,12 @@ function checkslidesinput()
 	if(subprojids.length>0)return true;
 	else {alert("Please Select Slides for SlideShow");return false}
 }
+
+$('#slideDIv').click(function (){
+	$('#slideshowsDiv').click();
+	
+})
+$('#selectProjectsForSlideShowModal').modal('hide');
 </script>
 </body>
 </html>

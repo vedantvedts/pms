@@ -2,6 +2,9 @@ package com.vts.pfms.header.service;
 
 import java.util.List;
 
+import com.vts.pfms.header.model.ProjectDashBoardFavourite;
+import com.vts.pfms.login.Login;
+
 public interface HeaderService {
 
 	public List<Object[]> FormModuleList(String LoginType,String LabCode)throws Exception;
@@ -37,5 +40,15 @@ public interface HeaderService {
 	public List<Object[]> getNotificationId(String Empid)throws Exception;
 	public List<Object[]> getFormNameByName(String valueOf) throws Exception;
 	public Boolean getRoleAccess(String valueOf, String string)throws Exception;
+	public long addDashBoardFav(String projects, String favName, String empId,String UserId,String LoginType)throws Exception;
+	public ProjectDashBoardFavourite findProjectDashBoardFavourite(long DashBoardId)throws Exception;
+	public List<Object[]> getDashBoardId(Long empId , String LoginType)throws Exception;
+	public Object[] projecthealthtotalDashBoardwise(String dashBoardId, String labCode)throws Exception;
+	public long isActiveDashBoard(String empId, String loginType)throws Exception;
+	public List<Object[]> DashboardFinanceProjectWise(String dashBoardId, String labCode)throws Exception;
+	
+	public List<Object[]> getDashBoards(Long empId , String LoginType)throws Exception;
+	public long updateDashBoard(String dashboardId,String projects,String UserId)throws Exception;
+	public List<Object[]> getProjectsBasedOnDashBoard(String dashBoardId)throws Exception;
 	
 }

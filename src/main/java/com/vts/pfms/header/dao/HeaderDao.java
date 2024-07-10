@@ -2,6 +2,9 @@ package com.vts.pfms.header.dao;
 
 import java.util.List;
 
+import com.vts.pfms.header.model.ProjectDashBoardFavourite;
+import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
+
 public interface HeaderDao {
 
 	public List<Object[]> FormModuleList(String LoginType,String LabCode)throws Exception;
@@ -38,4 +41,13 @@ public interface HeaderDao {
 	public List<Object[]> getNotificationId(String empid) throws Exception;
 	public List<Object[]> getFormNameByName(String search)throws Exception;
 	public Boolean getRoleAccess(String formModuleId, String logintype)throws Exception;
+	public long isActiveDashBoard(String empId,String LoginType)throws Exception;
+	public long addDashBoardFav(ProjectDashBoardFavourite pd)throws Exception;
+	public ProjectDashBoardFavourite findProjectDashBoardFavourite(long dashBoardId)throws Exception;
+	public List<Object[]> getDashBoardId(Long empId, String loginType)throws Exception;
+	public Object[] projecthealthtotalDashBoardwise(String dashBoardId, String labCode)throws Exception;
+	public List<Object[]> DashboardFinanceProjectWise(String dashBoardId, String labCode)throws Exception;
+	public long updateDashBoard(String dashboardId)throws Exception;
+	public List<Object[]> getProjectsBasedOnDashBoard(String dashBoardId)throws Exception;
+	public long addProjectDashBoardFavouriteProjetcts(ProjectDashBoardFavouriteProjetcts pf)throws Exception;
 }

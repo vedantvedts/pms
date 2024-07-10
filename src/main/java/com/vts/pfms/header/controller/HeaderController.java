@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.vts.pfms.header.model.ProjectDashBoardFavourite;
+import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
 import com.vts.pfms.header.service.HeaderService;
 
 @Controller
@@ -509,7 +511,6 @@ public class HeaderController {
 			String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
 			
 			notifationIdList = service.getNotificationId(EmpId);
-			System.out.println("notifationIdList---------- "+notifationIdList.size());
 			if(notifationIdList!=null && notifationIdList.size()>0) {
 			for(Object[] obj: notifationIdList) {
 				service.NotificationUpdate(obj[0].toString());
@@ -547,6 +548,83 @@ public class HeaderController {
 		if (String.valueOf(request.getParameter("search")).length()>0)
 		send = service.getRoleAccess(String.valueOf(request.getParameter("search")),ses.getAttribute("LoginType").toString());
 		return json.toJson(send);
+	}
+	
+	
+	@RequestMapping(value= "DashboardFavAdd.htm" , method = RequestMethod.POST)
+	public String DashboardFavAdd(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
+		String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode"); 
+		String LoginType = ((String) ses.getAttribute("LoginType"));
+		try {
+			
+			String projects = req.getParameter("projects");
+			String FavName = req.getParameter("addFav");
+			
+			
+			System.out.println("projects "+projects);
+	
+			
+			long DashBoardId =service.addDashBoardFav(projects,FavName,EmpId,UserId,LoginType);
+			
+			
+			ses.setAttribute("DashBoardId", DashBoardId+"");
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		 return "redirect:/MainDashBoard.htm";
+	}
+	
+	
+	
+	@RequestMapping(value= "UpdateDashboardFav.htm" , method = RequestMethod.POST)
+	public String UpdateDashboardFav(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
+		String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode"); 
+		String LoginType = ((String) ses.getAttribute("LoginType"));
+		try {
+			String dashboardId = req.getParameter("dashboardId");
+			if(dashboardId.equalsIgnoreCase("-1")) {
+				service.isActiveDashBoard(EmpId,LoginType);
+				ses.setAttribute("DashBoardId", "0");
+				 return "redirect:/MainDashBoard.htm";
+			}
+			else {
+				String projects = req.getParameter("favProjects");
+				System.out.println(projects);
+				service.isActiveDashBoard(EmpId,LoginType);
+				service.updateDashBoard(dashboardId,projects,UserId);
+				ses.setAttribute("DashBoardId", dashboardId);
+				 return "redirect:/MainDashBoard.htm";
+			}
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		 return "redirect:/MainDashBoard.htm";
+	}
+	
+	@RequestMapping(value = "getDashBoardProjects.htm" , method = RequestMethod.GET)
+	public @ResponseBody String getDashBoardProjects(HttpServletRequest request ,HttpSession ses) throws Exception
+	{
+		Gson json = new Gson();
+		
+		ProjectDashBoardFavourite pd=service.findProjectDashBoardFavourite(Long.parseLong(request.getParameter("DashBoardId")));
+		
+		List<String>projects = new ArrayList<>();
+		
+		if(pd!=null) {
+			for(ProjectDashBoardFavouriteProjetcts p:pd.getProjects()) {
+				projects.add(p.getProjectId()+"");
+			}
+		}
+		
+		//List<Object[]>projects = service.getProjectsBasedOnDashBoard(request.getParameter("DashBoardId"));
+		return json.toJson(projects);
 	}
 }
 

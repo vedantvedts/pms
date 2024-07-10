@@ -52,6 +52,8 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.committee.service.CommitteeService;
+import com.vts.pfms.header.model.ProjectDashBoardFavourite;
+import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
 import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.master.dto.ProjectSanctionDetailsMaster;
 import com.vts.pfms.model.FinanceChanges;
@@ -233,7 +235,8 @@ public class LoginController {
 		  	ses.setAttribute("LoginTypeName", headerservice.FormRoleName(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
 		  	ses.setAttribute("labid",headerservice.LabDetails(empdetails[3].toString())[0].toString());
 		  	//ses.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size());
-		 	
+		 	ses.setAttribute("DashBoardId", headerservice.getDashBoardId(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType())!=null && headerservice.getDashBoardId(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size()>0 ? headerservice.getDashBoardId(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).get(0)[0].toString():"0");
+		  	
 		  	String LabCode = headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getUsername().toString()).trim();
 		  	
 		  	ses.setAttribute("labcode", LabCode);
@@ -522,7 +525,7 @@ public class LoginController {
     
     
     
-    @RequestMapping(value = "MainDashBoard.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "MainDashBoard.htm", method = {RequestMethod.GET,RequestMethod.POST})
     public String MainDashBoard(HttpServletRequest req,HttpSession ses) throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
@@ -601,7 +604,8 @@ public class LoginController {
 		if (req.getParameter("projectid") != null) {
 			ProjectId = req.getParameter("projectid");
 		}
-
+		String preferedDashBoard=req.getParameter("preferedDashBoard");
+		
 		logger.info(new Date() + "Inside MainDashBoard.htm ");
 		try {
 			req.setAttribute("statsUrl", statsUrl);
@@ -626,16 +630,43 @@ public class LoginController {
 			headerservice.MyTaskDetails(EmpId)); /* CALL `Dashboard_Mytask_Details` (:empid) */
 			req.setAttribute("dashboardactionpdc", headerservice.DashboardActionPdc(EmpId, LoginType));
 			req.setAttribute("QuickLinkList", headerservice.QuickLinksList(LoginType));
-			req.setAttribute("projecthealthdata", rfpmainservice.ProjectHealthData(LabCode));
-			req.setAttribute("projecthealthtotal",
-			rfpmainservice.ProjectHealthTotalData(ProjectId, EmpId, LoginType, LabCode, "Y"));
-			System.out.println(ProjectId + "--" + EmpId + "---" + LoginType + "---" + LabCode);
+			
+			//to find favourite DashBoard
+			req.setAttribute("DashBoardsList", headerservice.getDashBoards(Long.parseLong(EmpId),LoginType));
+		
+			String DashBoardId = (String) ses.getAttribute("DashBoardId");
+			List<Object[]>projecthealthdata = rfpmainservice.ProjectHealthData(LabCode);
+			Object[]projecthealthtotal = rfpmainservice.ProjectHealthTotalData(ProjectId, EmpId, LoginType, LabCode, "Y");
+			List<Object[]>DashboardFinance = rfpmainservice.DashboardFinance(LoginType, EmpId, LabCode, ClusterId);
+			if(DashBoardId!=null && !DashBoardId.equalsIgnoreCase("0")) {
+			ProjectDashBoardFavourite pd=headerservice.findProjectDashBoardFavourite(Long.parseLong(DashBoardId));
+			
+			List<String>DashBoardProjects= new ArrayList<>();
+			// get the projects & add in temporaryList
+			if(pd.getProjects()!=null) {
+			for(ProjectDashBoardFavouriteProjetcts p:pd.getProjects()) {
+				DashBoardProjects.add(p.getProjectId()+"");
+			}
+			}else {
+				List<Object[]>projectLists = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
+				for(Object[]obj:projectLists) {
+					DashBoardProjects.add(obj[0].toString()+"");
+				}
+			}
+			
+			projecthealthdata = projecthealthdata.stream().filter(e->DashBoardProjects.contains(e[2].toString())).collect(Collectors.toList());
+			projecthealthtotal = headerservice.projecthealthtotalDashBoardwise(DashBoardId,LabCode);
+			DashboardFinance = headerservice.DashboardFinanceProjectWise(DashBoardId,LabCode);
+			}
+			req.setAttribute("projecthealthdata", projecthealthdata);
+			req.setAttribute("projecthealthtotal",projecthealthtotal);
+
 			// req.setAttribute("clusterlablist", headerservice.LabList());
 			// req.setAttribute("clusterlist", comservice.ClusterList());
 			// req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
 			req.setAttribute("DashboardFinanceCashOutGo",
 					rfpmainservice.DashboardFinanceCashOutGo(LoginType, EmpId, LabCode, ClusterId));
-			req.setAttribute("DashboardFinance", rfpmainservice.DashboardFinance(LoginType, EmpId, LabCode, ClusterId));
+			req.setAttribute("DashboardFinance", DashboardFinance);
 
 			String DGName = Optional.ofNullable(
 					headerservice.LabMasterList(ClusterId).stream().filter(e -> "Y".equalsIgnoreCase(e[2].toString()))
@@ -721,7 +752,6 @@ public class LoginController {
 
 				// req.setAttribute("AllSchedulesCount",
 				// rfpmainservice.AllSchedulesCount(LoginType,LoginId));
-				
 				req.setAttribute("actionscount", rfpmainservice.AllActionsCount(LoginType, EmpId, LoginId, LabCode));
 				req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType, EmpId, LabCode));
 				req.setAttribute("ProjectMeetingCount", rfpmainservice.ProjectMeetingCount(LoginType, EmpId, LabCode));

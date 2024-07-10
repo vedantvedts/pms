@@ -13,6 +13,10 @@ import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
+
+import com.vts.pfms.header.model.ProjectDashBoardFavourite;
+import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
+import com.vts.pfms.roadmap.model.RoadMap;
 @Transactional
 @Repository
 public class HeaderDaoImpl implements HeaderDao {
@@ -388,5 +392,98 @@ public class HeaderDaoImpl implements HeaderDao {
 		List<BigInteger> result = query.getResultList();
 		if (result.get(0).intValue()==0)return false;
 		else return true;
+	}
+	
+	private static final String ISACTIVEDB="UPDATE project_dashboard_favourite SET IsActive ='0' WHERE EmpId =:EmpId and LoginType=:LoginType";
+	
+	@Override
+	public long isActiveDashBoard(String EmpId,String LoginType) throws Exception {
+
+		Query query = manager.createNativeQuery(ISACTIVEDB);
+		query.setParameter("EmpId", EmpId);
+		query.setParameter("LoginType", LoginType);
+		
+		query.executeUpdate();
+		return 2l;
+	}
+	
+	@Override
+	public long addDashBoardFav(ProjectDashBoardFavourite pd) throws Exception {
+		isActiveDashBoard(pd.getEmpId()+"",pd.getLoginType());
+		manager.persist(pd);
+		return pd.getDashBoardId();
+	}
+	
+	@Override
+	public ProjectDashBoardFavourite findProjectDashBoardFavourite(long dashBoardId)throws Exception {
+		try {
+			return manager.find(ProjectDashBoardFavourite.class, dashBoardId);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getRoadMapDetails "+e);
+			return null;
+		}
+	}
+	
+	private static final String DASHBOARDIDS="SELECT DashBoardId,DashBoardName,LoginType,EmpId,IsActive FROM project_dashboard_favourite WHERE EmpId=:empId AND LoginType=:LoginType";
+
+	@Override
+	public List<Object[]> getDashBoardId(Long empId, String LoginType) throws Exception {
+
+		Query query = manager.createNativeQuery(DASHBOARDIDS);
+		
+		query.setParameter("empId", empId);
+		query.setParameter("LoginType", LoginType);
+		
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String projecthealthtotalDashBoardwise="CALL Project_Health_Total_Data_dasboardwise(:InDashBoardId , :labCode)";
+	@Override
+	public Object[] projecthealthtotalDashBoardwise(String InDashBoardId, String labCode) throws Exception {
+		Query query = manager.createNativeQuery(projecthealthtotalDashBoardwise);
+		query.setParameter("InDashBoardId", InDashBoardId);
+		query.setParameter("labCode", labCode);
+		
+		return (Object[])query.getSingleResult();
+	}
+	private static final String FINANCEPROJECTWISE="CALL Pfms_Dashboard_Finance_ProjectWise(:InDashBoardId ,:labCode)";
+	
+	@Override
+	public List<Object[]> DashboardFinanceProjectWise(String InDashBoardId, String labCode) throws Exception {
+		Query query = manager.createNativeQuery(FINANCEPROJECTWISE);
+		query.setParameter("InDashBoardId", InDashBoardId);
+		query.setParameter("labCode", labCode);
+		
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	
+	private static final String UPDATEDASHBOARD ="UPDATE project_dashboard_favourite SET IsActive ='1' WHERE DashBoardId = :dashboardId";
+	private static final String DELETEDASHBOARD ="DELETE FROM  project_dashboard_favourite_projects  WHERE DashBoardId = :dashboardId";
+	@Override
+	public long updateDashBoard(String dashboardId) throws Exception {
+		Query query1 = manager.createNativeQuery(UPDATEDASHBOARD);
+		query1.setParameter("dashboardId", dashboardId);
+		query1.executeUpdate();
+		
+		Query query2 = manager.createNativeQuery(DELETEDASHBOARD);
+		query2.setParameter("dashboardId", dashboardId);
+		query2.executeUpdate();
+		
+		return 1l;
+	}
+	private static final String DASHBOARDPROJECTS = "SELECT a.FavouriteId,a.DashBoardId,a.ProjectId FROM project_dashboard_favourite_projects a WHERE a.DashBoardId = :InDashBoardId";
+	@Override
+	public List<Object[]> getProjectsBasedOnDashBoard(String InDashBoardId) throws Exception {
+		Query query = manager.createNativeQuery(DASHBOARDPROJECTS);
+		query.setParameter("InDashBoardId", InDashBoardId);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	@Override
+	public long addProjectDashBoardFavouriteProjetcts(ProjectDashBoardFavouriteProjetcts pf) throws Exception {
+		manager.persist(pf);
+		manager.flush();
+		return pf.getFavouriteId();
 	}
 }

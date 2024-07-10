@@ -1143,8 +1143,14 @@ if(ses!=null){ %>
 		<!---------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV START --------->
 					 	
 				<div style="display: none" class="overallheader" id="changes-tab">
+					<div data-toggle="tooltip" title="" style="text-align: left;" >
+														<button data-toggle="tooltip" onclick ="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" style="cursor: pointer;"  type="button"  data-toggle="tooltip" data-placement="right"  title="Select DashBoard Projects" >
+														<img src="view/images/dashboard.png" style="width: 25px;" > 
+														</button>
+															<jsp:include page="../static/DashBoardSelection.jsp"></jsp:include>
+													</div>
 					
-			          	<div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 12px">
+			       <%--    	<div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 12px">
 			          	<button type="button" class="btn " style="background-color: #145374;color: white;font-size: 13px" onclick="ChangesForm('A')" ><i class="fa fa-arrows-alt" aria-hidden="true"></i> Changes</button>
 			          	  <button type="button"  onclick="ChangesForm('T')" class="btn changes-btn" ><span class="navbar-brand changes-font"  style="color:black;">Today</span>
 			          	  	<span class="badge changes-badge badge-danger badge-counter" id="todaychangescount">
@@ -1158,7 +1164,7 @@ if(ses!=null){ %>
 						  <span class="badge changes-badge badge-danger badge-counter" id="monthlychangescount">
 						  		<%=ProjectHealthTotalData[28] %>
 						  </span></button>
-						</div>
+						</div> --%>
 						
 				</div>
      <!----------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV END ---------------->
@@ -1252,13 +1258,13 @@ if(ses!=null){ %>
 										
 										<%if((obj[0]).toString().equalsIgnoreCase("Meeting")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
 									
-									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+<%-- 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="MeetingApprovalAgenda.htm" style="color:black" id="" >Meeting
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
-									</div> 
+									</div>  --%>
 										
-										<%approvalcount++;}} %>
+										<%/* approvalcount++; */}} %>
 										
 										<%if((obj[0]).toString().equalsIgnoreCase("Committee")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
 									
@@ -2931,7 +2937,7 @@ if(ses!=null){ %>
 												<td style="width:2%">
 													<div data-toggle="tooltip" title="Master Slide">
 														<a style="cursor: pointer;"   target="_blank"  >
-															<div type="button" data-toggle="modal" data-target="#selectProjectsForSlideShowModal">
+															<div type="button" data-toggle="modal" data-target="" id="slideDIv">
 																<img src="view/images/silde.png" style="width: 25px;"/>
 															</div>
 														</a>
@@ -2940,98 +2946,7 @@ if(ses!=null){ %>
 												<!-- Button trigger modal -->
 												<!-- Modal -->
 												<jsp:include page="../print/ProjectsSlideShowSelection.jsp"></jsp:include>
-												<%-- <div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-												  <div class="modal-dialog modal-lg " style="max-width: 1800px" role="document">
-												  <form action="GetAllProjectSlide.htm" target="_blank" onsubmit="return checkslideinput()" method="post">
-												  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-												    <div class="modal-content">
-												      <div class="modal-header">
-												        <h5 class="modal-title" id="exampleModalLabel">
-												        	Select Projects for SlideShow
-												        	<br><br>
-												        	<input type="checkbox" id="selectall" checked style="margin-left: -58%;width: 20px;height: 20px;"> 
-												        	<span style="font-size: 1.2rem;">Select All</span> 
-												        	
-												        </h5>
-												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												          <span aria-hidden="true">&times;</span>
-												        </button>
-												      </div>
-												      
-												      <div class="modal-body" >
-												      	<div class="container-fluid">
-												        	<% List<Object[]> mainProjectList =  ProjectHealthData!=null && ProjectHealthData.size()>0 ? (ProjectHealthData.stream().filter(e-> e[51]!=null && e[51].toString().equals("1")).collect(Collectors.toList())): new ArrayList<Object[]>();
-												        	   List<Object[]> subProjectList =  ProjectHealthData!=null && ProjectHealthData.size()>0 ? (ProjectHealthData.stream().filter(e-> e[51]!=null && e[51].toString().equals("0")).collect(Collectors.toList())): new ArrayList<Object[]>();
-												        	%>
-												        	<div class="row">
-												        		<div class="col-md-12">
-												        			<div align="left">
-												        				Main Projects:
-												        			</div>
-														        	<hr>
-														        	<%int c=0;
-														        		if(mainProjectList!=null && mainProjectList.size()>0) { 
-														        		for(Object[] obj : mainProjectList){%>
-														        	<%if(c==4||c==0) {c=0; %>
-														        	<div class="row">
-														        	<%} %>
-																		<div class="col-3" >
-																			<div style="text-align: left;">
-																				<input checked class="projectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
-																				<label for="<%=obj[2]%>">
-																					<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-																					  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
-																					  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
-																					  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
-																				  	</span> 	
-																				</label>
-																			</div>
-																		</div>
-																	<%if(c==3&&c!=0) { %>
-																	</div><%}%>
-																	<%c++;} }%>
-												        		</div>
-												        	</div> 
-												        	<div class="row">
-												        		<div class="col-md-12">
-												        			<div align="left">
-												        				Sub Projects:
-												        			</div>
-												        			<hr>
-														        	<%int c1=0;
-														        		if(subProjectList!=null && subProjectList.size()>0) { 
-														        		for(Object[] obj : subProjectList){%>
-														        	<%if(c1==4||c1==0) {c1=0; %>
-														        	<div class="row">
-														        	<%} %>
-																		<div class="col-3" >
-																			<div style="text-align: left;">
-																				<input checked class="projectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
-																				<label for="<%=obj[2]%>">
-																					<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-																					  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
-																					  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
-																					  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
-																				  	</span> 	
-																				</label>
-																			</div>
-																		</div>
-																	<%if(c1==3&&c1!=0) { %>
-																	</div><%}%>
-																	<%c1++;} }%>
-												        		</div>
-												        	</div>
-												      	</div>
-												      </div>
-												      <div class="modal-footer">
-												      <div class="d-flex align-items-start" style=" padding-right: 900px;" ><p style="text-align: left"><span style="color: red">Note</span>: Master slide is the combination of latest Data of selected project</p></div>
-												        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-												        <button type="submit"  class="btn btn-primary">Slide Show</button>
-												      </div>
-												    </div>
-												   </form>
-												  </div>
-												</div> --%>	<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
+												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
@@ -3044,7 +2959,9 @@ if(ses!=null){ %>
 										
 										<tbody>
 										
-											<%for(Object[] obj : ProjectHealthData){
+											<%
+											
+											for(Object[] obj : ProjectHealthData){
 												
 												if(ProjectList!=null){  for(Object[] obj2 : ProjectList) 
 												{
@@ -3290,8 +3207,8 @@ if(ses!=null){ %>
 		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden " align="center">
 			<div  style="margin: 5px">
 				<span class="ProjecChartCardTitle" style="color: #145374;font-size: 20px;text-decoration: underline;"></span>
-				<button class="btn btn-lg prints" style="float: left;padding: 3px 7px;margin: 0px 5px ;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
-				<button class="btn btn-lg back" style="float: left;padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Close" ><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></button>
+				<button class="btn prints" style="float: left;padding: 3px 7px;margin: 0px 5px ;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+				<button class="btn  btn-danger" style="float: left;padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Close" >CLOSE &nbsp;<i class="fa fa-times-circle faa-pulse animated faa-fast" aria-hidden="true"></i></button>
 				
 				<br>
 			</div>
@@ -4160,7 +4077,7 @@ function LabDetails(value){
 $(function () {
     $("[data-toggle='tooltip']").tooltip({
         animated: 'fade',
-        placement: 'top',
+       
         html : true,
         boundary: 'window'
     });
@@ -5454,10 +5371,10 @@ $projectid=value;
 					
 					return result[key,value]
 				})
-				
+			/* 	
 				document.getElementById('todaychangescount').innerHTML = values[0] + values[3] + values[6] + values[9] ;
 				document.getElementById('weeklychangescount').innerHTML = values[1] + values[4] + values[7] + values[10] ;
-				document.getElementById('monthlychangescount').innerHTML = values[2] + values[5] + values[8] + values[11] ;
+				document.getElementById('monthlychangescount').innerHTML = values[2] + values[5] + values[8] + values[11] ; */
 			}
 
 		})

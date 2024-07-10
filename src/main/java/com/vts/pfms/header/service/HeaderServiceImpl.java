@@ -1,9 +1,11 @@
 package com.vts.pfms.header.service;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.vts.pfms.header.dao.HeaderDao;
+import com.vts.pfms.header.model.ProjectDashBoardFavourite;
+import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
 @Service
 public class HeaderServiceImpl implements HeaderService {
 	@Autowired
@@ -327,7 +331,109 @@ public class HeaderServiceImpl implements HeaderService {
 
 	@Override
 	public Boolean getRoleAccess(String formModuleId, String logintype) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.getRoleAccess( formModuleId,  logintype);
 	}
+	
+	@Override
+	public long addDashBoardFav(String projects, String favName, String empId,String UserId,String LoginType) throws Exception {
+		ProjectDashBoardFavourite pd = new ProjectDashBoardFavourite();
+		pd.setEmpId(Long.parseLong(empId));
+		pd.setDashBoardName(favName);
+		pd.setIsActive(1);
+		pd.setLoginType(LoginType);
+		List<ProjectDashBoardFavouriteProjetcts> list = new ArrayList<>();
+		if(projects!=null && projects.length()>0) {
+		String[] project = projects.split(",");	
+		
+		for(int i=0;i<project.length;i++) {
+			ProjectDashBoardFavouriteProjetcts pf = new ProjectDashBoardFavouriteProjetcts();
+			pf.setProjectdbfav(pd);
+			pf.setProjectId(Long.parseLong(project[i]));
+			pf.setCreatedBy(UserId);
+			pf.setCreatedDate(sdf1.format(new Date()));
+			list.add(pf);
+		}
+		
+		}
+		pd.setProjects(list);
+		
+		
+		return dao.addDashBoardFav(pd);
+	}
+	
+	@Override
+	public ProjectDashBoardFavourite findProjectDashBoardFavourite(long DashBoardId) throws Exception {
+		return dao.findProjectDashBoardFavourite(DashBoardId);
+	}
+	
+		@Override
+		public List<Object[]> getDashBoardId(Long empId, String LoginType) throws Exception {
+			List<Object[]> getDashBoardId =	dao.getDashBoardId(empId,LoginType);
+			
+			if(getDashBoardId!=null && getDashBoardId.size()>0) {
+				getDashBoardId = getDashBoardId.stream().filter(e->e[4].equals(true)).collect(Collectors.toList());
+			}
+			return getDashBoardId;
+			
+		}
+		
+		@Override
+		public Object[] projecthealthtotalDashBoardwise(String dashBoardId, String labCode) throws Exception {
+		
+			return dao.projecthealthtotalDashBoardwise(dashBoardId,labCode);
+		}
+		
+		@Override
+		public long isActiveDashBoard(String empId, String loginType) throws Exception {
+			
+			return dao.isActiveDashBoard(empId,loginType);
+		}
+		
+		@Override
+		public List<Object[]> DashboardFinanceProjectWise(String dashBoardId, String labCode) throws Exception {
+			List<Object[]> DashboardFinance = dao.DashboardFinanceProjectWise(dashBoardId,labCode);
+			
+			BigDecimal thousandcrore = new BigDecimal("10000000000");
+			for(Object[] OutGo : DashboardFinance)
+			{ 
+				OutGo[3] = Double.parseDouble(OutGo[3].toString())!=0 ?  new BigDecimal(OutGo[3].toString()).divide(thousandcrore).setScale(2, BigDecimal.ROUND_HALF_EVEN ) : new BigDecimal(OutGo[3].toString()) ;
+				OutGo[4] = Double.parseDouble(OutGo[4].toString())!=0 ?  new BigDecimal(OutGo[4].toString()).divide(thousandcrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[4].toString()) ;
+				OutGo[5] = Double.parseDouble(OutGo[5].toString())!=0 ?  new BigDecimal(OutGo[5].toString()).divide(thousandcrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[5].toString()) ;
+			}
+			return DashboardFinance;
+		}
+		
+		@Override
+		public List<Object[]> getDashBoards(Long empId, String LoginType) throws Exception {
+
+			return dao.getDashBoardId(empId,LoginType);
+		}
+		
+		@Override
+		public long updateDashBoard(String dashboardId,String projects,String UserId) throws Exception {
+			dao.updateDashBoard(dashboardId);
+			ProjectDashBoardFavourite pd = dao.findProjectDashBoardFavourite(Long.parseLong(dashboardId));
+			long count =0l;
+			if(projects!=null && projects.length()>0) {
+				String [] project= projects.split(",");
+				for(int i=0;i<project.length;i++) {
+					ProjectDashBoardFavouriteProjetcts pf = new ProjectDashBoardFavouriteProjetcts();
+					pf.setProjectdbfav(pd);
+					pf.setProjectId(Long.parseLong(project[i]));
+					pf.setCreatedBy(UserId);
+					pf.setCreatedDate(sdf1.format(new Date()));
+				
+					count=dao.addProjectDashBoardFavouriteProjetcts(pf);
+				}
+			}
+			
+			return count;
+			
+			
+		}
+		
+		@Override
+		public List<Object[]> getProjectsBasedOnDashBoard(String dashBoardId) throws Exception {
+			return dao.getProjectsBasedOnDashBoard(dashBoardId);
+		}
 }
