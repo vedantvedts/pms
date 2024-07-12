@@ -1143,7 +1143,7 @@ if(ses!=null){ %>
 		<!---------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV START --------->
 					 	
 				<div style="display: none" class="overallheader" id="changes-tab">
-					<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %>
+					<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype")) && (ProjectList!=null && ProjectList.size()>0)){ %>
 					<div data-toggle="tooltip" title="" style="text-align: left;" >
 														<button data-toggle="tooltip" onclick ="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" style="cursor: pointer;"  type="button"  data-toggle="tooltip" data-placement="right"  title="Select DashBoard Projects" >
 														<img src="view/images/dashboard.png" style="width: 25px;" > 

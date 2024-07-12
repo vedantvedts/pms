@@ -426,11 +426,11 @@ int pageCOunt=1;
 															%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
 															<%}%>
 													</h2>
-													<h6 class="col" style="display: inline-block;">
+													<%-- <h6 class="col" style="display: inline-block;">
 								 						<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
 															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
 														<%} %>
-							 						</h6>
+							 						</h6> --%>
 							 						
 							 						 <span  style="float: right;margin-top:10px;margin-right:5px;"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></span> 
 							 						
@@ -465,7 +465,7 @@ int pageCOunt=1;
 																	<td class="border-black" colspan="1" style="color:#007bff;"> <%if(projects.get(i)[14]!=null){%> <%=projects.get(i)[14]%>
 																		<%} else {%> -- <%}%></td>
 																</tr>
-																<tr class="border-black">
+																<tr class="border-black" style="margin-left:10px;">
 																	<td class="border-black" colspan="1" style="font-size: 1.25rem; font-weight: bold; color: #021B79;vertical-align: top;">Brief :</td>
 																	<td class="border-black" colspan="7" style="font-size: 1.25rem;color: black;">
 																		<%if(projects.get(i)[28]!=null){%>
@@ -544,6 +544,10 @@ int pageCOunt=1;
 															<div class="row ml-3">
 												<span>	<i class="fa fa-lg fa-angle-double-right text-success" aria-hidden="true" style="font-size: 2rem"></i>	<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b>Show more</b></a></span>
 														</div>
+														<%} %>
+														
+														<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
+															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
 														<%} %>
 															</div>
 																	
@@ -625,11 +629,11 @@ int pageCOunt=1;
 															%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
 															<%}%>
 													</h2>
-													<h6 class="col" style="display: inline-block;">
+	<%-- 												<h6 class="col" style="display: inline-block;">
 								 						<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
 															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
 														<%} %>
-							 						</h6>
+							 						</h6> --%>
 							 						
 							 						 <span  style="float: right;margin-top:10px;margin-right:5px;"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></span> 
 							 						
@@ -661,12 +665,12 @@ int pageCOunt=1;
 														</tr>
 													</table>
 													<div class="row" style="">
-														<div class="col-md-6">
-															<div class="row">
+														<div class="col-md-6" style="width:45%;">
+															<div class="row" style="">
 																<div class="col left">
-																	<table class="border-black" style="width: 98.1%;font-weight: bold;font-size: 1.25rem;margin-left: 1%">
+																	<table class="border-black" style="width: 98.1%;font-weight: bold;font-size: 1.25rem;margin-left:10px;">
 																		<tr class="border-black" class="border-black">
-																			<td  class="border-black" style="border-top: none;width: 24.8%;vertical-align: top;">
+																			<td  class="border-black" style="border-top: none;vertical-align: top;">
 																				<b style="font-size: 1.25rem;font-weight: bold;color: #021B79;"> Brief:</b>
 																			</td>
 																			<td class="border-black" colspan="3" style="font-size: 1.25rem;border-top: none;vertical-align: top;color: black;">
@@ -734,18 +738,23 @@ int pageCOunt=1;
 													<span><i class="fa fa-lg fa-angle-double-right text-success" aria-hidden="true" style="font-size: 2rem"></i>	<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b>Show more </b></a> </span>	
 														</div>
 														<%} %>
-																	
+																<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
+															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
+														<%} %>	
 																</div>
 																</div>
 																
 															</div>
+														
+															
+															
 														</div>
 														<br>
-														<div class="col-md-6">
-															<table style="width: 100%;height: 100%;border-style: hidden;">
+														<div class="col-md-6" style="">
+															<table style="width: 20%;height: 10%;border-style: hidden;">
 																<tbody>
 																	<tr >
-																		<td style="border-bottom: none;max-height: 300px; max-width: 600px;margin: auto;">
+																		<td style="border-bottom: none;height:100px; width:200px;margin: auto;">
 																			<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[24]).exists()){%>
 																				<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
 																					<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" >
@@ -810,11 +819,11 @@ int pageCOunt=1;
 															%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
 															<%}%>
 													</h2>
-													<h6 class="col" style="display: inline-block;">
+												<%-- 	<h6 class="col" style="display: inline-block;">
 								 						<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
 															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
 														<%} %>
-							 						</h6>
+							 						</h6> --%>
 							 						
 							 						 <span  style="float: right;margin-top:10px;margin-right:5px;"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></span> 
 							 						
@@ -902,6 +911,10 @@ int pageCOunt=1;
 																		<%} else{%><div align="center">No Data</div> <%} %> 
 						
 															</div>
+															
+															<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
+															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
+														<%} %>
 															</div>
 															</div>
 															
