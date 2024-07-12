@@ -34,8 +34,9 @@ if(ProjectList!=null && ProjectList.size()>0){
 
 %>
 <!-- Modal -->
-<div class="modal fade bd-example-modal-lg" id="DashboardProjectModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document" style="">
+
+<div class="modal fade bd-example-modal-lg" id="DashboardProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document" style="max-width: 1440px;">
     <div class="modal-content">
       <div class="modal-header bg-primary text-light">
         <h5 class="modal-title" id="exampleModalLabel">Dashboard Projects</h5>
@@ -70,33 +71,34 @@ if(ProjectList!=null && ProjectList.size()>0){
       <div class="row ml-2 mb-3 mt-2" >
       Main projects : <input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
       </div>
+      <%} %>
       <div class="row" style="">
-       
-      <% for(Object[]obj:MainProjectList) {%>
+      <% 
+      if(MainProjectList!=null && MainProjectList.size()>0){
+      for(Object[]obj:MainProjectList) {%>
       <div class="col-md-2 ml-4 mt-3">
       <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> <span ><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span>
       </div>
        <%}} %>
-       </div>
+       </div> 
         <hr class="mt-2">
        <%if(subProjectList!=null && subProjectList.size()>0){ %>
       <div class="row ml-2 mb-3 mt-2" >
      		 Sub projects :       <input id="subProject" style="transform:scale(1.5)" type="checkbox"  > 
      		 
       </div>
-      
+      <%} %>
       <div class="row" style="">
-      <%for(Object[]obj:subProjectList) {%>
+      <%if(subProjectList!=null && subProjectList.size()>0){
+      for(Object[]obj:subProjectList) {%>
        <div class="col-md-2 ml-4 mt-3" >
        <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0].toString()%>"> <%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %>
       </div>
-      <%} } %>
+      <%}} %>
       </div>
-       <hr class="mt-2">
       
-      </div>
- 
-        <div class="mb-3" align="center" id="addDiv" style="display: none;">
+     
+          <div class="mb-3" align="center" id="addDiv" style="display: none;">
         	<form action="DashboardFavAdd.htm" method="post">
         	<input type="hidden" name="addFav" id="addFavvalue">
         	<input type="hidden" name="projects" id="projects">
@@ -116,6 +118,10 @@ if(ProjectList!=null && ProjectList.size()>0){
         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">CLOSE</button>
         	</form>
       </div>
+       
+      </div>
+ 
+     
     </div>
   </div>
 </div>

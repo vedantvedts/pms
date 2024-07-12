@@ -162,11 +162,11 @@ int pageCOunt=1;
 					<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;font-weight: bold; background-color: rgb(249, 242, 223);"  >
 						<% if(labInfo!=null){ %>
 							<tr>
-								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size: 22px"> <h2 style="color: #145374 !important;"> <%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %> </h2> </th>
+								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size: 22px"> <h2 style="color: #145374 !important; font-weight: bold;"> <%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %> ( <%=labInfo.getLabCode()%> ) </h2> </th>
 							</tr>
 						<%}%>
 						<tr>
-							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px"><br>Government of India, Ministry of Defence</th>
+							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px">Government of India, Ministry of Defence</th>
 						</tr>
 						<tr>
 							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px">Defence Research & Development Organization</th>
