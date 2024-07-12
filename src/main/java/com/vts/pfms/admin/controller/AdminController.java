@@ -905,6 +905,14 @@ public class AdminController {
 			throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + "Inside Role.htm " + UserId);
+		String Logintype = (String) ses.getAttribute("LoginType");
+		List<Object[]>roleAcess=service.hasroleAccess("Role.htm", Logintype);
+		
+
+		if(roleAcess==null || roleAcess.size()==0) {
+			return "static/Error";
+		}
+		
 		try {
 			String logintype = req.getParameter("logintype");
 			Map md = model.asMap();

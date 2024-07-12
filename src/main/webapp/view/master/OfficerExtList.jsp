@@ -280,15 +280,22 @@ function Delete(myfrm){
 </script>
 
  <script type="text/javascript">
-$(document).ready(function(){
+/* $(document).ready(function(){
 	  $("#myTable").DataTable({
 	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
 	 "pagingType": "simple"
 	
 });
 
-  });
-  
+  }); */
+  $(document).ready(function() {
+		$("#myTable").DataTable({
+				'aoColumnDefs': [{
+				'bSortable': false,
+				'aTargets': [-1] /* 1st one, start by the right */
+			}]
+		});
+	});
 
 </script>
 </body>

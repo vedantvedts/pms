@@ -1143,13 +1143,14 @@ if(ses!=null){ %>
 		<!---------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV START --------->
 					 	
 				<div style="display: none" class="overallheader" id="changes-tab">
+					<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %>
 					<div data-toggle="tooltip" title="" style="text-align: left;" >
 														<button data-toggle="tooltip" onclick ="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" style="cursor: pointer;"  type="button"  data-toggle="tooltip" data-placement="right"  title="Select DashBoard Projects" >
 														<img src="view/images/dashboard.png" style="width: 25px;" > 
 														</button>
 															<jsp:include page="../static/DashBoardSelection.jsp"></jsp:include>
-													</div>
-					
+													</div> 
+					<%} %>
 			       <%--    	<div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 12px">
 			          	<button type="button" class="btn " style="background-color: #145374;color: white;font-size: 13px" onclick="ChangesForm('A')" ><i class="fa fa-arrows-alt" aria-hidden="true"></i> Changes</button>
 			          	  <button type="button"  onclick="ChangesForm('T')" class="btn changes-btn" ><span class="navbar-brand changes-font"  style="color:black;">Today</span>
@@ -1258,7 +1259,7 @@ if(ses!=null){ %>
 										
 										<%if((obj[0]).toString().equalsIgnoreCase("Meeting")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
 									
-<%-- 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+								<%-- 	<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="MeetingApprovalAgenda.htm" style="color:black" id="" >Meeting
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>

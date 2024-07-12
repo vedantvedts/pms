@@ -113,8 +113,18 @@
 </head>
 <%
 List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("projecthealthdata");
+List<Object[]>ProjectList = (List<Object[]>)request.getAttribute("ProjectList"); 
+
+List<String>projectIds=new ArrayList<>();
+
+if(ProjectList!=null){
+	for(Object[]obj:ProjectList){
+		projectIds.add(obj[0].toString());
+	}
+}
+System.out.println(projectIds.toString());
 %>
-<body>
+
 <!-- Modal -->
 	<div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%;display: none;" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg " style="max-width: 1800px" role="document">
@@ -191,7 +201,7 @@ List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("project
 				                   <% } %>
 			                       <div class="col-3">
 			                           <div style="text-align: left;">
-			                               <input checked class="mainprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
+			                               <input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="mainprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
 			                               <label for="<%=obj[2]%>">
 			                                   <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
 			                                       <% if (obj[46] != null) { %><%= obj[46] %><% } else { %>-<% } %> /
@@ -228,7 +238,7 @@ List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("project
 			        	<%} %>
 							<div class="col-3" >
 								<div style="text-align: left;">
-									<input checked class="subprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
+									<input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="subprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
 									<label for="<%=obj[2]%>">
 										<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
 										  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /

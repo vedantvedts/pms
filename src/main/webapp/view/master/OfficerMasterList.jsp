@@ -494,20 +494,22 @@ function Delete(myfrm){
  })
  </script>
  <script type="text/javascript">
- $(document).ready(function(){
- 	  $("#myTable").DataTable({
- 	 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
- 	 "pagingType": "simple",
- 	 "pageLength": 5
- });
- });
- $(document).ready(function(){
+ $(document).ready(function() {
+		$("#myTable").DataTable({
+				'aoColumnDefs': [{
+				'bSortable': false,
+			     
+				'aTargets': [-1] /* 1st one, start by the right */
+			}]
+		});
+	});
+/*  $(document).ready(function(){
  	  $("#myTable1").DataTable({
  	 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
  	 "pagingType": "simple",
  	 "pageLength": 5
  });
- });
+ }); */
  </script>
 
 <div class="modal" id="loader">

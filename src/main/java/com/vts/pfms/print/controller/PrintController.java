@@ -17,6 +17,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -4708,148 +4709,269 @@ public class PrintController {
 					return pathForPdf;
 
 			 }
+//			 @RequestMapping(value = "DownloadSelectedSlides.htm/{ProjectIds}", method = RequestMethod.GET)
+//			 public String SelectedFreezedSlidesInpdf(@PathVariable String[] ProjectIds,HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+//			{
+//				String UserId = (String) ses.getAttribute("Username");
+//				String pathtopdf = "";
+//		    	 String LabCode= (String) ses.getAttribute("labcode");
+//				String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
+//				
+//		        Path uploadPath = Paths.get(Path);
+//		        if (!Files.exists(uploadPath)) {
+//		        	System.out.println("creating path for pdf, upload thank you slide for full slideshow");
+//		            Files.createDirectories(uploadPath);
+//		        }
+//				logger.info(new Date() + "Inside DownloadSelectedSlides.htm " + UserId);
+//				try {
+//					List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+//					List<Object[]> getAllProjectdata = new ArrayList<>();
+//					for (String id : ProjectIds) {
+//						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id); // freezed
+//						if (getoneProjectSlidedata.size() > 0){
+//								Object[] projectdata = (Object[]) service.GetProjectdata(id); // all values
+//								getAllProjectdata.add(projectdata);
+//							for (Object[] objects : getoneProjectSlidedata) {
+//								getAllProjectSlidedata.add(objects);
+//							}
+//						}
+//					}
+//					List<Object[]> dataForOutline = new ArrayList<>();
+//					List<Object[]> FreedDataForCover = new ArrayList<>();
+//					for (Object[] objects : getAllProjectdata) {
+//						for (Object[] objects2 : getAllProjectSlidedata) {
+//							File file = new File(ApplicationFilesDrive + objects2[1].toString() + objects2[2].toString());
+//							if (file.exists()) {
+//								if(objects2[3].toString().equals(objects[0].toString())) {
+//									dataForOutline.add(objects);
+//									FreedDataForCover.add(objects2);
+//								}
+//							}
+//						
+//							
+//						}
+//						
+//					}
+//					
+//					
+//					
+//					Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
+//						@Override
+//						public int compare(Object[] o1, Object[] o2) {
+//							Date date1 = (Date) o1[5];
+//							Date date2 = (Date) o2[5];
+//							return date1.compareTo(date2);
+//						}
+//					};
+//					
+//					if (getAllProjectdata.size() > 1)
+//						Collections.sort(getAllProjectdata, dateComparator);
+//					//aligning list values with the PROJids of project pdf PROJids
+//					
+//					
+//					getAllProjectSlidedata = FreedDataForCover;
+//					
+//					Map<String, List<Object[]>> details = new HashMap<>();
+//					details.put("getAllProjectdata", FreedDataForCover);
+//					details.put("dataForOutline", dataForOutline);
+//					String path = req.getServletContext().getRealPath("/view/temp");
+//					//static file thank you
+//					String pathToThankYou = "";
+//					String CoverSlide = "";
+//					File coverslideFile = new File(Path + "coverslide.pdf");
+//					if(coverslideFile.exists())
+//						CoverSlide = Path + "coverslide.pdf";
+//					else 
+//						CoverSlide = PrintCoverSlide(details, req, redir, res, ses);
+//					
+//					
+//					File projectOutline = new File(Path + "ProjectOutline.pdf");
+//					String prjOutlineSlide="";
+//					if(projectOutline.exists())prjOutlineSlide=projectOutline.getPath();
+//					else prjOutlineSlide=PrintProjectsOutline(details, req, redir, res, ses);
+//					
+//					PDFMergerUtility utility = new PDFMergerUtility();
+//					utility.setDestinationFileName(path + File.separator + "merged.pdf");
+//					
+//					File filec = new File(CoverSlide);
+//					utility.addSource(filec);
+//					File file0 = new File(prjOutlineSlide);
+//					utility.addSource(file0);
+//					
+//					boolean flag = false;
+////					Collections.reverse(getAllProjectSlidedata);
+//					List<Object> mainProjectids =  dataForOutline!=null && dataForOutline.size()>0 ? (dataForOutline.stream().filter(e-> e[21]!=null && e[21].toString().equals("1")).map(objArray -> objArray[0]).collect(Collectors.toList())): new ArrayList<Object>();
+//					List<Object> subProjectList =  dataForOutline!=null && dataForOutline.size()>0 ? (dataForOutline.stream().filter(e-> e[21]!=null && e[21].toString().equals("0")).map(objArray -> objArray[0]).collect(Collectors.toList())): new ArrayList<Object>();
+//					
+//					getAllProjectSlidedata.stream()
+//				    .filter(obj -> new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString()).exists())
+//				    .filter(obj -> mainProjectids.contains(obj[3]))
+//				    .forEach(obj -> {
+//				        File file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
+//				        try {
+//							utility.addSource(file);
+//						} catch (FileNotFoundException e1) {
+//							// TODO Auto-generated catch block
+//							e1.printStackTrace();
+//						}
+//				    });
+//
+//					// Process sub project ids
+//					getAllProjectSlidedata.stream()
+//					    .filter(obj -> new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString()).exists())
+//					    .filter(obj -> subProjectList.contains(obj[3]))
+//					    .forEach(obj -> {
+//					        File file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
+//					        try {
+//								utility.addSource(file);
+//							} catch (FileNotFoundException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+//					    });
+//					
+//					System.out.println("pathhhh----"+getAllProjectSlidedata.get(0)[1].toString());
+//					
+//					pathToThankYou =getAllProjectSlidedata.size()>0?getAllProjectSlidedata.get(0)[1].toString():"";
+//					
+//					pathToThankYou = ApplicationFilesDrive + pathToThankYou + "SlideFreezeTHANKYOU.pdf";
+//					File file = new File(pathToThankYou);
+//					if (pathToThankYou.equals("") || flag || !file.exists()) {
+//						redir.addAttribute("resultfail", "Selected slide has not been Freezed");
+//						if(!file.exists())System.out.println("=================  ERROR  =============\n=======================================\n"
+//								+ "=======================================\n"
+//								+ "==========  ADD THANKYOU SLIDE  ==========\n"
+//								+ "=======================================\n=======================================\n"
+//								+ "=======================================\n");
+//						redir.addAttribute("result", null);
+//						return "redirect:/MainDashBoard.htm";
+//					}
+//					
+//					
+//					utility.addSource(pathToThankYou);
+//					utility.mergeDocuments();
+//					res.setContentType("application/pdf");
+//					res.setHeader("Content-disposition", "inline; filename=FreezedProjectSlides.pdf");
+//					File f = new File(path + File.separator + "merged.pdf");
+//					OutputStream out = res.getOutputStream();
+//					FileInputStream in = new FileInputStream(f);
+//					byte[] buffer = new byte[4096];
+//					int length;
+//					while ((length = in.read(buffer)) > 0) {
+//						out.write(buffer, 0, length);
+//					}
+//					in.close();
+//					out.close();
+//					Files.delete(Paths.get(path + File.separator + "merged.pdf"));
+//					file0.delete();
+//					filec.delete();
+//					pathtopdf = path + File.separator + "merged.pdf";
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//				return "";
+//			} 
+			 
 			 @RequestMapping(value = "DownloadSelectedSlides.htm/{ProjectIds}", method = RequestMethod.GET)
+			 public void SelectedFreezedSlidesInpdf(@PathVariable String[] ProjectIds,HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+			 {
+				 String UserId = (String) ses.getAttribute("Username");
 
-			 public String SelectedFreezedSlidesInpdf(@PathVariable String[] ProjectIds,HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
-			{
-				String UserId = (String) ses.getAttribute("Username");
-				String pathtopdf = "";
-		    	 String LabCode= (String) ses.getAttribute("labcode");
-				String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
+					logger.info(new Date() + "Inside GetAllProjectSlide.htm " + UserId);
+
 				
-		        Path uploadPath = Paths.get(Path);
-		        if (!Files.exists(uploadPath)) {
-		        	System.out.println("creating path for pdf, upload thank you slide for full slideshow");
-		            Files.createDirectories(uploadPath);
-		        }
-				logger.info(new Date() + "Inside DownloadSelectedSlides.htm " + UserId);
-				try {
+
 					List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+
 					List<Object[]> getAllProjectdata = new ArrayList<>();
-					for (String id : ProjectIds) {
-						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id); // freezed
-						if (getoneProjectSlidedata.size() > 0){
-								Object[] projectdata = (Object[]) service.GetProjectdata(id); // all values
-								getAllProjectdata.add(projectdata);
-							for (Object[] objects : getoneProjectSlidedata) {
-								getAllProjectSlidedata.add(objects);
-							}
-						}
-					}
-					List<Object[]> dataForOutline = new ArrayList<>();
-					List<Object[]> FreedDataForCover = new ArrayList<>();
-					for (Object[] objects : getAllProjectdata) {
-						for (Object[] objects2 : getAllProjectSlidedata) {
-							File file = new File(ApplicationFilesDrive + objects2[1].toString() + objects2[2].toString());
-							if (file.exists()) {
-								if(objects2[3].toString().equals(objects[0].toString())) {
-									dataForOutline.add(objects);
-									FreedDataForCover.add(objects2);
+
+					List<Object[]> getAllProjectSlidesdata = new ArrayList<>();
+
+					if (ProjectIds != null && ProjectIds.length > 0)
+
+						for (String id : ProjectIds) {
+											
+							List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);  // freezing data
+							Object[] projectslidedata = (Object[]) service.GetProjectSildedata(id);  //[7] id project id
+							getAllProjectSlidesdata.add(projectslidedata);
+							Object[] projectdata = (Object[]) service.GetProjectdata(id); //[0] is project id ------ all vals
+							getAllProjectdata.add(projectdata);
+							if (getoneProjectSlidedata.size() > 0) {
+								for (Object[] objects : getoneProjectSlidedata) {
+									getAllProjectSlidedata.add(objects);
 								}
 							}
-						
-							
+
 						}
-						
-					}
-					
-					
-					
+
 					Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
+
 						@Override
+
 						public int compare(Object[] o1, Object[] o2) {
+
 							Date date1 = (Date) o1[5];
+
 							Date date2 = (Date) o2[5];
+
 							return date1.compareTo(date2);
+
 						}
+
 					};
 					
-					if (getAllProjectdata.size() > 1)
-						Collections.sort(getAllProjectdata, dateComparator);
-					//aligning list values with the PROJids of project pdf PROJids
 					
 					
-					getAllProjectSlidedata = FreedDataForCover;
-					
-					Map<String, List<Object[]>> details = new HashMap<>();
-					details.put("getAllProjectdata", FreedDataForCover);
-					details.put("dataForOutline", dataForOutline);
-					String path = req.getServletContext().getRealPath("/view/temp");
-					//static file thank you
-					String pathToThankYou = "";
-					String CoverSlide = "";
-					File coverslideFile = new File(Path + "coverslide.pdf");
-					if(coverslideFile.exists())
-						CoverSlide = Path + "coverslide.pdf";
-					else 
-						CoverSlide = PrintCoverSlide(details, req, redir, res, ses);
-					
-					
-					File projectOutline = new File(Path + "ProjectOutline.pdf");
-					String prjOutlineSlide="";
-					if(projectOutline.exists())prjOutlineSlide=projectOutline.getPath();
-					else prjOutlineSlide=PrintProjectsOutline(details, req, redir, res, ses);
-					
-					PDFMergerUtility utility = new PDFMergerUtility();
-					utility.setDestinationFileName(path + File.separator + "merged.pdf");
-					
-					File filec = new File(CoverSlide);
-					utility.addSource(filec);
-					File file0 = new File(prjOutlineSlide);
-					utility.addSource(file0);
-					
-					boolean flag = false;
-//					Collections.reverse(getAllProjectSlidedata);
-					List<Object> mainProjectids =  dataForOutline!=null && dataForOutline.size()>0 ? (dataForOutline.stream().filter(e-> e[21]!=null && e[21].toString().equals("1")).map(objArray -> objArray[0]).collect(Collectors.toList())): new ArrayList<Object>();
-					List<Object> subProjectList =  dataForOutline!=null && dataForOutline.size()>0 ? (dataForOutline.stream().filter(e-> e[21]!=null && e[21].toString().equals("0")).map(objArray -> objArray[0]).collect(Collectors.toList())): new ArrayList<Object>();
-					
-					getAllProjectSlidedata.stream()
-				    .filter(obj -> new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString()).exists())
-				    .filter(obj -> mainProjectids.contains(obj[3]))
-				    .forEach(obj -> {
-				        File file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
-				        try {
-							utility.addSource(file);
-						} catch (FileNotFoundException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-				    });
+					try {
 
-					// Process sub project ids
-					getAllProjectSlidedata.stream()
-					    .filter(obj -> new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString()).exists())
-					    .filter(obj -> subProjectList.contains(obj[3]))
-					    .forEach(obj -> {
-					        File file = new File(ApplicationFilesDrive + obj[1].toString() + obj[2].toString());
-					        try {
-								utility.addSource(file);
-							} catch (FileNotFoundException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-					    });
-					pathToThankYou =getAllProjectSlidedata.size()>0?getAllProjectSlidedata.get(0)[1].toString():"";
-					
-					pathToThankYou = ApplicationFilesDrive + pathToThankYou + "SlideFreezeTHANKYOU.pdf";
-					File file = new File(pathToThankYou);
-					if (pathToThankYou.equals("") || flag || !file.exists()) {
-						redir.addAttribute("resultfail", "Selected slide has not been Freezed");
-						if(!file.exists())System.out.println("=================  ERROR  =============\n=======================================\n"
-								+ "=======================================\n"
-								+ "==========  ADD THANKYOU SLIDE  ==========\n"
-								+ "=======================================\n=======================================\n"
-								+ "=======================================\n");
-						redir.addAttribute("result", null);
-						return "redirect:/MainDashBoard.htm";
+						if (getAllProjectdata.size() > 1) {
+							Collections.sort(getAllProjectdata, dateComparator);
+							Collections.sort(getAllProjectSlidedata, dateComparator);
+						}
+						Collections.reverse(getAllProjectdata);
+
+						String labcode = ses.getAttribute("labcode").toString();
+
+						req.setAttribute("getAllProjectdata", getAllProjectdata);
+
+						req.setAttribute("labInfo", service.LabDetailes(labcode));
+
+						req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+
+						req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+
+						req.setAttribute("filepath", ApplicationFilesDrive);
+
+						req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
+						req.setAttribute("getAllProjectSlidesdata", getAllProjectSlidesdata);
+
+					} catch (Exception e) {
+
+						e.printStackTrace();
+
+						logger.error(new Date() + " Inside GetAllProjectSlide.htm " + UserId, e);
+
 					}
 					
-					
-					utility.addSource(pathToThankYou);
-					utility.mergeDocuments();
+					String filename = "ProjectMasterSlide"+LocalDate.now().toString();
+					String path = req.getServletContext().getRealPath("/view/temp");
+					req.setAttribute("path", path);
+					CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+					req.getRequestDispatcher("/view/print/ProjectSlidePDf.jsp").forward(req, customResponse);
+					String html = customResponse.getOutput();
+
+					HtmlConverter.convertToPdf(html, new FileOutputStream(path + File.separator + filename + ".pdf"));
+					PdfWriter pdfw = new PdfWriter(path + File.separator + "merged.pdf");
+					PdfReader pdf1 = new PdfReader(path + File.separator + filename + ".pdf");
+					PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+					pdfDocument.close();
+					pdf1.close();
+					pdfw.close();
+
 					res.setContentType("application/pdf");
-					res.setHeader("Content-disposition", "inline; filename=FreezedProjectSlides.pdf");
-					File f = new File(path + File.separator + "merged.pdf");
+					res.setHeader("Content-disposition", "inline;filename=" + filename + ".pdf");
+					File f = new File(path + "/" + filename + ".pdf");
+
 					OutputStream out = res.getOutputStream();
 					FileInputStream in = new FileInputStream(f);
 					byte[] buffer = new byte[4096];
@@ -4858,17 +4980,13 @@ public class PrintController {
 						out.write(buffer, 0, length);
 					}
 					in.close();
+					out.flush();
 					out.close();
-					Files.delete(Paths.get(path + File.separator + "merged.pdf"));
-					file0.delete();
-					filec.delete();
-					pathtopdf = path + File.separator + "merged.pdf";
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return "";
-			} 
-			 
+
+					Path pathOfFile2 = Paths.get(path + File.separator + filename + ".pdf");
+					Files.delete(pathOfFile2);
+
+			 } 
 			 @RequestMapping(value = "saveFavSlides.htm", method = RequestMethod.POST)
 			 public @ResponseBody String favoriteSlidesAddSubmit(HttpServletRequest req ,HttpSession ses, RedirectAttributes redir, HttpServletResponse res)throws Exception
 			 {

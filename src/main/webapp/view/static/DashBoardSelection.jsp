@@ -12,6 +12,11 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<style type="text/css">
+input[type=checkbox] {
+	accent-color: green;
+}
+</style>
 </head>
 <body>
 <%
@@ -34,15 +39,15 @@ if(ProjectList!=null && ProjectList.size()>0){
     <div class="modal-content">
       <div class="modal-header bg-primary text-light">
         <h5 class="modal-title" id="exampleModalLabel">Dashboard Projects</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" style="color:red">&times;</span>
+        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color:red;">&times;</span>
         </button>
       </div>
       <div class="modal-body">
       <hr>
       <div class="row ml-2 mt-2 mb-2"> 
       
-      <div class="col-md-2">Favourites</div>
+      <div class="col-md-2" style="font-size: 1.2 rem;">Favourites</div>
       <div class="col-md-3">
       <select class="form-control" id="favs" name="favs" >
       <option disabled="disabled" selected="selected">SELECT</option>
@@ -63,25 +68,27 @@ if(ProjectList!=null && ProjectList.size()>0){
       <hr>
       <% if(MainProjectList!=null && MainProjectList.size()>0){%>
       <div class="row ml-2 mb-3 mt-2" >
-      Main projects :
+      Main projects : <input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
       </div>
-      <div class="row" style="display: flex;justify-content: space-evenly;align-items: center;">
+      <div class="row" style="">
        
       <% for(Object[]obj:MainProjectList) {%>
-      <div>
-      <input type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> <span ><%=obj[4].toString() %></span>
+      <div class="col-md-2 ml-4 mt-3">
+      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> <span ><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span>
       </div>
        <%}} %>
        </div>
         <hr class="mt-2">
        <%if(subProjectList!=null && subProjectList.size()>0){ %>
       <div class="row ml-2 mb-3 mt-2" >
-     		 Sub projects :
+     		 Sub projects :       <input id="subProject" style="transform:scale(1.5)" type="checkbox"  > 
+     		 
       </div>
       
-      <div class="row" style="display: flex;align-items: center;justify-content: space-evenly">
+      <div class="row" style="">
       <%for(Object[]obj:subProjectList) {%>
-       <div><input style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0].toString()%>"> <%=obj[4].toString() %>
+       <div class="col-md-2 ml-4 mt-3" >
+       <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0].toString()%>"> <%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %>
       </div>
       <%} %>
       </div>
@@ -95,6 +102,7 @@ if(ProjectList!=null && ProjectList.size()>0){
         	<input type="hidden" name="projects" id="projects">
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
         	<button type="submit" class="btn btn-sm submit" onclick="return DashFavAdd()">SUBMIT</button>
+        	<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">CLOSE</button>
         	</form>
         
       </div>
@@ -105,6 +113,7 @@ if(ProjectList!=null && ProjectList.size()>0){
         	<input type="hidden" name="favProjects" id="favProjects" value="">
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
         	<button type="submit" class="btn btn-sm edit" onclick="return updateDashBoard()">UPDATE</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">CLOSE</button>
         	</form>
       </div>
     </div>
@@ -121,12 +130,17 @@ $( document ).ready(function() {
 $("#favs").change(function(){
 	 var value = $('#favs').val();
 	 $("input:checkbox[name=projectId]").prop('checked',false);
+	 $('input:checkbox#mainProject').prop('checked', false);
+	 $('input:checkbox#subProject').prop('checked', false);
 	$('#dashboardId').val(value);
 	 if(value==0){
 		 console.log(value)
 		 $('#addFavDiv').show();
 		 $('#addDiv').show();
 		 $('#updateDiv').hide();
+		 $('input:checkbox#mainProject').prop('checked', true);
+		    $('input:checkbox#subProject').prop('checked', true);
+		 $("input:checkbox[name=projectId]").prop('checked',true);
 	 }else{
 		 
 		 $('#addFavDiv').hide();
@@ -135,6 +149,8 @@ $("#favs").change(function(){
 		 $('#projects').val('');
 		 
 		 if(value==-1){
+			 $('input:checkbox#mainProject').prop('checked', true);
+			    $('input:checkbox#subProject').prop('checked', true);
 				$("input:checkbox[name=projectId]").prop('checked',true);
 		 }else{
 			 var valuesToMatch = [];
@@ -241,5 +257,34 @@ function updateDashBoard(){
 	 }
 	
 }
+
+$(document).ready(function() {
+    // When the checkbox with id "subProject" is changed
+    $('#subProject').change(function() {
+    
+      var isChecked = $(this).prop('checked');
+      
+    
+      $('input:checkbox.subProject').prop('checked', isChecked);
+    });
+    
+    var initialChecked = $('#subProject').prop('checked');
+    $('input:checkbox.subProject').prop('checked', initialChecked);
+  });
+  
+  
+$(document).ready(function() {
+    // When the checkbox with id "subProject" is changed
+    $('#mainProject').change(function() {
+    
+      var isChecked = $(this).prop('checked');
+      
+    
+      $('input:checkbox.mainProject').prop('checked', isChecked);
+    });
+    
+    var initialChecked = $('#mainProject').prop('checked');
+    $('input:checkbox.mainProject').prop('checked', initialChecked);
+  });
 </script>
 </html>

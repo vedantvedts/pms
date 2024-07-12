@@ -92,6 +92,10 @@ color: black;
   transform: scale(1.7); /* (180% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
   z-index: 99999928374 !important;
 }
+
+.currentStatus li{
+text-align: left;
+}
 </style>
 </head>
 <body style="background-color: #F9F2DF66;" class="slides-container" id="slides-container">
@@ -152,15 +156,7 @@ if(ses1!=null){
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 						<h2 style="color: black;font-weight: 500;" class="col-md-9" align="center"> <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> - <%=projectdata[13]!=null?projectdata[13]:"--"%> (<%=projectdata[12]!=null?projectdata[12]:"--"%>) <%}%></h2>
-						<h6 class="col" style="font-weight: bold;">
-							<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
-								<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="PDF File">Show more</a>
-							<%} %>
-							<br>
-							<%if(new File(filePath + projectslidedata[3] + projectdata[30]).exists()){%>
-								<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" title="Video File">Show Video</a>
-							<%} %>
-						</h6>
+						
 						<div class="col-md-1" align="right" style="padding-top:5px;" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
@@ -172,24 +168,24 @@ if(ses1!=null){
 						
 								<table style="font-weight: bold;width: 100%;">
 									<tr>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Project No</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">DoS</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%">User</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Category</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr)</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application</td>
-										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;width: 12%;">Project No</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;width: 12%;">DoS</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">PDC</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;width: 12%">User</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;width: 12%;">Category</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">Cost (In Cr)</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">Application</td>
+										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">Current Stage</td>
 									</tr>
 									<tr>
-										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
-										<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projectdata[5])%></td>
-										<td colspan="1" style="color: black;"><%=sdf.format(projectdata[4])%></td>
-										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[6]!=null?projectdata[6]:"--"%>
-										<td colspan="1" style="width: 12%;color: black;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
-										<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%></td>
-										<td colspan="1" style="color: black;"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
-										<td colspan="1" style="color: black;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
+										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
+										<td colspan="1" style="width: 12%;color: #007bff;"><%=sdf.format(projectdata[5])%></td>
+										<td colspan="1" style="color: #007bff;"><%=sdf.format(projectdata[4])%></td>
+										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[6]!=null?projectdata[6]:"--"%>
+										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
+										<td colspan="1" style="color: #007bff;"><%=nfc.convert(cost / 10000000)%></td>
+										<td colspan="1" style="color: #007bff;"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
+										<td colspan="1" style="color: #007bff;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
 									</tr>
 
 									<tr>
@@ -231,9 +227,12 @@ if(ses1!=null){
 											<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
 												Current Status : 
 											</span>
-											<%if(projectdata!=null && projectdata[20]!=null) {%>
+											<%-- <%if(projectdata!=null && projectdata[20]!=null) {%>
 													<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
-												<%} else{%>-<%} %> 
+												<%} else{%>-<%} %>  --%>
+												<div class="ml-3" style="text-align: left;">
+												<%=projectdata[20].toString()%>
+												</div>
 										</div>
 									</div>
 									<%if(projectdata[31]!=null && projectdata[31]!=""){%>
@@ -243,12 +242,26 @@ if(ses1!=null){
 											<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
 												Way Forward : 
 											</span>
-											<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
+											<%-- <%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%> --%>
+										<div class="ml-3">
+												<%=projectdata[31].toString()%>
+												</div>
 										</div>
 										</div>
 									<%}%>
 								</div>
-							
+							<div class="row ml-3" style="text-align: left;"> 	
+							<h6 class="col" style="font-weight: bold;">
+							<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
+							<i class="fa fa-lg fa-angle-double-right text-success" aria-hidden="true" style="font-size: 2rem"></i>	<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="PDF File">Show more</a>
+							<%} %>
+							<br>
+							<%if(new File(filePath + projectslidedata[3] + projectdata[30]).exists()){%>
+							<i class="fa fa-lg fa-angle-double-right text-success" aria-hidden="true" style="font-size: 2rem"></i>	<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" title="Video File">Show Video</a>
+							<%} %>
+							</h6>
+							</div>
+						
 						
 							<div class="col">
 								<table style="width: 100%;height: 100%;border-style: hidden;">
@@ -289,24 +302,24 @@ if(ses1!=null){
 							<div class="card-body" style="padding: 0.25rem;" align="center">
 							<table style="width: 99%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.2rem;">
 										<tr>
-											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Project No</td>
-											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">DoS</td>
-											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">PDC</td>
-											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%">User</td>
-											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;width: 12%;">Category</td>
-											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Cost (In Cr)</td>
-											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Application</td>
-											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: #021B79;">Current Stage</td>
+											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;width: 12%;">Project No</td>
+											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;width: 12%;">DoS</td>
+											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">PDC</td>
+											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;width: 12%">User</td>
+											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;width: 12%;">Category</td>
+											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">Cost (In Cr)</td>
+											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">Application</td>
+											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">Current Stage</td>
 										</tr>
 										<tr>
-											<td colspan="1" style="width: 12%;color: black;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
-											<td colspan="1" style="width: 12%;color: black;"><%=sdf.format(projectdata[5])%></td>
-											<td colspan="1" style="color: black;"><%=sdf.format(projectdata[4])%></td>
-											<td colspan="1" style="width: 12%;color: black;"><%=projectdata[6]!=null?projectdata[6]:"-"%></td>
-											<td colspan="1" style="width: 12%;color: black;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
-											<td colspan="1" style="color: black;"><%=nfc.convert(cost / 10000000)%></td>
-											<td colspan="1" style="color: black;"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
-											<td colspan="1" style="color: black;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
+											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
+											<td colspan="1" style="width: 12%;color: #007bff"><%=sdf.format(projectdata[5])%></td>
+											<td colspan="1" style="color: #007bff"><%=sdf.format(projectdata[4])%></td>
+											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[6]!=null?projectdata[6]:"-"%></td>
+											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
+											<td colspan="1" style="color: #007bff"><%=nfc.convert(cost / 10000000)%></td>
+											<td colspan="1" style="color: #007bff"><%if (projectdata != null && projectdata[10] != null) {%><%=projectdata[10]%><%} else {%>--<%}%></td>
+											<td colspan="1" style="color: #007bff"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
 										</tr>
 									</table>
 								<div class="row" style="height: 80%">
@@ -343,7 +356,7 @@ if(ses1!=null){
 																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79;vertical-align: top;">Deliverables:</b>
 															</td>
 															<td style="color:#212529;">
-																<%=projectdata[8]!=null?projectdata[7]:"--"%>
+																<%=projectdata[8]!=null?projectdata[8]:"--"%>
 															</td>
 														</tr>
 
@@ -355,9 +368,12 @@ if(ses1!=null){
 															<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
 																Current Status : 
 															</span>
-															<%if(projectdata!=null && projectdata[20]!=null) {%>
+															<%-- <%if(projectdata!=null && projectdata[20]!=null) {%>
 																	<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
-																<%} else{%>-<%} %> 
+																<%} else{%>-<%} %>  --%>
+																<div class="ml-3"  style="text-align: left;">
+												<%=projectdata[20].toString()%>
+												</div>
 														</div>
 													</div>
 													<%if(projectdata[31]!=null && projectdata[31]!=""){%>
@@ -367,11 +383,27 @@ if(ses1!=null){
 															<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
 																Way Forward : 
 															</span>
-															<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
-														</div>
+<%-- 															<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
+ --%>														
+ 											<div class="ml-3">
+												<%=projectdata[31].toString()%>
+												</div>
+ </div>
 														</div>
 													<%}%>
 												</div>
+												
+								<div class="row ml-3" style="text-align: left;"> 	
+							<h6 class="col" style="font-weight: bold;">
+							<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
+							<i class="fa fa-lg fa-angle-double-right text-success" aria-hidden="true" style="font-size: 2rem"></i>	<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="PDF File">Show more</a>
+							<%} %>
+							<br>
+							<%if(new File(filePath + projectslidedata[3] + projectdata[30]).exists()){%>
+							<i class="fa fa-lg fa-angle-double-right text-success" aria-hidden="true" style="font-size: 2rem"></i>	<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" title="Video File">Show Video</a>
+							<%} %>
+							</h6>
+							</div>
 								</div>
 								<div class="col-md-6">
 										<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
