@@ -879,25 +879,19 @@ int pageCOunt=1;
 															</div>
 														</div>
 														<br>
-														<div class="col-md-6">
-															<table style="width: 100%;height: 100%;border-style: hidden;">
-																<tbody>
-																	<tr >
-																		<td style="border-bottom: none;max-height: 300px; max-width: 600px;margin: auto;">
-																			<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[24]).exists()){%>
+														<div class="col-md-6 mt-3">
+													<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[24]).exists()){%>
 																				<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
 																					<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" >
-																						<img class="zoom" data-enlargable height="600" style=" max-width: 70%; margin: auto; position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
+																						<img class="zoom" data-enlargable height="600" style=" max-width: 90%; margin-bottom: 5px;position: relative;display: flex;" align="middle"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
 																					</a>
 																				<%}else{ %>
-																					<img class=" d-flex justify-content-center zoom mx-auto d-block" data-enlargable style="max-height: 600px; max-width: 600px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
+																					<img class="zoom" data-enlargable height="600" style=" max-width: 90%; margin-bottom: 5px;position: relative;display: flex;" align="middle"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
 																				<%} %>
 																			<%} else{%>image<%}%>
-																		</td>
+																	
+															
 																
-																	</tr>
-																</tbody>
-															</table>
 															<br>
 															
 							

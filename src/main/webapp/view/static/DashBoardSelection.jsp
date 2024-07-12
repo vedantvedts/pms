@@ -11,14 +11,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+
 <style type="text/css">
 input[type=checkbox] {
 	accent-color: green;
 }
 </style>
 </head>
-<body>
+
 <%
 List<Object[]>ProjectList = (List<Object[]>)request.getAttribute("ProjectList"); 
 List<Object[]>DashBoardsList = (List<Object[]>)request.getAttribute("DashBoardsList"); 
@@ -34,8 +34,8 @@ if(ProjectList!=null && ProjectList.size()>0){
 
 %>
 <!-- Modal -->
-<div class="modal fade bd-example-modal-lg" id="DashboardProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document" style="max-width: 1440px;">
+<div class="modal fade bd-example-modal-lg" id="DashboardProjectModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document" style="">
     <div class="modal-content">
       <div class="modal-header bg-primary text-light">
         <h5 class="modal-title" id="exampleModalLabel">Dashboard Projects</h5>
@@ -90,10 +90,10 @@ if(ProjectList!=null && ProjectList.size()>0){
        <div class="col-md-2 ml-4 mt-3" >
        <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0].toString()%>"> <%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %>
       </div>
-      <%} %>
+      <%} } %>
       </div>
        <hr class="mt-2">
-       <%} %>
+      
       </div>
  
         <div class="mb-3" align="center" id="addDiv" style="display: none;">
@@ -119,7 +119,7 @@ if(ProjectList!=null && ProjectList.size()>0){
     </div>
   </div>
 </div>
-</body>
+
 <script type="text/javascript">
 $( document ).ready(function() {
 	$("#favs").change();

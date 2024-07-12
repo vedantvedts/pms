@@ -665,7 +665,7 @@ int pageCOunt=1;
 														</tr>
 													</table>
 													<div class="row" style="">
-														<div class="col-md-6" style="width:45%;">
+														<div class="col-md-6" style="float: left;width: 50%;height: 100%;display: block;">
 															<div class="row" style="">
 																<div class="col left">
 																	<table class="border-black" style="width: 98.1%;font-weight: bold;font-size: 1.25rem;margin-left:10px;">
@@ -750,25 +750,20 @@ int pageCOunt=1;
 															
 														</div>
 														<br>
-														<div class="col-md-6" style="">
-															<table style="width: 20%;height: 10%;border-style: hidden;">
-																<tbody>
-																	<tr >
-																		<td style="border-bottom: none;height:100px; width:200px;margin: auto;">
+														<div class="col-md-6" style="float: right;width: 45%;align-content: center;margin-top: 5px">
+															
 																			<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[24]).exists()){%>
 																				<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
-																					<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" >
-																						<img class="zoom" data-enlargable height="600" style=" max-width: 70%; margin: auto; position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
-																					</a>
+																				
+																						<img  height="475" width="352" style=" max-width: 352px; display: block; margin: 0 auto;  width: 75%;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
+																					
 																				<%}else{ %>
-																					<img class=" d-flex justify-content-center zoom mx-auto d-block" data-enlargable style="max-height: 600px; max-width: 600px;" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
+																					<img  height="475" width="352" style=" max-width: 352px; display: block; margin: 0 auto;  width: 75%;"src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
 																				<%} %>
 																			<%} else{%>image<%}%>
-																		</td>
+																	
 																
-																	</tr>
-																</tbody>
-															</table>
+																
 															<br>
 															
 							
