@@ -638,7 +638,7 @@ int pageCOunt=1;
 															<div class="container-fluid">
 																<div class="row">
 																	<div class="col">
-																	<p>
+																	
 																	<span style="text-align: left;font-size: 1.5rem; font-weight: bold; color: #021B79;">
 																				Current Status :</span> 
 																				<%if(projects.get(i)!=null && projects.get(i)[20]!=null && projects.get(i)[20].toString().length()>0) {%>
@@ -652,7 +652,7 @@ int pageCOunt=1;
 																			
 																<div class="row">
 																	<div class="col">
-																	<p>
+																	
 																		<span style="text-align: left;font-size: 1.5rem; font-weight: bold; color: #021B79;">
 																			Way Forward : 
 																			</span>
@@ -840,7 +840,7 @@ int pageCOunt=1;
 																	<div class="container-fluid">
 																	<div class="row">
 																		<div class="col">
-																			<p><span style="text-align: left;font-size: 1.5rem; font-weight: bold; color: #021B79;">
+																			<span style="text-align: left;font-size: 1.5rem; font-weight: bold; color: #021B79;">
 																				Current Status : 
 																			</span>
 																			<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
