@@ -98,7 +98,7 @@ if(ProjectList!=null && ProjectList.size()>0){
       </div>
       
      
-          <div class="mb-3" align="center" id="addDiv" style="display: none;">
+          <div class="mt-3 mb-3" align="center" id="addDiv" style="display: none;">
         	<form action="DashboardFavAdd.htm" method="post">
         	<input type="hidden" name="addFav" id="addFavvalue">
         	<input type="hidden" name="projects" id="projects">
@@ -109,7 +109,7 @@ if(ProjectList!=null && ProjectList.size()>0){
         
       </div>
       
-      	<div class="mb-3" align="center" id="updateDiv" style="display: none;">
+      	<div class="mt-3 mb-3" align="center" id="updateDiv" style="display: none;">
         	<form action="UpdateDashboardFav.htm" method="post">
         	<input type="hidden" name="dashboardId" id="dashboardId" value="">
         	<input type="hidden" name="favProjects" id="favProjects" value="">

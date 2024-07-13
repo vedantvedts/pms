@@ -639,8 +639,8 @@ int pageCOunt=1;
 																<div class="row">
 																	<div class="col">
 																	
-																	<span style="text-align: left;font-size: 1.5rem; font-weight: bold; color: #021B79;">
-																				Current Status :</span> 
+																	<p style="margin-bottom: 0px;"><span style="text-align: left;font-size: 1.5rem; font-weight: bold; color: #021B79;">
+																				Current Status :</span> </p>
 																				<%if(projects.get(i)!=null && projects.get(i)[20]!=null && projects.get(i)[20].toString().length()>0) {%>
 																				<%-- 	<%=projects.get(i)[20].toString().substring(3,projects.get(i)[20].toString().length()-1 )%> --%>
 																				<div class="ml-3" style="text-align: left;"><%=projects.get(i)[20]%></div>
@@ -653,9 +653,9 @@ int pageCOunt=1;
 																<div class="row">
 																	<div class="col">
 																	
-																		<span style="text-align: left;font-size: 1.5rem; font-weight: bold; color: #021B79;">
+																		<p style="margin-bottom: 0px;"><span style="text-align: left;font-size: 1.5rem; font-weight: bold; color: #021B79;">
 																			Way Forward : 
-																			</span>
+																			</span></p>
 																	<%-- 	<%=projects.get(i)[31].toString().substring(3,projects.get(i)[31].toString().length()-1 )%> --%>
 																		<div class="ml-4">
 																				<%=projects.get(i)[31].toString() %>
