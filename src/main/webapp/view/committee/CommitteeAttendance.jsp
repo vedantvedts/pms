@@ -155,7 +155,7 @@ String LabCode=(String) request.getAttribute("LabCode");
 										%>
 										
 									</td>
-									<td><%=obj[6] %> (<%=obj[7]%>)(<%=obj[11]%>)</td>        
+									<td><%=obj[6] %>, <%=obj[7]%> (<%=obj[11]%>)</td>        
 									
 									<td>
 											<input name="attendance"  onchange="FormNameEdit(<%=obj[1]%>)"  type="checkbox" <%if((obj[4]).toString().equalsIgnoreCase("P")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="112" data-height="15" data-on="<i class='fa fa-user' aria-hidden='true'></i> Present" data-off="<i class='fa fa-user-times' aria-hidden='true'></i> Absent" >

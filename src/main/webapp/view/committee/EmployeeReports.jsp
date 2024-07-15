@@ -92,7 +92,7 @@ th ,td {
 					                <td style="border: 0px;">
 					                	<select class="form-control selectdee" name="empid" id="empid" required="required" onchange="this.form.submit();"  >
 											<%for(Object[] obj :employeeList){ %>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(empid)){ %>selected="selected" <%} %>  ><%=obj[1] %> (<%=obj[2] %>)</option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(empid)){ %>selected="selected" <%} %>  ><%=obj[1] %>, <%=obj[2] %></option>
 											<%} %>
 										 </select>
 									</td>	

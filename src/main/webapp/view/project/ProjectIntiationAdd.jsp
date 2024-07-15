@@ -300,7 +300,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		  							<select class="custom-select selectdee" id="PDD" required="required" name="PDD">
 											    <option disabled="true"  selected value="">Choose...</option>
 											   	<% for (Object[] obj : EmployeeList) {%>
-												<option value="<%=obj[0]%>"><%=obj[1]%> (<%=obj[2] %>) </option>
+												<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2] %> </option>
 												<%} %>
 									</select>
 		                        </div>

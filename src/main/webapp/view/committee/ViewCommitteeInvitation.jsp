@@ -144,7 +144,7 @@ h5,h6{
 										{%>												
 											<%if(committeeinvited[3].toString().equals("CC"))
 											{ %>
-												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>) (<%= committeeinvited[11]%>) </td>
+												<td><%=committeeinvited[6]%>, <%= committeeinvited[7]%> (<%= committeeinvited[11]%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
 												<td style="padding-left: 10px">
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -169,7 +169,7 @@ h5,h6{
 										{%>												
 											<%if(committeeinvited[3].toString().equals("CS"))
 											{%>
-												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)(<%= committeeinvited[11]%>) </td>
+												<td><%=committeeinvited[6]%>, <%= committeeinvited[7]%> (<%= committeeinvited[11]%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
 											<td style="padding-left: 10px">
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -202,7 +202,7 @@ h5,h6{
 										{%>												
 											<%if(committeeinvited[3].toString().equals("PS"))
 											{%>
-												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)(<%= committeeinvited[11]%>) </td>
+												<td><%=committeeinvited[6]%>, <%= committeeinvited[7]%> (<%= committeeinvited[11]%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
 												<td style="padding-left: 10px">
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -227,7 +227,7 @@ h5,h6{
 										{%>												
 											<%if(committeeinvited[3].toString().equals("CH"))
 											{%>
-												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)(<%= committeeinvited[11]%>) </td>
+												<td><%=committeeinvited[6]%>, <%= committeeinvited[7]%> (<%= committeeinvited[11]%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
 												<td style="padding-left: 10px">
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -257,7 +257,7 @@ h5,h6{
 												if(obj[3].toString().equals("CI")){								
 											%>
 											<tr>			
-												<td class="tdclass"><%=memberscount%> )</td> <td> <%=obj[6]%> (<%=obj[7]%>) (<%=obj[11]%>)</td>
+												<td class="tdclass"><%=memberscount%> )</td> <td> <%=obj[6]%>, <%=obj[7]%> (<%=obj[11]%>)</td>
 												<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
 															<td style="padding-left: 10px">
 														 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -285,7 +285,7 @@ h5,h6{
 								for (Object[] obj : committeeinvitedlist ) {
 									if(obj[3].toString().equals("CW")){  	%>
 									<tr>			
-										<td class="tdclass"><%=externalcount%> )</td> <td> <%=obj[6]%> (<%=obj[7]%>) (<%=obj[11] %>)</td>
+										<td class="tdclass"><%=externalcount%> )</td> <td> <%=obj[6]%>, <%=obj[7]%> (<%=obj[11] %>)</td>
 									<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
 										<td style="padding-left: 10px">
 									 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -315,7 +315,7 @@ h5,h6{
 								for (Object[] obj : committeeinvitedlist ) {
 									if(obj[3].toString().equals("CO")){  	%>
 									<tr>			
-										<td class="tdclass"><%=outsidemember%> )</td> <td> <%=obj[6]%> (<%=obj[7]%>) (<%=obj[11] %>)</td>
+										<td class="tdclass"><%=outsidemember%> )</td> <td> <%=obj[6]%>, <%=obj[7]%> (<%=obj[11] %>)</td>
 									<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
 										<td style="padding-left: 10px">
 									 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -346,7 +346,7 @@ h5,h6{
 								for (Object[] obj : committeeinvitedlist ) {
 									if(obj[3].toString().equals("CIP")){  	%>
 									<tr>			
-										<td class="tdclass"><%=outsidemember%> )</td> <td> <%=obj[6]%> (<%=obj[7]%>) (<%=obj[11] %>)</td>
+										<td class="tdclass"><%=outsidemember%> )</td> <td> <%=obj[6]%>, <%=obj[7]%> (<%=obj[11] %>)</td>
 									<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
 										<td style="padding-left: 10px">
 									 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -398,7 +398,7 @@ h5,h6{
 										&emsp; :&emsp;
 									</td>
 									<td> 
-										<%=obj[10]%> (<%=obj[11]%>)	(<%=obj[14]%>)	
+										<%=obj[10]%>, <%=obj[11]%> (<%=obj[14]%>)	
 									</td>
 									
 									
@@ -460,7 +460,7 @@ h5,h6{
 								{%>		
 										
 										<tr>
-										<td><%=repcount%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>) (<%=committeeinvitedlist.get(i)[11]%>)(REP_<%=committeeinvitedlist.get(i)[3].toString()%>)</td> 
+										<td><%=repcount%> . <%=committeeinvitedlist.get(i)[6]%>, <%=committeeinvitedlist.get(i)[7]%> (<%=committeeinvitedlist.get(i)[11]%>)(REP_<%=committeeinvitedlist.get(i)[3].toString()%>)</td> 
 										<td style="padding-left: 30px">
 										
 										<%if(Long.parseLong(committeescheduledata[10].toString())<5 && Long.parseLong(committeescheduledata[10].toString())!=3 ){ %>
@@ -530,7 +530,7 @@ h5,h6{
 											<tr>
 
 												<td>
-													<%=intcount%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>)
+													<%=intcount%> . <%=committeeinvitedlist.get(i)[6]%>, <%=committeeinvitedlist.get(i)[7]%>
 												</td>
 												<%if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
 													<td style="padding-left: 10px">
@@ -921,7 +921,7 @@ h5,h6{
 											 <select class="form-control selectdee" name="internalmember" id="internalmember"  data-live-search="true"   data-placeholder="Select Members" multiple required>
 								               
 								                 <% for (Object[] obj : EmployeeList) {%>
-										       			<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+										       			<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]%>, <%=obj[2] %> </option>
 										    	<%} %>
 											</select>
 											<input type="hidden" name="internallabcode" value="<%=labcode %>" />
@@ -1012,7 +1012,7 @@ h5,h6{
 										<div class="input select external">
 											<select  class= "form-control selectdee" name="expertmember" id=""   data-live-search="true"   data-placeholder="Select Members" multiple required>
 												<% for (Object[] obj : ExpertList) {%>
-											       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+											       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]%>, <%=obj[2] %> </option>
 											    <%} %>
 											</select>
 											<input type="hidden" name="expertlabid" value="@EXP" />
@@ -1232,7 +1232,7 @@ function employeename(){
 						 for (i = 0; i < values.length; i++) {
 							
 							s += '<option value="'+values[i][0]+",W,"+values[i][4]+'">'
-									+values[i][1] + " (" +values[i][3]+")" 
+									+values[i][1] + ", " +values[i][3] 
 									+ '</option>';
 						} 
 						 
@@ -1282,7 +1282,7 @@ function specialname(ele){
 						 for (i = 0; i < values.length; i++) {
 							
 							s += '<option value="'+values[i][0]+",SPL,"+values[i][4]+'">'
-									+values[i][1] + " (" +values[i][3]+")" 
+									+values[i][1] + ", " +values[i][3] 
 									+ '</option>';
 						} 
 						 
@@ -1441,7 +1441,7 @@ function industrypartnerrepname(){
 						 for (i = 0; i < values.length; i++) {
 							
 							s += '<option value="'+values[i][0]+",IP,"+values[i][4]+'">'
-									+values[i][1] + " (" +values[i][3]+")" 
+									+values[i][1] + ", " +values[i][3]
 									+ '</option>';
 						} 
 						 

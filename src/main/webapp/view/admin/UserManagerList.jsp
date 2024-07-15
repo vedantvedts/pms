@@ -216,7 +216,7 @@ label {
 										<%for(Object[] obj:UserManagerList){ %>
 										<tr>
 											<td style="text-align: center; " ><input type="radio" name="Lid" value=<%=obj[0]%>></td>
-											<td><%=obj[5] %>(<%=obj[6] %>)</td>
+											<td><%=obj[5] %>, <%=obj[6] %></td>
 											<td><%=obj[1] %></td>
 											<td><%=obj[2] %></td>
 											<%-- <td><%=obj[3] %></td> --%>

@@ -203,7 +203,7 @@ FormatConverter fc = new FormatConverter();
 									    <select class="custom-select" id="PDD" name="PDD" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")   ) {%> disabled <%} %>  >
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <% for (Object[] obj : EmployeeList) {%>
-											<option value="<%=obj[0]%>" <%if(ProjectEditData[1].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%> (<%=obj[2] %>)</option>
+											<option value="<%=obj[0]%>" <%if(ProjectEditData[1].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%>, <%=obj[2] %> </option>
 											<%} %>
 									  </select>
 									  

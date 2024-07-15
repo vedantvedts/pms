@@ -121,7 +121,7 @@ h5,h6{
 											<%for(int i=0;i<committeeallmemberlist.size();i++){
 												Object[] obj=committeeallmemberlist.get(i);
 												if(obj[8].toString().equalsIgnoreCase("CC")){%>
-												<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
+												<td><%=obj[2]%>, <%= obj[4]%> (<%= obj[9]%>)
 													<input type="hidden" name="chairperson" value="<%=obj[5]%>,CC,<%=obj[3]%>">
 													<input type="hidden" name="empid" value="<%=obj[5]%>,CC,<%=obj[3]%>">
 													<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
@@ -144,7 +144,7 @@ h5,h6{
 												<%for(int i=0;i<committeeallmemberlist.size();i++){
 													Object[] obj=committeeallmemberlist.get(i);
 													if(obj[8].toString().equalsIgnoreCase("CS")){%>
-													<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
+													<td><%=obj[2]%>, <%= obj[4]%> (<%= obj[9]%>)
 														<input type="hidden" name="empid" value="<%=obj[5]%>,CS,<%=obj[3]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>
@@ -166,7 +166,7 @@ h5,h6{
 												<%for(int i=0;i<committeeallmemberlist.size();i++){
 													Object[] obj=committeeallmemberlist.get(i);
 													if(obj[8].toString().equalsIgnoreCase("CH")){%>
-													<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
+													<td><%=obj[2]%>, <%= obj[4]%> (<%= obj[9]%>)
 														<input type="hidden" name="empid" value="<%=obj[5]%>,CH,<%=obj[3]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>
@@ -200,7 +200,7 @@ h5,h6{
 														%>
 														<tr>
 														<td class="tdclass"><%=count%> )</td> 
-														<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
+														<td><%=obj[2]%>, <%= obj[4]%> (<%= obj[9]%>)
 															<input type="hidden" name="empid" value="<%=obj[5]%>,CI,<%=obj[3]%>">
 															<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 														</td>						
@@ -234,7 +234,7 @@ h5,h6{
 												%>
 												<tr>
 													<td class="tdclass"><%=count1%> )</td> 
-													<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
+													<td><%=obj[2]%>, <%= obj[4]%> (<%= obj[9]%>)
 														<input type="hidden" name="empid" value="<%=obj[5]%>,CW,<%=obj[3]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>						
@@ -268,7 +268,7 @@ h5,h6{
 												%>
 												<tr>
 													<td class="tdclass"><%=count2%> )</td> 
-													<td><%=obj[2]%> (<%= obj[4]%>) (<%= obj[9]%>)
+													<td><%=obj[2]%>, <%= obj[4]%> (<%= obj[9]%>)
 														<input type="hidden" name="empid" value="<%=obj[5]%>,CO,<%=obj[3]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>						
@@ -304,7 +304,7 @@ h5,h6{
 												%>
 												<tr>
 													<td class="tdclass"><%=count2%> )</td> 
-													<td><%=obj[2]%> (<%= obj[4]%>) (<%= obj[9]%>)
+													<td><%=obj[2]%>, <%= obj[4]%> (<%= obj[9]%>)
 														<input type="hidden" name="empid" value="<%=obj[5]%>,CIP,<%=obj[3]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>						
@@ -352,7 +352,7 @@ h5,h6{
 											&emsp; :&emsp;
 										</td>
 										<td>
-											<%=obj[10]%> (<%=obj[11]%>) (<%=obj[14]%>) 
+											<%=obj[10]%>, <%=obj[11]%> (<%=obj[14]%>) 
 											<input type="hidden" name="empid" value="<%=obj[9]%>,P,<%=obj[13] %>">
 											<input type="hidden" name="Labcode" value="<%=obj[14] %>" />	
 										</td>

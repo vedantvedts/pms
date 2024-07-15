@@ -259,7 +259,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 									<select class=" form-control selectdee" id="cochairperson" name="cochairperson" required="required" style="margin-top: -5px" >
 										<option  selected value="0">Choose...</option>
 										<%	for (Object[] obj  : EmployeeList) {%>
-									     	<option value="<%=obj[0]%>" ><%=obj[1]%> (<%=obj[2] %>) </option>
+									     	<option value="<%=obj[0]%>" ><%=obj[1]%>, <%=obj[2] %> </option>
 										<% } %>
 									</select>			  			
 				        	</div>
@@ -272,7 +272,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 				  					<select class=" form-control selectdee" id="proxysecretary" name="proxysecretary" style="margin-top: -5px" >
 										<option  selected value="0">Choose...</option>
 										<%	for (Object[] obj  : EmployeeList) {%>
-									     	<option value="<%=obj[0]%>" ><%=obj[1]%> (<%=obj[2] %>) </option>
+									     	<option value="<%=obj[0]%>" ><%=obj[1]%>, <%=obj[2] %> </option>
 										<% } %>
 									</select>			  		
 				        	</div>
@@ -417,7 +417,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 											for (i = 0; i < values.length; i++) 
 											{
 												
-												s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+												s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3]+ '</option>';
 											} 
 											 
 											$('#chairperson').html(s);
@@ -467,7 +467,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 										for (i = 0; i < values.length; i++) 
 										{
 											
-											s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+											s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3]+ '</option>';
 										} 
 										 
 										$('#secretary').html(s);
