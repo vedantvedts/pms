@@ -771,6 +771,7 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeMainMembersSubmit.htm "+Username);
 		try
 		{	
+			String ccmflag = req.getParameter("ccmflag");
 			CommitteeMembersDto dto=new CommitteeMembersDto();
 			dto.setCommitteeMainId(req.getParameter("committeemainid"));
 			dto.setInternalMemberIds(req.getParameterValues("InternalMemberIds"));
@@ -791,8 +792,9 @@ public class CommitteeController {
 			} else {
 				redir.addAttribute("resultfail", "Committee Members Add Unsuccessful");	
 			}			
-			redir.addFlashAttribute("committeemainid", req.getParameter("committeemainid"));
-			return "redirect:/CommitteeMainMembers.htm";
+			redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
+			
+			return ccmflag!=null && ccmflag.equalsIgnoreCase("Y")?"redirect:/CCMCommitteeConstitution.htm":"redirect:/CommitteeMainMembers.htm";
 		}
 		catch (Exception e) {
 			e.printStackTrace();			
@@ -1349,6 +1351,7 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeMemberDelete.htm "+Username);
 		try
 		{
+			String ccmflag = req.getParameter("ccmflag");
 			String committeememberid=req.getParameter("committeememberid");
 			
 			int count=0;
@@ -1359,12 +1362,16 @@ public class CommitteeController {
 			} else {
 				redir.addAttribute("resultfail", "Committee Member Delete Unsuccessful");	
 			}
-			redir.addFlashAttribute("committeemainid",req.getParameter("committeemainid"));	
+			redir.addAttribute("committeemainid",req.getParameter("committeemainid"));	
+			return ccmflag!=null && ccmflag.equalsIgnoreCase("Y")?"redirect:/CCMCommitteeConstitution.htm":"redirect:/CommitteeMainMembers.htm";
+
 		}
 		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMemberDelete.htm "+Username,e);
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside CommitteeMemberDelete.htm "+Username,e);
+			return "static/Error";
 		}
-		return"redirect:/CommitteeMainMembers.htm";
+
 	} 
 
 	@RequestMapping(value="CommitteeMainMembersAddSubmit.htm",method=RequestMethod.POST)
@@ -6171,6 +6178,7 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside InvitationSerialNoUpdate.htm "+UserId);
 		try
 		{
+			String ccmflag = req.getParameter("ccmflag");
 			String committeemainid = req.getParameter("committeemainid");
 			
 			
@@ -6190,8 +6198,7 @@ public class CommitteeController {
 			}	
 			redir.addAttribute("committeemainid", committeemainid);
 
-			
-			return "redirect:/CommitteeMainMembers.htm";
+			return ccmflag!=null && ccmflag.equalsIgnoreCase("Y")?"redirect:/CCMCommitteeConstitution.htm":"redirect:/CommitteeMainMembers.htm";
 		}
 		catch (Exception e)
 		{

@@ -276,4 +276,15 @@ public class FormatConverter
 		// Format the date to the desired output format
 		return date.format(outputFormatter);
 	}
+	
+	public String calendarDateTosdf(String sqlDate) {
+		// Define the input date format
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		// Parse the date
+		LocalDate date = LocalDate.parse(sqlDate, inputFormatter);
+		// Define the output date format
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// Format the date to the desired output format
+		return date.format(outputFormatter);
+	}
 }

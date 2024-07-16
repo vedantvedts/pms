@@ -25,4 +25,5 @@ public class CommitteeMember {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
+	private long SerialNo;
 }
