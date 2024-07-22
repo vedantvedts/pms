@@ -93,5 +93,5 @@ public interface MilestoneService {
 	public List<Object[]> getMsprojectTaskList(String projectId)throws Exception;
 	public long DocFileUploadAjax(FileUploadDto uploadDto)throws Exception;
 	public List<Object[]> getAttachmentId(String projectid)throws Exception;
-	public long submitCheckboxFile(ProjectTechnicalWorkData modal)throws Exception;
+	public long submitCheckboxFile(String userId, String techDataId, String attachid)throws Exception;
 }

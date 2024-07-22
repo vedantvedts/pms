@@ -1643,18 +1643,11 @@ public class MilestoneServiceImpl implements MilestoneService {
 		        
 		        List<Object[]> count3=dao.getAttachmentId(uploadDto.getProjectId());
 		        ProjectTechnicalWorkData tdata = new ProjectTechnicalWorkData();
-		        if(uploadDto.getAgendaId()==null && uploadDto.getAgendaId().equalsIgnoreCase("0")) {
+		        if(uploadDto.getAgendaId()==null || uploadDto.getAgendaId().equalsIgnoreCase("0")) {
 			        if(count3!=null && count3.size()>0) {
 		        	    String techId=count3.get(0)[0].toString();
 				        String attachId=count3.get(0)[1].toString();
-				        if(techId!=null && attachId.equalsIgnoreCase("0")) {
-				        	tdata.setTechDataId(Long.parseLong(techId));
-				        	tdata.setAttachmentId(count);
-				        	tdata.setModifiedBy(uploadDto.getUserId());
-				        	tdata.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
-				        	tdata.setIsActive(1);
-				        	dao.submitCheckboxFile(tdata);
-				        }else if(techId!=null && !attachId.equalsIgnoreCase("0")) {
+				        if(techId!=null && Long.parseLong(attachId)>=0) {
 				        	tdata.setTechDataId(Long.parseLong(techId));
 				        	tdata.setAttachmentId(count);
 				        	tdata.setModifiedBy(uploadDto.getUserId());
@@ -1671,17 +1664,16 @@ public class MilestoneServiceImpl implements MilestoneService {
 			        	tdata.setIsActive(1);
 			        	projectDao.TechnicalWorkDataAdd(tdata);
 			        }
-		        }
-				
-				  if(uploadDto.getAgendaId()!=null && !uploadDto.getAgendaId().equalsIgnoreCase("0")) {
-				  CommitteeScheduleAgendaDocs docs = new CommitteeScheduleAgendaDocs();
+		        }else {
+		      	  CommitteeScheduleAgendaDocs docs = new CommitteeScheduleAgendaDocs();
 				  docs.setAgendaId(Long.parseLong(uploadDto.getAgendaId()));
 				  docs.setFileDocId(count); 
 				  docs.setCreatedBy(uploadDto.getUserId());
 				  docs.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 				  docs.setIsActive(1); 
 				  committeDao.addAgendaLinkFile(docs); 
-				  }
+		        }
+				
 			 }
 			 
 		 }catch (Exception e) {
@@ -1698,7 +1690,11 @@ public class MilestoneServiceImpl implements MilestoneService {
 	}
 	
 	@Override
-	public long submitCheckboxFile(ProjectTechnicalWorkData modal) throws Exception {
+	public long submitCheckboxFile(String userId, String techDataId, String attachid) throws Exception {
+		ProjectTechnicalWorkData modal = new ProjectTechnicalWorkData();
+		modal.setTechDataId(Long.parseLong(techDataId));
+		modal.setAttachmentId(Long.parseLong(attachid));
+		modal.setModifiedBy(userId);
 		modal.setModifiedDate(sdtf.format(new Date()));
 		modal.setIsActive(1);
 		return dao.submitCheckboxFile(modal);

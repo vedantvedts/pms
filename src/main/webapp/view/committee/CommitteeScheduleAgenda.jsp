@@ -1287,7 +1287,7 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
 					            			                        		 additionalStr += '<span><button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+subItemId+'\')"><i class="fa fa-upload" aria-hidden="true" style="color: #FF5F00;font-size:20px;"></i></button>';
 					            			                        		 additionalStr += '<label for="fileInput" id="uploadlabel'+subItemId+'" style="margin-left: 20px; display: none;">'
 					            			                        		 additionalStr += '<input type="file" name="docFileInput" id="fileInput'+subItemId+'" required="required"  accept="application/pdf"/> '
-					            			                        		 additionalStr += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+subItemId+'\',\''+main+'\',\''+sub+'\',\''+mainLevelId+'\',\''+subLevelId+'\',\''+additionalValues[j][0]+'\',\''+additionalValues[j][7]+'\',\''+additionalValues[j][5]+'\',\''+additionalValues[j][6]+'\',\''+additionalValues[j][8]+'\',\''+ additionalValues[j][4] +'\', \''+additionalValues[j][3] +'\')">Upload</button>'
+					            			                        		 additionalStr += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+subItemId+'\',\''+main+'\',\''+sub+'\',\''+mainLevelId+'\',\''+subLevelId+'\',\''+additionalValues[j][0]+'\',\''+additionalValues[j][7]+'\',\''+additionalValues[j][5]+'\',\''+additionalValues[j][6]+'\',\''+additionalValues[j][8]+'\',\''+ additionalValues[j][4] +'\', \''+additionalValues[j][3] +'\',\''+mainAgendaId+'\')">Upload</button>'
 					            			                        		 additionalStr += '</label>'
 					            			                        		 additionalStr += '</span>';
 					            				                             additionalStr +='</li>'
@@ -1306,7 +1306,6 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
 					                        $('#' + itemId).append(mainStr);
 					                    }
 					               });
-								  
 								  })(projectid,itemId,itemCounter,main,sub,mainLevelId,subLevelId,attachRepIds);
 					}
 			     }

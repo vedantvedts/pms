@@ -3020,11 +3020,7 @@ public class MilestoneController {
 			String techDataId=req.getParameter("techDataId");	
 			String attachid=req.getParameter("attachid");
 			
-			ProjectTechnicalWorkData modal = new ProjectTechnicalWorkData();
-			modal.setTechDataId(Long.parseLong(techDataId));
-			modal.setAttachmentId(Long.parseLong(attachid));
-			modal.setModifiedBy(UserId);
-			long result = service.submitCheckboxFile(modal);
+			long result = service.submitCheckboxFile(UserId,techDataId,attachid);
 			Gson json = new Gson();
 			return json.toJson(result);	
 		}
