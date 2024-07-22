@@ -394,6 +394,25 @@ Project Revision</h4>
 </td>
 
  </tr>
+  <tr>
+		<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
+		<td colspan="3"><input required="required"	name="LabParticipating" class="form-control " maxlength="5000" value="<%if(ProjectEditData[27]!=null ){%><%=ProjectEditData[27] %><%} %>" /></td>
+</tr>
+ <tr>
+		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
+		<td colspan="3"><textarea required="required" name="Application"  class="form-control " rows="1" cols="53"><%if(ProjectEditData[26]!=null){%> <%=ProjectEditData[26]%> <%}%></textarea></td>
+</tr>
+   <tr>
+  <th colspan="1">
+ <label style="margin-bottom: -10px;">Scope:
+<span class="mandatory" style="color: red;">*</span>
+</label>
+</th>
+ <td colspan="3">
+	<textarea required="required" name="Scope" 
+	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectEditData[25] %></textarea>
+</td>
+ </tr>
  <tr>
   <th colspan="1">
  <label style="margin-bottom: -10px;">Objective:
@@ -423,7 +442,7 @@ Project Revision</h4>
 </label>
 </th>
  <td colspan="3">
-	<input  name="remarks" class="form-control"  maxlength="500" required="required" >
+	<input  name="remarks" class="form-control"  maxlength="500" required="required" value="<%=ProjectEditData[32] %>" >
 </td>
  </tr>
  

@@ -143,34 +143,23 @@ ul, #myUL {
   display: block;
 }
 </style>
-
-
 </head>
- 
 <body>
   <%
-  
-
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-
   Object[] scheduledata=(Object[])request.getAttribute("scheduledata");
   List<Object[]> projectlist=  (List<Object[]> ) request.getAttribute("projectlist");
   List<Object[]> defagendalist=(List<Object[]>)request.getAttribute("defAgendaList");
   List<Object[]> LabEmpList=(List<Object[]>)request.getAttribute("LabEmpList");
-  
   String projectid=scheduledata[9].toString();
   String divisionid=scheduledata[16].toString();
   String initiationid=scheduledata[17].toString();
   Object[] labdata=(Object[])request.getAttribute("labdata");
   String filesize=  (String)request.getAttribute("filesize");
   String LabCode=  (String)request.getAttribute("LabCode");
-  
-  
   List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filerepmasterlistall");
   List<Object[]> AllLabList=(List<Object[]>) request.getAttribute("AllLabList");
-  
-  
  %>
  
 <% 
@@ -186,21 +175,13 @@ ul, #myUL {
 			<div class="alert alert-success" role="alert"  >  <%=ses %> </div>
 	     </div>
    <%} %>
-
     <br />
-    
-    
-
 
 <div class="container-fluid">
 	<div style="margin-bottom:20px;"> 
-  
 		<div id="error"></div>
-		
     		<div class="card" style=" ">
-    	
 		    	<form action="CommitteeScheduleView.htm" name="myfrm" id="myfrm" method="post">
-		    	
 			    		<div class="card-header" style="background-color: #055C9D;">
 		      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=scheduledata[7] %> <span> (Meeting Date and Time :      				
 			      				 &nbsp;<%=sdf.format(sdf1.parse(scheduledata[2].toString()))%> - <%=scheduledata[3] %>) </span>      				
@@ -212,7 +193,6 @@ ul, #myUL {
 		      				 </h6>
 		      			</div>
 		      	</form>		
-      		
 	      		<div class="card-body">
 	      			<form method="post" action="ScheduleDefAgendaAdd.htm"  id="addagendafrm" name="addagendafrm">	        
 	        			<div >
@@ -238,12 +218,10 @@ ul, #myUL {
 													<input type="checkbox" class="" name="defagendaid" id="defagendaid_<%=agenda[0] %>" checked="checked"  value="<%=agenda[0]%>" onchange="selectCheck('<%=agenda[0]%>')">
 													<input type="hidden" name="defagendaid1" value="<%=agenda[0]%>" >
 												</td>	
-												
 												<td width="20%">
 													<input type="hidden" name="agendaitem" id="agendaitem_<%=agenda[0] %>" class="form-control item_name child" value="<%=agenda[2] %>" required="required" />
 													<span><%=agenda[2] %></span>
 												</td>
-												
 												<td width="13%">
 													<%if(Long.parseLong(projectid) > 0) {%>
 														<select class="form-control child  items" name="projectid"  required="required" id="projectid_<%=agenda[0] %>" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
@@ -259,7 +237,6 @@ ul, #myUL {
 														</select>
 													<%}else{ %>									
 														<select class="form-control child items" name="projectid" required="required" id="projectid_<%=agenda[0] %>"  style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
-																									
 											        		<option disabled  selected value="">Choose...</option>
 											        		<option value="0"><%=labdata[1] %>(GEN)</option>
 													  		<% for (Object[] obj : projectlist) {%>						    				 	
@@ -271,7 +248,6 @@ ul, #myUL {
 								         		<td  width="20%">
 								         			<input type="text" name="remarks" id="remarks_<%=agenda[0]%>" class="form-control item_name child" maxlength="255" required="required" value="<%=agenda[3] %>" />
 								         		</td>      
-								         		
 								         		<td width="10%">
 								         		 	<select class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_<%=agenda[0]%>"  required="required" style="width: 200px" onchange="AgendaPresentors('<%=agenda[0]%>')"  data-live-search="true" data-container="body">
 													    <% for (Object[] obj : AllLabList) {%>
@@ -279,52 +255,38 @@ ul, #myUL {
 													    <%} %>
 													    <option value="@EXP">Expert</option>
 													</select>
-								         		 
 								         		</td>
-						         		 
 								         		<td  width="15%"> 
-								         		
 													<select class="form-control items " name="presenterid" id="presenterid_<%=agenda[0] %>" required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" >
 														<option disabled="disabled" selected value="">Choose...</option>
 										          		<% for(Object[] emp : LabEmpList){ %>
 										          			<option value="<%=emp[0] %>"><%=emp[1] %>(<%=emp[3] %>)</option>
 										          		<%} %>
 													</select>
-													
 												</td>		
 												<td  width="10%">
 												 	<input type="number" name="duration" id="duration_<%=agenda[0] %>"  value="<%=agenda[4] %>" class="form-control item_name child" min="1"   placeholder="Minutes" required/>
 												</td>						         		                                      
 												<td style="text-align: left; width: 15%; display: none;">
-													
-													
 													<input type="file" name="FileAttach" id="file<%=agenda[0] %>" class="form-control wrap child filex" aria-describedby="inputGroup-sizing-sm" maxlength="255" style=";font-size: 11px;padding: 8px" onchange="Filevalidation('file<%=agenda[0] %>');" />
-													
 												</td>										
 												<td style="text-align: left; width: 15%;"> 
 													<button type="button" class="tr_clone_attach btn btnfileattachment" name="add" onclick="openMainModal('<%=agenda[0] %>','a')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
 													<br>
 													<table class="attachlist" id="attachlistdiv_<%=agenda[0] %>">
-														
 													</table> 	
-												
 												</td>												
-																			
 											</tr>
 										<%}
 										} else {%>
-										
 										<tr>
 											<td colspan="7" style="text-align: center;">
 												No Agendas Found
 											</td>
 										</tr>
-										
 										<%} %>
 								</tbody>
 							</table>
-							
-							
 
 	          				<div align="center">
 	          					<%if(defagendalist.size()>0){ %>
@@ -336,7 +298,6 @@ ul, #myUL {
 				            	</button> 
 	          				</div>
 	        			</div>
-	        		
 			        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 			        	<input type="hidden" name="scheduleid"  value="<%=scheduledata[6] %>">
 			     		<input type="hidden" name="schedulesub" value="<%=scheduledata[5]%>"/>
@@ -350,23 +311,13 @@ ul, #myUL {
    	<form action="AgendasFromPreviousMeetingsAdd.htm"  method="post" id="agendasprevious">
    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
    		<input type="hidden" name="scheduleidto" value="<%=scheduledata[6]%>"/>	   
-		
 	</form>
 	<form action="CommitteeScheduleAgenda.htm"  method="post" id="skipfrm">
    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	   	<input type="hidden" name="scheduleid"  value="<%=scheduledata[6] %>">   
-	   	
 	</form>
-	
 </div>
-	
-  
-
-
-
-
 <!--  -----------------------------------------------agenda attachment ---------------------------------------------- -->
-
 			<div class="modal" tabindex="-1" role="dialog" id="attachmentmodal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
  				 <div class="modal-dialog modal-dialog-centered " style="max-width: 75% !important; ">
    					 <div class="modal-content">
@@ -391,9 +342,6 @@ ul, #myUL {
 							             		<%=obj[3] %>
 							             	</span>
 							             	<span>
-									           <%--  <button type="button" class="btn"  style="background-color: transparent;margin: -5px 0px" onclick="batchdownload('<%=obj[0]%>')">                                     
-													<i class="fa fa-download" aria-hidden="true"></i>
-												</button> --%>
 							             	</span>
 											<ul  class="nested">
 												<li>
@@ -410,9 +358,6 @@ ul, #myUL {
 																<button type="button" id="upbutton<%=obj1[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','-','','-','','-','',1)">
 									             					<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i>
 									             				</button>
-									             				<%-- <button type="button" class="btn"  style="background-color: transparent;margin: -5px -10px" onclick="batchdownload('<%=obj1[0]%>')">                                     
-																	<i class="fa fa-download" aria-hidden="true"></i>
-																</button> --%>
 							             					</span>
 															<ul  class="nested">
 																<li>
@@ -429,10 +374,6 @@ ul, #myUL {
 																					<button type="button" id="upbutton<%=obj2[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','-','','-','',2)">
 													             						<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i>
 													             					</button>
-													             					<%-- <button type="button" class="btn"  style="background-color: transparent;margin: -5px -10px" onclick="batchdownload('<%=obj2[0]%>')">                                     
-																						<i class="fa fa-download" aria-hidden="true"></i>
-																					</button> --%>
-													             					
 											             						</span>
 																				<ul  class="nested">
 																					<li>
@@ -449,9 +390,6 @@ ul, #myUL {
 																										<button type="button" id="upbutton<%=obj3[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','-','',3)">
 																		             						<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i>
 																		             					</button>
-																		             					<%-- <button type="button" class="btn"  style="background-color: transparent;margin: -5px -10px" onclick="batchdownload('<%=obj3[0]%>')">                                     
-																											<i class="fa fa-download" aria-hidden="true"></i>
-																										</button> --%>
 																             						</span>
 																									<ul  class="nested">
 																										<li>
@@ -486,21 +424,18 @@ ul, #myUL {
 																								</li>	
 																							<%}
 																							} %>	
-																				
 																	<!-- ----------------------------------------level 3------------------------------------- -->
 																					</li>
 																				</ul>
 																			</li>	
 																		<%}
 																		} %>		
-															
 												<!-- ----------------------------------------level 2------------------------------------- -->
 																</li>
 															</ul>
 														</li>	
 													<%}
 													} %>
-											
 								<!-- ----------------------------------------level 1------------------------------------- -->
 												</li>
 											</ul>
@@ -518,11 +453,7 @@ ul, #myUL {
 			</div>
 <!--  -----------------------------------------------agenda attachment ---------------------------------------------- -->
 
-
 <!-- --------------------------------------------  model start  -------------------------------------------------------- -->
-
-
-
 		<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered "  style="max-width: 60% !important;">
 		
@@ -550,12 +481,10 @@ ul, #myUL {
 										
 				             		</div>					
 							</div>
-						
 					</div>
 				</div>
 			</div> 
 		</div>
-		
 		<input type="hidden" name="projectid" id="ProjectId" value="<%=projectid %>" />
 <!-- --------------------------------------------  model end  -------------------------------------------------------- -->
 
@@ -563,16 +492,12 @@ ul, #myUL {
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 	<input type="hidden" name="FileUploadId" id="FileUploadId" value="" />
 </form>
-
-
 <input type="hidden" id="agendatempid" value="" />
 <input type="hidden" id="addoredit" value="" />
 <input type="hidden" id="agendano" value="" />
 
-
 <script type="text/javascript">
 	function AgendaPresentors($AddrowId){
-			
 	$('#presenterid_'+$AddrowId).val("");
 		var $PresLabCode = $('#PresLabCode_'+$AddrowId).val();
 				if($PresLabCode !=""){
@@ -598,18 +523,13 @@ ul, #myUL {
 					{									
 						s += '<option value="'+values[i][0]+'">'+values[i][1] + " (" +values[i][3]+")" + '</option>';
 					} 
-								 
 					$('#presenterid_'+$AddrowId).html(s);
 				}
 			});
 		}
 	}
-	
 </script>
-
-
 <script type="text/javascript">
-							
 		function selectCheck(id)
 		{
 			if($('#defagendaid_'+id).is(':checked')) 
@@ -634,14 +554,9 @@ ul, #myUL {
 				$('#duration_'+id).removeAttr('required');
 				$('#duration_'+id).attr({"min" : 0 });
 				$('#presenterid_'+id+' option[value=""]' ).removeAttr('disabled');
-										
-										
 			}
-										
 	}
-								
 </script>
-
 <script type="text/javascript">
 function editcheck(editfileid)
 {
@@ -656,12 +571,8 @@ function editcheck(editfileid)
     	 return confirm('Are You Sure To Edit This Agenda?');
     }
 }
-
-
-
 </script>
 <script type="text/javascript">
-						
     function Filevalidation (fileid) 
     {
         const fi = $('#'+fileid )[0].files[0].size;							 	
@@ -672,8 +583,6 @@ function editcheck(editfileid)
         } 
     }
 </script> 
-
-
 <script type="text/javascript">
 var filexcount=0;
 	function allfilessizecheck(frmid)
@@ -685,7 +594,6 @@ var filexcount=0;
             	fileidarr.push(this.id);
             }
         });
-		
 		
 		for(var z=0; z<fileidarr.length;z++)
 		{
@@ -699,7 +607,6 @@ var filexcount=0;
 		        }	        
 			}
 		}
-		
 		if(filexcount>0)
 		{
 			event.preventDefault();
@@ -711,19 +618,16 @@ var filexcount=0;
 		
 	}					
 </script>
-		
 <script type='text/javascript'> 
 function submitForm(frmid)
 { 
 	document.getElementById(frmid).submit(); 
 } 
-
 function submitForm1(msg,frmid)
 { 
 	myconfirm(msg,frmid);
 	event.preventDefault(); 
 }
-
   function isNumber(evt) {
 	    evt = (evt) ? evt : window.event;
 	    var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -732,10 +636,8 @@ function submitForm1(msg,frmid)
 	    }
 	    return true;
 	}
-
 $('.edititemsdd').select2();
 $('.items').select2();
-
 var count=0;
 $("table").on('click','.tr_clone_addbtn' ,function() {
    $('.items').select2("destroy");        
@@ -746,79 +648,53 @@ $("table").on('click','.tr_clone_addbtn' ,function() {
    $clone.find('.items' ).select2('val', '');    
    $clone.find("input").val("").end();
   /*  $clone.find("input:number").val("").end(); */
- 
   count++;
-  
   var id='\''+'file'+count+'\'';
-  
    $clone.find("input:file").prop("id", 'file'+count).attr("onchange", 'Filevalidation('+id+')').val("").end() 
-     
 });
 
 $("table").on('click','.tr_clone_sub' ,function() {
-	
 var cl=$('.tr_clone').length;
-	
 if(cl>1){
-	
    $('.items').select2("destroy");        
    var $tr = $(this).closest('.tr_clone');
-  
    var $clone = $tr.remove();
    $tr.after($clone);
    $('.items').select2();
    /* $clone.find('.items').select2('val', ''); */
-   
 }
-   
 });
 </script>
- 
- 
-
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
 
 <script type="text/javascript">
-
 function openMainModal (agendatempid,addedit)
 {
 	$('#addoredit').val(addedit);
 	$('#agendano').val(agendatempid);
 	$('#attachmentmodal').modal('show');
 }
-
 function setagendaattachval(attachid, attchName)
 {
 	$addedit=$('#addoredit').val();
 	$agendaelem=$('#agendatempid').val();
 	console.log(attachid+'  '+attchName+'  '+$addedit+'  '+$agendaelem);
 	if($addedit==='a'){
-				
 		let agendano=$('#agendano').val();
 		let html= $("#attachlistdiv_"+agendano).html();
 		html += '<tr id="a_'+agendano+'"><td>'+attchName+'</td><td style="width:1% ;white-space: nowrap;">';
 		html += '<button type="button" onclick="$(this).parent(\'td\').parent(\'tr\').remove();" > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';  /* onclick="$(\'#a_'+agendano+'\').remove();" */
 		html += '<input type="hidden" name="attachid_'+agendano+'" value="'+attachid+'" /></td>';
-		
 		html += '</tr>';
 		 $("#attachlistdiv_"+agendano).html(html);
-		
-		
 	}else if($addedit==='e'){		
 		$('#editattachid_'+$agendaelem).val(attachid);
 		$('#editattachname_'+$agendaelem).html(attchName);
 	}
 	$('#exampleModalCenter1').modal('hide');
 	$('#attachmentmodal').modal('hide');
-		
 }
-
-
 </script>
-
-
-
-
 <script type="text/javascript">
 function FileDownload(fileid1)
 {
@@ -826,11 +702,7 @@ function FileDownload(fileid1)
 	$('#downloadform').submit();
 }
 </script>
-
 <script type="text/javascript">
-
-
-
 function onclickchange(ele)
 {
 	elements = document.getElementsByClassName('caret-1');
@@ -847,12 +719,6 @@ $(ele).css("color", "green");
 $(ele).css("font-weight", "700");
 
 }
-
-
-
-
-
-
 $(document).ready(function(){
 
 	var toggler = document.getElementsByClassName("caret");
@@ -866,11 +732,8 @@ $(document).ready(function(){
 });
 
 function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
-	
 	/* var modelhead=project+'  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+m; */
-	
 	var modelhead=m;
-	
 	if(lev>=1)
 	{
 		 modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l1; 
@@ -890,10 +753,8 @@ function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
 	$('#'+divid).html(modelhead);
 }
 
-
 function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 {
-		
 		var $projectid=$('#ProjectId').val();		
 		setmodelheader(mname,lname1,lname2,lname3,lname4,lev,$('#projectname').val(),'model-card-header');		
 		$('#amendmentbox').css('display','none');
@@ -905,7 +766,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 		$('#modeldescshow').text('');
 		$('#uploadbox').css('display','none');
 		$('#ammendmentbox').css('display','none');
-		
 		$.ajax({
 				type : "GET",
 				url : "FileHistoryListAjax.htm",
@@ -925,10 +785,7 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 						var values= Object.keys(result).map(function(e){
 						return result[e];
 					})			
-						
-					
 						/* --------------------------------------------ajax nested--------------------------------------- */		
-							
 							 $.ajax({
 									type : "GET",
 									url : "FileDocMasterListAll.htm",
@@ -958,7 +815,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																	{  
 																		str += '<li> <span class="caret-1" id="docsysl2'+values2[v2][0]+'" onclick="onclickchange(this);" >' +values2[v2][3]+'</span> <ul  class="nested-1"> <li>'; 
 																/* ----------------------------------------level 2------------------------------------- */
-																			
 																			for(var v3=0;v3<values.length;v3++)
 																			{ 
 																				if(  values[v3][1]==values2[v2][0])
@@ -972,49 +828,29 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																					{
 																						str += '<input type="radio" class="selectradio" disabled ></button>' ;
 																					}
-																					
 																					str +=' <span class="" id="docsysl3'+values[v3][0]+'" onclick="onclickchange(this);">'+values[v3][3]+'('+values[v3][9]+')</span>';
-																						
-																					/* str +='<span><button type="button" class="btn"  style="background-color: transparent;margin: -3px 0px;" onclick="showuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\')" >';
-																					
-																					str +=		'<i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i>';
-																					str +=		'</button>'; */
 																					if(values[v3][4]!=0)
 																					{ 
 																						str +=' <span class="version">Ver '+values[v3][8]+'.'+values[v3][6];
 																						str +=		' <button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;" onclick="FileDownload(\''+values[v3][4]+'\')">';                                     
 																						str += 			'<i class="fa fa-download" aria-hidden="true"></i>';
 																						str +=		'</button> ';
-																				
-																						/* str +=		'  <button type="button" class="btn"  style="background-color: #CFFFFE;padding : 0px 5px 3px;margin: 0px -10px;border: 0.1px solid grey;" onclick="showamuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\',\''+values[v3][4]+'\')" >';                                     
-																						str += 			' Amendment <img style="height:20px; width: 20px; " src="view/images/amendment-icon-2.png"> ';   /* <i class="fa fa-plus" style="color: #3DB2FF" aria-hidden="true"></i> <i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i> 
-																						str +=		'</button> </span>'; */
-																						
 																						str += '</span>';
 																					} 
-																							
-																							
 																					str +='	</span> </li>';
-																						
 																				}
 																			}			
-																	
-																			
 																/* ----------------------------------------level 2------------------------------------- */			
 																		str +=	'</li> </ul> </li>';
 																	}
 																} 
-															
 												 	/* ----------------------------------------level 1------------------------------------- */
-																			
 															str +='</li> 	</ul> 	</li>';	
 														} 
 													} 
 												/* --------------------------------------------------tree making--------------------------------------------------------- */
 													str += '</ul>';
-													
 													$('#fileuploadlist').html(str);
-													
 													var toggler = document.getElementsByClassName("caret-1");
 													$('#s1').val(l1);
 													$('#s2').val(l2);
@@ -1023,7 +859,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 													$('#mainsystemval').val(mid);
 													$('#sublevel').val(lev);
 													$('#Path').val(mname+'/'+lname1);
-													
 													var i;
 													for (i = 0; i <toggler.length; i++) {
 													  toggler[i].addEventListener("click", function() {	
@@ -1033,24 +868,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 													}
 													$('#exampleModalCenter1').modal('show');
 															
-															/* if($doclev1>0)
-															{
-																$('#docsysl1'+$doclev1).click();
-															}
-															if($doclev2>0)
-															{
-																$('#docsysl2'+$doclev2).click();
-															}
-															if($doclev3>0)
-															{
-																$('#docsysl3'+$doclev3).css("font-weight", "700")
-															}
-															
-															$doclev1=0;
-															$doclev2=0;
-															$doclev3=0;
-													 */
-													
 											},
 											error: function(XMLHttpRequest, textStatus, errorThrown) {
 												alert("Internal Error Occured !!");
@@ -1062,7 +879,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 							 
 						/* --------------------------------------------ajax nested--------------------------------------- */
 						
-					
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					alert("Internal Error Occured !!");
@@ -1073,15 +889,7 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 				
 }
 
-
 </script>
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
-
-
- 
- 
- 
- 
- 
 </body>
 </html>

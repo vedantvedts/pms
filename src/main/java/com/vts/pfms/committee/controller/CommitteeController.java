@@ -1606,14 +1606,14 @@ public class CommitteeController {
 			
 			req.setAttribute("LabCode",LabCode);
 			req.setAttribute("LabEmpList",service.PreseneterForCommitteSchedule(LabCode.trim()));
-			Object[] DefaultAgendasCount = service.getDefaultAgendasCount(scheduledata[0].toString(), LabCode);
-			if(Integer.parseInt(DefaultAgendasCount[0].toString())>0 && committeeagendalist.size()==0 && req.getParameter("skip")==null)
-			{
-				List<Object[]> defAgendaList = service.DefaultAgendaList(scheduledata[0].toString(),LabCode);
-				req.setAttribute("defAgendaList",defAgendaList);
-				
-				return "committee/ScheduleDefaultAgendas";
-			}
+//			Object[] DefaultAgendasCount = service.getDefaultAgendasCount(scheduledata[0].toString(), LabCode);
+//			if(Integer.parseInt(DefaultAgendasCount[0].toString())>0 && committeeagendalist.size()==0 && req.getParameter("skip")==null)
+//			{
+//				List<Object[]> defAgendaList = service.DefaultAgendaList(scheduledata[0].toString(),LabCode);
+//				req.setAttribute("defAgendaList",defAgendaList);
+//				
+//				return "committee/ScheduleDefaultAgendas";
+//			}
 			return "committee/CommitteeScheduleAgenda";
 		}
 		catch (Exception e) {
@@ -9843,5 +9843,41 @@ public class CommitteeController {
 					logger.error(new Date() + "Inside UploadedCommitteLetterDownload.htm " + UserId, e);
 				}
 
+			}
+			
+			@RequestMapping(value = "getAgendaAttachId.htm", method = RequestMethod.GET)
+			public @ResponseBody String getAgendaAttachId(HttpServletRequest req,HttpSession ses) throws Exception {
+
+				String UserId = (String)ses.getAttribute("Username");
+				logger.info(new Date() +" Inside getAgendaAttachId.htm "+ UserId);		
+				String agendaid=req.getParameter("agendaid");		
+				List<Object[]> attach = service.getAgendaAttachId(agendaid);
+				Gson json = new Gson();
+				if(attach!=null && attach.size()>0) {
+					return json.toJson(attach);
+				}
+				return json.toJson("");
+			}
+			
+			
+			@RequestMapping(value = "addAgendaLinkFile.htm", method = RequestMethod.GET)
+			public @ResponseBody String addAgendaLinkFile(HttpServletRequest req,HttpSession ses) throws Exception {
+
+				String UserId = (String)ses.getAttribute("Username");
+				logger.info(new Date() +" Inside addAgendaLinkFile.htm "+ UserId);	
+				
+				String agendaId=req.getParameter("agendaId");		
+				String attachId=req.getParameter("attachId");
+				
+				CommitteeScheduleAgendaDocs docs = new CommitteeScheduleAgendaDocs();
+				docs.setAgendaId(Long.parseLong(agendaId));
+				docs.setFileDocId(Long.parseLong(attachId));
+				docs.setCreatedBy(UserId);
+				docs.setCreatedDate(sdf1.format(new Date()));
+				docs.setIsActive(1);
+				long attach = service.addAgendaLinkFile(docs);
+				
+				Gson json = new Gson();
+				return json.toJson(attach);
 			}
 }

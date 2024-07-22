@@ -1301,8 +1301,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 	}
 	
-	
-
 	@Override
 	public List<Object[]> PfmsCategoryList() throws Exception {
 		Query query=manager.createNativeQuery(PROJECTCATEGORYLIST);
@@ -3272,5 +3270,21 @@ public Object[] NewApprovalList(String EnoteId) throws Exception {
 		query.setParameter("type", type);
 		return (List<Object[]>)query.getResultList();
 	}
+	
+	private static final String GETATTACHMENTID="SELECT AgendaDocid,FileDocId FROM committee_schedule_agenda_docs WHERE AgendaId=:agendaid AND IsActive='1'";
+	@Override
+	public List<Object[]> getAgendaAttachId(String agendaid) throws Exception {
+		Query query = manager.createNativeQuery(GETATTACHMENTID);
+		query.setParameter("agendaid", agendaid);
+		return (List<Object[]>) query.getResultList();
+	}
+	
+	@Override
+	public long addAgendaLinkFile(CommitteeScheduleAgendaDocs docs) throws Exception {
+		manager.persist(docs);
+		manager.flush();
+		return docs.getAgendaDocid();
+	}
+	
 }
 

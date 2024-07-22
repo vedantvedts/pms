@@ -36,6 +36,9 @@ public class ProjectMasterRev
     private String BoardReference;
     private int IsMainWC;
     private String WorkCenter;
+    private String Scope;
+    private String Application;
+    private String LabParticipating;
     private String Objective;
     private String Deliverable;
     private String Remarks;
@@ -202,10 +205,28 @@ public class ProjectMasterRev
 	public String getRemarks() {
 		return Remarks;
 	}
+	public String getScope() {
+		return Scope;
+	}
+	public void setScope(String scope) {
+		Scope = scope;
+	}
 	public void setRemarks(String remarks) {
 		Remarks = remarks;
 	}
-  
+	public String getApplication() {
+		return Application;
+	}
+	public void setApplication(String application) {
+		Application = application;
+	}
+	public String getLabParticipating() {
+		return LabParticipating;
+	}
+	public void setLabParticipating(String labParticipating) {
+		LabParticipating = labParticipating;
+	}
+    
 	
 	
 }

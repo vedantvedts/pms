@@ -4827,13 +4827,17 @@ function setattchidvalue(attachid, attchName)
 								     	
 								     	/* Title */
 								     	var column_1 = chart.dataGrid().column(0);
-								     	column_1.title().enabled(false);
+								     	column_1.labels().fontWeight(600);
+								     	column_1.labels().useHtml(true);
+								     	column_1.labels().fontColor("#055C9D");
 								     	
 								     	var column_2 = chart.dataGrid().column(1);
 								     	column_2.title().text("Milestone");
 								     	column_2.title().fontColor("#145374");
 								     	column_2.title().fontWeight(600);
+										chart.dataGrid().column(0).width(25);
 								     	
+								     	chart.dataGrid().tooltip().useHtml(true);
 								     	if(interval==="year"){
 								     		/* Yearly */
 									     	chart.getTimeline().scale().zoomLevels([["year"]]);

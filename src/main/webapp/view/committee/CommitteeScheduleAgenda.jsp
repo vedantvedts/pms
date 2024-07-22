@@ -7,9 +7,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
-
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+<link href="${sweetalertCss}" rel="stylesheet" />
+<script src="${sweetalertJs}"></script>
 <title>COMMITTEE AGENDA </title>
 <style type="text/css">
 label{  
@@ -173,6 +174,7 @@ ul, #myUL {
 .active-1 {
   display: block;
 }
+
 </style>
 
 </head>
@@ -311,7 +313,7 @@ ul, #myUL {
 																	
 										<td style="text-align: left; width: 15%;">
 										
-											<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','a')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
+											<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
 											<br>
 											<table class="attachlist" id="attachlistdiv_0">
 												
@@ -444,13 +446,13 @@ ul, #myUL {
 										
 											<td style="text-align: left; width: 15%;"> 
 												<span id="editattachname_<%=obj[0] %>" class="attachname"></span>
-												<button type="button" class=" btn btn-sm" name="add" id="attacheditbtn_<%=obj[0] %>" onclick="openMainModal('<%=obj[0] %>','e')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+												<button type="button" class=" btn btn-sm" name="add" id="attacheditbtn_<%=obj[0] %>" onclick="openMainModal('<%=obj[0] %>','<%=obj[1] %>','<%=obj[3] %>','<%=obj[5] %>','0','edit')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
 												<input type="hidden" name="attachid" id="editattachid_<%=obj[0] %>" value="">												
 											</td>																	
 											<td style="text-align: left; width: 6%;">
 				                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 												<input type="hidden"  name="AgendaPriority" value="<%= obj[8]%>"/>
-												<input type="hidden" name="committeescheduleagendaid" value="<%=obj[0]%>"/>
+												<input type="hidden" name="committeescheduleagendaid" id="committeescheduleagendaid" value="<%=obj[0]%>"/>
 												<input type="hidden" name="scheduleid" value="<%=scheduleid%>"/>
 												<button type="submit" class="btn  btn-sm" name="action" value="edit" onclick="return confirm('Are you sure To Edit this Agenda?')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 												<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete this Agenda?')" formaction="CommitteeAgendaDelete.htm"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
@@ -485,11 +487,11 @@ ul, #myUL {
 
 <!--  -----------------------------------------------agenda attachment ---------------------------------------------- -->
 
-		<div class="modal" tabindex="-1" role="dialog" id="attachmentmodal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<%-- 		<div class="modal" tabindex="-1" role="dialog" id="attachmentmodal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
  				 <div class="modal-dialog modal-dialog-centered " style="max-width: 75% !important; ">
    					 <div class="modal-content">
    						 <div class="modal-header">
-					        <h4 class="modal-title" style="color: #145374">Select Document for linking</h4>
+					        <h4 class="modal-title"></h4>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -617,13 +619,13 @@ ul, #myUL {
 									} %>
 									</ul>							
 								</div>
-		<!-- -------------------------------- tree end ----------------------------- -->				
+			
 							</div>
-		<!-- ------------------------------------------left page end --------------------------------------------- -->
+	
 						</div>	
 					</div> 
 				</div> 
-			</div>
+			</div> --%>
 <!--  -----------------------------------------------agenda attachment ---------------------------------------------- -->
 
 
@@ -644,8 +646,8 @@ ul, #myUL {
 							
 						<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;">
 							<div class="row">
-								<div class="col-md-8">
-									<div style="margin-top: 5px;" id="fileuploadlist">
+								<div class="col-md-12">
+									<div style="margin-top: -15px;" id="fileuploadlist">
 						
 									</div>
 								</div>
@@ -653,7 +655,10 @@ ul, #myUL {
 			           		</div>					
 						</div>
 					</div>
+				<div class="modal-footer">
+					<div style="color: red;font-weight: 500;">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
 				</div>
+			</div>
 			</div> 
 		</div>
 		
@@ -664,7 +669,6 @@ ul, #myUL {
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 	<input type="hidden" name="FileUploadId" id="FileUploadId" value="" />
 </form>
-
 
 
 <script type="text/javascript">
@@ -679,11 +683,9 @@ $("table").on('click','.tr_clone_addbtn' ,function() {
    var $clone = $tr.clone();
    $tr.after($clone);
   
- 
   count++;
   
-  
-  $clone.find(".btnfileattachment").attr("onclick", 'openMainModal(\''+count+'\',\'a\')').val("").end();
+  $clone.find(".btnfileattachment").attr("onclick", 'openMainModal(\'0\',\'0\',\' \',\''+'<%=projectid %>'+'\',\''+count+'\',\'add\')').val("").end();
   $clone.find(".hidden").prop("id", 'attachid_'+count).prop("name", 'attachid_'+count).val("").end();
   $clone.find(".attachlist").prop("id","attachlistdiv_"+count).html("").end();
   $clone.find(".attachname").prop("id", 'attachname_'+count).html("").end();
@@ -707,7 +709,6 @@ if(cl>1){
 	
    $('.items').select2("destroy");        
    var $tr = $(this).closest('.tr_clone');
-  
    var $clone = $tr.remove();
    $tr.after($clone);
    $('.items').select2();
@@ -720,17 +721,10 @@ if(cl>1){
 
 <script>
 function editsubmit(agendaid) {
-	
 	var attacharr = [];
-	
-	
-	
 	$('input[name="editattachid_'+agendaid+'"').each(function() {
 		attacharr.push($(this).val());
 	});
-	
-	
-	
 	return false;
 } 
 </script>
@@ -740,7 +734,6 @@ function editsubmit(agendaid) {
 <script type="text/javascript">
 function removeDocRow(elem,attachid)
 {
-	
 	if(confirm('Are You Sure To unlink this Document ?')){
 	
 		$.ajax({
@@ -767,7 +760,6 @@ function removeDocRow(elem,attachid)
 </script>
 
 
-		
 <script type='text/javascript'> 
 function submitForm(frmid)
 { 
@@ -792,33 +784,17 @@ function submitForm1(msg,frmid)
 	}
   </script>
 
- 
- 
-
-
-
 <input type="hidden" id="addoredit" value="" />
 <input type="hidden" id="agendano" value="" />
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
 
 <script type="text/javascript">
 
-function openMainModal (agendatempid,addedit)
-{
-	$('#addoredit').val(addedit);
-	$('#agendano').val(agendatempid);
-	$('#attachmentmodal').modal('show');
-}
-
 function setagendaattachval(attachid, attchName)
 {
-	
 	$addedit=$('#addoredit').val();
 	$agendaelem=$('#agendano').val();
-	
-	
-	
-	if($addedit==='a'  )
+	if($addedit==='add'  )
 	{
 		let agendano=$('#agendano').val();
 		let html= $("#attachlistdiv_"+agendano).html();
@@ -828,28 +804,21 @@ function setagendaattachval(attachid, attchName)
 		}else{
 			attname=attchName;
 		}
-		 
 		html += '<tr id="a_'+agendano+'"><td title='+attchName+'> '+attname+'</td><td style="width:1% ;white-space: nowrap;">';
 		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';  /* onclick="$(\'#a_'+agendano+'\').remove();" */
 		html += '<input type="hidden" name="attachid_'+agendano+'" value="'+attachid+'" /></td>';
-		
 		html += '</tr>';
 		$("#attachlistdiv_"+agendano).html(html);
-		
-		 
-		
-	}else if($addedit==='e'){		
+	}
+	/* else if($addedit==='edit'){		
 		$('#editattachid_'+$agendaelem).val(attachid);
 		$('#editattachname_'+$agendaelem).html(attchName+'&nbsp;&nbsp; <i class="btn btn-sm fa fa-minus" style="color: red;" onclick="editattachremove('+$agendaelem+');"  ></i>');
 		$('#attacheditbtn_'+$agendaelem).hide();
-	}
-	
-	
+	} */
 	$('#exampleModalCenter1').modal('hide');
 	$('#attachmentmodal').modal('hide');
-		
 }
-
+ 
 
 function editattachremove(agendaid)
 {
@@ -857,21 +826,23 @@ function editattachremove(agendaid)
 	$('#editattachname_'+$agendaelem).html('');
 	$('#attacheditbtn_'+$agendaelem).show();
 }
-
 </script>
-
 <script type="text/javascript">
 function FileDownload(fileid1)
 {
 	$('#FileUploadId').val(fileid1);
 	$('#downloadform').submit();
 }
+
+$(document).ready(function(){
+	<%for( Object[] agenda : committeeagendalist){ %>
+		EditAgendaPresentors('<%=agenda[0]%>','<%=agenda[9]%>');
+	<%}%>
+	
+});
 </script>
 
-<script type="text/javascript">
-
-
-
+<%-- <script type="text/javascript">
 function onclickchange(ele)
 {
 	elements = document.getElementsByClassName('caret-1');
@@ -888,7 +859,6 @@ $(ele).css("color", "green");
 $(ele).css("font-weight", "700");
 
 }
-
 function onclickchangeMain(ele)
 {
 	elements = document.getElementsByClassName('caret');
@@ -904,12 +874,7 @@ function onclickchangeMain(ele)
 	$(ele).css("color", "green");
 	$(ele).css("font-weight", "700");
 }
-
-
-
-
 $(document).ready(function(){
-
 	var toggler = document.getElementsByClassName("caret");
 	var i;
 	for (i = 0; i <toggler.length; i++) {
@@ -924,13 +889,9 @@ $(document).ready(function(){
 	<%}%>
 	
 });
-
 function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
-	
 	/* var modelhead=project+'  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+m; */
-	
 	var modelhead=m;
-	
 	if(lev>=1)
 	{
 		 modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l1; 
@@ -950,10 +911,8 @@ function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
 	$('#'+divid).html(modelhead);
 }
 
-
 function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 {
-		
 		var $projectid=$('#ProjectId').val();		
 		setmodelheader(mname,lname1,lname2,lname3,lname4,lev,$('#projectname').val(),'model-card-header');		
 		$('#amendmentbox').css('display','none');
@@ -985,10 +944,7 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 						var values= Object.keys(result).map(function(e){
 						return result[e];
 					})			
-						
-					
 						/* --------------------------------------------ajax nested--------------------------------------- */		
-							
 							 $.ajax({
 									type : "GET",
 									url : "FileDocMasterListAll.htm",
@@ -1018,7 +974,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																	{  
 																		str += '<li> <span class="caret-1" id="docsysl2'+values2[v2][0]+'" onclick="onclickchange(this);" >' +values2[v2][3]+'</span> <ul  class="nested-1"> <li>'; 
 																/* ----------------------------------------level 2------------------------------------- */
-																			
 																			for(var v3=0;v3<values.length;v3++)
 																			{ 
 																				if(  values[v3][1]==values2[v2][0])
@@ -1035,45 +990,28 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																					}
 																					
 																					str +=' <span class="caret-last-1" id="docsysl3'+values[v3][0]+'" onclick="onclickchange(this);">'+values[v3][3]+'('+values[v3][9]+')</span>';
-																						
-																					/* str +='<span><button type="button" class="btn"  style="background-color: transparent;margin: -3px 0px;" onclick="showuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\')" >';
-																					
-																					str +=		'<i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i>';
-																					str +=		'</button>'; */
 																					if(values[v3][4]!=0)
 																					{ 
 																						str +=' <span class="version">Ver '+values[v3][8]+'.'+values[v3][6];
 																						str +=		' <button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;" onclick="FileDownload(\''+values[v3][4]+'\')">';                                     
 																						str += 			'<i class="fa fa-download" aria-hidden="true"></i>';
 																						str +=		'</button> ';
-																				
-																						/* str +=		'  <button type="button" class="btn"  style="background-color: #CFFFFE;padding : 0px 5px 3px;margin: 0px -10px;border: 0.1px solid grey;" onclick="showamuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\',\''+values[v3][4]+'\')" >';                                     
-																						str += 			' Amendment <img style="height:20px; width: 20px; " src="view/images/amendment-icon-2.png"> ';   /* <i class="fa fa-plus" style="color: #3DB2FF" aria-hidden="true"></i> <i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i> 
-																						str +=		'</button> </span>'; */
-																						
 																						str += '</span>';
 																					} 
  																					str +='	</span> </li>';
-																						
 																				}
 																			}			
-																	
-																			
 																/* ----------------------------------------level 2------------------------------------- */			
 																		str +=	'</li> </ul> </li>';
 																	}
 																} 
-															
 												 	/* ----------------------------------------level 1------------------------------------- */
-																			
 															str +='</li> 	</ul> 	</li>';	
 														} 
 													} 
 												/* --------------------------------------------------tree making--------------------------------------------------------- */
 													str += '</ul>';
-													
 													$('#fileuploadlist').html(str);
-													
 													var toggler = document.getElementsByClassName("caret-1");
 													$('#s1').val(l1);
 													$('#s2').val(l2);
@@ -1091,21 +1029,14 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 													  });
 													}
 													$('#exampleModalCenter1').modal('show');
-															
-														
-													
 											},
 											error: function(XMLHttpRequest, textStatus, errorThrown) {
 												alert("Internal Error Occured !!");
 									            alert("Status: " + textStatus);
 									            alert("Error: " + errorThrown); 
 									        }  
-											
 							 		})
-							 
 						/* --------------------------------------------ajax nested--------------------------------------- */
-						
-					
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					alert("Internal Error Occured !!");
@@ -1115,14 +1046,9 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 		 })
 				
 }
-
-
-</script>
+</script> --%>
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
-
-
 <script type="text/javascript">
-
 function editcheck(editfileid)
 {
 	const fi = $('#'+editfileid )[0].files[0].size;							 	
@@ -1136,10 +1062,7 @@ function editcheck(editfileid)
     	 return confirm('Are You Sure To Edit This Agenda?');
     }
 }
-
 </script>
-
-
 <script type="text/javascript">
 var filexcount=0;
 	function allfilessizecheck(frmid)
@@ -1151,8 +1074,6 @@ var filexcount=0;
             	fileidarr.push(this.id);
             }
         });
-		
-		
 		for(var z=0; z<fileidarr.length;z++)
 		{
 			if(document.getElementById(fileidarr[z]).files.length !=0 ){
@@ -1165,7 +1086,6 @@ var filexcount=0;
 		        }	        
 			}
 		}
-		
 		if(filexcount>0)
 		{
 			event.preventDefault();
@@ -1174,14 +1094,11 @@ var filexcount=0;
 		{
 			return confirm('Are You Sure to Submit These Agenda (s)?')
 		}
-		
 	}					
 </script>
 	
 <script type="text/javascript">
-	
 		function AgendaPresentors($AddrowId){
-			
 			$('#presenterid_'+$AddrowId).val("");
 				var $PresLabCode = $('#PresLabCode_'+$AddrowId).val();
 						if($PresLabCode !=""){
@@ -1190,7 +1107,6 @@ var filexcount=0;
 							url : "CommitteeAgendaPresenterList.htm",
 							data : {
 								PresLabCode : $PresLabCode,
-								
 								   },
 							datatype : 'json',
 							success : function(result) {
@@ -1198,7 +1114,6 @@ var filexcount=0;
 							var result = JSON.parse(result);	
 							var values = Object.keys(result).map(function(e) {
 										 return result[e]
-									  
 							});
 								
 					var s = '';
@@ -1208,16 +1123,12 @@ var filexcount=0;
 											+values[i][1] + " (" +values[i][3]+")" 
 											+ '</option>';
 								} 
-								 
 								$('#presenterid_'+$AddrowId).html(s);
 							}
 						});
 		}
 	}
-		
-		
 		function EditAgendaPresentors($AddrowId,PresentorID){
-			
 			$('#presenterid_Edit_'+$AddrowId).val("");
 				var $PresLabCode = $('#PresLabCode_Edit_'+$AddrowId).val();
 						if($PresLabCode !=""){
@@ -1226,7 +1137,6 @@ var filexcount=0;
 							url : "CommitteeAgendaPresenterList.htm",
 							data : {
 								PresLabCode : $PresLabCode,
-								
 								   },
 							datatype : 'json',
 							success : function(result) {
@@ -1234,7 +1144,6 @@ var filexcount=0;
 							var result = JSON.parse(result);	
 							var values = Object.keys(result).map(function(e) {
 										 return result[e]
-									  
 							});
 								
 					var s = '';
@@ -1244,18 +1153,318 @@ var filexcount=0;
 											+values[i][1] + " (" +values[i][3]+")" 
 											+ '</option>';
 								} 
-								 
 								$('#presenterid_Edit_'+$AddrowId).html(s);
 								$('#presenterid_Edit_'+$AddrowId).val(PresentorID).trigger('change');
 							}
 						});
 		}
 	}
-
-</script>
+var mainAgendaId="";
+function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendatype){
+	var attachRepIds = [];
+	var agendadocId=[];
+	mainAgendaId="";
+	$('#addoredit').val(agendatype);
+	$('#agendano').val(cloneId);
+	mainAgendaId=agendaid;
+	if(agendaid!=0){
+		 $.ajax({
+             url: 'getAgendaAttachId.htm',
+             type: 'GET',
+             data: {agendaid: agendaid},
+             success: function(response) {
+            	 try {
+                     var parsedResponse = JSON.parse(response);
+                     if (Array.isArray(parsedResponse)) {
+                       parsedResponse.forEach(item => {
+                         attachRepIds.push(item[1]);
+                         agendadocId.push(item[0]);
+                       });
+                     } else {
+                       console.error('Response is not an array:', parsedResponse);
+                     }
+                   } catch (e) {
+                     console.error('Error parsing JSON response:', e);
+                   }
+             },
+          }); 
+	}
 	
+	$.ajax({
+		type : "GET",
+		url : "FileRepMasterListAllAjax.htm",
+		data : {
+			projectid : projectid,
+		},
+		datatype: 'json',
+		success : function(result)
+			{
+				var result= JSON.parse(result);
+				var values= Object.keys(result).map(function(e){
+					return result[e];
+				})	
+                if (values.length > 0) {
+                     projectName = values[0][4];
+                     subId = values[0][2];
+                }
+				
+				var values1=values;
+				var values2=values;
+				
+			/* --------------------------------------------------tree making--------------------------------------------------------- */			
+				var str='<ul>';
+				var itemCounter = 0;
+				var subCounter= 0;
+				var main="";
+				var sub="";
+				var mainLevelId="";
+				var subLevelId="";
+				for(var v1=0;v1<values1.length;v1++){ 
+					mainLevelId=values1[v1][0];
+					main=values1[v1][3];
+				  for(var v2=0;v2<values2.length;v2++){ 
+					  if( values2[v2][1]==values1[v1][0] )
+						{
+						  subLevelId=values2[v2][0];
+						  sub=values2[v2][3];
+						  levelId = values2[v2][0];
+						   var itemId = 'item-' + (++itemCounter);
+							str += '<li id="' + itemId + '"> <span style="color:blue;font-weight:600;font-size:20px;">'+values1[v1][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values2[v2][3]+'</span> ';
+							
+							 (function(projectid,itemId,mainIndex,main,sub,mainLevelId,subLevelId,attachRepIds) {
+								 $.ajax({
+					                    type: "GET",
+					                    url: "ProjectDocsList.htm",
+					                    data: { projectid: projectid}, 
+					                    datatype: 'json',
+					                    success: function(result) {
+					                    	var result= JSON.parse(result);
+					        				var mainvalues= Object.keys(result).map(function(e){
+					        					return result[e];
+					        				})
+					        				var values3=mainvalues;
+					        				var values4=mainvalues;
+					                        var mainStr = '<ul>';
+					                        for(var v3=0;v3<values3.length;v3++){
+					                        	for(var v4=0;v4<values4.length;v4++){
+					                        		var masterid=values4[v4][0];
+					                        		var mianItemId = 'main-sub-item-'+ (++subCounter);
+					                        		 if( values4[v4][1]==values3[v3][0] ){
+					                        			 mainStr +='<li id="' + mianItemId + '"> <span style="color:#AD1457;font-weight:600;font-size:19px;">'+values3[v3][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values4[v4][3]+'</span></li>';
+					                        		 
+					                      			 (function(mianItemId,subIndex,subLevelId,attachRepIds,masterid) {
+					            							 $.ajax({
+					            				                    type: "GET",
+					            				                    url: "AllFilesList.htm",
+					            				                    data: { projectid: projectid, subid:subLevelId }, 
+					            				                    datatype: 'json',
+					            				                    success: function(additionalResult) {
+					            				                        var additionalResult = JSON.parse(additionalResult);
+					            				                        var additionalValues = Object.keys(additionalResult).map(function(e) {
+					            				                            return additionalResult[e];
+					            				                        });
+					            				                        var additionalStr = '<ul>';
+					            				                        for (var j = 0; j < additionalValues.length; j++) {
+					            				                        	if(masterid==additionalValues[j][1]){
+					            				                        	var subItemId = 'sub-item-' + subIndex + '-' + j;
+					            				                            additionalStr +='<li id="' + subItemId + '" style="color:black;font-weight:600;font-size:18px;">'
+					            				                            additionalStr += '<input class="form-check-input " type="checkbox" style=" width: 18px; height: 18px;margin-top:9px;" value="' + additionalValues[j][4] + '" id="checkbox' + j + '"';
+					            				                            if(additionalValues[j][7]!=0){
+					            				                            	if(attachRepIds.length>0 && attachRepIds.includes(additionalValues[j][4])){
+					            					                            	   additionalStr += ' checked disabled>';
+					            					                              }
+					            				                            }else{
+					            				                                additionalStr += ' disabled>';
+					            				                            }
+					            				                            additionalStr +='&nbsp;<span >' + additionalValues[j][3] + '</span>';
+					            				                        	if(additionalValues[j][4]!=0){
+					            				                        		 additionalStr +='&nbsp;&nbsp;<span class="version" style="color:grey">Ver '+additionalValues[j][8]+'.'+additionalValues[j][6];
+					            				                        		 additionalStr +='<button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;"  onclick="FileDownload(\''+additionalValues[j][4]+'\')">';                                     
+					            				                        		 additionalStr +='<i class="fa fa-download" aria-hidden="true"></i>';
+					            				                        		 additionalStr +='</button> ';
+					            				                        		 additionalStr += '</span>';
+					            											}
+					            			                        		 additionalStr += '<span><button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+subItemId+'\')"><i class="fa fa-upload" aria-hidden="true" style="color: #FF5F00;font-size:20px;"></i></button>';
+					            			                        		 additionalStr += '<label for="fileInput" id="uploadlabel'+subItemId+'" style="margin-left: 20px; display: none;">'
+					            			                        		 additionalStr += '<input type="file" name="docFileInput" id="fileInput'+subItemId+'" required="required"  accept="application/pdf"/> '
+					            			                        		 additionalStr += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+subItemId+'\',\''+main+'\',\''+sub+'\',\''+mainLevelId+'\',\''+subLevelId+'\',\''+additionalValues[j][0]+'\',\''+additionalValues[j][7]+'\',\''+additionalValues[j][5]+'\',\''+additionalValues[j][6]+'\',\''+additionalValues[j][8]+'\',\''+ additionalValues[j][4] +'\', \''+additionalValues[j][3] +'\')">Upload</button>'
+					            			                        		 additionalStr += '</label>'
+					            			                        		 additionalStr += '</span>';
+					            				                             additionalStr +='</li>'
+					            				                        }
+					            				                    }
+					            				                        additionalStr += '</ul>';
+					            				                        $('#' + mianItemId).append(additionalStr);
+					            				                    }
+					            				               });
+					            						 })(mianItemId,subCounter,subLevelId,attachRepIds,masterid); 
+					                        			 
+					                        		 }
+					                        	}
+					                        }
+					                        mainStr += '</ul>';
+					                        $('#' + itemId).append(mainStr);
+					                    }
+					               });
+								  
+								  })(projectid,itemId,itemCounter,main,sub,mainLevelId,subLevelId,attachRepIds);
+					}
+			     }
+		      } 
+		/* --------------------------------------------------tree making--------------------------------------------------------- */
+				str += '</ul>';
+				 if (projectid != null && projectid !== undefined && projectid.trim() !== '') {
+			         $('#exampleModalCenter1 .modal-title').html('<span style="color: #F50057;font-weight:600;">Document Linking - ' + agendaname + '</span>');
+			     } else {
+			         $('#exampleModalCenter1 .modal-title').html('<span style="color: #F50057;font-weight:600;">Document Linking </span>');
+			     }
+			$('#fileuploadlist').html(str);
+		}
+    });
+	$('#exampleModalCenter1').modal('show');
+}
 
+// Event delegation for dynamically added checkboxes
+$(document).on('change', '.form-check-input', function() {
+  // Send AJAX request with the selected checkbox value
+  var selectedValue = $(this).val();
+  var isChecked = $(this).prop('checked');
+  var agendtype=$('#addoredit').val();
+  
+  if(isChecked){
+	  if (agendtype==='add') {
+      	setagendaattachval(selectedValue,'File');
+      }else{
+    	  $.ajax({
+  	        url: 'addAgendaLinkFile.htm', 
+  	        type: 'GET',
+  	        data: { attachId: selectedValue,agendaId: mainAgendaId},
+  	        success: function(response) {
+  	        	 Swal.fire({
+  	    	            icon: 'success',
+  	    	            title: 'Success',
+  	    	            text: 'Document linked successfully!',
+  	    	            allowOutsideClick :false
+  	    	          });
+  	        	 $('#exampleModalCenter1').hide();
+  	        	$('.swal2-confirm').click(function() {
+  	                location.reload();
+  	            });
+  	        },
+  	        error: function() {
+  	          Swal.fire({
+  	            icon: 'error',
+  	            title: 'Error',
+  	            text: 'An error occurred while submitting the checkbox selection.',
+  	          });
+  	        }
+  	    });
+      }
+    }
+});
 
- 
+function fileUpload(Id){
+	 var label = document.getElementById("uploadlabel"+Id);
+   if (label.style.display === "none") {
+       label.style.display = "inline-block";
+   } else {
+       label.style.display = "none";
+   }
+}
+
+function fileSubmit(value,main,sub,mainLevelId,subLevelId,docId,repid,filename,releaseDoc,version,attachid,attchName,agendaid) {
+	
+    var fileInput =  $("#fileInput"+value)[0].files[0];
+    var modalHeaderContent = main+','+sub;
+    var agendtype=$('#addoredit').val();
+    
+	 if (fileInput === undefined) {
+	       Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: 'Please select a file to upload!',
+	            allowOutsideClick :false
+	       });
+	       return;
+	  }
+	// Check if the file is a PDF
+	   var fileType = fileInput.type;
+	   if (fileType !== 'application/pdf') {
+	       Swal.fire({
+	           icon: 'error',
+	           title: 'Invalid File Type',
+	           text: 'Please select a PDF file!',
+	           allowOutsideClick: false
+	       });
+	       return;
+	   }
+	   // Check if the file size is less than 10MB (10 * 1024 * 1024 bytes)
+	   var fileSize = fileInput.size;
+	   if (fileSize > 10 * 1024 * 1024) {
+	       Swal.fire({
+	           icon: 'error',
+	           title: 'File Too Large',
+	           text: 'Please select a file smaller than 10MB!',
+	           allowOutsideClick: false
+	       });
+	       return;
+	   }
+    if (confirm("Are you sure to submit this?")) {
+        event.preventDefault();
+        var projectid = <%= projectid %>;
+        var formData = new FormData();
+        formData.append("file", $("#fileInput"+value)[0].files[0]);
+        formData.append("FileRepId", repid);
+        formData.append("projectid", projectid);
+        formData.append("mainLevelId", mainLevelId);
+        formData.append("subLevelId", subLevelId);
+        formData.append("docId", docId);
+        formData.append("FileNameUI", attchName);
+        formData.append("FileVersion", version);
+        formData.append("FileRelease", releaseDoc);
+        formData.append("HeaderValue", modalHeaderContent);
+        formData.append("agendaid", agendaid);
+        formData.append("${_csrf.parameterName}", "${_csrf.token}");
+        // Use AJAX to submit the form data
+        $.ajax({
+            url: 'DocFileUpload.htm',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+            	attachid=response;
+            	 if (agendtype==='add') {
+     	        	setagendaattachval(attachid,attchName);
+     	        }else{
+            	  Swal.fire({
+		    	       	title: "Success",
+		                text: "File Uploaded Successfully",
+		                icon: "success",
+		                allowOutsideClick :false
+		         		});
+            	  $('#exampleModalCenter1').hide();
+            	  $('.swal2-confirm').click(function() {
+  	                location.reload();
+  	               });
+            	}
+            },
+            error: function(xhr, status, error) {
+            	  Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'An error occurred while uploading the file'
+                  });
+                  console.log(xhr.responseText);
+               }
+          });
+        
+    } else {
+        event.preventDefault();
+        return false;
+    }
+}
+</script>
+
 </body>
 </html>

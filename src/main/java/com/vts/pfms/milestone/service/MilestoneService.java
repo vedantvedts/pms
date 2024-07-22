@@ -15,6 +15,7 @@ import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepNew;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 
 public interface MilestoneService {
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception;
@@ -91,4 +92,6 @@ public interface MilestoneService {
 	//Ms project
 	public List<Object[]> getMsprojectTaskList(String projectId)throws Exception;
 	public long DocFileUploadAjax(FileUploadDto uploadDto)throws Exception;
+	public List<Object[]> getAttachmentId(String projectid)throws Exception;
+	public long submitCheckboxFile(ProjectTechnicalWorkData modal)throws Exception;
 }

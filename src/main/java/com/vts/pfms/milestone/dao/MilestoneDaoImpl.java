@@ -35,6 +35,7 @@ import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
 import com.vts.pfms.milestone.model.MilestoneSchedule;
+import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 
 
 
@@ -105,7 +106,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String VERSIONCHECKLIST="SELECT b.filerepuploadid,b.filenameui,b.ReleaseDoc,b.filerepid, b.versionDoc FROM file_rep_new a,file_rep_upload b WHERE a.projectid=:projectid AND  a.subl1=:subsysteml1 AND a.documentid=:documenttitle  AND a.filerepid=b.filerepid AND a.IsActive=1 AND b.IsActive=1 ORDER BY b.filerepuploadid DESC LIMIT 1 ";  // prakash Change
 	private static final String DOCUMENTSTAGELIST="SELECT a.fileuploadmasterid,a.parentlevelid,a.levelid,a.levelname FROM file_doc_master a WHERE a.isactive=1 AND a.levelid=:levelid AND a.parentlevelid=:documenttype";
 	private static final String FILEHISTORYLIST="SELECT fru.filerepuploadid,frn.filerepid,fdm.docid,fdm.levelname,fru.versiondoc,fru.releasedoc,CAST(DATE_FORMAT(fru.createddate,'%d-%m-%Y') AS CHAR) AS 'createddate' FROM  file_rep_new frn,file_rep_upload fru,file_doc_master fdm WHERE frn.filerepid=fru.filerepid AND frn.documentid=fdm.fileuploadmasterid AND frn.filerepid=:filerepid ORDER BY fru.versiondoc DESC,fru.releasedoc DESC ";
-	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid AND LabCode=:LabCode ORDER BY parentlevelid ";
+	private static final String FILEREPMASTERLISTALL ="SELECT a.filerepmasterid,a.parentlevelid,a.levelid,a.levelname,b.ProjectCode FROM file_rep_master a,project_master b WHERE a.filerepmasterid>0 AND a.projectid=b.projectid AND a.projectid=:projectid AND a.LabCode=:LabCode ORDER BY a.parentlevelid";
 	private static final String FILEDOCMASTERLISTALL ="SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1  AND labcode=:LabCode AND fileuploadmasterid IN (SELECT parentlevelid FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid AND labcode=:LabCode ) )  UNION  SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND labcode=:LabCode AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid AND labcode=:LabCode) ";
 	private static final String PROJECTDOCUMETSADD ="SELECT DocAmendmentId,FileRepUploadId,FileName,Description,AmendVersion,FilePath,FilePass,Amendmentname FROM file_doc_amendment WHERE FileRepUploadId=:FileRepUploadId ORDER BY AmendVersion DESC";
 	private static final String DOCUMENTAMENDMENTDATA ="SELECT DocAmendmentId,FileRepUploadId,FileName,Description,AmendVersion,FilePath,FilePass,Amendmentname FROM file_doc_amendment WHERE DocAmendmentId=:docammendmentid ORDER BY AmendVersion DESC";
@@ -1155,7 +1156,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			return count;
 		}
 		
-		
 		private static final String MSPROJECTLIST= "SELECT a.MilestoneId,a.SampleTableId,a.ProjectUID,a.ProjectId,e.EmpName,d.designation,a.TaskUID,a.TaskParentUID,a.TaskOutlineLevel,a.TaskOutlineNumber,\r\n"
 				+ "a.TaskName,a.StartDate,a.FinishDate,a.ActualStartDate,a.ActualFinishDate,a.TaskProgress,a.IsCritical FROM pfms_milestone_msprojectdata a,\r\n"
 				+ "employee e , employee_desig d WHERE a.projectid=:projectid AND e.empno = a.empno AND e.desigid = d.desigid ORDER BY \r\n"
@@ -1167,26 +1167,61 @@ public class MilestoneDaoImpl implements MilestoneDao {
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 6), '.', -1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 7), '.', -1) AS UNSIGNED)";
 		
-		
 		@Override
 		public List<Object[]> getMsprojectTaskList(String ProjectId) throws Exception {
-
 			try {
 				System.out.println("ProjectId  "+ProjectId);
 				Query query = manager.createNativeQuery(MSPROJECTLIST);
 				query.setParameter("projectid", Long.parseLong(ProjectId));
-				
 				List<Object[]>mstaskList=query.getResultList();
-				
-				
 				return mstaskList;
-				
-				
 			}catch (Exception e) {
 				// TODO: handle exception
 				return null;
 			}
-			
-	
+		}
+		
+		private static final String GETATTACHMENTID="SELECT a.TechDataId,a.AttachmentId,(SELECT VersionDoc FROM file_rep_upload WHERE FileRepUploadId=a.AttachmentId)AS 'version',(SELECT ReleaseDoc FROM file_rep_upload WHERE FileRepUploadId=a.AttachmentId)AS 'release' FROM project_technical_work_data a WHERE a.ProjectId=:projectid AND a.IsActive='1'";
+		@Override
+		public List<Object[]> getAttachmentId(String projectid) throws Exception {
+			Query query = manager.createNativeQuery(GETATTACHMENTID);
+			query.setParameter("projectid", projectid);
+			return (List<Object[]>) query.getResultList();
+		}
+		
+		private static final String SUBMITCHECKFILE="UPDATE project_technical_work_data SET AttachmentId=:AttachmentId,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,IsActive=:IsActive WHERE TechDataId=:TechDataId";
+		@Override
+		public long submitCheckboxFile(ProjectTechnicalWorkData modal) throws Exception {
+			Query query = manager.createNativeQuery(SUBMITCHECKFILE);
+			query.setParameter("TechDataId", modal.getTechDataId());
+			query.setParameter("AttachmentId", modal.getAttachmentId());
+			query.setParameter("ModifiedBy", modal.getModifiedBy());
+			query.setParameter("ModifiedDate", modal.getModifiedDate());
+			query.setParameter("IsActive", modal.getIsActive());
+			return query.executeUpdate();
+		}
+		
+		private static final String GETFILEREPCHECKDATA="SELECT FileRepId,ProjectId,FileRepMasterId,SubL1,VersionDoc,ReleaseDoc FROM file_rep_new WHERE ProjectId=:projectId AND FileRepMasterId=:fileRepMasterId AND SubL1=:subL1 AND DocumentId=:docid AND IsActive='1'";
+		@Override
+		public List<Object[]> getFileRepData(String projectId, String fileRepMasterId, String subL1, String docid)
+				throws Exception {
+			Query query = manager.createNativeQuery(GETFILEREPCHECKDATA);
+			query.setParameter("projectId", projectId);
+			query.setParameter("fileRepMasterId", fileRepMasterId);
+			query.setParameter("subL1", subL1);
+			query.setParameter("docid", docid);
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		private static final String FILEREPUPDATEDATA="UPDATE file_rep_new SET VersionDoc=:VersionDoc,ReleaseDoc=:ReleaseDoc,CreatedBy=:CreatedBy,CreatedDate=:CreatedDate WHERE FileRepId=:FileRepId";
+		@Override
+		public long FileRepUpdate(FileRepNew rep) throws Exception {
+			Query query = manager.createNativeQuery(FILEREPUPDATEDATA);
+			query.setParameter("FileRepId", rep.getFileRepId());
+			query.setParameter("VersionDoc", rep.getVersionDoc());
+			query.setParameter("ReleaseDoc", rep.getReleaseDoc());
+			query.setParameter("CreatedBy", rep.getCreatedBy());
+			query.setParameter("CreatedDate", rep.getCreatedDate());
+			return query.executeUpdate();
 		}
 }

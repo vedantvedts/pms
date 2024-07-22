@@ -5266,6 +5266,9 @@ public class ProjectController
 			//			String projectType=req.getParameter("projecttype");
 			//			String isMainWC=req.getParameter("ismainwc");
 			//			String WCname=req.getParameter("wcname");
+			String Application=req.getParameter("Application");
+			String LabParticipating=req.getParameter("LabParticipating");
+			String Scope=req.getParameter("Scope");
 			String Objective=req.getParameter("Objective");
 			String Deliverable=req.getParameter("Deliverable");
 			String projectTypeID=req.getParameter("projectTypeID");
@@ -5291,11 +5294,13 @@ public class ProjectController
 				protype.setSanctionCostFE(Double.parseDouble(sancostfe.trim()));
 			}
 			protype.setPDC(new java.sql.Date(sdf2.parse(pdc).getTime()));
+			protype.setApplication(Application.trim());
+			protype.setLabParticipating(LabParticipating.trim());
+			protype.setScope(Scope.trim());
 			protype.setObjective(Objective.trim());
 			protype.setDeliverable(Deliverable.trim());
 			protype.setProjectShortName(projectshortcode);
 			protype.setEndUser(enduser);
-
 			protype.setIsActive(1);
 			protype.setModifiedBy(Username);
 			protype.setModifiedDate(sdf1.format(new Date()));

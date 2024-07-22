@@ -87,6 +87,7 @@ import com.vts.pfms.milestone.model.FileRepNew;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
+import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 
 
 @Controller
@@ -2080,6 +2081,8 @@ public class MilestoneController {
 			try {				
 				String ProjectId=req.getParameter("projectid");
 				String Sub=req.getParameter("subid");
+				
+				System.out.println("Sub   "+Sub);
 				DocumentTitleList=service.DocumentTitleList(ProjectId,Sub,LabCode);
 			}
 			catch (Exception e) {
@@ -2409,8 +2412,6 @@ public class MilestoneController {
 			}
 
 		}
-		
-		
 		
 		
 		@RequestMapping(value = "AmendFileUnpack.htm", method = RequestMethod.POST)
@@ -2954,6 +2955,9 @@ public class MilestoneController {
 				    @RequestParam(name = "file", required = false) MultipartFile file,
 		            @RequestParam("FileRepId") String fileRepId,
 		            @RequestParam("projectid") String projectid,
+		            @RequestParam("mainLevelId") String mainLevelId,
+		            @RequestParam("subLevelId") String subLevelId,
+		            @RequestParam("docId") String docId,
 		            @RequestParam("FileNameUI") String fileNameUI,
 		            @RequestParam("FileVersion") String fileVersion,
 		            @RequestParam("HeaderValue") String fileValue,
@@ -2964,8 +2968,13 @@ public class MilestoneController {
 			logger.info(new Date() +"Inside DocFileUpload.htm "+UserId);
 			try {
 				
+				String agendaid = req.getParameter("agendaid");
+				
 				FileUploadDto upload = new FileUploadDto();
 				upload.setFileId(fileRepId);
+				upload.setFileRepMasterId(mainLevelId);
+				upload.setSubL1(subLevelId);
+				upload.setDocid(docId);
 	            upload.setFileName(fileNameUI);
 	            upload.setIS(file.getInputStream());
 	            upload.setFileNamePath(file.getOriginalFilename());
@@ -2975,6 +2984,7 @@ public class MilestoneController {
 	            upload.setProjectId(projectid);
 	            upload.setUserId(UserId);
 	            upload.setLabCode(LabCode);
+	            upload.setAgendaId(agendaid);
 	            
 				long result = service.DocFileUploadAjax(upload);
 				
@@ -2986,6 +2996,60 @@ public class MilestoneController {
 				logger.error(new Date() +" Inside DocFileUpload.htm "+UserId, e); 
 				return "static/Error";
 			}
+		}
+		
+		@RequestMapping(value = "getAttachmentId.htm", method = RequestMethod.GET)
+		public @ResponseBody String getAttachmentId(HttpServletRequest req,HttpSession ses) throws Exception {
+
+			String UserId = (String)ses.getAttribute("Username");
+			logger.info(new Date() +" Inside getAttachmentId.htm "+ UserId);		
+			String projectid=req.getParameter("projectid");		
+			List<Object[]> attach = service.getAttachmentId(projectid);
+			Gson json = new Gson();
+			if(attach!=null && attach.size()>0) {
+				return json.toJson(attach.get(0));
+			}
+			return json.toJson("");
+		}
+		
+		@RequestMapping(value = "submitCheckboxFile.htm", method = RequestMethod.GET)
+		public @ResponseBody String submitCheckboxFile(HttpServletRequest req,HttpSession ses) throws Exception {
+
+			String UserId = (String)ses.getAttribute("Username");
+			logger.info(new Date() +" Inside submitCheckboxFile.htm "+ UserId);		
+			String techDataId=req.getParameter("techDataId");	
+			String attachid=req.getParameter("attachid");
+			
+			ProjectTechnicalWorkData modal = new ProjectTechnicalWorkData();
+			modal.setTechDataId(Long.parseLong(techDataId));
+			modal.setAttachmentId(Long.parseLong(attachid));
+			modal.setModifiedBy(UserId);
+			long result = service.submitCheckboxFile(modal);
+			Gson json = new Gson();
+			return json.toJson(result);	
+		}
+		
+		
+		@RequestMapping(value = "ProjectDocsList.htm", method = RequestMethod.GET)
+		public @ResponseBody String ProjectDocsList(HttpServletRequest req,HttpSession ses)
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside ProjectDocsList.htm "+UserId);
+			try {
+				String projectid=req.getParameter("projectid");		
+				List<Object[]> projectdoclist = service.FileDocMasterListAll(projectid,LabCode);
+				Gson json = new Gson();
+				if(projectdoclist!=null && projectdoclist.size()>0) {
+					return json.toJson(projectdoclist);
+				}
+				return json.toJson("");
+			}
+			catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside ProjectDocsList.htm "+UserId, e); 
+			}
+			return "";
 		}
 		
 }

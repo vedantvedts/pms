@@ -295,5 +295,7 @@ public interface CommitteeService {
 	public Object[] NewApprovalList(String enoteId)throws Exception;
 	public List<Object[]> eNoteApprovalList(long empId, String fromDate, String toDate)throws Exception;
 	public List<Object[]> EnotePrintDetails(long parseLong,String type)throws Exception;
+	public List<Object[]> getAgendaAttachId(String agendaid)throws Exception;
+	public long addAgendaLinkFile(CommitteeScheduleAgendaDocs docs)throws Exception;
 }
 

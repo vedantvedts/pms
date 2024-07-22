@@ -2170,6 +2170,9 @@ public class ProjectServiceImpl implements ProjectService {
 		rev.setBoardReference(master.getBoardReference());
 		rev.setIsMainWC(master.getIsMainWC());
 		rev.setWorkCenter(master.getWorkCenter());
+		rev.setApplication(master.getApplication());
+		rev.setLabParticipating(master.getLabParticipating());
+        rev.setScope(master.getScope());
 		rev.setObjective(master.getObjective());
 		rev.setDeliverable(master.getDeliverable());
 		rev.setCreatedBy(userid);

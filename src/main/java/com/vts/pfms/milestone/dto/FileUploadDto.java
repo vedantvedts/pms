@@ -20,6 +20,9 @@ public class FileUploadDto {
 	private String SubL1;
 	private String Docid;
 	private String LabCode;
+	private String FileRepMasterId;
+	private String AgendaId;
+  
 	
 	
 }

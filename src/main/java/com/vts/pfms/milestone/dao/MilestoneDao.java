@@ -18,6 +18,7 @@ import com.vts.pfms.milestone.model.MilestoneActivityRev;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
 import com.vts.pfms.milestone.model.MilestoneSchedule;
+import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 
 public interface MilestoneDao {
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception;
@@ -119,4 +120,8 @@ public interface MilestoneDao {
 	public int IsFileInActive(String project, int documentID);
 	public int DocumentListNameEdit(String filerepmasterid, String levelname);
 	public List<Object[]> getMsprojectTaskList(String projectId)throws Exception;
+	public List<Object[]> getAttachmentId(String projectid)throws Exception;
+	public long submitCheckboxFile(ProjectTechnicalWorkData modal)throws Exception;
+	public List<Object[]> getFileRepData(String projectId, String fileRepMasterId, String subL1, String docid)throws Exception;
+	public long FileRepUpdate(FileRepNew rep)throws Exception;
 }

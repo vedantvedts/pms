@@ -60,7 +60,6 @@
  	padding: 5px;
 	overflow-wrap: break-word;
  }
- 
  td
  {
  	border: 1px solid black;
@@ -81,24 +80,20 @@
  .textleft{
  	text-align: left;
  }
- 
  .containers {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
 }
-
 .anychart-credits {
    display: none;
 }
-
 .flex-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
 summary[role=button] {
   background-color: white;
   color: black;
@@ -124,7 +119,6 @@ border: 0px ;
 
 }
 summary::marker{
-	
 }
 details { 
   margin-bottom: 5px;  
@@ -135,9 +129,7 @@ padding: 0 1rem ;
 align: center;
 border: 1px solid black;
 }
-
 }
-
 .anchorlink{
 	cursor: pointer;
 	color: #C84B31;
@@ -145,21 +137,16 @@ border: 1px solid black;
 .anchorlink:hover {
     text-decoration: underline;
 }
-
 </style>
-
-
 <!-- --------------  tree   ------------------- -->
 <style>
 ul, #myUL {
   list-style-type: none;
 }
-
 #myUL {
   margin: 0;
   padding: 0;
 }
-
 .caret {
   cursor: pointer;
   -webkit-user-select: none; /* Safari 3.1+ */
@@ -167,21 +154,18 @@ ul, #myUL {
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
 }
-
 .caret::before {
   content: "  \25B7";
   color: black;
   display: inline-block;
   margin-right: 6px;
 }
-
 .caret-down::before {
   content: "\25B6  ";
   -ms-transform: rotate(90deg); /* IE 9 */
   -webkit-transform: rotate(90deg); /* Safari */'
   transform: rotate(90deg);  
 }
-
 .caret-last {
   cursor: pointer;
   -webkit-user-select: none; /* Safari 3.1+ */
@@ -189,29 +173,24 @@ ul, #myUL {
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
 }
-
-
 .caret-last::before {
   content: "\25B7";
   color: black;
   display: inline-block;
   margin-right: 6px;
 }
-
-
 .nested {
   display: none;
 }
-
 .active {
   display: block;
 }
+
 </style>
 
 <!------------------- tree -------------------->
 <!----------------- model  tree   ---------------------->
 <style>
-
 .caret-1 {
   cursor: pointer;
   -webkit-user-select: none; /* Safari 3.1+ */
@@ -219,7 +198,6 @@ ul, #myUL {
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
 }
-
 .caret-last-1 {
   cursor: pointer;
   -webkit-user-select: none; /* Safari 3.1+ */
@@ -227,57 +205,46 @@ ul, #myUL {
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
 }
-
-
 .caret-last-1::before {
   content: "\25B7" ;
   color: black;
   display: inline-block;
   margin-right: 6px;
 }
-
 .caret-1::before {
   content: "\25B7" ;
   color: black;
   display: inline-block;
   margin-right: 6px;
 }
-
 .caret-down-1::before {
   content: "\25B6";
   -ms-transform: rotate(90deg); /* IE 9 */
   -webkit-transform: rotate(90deg); /* Safari */'
   transform: rotate(90deg);  
 }
-
 .nested-1 {
   display: none;
 }
-
 .active-1 {
   display: block;
 }
-
  .completed{
 	color: green;
 	font-weight: 700;
 }
-
 .briefactive{
 	color: blue;
 	font-weight: 700;
 }
-
 .inprogress{
 	color: #F66B0E;
 	font-weight: 700;
 }
-
 .assigned{
 	color: brown;
 	font-weight: 700;
 }
-
 .notyet{
 	color: purple;
 	font-weight: 700;
@@ -290,56 +257,45 @@ ul, #myUL {
 	color: #F66B0E;
 	font-weight: 700;
 }
-
 .completed{
 	color: green;
 	font-weight: 700;
 }
-
 .delay{
 	color: maroon;
 	font-weight: 700;
 }
-
 .completeddelay{
 	color:#BABD42;
 	font-weight: 700;
 }
-
 .inactive{
 	color: red;
 	font-weight: 700;
 }
-
 .delaydays
 {
 	color:#000000;
 	font-weight: 700;
 }
-
 .select2-container{
 	float:right !important;
 	margin-top: 5px;
 	
 }
-
 .modal-xl{
 	max-width: 1400px;
 }
-
 .sub-title{
 	font-size : 20px !important;
 	color: #145374 !important
 }
-
 .subtables{
 	width: 1100px !important;
 }
-
 .date-column{
 	max-width:60px !important;
 }
- 
 .status-column{
 	max-width:10px !important;
 } 
@@ -347,7 +303,6 @@ ul, #myUL {
 .resp-column{
 	max-width:80px !important;
 } 
- 
 .currency{
 	color:#367E18 !important;
 	font-style: italic;
@@ -1925,199 +1880,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 								
 								<div align="left" style="margin-left: 15px;"><b>(a) Details of Procurement Plan (Major Items)</b></div>
 								<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
-			<!-- Comment 01-04  -->
-							<%--    	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
-									<thead>
-										<tr>
-											<th colspan="8"><span class="mainsubtitle">Demand Details ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
-													<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> Lakhs) <% } else { %> - )<% } %>
-												</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
-											</th>
-										</tr>
-									</thead>
-										
-										
-										<tr>
-											<th  style="width: 15px !important;text-align: center;">SN</th>
-											<th  style="width: 175px;">Demand No</th>
-											<th  style="width: 100px; ">Demand Date</th>
-											<th  colspan="2" style="width: 355px;"> Nomenclature</th>
-											<th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
-											<th  style="width: 50px; "> Status</th>
-											<th  style="width: 195px;">Remarks</th>
-										</tr>
-										    <% int k=0;
-										    if(procurementOnDemand.get(z)!=null &&  procurementOnDemand.get(z).size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : procurementOnDemand.get(z)){ 
-										    	k++; %>
-											<tr>
-												<td ><%=k%></td>
-												<td ><%=obj[1]%></td>
-												<td  ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td  colspan="2" ><%=obj[8]%></td>
-												<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												<td  > <%=obj[10]%> </td>
-												<td  ><%=obj[11]%> </td>		
-											</tr>		
-											<%
-												estcost += Double.parseDouble(obj[5].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td colspan="5" style="text-align: right;"><b>Total</b></td>
-										    	<td style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-										    	<td colspan="2" style="text-align: right;"></td>
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-											
-											
-											<!-- ********************************Future Demand Start *********************************** -->
-											<tr>
-											<th colspan="8"><span class="mainsubtitle">Future Demand</span></th>
-											</tr>
-											<tr>
-												 <th  style="width: 15px !important;text-align: center;">SN</th>
-											 <!--  	 	 <th style="width: 150px;">Demand No </th>
-											  	 	 <th style="width: 80px;">Demand  Date</th> -->
-													 <th  colspan="3" style="width: 295px;"> Nomenclature</th>
-													 <th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
-													 <th  style="max-width: 50px; "> Status</th>
-													 <th colspan="2" style="max-width: 310px;">Remarks</th>
-											</tr>
-										
-										    			    <% int a=0;
-										    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : envisagedDemandlist){ 
-										    	a++; %>
-											<tr>
-												<td ><%=a%></td>
-											<!-- 	<td >--</td>
-												<td  >--</td> -->
-												<td  colspan="3" ><%=obj[3]%></td>
-												<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
-												<td  > <%=obj[6]%> </td>
-												<td colspan="2" ><%=obj[4]%> </td>		
-											</tr>		
-											<%
-												estcost += Double.parseDouble(obj[2].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td colspan="4" style="text-align: right;"><b>Total</b></td>
-										    	<td style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-										    	<td colspan="3" style="text-align: right;"></td>
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-											
-									<!-- ********************************Future Demand End *********************************** -->
-								
-									
-												<thead>
-													<tr>
-														<th colspan="8"><span class="mainsubtitle">
-																Orders Placed ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
-																<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> Lakhs) <% } else { %> - )<% } %>
-																</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
-														</th>
-													</tr>
-												</thead>
-										  	 	 <tr>	
-											  	 	 <th rowspan="2" style="width: 15px !important;text-align: center;">SN</th>
-											  	 	 <th style="width: 150px;">Demand No </th>
-											  	 	 <th style="width: 80px;">Demand  Date</th>
-													 <th  colspan="2" style="width: 295px;"> Nomenclature</th>
-													 <th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
-													 <th  style="max-width: 50px; "> Status</th>
-													 <th  style="max-width: 310px;">Remarks</th>
-												</tr>
-											<tr>
-												
-												 <th style="">Supply Order No</th>
-												 <th  style="	">DP Date</th>
-												 <th  colspan="2" style="	">Vendor Name</th>
-												 <th  >Rev DP</th>											 
-												 <th   colspan="2" >SO Cost-Lakh &#8377;</th>		
-											</tr>
-										       
-										        <%
-										         if(procurementOnSanction.get(z)!=null && procurementOnSanction.get(z).size()>0){
-										    	    k=0;
-										    	    Double estcost=0.0;
-												    Double socost=0.0;
-												    String demand="";
-										  	 	        for(Object[] obj:procurementOnSanction.get(z))
-										  	 	         { 
-										  	 		       if(obj[2]!=null){ 
-										  	 		         if(!obj[1].toString().equals(demand)){
-										  	 			      k++;
-										  	 			//list is to get a size so it can be used as rowspan value
-										  	 			      List<Object[]> list = procurementOnSanction.get(z).stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
-										  	 	%>
-										  	 
-                                                <!-- 1st Row Label Values -->
-												<tr>
-												<td rowspan="<%=list.size()+1%>" style="text-align: center;"><%=k%></td>
-												<td ><%=obj[1]%> </td>
-												<td style="text-align:center" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-													<td   colspan="2" style="text-align: justify;"><%=obj[8]%></td>
-													<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												    <td  > <%=obj[10]%> </td>
-													<td  ><%=obj[11]%> </td>	
-												</tr>
-												<%demand=obj[1].toString();} %>
-												
-												<!-- 2nd Row Label Values -->
-												 <tr>
-													<td ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %></td>
-													<td style="text-align:center" >
-													     <%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %>
-													</td>
-													<td  colspan="2"> <%=obj[12] %></td>
-													<td style="text-align:center">
-													     <%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %>
-													</td>
-				                                    <td  colspan="2" style=" text-align: right;">
-				                                          <%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> 
-				                                          <%} else{ %> - <%} %>
-				                                    </td>												
-				
-												</tr>		
-												<% }
-										  	 		
-										  	 		Double value = 0.00;
-										  	 		if(obj[6]!=null){
-										  	 			value=Double.parseDouble(obj[6].toString());
-										  	 		}
-										  	 		
-										  	 		estcost += Double.parseDouble(obj[5].toString());
-										  	 		socost +=  value;
-										  	 		
-										  	 	 } 
-										   	%>
-										   	 
-										    <tr>
-										    	<td colspan="6" style="text-align: right;"><b>Total</b></td>
-										    	<td colspan="2" style="text-align: right;"><b><%=df.format(socost)%></b></td>
-										    	
-										    </tr>
-										     <% }else{%>
-											
-												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-									</table>  --%>
-									
+			
 								
 								<table class="subtables" style="width:1200px; margin-left: 8px;margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 										<thead>
@@ -3195,15 +2958,14 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 												<div class="col-12">
 													<textarea class="form-control" name="RelevantPoints" id="ckeditor" rows="5" cols="50" maxlength="5"><%if(TechWorkDataList.get(z)!=null){ %> <%=TechWorkDataList.get(z)[2] %> <%}%></textarea>
 												</div>	
-												
 											</div>
 										</div>
 										<div class="row" align="center" style="margin-top:15px;" >
-										<div class="col-2"></div>
-										<div class="col-3" style="text-align: right;margin-top: 5px;">	<label><b>Technical Work Carried (Attachment)</b></label></div>
-											
-
-												<div class="col-2" style="text-align: left;">
+										<!-- <div class="col-2"></div> -->
+										<div class="col-3" style="text-align: left;margin-top: 8px;margin-bottom: 5px"><label style="font-weight: 600;font-size: 16px;color: black;">Technical Work Carried (Attachment)</label></div>
+												<div class="col-9" style="text-align: left;">
+												<div class="row">
+												  <div class="col-2" style="margin-left: -5rem">
 													<span id="attachname_<%=projectidlist.get(z)%>" ></span>
 													<%if(TechWorkDataList.get(z)==null){ %>
 														<input type="hidden" name="TechDataId" value="0">
@@ -3217,20 +2979,17 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 														<input type="hidden" class="hidden" name="attachid" id="attachid_<%=projectidlist.get(z)%>" value="0">
 														<%} %>
 													<%} %>
-													
-													
-													
-													<button type="button" class="btn btn-primary btnfileattachment"  title="Link Document" id="" onclick="openMainModal('0','a',<%=projectidlist.get(z)%>) ;" ><i class="fa fa-link" aria-hidden="true"></i></button>
-												
+													<button type="button" class="btn btn-primary btnfileattachment"  title="Link Document" id="" onclick="openMainModal(<%=projectidlist.get(z)%>) ;" ><i class="fa fa-link" aria-hidden="true"></i></button>
 													<input type="hidden" name="projectid" value="<%=projectidlist.get(z)%>">
 													<input type="hidden" name="committeeid" value="<%=committeeid%>">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-											<%if(TechWorkDataList.get(z)==null){ %>
+                                                    </div>
+                                                    <div class="col-2"></div>
+                                             <div class="col-3">
 												<button type="submit" class="btn btn-sm submit" name="submit" value="submit" onclick="return confirm('Are You Sure To Submit ?');">SUBMIT</button>
-											<%}else{ %>
-												<button type="submit" class="btn btn-sm edit" name="submit" value="submit" onclick="return confirm('Are You Sure To Edit ?');">EDIT</button>
-											<%} %>
+												<input type="hidden" name="fileRepID" id="fileRepID" value="">
+											</div>
+											</div>
 											</div>
 										</div>
 									</form>								
@@ -3340,36 +3099,6 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 		</div>
 	</div>
 		
-		
-
-<!--  -----------------------------------------------agenda attachment ---------------------------------------------- -->
-
-			<div class="modal" tabindex="-1" role="dialog" id="attachmentmodal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
- 				 <div class="modal-dialog modal-dialog-centered " style="max-width: 75% !important; ">
-   					 <div class="modal-content">
-   						 <div class="modal-header">
-					        <h4 class="modal-title" style="color: #145374">Select Document for linking</h4>
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-						 </div>
-						<div class="modal-body">   
-		<!-- --------------------------------------------left page ----------------------------------------------------->
-							<div class="col-md-12" >		
-		<!-- -------------------------------- tree ----------------------------- -->
-								<div class="row" style="height: 28rem; overflow-y:auto;verflow-x:auto; " id="submodules">		
-											
-								</div>
-		<!-- -------------------------------- tree end ----------------------------- -->				
-							</div>
-		<!-- ------------------------------------------left page end --------------------------------------------- -->
-						</div>	
-					</div> 
-				</div> 
-			</div>
-<!--  -----------------------------------------------agenda attachment ---------------------------------------------- -->
-
-
 <!-- --------------------------------------------  model start  -------------------------------------------------------- -->
 
 		<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -3379,7 +3108,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 					   
 				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
 				      
-				    	<h4 class="modal-title" id="model-card-header" style="color: #145374"></h4>
+				    	<h4 class="modal-title" id="model-card-header"></h4>
 	
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 				          <span aria-hidden="true">&times;</span>
@@ -3391,9 +3120,9 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 							<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;">
 			
 								<div class="row">
-										<div class="col-md-8">
-											<div style="margin-top: 5px;" id="fileuploadlist">
-							
+										<div class="col-md-12" style="margin-top: -20px">
+											<div id="fileuploadlist">
+
 											</div>
 										</div>
 										
@@ -3401,6 +3130,9 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 							</div>
 						
 					</div>
+				<div class="modal-footer">
+					<div style="color: red;font-weight: 500;">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
+				 </div>
 				</div>
 			</div> 
 		</div>
@@ -3767,24 +3499,12 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 												</tbody>
 												</table>
 												</div>
-							
-
-
 											</div>
-							
 						</div>
-
 					</div>
-		
 				</div>
-
-	
 			</div>	
-				
-					          
 	</div>
-				
-					      
 			</div>
 		</div>
 	</div>
@@ -3855,35 +3575,20 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 		</div>
 
 
-
 <form method="POST" action="FileUnpack.htm"  id="downloadform" target="_blank"> 
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 	<input type="hidden" name="FileUploadId" id="FileUploadId" value="" />
 </form>
-	
-		
 <form method="get" action="AgendaDocLinkDownload.htm"  id="downloadform1" target="_blank"> 
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 	<input type="hidden" name="filerepid" id="filerepid" value="" />
 </form>
-	
 <form method="POST" action="MilestoneLevelUpdate.htm"  id="milestonelevelform" > 
-	
 	<input type="hidden" name="projectid" id="projectid">
 	<input type="hidden" name="committeeid" id="committeeid" >
 	<input type="hidden" name="milestonelevelid" id="milestonelevelid" />
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>	
-
-<%-- <form method="POST" action="DocFileUpload.htm"  id="uploadform" enctype="multipart/form-data"> 
-	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-	<input type="hidden" name="projectid" id="docProiectId" value="<%=projectid%>"/>
-	<input type="hidden" name="FileRepId" id="FileRepId" value="" />
-	<input type="hidden" name="FileNameUI" id="FileNameUI" value="" />
-	<input type="hidden" name="FileVersion" id="FileVersion" value="" />
-	<input type="hidden" name="FileRelease" id="FileRelease" value="" />
-</form>
- --%>
 
 <!--  -----------------------------------------------Tech data attachment js ---------------------------------------------- -->
 
@@ -3939,50 +3644,32 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 											
 				             	</div>					
 							</div>
-						
 					</div>
 				</div>
 			</div> 
 		</div>
-		
 <!-- --------------------------------------------  Risk Types Modal   -------------------------------------------------------- -->
-
 <script>
-
-
 $('#levelvalue').on('change', function(){
-	
 	$('#milestonelevelid').val($(this).find(":selected").val());
 	$('#projectid').val(<%=projectid%>);
 	$('#committeeid').val(<%=committeeid%>);
 	$('#milestonelevelform').submit();
-
 })
 
 $( document).on("click", ".milestonemodal", function () {
-    
 	var milId = $(this).data('id');
     $('.milestonemodalwhole').hide();
     $('.collapse').removeClass('show'); 
     $('#row'+milId.charAt(milId.length-1)).click();
  	$('#'+milId).show();
-
 });
 
-
-
-
-
 function milactivitychange(val){
-	
 	if(val.value=='A'){
-		
 		$('#milestonechangetableajax').hide();
 		$('#milestoneactivitychangetable').show();
-		
-		
 	}else{
-	
 	var Proid = <%=projectid%>;	
 	$('#milestoneactivitychangetable').hide();
 	
@@ -4005,48 +3692,28 @@ function milactivitychange(val){
 							+ "<th  style='max-width: 50px; '>Progress</th><th  style='max-width: 70px;'> Status</th><th  style='max-width: 70px;'> Remarks</th></tr>";
 				
 							if(values[0].length==0){
-								
 								s+= "<tr><td colspan=8' style='text-align: center;' > Nil</td></tr>";
-								
 							}else{
-								
 								for(var i=0;i<values[0].length;i++){
 									 if(parseInt(values[0][i][12])>0){ 
-										
 										s+= "<tr><td  style='max-width: 30px;'>" +parseInt(i+1)+ "</td><td  style='max-width: 40px;'>M"+values[0][i][2]+"</td><td  style='max-width: 230px;'>"+values[0][i][3]+"</td><td  style='max-width: 80px;' >"+formatDate(values[0][i][5])+" </td><td  style='max-width: 80px;'>"+formatDate(values[0][i][7])+"</td>"
 										+"<td  style='max-width: 50px;'>"+values[0][i][12]+"</td><td  style='max-width: 70px;'>"+values[0][i][11]+"	</td><td  style='max-width: 70px;'>"+values[0][i][13]+"</td></tr>";
-
 									 } 
-
 								}
-								
 							}
-							
-										
-						
 						s+="</table>"	
-							
 				$('#milestoneactivitychange').html(s);
 
 			}
-		
 	}) 		
 	
 	}
-	
 }
-
-
 function milactivitychange6(val){
-	
 	if(val.value=='A'){
-		
 		$('#milestonechangetableajax6').hide();
 		$('#milestoneactivitychangetable6').show();
-		
-		
 	}else{
-	
 	var Proid = <%=projectid%>;	
 	$('#milestoneactivitychangetable6').hide();
 	
@@ -4064,16 +3731,11 @@ function milactivitychange6(val){
 				var values= Object.keys(result).map(function(e){
 					return result[e];
 				})	
-							
 				var s = "<table id='milestonechangetableajax6' style='align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;'><tr><th  style='width: 30px !important;'>SN</th><th  style='max-width: 40px; '>MS No.</th><th  style='max-width: 230px; '>Milestones </th><th  style='max-width: 80px;'> Original PDC </th><th  style='max-width: 80px;'> Revised PDC</th>"
 							+ "<th  style='max-width: 50px; '>Progress</th><th  style='max-width: 70px;'> Status</th><th  style='max-width: 70px;'> Remarks</th></tr>";
-				
 							if(values[0].length==0){
-								
 								s+= "<tr><td colspan=8' style='text-align: center;' > Nil</td></tr>";
-								
 							}else{
-								
 								for(var i=0;i<values[0].length;i++){
 									 if(parseInt(values[0][i][12])>0){ 
 										
@@ -4081,15 +3743,9 @@ function milactivitychange6(val){
 										+"<td  style='max-width: 50px;'>"+values[0][i][12]+"</td><td  style='max-width: 70px;'>"+values[0][i][11]+"	</td><td  style='max-width: 70px;'>"+values[0][i][13]+"</td></tr>";
 
 									 } 
-
 								}
-								
 							}
-							
-										
-						
 						s+="</table>"	
-							
 				$('#milestoneactivitychange').html(s);
 
 			}
@@ -4099,10 +3755,6 @@ function milactivitychange6(val){
 	}
 	
 }
-
-
-
-
 
 	 function formatDate(date) {
 		    var d = new Date(date),
@@ -4120,445 +3772,18 @@ function milactivitychange6(val){
 
 </script>
 
-
-
 <script type="text/javascript">
 function FileDownload(fileid1)
 {
 	$('#FileUploadId').val(fileid1);
 	$('#downloadform').submit();
 }
-
 function FileDownload1(fileid1)
 {
 	$('#filerepid').val(fileid1);
 	$('#downloadform1').submit();
 }
-
 </script>
-
-<script type="text/javascript">
-
-function openMainModal(agendatempid,addedit,Proid)
-{
-	
-	$('#AttachProjectId').val(Proid); 
-	
-	
-	$.ajax({
-			type : "GET",
-			url : "FileRepMasterListAllAjax.htm",
-			data : {
-				projectid : Proid,
-							
-			},
-			datatype: 'json',
-			success : function(result)
-				{
-					var result= JSON.parse(result);
-					var values= Object.keys(result).map(function(e){
-						return result[e];
-					})	
-	
-					var values1=values;
-					var values2=values;
-					var values3=values;
-					var values4=values;
-					var values5=values;
-
-			
-				/* --------------------------------------------------tree making--------------------------------------------------------- */			
-					var str='<ul>';
-					for(var v1=0;v1<values1.length;v1++)
-					{ 
-						if(values1[v1][1]===0)
-						{  
-							str +='<li> <span class="caret" id="system'+values1[v1][0]+'" onclick="onclickchangeMain(this);"  >'+values1[v1][3] +'</span> <ul  class="nested"> <li>'; 
-					 /* ----------------------------------------level 1------------------------------------- */	
-								for(var v2=0;v2<values2.length;v2++)
-								{ 
-									if( values2[v2][1]==values1[v1][0] )
-									{  
-										str += '<li> <span class="caret" id="system'+values2[v2][0]+'" onclick="onclickchangeMain(this);"  >' +values2[v2][3]+'</span>';
-										str +=  '<span> <button type="button" id="upbutton'+values2[v2][0]+'" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox(\''+ values1[v1][0] +'\',\''+values1[v1][3]+'\' ,\''+values2[v2][0]+'\',\''+values2[v2][3]+'\', \'-\',\'\',\'-\',\'\',\'-\',\'\',1)"> ';
-										str +=  '<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i> </button>';
-										str +='<ul  class="nested"> <li>'; 
-								/* ----------------------------------------level 2------------------------------------- */
-											for(var v3=0;v3<values3.length;v3++)
-											{ 
-												if( values3[v3][1]==values2[v2][0] )
-												{  
-													str += '<li> <span class="caret" id="system'+values3[v3][0]+'"  onclick="onclickchangeMain(this);"  >' +values3[v3][3]+'</span>';
-													str +=  '<span> <button type="button" id="upbutton'+values3[v3][0]+'" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox(\''+ values1[v1][0] +'\',\''+values1[v1][3]+'\' ,\''+values2[v2][0]+'\',\''+values2[v2][3]+'\',\''+values3[v3][0]+'\',\''+values3[v3][3]+'\',\'-\',\'\',\'-\',\'\',2)"> ';
-													str +=  '<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i> </button>';
-													str +='<ul  class="nested"> <li>'; 
-											/* ----------------------------------------level 3------------------------------------- */
-														for(var v4=0;v4<values4.length;v4++)
-														{ 
-															if( values4[v4][1]==values3[v3][0] )
-															{  
-																str += '<li> <span class="caret" id="system'+values4[v4][0]+'" onclick="onclickchangeMain(this);"  >' +values4[v4][3]+'</span>';
-																str +=  '<span> <button type="button" id="upbutton'+values4[v4][0]+'" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox(\''+ values1[v1][0] +'\',\''+values1[v1][3]+'\' ,\''+values2[v2][0]+'\',\''+values2[v2][3]+'\',\''+values3[v3][0]+'\',\''+values3[v3][3]+'\',\''+values4[v4][0]+'\',\''+values4[v4][3]+'\',\'-\',\'\',3)"> ';
-																str +=  '<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i> </button>';
-																str +='<ul  class="nested"> <li>'; 
-														/* ----------------------------------------level 4------------------------------------- */
-																	for(var v5=0;v5<values5.length;v5++)
-																	{ 
-																		if( values5[v5][1]==values4[v4][0] )
-																		{  
-																			str += '<li> <span class="caret-last" id="system'+values5[v5][0]+'" onclick="onclickchangeMain(this);"  >' +values5[v5][3]+'</span>';
-																			str +=  '<span> <button type="button" id="upbutton'+values5[v5][0]+'" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox(\''+ values1[v1][0] +'\',\''+values1[v1][3]+'\' ,\''+values2[v2][0]+'\',\''+values2[v2][3]+'\',\''+values3[v3][0]+'\',\''+values3[v3][3]+'\',\''+values4[v4][0]+'\',\''+values4[v4][3]+'\',\''+values4[v5][0]+'\',\''+values4[v5][3]+'\',4)"> ';
-																			str +=  '<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i> </button>';
-																			
-																		}
-																	} 
-																	
-														/* ----------------------------------------level 4------------------------------------- */			
-																str +=	'</li> </ul> </li>';
-															}
-														} 
-														
-											/* ----------------------------------------level 3------------------------------------- */			
-													str +=	'</li> </ul> </li>';
-												}
-											} 
-											
-								/* ----------------------------------------level 2------------------------------------- */			
-										str +=	'</li> </ul> </li>';
-									}
-								} 
-							
-				 	/* ----------------------------------------level 1------------------------------------- */
-											
-							str +='</li> 	</ul> 	</li>';	
-						} 
-					} 
-			/* --------------------------------------------------tree making--------------------------------------------------------- */
-					str += '</ul>';
-				
-							
-				$('#submodules').html(str);
-				$('#attachmentmodal').modal('show');
-				var toggler = document.getElementsByClassName("caret");
-				var i;
-				for (i = 0; i <toggler.length; i++) {
-				  toggler[i].addEventListener("click", function() {	
-					this.parentElement.querySelector(".nested").classList.toggle("active");   
-				    this.classList.toggle("caret-down");
-				  });
-				}
-			}
-	
-	});
-	
-}
-
-
-
-function setattchidvalue(attachid, attchName)
-{
-	var $projectid=$('#AttachProjectId').val();
-	$('#attachid_'+$projectid).val(attachid);
-	$('#attachname_'+$projectid).html(attchName);
-	$('#exampleModalCenter1').modal('hide');
-	$('#attachmentmodal').modal('hide');
-	console.log("$projectid"+$projectid);
-	console.log("attachid"+attachid);
-	console.log("attchName"+attchName);
-}
-
-
-</script>
-
-
-<script type="text/javascript">
-
-function onclickchangeMain(ele)
-{
-	elements = document.getElementsByClassName('caret');
-	for (var i1 = 0; i1 < elements.length; i1++) {
-		$(elements[i1]).css("color", "black");
-		$(elements[i1]).css("font-weight", "");
-	}
-	elements = document.getElementsByClassName('caret-last');
-	for (var i1 = 0; i1 < elements.length; i1++) {
-		$(elements[i1]).css("color", "black");
-		$(elements[i1]).css("font-weight", "");
-	}
-	$(ele).css("color", "green");
-	$(ele).css("font-weight", "700");
-}
-
-
-function onclickchange(ele)
-{
-	elements = document.getElementsByClassName('caret-1');
-    for (var i1 = 0; i1 < elements.length; i1++) {
-    	$(elements[i1]).css("color", "black");
-    	$(elements[i1]).css("font-weight", "");
-    }
-    elements = document.getElementsByClassName('caret-last-1');
-    for (var i1 = 0; i1 < elements.length; i1++) {
-    	$(elements[i1]).css("color", "black");
-    	$(elements[i1]).css("font-weight", "");
-    }
-$(ele).css("color", "green");
-$(ele).css("font-weight", "700");
-
-}
-
-
-$(document).ready(function(){
-
-	
-	
-	var toggler = document.getElementsByClassName("caret");
-	var i;
-	for (i = 0; i <toggler.length; i++) {
-	  toggler[i].addEventListener("click", function() {	
-		this.parentElement.querySelector(".nested").classList.toggle("active");   
-	    this.classList.toggle("caret-down");
-	  });
-	}
-});
-
-function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
-	
-	/* var modelhead=project+'  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+m; */
-	
-	var modelhead=m;
-	
-	if(lev>=1)
-	{
-		 modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l1; 
-	}
-	if(lev>=2)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l2;
-	}
-	if(lev>=3)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l3;
-	}
-	if(lev>=4)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l4;
-	}
-	$('#'+divid).html(modelhead);
-}
-var values1="";
-var values2="";
-var values3="";
-var values4="";
-var values5="";
-var values6="";
-var values7="";
-var values8="";
-var values9="";
-var values10="";
-var values11="";
-
-function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
-{
-		
-	 values1=mid;
-	 values2=mname;
-	values3=l1;
-	 values4=lname1;
-	 values5=l2;
-	 values6=lname2;
-	values7=l3;
-	 values8=lname3;
-	 values9=l4;
-	 values10=lname4;
-	 values11=lev;
-	 
-
-		var $projectid=$('#AttachProjectId').val();		
-		setmodelheader(mname,lname1,lname2,lname3,lname4,lev,$('#projectname').val(),'model-card-header');		
-		$('#amendmentbox').css('display','none');
-		$('#submitversion').val('');
-		$('#prevversion').text('');
-		$('#downloadbtn').remove();
-		$('#FileName').prop('readonly',false);
-		$('#FileName').val('');
-		$('#modeldescshow').text('');
-		$('#uploadbox').css('display','none');
-		$('#ammendmentbox').css('display','none');
-		
-		$.ajax({
-				type : "GET",
-				url : "FileHistoryListAjax.htm",
-				data : {
-					projectid : $projectid,
-					mainsystemval : mid,
-					sublevel : lev ,
-					s1:l1,
-					s2:l2,
-					s3:l3,
-					s4:l4,				
-				},
-				datatype: 'json',
-				success : function(result)
-					{
-						var result= JSON.parse(result);
-						var values= Object.keys(result).map(function(e){
-						return result[e];
-					})			
-					
-						/* --------------------------------------------ajax nested--------------------------------------- */		
-							
-							 $.ajax({
-									type : "GET",
-									url : "FileDocMasterListAll.htm",
-									data : {
-										projectid : $projectid,		
-									},
-									datatype: 'json',
-									success : function(result1)
-											{
-												var result1= JSON.parse(result1);
-												var values1= Object.keys(result1).map(function(e){
-													return result1[e];
-												})
-														
-												var values2=values1;
-												/* --------------------------------------------------tree making--------------------------------------------------------- */			
-													var str='<ul>';
-													for(var v1=0;v1<values1.length;v1++)
-													{ 
-														if(values1[v1][2]===1)
-														{  
-															str +='<li> <span class="caret-1" id="docsysl1'+values1[v1][0]+'" onclick="onclickchange(this);" >'+values1[v1][3] +'</span> <ul  class="nested-1"> <li>'; 
-													 /* ----------------------------------------level 1------------------------------------- */	
-																for(var v2=0;v2<values2.length;v2++)
-																{ 
-																	if(values1[v2][2]===2 && values2[v2][1]==values1[v1][0] )
-																	{  
-																		str += '<li> <span class="caret-1" id="docsysl2'+values2[v2][0]+'" onclick="onclickchange(this);" >' +values2[v2][3]+'</span> <ul  class="nested-1"> <li>'; 
-																/* ----------------------------------------level 2------------------------------------- */
-																			
-																			for(var v3=0;v3<values.length;v3++)
-																			{ 
-																				if(  values[v3][1]==values2[v2][0])
-																				{
-																					str += '<li>';
-																					
-																					if(values[v3][4]!=0)
-																					{
-																						str += '<input type="radio" class="selectradio" onchange="setattchidvalue(\''+ values[v3][4] +'\', \''+values[v3][3] +'\');" ></button>' ;
-																					}else
-																					{
-																						str += '<input type="radio" class="selectradio" disabled ></button>' ;
-																					}
-																					
-																					str +=' <span class="caret-last-1" id="docsysl3'+values[v3][0]+'" onclick="onclickchange(this);">'+values[v3][3]+'('+values[v3][9]+')</span>';
-																						
-																					/*  str +='<span><button type="button" class="btn"  style="background-color: transparent;margin: -3px 0px;" onclick="showuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\')" >'; 																					
-																					str +=		'<i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i>';
-																					str +=		'</button>';  */
-																					if(values[v3][4]!=0)
-																					{ 
-																						str +=' <span class="version">Ver '+values[v3][8]+'.'+values[v3][6];
-																						str +=		' <button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;" onclick="FileDownload(\''+values[v3][4]+'\')">';                                     
-																						str += 			'<i class="fa fa-download" aria-hidden="true"></i>';
-																						str +=		'</button> ';
-																						str += '<button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+values[v3][7]+'\')"><i class="fa fa-cloud-upload" aria-hidden="true" style="color: #FF5F00;font-size:20px;"></i></button>';
-																						str += '<label for="fileInput" id="uploadlabel'+values[v3][7]+'" style="margin-left: 20px; display: none;">'
-																					    str += '<input type="file" name="docFileInput" id="fileInput'+values[v3][7]+'" required="required"  accept="application/pdf"/> '
-																					    str += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+('2'+values2[v2][0])+"/"+('3'+values[v3][0])+'\','+values[v3][7]+',\''+values[v3][5]+'\',\''+values[v3][6]+'\',\''+values[v3][8]+'\',\''+ values[v3][4] +'\', \''+values[v3][3] +'\')">Upload</button>'
-																					    str += '</label>'
-																				
-																						/* str +=		'  <button type="button" class="btn"  style="background-color: #CFFFFE;padding : 0px 5px 3px;margin: 0px -10px;border: 0.1px solid grey;" onclick="showamuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\',\''+values[v3][4]+'\')" >';                                     
-																						str  += 			' Amendment <img style="height:20px; width: 20px; " src="view/images/amendment-icon-2.png"> ';   /* <i class="fa fa-plus" style="color: #3DB2FF" aria-hidden="true"></i> <i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i> 
-																						str +=		'</button> </span>'; */
-																						
-																						str += '</span>';
-																					} 
-																							
-																							
-																					str +='	</span> </li>';
-																						
-																				}
-																			}			
-																	
-																			
-																/* ----------------------------------------level 2------------------------------------- */			
-																		str +=	'</li> </ul> </li>';
-																	}
-																} 
-															
-												 	/* ----------------------------------------level 1------------------------------------- */
-																			
-															str +='</li> 	</ul> 	</li>';	
-														} 
-													} 
-												/* --------------------------------------------------tree making--------------------------------------------------------- */
-													str += '</ul>';
-													
-													$('#fileuploadlist').html(str);
-													
-													var toggler = document.getElementsByClassName("caret-1");
-													$('#s1').val(l1);
-													$('#s2').val(l2);
-													$('#s3').val(l3);
-													$('#s4').val(l4);
-													$('#mainsystemval').val(mid);
-													$('#sublevel').val(lev);
-													$('#Path').val(mname+'/'+lname1);
-													
-													var i;
-													for (i = 0; i <toggler.length; i++) {
-													  toggler[i].addEventListener("click", function() {	
-														this.parentElement.querySelector(".nested-1").classList.toggle("active-1");   
-													    this.classList.toggle("caret-down-1");
-													  });
-													}
-													$('#exampleModalCenter1').modal('show');
-															
-															/* if($doclev1>0)
-															{
-																$('#docsysl1'+$doclev1).click();
-															}
-															if($doclev2>0)
-															{
-																$('#docsysl2'+$doclev2).click();
-															}
-															if($doclev3>0)
-															{
-																$('#docsysl3'+$doclev3).css("font-weight", "700")
-															}
-															
-															$doclev1=0;
-															$doclev2=0;
-															$doclev3=0;
-													 */
-													
-											},
-											error: function(XMLHttpRequest, textStatus, errorThrown) {
-												alert("Internal Error Occured !!");
-									            alert("Status: " + textStatus);
-									            alert("Error: " + errorThrown); 
-									        }  
-											
-							 		})
-							 
-						/* --------------------------------------------ajax nested--------------------------------------- */
-						
-					
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("Internal Error Occured !!");
-		            alert("Status: " + textStatus);
-		            alert("Error: " + errorThrown); 
-		        }  
-		 })
-				
-}
-
-
-</script>
-
 
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
 			
@@ -4567,11 +3792,8 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								    	  
 									function chartprint_<%=projectidlist.get(z)%>(type,interval){ 
 								    	  var data = [
-								    		  
  											<%for(Object[] obj : ganttchartlist.get(z)){%>
-								    		  
 								    		  {
-				                 
 								    		    id: "<%=obj[3]%>",
 								    		    name: "<%=obj[2]%>",
 								    		    <%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
@@ -4599,35 +3821,28 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								    		  <%}%>
 								    	
 								    		  ];
-								    		    
 								    		 
 								    		// create a data tree
 								    		var treeData = anychart.data.tree(data, "as-tree");
-								
 								    		// create a chart
 								    		var chart = anychart.ganttProject();
-								
 								    		// set the data
 								    		chart.data(treeData);   
-								  
 								        	// set the container id
-								        	
 								        	chart.container("containers_<%=projectidlist.get(z)%>");  
-
 								        	// initiate drawing the chart
 								        	chart.draw();    
-									
 								        	// fit elements to the width of the timeline
 								        	chart.fitAll();
-								        	
-							        	   var timeline = chart.getTimeline();
-
-										   // configure labels of elements
-										   timeline.elements().labels().fontWeight(600);
-										   timeline.elements().labels().fontSize("14px");
-										   timeline.elements().labels().fontColor("#FF6F00");
 								        
-								        	 chart.getTimeline().tooltip().useHtml(true);    
+								        	 chart.getTimeline().tooltip().useHtml(true);   
+								        	 
+								        	  var timeline = chart.getTimeline();
+											   // configure labels of elements
+											   timeline.elements().labels().fontWeight(600);
+											   timeline.elements().labels().fontSize("14px");
+											   timeline.elements().labels().fontColor("#FF6F00");
+								        	 
 										        chart.getTimeline().tooltip().format(
 									        		 function() {
 									        		        var actualStart = this.getData("actualStart") ? this.getData("actualStart") : this.getData("baselineStart");
@@ -4655,17 +3870,7 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 									        		        return html;
 									        		    }
 										        		
-										         /*  "<span style='font-weight:600;font-size:10pt'> Actual : " +
-										          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
-										          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-										          "<span style='font-weight:600;font-size:10pt'> Revised : " +
-										          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
-										          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-										          "Progress: {%progressValue}<br>"  */
 										        ); 
-										        
-								        
-								        
 								       
 								        /* Title */
 								        
@@ -4676,14 +3881,11 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 										title.fontSize(18);
 										title.fontWeight(600);
 										title.padding(5);
-								        
 										<%-- <%} %> --%>
-																	        
 								        chart.rowHoverFill("#8fd6e1 0.3");
 								        chart.rowSelectedFill("#8fd6e1 0.3");
 								        chart.rowStroke("0.5 #64b5f6");
 								        chart.columnStroke("0.5 #64b5f6");
-								        
 								        chart.defaultRowHeight(35);
 								     	chart.headerHeight(90);
 								     	
@@ -4697,19 +3899,22 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								     	dataGrid.rowSelectedFill("#ffd54f 0.3");
 								     	dataGrid.columnStroke("2 #64b5f6");
 								     	dataGrid.headerFill("#64b5f6 0.2");
-								     	
 								     
 								     	/* Title */
 								     	var column_1 = chart.dataGrid().column(0);
-								     	column_1.title().enabled(false);
+								    	column_1.labels().fontWeight(600);
+								     	column_1.labels().useHtml(true);
+								     	column_1.labels().fontColor("#055C9D");
 								     	
 								     	var column_2 = chart.dataGrid().column(1);
 								     	column_2.title().text("Milestone");
 								     	column_2.title().fontColor("#145374");
 								     	column_2.title().fontWeight(600);
 								     	
+										chart.dataGrid().column(0).width(25);
 								     	
-								     
+								     	chart.dataGrid().tooltip().useHtml(true);    
+								        
 								     	if(interval==="year"){
 								     		/* Yearly */
 									     	chart.getTimeline().scale().zoomLevels([["year"]]);
@@ -4717,7 +3922,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 									     	header.level(2).format("{%value}-{%endValue}");
 									     	header.level(1).format("{%value}-{%endValue}"); 
 								     	}
-								     	
 								     	if(interval==="half"){
 								     		/* Half-yearly */
 									     	chart.getTimeline().scale().zoomLevels([["semester", "year"]]);
@@ -4733,7 +3937,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								     		  return duration;
 								     		});
 								     	}
-								     	
 								     	if(interval==="quarter"){
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
@@ -4747,14 +3950,11 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								     		  return duration;
 								     		});
 								     	}
-								     	
 								     	if(interval==="month"){
 								     		/* Monthly */
 									     	chart.getTimeline().scale().zoomLevels([["month", "quarter","year"]]);
 								     	}
-								     	
 								     	else if(interval===""){
-															     		
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
 									     	var header = chart.getTimeline().header();
@@ -4766,25 +3966,20 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								     				duration='H2'
 								     		  return duration;
 								     		});
-								     		
 								     	}
 								     	/* chart.getTimeline().scale().fiscalYearStartMonth(4); */
-								     	
 								     	/* Header */
 								     	var header = chart.getTimeline().header();
 								     	header.level(0).fill("#64b5f6 0.2");
 								     	header.level(0).stroke("#64b5f6");
 								     	header.level(0).fontColor("#145374");
 								     	header.level(0).fontWeight(600);
-								     	
 								     	/* Marker */
 								     	var marker_1 = chart.getTimeline().lineMarker(0);
 								     	marker_1.value("current");
 								     	marker_1.stroke("2 #dd2c00");
-								     	
 								     	/* Progress */
 								     	var timeline = chart.getTimeline();
-								     	
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
@@ -4793,7 +3988,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								     	    return "<span style='color:black;font-weight:bold'></span>";
 								     	  }
 								     	});
-								     	
 								     	
 								    // calculate height
 								     	var traverser = treeData.getTraverser();
@@ -4812,80 +4006,36 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								        }
 								        }
 								        itemSum += chart.headerHeight();
-								        
-								       
 								        var menu = chart.contextMenu();
-								        
-								
-								        
-
-								   		<%-- anychart.onDocumentReady(function () { 
-								   		    var nammme="<%=projectidlist.get(z)%>";
-								            document.getElementById("containers_"+nammme).style.height = String(itemSum) + 'px';
-								            setTimeout(function() {
-								            
-								            	 //chart.shareAsJpg(function (response) {
-								            	    //    alert(response);
-								            	    //});
-								              
- 								             //chart.saveAsJpg({"width":1200, "height": 600,"quality": 2.0,"forceTransparentWhite": false,"filename": "Grantt_"+nammme});
-								             //chart.saveAsPdf('a4', true, 100, 100, 'Grantt_'+nammme);
-								              //chart.print();
-								              setTimeout(function() {
-								                //document.getElementById('containers').style.height = '100%';
-								              },3000);
-								            },1000);
-								          });  --%>
-									    
 								          
 									} 
-								  
-	
-		
 		 $( document ).ready(function(){
-	    	  
 	    	  chartprint_<%=projectidlist.get(z)%>('type','');
 	      })
-	      
-	      
 	      function ChartPrint_<%=projectidlist.get(z)%>(){
 		   		console.log("#interval_<%=projectidlist.get(z) %>");
 	    	  var interval_<%=projectidlist.get(z) %> = $("#interval_<%=projectidlist.get(z) %>").val();
 	    	  $('#containers_<%=projectidlist.get(z) %>').empty();
 	    	  chartprint_<%=projectidlist.get(z)%>('print',interval_<%=projectidlist.get(z) %>);
 	     }
-	     
-	 
 				$('#interval_<%=projectidlist.get(z) %>').on('change',function(){
-					
 					$('#containers_<%=projectidlist.get(z) %>').empty();
 					var interval_<%=projectidlist.get(z) %> = $("#interval_<%=projectidlist.get(z) %>").val()
 					chartprint_<%=projectidlist.get(z)%>('type',interval_<%=projectidlist.get(z) %>);
 					
 				})
-		
-
-		
 		</script>
-				
 	<% } %>
-				
 <script type="text/javascript">
-
 function submitForm(frmid)
 { 
-  
 	        $('body').css("filter", "blur(0.8px)");
 	        $('#main').hide();
 	        $('#spinner').show();
-	  
-	
 	document.getElementById(frmid).submit(); 
 } 
 </script>
-
 <script type="text/javascript">
-
 $('.edititemsdd').select2();
 $('.items').select2();
 $("table").on('click','.tr_clone_addbtn' ,function() {
@@ -4901,14 +4051,8 @@ $("table").on('click','.tr_clone_addbtn' ,function() {
    */  
 });
 </script>
-
-
-
 <script type="text/javascript">
-
-
 var editor_config = {
-	
 	maxlength: '4000',
 	toolbar: [{
 	          name: 'clipboard',
@@ -4935,7 +4079,6 @@ var editor_config = {
 	          items: ['Scayt']
 	        },
 	        '/',
-
 	        {
 	          name: 'styles',
 	          items: ['Format', 'Font', 'FontSize']
@@ -4953,34 +4096,19 @@ var editor_config = {
 	          items: ['Print', 'PageBreak', 'Source']
 	        }
 	      ],
-	     
 	    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-
 		customConfig: '',
-
 		disallowedContent: 'img{width,height,float}',
 		extraAllowedContent: 'img[width,height,align]',
-
 		height: 300,
-		
 		contentsCss: [CKEDITOR.basePath +'mystyles.css' ],
-
-		
 		bodyClass: 'document-editor',
-
-		
 		format_tags: 'p;h1;h2;h3;pre',
-
-		
 		removeDialogTabs: 'image:advanced;link:advanced',
-		
 		stylesSet: [
-		
 			{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
 			{ name: 'Cited Work', element: 'cite' },
 			{ name: 'Inline Quotation', element: 'q' },
-
-			
 			{
 				name: 'Special Container',
 				element: 'div',
@@ -5005,12 +4133,8 @@ var editor_config = {
 			},
 			{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
 			{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
-			
-
 
 ]
-		
-		
 		
 	} ;
 	
@@ -5020,15 +4144,12 @@ CKEDITOR.replace('ckeditor1', editor_config );
 $(document).ready(function() {
 	var locked=0;
 	   var editAbstract=CKEDITOR.instances.ckeditor;
-
 	   editAbstract.on("key",function(e) {      
-	                           
 	      var maxLength=e.editor.config.maxlength;
 	      e.editor.document.on("keyup",function() {KeyUp(e.editor,maxLength,"letterCount",e);});
 	      e.editor.document.on("paste",function() {KeyUp(e.editor,maxLength,"letterCount",e);});
 	      e.editor.document.on("blur",function() {KeyUp(e.editor,maxLength,"letterCount",e);});
 	   },editAbstract.element.$);
-
 	   //function to handle the count check
 	   function KeyUp(editorID,maxLimit,infoID,editor) 
 	   {
@@ -5053,9 +4174,6 @@ $(document).ready(function() {
 		   }
 	   }   
 	});
-
-
-
 
 function RecDecEdit(recdescid ){
 	
@@ -5161,55 +4279,63 @@ function openEditDiv(a){
     }
 }
 
-function fileUpload(repId){
-	 var label = document.getElementById("uploadlabel"+repId);
-
+function fileUpload(Id){
+	 var label = document.getElementById("uploadlabel"+Id);
     if (label.style.display === "none") {
         label.style.display = "inline-block";
     } else {
         label.style.display = "none";
     }
 }
-
 </script>
 <script>
-function fileSubmit(value,repid,filename,releaseDoc,version,attachid, attchName) {
+function fileSubmit(value,main,sub,mainLevelId,subLevelId,docId,repid,filename,releaseDoc,version,attachid,attchName) {
 	
-	 // Clone the header content to avoid modifying the original
-    var clonedHeader = $('#exampleModalCenter1 .modal-title').clone();
-    // Remove <i> elements from the cloned content
-    clonedHeader.find('i').remove();
-    // Get the text content
-    var textNodes = clonedHeader.contents().filter(function() {
-        return this.nodeType === Node.TEXT_NODE;
-    });
-    // Join text nodes as comma-separated values
-    var modalHeaderContent = textNodes.map(function() {
-        return $(this).text().trim();
-    }).get().join(',');
+    var fileInput =  $("#fileInput"+value)[0].files[0];
+    var modalHeaderContent = main+','+sub;
     
-    
-    var fileInput =  $("#fileInput"+repid)[0].files[0];
-    
-    console.log("fileInput"+fileInput)
-   if (fileInput === undefined) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Please select a file to upload!',
-            allowOutsideClick :false
-        });
-        return;
-    }  
-    
+	 if (fileInput === undefined) {
+	       Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: 'Please select a file to upload!',
+	            allowOutsideClick :false
+	       });
+	       return;
+	  }
+	// Check if the file is a PDF
+	   var fileType = fileInput.type;
+	   if (fileType !== 'application/pdf') {
+	       Swal.fire({
+	           icon: 'error',
+	           title: 'Invalid File Type',
+	           text: 'Please select a PDF file!',
+	           allowOutsideClick: false
+	       });
+	       return;
+	   }
+	   // Check if the file size is less than 10MB (10 * 1024 * 1024 bytes)
+	   var fileSize = fileInput.size;
+	   if (fileSize > 10 * 1024 * 1024) {
+	       Swal.fire({
+	           icon: 'error',
+	           title: 'File Too Large',
+	           text: 'Please select a file smaller than 10MB!',
+	           allowOutsideClick: false
+	       });
+	       return;
+	   }
     if (confirm("Are you sure to submit this?")) {
         event.preventDefault();
         var projectid = <%= projectid %>;
         var formData = new FormData();
-        formData.append("file", $("#fileInput"+repid)[0].files[0]);
+        formData.append("file", $("#fileInput"+value)[0].files[0]);
         formData.append("FileRepId", repid);
         formData.append("projectid", projectid);
-        formData.append("FileNameUI", filename);
+        formData.append("mainLevelId", mainLevelId);
+        formData.append("subLevelId", subLevelId);
+        formData.append("docId", docId);
+        formData.append("FileNameUI", attchName);
         formData.append("FileVersion", version);
         formData.append("FileRelease", releaseDoc);
         formData.append("HeaderValue", modalHeaderContent);
@@ -5225,17 +4351,21 @@ function fileSubmit(value,repid,filename,releaseDoc,version,attachid, attchName)
             	attachid=response;
             	  Swal.fire({
 		    	       	title: "Success",
-		                text: "File Uploaded Successfully and Click EDIT Button to Update the File",
+		                text: "File Uploaded Successfully",
 		                icon: "success",
 		                allowOutsideClick :false
 		         		});
-               setattchidvalue(attachid, attchName);
+            	  $('#exampleModalCenter1').hide();
+            	  $('.swal2-confirm').click(function (){
+      	        	console.log("hiiii")
+      	            location.reload();
+      	        	})
             },
             error: function(xhr, status, error) {
             	  Swal.fire({
                       icon: 'error',
                       title: 'Error',
-                      text: 'An error occurred while uploading the file.'
+                      text: 'An error occurred while uploading the file'
                   });
                   console.log(xhr.responseText);
                }
@@ -5246,7 +4376,195 @@ function fileSubmit(value,repid,filename,releaseDoc,version,attachid, attchName)
         return false;
     }
 }
-
 </script>
+<script type="text/javascript">
+var projectId='<%=projectid%>';
+var x="";
+var y="";
+$( document ).ready(function() {
+	$.ajax({
+	    url: 'getAttachmentId.htm',
+	    type: 'GET',
+	    data: {projectid: projectId},
+	    success: function(response) {
+	    	var result= JSON.parse(response);
+	    		 x=result[1];
+	        	 y=result[0];
+	    },
+	  })
+});
 
+function openMainModal(projectid){
+var projectName="";
+var subId="";
+var attachRepId=x;
+var techDataId=y;
+var main="";
+var sub="";
+var mainLevelId="";
+var subLevelId="";
+
+	$.ajax({
+		type : "GET",
+		url : "FileRepMasterListAllAjax.htm",
+		data : {
+			projectid : projectid,
+		},
+		datatype: 'json',
+		success : function(result)
+			{
+				var result= JSON.parse(result);
+				var values= Object.keys(result).map(function(e){
+					return result[e];
+				})	
+                if (values.length > 0) {
+                     projectName = values[0][4];
+                     subId = values[0][2];
+                }
+				var values1=values;
+				var values2=values;
+				
+			/* --------------------------------------------------tree making--------------------------------------------------------- */			
+				var str='<ul>';
+				var itemCounter = 0;
+				var subCounter= 0;
+				for(var v1=0;v1<values1.length;v1++){ 
+					mainLevelId=values1[v1][0];
+					main=values1[v1][3];
+				  for(var v2=0;v2<values2.length;v2++){ 
+					  if( values2[v2][1]==values1[v1][0] )
+						{
+						  subLevelId=values2[v2][0];
+						  sub=values2[v2][3];
+						  var levelId = values2[v2][0];
+						   var itemId = 'item-' + (++itemCounter);
+							str += '<li id="' + itemId + '"> <span style="color:blue;font-weight:600;font-size:20px;">'+values1[v1][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values2[v2][3]+'</span> ';
+							
+							 (function(projectid,itemId,mainIndex,main,sub,mainLevelId,subLevelId,attachRepId) {
+								 $.ajax({
+					                    type: "GET",
+					                    url: "ProjectDocsList.htm",
+					                    data: { projectid: projectid}, 
+					                    datatype: 'json',
+					                    success: function(result) {
+					                    	var result= JSON.parse(result);
+					        				var mainvalues= Object.keys(result).map(function(e){
+					        					return result[e];
+					        				})
+					        				var values3=mainvalues;
+					        				var values4=mainvalues;
+					                        var mainStr = '<ul>';
+					                        for(var v3=0;v3<values3.length;v3++){
+					                        	for(var v4=0;v4<values4.length;v4++){
+					                        		var masterid=values4[v4][0];
+					                        		var mianItemId = 'main-sub-item-'+ (++subCounter);
+					                        		 if( values4[v4][1]==values3[v3][0] ){
+					                        			 mainStr +='<li id="' + mianItemId + '"> <span style="color:#AD1457;font-weight:600;font-size:19px;">'+values3[v3][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values4[v4][3]+'</span></li>';
+					                        		 
+					                      			 (function(mianItemId,subIndex,subLevelId,attachRepId,masterid) {
+					            							 $.ajax({
+					            				                    type: "GET",
+					            				                    url: "AllFilesList.htm",
+					            				                    data: { projectid: projectid, subid:subLevelId }, 
+					            				                    datatype: 'json',
+					            				                    success: function(additionalResult) {
+					            				                        var additionalResult = JSON.parse(additionalResult);
+					            				                        var additionalValues = Object.keys(additionalResult).map(function(e) {
+					            				                            return additionalResult[e];
+					            				                        });
+					            				                        var additionalStr = '<ul>';
+					            				                        for (var j = 0; j < additionalValues.length; j++) {
+					            				                        	if(masterid==additionalValues[j][1]){
+					            				                        	var subItemId = 'sub-item-' + subIndex + '-' + j;
+					            				                            additionalStr +='<li id="' + subItemId + '" style="color:black;font-weight:600;font-size:18px;">'
+					            				                            additionalStr += '<input class="form-check-input " type="checkbox" style=" width: 18px; height: 18px;margin-top:9px;" value="' + additionalValues[j][4] + '" id="checkbox' + j + '"';
+					            				                            if(additionalValues[j][7]!=0){
+					            				                            	if(attachRepId!=null && attachRepId==additionalValues[j][4]){
+					            				                            	   additionalStr += ' checked disabled>';
+					            				                            	}
+					            				                            }else{
+					            				                                additionalStr += ' disabled>';
+					            				                            }
+					            				                            additionalStr +='&nbsp;<span >' + additionalValues[j][3] + '</span>';
+					            				                        	if(additionalValues[j][4]!=0){
+					            				                        		 additionalStr +='&nbsp;&nbsp;<span class="version" style="color:grey">Ver '+additionalValues[j][8]+'.'+additionalValues[j][6];
+					            				                        		 additionalStr +='<button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;"  onclick="FileDownload(\''+additionalValues[j][4]+'\')">';                                     
+					            				                        		 additionalStr +='<i class="fa fa-download" aria-hidden="true"></i>';
+					            				                        		 additionalStr +='</button> ';
+					            				                        		 additionalStr += '</span>';
+					            											}
+					            			                        		 additionalStr += '<span><button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+subItemId+'\')"><i class="fa fa-upload" aria-hidden="true" style="color: #FF5F00;font-size:20px;"></i></button>';
+					            			                        		 additionalStr += '<label for="fileInput" id="uploadlabel'+subItemId+'" style="margin-left: 20px; display: none;">'
+					            			                        		 additionalStr += '<input type="file" name="docFileInput" id="fileInput'+subItemId+'" required="required"  accept="application/pdf"/> '
+					            			                        		 additionalStr += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+subItemId+'\',\''+main+'\',\''+sub+'\',\''+mainLevelId+'\',\''+subLevelId+'\',\''+additionalValues[j][0]+'\',\''+additionalValues[j][7]+'\',\''+additionalValues[j][5]+'\',\''+additionalValues[j][6]+'\',\''+additionalValues[j][8]+'\',\''+ additionalValues[j][4] +'\', \''+additionalValues[j][3] +'\')">Upload</button>'
+					            			                        		 additionalStr += '</label>'
+					            			                        		 additionalStr += '</span>';
+					            				                             additionalStr +='</li>'
+					            				                        }
+					            				                    }
+					            				                        additionalStr += '</ul>';
+					            				                        $('#' + mianItemId).append(additionalStr);
+					            				                    }
+					            				               });
+					            						 })(mianItemId,subCounter,subLevelId,attachRepId,masterid); 
+					                        			 
+					                        		 }
+					                        	}
+					                        }
+					                        mainStr += '</ul>';
+					                        $('#' + itemId).append(mainStr);
+					                    }
+					               });
+								  
+								  })(projectid,itemId,itemCounter,main,sub,mainLevelId,subLevelId,attachRepId);
+						
+					}
+			     }
+		      } 
+		/* --------------------------------------------------tree making--------------------------------------------------------- */
+				str += '</ul>';
+			  if (projectName !== undefined && projectName.trim() !== '') {
+		            $('#exampleModalCenter1 .modal-title').html('<span style="color: #F50057;font-weight:600;">Document Linking For ' + projectName + '</span>');
+		        } else {
+		            $('#exampleModalCenter1 .modal-title').html('<span style="color: #F50057;font-weight:600;">Document Linking </span>');
+		            str = '<span>No Data Available</span>';
+		        }
+			$('#fileuploadlist').html(str);
+		}
+    });
+	$('#exampleModalCenter1').modal('show');
+	
+	 // Event delegation for dynamically added checkboxes
+     $(document).on('change', '.form-check-input', function() {
+       // Logic to allow only one checkbox to be checked at a time within the list
+       $('.form-check-input').not(this).prop('checked', false);
+       // Send AJAX request with the selected checkbox value
+       var selectedValue = $(this).val();
+       $.ajax({
+         url: 'submitCheckboxFile.htm', 
+         type: 'GET',
+         data: { attachid: selectedValue,techDataId: techDataId},
+         success: function(response) {
+           Swal.fire({
+             icon: 'success',
+             title: 'Success',
+             text: 'Document linked successfully!',
+             allowOutsideClick :false
+           });
+           $('#exampleModalCenter1').hide();
+           $('.swal2-confirm').click(function (){
+	            location.reload();
+	        	})
+         },
+         error: function() {
+           Swal.fire({
+             icon: 'error',
+             title: 'Error',
+             text: 'An error occurred while submitting the checkbox selection.',
+           });
+         }
+    });	 
+  });
+}
+</script>
 </body>

@@ -178,7 +178,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid"
-													value="<%=obj[0]%>/<%=obj[3] %>"
+													value="<%=obj[0]%>,<%=obj[3] %>"
 													formtarget="_blank">
 													<div class="cc-rockmenu">
 														<div class="rolling">

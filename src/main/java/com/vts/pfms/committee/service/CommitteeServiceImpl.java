@@ -3701,4 +3701,12 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.EnotePrintDetails(enoteId,type);
 	}
+	@Override
+	public List<Object[]> getAgendaAttachId(String agendaid) throws Exception {
+		return dao.getAgendaAttachId(agendaid);
+	}
+    @Override
+    public long addAgendaLinkFile(CommitteeScheduleAgendaDocs docs) throws Exception {
+    	return dao.addAgendaLinkFile(docs);
+    }
 }

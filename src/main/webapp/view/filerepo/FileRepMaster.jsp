@@ -371,10 +371,12 @@ div {
 					       		</div>
 					        </h4>
 					       		<div style="float: right !important; margin-top:-20px; " > 
-					       		<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %>"></i></a>
+					       		<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %>" > 
+					       		<%-- <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %>"></i> --%>
+					       		</a>
 					       		    </div>
 					      </div>
-					  			<div id="collapse55B<%=Sub0Count %><%=Sub1Count %>" class="panel-collapse collapse in">
+					  			<%-- <div id="collapse55B<%=Sub0Count %><%=Sub1Count %>" class="panel-collapse collapse in">
 					  			
 					  			<%
 						  			int Sub2Count=1; 
@@ -702,7 +704,7 @@ div {
 	  			</div>	
 					<!-- end two	 -->		
 					  			
-					  </div>
+					  </div> --%>
 					 </div>
 					 
 				  </div>

@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.committee.dao.CommitteeDao;
+import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.dao.MilestoneDao;
 import com.vts.pfms.milestone.dto.FileDocAmendmentDto;
@@ -41,12 +43,21 @@ import com.vts.pfms.milestone.model.MilestoneActivityRev;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
 import com.vts.pfms.milestone.model.MilestoneSchedule;
+import com.vts.pfms.print.model.ProjectTechnicalWorkData;
+import com.vts.pfms.project.dao.ProjectDao;
 
 @Service
 public class MilestoneServiceImpl implements MilestoneService {
 
 	@Autowired
 	MilestoneDao dao;
+	
+	@Autowired
+	ProjectDao projectDao;
+	
+	@Autowired
+	CommitteeDao committeDao;
+	
 	FormatConverter fc=new FormatConverter();
 	private static final Logger logger=LogManager.getLogger(MilestoneServiceImpl.class);
 	@Value("${ApplicationFilesDrive}")
@@ -1559,6 +1570,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		
 		logger.info(new Date() +"Inside SERVICE DocFileUploadAjax ");
 		long count=0;
+		long count1=0;
 	
 		 try {
 				String[] Dir=uploadDto.getPathName().split(",");
@@ -1577,38 +1589,118 @@ public class MilestoneServiceImpl implements MilestoneService {
 				}
 			
 				Zipper zip=new Zipper();
-
 				String Pass=dao.FilePass(uploadDto.getUserId());
 				long version=Long.parseLong(uploadDto.getVer());
 				long release=Long.parseLong(uploadDto.getRel());
-				 
+				if(version>=1) {
+		             release +=1;
+					}
+				if(version==0) {
+					version +=1;
+				}
+				
+	            FileRepNew rep = new FileRepNew();
+	            List<Object[]> fileRepUpdate = dao.getFileRepData(uploadDto.getProjectId(),uploadDto.getFileRepMasterId(),uploadDto.getSubL1(),uploadDto.getDocid());
+	            if(fileRepUpdate!=null && fileRepUpdate.size()>0) {
+	            	rep.setFileRepId(Long.parseLong(fileRepUpdate.get(0)[0].toString()));
+	 	            rep.setVersionDoc(version);
+	 	            rep.setReleaseDoc(release);
+	 	            rep.setCreatedBy(uploadDto.getUserId());
+	 	            rep.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+	 	            dao.FileRepUpdate(rep);
+	 	            count1=Long.parseLong(fileRepUpdate.get(0)[0].toString());
+	            }else {
+		            rep.setProjectId(Long.parseLong(uploadDto.getProjectId()));
+		            rep.setFileRepMasterId(Long.parseLong(uploadDto.getFileRepMasterId()));
+		            rep.setSubL1(Long.parseLong(uploadDto.getSubL1()));
+		            rep.setVersionDoc(version);
+		            rep.setReleaseDoc(release);
+		            rep.setDocumentId(Long.parseLong(uploadDto.getDocid()));
+		            rep.setCreatedBy(uploadDto.getUserId());
+		            rep.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            rep.setIsActive(1);
+		            count1=dao.FileSubInsertNew(rep);
+	            }
+	            
 				FileRepUploadNew upload=new FileRepUploadNew();
 				upload.setFileName(uploadDto.getFileNamePath());
 				upload.setFilePass(Pass);
-				upload.setReleaseDoc(release+1);
+				upload.setReleaseDoc(release);
 				upload.setVersionDoc(version);
-				upload.setFileRepId(Long.parseLong(uploadDto.getFileId()));
+				upload.setFileRepId(count1);
 				upload.setFilePath(FullDir);
 				upload.setFileNameUi(uploadDto.getFileName());
 				upload.setCreatedBy(uploadDto.getUserId());
 				upload.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 				upload.setIsActive(1);
 				count=dao.FileUploadInsertNew(upload);
-				 
+				
 				Long Rev=upload.getReleaseDoc();
 				Long Ver=upload.getVersionDoc();
 				if(count>0) {
-					
 		        zip.pack(uploadDto.getFileNamePath(),uploadDto.getIS(),actialFullPath,uploadDto.getFileName()+Ver+"-"+Rev,Pass);
-		        long count1=dao.FileRepRevUpdate(uploadDto.getFileId(),upload.getReleaseDoc(),version);
+		        long count2=dao.FileRepRevUpdate(uploadDto.getFileId(),upload.getReleaseDoc(),version);
+		        
+		        List<Object[]> count3=dao.getAttachmentId(uploadDto.getProjectId());
+		        ProjectTechnicalWorkData tdata = new ProjectTechnicalWorkData();
+		        if(uploadDto.getAgendaId()==null && uploadDto.getAgendaId().equalsIgnoreCase("0")) {
+			        if(count3!=null && count3.size()>0) {
+		        	    String techId=count3.get(0)[0].toString();
+				        String attachId=count3.get(0)[1].toString();
+				        if(techId!=null && attachId.equalsIgnoreCase("0")) {
+				        	tdata.setTechDataId(Long.parseLong(techId));
+				        	tdata.setAttachmentId(count);
+				        	tdata.setModifiedBy(uploadDto.getUserId());
+				        	tdata.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				        	tdata.setIsActive(1);
+				        	dao.submitCheckboxFile(tdata);
+				        }else if(techId!=null && !attachId.equalsIgnoreCase("0")) {
+				        	tdata.setTechDataId(Long.parseLong(techId));
+				        	tdata.setAttachmentId(count);
+				        	tdata.setModifiedBy(uploadDto.getUserId());
+				        	tdata.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				        	tdata.setIsActive(1);
+				        	dao.submitCheckboxFile(tdata);
+				        }
+			        }
+			        else {
+			        	tdata.setProjectId(Long.parseLong(uploadDto.getProjectId()));
+			        	tdata.setAttachmentId(count);
+			        	tdata.setCreatedBy(uploadDto.getUserId());
+			        	tdata.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+			        	tdata.setIsActive(1);
+			        	projectDao.TechnicalWorkDataAdd(tdata);
+			        }
+		        }
+				
+				  if(uploadDto.getAgendaId()!=null && !uploadDto.getAgendaId().equalsIgnoreCase("0")) {
+				  CommitteeScheduleAgendaDocs docs = new CommitteeScheduleAgendaDocs();
+				  docs.setAgendaId(Long.parseLong(uploadDto.getAgendaId()));
+				  docs.setFileDocId(count); 
+				  docs.setCreatedBy(uploadDto.getUserId());
+				  docs.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				  docs.setIsActive(1); 
+				  committeDao.addAgendaLinkFile(docs); 
+				  }
 			 }
 			 
 		 }catch (Exception e) {
 			 logger.error(new Date() +"Inside SERVICE DocFileUploadAjax "+ e);
 			 e.printStackTrace();
-		   count=0;
+		     count=0;
 		}
-
 		return count;
+	}
+	
+	@Override
+	public List<Object[]> getAttachmentId(String projectid) throws Exception {
+		return dao.getAttachmentId(projectid);
+	}
+	
+	@Override
+	public long submitCheckboxFile(ProjectTechnicalWorkData modal) throws Exception {
+		modal.setModifiedDate(sdtf.format(new Date()));
+		modal.setIsActive(1);
+		return dao.submitCheckboxFile(modal);
 	}
 }
