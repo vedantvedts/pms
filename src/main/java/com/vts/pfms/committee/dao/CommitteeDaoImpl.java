@@ -3239,7 +3239,21 @@ public Object[] NewApprovalList(String EnoteId) throws Exception {
 	return null;
 }
 
-	private static final String ENOTEAPPROVELIST="SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,cm.CommitteeShortName,p.ProjectShortName,a.CommitteeMainId FROM pms_enote a,employee b,pms_enote_trans c,dak_enote_status d, committee_main m ,committee cm, project_master p WHERE a.InitiatedBy=b.EmpId AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND  m.CommitteeMainId=a.CommitteeMainId AND m.CommitteeId =cm.CommitteeId AND m.projectid = p.projectid AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND c.ActionBy=:empId AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate GROUP BY a.EnoteId ORDER BY a.EnoteId DESC ";
+private static final String ENOTEAPPROVELIST="SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,\r\n"
+		+ "c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,cm.CommitteeShortName,\r\n"
+		+ "p.ProjectShortName,a.CommitteeMainId FROM pms_enote a,employee b,pms_enote_trans c,\r\n"
+		+ "dak_enote_status d, committee_main m ,committee cm, project_master p WHERE a.InitiatedBy=b.EmpId\r\n"
+		+ " AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND  m.CommitteeMainId=a.CommitteeMainId\r\n"
+		+ "  AND m.CommitteeId =cm.CommitteeId AND m.projectid = p.projectid AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND\r\n"
+		+ " c.ActionBy=:empId AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate GROUP BY a.EnoteId \r\n"
+		+ " UNION\r\n"
+		+ " SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,\r\n"
+		+ "c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,cm.CommitteeShortName,\r\n"
+		+ "'Non-Project',a.CommitteeMainId FROM pms_enote a,employee b,pms_enote_trans c,\r\n"
+		+ "dak_enote_status d, committee_main m ,committee cm WHERE a.InitiatedBy=b.EmpId\r\n"
+		+ " AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND  m.CommitteeMainId=a.CommitteeMainId\r\n"
+		+ "AND m.CommitteeId =cm.CommitteeId AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND\r\n"
+		+ "c.ActionBy=:empId AND m.projectid='0' AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate GROUP BY a.EnoteId ORDER BY EnoteId DESC ";
 	@Override
 	public List<Object[]> eNoteApprovalList(long empId, String fromDate, String tdate) throws Exception {
 	

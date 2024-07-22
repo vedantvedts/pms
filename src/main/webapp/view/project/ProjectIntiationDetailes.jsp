@@ -2684,7 +2684,7 @@ function submitProcurementPlan(){
 	var InitiationCostId=$('#InitiationCostId').val();
 	var initiationid=$('#initiationid').val();
 	var y;
-	 if(Item.lenght==0||Purpose.lenght==0||Source.lenght==0||Mode==null||cost.length==0){
+	 if(Item.lenght==0||Purpose.lenght==0||Source.lenght==0||cost.length==0){
 		 alert("please fill all the fields");
 	 }
  		 else{

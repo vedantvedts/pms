@@ -194,13 +194,13 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[7]!=null?projectdata[7]:"--"%>
 										</td>
 									</tr>
-									<tr>
+								<%-- 	<tr>
 										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; vertical-align: top;">
 											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Scope : </b>
 										</td>
 										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[9]!=null?projectdata[9]:"--"%>
 										</td>
-									</tr>
+									</tr> --%>
 									<tr>
 										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; vertical-align: top;">
 											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Deliverables : </b> 
@@ -213,7 +213,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				</div>
 				<br><br><br><br>
 				<p style="width: 100%; float: left;margin-top: 10px;text-align: left;">
-					<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+					<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:maroon ;">
 						Current Status : 
 					</span>
 					<%if(projectdata!=null && projectdata[20]!=null) {%>
@@ -224,7 +224,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 				<%if(projectdata[31]!=null && projectdata[31]!=""){%>
 					<br>
 					<p style="width: 100%; float: left;text-align: left;">
-					<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+					<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:maroon ;">
 						Way Forward : 
 					</span>
 					<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
@@ -313,12 +313,12 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 								<td colspan="7" style="text-align: left;color:#212529;border-top: none; "><%=projectdata[7]!=null?projectdata[7]:"--"%>
 								</td>
 							</tr>
-							<tr >
+						<%-- 	<tr >
 								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 6px;vertical-align: top;">Scope :
 								</td>
 								<td colspan="7" style="text-align: left;color:#212529 "> <%=projectdata[9]!=null?projectdata[9]:"--"%> 
 								</td>
-						   	</tr>
+						   	</tr> --%>
 							<tr >
 								<td style="font-size: 1.02rem;font-weight: bold;color:#021B79 ;padding-top: 6px; padding-bottom: 0px;vertical-align: top;">Deliverables : 
 								</td>
@@ -329,7 +329,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						</table>
 						<br>
 						<p style="width: 80%; float: left;">
-							<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;">
+							<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:maroon ;">
 								Current Status : 
 							</span>
 							<%if(projectdata!=null && projectdata[20]!=null) {%>
@@ -340,7 +340,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						<%if(projectdata[31]!=null && projectdata[31]!=""){%>
 							<br><br><br>
 							<p style="width: 80%; float: left;margin-top: 15px;">
-							<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:#021B79 ;width: 20%; float: left;margin: 0px;">
+							<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:maroon ;width: 20%; float: left;margin: 0px;">
 								Way Forward : 
 							</span>
 							

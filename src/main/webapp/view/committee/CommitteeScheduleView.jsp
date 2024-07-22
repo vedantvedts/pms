@@ -587,9 +587,9 @@
 								
 								
 								<hr style="margin: 0.5rem 0rem !important;">
-								<%if(!todaydate.isAfter(scheduledate)) {%>
+								
 								<form  action="#" method="post" id="myfrm" target="_blank">
-									<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=6) { %>
+									<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=5) { %>
 										
 											<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="AgendaPresentation.htm"  formmethod="post" formtarget="_blank" title="Agenda Presentation" >
 												<img alt="" src="view/images/presentation.png" style="width:19px !important">
@@ -600,6 +600,7 @@
 										<input type="hidden" name="projectid" value="<%=projectid %>">
 										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 									<%} %>
+									<%if(!todaydate.isAfter(scheduledate)) {%>
 									<% if(committeescheduleeditdata[23].toString().equalsIgnoreCase("Y")){%>
 										<button type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=committeescheduleeditdata[6] %>" formmethod="get" data-toggle="tooltip" data-placement="bottom" title="Briefing Paper" >
 											BRIEFING

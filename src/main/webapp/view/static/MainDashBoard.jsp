@@ -3000,7 +3000,12 @@ if(ses!=null){ %>
 													</div>
 												
 												</td>
-												<td><a style="cursor: pointer;" href="PfmsProjectSlides.htm?projectid=<%=obj[2]%>" target="_blank" > <img src="view/images/silde.png" style="width: 25px;"/></a></td>
+												<td>
+												<form action="#">
+												<button class="bg-transparent"  style="cursor: pointer;"  type="submit" name="projectid" value="<%=obj[2]%>" formaction="PfmsProjectSlides.htm" formmethod="get" formtarget="blank" data-toggle="tooltip"  data-original-title="Project Slide"> <img src="view/images/silde.png" style="width: 25px;"/></button>
+												</form>
+											<%-- 	<a style="cursor: pointer;" href="PfmsProjectSlides.htm?projectid=<%=obj[2]%>" target="_blank" title="Project Slide">
+												 <img src="view/images/silde.png" style="width: 25px;"/></a> --%></td>
 												<td style="font-size: 13px;font-weight: 600; "><%if(obj[50]!=null){%><%= sdf3.format(sdf2.parse(obj[50].toString()))%><%}else{ %> - <%} %></td>
 												<td style="font-size: 13px;font-weight: 600; <%if(obj[47]!=null){ if(LocalDate.parse(obj[47].toString()).isBefore(LocalDate.now())){ %>color:maroon<%}}%>  "><%if(obj[47]!=null){%><%= sdf3.format(sdf2.parse(obj[47].toString()))%><%}else{ %> - <%} %></td>
 												<td class="custom-td">
@@ -4078,7 +4083,7 @@ function LabDetails(value){
 $(function () {
     $("[data-toggle='tooltip']").tooltip({
         animated: 'fade',
-       
+       position:'top',
         html : true,
         boundary: 'window'
     });

@@ -420,7 +420,7 @@ strong {
 										<tr>
 											<td style="width: 60%"><h5>1. Name of laboratory:</h5></td>
 											<td>
-												<h5>MTRDC</h5>
+												<h5><%=session.getAttribute("labcode") %></h5>
 											</td>
 										</tr>
 										<tr>

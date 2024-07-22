@@ -193,7 +193,7 @@ String ses=(String)request.getParameter("result");
 							<div class="col-md-6">
 								
 								<div class="form-group">
-									<label class="control-label">Description</label>
+									<label class="control-label">Purpose</label>
 									<%-- <textarea class="form-control"  name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"><%if(committeedetails[10]!=null){ %><%=committeedetails[10]%><%} %></textarea> --%>
 								
 									<div id="Editordescription" class="center">
@@ -231,7 +231,7 @@ String ses=(String)request.getParameter("result");
 						<div class="col-md-3">
 							<div class="form-group">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-								<button class="btn btn-primary btn-sm submit" type="submit"  name="submit" value="SUBMIT"   onclick="return confirm ('Are you sure to submit?')" >SUBMIT</button>
+								<button class="btn btn-primary btn-sm submit" type="submit"  name="submit" value="SUBMIT"   onclick="return submitfrm()" >SUBMIT</button>
 								<input type="hidden" name="id" value="<%=committeedetails[4]%>">							
 								<button class="btn btn-primary btn-sm back" type="button"  onclick="submitForm('backfrm');">BACK</button>
 							</div>
@@ -257,6 +257,26 @@ String ses=(String)request.getParameter("result");
 		
 <script type="text/javascript">
 $('#projectid').select2();
+
+function submitfrm(){
+	 var data1 =CKEDITOR.instances['Editordescription'].getData();
+	 var data2 =CKEDITOR.instances['EditorReference'].getData();
+
+
+
+	 $('#description').val(data1);
+	 $('#TOR').val(data2)
+	 
+	 
+	 if(confirm('Are you sure to submit?')){
+		 
+	 }else{
+		 return false;
+		 event.preventDefault();
+	 }
+}
+
+
 function submitForm1(myform)
 { 
 	/* var periodic=$('#projectapplicable').val();

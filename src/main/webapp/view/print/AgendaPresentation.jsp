@@ -62,6 +62,7 @@
 		String scheduleid = scheduledata[6].toString();
 		String committeeid = scheduledata[0].toString();
 		String CommitteeCode = committeeData.getCommitteeShortName().trim();
+		String CommitteeName = committeeData.getCommitteeName().trim();
 		String projectid = scheduledata[9].toString();
 		
 		String ProjectCode="General";
@@ -89,7 +90,7 @@
 						<div align="center" ><h3 style="color: #145374 !important">for</h3></div>
 							
 						<div align="center" >
-							<h3 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h3>
+							<h3 style="color: #4C9100 !important" ><%=CommitteeName %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h3>
 				   		</div>
 						
 						<div align="center" ><h3 style="color: #4C9100 !important"><%if(projectattributes!=null){%> <%= projectattributes[1] %> (<%= projectattributes[0] %>) <%}%></h3></div>
@@ -208,11 +209,11 @@
 			            		<tr>
 			                    	<th style="width: 5%;">SN</th>
 			                       	<th style="width: 22%;">Agenda Item</th> 
-			                       	<th style="width: 15%;">Reference</th>
-			                       	<th style="width: 10%;">Remarks</th>
+			                       <!-- 	<th style="width: 15%;">Reference</th>
+			                       	<th style="width: 10%;">Remarks</th> -->
 			                       	<th style="width: 24%;">Presenter</th>
 			                       	<th style="width: 14%;">Duration</th>
-			                       	<th style="width: 10%;">Attachment</th>
+			                       <!-- 	<th style="width: 10%;">Attachment</th> -->
 			                    </tr>
 			              	</thead> 
 			              	<tbody>
@@ -223,15 +224,15 @@
 										
 									<td style="text-align: center;"><%=count%></td>
 									<td><%=obj[3] %></td>
-									<td><%=obj[4] %>  </td>									
-									<td><%=obj[6] %></td>									
+									<%-- <td><%=obj[4] %>  </td>									
+									<td><%=obj[6] %></td> --%>									
 									<td><%=obj[10]%>(<%=obj[11] %>)  </td>
 									<td style="text-align: center;">
 										<%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=starttime.plusMinutes(Long.parseLong(obj[12].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
 										<%starttime=starttime.plusMinutes(Long.parseLong(obj[12].toString()) /* + 1 */); %>
 									
 									</td>
-									<td>
+								<%-- 	<td>
 							 			<table>
 											<%for(Object[] doc : AgendaDocList) { 
 											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
@@ -241,7 +242,7 @@
 												<tr>													
 											<%} }%>
 										</table>
-									</td>
+									</td> --%>
 									
 								</tr>
 							

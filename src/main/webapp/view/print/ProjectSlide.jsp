@@ -131,7 +131,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						</div>
 						<div class="col" >
 							<p style="font-weight: bold;">Brief : </p>
-							<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Brief" id="ckeditor2" rows="5" cols="10" maxlength="5"></textarea>
+							<textarea class="form-control" placeholder="Enter Maximum 1000 charcters" name="Brief" id="ckeditor2" rows="10" cols="20" maxlength="1000"></textarea>
 				 		</div>
 						<div class="col" >
 							<p style="font-weight: bold;">Way forward : </p>
@@ -289,7 +289,7 @@ var editor_config = {
 			]
 	} ;
 CKEDITOR.replace('ckeditor1', editor_config );
-CKEDITOR.replace('ckeditor2', editor_config );
+/* CKEDITOR.replace('ckeditor2', editor_config ); */
 CKEDITOR.replace('ckeditor3', editor_config );
 
 function checkData(){

@@ -481,7 +481,7 @@ public class PrintController {
     		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
     		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
     		req.setAttribute("LabList", service.LabList(LabCode));
-    		req.setAttribute("RequirementList", service.RequirementList(InitiationId));
+    		//req.setAttribute("RequirementList", service.RequirementList(InitiationId));
     
     		String filename="ProjectProposal";	
 	    	String path=req.getServletContext().getRealPath("/view/temp");
@@ -3280,6 +3280,11 @@ public class PrintController {
 	    	 String UserId = (String) ses.getAttribute("Username");
 	    	 String LabCode= (String) ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside GanttChartUpload.htm "+UserId);
+				
+				
+				String os = System.getProperty("os.name");
+				
+				System.out.println("osss  -----"+os);
 	    	try {
             int result=service.saveTechImages(file,req.getParameter("ProjectId"),env.getProperty("ApplicationFilesDrive"),req.getUserPrincipal().getName(),LabCode);
             if(result>0) {  
@@ -4202,23 +4207,23 @@ public class PrintController {
 		 @RequestMapping(value = "GetAllProjectSlide.htm" , method = RequestMethod.POST)
 		 public String GetAllProjectSlide(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
 			{
-
+			 long startTime = System.currentTimeMillis();
 				String UserId = (String) ses.getAttribute("Username");
 
-				logger.info(new Date() + "Inside GetAllProjectSlide.htm " + UserId);
+			logger.info(new Date() + "Inside GetAllProjectSlide.htm " + UserId);
 
-				String[] IdsInput = req.getParameterValues("projectlist");
+			String[] IdsInput = req.getParameterValues("projectlist");
 
-				List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+			List<Object[]> getAllProjectSlidedata = new ArrayList<>();
 
-				List<Object[]> getAllProjectdata = new ArrayList<>();
+			List<Object[]> getAllProjectdata = new ArrayList<>();
 
 				List<Object[]> getAllProjectSlidesdata = new ArrayList<>();
 
 				if (IdsInput != null && IdsInput.length > 0)
 
 					for (String id : IdsInput) {
-										
+									
 						List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);  // freezing data
 						Object[] projectslidedata = (Object[]) service.GetProjectSildedata(id);  //[7] id project id
 						getAllProjectSlidesdata.add(projectslidedata);
@@ -4227,10 +4232,10 @@ public class PrintController {
 						if (getoneProjectSlidedata.size() > 0) {
 							for (Object[] objects : getoneProjectSlidedata) {
 								getAllProjectSlidedata.add(objects);
-							}
+						}
 						}
 
-					}
+				}
 
 				Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
 
@@ -4248,7 +4253,7 @@ public class PrintController {
 
 				};
 				
-				
+			
 				if (IdsInput != null && IdsInput.length == 0) {
 					redir.addAttribute("resultfail", "could not open empty slideshow");
 					return "redirect:/MainDashBoard.htm";
@@ -4256,16 +4261,16 @@ public class PrintController {
 				try {
 
 					if (getAllProjectdata.size() > 1) {
-						Collections.sort(getAllProjectdata, dateComparator);
+					Collections.sort(getAllProjectdata, dateComparator);
 						Collections.sort(getAllProjectSlidedata, dateComparator);
-					}
+				}
 					Collections.reverse(getAllProjectdata);
 
 					String labcode = ses.getAttribute("labcode").toString();
 
 					req.setAttribute("getAllProjectdata", getAllProjectdata);
 
-					req.setAttribute("labInfo", service.LabDetailes(labcode));
+				req.setAttribute("labInfo", service.LabDetailes(labcode));
 
 					req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
 
@@ -4280,9 +4285,12 @@ public class PrintController {
 
 					e.printStackTrace();
 
-					logger.error(new Date() + " Inside GetAllProjectSlide.htm " + UserId, e);
+					//logger.error(new Date() + " Inside GetAllProjectSlide.htm " + UserId, e);
 
 				}
+				 long end = System.currentTimeMillis();
+				 System.out.println("Time Needed "+(end-startTime));
+				
 				return "print/ProjectSlideFreezedViewAll";
 			}
 	
@@ -4883,20 +4891,20 @@ public class PrintController {
 
 					List<Object[]> getAllProjectSlidedata = new ArrayList<>();
 
-					List<Object[]> getAllProjectdata = new ArrayList<>();
+				List<Object[]> getAllProjectdata = new ArrayList<>();
 
 					List<Object[]> getAllProjectSlidesdata = new ArrayList<>();
 
-					if (ProjectIds != null && ProjectIds.length > 0)
+				if (ProjectIds != null && ProjectIds.length > 0)
 
 						for (String id : ProjectIds) {
-											
+										
 							List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);  // freezing data
 							Object[] projectslidedata = (Object[]) service.GetProjectSildedata(id);  //[7] id project id
 							getAllProjectSlidesdata.add(projectslidedata);
 							Object[] projectdata = (Object[]) service.GetProjectdata(id); //[0] is project id ------ all vals
 							getAllProjectdata.add(projectdata);
-							if (getoneProjectSlidedata.size() > 0) {
+						if (getoneProjectSlidedata.size() > 0) {
 								for (Object[] objects : getoneProjectSlidedata) {
 									getAllProjectSlidedata.add(objects);
 								}
@@ -5161,6 +5169,49 @@ public class PrintController {
 				 return "redirect:/ProjectVideo";
 			 }
 			 
+			 @RequestMapping(value = "ProjectSlideImagePath.htm", method = RequestMethod.GET)
+			 public @ResponseBody String ProjectSlideImagePath(@RequestParam String projectId,HttpServletResponse res)throws Exception
+			 {
+				 List<String> iframe=new ArrayList<>();
+				 
+				 List<String>proList = Arrays.asList(projectId.split(","));
+				 List<String[]> getAllProjectSlidesdata = new ArrayList<String[]>();
 				
+				 for(String projectIds:proList) {
+					 Object[] projectslidedata = (Object[]) service.GetProjectSildedata(projectIds);
+					 if(projectslidedata!=null && projectslidedata[2]!=null && projectslidedata[3]!=null) {
+						 String[] myArray = new String[5];
+						 File my_file=null;
+						 my_file = new File(ApplicationFilesDrive+projectslidedata[3]+File.separator+projectslidedata[2]); 
+						 myArray[0]=projectIds;
+						 myArray[1]=projectslidedata[1]+"";
+						 //myArray[2]=FilenameUtils.getExtension(projectslidedata[2]+"");
+						 //myArray[3]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(my_file));
+						myArray[4] = "SelectedSlidesImage.htm"+"/"+(projectIds);
+//						 File imgFile = new File(ApplicationFilesDrive+projectslidedata[3]);
+//				            res.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+//				            Files.copy(imgFile.toPath(), res.getOutputStream());
+//				            res.getOutputStream().close();
+						 getAllProjectSlidesdata.add(myArray);
+					 }
+				 }
+				 
+//			
+				 Gson json = new Gson();
+				 return json.toJson(getAllProjectSlidesdata);
+			 }
+			 
+			 
+			 @RequestMapping(value = "SelectedSlidesImage.htm/{projectIds}", method = RequestMethod.GET)
+			    public void getImage(@PathVariable String projectIds ,HttpServletResponse response) throws Exception {
+			       		
+				 Object[] projectslidedata = (Object[]) service.GetProjectSildedata(projectIds);
+			        	
+			            File imgFile = new File(ApplicationFilesDrive+projectslidedata[3]+projectslidedata[2]);
+			            response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+			            Files.copy(imgFile.toPath(), response.getOutputStream());
+			            response.getOutputStream().close();
+			        
+			    }
 			 
 }

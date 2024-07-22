@@ -410,7 +410,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	</tbody>
 		</table>
 		
-		<% if(!RequirementList.isEmpty()){ %>
+		<% if(RequirementList!=null &&!RequirementList.isEmpty()){ %>
 		<table style="width:100%;margin-left:17px; margin-top:25px; padding:10px; border-collapse:collapse; border:1px solid black;">
 
 				<thead  style="margin-top:10px; borde:1px solid black">
@@ -424,7 +424,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 				</thead>
 <tbody>
   <%int i=1;
-  if(!RequirementList.isEmpty()){
+  if(RequirementList!=null &&!RequirementList.isEmpty()){
   for(Object obj[]:RequirementList){ %>
   <tr>
 		<td style="font-size: 17px;  padding:10px; border-collapse:collapse; border:1px solid black;"><%=i+"." %></td>
@@ -1016,7 +1016,7 @@ for(Object[] obj : DetailsList){   %>
 	  }  
 			}
 		 %>
- <table class="border-black" style="margin-top:0px; margin-bottom: 10px;margin-left: 10px;width:695px;  " id="cost">
+ <table class="border-black" style="margin-top:0px; margin-bottom: 10px;margin-left: 10px;width:695px;margin-right:10px;  " id="cost">
 		  <thead>
 			  	<tr> 
 				  	 <th colspan="5" class="border_black weight_700 center">
@@ -1322,7 +1322,7 @@ for(Object[] obj : DetailsList){   %>
 		 %>  
 
 	 
-  <table class="border-black" style="margin-top:10px; margin-bottom: 10px;margin-left: 10px;width:710px;  " id="cost">
+  <table class="border-black" style="margin-top:10px; margin-bottom: 10px;margin-left: 10px;width:695px;margin-right:10px;  " id="cost">
 		  <thead>
 			  	<tr> 
 				  	 <th colspan="5" class="border_black weight_700 center">
