@@ -104,12 +104,16 @@ preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<input type="hidden" name="startYear" value="<%=startYear%>">
 			<input type="hidden" name="endYear" value="<%=endYear%>">
-			<%for(String projectId:projectIds) {%>
+			<%
+			if(projectIds!=null && projectIds.length>0){
+			for(String projectId:projectIds) {%>
 				<input type="hidden" name="projectIds" value="<%=projectId%>">
-			<%} %>
-			<%for(String initiationId:initiationIds) {%>
+			<%} }%>
+			<%
+			if(initiationIds!=null && initiationIds.length>0){
+			for(String initiationId:initiationIds) {%>
 				<input type="hidden" name="initiationIds" value="<%=initiationId%>">
-			<%} %>
+			<%} }%>
 			
 			<div class="center">
 				<button type="submit" class="btn btn-sm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Road Map Report Excel Download" style="background-color: purple;border: none;color: white;font-weight: 600;">

@@ -277,14 +277,42 @@ public class FormatConverter
 		return date.format(outputFormatter);
 	}
 	
-	public String calendarDateTosdf(String sqlDate) {
+	public String calendarDateTosdf(String calendarDate) {
 		// Define the input date format
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		// Parse the date
-		LocalDate date = LocalDate.parse(sqlDate, inputFormatter);
+		LocalDate date = LocalDate.parse(calendarDate, inputFormatter);
 		// Define the output date format
 		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		// Format the date to the desired output format
 		return date.format(outputFormatter);
+	}
+	
+	public String sdfTocalendarDate(String sqlDate) {
+		// Define the input date format
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// Parse the date
+		LocalDate date = LocalDate.parse(sqlDate, inputFormatter);
+		// Define the output date format
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		// Format the date to the desired output format
+		return date.format(outputFormatter);
+	}
+	
+	public String sdtfTordtf2(String sqlDatetime)throws Exception
+	{
+	    // Define the source and target date-time formatters
+        DateTimeFormatter sourceFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter targetFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+        // Parse the SQL datetime string using the source formatter
+        LocalDateTime dateTime = LocalDateTime.parse(sqlDatetime, sourceFormatter);
+
+        // Format the LocalDateTime using the target formatter
+        String formattedDateTime = dateTime.format(targetFormatter);
+
+        // Output the formatted date-time
+        return formattedDateTime;
+
 	}
 }
