@@ -1,6 +1,9 @@
 package com.vts.pfms.milestone.service;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -1192,18 +1195,20 @@ public class MilestoneServiceImpl implements MilestoneService {
 		 try {
 				String[] Dir=dto.getPathName().split("/");
 				
-				String FullDir=dto.getLabCode()+"\\docrepo\\P"+dto.getProjectId()+"\\";
+				Path docPath1=Paths.get(dto.getLabCode(),"docrepo",("P"+dto.getProjectId()),Dir[0],Dir[1]);
+				Path docPath2=Paths.get(FilePath,dto.getLabCode(),"docrepo",("P"+dto.getProjectId()),Dir[0],Dir[1]);
 				
-				String actialFullPath = FilePath+FullDir;
-				
-				for (int i = 0; i < Dir.length; i++) {
-					actialFullPath=actialFullPath.concat(Dir[i]+"\\");
-					FullDir =FullDir.concat(Dir[i]+"\\");
-					File theDir = new File(actialFullPath);
-					 if (!theDir.exists()){
-					     theDir.mkdirs();
-					 }
-				}
+//				String FullDir=dto.getLabCode()+"\\docrepo\\P"+dto.getProjectId()+"\\";
+//				String actialFullPath = FilePath+FullDir;
+//				
+//				for (int i = 0; i < Dir.length; i++) {
+//					actialFullPath=actialFullPath.concat(Dir[i]+"\\");
+//					FullDir =FullDir.concat(Dir[i]+"\\");
+//					File theDir = new File(actialFullPath);
+//					 if (!theDir.exists()){
+//					     theDir.mkdirs();
+//					 }
+//				}
 			
 				Zipper zip=new Zipper();
 
@@ -1217,7 +1222,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 				upload.setReleaseDoc(release);
 				upload.setVersionDoc(version);
 				upload.setFileRepId(Long.parseLong(dto.getFileId()));
-				upload.setFilePath(FullDir);
+				upload.setFilePath(docPath1.toString());
 				upload.setFileNameUi(dto.getFileName());
 				upload.setDescription(dto.getDescription());
 				upload.setCreatedBy(dto.getUserId());
@@ -1230,7 +1235,10 @@ public class MilestoneServiceImpl implements MilestoneService {
 				Long Ver=Long.parseLong(dto.getVer());
 				if(count>0) {
 					
-		        zip.pack(dto.getFileNamePath(),dto.getIS(),actialFullPath,dto.getFileName()+Ver+"-"+Rev,Pass);
+				if (!Files.exists(docPath2)) {
+					Files.createDirectories(docPath2);
+				}
+		        zip.pack(dto.getFileNamePath(),dto.getIS(),docPath2.toString(),dto.getFileName()+Ver+"-"+Rev,Pass);
 		        
 		        count=dao.FileRepRevUpdate(dto.getFileId(),release,version);
 	         
@@ -1575,19 +1583,9 @@ public class MilestoneServiceImpl implements MilestoneService {
 		 try {
 				String[] Dir=uploadDto.getPathName().split(",");
 				
-				String FullDir=uploadDto.getLabCode()+"\\docrepo\\P"+uploadDto.getProjectId()+"\\";
+				Path docPath1=Paths.get(uploadDto.getLabCode(),"docrepo",("P"+uploadDto.getProjectId()),Dir[0],Dir[1]);
+				Path docPath2=Paths.get(FilePath,uploadDto.getLabCode(),"docrepo",("P"+uploadDto.getProjectId()),Dir[0],Dir[1]);
 				
-				String actialFullPath = FilePath+FullDir;
-				
-				for (int i = 0; i < Dir.length; i++) {
-					actialFullPath=actialFullPath.concat(Dir[i]+"\\");
-					FullDir =FullDir.concat(Dir[i]+"\\");
-					File theDir = new File(actialFullPath);
-					 if (!theDir.exists()){
-					     theDir.mkdirs();
-					 }
-				}
-			
 				Zipper zip=new Zipper();
 				String Pass=dao.FilePass(uploadDto.getUserId());
 				long version=Long.parseLong(uploadDto.getVer());
@@ -1628,7 +1626,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 				upload.setReleaseDoc(release);
 				upload.setVersionDoc(version);
 				upload.setFileRepId(count1);
-				upload.setFilePath(FullDir);
+				upload.setFilePath(docPath1.toString());
 				upload.setFileNameUi(uploadDto.getFileName());
 				upload.setCreatedBy(uploadDto.getUserId());
 				upload.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
@@ -1637,8 +1635,13 @@ public class MilestoneServiceImpl implements MilestoneService {
 				
 				Long Rev=upload.getReleaseDoc();
 				Long Ver=upload.getVersionDoc();
+				
 				if(count>0) {
-		        zip.pack(uploadDto.getFileNamePath(),uploadDto.getIS(),actialFullPath,uploadDto.getFileName()+Ver+"-"+Rev,Pass);
+					if (!Files.exists(docPath2)) {
+						Files.createDirectories(docPath2);
+					}
+					zip.pack(uploadDto.getFileNamePath(),uploadDto.getIS(),docPath2.toString(),uploadDto.getFileName()+Ver+"-"+Rev,Pass);
+					
 		        long count2=dao.FileRepRevUpdate(uploadDto.getFileId(),upload.getReleaseDoc(),version);
 		        
 		        List<Object[]> count3=dao.getAttachmentId(uploadDto.getProjectId());

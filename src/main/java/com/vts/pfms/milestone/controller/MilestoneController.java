@@ -2385,7 +2385,11 @@ public class MilestoneController {
                 Object[] obj=service.FileDeatils(Id).get(0);
                 String path=req.getServletContext().getRealPath("/view/temp");
                 Zipper zip=new Zipper();
-                zip.unpack(FilePath+obj[2].toString()+obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip", path,obj[5].toString());
+                String tecdata = obj[2].toString().replaceAll("[/\\\\]", ",");
+       		    String[] fileParts = tecdata.split(",");
+       		    String zipName = String.format(obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip");
+       		    Path techPath = Paths.get(FilePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+                zip.unpack(techPath.toString(), path,obj[5].toString());
                 
                 res.setContentType("application/pdf");
                 res.setHeader("Content-disposition","attachment;filename="+obj[4]); 

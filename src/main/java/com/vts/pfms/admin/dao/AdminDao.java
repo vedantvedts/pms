@@ -112,4 +112,5 @@ public interface AdminDao {
 	public List<Object[]> ProjectListIC(String empId)throws Exception;
 	public long getTypeOfHostCount(String hostType) throws Exception;
 	public List<Object[]> hasroleAccess(String url, String logintype)throws Exception;
+	public List<Object[]> getFormUrlList(String loginType);
   }

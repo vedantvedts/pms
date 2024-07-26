@@ -1,3 +1,6 @@
+<%@page import="java.nio.file.Files"%>
+<%@page import="java.nio.file.Paths"%>
+<%@page import="java.nio.file.Path"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.net.Inet4Address"%>
@@ -525,21 +528,25 @@ System.out.println(todayDate+"---");
 								</tr>
 								<tr>
 									<td style="border: 0; text-align: center;">
-										<%
+									    <%
+									    Path systemPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[3].toString());
+										File systemfile = systemPath.toFile();
+										if(systemfile.exists()){
 										if (FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")) {
 										%>
 										<iframe
-											src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>#view=FitV" style="width:100%;height:70vh"
+											src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>#view=FitV" style="width:100%;height:70vh"
 											id="config<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 											 } else {
 											 %>
 								<!-- iframe with fit to page code== #view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11" -->
 										<img data-enlargable
 										style="width: 98%!important; height:78vh;"
-										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString())%>;base64,<%=pdffiles.get(z)[0]%>"
+										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString())%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>"
 										id="config<%=ProjectDetail.get(z)[0]%>"> <%
 										 }
 										 %>
+									<%} %>
 									</td>
 								</tr>
 								<%
@@ -624,19 +631,23 @@ System.out.println(todayDate+"---");
 								<tr>
 									<td style="border: 0; text-align: center;">
 										<%
+										Path specificPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[4].toString());
+										File specificfile = specificPath.toFile();
+										if(specificfile.exists()){
 										if (FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")) {
 										%>
 										<iframe 
-											src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>#view=FitV" style="width:100%;height:70vh"
+											src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>#view=FitV" style="width:100%;height:70vh"
 											id="sysspecs<%=ProjectDetail.get(z)[0]%>" > </iframe> <%
 										 } else {
 										 %>
 										<img data-enlargable
 										style="width: 98%; height:78vh"
-										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString())%>;base64,<%=pdffiles.get(z)[3]%>"
+										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString())%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>"
 										id="sysspecs<%=ProjectDetail.get(z)[0]%>"> <%
 										 }
 										 %>
+									  <%} %>	 
 									</td>
 								</tr>
 								<%
@@ -721,16 +732,20 @@ System.out.println(todayDate+"---");
 						<tr>
 							<td style="border: 0; padding-left: 1.5rem; text-align: center;">
 								<%
+								Path productTreePath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[5].toString());
+								File productTreeFile = productTreePath.toFile();
+								if(productTreeFile.exists()){
 								if (FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")) {
 								%>
 								<iframe
-									src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>#view=FitV" style="width:100%;height:70vh"
+									src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>#view=FitV" style="width:100%;height:70vh"
 									id="protree<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 								 } else {
 								 %>
 								<img data-enlargable style="width: 98%; height:78vh;"
-								src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString())%>;base64,<%=pdffiles.get(z)[1]%>"
+								src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString())%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>"
 								id="protree<%=ProjectDetail.get(z)[0]%>"> <% } %>
+								<%} %>
 							</td>
 
 						</tr>
@@ -1901,13 +1916,18 @@ System.out.println(todayDate+"---");
 							</tr>
 							<tr>
 									<td style="border: 0;text-align: center;" >
-									<%  if (FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")) {  %>
+									<%
+									Path trlPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[6].toString());
+									File trlfile = trlPath.toFile();
+									if(trlfile.exists()){
+									if (FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")) {  %>
 										<div class="col-md-12" style="position: relative;width: 100%;padding-bottom: calc(8.5/ 11 * 100%);">
-										<iframe  src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
+										<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
 									</div>
 									<% } else { %>
-										<img data-enlargable style="width:75%;height:75vh;" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=pdffiles.get(z)[2]%>"id="pearl<%=ProjectDetail.get(z)[0]%>"> 
+										<img data-enlargable style="width:75%;height:75vh;" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>"id="pearl<%=ProjectDetail.get(z)[0]%>"> 
 									<% } %>
+								  <%} %>
 								</td>
 							</tr>
 
@@ -3642,12 +3662,15 @@ System.out.println(todayDate+"---");
 
 								<% Object[] TechWork = TechWorkDataList.get(z);
 								String fileExt = FilenameUtils.getExtension(TechWork[8].toString());
-								if (FileExtList.contains(fileExt) && new File(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip").exists()) {%>
-
-								<%-- <% System.out.println(fileExt); %> --%>
+								 String tecdata = TechWork[6].toString().replaceAll("[/\\\\]", ",");
+				        		 String[] fileParts = tecdata.split(",");
+				        		 String zipName = String.format(TechWork[7].toString()+TechWork[11].toString()+"-"+TechWork[10].toString()+".zip");
+				        		 Path techPath = Paths.get(filePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+								
+				        		 if (FileExtList.contains(fileExt) && Files.exists(techPath)) {%>
 								<% String path = request.getServletContext().getRealPath("/view/temp");
 								Zipper zip = new Zipper();
-								zip.unpack(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip", path, TechWork[9].toString());
+								zip.unpack(techPath.toString(), path, TechWork[9].toString());
 								File techattachfile = new File(path + "/" + TechWork[8]); %>
 
 								<% if (fileExt.equalsIgnoreCase("pdf")) { %>
@@ -3709,8 +3732,13 @@ System.out.println(todayDate+"---");
 							if (TechImagesList.size() > 0) {
 								for (TechImages imges : TechImagesList) { %>
 
-								<% if (new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName()).exists()) { %>
-								<img data-enlargable style="width:98%;height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName())))%>">
+								<% 
+								Path uploadPath = Paths.get(filePath,projectLabCode,"TechImages",imges.getTechImagesId()+"_"+imges.getImageName());
+								File file = uploadPath.toFile();
+								if (file.exists()) {
+									System.out.println(uploadPath.toString());
+									%>
+								<img data-enlargable style="width:98%;height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file))%>">
 								<hr>
 								<% } %>
 						<%

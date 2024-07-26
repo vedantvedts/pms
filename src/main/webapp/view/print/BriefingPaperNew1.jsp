@@ -1,3 +1,5 @@
+<%@page import="java.nio.file.Paths"%>
+<%@page import="java.nio.file.Path"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
@@ -645,11 +647,13 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 		<div align="left" style="margin-top: 5px;margin-left: 10px;"><b class="mainsubtitle">2 (a) System Configuration : </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
 				
-				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3]).exists()){ %>
-				
+				<%
+				Path systemPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[3].toString());
+				File systemfile = systemPath.toFile();
+				if(systemfile.exists()){ %>
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
 						<div align="center">
-						<img class="logo" style="max-width:25cm;max-height:17cm;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
+						<img class="logo" style="max-width:25cm;max-height:17cm;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>" alt="confi" >
 						</div>
 					<% }else{ %>
 						<b>  System Configuration Annexure </b>
@@ -671,8 +675,10 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 	</div>
 				<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
 				
-				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3]).exists()){ %>
-				
+				<%
+				Path systemPath1 = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[3].toString());
+				File systemfile1 = systemPath1.toFile();
+				if(systemfile1.exists()){ %>
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
 							<h1 class="break"></h1>
 					<% }else{ %>
@@ -686,11 +692,13 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 	
 		<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[4]!=null){ %>
 				
-				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4]).exists()){ %>
-				
+				<%
+				Path specificPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[4].toString());
+				File specificfile = specificPath.toFile();
+				if(specificfile.exists()){ %>
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf") ){ %>
 						<div align="center"><br>
-							<img class="logo" style="max-width:25cm;max-height:17cm;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" >
+							<img class="logo" style="max-width:25cm;max-height:17cm;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>" alt="Speci" >
 						</div> 
 					<% }else{ %>
 						<b> System Specification Annexure </b>
@@ -717,8 +725,10 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 	<!-- <h1 class="break"></h1> -->
 					<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[4]!=null){ %>
 				
-				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3]).exists()){ %>
-				
+				<%
+				Path specificPath1 = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[4].toString());
+				File specificfile1 = specificPath1.toFile();
+				if(specificfile1.exists()){ %>
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
 							<h1 class="break"></h1>
 					<% }else{ %>
@@ -728,11 +738,13 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 
 				<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[5]!=null){ %>
 				
-				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5]).exists()){ %>
-				
+				<%
+				Path productTreePath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[5].toString());
+				File productTreeFile = productTreePath.toFile();
+				if(productTreeFile.exists()){ %>
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf") ){ %>
 						<div align="center"><br>
-							<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" >
+							<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>" alt="Speci" >
 						</div> 
 					<% }else{ %>
 						<b> Overall Product tree/WBS Annexure </b>
@@ -1537,19 +1549,19 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						
 								<% if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[6]!=null){ %>
 				
-									<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6]).exists()){ %>
-									
+									<%
+									Path trlPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[6].toString());
+									File trlfile = trlPath.toFile();
+									if(trlfile.exists()){ %>
 										<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf") ){ %>
 											<div align="center"><br>
-												<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" >
+												<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>" alt="Speci" >
 											</div> 
 										<% }else{ %>
 												<div align="center"><br>
 											 	<b> TRL table with TRL at sanction stage Annexure </b>
 												</div>
-										
 										<% }%>
-									
 									<%}else{ %>
 										<div align="center">
 											<br>
@@ -1569,8 +1581,10 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						</div>
 				<% if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[6]!=null){ %>
 				
-									<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6]).exists()){ %>
-									
+									<%
+									Path trlPath1 = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[6].toString());
+									File trlfile1 = trlPath1.toFile();
+									if(trlfile1.exists()){ %>
 										<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf") ){ %>
 										<h1 class="break"></h1>
 										<% }else{ %>
@@ -2754,7 +2768,14 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 				</b>
 			</div>
 			
-              <% if(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".png").exists()){ %>
+              <% 
+              String fileName = String.format("grantt_%s_%s.png", projectidlist.get(z).toString(), No2);
+              String fileName1 = String.format("grantt_%s_%s.pdf", projectidlist.get(z).toString(), No2);
+              Path uploadPath = Paths.get(filePath,projectLabCode,"gantt",fileName);
+              Path uploadPath1 = Paths.get(filePath,projectLabCode,"gantt",fileName1);
+			  File file = uploadPath.toFile();
+			  File file1 = uploadPath1.toFile();
+              if(file.exists()){ %>
 				<div style="font-weight: bold;" align="right" >
 					<br>
 					<span >
@@ -2764,10 +2785,10 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 					</span>
 				</div>
 				<div align="center"><br>
-					<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".png")))%>" alt="confi" > 
+					<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file))%>" alt="confi" > 
 				</div>
 				
-              <%} else if(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".pdf").exists()){ %>
+              <%} else if(file1.exists()){ %>
               
 				<b>Grantt Chart Annexure</b>
 				
@@ -2943,24 +2964,22 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										
 					<br>
 					</div>
-					
 							<% if(TechImages.size()>0){
 							List<TechImages>  TechImagesList= TechImages.get(z); 
 							if(TechImagesList.size()>0){
 							for(TechImages imges:TechImagesList){ %>
 							<div>
-	
 								<table>
 									<tr>
 										<td style="border:0; padding-left: 1.5rem;"> 
-											
-											<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
-											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
+											<%
+											Path techPath = Paths.get(filePath,projectLabCode,"TechImages",imges.getTechImagesId()+"_"+imges.getImageName());
+											File tecfile = techPath.toFile();
+											if(tecfile.exists()){ %>
+											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))%>" > 											
 											<%} %>
-
 										</td>
 										<td style="border:0;">  
-											
 										</td>
 									</tr>
 								</table>

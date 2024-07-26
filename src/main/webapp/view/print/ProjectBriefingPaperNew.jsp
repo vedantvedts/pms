@@ -1,3 +1,5 @@
+<%@page import="java.nio.file.Paths"%>
+<%@page import="java.nio.file.Path"%>
 <%@page import="java.time.DayOfWeek"%>
 <%@page import="java.util.stream.Collector"%>
 <%@page import="java.math.MathContext"%>
@@ -721,12 +723,16 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 												</form>	
 												
 												
-												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")){ %>
-													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>"  id="config<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
+												<%
+												Path systemPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[3].toString());
+												File systemfile = systemPath.toFile();
+												if(systemfile.exists()){
+												if(FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")){ %>
+													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>"  id="config<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 												<%}else{ %>
-													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()) %>;base64,<%=pdffiles.get(z)[0]%>"  id="config<%=ProjectDetail.get(z)[0] %>"  > 											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>"  id="config<%=ProjectDetail.get(z)[0] %>"  > 											
 												<%} %>
-
+                                              <%} %>
 											<%}else{ %>
 												2 (a) System Configuration. &nbsp; File Not Found
 											<%} %>
@@ -751,12 +757,16 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 												<input type="hidden" name="filename" value="sysspecs"/>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
-											<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")){ %>
-												<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
+											<%
+											Path specificPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[4].toString());
+											File specificfile = specificPath.toFile();
+											if(specificfile.exists()){
+											if(FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")){ %>
+												<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 											<%}else{ %>
-												<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()) %>;base64,<%=pdffiles.get(z)[3]%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>"  > 											
+												<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>"  > 											
 											<%} %>
-												
+										   <%} %>
 										<%}else{ %>
 											2 (b) System Specifications. &nbsp; File Not Found
 										<%} %>
@@ -800,12 +810,16 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 												</form>	
 												
 												
-												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")){ %>
-													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>"  id="protree<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
+												<%
+												Path productTreePath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[5].toString());
+												File productTreeFile = productTreePath.toFile();
+												if(productTreeFile.exists()){
+												if(FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")){ %>
+													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>"  id="protree<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 												<%}else{ %>
-													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()) %>;base64,<%=pdffiles.get(z)[1]%>"  id="protree<%=ProjectDetail.get(z)[0] %>"  > 											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>"  id="protree<%=ProjectDetail.get(z)[0] %>"  > 											
 												<%} %>
-												
+											  <%} %>
 											<%}else{ %>
 												Overall Product tree/WBS &nbsp; File Not Found
 											<%} %>
@@ -1693,10 +1707,16 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												</form>	
 												
-												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")){ %>
-													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
-												<%}else{ %>
-													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>"  >											
+												<%
+												Path trlPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[6].toString());
+												File trlfile = trlPath.toFile();
+												if(trlfile.exists()){
+												if(FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")){ %>
+													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>"  id="pearl<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
+												<%}else{
+													%>
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>"  id="pearl<%=ProjectDetail.get(z)[0] %>"  >											
+												  <%} %>
 												<%} %>
 											<% }else{ %>
 												File Not Found
@@ -2643,6 +2663,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 								    <div class="row">
 								    	<div class="col-md-9 ">
 											<form method="post" style="float: right;margin-top:13px;" enctype="multipart/form-data" >
+												<label>Note : Upload PNG image only.</label>
 												<input type="file" name="FileAttach" id="FileAttach"  required="required"  accept="image/png"/>
 												<input type="hidden" name="ChartName"  value="grantt_<%=projectidlist.get(z)%>_<%=No2%>"> 
 												<button type="submit" class="btn btn-sm back" formaction="GanttChartUpload.htm"  style="margin-right: 50px;margin" >Upload</button>
@@ -3014,8 +3035,11 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 							<table>
 							<tr>
 							<td style="border:0; padding-left: 1.5rem;"> 
-							<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
-								<img style="max-width:20cm;max-height:14cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
+							<% 
+							Path uploadPath = Paths.get(filePath,projectLabCode,"TechImages",imges.getTechImagesId()+"_"+imges.getImageName());
+							File file = uploadPath.toFile();
+							if(file.exists()){ %>
+								<img style="max-width:20cm;max-height:14cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file))%>" > 											
 									<%} %>
 									<button class="btn btn-sm" id="TechImagesId1" value="" onclick="openEditDiv(<%=imges.getTechImagesId()%>)" style="background-color: transparent;font-size: 2.5rem"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 									<form action="#" style="display: inline">
@@ -4438,7 +4462,7 @@ var subLevelId="";
 						  sub=values2[v2][3];
 						  var levelId = values2[v2][0];
 						   var itemId = 'item-' + (++itemCounter);
-							str += '<li id="' + itemId + '"> <span style="color:blue;font-weight:600;font-size:20px;">'+values1[v1][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values2[v2][3]+'</span> ';
+							str += '<li id="' + itemId + '"> <span style="color:#006400;font-weight:600;font-size:20px;">'+values1[v1][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values2[v2][3]+'</span> ';
 							
 							 (function(projectid,itemId,mainIndex,main,sub,mainLevelId,subLevelId,attachRepId) {
 								 $.ajax({
@@ -4459,7 +4483,7 @@ var subLevelId="";
 					                        		var masterid=values4[v4][0];
 					                        		var mianItemId = 'main-sub-item-'+ (++subCounter);
 					                        		 if( values4[v4][1]==values3[v3][0] ){
-					                        			 mainStr +='<li id="' + mianItemId + '"> <span style="color:#AD1457;font-weight:600;font-size:19px;">'+values3[v3][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values4[v4][3]+'</span></li>';
+					                        			 mainStr +='<li id="' + mianItemId + '"> <span style="color:#FF6700;font-weight:600;font-size:19px;">'+values3[v3][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values4[v4][3]+'</span></li>';
 					                        		 
 					                      			 (function(mianItemId,subIndex,subLevelId,attachRepId,masterid) {
 					            							 $.ajax({
@@ -4489,11 +4513,11 @@ var subLevelId="";
 					            				                        	if(additionalValues[j][4]!=0){
 					            				                        		 additionalStr +='&nbsp;&nbsp;<span class="version" style="color:grey">Ver '+additionalValues[j][8]+'.'+additionalValues[j][6];
 					            				                        		 additionalStr +='<button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;"  onclick="FileDownload(\''+additionalValues[j][4]+'\')">';                                     
-					            				                        		 additionalStr +='<i class="fa fa-download" aria-hidden="true"></i>';
+					            				                        		 additionalStr +='<i class="fa fa-download" aria-hidden="true" style="font-size:20px;"></i>';
 					            				                        		 additionalStr +='</button> ';
 					            				                        		 additionalStr += '</span>';
 					            											}
-					            			                        		 additionalStr += '<span><button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+subItemId+'\')"><i class="fa fa-upload" aria-hidden="true" style="color: #FF5F00;font-size:20px;"></i></button>';
+					            			                        		 additionalStr += '<span><button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+subItemId+'\')"><i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff;font-size:20px;"></i></button>';
 					            			                        		 additionalStr += '<label for="fileInput" id="uploadlabel'+subItemId+'" style="margin-left: 20px; display: none;">'
 					            			                        		 additionalStr += '<input type="file" name="docFileInput" id="fileInput'+subItemId+'" required="required"  accept="application/pdf"/> '
 					            			                        		 additionalStr += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+subItemId+'\',\''+main+'\',\''+sub+'\',\''+mainLevelId+'\',\''+subLevelId+'\',\''+additionalValues[j][0]+'\',\''+additionalValues[j][7]+'\',\''+additionalValues[j][5]+'\',\''+additionalValues[j][6]+'\',\''+additionalValues[j][8]+'\',\''+ additionalValues[j][4] +'\', \''+additionalValues[j][3] +'\')">Upload</button>'

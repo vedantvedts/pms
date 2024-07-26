@@ -4792,7 +4792,10 @@ public class ProjectController
 			{
 				index=3;
 			}
-			my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+			String LabCode = (String)ses.getAttribute("labcode");
+			//my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+			Path pdataPath = Paths.get(uploadpath, LabCode,"ProjectData",projectdatafiledata[index].toString());
+			my_file=pdataPath.toFile();
 			res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
 			iframe.add(FilenameUtils.getExtension(projectdatafiledata[index]+""));
 			String pdf=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(my_file));
@@ -5433,16 +5436,19 @@ public class ProjectController
 	public void ProjectMasterAttachDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception
 	{	
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectMasterAttachDownload.htm "+UserId);
 		try
 		{
 			String attachid=req.getParameter("attachid");
 
 			Object[] attachmentdata=service.ProjectMasterAttachData(attachid);
-
+			String data = attachmentdata[2].toString().replaceAll("[/\\\\]", ",");
+            String [] attachdata = data.split(",");
 			File my_file=null;
-			my_file = new File(uploadpath+ attachmentdata[2]+File.separator+attachmentdata[3]);
-
+//			my_file = new File(uploadpath+ attachmentdata[2]+File.separator+attachmentdata[3]);
+            Path attachPath = Paths.get(uploadpath, LabCode,attachdata[1],attachdata[2]); 
+            my_file=attachPath.toFile();
 			res.setContentType("Application/octet-stream");	
 			res.setHeader("Content-disposition","attachment; filename="+attachmentdata[3].toString()); 
 			OutputStream out = res.getOutputStream();

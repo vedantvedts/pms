@@ -1229,7 +1229,7 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
 						  sub=values2[v2][3];
 						  levelId = values2[v2][0];
 						   var itemId = 'item-' + (++itemCounter);
-							str += '<li id="' + itemId + '"> <span style="color:blue;font-weight:600;font-size:20px;">'+values1[v1][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values2[v2][3]+'</span> ';
+							str += '<li id="' + itemId + '"> <span style="color:#006400;font-weight:600;font-size:20px;">'+values1[v1][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values2[v2][3]+'</span> ';
 							
 							 (function(projectid,itemId,mainIndex,main,sub,mainLevelId,subLevelId,attachRepIds) {
 								 $.ajax({
@@ -1250,7 +1250,7 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
 					                        		var masterid=values4[v4][0];
 					                        		var mianItemId = 'main-sub-item-'+ (++subCounter);
 					                        		 if( values4[v4][1]==values3[v3][0] ){
-					                        			 mainStr +='<li id="' + mianItemId + '"> <span style="color:#AD1457;font-weight:600;font-size:19px;">'+values3[v3][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values4[v4][3]+'</span></li>';
+					                        			 mainStr +='<li id="' + mianItemId + '"> <span style="color:#FF6700;font-weight:600;font-size:19px;">'+values3[v3][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values4[v4][3]+'</span></li>';
 					                        		 
 					                      			 (function(mianItemId,subIndex,subLevelId,attachRepIds,masterid) {
 					            							 $.ajax({
@@ -1280,11 +1280,11 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
 					            				                        	if(additionalValues[j][4]!=0){
 					            				                        		 additionalStr +='&nbsp;&nbsp;<span class="version" style="color:grey">Ver '+additionalValues[j][8]+'.'+additionalValues[j][6];
 					            				                        		 additionalStr +='<button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;"  onclick="FileDownload(\''+additionalValues[j][4]+'\')">';                                     
-					            				                        		 additionalStr +='<i class="fa fa-download" aria-hidden="true"></i>';
+					            				                        		 additionalStr +='<i class="fa fa-download" aria-hidden="true" style="font-size:20px;"></i>';
 					            				                        		 additionalStr +='</button> ';
 					            				                        		 additionalStr += '</span>';
 					            											}
-					            			                        		 additionalStr += '<span><button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+subItemId+'\')"><i class="fa fa-upload" aria-hidden="true" style="color: #FF5F00;font-size:20px;"></i></button>';
+					            			                        		 additionalStr += '<span><button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+subItemId+'\')"><i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff;font-size:20px;"></i></button>';
 					            			                        		 additionalStr += '<label for="fileInput" id="uploadlabel'+subItemId+'" style="margin-left: 20px; display: none;">'
 					            			                        		 additionalStr += '<input type="file" name="docFileInput" id="fileInput'+subItemId+'" required="required"  accept="application/pdf"/> '
 					            			                        		 additionalStr += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+subItemId+'\',\''+main+'\',\''+sub+'\',\''+mainLevelId+'\',\''+subLevelId+'\',\''+additionalValues[j][0]+'\',\''+additionalValues[j][7]+'\',\''+additionalValues[j][5]+'\',\''+additionalValues[j][6]+'\',\''+additionalValues[j][8]+'\',\''+ additionalValues[j][4] +'\', \''+additionalValues[j][3] +'\',\''+mainAgendaId+'\')">Upload</button>'

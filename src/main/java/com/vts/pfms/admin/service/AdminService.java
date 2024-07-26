@@ -92,5 +92,6 @@ public interface AdminService {
 
 	public List<Object[]> ProjectListIC(String empId) throws Exception;
 	public List<Object[]> hasroleAccess(String string, String logintype)throws Exception;
+	public List<Object[]> getFormUrlList(String loginType);
 
 }

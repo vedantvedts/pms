@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -27,8 +29,9 @@ public class Zipper
         zipParameters.setEncryptFiles(true);
         zipParameters.setEncryptionMethod(EncryptionMethod.AES);
         // Below line is optional. AES 256 is used by default. You can override it to use AES 128. AES 192 is supported only for extracting.
-        zipParameters.setAesKeyStrength(AesKeyStrength.KEY_STRENGTH_256); 
-        new ZipFile(FullPath+FileName+".zip",Pass.toCharArray()).addStream(IS, zipParameters);
+        zipParameters.setAesKeyStrength(AesKeyStrength.KEY_STRENGTH_256);
+        Path docPath = Paths.get(FullPath,FileName);
+        new ZipFile(docPath.toString()+".zip",Pass.toCharArray()).addStream(IS, zipParameters);
     }
 
     public void unpack(String sourceZipFilePath, String extractedZipFilePath,String Pass) throws ZipException

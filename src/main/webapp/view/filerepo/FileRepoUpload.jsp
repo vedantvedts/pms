@@ -884,7 +884,7 @@ $('input:radio[name="isnewver"]').change(function(){
     }
     if($(this).val() == 'N'){
     	var ver=Number($('#Ver').val());
-    	var rel=Number($('#Ver').val());
+    	var rel=Number($('#Rev').val())+1;
     	$('#submitversion').val("Upload Version "+ver+'.'+rel);
     }
 });

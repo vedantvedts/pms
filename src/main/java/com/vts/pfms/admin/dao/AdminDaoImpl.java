@@ -1111,4 +1111,19 @@ public class AdminDaoImpl implements AdminDao{
 		
 		return hasroleAccess;
 	}
+	
+	private static final String GETFORMURLLIST="SELECT a.FormDetailId,a.FormName,a.FormUrl,a.isactive,b.FormRoleAccessId FROM pfms_form_detail a, pfms_form_role_access b WHERE a.FormDetailId=b.FormDetailId AND b.LoginType=:loginType AND b.isactive='1'";
+	@Override
+	public List<Object[]> getFormUrlList(String loginType)  {
+       try {
+		
+    	   Query query = manager.createNativeQuery(GETFORMURLLIST);
+   		query.setParameter("loginType", loginType);
+   		List<Object[]>hasroleAccess = (List<Object[]>)query.getResultList();
+   		return hasroleAccess;
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+       return null;
+	}
 }

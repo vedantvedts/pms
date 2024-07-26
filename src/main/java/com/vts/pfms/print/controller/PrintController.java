@@ -896,8 +896,14 @@ public class PrintController {
 	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
 	    	converterProperties.setFontProvider(dfp);
 	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
-            ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
-            ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+projectLabCode.toLowerCase()+".png");
+	        Path leftLogoPath = Paths.get(env.getProperty("ApplicationFilesDrive"),"images","lablogos","drdo.png");
+	        Path rightLogoPath = Paths.get(env.getProperty("ApplicationFilesDrive"),"images","lablogos",projectLabCode.toLowerCase()+".png");
+          //  ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
+           // ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+projectLabCode.toLowerCase()+".png");
+	        byte[] imageBytes = Files.readAllBytes(leftLogoPath);
+	        byte[] imageBytes1 = Files.readAllBytes(rightLogoPath);
+	        ImageData leftLogo = ImageDataFactory.create(imageBytes);
+            ImageData rightLogo = ImageDataFactory.create(imageBytes1);
 	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
 	        //PdfWriter pdfWriter = new PdfWriter(path + File.separator + "mergedb.pdf");
 	        PdfDocument pdfDocs = new PdfDocument(pdfw);
@@ -937,9 +943,13 @@ public class PrintController {
 	        		No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 	        		}else if(CommitteeCode.equalsIgnoreCase("EB")){
 	        			No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
-	        		} 
-		        	if(new File(env.getProperty("ApplicationFilesDrive")+"\\"+projectLabCode+"\\gantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
-		        		 	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+"\\"+projectLabCode+"\\gantt\\grantt_"+objData[1]+"_"+No2+".pdf"),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        		}
+	        		String fileName = String.format("grantt_%s_%s.pdf", objData[1].toString(), No2);
+	        		Path ganttPath = Paths.get(env.getProperty("ApplicationFilesDrive"), projectLabCode,"gantt",fileName);
+	        		
+		        	if(Files.exists(ganttPath)) {
+		        		    PdfReader pdfReader = new PdfReader(ganttPath.toString());
+		        		 	PdfDocument pdfDocument2 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 					        Document document5 = new Document(pdfDocument2,PageSize.A4);
 					        document5.setMargins(50, 50, 50, 50);
 					        Rectangle pageSize;
@@ -986,8 +996,10 @@ public class PrintController {
 	        	
 	        	
 	        	if(objData!=null && objData[3]!=null) {
-	        	if(FilenameUtils.getExtension(objData[3].toString()).equalsIgnoreCase("pdf")) {
-		        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        	   Path sysPath = Paths.get(env.getProperty("ApplicationFilesDrive"), projectLabCode,"ProjectData",objData[3].toString());
+	        	if(FilenameUtils.getExtension(objData[3].toString()).equalsIgnoreCase("pdf") && Files.exists(sysPath)) {
+	            PdfReader pdfReader = new PdfReader(sysPath.toString());
+		        PdfDocument pdfDocument2 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 		        Document document5 = new Document(pdfDocument2,PageSize.A4);
 		        document5.setMargins(50, 50, 50, 50);
 		        Rectangle pageSize;
@@ -1021,8 +1033,10 @@ public class PrintController {
 			    }
 	        	}
 	        	if(objData!=null && objData[4]!=null) {
-			    if(FilenameUtils.getExtension(objData[4].toString()).equalsIgnoreCase("pdf") && new File(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]).exists()) {
-			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        		Path specPath = Paths.get(env.getProperty("ApplicationFilesDrive"), projectLabCode,"ProjectData",objData[4].toString());
+			    if(FilenameUtils.getExtension(objData[4].toString()).equalsIgnoreCase("pdf") && Files.exists(specPath)) {
+			    	PdfReader pdfReader = new PdfReader(specPath.toString());
+			    	PdfDocument pdfDocument2 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
 			        Rectangle pageSize;
@@ -1056,8 +1070,10 @@ public class PrintController {
 			    }
 	        	}
 	        	if(objData!=null && objData[5]!=null) {
-			    if(FilenameUtils.getExtension(objData[5].toString()).equalsIgnoreCase("pdf")) {
-			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[5]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        		Path treePath = Paths.get(env.getProperty("ApplicationFilesDrive"), projectLabCode,"ProjectData",objData[5].toString());
+			    if(FilenameUtils.getExtension(objData[5].toString()).equalsIgnoreCase("pdf") && Files.exists(treePath)) {
+			    	PdfReader pdfReader = new PdfReader(treePath.toString());
+			    	PdfDocument pdfDocument2 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
 			        Rectangle pageSize;
@@ -1091,8 +1107,10 @@ public class PrintController {
 				    }
 	        	}
 	        	if(objData!=null&&objData[6]!=null) {
-			    if(FilenameUtils.getExtension(objData[6].toString()).equalsIgnoreCase("pdf")) {
-			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[6]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        		Path pearlPath = Paths.get(env.getProperty("ApplicationFilesDrive"), projectLabCode,"ProjectData",objData[6].toString());
+			    if(FilenameUtils.getExtension(objData[6].toString()).equalsIgnoreCase("pdf") && Files.exists(pearlPath)) {
+			    	PdfReader pdfReader = new PdfReader(pearlPath.toString());
+			    	PdfDocument pdfDocument2 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
 			        Rectangle pageSize;
@@ -1135,7 +1153,11 @@ public class PrintController {
 	        	
 	        	 if(TechWorkDataList.get(z) !=null &&FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equalsIgnoreCase("pdf")) {
 	        		 Zipper zip=new Zipper();
-	                 zip.unpack(env.getProperty("ApplicationFilesDrive")+TechWorkDataList.get(z)[6].toString()+TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip",path,TechWorkDataList.get(z)[9].toString());
+	        		 String tecdata = TechWorkDataList.get(z)[6].toString().replaceAll("[/\\\\]", ",");
+	        		 String[] fileParts = tecdata.split(",");
+	        		 String zipName = String.format(TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip");
+	        		 Path techPath = Paths.get(env.getProperty("ApplicationFilesDrive"), fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+	                 zip.unpack(techPath.toString(),path,TechWorkDataList.get(z)[9].toString());
 				    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(path+File.separator+TechWorkDataList.get(z)[8].toString()),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 				        Document document5 = new Document(pdfDocument2,PageSize.A4);
 				        document5.setMargins(50, 50, 50, 50);
@@ -3883,7 +3905,8 @@ public class PrintController {
 		 @RequestMapping(value = "SlideAttachDownload.htm", method = RequestMethod.GET)
 		 public void SlideAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
 		 {	 
-			 String UserId = (String) ses.getAttribute("Username");
+			     String UserId = (String) ses.getAttribute("Username");
+			     String LabCode = (String) ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside SlideAttachDownload.htm "+UserId);		
 				try { 
 			 
@@ -3891,8 +3914,8 @@ public class PrintController {
 						ProjectSlides attach=service.SlideAttachmentDownload(req.getParameter("slideId" ));
 						
 						File my_file=null;
-					
-						my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getImageName()); 
+					    Path imagePath = Paths.get(ApplicationFilesDrive, LabCode, "ProjectSlide");
+						my_file = new File(imagePath+File.separator+attach.getImageName()); 
 				        res.setHeader("Content-disposition","attachment; filename="+attach.getImageName().toString());
 				        OutputStream out = res.getOutputStream();
 				        FileInputStream in = new FileInputStream(my_file);
@@ -3915,6 +3938,7 @@ public class PrintController {
 		 public void SlidePdfAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
 		 {	 
 			 String UserId = (String) ses.getAttribute("Username");
+			 String LabCode = (String) ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside SlidepdfAttachDownload.htm "+UserId);		
 				try { 
 			 
@@ -3922,8 +3946,8 @@ public class PrintController {
 						ProjectSlides attach=service.SlideAttachmentDownload(req.getParameter("slideId" ));
 						
 						File my_file=null;
-					
-						my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getAttachmentName()); 
+						Path pdfPath = Paths.get(ApplicationFilesDrive, LabCode, "ProjectSlide");
+						my_file = new File(pdfPath+File.separator+attach.getAttachmentName()); 
 				        res.setHeader("Content-disposition","attachment; filename="+attach.getAttachmentName().toString()); 
 				        OutputStream out = res.getOutputStream();
 				        FileInputStream in = new FileInputStream(my_file);
@@ -3948,6 +3972,7 @@ public class PrintController {
 		 public void SlideVideoAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
 		 {	 
 			 String UserId = (String) ses.getAttribute("Username");
+			 String LabCode = (String) ses.getAttribute("labcode");
 			 logger.info(new Date() +"Inside SlidepdfAttachDownload.htm "+UserId);		
 			 try { 
 				 
@@ -3955,7 +3980,8 @@ public class PrintController {
 				 ProjectSlides attach=service.SlideAttachmentDownload(req.getParameter("slideId" ));
 				 
 				 File my_file=null;
-				 my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getVideoName()); 
+				 Path pdfPath = Paths.get(ApplicationFilesDrive, LabCode, "ProjectSlide");
+				 my_file = new File(pdfPath+File.separator+attach.getVideoName()); 
 				 res.setHeader("Content-disposition","attachment; filename="+attach.getVideoName().toString()); 
 				 OutputStream out = res.getOutputStream();
 				 FileInputStream in = new FileInputStream(my_file);
@@ -3978,14 +4004,15 @@ public class PrintController {
 		 public void SlidePdfOpenAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
 		 {
 			 String UserId = (String) ses.getAttribute("Username");
+			 String LabCode = (String) ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside SlidepdfAttachDownload.htm "+UserId);		
 				try { 
 					res.setContentType("application/pdf");	
 					ProjectSlides attach=service.SlideAttachmentDownload(req.getParameter("slideId" ));
 					
 					File my_file=null;
-				
-					my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getAttachmentName()); 
+					Path openPath = Paths.get(ApplicationFilesDrive, LabCode, "ProjectSlide");
+					my_file = new File(openPath+File.separator+attach.getAttachmentName()); 
 			        res.setContentType("application/pdf");
 			        String filename = attach.getAttachmentName() != null ? attach.getAttachmentName().toString() : "name.pdf";
 //					res.setHeader("Content-disposition", "inline; filename="+attach.getAttachmentName()!=null?attach.getAttachmentName().toString():"name"+".pdf"); 
@@ -4010,14 +4037,15 @@ public class PrintController {
 		 public void SlideVideoOpenAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
 		 {
 			 String UserId = (String) ses.getAttribute("Username");
+			 String LabCode = (String) ses.getAttribute("labcode");
 			 logger.info(new Date() +"Inside SlidepdfAttachDownload.htm "+UserId);		
 			 try { 
 				 res.setContentType("application/pdf");	
 				 ProjectSlides attach=service.SlideAttachmentDownload(req.getParameter("slideId" ));
 				 
 				 File my_file=null;
-				 
-				 my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getVideoName()); 
+				 Path videoPath = Paths.get(ApplicationFilesDrive, LabCode, "ProjectSlide");
+				 my_file = new File(videoPath+File.separator+attach.getVideoName()); 
 				 res.setContentType("video/mp4");
 				 String filename = attach.getVideoName() != null ? attach.getVideoName().toString() : "name.pdf";
 //				 res.setHeader("Content-disposition", "inline; filename="+attach.getAttachmentName()!=null?attach.getAttachmentName().toString():"name"+".pdf"); 
@@ -4102,9 +4130,10 @@ public class PrintController {
 						Timestamp instant = Timestamp.from(Instant.now());
 						String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 				       String filesname="SlideFreeze"+timestampstr+".pdf";
-						String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
+//						String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
 						
-				        Path uploadPath = Paths.get(Path);
+				        Path uploadPath = Paths.get(ApplicationFilesDrive,LabCode,"FreezedProjectSlide");
+				        Path uploadPath1 = Paths.get(LabCode,"FreezedProjectSlide");
 				        if (!Files.exists(uploadPath)) {
 				            Files.createDirectories(uploadPath);
 				        }
@@ -4115,7 +4144,7 @@ public class PrintController {
 				        Files.delete(pathOfFile2);
 				        
 				        freeze.setAttachName(filesname);
-				        freeze.setPath(LabCode+"\\FreezedProjectSlide\\");
+				        freeze.setPath(uploadPath1.toString());
 				        freeze.setCreatedBy(UserId);
 				        long count  = service.AddFreezeData(freeze);
 						if(count>0)
@@ -4174,6 +4203,7 @@ public class PrintController {
 		 public void ProjectSlideAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
 		 {	 
 			 String UserId = (String) ses.getAttribute("Username");
+			 String LabCode = (String) ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside ProjectSlideAttachDownload.htm "+UserId);		
 				try { 
 			 
@@ -4181,8 +4211,8 @@ public class PrintController {
 						ProjectSlideFreeze attach=service.FreezedSlideAttachmentDownload(req.getParameter("freezedId" ));
 						
 						File my_file=null;
-					
-						my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getAttachName()); 
+						Path freezePath = Paths.get(ApplicationFilesDrive, LabCode, "ProjectSlide");
+						my_file = new File(freezePath+File.separator+attach.getAttachName()); 
 				        res.setHeader("Content-disposition","attachment; filename="+attach.getAttachName().toString()); 
 				        OutputStream out = res.getOutputStream();
 				        FileInputStream in = new FileInputStream(my_file);
@@ -4295,7 +4325,7 @@ public class PrintController {
 			}
 	
 		 
-		 @RequestMapping(value = "downloadMaduguru.htm")
+		 @RequestMapping(value = "FreezedSlidesInpdf.htm")
 		 public void FreezedSlidesInpdf(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
 		 {
 			 String UserId = (String) ses.getAttribute("Username");
@@ -5028,8 +5058,6 @@ public class PrintController {
 			 public @ResponseBody String favoriteSlidesEditSubmit(HttpServletRequest req ,HttpSession ses, RedirectAttributes redir, HttpServletResponse res)throws Exception
 			 {
 				 try {
-					
-				
 					 FavouriteSlidesModel FSM = new FavouriteSlidesModel();
 					 String Title = req.getParameter("name").toString();
 					 String projectlist = "";

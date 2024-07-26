@@ -911,6 +911,8 @@ public class ProjectServiceImpl implements ProjectService {
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
 		String Path = LabCode + "\\ProjectInitiation\\";
+		
+		Path initiationPath = Paths.get(uploadpath,LabCode,"ProjectInitiation");
 
 		PfmsInitiationAttachment pfmsinitiationattachment = new PfmsInitiationAttachment();
 		pfmsinitiationattachment.setInitiationId(Long.parseLong(pfmsinitiationattachmentdto.getInitiationId()));
@@ -924,7 +926,7 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiationattachmentfile.setFilePath(Path);
 		pfmsinitiationattachmentfile.setFileName("Initiation" + timestampstr + "."
 				+ FilenameUtils.getExtension(pfmsinitiationattachmentfiledto.getFileAttach().getOriginalFilename()));
-		saveFile(uploadpath + Path, pfmsinitiationattachmentfile.getFileName(),
+		saveFile1(initiationPath, pfmsinitiationattachmentfile.getFileName(),
 				pfmsinitiationattachmentfiledto.getFileAttach());
 
 		return dao.ProjectInitiationAttachmentAdd(pfmsinitiationattachment, pfmsinitiationattachmentfile);
@@ -1660,6 +1662,28 @@ public class ProjectServiceImpl implements ProjectService {
 			throw new IOException("Could not save image file: " + fileName, ioe);
 		}
 	}
+	
+	 public static int  saveFile1(Path uploadPath, String fileName, MultipartFile multipartFile) throws IOException 
+	   {
+		 logger.info(new Date()  +"Inside SERVICE saveFile ");
+		    int result=1;
+	        
+	        if (!Files.exists(uploadPath)) {
+	            Files.createDirectories(uploadPath);
+	        }
+	        try (InputStream inputStream = multipartFile.getInputStream()) {
+	            Path filePath = uploadPath.resolve(fileName);
+	            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	        } catch (IOException ioe) {
+	        	 result=0;
+	            throw new IOException("Could not save image file: " + fileName, ioe);
+	        }   catch (Exception e) {
+	        	 result=0;
+	        	 logger.error(new Date()  +"Inside SERVICE saveFile "+e);
+	        	e.printStackTrace();
+	        }
+	        return result;
+	   }
 
 	@Override
 	public List<Object[]> ProjectStageDetailsList() throws Exception {
@@ -1678,17 +1702,20 @@ public class ProjectServiceImpl implements ProjectService {
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-		String Path = LabCode + "\\ProjectData\\";
+	//	String Path = LabCode + "\\ProjectData\\";
+		
+		Path filePath = Paths.get(uploadpath,LabCode,"ProjectData");
+		Path filePath1 = Paths.get(LabCode,"ProjectData");
 
 		PfmsProjectData model = new PfmsProjectData();
 		model.setProjectId(Long.parseLong(dto.getProjectId()));
 		model.setCurrentStageId(Integer.parseInt(dto.getCurrentStageId()));
-		model.setFilesPath(Path);
+		model.setFilesPath(filePath1.toString());
 
 		if (!dto.getSystemConfigImg().isEmpty()) {
 			model.setSystemConfigImgName("configimg" + timestampstr + "."
 					+ FilenameUtils.getExtension(dto.getSystemConfigImg().getOriginalFilename()));
-			saveFile(uploadpath + Path, model.getSystemConfigImgName(), dto.getSystemConfigImg());
+			saveFile1(filePath, model.getSystemConfigImgName(), dto.getSystemConfigImg());
 		} else {
 			model.setSystemConfigImgName(null);
 		}
@@ -1696,7 +1723,7 @@ public class ProjectServiceImpl implements ProjectService {
 		if (!dto.getSystemSpecsFile().isEmpty()) {
 			model.setSystemSpecsFileName("specsfile" + timestampstr + "."
 					+ FilenameUtils.getExtension(dto.getSystemSpecsFile().getOriginalFilename()));
-			saveFile(uploadpath + Path, model.getSystemSpecsFileName(), dto.getSystemSpecsFile());
+			saveFile1(filePath, model.getSystemSpecsFileName(), dto.getSystemSpecsFile());
 		} else {
 			model.setSystemSpecsFileName(null);
 		}
@@ -1704,7 +1731,7 @@ public class ProjectServiceImpl implements ProjectService {
 		if (!dto.getProductTreeImg().isEmpty()) {
 			model.setProductTreeImgName("producttree" + timestampstr + "."
 					+ FilenameUtils.getExtension(dto.getProductTreeImg().getOriginalFilename()));
-			saveFile(uploadpath + Path, model.getProductTreeImgName(), dto.getProductTreeImg());
+			saveFile1(filePath, model.getProductTreeImgName(), dto.getProductTreeImg());
 		} else {
 			model.setProductTreeImgName(null);
 		}
@@ -1712,7 +1739,7 @@ public class ProjectServiceImpl implements ProjectService {
 		if (!dto.getPEARLImg().isEmpty()) {
 			model.setPEARLImgName("pearlimg" + timestampstr + "."
 					+ FilenameUtils.getExtension(dto.getPEARLImg().getOriginalFilename()));
-			saveFile(uploadpath + Path, model.getPEARLImgName(), dto.getPEARLImg());
+			saveFile1(filePath, model.getPEARLImgName(), dto.getPEARLImg());
 		} else {
 			model.setPEARLImgName(null);
 		}
@@ -1724,10 +1751,11 @@ public class ProjectServiceImpl implements ProjectService {
 		model.setLastEBDate(dto.getLastEBDate());
 		model.setRevisionNo(0);
 		model.setProcLimit(Double.parseDouble(dto.getProcLimit()));
-		File theDir = new File(uploadpath + Path);
-		if (!theDir.exists()) {
-			theDir.mkdirs();
-		}
+		// Convert Path to File
+		  File theDir = filePath.toFile();  
+	        if (!theDir.exists()) {
+	            theDir.mkdirs();
+	        }
 
 		return dao.ProjectDataSubmit(model);
 	}
@@ -1737,6 +1765,7 @@ public class ProjectServiceImpl implements ProjectService {
 			throws Exception {
 		logger.info(new Date() + "Inside SERVICE preProjectFileupload ");
 		String Path = labCode + "\\ProjectRequirement\\";
+		Path prePath = Paths.get(uploadpath,labCode,"ProjectRequirement");
 		long count=0;
 		PreprojectFile pf=new PreprojectFile();
 		pf.setInitiationId(pfd.getInitiationId());
@@ -1744,7 +1773,7 @@ public class ProjectServiceImpl implements ProjectService {
 		pf.setDocumentName(pfd.getDocumentName());
 		if(!fileAttach.isEmpty()) {
 			pf.setFileName(fileAttach.getOriginalFilename());
-			saveFile(uploadpath+Path,pf.getFileName(),fileAttach);
+			saveFile1(prePath,pf.getFileName(),fileAttach);
 		}
 		pf.setFilePath(Path);
 		pf.setVersionDoc(version);
@@ -1753,22 +1782,21 @@ public class ProjectServiceImpl implements ProjectService {
 		pf.setCreatedDate(sdf1.format(new Date()));
 		pf.setCreatedBy(UserId);
 		pf.setIsActive(1);
-		
-		
 		return dao.preProjectFileUpload(pf);
 	}
 	
 	@Override
 	public long insertTestVerificationFile(ReqTestExcelFile re , String LabCode) throws Exception {
 		
-		String Path = LabCode +"\\APPENDIX\\";
-		
+		//String Path = LabCode +"\\APPENDIX\\";
+		Path testPath = Paths.get(uploadpath,LabCode,"APPENDIX");
+		Path testPath1 = Paths.get(LabCode,"APPENDIX");
 		if(!re.getFile().isEmpty()) {
 			re.setFileName(re.getFile().getOriginalFilename());
-			saveFile(uploadpath+Path,re.getFileName(),re.getFile());
+			saveFile1(testPath,re.getFileName(),re.getFile());
 		}
 		re.setIsActive(1);
-		re.setFilePath(Path);
+		re.setFilePath(testPath1.toString());
 		return dao.insertTestVerificationFile(re);
 	}
 	
@@ -1778,11 +1806,13 @@ public class ProjectServiceImpl implements ProjectService {
 		// TODO Auto-generated method stub
 		logger.info(new Date() + "Inside SERVICE ProjectSqrSubmit ");
 		String Path = LabCode + "\\ProjectRequirement\\";
+		Path sqrPath = Paths.get(uploadpath,LabCode,"ProjectRequirement");
+		Path sqrPath1 = Paths.get(LabCode,"ProjectRequirement");
 		if(!fileAttach.isEmpty()) {
 			psf.setFileName(fileAttach.getOriginalFilename());
-			saveFile(uploadpath+Path,psf.getFileName(),fileAttach);
+			saveFile1(sqrPath,psf.getFileName(),fileAttach);
 		}
-		psf.setFilePath(Path);
+		psf.setFilePath(sqrPath1.toString());
 		psf.setCreatedDate(sdf1.format(new Date()));
 		psf.setCreatedBy(userId);
 		psf.setIsActive(1);
@@ -1799,35 +1829,38 @@ public class ProjectServiceImpl implements ProjectService {
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		String query = "";
 
-		String Path = LabCode + "\\ProjectData\\";
+//		String Path = LabCode + "\\ProjectData\\";
+		
+		Path filePath = Paths.get(uploadpath,LabCode,"ProjectData");
+		Path filePath1 = Paths.get(LabCode,"ProjectData");
 
 		PfmsProjectData model = new PfmsProjectData();
 		model.setProjectId(Long.parseLong(dto.getProjectId()));
 		model.setProjectDataId(Long.parseLong(dto.getProjectDataId()));
 		model.setCurrentStageId(Integer.parseInt(dto.getCurrentStageId()));
-		model.setFilesPath(Path);
+		model.setFilesPath(filePath1.toString());
 		if (!dto.getSystemConfigImg().isEmpty()) {
 			model.setSystemConfigImgName("configimg" + timestampstr + "."
 					+ FilenameUtils.getExtension(dto.getSystemConfigImg().getOriginalFilename()));
-			saveFile(uploadpath + Path, model.getSystemConfigImgName(), dto.getSystemConfigImg());
+			saveFile1(filePath, model.getSystemConfigImgName(), dto.getSystemConfigImg());
 			query = query + "SystemConfigImgName='" + model.getSystemConfigImgName() + "',";
 		}
 		if (!dto.getSystemSpecsFile().isEmpty()) {
 			model.setSystemSpecsFileName("specsfile" + timestampstr + "."
 					+ FilenameUtils.getExtension(dto.getSystemSpecsFile().getOriginalFilename()));
-			saveFile(uploadpath + Path, model.getSystemSpecsFileName(), dto.getSystemSpecsFile());
+			saveFile1(filePath, model.getSystemSpecsFileName(), dto.getSystemSpecsFile());
 			query = query + "SystemSpecsFileName='" + model.getSystemSpecsFileName() + "',";
 		}
 		if (!dto.getProductTreeImg().isEmpty()) {
 			model.setProductTreeImgName("producttree" + timestampstr + "."
 					+ FilenameUtils.getExtension(dto.getProductTreeImg().getOriginalFilename()));
-			saveFile(uploadpath + Path, model.getProductTreeImgName(), dto.getProductTreeImg());
+			saveFile1(filePath, model.getProductTreeImgName(), dto.getProductTreeImg());
 			query = query + "ProductTreeImgName='" + model.getProductTreeImgName() + "',";
 		}
 		if (!dto.getPEARLImg().isEmpty()) {
 			model.setPEARLImgName("pearlimg" + timestampstr + "."
 					+ FilenameUtils.getExtension(dto.getPEARLImg().getOriginalFilename()));
-			saveFile(uploadpath + Path, model.getPEARLImgName(), dto.getPEARLImg());
+			saveFile1(filePath, model.getPEARLImgName(), dto.getPEARLImg());
 			query = query + "PEARLImgName='" + model.getPEARLImgName() + "',";
 		}
 		model.setModifiedBy(dto.getModifiedBy());
@@ -2002,6 +2035,8 @@ public class ProjectServiceImpl implements ProjectService {
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
 		String Path = LabCode + "\\ProjectReference\\";
+		Path authPath = Paths.get(uploadpath,LabCode,"ProjectReference");
+		
 		PfmsInitiationAuthority pfmsauthority = new PfmsInitiationAuthority();
 		pfmsauthority.setInitiationId(Long.parseLong(pfmsinitiationauthoritydto.getInitiationId()));
 		pfmsauthority.setAuthorityName(Long.parseLong(pfmsinitiationauthoritydto.getAuthorityName()));
@@ -2015,7 +2050,7 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiationauthorityfile.setFile(Path);
 		pfmsinitiationauthorityfile.setAttachmentName("Reference" + timestampstr + "."
 				+ pfmsinitiationauthorityfiledto.getAttachFile().getOriginalFilename().split("\\.")[1]);
-		saveFile(uploadpath + Path, pfmsinitiationauthorityfile.getAttachmentName(),
+		saveFile1(authPath, pfmsinitiationauthorityfile.getAttachmentName(),
 				pfmsinitiationauthorityfiledto.getAttachFile());
 
 		return dao.ProjectInitiationAuthorityAdd(pfmsauthority, pfmsinitiationauthorityfile);
@@ -2058,13 +2093,13 @@ public class ProjectServiceImpl implements ProjectService {
 				f.delete();
 			}
 			String Path = pfmsinitiationauthorityfiledto.getFilePath() + "\\ProjectReference\\";
-
+			Path authorityPath = Paths.get(uploadpath,pfmsinitiationauthorityfiledto.getFilePath(),"ProjectReference");
 			pfmsinitiationauthorityfile.setAttachmentName("Reference" + timestampstr + "."
 					+ FilenameUtils.getExtension(pfmsinitiationauthorityfiledto.getAttachFile().getOriginalFilename()));
 			pfmsinitiationauthorityfile.setFile(Path);
 			pfmsinitiationauthorityfile.setInitiationAuthorityFileId(
 					Long.parseLong(pfmsinitiationauthorityfiledto.getInitiationAuthorityFileId()));
-			saveFile(uploadpath + Path, pfmsinitiationauthorityfile.getAttachmentName(),
+			saveFile1(authorityPath, pfmsinitiationauthorityfile.getAttachmentName(),
 					pfmsinitiationauthorityfiledto.getAttachFile());
 
 			ret = dao.AuthorityFileUpdate(pfmsinitiationauthorityfile);
@@ -2197,10 +2232,12 @@ public class ProjectServiceImpl implements ProjectService {
 
 		String projectcode = dao.ProjectData(dto.getProjectId())[1].toString();
 		String path = dto.getLabCode() + "\\ProjectMasterFiles\\" + projectcode;
+		
+		Path projectAttachPath = Paths.get(uploadpath,dto.getLabCode(),"ProjectMasterFiles",projectcode);
 
-		String FullPath = uploadpath + path;
+		//String FullPath = uploadpath + path;
 
-		File filepath = new File(FullPath);
+		File filepath = projectAttachPath.toFile();
 		long ret = 0;
 		if (!filepath.exists()) {
 			filepath.mkdirs();
@@ -2216,21 +2253,34 @@ public class ProjectServiceImpl implements ProjectService {
 				modal.setCreatedBy(dto.getCreatedBy());
 				modal.setCreatedDate(sdf1.format(new Date()));
 
-				String fullFilePath = FullPath + "\\" + modal.getOriginalFileName();
+				//String fullFilePath = FullPath + "\\" + modal.getOriginalFileName();
+				Path fullFilePath =  Paths.get(projectAttachPath.toString(),modal.getOriginalFileName());
 
-				File file = new File(fullFilePath);
+				File file =fullFilePath.toFile();
 				int count = 0;
 				while (true) {
-					file = new File(fullFilePath);
-
+				//	file = fullFilePath.toFile();
 					if (file.exists()) {
 						count++;
-						fullFilePath = uploadpath + path + "\\" + FilenameUtils.getBaseName(modal.getOriginalFileName())
-								+ "-" + count + "." + FilenameUtils.getExtension(modal.getOriginalFileName());
+						/*
+						 * fullFilePath = uploadpath + path + "\\" +
+						 * FilenameUtils.getBaseName(modal.getOriginalFileName()) + "-" + count + "." +
+						 * FilenameUtils.getExtension(modal.getOriginalFileName());
+						 */
+						 String newFileName = FilenameUtils.getBaseName(modal.getOriginalFileName()) + "-" + count + "."
+			                        + FilenameUtils.getExtension(modal.getOriginalFileName());
+			                fullFilePath = Paths.get(projectAttachPath.toString(), newFileName);
+			                file = fullFilePath.toFile();
 					} else {
 						if (count > 0) {
-							modal.setOriginalFileName(FilenameUtils.getBaseName(modal.getOriginalFileName()) + "-"
-									+ count + "." + FilenameUtils.getExtension(modal.getOriginalFileName()));
+							/*
+							 * modal.setOriginalFileName(FilenameUtils.getBaseName(modal.getOriginalFileName
+							 * ()) + "-" + count + "." +
+							 * FilenameUtils.getExtension(modal.getOriginalFileName()));
+							 */
+							 String newFileName = FilenameUtils.getBaseName(modal.getOriginalFileName()) + "-" + count + "."
+			                            + FilenameUtils.getExtension(modal.getOriginalFileName());
+			                    modal.setOriginalFileName(newFileName);
 						}
 						break;
 					}
@@ -2238,7 +2288,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 				modal.setPath(path);
 
-				saveFile(uploadpath + path, modal.getOriginalFileName(), dto.getFiles()[i]);
+				saveFile1(projectAttachPath, modal.getOriginalFileName(), dto.getFiles()[i]);
 				ret = dao.ProjectMasterAttachAdd(modal);
 
 			}
@@ -3452,10 +3502,11 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		@Override
 		public long uploadProductTree(SpecifcationProductTree s, String LabCode) throws Exception {
 			String Path = LabCode + "\\SpecificationProducTree\\";
+			Path treePath = Paths.get(uploadpath,LabCode,"SpecificationProducTree");
 			long count=0l;
 			if(!s.getFile().isEmpty()) {
 				s.setFilesPath(Path);
-				saveFile(uploadpath + Path, s.getFile().getOriginalFilename(), s.getFile());
+				saveFile1(treePath, s.getFile().getOriginalFilename(), s.getFile());
 				s.setIsactive(1);
 				s.setImageName(s.getFile().getOriginalFilename());
 				count=dao.uploadProductTree(s);
