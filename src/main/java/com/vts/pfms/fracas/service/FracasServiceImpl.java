@@ -83,7 +83,9 @@ public class FracasServiceImpl implements FracasService {
 		Timestamp instant= Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 		
-		String Path = LabCode+"\\FracasData\\";
+//		String Path = LabCode+"\\FracasData\\";
+		Path uploadPath = Paths.get(uploadpath, LabCode, "FracasData");
+		Path uploadPath1 = Paths.get(LabCode, "FracasData");
 		PfmsFracasMain model=new PfmsFracasMain();
 		model.setFracasTypeId(Integer.parseInt(dto.getFracasTypeId()));
 		model.setFracasItem(dto.getFracasItem());
@@ -100,9 +102,9 @@ public class FracasServiceImpl implements FracasService {
 			
 			PfmsFracasAttach attach=new PfmsFracasAttach();
 			attach.setFracasMainId(mainid);
-			attach.setFilePath(Path);
+			attach.setFilePath(uploadPath1.toString());
 			attach.setAttachName("Fracas"+timestampstr+"."+FilenameUtils.getExtension(dto.getFracasMainAttach().getOriginalFilename()));
-			saveFile(uploadpath+Path, attach.getAttachName(), dto.getFracasMainAttach());
+			saveFile1(uploadPath, attach.getAttachName(), dto.getFracasMainAttach());
 			attach.setFracasSubId(0);
 			attach.setCreatedBy(dto.getCreatedBy());
 			attach.setCreatedDate(sdf1.format(new Date()));			
@@ -111,6 +113,28 @@ public class FracasServiceImpl implements FracasService {
 		
 		return mainid;
 	}
+	
+	public static int saveFile1(Path uploadPath, String fileName, MultipartFile multipartFile) throws IOException {
+		logger.info(new Date() + "Inside SERVICE saveFile ");
+		int result = 1;
+
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
+		}
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			result = 0;
+			throw new IOException("Could not save image file: " + fileName, ioe);
+		} catch (Exception e) {
+			result = 0;
+			logger.error(new Date() + "Inside SERVICE saveFile " + e);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	 public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
 	    {
 	    	logger.info(new Date() +"Inside SERVICE saveFile ");
@@ -231,7 +255,9 @@ public class FracasServiceImpl implements FracasService {
 		Timestamp instant= Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 		
-		String Path = LabCode+"\\FracasData\\";
+//		String Path = LabCode+"\\FracasData\\";
+		Path uploadPath = Paths.get(uploadpath, LabCode, "FracasData");
+		Path uploadPath1 = Paths.get(LabCode, "FracasData");
 		PfmsFracasSub model=new PfmsFracasSub();
 		model.setFracasAssignId(Long.parseLong(dto.getFracasAssignId()));
 		model.setProgress(Integer.parseInt(dto.getProgress()));
@@ -248,9 +274,9 @@ public class FracasServiceImpl implements FracasService {
 				
 				PfmsFracasAttach attach=new PfmsFracasAttach();
 				attach.setFracasMainId(0);
-				attach.setFilePath(Path);
+				attach.setFilePath(uploadPath1.toString());
 				attach.setAttachName("Fracas"+timestampstr+"."+FilenameUtils.getExtension(dto.getAttachment().getOriginalFilename()));
-				saveFile(uploadpath+Path, attach.getAttachName(), dto.getAttachment());
+				saveFile1(uploadPath, attach.getAttachName(), dto.getAttachment());
 				attach.setFracasSubId(subid);
 				attach.setCreatedBy(dto.getCreatedBy());
 				attach.setCreatedDate(sdf1.format(new Date()));			
@@ -342,7 +368,9 @@ public class FracasServiceImpl implements FracasService {
 		Timestamp instant= Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 		
-		String Path = LabCode+"\\FracasData\\";
+//		String Path = LabCode+"\\FracasData\\";
+		Path uploadPath = Paths.get(uploadpath, LabCode, "FracasData");
+		Path uploadPath1 = Paths.get(LabCode, "FracasData");
 		dto.setModifiedDate(sdf1.format(new Date()));
 		dto.setFracasDate(sdf1.format(sdf.parse(dto.getFracasDate())));
 		int ret=dao.FracasMainEdit(dto);
@@ -359,8 +387,8 @@ public class FracasServiceImpl implements FracasService {
 			PfmsFracasAttach attach=new PfmsFracasAttach();
 			attach.setFracasMainId(Long.parseLong(dto.getFracasMainId()));
 			attach.setAttachName("Fracas"+timestampstr+"."+FilenameUtils.getExtension(dto.getFracasMainAttach().getOriginalFilename()));
-			attach.setFilePath(Path);
-			saveFile(uploadpath+Path, attach.getAttachName(), dto.getFracasMainAttach());
+			attach.setFilePath(uploadPath1.toString());
+			saveFile1(uploadPath, attach.getAttachName(), dto.getFracasMainAttach());
 			attach.setFracasSubId(0);
 			attach.setCreatedBy(dto.getModifiedBy());
 			attach.setCreatedDate(sdf1.format(new Date()));			

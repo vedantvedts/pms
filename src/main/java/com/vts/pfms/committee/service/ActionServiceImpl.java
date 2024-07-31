@@ -58,6 +58,27 @@ public class ActionServiceImpl implements ActionService {
 	ActionDao dao;
 	
 	private static final Logger logger=LogManager.getLogger(ActionServiceImpl.class);
+	
+	public static int saveFile1(Path uploadPath, String fileName, MultipartFile multipartFile) throws IOException {
+		logger.info(new Date() + "Inside SERVICE saveFile ");
+		int result = 1;
+
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
+		}
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			result = 0;
+			throw new IOException("Could not save image file: " + fileName, ioe);
+		} catch (Exception e) {
+			result = 0;
+			logger.error(new Date() + "Inside SERVICE saveFile " + e);
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	@Override
 	public List<Object[]> EmployeeList(String LabCode) throws Exception {
@@ -653,7 +674,9 @@ public class ActionServiceImpl implements ActionService {
 		String LabCode = main.getLabCode();
 		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 		
-		String Path = LabCode+"\\ActionData\\";
+//		String Path = LabCode+"\\ActionData\\";
+		Path subPath = Paths.get(uploadpath,LabCode, "ActionData");
+		Path subPath1 = Paths.get(LabCode, "ActionData");
 		ActionSub sub=new ActionSub();
 		sub.setActionAssignId(Long.parseLong(main.getActionAssignId()));
 		sub.setRemarks(main.getRemarks());
@@ -678,13 +701,13 @@ public class ActionServiceImpl implements ActionService {
 			if(!main.getMultipartfile().isEmpty()) 
 			{
 				ActionAttachment attach=new ActionAttachment();
-				attach.setAttachFilePath(Path);
+				attach.setAttachFilePath(subPath1.toString());
 				attach.setActionSubId(subresult);
 				attach.setAttachName(main.getFileNamePath());
 				attach.setCreatedBy(main.getCreatedBy());
 				attach.setCreatedDate(sdf1.format(new Date()));
 				attach.setAttachName("Action"+timestampstr+"."+FilenameUtils.getExtension(main.getMultipartfile().getOriginalFilename()));
-				saveFile(uploadpath+Path, attach.getAttachName(), main.getMultipartfile());
+				saveFile1(subPath, attach.getAttachName(), main.getMultipartfile());
 				dao.ActionAttachInsert(attach);
 			}
 			}
@@ -1475,8 +1498,9 @@ public class ActionServiceImpl implements ActionService {
 		String LabCode = main.getLabCode();
 		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 		
-		String Path = LabCode+"\\IssueData\\";
-		
+//		String Path = LabCode+"\\IssueData\\";
+		Path issuePath = Paths.get(uploadpath,LabCode, "IssueData");
+		Path issuePath1 = Paths.get(LabCode, "IssueData");
 		ActionSub sub=new ActionSub();
 		sub.setActionAssignId(Long.parseLong(main.getActionAssignId()));
 		sub.setRemarks(main.getRemarks());
@@ -1499,12 +1523,12 @@ public class ActionServiceImpl implements ActionService {
 			dao.AssignUpdate(updateassign);
 			ActionAttachment attach=new ActionAttachment();
 			
-			attach.setAttachFilePath(Path);
+			attach.setAttachFilePath(issuePath1.toString());
 			attach.setActionSubId(subresult);
 			attach.setAttachName(main.getFileNamePath());
 			if(!main.getMultipartfile().isEmpty()) {
 				attach.setAttachName("Issue"+timestampstr+"."+FilenameUtils.getExtension(main.getMultipartfile().getOriginalFilename()));
-				saveFile(uploadpath+Path, attach.getAttachName(), main.getMultipartfile());
+				saveFile1(issuePath, attach.getAttachName(), main.getMultipartfile());
 			}else{
 				attach.setAttachFilePath(null);
 			}
@@ -1665,10 +1689,12 @@ public class ActionServiceImpl implements ActionService {
 			RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + (RfaCount+1);
 		}
 
-		String Path = LabCode+"\\RFAFiles\\";
+//		String Path = LabCode+"\\RFAFiles\\";
+		
+		Path rfaPath = Paths.get(uploadpath,LabCode, "RFAFiles");
+		Path rfaPath1 = Paths.get(LabCode, "RFAFiles");
 		
 		RfaAction rfa1= new RfaAction();
-		
 		rfa1.setRfaDate(rfa.getRfaDate());
 		rfa1.setLabCode(LabCode);
 		rfa1.setRfaNo(RfaNo);
@@ -1722,9 +1748,9 @@ public class ActionServiceImpl implements ActionService {
  if(!rfa.getAssignorAttachment().isEmpty()) {
 		RfaAttachment rfaAttach=new RfaAttachment();
 		rfaAttach.setRfaId(rfaIdAttach);
-		rfaAttach.setFilesPath(Path);
+		rfaAttach.setFilesPath(rfaPath1.toString());
 		rfaAttach.setAssignorAttachment(rfa.getMultipartfile().getOriginalFilename());
-		saveFile(uploadpath+Path, rfaAttach.getAssignorAttachment(), rfa.getMultipartfile());
+		saveFile1(rfaPath, rfaAttach.getAssignorAttachment(), rfa.getMultipartfile());
 		rfaAttach.setCreatedBy(UserId);
 		rfaAttach.setCreatedDate(sdf.format(new Date()));
 		rfaAttach.setIsActive(1);
@@ -1757,7 +1783,9 @@ public class ActionServiceImpl implements ActionService {
 	public Long RfaEditSubmit(RfaActionDto rfa,String[] assignee,String[] CCEmpName) throws Exception {
 		
 		String LabCode = rfa.getLabCode();
-		String Path = LabCode + "\\RFAFiles\\";
+//		String Path = LabCode + "\\RFAFiles\\";
+		Path rfaPath = Paths.get(uploadpath,LabCode, "RFAFiles");
+		Path rfaPath1 = Paths.get(LabCode, "RFAFiles");
 
 		RfaAction action = new RfaAction();
 			action.setRfaDate(rfa.getRfaDate());
@@ -1781,9 +1809,9 @@ public class ActionServiceImpl implements ActionService {
 				int result=dao.deleterfaAttachment(rfa.getRfaId()); // deleting the existing attachement
 
 				rfaAttach.setRfaId(rfa.getRfaId());
-				rfaAttach.setFilesPath(Path);
+				rfaAttach.setFilesPath(rfaPath1.toString());
 				rfaAttach.setAssignorAttachment(rfa.getMultipartfile().getOriginalFilename());
-				saveFile(uploadpath+Path, rfaAttach.getAssignorAttachment(), rfa.getMultipartfile());
+				saveFile1(rfaPath, rfaAttach.getAssignorAttachment(), rfa.getMultipartfile());
 				rfaAttach.setCreatedBy(rfa.getModifiedBy());
 				rfaAttach.setCreatedDate(sdf1.format(new Date()));
 				rfaAttach.setIsActive(1);
@@ -1794,9 +1822,9 @@ public class ActionServiceImpl implements ActionService {
 		
 		if(!rfa.getAssignorAttachment().isEmpty()) {
 			rfaAttach.setRfaId(rfa.getRfaId());
-			rfaAttach.setFilesPath(Path);
+			rfaAttach.setFilesPath(rfaPath1.toString());
 			rfaAttach.setAssignorAttachment(rfa.getMultipartfile().getOriginalFilename());
-			saveFile(uploadpath+Path, rfaAttach.getAssignorAttachment(), rfa.getMultipartfile());
+			saveFile1(rfaPath, rfaAttach.getAssignorAttachment(), rfa.getMultipartfile());
 			rfaAttach.setCreatedBy(rfa.getModifiedBy());
 			rfaAttach.setCreatedDate(sdf1.format(new Date()));
 			rfaAttach.setIsActive(1);
@@ -1820,7 +1848,6 @@ public class ActionServiceImpl implements ActionService {
 		}
 		//for assignee emplist edit end
 		
-		System.out.println(Arrays.asList(CCEmpName)+"-------");
 		
 		//for CC emplist edit start
 		Long result1=dao.updateRfaCC(rfa.getRfaId()+"");  // here first existing data isactive will be "0"
@@ -1887,7 +1914,9 @@ public Long RfaModalSubmit(RfaInspection inspection,RfaActionDto rfa) throws Exc
 	inspection.setCreatedDate(sdf1.format(new Date()));
 	
 	String LabCode = rfa.getLabCode();
-	String Path = LabCode + "\\RFAFiles\\";
+//	String Path = LabCode + "\\RFAFiles\\";
+	Path modalPath = Paths.get(uploadpath,LabCode, "RFAFiles");
+	Path modalPath1 = Paths.get(LabCode, "RFAFiles");
 	
 	RfaAttachment rfaAttach=new RfaAttachment();
 	
@@ -1898,7 +1927,7 @@ public Long RfaModalSubmit(RfaInspection inspection,RfaActionDto rfa) throws Exc
 			rfaAttach.setRfaId(rfa.getRfaId());
 			rfaAttach.setFilesPath(obj[2].toString());
 			rfaAttach.setAssigneeAttachment(rfa.getMultipartfile().getOriginalFilename());
-			saveFile(uploadpath+Path, rfaAttach.getAssigneeAttachment(), rfa.getMultipartfile());
+			saveFile1(modalPath, rfaAttach.getAssigneeAttachment(), rfa.getMultipartfile());
 			rfaAttach.setModifiedBy(rfa.getModifiedBy());
 			rfaAttach.setModifiedDate(sdf1.format(new Date()));
 			rfaAttach.setIsActive(1);
@@ -1909,9 +1938,9 @@ public Long RfaModalSubmit(RfaInspection inspection,RfaActionDto rfa) throws Exc
 	
 	if(!rfa.getAssigneAttachment().isEmpty()) {
 		rfaAttach.setRfaId(rfa.getRfaId());
-		rfaAttach.setFilesPath(Path);
+		rfaAttach.setFilesPath(modalPath1.toString());
 		rfaAttach.setAssigneeAttachment(rfa.getMultipartfile().getOriginalFilename());
-		saveFile(uploadpath+Path, rfaAttach.getAssigneeAttachment(), rfa.getMultipartfile());
+		saveFile1(modalPath, rfaAttach.getAssigneeAttachment(), rfa.getMultipartfile());
 		rfaAttach.setCreatedBy(rfa.getCreatedBy());
 		rfaAttach.setCreatedDate(sdf1.format(new Date()));
 		rfaAttach.setIsActive(1);
@@ -1943,7 +1972,9 @@ public Long RfaModalUpdate(RfaInspection inspection,RfaActionDto rfa) throws Exc
 	inspection.setModifiedDate(sdf1.format(new Date()));
 
 	String LabCode = rfa.getLabCode();
-	String Path = LabCode + "\\RFAFiles\\";
+//	String Path = LabCode + "\\RFAFiles\\";
+	Path modalPath = Paths.get(uploadpath,LabCode, "RFAFiles");
+	Path modalPath1 = Paths.get(LabCode, "RFAFiles");
 	
 	RfaAttachment rfaAttach=new RfaAttachment();
 	
@@ -1954,7 +1985,7 @@ public Long RfaModalUpdate(RfaInspection inspection,RfaActionDto rfa) throws Exc
 			rfaAttach.setRfaId(rfa.getRfaId());
 			rfaAttach.setFilesPath(obj[2].toString());
 			rfaAttach.setAssigneeAttachment(rfa.getMultipartfile().getOriginalFilename());
-			saveFile(uploadpath+Path, rfaAttach.getAssigneeAttachment(), rfa.getMultipartfile());
+			saveFile1(modalPath, rfaAttach.getAssigneeAttachment(), rfa.getMultipartfile());
 			rfaAttach.setModifiedBy(rfa.getModifiedBy());
 			rfaAttach.setCreatedDate(sdf1.format(new Date()));
 			rfaAttach.setIsActive(1);
@@ -1965,9 +1996,9 @@ public Long RfaModalUpdate(RfaInspection inspection,RfaActionDto rfa) throws Exc
 	
 	if(!rfa.getAssigneAttachment().isEmpty()) {
 		rfaAttach.setRfaId(rfa.getRfaId());
-		rfaAttach.setFilesPath(Path);
+		rfaAttach.setFilesPath(modalPath1.toString());
 		rfaAttach.setAssigneeAttachment(rfa.getMultipartfile().getOriginalFilename());
-		saveFile(uploadpath+Path, rfaAttach.getAssigneeAttachment(), rfa.getMultipartfile());
+		saveFile1(modalPath, rfaAttach.getAssigneeAttachment(), rfa.getMultipartfile());
 		rfaAttach.setCreatedBy(rfa.getCreatedBy());
 		rfaAttach.setCreatedDate(sdf1.format(new Date()));
 		rfaAttach.setIsActive(1);

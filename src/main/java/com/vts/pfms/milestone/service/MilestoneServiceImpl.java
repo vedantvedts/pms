@@ -370,18 +370,12 @@ public class MilestoneServiceImpl implements MilestoneService {
 		logger.info(new Date() +"Inside  ActivityProgressUpdate ");
 		int result=0;
 		
-		System.out.println("ProgressDate"+dto.getProgressDate());
-		System.out.println("ProgessData"+dateFormat.parse(dto.getProgressDate()));
-		System.out.println("ProgressDate "+new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime()));
-		
 		String progressdate= new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime())+"";
 		
-		System.out.println("ProgressDate formattted "+progressdate);
+
 		Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
-		
 		Date progressDate=fc.getSqlDateFormat().parse(progressdate);
 		
-		System.out.println(enddate+"----"+progressDate+"-----"+enddate.after(progressDate));
 		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
 		if("100".equalsIgnoreCase(dto.getProgressStatus())) {
 		dto.setDateOfCompletion(progressdate);
@@ -1646,7 +1640,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		        
 		        List<Object[]> count3=dao.getAttachmentId(uploadDto.getProjectId());
 		        ProjectTechnicalWorkData tdata = new ProjectTechnicalWorkData();
-		        if(uploadDto.getAgendaId()==null || uploadDto.getAgendaId().equalsIgnoreCase("0")) {
+		        if(uploadDto.getAgendaId()==null) {
 			        if(count3!=null && count3.size()>0) {
 		        	    String techId=count3.get(0)[0].toString();
 				        String attachId=count3.get(0)[1].toString();
@@ -1668,6 +1662,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 			        	projectDao.TechnicalWorkDataAdd(tdata);
 			        }
 		        }else {
+		          if(! uploadDto.getAgendaId().equalsIgnoreCase("0")) {
 		      	  CommitteeScheduleAgendaDocs docs = new CommitteeScheduleAgendaDocs();
 				  docs.setAgendaId(Long.parseLong(uploadDto.getAgendaId()));
 				  docs.setFileDocId(count); 
@@ -1675,6 +1670,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 				  docs.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 				  docs.setIsActive(1); 
 				  committeDao.addAgendaLinkFile(docs); 
+		          }
 		        }
 				
 			 }
