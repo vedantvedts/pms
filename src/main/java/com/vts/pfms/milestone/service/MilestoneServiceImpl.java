@@ -1656,6 +1656,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 			        else {
 			        	tdata.setProjectId(Long.parseLong(uploadDto.getProjectId()));
 			        	tdata.setAttachmentId(count);
+			        	tdata.setRelatedPoints(" ");
 			        	tdata.setCreatedBy(uploadDto.getUserId());
 			        	tdata.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 			        	tdata.setIsActive(1);
