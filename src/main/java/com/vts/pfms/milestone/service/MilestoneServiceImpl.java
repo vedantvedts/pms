@@ -1689,13 +1689,26 @@ public class MilestoneServiceImpl implements MilestoneService {
 	}
 	
 	@Override
-	public long submitCheckboxFile(String userId, String techDataId, String attachid) throws Exception {
+	public long submitCheckboxFile(String userId, String techDataId, String attachid, String projectid) throws Exception {
+		
 		ProjectTechnicalWorkData modal = new ProjectTechnicalWorkData();
-		modal.setTechDataId(Long.parseLong(techDataId));
-		modal.setAttachmentId(Long.parseLong(attachid));
-		modal.setModifiedBy(userId);
-		modal.setModifiedDate(sdtf.format(new Date()));
-		modal.setIsActive(1);
-		return dao.submitCheckboxFile(modal);
+		if(techDataId!=null) {
+			modal.setTechDataId(Long.parseLong(techDataId));
+			modal.setAttachmentId(Long.parseLong(attachid));
+			modal.setModifiedBy(userId);
+			modal.setModifiedDate(sdtf.format(new Date()));
+			modal.setIsActive(1);
+			dao.submitCheckboxFile(modal);
+		}else {
+			modal.setProjectId(Long.parseLong(projectid));
+			modal.setAttachmentId(Long.parseLong(attachid));
+			modal.setRelatedPoints(" ");
+			modal.setCreatedBy(userId);
+			modal.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+			modal.setIsActive(1);
+        	projectDao.TechnicalWorkDataAdd(modal);
+		}
+		
+		return 1;
 	}
 }

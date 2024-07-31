@@ -4564,10 +4564,11 @@ var subLevelId="";
        $('.form-check-input').not(this).prop('checked', false);
        // Send AJAX request with the selected checkbox value
        var selectedValue = $(this).val();
+       var projectid = <%=projectid%>;
        $.ajax({
          url: 'submitCheckboxFile.htm', 
          type: 'GET',
-         data: { attachid: selectedValue,techDataId: techDataId},
+         data: { attachid: selectedValue,techDataId: techDataId,projectid: projectid},
          success: function(response) {
            Swal.fire({
              icon: 'success',
