@@ -2479,8 +2479,8 @@ public class MilestoneController {
                 Zipper zip=new Zipper();
                
                	for(Object[] Doc:DocsData) 
-               	{           
-               		zip.unpack(FilePath+Doc[2].toString()+Doc[3].toString()+Doc[7].toString()+"-"+Doc[6].toString()+".zip",path,Doc[5].toString());
+               	{   Path uploadPath = Paths.get(FilePath, Doc[2].toString(),(Doc[3].toString()+Doc[7].toString()+"-"+Doc[6].toString()+".zip"));
+               		zip.unpack(uploadPath.toString(),path,Doc[5].toString());
                		File OFile=new File(path+"/"+Doc[4]);
                		File NFile=new File(path+"/"+Doc[13]+"-"+Doc[14]+"-"+Doc[4]);
                		OFile.renameTo(NFile);
