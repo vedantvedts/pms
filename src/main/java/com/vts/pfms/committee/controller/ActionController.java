@@ -553,16 +553,17 @@ public class ActionController {
 	 public void ActionAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
 	 {	 
 		 String UserId = (String) ses.getAttribute("Username");
+		 String labCode = (String)ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside ActionAttachDownload.htm "+UserId);		
 			try { 
 		 
 				  ActionAttachment attachment=service.ActionAttachmentDownload(req.getParameter("ActionSubId" ));
-		
-				  res.setContentType("application/octet-stream");
+				  Path pdfPath = Paths.get(uploadpath, labCode,"ActionData",attachment.getAttachName().toString());
 				  File my_file=null;
-					
-					my_file = new File(uploadpath+attachment.getAttachFilePath()+File.separator+attachment.getAttachName()); 
-			        res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachName().toString()); 
+//					my_file = new File(uploadpath+attachment.getAttachFilePath()+File.separator+attachment.getAttachName()); 
+					my_file = pdfPath.toFile(); 
+					res.setContentType("application/octet-stream");
+					res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachName().toString()); 
 			        OutputStream out = res.getOutputStream();
 			        FileInputStream in = new FileInputStream(my_file);
 			        byte[] buffer = new byte[4096];
@@ -584,16 +585,17 @@ public class ActionController {
 	 public void ActionDataAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
 	 {	 
 		 String UserId = (String) ses.getAttribute("Username");
+		 String labCode = (String)ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside ActionAttachDownload.htm "+UserId);		
 			try { 
 		 
-					res.setContentType("Application/octet-stream");	
 					ActionAttachment attach=service.ActionAttachmentDownload(req.getParameter("ActionSubId" ));
-					
+					Path pdfPath = Paths.get(uploadpath,labCode,"ActionData",attach.getAttachName().toString());
 					File my_file=null;
-				
-					my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
-			        res.setHeader("Content-disposition","attachment; filename="+attach.getAttachName().toString()); 
+//					my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
+					my_file = pdfPath.toFile(); 
+					res.setContentType("Application/octet-stream");	
+					res.setHeader("Content-disposition","attachment; filename="+attach.getAttachName().toString()); 
 			        OutputStream out = res.getOutputStream();
 			        FileInputStream in = new FileInputStream(my_file);
 			        byte[] buffer = new byte[4096];
@@ -616,6 +618,7 @@ public class ActionController {
 	public String TCCMemberDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labCode = (String)ses.getAttribute("labcode");
 		String ActionSubId=req.getParameter("ActionSubId");
 		String AttachMentId=req.getParameter("ActionAttachid");
 		String Progress=null;
@@ -627,9 +630,9 @@ public class ActionController {
 			ActionAttachment attach = null;
 			if(!AttachMentId.equalsIgnoreCase("null")) {
 				attach=service.ActionAttachmentDownload(AttachMentId);	
-				File my_file=null;
-			       
-				my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
+				Path pdfPath = Paths.get(uploadpath,labCode,"ActionData",attach.getAttachName().toString());
+				File my_file=pdfPath.toFile();
+//				my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
 				       
 				if(my_file.exists()) {
 					my_file.delete();
@@ -3154,6 +3157,7 @@ public class ActionController {
 	 	public void RfaAttachmentDownload(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir)throws Exception
 	 	{
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String) ses.getAttribute("labcode");
 
 			logger.info(new Date() +"Inside RfaAttachmentDownload.htm "+UserId);
 			try {
@@ -3164,14 +3168,16 @@ public class ActionController {
 				
 				File my_file=null;
 				if(type.equalsIgnoreCase("ARD")) {
-					
-					my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[3]);
+					Path filePath = Paths.get(uploadpath,LabCode,"RFAFiles",rfaAttachDownload[3].toString());
+//					my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[3]);
+					my_file = filePath.toFile();
 					res.setContentType("Application/octet-stream");	
 			        res.setHeader("Content-disposition","attachment; filename="+rfaAttachDownload[3].toString()); 
 					
 				}else {
-					
-				   my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[4]);
+				  Path filePath1 = Paths.get(uploadpath,LabCode,"RFAFiles",rfaAttachDownload[4].toString());
+				  my_file = filePath1.toFile();
+//				   my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[4]);
 				   res.setContentType("Application/octet-stream");	
 		           res.setHeader("Content-disposition","attachment; filename="+rfaAttachDownload[4].toString()); 
 				}
@@ -3373,7 +3379,9 @@ public class ActionController {
 	        		if(attachmentData[3]!=null) {
 		        		
 	        			if(FilenameUtils.getExtension(attachmentData[3].toString()).equalsIgnoreCase("pdf")) {
-	        		        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+attachmentData[2]+"\\"+attachmentData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        				Path pdfPath = Paths.get(uploadpath, LabCode,"RFAFiles",attachmentData[3].toString());
+	        			    PdfReader pdfReader = new PdfReader(pdfPath.toString());
+	        		        PdfDocument pdfDocument1 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 	        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
 	        		        document4.setMargins(50, 50, 50, 50);
 	        		        Rectangle pageSize;
@@ -3411,7 +3419,9 @@ public class ActionController {
 	        	if(attachmentData[4]!=null) {
 	        		
 	        			if(FilenameUtils.getExtension(attachmentData[4].toString()).equalsIgnoreCase("pdf")) {
-	        		        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+attachmentData[2]+"\\"+attachmentData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        				Path pdfPath1 = Paths.get(uploadpath, LabCode,"RFAFiles",attachmentData[4].toString());
+	        			    PdfReader pdfReader1 = new PdfReader(pdfPath1.toString());
+	        		        PdfDocument pdfDocument2 = new PdfDocument(pdfReader1,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 	        		        Document document5 = new Document(pdfDocument2,PageSize.A4);
 	        		        document5.setMargins(50, 50, 50, 50);
 	        		        Rectangle pageSize;
@@ -3569,7 +3579,9 @@ public class ActionController {
 			        		if(attachmentData[3]!=null) {
 				        		
 			        			if(FilenameUtils.getExtension(attachmentData[3].toString()).equalsIgnoreCase("pdf")) {
-			        		        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+attachmentData[2]+"\\"+attachmentData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+			        				Path pdfPath = Paths.get(uploadpath, LabCode,"RFAFiles",attachmentData[3].toString());
+			        			    PdfReader pdfReader = new PdfReader(pdfPath.toString());
+			        		        PdfDocument pdfDocument1 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
 			        		        document4.setMargins(50, 50, 50, 50);
 			        		        Rectangle pageSize;
@@ -3607,7 +3619,9 @@ public class ActionController {
 			        	if(attachmentData[4]!=null) {
 			        		
 			        			if(FilenameUtils.getExtension(attachmentData[4].toString()).equalsIgnoreCase("pdf")) {
-			        		        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+attachmentData[2]+"\\"+attachmentData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+			        				Path pdfPath1 = Paths.get(uploadpath, LabCode,"RFAFiles",attachmentData[4].toString());
+			        			    PdfReader pdfReader1 = new PdfReader(pdfPath1.toString());
+			        		        PdfDocument pdfDocument2 = new PdfDocument(pdfReader1,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        		        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        		        document5.setMargins(50, 50, 50, 50);
 			        		        Rectangle pageSize;

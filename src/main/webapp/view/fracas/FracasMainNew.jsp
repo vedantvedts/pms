@@ -159,8 +159,10 @@ h6{
 										<%}else if(Long.parseLong(projectid)>=0){%>
 											<select class="form-control selectdee" id="projectid" name="projectid" required >
 												<%for(Object[] obj:projectslist){ %>
-													<%if(projectid.equals(obj[0].toString())){ %>	
-														<option value="<%=obj[0]%>" selected><%=obj[1]%></option>	
+													<%if(projectid.equals(obj[0].toString())){
+														String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+														%>
+														<option value="<%=obj[0]%>" selected><%=obj[4]+projectshortName%></option>	
 													<%} %>
 												<%} %>
 											</select>

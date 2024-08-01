@@ -7451,9 +7451,10 @@ public class CommitteeController {
 			try {	
 				String filerepid=req.getParameter("filerepid");
                 Object[] obj=service.AgendaDocLinkDownload(filerepid);
+                Path uploadPath = Paths.get(ApplicationFilesDrive, obj[2].toString(),(obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip"));
                 String path=req.getServletContext().getRealPath("/view/temp");
                 Zipper zip=new Zipper();
-                zip.unpack(ApplicationFilesDrive+ obj[2].toString()+obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip",path,obj[5].toString());
+                zip.unpack(uploadPath.toString(),path,obj[5].toString());
                 res.setContentType("application/pdf");
                 res.setHeader("Content-disposition","attachment;filename="+obj[4]); 
                 File f=new File(path+"/"+obj[4]);

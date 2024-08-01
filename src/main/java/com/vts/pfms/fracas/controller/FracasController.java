@@ -3,6 +3,8 @@ package com.vts.pfms.fracas.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -121,9 +123,6 @@ public class FracasController {
 			dto.setCreatedBy(UserId);
 			dto.setLabCode(LabCode);
 			
-		System.out.println(LabCode+"-----------------------");
-			
-			
 			long count=service.FracasMainAddSubmit(dto);
 			
 			if (count > 0) {
@@ -146,15 +145,16 @@ public class FracasController {
 			throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside FracasAttachDownload.htm "+UserId);
 		try
 		{
 			res.setContentType("Application/octet-stream");	
 			
 			PfmsFracasAttach attachment = service.FracasAttachDownload(req.getParameter("fracasattachid"));
-			File my_file=null;
-		
-			my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getAttachName()); 
+			Path uploadPath = Paths.get(uploadpath,LabCode,"FracasData",attachment.getAttachName().toString());
+			File my_file=uploadPath.toFile();
+//			my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getAttachName()); 
 	        res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachName().toString()); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
