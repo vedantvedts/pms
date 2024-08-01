@@ -475,7 +475,7 @@ String labcode= (String)session.getAttribute("labcode");
 
 				<!------------------------------------------------ new navbar end ------------------------------------->
 
-
+<button type="button" style="display: none;" id="storeSessionData"></button>
 			</div>
 
 
@@ -897,6 +897,33 @@ function changed() {
 				$('#smartsearch').on('shown.bs.modal', function() {
 					  $(this).find('[autofocus]').focus();
 					});
+				
+				$(document).ready(function() {
+					$('#storeSessionData').click();
+					
+				});
+				$('#storeSessionData').click(function(){
+				
+					var DashBoardId = "<%=(String)session.getAttribute("DashBoardId")%>";
+					var path = window.location.pathname.split("/").includes("MainDashBoard.htm");
+					console.log("DashBoardId  "+DashBoardId)
+					console.log("path  "+path)
+					if(path){
+						$.ajax({
+							type:'GET',
+							url:'storeSlideData.htm',
+							datatype:'json',
+							data:{
+								DashBoardId:DashBoardId,
+							},
+							 success:function(result){
+								 
+							 }
+						})
+					}
+					
+				
+				})
 </script>
 
 

@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,10 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jdt.internal.compiler.parser.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,13 +33,20 @@ import com.google.gson.Gson;
 import com.vts.pfms.header.model.ProjectDashBoardFavourite;
 import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
 import com.vts.pfms.header.service.HeaderService;
-
+import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.service.RfpMainService;
+import com.vts.pfms.utils.PMSLogoUtil;
 @Controller
 public class HeaderController {
 
 	@Autowired
 	HeaderService service;
 	
+	@Autowired
+	PrintService printservice;
+	
+	@Autowired
+	RfpMainService rfpmainservice;
 	private static final Logger logger=LogManager.getLogger(HeaderController.class);
 	
 	@RequestMapping(value = "HeaderModuleList.htm" , method = RequestMethod.GET)
@@ -607,7 +621,8 @@ public class HeaderController {
 		
 		 return "redirect:/MainDashBoard.htm";
 	}
-	
+	@Value("${ApplicationFilesDrive}")
+	private String ApplicationFilesDrive;
 	@RequestMapping(value = "getDashBoardProjects.htm" , method = RequestMethod.GET)
 	public @ResponseBody String getDashBoardProjects(HttpServletRequest request ,HttpSession ses) throws Exception
 	{
@@ -623,7 +638,97 @@ public class HeaderController {
 			}
 		}
 		
-		//List<Object[]>projects = service.getProjectsBasedOnDashBoard(request.getParameter("DashBoardId"));
+	
+		return json.toJson(projects);
+	}
+	
+	@RequestMapping(value = "storeSlideData.htm" , method = RequestMethod.GET)
+	public @ResponseBody String storeSlideData(HttpServletRequest request ,HttpSession ses) throws Exception
+	{
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType = (String) ses.getAttribute("LoginType");
+		String LabCode = (String) ses.getAttribute("labcode");
+		
+		Gson json = new Gson();
+		
+		ProjectDashBoardFavourite pd=service.findProjectDashBoardFavourite(Long.parseLong(request.getParameter("DashBoardId")));
+		
+		List<String>projects = new ArrayList<>();
+		
+		if(pd!=null) {
+			for(ProjectDashBoardFavouriteProjetcts p:pd.getProjects()) {
+				projects.add(p.getProjectId()+"");
+			}
+		}else {
+			List<Object[]>projectLists = rfpmainservice.ProjectList(LoginType, EmpId, LabCode);
+			for(Object[]obj:projectLists) {
+				projects.add(obj[0].toString()+"");
+			}
+		}
+		List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+
+		List<Object[]> getAllProjectdata = new ArrayList<>();
+
+		List<Object[]> getAllProjectSlidesdata = new ArrayList<>();
+
+		if (projects != null && projects.size() > 0)
+
+			for (String id : projects) {
+								
+				List<Object[]> getoneProjectSlidedata = printservice.GetAllProjectSildedata(id);  // freezing data
+				Object[] projectslidedata = (Object[]) printservice.GetProjectSildedata(id);  //[7] id project id
+				getAllProjectSlidesdata.add(projectslidedata);
+				Object[] projectdata = (Object[]) printservice.GetProjectdata(id); //[0] is project id ------ all vals
+				getAllProjectdata.add(projectdata);
+				if (getoneProjectSlidedata.size() > 0) {
+					for (Object[] objects : getoneProjectSlidedata) {
+						getAllProjectSlidedata.add(objects);
+					}
+				}
+
+			}
+
+		Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
+
+			@Override
+
+			public int compare(Object[] o1, Object[] o2) {
+
+				Date date1 = (Date) o1[5];
+
+				Date date2 = (Date) o2[5];
+
+				return date1.compareTo(date2);
+
+			}
+
+		};
+		try {
+
+			if (getAllProjectdata.size() > 1) {
+				Collections.sort(getAllProjectdata, dateComparator);
+				Collections.sort(getAllProjectSlidedata, dateComparator);
+			}
+			Collections.reverse(getAllProjectdata);
+
+			String labcode = ses.getAttribute("labcode").toString();
+
+			ses.setAttribute("getAllProjectdata", getAllProjectdata);
+
+			ses.setAttribute("labInfo", printservice.LabDetailes(labcode));
+
+
+			ses.setAttribute("filepath", ApplicationFilesDrive);
+
+			ses.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
+			ses.setAttribute("getAllProjectSlidesdata", getAllProjectSlidesdata);
+			
+			
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	
 		return json.toJson(projects);
 	}
 }

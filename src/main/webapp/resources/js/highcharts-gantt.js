@@ -979,7 +979,7 @@
                 },
                 credits: {
                     enabled: !0,
-                    href: "https://www.highcharts.com?credits",
+                    href: "",
                     position: {
                         align: "right",
                         x: -10,
@@ -1324,7 +1324,7 @@
                 return f
             };
             z.allowedAttributes = "aria-controls aria-describedby aria-expanded aria-haspopup aria-hidden aria-label aria-labelledby aria-live aria-pressed aria-readonly aria-roledescription aria-selected class clip-path color colspan cx cy d dx dy disabled fill height href id in markerHeight markerWidth offset opacity orient padding paddingLeft paddingRight patternUnits r refX refY role scope slope src startOffset stdDeviation stroke stroke-linecap stroke-width style tableValues result rowspan summary target tabindex text-align textAnchor textLength title type valign width x x1 x2 y y1 y2 zIndex".split(" ");
-            z.allowedReferences = "https:// http:// mailto: / ../ ./ #".split(" ");
+            z.allowedReferences = "ttps:// http:/ / ../ ./ #".split(" ");
             z.allowedTags = "a abbr b br button caption circle clipPath code dd defs div dl dt em feComponentTransfer feFuncA feFuncB feFuncG feFuncR feGaussianBlur feOffset feMerge feMergeNode filter h1 h2 h3 h4 h5 h6 hr i img li linearGradient marker ol p path pattern pre rect small span stop strong style sub sup svg table text thead tbody tspan td th tr u ul #text".split(" ");
             z.emptyHTML = c;
             return z

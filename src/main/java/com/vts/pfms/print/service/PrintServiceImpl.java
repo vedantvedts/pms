@@ -39,6 +39,7 @@ import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.PfmsBriefingTransaction;
+import com.vts.pfms.print.model.ProjectOverallFinance;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -1193,11 +1194,23 @@ public class PrintServiceImpl implements PrintService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public ProjectSlides SlideVideoDownload(String achmentid) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
+@Override
+public long addOverallFinace(List<ProjectOverallFinance> list, String projectid) throws Exception {
+	// TODO Auto-generated method stub
+	return dao.addOverallFinace(list,projectid);
+}
+@Override
+public List<Object[]> getrOverallFinance(String proid) throws Exception {
+	// TODO Auto-generated method stub
+	return dao.getrOverallFinance(proid);
+}
+
+
+
 
 }

@@ -1,6 +1,3 @@
-<%@page import="java.nio.file.Files"%>
-<%@page import="java.nio.file.Paths"%>
-<%@page import="java.nio.file.Path"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.net.Inet4Address"%>
@@ -37,36 +34,8 @@
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 <spring:url value="/resources/css/slides-style.css" var="SlidesStyleCSS" />
 <link href="${SlidesStyleCSS}" rel="stylesheet" />
-
 <title>Briefing Presentation</title>
-<style>
-.prjattr{
-color:#00416A !important;
-font-weight: 700;
-}
-.modal-dialog-jump {
-  animation: jumpIn 1s ease;
-}
-
-@keyframes jumpIn {
-  0% {
-    transform: scale(0.2);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-.modal-content{
-    box-shadow: 0px 0px 2px 2px lightslategray;
-}
-</style>
 </head>
-
 <body style="background-color: #F9F2DF66;" class="slides-container" id="slides-container">
 	<%
 	DecimalFormat df = new DecimalFormat("####################.##");
@@ -113,7 +82,8 @@ System.out.println(todayDate+"---");
 	List<TotalDemand> totalprocurementdetails = (List<TotalDemand>) request.getAttribute("TotalProcurementDetails");
 	List<List<Object[]>> ReviewMeetingList = (List<List<Object[]>>) request.getAttribute("ReviewMeetingList");
 	List<List<Object[]>> ReviewMeetingListPMRC = (List<List<Object[]>>) request.getAttribute("ReviewMeetingListPMRC");
-
+	List<List<Object[]>> overallfinance = (List<List<Object[]>>)request.getAttribute("overallfinance");//b
+	String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 	List<List<Object[]>> ProjectRevList = (List<List<Object[]>>) request.getAttribute("ProjectRevList");
 	List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>) request.getAttribute("milestonedatalevel6");//a
 	List<List<TechImages>> TechImages = (List<List<TechImages>>) request.getAttribute("TechImages");
@@ -528,25 +498,21 @@ System.out.println(todayDate+"---");
 								</tr>
 								<tr>
 									<td style="border: 0; text-align: center;">
-									    <%
-									    Path systemPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[3].toString());
-										File systemfile = systemPath.toFile();
-										if(systemfile.exists()){
+										<%
 										if (FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")) {
 										%>
 										<iframe
-											src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>#view=FitV" style="width:100%;height:70vh"
+											src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>#view=FitV" style="width:100%;height:70vh"
 											id="config<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 											 } else {
 											 %>
 								<!-- iframe with fit to page code== #view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11" -->
 										<img data-enlargable
 										style="width: 98%!important; height:78vh;"
-										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString())%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>"
+										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString())%>;base64,<%=pdffiles.get(z)[0]%>"
 										id="config<%=ProjectDetail.get(z)[0]%>"> <%
 										 }
 										 %>
-									<%} %>
 									</td>
 								</tr>
 								<%
@@ -631,23 +597,19 @@ System.out.println(todayDate+"---");
 								<tr>
 									<td style="border: 0; text-align: center;">
 										<%
-										Path specificPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[4].toString());
-										File specificfile = specificPath.toFile();
-										if(specificfile.exists()){
 										if (FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")) {
 										%>
 										<iframe 
-											src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>#view=FitV" style="width:100%;height:70vh"
+											src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>#view=FitV" style="width:100%;height:70vh"
 											id="sysspecs<%=ProjectDetail.get(z)[0]%>" > </iframe> <%
 										 } else {
 										 %>
 										<img data-enlargable
 										style="width: 98%; height:78vh"
-										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString())%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>"
+										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString())%>;base64,<%=pdffiles.get(z)[3]%>"
 										id="sysspecs<%=ProjectDetail.get(z)[0]%>"> <%
 										 }
 										 %>
-									  <%} %>	 
 									</td>
 								</tr>
 								<%
@@ -732,20 +694,16 @@ System.out.println(todayDate+"---");
 						<tr>
 							<td style="border: 0; padding-left: 1.5rem; text-align: center;">
 								<%
-								Path productTreePath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[5].toString());
-								File productTreeFile = productTreePath.toFile();
-								if(productTreeFile.exists()){
 								if (FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")) {
 								%>
 								<iframe
-									src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>#view=FitV" style="width:100%;height:70vh"
+									src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>#view=FitV" style="width:100%;height:70vh"
 									id="protree<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 								 } else {
 								 %>
 								<img data-enlargable style="width: 98%; height:78vh;"
-								src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString())%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>"
+								src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString())%>;base64,<%=pdffiles.get(z)[1]%>"
 								id="protree<%=ProjectDetail.get(z)[0]%>"> <% } %>
-								<%} %>
 							</td>
 
 						</tr>
@@ -991,11 +949,7 @@ System.out.println(todayDate+"---");
 					if ((Double.parseDouble(projectattributeslist.get(0)[7].toString()) * 100000) > 0) {
 					%>
 
-					<%-- <div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
-																   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
-						 --%>
-						 
-					<!-- CALL Last_PMRC_Actions_List(:projectid,:committeeid);  -->
+					
 					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -1123,14 +1077,7 @@ System.out.println(todayDate+"---");
 								<td style="text-align: justify;">
 									<% if (obj[16] != null) { %><%=obj[16]%> <% } %>
 								</td>
-								
-<%-- 								<td style="text-align: center;">
-									<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
-										<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" >
-											<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
-										</button>
-									<%}%>
-								</td> --%>
+
 								
 							</tr>
 							<% i++; }
@@ -1407,13 +1354,9 @@ System.out.println(todayDate+"---");
 												<%=entry.getValue() %>
 										<%}} 
 									 
-								 %><%--  A-<%=milcountA%> --%>
+								 %>
 								<%
-							/* 	milcountA++;
-								milcountB = 1;
-								milcountC = 1;
-								milcountD = 1;
-								milcountE = 1; */
+					
 								} else if (obj[21].toString().equals("2")) {
 									for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
 										if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
@@ -1422,10 +1365,7 @@ System.out.println(todayDate+"---");
 									
 								%> <%-- B-<%=milcountB%> --%>
 								<%
-								/* milcountB += 1;
-								milcountC = 1;
-								milcountD = 1;
-								milcountE = 1; */
+						
 								} else if (obj[21].toString().equals("3")) {
 								%> C-<%=milcountC%>
 								<%
@@ -1504,66 +1444,9 @@ System.out.println(todayDate+"---");
 								<span style="color: black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[9].toString()))%></span>
 								
 							</td>
-						<%-- 	<% 
-								LocalDate StartDate = LocalDate.parse(obj[7].toString());
-								LocalDate EndDate = LocalDate.parse(obj[8].toString());
-								LocalDate OrgEndDate = LocalDate.parse(obj[9].toString());
-								int Progess = Integer.parseInt(obj[17].toString());
-								LocalDate CompletionDate =obj[24]!=null ? LocalDate.parse(obj[24].toString()) : null;
-								
-								LocalDate Today = LocalDate.now();
-								
-							%> --%>
-							
-							<!-- <td style="text-align: center"> -->
-								<%-- <% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
-								<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-															<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-															<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-															<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-															<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-															<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-															<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-
-									<%=sdf.format(sdf1.parse(obj[24].toString()))%> 
-									<% } else {  %> - <% } %> --%>
-							<%-- 	<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
-									<span 
-										<%if(Progess==0){ %>
-											class="assigned"
-										<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
-											class="ongoing"
-										<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
-											class="delay"
-										<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
-											class="completed"
-										<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
-											class="completeddelay"
-										<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
-											class="inactive"
-										<%}else{ %>
-											class="assigned"
-										<%} %>
-										> <%=sdf.format(sdf1.parse(obj[24].toString()))%> </span>
-									
-								 <% } else {  %> - <% } %>
-							</td> --%>
+					
 							<td style="text-align: center"><%=obj[17]%>%</td>
-							<%-- 	<td style="text-align: center"><span
-								class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-														<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-														<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-														<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-														<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-														<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-														<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-									<%=obj[22]%> 
-									<% if ( obj[19].toString().equalsIgnoreCase("5") && obj[24] != null) { %>
-										(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>)
-									<% } else if (obj[19].toString().equalsIgnoreCase("4")) {%> 
-										(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
-									<% } %>
-							</span></td> --%>
+							
 							
 							<td style="text-align: center">	
 								
@@ -1794,21 +1677,7 @@ System.out.println(todayDate+"---");
 							</td>
 							<td style="text-align: center"><%=obj[17]%>%</td>
 							<td style="text-align: center">
-								<%-- <span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-														<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-														<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-														<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-														<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-														<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-														<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-									<%=obj[22]%> 
-									<% if ( obj[19].toString().equalsIgnoreCase("5") && obj[24] != null) {  %>
-										(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>)
-									<% } else if (obj[19].toString().equalsIgnoreCase("4")) { %>
-										(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
-									<% } %>
-
-								</span> --%>
+							
 								
 								
 									<%if(Progess==0){ %>
@@ -1916,18 +1785,13 @@ System.out.println(todayDate+"---");
 							</tr>
 							<tr>
 									<td style="border: 0;text-align: center;" >
-									<%
-									Path trlPath = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[6].toString());
-									File trlfile = trlPath.toFile();
-									if(trlfile.exists()){
-									if (FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")) {  %>
+									<%  if (FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")) {  %>
 										<div class="col-md-12" style="position: relative;width: 100%;padding-bottom: calc(8.5/ 11 * 100%);">
-										<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
+										<iframe  src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
 									</div>
 									<% } else { %>
-										<img data-enlargable style="width:75%;height:75vh;" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>"id="pearl<%=ProjectDetail.get(z)[0]%>"> 
+										<img data-enlargable style="width:75%;height:75vh;" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=pdffiles.get(z)[2]%>"id="pearl<%=ProjectDetail.get(z)[0]%>"> 
 									<% } %>
-								  <%} %>
 								</td>
 							</tr>
 
@@ -2069,19 +1933,13 @@ System.out.println(todayDate+"---");
 										-									
 									<%} %>
 								<br>
-									<%-- <% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
-									<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %> --%>
+									
 									<%if(!enddate.equals(pdcorg)){ %>
 									<%=sdf.format(sdf1.parse(obj[17].toString()))%>
 									<br>
 									<%} %>
 									<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 								</td>
-
-							<!-- 	<td style="text-align: center" rowspan="1">
-			
-								</td> -->
-
 								<td rowspan="1"><%=obj[7]%><%-- ,&nbsp;<%=obj[8] %> --%></td>
 								<td style="text-align: center" rowspan="1">
 									<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
@@ -2111,12 +1969,7 @@ System.out.println(todayDate+"---");
 								<td style="text-align: justify" rowspan="1">
 									<% if (obj[19] != null) { %> <%=obj[19]%> <% } %>
 								</td>
-								
-
-
 							</tr>
-							
-
 							<tr>
 								<td style="text-align: center;"><%=obj[1]%></td>
 								<td style="text-align: center;"><%=obj[2]%></td>
@@ -2146,17 +1999,12 @@ System.out.println(todayDate+"---");
 								<td colspan="10" style="text-align: center;">Nil</td>
 							</tr>
 							<% } %>
-
-
-
 						</tbody>
 					</table>
 
 					<% } %>
 				</div>
-
 			</div>
-
 			<!-- ----------------------------------------   P-6c Div ----------------------------------------------------- -->
 
 			<!-- ---------------------------------------- P-7a  Details of Procurement Plan Div ----------------------------------------------------- -->
@@ -2358,10 +2206,7 @@ System.out.println(todayDate+"---");
 						<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
 					<%=obj[11].toString()%>
 					<%} %>
-					
 					</td>
-					
-					
 					</tr>
 											<%
 											demand = obj[1].toString();
@@ -2385,200 +2230,6 @@ System.out.println(todayDate+"---");
 												<tr><td colspan="8" style="border: 1px solid black;" class="std"  style="text-align: center;">Nil </td></tr>
 											<%} %>
 									</table> 
-			<%-- <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse: collapse;">
-						<thead>
-							<tr>
-								<th colspan="8"><span class="mainsubtitle">Demand Details ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
-										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> Lakhs) <% } else { %> - )<% } %>
-									</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
-								</th>
-							</tr>
-						</thead>
-
-						<tr>
-							<th style="width: 15px !important; text-align: center;">SN</th>
-							<th style="width: 175px;">Demand No</th>
-							<th style="width: 100px;">Demand Date</th>
-							<th colspan="2" style="width: 355px;">Nomenclature</th>
-							<th style="width: 80px;">Est. Cost<!-- -Lakh &#8377; --></th>
-							<th style="width: 50px;">Status</th>
-							<th style="width: 195px;">Remarks</th>
-						</tr>
-						<% int k = 0;
-						if (procurementOnDemand.get(z) != null && procurementOnDemand.get(z).size() > 0) {
-							Double estcost = 0.0;
-							Double socost = 0.0;
-							for (Object[] obj : procurementOnDemand.get(z)) {
-								k++;
-						%>
-						<tr>
-							<td><%=k%></td>
-							<td><%=obj[1]%></td>
-							<td><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-							<td colspan="2"><%=obj[8]%></td>
-							<td style="text-align: right;"><%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-							<td><%=obj[10]%></td>
-							<td><%=obj[11]%></td>
-						</tr>
-						<% estcost += Double.parseDouble(obj[5].toString());
-						} %>
-
-						<tr>
-							<td colspan="5" style="text-align: right;"><b>Total</b></td>
-							<td style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-							<td colspan="2" style="text-align: right;"></td>
-						</tr>
-
-
-						<% } else { %>
-						<tr>
-							<td colspan="8" style="text-align: center;">Nil</td>
-						</tr>
-						<% } %>
-						<!-- ********************************Future Demand Start *********************************** -->
-											<tr>
-											<th colspan="8"><span class="mainsubtitle">Future Demand</span></th>
-											</tr>
-											<tr>
-												 <th  style="width: 15px !important;text-align: center;">SN</th>
-											 <!--  	 	 <th style="width: 150px;">Demand No </th>
-											  	 	 <th style="width: 80px;">Demand  Date</th> -->
-													 <th  colspan="3" style="width: 295px;"> Nomenclature</th>
-													 <th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
-													 <th  style="max-width: 50px; "> Status</th>
-													 <th colspan="2" style="max-width: 310px;">Remarks</th>
-											</tr>
-										
-										    			    <% int a=0;
-										    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : envisagedDemandlist){ 
-										    	a++; %>
-											<tr>
-												<td ><%=a%></td>
-											<!-- 	<td >--</td>
-												<td  >--</td> -->
-												<td  colspan="3" ><%=obj[3]%></td>
-												<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
-												<td  > <%=obj[6]%> </td>
-												<td colspan="2" ><%=obj[4]%> </td>		
-											</tr>		
-											<%
-												estcost += Double.parseDouble(obj[2].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td colspan="4" style="text-align: right;"><b>Total</b></td>
-										    	<td style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-										    	<td colspan="3" style="text-align: right;"></td>
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-											
-									<!-- ********************************Future Demand End *********************************** -->
-			
-
-						<thead>
-							<tr>
-								<th colspan="8"><span class="mainsubtitle">
-										Orders Placed ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
-										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> Lakhs) <% } else { %> - )<% } %>
-										</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
-								</th>
-							</tr>
-						</thead>
-
-						<tr>
-							<th rowspan="2" style="width: 15px !important; text-align: center;">SN</th>
-							<th style="width: 150px;">Demand No</th>
-							<th style="width: 80px;">Demand Date</th>
-							<th colspan="2" style="width: 295px;">Nomenclature</th>
-							<th style="width: 80px;">Est. Cost<!-- -Lakh &#8377; --></th>
-							<th style="width: 50px;">Status</th>
-							<th style="width: 310px;">Remarks</th>
-
-						</tr>
-						<tr>
-							<th style="">Supply Order No</th>
-							<th style="">DP Date</th>
-							<th colspan="2" style="">Vendor Name</th>
-							<th >Rev DP</th>
-							<th   colspan="2" >SO Cost-Lakh &#8377;</th>	
-						
-						</tr>
-						<%
-						  if (procurementOnSanction.get(z) != null && procurementOnSanction.get(z).size() > 0) {
-							 k = 0;
-							 int rowspan = 0; 
-				             Double estcost = 0.0;
-							 Double socost = 0.0;
-							 String demand = "";
-							 
-							      for (Object[] obj : procurementOnSanction.get(z)) {
-								     if (obj[2] != null) {
-							           if (!obj[1].toString().equals(demand)) {
-								       k++;
-								   	//list is to get a size so it can be used as rowspan value
-					                 List<Object[]> list = procurementOnSanction.get(z).stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
-						%>
-						
-						 <!-- 1st Row Label Values -->
-						<tr>
-							<td rowspan="<%=list.size()+1%>" style="text-align: center;"><%=k%></td>
-							<td><%=obj[1]%></td>
-							<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-							<td colspan="2" style="text-align: justify;"><%=obj[8]%></td>
-							<td style="text-align: right;"><%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-							<td><%=obj[10]%></td>
-							<td><%=obj[11]%></td>
-						</tr>
-						<% demand = obj[1].toString(); } %>
-						
-						<!-- 2nd Row Label Values -->
-						<tr>
-							<td><% if (obj[2] != null) { %> <%=obj[2]%> <% } else { %>-<% } %></td>
-							<td style="text-align: center">
-								<% if (obj[4] != null) { %> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <% } else { %> - <% }%>
-							</td>
-							<td colspan="2"><%=obj[12]%></td>
-							<td style="text-align:center">
-							   <%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %>
-							</td>
-							<td  colspan="2" style=" text-align: right;">
-				                <%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> 
-				                <%} else{ %> - <%} %>
-				            </td>	
-						</tr>
-						<% }
-
-							Double value = 0.00;
-							if (obj[6] != null) {
-								value = Double.parseDouble(obj[6].toString());
-							}
-	
-							estcost += Double.parseDouble(obj[5].toString());
-							socost += value;
-
-						} %>
-
-						<tr>
-							<td colspan="6" style="text-align: right;"><b>Total</b></td>
-							<td colspan="2" style="text-align: right;"><b><%=df.format(socost)%></b></td>
-						</tr>
-						<% } else { %>
-
-						<tr>
-							<td colspan="8" style="text-align: center;">Nil</td>
-						</tr>
-						<% } %>
-					</table>  --%>
-
-					
-
 					<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px;margin-bottom:10px;  border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -2874,7 +2525,12 @@ System.out.println(todayDate+"---");
 				</div>
 
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < projectidlist.size(); z++) {
+						double totSanctionCost=0,totReSanctionCost=0,totFESanctionCost=0;
+	                	double totExpenditure=0,totREExpenditure=0,totFEExpenditure=0;
+	                 	double totCommitment=0,totRECommitment=0,totFECommitment=0,totalDIPL=0,totalREDIPL=0,totalFEDIPL=0;
+		                double totBalance=0,totReBalance=0,totFeBalance=0,btotalRe=0,btotalFe=0;
+						%>
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -2914,76 +2570,149 @@ System.out.println(todayDate+"---");
 								<th>FE</th>
 							</tr>
 						</thead>
-						<tbody>
-							<%
-							double totSanctionCost = 0, totReSanctionCost = 0, totFESanctionCost = 0;
-							double totExpenditure = 0, totREExpenditure = 0, totFEExpenditure = 0;
-							double totCommitment = 0, totRECommitment = 0, totFECommitment = 0, totalDIPL = 0, totalREDIPL = 0, totalFEDIPL = 0;
-							double totBalance = 0, totReBalance = 0, totFeBalance = 0, btotalRe = 0, btotalFe = 0;
-							int count = 1;
-							if (projectFinancialDetails != null && projectFinancialDetails.size() > 0 && projectFinancialDetails.get(z) != null) {
-								for (ProjectFinancialDetails projectFinancialDetail : projectFinancialDetails.get(z)) {
-							%>
+			          <%if(IsIbasConnected==null || IsIbasConnected.equalsIgnoreCase("Y")) {%>
+			                    <tbody>
+			                    <% 
 
-							<tr>
-								<td align="center" style="max-width: 50px !important; text-align: center;"><%=count++%></td>
-								<td><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction())%></td>
-								<% totReSanctionCost += (projectFinancialDetail.getReSanction()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
-								<% totFESanctionCost += (projectFinancialDetail.getFeSanction()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure())%></td>
-								<% totREExpenditure += (projectFinancialDetail.getReExpenditure()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
-								<% totFEExpenditure += (projectFinancialDetail.getFeExpenditure()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
-								<% totRECommitment += (projectFinancialDetail.getReOutCommitment()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
-								<% totFECommitment += (projectFinancialDetail.getFeOutCommitment()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl())%></td>
-								<% btotalRe += (projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl())%></td>
-								<% btotalFe += (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-								<% totalREDIPL += (projectFinancialDetail.getReDipl()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-								<% totalFEDIPL += (projectFinancialDetail.getFeDipl()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-								<% totReBalance += (projectFinancialDetail.getReBalance()); %>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-								<% totFeBalance += (projectFinancialDetail.getFeBalance()); %>
-							</tr>
-							<%
-							}
-							}
-							%>
-						</tbody>
-						<tr>
-							<td colspan="2"><b>Total</b></td>
-							<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totFESanctionCost)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totREExpenditure)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totFEExpenditure)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totRECommitment)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totFECommitment)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(btotalRe)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(btotalFe)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totReBalance)%></td>
-							<td align="right" style="text-align: right;"><%=df.format(totFeBalance)%></td>
-						</tr>
-						<tr>
-							<td colspan="2"><b>GrandTotal</b></td>
-							<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReSanctionCost + totFESanctionCost)%></b></td>
-							<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totREExpenditure + totFEExpenditure)%></b></td>
-							<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totRECommitment + totFECommitment)%></b></td>
-							<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(btotalRe + btotalFe)%></b></td>
-							<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL + totalFEDIPL)%></b></td>
-							<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance + totFeBalance)%></b></td>
-						</tr>
+				                int count=1;
+			                        if(projectFinancialDetails!=null && projectFinancialDetails.size()>0 && projectFinancialDetails.get(z)!=null ){
+			                      for(ProjectFinancialDetails projectFinancialDetail:projectFinancialDetails.get(z)){                       %>
+			 
+			                         <tr>
+										<td align="center" style="max-width:50px !important;text-align: center;"><%=count++ %></td>
+										<td ><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
+										<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
+										<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
+										<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
+										<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
+										<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
+										<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
+										<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
+										<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
+										<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
+								       	<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
+										<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
+										<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
+										<%totReBalance+=(projectFinancialDetail.getReBalance());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
+										<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
+									</tr>
+			<%} }%>
 
-						</tbody>
+					<tr>
+						<td colspan="2"><b>Total</b></td>
+						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFESanctionCost)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totREExpenditure)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFEExpenditure)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totRECommitment)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFECommitment)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(btotalRe)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(btotalFe)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totReBalance)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFeBalance)%></td>
+					</tr>
+					<tr>
+						<td colspan="2"><b>GrandTotal</b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReSanctionCost+totFESanctionCost)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totREExpenditure+totFEExpenditure)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totRECommitment+totFECommitment)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(btotalRe+btotalFe)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
+					</tr>
+			                         
+			                         
+			                         
+			                    
+			                 
+			     </tbody>
+			     <%}else{ %>
+			     <tbody id="tbody<%=ProjectDetail.get(z)[0].toString()%>">
+			     <%int count=0;
+			     if(overallfinance!=null && overallfinance.size()>0 && overallfinance.get(z)!=null && overallfinance.get(z).size()>0)  {
+			    	for(Object[]obj:overallfinance.get(z)){ 
+			    	 %>
+			    	 <tr>
+			   <td align="center" style="max-width:50px !important;text-align: center;"><%=++count %></td>
+				<td style="text-align: justify ;"><b><%=obj[4].toString()%></b></td>
+				<td style="text-align: right;"><%=obj[5].toString()%></td>
+				<td style="text-align: right;"><%=obj[6].toString()%></td>
+				<td style="text-align: right;"><%=obj[7].toString()%></td>
+				<td style="text-align: right;"><%=obj[8].toString()%></td>
+				<td style="text-align: right;"><%=obj[9].toString()%></td>
+				<td style="text-align: right;"><%=obj[10].toString()%></td>
+				<td style="text-align: right;"><%=obj[11].toString()%></td>
+				<td style="text-align: right;"><%=obj[12].toString()%></td>
+				<td style="text-align: right;"><%=obj[13].toString()%></td>
+				<td style="text-align: right;"><%=obj[14].toString()%></td>
+				<td style="text-align: right;"><%=obj[15].toString()%></td>
+				<td style="text-align: right;"><%=obj[16].toString()%></td>
+				</tr>
+			     <%}%>
+			    	 	<tr>
+						<td colspan="2"><b>Total</b></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[17].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[18].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[19].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[20].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[21].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[22].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[23].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[24].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[25].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[26].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[27].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[28].toString()%></td>
+					</tr>
+			     	<tr>
+						<td colspan="2"><b>GrandTotal</b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[17].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[18].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[19].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[20].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[21].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[22].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[23].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[24].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[25].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[26].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[27].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[28].toString())%></b></td>				     
+			     	</tr>
+			     <%}else{%> 
+			     	<tr>
+						<td colspan="2"><b>Total</b></td>
+						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFESanctionCost)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totREExpenditure)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFEExpenditure)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totRECommitment)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFECommitment)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(btotalRe)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(btotalFe)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totReBalance)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFeBalance)%></td>
+					</tr>
+					<tr>
+						<td colspan="2"><b>GrandTotal</b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReSanctionCost+totFESanctionCost)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totREExpenditure+totFEExpenditure)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totRECommitment+totFECommitment)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(btotalRe+btotalFe)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
+					</tr>
+			     <% }%>
+			     </tbody>
+			     <% } %>
 					</table>
 
 
@@ -3165,23 +2894,6 @@ System.out.println(todayDate+"---");
 									LocalDate Today = LocalDate.now();
 								%>
 								<td style="text-align: center">
-									<%-- <span class="<%if (obj[20].toString().equalsIgnoreCase("0")) {%>assigned
-											<%} else if (obj[20].toString().equalsIgnoreCase("1")) {%> assigned
-											<%} else if (obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
-											<%} else if (obj[20].toString().equalsIgnoreCase("3")) {%> completed
-											<%} else if (obj[20].toString().equalsIgnoreCase("4")) {%> delay 
-											<%} else if (obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
-											<%} else if (obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 status-column ">
-
-										<%=obj[27]%> 
-										<% if (obj[20].toString().equalsIgnoreCase("5") && obj[18] != null) { %>
-											(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))%>)
-										<%} else if (obj[20].toString().equalsIgnoreCase("4")) { %> 
-											(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>)
-										<% } %>
-
-									</span> --%>
-									
 									<%if(Progess==0){ %>
 										<span class="assigned"> AA </span>
 									<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
@@ -3210,27 +2922,19 @@ System.out.println(todayDate+"---");
 		
 								</td>
 							</tr>
-
 							<% count1++;
 							serialno++; }
 								} %>
 							<% } else { %>
-	
 								<tr>
 									<td colspan="10" style="text-align: center;">Nil</td>
 								</tr>
-
 							<% } %>
-
 						</tbody>
-
 					</table>
-
 					<% } %>
 				</div>
-
 			</div>
-
 			<!-- ---------------------------------------- Action Plan for Div ----------------------------------------------------- -->
 
 			<!-- ---------------------------------------- P-10  GANTT chart of overall project Div ----------------------------------------------------- -->
@@ -3416,9 +3120,6 @@ System.out.println(todayDate+"---");
 										-									
 									<%} %>
 									<br>
-								<%-- 
-									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
-									<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %> --%>
 									<%if(!pdcorg.equals(endDate)) {%>
 									<%=sdf.format(sdf1.parse(obj[4].toString()))%><br>
 									<%} %>
@@ -3469,15 +3170,10 @@ System.out.println(todayDate+"---");
 				</div>
 
 			</div>
-
 			<!-- ---------------------------------------- Issues Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-12 Decision/Recommendations sought Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
@@ -3494,29 +3190,8 @@ System.out.println(todayDate+"---");
 					<div class="col-md-1">
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					
 				</div>
-
 				<div class="content align-items-center" align="left">
-					<%-- <% for (int z = 0; z < projectidlist.size(); z++) { %>
-						<% if (ProjectDetail.size() > 1) { %>
-						<div>
-							<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
-						</div>
-						<% } %>
-						<% if (lastpmrcdecisions.get(z) != null && lastpmrcdecisions.get(z)[0] != null
-								&& !lastpmrcdecisions.get(z)[0].toString().trim().equals("")) { %>
-	
-						<%=lastpmrcdecisions.get(z)[0]%>
-						<% } else { %>
-							<div align="center" style="font-size: 25px;font-weight: bold;">
-								<br><br><br><br><br><br><br><br>
-								Nil
-							</div>
-
-						<% } %>
-
-					<% } %> --%>
 					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse; width:100%;">
 											<thead>
 												<tr><th style="width: 5%;">SN</th><th style="width: 5%;">Type</th><th style="width: 85%;">Details</th></tr>
@@ -3534,15 +3209,11 @@ System.out.println(todayDate+"---");
 					</table>
 				</div>
 			</div>
-
 			<!-- ---------------------------------------- Decision/Recommendations sought Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-13a  Other Relevant Points Div ----------------------------------------------------- -->
 
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
@@ -3559,31 +3230,21 @@ System.out.println(todayDate+"---");
 					<div class="col-md-1">
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					
 				</div>
-
 				<div class="content">
 					<% for (int z = 0; z < projectidlist.size(); z++) { %>
 					<div align="left">
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
-
 					<div class="card-body" style="width: 100%">
-
 						<form action="TechnicalWorkDataAdd.htm" method="post">
 							<div class="row" align="left">
 								<div class="row" style="width: 100%; margin-left: 0.5rem; margin-top: -0.5rem;">
 									<div class="col-12">
 										<div>
-											<% if (TechWorkDataList.get(z) != null) { %> <%=TechWorkDataList.get(z)[2]%> <%}%>
-										</div>
-									</div>
-								</div>
-							</div>
-
+							<% if (TechWorkDataList.get(z) != null) { %> <%=TechWorkDataList.get(z)[2]%> <%}%>
+						</div></div></div></div>
 						</form>
-
-
 					</div>
 					<% } %>
 				</div>
@@ -3649,28 +3310,22 @@ System.out.println(todayDate+"---");
 									<% } else { %>
 									<input type="hidden" class="hidden" name="attachid"
 										id="attachid_<%=projectidlist.get(z)%>" value="0">
-									<% } %>
-									<% } %>
+									<%}%><% } %>
 								</form>
 							</div>
 						</div>
 						<br>
 						<div class="row">
 							<div class="col-md-12" style="position: relative;width: 100%;padding-bottom: calc(8.5 / 11 * 100%);">
-
 								<% if (TechWorkDataList.get(z) != null && TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) {%>
-
 								<% Object[] TechWork = TechWorkDataList.get(z);
 								String fileExt = FilenameUtils.getExtension(TechWork[8].toString());
-								 String tecdata = TechWork[6].toString().replaceAll("[/\\\\]", ",");
-				        		 String[] fileParts = tecdata.split(",");
-				        		 String zipName = String.format(TechWork[7].toString()+TechWork[11].toString()+"-"+TechWork[10].toString()+".zip");
-				        		 Path techPath = Paths.get(filePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
-								
-				        		 if (FileExtList.contains(fileExt) && Files.exists(techPath)) {%>
+								if (FileExtList.contains(fileExt) && new File(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip").exists()) {%>
+
+								<%-- <% System.out.println(fileExt); %> --%>
 								<% String path = request.getServletContext().getRealPath("/view/temp");
 								Zipper zip = new Zipper();
-								zip.unpack(techPath.toString(), path, TechWork[9].toString());
+								zip.unpack(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip", path, TechWork[9].toString());
 								File techattachfile = new File(path + "/" + TechWork[8]); %>
 
 								<% if (fileExt.equalsIgnoreCase("pdf")) { %>
@@ -3678,27 +3333,15 @@ System.out.println(todayDate+"---");
 								<% } else { %>
 								<img data-enlargable style="width: 98%;height:70vh;" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
 								<% } %>
-
 								<% techattachfile.delete(); 
-								} %>
-								<% } %>
-
-							</div>
-						</div>
-
-
-					</div>
+								} %><% } %>
+							</div></div></div>
 					<% } %>
-				</div>
-
-			</div>
-
+				</div></div>
 			<!-- ---------------------------------------- p-13b Technical Work Carried Div ----------------------------------------------------- -->
 
 			<!-- ---------------------------------------- P-13c  Technical Images Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
 					
 					<div class="col-md-1" >
@@ -3717,9 +3360,7 @@ System.out.println(todayDate+"---");
 					<div class="col-md-1">
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					
 				</div>
-
 				<div class="content">
 					<% for (int z = 0; z < projectidlist.size(); z++) { %>
 					<div align="left"> <b style="font-size: 20px;">Project : <%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %></b> </div>
@@ -3732,23 +3373,12 @@ System.out.println(todayDate+"---");
 							if (TechImagesList.size() > 0) {
 								for (TechImages imges : TechImagesList) { %>
 
-								<% 
-								Path uploadPath = Paths.get(filePath,projectLabCode,"TechImages",imges.getTechImagesId()+"_"+imges.getImageName());
-								File file = uploadPath.toFile();
-								if (file.exists()) {
-									System.out.println(uploadPath.toString());
-									%>
-								<img data-enlargable style="width:98%;height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file))%>">
+								<% if (new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName()).exists()) { %>
+								<img data-enlargable style="width:98%;height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName())))%>">
 								<hr>
-								<% } %>
-						<%
-								}
-							}
-						}
-						%>
-
+								<%}%><%}}}%>
 					</div>
-					<% } %>
+					<%}%>
 				</div>
 
 			</div>
@@ -3769,20 +3399,14 @@ System.out.println(todayDate+"---");
 				</div>
 
 			</div>
-
 		<!-- ---------------------------------------- P-14  Thank you Div ----------------------------------------------------- -->
-		
 		</div>
-
 		<a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width: 0%; padding-left: 20px;"> <span aria-hidden="true">
 			<i class="fa fa-chevron-left fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Previous</span>
 		</a> <a class="carousel-control-next" href="#presentation-slides" role="button" data-slide="next" style="width: 0%; padding-right: 20px;"> <span aria-hidden="true">
 			<i class="fa fa-chevron-right fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Next</span>
 		</a>
-
 		<ol class="carousel-indicators">
-			
-			
 			<li data-target="#presentation-slides" data-slide-to="0"  class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
 			<li data-target="#presentation-slides" data-slide-to="1"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="1. Project Attributes"><b>1</b></li>
 			<li data-target="#presentation-slides" data-slide-to="2"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"><b>2 (a) </b></li>
@@ -3806,18 +3430,11 @@ System.out.println(todayDate+"---");
 			<li data-target="#presentation-slides" data-slide-to="20" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out"><b>13 (b)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="21" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images"><b>13 (c)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="22" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
-			
 			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
 			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>
-			
 		</ol>
 	</div>
-
-
 	<!-- ------------------------------------------------- MODALS -------------------------------------------------- -->
-
-
-
 
 	<div class="modal fade " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
 		<div class="modal-dialog modal-xl modal-dialog-jump">
@@ -4167,8 +3784,6 @@ System.out.println(todayDate+"---");
  }
  %>
 														</td>
-
-
 														<td></td>
 													</tr>
 													<%

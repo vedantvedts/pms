@@ -1,5 +1,7 @@
 package com.vts.pfms.pfts.controller;
 
+import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,10 +9,26 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -39,6 +57,7 @@ import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
 import com.vts.pfms.pfts.model.PftsFileOrder;
 import com.vts.pfms.pfts.service.PFTSService;
+import com.vts.pfms.print.model.ProjectOverallFinance;
 
 @Controller
 public class PFTSController {
@@ -70,6 +89,8 @@ public class PFTSController {
 		try {
 			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 			
+			System.out.println(projectId+"-----projectId");
+			
 			if(projectlist.size()==0) 
 		    {				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -85,8 +106,8 @@ public class PFTSController {
 			req.setAttribute("fileStatusList",service.getFileStatusList(projectId));
 			req.setAttribute("pftsStageList", service.getpftsStageList());
 			req.setAttribute("projectId",projectId);
-			
-			
+			String projectcode = service.ProjectData(projectId)[1].toString();
+			req.setAttribute("projectcode",projectcode);
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
@@ -919,6 +940,185 @@ public class PFTSController {
 				}
 
 			}
+		@RequestMapping(value="ManualDemandExcel.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+		public String ManualDemandExcel( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+		{
+			String UserId=(String)ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			logger.info(new Date() +"Inside ManualDemandExcel.htm "+UserId);
+			try {
+				XSSFWorkbook workbook = new XSSFWorkbook();
+				XSSFSheet sheet = workbook.createSheet("Abbreviation Details");
+				XSSFRow row = sheet.createRow(0);
+
+				// Create a bold font style for headers
+				Font headerFont = workbook.createFont();
+				headerFont.setBold(true);
+
+				// Create a cell style for headers
+				CellStyle headerCellStyle = workbook.createCellStyle();
+				headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+				headerCellStyle.setFont(headerFont);
+
+				// Create a cell style for center alignment and text wrapping
+				CellStyle centerWrapCellStyle = workbook.createCellStyle();
+				centerWrapCellStyle.setAlignment(HorizontalAlignment.CENTER);
+				centerWrapCellStyle.setWrapText(true);
+				centerWrapCellStyle.setFont(headerFont);
+
+				// Create and style cells
+				Cell cell0 = row.createCell(0);
+				cell0.setCellValue("SN");
+				cell0.setCellStyle(headerCellStyle);
+				sheet.setColumnWidth(0, 2000);
+
+				Cell cell1 = row.createCell(1);
+				cell1.setCellValue("Demand No");
+				cell1.setCellStyle(headerCellStyle);
+				sheet.setColumnWidth(1, 7000);
+
+				Cell cell2 = row.createCell(2);
+				cell2.setCellValue("Demand Date\n(DD-MM-YYYY)");
+				cell2.setCellStyle(headerCellStyle);
+				cell2.setCellStyle(centerWrapCellStyle);
+				sheet.setColumnWidth(2, 8000);
+
+				Cell cell3 = row.createCell(3);
+				cell3.setCellValue("Estimated cost \n(In Rs)");
+				cell3.setCellStyle(headerCellStyle);
+				cell3.setCellStyle(centerWrapCellStyle);
+				sheet.setColumnWidth(3, 5000);
+
+				Cell cell4 = row.createCell(4);
+				cell4.setCellValue("Item Name");
+				cell4.setCellStyle(headerCellStyle);
+				sheet.setColumnWidth(4, 5000);
+
+				res.setContentType("application/vnd.ms-excel");
+				res.setHeader("Content-Disposition", "attachment; filename=Demands.xls");
+
+				// Write the workbook to the response output stream
+				workbook.write(res.getOutputStream());
+				workbook.close();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
 			
+			return null;
+		}
+		
+		
+		 @RequestMapping(value="ManualDemandExcelSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+			public String ManualDemandExcelSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+			{
+			  
+				String UserId = (String) ses.getAttribute("Username");
+				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				String Logintype= (String)ses.getAttribute("LoginType");
+				String LabCode = (String)ses.getAttribute("labcode");
+				String projectid =req.getParameter("ProjectId");
+			
+			
+				
+				try {
+					if(ServletFileUpload.isMultipartContent(req)) {
+						   List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));	
+						   Part filePart = req.getPart("filename");
+							List<ProjectOverallFinance>list = new ArrayList<>();
+							InputStream fileData = filePart.getInputStream();
+							
+						Long count =0l;
+							Workbook workbook = new XSSFWorkbook(fileData);
+							Sheet sheet  = workbook.getSheetAt(0);
+							int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
+						
+							for (int i=1;i<=rowCount;i++) {
+								PFTSFile pf = new PFTSFile();
+								int cellcount= sheet.getRow(i).getLastCellNum();
+								
+								 Row row = sheet.getRow(i);
+								 DecimalFormat df = new DecimalFormat("#");
+							
+								for(int j=1;j<cellcount;j++) {
+									Cell cell = row.getCell(j);
+									if(cell!=null) {
+										if(j==1) {
+											switch(sheet.getRow(i).getCell(j).getCellType()) {
+											case Cell.CELL_TYPE_BLANK:
+												break;
+											case Cell.CELL_TYPE_NUMERIC:
+												pf.setDemandNo(df.format(sheet.getRow(i).getCell(j).getNumericCellValue()));
+												break;
+											case Cell.CELL_TYPE_STRING:
+												pf.setDemandNo(sheet.getRow(i).getCell(j).getStringCellValue());
+												break;	 
+											}
+										}
+										
+										if(j==2) {
+											switch(sheet.getRow(i).getCell(j).getCellType()) {
+											case Cell.CELL_TYPE_BLANK:
+												break;
+											case Cell.CELL_TYPE_NUMERIC:
+												break;
+											case Cell.CELL_TYPE_STRING:
+												pf.setDemandDate(new java.sql.Date(inputFormat.parse((sheet.getRow(i).getCell(j).getStringCellValue())).getTime()));
+												break;	 
+											}
+										}
+										
+										if(j==3) {
+											switch(sheet.getRow(i).getCell(j).getCellType()) {
+											case Cell.CELL_TYPE_BLANK:
+												break;
+											case Cell.CELL_TYPE_NUMERIC:
+												pf.setEstimatedCost(sheet.getRow(i).getCell(j).getNumericCellValue());
+												break;
+											case Cell.CELL_TYPE_STRING:
+												pf.setEstimatedCost(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
+												break;	 
+											}
+										}
+										
+										if(j==4) {
+											switch(sheet.getRow(i).getCell(j).getCellType()) {
+											case Cell.CELL_TYPE_BLANK:
+												break;
+											case Cell.CELL_TYPE_NUMERIC:
+												break;
+											case Cell.CELL_TYPE_STRING:
+												pf.setItemNomenclature(sheet.getRow(i).getCell(j).getStringCellValue());
+												break;	 
+											}
+										}
+									}
+								}
+								pf.setDemandType("M");
+								pf.setPftsStatusId(1l);
+							     pf.setRemarks("Nil");
+								 pf.setCreatedBy(UserId);
+								 pf.setCreatedDate(sdf.format(new Date()));
+								 pf.setProjectId(Long.parseLong(projectid));
+								 
+								 if(pf.getDemandNo()!=null) {
+								  count=count+service.addDemandfile(pf);
+								 }
+							}
+							if(count>0) {
+								redir.addAttribute("result","Demands Added Successfully ");
+							}else {
+								redir.addAttribute("resultfail","Something went worng");
+							}
+					}
+				} catch (Exception e) {
+				e.printStackTrace();
+				}
+				redir.addAttribute("projectid", projectid);
+				return "redirect:/ProcurementStatus.htm";
+				
+			}
+		 
+		
 }
 

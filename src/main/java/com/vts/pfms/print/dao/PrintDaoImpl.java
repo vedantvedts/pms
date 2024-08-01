@@ -1,6 +1,7 @@
 package com.vts.pfms.print.dao;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,7 @@ import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.PfmsBriefingTransaction;
+import com.vts.pfms.print.model.ProjectOverallFinance;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -1414,6 +1416,46 @@ public class PrintDaoImpl implements PrintDao {
 			query.setParameter("CreatedDate", image.getCreatedDate());
 			query.setParameter("TechImagesId", image.getTechImagesId());
 			return query.executeUpdate();
+		}
+		
+		
+		@Override
+		public long addOverallFinace(List<ProjectOverallFinance> list, String projectid) {
+			String sql ="UPDATE pfms_overall_finance SET isactive='0' ,ModifiedBy =:ModifiedBy , ModifiedDate=:ModifiedDate WHERE ProjectId=:ProjectId";
+			Query query = manager.createNativeQuery(sql);
+			query.setParameter("ProjectId", projectid);
+			query.setParameter("ModifiedBy", list.get(0).getCreatedBy());
+			query.setParameter("ModifiedDate", LocalDate.now().toString());
+			query.executeUpdate();
+			
+			for(ProjectOverallFinance pf:list) {
+				manager.persist(pf);
+				manager.flush();
+			}
+			return 2;
+		}
+		private static final String OVERALLFINANCE="SELECT a.ProjectFinanceId,a.LabCode,a.ProjectId,a.ProjectCode,a.BudgetHead,a.SanctionCostRE,\r\n"
+				+ "a.SanctionCostFE,a.ExpenditureRE,a.ExpenditureFE,a.OutCommitmentRE,a.OutCommitmentFE,\r\n"
+				+ "a.BalanceRE,a.BalanceFE,a.DiplRE,a.DiplFE,a.NotaionalBalRE,a.NotaionalBalFE,\r\n"
+				+ "(SELECT SUM(SanctionCostRE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS'TotalSanctionCostRE' ,\r\n"
+				+ "(SELECT SUM(SanctionCostFE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalSanctionCostFE',\r\n"
+				+ "(SELECT SUM(ExpenditureRE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalExpenditureRE',\r\n"
+				+ "(SELECT SUM(ExpenditureFE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalExpenditureFE',\r\n"
+				+ "(SELECT SUM(OutCommitmentRE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalOutCommitmentRE',\r\n"
+				+ "(SELECT SUM(OutCommitmentFE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalOutCommitmentFE',\r\n"
+				+ "(SELECT SUM(BalanceRE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalBalanceRE',\r\n"
+				+ "(SELECT SUM(BalanceFE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalBalanceFE',\r\n"
+				+ "(SELECT SUM(DiplRE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalDiplRE',\r\n"
+				+ "(SELECT SUM(DiplFE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalDiplFE',\r\n"
+				+ "(SELECT SUM(NotaionalBalRE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalNotaionalBalRE',\r\n"
+				+ "(SELECT SUM(NotaionalBalFE) FROM pfms_overall_finance b WHERE b.projectid=a.projectid AND b.isactive='1') AS 'TotalNotaionalBalFE'\r\n"
+				+ "FROM pfms_overall_finance a WHERE a.projectid=:projectid AND a.isactive='1'";
+		@Override
+		public List<Object[]> getrOverallFinance(String proid) throws Exception {
+			Query query = manager.createNativeQuery(OVERALLFINANCE);
+			query.setParameter("projectid", proid);
+			
+			return (List<Object[]>)query.getResultList();
 		}
 		
 	}

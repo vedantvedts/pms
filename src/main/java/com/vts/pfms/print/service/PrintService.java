@@ -12,6 +12,7 @@ import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectOverallFinance;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -131,5 +132,6 @@ public interface PrintService {
 	public Long EditFavouriteSlides(FavouriteSlidesModel fSM)throws Exception;
 	public int TechImagesEdit(MultipartFile file,String techImageId, String path,String userName, String labCode)throws Exception;
 	public ProjectSlides SlideVideoDownload(String achmentid) throws Exception;
-	
+	public long addOverallFinace(List<ProjectOverallFinance> list, String projectid)throws Exception;
+	public List<Object[]> getrOverallFinance(String proid)throws Exception;
 }

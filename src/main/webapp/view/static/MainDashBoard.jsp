@@ -1705,7 +1705,7 @@ if(ses!=null){ %>
 					<%if(ProjectList!=null){
 						for(Object[] obj1 : ProjectList){%> 
 					
-						<script>
+									<script>
 							anychart.onDocumentReady(function () {
 								    	  var data = [
 								    		  <%
@@ -1713,20 +1713,29 @@ if(ses!=null){ %>
 								    			  if(obj1[0].toString().equalsIgnoreCase(obj[1].toString())){
 								    			  %>	
 								    		  {
-								    		    id: "<%=obj[3]%>",
-								    		    name: "<%=obj[2]%>",
-								    		    <%if(!obj[9].toString().equalsIgnoreCase("0")){%>
-								    		   	baselineStart: "<%=obj[6]%>",
-								    		    baselineEnd: "<%=obj[7]%>", 
-								    		    <%}%>
-								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-								    		    actualStart: "<%=obj[4]%>",
-								    		    actualEnd: "<%=obj[5]%>",
-								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
-								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
-								    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
-								    		    rowHeight: "35",
-								    		   
+								    			  id: "<%=obj[3]%>",
+									    		    name: "<%=obj[2]%>",
+									    		    <%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
+									    		   	baselineStart: "<%=obj[6]%>",
+									    		    baselineEnd: "<%=obj[7]%>", 
+									    		    baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
+									    		    actualStart: "<%=obj[4]%>",
+									    		    actualEnd: "<%=obj[5]%>",
+									    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
+									    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
+									    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
+									    		    progressValue: "<%= Math.round((int)obj[8])%>% ", 
+									    		    <%} else{%>
+								    		   		<%-- baselineStart: "<%=obj[6]%>",
+									    		    baselineEnd: "<%=obj[7]%>",  --%>
+									    		    baselineStart: "<%=obj[4]%>",
+									    		    baselineEnd: "<%=obj[5]%>", 
+									    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+									    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
+									    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+									    		    progressValue: "<%= Math.round((int)obj[8])%>% ", 
+									    		    <%}%>
+									    		    rowHeight: "55",
 								    		  },
 								    		  
 								    		  <%}}%>
@@ -1754,20 +1763,46 @@ if(ses!=null){ %>
 								        	 // fit elements to the width of the timeline
 								        	chart.fitAll(); 
 								        
-								        	 
+								            
+									        var timeline = chart.getTimeline();
+
+										   // configure labels of elements
+										   timeline.elements().labels().fontWeight(600);
+										   timeline.elements().labels().fontSize("10px");
+										   timeline.elements().labels().fontColor("#FF6F00");
 								        	 /* ToolTip */
 								        	chart.getTimeline().tooltip().useHtml(true);    
-									        chart.getTimeline().tooltip().format(
-									          "<span style='font-weight:600;font-size:10pt;text-align:left'> Actual : " +
-									          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
-									          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-									          "<span style='font-weight:600;font-size:10pt;text-align:left'> Revised : " +
-									          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
-									          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-									          "Progress: {%progress}<br>" 
-									          
-									        ); 
+								        	chart.getTimeline().tooltip().format(
+									        		 function() {
+									        		        var actualStart = this.getData("actualStart") ? this.getData("actualStart") : this.getData("baselineStart");
+									        		        var actualEnd = this.getData("actualEnd") ? this.getData("actualEnd") : this.getData("baselineEnd");
+									        		        var reDate=this.getData("actualStart") ;
+									        		   
+									        		        var html="";
+									        		        if(reDate===undefined){
+									        		        	html="";
+									        		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+									        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+									        		        }else{
+									        		        	html="";
+									        		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+									        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+									        		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+									        		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
+									        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
+									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+									        		        }
+									        		        
+									        		        return html;
+									        		    }
+										          
+										        ); 
 								        	 
+								        	
+								        	
 								        /* Hover */
 								        
 								        chart.rowHoverFill("#8fd6e1 0.3");
@@ -1836,23 +1871,20 @@ if(ses!=null){ %>
 								     	marker_1.stroke("2 #dd2c00");
 								     	
 								     	/* Progress */
-								     	var timeline = chart.getTimeline();
-								     	
+											var timeline = chart.getTimeline();
 								     	timeline.tasks().labels().useHtml(true);
-								     	 timeline.tasks().labels().format(function() {
+								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'>Completed</span>";
+								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'><Completed</span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'>" +
-								     	           Math.round(this.progress * 100) + "</span>%";
+								     	    return "<span style='color:black;font-weight:bold'></span>";
 								     	  }
-								     	}); 
+								     	});
 
 								       
 								      } );    
 	
 								    </script>	
-							
 						<% } } %>
 
 					<%} %> 

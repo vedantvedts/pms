@@ -14,6 +14,7 @@ import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.PfmsBriefingTransaction;
+import com.vts.pfms.print.model.ProjectOverallFinance;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -133,5 +134,7 @@ public interface PrintDao {
 	public List<Object[]> GETFavouriteSlides() throws Exception;
 	public Long EditFavouriteSlides(FavouriteSlidesModel fSM)throws Exception;
 	public int editTechImage(TechImages image)throws Exception;
+	public long addOverallFinace(List<ProjectOverallFinance> list, String projectid)throws Exception;
+	public List<Object[]> getrOverallFinance(String proid)throws Exception;
 
 }

@@ -8,14 +8,15 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
-    
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/js/excel.js" var="excel" />
+<script src="${excel}"></script>
 <title>Procurement Status</title>
 
 
@@ -192,6 +193,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
 List<Object[]> fileStatusList=(List<Object[]>)request.getAttribute("fileStatusList");
 String projectId=request.getAttribute("projectId").toString();
+String projectcode=request.getAttribute("projectcode").toString();
 List<Object[]> pftsStageList=(List<Object[]>)request.getAttribute("pftsStageList");
 List<Object[]> pftsStageList1=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())<=10).collect(Collectors.toList());
 List<Object[]> pftsStageList2=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())>=10).collect(Collectors.toList());
@@ -418,6 +420,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                        		<button  class="btn add" type="button" formaction="AddNewDemandFile.htm" id="ibasAddBtn" onclick="addIbis()">Add Demand From IBAS</button>
  	                        		<button  class="btn btn-info" style="font-weight:600" type="button" id="manualAddBtn" onclick="addManual()" formaction="AddManualDemand.htm">MANUAL DEMAND</button>
 	                        		<button  class="btn btn-success" style="font-weight:600"  type="button" id="enviBtn" onclick="addEnvi()" formaction="envisagedAction.htm">ENVISAGED DEMAND</button>
+	                        		<button type="button" class="btn btn-warning" style="font-weight:600"  type="button" id="" onclick="showManualDemand()" data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Excel Upload" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i> &nbsp;UPLOAD</button>
 	                        		
 	                           </form>
 	                        
@@ -432,6 +435,54 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 					</div>
 			</div>
 		</div>
+		
+		<!-- Excel Upload-->
+<div class="modal fade bd-example-modal-lg" id="MANUALDEMANDS" >
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width: 150%;margin-left: -25%;">
+      <div class="modal-header bg-primary text-light"  >
+        <h5 class="modal-title" id="exampleModalLabel">MANUAL DEMANDS (<%=projectcode %>)</h5>
+		<form action="ManualDemandExcel.htm" method="post">
+		<button class="btn btn-sm"  data-toggle="tooltip" type="submit" data-toggle="tooltip" data-placement="top"  title="Download Format" ><i class="fa fa-download fa-lg" aria-hidden="true"></i>
+		&nbsp; Sample Format
+		</button>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		</form>
+      </div>
+       <form action="ManualDemandExcelSubmit.htm" method="post" id="excelForm" enctype="multipart/form-data">
+      <div class="modal-body">
+      <div class="col-md-4 mb-4">
+      <input class="form-control" type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">						
+      </div>
+      <table class="table table-bordered table-hover">
+      <thead>
+      <tr>
+  	  <th colspan="1" style="color: #001253 !important;">SN</th>
+      <th colspan="2" style="width:120px;color: #001253 !important;">Demand No</th>
+      <th colspan="2" style="width:150px;color: #001253 !important;">Demand Date</th>
+      <th colspan="2" style="width:150px;color: #001253 !important;">Estimated Cost</th>
+      <th colspan="2" style="width:200px;color: #001253 !important;">Item Name</th>
+      </tr>
+      </thead>
+      <tbody id="overalltbody">
+      <tr>
+      <td colspan="9" style="color: #001253 !important;text-align: center;font-weight: 700;">No Data Available!</td>
+      </tr>
+      </tbody>
+      </table>
+      </div>
+      <hr>
+      <div align="center" class="m-2">
+		<input type="hidden" name="ProjectId" value="<%=projectId%>">
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+      <button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')">Submit</button>
+      <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" style="font-weight: 600;text-transform: uppercase;">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--  -->
 	</div>
 	
 <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -685,6 +736,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	 </div>
 </div>
 
+
 <script type="text/javascript">
 
 function submitForm(frmid)
@@ -839,7 +891,7 @@ function openEditform(fileId,demandid,pstatusid,itemname,demandtype){
 			success : function(result) {
 				 if (result != null) {
 				        var resultData = JSON.parse(result); 
-				        console.log("resultData"+resultData);
+				 
 				        $('#procRemarks').val(resultData[9]);
 				        $('#procstatus').empty();
 				        if(pstatusid<10){
@@ -966,7 +1018,7 @@ function openPDCform(fileId){
             var IntegrationDate = new Date();
             if(values[5]!==null){     PDCDate =  new Date(values[5]); }
             if(values[6]!==null){     IntegrationDate = new Date(values[6]); }
-            console.log(values[6]);
+           
             $('#PDCDate').daterangepicker({
             	"singleDatePicker" : true,
             	"linkedCalendars" : false,
@@ -1081,7 +1133,7 @@ function manualOrderStatus(fileId,demandno){
 		    },
 		    error: function(xhr, status, error) {
 		        // Handle error if any
-		        console.error(xhr.responseText);
+		       
 		    }
 		});
 
@@ -1166,7 +1218,7 @@ function ibasOrderStatus(fileId,demandno){
 		    },
 		    error: function(xhr, status, error) {
 		        // Handle error if any
-		        console.error(xhr.responseText);
+	
 		    }
 		});
 
@@ -1230,7 +1282,7 @@ $('#demandno').on('input', function() {
             }
         },
         error: function(xhr, status, error) {
-            console.error(xhr.responseText);
+    
         }
     });
 });
@@ -1241,7 +1293,203 @@ $('.btn[data-toggle="tooltip"]').tooltip({
     html : true,
     boundary: 'window'
 });
+var DemandNumbers = [];
+<%if(fileStatusList!=null){
+for(Object[]obj:fileStatusList){
+if(obj[1]!=null){
+%>
+var val  = "<%=obj[1].toString()%>"
+<%}}}%>
+function showManualDemand(){
+	$('#MANUALDEMANDS').modal('show');
+}
+var excel_file = document.getElementById('excel_file');
 
+excel_file.addEventListener('change', (event) => {
+	
+	var reader = new FileReader();
+    reader.readAsArrayBuffer(event.target.files[0]);
+
+    reader.onload = function (event){
+    
+    	var data = new Uint8Array(reader.result);
+    	
+    	var work_book = XLSX.read(data, {type:'array'});
+    	
+    	var sheet_name = work_book.SheetNames;
+    	
+    	var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]],{header:1});
+    	
+
+    	var checkExcel = 0;
+    	table_output = '';
+    	var html="";
+    	var duplicate=[];
+    	
+    	var estimatedCost =[];
+    	var demandNo =[];
+    	var demandDate =[];
+    	if(sheet_data.length > 0){
+    		for(var row = 0; row < sheet_data.length ; row ++){
+    			if(row>0){
+    				table_output += '<tr>'
+    					duplicate.push(sheet_data[row][1])
+    			}
+    			var html="";
+    			
+    		
+
+    				for(var cell =0;cell<=4;cell++){
+    					if(row==0){
+    			 	 	if(cell==0 && "SN"!= sheet_data[row][cell]){checkExcel++;}
+    					if(cell==1 && "Demand No"!= sheet_data[row][cell]){checkExcel++;}
+    					if(cell==2 && !sheet_data[row][cell].startsWith("Demand Date")){checkExcel++;}
+    					if(cell==3 && !sheet_data[row][cell].startsWith("Estimated")){checkExcel++;}
+    					if(cell==4 && "Item Name"!= sheet_data[row][cell]){checkExcel++;}
+    					}
+    					
+    					if(row>0){
+    						if(cell==0){
+    	    					html=html+'<td colspan="1" style="text-align:center">'+sheet_data[row][cell]+'</td>'	
+    	    					}else if(cell==1){
+    	    						var demandNos = sheet_data[row][cell];
+    	    						
+    	    						if((demandNos===undefined || demandNos.length===0) && row!=0){
+    	    							demandNo.push(row+1);
+    	    						}
+    	    						if((demandNos+"").length>15){
+    	    							alert("Demand No length should be of 15 Chareacters. Demand No's length is too much for "+demandNos);
+    	    							excel_file.value = '';
+    	    			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    	    			    			return;
+    	    						}
+    	    						if(DemandNumbers.includes(demandNos+"")){
+    	    						
+    	    						
+    	    							alert("The same Demand No. already exists with "+demandNos+". Please check the Excel sheet once.");
+    	    							excel_file.value = '';
+    	    			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    	    			    			return;
+    	    						}
+    	    						
+    	    						html=html+'<td colspan="2" style="text-align:center">'+sheet_data[row][cell]+'</td>'	
+    	    					}else if(cell==2){
+    	    						var dates = sheet_data[row][cell];
+    	    						console.log(dates)
+    	    						
+    	    						if(dates===undefined ||  dates.length==0 ){
+    	    							alert("Dates can not be blank for Demand  "+ sheet_data[row][1]);
+    	    							excel_file.value = '';
+    	    			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    	    			    			return;
+    	    						}
+    	    						var dates1 =dates.split("-").reverse().join('-')
+    	    						var date = new Date(dates1+"");
+    	    						
+    	    					  if (isNaN(date.getTime()) && row!=0) {
+    	    								alert("Please give a proper date  for Demand  "+ sheet_data[row][1]);
+    	        							excel_file.value = '';
+    	        			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    	        			    			return;
+    	    						 } 
+    	    						
+    	    					
+    	    						/* demandDate */
+    	    						html=html+'<td colspan="2" style="text-align:center">'+sheet_data[row][cell]+'</td>'	
+    	    					}
+    							else if(cell==3){
+    								var x=parseFloat(sheet_data[row][cell]).toFixed(2);
+    								if((isNaN(x) || x===undefined)&& row!=0){
+    									estimatedCost.push(sheet_data[row][1]);
+    								}
+    								
+    	    						html=html+'<td colspan="2" style="text-align:right;">'+parseFloat(sheet_data[row][cell]).toFixed(2)+'</td>'
+    	    					}
+    							else{
+    								var itemName=sheet_data[row][cell];
+    								if(itemName==undefined || itemName.length==0){
+    									alert("Item is empty for Demand No. "+ sheet_data[row][1]);
+	        							excel_file.value = '';
+	        			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+	        			    			return;
+    								}
+    								
+    								if(itemName!=undefined && itemName.length>255){
+    									alert("Item should be of 255 characters for Demand No. "+ sheet_data[row][1]);
+	        							excel_file.value = '';
+	        			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+	        			    			return;
+    								}
+    							
+    	    						html=html+'<td colspan="2" style="text-align:justify;padding:3px!important;">'+sheet_data[row][cell]+'</td>'	
+    	    					}
+    	    			
+    					}
+    					
+    					if(checkExcel>0){
+    		    			alert("Please Download the Manual Demands format and upload it.");
+    		    			$('#overalltbody').html('<td colspan="9" style="color: #001253 !important;text-align: center;font-weight: 700;">No Data Available!</td>');
+    		     			excel_file.value = '';
+    		  				return;
+    		    		}
+						
+    					
+    				}
+    				if(row>0){
+    					table_output =table_output+html+'</tr>';
+    				}
+    		}
+    		if(demandNo.length>0){
+    			alert("Demand Numbers are blank at row "+demandNo)
+    			excel_file.value = '';
+    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    			return;
+    		}
+    		
+    		if(estimatedCost.length>0){
+    			alert("Please provide proper cost for Demand Numbers with "+estimatedCost)
+    			excel_file.value = '';
+    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    			return;
+    		}
+    		
+    		
+    		
+    		
+    		   var map = {};
+    		   var duplicates = [];
+    			
+     	   for (let i = 0; i < duplicate.length; i++) {
+    		        if (map[duplicate[i]]) {
+    		            duplicates.push(duplicate[i]);
+    		        } else {
+    		            map[duplicate[i]] = true;
+    		        }
+    		    }
+    
+    	
+    		
+    	 	if(duplicates.length>0){
+    			alert("Duplicate Demand numbers are there in Excel ("+duplicates+ ")");
+    			excel_file.value = '';
+    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    			return;
+    		} 
+    		   
+    		   
+    		
+    	  	if(table_output.length>0){
+    			$('#overalltbody').html(table_output)
+    		} else{
+    			alert("No Data available in this Excel Sheet!")
+    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data is their in Excel Sheet</td></tr>');
+    			excel_file.value = '';
+    		} 
+    		
+    	}
+    	
+    }
+});
 </script>
 </body>
 </html>

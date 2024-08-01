@@ -712,7 +712,14 @@ String ses=(String)request.getParameter("result");
 												<input type="hidden" name="divisionid" value="<%=divisionid%>"> 		
 												<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
 										</form>		
-										
+											<td>
+										<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
+											<button  type="submit" class="btn btn-sm edit">DESCRIPTION</button>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">		
+											<input type="hidden" name="operation" value="approve">								
+										</form>
+									</td>
 										<%} %>	
 										
 									</td>

@@ -35,6 +35,9 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+
+
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -42,6 +45,21 @@ import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -102,6 +120,7 @@ import com.vts.pfms.print.model.FavouriteSlidesModel;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.PfmsBriefingTransaction;
+import com.vts.pfms.print.model.ProjectOverallFinance;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -139,6 +158,8 @@ public class PrintController {
 	@Value("#{${CommitteeCodes}}")
 	private List<String> SplCommitteeCodes;
 	
+	@Value("${IsIbasConnected}")
+	private String IsIbasConnected;
 	@Autowired
 	Environment env;
 	
@@ -610,7 +631,7 @@ public class PrintController {
 	    	String text=req.getParameter("text");
 	    	
 	    	req.setAttribute("text", text);
-	    	
+	    	req.setAttribute("IsIbasConnected", IsIbasConnected);
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	Committee committee = service.getCommitteeData(committeeid);
@@ -640,7 +661,7 @@ public class PrintController {
     		envisagedDemandlist=service.getEnvisagedDemandList(projectid);
     		req.setAttribute("envisagedDemandlist", envisagedDemandlist);
 
-    		
+    		List<List<Object[]>> overallfinance =new ArrayList<List<Object[]>>();
 	    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
 	    	
 	    	
@@ -704,7 +725,10 @@ public class PrintController {
 							e.printStackTrace();
 						}
 					}
-	    	
+					if(IsIbasConnected!=null && IsIbasConnected.equalsIgnoreCase("N")) {
+						overallfinance.add(service.getrOverallFinance(proid));
+				
+					}
 					final String localUri2=uri+"/pfms_serv/getTotalDemand";
 
 			 		String jsonResult2=null;
@@ -878,7 +902,7 @@ public class PrintController {
 				req.setAttribute("mappmrc", mappmrc);
 		    	req.setAttribute("mapEB", mapEB);
     		//end on 13th sept
-    		
+		    	req.setAttribute("overallfinance", overallfinance);
 	    	String filename="BriefingPaper";		
 	    	
 	    	String path=req.getServletContext().getRealPath("/view/temp");
@@ -2297,7 +2321,8 @@ public class PrintController {
     		List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
     		List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
     		List<Object[]> LastMeetingDates =new ArrayList<Object[]>();
-    		
+    		//overall finance when ibas is not connected
+    		List<List<Object[]>> overallfinance =new ArrayList<List<Object[]>>();
     		
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
@@ -2422,6 +2447,13 @@ public class PrintController {
 							e.printStackTrace();
 						}
 					}
+					
+					//make sure IsIbasConnected is no for the labs which does not have ibas.The value of IsIbasConnected is coming form applicationProperties
+					if(IsIbasConnected!=null && IsIbasConnected.equalsIgnoreCase("N")) {
+						overallfinance.add(service.getrOverallFinance(proid));
+				
+					}
+					
 					final String localUri2=uri+"/pfms_serv/getTotalDemand";
 
 			 		String jsonResult2=null;
@@ -2540,6 +2572,7 @@ public class PrintController {
 	 		}
 	 	}
 	 }
+	 	req.setAttribute("overallfinance", overallfinance);
 				 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
 				 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
 				 	 // new code end
@@ -2685,6 +2718,7 @@ public class PrintController {
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
 				return "redirect:/MainDashBoard.htm";
 			}
+			req.setAttribute("IsIbasConnected", IsIbasConnected);
 			return "print/ProjectBriefingPaperNew";
 		}
 	    catch(Exception e) {	    		
@@ -2706,6 +2740,7 @@ public class PrintController {
 				redir.addAttribute("cc", "No Project is Assigned to you.");
 				return "redirect:/MainDashBoard.htm";
 			}  
+			req.setAttribute("IsIbasConnected", IsIbasConnected);
 			return "print/BriefingPresentation";
 		}
 	    catch(Exception e) {	    		
@@ -5241,5 +5276,389 @@ public class PrintController {
 			            response.getOutputStream().close();
 			        
 			    }
-			 
+			 @RequestMapping(value="OverallFinanceExcel.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+				public String OverallFinanceExcel( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+				{
+				 try {
+					 XSSFWorkbook workbook = new XSSFWorkbook();
+				        XSSFSheet sheet = workbook.createSheet("PMS_Finance");
+
+				        // Create cell styles
+				        CellStyle headerStyle = workbook.createCellStyle();
+				        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+				        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+				  
+				        
+				        // First row (merged cells)
+				        XSSFRow row1 = sheet.createRow(0);
+
+				        // Merge and set values for the first row
+				        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1)); // Merge for "Head"
+				        Cell cell = row1.createCell(0);
+				        cell.setCellValue("Head");
+				        cell.setCellStyle(headerStyle);
+
+				        for (int i = 1; i <= 6; i++) {
+				            int colIndex = (i - 1) * 2 + 2;
+				            sheet.addMergedRegion(new CellRangeAddress(0, 0, colIndex, colIndex + 1));
+				            cell = row1.createCell(colIndex);
+				            cell.setCellValue(getColumnHeader(i) + "( in Cr )");
+				            cell.setCellStyle(headerStyle);
+				        }
+
+				        // Second row (split cells)
+				        XSSFRow row2 = sheet.createRow(1);
+				        row2.createCell(0).setCellValue("SN");
+				        row2.createCell(1).setCellValue("Head");
+
+				        for (int i = 1; i <= 6; i++) {
+				            int colIndex = (i - 1) * 2 + 2;
+				            row2.createCell(colIndex).setCellValue("RE");
+				            row2.createCell(colIndex + 1).setCellValue("FE");
+				        }
+
+				        // Adjust column widths
+				        for (int i = 0; i <= 13; i++) {
+				            sheet.setColumnWidth(i, 3000);
+				        }
+
+				    
+				     
+
+				        // Set the response properties
+				        res.setContentType("application/vnd.ms-excel");
+				        res.setHeader("Content-Disposition", "attachment; filename=PMS_Finance.xlsx");
+
+				        // Write the workbook to the response output stream
+				        workbook.write(res.getOutputStream());
+				        workbook.close();
+
+
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				 return null;
+				}
+			  private String getColumnHeader(int index) {
+			        switch (index) {
+			            case 1: return "Sanction";
+			            case 2: return "Expenditure";
+			            case 3: return "Out Commitment";
+			            case 4: return "Balance";
+			            case 5: return "DIPL";
+			            case 6: return "Notional Balance";
+			            default: return "";
+			        }
+			    }
+			  
+			  @RequestMapping(value="OverAllFinaceSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+				public String OverAllFinaceSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+				{
+				  
+					String LabCode = (String) ses.getAttribute("labcode");
+					String UserId = (String) ses.getAttribute("Username");
+					String projectid =req.getParameter("projectid");
+					String mainprojectid =req.getParameter("mainprojectid");
+					String committeeid =req.getParameter("committeeid");
+					Object[]projectDetails=service.ProjectDetails(mainprojectid).get(0);
+					
+					String projectCode=projectDetails[1].toString();
+				   try {
+					
+					   if(ServletFileUpload.isMultipartContent(req)) {
+						   List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));	
+						   Part filePart = req.getPart("filename");
+							List<ProjectOverallFinance>list = new ArrayList<>();
+							InputStream fileData = filePart.getInputStream();
+							
+						
+							Workbook workbook = new XSSFWorkbook(fileData);
+							Sheet sheet  = workbook.getSheetAt(0);
+							int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
+							
+			
+							for (int i=2;i<=rowCount;i++) {
+								ProjectOverallFinance pof = new ProjectOverallFinance();
+								int cellcount= sheet.getRow(i).getLastCellNum();
+								
+								 Row row = sheet.getRow(i);
+								 if (row == null) continue;
+							
+								for(int j=1;j<cellcount;j++) {
+									 Cell cell = row.getCell(j);
+						                if (cell == null) continue;
+									if(j==1) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setBudgetHead(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setBudgetHead(sheet.getRow(i).getCell(j).getStringCellValue());
+											break;	 
+										}
+										
+										
+									}
+							
+									if(j==2) {
+									
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setSanctionCostRE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setSanctionCostRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setSanctionCostRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+										
+										
+									}
+									
+									
+									if(j==3) {
+								
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setSanctionCostFE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setSanctionCostFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setSanctionCostFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+										
+									}
+									
+									if(j==4) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setExpenditureRE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setExpenditureRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setExpenditureRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+									
+									}
+									
+									if(j==5) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setExpenditureFE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setExpenditureFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setExpenditureFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+									
+									}
+									
+									if(j==6) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setOutCommitmentRE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setOutCommitmentRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setOutCommitmentRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+						
+									}
+									if(j==7) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setOutCommitmentFE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setOutCommitmentFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setOutCommitmentFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+								
+									}
+									
+									if(j==8) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setBalanceRE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setBalanceRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setBalanceRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+								
+									}
+									
+									if(j==9) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setBalanceFE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setBalanceFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setBalanceFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+								
+									}
+									
+									if(j==10) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setDiplRE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setDiplRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setDiplRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+									
+									}
+									if(j==11) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setDiplFE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setDiplFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setDiplFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+							
+									}
+									
+									if(j==13) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setNotaionalBalFE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setNotaionalBalFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setNotaionalBalFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+								
+									}
+									
+									if(j==12) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											pof.setNotaionalBalRE(0.00);
+											break;
+										case Cell.CELL_TYPE_NUMERIC:
+											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case Cell.CELL_TYPE_STRING:
+											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+									}
+								}
+									
+								pof.setProjectCode(projectCode);
+								pof.setProjectId(Long.parseLong(mainprojectid));
+								pof.setLabCode(LabCode);
+								pof.setCreatedBy(UserId);
+								pof.setCreatedDate(LocalDate.now().toString());
+								pof.setIsActive(1);
+								
+								if(pof.getSanctionCostRE()==null) {
+									pof.setSanctionCostRE(0.00);
+								}
+								if(pof.getSanctionCostFE()==null) {
+									pof.setSanctionCostFE(0.00);
+								}
+								
+								if(pof.getExpenditureRE()==null) {
+									pof.setExpenditureRE(0.00);
+								}
+								
+								if(pof.getExpenditureFE()==null) {
+									pof.setExpenditureFE(0.00);
+								}
+								
+								if(pof.getOutCommitmentRE()==null) {
+									pof.setOutCommitmentRE(0.00);
+								}
+								
+								if(pof.getOutCommitmentFE()==null) {
+									pof.setOutCommitmentFE(0.00);
+								}
+								
+								if(pof.getBalanceRE()==null) {
+									pof.setBalanceRE(0.00);
+								}
+								
+								if(pof.getBalanceFE()==null) {
+									pof.setBalanceFE(0.00);
+								}
+								
+								if(pof.getDiplRE()==null) {
+									pof.setDiplRE(0.00);
+								}
+								
+								if(pof.getDiplFE()==null) {
+									pof.setDiplFE(0.00);
+								}
+								if(pof.getNotaionalBalRE()==null) {
+									pof.setNotaionalBalRE(0.00);
+								}
+								
+								if(pof.getNotaionalBalFE()==null) {
+									pof.setNotaionalBalFE(0.00);
+								}
+								
+								if(pof.getBudgetHead()!=null ) {
+									list.add(pof);
+								}
+								
+								System.out.println(list.size());
+							}
+							
+							long count = service.addOverallFinace(list,mainprojectid);
+							
+							if(count>0) {
+								redir.addAttribute("result","Overall Finance Data Added Successfully");
+							}else {
+								redir.addAttribute("resultfail","Overall Finance Data Add Unsuccessful");
+
+							}
+					
+					   }
+				   }catch (Exception e) {
+					// TODO: handle exceptione.pr
+					   e.printStackTrace();
+				}
+					redir.addFlashAttribute("projectid",projectid);
+	    			redir.addFlashAttribute("committeeid",committeeid);
+	    			return "redirect:/ProjectBriefingPaper.htm";
+				}
 }

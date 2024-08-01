@@ -32,6 +32,8 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <script src="${ckeditor}"></script>
+<spring:url value="/resources/js/excel.js" var="excel" />
+<script src="${excel}"></script>
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <link href="${contentCss}" rel="stylesheet" />
 <spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
@@ -431,6 +433,10 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
+
+
+List<List<Object[]>> overallfinance = (List<List<Object[]>>)request.getAttribute("overallfinance");//b
+String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 %>
 <%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
@@ -2314,8 +2320,13 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 						<details>
    						<summary role="button" tabindex="0"><b>8. Overall Financial Status  <i style="text-decoration: underline;">(&#8377; Crore)</i> </b> </summary>
    						
-						  	<div class="content">
-						  	<%for(int z=0;z<projectidlist.size();z++){ %>
+											  	<div class="content">
+						  	<%for(int z=0;z<projectidlist.size();z++){ 
+		                		double totSanctionCost=0,totReSanctionCost=0,totFESanctionCost=0;
+			                	double totExpenditure=0,totREExpenditure=0,totFEExpenditure=0;
+			                 	double totCommitment=0,totRECommitment=0,totFECommitment=0,totalDIPL=0,totalREDIPL=0,totalFEDIPL=0;
+				                double totBalance=0,totReBalance=0,totFeBalance=0,btotalRe=0,btotalFe=0;
+						  	%>
 						  	<%if(ProjectDetail.size()>1){ %>
 								<div>
 									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
@@ -2326,13 +2337,18 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 						  	<table  class="subtables" style="width: 980px;">
 						  	    <thead>
 		                           <tr>
-		                         	<th colspan="2" style="text-align: center ;width:200px !important;">Head</td>
-		                         	<th colspan="2" style="text-align: center;width:120px !important;">Sanction</td>
-			                        <th colspan="2" style="text-align: center;width:120px !important;">Expenditure</td>
-			                        <th colspan="2" style="text-align: center;width:120px !important;">Out Commitment </td>
-		                           	<th colspan="2" style="text-align: center;width:120px !important;">Balance</td>
-			                        <th colspan="2" style="text-align: center;width:120px !important;">DIPL</td>
-		                          	<th colspan="2" style="text-align: center;width:120px !important;">Notional Balance</td>
+		                         	<th colspan="2" style="text-align: center ;width:200px !important;">Head</th>
+		                         	<th colspan="2" style="text-align: center;width:120px !important;">Sanction</th>
+			                        <th colspan="2" style="text-align: center;width:120px !important;">Expenditure</th>
+			                        <th colspan="2" style="text-align: center;width:120px !important;">Out Commitment </th>
+		                           	<th colspan="2" style="text-align: center;width:120px !important;">Balance</th>
+			                        <th colspan="2" style="text-align: center;width:120px !important;">DIPL</th>
+		                          	<th colspan="2" style="text-align: center;width:120px !important;">Notional Balance</th>
+		                          	<%if(IsIbasConnected!=null &&  IsIbasConnected.equalsIgnoreCase("N")) {%>
+		                          	<th colspan="1" style="text-align: center;border: none;">
+		                          	<button data-toggle="tooltip" onclick ="showModal(<%=projectid %>,'<%=ProjectDetail.get(z)[0] %>','<%=ProjectDetail.get(z)[1] %>')" class="btn btn-sm"  style="cursor: pointer;font-weight: 600"  type="button"  data-toggle="tooltip" data-placement="right"  title="Upload Overall Finance"  ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i>&nbsp;Excel Upload</button>
+		                       	<jsp:include page="../print/OverallExcelUpload.jsp"></jsp:include> 
+		                          	</th> <%} %>
 			                      </tr>
 			                      <tr>
 				                    <th style="width:30px !important;text-align: center;" >SN</th>
@@ -2351,12 +2367,10 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 				                    <th>FE</th>
 		                       	  </tr>
 			                    </thead>
+			                    <%if(IsIbasConnected==null || IsIbasConnected.equalsIgnoreCase("Y")) {%>
 			                    <tbody>
 			                    <% 
-		                		double totSanctionCost=0,totReSanctionCost=0,totFESanctionCost=0;
-			                	double totExpenditure=0,totREExpenditure=0,totFEExpenditure=0;
-			                 	double totCommitment=0,totRECommitment=0,totFECommitment=0,totalDIPL=0,totalREDIPL=0,totalFEDIPL=0;
-				                double totBalance=0,totReBalance=0,totFeBalance=0,btotalRe=0,btotalFe=0;
+
 				                int count=1;
 			                        if(projectFinancialDetails!=null && projectFinancialDetails.size()>0 && projectFinancialDetails.get(z)!=null ){
 			                      for(ProjectFinancialDetails projectFinancialDetail:projectFinancialDetails.get(z)){                       %>
@@ -2390,7 +2404,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 										<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
 									</tr>
 			<%} }%>
-			</tbody>
+
 					<tr>
 						<td colspan="2"><b>Total</b></td>
 						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
@@ -2421,12 +2435,87 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 			                    
 			                 
 			     </tbody>
+			     <%}else{ %>
+			     <tbody id="tbody<%=ProjectDetail.get(z)[0].toString()%>">
+			     <%int count=0;
+			     if(overallfinance!=null && overallfinance.size()>0 && overallfinance.get(z)!=null && overallfinance.get(z).size()>0)  {
+			    	for(Object[]obj:overallfinance.get(z)){ 
+			    	 %>
+			    	 <tr>
+			   <td align="center" style="max-width:50px !important;text-align: center;"><%=++count %></td>
+				<td style="text-align: justify ;"><b><%=obj[4].toString()%></b></td>
+				<td style="text-align: right;"><%=obj[5].toString()%></td>
+				<td style="text-align: right;"><%=obj[6].toString()%></td>
+				<td style="text-align: right;"><%=obj[7].toString()%></td>
+				<td style="text-align: right;"><%=obj[8].toString()%></td>
+				<td style="text-align: right;"><%=obj[9].toString()%></td>
+				<td style="text-align: right;"><%=obj[10].toString()%></td>
+				<td style="text-align: right;"><%=obj[11].toString()%></td>
+				<td style="text-align: right;"><%=obj[12].toString()%></td>
+				<td style="text-align: right;"><%=obj[13].toString()%></td>
+				<td style="text-align: right;"><%=obj[14].toString()%></td>
+				<td style="text-align: right;"><%=obj[15].toString()%></td>
+				<td style="text-align: right;"><%=obj[16].toString()%></td>
+				</tr>
+			     <%}%>
+			    	 	<tr>
+						<td colspan="2"><b>Total</b></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[17].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[18].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[19].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[20].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[21].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[22].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[23].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[24].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[25].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[26].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[27].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[28].toString()%></td>
+					</tr>
+			     	<tr>
+						<td colspan="2"><b>GrandTotal</b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[17].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[18].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[19].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[20].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[21].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[22].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[23].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[24].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[25].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[26].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[27].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[28].toString())%></b></td>				     
+			     	</tr>
+			     <%}else{%> 
+			     	<tr>
+						<td colspan="2"><b>Total</b></td>
+						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFESanctionCost)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totREExpenditure)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFEExpenditure)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totRECommitment)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFECommitment)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(btotalRe)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(btotalFe)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totReBalance)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFeBalance)%></td>
+					</tr>
+					<tr>
+						<td colspan="2"><b>GrandTotal</b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReSanctionCost+totFESanctionCost)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totREExpenditure+totFEExpenditure)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totRECommitment+totFECommitment)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(btotalRe+btotalFe)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
+					</tr>
+			     <% }%>
+			     </tbody>
+			     <% } %>
 			</table>  	
   
   
 							<%} %>
 							
-							</div> 		
+							</div> 	
 						
 						</details>
 	

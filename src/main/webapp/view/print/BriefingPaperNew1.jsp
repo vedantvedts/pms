@@ -63,6 +63,9 @@ No2="P"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 	No2="E"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 }
 LocalDate before6months = LocalDate.now().minusMonths(6);
+
+List<List<Object[]>> overallfinance = (List<List<Object[]>>)request.getAttribute("overallfinance");//b
+String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 %>
 
 <style type="text/css">
@@ -1976,197 +1979,6 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 											<%} %>
 									</table> 
 							
-								<%-- 	<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse; width: 970px !important;"  >
-											
-										<thead>
-											<tr>
-											 	<th colspan="8">
-											 		<b class="mainsubtitle">Demand Details </b>
-											 		<b class="mainsubtitle">( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> Lakhs) <%} else {%> - )<%} %> </b> 
-											 	</th>
-											 </tr>
-										
-										
-										<tr>
-											<th  style="width: 15px !important;text-align: center;">SN</th>
-											<th  style="width: 175px;">Demand No</th>
-											<th  style="width: 100px; ">Demand Date</th>
-											<th  colspan="2" style="width: 355px;"> Nomenclature</th>
-											<th  style="width: 80px;"> Est. Cost</th>
-											<th  style="width: 50px; "> Status</th>
-											<th  style="width: 195px;">Remarks</th>
-										</tr>
-									</thead>
-										    <% int k=0;
-										    if(procurementOnDemand.get(z)!=null &&  procurementOnDemand.get(z).size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : procurementOnDemand.get(z)){ 
-										    	k++; %>
-											<tr>
-												<td style="text-align: center;"><%=k%></td>
-												<td ><%=obj[1]%></td>
-												<td style="text-align:center" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td  colspan="2" ><%=obj[8]%></td>
-												<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												<td  > <%=obj[10]%> </td>
-												<td  ><%=obj[11]%> </td>		
-											</tr>		
-											<%
-											estcost += Double.parseDouble(obj[5].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td colspan="5" style="text-align: right;"><b>Total</b></td>
-										    	<td style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-										    	
-										    	<td colspan="2" style="text-align: right;"></td>
-
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-											
-										</table>
-										<!-- ********************************Future Demand Start *********************************** -->
-										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse; width: 970px !important;"  >
-											<thead>
-											<tr>
-											 	<th colspan="8">
-											 		<b class="mainsubtitle">Future Demand</b>
-											 	</th>
-											 </tr>
-										
-										
-										<tr>
-											<th  style="width: 15px !important;text-align: center;">SN</th>
-									<!-- 		<th  style="width: 175px;">Demand No</th>
-											<th  style="width: 100px; ">Demand Date</th> -->
-											<th  colspan="2" style="width: 430px;"> Nomenclature</th>
-											<th  style="width: 80px;"> Est. Cost</th>
-											<th  style="width: 150px; "> Status</th>
-											<th  style="width: 295px;">Remarks</th>
-										</tr>
-									</thead>
-									    			    <% int a=0;
-										    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : envisagedDemandlist){ 
-										    	a++; %>
-											<tr>
-												<td ><%=a%></td>
-											<!-- 	<td >--</td>
-												<td  >--</td> -->
-												<td  colspan="2" ><%=obj[3]%></td>
-												<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
-												<td  > <%=obj[6]%> </td>
-												<td  ><%=obj[4]%> </td>		
-											</tr>		
-											<%
-												estcost += Double.parseDouble(obj[2].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td colspan="3" style="text-align: right;"><b>Total</b></td>
-										    	<td style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-										    	<td colspan="4" style="text-align: right;"></td>
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-											
-										</table>
-									<!-- ********************************Future Demand End *********************************** -->
-					
-								
-								
-									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
-										<thead>
-											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Orders Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> Lakhs) <%} else {%> -  )<%} %> </b> </th>
-											 </tr>
-										 </thead>
-										  	 	 <tr>	
-											  	 	 <th rowspan="2" style="width: 15px !important;text-align: center;">SN</th>
-											  	 	 <th style="width: 150px;">Demand No </th>
-											  	 	 <th style="width: 80px;">Demand  Date</th>
-													 <th  colspan="2" style="width: 295px;"> Nomenclature</th>
-													 <th  style="width: 80px;"> Est. Cost</th>
-													 <th  style="max-width: 50px; "> Status</th>
-													 <th  style="max-width: 310px;">Remarks</th>
-												</tr>
-											
-											<tr>
-												 <th style="">Supply Order No</th>
-												 <th  style="	">DP Date</th>
-												 <th  colspan="2" style="	">Vendor Name</th>
-												 <th  >Rev DP</th>
-												 <th   colspan="2" >SO Cost-Lakh &#8377;</th>												 
-											</tr>
-											
-										       <%
-										        if(procurementOnSanction.get(z)!=null && procurementOnSanction.get(z).size()>0){
-										    	  k=0;
-										    	  Double estcost=0.0;
-												  Double socost=0.0;
-												  String demand="";
-										  	 	   for(Object[] obj:procurementOnSanction.get(z)){ 
-										  	 		 if(obj[2]!=null){ 
-										  	 		 if(!obj[1].toString().equals(demand)){
-										  	 			k++;
-										  	 		//list is to get a size so it can be used as rowspan value
-									  	 			      List<Object[]> list = procurementOnSanction.get(z).stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
-										  	 	%>
-										  	  
-										  	  <!-- 1st Row Label Values -->
-												<tr>
-												    <td rowspan="<%=list.size()+1%>" style="text-align: center;"><%=k%></td>
-													<td ><%=obj[1]%> </td>
-													<td style="text-align:center" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-													<td   colspan="2" style="text-align: justify;"><%=obj[8]%></td>
-													<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												    <td  > <%=obj[10]%> </td>
-												    <td  > <%=obj[11]%> </td>
-												</tr>
-												<%demand=obj[1].toString();} %>
-												
-											  <!-- 2nd Row Label Values -->
-												<tr>
-													<td ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> </td>
-													<td style="text-align:center" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
-													<td  colspan="2"> <%=obj[12] %> </td>
-													<td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td>
-				                                    <td  colspan="2" style=" text-align: right;">
-				                                       <%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> 
-				                                       <%} else{ %> - <%} %>
-				                                    </td>									
-				
-												</tr>		
-												<% }
-										  	 		Double value = 0.00;
-										  	 		if(obj[6]!=null){
-										  	 			value=Double.parseDouble(obj[6].toString());
-										  	 		}
-										  	 		estcost += Double.parseDouble(obj[5].toString());
-										  	 		socost +=  value;
-										  	 	 } %>
-										   	 
-										    <tr>
-										    	<td colspan="6" style="text-align: right;"><b>Total</b></td>
-										    	<td colspan="2" style="text-align: right;"><b><%=df.format(socost)%></b></td>
-										    	
-										    </tr>
-										     <% }else{%>
-											
-												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-									</table> 
-									 --%>
 									 
 									 
 									<div align="right"> <span class="currency" style="font-weight: bold;width: 970px !important;" >(In &#8377; Lakhs)</span></div>
@@ -2337,58 +2149,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										
 								 	</tbody>
 								</table>
-								<!-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;font-size: 12px;" >
-									<tr>
-										<td style="width: 3%;">1</td>
-										<td style="width: 22%;">Demand Released from Division</td>
-										<td style="width: 3%;">6</td>
-										<td style="width: 22%;">Tender Opening</td>
-										<td style="width: 3%;">11</td>
-										<td style="width: 22%;">Realization in Progress</td>
-										<td style="width: 3%;">16</td>
-										<td style="width: 22%;">Payment Process</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>SPC Cleared</td>
-										<td>7</td>
-										<td>TCEC Approved</td>
-										<td>12</td>
-										<td>Realization Completed</td>
-										<td>17</td>
-										<td>Payment Released</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>EPC Approved</td>
-										<td>8</td>
-										<td>TPC Approved</td>
-										<td>13</td>
-										<td>ATP/QTP Completed</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>Tender Enquiry Floated</td>
-										<td>9</td>
-										<td>Financial Sanction</td>
-										<td>14</td>
-										<td>Delivery at Stores</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>Receipt of Quotations</td>
-										<td>10</td>
-										<td>Order Placement</td>
-										<td>15</td>
-										<td>Inward Inspection Clerance</td>
-										<td></td>
-										<td></td>
-									</tr>
-								</table>  -->
+								
 						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
 									<tr>
 										<td style="width: 3%;">0</td>
@@ -2481,47 +2242,50 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 				                    <th>FE</th>
 		                       	  </tr>
 			                    </thead>
+			                     <%
+			                 	double totSanctionCost=0,totReSanctionCost=0,totFESanctionCost=0;
+				                	double totExpenditure=0,totREExpenditure=0,totFEExpenditure=0;
+				                 	double totCommitment=0,totRECommitment=0,totFECommitment=0,totalDIPL=0,totalREDIPL=0,totalFEDIPL=0;
+					                double totBalance=0,totReBalance=0,totFeBalance=0,btotalRe=0,btotalFe=0;
+			                     
+			                     if(IsIbasConnected==null || IsIbasConnected.equalsIgnoreCase("Y")) {%>
 			                    <tbody>
 			                    <% 
-		                		double totSanctionCost=0,totReSanctionCost=0,totFESanctionCost=0;
-			                	double totExpenditure=0,totREExpenditure=0,totFEExpenditure=0;
-			                 	double totCommitment=0,totRECommitment=0,totFECommitment=0,totalDIPL=0,totalREDIPL=0,totalFEDIPL=0;
-				                double totBalance=0,totReBalance=0,totFeBalance=0,btotalRe=0,btotalFe=0;
+
 				                int count=1;
 			                        if(projectFinancialDetails!=null && projectFinancialDetails.size()>0 && projectFinancialDetails.get(z)!=null ){
 			                      for(ProjectFinancialDetails projectFinancialDetail:projectFinancialDetails.get(z)){                       %>
 			 
-			                  <tr>
-								<td align="center" style="max-width:50px !important;text-align: center;"><%=count++ %></td>
-								<td ><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
-								<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
-								<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
-								<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
-							    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
-								<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
-							    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
-								<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
-							    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
-								<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
-								<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
-								<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
-								<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
-						       	<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-									<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-									<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
-							<%-- 	<%double balance=(res.getDouble("SanctionCost")-(res.getDouble("Expenditure")+res.getDouble("OutCommitment")+res.getDouble("Dipl"));%> --%>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-									<%totReBalance+=(projectFinancialDetail.getReBalance());%>
-								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-									<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
-							</tr>
+			                         <tr>
+										<td align="center" style="max-width:50px !important;text-align: center;"><%=count++ %></td>
+										<td ><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
+										<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
+										<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
+										<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
+										<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
+										<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
+										<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
+										<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
+										<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
+										<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
+								       	<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
+										<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
+										<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
+										<%totReBalance+=(projectFinancialDetail.getReBalance());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
+										<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
+									</tr>
 			<%} }%>
-				</tbody>
+
 					<tr>
 						<td colspan="2"><b>Total</b></td>
 						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
@@ -2546,8 +2310,87 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
 						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
 					</tr>
+			                         
+			                         
+			                         
+			                    
 			                 
 			     </tbody>
+			     <%}else{ %>
+			     <tbody id="tbody<%=ProjectDetail.get(z)[0].toString()%>">
+			     <%int count=0;
+			     if(overallfinance!=null && overallfinance.size()>0 && overallfinance.get(z)!=null && overallfinance.get(z).size()>0)  {
+			    	for(Object[]obj:overallfinance.get(z)){ 
+			    	 %>
+			    	 <tr>
+			   <td align="center" style="max-width:50px !important;text-align: center;"><%=++count %></td>
+				<td style="text-align: justify ;"><b><%=obj[4].toString()%></b></td>
+				<td style="text-align: right;"><%=obj[5].toString()%></td>
+				<td style="text-align: right;"><%=obj[6].toString()%></td>
+				<td style="text-align: right;"><%=obj[7].toString()%></td>
+				<td style="text-align: right;"><%=obj[8].toString()%></td>
+				<td style="text-align: right;"><%=obj[9].toString()%></td>
+				<td style="text-align: right;"><%=obj[10].toString()%></td>
+				<td style="text-align: right;"><%=obj[11].toString()%></td>
+				<td style="text-align: right;"><%=obj[12].toString()%></td>
+				<td style="text-align: right;"><%=obj[13].toString()%></td>
+				<td style="text-align: right;"><%=obj[14].toString()%></td>
+				<td style="text-align: right;"><%=obj[15].toString()%></td>
+				<td style="text-align: right;"><%=obj[16].toString()%></td>
+				</tr>
+			     <%}%>
+			    	 	<tr>
+						<td colspan="2"><b>Total</b></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[17].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[18].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[19].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[20].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[21].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[22].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[23].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[24].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[25].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[26].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[27].toString()%></td>
+						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[28].toString()%></td>
+					</tr>
+			     	<tr>
+						<td colspan="2"><b>GrandTotal</b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[17].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[18].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[19].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[20].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[21].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[22].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[23].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[24].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[25].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[26].toString())%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[27].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[28].toString())%></b></td>				     
+			     	</tr>
+			     <%}else{%> 
+			     	<tr>
+						<td colspan="2"><b>Total</b></td>
+						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFESanctionCost)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totREExpenditure)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFEExpenditure)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totRECommitment)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFECommitment)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(btotalRe)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(btotalFe)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totReBalance)%></td>
+						<td align="right" style="text-align: right;"><%=df.format(totFeBalance)%></td>
+					</tr>
+					<tr>
+						<td colspan="2"><b>GrandTotal</b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReSanctionCost+totFESanctionCost)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totREExpenditure+totFEExpenditure)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totRECommitment+totFECommitment)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(btotalRe+btotalFe)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
+						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
+					</tr>
+			     <% }%>
+			     </tbody>
+			     <% } %>
 			</table>  	
   
  <h1 class="break"></h1>
@@ -2571,18 +2414,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						<thead>
 							<tr>
 								<td colspan="9" style="border: 0">
-									<!-- <p style="font-size: 10px;text-align: center"> 
-									<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-									<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-									<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-									<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-									<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-									<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-									<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-									<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-									<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
-									 </p> -->
+								
 								</td>									
 							</tr>
 							
@@ -2702,43 +2534,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												LocalDate CompletionDate =obj[18]!=null ? LocalDate.parse(obj[18].toString()) : null;
 												LocalDate Today = LocalDate.now();
 											%>									
-									<%-- 		<td  style="text-align: center">
-											
-												<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
-													<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> assigned
-													<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
-													<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
-													<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
-													<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
-													<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 status-column " >
-													
-													<%=obj[27] %>	
-													
-													<%if((obj[20].toString().equalsIgnoreCase("3") || obj[20].toString().equalsIgnoreCase("5") )&& obj[18]!=null){ %>
-														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString())) %>) 
-													<%}else if(obj[20].toString().equalsIgnoreCase("4")){ %>
-														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now()) %>)
-													<%} %>
-													
-												</span>
-												
-												<%if(Progess==0){ %>
-													<span class="assigned"> AA </span>
-												<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
-													<span class="ongoing"> OG </span>
-												<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
-													<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
-												<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
-													<span class="completed"> CO</span>
-												<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
-													<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>)</span>
-												<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
-													<span class="inactive">IA</span>
-												<%}else{ %>
-													<span class="assigned">AA</span>
-												<%} %>
-											
-											</td> --%>
+							
 											<td >
 												<%if(obj[28]!=null){ %>
 												<%=obj[28] %>
@@ -2821,18 +2617,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						<thead>
 							<tr>
 								<td colspan="7" style="border: 0">
-									<!-- <p style="font-size: 10px;text-align: center"> 
-										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-										<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-										<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
-									</p> -->
+								
 								</td>									
 							</tr>
 							<tr>
@@ -2996,15 +2781,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 	
 <!-- ------------------------------------------------------------------------------------------------ -->
 <%} %>
-<%-- 
-<div style="margin-left: 15px;width: 980px;">
-	<p style="text-indent: 50px; ">
-		<b>he information in this Document is proprietary of &nbsp;<%=labInfo.getLabCode() %>/DRDO, 
-		MOD Government of India. 
-		Unauthorized possession/use is violating the Government procedure which may be liable for prosecution.</b>
-	</p> 
 
-</div>--%>
 
 <h1 class="break"></h1> 
 
