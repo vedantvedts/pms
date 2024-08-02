@@ -17,6 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
@@ -978,11 +980,10 @@ public class PFTSController {
 				cell1.setCellStyle(headerCellStyle);
 				sheet.setColumnWidth(1, 7000);
 
-				Cell cell2 = row.createCell(2);
-				cell2.setCellValue("Demand Date\n(DD-MM-YYYY)");
-				cell2.setCellStyle(headerCellStyle);
-				cell2.setCellStyle(centerWrapCellStyle);
-				sheet.setColumnWidth(2, 8000);
+				   Cell cell2 = row.createCell(2, CellType.STRING);
+				    cell2.setCellValue("Demand Date\n(DD-MM-YYYY)");
+				    cell2.setCellStyle(centerWrapCellStyle);
+				    sheet.setColumnWidth(2, 8000);
 
 				Cell cell3 = row.createCell(3);
 				cell3.setCellValue("Estimated cost \n(In Rs)");
@@ -1057,14 +1058,21 @@ public class PFTSController {
 										}
 										
 										if(j==2) {
+											System.out.println("sheet.getRow(i).getCell(j)"+sheet.getRow(i).getCell(j));
+											
 											switch(sheet.getRow(i).getCell(j).getCellType()) {
 											case Cell.CELL_TYPE_BLANK:
 												break;
 											case Cell.CELL_TYPE_NUMERIC:
+												 if (DateUtil.isCellDateFormatted(sheet.getRow(i).getCell(j))) {
+											            java.util.Date date = sheet.getRow(i).getCell(j).getDateCellValue();
+											            pf.setDemandDate(new java.sql.Date(date.getTime()));
+											        }
 												break;
 											case Cell.CELL_TYPE_STRING:
 												pf.setDemandDate(new java.sql.Date(inputFormat.parse((sheet.getRow(i).getCell(j).getStringCellValue())).getTime()));
 												break;	 
+											
 											}
 										}
 										

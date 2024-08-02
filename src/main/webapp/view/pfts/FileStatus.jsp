@@ -1299,7 +1299,10 @@ for(Object[]obj:fileStatusList){
 if(obj[1]!=null){
 %>
 var val  = "<%=obj[1].toString()%>"
+	DemandNumbers.push(val)
 <%}}}%>
+
+console.log("DemandNumbers"+DemandNumbers)
 function showManualDemand(){
 	$('#MANUALDEMANDS').modal('show');
 }
@@ -1375,27 +1378,44 @@ excel_file.addEventListener('change', (event) => {
     	    						html=html+'<td colspan="2" style="text-align:center">'+sheet_data[row][cell]+'</td>'	
     	    					}else if(cell==2){
     	    						var dates = sheet_data[row][cell];
-    	    						console.log(dates)
-    	    						
+    	    						console.log(sheet_data[row][cell]+"---dates--"+typeof dates)
+    	    		var formattedDate="";
+    	    		if(!isNaN(dates)){
+					var baseDate = new Date(1900, 0, 1);
+					
+					// Add the number of days (37092) to the base date
+					var daysToAdd = sheet_data[row][cell];
+					
+					// Adjust for Excel's leap year bug (Excel incorrectly considers 1900 a leap year)
+					var excelLeapYearBug = 1;
+					
+					var targetDate = new Date(baseDate.getTime() + (daysToAdd - excelLeapYearBug) * 24 * 60 * 60 * 1000);
+					
+					// Format the date to a readable string (e.g., 'YYYY-MM-DD')
+					 formattedDate = targetDate.toISOString().split('T')[0];
+					 formattedDate =formattedDate.split("-").reverse().join('-')
+					
+    	    		}				
     	    						if(dates===undefined ||  dates.length==0 ){
     	    							alert("Dates can not be blank for Demand  "+ sheet_data[row][1]);
     	    							excel_file.value = '';
     	    			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
     	    			    			return;
     	    						}
+    	    						if((dates+"").split("").includes("-")){
     	    						var dates1 =dates.split("-").reverse().join('-')
     	    						var date = new Date(dates1+"");
-    	    						
+    	    						formattedDate=sheet_data[row][cell];
     	    					  if (isNaN(date.getTime()) && row!=0) {
     	    								alert("Please give a proper date  for Demand  "+ sheet_data[row][1]);
     	        							excel_file.value = '';
     	        			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
     	        			    			return;
     	    						 } 
-    	    						
+    	    						}
     	    					
     	    						/* demandDate */
-    	    						html=html+'<td colspan="2" style="text-align:center">'+sheet_data[row][cell]+'</td>'	
+    	    						html=html+'<td colspan="2" style="text-align:center">'+formattedDate+'</td>'	
     	    					}
     							else if(cell==3){
     								var x=parseFloat(sheet_data[row][cell]).toFixed(2);
