@@ -2,7 +2,11 @@ package com.vts.pfms.ccm.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -20,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,12 +32,21 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.PfmsFileUtils;
 import com.vts.pfms.ccm.model.CCMSchedule;
 import com.vts.pfms.ccm.model.CCMScheduleAgenda;
 import com.vts.pfms.ccm.service.CCMService;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
+import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.service.CommitteeService;
+import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
 public class CCMController {
@@ -49,6 +63,15 @@ public class CCMController {
 	
 	@Autowired
 	CommitteeService committeeservice;
+	
+	@Autowired
+	PrintService printservice;
+	
+	@Autowired
+	PfmsFileUtils pfmsFileUtils;
+	
+	@Autowired
+	PMSLogoUtil LogoUtil;
 	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
@@ -265,13 +288,22 @@ public class CCMController {
 		try
 		{
 			String scheduleAgendaId =req.getParameter("scheduleAgendaId");
-			CCMScheduleAgenda ccmScheduleAgenda = service.getCCMScheduleAgendaById(scheduleAgendaId);
+			String count =req.getParameter("count");
+			String subCount =req.getParameter("subCount");
+			CCMScheduleAgenda agenda = service.getCCMScheduleAgendaById(scheduleAgendaId);
 			res.setContentType("Application/octet-stream");	
 			
-			File my_file=null;
-			String file = ccmScheduleAgenda.getAttatchmentPath();
-			my_file = new File(uploadpath+labcode +"\\CCM\\"+File.separator+file); 
-	        res.setHeader("Content-disposition","inline; filename="+file); 
+
+			String file = agenda.getAttatchmentPath();
+			String fileExtention = "."+ (file.split("\\.")[1]);
+			String filePath = uploadpath+labcode +"\\CCM\\";
+			String fileName = "Annex-"+(count)+(subCount!=null && !subCount.equalsIgnoreCase("0")?("-"+subCount):"");
+			
+			if(fileExtention.equalsIgnoreCase(".pdf"))
+			pfmsFileUtils.addWatermarktoCCMPdf(filePath +File.separator+ file,filePath +File.separator+ file+"(1)", fileName);
+			
+			File my_file = new File(filePath+File.separator+file); 
+	        res.setHeader("Content-disposition","inline; filename="+fileName+fileExtention); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
 	        byte[] buffer = new byte[4096];
@@ -298,7 +330,8 @@ public class CCMController {
 		try {
 			
 			CCMScheduleAgenda agenda = service.getCCMScheduleAgendaById(req.getParameter("scheduleAgendaId"));
-			agenda.setAgendaPriority(Integer.parseInt(req.getParameter("agendaPriority")));
+			int orgDuration = agenda.getDuration();
+			//agenda.setAgendaPriority(Integer.parseInt(req.getParameter("agendaPriority")));
 			agenda.setAgendaItem(req.getParameter("agendaItem"));
 			agenda.setPresenterLabCode(req.getParameter("prepsLabCode"));
 			agenda.setPresenterId(req.getParameter("presenterId"));
@@ -306,7 +339,7 @@ public class CCMController {
 			agenda.setModifiedBy(UserId);
 			agenda.setModifiedDate(sdtf.format(new Date()));
 			
-			long result = service.addCCMScheduleAgenda(agenda, attachment, labcode);
+			long result = service.addCCMScheduleAgenda(agenda, attachment, labcode, orgDuration);
 			
 			if (result != 0) {
 				redir.addAttribute("result", "Agenda Details Updated successfully");
@@ -436,4 +469,81 @@ public class CCMController {
 	        return "static/Error";
 	    }
 	}
+	
+	@RequestMapping(value="CCMScheduleAgendaPdfDownload.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public void ccmScheduleAgendaPdfDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside CCMScheduleAgendaPdfDownload.htm "+UserId);
+		try {
+			String ccmScheduleId = req.getParameter("ccmScheduleId");
+			
+			if(ccmScheduleId!=null) {
+				req.setAttribute("ccmScheduleData", service.getCCMScheduleById(ccmScheduleId));
+				req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
+				req.setAttribute("ccmScheduleId", ccmScheduleId);
+			}
+			
+			String filename="CCM_Agenda";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CCMScheduleAgendaDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+			
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside CCMScheduleAgendaPdfDownload.htm "+UserId, e);
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value="CCMAgendaPresentation.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String ccmAgendaPresentation(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)	throws Exception 
+	{
+    	String UserId = (String) ses.getAttribute("Username");
+    	String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CCMAgendaPresentation.htm "+UserId);		
+    	try {
+    		String ccmScheduleId = req.getParameter("ccmScheduleId");
+
+    		req.setAttribute("ccmScheduleData", service.getCCMScheduleById(ccmScheduleId));
+	    	req.setAttribute("labInfo", printservice.LabDetailes(labcode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+	    	req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
+	    	req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
+	    	
+	    	return "ccm/CCMAgendaPresentation";
+    	}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside CCMAgendaPresentation.htm  "+UserId, e); 
+			return "static/Error";
+			
+		}
+	}
+	
 }

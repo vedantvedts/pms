@@ -227,4 +227,20 @@ public class CCMDaoImpl implements CCMDao{
 		}
 		
 	}
+	
+	private static final String UPDATECCMSCHEDULEAGENDADURATION = "UPDATE pfms_ccm_schedule_agenda SET Duration=(Duration - :OrgDuration)+:Duration WHERE ScheduleAgendaId=:ScheduleAgendaId";
+	@Override
+	public int updateCCMScheduleAgendaDuration(int orgDuration, int duration, Long scheduleAgendaId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(UPDATECCMSCHEDULEAGENDADURATION);
+			query.setParameter("ScheduleAgendaId", scheduleAgendaId);
+			query.setParameter("OrgDuration", orgDuration);
+			query.setParameter("Duration", duration);
+			return query.executeUpdate();
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl updateCCMScheduleAgendaDuration "+ e);
+			return 0;
+		}
+	}
 }

@@ -207,7 +207,7 @@ public class CCMServiceImpl implements CCMService{
 	                agenda.setPresenterId(req.getParameter("agenda[" + i + "].presenterId"));
 	                //agenda.setStartTime(req.getParameter("agenda[" + i + "].startTime"));
 	                //agenda.setEndTime(req.getParameter("agenda[" + i + "].endTime"));
-	                agenda.setDuration(Integer.parseInt(req.getParameter("agenda[" + i + "].duration")));
+	                agenda.setDuration(req.getParameter("agenda[" + i + "].duration")!=null?Integer.parseInt(req.getParameter("agenda[" + i + "].duration")): 0);
 	                agenda.setCreatedBy(UserId);
 	                agenda.setCreatedDate(sdtf.format(new Date()));
 	                agenda.setIsActive(1);
@@ -238,20 +238,19 @@ public class CCMServiceImpl implements CCMService{
 	                        subagenda.setAgendaItem(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].agendaItem"));
 	                        subagenda.setPresenterLabCode(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].prepsLabCode"));
 	                        subagenda.setPresenterId(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].presenterId"));
-	                        subagenda.setDuration(Integer.parseInt(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].duration")));
+	                        subagenda.setDuration(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].duration")!=null? Integer.parseInt(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].duration")) : 0);
 	                        //subagenda.setStartTime(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].startTime"));
 	                        //subagenda.setEndTime(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].endTime"));
-	                        subagenda.setDuration(0);
 	                        subagenda.setCreatedBy(UserId);
 	                        subagenda.setCreatedDate(sdtf.format(new Date()));
 	                        subagenda.setIsActive(1);
 	                        
 	                        Timestamp instant2 = Timestamp.from(Instant.now());
-	        				String timestampstr2 = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+	        				String timestampstr2 = instant2.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 	        				
 	                        MultipartFile subattachment = fileMap.get("agenda[" + i + "].subAgendas[" + j + "].attachment");
 	                        if (subattachment != null && !subattachment.isEmpty()) {
-	                            subagenda.setAttatchmentPath("File-" + timestampstr + "." + FilenameUtils.getExtension(subattachment.getOriginalFilename()));
+	                            subagenda.setAttatchmentPath("File-" + timestampstr2 + "." + FilenameUtils.getExtension(subattachment.getOriginalFilename()));
 	                            saveFile(uploadpath + Path, subagenda.getAttatchmentPath(), subattachment);
 	                        } else {
 	                            subagenda.setAttatchmentPath(null);
@@ -336,8 +335,14 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public Long addCCMScheduleAgenda(CCMScheduleAgenda agenda, MultipartFile attachment, String labcode) throws Exception {
+	public Long addCCMScheduleAgenda(CCMScheduleAgenda agenda, MultipartFile attachment, String labcode, int orgDuration) throws Exception {
 		try {
+			
+			// Update Duration of Main Agenda
+			if(orgDuration!=agenda.getDuration() && (agenda.getParentScheduleAgendaId()!=0)) {
+				dao.updateCCMScheduleAgendaDuration(orgDuration, agenda.getDuration(), agenda.getParentScheduleAgendaId());
+			}
+			
 			Timestamp instant = Timestamp.from(Instant.now());
 	        String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
@@ -412,6 +417,8 @@ public class CCMServiceImpl implements CCMService{
 
 	        String Path = labcode + "\\CCM\\";
 			int subPriority = dao.getMaxAgendaPriority(ccmScheduleId, scheduleAgendaId);
+			
+			int totalDuration = 0;
 			for(int i=0; i<agendaItem.length; i++) {
 				CCMScheduleAgenda agenda = new CCMScheduleAgenda();
                 agenda.setCCMScheduleId(Long.parseLong(ccmScheduleId));
@@ -424,6 +431,8 @@ public class CCMServiceImpl implements CCMService{
                 agenda.setCreatedBy(userId);
                 agenda.setCreatedDate(sdtf.format(new Date()));
                 agenda.setIsActive(1);
+                
+                totalDuration+=agenda.getDuration();
                 
                 Timestamp instant = Timestamp.from(Instant.now());
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
@@ -438,6 +447,11 @@ public class CCMServiceImpl implements CCMService{
                 dao.addCCMScheduleAgenda(agenda);
 			}
 			
+			// Update Duration of Main Agenda
+			if(totalDuration!=0) {
+				dao.updateCCMScheduleAgendaDuration(0, totalDuration, Long.parseLong(scheduleAgendaId));
+			}
+			
 			return 1;
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -449,8 +463,15 @@ public class CCMServiceImpl implements CCMService{
 	@Override
 	public int ccmScheduleSubAgendaDelete(String scheduleAgendaId, String userId, String ccmScheduleId, String agendaPriority, String parentScheduleAgendaId) throws Exception {
 		try {
+			CCMScheduleAgenda agenda = dao.getCCMScheduleAgendaById(scheduleAgendaId);
+			
+			// Remove the Duration from Main Agenda
+			if(agenda.getParentScheduleAgendaId()!=0) {
+				dao.updateCCMScheduleAgendaDuration(agenda.getDuration(), 0, agenda.getParentScheduleAgendaId());
+			}
+			
 			List<Object[]> ccmScheduleAgendasAfter = dao.getCCMScheduleAgendasAfter(ccmScheduleId, agendaPriority, parentScheduleAgendaId);
-			System.out.println("ccmScheduleAgendasAfter.size(): "+ccmScheduleAgendasAfter.size());
+
 			if(ccmScheduleAgendasAfter!=null && ccmScheduleAgendasAfter.size()>0) 
 			{
 				for(Object[] obj : ccmScheduleAgendasAfter )
