@@ -21,7 +21,7 @@ public interface CCMService {
 	public long addCCMAgendaDetails(HttpServletRequest req, HttpSession ses, Map<String, MultipartFile> fileMap, String ccmScheduleId) throws Exception;
 	public List<Object[]> getCCMScheduleAgendaListByCCMScheduleId(String ccmScheduleId) throws Exception;
 	public CCMScheduleAgenda getCCMScheduleAgendaById(String ccmScheduleAgendaId) throws Exception;
-	public Long addCCMScheduleAgenda(CCMScheduleAgenda agenda, MultipartFile attachment, String labcode) throws Exception;
+	public Long addCCMScheduleAgenda(CCMScheduleAgenda agenda, MultipartFile attachment, String labcode, int orgDuration) throws Exception;
 	public Long ccmAgendaPriorityUpdate(String[] ccmScheduleAgendaId, String[] agendaPriority) throws Exception;
 	public long ccmScheduleAgendaDelete(String scheduleAgendaId, String userId, String ccmScheduleId,String agendaPriority) throws Exception;
 	public long addCCMAgendaDetails(HttpServletRequest req, HttpSession ses, MultipartFile[] attachments) throws Exception;

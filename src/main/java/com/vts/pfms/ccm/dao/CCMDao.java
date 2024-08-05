@@ -21,4 +21,5 @@ public interface CCMDao {
 	public List<Object[]> getCCMScheduleAgendasAfter(String ccmScheduleId, String agendaPriority, String ParentScheduleAgendaId) throws Exception;
 	public int ccmScheduleAgendaDelete(String scheduleAgendaId, String modifiedby, String modifiedDate) throws Exception;
 	public int ccmScheduleSubAgendaDelete(String scheduleAgendaId, String modifiedby, String modifiedDate) throws Exception;
+	public int updateCCMScheduleAgendaDuration(int orgDuration, int duration, Long scheduleAgendaId) throws Exception;
 }
