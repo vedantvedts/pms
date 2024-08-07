@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -100,6 +101,7 @@ import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
 import com.vts.pfms.committee.dto.MeetingExcelDto;
+import com.vts.pfms.committee.dto.OldRfaUploadDto;
 import com.vts.pfms.committee.dto.RfaActionDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
@@ -1566,26 +1568,159 @@ public class ActionController {
 							try {												
 							String Logintype= (String)ses.getAttribute("LoginType");
 							String ActionType=req.getParameter("ActionType");	
+							String Type=req.getParameter("Type");	
 							String ProjectId=req.getParameter("ProjectId");
-	
 							
+							if(ActionType==null) {
+								ActionType="NA";
+							}
+							if(Type==null) {
+								Type="P";
+							}
 							if(ProjectId==null) {
-								ProjectId="A";
+								List<Object[]> projectlist = service.ProjectList();
+								ProjectId=projectlist.get(0)[0].toString();
 							}
+	
+						   List<Object[]> StatusList = service.ActionWiseAllReport(ProjectId);
+						   
+						   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adjust the pattern according to your date format
+						   LocalDate currentDate = LocalDate.now();
+						   // NA - New Action Lists
+						   if(ActionType.equalsIgnoreCase("NA")) {
+							   if(Type.equalsIgnoreCase("P")) {
+								   StatusList = StatusList.stream().filter(e->!(e[10].toString().equalsIgnoreCase("C") || e[10].toString().equalsIgnoreCase("F"))
+										         && e[11].toString().equalsIgnoreCase("N") && e[12].toString().equalsIgnoreCase("A")
+										         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("F")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("F")
+									         && e[11].toString().equalsIgnoreCase("N") && e[12].toString().equalsIgnoreCase("A")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("C")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("C")
+									         && e[11].toString().equalsIgnoreCase("N") && e[12].toString().equalsIgnoreCase("A")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("D")) {
+								   StatusList = StatusList.stream().filter(e->!e[10].toString().equalsIgnoreCase("C")
+									         && e[11].toString().equalsIgnoreCase("N") && e[12].toString().equalsIgnoreCase("A")
+									         && LocalDate.parse(e[8].toString(), formatter).isBefore(currentDate)).collect(Collectors.toList());
+							   }
+							// MLA - Milestone Action Lists
+						   }else if(ActionType.equalsIgnoreCase("MLA")) {
+							   if(Type.equalsIgnoreCase("P")) {
+								   StatusList = StatusList.stream().filter(e->!(e[10].toString().equalsIgnoreCase("C") || e[10].toString().equalsIgnoreCase("F"))
+										         && (e[11].toString().equalsIgnoreCase("A") || e[11].toString().equalsIgnoreCase("B") || e[11].toString().equalsIgnoreCase("C")
+										        	 || e[11].toString().equalsIgnoreCase("D") || e[11].toString().equalsIgnoreCase("E"))
+										         && e[12].toString().equalsIgnoreCase("A") && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("F")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("F")
+									         && (e[11].toString().equalsIgnoreCase("A") || e[11].toString().equalsIgnoreCase("B") || e[11].toString().equalsIgnoreCase("C")
+										        	 || e[11].toString().equalsIgnoreCase("D") || e[11].toString().equalsIgnoreCase("E"))
+									         && e[12].toString().equalsIgnoreCase("A") && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("C")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("C")
+									         && (e[11].toString().equalsIgnoreCase("A") || e[11].toString().equalsIgnoreCase("B") || e[11].toString().equalsIgnoreCase("C")
+										        	 || e[11].toString().equalsIgnoreCase("D") || e[11].toString().equalsIgnoreCase("E"))
+									         && e[12].toString().equalsIgnoreCase("A") && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("D")) {
+								   StatusList = StatusList.stream().filter(e->!e[10].toString().equalsIgnoreCase("C")
+									         && (e[11].toString().equalsIgnoreCase("A") || e[11].toString().equalsIgnoreCase("B") || e[11].toString().equalsIgnoreCase("C")
+										        	 || e[11].toString().equalsIgnoreCase("D") || e[11].toString().equalsIgnoreCase("E"))
+									         && e[12].toString().equalsIgnoreCase("A") && LocalDate.parse(e[8].toString(), formatter).isBefore(currentDate)).collect(Collectors.toList());
+							   }
+							// MA - Meeting Action Lists
+						   }else if(ActionType.equalsIgnoreCase("MA")) {
+							   if(Type.equalsIgnoreCase("P")) {
+								   StatusList = StatusList.stream().filter(e->!(e[10].toString().equalsIgnoreCase("C") || e[10].toString().equalsIgnoreCase("F"))
+										         && e[11].toString().equalsIgnoreCase("S") && e[12].toString().equalsIgnoreCase("A")
+										         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("F")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("F")
+									         && e[11].toString().equalsIgnoreCase("S") && e[12].toString().equalsIgnoreCase("A")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("C")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("C")
+									         && e[11].toString().equalsIgnoreCase("S") && e[12].toString().equalsIgnoreCase("A")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("D")) {
+								   StatusList = StatusList.stream().filter(e->!e[10].toString().equalsIgnoreCase("C")
+									         && e[11].toString().equalsIgnoreCase("S") && e[12].toString().equalsIgnoreCase("A")
+									         && LocalDate.parse(e[8].toString(), formatter).isBefore(currentDate)).collect(Collectors.toList());
+							   }
+							// RK - Risk Action Lists
+						   }else if(ActionType.equalsIgnoreCase("RK")) {
+							   if(Type.equalsIgnoreCase("P")) {
+								   StatusList = StatusList.stream().filter(e->!(e[10].toString().equalsIgnoreCase("C") || e[10].toString().equalsIgnoreCase("F"))
+										         && (e[11].toString().equalsIgnoreCase("N") || e[11].toString().equalsIgnoreCase("S")) && e[12].toString().equalsIgnoreCase("K")
+										         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("F")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("F")
+									         && (e[11].toString().equalsIgnoreCase("N") || e[11].toString().equalsIgnoreCase("S")) && e[12].toString().equalsIgnoreCase("K")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("C")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("C")
+									         && (e[11].toString().equalsIgnoreCase("N") || e[11].toString().equalsIgnoreCase("S")) && e[12].toString().equalsIgnoreCase("K")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("D")) {
+								   StatusList = StatusList.stream().filter(e->!e[10].toString().equalsIgnoreCase("C")
+									         && (e[11].toString().equalsIgnoreCase("N") || e[11].toString().equalsIgnoreCase("S")) && e[12].toString().equalsIgnoreCase("K")
+									         && LocalDate.parse(e[8].toString(), formatter).isBefore(currentDate)).collect(Collectors.toList());
+							   }
+						   // IU- Issue Action Lists
+						   }else if(ActionType.equalsIgnoreCase("IU")) {
+							   if(Type.equalsIgnoreCase("P")) {
+								   StatusList = StatusList.stream().filter(e->!(e[10].toString().equalsIgnoreCase("C") || e[10].toString().equalsIgnoreCase("F"))
+										         && (e[11].toString().equalsIgnoreCase("N") || e[11].toString().equalsIgnoreCase("S")) && e[12].toString().equalsIgnoreCase("I")
+										         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("F")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("F")
+									         && (e[11].toString().equalsIgnoreCase("N") || e[11].toString().equalsIgnoreCase("S")) && e[12].toString().equalsIgnoreCase("I")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("C")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("C")
+									         && (e[11].toString().equalsIgnoreCase("N") || e[11].toString().equalsIgnoreCase("S")) && e[12].toString().equalsIgnoreCase("I")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("D")) {
+								   StatusList = StatusList.stream().filter(e->!e[10].toString().equalsIgnoreCase("C")
+									         && (e[11].toString().equalsIgnoreCase("N") || e[11].toString().equalsIgnoreCase("S")) && e[12].toString().equalsIgnoreCase("I")
+									         && LocalDate.parse(e[8].toString(), formatter).isBefore(currentDate)).collect(Collectors.toList());
+							   }
+						   // RC - Recommendation Action Lists
+						   }else if(ActionType.equalsIgnoreCase("RC")) {
+							   if(Type.equalsIgnoreCase("P")) {
+								   StatusList = StatusList.stream().filter(e->!(e[10].toString().equalsIgnoreCase("C") || e[10].toString().equalsIgnoreCase("F"))
+										         && e[11].toString().equalsIgnoreCase("S") && e[12].toString().equalsIgnoreCase("R")
+										         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("F")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("F")
+									         && e[11].toString().equalsIgnoreCase("S") && e[12].toString().equalsIgnoreCase("R")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("C")) {
+								   StatusList = StatusList.stream().filter(e->e[10].toString().equalsIgnoreCase("C")
+									         && e[11].toString().equalsIgnoreCase("S") && e[12].toString().equalsIgnoreCase("R")
+									         && (e[14]!=null && Long.parseLong(e[14].toString())>0)).collect(Collectors.toList());
+							   }else if(Type.equalsIgnoreCase("D")) {
+								   StatusList = StatusList.stream().filter(e->!e[10].toString().equalsIgnoreCase("C")
+									         && e[11].toString().equalsIgnoreCase("S") && e[12].toString().equalsIgnoreCase("R")
+									         && LocalDate.parse(e[8].toString(), formatter).isBefore(currentDate)).collect(Collectors.toList());
+							   }
+						   }
 
-							if(Logintype.equalsIgnoreCase("Y") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I") )                             
-							{
-								req.setAttribute("StatusList", service.ActionWiseAllReport(ActionType,"0",ProjectId));
-							}
-							else if(Logintype.equalsIgnoreCase("P") )
-							{
-								String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-								req.setAttribute("StatusList", service.ActionWiseAllReport(ActionType,EmpId,ProjectId));
-							}
+//							if(Logintype.equalsIgnoreCase("Y") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("C")|| 
+//									Logintype.equalsIgnoreCase("I") || Logintype.equalsIgnoreCase("P") || Logintype.equalsIgnoreCase("D"))                             
+//							{
+//								req.setAttribute("StatusList",StatusList);
+//							}
+//							else if(Logintype.equalsIgnoreCase("P") )
+//							{
+//								String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//								req.setAttribute("StatusList", service.ActionWiseAllReport(ActionType,EmpId,ProjectId));
+//							}
 							
-								
+							req.setAttribute("StatusList",StatusList);
 							req.setAttribute("ProjectId",req.getParameter("ProjectId"));
 							req.setAttribute("ActionType",req.getParameter("ActionType"));
+							req.setAttribute("Type",req.getParameter("Type"));
 							req.setAttribute("ProjectList", service.ProjectList());
 							
 							}
@@ -4536,5 +4671,148 @@ public class ActionController {
     			logger.error(new Date() +" Inside RfaActionReportPdf.htm "+UserId, e);
     		}
         		
+        	}
+            
+            @RequestMapping(value = "OldRfaUpload.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String OldRfaUpload(Model model,HttpServletRequest req,HttpServletResponse res ,HttpSession ses
+        		)throws Exception
+        	{
+            	String UserId = (String) ses.getAttribute("Username");
+        		String LabCode = (String) ses.getAttribute("labcode");
+        		logger.info(new Date() +"Inside OldRfaUpload.htm "+UserId);
+        		try {
+        			
+        	    List<Object[]> oldRfaUploadList = service.getoldRfaUploadList(LabCode);
+        	    req.setAttribute("oldRfaUploadList", oldRfaUploadList);
+     		
+    	 	}catch (Exception e) {
+    			e.printStackTrace();
+    			logger.error(new Date() +" Inside OldRfaUpload.htm "+UserId, e);
+    		}
+        		return "action/OldRfaUpload";
+        	}
+            
+            @RequestMapping(value = "OldRfaUploadSubmit.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String OldRfaUploadSubmit(Model model,HttpServletRequest req,HttpServletResponse res ,HttpSession ses, RedirectAttributes redir,
+        		    @RequestParam(name = "rfafile", required = false) MultipartFile rfafile,
+         			@RequestParam(name = "closurefile", required = false) MultipartFile closurefile,
+     				@RequestParam("oldrfano") String oldrfano,
+     				@RequestParam("rfadate") String rfadate)throws Exception
+        	{
+            	String UserId = (String) ses.getAttribute("Username");
+        		String LabCode = (String) ses.getAttribute("labcode");
+        		logger.info(new Date() +"Inside OldRfaUploadSubmit.htm "+UserId);
+        		try {
+        			
+        			OldRfaUploadDto rfadto = new OldRfaUploadDto();
+        			rfadto.setLabCode(LabCode);
+        			rfadto.setRfaNo(oldrfano);
+        			rfadto.setRfaDate(rfadate);
+        			rfadto.setRfaFile(rfafile);
+        			rfadto.setClosureFile(closurefile);
+        			rfadto.setCreatedBy(UserId);
+
+        			long count = service.oldRfaUploadSubmit(rfadto);
+        			if(count>0) {
+        				redir.addAttribute("result","RFA Added successfully");
+        			}else {
+        				redir.addAttribute("result","RFA Add unsuccessful");
+        			}
+        			
+        			List<Object[]> oldRfaUploadList = service.getoldRfaUploadList(LabCode);
+             	    req.setAttribute("oldRfaUploadList", oldRfaUploadList);
+        			
+    	 	}catch (Exception e) {
+    			e.printStackTrace();
+    			logger.error(new Date() +" Inside OldRfaUploadSubmit.htm "+UserId, e);
+    		}
+        		return "redirect:/OldRfaUpload.htm";
+        	}
+            
+            @RequestMapping(value = {"OldRfaFileDownload.htm"})
+        	public void OldRfaFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
+        	{
+        		String UserId = (String) ses.getAttribute("Username");
+        		String LabCode = (String) ses.getAttribute("labcode");
+        		logger.info(new Date() +"Inside OldRfaFileDownload.htm "+UserId);
+        		try
+        		{
+        			String oldrfano=req.getParameter("rfano");
+        			String rfafile=req.getParameter("file1");
+        			String closurefile=req.getParameter("file2");
+        			String rfaNo = oldrfano.replaceAll("/", "_");
+        			res.setContentType("application/pdf");
+        			File my_file=null;
+        			if(rfafile!=null) {
+        				Path filepath = Paths.get(uploadpath,LabCode,"OldRFAFiles",rfaNo,rfafile);
+        				my_file = filepath.toFile();
+        				res.setHeader("Content-Disposition", "inline; filename=\""+rfafile +"\"");
+        			}
+        			if(closurefile!=null) {
+        				Path filepath = Paths.get(uploadpath,LabCode,"OldRFAFiles",rfaNo,closurefile);
+        				my_file = filepath.toFile();
+        				res.setHeader("Content-Disposition", "inline; filename=\""+closurefile+"\"");
+        			}
+        			OutputStream out = res.getOutputStream();
+        			FileInputStream in = new FileInputStream(my_file);
+        			byte[] buffer = new byte[4096];
+        			int length;
+        			while ((length = in.read(buffer)) > 0){
+        				out.write(buffer, 0, length);
+        			}
+        			in.close();
+        			out.flush();
+        			out.close();
+        		}catch (Exception e) {
+        			e.printStackTrace(); 
+        			logger.error(new Date() +"Inside OldRfaFileDownload.htm "+UserId,e);
+        		}
+        	}
+            
+            
+            @RequestMapping(value = "OldRfaUploadEditSubmit.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String OldRfaUploadEditSubmit(Model model,HttpServletRequest req,HttpServletResponse res ,HttpSession ses, RedirectAttributes redir,
+        		    @RequestParam(name = "rfafile", required = false) MultipartFile rfafile,
+         			@RequestParam(name = "closurefile", required = false) MultipartFile closurefile,
+     				@RequestParam("oldrfano") String oldrfano,
+     				@RequestParam("rfaUploadId") String rfaUploadId,
+     				@RequestParam("rfadate") String rfadate)throws Exception
+        	{
+            	String UserId = (String) ses.getAttribute("Username");
+        		String LabCode = (String) ses.getAttribute("labcode");
+        		logger.info(new Date() +"Inside OldRfaUploadEditSubmit.htm "+UserId);
+        		try {
+        			
+        			OldRfaUploadDto rfadto = new OldRfaUploadDto();
+        			rfadto.setRfaFileUploadId(Long.parseLong(rfaUploadId));
+        			rfadto.setLabCode(LabCode);
+        			rfadto.setRfaNo(oldrfano);
+        			rfadto.setRfaDate(rfadate);
+        			rfadto.setRfaFile(rfafile);
+        			rfadto.setClosureFile(closurefile);
+        			rfadto.setModifiedBy(UserId);
+        			
+        			System.out.println("rfaUploadId "+rfaUploadId);
+        			System.out.println("oldrfano "+oldrfano);
+        			System.out.println("rfadate "+rfadate);
+        			System.out.println("rfafile "+rfafile.getOriginalFilename());
+        			System.out.println("closurefile "+closurefile.getOriginalFilename());
+        			
+
+        			long count = service.oldRfaUploadEditSubmit(rfadto);
+        			if(count>0) {
+        				redir.addAttribute("result","RFA Edited successfully");
+        			}else {
+        				redir.addAttribute("result","RFA Edit unsuccessful");
+        			}
+        			
+        			List<Object[]> oldRfaUploadList = service.getoldRfaUploadList(LabCode);
+             	    req.setAttribute("oldRfaUploadList", oldRfaUploadList);
+        			
+    	 	}catch (Exception e) {
+    			e.printStackTrace();
+    			logger.error(new Date() +" Inside OldRfaUploadEditSubmit.htm "+UserId, e);
+    		}
+        		return "redirect:/OldRfaUpload.htm";
         	}
 }

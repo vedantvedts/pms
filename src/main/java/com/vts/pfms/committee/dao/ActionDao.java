@@ -11,6 +11,7 @@ import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
 import com.vts.pfms.committee.model.FavouriteList;
+import com.vts.pfms.committee.model.OldRfaUpload;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
@@ -60,7 +61,7 @@ public interface ActionDao {
 	public List<Object[]> ActionSelfList(String EmpId)throws Exception;
 	public List<Object[]> SearchDetails(String MainId , String assignid) throws Exception;
 	public List<Object[]> allprojectdetailsList() throws Exception;	
-	public List<Object[]> ActionWiseAllReport(String Term,String empid,String ProjectId) throws Exception;
+	public List<Object[]> ActionWiseAllReport(String ProjectId) throws Exception;
 	public long ActionSelfReminderAddSubmit(ActionSelf actionself) throws Exception;
 	public List<Object[]> ActionSelfReminderList(String empid,String fromdate,String todate) throws Exception;
 	public int ActionSelfReminderDelete(String actionid) throws Exception;
@@ -187,4 +188,8 @@ public interface ActionDao {
 	public List<Object[]> getMainIds(String scheduleMinutesId)throws Exception;
 	public List<Object[]> ActionReportsNew(String empId, String term, String position, String type, String labCode,
 			String loginType)throws Exception;
+	public Long oldRfaUploadSubmit(OldRfaUpload rfaUpload)throws Exception;
+	public List<Object[]> getoldRfaUploadList(String labCode)throws Exception;
+	public OldRfaUpload getOldRfaDetails(Long rfaFileUploadId)throws Exception;
+	public long oldRfaUploadEditSubmit(OldRfaUpload rfaModel)throws Exception;
 }

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -118,12 +119,13 @@ public class RfpMainServiceImpl implements RfpMainService {
 		logger.info(new Date() +"Inside SERVICE AllActionsCount ");
 		List<Object[]> al = new ArrayList<Object[]>();
 		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,logintype,LabCode);
-
+   
+        if(ProjectList!=null) {
 		for(Object[] obj : ProjectList) {
 			
 			al.addAll(dao.AllActionsCount(empid,obj[0].toString()));
 		}
-
+        }
 		return al;
 	}
 	

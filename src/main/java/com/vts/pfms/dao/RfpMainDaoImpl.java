@@ -180,8 +180,8 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public List<Object[]> AllActionsCount(String empid,String ProjectId) throws Exception {
 		
-		Query query=manager.createNativeQuery("CALL Pfms_All_Actions_Count (:empid,:projectid)");	
-		query.setParameter("empid", empid);
+		Query query=manager.createNativeQuery("CALL Pfms_All_Actions_Count (:projectid)");	
+//		query.setParameter("empid", empid);
 		query.setParameter("projectid", ProjectId);
 
 		List<Object[]> AllActionsCount=(List<Object[]>)query.getResultList();	

@@ -1,5 +1,6 @@
 package com.vts.pfms.committee.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -28,6 +29,7 @@ import com.vts.pfms.committee.dao.ActionSelfDao;
 import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
+import com.vts.pfms.committee.dto.OldRfaUploadDto;
 import com.vts.pfms.committee.dto.RfaActionDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
@@ -35,6 +37,7 @@ import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
 import com.vts.pfms.committee.model.FavouriteList;
+import com.vts.pfms.committee.model.OldRfaUpload;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
@@ -1215,8 +1218,8 @@ public class ActionServiceImpl implements ActionService {
 	
 	
 	@Override
-	public List<Object[]> ActionWiseAllReport(String Term,String empid,String ProjectId) throws Exception {
-		return dao.ActionWiseAllReport(Term,empid,ProjectId);
+	public List<Object[]> ActionWiseAllReport(String ProjectId) throws Exception {
+		return dao.ActionWiseAllReport(ProjectId);
 	}
 	
 	@Override
@@ -2420,4 +2423,102 @@ public List<Object[]> ActionReportsNew(String EmpId, String Term, String Positio
 	
 	return dao.ActionReportsNew(EmpId, Term, Position,Type,LabCode,loginType);
 }
+@Override
+public Long oldRfaUploadSubmit(OldRfaUploadDto rfadto)
+		throws Exception {
+	
+	String rfaNo = rfadto.getRfaNo().replaceAll("/", "_");
+	
+	Path rfaPath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",rfaNo);
+	Path rfaPath1 = Paths.get(rfadto.getLabCode(),"OldRFAFiles",rfaNo);
+	
+	OldRfaUpload rfaUpload = new OldRfaUpload();
+	rfaUpload.setRfaNo(rfadto.getRfaNo());
+	rfaUpload.setLabCode(rfadto.getLabCode());
+	rfaUpload.setRfaDate(sdf.format(rdf.parse(rfadto.getRfaDate())));
+	rfaUpload.setPath(rfaPath1.toString());
+	rfaUpload.setCreatedBy(rfadto.getCreatedBy());
+	rfaUpload.setCreatedDate(sdf1.format(new Date()));
+	rfaUpload.setIsActive(1);
+	
+	if(rfadto.getRfaFile()!=null && !rfadto.getRfaFile().isEmpty()) {
+		rfaUpload.setRfaFile(rfadto.getRfaFile().getOriginalFilename());
+		saveFile1(rfaPath, rfadto.getRfaFile().getOriginalFilename(), rfadto.getRfaFile());
+	}
+	if(rfadto.getClosureFile()!=null && !rfadto.getClosureFile().isEmpty()) {
+		rfaUpload.setClosureFile(rfadto.getClosureFile().getOriginalFilename());
+		saveFile1(rfaPath, rfadto.getClosureFile().getOriginalFilename(), rfadto.getClosureFile());
+	}
+	return dao.oldRfaUploadSubmit(rfaUpload);
+ }
+
+@Override
+public List<Object[]> getoldRfaUploadList(String labCode) throws Exception {
+	return dao.getoldRfaUploadList(labCode);
+}
+
+@Override
+public long oldRfaUploadEditSubmit(OldRfaUploadDto rfadto) throws Exception {
+	
+	OldRfaUpload oldRfaDetails = dao.getOldRfaDetails(rfadto.getRfaFileUploadId());
+	Path filePath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",oldRfaDetails.getRfaNo().replace("/", "_"));
+	Path newRenamedFilePath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",rfadto.getRfaNo().replace("/", "_"));
+	Path rfaPath = Paths.get(rfadto.getLabCode(), "OldRFAFiles",rfadto.getRfaNo().replace("/", "_"));
+	try {
+		
+		if(!rfadto.getRfaFile().isEmpty()) {
+		     Path oldFilePath=filePath.resolve(oldRfaDetails.getRfaFile());
+			 File oldFile = oldFilePath.toFile();
+		     if (oldFile.exists()) {
+		    	// Delete the old file
+		    	 oldFile.delete();
+		     }
+		     MultipartFile file = rfadto.getRfaFile();
+		     Path theDir = filePath.resolve(file.getOriginalFilename());
+		     file.transferTo(theDir.toFile());
+		}
+		
+		if(!rfadto.getClosureFile().isEmpty()) {
+		     Path oldFilePath=filePath.resolve(oldRfaDetails.getClosureFile());
+			 File oldFile = oldFilePath.toFile();
+		     if (oldFile.exists()) {
+		    	// Delete the old file
+		    	 oldFile.delete();
+		     }
+		     MultipartFile file = rfadto.getClosureFile();
+		     Path theDir = filePath.resolve(file.getOriginalFilename());
+		     file.transferTo(theDir.toFile());
+		}
+		
+		 if(!oldRfaDetails.getRfaNo().equals(rfadto.getRfaNo())){
+		    //rename the folder if the rfa number has changed
+	        File oldDir = filePath.toFile();
+	        if (oldDir.exists()) {
+	            File newRenamedDir = newRenamedFilePath.toFile();
+	            oldDir.renameTo(newRenamedDir);
+	         }
+	      }
+		 OldRfaUpload rfaModel = new OldRfaUpload();
+		 rfaModel.setRfaFileUploadId(rfadto.getRfaFileUploadId());
+		 rfaModel.setRfaNo(rfadto.getRfaNo());
+		 rfaModel.setRfaDate(sdf.format(rdf.parse(rfadto.getRfaDate())));
+		 rfaModel.setClosureFile(rfadto.getClosureFile().getOriginalFilename());
+		 rfaModel.setRfaFile(rfadto.getRfaFile().getOriginalFilename());
+		 if(rfadto.getRfaFile()==null || rfadto.getRfaFile().isEmpty()) {
+			 rfaModel.setRfaFile(oldRfaDetails.getRfaFile());
+         }
+		 if(rfadto.getClosureFile()==null || rfadto.getClosureFile().isEmpty()) {
+			 rfaModel.setClosureFile(oldRfaDetails.getClosureFile());
+		 }
+		 rfaModel.setPath(rfaPath.toString());
+		 rfaModel.setModifiedBy(rfadto.getModifiedBy());
+		 rfaModel.setModifiedDate(sdf1.format(new Date()));
+		 rfaModel.setIsActive(1);
+		 return dao.oldRfaUploadEditSubmit(rfaModel);
+	} catch (Exception e) {
+		e.printStackTrace();
+		 return 0;
+	}
+  }
+
 }

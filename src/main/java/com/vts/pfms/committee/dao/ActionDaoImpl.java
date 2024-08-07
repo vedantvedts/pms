@@ -23,6 +23,7 @@ import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
 import com.vts.pfms.committee.model.FavouriteList;
+import com.vts.pfms.committee.model.OldRfaUpload;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
@@ -64,7 +65,7 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String ASSIGNEEDETAILS="SELECT assignor,assignee,actionno, assigneelabcode, assignorlabcode FROM action_assign WHERE actionassignid=:assignid";
 	private static final String SCHEDULEITEM="SELECT a.scheduleminutesid,a.details FROM  committee_schedules_minutes_details a WHERE  a.scheduleminutesid=:schid";
     private static final String ACTIONSEARCHNO="CALL Pfms_ActionNo_Search(:empid,:no,:position)";
-	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1";
+	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname,ProjectShortName FROM project_master WHERE isactive=1";
     private static final String ACTIONCOUNT="CALL Pfms_Action_PD_Chart(:projectid)";
     private static final String LOGINPROJECTIDLIST="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a,project_employee b WHERE a.isactive=1 and a.projectid=b.projectid and b.empid=:empid";
     private static final String ALLPROJECTDETAILSLIST ="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector,a.projectshortname FROM project_master a WHERE a.isactive=1 ";
@@ -74,7 +75,7 @@ public class ActionDaoImpl implements ActionDao{
     private static final String PROJECTCODE="SELECT projectcode FROM project_master WHERE   projectid=:ProjectId  AND isactive='1'";
 	private static final String SELFASSIGNEDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) as 'empname' ,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,aas.revision  FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.assignor=:empid AND aas.assignee=:empid AND aas.actionstatus<>'C'";
 	private static final String SEARCHDATA="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status',a.scheduleminutesid,a.actionlinkid,d.actionno,d.revision FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid  AND a.actionmainid=:mainid AND d.actionassignid=:assignid";
-	private static final String ACTIONWISEALLREPORT="CALL Pfms_Action_Wise_All_Reports (:term,:empid,:projectid);";
+//	private static final String ACTIONWISEALLREPORT="CALL Pfms_Action_Wise_All_Reports (:term,:empid,:projectid);";
 	private static final String ACTIONALERT="CALL Pfms_Actions_Msg()";
 	private static final String ACTIONTODAY="SELECT b.actionno,a.projectid FROM action_main a , action_assign b WHERE  b.enddate=CURDATE() AND a.actionmainid=b.actionmainid  AND b.actionstatus IN('A','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND  b.assignee=:empid AND b.AssigneeLabCode <> '@EXP'  ";
 	private static final String ACTIONTOMMO="SELECT b.actionno,a.projectid FROM action_main a , action_assign b WHERE  b.enddate=CURDATE()+1 AND a.actionmainid=b.actionmainid  AND b.actionstatus IN('A','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND b.assignee=:empid AND b.AssigneeLabCode <> '@EXP' ";
@@ -490,13 +491,14 @@ public class ActionDaoImpl implements ActionDao{
 	}	
 	
 	
-	
+	private static final String ACTIONWISEALLREPORT="SELECT aas.actionassignid,a.actionmainid,aas.actionno,ab.empname,dc.designation,ab.extno,ab.mobileno,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,a.actiontype,a.type,\r\n"
+			+ "a.actionlinkid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(f.actionsubid) FROM action_sub f WHERE f.actionassignid = aas.actionassignid) )  AS progress,  a.projectid\r\n"
+			+ "FROM action_main a,  employee ab ,employee_desig dc, action_assign aas\r\n"
+			+ "WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid AND dc.desigid=ab.desigid AND ab.isactive<>0 AND aas.AssigneeLabCode <> '@EXP' AND a.projectid=:projectid AND a.isactive='1' \r\n";
 	@Override
-	public List<Object[]> ActionWiseAllReport(String Term,String empid,String ProjectId) throws Exception {
+	public List<Object[]> ActionWiseAllReport(String ProjectId) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONWISEALLREPORT);
-		query.setParameter("term",Term);
-		query.setParameter("empid",empid);
 		query.setParameter("projectid", ProjectId);
 		List<Object[]> ActionWiseAllReport=(List<Object[]>)query.getResultList();	
 		return ActionWiseAllReport;
@@ -1890,5 +1892,66 @@ public class ActionDaoImpl implements ActionDao{
 		
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
+	}
+	
+	@Override
+	public Long oldRfaUploadSubmit(OldRfaUpload rfaUpload) throws Exception {
+		
+		logger.info( "Inside DaoImpl oldRfaUploadSubmit");
+		try {
+		manager.persist(rfaUpload);
+		manager.flush();
+		return rfaUpload.getRfaFileUploadId();
+	    } catch (Exception e) {
+		e.printStackTrace();
+		logger.error( "Inside DaoImpl oldRfaUploadSubmit", e);
+		return 0l;
+	    }
+	}
+	
+	private static final String OLDRFAUPLOADLIST="SELECT RfaFileUploadId,RfaNo,RfaDate,RfaFile,ClosureFile,Path FROM pfms_rfa_oldfile WHERE LabCode=:labCode AND IsActive='1'";
+	@Override
+	public List<Object[]> getoldRfaUploadList(String labCode) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(OLDRFAUPLOADLIST);
+			query.setParameter("labCode", labCode);
+			return (List<Object[]>)query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public OldRfaUpload getOldRfaDetails(Long rfaFileUploadId) throws Exception {
+		try {
+			return manager.find(OldRfaUpload.class, rfaFileUploadId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static final String UPDATEOLDRFADATA="UPDATE pfms_rfa_oldfile SET RfaNo=:RfaNo,RfaDate=:RfaDate,RfaFile=:RfaFile,ClosureFile=:ClosureFile,Path=:Path,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE RfaFileUploadId=:RfaFileUploadId";
+	@Override
+	public long oldRfaUploadEditSubmit(OldRfaUpload rfaModel) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(UPDATEOLDRFADATA);
+			query.setParameter("RfaFileUploadId", rfaModel.getRfaFileUploadId());
+			query.setParameter("RfaNo", rfaModel.getRfaNo());
+			query.setParameter("RfaDate", rfaModel.getRfaDate());
+			query.setParameter("RfaFile", rfaModel.getRfaFile());
+			query.setParameter("ClosureFile", rfaModel.getClosureFile());
+			query.setParameter("Path", rfaModel.getPath());
+			query.setParameter("ModifiedBy", rfaModel.getModifiedBy());
+			query.setParameter("ModifiedDate", rfaModel.getModifiedDate());
+			query.executeUpdate();
+			return rfaModel.getRfaFileUploadId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
 	}
 }

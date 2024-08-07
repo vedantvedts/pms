@@ -48,6 +48,7 @@ h6{
   List<Object[]> AssigneeList=(List<Object[]>)request.getAttribute("StatusList");
   String ProjectId=(String)request.getAttribute("ProjectId");
   String ActionType=(String)request.getAttribute("ActionType");
+  String Type=(String)request.getAttribute("Type");
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
  %>
 
@@ -62,12 +63,12 @@ h6{
 					<div class="card-header ">  
 
 					<div class="row">
-						<h4 class="col-md-6">
-						<%if("F".equalsIgnoreCase(ActionType)){ %>Forwarded <%} %>
-						<%if("Y".equalsIgnoreCase(ActionType)){ %>Completed  <%} %>
-						<%if("P".equalsIgnoreCase(ActionType)){ %>Pending    <%} %>
-						<%if("E".equalsIgnoreCase(ActionType)){ %>Delayed  <%} %> Action Reports</h4>  
-							<div class="col-md-6" style="float: right; margin-top: -8px;">
+						<h4 class="col-md-4">
+						<%if("F".equalsIgnoreCase(Type)){ %>Forwarded <%} %>
+						<%if("C".equalsIgnoreCase(Type)){ %>Completed  <%} %>
+						<%if("P".equalsIgnoreCase(Type)){ %>Pending    <%} %>
+						<%if("D".equalsIgnoreCase(Type)){ %>Delayed  <%} %> Action Reports</h4>  
+							<div class="col-md-8" style="float: right; margin-top: -8px;">
 								 <table>
 								 	<tr style="">
 								 		
@@ -79,21 +80,43 @@ h6{
 											<form class="form-inline" method="post" action="ActionWiseAllReport.htm" name="myform" id="myform" style="float:right">
 				                            	<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId" style="width:220px !important">
 				    									<option disabled="true"  selected value="">Choose...</option>
-				    									<option value="A" <%if(ProjectId.toString().equalsIgnoreCase("A")){ %>selected="selected" <%} %>>All</option>
-				    									<option value="0" <%if(ProjectId.toString().equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option>
+				    									<%-- <option value="A" <%if(ProjectId.toString().equalsIgnoreCase("A")){ %>selected="selected" <%} %>>All</option>
+				    									<option value="0" <%if(ProjectId.toString().equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option> --%>
 				    									
-				    										<% for (Object[] obj : ProjectList) {%>
-														<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]%>( <%=obj[3]%> ) </option>
-															<%} %>
+				    										<% 
+				    										if(ProjectList!=null && ProjectList.size()>0){
+				    										for (Object[] obj : ProjectList) {
+				    											String projectshortName=(obj[4]!=null)?" ( "+obj[4].toString()+" ) ":"";
+				    										%>
+														<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]+projectshortName%></option>
+															<%}} %>
 				  								</select>
                             					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 												<input type="hidden" name="ProjectId"  id="ProjectId" value="<%=ProjectId %>" /> 
 												<input type="hidden" name="ActionType"  id="ActionType" value="<%=ActionType %>" />
+												<input type="hidden" name="Type"  id="Type" value="<%=Type %>" />
 											</form>	
 								  		</td>
 								 		
-								 		<td>&ensp;&ensp;&ensp;&ensp;</td>
-								 		<td></td>
+								 		<td>Action Type :   &ensp;</td>
+								 		
+								 		<td>
+								 		  <form action="ActionWiseAllReport.htm" name="actiontypefrm" id="actiontypefrm" method="post">	
+											<select class="form-control " id="ActionType" required="required" name="ActionType" onchange="submitForm('actiontypefrm');" >
+								   				<%-- <option <%if("A".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="A">All</option> --%>
+								   				<option <%if("NA".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="NA">Action</option>
+								   				<option <%if("MA".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="MA">Meeting</option>
+								   				<option <%if("MLA".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="MLA">Milestone</option>
+								   				<option <%if("RK".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="RK">Risk</option>								   				 
+								   				<option <%if("IU".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="IU">Issue</option>								   				 
+								   				<option <%if("RC".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="RC">Recommendation</option>								   				 
+								  			</select>
+								  			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+								  			<input type="hidden" name="ProjectId"  id="ProjectId" value="<%=ProjectId %>" /> 
+											<input type="hidden" name="ActionType"  id="ActionType" value="<%=ActionType %>" />
+											<input type="hidden" name="Type"  id="Type" value="<%=Type %>" />
+								  			</form>	
+								 		</td>
 								 		
 								 		
 								 		<td>
@@ -101,17 +124,18 @@ h6{
 										</td>
 										
 										<td>
-											<form action="ActionWiseAllReport.htm" name="actiontypefrm" id="actiontypefrm" method="post">	
-											<select class="form-control " id="ActionType" required="required" name="ActionType" onchange="submitForm('actiontypefrm');" >
-								   				<option <%if("A".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="A">All</option>
-								   				<option <%if("P".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="P">Pending</option>
-								   				<option <%if("F".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="F">Forwarded</option>
-								   				<option <%if("Y".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="Y">Completed</option>
-								   				<option <%if("E".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="E">Delayed</option>								   				 
+											<form action="ActionWiseAllReport.htm" name="typefrm" id="typefrm" method="post">	
+											<select class="form-control " id="Type" required="required" name="Type" onchange="submitForm('typefrm');" >
+								   				<%-- <option <%if("A".equalsIgnoreCase(ActionType)){ %>selected<%} %> value="A">All</option> --%>
+								   				<option <%if("P".equalsIgnoreCase(Type)){ %>selected<%} %> value="P">Pending</option>
+								   				<option <%if("F".equalsIgnoreCase(Type)){ %>selected<%} %> value="F">Forwarded</option>
+								   				<option <%if("C".equalsIgnoreCase(Type)){ %>selected<%} %> value="C">Completed</option>
+								   				<option <%if("D".equalsIgnoreCase(Type)){ %>selected<%} %> value="D">Delayed</option>								   				 
 								  			</select>
 								  			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								  			<input type="hidden" name="ProjectId"  id="ProjectId" value="<%=ProjectId %>" /> 
 											<input type="hidden" name="ActionType"  id="ActionType" value="<%=ActionType %>" />
+											<input type="hidden" name="Type"  id="Type" value="<%=Type %>" />
 								  			</form>	
 								  		</td>
 										<td> 	 	
@@ -164,23 +188,23 @@ h6{
 																		<td><%=count %></td>
 																		<td>
 																		<form action="ActionDetails.htm" method="POST" >
-																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[0] %></button>
-																			   <input type="hidden" name="ActionLinkId" value="<%=obj[11]%>"/>
-																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
-																	           <input type="hidden" name="ActionMainId" value="<%=obj[10]%>"/>
-																	           <input type="hidden" name="ActionAssignId" value="<%=obj[14]%>"/>
-																	           <input type="hidden" name="ActionNo" value="<%=obj[0]%>">
+																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[2] %></button>
+																			   <input type="hidden" name="ActionLinkId" value="<%=obj[13]%>"/>
+																	           <input type="hidden" name="Assignee" value="<%=obj[3]%>,<%=obj[4]%>"/>
+																	           <input type="hidden" name="ActionMainId" value="<%=obj[1]%>"/>
+																	           <input type="hidden" name="ActionAssignId" value="<%=obj[0]%>"/>
+																	           <input type="hidden" name="ActionNo" value="<%=obj[2]%>">
  																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 																			
 																			</form>  
                                                                         </td>
-																		<td><%=sdf.format(obj[6])%></td>																		
-																		<td><%=obj[1]%>, <%=obj[2]%></td>
-																	  	<td>Ext: <%=obj[3]%>, Mob: <%=obj[4]%></td>
-																		<td style="width:8% !important; "><%if(obj[12]!=null){ %>
+																		<td><%=sdf.format(obj[8])%></td>																		
+																		<td><%=obj[3]%>, <%=obj[4]%></td>
+																	  	<td>Ext: <%=obj[5]%>, Mob: <%=obj[6]%></td>
+																		<td style="width:8% !important; "><%if(obj[14]!=null){ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															            <%=obj[12]%>
+															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															            <%=obj[14]%>
 															            </div> 
 															            </div> <%}else{ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

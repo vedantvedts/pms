@@ -3,10 +3,13 @@ package com.vts.pfms.committee.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.vts.pfms.committee.dao.ActionSelfDao;
 import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
+import com.vts.pfms.committee.dto.OldRfaUploadDto;
 import com.vts.pfms.committee.dto.RfaActionDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
@@ -52,7 +55,7 @@ public interface ActionService {
 	public List<Object[]> ActionSelfList(String EmpId)throws Exception;
 	public List<Object[]> SearchDetails(String MainId ,String assignid) throws Exception;
 	public List<Object[]> allprojectdetailsList() throws Exception;
-	public List<Object[]> ActionWiseAllReport(String Term,String empid,String ProjectId) throws Exception;
+	public List<Object[]> ActionWiseAllReport(String ProjectId) throws Exception;
 	public long ActionSelfReminderAddSubmit(ActionSelfDao actionselfdao) throws Exception;
 	public List<Object[]> ActionSelfReminderList(String empid,String fromdate,String todate) throws Exception;
 	public int ActionSelfReminderDelete(String actionid) throws Exception;
@@ -157,4 +160,7 @@ public interface ActionService {
 	//prakarsh
 	public  List<Object[]>  ActionReportsNew(String empId, String string, String string2, String string3, String labCode,
 			String logintype)throws Exception;
+	public Long oldRfaUploadSubmit(OldRfaUploadDto rfadto)throws Exception;
+	public List<Object[]> getoldRfaUploadList(String labCode)throws Exception;
+	public long oldRfaUploadEditSubmit(OldRfaUploadDto rfadto)throws Exception;
 }

@@ -510,9 +510,7 @@
 		font-size: 14px !important;
 	}
 	
-	
 }
-
 	.bigcount h1{
 		margin-bottom: -7px;
 	}
@@ -771,9 +769,7 @@
 				document.getElementById('meetingdate').innerHTML=result[4][0].toString().substring(0,10);}
 			if (result[5][0].length==0 || result[5][0][0]==null	){document.getElementById('ProcurementDate').innerHTML='----';}else{
 				document.getElementById('ProcurementDate').innerHTML=result[5][0][0].toString().substring(0,10);}
-
 		}
-
 	});
 	
 	function changeit(val)
@@ -781,26 +777,20 @@
 		document.getElementById('weeklyupdate').reset();
 		var name = document.getElementById('UProjects').innerHTML;
 		var value = document.getElementById('UProjects').value;
-
 	}
 	
 	function changedates(val)
 	{
-
 		document.getElementById('Usubmit').value=document.getElementById('UProjects').value;
 		$pid=val;
 		$.ajax({
-			
 			type:"GET",
 			url:"GetUpdateDates.htm",
 			data :{
-				
 				ProjectId : $pid
-				
 			},
 			datatype : 'json',
 			success : function(result){
-				
 				var result = JSON.parse(result);
 				var modifieddate=result[0];
 				if (modifieddate[0]==',' || modifieddate[0][0]==null){document.getElementById('actionmodifieddate').innerHTML='----';}else{
@@ -822,17 +812,12 @@
 					document.getElementById('ProcurementDate').innerHTML=result[5][0][0].toString().substring(0,10);}
 
 			}
-
 		});
 	}
-	
-	
 	</script>
 <%} %>
 <!-- end -->
-
 <%
-
 String Username =(String)session.getAttribute("Username");  
 String EmpNo=(String)session.getAttribute("empNo");
 String LabCode=(String)session.getAttribute("labcode");
@@ -862,7 +847,6 @@ List<String> status1 = Arrays.asList("AA","REV", "RC", "RV", "RE");
 if(rfaPendingCountList!=null && rfaPendingCountList.size()>0){
 	todayRfaCount1=rfaPendingCountList.stream().filter(i -> status1.contains(i[14].toString().toUpperCase())).count();
 }
-
 /* List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist"); */
 List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
 List<Object[]> actionscount=(List<Object[]>)request.getAttribute("actionscount");
@@ -870,9 +854,7 @@ Integer selfremindercount=(Integer)request.getAttribute("selfremindercount");
 Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").toString());
 /* List<Object[]> noticeList =(List<Object[]>)request.getAttribute("NotiecList"); */
 Integer selfremaindercount=(Integer)request.getAttribute("selfremaindercount");
-
 /* Object[] allschedulescount=(Object[])request.getAttribute("AllSchedulesCount"); */
-
 List<ProjectSanctionDetailsMaster>  budgetlist=(List<ProjectSanctionDetailsMaster>)request.getAttribute("budgetlist");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> ProjectMeetingCount=(List<Object[]>)request.getAttribute("ProjectMeetingCount");
@@ -959,45 +941,26 @@ if(ses!=null){ %>
 
          <!-- ----------------PROJECT DASHBOARD PROJECT NAME DISPLAY START --------------- -->
 			      	 <%if(ProjectList!=null){ %>
-						
 						 <div class="row" style="display: none" id="projectname" >
-							
 							<div class="col-md-12" align="center">
-								
 								<div id="carouselExampleSlidesOnly" class=""  data-ride=""  >
-						
 									<div class="carousel-inner">	
-									
 										<%	for (Object[] obj : ProjectList) { 
 											String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 										%>
-									
 										 <div class="carousel-item" id="projectname<%=obj[0]%>">
-										 
 										 	<div class="row" style="margin:0px !important">
-						
 												<div class="col-md-12" style="text-transform: uppercase;font-size: 22px; ">
-												
 													<%=obj[4]+projectshortName %>
-												
 													<br><br>
-													
 												</div>
-		
 											</div>
-										 
 										 </div>
-									
 										<%} %>
-									
 									</div>
-						
 								</div>
-							
 							</div>
-	
-					</div> 
-	
+					   </div> 
 				 <%} %> 
 			 <!-- ----------------PROJECT DASHBOARD PROJECT NAME DISPLAY END --------------- -->      
 			      
@@ -1011,16 +974,11 @@ if(ses!=null){ %>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								</form>
 							</nav>	
-							
 							<div class="card-body" style="padding: 0.5rem 0.5rem 0rem 0.5rem;" >
 								<div  style="color:black ">
-
 								    <div style="height:6.2rem ;overflow-y: hidden ; ">
-								    
 								     <div id="carouselExampleControls5" class="carousel vert slide" data-ride="carousel" data-interval="5000">
-								       
 										<div class="carousel-inner">
-																        
 											<% 
 											int count=0;
 											if(todayschedulelist.size()>0){
@@ -1028,23 +986,16 @@ if(ses!=null){ %>
 											  	if(!obj[6].toString().equalsIgnoreCase("E")){
 											  		if(obj[3].toString().equalsIgnoreCase(TodayDate)){
 											  		%>
-																        
 												<div class="carousel-item action" id="schedule" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;overflow: hidden">
-																            
 														<ul style="padding: 0px;margin-bottom: 5px !important">	
 															<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 10px 0px !important;">
-																	            	
 																 <a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " style="color:black" >
-									               
 													                <i class="fa fa-arrow-right faa-pulse animated faa-fast" aria-hidden="true" style="color: green;font-size: 1.3rem !important"></i> 
 															    	<%=obj[7] %> -
 															    	<i class="fa fa-clock-o" aria-hidden="true"></i> <%=obj[4] %> &nbsp;&nbsp;
-					
 															    </a>
-																				    
 														 	</li>
 														</ul>
-								
 												</div>
 												<%count++;}} }}%>
 								
@@ -1055,54 +1006,33 @@ if(ses!=null){ %>
 												<%} %>
 											
 											</div>
-																        
 										</div>									 
-								    
 								    </div>
-			
 								</div>
 					 	  </div>
-					 	  
 					 	  <div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-					 	  	
 					 	  	<a class="navbar-brand" href="MySchedules.htm" style="color:black;">Upcoming Schedule</a><span class="badge <%if(todayschedulelist.size()-count> 0) {%>  badge-danger <%} else { %> badge-success <%} %>badge-counter"><%if(todayschedulelist.size()-count >0){%> <%=todayschedulelist.size()-count %><%} %></span>
-					
 					 	  </div>
 					 	  <div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-					 	  	
-					 	  
 					 	  	<a class="navbar-brand"  href="ActionSelfReminderAdd.htm" style="color:black;">My Reminders</a><span class="badge <%if(selfremindercount> 0) {%>  badge-danger <%} %> badge-counter"><%if(selfremindercount >0){%><%=selfremindercount %><%} %></span>
 					 	  </div>
-					
 					</div> 
 					
 		<!-- -----------------ACTION DASHBOARD TODAY'S SCHEDULE END -------------------------- -->
 					
-					
 		<!-- ----------------PROJECT DASHBOARD PROJECT DETAILS LEFT SIDE START --------------- -->
 					
 					<div  style="display: none" id="projectdetails1">
-					 
 					 	 <%if(ProjectList!=null){ %>
-						
 						 <div class="row" style="" >
-							
 							<div class="col-md-12" align="center">
-								
-								
 								<div id=carouselprojectdetailsSlidesOnly class=""  data-ride=""  >	
 									<div class="carousel-inner">	
-									
 										<%	for (Object[] obj : ProjectList) { %>
-									
 										 <div class="carousel-item" id="projectdetailsname<%=obj[0]%>">
-										 
 										 	<div class="row" style="margin:0px !important">
-						
 												<div class="col-md-12" style="text-align: right;">
-													
 													<%if(obj[8]!=null) { if(!obj[8].toString().equals("0")){ %>
-													
 													<h6>Project Code : </h6>
 													<h6>Project Name : </h6>
 													<br>
@@ -1110,33 +1040,20 @@ if(ses!=null){ %>
 													<h6>PDC : </h6>
 													<h6>PMRC Due On : </h6>
 													<h6>EB Due On : </h6>
-
 													<%}}else{ %>
-													
 														<br><br><br><br><br><br><br>
-													
 													<%} %>
-													
 													<br><br>
-													
 												</div>
-		
 											</div>
-										 
 										 </div>
-									
 										<%} %>
-									
 									</div>
-						
 								</div>
-							
 							</div>
-	
 					</div> 
-	
 				 <%} %>
-					 </div>
+		  </div>
 					 
 	    <!--------------- PROJECT DASHBOARD PROJECT DETAILS LEFT SIDE END  ------------- -->		 
 					 	
@@ -1178,11 +1095,8 @@ if(ses!=null){ %>
 			      
 		 <!-- -----------------PROJECT DASHBOARD PROJECTDROPDOWN START---------------------------- -->
 			      		<%if(ProjectList!=null){ %>
-						
 						 <div class="row">
-							
 							<div class="col-md-12" style="display: none" id="projectdropdown" >
-		
 								<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="dropdown()"  >
 									<%	for (Object[] obj2 : ProjectList) {
 										String projectshortName=(obj2[17]!=null)?" ( "+obj2[17].toString()+" ) ":"";
@@ -1191,72 +1105,50 @@ if(ses!=null){ %>
 									<%} %>
 								</select>
 								<br><br>
-								
 						    </div>
-						
 						</div> 
-						
 				 	<%} %> 
 	   <!-- -----------------PROJECT DASHBOARD PROJECTDROPDOWN END---------------------------- -->
 
 	   <!-- -----------------ACTION DASHBOARD APPROVAL'S(TO BE APPROVED BY ME) SCHEDULE START---------------------------- -->
 							
 						<div class="card" style="background: transparent;display: none" id="approvalblock">
-						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
 								<a class="navbar-brand" style="color:white"; >To be Approved By Me</a>
 							</nav>					
-											
 							<div id="carouselExampleControls8" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">
-								
 								<div class="carousel-inner">
-
 									<% int approvalcount=0;
 										for(Object[] obj : approvallist){ %>
-
 										<%if((obj[0]).toString().equalsIgnoreCase("DO")){ if(Integer.valueOf((String) obj[1].toString())>0){ %>
-									
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="ProjectApprovalPd.htm" style="color:black;" id="" >Initiation (DO)
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i> 
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span> 
 										</a>
-										
-										
 									</div>
-									
 										<%approvalcount++; }} %>
-										
 										<%if((obj[0]).toString().equalsIgnoreCase("RTMD-DO")){ if(Integer.valueOf((String) obj[1].toString())>0){ %>
-									
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="ProjectApprovalRtmddo.htm" style="color:black" id="" >Initiation (P&C-DO)
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
 									</div>
-									
 										<%approvalcount++;} }%>
-										
 										<%if((obj[0]).toString().equalsIgnoreCase("AD")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
-										
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="ProjectApprovalAd.htm" style="color:black" id="" >Initiation (AD)
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
 									</div>
-									
 										<%approvalcount++;} }%>
-										
 										<%if((obj[0]).toString().equalsIgnoreCase("TCM")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
-									
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="ProjectApprovalTcc.htm" style="color:black" id="" >Initiation (TCM)
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
 									</div> 
-										
 										<%approvalcount++;}} %>
-										
 										<%if((obj[0]).toString().equalsIgnoreCase("Meeting")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
 									
 								<%-- 	<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
@@ -1264,65 +1156,37 @@ if(ses!=null){ %>
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
 									</div>  --%>
-										
 										<%/* approvalcount++; */}} %>
-										
 										<%if((obj[0]).toString().equalsIgnoreCase("Committee")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
-									
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="CommitteeMainApprovalList.htm" style="color:black" id="" >Committee
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
 									</div> 
-										
 										<%approvalcount++;}} %>
-										
-									
 									<%} %>
-						
-									
 									<%if(approvalcount==0){ %>
-									
 										<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand"  style="color:black" id="" >No Approvals</a>
-										
 									</div> 
-									
 									<%} %>
-									
-										    
 								</div>
-								
 							</div> 
-							
 						</div>
-							
 						
          <!-- -------------------------ACTION DASHBOARD APPROVAL'S SCHEDULE END---------------------------  -->				
 					
 	     <!-- -----------------PROJECT DASHBOARD SELECTED PROJECTED DETAILS DISPLAY START---------------------------- -->				
 						
 					<div  style="display: none" id="projectdetails2">
-					 
 					 	<%if(ProjectList!=null){ %>
-						
 						 <div class="row" style="" >
-							
 							<div class="col-md-12" align="center">
-								
 								<div id=carouselprojectdetailsSlides2Only class=""  data-ride=""  >	
-								
-						
 									<div class="carousel-inner">	
-									
 										<%	for (Object[] obj : ProjectList) { %>
-										
-										
-									
 										 <div class="carousel-item" id="projectinfo<%=obj[0]%>">
-										 
 										 	<div class="row" style="margin:0px !important">
-						
 												<div class="col-md-12" style="text-align: left;">
 													<h6><%if(!obj[0].toString().equals("0")){%><%=obj[4]%><%} %></h6>
 													<%if(!obj[0].toString().equals("0")){ if(obj[1].toString().chars().count()>17){ %>
@@ -1336,28 +1200,17 @@ if(ses!=null){ %>
 													<h6><%if(obj[15]!=null){%><%= sdf.format(sdf1.parse( obj[15].toString()))%><%}else{ %>-<%} %></h6>
 													<h6><%if(obj[16]!=null){%><%= sdf.format(sdf1.parse( obj[16].toString()))%><%}else{ %>-<%} %></h6>
 												</div>
-		
 											</div>
-										 
 										 </div>
-									
 										<%} %>
-									
 									</div>
-						
 								</div>
-							
 							</div>
-	
-					</div> 
-	
+					  </div> 
 				 <%} %>
-					 
-					 
-					 </div>
+			</div>
 					 
 	 <!-- -----------------PROJECT DASHBOARD SELECTED PROJECTED DETAILS DISPLAY END---------------------------- -->	
-
 			      </div>
 <!-- @@@@@@@@@@ NESTED ROW SCHEDULE END( 2 ) @@@@@@@@@@  -->    		      
 
@@ -1371,29 +1224,17 @@ if(ses!=null){ %>
 		<%if(error!=null){ %>
 				<h4 style="color:#ce1212;margin-top: 25%;display:none" id="financialdataerror" ><%=error %></h4>  
 		 <%} %> 
-			      
 		 <% if(!logintype.equalsIgnoreCase("U")){ %>
-			 			 
 			 <%if(budgetlist!=null && budgetlist.size()>0){ %>	
-				
 				<div class="card-body" style="padding: 0.4rem !important;display:none" align="center" id="financialdata"  > 
-					
 					<div id="carouselExampleControls" class=""  data-ride=""  >		
-					
 							<div class="carousel-inner">					
-							
 							<div style="background-color: white;">
-									
 									<%long i=0;
 									for(ProjectSanctionDetailsMaster obj : budgetlist){
 										%>
-											 
-											 <div class="carousel-item" style="border-radius: 15px;padding-bottom: 10px;" id="chart<%=obj.getProjectid()%>"> 
-										
-										
-										
+									<div class="carousel-item" style="border-radius: 15px;padding-bottom: 10px;" id="chart<%=obj.getProjectid()%>"> 
 										<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
-										
 											<a class="navbar-brand" >Financial Performance</a>
 										    <form class="form-inline" target="_blank" method="post" id="ibasform" action="<%=ibasUri%>/loginFromPfms">
 										    <input type="hidden" name="empNo" value="<%=EmpNo%>">
@@ -1413,16 +1254,9 @@ if(ses!=null){ %>
 										    <input type="hidden" name="formRoleId" value="<%=formRoleId%>">
 										    <input type="hidden" name="userName" value="<%=Username%>"> --%>
                                             <!-- -------- -->
-											
-										    
-										 
-										    
 										    <button type="submit" class="btn btn-sm" style="float: right;background-color: #23689b;color: white" ><img src="view/images/projecticon.png"/> &nbsp;Project Details</button>
-										  
 										  </form>
 										</nav>
-										
-										
 										<div class="" id="container<%=obj.getSno()%>" style="height: 12rem;"></div>
 											<div>
 												<table>
@@ -1445,29 +1279,13 @@ if(ses!=null){ %>
 										</div> 
 									<% i++;
 									} %>
-									
-							
 							</div>
-							
 						</div>
-						
-						
-						</div>
-						
-						
-					</div>
-				
-				
+				  </div>
+			</div>
 				<%for(ProjectSanctionDetailsMaster obj : budgetlist){ %>
-				
-				
-				
 					<script>
-					
-					
-					
 					anychart.onDocumentReady(function () {
-
 					    // create data
 					    var data = [
 					      {x: "EXP ", value: <%=obj.getExpAmt()%>, fill : "#ac0d0d"},
@@ -1476,24 +1294,18 @@ if(ses!=null){ %>
 					      {x: "BAL  ", value: <%=obj.getBalAmt()%>, fill : "#06623b"},
 					      
 					    ];
-					    
 					    // create a chart and set the data
 					    var chart = anychart.pie3d(data);
-					    
 					    var legend= chart.legend();
 					    //legend.enabled(false);
 					    //legend.position("right");
-					    
 					    legend.positionMode("inside");
 						// set position and alignement
 						legend.position("center");
 						legend.align("right");
 						legend.itemsLayout("vertical");
-					    
-					    
 					 	
 					    var tooltip = chart.tooltip();
-
 					    tooltip.enabled(true);
 					    tooltip.fontColor('white');
 					    tooltip.fontWeight(600);
@@ -1517,10 +1329,6 @@ if(ses!=null){ %>
 					    chart.draw();
 					    
 					});				
-						
-					
-					
-					
 					</script>
 				<%} %>
 				
@@ -1534,14 +1342,11 @@ if(ses!=null){ %>
 		<!-- -----------------ACTION DASHBOARD TASKBAR STARTS---------------------------- -->	
 		      
 		       <div class="card" style="background: transparent;display:none" id="mytasks">
-						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
 								<a class="navbar-brand" style="color:white;" >My Tasks</a><a style="color:white" href="FeedBack.htm" title="Feedback"><i class="fa fa-commenting" aria-hidden="true"></i></a>
 							</nav>					
-											
 								<div id="" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">
 									<div class="carousel-inner">
-									   
 										    	<table class="table meeting" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
 													<tr>
 														<td style="padding : 5px 15px 5px 15px;"></td>
@@ -1551,88 +1356,60 @@ if(ses!=null){ %>
 <!-- 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Upcoming</span></td>
  -->													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Review</span></td>
 													</tr>
-				
-				
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Action</td>
 														<%int actionCounts=0;
 														for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
-														
-														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> <%} %> " style="background-color: green;color:white; "><%=obj[1] %></button></td>
 														<td><button type="button" onclick="actionformtask('I','N')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 <%-- 														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
  --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
-														
 														<% actionCounts+=Integer.parseInt(obj[3].toString());}   } %>
-														
 													</tr>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Meeting</td>
-														
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Meeting")){ %>
-														
-														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>   <!--changed 'E' to 'N'  -->   
+														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1] %></button></td>   <!--changed 'E' to 'N'  -->   
 														<td><button type="button" onclick="actionformtask('I','S')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %> class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 <%-- 														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
  --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
-														
 														<% actionCounts+=Integer.parseInt(obj[3].toString());}  } %>
-														
 													<tr>
-													
 													<%if(!IsDG.equalsIgnoreCase("Yes")){ %>
-													
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestone</td>
-														
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Milestone")){ %>
-														
-														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1] %></button></td>
 														<td><button type="button" onclick="actionformtask('I','M')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 <%-- 														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
  --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
-														
 														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
-														
 													</tr>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Fracas</td>
-														
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Fracas")){ %>
-														
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1] %></button></td>
 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 <%-- 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
  --%>														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
-													
 														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
-													
 													</tr>
-													
-													
 													<%} %>
-				
-													
 												 </table>
-								
 										  </div>
-				
 									</div> 
-							
 							</div> 
-				
 		<!-- -----------------ACTION DASHBOARD TASKBAR ENDS---------------------------- -->	
 			
 		<!-- -----------------OVERALL DASHBOARD HEADING STARTS---------------------------- -->							
-		
 						<div class="row" >
 							<div class="col-md-6">
 								<div style="display: none" class="overallheader">
@@ -1644,14 +1421,9 @@ if(ses!=null){ %>
 								
 							</div>
 						</div>
-
 	 <!-- -----------------OVERALL DASHBOARD HEADING ENDS---------------------------- -->	
-
 			</div>
 <!-- @@@@@@@@@@ NESTED ROW BUDGET START @@@@@@@@@@  --> 	
-			      
-
- 
     <!-- -----------------PROJECT DASHBOARD GANTT CHART STARTS---------------------------- -->	
 	          <div class="col-md-12">
 			    	
@@ -1666,7 +1438,6 @@ if(ses!=null){ %>
 								 %>
 			
 								    <div class="carousel-item " style="overflow-y: auto;" id="Mil<%=obj1[0]%>">
-								    
 									    <nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
 												<form class="form-inline" method="post" action="GanttChart.htm" id="myform" >
 													<input type="hidden" name="ProjectId"  id="ProjectId" value="<%=obj1[0] %>" /> 
@@ -1674,24 +1445,17 @@ if(ses!=null){ %>
 								 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								 				</form>
 								 				
-
 												<%if(!obj1[0].toString().equalsIgnoreCase("0")){ %>
 														<span style="font-size: 15px;text-transform: capitalize;color:white"><%=obj1[14] %> (<%=obj1[11] %>)</span>
 												<%} %>
-												
-								 				
 								 				<form method="post" action="ProjectBriefingPaper.htm">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 													<button  class="btn btn-primary navbar-brand text-white" style="background-color: #23689b;color:white" ><img src="view/images/camera.png"/> Project Snapshot </button>
 													<input type="hidden" name="projectid" value="<%=obj1[0] %>" />
 												</form>
-								 				
 										</nav> 
 						
-
 					   				<div class="flex-container" id="containers<%=obj1[0] %>" style="height:13.5rem" ></div>
-
-									   
 									</div>
 			
 								 <%} } } %>
@@ -1745,27 +1509,17 @@ if(ses!=null){ %>
 								    		 
 								    	// create a data tree
 								    		var treeData = anychart.data.tree(data, "as-tree");
-								
 								    		// create a chart
 								    		var chart = anychart.ganttProject();
-								
 								    		// set the data
 								    		chart.data(treeData);   
-								  
 								        	// set the container id
-								        	
 								        	chart.container("containers<%=obj1[0]%>");  
-								        	
-
 								        	// initiate drawing the chart
 								        	chart.draw();    
-									
 								        	 // fit elements to the width of the timeline
 								        	chart.fitAll(); 
-								        
-								            
 									        var timeline = chart.getTimeline();
-
 										   // configure labels of elements
 										   timeline.elements().labels().fontWeight(600);
 										   timeline.elements().labels().fontSize("10px");
@@ -1777,7 +1531,6 @@ if(ses!=null){ %>
 									        		        var actualStart = this.getData("actualStart") ? this.getData("actualStart") : this.getData("baselineStart");
 									        		        var actualEnd = this.getData("actualEnd") ? this.getData("actualEnd") : this.getData("baselineEnd");
 									        		        var reDate=this.getData("actualStart") ;
-									        		   
 									        		        var html="";
 									        		        if(reDate===undefined){
 									        		        	html="";
@@ -1795,14 +1548,9 @@ if(ses!=null){ %>
 									        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
 									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
 									        		        }
-									        		        
 									        		        return html;
 									        		    }
-										          
 										        ); 
-								        	 
-								        	
-								        	
 								        /* Hover */
 								        
 								        chart.rowHoverFill("#8fd6e1 0.3");
@@ -1895,16 +1643,12 @@ if(ses!=null){ %>
     <!-- -----------------ACTION DASHBOARD UPCOMING SCHEDULE STARTS---------------------------- -->	
     
           <div class="col-md-4">
-		       
 		       <br>	
 		       <div class="card" style="background: transparent;display: none" id="upcomingschedules">
-						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
 								<a class="navbar-brand" style="color:white"; >Upcoming Schedule Details</a>
 							</nav>					
-											
 								<div style="background-color: rgba(255, 255, 255, 0.39999) !important;max-height:14rem ;overflow-y: auto ;border-radius: 4px ">
-								
 									<table class="table meeting " >	
 										<thead>												
 											<tr>
@@ -1914,25 +1658,20 @@ if(ses!=null){ %>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Committee</span></td>
 											</tr>
 										</thead>
-										
 										<%
 										int newsize=0;
 										if(todayschedulelist.size()!=0){
 											int count1=1;
 											for(Object[] obj : todayschedulelist) {
 												if(!obj[3].toString().equalsIgnoreCase(TodayDate)){	%>
-							
 										<tbody>
-										
 											<tr>
 												<td><a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " ><i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
 												<td><%=sdf.format(obj[3]) %></td>
 												<td><%=obj[4] %></td>
 												<td><%=obj[7] %></td>
 											</tr>
-											
 											<%count1++;newsize++;}}} %>
-											
 											<%if(newsize==0){%>
 												<tr>
 												<td colspan="5">
@@ -1942,16 +1681,10 @@ if(ses!=null){ %>
 												</td>	
 												<tr>
 											<%} %>
-											
 										</tbody>
-											
-											
 									</table>				
-				
 								</div> 
-							
 							</div> 
-							
 					</div>		
             <!-- -----------------ACTION DASHBOARD UPCOMING SCHEDULE ENDS---------------------------- -->				
 					
@@ -1962,13 +1695,10 @@ if(ses!=null){ %>
 		       	<!-- -----------------ACTION DASHBOARD MY TASK DETAILS STARTS---------------------------- -->	
 		       	
 		       		 <div class="card" style="background: transparent;display:none" id="mytaskdetails">
-						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
 								<a class="navbar-brand" style="color:white"; >My Task Details</a>
 							</nav>					
-											
 								<div style="background-color: rgba(255, 255, 255, 0.39999) !important;max-height:14rem ;overflow-y: auto ;border-radius: 4px ">
-								
 									<table class="table meeting " >	
 										<thead>												
 											<tr>
@@ -1978,7 +1708,6 @@ if(ses!=null){ %>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Assigned By</span></td>
 											</tr>
 										</thead>
-										
 										<%
 										int newsizefortask=0;
 										if(mytaskdetails.size()!=0){
@@ -1987,15 +1716,12 @@ if(ses!=null){ %>
 												if(obj[11].toString().equalsIgnoreCase("A")){
 												
 												%>
-							
 										<tbody>
-										
 											<tr>
 												<td><a href="javascript:MyTaskDetails(<%=obj[0]%>)"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
 												<td style="text-align:justify; "><%=obj[2] %></td>
 												<td style="width:100px"><%=sdf.format(obj[4]) %></td>
 												<td><%=obj[12] %>
-
 													<form name="MyTaskDetails<%=obj[0]%>" id="MyTaskDetails<%=obj[0]%>" action="<%=obj[14] %>" method="POST" >
 														<input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[13]%>"/>													
 		                                                <input type="hidden" name="ActionLinkId" value="<%=obj[15]%>"/>
@@ -2005,13 +1731,9 @@ if(ses!=null){ %>
 		 												<input type="hidden" name="ActionAssignid" value="<%=obj[16]%>"/>
 		 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 													</form> 
-												
 												</td>
-												
 											</tr>
-											
 											<%count1++;newsizefortask++;}}} %>
-											
 											<%if(newsizefortask==0){%>
 												<tr>
 												<td colspan="5">
@@ -2021,60 +1743,37 @@ if(ses!=null){ %>
 												</td>	
 												<tr>
 											<%} %>
-											
 										</tbody>
-											
-											
 									</table>	
-									
-												
-				
 								</div> 
-							
 							</div> 
 							<!-- -----------------ACTION DASHBOARD MY TASK DETAILS ENDS---------------------------- -->	
 							
 							<!-- -----------------ACTION DASHBOARD Briefing Paper,Project Meeting,Annual Meeting STARTS---------------------------- -->	
 							
 							<%if(!IsDG.equalsIgnoreCase("Yes")){ %>
-							
 							<%if(QuickLinkList.size()>0){ %>
 							<div class="multi-button" id="quicklinks" style="display: none">
 									  <span><span class="badge badge-success"><i class="fa fa-link" aria-hidden="true"></i></span>  Links : </span>
-									  
 									<%for(Object[] obj : QuickLinkList){ %>
 										<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0] %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>									  <%} %>
 										</div>
 									<%} %>
-							
 							<%} %>
 						  <!-- -----------------ACTION DASHBOARD Briefing Paper,Project Meeting,Annual Meeting ENDS---------------------------- -->	
 		
 			</div>
-		 
-			
-		
-			
-		   
-			 
-			      
 		</div>
 <!-- @@@@@@@@@@ NESTED ROW END @@@@@@@@@@  --> 				
-		    
-		    
 		</div>  
 <!-- @@@@@@@@ MAIN ROW col-md-9 END @@@@@@@ -->		
-		  	
-	
 <!-- @@@@@@@@ MAIN ROW col-md-3 START @@@@@@@ -->		
-
 		 <div class="col-md-3" >
 		
 		 <!-- ----------- COMMON TOGGLE BUTTONS(ACTION,PROJECT,OVERALL) STARTS --------------------------- --> 	
 		   <div style="float: right;padding:5px;margin-top:-7px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
 		  	 <div class="btn-group "> 
-	
-		  	 	  	<form id="pmsToIbasForm" action="<%=pmsToStatsUrl%>" target="blank" method="get"> 
+		  	<form id="pmsToIbasForm" action="<%=pmsToStatsUrl%>" target="blank" method="get"> 
              <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
              <input type="hidden" name="username" value="<%=Username%>">
              <input type="hidden" name="action" value="loginFromPms">
@@ -2094,11 +1793,9 @@ if(ses!=null){ %>
 
 		 <!-- ----------- ACTION DASHBOARD NOTICE MAIN ROW STARTS--------------------------- --> 	
 		  		<div class="card notice col-12 "  style="margin-top: 4px;"  >
-					
 					<div class="card-body"  style="background-color : #0000 ;padding-bottom: 5px !important;display: none" id="noticeboard" >
 						<span class="side-stick"></span>
 						<div class="side-stick-right "  style="max-width: 10%;" > 
-							
 							<table>
 								<%if(noticeElib>0){%> 	
 									<tr>
@@ -2111,42 +1808,26 @@ if(ses!=null){ %>
 								<%if(notice!=null&& notice.size()>1){%> 
 									<tr>
 									</tr>
-									
-										     	<%} %>
+							   <%} %>
 							</table>
 						</div>
-						
 						<div style="max-width: 90%;" >
  							<blink>	<h5 style="color: #e84545;">Notice</h5></blink>
-							
 							<div id="carouselExampleControls6" class="carousel vert slide" data-ride="carousel" data-interval="5000">
-								       
 								    <div class="carousel-inner">
-								        
 								        	<% if(notice.size()>0){
 										  for(Object[] obj : notice){
 											  	%>
-								        
 								            <div class="carousel-item " id="notice" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;">
-								            
 											    <p style="font-weight: lighter; font-size: 12px;text-align:justify;  text-justify: inter-word;" align = "center" ><%if(notice!=null && notice.size()>0){ %> <%=obj[1] %> <%} %> </p>
 												<p style="font-weight: lighter; font-size: 12px;" align="right" > <%if(notice!=null && notice.size()>0){ %>-&nbsp; <%=obj[2]%> <%} %> </p> 
-
 								            </div>
-
-											
 											<%} }else{%>
-
 										 	<p style="font-weight: lighter; font-size: 12px;" align="right" > No Notice. </p> 
-										 	
 										 <%} %> 
-			
 								      </div>
-								        
-							</div> 
-						
+							   </div> 
 						</div>
-										
 					</div>
 				</div>
 				
@@ -2154,137 +1835,118 @@ if(ses!=null){ %>
 							
 							
     <!-- @@@@@@@@@@@@@@@@ DIV CARD BOX STARTS @@@@@@@@@@@@@@@@@@@@@@@ -->
-
+            <%if(!logintype.equalsIgnoreCase("U") ) { %>
 				<div class="card box" style="background: transparent;margin-top: 5px;background-color: rgba(255, 255, 255, 0.3) !important;display:none" id="mainactivitystatus" >
-							
 						<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display: none" id="activitystatusheader">
 								    Activity Status 
 						</div>
-						
 						<div class="card-body" style="padding: 0px;">
-						
 					 <!-- ----------- PROJECT DASHBOARD ACTIVITY STATUS STARTS------------- -->
-					 
-							<%if(!logintype.equalsIgnoreCase("U") ) { %>
-							
 							<!-- <div id="carouselExampleControls3" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;"> -->
 							<!-- Uncomment the above line to add carousel -->	
 							<div id="carouselExampleControls3" class="" data-ride=""  style="padding: 3px 0px 7px 4px;">
-									
 									<div class="carousel-inner" style="display: none" id="activitystatus">
-									
-											<%if(actionscount!=null){									
-												if(loginlist.contains(logintype))
-												    { %>	
-										    
+											<%if(actionscount!=null){ %>	
 										    	<%if(ProjectList!=null){ %>
 									   				 <%for(Object[] obj : ProjectList){ %>
-										    
-										    
 										<div class="carousel-item "  id="act<%=obj[0]%>">
-									    
-										    	<table class="table" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
-													<tr>
-																		<td style="padding : 5px 15px 5px 15px;"></td>
-													       				<td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">P</span></td>
-													       				<td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">F</span></td>
-													       				<td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">C</span></td>
-													       				<td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">D</span></td>	       			
-													       			</tr>
-				
-													<%if(actionscount!=null){ %>	
-															
-													<%for(Object[] obj2 : actionscount){ %>
-				
-														<%if(obj[0].toString().equalsIgnoreCase(obj2[4].toString())) { %>
-																						
-													<tr>
-																		<td  style="padding : 5px 0px 5px 0px;text-align: left" >Action Items</td>
-																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;; "><%=obj2[0] %> </button></td>
-															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea; color:white; "><%=obj2[1] %> </button></td>
-															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[2] %> </button></td>
-															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[3] %> </button></td>					
-													       			</tr>
-													       			 <tr>
-																		<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestones</td>
-																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0</button></td>					
-													       			</tr>
-													       			<tr>
-																		<td  style="padding : 5px 0px 5px 0px;text-align: left">Activity</td>
-																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; ">0</button></td>
-															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0 </button></td>					
-													       			</tr>
-													       			<tr>
-																		<td  style="padding : 5px 0px 5px 0px;text-align: left">Risks</td>
-																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; ">0</button></td>
-															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0 </button></td>					
-													       			</tr>
-													       			<tr>
-																		<td  style="padding : 5px 0px 5px 0px;text-align: left;">Issues</td>
-																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; ">0</button></td>
-															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; ">0 </button></td>
-															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0 </button></td>					
-													       			</tr> 
-												       	
-															<%}%>
-				
-														<%} %>
-													
-													<%} %>
-				
-													
-												 </table>
-										    </div>
-										    
-										    <%}} %>
-										    
-										    
-										    
-										    <%} %>
-										    
-										    <%} else{ %>
-										    
-										    
-										    	<div class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;border: none;margin: 19%">
-										    		No Activities
-										    	</div>
-										    
-										    <%} %>
-										    
-										  </div>
-										  
-				
+										    	<table class="table" style="height: 70px; margin : 0px 0px 0px 0px;"  >
+										<tr>
+											<td style="padding: 5px 15px 5px 15px;"></td>
+											<td style="padding: 5px 15px 5px 15px;"><span
+												style="font-size: 12px; font-weight: bold;">P</span></td>
+											<td style="padding: 5px 15px 5px 15px;"><span
+												style="font-size: 12px; font-weight: bold;">F</span></td>
+											<td style="padding: 5px 15px 5px 15px;"><span
+												style="font-size: 12px; font-weight: bold;">C</span></td>
+											<td style="padding: 5px 15px 5px 15px;"><span
+												style="font-size: 12px; font-weight: bold;">D</span></td>
+										</tr>
+										<%if (actionscount != null) {%>	
+											  <%for(Object[] obj2 : actionscount){ %>
+												<%if(obj[0].toString().equalsIgnoreCase(obj2[5].toString())) { %>
+									                <tr>
+									                  <%if(obj2[0].toString().equalsIgnoreCase("Actions")){ %>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left" >Action Items</td>
+													   	<td><button type="button" onclick="submitForm('P','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;; "><%=obj2[1] %> </button></td>
+											            <td><button type="button" onclick="submitForm('F','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea; color:white; "><%=obj2[2] %> </button></td>
+											            <td><button type="button" onclick="submitForm('C','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %> </button></td>
+											            <td><button type="button" onclick="submitForm('D','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %> </button></td>					
+									       			  <% }%>
+									       			</tr>
+									       			 <tr>
+									       			   <%if(obj2[0].toString().equalsIgnoreCase("Milestone")){ %>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestones</td>
+													   	<td><button type="button" onclick="submitForm('P','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
+											            <td><button type="button" onclick="submitForm('F','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
+											            <td><button type="button" onclick="submitForm('C','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
+											            <td><button type="button" onclick="submitForm('D','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+									       			   <% }%>
+									       			</tr>
+									       			<tr>
+									       			    <%if(obj2[0].toString().equalsIgnoreCase("Meeting")){ %>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">Meetings</td>
+													   	<td><button type="button" onclick="submitForm('P','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
+											            <td><button type="button" onclick="submitForm('F','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
+											            <td><button type="button" onclick="submitForm('C','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
+											            <td><button type="button" onclick="submitForm('D','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+									       			    <% }%>
+									       			</tr>
+									       			<tr>
+									       			    <%if(obj2[0].toString().equalsIgnoreCase("Risk")){ %>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">Risks</td>
+													   	<td><button type="button" onclick="submitForm('P','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
+											            <td><button type="button" onclick="submitForm('F','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
+											            <td><button type="button" onclick="submitForm('C','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
+											            <td><button type="button" onclick="submitForm('D','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+									       			    <% }%>
+									       			</tr>
+									       			<tr>
+									       			    <%if(obj2[0].toString().equalsIgnoreCase("Issue")){ %>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left;">Issues</td>
+													   	<td><button type="button" onclick="submitForm('P','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
+											            <td><button type="button" onclick="submitForm('F','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
+											            <td><button type="button" onclick="submitForm('C','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
+											            <td><button type="button" onclick="submitForm('D','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+									       			    <% }%>
+									       			</tr>
+									       			<tr>
+									       			    <%if(obj2[0].toString().equalsIgnoreCase("Recommendation")){ %>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left;">Recommendations</td>
+													   	<td><button type="button" onclick="submitForm('P','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
+											            <td><button type="button" onclick="submitForm('F','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
+											            <td><button type="button" onclick="submitForm('C','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
+											            <td><button type="button" onclick="submitForm('D','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+									       			    <% }%>
+									       			</tr> 
+													<%}%>
+												<%} %>
+											<%} %>
+										 </table>
+								    </div>
+								    <%}} %>
+								    <%} else{ %>
+								    	<div class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;border: none;margin: 19%">
+								    		No Activities
+								    	</div>
+								    <%} %>
+								  </div>
 								</div> 
-								
 							<%} %>	
-							
 		<!-- ----------- PROJECT DASHBOARD ACTIVITY STATUS ENDS------------- -->
 								
 
 	     <!-- ----------- ACTION DASHBOARD  REVIEW  BLOCK STARTS------------- -->
-
 		   					<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display:none" id="reviewheader">
 								<span style="font-size:12px ">Review - Pending with My Approver</span>
 							</div>	
-		   
 							<div style="margin-top:5px;display:none" id="review">
 									
 									 <!-- <div align="center"> Action Items</div> -->		
 													
 													<!-- Actions Start -->
-													
 											<div style="  <%if(logintype.equalsIgnoreCase("U")){ %>   max-height:9rem <%}else{ %> max-height:9rem  <%} %>;overflow-y: auto ; ">
-																				
 															<ul style="padding: 0px">	 
-																					  
 																<% int formcount=1;
 																	if(dashboardactionpdc.size()>0){
 																  for(Object[] obj : dashboardactionpdc){
@@ -2292,9 +1954,7 @@ if(ses!=null){ %>
 																	  	%>
 																  
 																    <li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 12px 0px !important;">
-																    	
 																    	<form name="Action<%=formcount%>" id="Action<%=formcount%>" action="<%=obj[7] %>" method="POST" >
-																    	
 																    		<input type="hidden" name="Assigner" value="<%=obj[11]%>,<%=obj[13]%>"/>													
 		                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
 																			<input type="hidden" name="ActionMainId" value="<%=obj[9]%>"/>
@@ -2302,13 +1962,8 @@ if(ses!=null){ %>
 																			<input type="hidden" name="Assignee" value="<%=obj[11] %>" />
 																			<input type="hidden" name="fracasassignid" value="<%=obj[10]%>"/>
 																			<input type="hidden" name="ActionAssignId" value="<%=obj[16]%>">
-																			
 		 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-																    		
-																    	
 																    	</form>
-																    	
-																    	
 
 																    	<a href="javascript:actionform(<%=formcount%>)" class="btn btn-sm" style=" border-radius: 3px; 
 																	    	<%if("A".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
@@ -2318,24 +1973,14 @@ if(ses!=null){ %>
 																    		transition: all 200ms ease-out;color:black;font-weight:bold;"> 
 																    	<!-- <i class="fa fa-arrow-right" aria-hidden="true" style="color: #1687a7;font-size: 1.00 rem !important"></i>  -->
 																    		<%=obj[11] %> <br> <%=obj[0] %> &nbsp;&nbsp;
-																		    		
 																    	</a> 
-																    	
-																    	
 														   			 </li>
-														   			 
-													
 																 <%formcount++;}} }else{%>
-																 	
 																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
 																 	</li>
-																 
 																 <%} %> 
-		 
 													 	 </ul> 
-													 	 
 													</div>
-										
 				 				</div>   
 				 				
 				 				<!--  Second Review Except User---------------- -->
@@ -2345,15 +1990,9 @@ if(ses!=null){ %>
 				 			<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display:none" id="reviewheader2">
 							<span style="font-size:12px ">Review - Pending with Me</span>
 							</div>	
-		   					
-		   
 								<div style="margin-top:5px;display:none" id="review2">
-				
-													
 											<div style="max-height:9rem ;overflow-y: auto ; ">
-																				
 															<ul style="padding: 0px">	 
-																					  
 																<% int formcount1=55;
 																	if(dashboardactionpdc.size()>0){
 																  for(Object[] obj : dashboardactionpdc){
@@ -2361,9 +2000,7 @@ if(ses!=null){ %>
 																	  	%>
 																  
 																    <li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 12px 0px !important;">
-																    	
 																    	<form name="Action<%=formcount1%>" id="Action<%=formcount1%>" action="<%=obj[7] %>" method="POST" >
-																    	
 																    		<input type="hidden" name="Assigner" value="<%=obj[11]%>,<%=obj[13]%>"/>													
 		                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
 																			<input type="hidden" name="ActionMainId" value="<%=obj[9]%>"/>
@@ -2373,11 +2010,7 @@ if(ses!=null){ %>
 																			<input type="hidden" name="forceclose" value="N"/>
 																			<input type="hidden" name="ActionAssignId" value="<%=obj[16]%>">
 		 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-																    		
-																    	
 																    	</form>
-																    	
-																    	
 
 																    	<a href="javascript:actionform(<%=formcount1%>)" class="btn btn-sm" style=" border-radius: 3px; 
 																	    	<%if("A".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
@@ -2386,23 +2019,12 @@ if(ses!=null){ %>
 																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px 	#DC143C; <%} %>
 																    		transition: all 200ms ease-out;color:black;font-weight:bold;"> 
 																    		<%=obj[1] %> <br> <%=obj[0] %> &nbsp;&nbsp;
-																		    		
 																    	</a> 
-																    	
-																    	
 														   			 </li>
-														   			 
-														   			 
-														   			 
-														   			 
-													
 																 <%formcount1++;} }}else{%>
-																 	
 																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
 																 	</li>
-																 
 																 <% } %> 
-		 
 													 	 </ul> 
 													 	 
 													</div>
@@ -2412,13 +2034,7 @@ if(ses!=null){ %>
 				 			
 				 		<%-- <%} %>	 --%><!-- Closing of condition for second review block --><!--------- Closing if loop of action items ------------->
 				 				
-				 				
 			<!-- ----------- ACTION DASHBOARD  REVIEW  BLOCK ENDS------------- -->
-				 	
-				 
-				 				
-			
-		
 					 </div>	
 				</div>
 	<!-- @@@@@@@@@@@@@@@@ DIV CARD BOX ENDS @@@@@@@@@@@@@@@@@@@@@@@ -->
@@ -2450,18 +2066,12 @@ if(ses!=null){ %>
 				          </div>
 				        </div> --%>
 
-
-
-
-
 				<!-- ----------- PROJECT DASHBOARD  MEETINGS  BLOCK STARTS------------- -->
 				 			
 				 			<div class="card" style="background: transparent;margin-top:1%;display: none"  id="meetingblock">
-						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
 								<a class="navbar-brand" style="color:white;" >Meetings</a>
 							</nav>					
-											
 								<!-- <div id="carouselExampleControls1" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;"> -->
 								<!-- Uncomment the above line to add carousel -->
 								<div id="carouselExampleControls1" class="" data-ride=""  style="padding: 3px 0px 7px 4px;">
@@ -2470,10 +2080,7 @@ if(ses!=null){ %>
 										<%if(ProjectList!=null){ %>
 									    <%for(Object[] obj : ProjectList){
 									    	%>
-										    
 									    <div class="carousel-item" id="Meeting<%=obj[0]%>" <%if(obj[0].toString().equals("0")){ %> style="display: none" <%} %>>
-				
-				
 										    	<table class="table meeting" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
 													<tr>
 														<td style="padding : 5px 15px 5px 15px;"></td>
@@ -2483,11 +2090,8 @@ if(ses!=null){ %>
 													</tr>
 				
 													<%if(ProjectMeetingCount!=null ){ %>	
-															
-													<%for(Object[] obj2 : ProjectMeetingCount){ %>
-				
+													  <%for(Object[] obj2 : ProjectMeetingCount){ %>
 														<%if(obj[0].toString().equalsIgnoreCase(obj2[9].toString())) { %>
-														
 														  <!-- (project status) ==> all = All, B = held and C = remaining -->
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">EB</td>
@@ -2508,48 +2112,27 @@ if(ses!=null){ %>
 														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[8] %></button></td>
 													</tr>
 													
-													<%}%>
-				
-													<%} %>
-													
-													<%} %>
-				
-													
+													 <%}%>
+												   <%} %>
+												<%} %>
 												 </table>
 										    </div>
-										    
 										    <%} %>
-										    
 										    <%} else{ %>
-										    
-										    
 										    	<div class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;border: none; ">
 										    		No Meetings
 										    	</div>
-										    
 										    <%} %>
-										    
 										  </div>
-				
 									</div> 
-							
 							</div>
 					<!-- ----------- PROJECT DASHBOARD  MEETINGS  BLOCK ENDS------------- -->
-		
-
-
-
 			</div>
 <!-- @@@@@@@@ MAIN ROW col-md-3 END @@@@@@@ -->	
-	
-	
 		</div>
 <!-- @@@@@@@@ MAIN ROW END @@@@@@@ -->
-
 </div>
 <!-- @@@@@@@@ CONTAINER FLUID END @@@@@@@ -->
-
-
 
 <!-- ------------------------------------------------------------- NOTICE MODAL (popup when clicked on + symbol of NOTICE IN ACTION DASHBOARD)   ------------------------------------------------------------------------------------ -->		
 			
@@ -3747,16 +3330,12 @@ if(ses!=null){ %>
 										</thead>
 										
 										<tbody>
-	
 											<%for(Object[] obj : projecthealthtotaldg) { %>
-		
 											<tr>
-											
 												<td><a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
 												<td style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
 												<td class="custom-td">
 													<%if(Integer.parseInt(obj[2].toString())>0){ %>
-														
 														<div class="row">
 															<div class="col-md-11">
 															    <div class="progress"  >
@@ -3951,8 +3530,9 @@ if(ses!=null){ %>
 
 	<form method="post" action="ActionWiseAllReport.htm" name="dateform" id="dateform">                                                    	
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 													
-		<input type="hidden" name="ActionType"  id="TypeId" />
-		<input type="hidden" name="ProjectId"	id="Id"/>		
+		<input type="hidden" name="Type"  id="TypeId" />
+		<input type="hidden" name="ActionType" id="ActionType" />
+		<input type="hidden" name="ProjectId" id="Id"/>		
 	</form>
 	
 	<form method="post" action="CommitteeAutoScheduleList.htm" name="committeeform" id="committeeform">                                                    	
@@ -4604,11 +4184,12 @@ $(document).ready(function () {
 	});
 
 
-function submitForm(type,id)
+function submitForm(type,actionType,id)
 { 
 
    $("#TypeId").val(type);
    $("#Id").val(id);
+   $("#ActionType").val(actionType);
    
    document.getElementById('dateform').submit(); 
 } 
