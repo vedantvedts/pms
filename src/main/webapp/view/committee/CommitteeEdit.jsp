@@ -63,7 +63,7 @@ String ses=(String)request.getParameter("result");
     <br />
     
     
-	<div class="container">
+	<div class="container" style="max-width: 100%;">
 		<div class="row">
 			<div class="col-md-12">			
 				<div class="card shadow-nohover">
@@ -262,6 +262,7 @@ function submitfrm(){
 	 var data1 =CKEDITOR.instances['Editordescription'].getData();
 	 var data2 =CKEDITOR.instances['EditorReference'].getData();
 
+	 console.log(data1)
 
 
 	 $('#description').val(data1);
@@ -350,87 +351,94 @@ if(this.value == "P"){
 
 
 var editor_config = {
-		toolbar : [
-				{
-					name : 'paragraph',
-					items : [ 'NumberedList', 'BulletedList', '-',
-							'Outdent', 'Indent', '-', 'Blockquote' ]
-				},
-				{
-					name : 'styles',
-					items : [ 'Format', 'Font', 'FontSize' ]
-				},
-				{
-					name : 'align',
-					items : [ 'JustifyLeft', 'JustifyCenter',
-							'JustifyRight', 'JustifyBlock' ]
-				} ],
-		removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-		customConfig : '',
-		disallowedContent : 'img{width,height,float}',
-		extraAllowedContent : 'img[width,height,align]',
-		height : 120,
-		contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
-		bodyClass : 'document-editor',
-		format_tags : 'p;h1;h2;h3;pre',
-
-		removeDialogTabs : 'image:advanced;link:advanced',
-
-		stylesSet : [
-
-		{
-			name : 'Marker',
-			element : 'span',
-			attributes : {
-				'class' : 'marker'
-			}
-		}, {
-			name : 'Cited Work',
-			element : 'cite'
-		}, {
-			name : 'Inline Quotation',
-			element : 'q'
-		},
-
-		{
-			name : 'Special Container',
-			element : 'div',
-			styles : {
-				padding : '5px 10px',
-				background : '#eee',
-				border : '1px solid #ccc'
-			}
-		}, {
-			name : 'Compact table',
-			element : 'table',
-			attributes : {
-				cellpadding : '5',
-				cellspacing : '0',
-				border : '1',
-				bordercolor : '#ccc'
-			},
-			styles : {
-				'border-collapse' : 'collapse'
-			}
-		}, {
-			name : 'Borderless Table',
-			element : 'table',
-			styles : {
-				'border-style' : 'hidden',
-				'background-color' : '#E6E6FA'
-			}
-		}, {
-			name : 'Square Bulleted List',
-			element : 'ul',
-			styles : {
-				'list-style-type' : 'square'
-			}
-		}, {
-			filebrowserUploadUrl : '/path/to/upload-handler'
-		}, ]
+	    toolbar: [
+	        {
+	            name: 'paragraph',
+	            items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+	        },
+	        {
+	            name: 'styles',
+	            items: ['Format', 'Font', 'FontSize']
+	        },
+	        {
+	            name: 'align',
+	            items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+	        }
+	    ],
+	    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+	    customConfig: '',
+	    disallowedContent: 'img{width,height,float}',
+	    extraAllowedContent: 'img[width,height,align]',
+	    height: 200,
+	    contentsCss: [CKEDITOR.basePath + 'mystyles.css'],
+	    bodyClass: 'document-editor',
+	    format_tags: 'p;h1;h2;h3;pre',
+	    removeDialogTabs: 'image:advanced;link:advanced',
+	    stylesSet: [
+	        {
+	            name: 'Marker',
+	            element: 'span',
+	            attributes: { 'class': 'marker' }
+	        },
+	        {
+	            name: 'Cited Work',
+	            element: 'cite'
+	        },
+	        {
+	            name: 'Inline Quotation',
+	            element: 'q'
+	        },
+	        {
+	            name: 'Special Container',
+	            element: 'div',
+	            styles: {
+	                padding: '5px 10px',
+	                background: '#eee',
+	                border: '1px solid #ccc'
+	            }
+	        },
+	        {
+	            name: 'Compact table',
+	            element: 'table',
+	            attributes: {
+	                cellpadding: '5',
+	                cellspacing: '0',
+	                border: '1',
+	                bordercolor: '#ccc'
+	            },
+	            styles: { 'border-collapse': 'collapse' }
+	        },
+	        {
+	            name: 'Borderless Table',
+	            element: 'table',
+	            styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' }
+	        },
+	        {
+	            name: 'Square Bulleted List',
+	            element: 'ul',
+	            styles: { 'list-style-type': 'square' }
+	        }
+	    ],
+	    enterMode: CKEDITOR.ENTER_BR,
+	    shiftEnterMode: CKEDITOR.ENTER_P,
+	    on: {
+	        instanceReady: function() {
+	            this.dataProcessor.htmlFilter.addRules({
+	                elements: {
+	                    p: function(element) {
+	                        if (element.children.length == 1 && element.children[0].name == 'br') {
+	                            return false;
+	                        }
+	                    }
+	                }
+	            });
+	        }
+	    }
 	};
-CKEDITOR.replace('Editordescription', editor_config);
-CKEDITOR.replace('EditorReference', editor_config);
+
+	CKEDITOR.replace('Editordescription', editor_config);
+	CKEDITOR.replace('EditorReference', editor_config);
+
 </script>		
 	
 		

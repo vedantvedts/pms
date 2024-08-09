@@ -64,7 +64,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
     <br />
     
     
-	<div class="container">
+	<div class="container" style="max-width: 100%;">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
@@ -393,7 +393,7 @@ document.getElementById('periodic').addEventListener('change', function() {
 			customConfig : '',
 			disallowedContent : 'img{width,height,float}',
 			extraAllowedContent : 'img[width,height,align]',
-			height : 120,
+			height : 200,
 			contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
 			bodyClass : 'document-editor',
 			format_tags : 'p;h1;h2;h3;pre',

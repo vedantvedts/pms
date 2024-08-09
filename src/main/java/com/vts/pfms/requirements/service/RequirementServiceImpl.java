@@ -935,7 +935,7 @@ public class RequirementServiceImpl implements RequirementService {
 					  							  .InitiationId(Long.parseLong(initiationId))
 					  							  .ProjectId(Long.parseLong(projectId))
 					  							  .ProductTreeMainId(Long.parseLong(productTreeMainId))
-					  							  .SpecsVersion(version!=null ?version:"0")
+					  							  .SpecsVersion(version!=null ?version:"1")
 					  							  .InitiatedBy(Long.parseLong(empId))
 					  							  .InitiatedDate(sdf2.format(new Date()))
 					  							  .ReqStatusCode("RIN")

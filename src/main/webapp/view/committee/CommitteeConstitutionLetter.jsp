@@ -158,8 +158,7 @@ p{
 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
 	<thead>
 	<tr >
-<%-- 	<td style="text-align: left">Reference No. : <%if(committeemaindata[11]!=null) {%> <%=committeemaindata[11].toString()%><%}else{ %> -<%} %> </td>
-	<td style="text-align: right">Date: <%if(committeemaindata[12]!=null){ %>  <%=sdf.format(sdf1.parse(committeemaindata[12].toString()))%><%} %></td> --%>
+
 	</tr>
 	</thead>
 	</table>
@@ -179,8 +178,8 @@ p{
 				i++; %>
 			<tr>				
 				<td  style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=i %> .&nbsp;</td>
-				<td style="max-width: 300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;<%=member[2] %>, <%=member[4] %> <%if(member[8].toString().equals("CW")){ %><%=member[9]%><%}  %>&nbsp;</td>
-				<td  style="max-width: 150px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=member[12].toString()%> </td>
+				<td style="max-width:300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;<%=member[2] %>, <%=member[4] %> <%-- <%if(member[8].toString().equals("CW")){ %><%=member[9]%><%}  %> --%>&nbsp;</td>
+				<td  style="max-width:150px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=member[12].toString()%> </td>
 				<td style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp; 
 				<%if(member[8].toString().equals("CC")){ %>Chairperson<%}
 				else if(member[8].toString().equals("CH")){ %>Co-Chairperson<%} 
@@ -221,31 +220,9 @@ p{
 	</table>
 	</div>
 </div>
-<%-- 					 	<div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
-				                <table  align="center" <%if(flag!=null && flag.equalsIgnoreCase("Y")) {%>  style="float:right" <%}else{ %> style="margin-left:55%;"<%} %>>
-				                	<tr>
-				                		<!-- <td class="trup" style="">
-				                			Constituted By
-				                		</td> -->
-				                	
-				                			                		
-				                	</tr>			   
-				                	
-				                	<tr>
-				                		<td class="trdown" style=" " >	
-				                			<%if(constitutionapprovalflow.size()>0){ %>
-								                     <%for(Object[] obj : constitutionapprovalflow){ %>
-								                     
-								                     		<%=obj[0] %>,<%=obj[1] %>
-								                     	
-								                     <%} %>
-								               <%} %>
-				                		</td>
-				                	</tr>             	
-				                </table>			             
-						 	</div> --%>
+
 	<div class="row " style="text-align: left;">
-	<br><br><br>
+	<br>
 	<div align="center" style="text-align: center">
 	<%if(committeemaindata[9].toString().equalsIgnoreCase("A")){ %>
 	 Approved

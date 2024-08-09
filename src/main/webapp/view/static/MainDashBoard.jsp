@@ -7,7 +7,8 @@
 <%@page import="com.vts.pfms.master.dto.ProjectSanctionDetailsMaster"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat" %>
 <%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
-
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +19,8 @@
 
 <spring:url value="/resources/css/newfont.css" var="NewFontCss" />
 <link href="${NewFontCss}" rel="stylesheet" /> 
-
+<link href="${sweetalertCss}" rel="stylesheet" />
+	<script src="${sweetalertJs}"></script>
 <spring:url value="/resources/css/master.css" var="masterCss" />
 <link href="${masterCss}" rel="stylesheet" />
 
@@ -969,6 +971,7 @@ if(ses!=null){ %>
 				      <div class="card" style="background: transparent;display: none" id="todayschedules">
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
 								<span style="color:white">Today's Schedule <span class="badge badge-today badge-success" style="position: absolute;top: 0px;"></span> </span> 
+					 	  		<%if(logintype.equalsIgnoreCase("A")) {%><button class="btn btn-sm" id="sendMail" onclick="sendMail('<%=LocalDate.now()%>')"> <i class="fa fa-paper-plane" aria-hidden="true"></i></button><%} %>
 					 	  		<form class=" form-inline" method="post" action="MySchedules.htm" id="myform" >
 									<input  class="btn btn-primary myschedule" type="submit" name="sub" value=" &nbsp;&nbsp;" style="background-color: #23689b;font-size: 0.875rem;border: 2px solid lightslategrey" >
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -5115,6 +5118,7 @@ $("#selectall").click(function(){
 	}
 	
 });
+
 </script>
 
 </body>

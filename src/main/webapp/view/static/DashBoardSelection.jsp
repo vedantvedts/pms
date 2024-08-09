@@ -292,5 +292,57 @@ $(document).ready(function() {
     var initialChecked = $('#mainProject').prop('checked');
     $('input:checkbox.mainProject').prop('checked', initialChecked);
   });
+  
+  
+function sendMail(a){
+	Swal.fire({
+	    title: 'Sending...',
+	  
+	    didOpen: () => {
+	        Swal.showLoading()
+	    }
+	});
+	
+	console.log(a)
+	$.ajax({
+		type:'get',
+		url:'sendMails.htm',
+		datatype:'json',
+		data:{
+			scheduledate:a,
+		},
+		 success:function(result){
+			 var ajaxresult = JSON.parse(result);
+			 console.log(typeof ajaxresult)
+			if(ajaxresult<0){
+				   Swal.close();
+					Swal.fire({
+		    			  icon: "error",
+		    			  text: "Mail Authentication Failed!",
+		    			 
+		    			}); 
+			}else if(ajaxresult===111){
+				  Swal.close();
+					Swal.fire({
+		    			  icon: "warning",
+		    			  text: "No meetings sceduled for today!",
+		    			 
+		    			}); 
+			}
+			else{
+				  Swal.close();
+					Swal.fire({
+		    			  icon: "success",
+		    			  text: "Mail sent!",
+		    			 
+		    			}); 
+			}
+		 }
+		
+	});
+	
+	
+	
+}
 </script>
 </html>

@@ -450,12 +450,12 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
 			<%int count=0;
 				for(Object []obj:subReqList) {%>
-					<button  type="button" class="btn btn-secondary viewbtn mt-2" style="width:88%" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
+				<div>	<button  type="button" class="btn btn-secondary viewbtn mt-2" style="width:88%" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
 						 <%=(++count)+". "+ obj[3] %>
 					</button>
 					<button style="width:10%;background: white;" class="btn btn-sm" onclick="openSubReqModal(<%=obj[14].toString()%>,<%=obj[0].toString()%>)" data-toggle="tooltip" data-placement="bottom" data-original-data="" title="ADD REQ">
 						<i class="fa fa-plus-square" aria-hidden="true"></i>
-					</button>
+					</button> </div>
 					<div class="col-md-10 subDiv" id="subDiv<%=obj[0].toString()%>" style="display:none;" >
 					
 						<% List<Object[]>subList=RequirementList.stream().filter(e->e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
@@ -856,6 +856,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 			<!-- body for Edit  -->
 			<form class="form-horizontal" role="form"action="RequirementUpdate.htm" method="POST" id="myform2">
 			<div class="row" id="row3" style="display:none;">
+							<div id="ReqTypeName" style="font-size: 1.5rem;margin-left: 10px;font-weight: 600;"></div>
 									
 							<div class="col-md-12">
 								<div class="row">
@@ -880,7 +881,18 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>
-							
+									<div class="col-md-12">
+								<div class="row mt-2">
+									<div class=col-md-3>
+										<label style="font-size: 17px; margin-top: 7%;  color: #07689f">
+											Requirement Type:<span class="mandatory" style="color: red;">*</span>
+										</label>
+									</div>
+									<div class="col-md-4">
+										<select required="required"  class="form-control" data-width="100%" id="reqTypeedit" name="reqType" ></select>
+									</div>
+									</div>
+									</div>
 							<div class="col-md-12">
 								<div class="row">
 									<div class=col-md-3>
@@ -1168,8 +1180,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
        						<span class="text-primary">No system requirements to Add</span>
          				</div>
        				<%} %>
-       				<div align="center" class="mb-2"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">ADD NEW</button></div>
-      				<hr class="mb-2">
+<!--        				<div align="center" class="mb-2"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">ADD NEW</button></div>
+ -->      				<hr class="mb-2">
       				<div class="p-2" align="center">
 	      			    <input type="hidden" name="project" value="<%=project%>">
 		    			<input type="hidden" name="initiationId" value="<%=initiationId%>">
@@ -1425,6 +1437,8 @@ function showDetails(InitiationReqId,type){
 	$('#subDivs').hide();
 	
 }
+
+var map = new Map();
 function showDetailss(subId,Id){
 	$('.viewbtn').css("background","#055C9D");
 	$('#'+subId).css("background","green");
@@ -1477,6 +1491,32 @@ function showDetailss(subId,Id){
 				$('#description').html(ajaxresult[3]);
 			}
 	$('#editreq').html('<button type="button"  class="btn btn-sm" onclick="edit1('+ajaxresult[7]+')"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" ><i class="fa fa-pencil-square-o fa-lg" style="color:orange" aria-hidden="true"></i></button>');
+		
+		var value = $('#'+Id).val();
+		
+		map = new Map();
+		$.ajax({
+			type:'GET',
+			url:'RequirementMainJsonValue.htm',
+			datatype:'json',
+			data:{
+				ReqMainId:value,
+			},
+			success:function(result){
+				 var ajaxresult=JSON.parse(result);
+			
+		
+				var html='<option disabled="disabled" value="" selected="selected">Choose..</option>';
+				for(var i=0;i<ajaxresult.length;i++){
+					
+					map.set(ajaxresult[i][0]+"/"+ajaxresult[i][3]+"/"+ajaxresult[i][1], ajaxresult[i][3]);
+					html=html+'<option value="'+ajaxresult[i][0]+"/"+ajaxresult[i][3]+"/"+ajaxresult[i][1]+'">'+ajaxresult[i][1]+'   ('+ajaxresult[i][3]+') </option>'
+				}
+				$('#reqTypeedit').html(html);
+				
+			}
+		})
+	
 		}
 	})
 }
@@ -1527,6 +1567,7 @@ function edit1(InitiationReqId){
 				 $('#remarksedit').val(ajaxresult[9])
 				 $('#Constraintsedit').val(ajaxresult[12])
 				 $('#criticalityedit').val(ajaxresult[19])
+				 document.getElementById('ReqTypeName').innerHTML ="Requirement No.- "+ ajaxresult[4]
 				 
 				 if(ajaxresult[8]==="E"){
 					 $('#essentialRadio').prop('checked', true);
@@ -1536,7 +1577,7 @@ function edit1(InitiationReqId){
 				
 				 if(ajaxresult[13]!=null){
 					 var para = ajaxresult[13].toString().split(", ");
-					 console.log(para);
+					
 					 $('#LinkedParaEdit').val(para).trigger('change');
 				 }
 				 if(ajaxresult[14]!=null){
@@ -1565,7 +1606,18 @@ function edit1(InitiationReqId){
 				
 					 $('#specialMethodsedit').val(methods).trigger('change');
 				 }
-				 
+		
+			 var reqtypeName =ajaxresult[4].split("_")[0];  
+		      
+		        var matchingKey = null;
+
+		        map.forEach((value, key) => {
+		            if (value === reqtypeName) {
+		                matchingKey = key;
+		            }
+		        });
+				$('#reqTypeedit').val(matchingKey)
+		        console.log("Matching Key:", matchingKey);
 			}
 		})
 

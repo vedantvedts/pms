@@ -582,11 +582,14 @@ if(RequirementList!=null && RequirementList.size()>0){
 		var LinkedRequirements = Data.LinkedRequirement.split(",");
 		var tempArray=[];
 		var jsObjectList = JSON.parse('<%= jsonArray %>');
+		console.log("jsObjectList"+jsObjectList)
+		if(jsObjectList!=null){
 		for(var i =0;i<jsObjectList.length;i++){
 			
 			if(LinkedRequirements.includes(jsObjectList[i][0]+"")){
 				tempArray.push(jsObjectList[i][1]);
 			}
+		}
 		}
 		var temp =tempArray.toString();
 		

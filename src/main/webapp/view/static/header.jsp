@@ -244,10 +244,10 @@ String labcode= (String)session.getAttribute("labcode");
 						<div class="collapse navbar-collapse" id="navbarResponsive">
 							<ul class="navbar-nav ml-auto ">
 
-								<li class="nav-item active">
-								<button type="button" class="btn btn-light"
-									onclick="opensmartsearch()" >
-									<b>Smart Search </b>&#x1F50D;
+								<li class="nav-item active" style="display: flex;">
+								<button type="button" class="btn btn-sm btn-light"
+									onclick="opensmartsearch()" style="height:40px;" >
+									 <b>Search </b>&#x1F50D;
 								</button>
 								<a class="btn custom-button "
 									href="MainDashBoard.htm" type="button" aria-haspopup="true"
@@ -505,7 +505,7 @@ String labcode= (String)session.getAttribute("labcode");
 			
 					var name=values[i][1].replace(/ /g,'');
 
-					module+="<li class='nav-item dropdown uppernav ' style='padding: 0rem 1rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
+					module+="<li class='nav-item dropdown uppernav ' style='padding:0rem 0.35rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
 					
 					}
 					
