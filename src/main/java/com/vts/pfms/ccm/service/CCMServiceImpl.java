@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -30,11 +31,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.ccm.dao.CCMDao;
-import com.vts.pfms.ccm.model.CCMSchedule;
-import com.vts.pfms.ccm.model.CCMScheduleAgenda;
 import com.vts.pfms.committee.dao.CommitteeDao;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
+import com.vts.pfms.committee.model.CommitteeMain;
 import com.vts.pfms.committee.model.CommitteeMember;
+import com.vts.pfms.committee.model.CommitteeSchedule;
+import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 
 @Service
 public class CCMServiceImpl implements CCMService{
@@ -58,9 +60,29 @@ public class CCMServiceImpl implements CCMService{
 	@Override
 	public long ccmCommitteeMainMembersSubmit(CommitteeMembersEditDto dto, String action) throws Exception {
 		try {
+			
+			Long commmitteeMainId = Long.parseLong(dto.getCommitteemainid());
+			if(commmitteeMainId==0L) {
+				
+				LocalDate fromDate = LocalDate.now();
+				
+				CommitteeMain main = new CommitteeMain();
+				main.setCommitteeId(Long.parseLong(dto.getCommitteeId()));
+				main.setValidFrom(java.sql.Date.valueOf(fromDate));
+				main.setValidTo(java.sql.Date.valueOf(fromDate.plusYears(5).minusDays(1)));
+				main.setStatus("A");
+				main.setPreApproved("Y");
+				main.setIsActive(1);
+				main.setCreatedBy(dto.getModifiedBy());
+				main.setCreatedDate(sdtf.format(new Date()));
+				main.setFormationDate(java.sql.Date.valueOf(fromDate));
+				
+				commmitteeMainId = committeedao.CommitteeDetailsSubmit(main);	
+			}
+			
 			// Chairperson Add / Edit
 			CommitteeMember mem1 = action.equalsIgnoreCase("Add")? new CommitteeMember() : dao.getCommitteeMemberById(dto.getChairpersonmemid());
-			mem1.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
+			mem1.setCommitteeMainId(commmitteeMainId);
 			mem1.setLabCode(dto.getSesLabCode());
 			mem1.setEmpId(Long.parseLong(dto.getChairperson()));
 			mem1.setMemberType("CC");
@@ -87,7 +109,7 @@ public class CCMServiceImpl implements CCMService{
 			}
 			if(dto.getCo_chairperson()!=null && Long.parseLong(dto.getCo_chairperson())>0) {
 				mem1 = action.equalsIgnoreCase("Add") || dto.getComemberid()==null? new CommitteeMember() : dao.getCommitteeMemberById(dto.getComemberid());
-				mem1.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
+				mem1.setCommitteeMainId(commmitteeMainId);
 				mem1.setLabCode(dto.getSesLabCode());
 				mem1.setEmpId(Long.parseLong(dto.getCo_chairperson()));
 				mem1.setMemberType("CH");
@@ -106,7 +128,7 @@ public class CCMServiceImpl implements CCMService{
 			
 			// Member Secretary Add / Edit
 			mem1 = action.equalsIgnoreCase("Add")? new CommitteeMember() : dao.getCommitteeMemberById(dto.getSecretarymemid());
-			mem1.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
+			mem1.setCommitteeMainId(commmitteeMainId);
 			mem1.setLabCode(dto.getSesLabCode());
 			mem1.setEmpId(Long.parseLong(dto.getSecretary()));
 			mem1.setMemberType("CS");
@@ -133,7 +155,7 @@ public class CCMServiceImpl implements CCMService{
 			}
 			if(dto.getProxysecretary()!=null && Long.parseLong(dto.getProxysecretary())>0) {
 				mem1 = (action.equalsIgnoreCase("Add") || dto.getProxysecretarymemid()==null)? new CommitteeMember() : dao.getCommitteeMemberById(dto.getProxysecretarymemid());
-				mem1.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
+				mem1.setCommitteeMainId(commmitteeMainId);
 				mem1.setLabCode(dto.getSesLabCode());
 				mem1.setEmpId(Long.parseLong(dto.getProxysecretary()));
 				mem1.setMemberType("PS");
@@ -150,7 +172,7 @@ public class CCMServiceImpl implements CCMService{
 				committeedao.CommitteeMainMembersAdd(mem1);
 			}
 			
-			return 1;
+			return commmitteeMainId;
 
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -161,27 +183,28 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public List<CCMSchedule> getCCMScheduleList(String year) throws Exception {
+	public List<CommitteeSchedule> getScheduleListByYear(String year) throws Exception {
 		
-		return dao.getCCMScheduleList(year);
+		return dao.getScheduleListByYear(year);
 	}
 
 	@Override
-	public CCMSchedule getCCMScheduleById(String ccmScheduleId) throws Exception {
+	public CommitteeSchedule getCCMScheduleById(String ccmScheduleId) throws Exception {
 		
 		return dao.getCCMScheduleById(ccmScheduleId);
 	}
 
 	@Override
-	public long addCCMSchedule(CCMSchedule ccmSchedule, String labcode) throws Exception {
-		if(ccmSchedule.getCCMScheduleId()==null) {
-			LocalDate localDate = LocalDate.parse(ccmSchedule.getMeetingDate().substring(0, 10));
+	public long addCCMSchedule(CommitteeSchedule schedule) throws Exception {
+		if(schedule.getScheduleId()==null) {
+			LocalDate localDate = LocalDate.parse(schedule.getScheduleDate().toString());
 			String month = localDate.getMonth().toString().substring(0, 3);
-			long maxCCMScheduleIdForMonth = dao.getMaxCCMScheduleIdForMonth(month);
-			ccmSchedule.setMeetingRefNo(labcode+"/CCM/"+(localDate.getYear())+"/"+month+"/"+(maxCCMScheduleIdForMonth+1));
+			String seq = schedule.getLabCode()+"/CCM/"+(localDate.getYear())+"/"+month+"/";
+			long maxCCMScheduleIdForMonth = dao.getMaxCCMScheduleIdForMonth(seq);
+			schedule.setMeetingId(seq+(maxCCMScheduleIdForMonth+1));
 		}
 		
-		return dao.addCCMSchedule(ccmSchedule);
+		return dao.addCCMSchedule(schedule);
 	}
 	
 	@Override
@@ -198,13 +221,14 @@ public class CCMServiceImpl implements CCMService{
 	        int maxAgendaIndex = getMaxAgendaIndex(req, "agenda");
 	        for (i = 0; i <= maxAgendaIndex; i++) {
 	            if (req.getParameter("agenda[" + i + "].agendaItem") != null) {
-	                CCMScheduleAgenda agenda = new CCMScheduleAgenda();
-	                agenda.setCCMScheduleId(Long.parseLong(ccmScheduleId));
+	            	CommitteeScheduleAgenda agenda = new CommitteeScheduleAgenda();
+	                agenda.setScheduleId(Long.parseLong(ccmScheduleId));
 	                agenda.setParentScheduleAgendaId(0L);
 	                agenda.setAgendaPriority(++mainpriority);
 	                agenda.setAgendaItem(req.getParameter("agenda[" + i + "].agendaItem"));
-	                agenda.setPresenterLabCode(req.getParameter("agenda[" + i + "].prepsLabCode"));
-	                agenda.setPresenterId(req.getParameter("agenda[" + i + "].presenterId"));
+	                agenda.setPresentorLabCode(req.getParameter("agenda[" + i + "].prepsLabCode"));
+	                //agenda.setPresenterId(req.getParameter("agenda[" + i + "].presenterId"));
+	                agenda.setPresenterId(req.getParameter("agenda[" + i + "].presenterId")!=null?Long.parseLong(req.getParameter("agenda[" + i + "].presenterId")): 0);
 	                //agenda.setStartTime(req.getParameter("agenda[" + i + "].startTime"));
 	                //agenda.setEndTime(req.getParameter("agenda[" + i + "].endTime"));
 	                agenda.setDuration(req.getParameter("agenda[" + i + "].duration")!=null?Integer.parseInt(req.getParameter("agenda[" + i + "].duration")): 0);
@@ -217,10 +241,10 @@ public class CCMServiceImpl implements CCMService{
 					
 	                MultipartFile attachment = fileMap.get("agenda[" + i + "].attachment");
 	                if (attachment != null && !attachment.isEmpty()) {
-	                    agenda.setAttatchmentPath("File-" + timestampstr + "." + FilenameUtils.getExtension(attachment.getOriginalFilename()));
-	                    saveFile(uploadpath + Path, agenda.getAttatchmentPath(), attachment);
+	                    agenda.setFileName("File-" + timestampstr + "." + FilenameUtils.getExtension(attachment.getOriginalFilename()));
+	                    saveFile(uploadpath + Path, agenda.getFileName(), attachment);
 	                } else {
-	                    agenda.setAttatchmentPath(null);
+	                    agenda.setFileName(null);
 	                }
 	                
 	                Long scheduleAgendaId = dao.addCCMScheduleAgenda(agenda);
@@ -231,13 +255,14 @@ public class CCMServiceImpl implements CCMService{
 	                int maxSubAgendaIndex = getMaxSubAgendaIndex(req, "agenda[" + i + "].subAgendas");
 	                for (j = 0; j <= maxSubAgendaIndex; j++) {
 	                    if (req.getParameter("agenda[" + i + "].subAgendas[" + j + "].agendaItem") != null && !req.getParameter("agenda[" + i + "].subAgendas[" + j + "].agendaItem").isEmpty()) {
-	                        CCMScheduleAgenda subagenda = new CCMScheduleAgenda();
-	                        subagenda.setCCMScheduleId(Long.parseLong(ccmScheduleId));
+	                    	CommitteeScheduleAgenda subagenda = new CommitteeScheduleAgenda();
+	                        subagenda.setScheduleId(Long.parseLong(ccmScheduleId));
 	                        subagenda.setParentScheduleAgendaId(scheduleAgendaId);
 	                        subagenda.setAgendaPriority(++subpriority);
 	                        subagenda.setAgendaItem(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].agendaItem"));
-	                        subagenda.setPresenterLabCode(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].prepsLabCode"));
-	                        subagenda.setPresenterId(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].presenterId"));
+	                        subagenda.setPresentorLabCode(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].prepsLabCode"));
+	                        //subagenda.setPresenterId(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].presenterId"));
+	                        subagenda.setPresenterId(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].presenterId")!=null? Long.parseLong(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].presenterId")) : 0);
 	                        subagenda.setDuration(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].duration")!=null? Integer.parseInt(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].duration")) : 0);
 	                        //subagenda.setStartTime(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].startTime"));
 	                        //subagenda.setEndTime(req.getParameter("agenda[" + i + "].subAgendas[" + j + "].endTime"));
@@ -250,10 +275,10 @@ public class CCMServiceImpl implements CCMService{
 	        				
 	                        MultipartFile subattachment = fileMap.get("agenda[" + i + "].subAgendas[" + j + "].attachment");
 	                        if (subattachment != null && !subattachment.isEmpty()) {
-	                            subagenda.setAttatchmentPath("File-" + timestampstr2 + "." + FilenameUtils.getExtension(subattachment.getOriginalFilename()));
-	                            saveFile(uploadpath + Path, subagenda.getAttatchmentPath(), subattachment);
+	                            subagenda.setFileName("File-" + timestampstr2 + "." + FilenameUtils.getExtension(subattachment.getOriginalFilename()));
+	                            saveFile(uploadpath + Path, subagenda.getFileName(), subattachment);
 	                        } else {
-	                            subagenda.setAttatchmentPath(null);
+	                            subagenda.setFileName(null);
 	                        }
 	                        
 	                        dao.addCCMScheduleAgenda(subagenda);
@@ -329,13 +354,13 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public CCMScheduleAgenda getCCMScheduleAgendaById(String ccmScheduleAgendaId) throws Exception {
+	public CommitteeScheduleAgenda getCCMScheduleAgendaById(String ccmScheduleAgendaId) throws Exception {
 		
 		return dao.getCCMScheduleAgendaById(ccmScheduleAgendaId);
 	}
 
 	@Override
-	public Long addCCMScheduleAgenda(CCMScheduleAgenda agenda, MultipartFile attachment, String labcode, int orgDuration) throws Exception {
+	public Long addCCMScheduleAgenda(CommitteeScheduleAgenda agenda, MultipartFile attachment, String labcode, int orgDuration) throws Exception {
 		try {
 			
 			// Update Duration of Main Agenda
@@ -348,8 +373,8 @@ public class CCMServiceImpl implements CCMService{
 
 	        String Path = labcode + "\\CCM\\";
 			if (attachment != null && !attachment.isEmpty()) {
-                agenda.setAttatchmentPath("File-" + timestampstr + "." + FilenameUtils.getExtension(attachment.getOriginalFilename()));
-                saveFile(uploadpath + Path, agenda.getAttatchmentPath(), attachment);
+                agenda.setFileName("File-" + timestampstr + "." + FilenameUtils.getExtension(attachment.getOriginalFilename()));
+                saveFile(uploadpath + Path, agenda.getFileName(), attachment);
             } 
 			return dao.addCCMScheduleAgenda(agenda);
 		}catch (Exception e) {
@@ -420,13 +445,13 @@ public class CCMServiceImpl implements CCMService{
 			
 			int totalDuration = 0;
 			for(int i=0; i<agendaItem.length; i++) {
-				CCMScheduleAgenda agenda = new CCMScheduleAgenda();
-                agenda.setCCMScheduleId(Long.parseLong(ccmScheduleId));
+				CommitteeScheduleAgenda agenda = new CommitteeScheduleAgenda();
+                agenda.setScheduleId(Long.parseLong(ccmScheduleId));
                 agenda.setParentScheduleAgendaId(Long.parseLong(scheduleAgendaId));
                 agenda.setAgendaPriority(++subPriority);
                 agenda.setAgendaItem(agendaItem[i]);
-                agenda.setPresenterLabCode(prepsLabCode[i]);
-                agenda.setPresenterId(presenterId[i]);
+                agenda.setPresentorLabCode(prepsLabCode[i]);
+                agenda.setPresenterId(Long.parseLong(presenterId[i]));
                 agenda.setDuration(Integer.parseInt(duration[i]));
                 agenda.setCreatedBy(userId);
                 agenda.setCreatedDate(sdtf.format(new Date()));
@@ -438,10 +463,10 @@ public class CCMServiceImpl implements CCMService{
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 				
                 if (attachments[i] != null && !attachments[i].isEmpty()) {
-                    agenda.setAttatchmentPath("File-" + timestampstr + "." + FilenameUtils.getExtension(attachments[i].getOriginalFilename()));
-                    saveFile(uploadpath + Path, agenda.getAttatchmentPath(), attachments[i]);
+                    agenda.setFileName("File-" + timestampstr + "." + FilenameUtils.getExtension(attachments[i].getOriginalFilename()));
+                    saveFile(uploadpath + Path, agenda.getFileName(), attachments[i]);
                 } else {
-                    agenda.setAttatchmentPath(null);
+                    agenda.setFileName(null);
                 }
                 
                 dao.addCCMScheduleAgenda(agenda);
@@ -463,7 +488,7 @@ public class CCMServiceImpl implements CCMService{
 	@Override
 	public int ccmScheduleSubAgendaDelete(String scheduleAgendaId, String userId, String ccmScheduleId, String agendaPriority, String parentScheduleAgendaId) throws Exception {
 		try {
-			CCMScheduleAgenda agenda = dao.getCCMScheduleAgendaById(scheduleAgendaId);
+			CommitteeScheduleAgenda agenda = dao.getCCMScheduleAgendaById(scheduleAgendaId);
 			
 			// Remove the Duration from Main Agenda
 			if(agenda.getParentScheduleAgendaId()!=0) {
@@ -487,5 +512,17 @@ public class CCMServiceImpl implements CCMService{
 			return 0;
 		}
 		
+	}
+
+	@Override
+	public Long getCommitteeMainIdByCommitteeCode(String labCode) throws Exception {
+		
+		return dao.getCommitteeMainIdByCommitteeCode(labCode);
+	}
+
+	@Override
+	public Long getCommitteeIdByCommitteeCode(String labCode) throws Exception {
+		
+		return dao.getCommitteeIdByCommitteeCode(labCode);
 	}
 }

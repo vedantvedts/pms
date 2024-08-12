@@ -29,5 +29,6 @@ public class CommitteeScheduleAgenda {
 	private String ModifiedDate;
 	private int AgendaPriority;
 	private int IsActive;
-	
+	private Long ParentScheduleAgendaId;
+	private String FileName;
 }

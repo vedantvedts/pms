@@ -1,9 +1,9 @@
+<%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.AbstractMap"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.List"%>
-<%@page import="com.vts.pfms.ccm.model.CCMSchedule"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.temporal.TemporalAdjusters"%>
@@ -206,11 +206,11 @@ String endDate = fc.sdfTordf(selectedMonthEndDate);
 
 LocalTime currentTime = LocalTime.now();
 
-List<CCMSchedule> ccmScheduleList = (List<CCMSchedule>) request.getAttribute("ccmScheduleList");
+List<CommitteeSchedule> ccmScheduleList = (List<CommitteeSchedule>) request.getAttribute("ccmScheduleList");
 if (ccmScheduleList != null && !ccmScheduleList.isEmpty()) {
     ccmScheduleList = ccmScheduleList.stream()
         .map(e -> {
-            LocalDate meetingDate = LocalDate.parse(e.getMeetingDate().substring(0, 10));
+            LocalDate meetingDate = LocalDate.parse(e.getScheduleDate().toString());
             return new AbstractMap.SimpleEntry<>(e, meetingDate);
         })
         .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())) // Sort in descending order
@@ -218,7 +218,7 @@ if (ccmScheduleList != null && !ccmScheduleList.isEmpty()) {
         .collect(Collectors.toList());
 }
 
-/* CCMSchedule ccmScheduleData = ccmScheduleList!=null && ccmScheduleList.size()>0 ? ccmScheduleList.stream()
+/* CCMSchedule ccmSchedule = ccmScheduleList!=null && ccmScheduleList.size()>0 ? ccmScheduleList.stream()
 							  .map(e -> {
 						          LocalDate meetingDate = LocalDate.parse(e.getMeetingDate().substring(0,10));
 						          return new AbstractMap.SimpleEntry<>(e, meetingDate);
@@ -234,13 +234,15 @@ if (ccmScheduleList != null && !ccmScheduleList.isEmpty()) {
 						      .findFirst()
 						      .orElse(null)
 						      : null;
-long ccmScheduleId = ccmScheduleData!=null?ccmScheduleData.getCCMScheduleId():0; */
-String ccmScheduleId =  request.getAttribute("ccmScheduleId")!=null?(String)request.getAttribute("ccmScheduleId"):"0";
+long ccmScheduleId = ccmSchedule!=null?ccmSchedule.getCCMScheduleId():0; */
+String ccmScheduleId = request.getAttribute("ccmScheduleId")!=null?(String)request.getAttribute("ccmScheduleId"):"0";
+String committeeMainId = request.getAttribute("committeeMainId")!=null?(String)request.getAttribute("committeeMainId"):"0";
+String committeeId = request.getAttribute("committeeId")!=null?(String)request.getAttribute("committeeId"):"0";
 
 List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 
-CCMSchedule ccmScheduleData = ccmScheduleList!=null && ccmScheduleList.size()>0 ? ccmScheduleList.stream()
-							.filter(e -> e.getCCMScheduleId()==(Long.parseLong(ccmScheduleId)))
+CommitteeSchedule ccmSchedule = ccmScheduleList!=null && ccmScheduleList.size()>0 ? ccmScheduleList.stream()
+							.filter(e -> e.getScheduleId()==(Long.parseLong(ccmScheduleId)))
 							.findFirst().orElse(null) : null;
 
 List<Object[]> allLabList = (List<Object[]>) request.getAttribute("allLabList");
@@ -274,6 +276,8 @@ String labcode =  (String)request.getAttribute("labcode");
  					<div class="col-md-8"></div>
  					<div class="col-md-2 right">
 	 					<form action="CCMSchedule.htm" method="post">
+	 						<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
+							<input type="hidden" name="committeeId" value="<%=committeeId%>">
 	 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	 						<label class="control-label">Choose : </label>
 	 						<input class="monthpicker" type="hidden"  name="monthyear" id="monthyear" value="<%=monthyear %>" onchange="this.form.submit()">
@@ -298,6 +302,8 @@ String labcode =  (String)request.getAttribute("labcode");
    							<div class="card-body ccmSideBar">
    								<form action="CCMSchedule.htm" method="GET">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+									<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
+									<input type="hidden" name="committeeId" value="<%=committeeId%>">
 									<div class="row">
    										<div class="col-md-12">
      										<button class="btn btn-primary ccmSideBarButton" type="submit" data-toggle="tooltip" data-placement="top" title="New CCM for Chosen Month">
@@ -307,11 +313,11 @@ String labcode =  (String)request.getAttribute("labcode");
     								</div>
     								<%
     								if(ccmScheduleList!=null && ccmScheduleList.size()>0) {
-    								for(CCMSchedule ccmSchedule : ccmScheduleList) {%>
+    								for(CommitteeSchedule schedule : ccmScheduleList) {%>
     									<div class="row">
     										<div class="col-md-12">
-	     										<button class="btn btn-secondary viewbtn ccmSideBarButton" type="submit" name="ccmScheduleId" value="<%=ccmSchedule.getCCMScheduleId()%>"  data-toggle="tooltip" data-placement="top" title="<%=ccmSchedule.getMeetingRefNo() %>">
-	     											<%=ccmSchedule.getMeetingRefNo() %>
+	     										<button class="btn btn-secondary viewbtn ccmSideBarButton" type="submit" name="ccmScheduleId" value="<%=schedule.getScheduleId()%>"  data-toggle="tooltip" data-placement="top" title="<%=schedule.getMeetingId() %>">
+	     											<%=schedule.getMeetingId() %>
 	     										</button>
     										</div>
     									</div>
@@ -380,22 +386,24 @@ String labcode =  (String)request.getAttribute("labcode");
 					               						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					               						<input type="hidden" name="monthyear" value="<%=monthyear %>">
 					               						<input type="hidden" name="tabId" value="<%=tabId %>">
+					               						<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
+														<input type="hidden" name="committeeId" value="<%=committeeId%>">
 					               						<div class="fom-group">
 							               					<div class="row mt-2">
 					        									<div class="col-md-2 mt-1">
 					        										<label class="control-label">Meeting Date & Time :</label>
 					        									</div>
 					        									<div class="col-md-2 left">
-					        										<input type="text" class="form-control" name="meetingDate" id="meetingDate" <%if(ccmScheduleData!=null && ccmScheduleData.getMeetingDate()!=null ) {%> value="<%=fc.sdtfTordtf2(ccmScheduleData.getMeetingDate()) %>" <%} else{%> form="agendaForm"<%} %> >	        									
+					        										<input type="text" class="form-control" name="meetingDate" id="meetingDate" <%if(ccmSchedule!=null && ccmSchedule.getScheduleDate()!=null ) {%> value="<%=fc.sdfTordf(ccmSchedule.getScheduleDate().toString())+" "+ccmSchedule.getScheduleStartTime() %>" <%} else{%> form="agendaForm"<%} %> >	        									
 					        									</div>
 					        									
 					        									<div class="col-md-1 mt-1">
 					        										<label class="control-label">Venue :</label>
 					        									</div>
 					        									<div class="col-md-4 left">
-					        										<input type="text" class="form-control" name="meetingVenue" id="meetingVenue" placeholder="Enter Venue Details" maxlength="1000" required  <%if(ccmScheduleData!=null && ccmScheduleData.getMeetingVenue()!=null ) {%> value="<%=ccmScheduleData.getMeetingVenue() %>" <%} else{%> form="agendaForm"<%} %> >
+					        										<input type="text" class="form-control" name="meetingVenue" id="meetingVenue" placeholder="Enter Venue Details" maxlength="1000" required  <%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null ) {%> value="<%=ccmSchedule.getMeetingVenue() %>" <%} else{%> form="agendaForm"<%} %> >
 					        									</div>
-					        									<%if(ccmScheduleData!=null) {%>
+					        									<%if(ccmSchedule!=null) {%>
 					        										<input type="hidden" name="ccmScheduleId" id="ccmScheduleId" value="<%=ccmScheduleId%>">
 						        									<div class="col-md-3 left">
 						        										<button type="submit" class=" btn btn-sm edit" name="action" value="Edit" onclick="return confirm('Are You Sure to Update?')" data-toggle="tooltip" data-placement="top" title="Update Schedule Details" >UPDATE</button>
@@ -483,10 +491,10 @@ String labcode =  (String)request.getAttribute("labcode");
 																					<%-- <input type="text" class="form-control startTime" name="startTime" value="<%=level1[7] %>"  style="width: 40%;display: inline;"/>
 																				 	-
 																				 	<input type="text" class="form-control endTime" name="endTime" value="<%=level1[8] %>" style="width: 40%;display: inline;"> --%>
-																					<input type="number" form="agendaEditForm-<%=count %>" class="form-control" name="duration" id="duration_Edit_<%=count %>" value="<%=level1[9] %>" min="1" placeholder="Minutes" onkeypress="return isNumber(event)" required>
+																					<input type="number" form="agendaEditForm-<%=count %>" class="form-control" name="duration" id="duration_Edit_<%=count %>" value="<%=level1[7] %>" min="1" placeholder="Minutes" onkeypress="return isNumber(event)" required>
 																				</td>
 																				<td style="width: 3%;">
-																					<%if(level1[10]!=null && !level1[10].toString().isEmpty()) {%>
+																					<%if(level1[8]!=null && !level1[8].toString().isEmpty()) {%>
 																						<button type="submit" form="agendaEditForm-<%=count %>" class="btn btn-sm" name="scheduleAgendaId" formmethod="post" formnovalidate="formnovalidate" value="<%=level1[0] %>" formaction="CCMScheduleAgendaFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Attachment Download">
 		                            					 									<i class="fa fa-download"></i>
 		                            					 								</button>
@@ -576,10 +584,10 @@ String labcode =  (String)request.getAttribute("labcode");
 																										<%-- <input type="text" class="form-control startTime" name="startTime" value="<%=level2[7] %>" style="width: 40%;display: inline;"/>
 																									 	-
 																									 	<input type="text" class="form-control endTime" name="endTime" value="<%=level2[8] %>" style="width: 40%;display: inline;"> --%>
-																										<input type="number" form="subAgendaEditForm-<%=count %>-<%=countA %>" class="form-control" name="duration" id="duration_Edit_<%=count %>_<%=countA %>" value="<%=level2[9] %>" min="1" placeholder="Minutes"  onkeypress="return isNumber(event)" required >
+																										<input type="number" form="subAgendaEditForm-<%=count %>-<%=countA %>" class="form-control" name="duration" id="duration_Edit_<%=count %>_<%=countA %>" value="<%=level2[7] %>" min="1" placeholder="Minutes"  onkeypress="return isNumber(event)" required >
 																									</td>
 																									<td style="width: 4%;">
-																										<%if(level2[10]!=null && !level2[10].toString().isEmpty()) {%>
+																										<%if(level2[8]!=null && !level2[8].toString().isEmpty()) {%>
 																											<button type="submit" form="subAgendaEditForm-<%=count %>-<%=countA %>" class="btn btn-sm" name="scheduleAgendaId" formmethod="post" formnovalidate="formnovalidate" value="<%=level2[0] %>" formaction="CCMScheduleAgendaFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Attachment Download">
 							                            					 									<i class="fa fa-download"></i>
 							                            					 								</button>
@@ -630,6 +638,8 @@ String labcode =  (String)request.getAttribute("labcode");
 									        										<input type="hidden" name="ccmScheduleId" id="ccmScheduleId" value="<%=ccmScheduleId%>">
 									        										<input type="hidden" name="monthyear" value="<%=monthyear %>">
 												               						<input type="hidden" name="tabId" value="<%=tabId %>">
+												               						<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
+																					<input type="hidden" name="committeeId" value="<%=committeeId%>">
 												               						<input type="hidden" name="agendaPriority" id="agendaPriorityMainForm">
 												               						<input type="hidden" name="scheduleAgendaId" id="scheduleAgendaIdMainForm">
 																					<button type="button" class="btn btn-sm edit" onclick="updateMainPriority()" data-toggle="tooltip" data-placement="top" title="Update Agenda Priority">UPDATE</button>
@@ -649,6 +659,8 @@ String labcode =  (String)request.getAttribute("labcode");
 		        									
 				                					<form action="CCMAgendaDetailsSubmit.htm" method="POST" name="myform6" id="agendaForm" enctype="multipart/form-data">	
 														<input type="hidden" name="ccmScheduleId" value="<%=ccmScheduleId%>">
+														<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
+														<input type="hidden" name="committeeId" value="<%=committeeId%>">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 														<input type="hidden" name="monthyear" value="<%=monthyear %>">
 					               						<input type="hidden" name="tabId" value="<%=tabId %>">
@@ -797,6 +809,10 @@ String labcode =  (String)request.getAttribute("labcode");
 				        								<input type="hidden" name="ccmScheduleId" value="<%=ccmScheduleId %>">
 				        								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				        								<%if(agendaList!=null && agendaList.size()>0) {%>
+				        									
+				        									<button type="submit" class="btn btn-sm back" name="committeescheduleid" value="<%=ccmScheduleId %>" formaction="CommitteeInvitations.htm" style="background-color: #0e49b5;color: white;">
+				        										Participants
+				        									</button>
 				        									<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="CCMAgendaPresentation.htm" formmethod="post" formtarget="_blank" title="Agenda Presentation">
 																<img alt="" src="view/images/presentation.png" style="width:19px !important">
 															</button>
@@ -918,6 +934,8 @@ String labcode =  (String)request.getAttribute("labcode");
                         <input type="hidden" name="ccmScheduleId" value="<%=ccmScheduleId%>">
                         <input type="hidden" name="monthyear" value="<%=monthyear %>">
 					    <input type="hidden" name="tabId" value="<%=tabId %>">
+					    <input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
+						<input type="hidden" name="committeeId" value="<%=committeeId%>">
                         <input type="hidden" name="scheduleAgendaId" id="scheduleAgendaIdModal">
                         <input type="hidden" name="slno" id="slno">
                         
@@ -967,7 +985,7 @@ String labcode =  (String)request.getAttribute("labcode");
 		    timePicker24Hour: true,
 		    timePickerIncrement: 1,
 		    autoUpdateInput: true,
-		    <%if(ccmScheduleData==null) {%>
+		    <%if(ccmSchedule==null) {%>
 		    startDate : "<%=startDate+" "+currentTime%>",
 		    <%}%>
 		    minDate : "<%=minDate+" 00:00:00"%>",

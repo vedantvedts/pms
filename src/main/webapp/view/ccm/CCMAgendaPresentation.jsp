@@ -1,5 +1,5 @@
+<%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
-<%@page import="com.vts.pfms.ccm.model.CCMSchedule"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -29,7 +29,7 @@
 		SimpleDateFormat sdf = fc.getRegularDateFormat();
 		SimpleDateFormat sdf1 = fc.getSqlDateFormat();
 	
-		CCMSchedule ccmSchedule = (CCMSchedule) request.getAttribute("ccmScheduleData");
+		CommitteeSchedule ccmSchedule = (CommitteeSchedule) request.getAttribute("ccmScheduleData");
 		List<Object[]> agendaList =  (List<Object[]>) request.getAttribute("agendaList");
 		
 		LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
@@ -65,7 +65,7 @@
 						<table style="align: center;width: 650px;  "  >
 							<tr style="margin-top: 10px">
 								 <th  style="text-align: center;font-size: 18px;border:0px !important; "> Meeting Id </th></tr><tr>
-								 <th  style="text-align: center;font-size: 18px;border:0px !important;  "> <%if(ccmSchedule!=null && ccmSchedule.getMeetingRefNo()!=null) {%> <%=ccmSchedule.getMeetingRefNo() %> <%} else{%>-<%} %> </th>				
+								 <th  style="text-align: center;font-size: 18px;border:0px !important;  "> <%if(ccmSchedule!=null && ccmSchedule.getMeetingId()!=null) {%> <%=ccmSchedule.getMeetingId() %> <%} else{%>-<%} %> </th>				
 							 </tr>
 						</table>
 						
@@ -75,8 +75,8 @@
 								 <th  style="text-align: center;  width: 50%;font-size: 18px;border:0px !important;  "> Meeting Time </th>
 							</tr>
 							<tr>
-								 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important;"> <b> <%if(ccmSchedule!=null && ccmSchedule.getMeetingDate()!=null) {%> <%=fc.sdfTordf(ccmSchedule.getMeetingDate().substring(0, 10)) %> <%} else{%>-<%} %> </b></td>
-								 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important; "> <b><%if(ccmSchedule!=null && ccmSchedule.getMeetingDate()!=null) {%> <%=ccmSchedule.getMeetingDate().substring(11, 19) %> <%} else{%>-<%} %></b></td>
+								 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important;"> <b> <%if(ccmSchedule!=null && ccmSchedule.getScheduleDate()!=null) {%> <%=fc.sdfTordf(ccmSchedule.getScheduleDate().toString()) %> <%} else{%>-<%} %> </b></td>
+								 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important; "> <b><%if(ccmSchedule!=null && ccmSchedule.getScheduleStartTime()!=null) {%> <%=ccmSchedule.getScheduleStartTime() %> <%} else{%>-<%} %></b></td>
 							</tr>
 						</table>
 						
@@ -170,7 +170,7 @@
 		              		
 			    			<%
 								if(agendaList!=null && agendaList.size()>0) {
-									LocalTime starttime = LocalTime.parse(ccmSchedule.getMeetingDate().substring(11, 16));
+									LocalTime starttime = LocalTime.parse(ccmSchedule.getScheduleStartTime());
 									int  count=0;
 								  	for(Object[] level1: agendaList){
 										if(level1[2].toString().equalsIgnoreCase("0")) {
@@ -185,14 +185,14 @@
 									<td style="width: 35%;"><%=level1[4] %></td>
 									<td style="width: 25%;">
 										<%if(level1[6]!=null && !level1[6].toString().equalsIgnoreCase("0")) {%>
-											<%=level1[11] %>
+											<%=level1[9] %>
 										<%} else {%>
 											-
 										<%} %>
 									</td>
 									
 									<td class="center" style="width: 10%;">
-										<%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=starttime.plusMinutes(Long.parseLong(level1[9].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
+										<%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=starttime.plusMinutes(Long.parseLong(level1[7].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
 									</td>
 									
 								</tr>
@@ -220,15 +220,15 @@
 															
 															<td style="width: 31.9%;">
 																<%if(level2[6]!=null && !level2[6].toString().equalsIgnoreCase("0")) {%>
-																	<%=level2[11] %>
+																	<%=level2[9] %>
 																<%} else {%>
 																	-
 																<%} %>
 															</td>
 															
 															<td class="center" style="width: 17.5%;">
-																<%=substarttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=substarttime.plusMinutes(Long.parseLong(level2[9].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
-																<%substarttime = substarttime.plusMinutes(Long.parseLong(level2[9].toString())); %>
+																<%=substarttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=substarttime.plusMinutes(Long.parseLong(level2[7].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
+																<%substarttime = substarttime.plusMinutes(Long.parseLong(level2[7].toString())); %>
 															</td>
 														</tr>
 														
@@ -238,7 +238,7 @@
 										</td>	
 									</tr>	
 								<%} %>
-								<%starttime=starttime.plusMinutes(Long.parseLong(level1[9].toString())); %>
+								<%starttime=starttime.plusMinutes(Long.parseLong(level1[7].toString())); %>
 							<%} } }%>
 						</tbody>
 					</table>
@@ -261,7 +261,7 @@
 			<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
 			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Agenda"><b>1</b></li>
 			<li style="background-color:  white;width: 55px;margin-left: 20px;">
-				<a target="_blank" href="CCMScheduleAgendaPdfDownload.htm?ccmScheduleId=<%=ccmSchedule.getCCMScheduleId() %>" data-toggle="tooltip" title="Download Agenda" ><i class="fa fa-download fa-2x" style="color: green;" aria-hidden="true"></i></a>	
+				<a target="_blank" href="CCMScheduleAgendaPdfDownload.htm?ccmScheduleId=<%=ccmSchedule.getScheduleId() %>" data-toggle="tooltip" title="Download Agenda" ><i class="fa fa-download fa-2x" style="color: green;" aria-hidden="true"></i></a>	
 			</li>
 		</ol>
 	</div>
@@ -280,7 +280,7 @@ $('[data-toggle="tooltip"]').tooltip()
 /* --------------------- Expand Button Handle for Agenda List--------------------------- */
 	function ChangeButton(id) {
 		  
-		if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
+		if($("#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
 		$( "#btn"+id ).removeClass( "btn btn-sm btn-success" ).addClass( "btn btn-sm btn-danger" );
 		$( "#fa"+id ).removeClass( "fa fa-plus" ).addClass( "fa fa-minus" );
 		$( ".row"+id).show();

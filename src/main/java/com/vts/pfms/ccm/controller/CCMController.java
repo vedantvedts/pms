@@ -10,9 +10,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,11 +36,10 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.PfmsFileUtils;
-import com.vts.pfms.ccm.model.CCMSchedule;
-import com.vts.pfms.ccm.model.CCMScheduleAgenda;
 import com.vts.pfms.ccm.service.CCMService;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
-import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeSchedule;
+import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.utils.PMSLogoUtil;
@@ -56,7 +52,7 @@ public class CCMController {
 	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	private SimpleDateFormat sdf = fc.getSqlDateFormat();
-	private SimpleDateFormat rdf = new SimpleDateFormat("dd-MM-yyyy");
+	private SimpleDateFormat rdf = fc.getRegularDateFormat();
 	
 	@Autowired
 	CCMService service;
@@ -79,9 +75,12 @@ public class CCMController {
 	@RequestMapping(value="CCMModules.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String ccmModules(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside CCMModules.htm "+UserId);
 		try {
 			
+			req.setAttribute("committeeId", String.valueOf(service.getCommitteeIdByCommitteeCode(labcode)));
+			req.setAttribute("committeeMainId", String.valueOf(service.getCommitteeMainIdByCommitteeCode(labcode)));
 			return "ccm/CCMModules";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside CCMModules.htm "+UserId, e);
@@ -96,12 +95,16 @@ public class CCMController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside CCMCommitteeConstitution.htm "+UserId);
 		try {
+			String committeeMainId = req.getParameter("committeeMainId");
+			String committeeId = req.getParameter("committeeId");
 			
 			req.setAttribute("allLabList", committeeservice.AllLabList());
-			req.setAttribute("employeeList", committeeservice.EmployeeListWithoutMembers("0",labcode));
-			req.setAttribute("employeeList1", committeeservice.EmployeeListNoMembers(labcode,"0"));
-			req.setAttribute("expertList", committeeservice.ExternalMembersNotAddedCommittee("0"));
-			req.setAttribute("committeeMembersAll", committeeservice.CommitteeAllMembersList("0"));
+			req.setAttribute("employeeList", committeeservice.EmployeeListWithoutMembers(committeeMainId,labcode));
+			req.setAttribute("employeeList1", committeeservice.EmployeeListNoMembers(labcode,committeeMainId));
+			req.setAttribute("expertList", committeeservice.ExternalMembersNotAddedCommittee(committeeMainId));
+			req.setAttribute("committeeMembersAll", committeeservice.CommitteeAllMembersList(committeeMainId));
+			req.setAttribute("committeeMainId", committeeMainId);
+			req.setAttribute("committeeId", committeeId);
 			
 			return "ccm/CCMCommitteeConstitution";
 		}catch (Exception e) {
@@ -134,7 +137,7 @@ public class CCMController {
 			dto.setCo_chairperson(req.getParameter("co_chairperson"));
 			dto.setComemberid(req.getParameter("comemberid"));
 			dto.setMsLabCode(req.getParameter("msLabCode"));
-			
+			dto.setCommitteeId(req.getParameter("committeeId"));
 			long result = service.ccmCommitteeMainMembersSubmit(dto, action);
 			
 			if(result!=0) {
@@ -143,6 +146,8 @@ public class CCMController {
 				redir.addAttribute("resultfail", "Committee Main Members "+action+" UnSuccessful");
 			}
 			
+			redir.addAttribute("committeeMainId", result);
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
 			return "redirect:/CCMCommitteeConstitution.htm";
 			
 		}catch (Exception e) {
@@ -158,6 +163,7 @@ public class CCMController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside CCMSchedule.htm "+UserId);
 		try {
+			
 			String tabId = req.getParameter("tabId");
 			String monthyear = req.getParameter("monthyear");
 			String monthyeartext = "";
@@ -169,7 +175,7 @@ public class CCMController {
 			String selectedMonthStartDate = selectedDate.with(TemporalAdjusters.firstDayOfMonth()).toString();
 			String selectedMonthEndDate = selectedDate.with(TemporalAdjusters.lastDayOfMonth()).toString();
 			
-			req.setAttribute("ccmScheduleList", service.getCCMScheduleList(selectedDate.getYear()+""));
+			req.setAttribute("ccmScheduleList", service.getScheduleListByYear(selectedDate.getYear()+""));
 			req.setAttribute("tabId", tabId==null?"1":tabId);
 			req.setAttribute("monthyear", monthyear==null?fc.sdfTocalendarDate(selectedDate.toString()):monthyear);
 			req.setAttribute("monthyeartext", monthyeartext);
@@ -180,6 +186,8 @@ public class CCMController {
 			req.setAttribute("allLabList", committeeservice.AllLabList());
 			req.setAttribute("labEmpList", committeeservice.PreseneterForCommitteSchedule(labcode));
 			req.setAttribute("labcode", labcode);
+			req.setAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			req.setAttribute("committeeId", req.getParameter("committeeId"));
 			
 			if(ccmScheduleId!=null) {
 				req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
@@ -205,19 +213,15 @@ public class CCMController {
 			String meetingDate = req.getParameter("meetingDate");
 			String action = req.getParameter("action");
 			
-			CCMSchedule schedule = action.equalsIgnoreCase("Add")? new CCMSchedule() : service.getCCMScheduleById(ccmScheduleId);
-			schedule.setMeetingDate(fc.rdtfTosdtf(meetingDate+":00"));
-			schedule.setMeetingVenue(req.getParameter("meetingVenue"));
-			if(action.equalsIgnoreCase("Add")) {
-				schedule.setCreatedBy(UserId);
-				schedule.setCreatedDate(sdtf.format(new Date()));
-				schedule.setIsActive(1);
-			}else {
-				schedule.setModifiedBy(UserId);
-				schedule.setModifiedDate(sdtf.format(new Date()));
-			}
+			CommitteeSchedule schedule = service.getCCMScheduleById(ccmScheduleId);
 			
-			long result = service.addCCMSchedule(schedule, labcode);
+			schedule.setScheduleDate(new java.sql.Date(rdf.parse(meetingDate.substring(0,10)).getTime()));
+			schedule.setScheduleStartTime(meetingDate.substring(11,16));
+			schedule.setMeetingVenue(req.getParameter("meetingVenue"));
+			schedule.setModifiedBy(UserId);
+			schedule.setModifiedDate(sdtf.format(new Date()));
+			
+			long result = service.addCCMSchedule(schedule);
 			
 			if(result!=0) {
 				redir.addAttribute("result", "Schedule Details "+action+"ed Successfully");
@@ -249,14 +253,20 @@ public class CCMController {
 	    	if(ccmScheduleId.equalsIgnoreCase("0")) {
 				String meetingDate = req.getParameter("meetingDate");
 				
-				CCMSchedule schedule = new CCMSchedule();
-				schedule.setMeetingDate(fc.rdtfTosdtf(meetingDate+":00"));
+				CommitteeSchedule schedule = new CommitteeSchedule();
+				schedule.setScheduleDate(new java.sql.Date(rdf.parse(meetingDate.substring(0,10)).getTime()));
+				schedule.setScheduleStartTime(meetingDate.substring(11,16));
 				schedule.setMeetingVenue(req.getParameter("meetingVenue"));
+				schedule.setLabCode(labcode);
+				schedule.setCommitteeId(Long.parseLong(req.getParameter("committeeId")));
+				schedule.setCommitteeMainId(Long.parseLong(req.getParameter("committeeMainId")));
+				schedule.setScheduleType("C");
 				schedule.setCreatedBy(UserId);
 				schedule.setCreatedDate(sdtf.format(new Date()));
 				schedule.setIsActive(1);
 				
-				ccmScheduleId = String.valueOf(service.addCCMSchedule(schedule, labcode));
+				ccmScheduleId = String.valueOf(service.addCCMSchedule(schedule));
+				
 	    	}
 			
 	        long result = service.addCCMAgendaDetails(req, ses, fileMap, ccmScheduleId);
@@ -270,6 +280,8 @@ public class CCMController {
 	        redir.addAttribute("ccmScheduleId", ccmScheduleId);
 			redir.addAttribute("tabId", req.getParameter("tabId"));
 			redir.addAttribute("monthyear", req.getParameter("monthyear"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
 	        return "redirect:/CCMSchedule.htm";
 
 	    } catch (Exception e) {
@@ -290,11 +302,11 @@ public class CCMController {
 			String scheduleAgendaId =req.getParameter("scheduleAgendaId");
 			String count =req.getParameter("count");
 			String subCount =req.getParameter("subCount");
-			CCMScheduleAgenda agenda = service.getCCMScheduleAgendaById(scheduleAgendaId);
+			CommitteeScheduleAgenda agenda = service.getCCMScheduleAgendaById(scheduleAgendaId);
 			res.setContentType("Application/octet-stream");	
 			
 
-			String file = agenda.getAttatchmentPath();
+			String file = agenda.getFileName();
 			String fileExtention = "."+ (file.split("\\.")[1]);
 			String filePath = uploadpath+labcode +"\\CCM\\";
 			String fileName = "Annex-"+(count)+(subCount!=null && !subCount.equalsIgnoreCase("0")?("-"+subCount):"");
@@ -329,12 +341,12 @@ public class CCMController {
 	    logger.info(new Date() + " Inside CCMScheduleAgendaEdit.htm " + UserId);
 		try {
 			
-			CCMScheduleAgenda agenda = service.getCCMScheduleAgendaById(req.getParameter("scheduleAgendaId"));
+			CommitteeScheduleAgenda agenda = service.getCCMScheduleAgendaById(req.getParameter("scheduleAgendaId"));
 			int orgDuration = agenda.getDuration();
 			//agenda.setAgendaPriority(Integer.parseInt(req.getParameter("agendaPriority")));
 			agenda.setAgendaItem(req.getParameter("agendaItem"));
-			agenda.setPresenterLabCode(req.getParameter("prepsLabCode"));
-			agenda.setPresenterId(req.getParameter("presenterId"));
+			agenda.setPresentorLabCode(req.getParameter("prepsLabCode"));
+			agenda.setPresenterId(Long.parseLong(req.getParameter("presenterId")));
 			agenda.setDuration(Integer.parseInt(req.getParameter("duration")));
 			agenda.setModifiedBy(UserId);
 			agenda.setModifiedDate(sdtf.format(new Date()));
@@ -350,6 +362,8 @@ public class CCMController {
 			redir.addAttribute("ccmScheduleId", req.getParameter("ccmScheduleId"));
 			redir.addAttribute("tabId", req.getParameter("tabId"));
 			redir.addAttribute("monthyear", req.getParameter("monthyear"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
 			return "redirect:/CCMSchedule.htm";
 		}catch (Exception e) {
 	        logger.error(new Date() + " Inside CCMScheduleAgendaEdit.htm " + UserId, e);
@@ -378,6 +392,8 @@ public class CCMController {
 			redir.addAttribute("ccmScheduleId", req.getParameter("ccmScheduleId"));
 			redir.addAttribute("tabId", req.getParameter("tabId"));
 			redir.addAttribute("monthyear", req.getParameter("monthyear"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
 			return "redirect:/CCMSchedule.htm";
 		}catch (Exception e) {
 	        logger.error(new Date() + " Inside CCMScheduleAgendaEdit.htm " + UserId, e);
@@ -406,6 +422,8 @@ public class CCMController {
 			redir.addAttribute("ccmScheduleId", ccmScheduleId);
 			redir.addAttribute("tabId", req.getParameter("tabId"));
 			redir.addAttribute("monthyear", req.getParameter("monthyear"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
 			return "redirect:/CCMSchedule.htm";
 		}catch (Exception e) {
 	        logger.error(new Date() + " Inside CCMScheduleAgendaEdit.htm " + UserId, e);
@@ -433,6 +451,8 @@ public class CCMController {
 			redir.addAttribute("ccmScheduleId", req.getParameter("ccmScheduleId"));
 			redir.addAttribute("tabId", req.getParameter("tabId"));
 			redir.addAttribute("monthyear", req.getParameter("monthyear"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
 			return "redirect:/CCMSchedule.htm";
 		}catch (Exception e) {
 	        logger.error(new Date() + " Inside CCMScheduleSubAgendaSubmit.htm " + UserId, e);
@@ -462,6 +482,8 @@ public class CCMController {
 			redir.addAttribute("ccmScheduleId", ccmScheduleId);
 			redir.addAttribute("tabId", req.getParameter("tabId"));
 			redir.addAttribute("monthyear", req.getParameter("monthyear"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
 			return "redirect:/CCMSchedule.htm";
 		}catch (Exception e) {
 	        logger.error(new Date() + " Inside CCMScheduleSubAgendaDelete.htm " + UserId, e);

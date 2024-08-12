@@ -76,7 +76,8 @@ Object[] proxysecretary = committeeMembersAll!=null && committeeMembersAll.size(
 					   .findFirst().orElse(null) : null;
 
 String labCode = (String)session.getAttribute("labcode");
-String committeemainid = "0";
+String committeeMainId = (String)request.getAttribute("committeeMainId");
+String committeeId = (String)request.getAttribute("committeeId");
 
 ObjectMapper objectMapper = new ObjectMapper();
 String jsonemployeeList1 = objectMapper.writeValueAsString(employeeList1);
@@ -85,7 +86,11 @@ String jsonco_chairperson = objectMapper.writeValueAsString(co_chairperson);
 String jsonsecretary = objectMapper.writeValueAsString(secretary);
 String jsonproxysecretary = objectMapper.writeValueAsString(proxysecretary);
 
-System.out.println(committeeMembersAll.size());
+jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\"")
+					.replace("\b", "\\b").replace("\f", "\\f")
+					.replace("\n", "\\n").replace("\r", "\\r")
+					.replace("\t", "\\t");
+
 %>
 	<% String ses=(String)request.getParameter("result");
 	 	String ses1=(String)request.getParameter("resultfail");
@@ -113,7 +118,7 @@ System.out.println(committeeMembersAll.size());
  					</div>
  					<div class="col-md-8"></div>
  					<div class="col-md-1">
- 						<a class="btn btn-info btn-sm shadow-nohover back" href="CCMSchedule.htm">Schedule</a>
+ 						<a class="btn btn-info btn-sm shadow-nohover back" id="schedule-btn" href="CCMSchedule.htm">Schedule</a>
  					</div>
  				</div>
        		</div>
@@ -212,7 +217,8 @@ System.out.println(committeeMembersAll.size());
 					<div class="row">			
 						<div class="col-md-12" align="center">
 					    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                  	
-							<input type="hidden" name="committeemainid" value="<%=committeemainid%>"> 
+							<input type="hidden" name="committeemainid" value="<%=committeeMainId%>"> 
+							<input type="hidden" name="committeeId" value="<%=committeeId%>"> 
 							<%if(chairperson!=null) {%>
 								<button type="submit" class=" btn btn-sm edit" name="action" value="Edit" onclick="Add('committeeeditfrm')" >UPDATE</button>
 							<%} else{%>
@@ -278,7 +284,7 @@ System.out.println(committeeMembersAll.size());
 													</td>
 													<td align="center">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-												        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">
+												        <input type="hidden" name="committeemainid" value="<%=committeeMainId%>">
 												        <input type="hidden" name="ccmflag" value="Y">
 														<button class="fa fa-trash btn btn-danger" type="submit" style="background-color: white;border-color: white;"
 														formnovalidate="formnovalidate" formaction="CommitteeMemberDelete.htm" formmethod="POST" name="committeememberid" value="<%=obj[0] %>"
@@ -289,7 +295,7 @@ System.out.println(committeeMembersAll.size());
 		              						<%}%>
 		              					<tr>
 		              						<td colspan=1 style="display: flex;justify-content: center;align-items: center">
-			              						<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
+			              						<input type="hidden" name="committeemainid" value="<%=committeeMainId%>">
 			              						<input type="hidden" name="ccmflag" value="Y">
 			              						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			              						<button class="btn btn-sm edit" onclick="return slnocheck('serialnoupdate');">UPDATE</button>
@@ -372,10 +378,10 @@ System.out.println(committeeMembersAll.size());
 								</div>
 											
 								<div class="col-md-2 align-self-center">	
-									<button class="btn  btn-sm submit" name="submit" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');"  >SUBMIT</button>
+									<button class="btn btn-sm submit btn-members" name="submit" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');"  >SUBMIT</button>
 								</div>									
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-								<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
+								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>">
 								<input type="hidden" name="ccmflag" value="Y"> 
 							</div>
 						</form>
@@ -420,10 +426,10 @@ System.out.println(committeeMembersAll.size());
 									</table>
 								</div>
 								<div class="col-md-2 align-self-center">					
-									<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
+									<button class="btn  btn-sm submit btn-members" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
 								</div>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-								<input type="hidden" name="committeemainid" value="<%=committeemainid%>"> 
+								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>"> 
 								<input type="hidden" name="ccmflag" value="Y">
 							</div>
 						</form>
@@ -457,10 +463,10 @@ System.out.println(committeeMembersAll.size());
 									</table>
 								</div>
 								<div class="col-md-2 align-self-center">					
-									<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
+									<button class="btn  btn-sm submit btn-members" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
 								</div>	
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />											
-								<input type="hidden" name="committeemainid" value="<%=committeemainid%>"> 
+								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>"> 
 								<input type="hidden" name="ccmflag" value="Y">
 							</div>
 						</form>
@@ -487,7 +493,7 @@ function employeename(){
 					url : "ExternalEmployeeListFormation.htm",
 					data : {
 						CpLabCode : $CpLabCode ,
-						committeemainid : '<%=committeemainid%>'
+						committeemainid : '<%=committeeMainId%>'
 					   },
 					datatype : 'json',
 					success : function(result) {
@@ -569,7 +575,7 @@ function replacerepdd(){
 				type : "GET",
 				url : "CommitteeRepNotAddedList.htm",
 				data : {
-						committeemainid : '<%=committeemainid%>'
+						committeemainid : '<%=committeeMainId%>'
 					   },
 				datatype : 'json',
 				success : function(result) {
@@ -606,10 +612,21 @@ function replacerepdd(){
 	 
 	/* chairpersonfetch('0');
 	msfetch('0'); */
-		
+	
+	 const committeeMainId = '<%=committeeMainId%>';
+	 
+	 if(committeeMainId=="0"){
+		 $('.btn-members').prop('disabled', true);
+	 }
+	 
+	 $('#schedule-btn').on('click', function(){
+		 if(committeeMainId=="0"){
+			 alert('CCM Committee not constituted yet');
+			 event.preventDefault();
+		 }
+	 });
 }); 
 
-	
 		<%-- function chairpersonfetch(hint){
 			$('#chairperson').val("");
 				var $CpLabCode = $('#CpLabCode').val();
@@ -846,7 +863,7 @@ function slnocheck(formid) {
 
             const id = select.attr('id');
             if (id !== 'chairperson' && id !== 'secretary') {
-                select.append('<option selected value="0">None</option>');
+                select.append('<option value="0">None</option>');
             }else if(id == 'secretary'){
             	select.append('<option value="" disabled="disabled" selected>--select--</option>');
             }

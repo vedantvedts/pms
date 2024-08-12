@@ -45,6 +45,10 @@
 </style>
 </head>
 <body>
+<%
+String committeeMainId = (String)request.getAttribute("committeeMainId");
+String committeeId = (String)request.getAttribute("committeeId");
+%>
 	<% String ses=(String)request.getParameter("result");
 	 	String ses1=(String)request.getParameter("resultfail");
 		if(ses1!=null){
@@ -104,9 +108,51 @@
 	</div>
 <script>
 	$(document).ready(function() {
+		const committeeMainId = '<%=committeeMainId%>';
+		const committeeId = '<%=committeeId%>';
+		
+		var parameters = "committeeMainId="+committeeMainId+"&committeeId="+committeeId;
+		
 		 $('.module').click(function() {
              var url = $(this).data('url');
-             window.open(url, '_blank');
+             
+             if (url === 'CCMCommitteeConstitution.htm') {
+            	 
+            	url += '?' + parameters;
+            	 
+ 				if(committeeId=="0"){
+ 					if(confirm('CCM Committee not created yet \n Do you want to create New Committee?')){
+ 						window.open('CommitteeList.htm', '_blank');
+ 					}else{
+ 						event.preventDefault();
+ 					}
+ 				}else{
+ 					window.open(url, '_blank');
+ 				}
+ 				
+ 			} else if (url === 'CCMSchedule.htm') {
+ 				
+ 				if(committeeMainId=="0" && committeeId!="0"){
+ 					if(confirm('CCM Committee not constituted yet \n Do you want to constitute Committee?')){
+ 						window.open('CCMCommitteeConstitution.htm?'+ parameters, '_blank');
+ 					}else{
+ 						event.preventDefault();
+ 					}
+ 				}else if(committeeMainId=="0" && committeeId=="0"){
+ 					if(confirm('CCM Committee not created yet \n Do you want to create New Committee?')){
+ 						window.open('CommitteeList.htm', '_blank');
+ 					}else{
+ 						event.preventDefault();
+ 					}
+ 				}else{
+ 					url += '?' + parameters;
+ 					window.open(url, '_blank');
+ 				}
+ 			} else {
+ 				window.open(url, '_blank');
+ 			}
+             
+             
          });
 	});
 </script>	

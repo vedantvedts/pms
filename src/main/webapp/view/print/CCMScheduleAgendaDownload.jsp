@@ -1,7 +1,7 @@
+<%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.util.stream.Collectors"%>
-<%@page import="com.vts.pfms.ccm.model.CCMSchedule"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -11,7 +11,7 @@
 <meta charset="ISO-8859-1">
 <title>CCM Agenda</title>
 <%
-CCMSchedule ccmSchedule = (CCMSchedule) request.getAttribute("ccmScheduleData");
+CommitteeSchedule ccmSchedule = (CommitteeSchedule) request.getAttribute("ccmScheduleData");
 List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 %>
 
@@ -76,7 +76,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 	
 	@top-left {
 	  margin-top: 30px;
-	  content: "<%=ccmSchedule.getMeetingRefNo()%>";
+	  content: "<%=ccmSchedule.getMeetingId()%>";
 	  font-size: 13px;
 	  margin-left: 10px;
 	}               
@@ -135,7 +135,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 		<tbody>
 			<%
 				if(agendaList!=null && agendaList.size()>0) {
-					LocalTime starttime = LocalTime.parse(ccmSchedule.getMeetingDate().substring(11, 16));
+					LocalTime starttime = LocalTime.parse(ccmSchedule.getScheduleStartTime());
 					int  count=0;
 				  	for(Object[] level1: agendaList){
 						if(level1[2].toString().equalsIgnoreCase("0")) {
@@ -156,18 +156,18 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 						
 					<td style="width: 25%;">
 						<%if(level1[6]!=null && !level1[6].toString().equalsIgnoreCase("0")) {%>
-							<%=level1[11] %>
+							<%=level1[9] %>
 						<%} else {%>
 							-
 						<%} %>
 					</td>
 					
 					<td class="center" style="width: 20%;">
-						<%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=starttime.plusMinutes(Long.parseLong(level1[9].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
+						<%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=starttime.plusMinutes(Long.parseLong(level1[7].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
 					</td>
 					
 					<td class="center" style="width: 13%;">
-						<%if(level1[10]!=null && !level1[10].toString().isEmpty()) {%>
+						<%if(level1[8]!=null && !level1[8].toString().isEmpty()) {%>
 							<a class="btn btn-sm" href="CCMScheduleAgendaFileDownload.htm?scheduleAgendaId=<%=level1[0] %>&count=<%=count %>&subCount=0" target="_blank">
 								Annex-<%=level1[3] %>
                				</a>
@@ -208,19 +208,19 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 												
 											<td style="width: 27.7%;">
 												<%if(level2[6]!=null && !level2[6].toString().equalsIgnoreCase("0")) {%>
-													<%=level2[11] %>
+													<%=level2[9] %>
 												<%} else {%>
 													-
 												<%} %>
 											</td>
 											
 											<td class="center" style="width: 22%;">
-												<%=substarttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=substarttime.plusMinutes(Long.parseLong(level2[9].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
-												<%substarttime = substarttime.plusMinutes(Long.parseLong(level2[9].toString())); %>
+												<%=substarttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=substarttime.plusMinutes(Long.parseLong(level2[7].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
+												<%substarttime = substarttime.plusMinutes(Long.parseLong(level2[7].toString())); %>
 											</td>
 											
 											<td class="center" style="width: 13%;">
-												<%if(level2[10]!=null && !level2[10].toString().isEmpty()) {%>
+												<%if(level2[8]!=null && !level2[8].toString().isEmpty()) {%>
 													<a class="btn btn-sm" href="CCMScheduleAgendaFileDownload.htm?scheduleAgendaId=<%=level2[0] %>&count=<%=count %>&subCount=<%=countA %>" target="_blank">
 														Annex-<%=count %>-<%=countA %>
 						               				</a>
@@ -236,7 +236,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 						</td>	
 					</tr>	
 				<%} %>
-				<%starttime=starttime.plusMinutes(Long.parseLong(level1[9].toString())); %>
+				<%starttime=starttime.plusMinutes(Long.parseLong(level1[7].toString())); %>
 			<%} } }%>
 		</tbody>
 	</table>	

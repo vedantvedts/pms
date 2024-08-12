@@ -15,9 +15,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.vts.pfms.ccm.model.CCMSchedule;
-import com.vts.pfms.ccm.model.CCMScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeMember;
+import com.vts.pfms.committee.model.CommitteeSchedule;
+import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 
 @Repository
 @Transactional
@@ -41,23 +41,23 @@ public class CCMDaoImpl implements CCMDao{
 	}
 	
 	@Override
-	public List<CCMSchedule> getCCMScheduleList(String year) throws Exception {
+	public List<CommitteeSchedule> getScheduleListByYear(String year) throws Exception {
 		try {
-			Query query = manager.createQuery("FROM CCMSchedule WHERE SUBSTR(MeetingDate,1,4)=:Year AND IsActive=1");
+			Query query = manager.createQuery("FROM CommitteeSchedule WHERE SUBSTR(ScheduleDate,1,4)=:Year AND ScheduleType='C' AND IsActive=1");
 			query.setParameter("Year", year);
-			return (List<CCMSchedule>)query.getResultList();
+			return (List<CommitteeSchedule>)query.getResultList();
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date()+" Inside CCMDaoImpl getCCMScheduleByDate "+e);
+			logger.error(new Date()+" Inside CCMDaoImpl getScheduleListByYear "+e);
 			return null;
 		}
 	}
 	
 	@Override
-	public CCMSchedule getCCMScheduleById(String ccmScheduleId) throws Exception {
+	public CommitteeSchedule getCCMScheduleById(String ccmScheduleId) throws Exception {
 		try {
-			return manager.find(CCMSchedule.class, Long.parseLong(ccmScheduleId));
+			return manager.find(CommitteeSchedule.class, Long.parseLong(ccmScheduleId));
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl getCCMScheduleById "+e);
@@ -67,11 +67,11 @@ public class CCMDaoImpl implements CCMDao{
 	}
 
 	@Override
-	public long addCCMSchedule(CCMSchedule ccmSchedule) throws Exception {
+	public long addCCMSchedule(CommitteeSchedule ccmSchedule) throws Exception {
 		try {
 			manager.persist(ccmSchedule);
 			manager.flush();
-			return ccmSchedule.getCCMScheduleId();
+			return ccmSchedule.getScheduleId();
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl addCCMSchedule "+e);
@@ -79,13 +79,13 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String GETMAXCCMSCHEDULEIDFORMONTH="SELECT IFNULL(MAX(CCMScheduleId),0) AS 'MAX' FROM pfms_ccm_schedule WHERE IsActive=1 AND MeetingRefNo LIKE :Month";
+	private static final String GETMAXCCMSCHEDULEIDFORMONTH="SELECT IFNULL(COUNT(ScheduleId),0) AS 'MAX' FROM committee_schedule WHERE IsActive=1 AND MeetingId LIKE :Month";
 	@Override
-	public long getMaxCCMScheduleIdForMonth(String month) throws Exception {
+	public long getMaxCCMScheduleIdForMonth(String seq) throws Exception {
 
 		try {
 			Query query =  manager.createNativeQuery(GETMAXCCMSCHEDULEIDFORMONTH);
-			query.setParameter("Month", "%"+month+"%");
+			query.setParameter("Month", seq+"%");
 			BigInteger ccmScheduleId=(BigInteger)query.getSingleResult();
 			return ccmScheduleId.longValue();
 		}catch ( NoResultException e ) {
@@ -96,7 +96,7 @@ public class CCMDaoImpl implements CCMDao{
 	}
 	
 	@Override
-	public Long addCCMScheduleAgenda(CCMScheduleAgenda agenda) throws Exception {
+	public Long addCCMScheduleAgenda(CommitteeScheduleAgenda agenda) throws Exception {
 		try {
 			manager.persist(agenda);
 			manager.flush();
@@ -108,18 +108,17 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String GETCCMSCHEDULEAGENDALISTBYCCMSCHEDULEID = "SELECT b.ScheduleAgendaId, b.CCMScheduleId, b.ParentScheduleAgendaId, b.AgendaPriority, b.AgendaItem, \r\n"
-			+ "	b.PresenterLabCode, b.PresenterId, b.StartTime, b.EndTime, b.Duration, b.AttatchmentPath,\r\n"
-			+ "	(CASE WHEN b.PresenterLabCode='@EXP' THEN (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.ExpertName,', ',d.Designation) FROM expert c, employee_desig d WHERE c.ExpertId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) \r\n"
-			+ "	   ELSE (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.EmpName,', ',d.Designation) FROM employee c, employee_desig d WHERE c.EmpId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) END) AS 'Presenter'\r\n"
-			+ "FROM pfms_ccm_schedule a, pfms_ccm_schedule_agenda b\r\n"
-			+ "WHERE a.CCMScheduleId=b.CCMScheduleId AND b.IsActive=1 AND a.CCMScheduleId=:CCMScheduleId\r\n"
+	private static final String GETCCMSCHEDULEAGENDALISTBYCCMSCHEDULEID = "SELECT b.ScheduleAgendaId, b.ScheduleId, b.ParentScheduleAgendaId, b.AgendaPriority, b.AgendaItem, b.PresentorLabCode, b.PresenterId, b.Duration, b.FileName,\r\n"
+			+ "      (CASE WHEN b.PresentorLabCode='@EXP' THEN (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.ExpertName,', ',d.Designation) FROM expert c, employee_desig d WHERE c.ExpertId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) \r\n"
+			+ "	ELSE (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.EmpName,', ',d.Designation) FROM employee c, employee_desig d WHERE c.EmpId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) END) AS 'Presenter'\r\n"
+			+ "FROM committee_schedule a, committee_schedules_agenda b\r\n"
+			+ "WHERE a.ScheduleId=b.ScheduleId AND b.IsActive=1 AND a.ScheduleId=:ScheduleId\r\n"
 			+ "ORDER BY b.ParentScheduleAgendaId,b.AgendaPriority";
 	@Override
 	public List<Object[]> getCCMScheduleAgendaListByCCMScheduleId(String ccmScheduleId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETCCMSCHEDULEAGENDALISTBYCCMSCHEDULEID);
-			query.setParameter("CCMScheduleId", ccmScheduleId);
+			query.setParameter("ScheduleId", ccmScheduleId);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -129,9 +128,9 @@ public class CCMDaoImpl implements CCMDao{
 	}
 	
 	@Override
-	public CCMScheduleAgenda getCCMScheduleAgendaById(String ccmScheduleAgendaId) throws Exception {
+	public CommitteeScheduleAgenda getCCMScheduleAgendaById(String ccmScheduleAgendaId) throws Exception {
 		try {
-			return manager.find(CCMScheduleAgenda.class, Long.parseLong(ccmScheduleAgendaId));
+			return manager.find(CommitteeScheduleAgenda.class, Long.parseLong(ccmScheduleAgendaId));
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl getCCMScheduleAgendaById "+e);
@@ -140,13 +139,13 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 	
-	private static final String GETMAXAGENDAPRIORITY ="SELECT IFNULL(MAX(AgendaPriority),0) AS 'MAX' FROM pfms_ccm_schedule_agenda WHERE CCMScheduleId=:CCMScheduleId AND ParentScheduleAgendaId=:ParentScheduleAgendaId";
+	private static final String GETMAXAGENDAPRIORITY ="SELECT IFNULL(MAX(AgendaPriority),0) AS 'MAX' FROM committee_schedules_agenda WHERE ScheduleId=:ScheduleId AND ParentScheduleAgendaId=:ParentScheduleAgendaId";
 	@Override
 	public int getMaxAgendaPriority(String ccmScheduleId, String parentScheduleAgendaId) throws Exception {
 
 		try {
 			Query query =  manager.createNativeQuery(GETMAXAGENDAPRIORITY);
-			query.setParameter("CCMScheduleId", ccmScheduleId);
+			query.setParameter("ScheduleId", ccmScheduleId);
 			query.setParameter("ParentScheduleAgendaId", parentScheduleAgendaId);
 			BigInteger agendaPriority=(BigInteger)query.getSingleResult();
 			return agendaPriority.intValue();
@@ -157,7 +156,7 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String CCMAGENDAPRIORITYUPDATE ="UPDATE pfms_ccm_schedule_agenda SET AgendaPriority=:AgendaPriority WHERE ScheduleAgendaId=:ScheduleAgendaId";
+	private static final String CCMAGENDAPRIORITYUPDATE ="UPDATE committee_schedules_agenda SET AgendaPriority=:AgendaPriority WHERE ScheduleAgendaId=:ScheduleAgendaId";
 	@Override
 	public int ccmAgendaPriorityUpdate(String scheduleAgendaId,String agendaPriority) throws Exception
 	{
@@ -174,14 +173,14 @@ public class CCMDaoImpl implements CCMDao{
 
 	}
 	
-	private static final String GETCCMSCHEDULEAGENDASAFTER ="SELECT ScheduleAgendaId,AgendaPriority FROM pfms_ccm_schedule_agenda WHERE CCMScheduleId=:CCMScheduleId AND ParentScheduleAgendaId=:ParentScheduleAgendaId AND AgendaPriority>:AgendaPriority ORDER BY AgendaPriority ASC";
+	private static final String GETCCMSCHEDULEAGENDASAFTER ="SELECT ScheduleAgendaId,AgendaPriority FROM committee_schedules_agenda WHERE ScheduleId=:ScheduleId AND ParentScheduleAgendaId=:ParentScheduleAgendaId AND AgendaPriority>:AgendaPriority ORDER BY AgendaPriority ASC";
 	@Override
 	public List<Object[]> getCCMScheduleAgendasAfter(String ccmScheduleId,String agendaPriority, String parentScheduleAgendaId) throws Exception
 	{
 		try {
 			Query query=manager.createNativeQuery(GETCCMSCHEDULEAGENDASAFTER);
 			query.setParameter("AgendaPriority", agendaPriority);
-			query.setParameter("CCMScheduleId", ccmScheduleId);
+			query.setParameter("ScheduleId", ccmScheduleId);
 			query.setParameter("ParentScheduleAgendaId", parentScheduleAgendaId);
 			return (List<Object[]>)query.getResultList();
 		}catch ( Exception e ) {
@@ -192,7 +191,7 @@ public class CCMDaoImpl implements CCMDao{
 
 	}
 	
-	private static final String CCMSCHEDULEAGENDADELETE = "UPDATE pfms_ccm_schedule_agenda SET ModifiedBy=:ModifiedBy, ModifiedDate=:ModifiedDate, IsActive=0, AgendaPriority=0 WHERE ScheduleAgendaId=:ScheduleAgendaId";
+	private static final String CCMSCHEDULEAGENDADELETE = "UPDATE committee_schedules_agenda SET ModifiedBy=:ModifiedBy, ModifiedDate=:ModifiedDate, IsActive=0, AgendaPriority=0 WHERE ScheduleAgendaId=:ScheduleAgendaId";
 	@Override
 	public int ccmScheduleAgendaDelete(String scheduleAgendaId, String modifiedby ,String modifiedDate)throws Exception
 	{
@@ -210,7 +209,7 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 	
-	private static final String CCMSCHEDULESUBAGENDADELETE = "UPDATE pfms_ccm_schedule_agenda SET ModifiedBy=:ModifiedBy, ModifiedDate=:ModifiedDate, IsActive=0, AgendaPriority=0 WHERE ParentScheduleAgendaId=:ScheduleAgendaId";
+	private static final String CCMSCHEDULESUBAGENDADELETE = "UPDATE committee_schedules_agenda SET ModifiedBy=:ModifiedBy, ModifiedDate=:ModifiedDate, IsActive=0, AgendaPriority=0 WHERE ParentScheduleAgendaId=:ScheduleAgendaId";
 	@Override
 	public int ccmScheduleSubAgendaDelete(String scheduleAgendaId, String modifiedby ,String modifiedDate)throws Exception
 	{
@@ -228,7 +227,7 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 	
-	private static final String UPDATECCMSCHEDULEAGENDADURATION = "UPDATE pfms_ccm_schedule_agenda SET Duration=(Duration - :OrgDuration)+:Duration WHERE ScheduleAgendaId=:ScheduleAgendaId";
+	private static final String UPDATECCMSCHEDULEAGENDADURATION = "UPDATE committee_schedules_agenda SET Duration=(Duration - :OrgDuration)+:Duration WHERE ScheduleAgendaId=:ScheduleAgendaId";
 	@Override
 	public int updateCCMScheduleAgendaDuration(int orgDuration, int duration, Long scheduleAgendaId) throws Exception {
 		try {
@@ -243,4 +242,36 @@ public class CCMDaoImpl implements CCMDao{
 			return 0;
 		}
 	}
+	
+	private static final String GETCOMMITTEEMAINIDBYCOMMITTEECODE = "SELECT a.CommitteeMainId FROM committee_main a, committee b WHERE a.CommitteeId=b.CommitteeId AND b.CommitteeShortName='CCM' AND a.ProjectId='0' AND a.DivisionId='0' AND a.InitiationId='0' AND CURDATE() BETWEEN a.ValidFrom AND a.ValidTo AND a.IsActive=1 AND b.LabCode=:LabCode ORDER BY a.CommitteeMainId DESC LIMIT 1";
+	@Override
+	public Long getCommitteeMainIdByCommitteeCode(String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETCOMMITTEEMAINIDBYCOMMITTEECODE);
+			query.setParameter("LabCode", labCode);
+			BigInteger committeeMainId = (BigInteger)query.getSingleResult();
+			return committeeMainId.longValue();
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl getCommitteeMainIdByCommitteeCode "+ e);
+			return 0L;
+		}
+	}
+	
+	private static final String GETCOMMITTEEMIDBYCOMMITTEECODE = "SELECT a.committeeId FROM committee a WHERE a.CommitteeShortName='CCM' AND a.LabCode=:LabCode AND a.IsActive=1";
+	@Override
+	public Long getCommitteeIdByCommitteeCode(String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETCOMMITTEEMIDBYCOMMITTEECODE);
+			query.setParameter("LabCode", labCode);
+			BigInteger committeeMainId = (BigInteger)query.getSingleResult();
+			return committeeMainId.longValue();
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl getCommitteeIdByCommitteeCode "+ e);
+			return 0L;
+		}
+	}
+	
+	
 }

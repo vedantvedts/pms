@@ -20,6 +20,7 @@ public class CommitteeMembersEditDto {
 	
 	
 	private String msLabCode;
+	private String CommitteeId;
 	
 	
 

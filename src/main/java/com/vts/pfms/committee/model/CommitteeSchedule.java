@@ -45,5 +45,6 @@ public class CommitteeSchedule
 	private long InitiationId; 
 	private long RODNameId;
 	private String PresentationFrozen;
+	private String ScheduleType;
 
 }
