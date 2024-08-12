@@ -258,7 +258,12 @@ Object[] dPandC = (Object[])request.getAttribute("DPandC");
 	<%if(dPandC!=null) {%>
 	<table style="width: 98%;margin-top: 10px;">
 		<tr>
-			<td style="text-align: right;"><%if(dPandC[4]!=null) {%><%=dPandC[4] %><%} else{%><%=dPandC[5] %><%} %><%=dPandC[1]+", "+dPandC[2] %></td>
+			<td style="text-align: right;">
+			<%if(dPandC[4]!=null) {%><%=dPandC[4] %>
+			<%} else if(dPandC[5]!=null){%><%=dPandC[5] %>
+			<%} else{%><%} %>
+			<%=dPandC[1]+", "+dPandC[2] %>
+			</td>
 		</tr>
 		<tr>
 			<td style="text-align: right;">D-P&C</td>

@@ -1126,12 +1126,12 @@ public class CARSDaoImpl implements CARSDao{
 	}
 	
 	private static final String CARSTRANSAPPROVALDATABYMILESTONENO = "SELECT tra.CARSInitiationTransId,\r\n"
-			+ "	(SELECT empno FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empno',\r\n"
-			+ "	(SELECT empname FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empname',\r\n"
-			+ "	(SELECT designation FROM pfms_cars_initiation_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'Designation',\r\n"
-			+ "	MAX(tra.ActionDate) AS ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor,sta.CARSStatusCode \r\n"
-			+ "	FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,pfms_cars_initiation par\r\n"
-			+ "	WHERE par.CARSInitiationId=tra.CARSInitiationId AND tra.CARSStatusCode =sta.CARSStatusCode AND tra.Actionby=emp.EmpId AND sta.CARSForward='MF' AND tra.MilestoneNo=:MilestoneNo AND par.CARSInitiationId=:CARSInitiationId GROUP BY sta.CARSStatusCode ORDER BY tra.CARSInitiationTransId ASC";
+			+ "(SELECT empno FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.CARSStatusCode =  sta.CARSStatusCode  AND t.MilestoneNo=:MilestoneNo AND t.CARSInitiationId=:CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empno',\r\n"
+			+ "(SELECT empname FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.CARSStatusCode =  sta.CARSStatusCode  AND t.MilestoneNo=:MilestoneNo AND t.CARSInitiationId=:CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empname',\r\n"
+			+ "(SELECT designation FROM pfms_cars_initiation_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.CARSStatusCode =  sta.CARSStatusCode  AND t.MilestoneNo=:MilestoneNo AND t.CARSInitiationId=:CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'Designation',\r\n"
+			+ "MAX(tra.ActionDate) AS ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor,sta.CARSStatusCode\r\n"
+			+ "FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,pfms_cars_initiation par\r\n"
+			+ "WHERE par.CARSInitiationId=tra.CARSInitiationId AND tra.CARSStatusCode =sta.CARSStatusCode AND tra.Actionby=emp.EmpId AND sta.CARSForward='MF' AND tra.MilestoneNo=:MilestoneNo AND par.CARSInitiationId=:CARSInitiationId GROUP BY sta.CARSStatusCode ORDER BY tra.CARSInitiationTransId ASC";
 	@Override
 	public List<Object[]> carsTransApprovalDataByMilestoneNo(String carsInitiationId, String milestoneNo) {
 
