@@ -15,11 +15,19 @@ public class MailDaoImpl implements MailDao {
 	@PersistenceContext
 	EntityManager manager;
 	
-	private static final String MEETINGS="SELECT cs.scheduleid,cs.projectid,cs.InitiationId,c.CommitteeShortName,c.CommitteeName,cs.MeetingVenue,cs.ScheduleStartTime,pm.projectcode,pm.projectshortname FROM committee_schedule cs,committee c ,project_master pm WHERE  c.CommitteeId=cs.CommitteeId AND pm.projectid=cs.projectid AND  cs.ScheduleDate=:date AND cs.isactive='1'";
+	private static final String MEETINGS="SELECT cs.scheduleid,cs.projectid,cs.InitiationId,\r\n"
+			+ "c.CommitteeShortName,c.CommitteeName,cs.MeetingVenue,\r\n"
+			+ "cs.ScheduleStartTime,pm.projectcode,pm.projectshortname FROM committee_schedule cs,committee c ,project_master pm WHERE \r\n"
+			+ "c.CommitteeId=cs.CommitteeId AND pm.projectid=cs.projectid AND  cs.ScheduleDate=:DATE AND cs.isactive='1'\r\n"
+			+ "UNION \r\n"
+			+ "SELECT cs.scheduleid,cs.projectid,cs.InitiationId,\r\n"
+			+ "c.CommitteeShortName,c.CommitteeName,cs.MeetingVenue,\r\n"
+			+ "cs.ScheduleStartTime,'','-'FROM committee_schedule cs,committee c WHERE \r\n"
+			+ "c.CommitteeId=cs.CommitteeId AND cs.projectid='0' AND  cs.ScheduleDate=:DATE AND cs.isactive='1'";
 	@Override
 	public List<Object[]> getTodaysMeetings(String date) throws Exception {
 		Query query = manager.createNativeQuery(MEETINGS);
-		query.setParameter("date", date);
+		query.setParameter("DATE", date);
 		
 		return (List<Object[]>)query.getResultList();
 	}

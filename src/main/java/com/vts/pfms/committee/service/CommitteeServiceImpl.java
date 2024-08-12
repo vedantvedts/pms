@@ -1487,70 +1487,19 @@ public class CommitteeServiceImpl implements CommitteeService{
 			Status="MMS";
 		}
 		
-		approval.setScheduleId(Long.parseLong(CommitteeScheduleId));
-		approval.setEmpId(Long.parseLong(EmpId));
-		approval.setMeetingStatus(Status);
-		approval.setActionBy(UserId);
-		approval.setActionDate(sdf1.format(new Date()));
-		
-		schedule.setScheduleId(Long.parseLong(CommitteeScheduleId));
-		schedule.setScheduleFlag("MMF");
-		schedule.setModifiedBy(UserId);
-		schedule.setModifiedDate(sdf1.format(new Date()));
-		dao.MeetingMinutesApproval(approval,schedule);
-		}
-//		Object[] CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"CC");
-//		if(CommitteMainData!=null )
-//		{
-//			PfmsNotification notificationcp= new PfmsNotification();
-//			String ChairpersonId=CommitteMainData[0].toString();
-//			notificationcp.setEmpId(Long.parseLong(ChairpersonId));
-//			notificationcp.setNotificationby(Long.parseLong(EmpId));
-//			notificationcp.setNotificationDate(sdf1.format(new Date()));
-//			notificationcp.setNotificationMessage("Minutes Pending Approval For " + CommitteMainData[2].toString() );
-//			notificationcp.setNotificationUrl("MeetingApprovalAgenda.htm");
-//			notificationcp.setCreatedBy(UserId);
-//			notificationcp.setCreatedDate(sdf1.format(new Date()));
-//			notificationcp.setIsActive(1);
-//			notificationcp.setScheduleId(Long.parseLong(CommitteeScheduleId));
-//			notificationcp.setStatus(Status);
-//			dao.MeetingMinutesApprovalNotification(notificationcp);
-//		}
+//		approval.setScheduleId(Long.parseLong(CommitteeScheduleId));
+//		approval.setEmpId(Long.parseLong(EmpId));
+//		approval.setMeetingStatus(Status);
+//		approval.setActionBy(UserId);
+//		approval.setActionDate(sdf1.format(new Date()));
 //		
-//		CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"CS");
-//		if(CommitteMainData!=null )
-//		{
-//			String secretary=CommitteMainData[0].toString();
-//			PfmsNotification notificationms= new PfmsNotification();
-//			notificationms.setEmpId(Long.parseLong(secretary));
-//			notificationms.setNotificationby(Long.parseLong(EmpId));
-//			notificationms.setNotificationDate(sdf1.format(new Date()));
-//			notificationms.setNotificationMessage("Minutes Pending Approval For " + CommitteMainData[2].toString() );
-//			notificationms.setNotificationUrl("MeetingApprovalAgenda.htm");
-//			notificationms.setCreatedBy(UserId);
-//			notificationms.setCreatedDate(sdf1.format(new Date()));
-//			notificationms.setIsActive(1);
-//			notificationms.setScheduleId(Long.parseLong(CommitteeScheduleId));
-//			notificationms.setStatus(Status);
-//			dao.MeetingMinutesApprovalNotification(notificationms);
-//		}
-//		CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"PS");
-//		if(CommitteMainData!=null )
-//		{
-//			String secretary=CommitteMainData[0].toString();
-//			PfmsNotification notificationps= new PfmsNotification();
-//			notificationps.setEmpId(Long.parseLong(secretary));
-//			notificationps.setNotificationby(Long.parseLong(EmpId));
-//			notificationps.setNotificationDate(sdf1.format(new Date()));
-//			notificationps.setNotificationMessage("Minutes Pending Approval For " + CommitteMainData[2].toString() );
-//			notificationps.setNotificationUrl("MeetingApprovalAgenda.htm");
-//			notificationps.setCreatedBy(UserId);
-//			notificationps.setCreatedDate(sdf1.format(new Date()));
-//			notificationps.setIsActive(1);
-//			notificationps.setScheduleId(Long.parseLong(CommitteeScheduleId));
-//			notificationps.setStatus(Status);
-//			dao.MeetingMinutesApprovalNotification(notificationps);
-//		}
+//		schedule.setScheduleId(Long.parseLong(CommitteeScheduleId));
+//		schedule.setScheduleFlag("MMF");
+//		schedule.setModifiedBy(UserId);
+//		schedule.setModifiedDate(sdf1.format(new Date()));
+//		dao.MeetingMinutesApproval(approval,schedule);
+		}
+
 		Object[]CommitteMainEnoteList= dao.CommitteMainEnoteList("0",CommitteeScheduleId);
 		if(CommitteMainEnoteList==null) {
 		PmsEnote pe = new PmsEnote();
@@ -3659,19 +3608,19 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 			notification.setNotificationDate(sdf1.format(new Date()));
 			carsdao.addNotifications(notification);
 			if(pe.getEnoteFrom().equalsIgnoreCase("S")) {
-				CommitteeMeetingApproval approval=new CommitteeMeetingApproval();
-				CommitteeSchedule schedule= new CommitteeSchedule();
-				approval.setScheduleId(pe.getScheduleId());
-				approval.setEmpId(empId);
-				approval.setMeetingStatus("MMR");
-				approval.setActionBy(Username);
-				approval.setActionDate(sdf1.format(new Date()));
-				
-				schedule.setScheduleId(pe.getScheduleId());
-				schedule.setScheduleFlag("MMR");
-				schedule.setModifiedBy(Username);
-				schedule.setModifiedDate(sdf1.format(new Date()));
-				dao.MeetingMinutesApproval(approval,schedule);
+//				CommitteeMeetingApproval approval=new CommitteeMeetingApproval();
+//				CommitteeSchedule schedule= new CommitteeSchedule();
+//				approval.setScheduleId(pe.getScheduleId());
+//				approval.setEmpId(empId);
+//				approval.setMeetingStatus("MMR");
+//				approval.setActionBy(Username);
+//				approval.setActionDate(sdf1.format(new Date()));
+//				
+//				schedule.setScheduleId(pe.getScheduleId());
+//				schedule.setScheduleFlag("MMR");
+//				schedule.setModifiedBy(Username);
+//				schedule.setModifiedDate(sdf1.format(new Date()));
+//				dao.MeetingMinutesApproval(approval,schedule);
 			}
 		}
 		

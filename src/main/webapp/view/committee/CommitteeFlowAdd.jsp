@@ -316,12 +316,21 @@ String ses=(String)request.getParameter("result");
 					</form>
 					
 						<%if(CommitteMainEnoteList!=null){ %>
-				 	<div align="center" style="margin-top:1%;">
+				 	<div align="center" style="margin-top:1%;display: flex;justify-content: center;">
 				 	<form action="#">
 				<label class="control-label" style="margin-bottom: 4px !important;">Status History: &nbsp;</label>
 				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20].toString() %> 
 				<i class="fa fa-external-link" aria-hidden="true"></i></button>
 				</form>
+				
+				<form action="CommitteeEnotePrint.htm" target="_blank" style="margin-left:1%;">
+					<button type="submit" class="btn btn-sm edit" style="background: #088395;border-color: #088395" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem;color:white "></i></button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+					<input type="hidden" name="EnoteId" value="<%=CommitteMainEnoteList[0].toString()%>">
+						<input type="hidden" name="type" value="C">
+						<input type="hidden" name="scheduleid" value="0">
+						<input type="hidden" name="committeemainid" value="<%=CommitteMainEnoteList[5].toString()%>">
+					</form>
 					</div> 
 					<%} %>
 					</div>

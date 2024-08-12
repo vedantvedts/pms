@@ -1983,20 +1983,14 @@ public class CommitteeController {
 			dto.setCo_chairperson(req.getParameter("co_chairperson"));
 			dto.setComemberid(req.getParameter("comemberid"));
 			dto.setMsLabCode(req.getParameter("msLabCode"));
-			cmd.setFormationDate(req.getParameter("Formationdates"));
+			cmd.setFormationDate(!req.getParameter("Formationdates").isEmpty()?req.getParameter("Formationdates"):LocalDate.now().toString());
 			cmd.setReferenceNo(req.getParameter("Reference No."));
+		
+			
 			long count =service.CommitteeMainMemberUpdate(dto,cmd);			
 			
-//			CommitteeMainDto committeemaindto=new CommitteeMainDto();
-//			committeemaindto.setProxySecretary(req.getParameter("proxysecretary"));
-//			committeemaindto.setCommitteeMainId(req.getParameter("committeemainid"));
-//			committeemaindto.setChairperson(req.getParameter("chairperson"));
-//			committeemaindto.setSecretary(req.getParameter("Secretary"));
-//			committeemaindto.setModifiedBy(Username);
-//			committeemaindto.setCpLabId(req.getParameter("cplabid"));		
-//			
-//			long count = service.CommitteeMainEdit(committeemaindto);
-//			
+
+		
 			if (count > 0) {
 				redir.addAttribute("result", "Committee Edited Successfully");
 			} else {
