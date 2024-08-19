@@ -182,7 +182,33 @@ $(document).ready(function() {
 
 function groupcheck(frmid){
 	var count=0;
-	var groupCode=$('#groupCode').val();
+	var groupCode=$('#groupCode').val() || '';
+	var groupName=$('#groupName').val() || '';
+	var ghempid=$('#ghempid').val() || '';
+	var tdId=$('#tdId').val() || '';
+	
+	groupCode = groupCode.trim();
+	groupName = groupName.trim();
+	ghempid = ghempid.trim();
+	tdId = tdId.trim();
+	
+   if (!groupCode) {
+        alert('Group Code is required.');
+        return; 
+    }
+    if (!groupName) {
+        alert('Group Name is required.');
+        return; 
+    }
+    if (!ghempid) {
+        alert('GH Head Name is required.');
+        return; 
+    }
+    if (!tdId) {
+        alert('TD Name is required.');
+        return; 
+    }
+	
 	$.ajax({
 
 		type : "GET",

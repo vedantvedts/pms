@@ -208,6 +208,12 @@ a:hover {
 
 
 											</div>
+									<div class="row">
+								         <div class="col-md-4"> </div>
+								         <div class="col-md-4" align="center">
+									       <a  class="btn btn-sm back" href="MainDashBoard.htm">Back</a>
+								        </div>
+							      </div>
 										</div>
 									</div>
 								</div>

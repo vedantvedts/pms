@@ -150,10 +150,10 @@ String Project="";
 		            <br>
 		      
 		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
+		                  <div class="col-md-2" style="max-width: 18%">
 		                      <label class="control-label"> Problem Statement</label>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 83%;margin-left: -22px;">
+		                  <div class="col-md-10">
 		                      <textarea class="form-control" rows="2" cols="30" name="statement" id="statement"><%=RfaAction[6].toString() %></textarea>
 		                  </div>
 		            </div>
@@ -185,10 +185,10 @@ String Project="";
 		            <br>
 		            
 		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
+		                  <div class="col-md-2" style="max-width: 18%">
 		                      <label class="control-label">References</label>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 84%;margin-left: -22px;">
+		                  <div class="col-md-10">
 		                       <textarea class="form-control" rows="2" cols="30" name="reference" id="reference"><%=RfaAction[8].toString() %></textarea>
 		                  </div> 
 		            </div>

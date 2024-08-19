@@ -310,7 +310,7 @@ List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplL
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid"
-													value="<%=obj[0]%>/<%=obj[3]%>"
+													value="<%=obj[0]%>,<%=obj[3]%>"
 													formtarget="_blank">
 													<div class="cc-rockmenu">
 														<div class="rolling">

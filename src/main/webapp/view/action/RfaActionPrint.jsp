@@ -208,7 +208,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <%} %>
               </tr> 
               <tr>
-				<%if(RfaPrint[17]!=null && Arrays.asList("AV","AAA","AR","AP","ARC","RFA","AX","AY","RR","RP","REK","ARC").contains(RfaPrint[11]+"")){ %>
+				<%if(RfaPrint[18]!=null && Arrays.asList("AV","AAA","AR","AP","ARC","RFA","AX","AY","RR","RP","REK","ARC").contains(RfaPrint[11]+"")){ %>
                  <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 64px">&nbsp;&nbsp;Approved By </td>
                  <%if(approvedByStatus.contains(RfaPrint[11].toString())){ %>
                  <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700; height: 64px"><span style="font-weight: normal;">&nbsp;&nbsp;<%=approvedBy2%> <br> <span style="font-size: 13px;"> &nbsp; [approved on :</span> <span class="spanDate"><%=approvedDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>

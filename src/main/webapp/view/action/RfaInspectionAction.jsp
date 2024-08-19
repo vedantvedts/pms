@@ -84,6 +84,14 @@ font-size: 13px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
+#filealert {
+    color: red;
+    font-weight:bold;
+    font-size: 18px;
+    margin-left: -35%;
+    margin-top: 5px;
+  }
+
 </style>
 </head>
 <body>
@@ -385,8 +393,9 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 											</div>
 											<div class="col-md-4" style="margin-top: 5px;">
 												<div class="form-group" style="width: 80%; margin-left:-33%">
-													<input type="file" class="form-control" name="attachment">
-												</div>   
+													<input type="file" class="form-control" name="attachment" id="" accept="application/pdf , image/* " oninput="validateFile(this)">
+												</div> 
+												 <div id="filealert"></div> 
 		                                     </div>
 		                                     <div class="col-md-5" style="margin-top: 10px;display: none;" id="download">
 		                                     <button type="submit" class="btn btn-sm "  style="margin-left: -6rem; background-color: transparent;" name="filename"  formaction="RfaAttachmentDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>
@@ -923,9 +932,22 @@ function rfaOptionFunc(){
 				]
 			} ;
 CKEDITOR.replace('Editor',editor_config);
+
+function validateFile(input) {
+	  const file = input.files[0];
+	  const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+
+	  if (!file) return;
+
+	  if (!allowedTypes.includes(file.type)) {
+	    document.getElementById('filealert').innerText = 'Only image and PDF files are allowed!';
+	    // Clearing the file input to prevent submission
+	    input.value = '';
+	  } else {
+	    document.getElementById('filealert').innerText = '';
+	  }
+	}
+	
  </script>
-
 </body>
-
-
 </html>

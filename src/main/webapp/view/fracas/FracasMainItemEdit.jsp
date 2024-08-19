@@ -162,8 +162,10 @@ h6{
 												<option selected value="0">General</option>							
 												<%} %>				
 												<%for(Object[] obj:projectslist){ %>
-													<%if(fracasitemdata[4].toString().equals(obj[0].toString())){ %>	
-														<option value="<%=obj[0]%>" selected><%=obj[1]%></option>	
+													<%if(fracasitemdata[4].toString().equals(obj[0].toString())){
+														String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+														%>	
+														<option value="<%=obj[0]%>" selected><%=obj[4]+projectshortName%></option>	
 													<%} %>
 												<%} %>
 											</select>

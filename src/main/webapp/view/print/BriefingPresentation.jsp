@@ -1,3 +1,5 @@
+<%@page import="java.nio.file.Paths"%>
+<%@page import="java.nio.file.Path"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.net.Inet4Address"%>
@@ -45,8 +47,6 @@
     SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
     SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
 	String todayDate=outputFormat.format(new Date()).toString();
-	
-System.out.println(todayDate+"---");
 	int addcount = 0;
 	NFormatConvertion nfc = new NFormatConvertion();
 	Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
@@ -118,10 +118,6 @@ System.out.println(todayDate+"---");
 	List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 	Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
 	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
-	for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
-		System.out.println(entry.getValue()+"--"+entry.getKey());
-	}
-	
 		List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envisagedDemandlist");
 	%>
 
@@ -3320,12 +3316,14 @@ System.out.println(todayDate+"---");
 								<% if (TechWorkDataList.get(z) != null && TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) {%>
 								<% Object[] TechWork = TechWorkDataList.get(z);
 								String fileExt = FilenameUtils.getExtension(TechWork[8].toString());
-								if (FileExtList.contains(fileExt) && new File(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip").exists()) {%>
-
-								<%-- <% System.out.println(fileExt); %> --%>
+								String tecdata = TechWorkDataList.get(z)[6].toString().replaceAll("[/\\\\]", ",");
+				        		String[] fileParts = tecdata.split(",");
+				        		String zipName = String.format(TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip");
+				        		Path techPath = Paths.get(filePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+								if (FileExtList.contains(fileExt) ) {%>
 								<% String path = request.getServletContext().getRealPath("/view/temp");
 								Zipper zip = new Zipper();
-								zip.unpack(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip", path, TechWork[9].toString());
+								zip.unpack(techPath.toString(), path, TechWorkDataList.get(z)[9].toString());
 								File techattachfile = new File(path + "/" + TechWork[8]); %>
 
 								<% if (fileExt.equalsIgnoreCase("pdf")) { %>
@@ -3364,7 +3362,6 @@ System.out.println(todayDate+"---");
 				<div class="content">
 					<% for (int z = 0; z < projectidlist.size(); z++) { %>
 					<div align="left"> <b style="font-size: 20px;">Project : <%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %></b> </div>
-
 					<div align="center">
 						<span class="mainsubtitle">Technical Images</span>
 						<hr>
@@ -3372,15 +3369,14 @@ System.out.println(todayDate+"---");
 							List<TechImages> TechImagesList = TechImages.get(z);
 							if (TechImagesList.size() > 0) {
 								for (TechImages imges : TechImagesList) { %>
-
-								<% if (new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName()).exists()) { %>
-								<img data-enlargable style="width:98%;height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName())))%>">
+								<% Path imagePath = Paths.get(filePath,projectLabCode,"TechImages",(imges.getTechImagesId() + "_" + imges.getImageName()));
+								if (imagePath.toFile().exists()) { %>
+								<img data-enlargable style="width:98%;height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagePath.toFile()))%>">
 								<hr>
 								<%}%><%}}}%>
 					</div>
 					<%}%>
 				</div>
-
 			</div>
 
 		<!-- ---------------------------------------- p-13c Technical Images Div ----------------------------------------------------- -->
@@ -3388,16 +3384,11 @@ System.out.println(todayDate+"---");
 		<!-- ---------------------------------------- P-14  Thank you Div ----------------------------------------------------- -->
 
 			<div class="carousel-item ">
-
 				<div class="content" style="border: 0px solid black;padding-top: 50px;border-radius: 20px;position: relative;height: 93vh !important;">
-					
-					
 					<div style=" position: absolute ;top: 40%;left: 34%;">
 						<h1 style="font-size: 5rem;">Thank You !</h1>
 					</div>
-					
 				</div>
-
 			</div>
 		<!-- ---------------------------------------- P-14  Thank you Div ----------------------------------------------------- -->
 		</div>
@@ -3439,9 +3430,7 @@ System.out.println(todayDate+"---");
 	<div class="modal fade " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
 		<div class="modal-dialog modal-xl modal-dialog-jump">
 			<div class="modal-content">
-
 				<div class="modal-body">
-				
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-md-12">
@@ -3462,36 +3451,27 @@ System.out.println(todayDate+"---");
 												%>
 											</h5>
 										</div>
-
 									</div>
 									<div class="card-body">
-
 										<div class="table-responsive">
 											<table class="table  table-hover table-bordered">
 												<thead>
-
 													<tr>
 														<th>Expand</th>
 														<th style="text-align: left; max-width: 15px;">Mil-No</th>
-														<!-- 	<th style="text-align: left;">Project Name</th> -->
-														<th style="text-align: left; max-width: 200px;">Milestone
-															Activity</th>
+														<th style="text-align: left; max-width: 200px;">Milestone Activity</th>
 														<th>Start Date</th>
 														<th>End Date</th>
-														<th style="text-align: left; max-width: 200px;">First
-															OIC</th>
+														<th style="text-align: left; max-width: 200px;">First OIC</th>
 														<th style="text-align: center; max-width: 50px;">Weightage</th>
 														<th style="text-align: center; max-width: 80px;">Progress</th>
 
 													</tr>
 												</thead>
 												<tbody>
-
 													<%
 													int count = 1;
-
 													if (MilestoneList != null && MilestoneList.size() > 0) {
-
 														for (Object[] obj : MilestoneList) {
 													%>
 													<tr class="milestonemodalwhole"
@@ -3538,19 +3518,17 @@ System.out.println(todayDate+"---");
 																	<%=obj[12]%>
 																</div>
 															</div> <%
- } else {
- %>
+															 } else {
+															 %>
 															<div class="progress"
 																style="background-color: #cdd0cb !important; height: 1.4rem !important;">
 																<div class="progress-bar" role="progressbar"
 																	style="width: 100%; background-color: #cdd0cb !important; color: black; font-weight: bold;">
 																	Not Started</div>
 															</div> <%
- }
- %>
+															 }
+															 %>
 														</td>
-
-
 													</tr>
 													<tr class="collapse row<%=count%>"
 														style="font-weight: bold;">
@@ -3589,15 +3567,15 @@ System.out.println(todayDate+"---");
 															<%
 															if (objA[7] != null) {
 															%> <%=sdf.format(objA[7])%> <%
- } else {
- %><%=objA[8]%>
+															 } else {
+															 %><%=objA[8]%>
 															<%
 															}
 															%> <%
- } else {
- %> <%=objA[8]%> <%
- }
- %>
+															 } else {
+															 %> <%=objA[8]%> <%
+															 }
+															 %>
 														</td>
 														<td align="center"><%=objA[6]%></td>
 														<td>
@@ -3624,26 +3602,25 @@ System.out.println(todayDate+"---");
 																	<%=objA[5]%>
 																</div>
 															</div> <%
- } else {
- %>
+															 } else {
+															 %>
 															<div class="progress"
 																style="background-color: #cdd0cb !important; height: 1.4rem !important;">
 																<div class="progress-bar" role="progressbar"
 																	style="width: 100%; background-color: #cdd0cb !important; color: black; font-weight: bold;">
 																	Not Started</div>
 															</div> <%
- }
- %>
+															 }
+															 %>
 														</td>
-
-														<td></td>
+														<td>
+														</td>
 													</tr>
 													<%
 													int countB = 1;
 													if (MilestoneB != null && MilestoneB.size() > 0) {
 														for (Object[] objB : MilestoneB) {
-															List<Object[]> MilestoneC = (List<Object[]>) request
-															.getAttribute(count + "MilestoneActivityC" + countA + countB);
+															List<Object[]> MilestoneC = (List<Object[]>) request.getAttribute(count + "MilestoneActivityC" + countA + countB);
 													%>
 													<tr class="collapse row<%=count%>">
 														<td style="width: 2% !important;" class="center"></td>
@@ -3663,15 +3640,15 @@ System.out.println(todayDate+"---");
 															<%
 															if (objB[7] != null) {
 															%> <%=sdf.format(objB[7])%> <%
- } else {
- %><%=objB[8]%>
+															 } else {
+															 %><%=objB[8]%>
 															<%
 															}
 															%> <%
- } else {
- %> <%=objB[8]%> <%
- }
- %>
+															 } else {
+															 %> <%=objB[8]%> <%
+															 }
+															 %>
 														</td>
 														<td align="center"><%=objB[6]%></td>
 														<td>
@@ -3698,27 +3675,25 @@ System.out.println(todayDate+"---");
 																	<%=objB[5]%>
 																</div>
 															</div> <%
- } else {
- %>
+															 } else {
+															 %>
 															<div class="progress"
 																style="background-color: #cdd0cb !important; height: 1.4rem !important;">
 																<div class="progress-bar" role="progressbar"
 																	style="width: 100%; background-color: #cdd0cb !important; color: black; font-weight: bold;">
 																	Not Started</div>
 															</div> <%
- }
- %>
+															 }
+															 %>
 														</td>
-
-
-														<td></td>
+														<td>
+														</td>
 													</tr>
 													<%
 													int countC = 1;
 													if (MilestoneC != null && MilestoneC.size() > 0) {
 														for (Object[] objC : MilestoneC) {
-															List<Object[]> MilestoneD = (List<Object[]>) request
-															.getAttribute(count + "MilestoneActivityD" + countA + countB + countC);
+															List<Object[]> MilestoneD = (List<Object[]>) request.getAttribute(count + "MilestoneActivityD" + countA + countB + countC);
 													%>
 													<tr class="collapse row<%=count%>">
 														<td style="width: 2% !important;" class="center"></td>
@@ -3738,15 +3713,15 @@ System.out.println(todayDate+"---");
 															<%
 															if (objC[7] != null) {
 															%> <%=sdf.format(objC[7])%> <%
- } else {
- %><%=objC[8]%>
+															 } else {
+															 %><%=objC[8]%>
 															<%
 															}
 															%> <%
- } else {
- %> <%=objC[8]%> <%
- }
- %>
+															 } else {
+															 %> <%=objC[8]%> <%
+															 }
+															 %>
 														</td>
 														<td align="center"><%=objC[6]%></td>
 														<td>
@@ -3773,8 +3748,8 @@ System.out.println(todayDate+"---");
 																	<%=objC[5]%>
 																</div>
 															</div> <%
- } else {
- %>
+															 } else {
+															 %>
 															<div class="progress"
 																style="background-color: #cdd0cb !important; height: 1.4rem !important;">
 																<div class="progress-bar" role="progressbar"
@@ -3790,8 +3765,7 @@ System.out.println(todayDate+"---");
 													int countD = 1;
 													if (MilestoneD != null && MilestoneD.size() > 0) {
 														for (Object[] objD : MilestoneD) {
-															List<Object[]> MilestoneE = (List<Object[]>) request
-															.getAttribute(count + "MilestoneActivityE" + countA + countB + countC + countD);
+															List<Object[]> MilestoneE = (List<Object[]>) request.getAttribute(count + "MilestoneActivityE" + countA + countB + countC + countD);
 													%>
 													<tr class="collapse row<%=count%>">
 														<td style="width: 2% !important;" class="center"></td>
@@ -3805,21 +3779,21 @@ System.out.println(todayDate+"---");
 														<td style="width: 8% !important;"><%=sdf.format(objB[3])%></td>
 
 														<td class="width-30px">
-															<%
-															if (objD[9].toString().equalsIgnoreCase("3") || objD[9].toString().equalsIgnoreCase("5")) {
-															%>
-															<%
-															if (objD[7] != null) {
-															%> <%=sdf.format(objD[7])%> <%
- } else {
- %><%=objD[8]%>
-															<%
-															}
-															%> <%
- } else {
- %> <%=objD[8]%> <%
- }
- %>
+														<%
+														if (objD[9].toString().equalsIgnoreCase("3") || objD[9].toString().equalsIgnoreCase("5")) {
+														%>
+														<%
+														if (objD[7] != null) {
+														%> <%=sdf.format(objD[7])%> <%
+														 } else {
+														 %><%=objD[8]%>
+														<%
+														}
+														%> <%
+														 } else {
+														 %> <%=objD[8]%> <%
+														 }
+														 %>
 														</td>
 														<td align="center"><%=objD[6]%></td>
 														<td>
@@ -3846,16 +3820,16 @@ System.out.println(todayDate+"---");
 																	<%=objD[5]%>
 																</div>
 															</div> <%
- } else {
- %>
+															 } else {
+															 %>
 															<div class="progress"
 																style="background-color: #cdd0cb !important; height: 1.4rem !important;">
 																<div class="progress-bar" role="progressbar"
 																	style="width: 100%; background-color: #cdd0cb !important; color: black; font-weight: bold;">
 																	Not Started</div>
 															</div> <%
- }
- %>
+															 }
+															 %>
 														</td>
 
 
@@ -3884,15 +3858,15 @@ System.out.println(todayDate+"---");
 															<%
 															if (objE[7] != null) {
 															%> <%=sdf.format(objE[7])%> <%
- } else {
- %><%=objE[8]%>
+															} else {
+															 %><%=objE[8]%>
 															<%
 															}
 															%> <%
- } else {
- %> <%=objE[8]%> <%
- }
- %>
+															} else {
+															%> <%=objE[8]%> <%
+															}
+															%>
 														</td>
 														<td align="center"><%=objE[6]%></td>
 														<td>
@@ -3930,9 +3904,8 @@ System.out.println(todayDate+"---");
 														 }
 														 %>
 														</td>
-
-
-														<td></td>
+														<td>
+														</td>
 													</tr>
 													<%
 													countE++;
@@ -3981,28 +3954,12 @@ System.out.println(todayDate+"---");
 												</tbody>
 											</table>
 										</div>
-
-
-
 									</div>
-
 								</div>
-
 							</div>
-
 						</div>
-
-
 					</div>
-
-
-
-
-
-
 				</div>
-
-
 			</div>
 		</div>
 	</div>

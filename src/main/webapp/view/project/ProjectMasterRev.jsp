@@ -442,7 +442,7 @@ Project Revision</h4>
 </label>
 </th>
  <td colspan="3">
-	<input  name="remarks" class="form-control"  maxlength="500" required="required" value="<%=ProjectEditData[32] %>" >
+	<input  name="remarks" class="form-control"  maxlength="500" required="required" value="<%if(ProjectEditData[32]!=null){%> <%=ProjectEditData[32]%> <%}%>" >
 </td>
  </tr>
  

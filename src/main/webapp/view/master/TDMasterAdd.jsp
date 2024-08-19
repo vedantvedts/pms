@@ -165,15 +165,37 @@ $(document).ready(function() {
 <script type="text/javascript">
 
 function tdcheck(frmid){
-	var count=0;
-	var tdCode=$('#tdCode').val();
+	 var count=0;
+	 
+	  var tdCode = $('#tdCode').val() || '';
+	  var tdName = $('#tdName').val() || '';
+	  var tdempid = $('#tdempid').val() || '';
+
+	    tdCode = tdCode.trim();
+	    tdName = tdName.trim();
+	    tdempid = tdempid.trim();
+
+	 
+	   if (!tdCode) {
+	        alert('TD Code is required.');
+	        return; 
+	    }
+	    if (!tdName) {
+	        alert('TD Name is required.');
+	        return; 
+	    }
+	    if (!tdempid) {
+	        alert('TD Head Name is required.');
+	        return; 
+	    }
+	 
 	$.ajax({
 
 		type : "GET",
 		url : "tdAddCheck.htm",
 		data : {
 			
-			tcode:tdCode.trim()
+			tcode:tdCode
 			
 		},
 		datatype : 'json',

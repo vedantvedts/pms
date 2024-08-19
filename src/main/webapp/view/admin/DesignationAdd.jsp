@@ -131,38 +131,48 @@
 <script type="text/javascript">
 	function Designationcheck(frmid) {
 
-		var desigcode = $('#desigcode').val();
-		var designation = $('#designation').val();
+		 var desigcode = $('#desigcode').val().trim();
+		 var designation = $('#designation').val().trim();
+		 
+		   if (!desigcode) {
+		        alert('Designation Code is required.');
+		        return;
+		    }
+
+		    if (!designation) {
+		        alert('Designation Name is required.');
+		        return;
+		    }
+		 
 		$.ajax({
 
 			type : "GET",
 			url : "DesignationAddCheck.htm",
 			data : {
 
-				dcode : desigcode.trim(),
-				dname : designation.trim(),
+				dcode : desigcode,
+				dname : designation,
 
 			},
 			datatype : 'json',
 			success : function(result) {
 				var ajaxresult = JSON.parse(result);
-				var count = 0;
-				if (ajaxresult[0] == 1) {
-					alert('Designation Code Already Exists');
-					count++;
+				 var messages = [];
+				if (ajaxresult[0] == 1) {	
+				   messages.push('Designation Code Already Exists');
 				}
 				if (ajaxresult[1] == 1) {
-					alert('Designation Name Already Exists');
-					count++;
+				   messages.push('Designation Name Already Exists');
 				}
 
-				if (count == 0) {
-
-					var ret = confirm('Are you Sure To Submit ?');
-					if (ret) {
-						$('#' + frmid).submit();
-					}
-				}
+			    if (messages.length > 0) {
+	                alert(messages.join('\n'));
+	            } else {
+	                var ret = confirm('Are you sure you want to submit?');
+	                if (ret) {
+	                    $('#' + frmid).submit();
+	                }
+	            }
 			}
 		});
 	}

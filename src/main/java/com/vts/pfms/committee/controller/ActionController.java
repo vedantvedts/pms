@@ -4792,13 +4792,6 @@ public class ActionController {
         			rfadto.setClosureFile(closurefile);
         			rfadto.setModifiedBy(UserId);
         			
-        			System.out.println("rfaUploadId "+rfaUploadId);
-        			System.out.println("oldrfano "+oldrfano);
-        			System.out.println("rfadate "+rfadate);
-        			System.out.println("rfafile "+rfafile.getOriginalFilename());
-        			System.out.println("closurefile "+closurefile.getOriginalFilename());
-        			
-
         			long count = service.oldRfaUploadEditSubmit(rfadto);
         			if(count>0) {
         				redir.addAttribute("result","RFA Edited successfully");
