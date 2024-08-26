@@ -140,8 +140,8 @@ display:none;
 							for(Object[] obj: EnoteApprovalPendingList) {%>
 							<tr>
 							<td style="text-align: center;"> <%=++firstCount %></td>
-							<td style="text-align: center;"><%=obj[9].toString() %></td>
-							<td style="text-align: center;"><%=obj[10].toString() %></td>
+							<td style="text-align: center;"><%=obj[9] %></td>
+							<td style="text-align: center;"><%=obj[10] %></td>
 							<td style="text-align: center;"> 
 							<%if (obj[1]!=null){%>
 							<%=obj[1] .toString() %>
@@ -179,7 +179,7 @@ display:none;
 					
 					
 					<!-- Committee Letter -->
-					<form action="CommitteeMinutesNewDownload.htm" target="_blank">
+					<form <%if(obj[10]!=null && obj[10].toString().equalsIgnoreCase("Non-project")) {%> action="CommitteeMinutesViewAllDownload.htm" <%} else{%> action="CommitteeMinutesNewDownload.htm" <%} %> target="_blank">
 					<input type="hidden" name="committeescheduleid" value="<%=obj[12].toString()%>">
 					<button type="submit" class="btn btn-sm edit" data-toggle="tooltip" data-placement="top" title="MOM"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
