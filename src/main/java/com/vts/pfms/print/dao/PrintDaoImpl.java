@@ -788,15 +788,18 @@ public class PrintDaoImpl implements PrintDao {
 			return list;
 		}
 		
-		private static final String GETCOMMITTEEDATA="FROM Committee WHERE committeeid=:committeeid";
+		//private static final String GETCOMMITTEEDATA="FROM Committee WHERE committeeid=:committeeid";
 		@Override
 		public Committee getCommitteeData(String committeeid)throws Exception
 		{
-			Query query = manager.createQuery(GETCOMMITTEEDATA);
-			query.setParameter("committeeid", Long.parseLong(committeeid));
-			Committee committee =(Committee)query.getSingleResult();
-			return committee;
+			try {
+				return manager.find(Committee.class, Long.parseLong(committeeid));
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
+
 
 		@Override
 		public long FreezeBriefingAdd(CommitteeProjectBriefingFrozen briefing) throws Exception {
