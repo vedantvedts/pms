@@ -433,7 +433,7 @@ public class PrintController {
 			req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
 			req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
 			req.setAttribute("LabList", service.LabList(LabCode));
-			req.setAttribute("RequirementList", service.RequirementList(InitiationId));
+//			req.setAttribute("RequirementList", service.RequirementList(InitiationId));
 			req.setAttribute("InitiationId", InitiationId);
 			
 			String filename="ProjectProposalPresentation";
