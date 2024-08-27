@@ -435,7 +435,7 @@ public class ActionServiceImpl implements ActionService {
 				
 				comishortname = dao.CommitteeShortName(main.getScheduleMinutesId());
 				
-				if(!main.getScheduleMinutesId().equalsIgnoreCase("0")) {
+				if(!main.getScheduleMinutesId().equalsIgnoreCase("0") && main.getActionType().equalsIgnoreCase("S")) {
 					List<Object[]>mainIds = dao.getMainIds(main.getScheduleMinutesId());
 					
 					if(mainIds.size()>0) {
