@@ -485,12 +485,21 @@ public class ActionController {
 			} else {
 				redir.addAttribute("resultfail", "Action Update Unsuccessful");
 			}
-
-			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
-			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
-			redir.addFlashAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
-			redir.addFlashAttribute("flag", req.getParameter("flag"));
-			redir.addFlashAttribute("projectid", req.getParameter("projectid"));
+			
+			String ccmActionFlag = req.getParameter("ccmActionFlag");
+			if(ccmActionFlag!=null && ccmActionFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("tabName", req.getParameter("tabName"));
+				
+				return "redirect:/CCMPresentation.htm";
+			}else {
+				redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
+				redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+				redir.addFlashAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
+				redir.addFlashAttribute("flag", req.getParameter("flag"));
+				redir.addFlashAttribute("projectid", req.getParameter("projectid"));
+			}
+			
 		}
 		catch (Exception e) {
 				e.printStackTrace();
@@ -968,7 +977,22 @@ public class ActionController {
 				logger.error(new Date() +" Inside CommitteeAction.htm "+UserId, e);
 			}
 			
-
+			// CCM Handling
+			String ccmFlag = req.getParameter("ccmFlag");
+			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+				req.setAttribute("ccmScheduleId", req.getParameter("ScheduleId"));
+				req.setAttribute("committeeMainId", req.getParameter("committeeMainId"));
+				req.setAttribute("committeeId", req.getParameter("committeeId"));
+				req.setAttribute("ccmFlag", ccmFlag);
+			}
+			
+			// DMC Handling
+			String dmcFlag = req.getParameter("dmcFlag");
+			if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+				req.setAttribute("committeeId", req.getParameter("committeeId"));
+				req.setAttribute("dmcFlag", dmcFlag);
+			}
+			
 			return "action/CommitteeScheduleActions";
 		}
 		
@@ -1058,16 +1082,31 @@ public class ActionController {
 			} else {
 				redir.addAttribute("resultfail", "Action Assign Unsuccessful");
 			}
-			redir.addFlashAttribute("ScheduleId", req.getParameter("ScheduleId"));
-			redir.addFlashAttribute("specname", req.getParameter("specname"));
-			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
+			redir.addAttribute("ScheduleId", req.getParameter("ScheduleId"));
+			redir.addAttribute("specname", req.getParameter("specname"));
+			redir.addAttribute("minutesback", req.getParameter("minutesback"));
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() +" Inside CommitteeActionSubmit.htm "+UserId, e);
 			}
 		
-		
+			// CCM Handling
+			String ccmFlag = req.getParameter("ccmFlag");
+			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("ccmScheduleId", req.getParameter("ScheduleId"));
+				redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("ccmFlag", ccmFlag);
+			}
+			
+			// DMC Handling
+			String dmcFlag = req.getParameter("dmcFlag");
+			if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("dmcFlag", dmcFlag);
+			}
+			
 			return "redirect:/CommitteeAction.htm";
 		}
 
@@ -4602,6 +4641,23 @@ public class ActionController {
         			redir.addFlashAttribute("ScheduleId", CommitteeScheduleId);
         			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
         			redir.addFlashAttribute("specname", req.getParameter("specnamevalue"));
+        			
+        			// CCM Handling
+        			String ccmFlag = req.getParameter("ccmFlag");
+        			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+        				redir.addAttribute("ccmScheduleId", CommitteeScheduleId);
+        				redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+        				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+        				redir.addAttribute("ccmFlag", ccmFlag);
+        			}
+        			
+        			// DMC Handling
+        			String dmcFlag = req.getParameter("dmcFlag");
+        			if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+        				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+        				redir.addAttribute("dmcFlag", dmcFlag);
+        			}
+        			
         			return "redirect:/CommitteeAction.htm";
         			
 				} catch (Exception e) {

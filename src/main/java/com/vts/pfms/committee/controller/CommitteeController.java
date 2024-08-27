@@ -137,6 +137,7 @@ import com.itextpdf.layout.property.VerticalAlignment;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.ccm.service.CCMService;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeDto;
 import com.vts.pfms.committee.dto.CommitteeInvitationDto;
@@ -238,6 +239,9 @@ public class CommitteeController {
 	
 	@Autowired
 	PMSLogoUtil LogoUtil;
+	
+	@Autowired
+	CCMService ccmservice;
 	  SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
       SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 	FormatConverter fc=new FormatConverter(); 
@@ -792,9 +796,18 @@ public class CommitteeController {
 			} else {
 				redir.addAttribute("resultfail", "Committee Members Add Unsuccessful");	
 			}			
-			redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
 			
-			return ccmflag!=null && ccmflag.equalsIgnoreCase("Y")?"redirect:/CCMCommitteeConstitution.htm":"redirect:/CommitteeMainMembers.htm";
+			if(ccmflag!=null && ccmflag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeMainId", req.getParameter("committeemainid"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				
+				return "redirect:/CCMCommitteeConstitution.htm";
+			}else {
+				redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
+				return "redirect:/CommitteeMainMembers.htm";
+			}
+			
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();			
@@ -1129,84 +1142,98 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside MomEnoteForward.htm "+Username);
 		try
 		{
-			
-			
+
+
 			String action= req.getParameter("action");
 			String flag = req.getParameter("flag");
 			String flow =req.getParameter("flow");
-			
+
 			System.out.println("flow" +flow);
-			
+
 			long flagcount=0;
 			PmsEnote pe = req.getParameter("EnoteId")!=null && req.getParameter("EnoteId").equalsIgnoreCase("0")? new PmsEnote():  service.getPmsEnote(req.getParameter("EnoteId"));
-			
+
 			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
-			pe.setRefNo(req.getParameter("RefNo"));
-			pe.setRefDate(pe.getRefDate()!=null ? pe.getRefDate(): java.sql.Date.valueOf(req.getParameter("RefDate")));
-			pe.setSubject(req.getParameter("subject").trim());
-			pe.setComment(req.getParameter("Comment").trim());
-			pe.setCommitteeMainId(0l);
-			pe.setEnoteFrom("S");
-			pe.setEnoteStatusCode(pe.getEnoteStatusCode()==null?"INI":pe.getEnoteStatusCode());
-			pe.setEnoteStatusCodeNext(pe.getEnoteStatusCodeNext()==null ? "INI":pe.getEnoteStatusCodeNext());
-			pe.setScheduleId(Long.parseLong(req.getParameter("scheduleid")));
-			pe.setInitiatedBy(Long.parseLong(req.getParameter("InitiatedBy")));
-			if(req.getParameter("Recommend1")!=null) {
-				pe.setRecommend1(Long.parseLong(req.getParameter("Recommend1")));
-				pe.setRec1_Role(req.getParameter("Rec1_Role").toUpperCase());
-			}
-			if(req.getParameter("Recommend2").length()>0) {;
-			pe.setRecommend2(Long.parseLong(req.getParameter("Recommend2")));
-			pe.setRec2_Role(req.getParameter("Rec2_Role").toUpperCase());
-			}else {
-				pe.setRecommend2(null);
-				pe.setRec2_Role(null);
-			}
-			if(req.getParameter("Recommend3").length()>0) {
-			pe.setRecommend3(Long.parseLong(req.getParameter("Recommend3")));
-			pe.setRec3_Role(req.getParameter("Rec3_Role").toUpperCase());
-			}else {
-				pe.setRecommend3(null);
-				pe.setRec3_Role(null);
-			}
-			if(req.getParameter("ApprovingOfficer")!=null) {
-			pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
-			}
-			pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
-			if(pe.getCreatedBy()==null) {
-			pe.setCreatedBy(Username);	
-			pe.setCreatedDate(sdf1.format(new Date()));	
-			}else {
-			pe.setModifiedBy(Username);
-			pe.setModifiedDate(sdf1.format(new Date()));
-			}
-			pe.setIsActive(1);
-			flagcount = service.addPmsEnote(pe);
+				pe.setRefNo(req.getParameter("RefNo"));
+				pe.setRefDate(pe.getRefDate()!=null ? pe.getRefDate(): java.sql.Date.valueOf(req.getParameter("RefDate")));
+				pe.setSubject(req.getParameter("subject").trim());
+				pe.setComment(req.getParameter("Comment").trim());
+				pe.setCommitteeMainId(0l);
+				pe.setEnoteFrom("S");
+				pe.setEnoteStatusCode(pe.getEnoteStatusCode()==null?"INI":pe.getEnoteStatusCode());
+				pe.setEnoteStatusCodeNext(pe.getEnoteStatusCodeNext()==null ? "INI":pe.getEnoteStatusCodeNext());
+				pe.setScheduleId(Long.parseLong(req.getParameter("scheduleid")));
+				pe.setInitiatedBy(Long.parseLong(req.getParameter("InitiatedBy")));
+				if(req.getParameter("Recommend1")!=null) {
+					pe.setRecommend1(Long.parseLong(req.getParameter("Recommend1")));
+					pe.setRec1_Role(req.getParameter("Rec1_Role").toUpperCase());
+				}
+				if(req.getParameter("Recommend2").length()>0) {;
+				pe.setRecommend2(Long.parseLong(req.getParameter("Recommend2")));
+				pe.setRec2_Role(req.getParameter("Rec2_Role").toUpperCase());
+				}else {
+					pe.setRecommend2(null);
+					pe.setRec2_Role(null);
+				}
+				if(req.getParameter("Recommend3").length()>0) {
+					pe.setRecommend3(Long.parseLong(req.getParameter("Recommend3")));
+					pe.setRec3_Role(req.getParameter("Rec3_Role").toUpperCase());
+				}else {
+					pe.setRecommend3(null);
+					pe.setRec3_Role(null);
+				}
+				if(req.getParameter("ApprovingOfficer")!=null) {
+					pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
+				}
+				pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
+				if(pe.getCreatedBy()==null) {
+					pe.setCreatedBy(Username);	
+					pe.setCreatedDate(sdf1.format(new Date()));	
+				}else {
+					pe.setModifiedBy(Username);
+					pe.setModifiedDate(sdf1.format(new Date()));
+				}
+				pe.setIsActive(1);
+				flagcount = service.addPmsEnote(pe);
 			}
 			pe = service.getPmsEnote(req.getParameter("EnoteId"));
-			
+
 			if(action!=null && action.equalsIgnoreCase("UPDATE")) {
-			
-			if (flagcount > 0) {
-				redir.addAttribute("result", "Data Saved Successfully");
-			} else {
-				redir.addAttribute("resultfail", "FlowData Add Unsuccessful");	
+
+				if (flagcount > 0) {
+					redir.addAttribute("result", "Data Saved Successfully");
+				} else {
+					redir.addAttribute("resultfail", "FlowData Add Unsuccessful");	
+				}
+
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				String ccmFlag = req.getParameter("ccmFlag");
+				if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+					redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
+					redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+					redir.addAttribute("committeeId", req.getParameter("committeeId"));
+					redir.addAttribute("ccmFlag", ccmFlag);
+				}
+				return"redirect:/MeetingMinutesApproval.htm";
 			}
-			
-			redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			return"redirect:/MeetingMinutesApproval.htm";
-			}
-			
+
 			if(flow!=null && flow.equalsIgnoreCase("REV")) {
-			
+
 				if(!pe.getEnoteStatusCode().equalsIgnoreCase("FWD")) {
 					redir.addAttribute("resultfail", "It can not be Revoked!");
 					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+					String ccmFlag = req.getParameter("ccmFlag");
+					if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+						redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
+						redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+						redir.addAttribute("committeeId", req.getParameter("committeeId"));
+						redir.addAttribute("ccmFlag", ccmFlag);
+					}
 					return"redirect:/MeetingMinutesApproval.htm";
 				}
-		
+
 			}
-			
+
 			String remarks= req.getParameter("Remarks");
 			long result = service.EnoteForward(pe,remarks,EmpId,flow,Username);
 			if(flow!=null && flow.equalsIgnoreCase("REV")) {
@@ -1216,10 +1243,17 @@ public class CommitteeController {
 					redir.addAttribute("resultfail", "MoM Revoke Unsuccessful");	
 				}
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				String ccmFlag = req.getParameter("ccmFlag");
+				if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+					redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
+					redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+					redir.addAttribute("committeeId", req.getParameter("committeeId"));
+					redir.addAttribute("ccmFlag", ccmFlag);
+				}
 				return"redirect:/MeetingMinutesApproval.htm";
-			
+
 			}
-			
+
 			if(flow!=null && flow.equalsIgnoreCase("R")) {
 				if(result>0) {
 					redir.addAttribute("result", "MoM Returned Successfully");	
@@ -1236,8 +1270,8 @@ public class CommitteeController {
 				}
 				return"redirect:/MoMApprovalList.htm";
 			}
-			
-			
+
+
 			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
 				if(result>0) {
 					redir.addAttribute("result", "MoM Forwarded Successfully");	
@@ -1245,11 +1279,18 @@ public class CommitteeController {
 					redir.addAttribute("resultfail", "MoM Forward Unsuccessful");	
 				}
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				String ccmFlag = req.getParameter("ccmFlag");
+				if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+					redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
+					redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+					redir.addAttribute("committeeId", req.getParameter("committeeId"));
+					redir.addAttribute("ccmFlag", ccmFlag);
+				}
 				return"redirect:/MeetingMinutesApproval.htm";
 			}
-			
-			
-			
+
+
+
 		}
 		catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +"Inside MomEnoteForward.htm "+Username,e);
@@ -1362,9 +1403,17 @@ public class CommitteeController {
 			} else {
 				redir.addAttribute("resultfail", "Committee Member Delete Unsuccessful");	
 			}
-			redir.addAttribute("committeemainid",req.getParameter("committeemainid"));	
-			return ccmflag!=null && ccmflag.equalsIgnoreCase("Y")?"redirect:/CCMCommitteeConstitution.htm":"redirect:/CommitteeMainMembers.htm";
-
+			
+			if(ccmflag!=null && ccmflag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeMainId", req.getParameter("committeemainid"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				
+				return "redirect:/CCMCommitteeConstitution.htm";
+			}else {
+				redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
+				return "redirect:/CommitteeMainMembers.htm";
+			}
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace(); 
@@ -1427,7 +1476,8 @@ public class CommitteeController {
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside MasterScheduleListSelect.htm "+UserId,e);
 		}
-		return "committee/CommitteeScheduleSelect";
+		//return "committee/CommitteeScheduleSelect";
+		return "redirect:/CommitteeScheduleList.htm";
 	}
 	
 	@RequestMapping(value="CommitteeScheduleList.htm")
@@ -1439,14 +1489,16 @@ public class CommitteeController {
 		try
 		{
 			String committeeid=req.getParameter("committeeid");
-			if(committeeid!=null)
-			{
-				req.setAttribute("initiationid","0");
-				req.setAttribute("committeeid",committeeid);
-				req.setAttribute("committeedetails",service.CommitteeDetails(committeeid));
-				req.setAttribute("committeeschedulelist",service.CommitteeScheduleListNonProject(committeeid) );
-			}		
-			req.setAttribute("CommitteeList", service.CommitteeMainList(labcode));
+			List<Object[]> committeeactivelist=service.CommitteeMainList(labcode);
+			if(committeeid==null && committeeactivelist!=null && committeeactivelist.size()>0){
+				committeeid = String.valueOf(committeeactivelist.get(0)[1]);
+			} 
+			req.setAttribute("initiationid","0");
+			req.setAttribute("committeeid",committeeid);
+			req.setAttribute("committeedetails",service.CommitteeDetails(committeeid));
+			req.setAttribute("committeeschedulelist",service.CommitteeScheduleListNonProject(committeeid) );
+					
+			req.setAttribute("CommitteeList", committeeactivelist);
 			return "committee/CommitteeScheduleSelect";
 		}
 		catch (Exception e) {
@@ -2115,13 +2167,25 @@ public class CommitteeController {
 			req.setAttribute("committscheduleid", CommitteeScheduleId);
 			req.setAttribute("committeescheduleeditdata", service.CommitteeScheduleEditData(CommitteeScheduleId));
 			req.setAttribute("minutesspeclist", service.CommitteeMinutesSpecList(CommitteeScheduleId));
-			req.setAttribute("committeeagendalist", service.AgendaList(CommitteeScheduleId));
+			
+			String ccmFlag = req.getParameter("ccmFlag");
+			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+				req.setAttribute("agendaList", ccmservice.getCCMScheduleAgendaListByCCMScheduleId(CommitteeScheduleId));
+			}else {
+				req.setAttribute("committeeagendalist", service.AgendaList(CommitteeScheduleId));
+			}
+			
 			req.setAttribute("minutesoutcomelist", service.MinutesOutcomeList());
 			req.setAttribute("minutesattachmentlist",service.MinutesAttachmentList(CommitteeScheduleId));
 			req.setAttribute("committeescheduledata",service.CommitteeActionList(CommitteeScheduleId));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("MomAttachment", service.MomAttachmentFile(CommitteeScheduleId));
 			
+			req.setAttribute("ccmFlag", ccmFlag);
+			req.setAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			req.setAttribute("committeeId", req.getParameter("committeeId"));
+			
+			req.setAttribute("dmcFlag", req.getParameter("dmcFlag"));
 		}
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeScheduleMinutes.htm "+
@@ -2172,11 +2236,11 @@ public class CommitteeController {
 				redir.addAttribute("resultfail", " Schedule Minutes Add Unsuccessful");
 			}
 			
-			redir.addFlashAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			redir.addFlashAttribute("specname", req.getParameter("specname"));
-			redir.addFlashAttribute("membertype",req.getParameter("membertype"));
-			redir.addFlashAttribute("formname", req.getParameter("formname"));
-			redir.addFlashAttribute("unit1",req.getParameter("unit1"));
+			redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			redir.addAttribute("specname", req.getParameter("specname"));
+			redir.addAttribute("membertype",req.getParameter("membertype"));
+			redir.addAttribute("formname", req.getParameter("formname"));
+			redir.addAttribute("unit1",req.getParameter("unit1"));
 
 		}
 		catch (Exception e) {
@@ -2190,6 +2254,23 @@ public class CommitteeController {
 			return"redirect:/RODScheduleMinutes.htm";
 		}
 		/* ------------------ end ----------------------- */
+		
+		// CCM Handling
+		String ccmFlag = req.getParameter("ccmFlag");
+		if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+			redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("ccmFlag", ccmFlag);
+		}
+		
+		// DMC Handling
+		String dmcFlag = req.getParameter("dmcFlag");
+		if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("dmcFlag", dmcFlag);
+		}
+		
 		return "redirect:/CommitteeScheduleMinutes.htm";
 	}
 	
@@ -2286,6 +2367,25 @@ public class CommitteeController {
 				return"redirect:/RODScheduleMinutes.htm";
 			}
 			/* ------------------ end ----------------------- */
+			
+			// CCM Handling
+			String ccmFlag = req.getParameter("ccmFlag");
+			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
+				redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("ccmFlag", ccmFlag);
+			}
+			
+			// DMC Handling
+			String dmcFlag = req.getParameter("dmcFlag");
+			if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("dmcFlag", dmcFlag);
+			}
+			
+			redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+			
 			return "redirect:/CommitteeScheduleMinutes.htm";
 		}
 	  
@@ -2321,7 +2421,7 @@ public class CommitteeController {
 					redir.addAttribute("resultfail", " Schedule Minutes Delete Unsuccessful");
 				}
 				
-				redir.addFlashAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 				
 			}
 			catch (Exception e) {
@@ -2334,6 +2434,22 @@ public class CommitteeController {
 				return"redirect:/RODScheduleMinutes.htm";
 			}
 			/* ------------------ end ----------------------- */
+			
+			// CCM Handling
+			String ccmFlag = req.getParameter("ccmFlag");
+			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
+				redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("ccmFlag", ccmFlag);
+			}
+			
+			// DMC Handling
+			String dmcFlag = req.getParameter("dmcFlag");
+			if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("dmcFlag", dmcFlag);
+			}
 			return "redirect:/CommitteeScheduleMinutes.htm";
 		}
 	  
@@ -2400,6 +2516,7 @@ public class CommitteeController {
 		try
 		{
 			String committeescheduleid=req.getParameter("committeescheduleid");		
+			String ccmFlag = req.getParameter("ccmFlag");		
 			
 			System.out.println("committeescheduleid invite --------------"+committeescheduleid);
 			if (committeescheduleid == null) 
@@ -2419,22 +2536,29 @@ public class CommitteeController {
 			// Prudhvi - 27/03/2024
 			/* ------------------ start ----------------------- */
 			req.setAttribute("industryPartnerList",  masterservice.getIndustryPartnerList());
-			/* ------------------ end ----------------------- */			
+			/* ------------------ end ----------------------- */	
+			
+			String committeemainid="0";
+			if(Long.parseLong(initiationid)>0) {
+				committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid,initiationid));
+			}else {
+				committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid,"0"));
+			}
+			
 			if(committeeinvitedlist.size()==0) 
 			{	
-				String committeemainid="0";
-				if(Long.parseLong(initiationid)>0) {
-					committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid,initiationid));
-				}else {
-					committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid,"0"));
-				}
-				
 				
 				req.setAttribute("committeemainid",committeemainid);
 				req.setAttribute("committeeallmemberlist",service.CommitteeAllMembersList(committeemainid) );
 				req.setAttribute("committeescheduleid", committeescheduleid);
-				req.setAttribute("committeescheduledata",committeescheduledata );				
-				req.setAttribute("agendalist",service.AgendaList(committeescheduleid) );
+				req.setAttribute("committeescheduledata",committeescheduledata );
+				req.setAttribute("committeeId", committeeid);
+				if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+					req.setAttribute("agendaList", ccmservice.getCCMScheduleAgendaListByCCMScheduleId(committeescheduleid));
+					req.setAttribute("ccmFlag", ccmFlag);
+				}else {
+					req.setAttribute("agendalist",service.AgendaList(committeescheduleid) );
+				}
 				req.setAttribute("labid", service.LabDetails(committeescheduledata[15].toString())[13].toString());
 				return "committee/CommitteeInvitation";
 			}
@@ -2448,12 +2572,20 @@ public class CommitteeController {
 				req.setAttribute("EmployeeList", EmployeeList);
 				req.setAttribute("ExpertList", ExpertList);
 				req.setAttribute("committeescheduleid", committeescheduleid);
+				req.setAttribute("committeemainid",committeemainid);
+				req.setAttribute("committeeId", committeeid);
 				req.setAttribute("committeescheduledata",committeescheduledata );
-				req.setAttribute("agendalist",service.AgendaList(committeescheduleid) );
+				if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+					req.setAttribute("agendaList", ccmservice.getCCMScheduleAgendaListByCCMScheduleId(committeescheduleid));
+					req.setAttribute("ccmFlag", ccmFlag);
+				}else {
+					req.setAttribute("agendalist",service.AgendaList(committeescheduleid) );
+				}
 				req.setAttribute("clusterlablist", service.AllLabList());
 				req.setAttribute("labid", service.LabDetails(committeescheduledata[15].toString())[13].toString());
 				return "committee/ViewCommitteeInvitation";
 			}
+			
 			
 			
 		}
@@ -2576,6 +2708,8 @@ public class CommitteeController {
 			return"redirect:/RODInvitations.htm";
 		}
 		/* ------------------ end ----------------------- */
+		
+		redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
 		return "redirect:/CommitteeInvitations.htm";
 	}
 		
@@ -2660,8 +2794,17 @@ public class CommitteeController {
 				redir.addAttribute("resultfail", "Meeting Agenda Forward Unsuccessful");
 			}
 			
-			redir.addAttribute("scheduleid", CommitteeScheduleId);
-			return "redirect:/CommitteeScheduleView.htm";
+			String ccmFlag = req.getParameter("ccmFlag");
+			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("ccmScheduleId", CommitteeScheduleId);
+				redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				return "redirect:/CCMSchedule.htm";
+			}else {
+				redir.addAttribute("scheduleid", CommitteeScheduleId);
+				return "redirect:/CommitteeScheduleView.htm";
+			}
+			
 		}
 		catch (Exception e) {
 				e.printStackTrace(); 
@@ -2703,9 +2846,16 @@ public class CommitteeController {
 			String ScheduleId=req.getParameter("scheduleid");
 			Object[] ScheduletData =service.CommitteeScheduleEditData(ScheduleId);
 			
+			String committeename = req.getParameter("committeename");
 			req.setAttribute("empscheduledata", service.EmpScheduleData(EmpId, ScheduleId));			
-			req.setAttribute("committeename", req.getParameter("committeename"));			
-			req.setAttribute("agendalist",  service.AgendaList(ScheduleId));			
+			req.setAttribute("committeename", committeename);		
+			if(committeename!=null && committeename.equalsIgnoreCase("CCM")) {
+				req.setAttribute("ccmScheduleData", ccmservice.getCCMScheduleById(ScheduleId));
+				req.setAttribute("agendaList",  ccmservice.getCCMScheduleAgendaListByCCMScheduleId(ScheduleId));
+			}else {
+				req.setAttribute("agendalist",  service.AgendaList(ScheduleId));
+			}
+						
 			req.setAttribute("scheduledata",ScheduletData);			
 			req.setAttribute("committeedata", service.CommitteeMainList(labcode) );			
 			req.setAttribute("invitedlist",service.CommitteeAtendance(ScheduleId));
@@ -2840,6 +2990,9 @@ public class CommitteeController {
 			req.setAttribute("committeescheduledata",committeescheduledata );
 			req.setAttribute("LabCode", LabCode);
 			req.setAttribute("clusterlablist", service.AllLabList());
+			req.setAttribute("ccmFlag", req.getParameter("ccmFlag"));
+			req.setAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			req.setAttribute("committeeId", req.getParameter("committeeId"));
 		}
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeAttendance.htm "+UserId,e);
@@ -3103,8 +3256,16 @@ public class CommitteeController {
 		 	
 		 	
 		}
-		redir.addFlashAttribute("scheduleid",CommitteeScheduleId);
-		return "redirect:/CommitteeScheduleView.htm";
+		 String ccmFlag = req.getParameter("ccmFlag");
+		if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+			redir.addAttribute("ccmScheduleId", CommitteeScheduleId);
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			return "redirect:/CCMSchedule.htm";
+		}else {
+			redir.addAttribute("scheduleid", CommitteeScheduleId);
+			return "redirect:/CommitteeScheduleView.htm";
+		} 
 	}
 	
 
@@ -3813,6 +3974,23 @@ public class CommitteeController {
 			return"redirect:/RODScheduleMinutes.htm";
 		}
 		/* ------------------ end ----------------------- */
+		
+		// CCM Handling
+		String ccmFlag = req.getParameter("ccmFlag");
+		if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+			redir.addAttribute("ccmScheduleId", req.getParameter("ScheduleId"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("ccmFlag", ccmFlag);
+		}
+
+		// DMC Handling
+		String dmcFlag = req.getParameter("dmcFlag");
+		if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("dmcFlag", dmcFlag);
+		}
+		
 		return "redirect:/CommitteeScheduleMinutes.htm";	
 	}
 	@RequestMapping(value="MomAttachment.htm",method=RequestMethod.POST)
@@ -3891,6 +4069,23 @@ public class CommitteeController {
 			return"redirect:/RODScheduleMinutes.htm";
 		}
 		/* ------------------ end ----------------------- */
+		
+		// CCM Handling
+		String ccmFlag = req.getParameter("ccmFlag");
+		if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+			redir.addAttribute("ccmScheduleId", req.getParameter("ScheduleId"));
+			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("ccmFlag", ccmFlag);
+		}
+
+		// DMC Handling
+		String dmcFlag = req.getParameter("dmcFlag");
+		if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("dmcFlag", dmcFlag);
+		}
+		
 		return "redirect:/CommitteeScheduleMinutes.htm";	
 	}
 	
@@ -3996,44 +4191,46 @@ public class CommitteeController {
 	{
 		String UserId=(String)ses.getAttribute("Username");
 		String Option=req.getParameter("sub");
-		
+
 		logger.info(new Date() +"Inside MeetingMinutesApproval.htm "+UserId);
 		try
 		{
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String CommitteeScheduleId=req.getParameter("committeescheduleid");
-			System.out.println("CommitteeScheduleId "+CommitteeScheduleId);
 			String LabCode =(String)ses.getAttribute("labcode");
+			
+			req.setAttribute("ccmFlag", req.getParameter("ccmFlag"));
+			req.setAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			req.setAttribute("committeeId", req.getParameter("committeeId"));
+			
 			if(Option!=null) {
-			int count = service.MeetingMinutesApproval(CommitteeScheduleId, UserId, EmpId,Option);
-			if (count == -1) {
-				redir.addAttribute("resultfail", "Please Assign All Actions To Forward Minutes For Approval");
-				redir.addAttribute("scheduleid", CommitteeScheduleId);
-				return "redirect:/CommitteeScheduleView.htm";
+				int count = service.MeetingMinutesApproval(CommitteeScheduleId, UserId, EmpId,Option);
+				if (count == -1) {
+					redir.addAttribute("resultfail", "Please Assign All Actions To Forward Minutes For Approval");
+					redir.addAttribute("scheduleid", CommitteeScheduleId);
+					return "redirect:/CommitteeScheduleView.htm";
+				}
+
+				else if (count > 0) {
+					Object[]CommitteMainEnoteList= service.CommitteMainEnoteList("0",CommitteeScheduleId);
+					req.setAttribute("NewApprovalList", CommitteMainEnoteList!=null ? service.NewApprovalList(CommitteMainEnoteList[0].toString()):service.NewApprovalList("0"));
+					req.setAttribute("scheduleid", CommitteeScheduleId);
+					req.setAttribute("employeelist", service.EmployeeList(LabCode));
+					req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
+					return "committee/MoMFlowAdd";
+				}
 			}
-	
-			else if (count > 0) {
-				Object[]CommitteMainEnoteList= service.CommitteMainEnoteList("0",CommitteeScheduleId);
-				req.setAttribute("NewApprovalList", CommitteMainEnoteList!=null ? service.NewApprovalList(CommitteMainEnoteList[0].toString()):service.NewApprovalList("0"));
-				req.setAttribute("scheduleid", CommitteeScheduleId);
-				req.setAttribute("employeelist", service.EmployeeList(LabCode));
-				req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
-				return "committee/MoMFlowAdd";
-			}
-			System.out.println("CommitteeScheduleId1 "+CommitteeScheduleId);
-			}
-			System.out.println("CommitteeScheduleId2 "+CommitteeScheduleId);
 			Object[]CommitteMainEnoteList= service.CommitteMainEnoteList("0",CommitteeScheduleId);
 			req.setAttribute("NewApprovalList", CommitteMainEnoteList!=null ? service.NewApprovalList(CommitteMainEnoteList[0].toString()):service.NewApprovalList("0"));
 			req.setAttribute("scheduleid", CommitteeScheduleId);
 			req.setAttribute("employeelist", service.EmployeeList(LabCode));
 			req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
-		
+			
 		}
 		catch (Exception e) {
-				e.printStackTrace(); logger.error(new Date() +"MeetingMinutesApproval.htm "+UserId,e);
+			e.printStackTrace(); logger.error(new Date() +"MeetingMinutesApproval.htm "+UserId,e);
 		}			
-		
+
 		return "committee/MoMFlowAdd";
 	}
 	
@@ -5094,6 +5291,7 @@ public class CommitteeController {
 			/* ------------------ start ----------------------- */
 			Object[] scheduledata = null;
 			String rodflag = req.getParameter("rodflag");
+			String ccmFlag = req.getParameter("ccmFlag");
 			String rodmessagehandle = "";
 			if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
 				scheduledata = rodservice.RODScheduleEditData(committeescheduleid);
@@ -5129,7 +5327,11 @@ public class CommitteeController {
 			{
 				ProjectName= service.projectdetails(scheduledata[9].toString())[1].toString();
 			}
-			 
+			
+			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+				ProjectName = "";
+			}
+			
 			String [] Email = emails.toArray(new String[emails.size()]);
 			String [] DronaEmail = emails.toArray(new String[dronaemails.size()]);
 			String Message="Sir/Madam<br><p>&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + rodmessagehandle + ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
@@ -5187,6 +5389,7 @@ public class CommitteeController {
 			redir.addAttribute("resultfail", " Host Email Authentication Failed, Unable to Send Invitations !!");
 		}
 		 redir.addAttribute("committeescheduleid",committeescheduleid);
+		 
 		// Prudhvi - 05/03/2024
 		/* ------------------ start ----------------------- */
 		String rodflag = req.getParameter("rodflag");
@@ -5194,8 +5397,10 @@ public class CommitteeController {
 			return "redirect:/RODInvitations.htm";
 		}
 		/* ------------------ end ----------------------- */
-		 return "redirect:/CommitteeInvitations.htm";
-		 }
+	
+		redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+		return "redirect:/CommitteeInvitations.htm";
+	}
 	
 	@RequestMapping(value = "TotalMeetingReport.htm", method = {RequestMethod.GET })
 	public String TotalMeetingReport(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
@@ -6190,9 +6395,17 @@ public class CommitteeController {
 				redir.addAttribute("resultfail", "Agenda Priority Updated UnSuccessfull");
 				
 			}	
-			redir.addAttribute("committeemainid", committeemainid);
-
-			return ccmflag!=null && ccmflag.equalsIgnoreCase("Y")?"redirect:/CCMCommitteeConstitution.htm":"redirect:/CommitteeMainMembers.htm";
+			
+			if(ccmflag!=null && ccmflag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeMainId", committeemainid);
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				
+				return "redirect:/CCMCommitteeConstitution.htm";
+			}else {
+				redir.addAttribute("committeemainid", committeemainid);
+				return "redirect:/CommitteeMainMembers.htm";
+			}
+			
 		}
 		catch (Exception e)
 		{
@@ -6683,7 +6896,7 @@ public class CommitteeController {
 					/*---------------------------------------------------------------------------------------------------------------*/
 		//				if(Long.parseLong(projectid) >0 && committeescheduleeditdata[22].toString().equals("N") ) {
 							
-							 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
+							 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+(projectdetails!=null?projectdetails[4].toString():"")+"&rupess="+10000000;
 						 		HttpHeaders headers = new HttpHeaders();
 						 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 						 		headers.set("labcode", LabCode);

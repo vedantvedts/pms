@@ -427,9 +427,13 @@ public class ActionServiceImpl implements ActionService {
 			int subcount=0;
 			String ProjectCode=null;
 			long mainid=0l;
+			Object[] comishortname= null;
+			
 			try
 			{
 				lab=dao.LabDetails();
+				
+				comishortname = dao.CommitteeShortName(main.getScheduleMinutesId());
 				
 				if(!main.getScheduleMinutesId().equalsIgnoreCase("0")) {
 					List<Object[]>mainIds = dao.getMainIds(main.getScheduleMinutesId());
@@ -443,16 +447,29 @@ public class ActionServiceImpl implements ActionService {
 							
 							count=Integer.parseInt(abc[0]);
 							subcount=Integer.parseInt(abc[1]);
+						}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
+						}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 						}else {
 							count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 						}
 						
+					}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
+					}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 					}else {
 						count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 					}
+				}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
+				}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 				}else {
-				count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
+					count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 				}
+				
 				if(!main.getProjectId().equalsIgnoreCase("0"))
 				{
 					ProjectCode=dao.ProjectCode(main.getProjectId());
@@ -468,7 +485,7 @@ public class ActionServiceImpl implements ActionService {
 			if(!main.getProjectId().equalsIgnoreCase("0")) {
 				if(main.getActionType().equalsIgnoreCase("S")) 
 				{
-					Object[] comishortname=dao.CommitteeShortName(main.getScheduleMinutesId());
+					
 					Project="/"+ProjectCode+"/"+comishortname[1]+"/";
 				}
 				// Prudhvi - 13/03/2024
@@ -483,6 +500,10 @@ public class ActionServiceImpl implements ActionService {
 				}else {
 					Project="/"+ProjectCode+"/MIL/";
 				}
+			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+				Project="/"+comishortname[1]+"/";
+			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+				Project="/"+comishortname[1]+"/";
 			}else{
 				Project="/GEN/";
 			}

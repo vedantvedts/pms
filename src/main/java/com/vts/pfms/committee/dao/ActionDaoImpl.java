@@ -1954,4 +1954,18 @@ public class ActionDaoImpl implements ActionDao{
 		}
 		
 	}
+
+	private static final String  ACTIONCOUNTBYCOMMITTEE = "SELECT COUNT(DISTINCT a.actionmainid)AS 'count' FROM action_main a, committee_schedules_minutes_details b, committee_schedule c\r\n"
+			+ "WHERE a.projectid=:ProjectId AND a.isactive='1' AND a.type=:Type AND a.ScheduleMinutesId=b.ScheduleMinutesId AND b.ScheduleId=c.ScheduleId AND c.CommitteeId IN (SELECT d.CommitteeId FROM committee d WHERE d.CommitteeShortName=:CommitteeShortName AND d.IsActive=1)\r\n"
+			+ "AND DATE_FORMAT(CURDATE(), \"%Y\")=DATE_FORMAT(a.actiondate, \"%Y\")";
+	@Override
+	public int getActionCountByCommittee(String projectId, String type, String committeeShortName) throws Exception {
+		
+		Query query = manager.createNativeQuery(ACTIONCOUNTBYCOMMITTEE);
+		query.setParameter("ProjectId",projectId );
+		query.setParameter("Type", type);
+		query.setParameter("CommitteeShortName", committeeShortName);
+		BigInteger count=(BigInteger)query.getSingleResult();
+			return count.intValue();
+	}
 }
