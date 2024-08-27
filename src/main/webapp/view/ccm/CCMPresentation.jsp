@@ -744,7 +744,7 @@ input,select,table,div,label,span {
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 												<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
 												<input type="hidden" name="committeeIdDMC" value="<%=committeeIdDMC %>">
-												<input type="hidden" name="committeeId" value="<%=committeeId %>">
+												<input type="hidden" name="committeeId" value="<%=committeeIdDMC %>">
 												<div class="row">
 													<div class="col-md-4">
 													</div>
@@ -1180,7 +1180,15 @@ input,select,table,div,label,span {
 	    document.getElementById('fixedModal').style.display = 'none';
 	});
 
-
+	document.addEventListener('DOMContentLoaded', function() {
+		document.getElementById('fixedModal').style.display = 'block';
+    });
+	
+	$( document ).ready(function() {
+ 	   setTimeout(() => { 
+ 		  document.getElementById('fixedModal').style.display = 'none';
+		}, 5000);
+ 	});
 </script>	
 </body>
 </html>

@@ -615,11 +615,13 @@ public class CCMController {
     public String ccmPresentation(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
     	String UserId = (String) ses.getAttribute("Username");
     	String labcode = (String)ses.getAttribute("labcode");
+    	String clusterid = (String)ses.getAttribute("clusterid");
     	logger.info(new Date()+" Inside CCMPresentation.htm "+UserId);
     	try {
     		String committeeId = req.getParameter("committeeId");
     		String tabName = req.getParameter("tabName")!=null?req.getParameter("tabName"):"ATR";
     		
+			/* ----------------------- ATR Start -------------------------- */
     		if(tabName.equalsIgnoreCase("ATR")) {
     			
     			Long scheduleId = service.getLatestScheduleId("%/CCM/%", "C");
@@ -638,7 +640,10 @@ public class CCMController {
         		req.setAttribute("ccmSchedule", service.getCCMScheduleById(scheduleId+""));
          		req.setAttribute("mapCCM", mapCCM);
          		
-    		}else if(tabName!=null && tabName.equalsIgnoreCase("DMC")) {
+    		}
+    		/* -----------------------  ATR End -------------------------- */
+    		/* ----------------------- DMC Start -------------------------- */
+    		else if(tabName!=null && tabName.equalsIgnoreCase("DMC")) {
     			
     			String committeeIdDMC = service.getCommitteeIdByCommitteeCode("DMC")+"";
     			if(committeeIdDMC==null || (committeeIdDMC!=null && committeeIdDMC.isEmpty())) {
@@ -662,7 +667,7 @@ public class CCMController {
     			req.setAttribute("committeeIdDMC", committeeIdDMC);
     			req.setAttribute("committeeMainId", service.getCommitteeMainIdByCommitteeCode("DMC")+"");
     		}
-    		
+    		/* ----------------------- DMC End -------------------------- */
     		req.setAttribute("committeeId", committeeId);
     		req.setAttribute("tabName", tabName);
     		req.setAttribute("filesize",file_size);

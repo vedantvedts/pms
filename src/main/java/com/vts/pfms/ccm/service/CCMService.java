@@ -30,5 +30,7 @@ public interface CCMService {
 	public Long getCommitteeIdByCommitteeCode(String committeeCode) throws Exception;
 	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception;
 	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception;
+	public List<Object[]> getClusterLabListByClusterId(String clusterId) throws Exception;
+	public List<CommitteeSchedule> getScheduleListByScheduleType(String scheduleType) throws Exception;
 	
 }

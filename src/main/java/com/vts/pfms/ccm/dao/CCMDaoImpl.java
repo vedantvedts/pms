@@ -243,7 +243,7 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String GETCOMMITTEEMAINIDBYCOMMITTEECODE = "SELECT a.CommitteeMainId FROM committee_main a, committee b WHERE a.CommitteeId=b.CommitteeId AND b.CommitteeShortName=:CommitteeShortName AND a.ProjectId='0' AND a.DivisionId='0' AND a.InitiationId='0' AND CURDATE() BETWEEN a.ValidFrom AND a.ValidTo AND a.IsActive=1 AND b.LabCode=:LabCode ORDER BY a.CommitteeMainId DESC LIMIT 1";
+	private static final String GETCOMMITTEEMAINIDBYCOMMITTEECODE = "SELECT a.CommitteeMainId FROM committee_main a, committee b WHERE a.CommitteeId=b.CommitteeId AND b.CommitteeShortName=:CommitteeShortName AND a.ProjectId='0' AND a.DivisionId='0' AND a.InitiationId='0' AND CURDATE() BETWEEN a.ValidFrom AND a.ValidTo AND a.IsActive=1 ORDER BY a.CommitteeMainId DESC LIMIT 1";
 	@Override
 	public Long getCommitteeMainIdByCommitteeCode(String committeeCode) throws Exception {
 		try {
@@ -307,4 +307,35 @@ public class CCMDaoImpl implements CCMDao{
 			return null;
 		}
 	}
+	
+	private static final String GETCLUSTERLABLISTBYCLUSTERID ="SELECT a.LabId, a.LabName, a.LabCode, b.IsCluster FROM cluster_lab a, lab_master b WHERE a.LabId=b.LabId AND a.ClusterId=:ClusterId ORDER BY a.LabCode";
+	@Override
+	public List<Object[]> getClusterLabListByClusterId(String clusterId) throws Exception
+	{
+		try {
+			Query query=manager.createNativeQuery(GETCLUSTERLABLISTBYCLUSTERID);
+			query.setParameter("ClusterId", clusterId);
+			return (List<Object[]>)query.getResultList();
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl getClusterLabListByClusterId "+ e);
+			return new ArrayList<Object[]>();
+		}
+
+	}
+	
+	@Override
+	public List<CommitteeSchedule> getScheduleListByScheduleType(String scheduleType) throws Exception {
+		try {
+			Query query = manager.createQuery("FROM CommitteeSchedule WHERE ScheduleType=:ScheduleType AND IsActive=1");
+			query.setParameter("ScheduleType", scheduleType);
+			return (List<CommitteeSchedule>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getScheduleListByScheduleType "+e);
+			return null;
+		}
+	}
+	
 }

@@ -2185,7 +2185,11 @@ public class CommitteeController {
 			req.setAttribute("committeeMainId", req.getParameter("committeeMainId"));
 			req.setAttribute("committeeId", req.getParameter("committeeId"));
 			
-			req.setAttribute("dmcFlag", req.getParameter("dmcFlag"));
+			String dmcFlag = req.getParameter("dmcFlag");
+			if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+				req.setAttribute("dmcScheduleList", ccmservice.getScheduleListByScheduleType("D"));
+			}
+			req.setAttribute("dmcFlag", dmcFlag);
 		}
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeScheduleMinutes.htm "+

@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -334,7 +335,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 List<Object[]> agendaList = (List<Object[]>)request.getAttribute("agendaList");
 
 String dmcFlag = (String) request.getAttribute("dmcFlag");
-
+List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getAttribute("dmcScheduleList");
 %>
 
 
@@ -369,7 +370,21 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=committeescheduleeditdata[7] %> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString()))%> - <%=committeescheduleeditdata[3] %>)</span></b>
 
 	</a>
-	
+	<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) { %>
+		<form action="CommitteeScheduleMinutes.htm" method="get">
+			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+			<input type="hidden" name="committeeId" value="<%=committeeId %>">
+			<input type="hidden" name="dmcFlag" value="Y">
+			<label>Meeting Id: </label>
+			<select class="form-control selectdee" name="committeescheduleid" onchange="this.form.submit()">
+				<%if(dmcScheduleList!=null && dmcScheduleList.size()>0) {
+					for(CommitteeSchedule dmc : dmcScheduleList) {
+				%>
+					<option value="<%=dmc.getScheduleId()%>" <%if(dmc.getScheduleId()==(Long.parseLong(committeescheduleeditdata[6].toString()))) {%>selected<%} %> ><%=dmc.getMeetingId() %></option>
+				<%} }%>
+			</select>
+		</form>
+	<%} %>
 	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
 					<%-- <button type="button" class="btn btn-sm prints my-2 my-sm-0" formaction=""  style="font-size:12px;" onclick="sendEmail(<%=committeescheduleeditdata[6]%>)">
 					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> --%>

@@ -538,5 +538,17 @@ public class CCMServiceImpl implements CCMService{
 		
 		return dao.getLatestScheduleMinutesIds(scheduleId);
 	}
+
+	@Override
+	public List<Object[]> getClusterLabListByClusterId(String clusterId) throws Exception {
+		
+		return dao.getClusterLabListByClusterId(clusterId);
+	}
+
+	@Override
+	public List<CommitteeSchedule> getScheduleListByScheduleType(String scheduleType) throws Exception {
+		
+		return dao.getScheduleListByScheduleType(scheduleType);
+	}
 	
 }
