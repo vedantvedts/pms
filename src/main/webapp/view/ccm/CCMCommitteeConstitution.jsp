@@ -118,7 +118,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
  					</div>
  					<div class="col-md-8"></div>
  					<div class="col-md-1">
- 						<a class="btn btn-info btn-sm shadow-nohover back" id="schedule-btn" href="CCMSchedule.htm">Schedule</a>
+ 						<a class="btn btn-info btn-sm shadow-nohover back" id="schedule-btn" href="CCMSchedule.htm?committeeFlag=Y&committeeMainId=<%=committeeMainId%>&committeeId=<%=committeeId%>">Schedule</a>
  					</div>
  				</div>
        		</div>
@@ -285,6 +285,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 													<td align="center">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 												        <input type="hidden" name="committeemainid" value="<%=committeeMainId%>">
+												        <input type="hidden" name="committeeId" value="<%=committeeId%>">
 												        <input type="hidden" name="ccmflag" value="Y">
 														<button class="fa fa-trash btn btn-danger" type="submit" style="background-color: white;border-color: white;"
 														formnovalidate="formnovalidate" formaction="CommitteeMemberDelete.htm" formmethod="POST" name="committeememberid" value="<%=obj[0] %>"
@@ -296,6 +297,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 		              					<tr>
 		              						<td colspan=1 style="display: flex;justify-content: center;align-items: center">
 			              						<input type="hidden" name="committeemainid" value="<%=committeeMainId%>">
+			              						<input type="hidden" name="committeeId" value="<%=committeeId%>">
 			              						<input type="hidden" name="ccmflag" value="Y">
 			              						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			              						<button class="btn btn-sm edit" onclick="return slnocheck('serialnoupdate');">UPDATE</button>
@@ -382,6 +384,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 								</div>									
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>">
+								<input type="hidden" name="committeeId" value="<%=committeeId%>">
 								<input type="hidden" name="ccmflag" value="Y"> 
 							</div>
 						</form>
@@ -430,6 +433,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 								</div>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>"> 
+								<input type="hidden" name="committeeId" value="<%=committeeId%>">
 								<input type="hidden" name="ccmflag" value="Y">
 							</div>
 						</form>
@@ -467,6 +471,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 								</div>	
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />											
 								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>"> 
+								<input type="hidden" name="committeeId" value="<%=committeeId%>">
 								<input type="hidden" name="ccmflag" value="Y">
 							</div>
 						</form>

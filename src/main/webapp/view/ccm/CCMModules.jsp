@@ -89,6 +89,13 @@ String committeeId = (String)request.getAttribute("committeeId");
 					</div>
 				</div>
 				
+				<div class="card module" data-url="CCMPresentation.htm">
+					<div class="card-body">
+						<h5>CCM Presentation</h5>
+						<img alt="report" src="view/images/play.png" style="width: 80px;margin-top: 0.8rem;" >
+					</div>
+				</div>
+				
 				<div class="card module" data-url="CCMReport.htm">
 					<div class="card-body">
 						<h5>CCM Report</h5>
@@ -96,14 +103,9 @@ String committeeId = (String)request.getAttribute("committeeId");
 					</div>
 				</div>
 				
-				<div class="card module" data-url="#">
-					<div class="card-body">
-						<h5>Others</h5>
-					</div>
-				</div>
-				
 				<div class="emptymodule"></div>
 			</div>
+			
 		</div> 
 	</div>
 <script>
@@ -148,6 +150,9 @@ String committeeId = (String)request.getAttribute("committeeId");
  					url += '?' + parameters;
  					window.open(url, '_blank');
  				}
+ 			} else if(url === 'CCMPresentation.htm') {
+ 				url += '?' + parameters;
+				window.open(url, '_blank');
  			} else {
  				window.open(url, '_blank');
  			}

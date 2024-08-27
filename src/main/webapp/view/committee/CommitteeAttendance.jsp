@@ -63,6 +63,9 @@ List<Object[]> clusterlablist=(List<Object[]>) request.getAttribute("clusterlabl
 List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committeereplist");
 
 String LabCode=(String) request.getAttribute("LabCode");
+String ccmFlag = (String) request.getAttribute("ccmFlag");
+String committeeMainId = (String) request.getAttribute("committeeMainId");
+String committeeId = (String) request.getAttribute("committeeId");
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -181,13 +184,25 @@ String LabCode=(String) request.getAttribute("LabCode");
 		    	</div> 
 		       
 				<div align="center">
-			      	<form method="post" action="CommitteeScheduleView.htm">
-						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-						<input type="hidden" name="scheduleid" value="<%=committeescheduleid %>">
-						<!-- <button type="button" class="btn btn-sm add" id="addrep" onclick="showaddladd();">Add Additional Members</button>
-						<button type="button" class="btn btn-sm add" id="addrep" onclick="showrepadd();">Add Representative</button> -->
-						<button class="btn btn-info btn-sm  shadow-nohover back" >Back</button>
-					</form>									
+					<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+          				<form method="post" action="CCMSchedule.htm" id="backfrm1" >
+							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+							<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleid %>">
+							<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+							<input type="hidden" name="committeeId" value="<%=committeeId %>">
+							<button class="btn btn-info btn-sm  shadow-nohover back" >Back</button>
+						</form> 
+	          				
+	          		<%} else{%>
+		          		<form method="post" action="CommitteeScheduleView.htm">
+							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+							<input type="hidden" name="scheduleid" value="<%=committeescheduleid %>">
+							<!-- <button type="button" class="btn btn-sm add" id="addrep" onclick="showaddladd();">Add Additional Members</button>
+							<button type="button" class="btn btn-sm add" id="addrep" onclick="showrepadd();">Add Representative</button> -->
+							<button class="btn btn-info btn-sm  shadow-nohover back" >Back</button>
+						</form>		
+	          		<%} %>	
+			      								
 				 </div>
 			
 <!------------------------------------------------------------------------------------------------------------------------------------------------ -->	

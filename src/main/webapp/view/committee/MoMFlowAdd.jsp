@@ -82,6 +82,9 @@ Object[]NewApprovalList = (Object[])request.getAttribute("NewApprovalList");
 
 String scheduleid = (String)request.getAttribute("scheduleid");
 
+String ccmFlag = (String) request.getAttribute("ccmFlag");
+String committeeMainId = (String) request.getAttribute("committeeMainId");
+String committeeId = (String) request.getAttribute("committeeId");
 %>
 
 <%
@@ -282,7 +285,20 @@ String ses=(String)request.getParameter("result");
 					<input type="hidden" name="flag" id="flag" value="UpdateForward">
 					<input type="hidden" name="flow" value="A" id="flow">
 		<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[15].toString().equalsIgnoreCase("FWD") && EmpId.equalsIgnoreCase(CommitteMainEnoteList[17].toString())) {%>	<button type="submit" name="flow" value="Rev" class="btn btn-sm btn-danger delete" onclick="return Revoke('enotefrm')" >REVOKE</button> <%} %>
-					<a class="btn btn-sm back" type="button" href="CommitteeScheduleView.htm?scheduleid=<%=scheduleid%>">BACK</a>
+					
+					<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+						<button type="submit" class="btn btn-sm back" formaction="CCMSchedule.htm" formnovalidate="formnovalidate">
+							BACK
+						</button>
+						<input type="hidden" name="ccmScheduleId" value="<%=scheduleid %>">
+						<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+						<input type="hidden" name="committeeId" value="<%=committeeId %>">
+						<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">	
+					<%} else {%>
+						<button type="submit" class="btn btn-sm back" formaction="CommitteeScheduleView.htm" formnovalidate="formnovalidate">
+							BACK
+						</button>
+					<%} %>
 					</div>
 					
 					</form>

@@ -253,6 +253,12 @@ List<String>committees=Arrays.asList("PMRC","EB");
 
 //Prudhvi - 13/03/2024
 String rodflag=(String)request.getAttribute("rodflag");
+
+String ccmFlag = (String) request.getAttribute("ccmFlag");
+String committeeMainId = (String) request.getAttribute("committeeMainId");
+String committeeId = (String) request.getAttribute("committeeId");
+
+String dmcFlag = (String) request.getAttribute("dmcFlag");
 %>
 
 
@@ -289,6 +295,10 @@ String rodflag=(String)request.getAttribute("rodflag");
 		<a class="btn  btn-sm back"
 		    <%if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {%>
 		    	href="RODScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>"
+		    <%} else if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>	
+		    	href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>&ccmFlag=Y&committeeMainId=<%=committeeMainId %>&committeeId=<%=committeeId %>"
+		    <%} else if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>	
+		    	href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>&dmcFlag=Y&committeeId=<%=committeeId %>"
 		    <%} else{%>
 				href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>"
 			<%} %>
@@ -330,7 +340,8 @@ String rodflag=(String)request.getAttribute("rodflag");
 
 							<div class="panel-heading " id="div<%=obj[0].toString()%>">
 								<h4 class="panel-title" id="<%=obj[0].toString()%>">
-									<span style="font-size: 14px"><%=obj[7]+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
+									<span style="font-size: 14px">
+										<%=(ccmFlag!=null&&ccmFlag.equalsIgnoreCase("Y")?"3":(dmcFlag!=null&&dmcFlag.equalsIgnoreCase("Y")?"1":obj[7]) )+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
 									<input type="hidden" id="Data<%=obj[0].toString()%>" value="<%=obj[1].toString()%>">
 									<%if(obj[1].toString().length()>50) {%>
 									<%=obj[1].toString().substring(0,50) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[0].toString()%>")'>&nbsp;( view more)</span>
@@ -419,6 +430,16 @@ String rodflag=(String)request.getAttribute("rodflag");
 										type="hidden" name="ScheduleSpec" id="ScheduleSpec"> <input
 										type="hidden" name="specname" id="specnameadd"> <input
 										type="hidden" name="minutesback" value="<%=MinutesBack %>">
+										<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+											<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+											<input type="hidden" name="committeeId" value="<%=committeeId %>">
+											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+										<%} %>
+										<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="committeeId" value="<%=committeeId %>">
+											<input type="hidden" name="dmcFlag" value="<%=dmcFlag %>">
+										<%} %>
 									</label>
 								</div>
 
@@ -688,18 +709,24 @@ String rodflag=(String)request.getAttribute("rodflag");
 						</div>
 						<br>
 						<div align="center">
-							<button type="submit" class="btn btn-sm submit"
-								onclick="return confirm('Are you sure To Submit?')">Submit</button>
-							<input type="hidden" name="ActionAssignId" id="ActionAssignId"
-								value=""> <input type="hidden" name="ActionMainId"
-								id="ActionMainId" value="" /> <input type="hidden"
-								name="AssigneeId" id="AssigneeId" value="" /> <input
-								type="hidden" name="CommitteeScheduleId"
-								id="CommitteeScheduleId" value="" /> <input type="hidden"
-								name="minutesback" value="<%=MinutesBack%>" /> 
-								<input type="hidden" name="specnamevalue" id="specValue" value="">
-								<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
+							<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure To Submit?')">Submit</button>
+							<input type="hidden" name="ActionAssignId" id="ActionAssignId" value=""> 
+							<input type="hidden" name="ActionMainId" id="ActionMainId" value="" /> 
+							<input type="hidden" name="AssigneeId" id="AssigneeId" value="" /> 
+							<input type="hidden" name="CommitteeScheduleId" id="CommitteeScheduleId" value="" /> 
+							<input type="hidden" name="minutesback" value="<%=MinutesBack%>" /> 
+							<input type="hidden" name="specnamevalue" id="specValue" value="">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+								<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+								<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+								<input type="hidden" name="committeeId" value="<%=committeeId %>">
+								<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+							<%} %>
+							<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>
+								<input type="hidden" name="committeeId" value="<%=committeeId %>">
+								<input type="hidden" name="dmcFlag" value="<%=dmcFlag %>">
+							<%} %>	
 						</div>
 					</form>
 				</div>

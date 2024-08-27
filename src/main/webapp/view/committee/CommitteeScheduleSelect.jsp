@@ -1,3 +1,4 @@
+<%@page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -103,8 +104,10 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 List<Object[]> CommitteList=(List<Object[]>) request.getAttribute("CommitteeList");
 String committeeid=(String)request.getAttribute("committeeid");
+
 List<Object[]>  committeeschedulelist=(List<Object[]>)request.getAttribute("committeeschedulelist");
 
+System.out.println("committeeid: "+committeeid);
 %>
 
 <div class="card-header" style="margin-top: -1%">
@@ -118,7 +121,7 @@ List<Object[]>  committeeschedulelist=(List<Object[]>)request.getAttribute("comm
 			  <table><tr><td>
 				Select Committee :   &ensp;</td><td>
 				<select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
-	   				<option disabled="true"  selected value="">Choose...</option>
+	   				<option disabled selected value="">Choose...</option>
 	   				<% for (Object[] obj : CommitteList) {%>
 					<option value="<%=obj[1]%>" <%if(committeeid!=null && committeeid.equals(obj[1].toString())){%>selected <%}%> ><%=obj[4]%>(<%=obj[5]%>)</option>
 					<%} %>   

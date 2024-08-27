@@ -1,3 +1,7 @@
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalTime"%>
+<%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -80,6 +84,9 @@
 	List<Object[]> invitedlist=(List<Object[]>)request.getAttribute("invitedlist");	
 	
 	List<Object[]> AgendaDocList=(List<Object[]>) request.getAttribute("AgendaDocList");
+	
+	List<Object[]> agendaList=(List<Object[]>)request.getAttribute("agendaList");
+	CommitteeSchedule ccmSchedule = (CommitteeSchedule) request.getAttribute("ccmScheduleData");
 	%>
 	
 	
@@ -128,7 +135,7 @@
 						<hr>
 						<br>
 					
-					 		<%if(!agendalist.isEmpty()){ %>
+					 		<%if(agendalist!=null && agendalist.size()>0){ %>
 				
 			         	<table  class="table table-bordered table-hover table-striped table-condensed ">
 			            	<thead>
@@ -171,10 +178,119 @@
 								</tr>
 									
 							</tbody>
-				    		
-								<%}} %>
+				    		</table>
+								<%}} else if(agendaList!=null && agendaList.size()>0) {%>
+									<table class="table table-bordered table-hover table-condensed " style="margin-top:10px;width:100% ">
+						     	      	<thead>
+						            		<tr>
+						            			<th>Expand</th>
+						                    	<th style="width: 5%;">SN</th>
+						                       	<th style="width: 22%;">Agenda Item</th> 
+						                       	<th style="width: 24%;">Presenter</th>
+						                       	<th style="width: 14%;">Duration</th>
+						                       	<th style="width: 14%;">File</th>
+						                    </tr>
+						              	</thead> 
+							            <tbody>
+						              		<%//LocalTime starttime = LocalTime.parse(LocalTime.parse(scheduledata[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));  %>
+						              		
+							    			<%
+												if(agendaList!=null && agendaList.size()>0) {
+													LocalTime starttime = LocalTime.parse(ccmSchedule.getScheduleStartTime());
+													int  count=0;
+												  	for(Object[] level1: agendaList){
+														if(level1[2].toString().equalsIgnoreCase("0")) {
+															++count;
+											%>
+												<tr>
+													<td class="center" style="width: 3%;">
+														<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button type="button" class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"  data-toggle="tooltip" data-placement="top" title="Expand"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span>
+													</td>
+													<td class="center" style="width: 5%;"><%=count %></td>
+													
+													<td style="width: 35%;"><%=level1[4] %></td>
+													
+													<td style="width: 25%;">
+														<%if(level1[6]!=null && !level1[6].toString().equalsIgnoreCase("0")) {%>
+															<%=level1[9] %>
+														<%} else {%>
+															-
+														<%} %>
+													</td>
+													
+													<td class="center" style="width: 10%;">
+														<%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=starttime.plusMinutes(Long.parseLong(level1[7].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
+													</td>
+													
+													<td class="center">
+														<%if(level1[8]!=null && !level1[8].toString().isEmpty()) {%>
+															<a class="btn btn-sm" href="CCMScheduleAgendaFileDownload.htm?scheduleAgendaId=<%=level1[0] %>&count=<%=count %>&subCount=0" target="_blank">
+																Annex-<%=level1[3] %>
+								               				</a>
+														<%} else{%>	
+															-
+														<%} %>
+													</td>
+													
+												</tr>
+						
+												<%
+												List<Object[]> agendaList2 = agendaList.stream().filter(e -> level1[0].toString().equalsIgnoreCase(e[2].toString())).collect(Collectors.toList());
+												
+												if(agendaList2.size()>0) {
+													LocalTime substarttime = starttime ;
+												%>
+								
+													<tr class="collapse row<%=count %>" id="rowcollapse<%=count%>" >
+														<td colspan="1"></td>
+														<td colspan="8">
+															<table style="width:100%;" class="table table-bordered table-hover table-condensed  subagendatable" id="subagendatable">
+																<tbody>
+																	<%	int countA=0;
+																		for(Object[] level2: agendaList2){
+																				++countA;
+																	%>
+																		<tr>
+																			<%-- <td class="center"><%=level2[3] %></td> --%>
+																			<td class="center" style="width: 5%;"><%=count+"."+countA %></td>
+																			<td style="width: 38%;"><%=level2[4] %></td>
+																			
+																			<td style="width: 27%;">
+																				<%if(level2[6]!=null && !level2[6].toString().equalsIgnoreCase("0")) {%>
+																					<%=level2[9] %>
+																				<%} else {%>
+																					-
+																				<%} %>
+																			</td>
+																			
+																			<td class="center" style="width: 15.25%;">
+																				<%=substarttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=substarttime.plusMinutes(Long.parseLong(level2[7].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
+																				<%substarttime = substarttime.plusMinutes(Long.parseLong(level2[7].toString())); %>
+																			</td>
+																			
+																			<td class="center" style="width: 14.75%;">
+																				<%if(level2[8]!=null && !level2[8].toString().isEmpty()) {%>
+																					<a class="btn btn-sm" href="CCMScheduleAgendaFileDownload.htm?scheduleAgendaId=<%=level2[0] %>&count=<%=count %>&subCount=<%=countA %>" target="_blank">
+																						Annex-<%=count %>-<%=countA %>
+														               				</a>
+																				<%} else{%>	
+																					-
+																				<%} %>
+																			</td>
+																		</tr>
+																		
+																	<%} %>
+																</tbody>
+															</table>
+														</td>	
+													</tr>	
+												<%} %>
+												<%starttime=starttime.plusMinutes(Long.parseLong(level1[7].toString())); %>
+											<%} } }%>
+										</tbody>
+									</table>
+								<%} %>
 
-			             </table>
 
 <!-- Second Block -->
 
@@ -415,7 +531,20 @@ function Add(myfrm){
 
 
 	
-	
+/* --------------------- Expand Button Handle for Agenda List--------------------------- */
+function ChangeButton(id) {
+	  
+	if($("#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
+	$( "#btn"+id ).removeClass( "btn btn-sm btn-success" ).addClass( "btn btn-sm btn-danger" );
+	$( "#fa"+id ).removeClass( "fa fa-plus" ).addClass( "fa fa-minus" );
+	$( ".row"+id).show();
+    }else{
+	$( "#btn"+id ).removeClass( "btn btn-sm btn-danger" ).addClass( "btn btn-sm btn-success" );
+	$( "#fa"+id ).removeClass( "fa fa-minus" ).addClass( "fa fa-plus" );
+	$( ".row"+id).hide();
+    }
+}	
+/* --------------------- Expand Button Handle for Agenda List End --------------------------- */	
 	
 
  

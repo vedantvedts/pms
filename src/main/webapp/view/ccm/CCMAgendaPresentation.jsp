@@ -163,6 +163,7 @@
 		                       	<th style="width: 22%;">Agenda Item</th> 
 		                       	<th style="width: 24%;">Presenter</th>
 		                       	<th style="width: 14%;">Duration</th>
+		                       	<th style="width: 14%;">File</th>
 		                    </tr>
 		              	</thead> 
 			            <tbody>
@@ -174,15 +175,21 @@
 									int  count=0;
 								  	for(Object[] level1: agendaList){
 										if(level1[2].toString().equalsIgnoreCase("0")) {
+											List<Object[]> agendaList2 = agendaList.stream().filter(e -> level1[0].toString().equalsIgnoreCase(e[2].toString())).collect(Collectors.toList());
 											++count;
 							%>
 								<tr>
 									<td class="center" style="width: 3%;">
-										<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button type="button" class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"  data-toggle="tooltip" data-placement="top" title="Expand"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span>
+										<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>">
+											<button type="button" class="btn btn-sm btn-success" id="btn<%=count %>" onclick="ChangeButton('<%=count %>')" data-toggle="tooltip" data-placement="top" title="Expand" <%if(agendaList2.size()<1) {%>disabled<%} %> >
+												<i class="fa fa-plus"  id="fa<%=count%>"></i> 
+											</button>
+										</span>
 									</td>
 									<td class="center" style="width: 5%;"><%=count %></td>
 									
 									<td style="width: 35%;"><%=level1[4] %></td>
+									
 									<td style="width: 25%;">
 										<%if(level1[6]!=null && !level1[6].toString().equalsIgnoreCase("0")) {%>
 											<%=level1[9] %>
@@ -195,10 +202,19 @@
 										<%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=starttime.plusMinutes(Long.parseLong(level1[7].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
 									</td>
 									
+									<td class="center">
+										<%if(level1[8]!=null && !level1[8].toString().isEmpty()) {%>
+											<a class="btn btn-sm" href="CCMScheduleAgendaFileDownload.htm?scheduleAgendaId=<%=level1[0] %>&count=<%=count %>&subCount=0" target="_blank">
+												Annex-<%=level1[3] %>
+				               				</a>
+										<%} else{%>	
+											-
+										<%} %>
+									</td>
+									
 								</tr>
 		
 								<%
-								List<Object[]> agendaList2 = agendaList.stream().filter(e -> level1[0].toString().equalsIgnoreCase(e[2].toString())).collect(Collectors.toList());
 								
 								if(agendaList2.size()>0) {
 									LocalTime substarttime = starttime ;
@@ -215,10 +231,10 @@
 													%>
 														<tr>
 															<%-- <td class="center"><%=level2[3] %></td> --%>
-															<td class="center" style="width: 6%;"><%=count+"."+countA %></td>
-															<td style="width: 44.6%;"><%=level2[4] %></td>
+															<td class="center" style="width: 5%;"><%=count+"."+countA %></td>
+															<td style="width: 38%;"><%=level2[4] %></td>
 															
-															<td style="width: 31.9%;">
+															<td style="width: 27%;">
 																<%if(level2[6]!=null && !level2[6].toString().equalsIgnoreCase("0")) {%>
 																	<%=level2[9] %>
 																<%} else {%>
@@ -226,9 +242,19 @@
 																<%} %>
 															</td>
 															
-															<td class="center" style="width: 17.5%;">
+															<td class="center" style="width: 15.25%;">
 																<%=substarttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=substarttime.plusMinutes(Long.parseLong(level2[7].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
 																<%substarttime = substarttime.plusMinutes(Long.parseLong(level2[7].toString())); %>
+															</td>
+															
+															<td class="center" style="width: 14.75%;">
+																<%if(level2[8]!=null && !level2[8].toString().isEmpty()) {%>
+																	<a class="btn btn-sm" href="CCMScheduleAgendaFileDownload.htm?scheduleAgendaId=<%=level2[0] %>&count=<%=count %>&subCount=<%=countA %>" target="_blank">
+																		Annex-<%=count %>-<%=countA %>
+										               				</a>
+																<%} else{%>	
+																	-
+																<%} %>
 															</td>
 														</tr>
 														

@@ -109,11 +109,11 @@ public class CCMDaoImpl implements CCMDao{
 	}
 	
 	private static final String GETCCMSCHEDULEAGENDALISTBYCCMSCHEDULEID = "SELECT b.ScheduleAgendaId, b.ScheduleId, b.ParentScheduleAgendaId, b.AgendaPriority, b.AgendaItem, b.PresentorLabCode, b.PresenterId, b.Duration, b.FileName,\r\n"
-			+ "      (CASE WHEN b.PresentorLabCode='@EXP' THEN (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.ExpertName,', ',d.Designation) FROM expert c, employee_desig d WHERE c.ExpertId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) \r\n"
-			+ "	ELSE (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.EmpName,', ',d.Designation) FROM employee c, employee_desig d WHERE c.EmpId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) END) AS 'Presenter'\r\n"
+			+ "	(CASE WHEN b.PresentorLabCode='@EXP' THEN (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.ExpertName,', ',d.Designation) FROM expert c, employee_desig d WHERE c.ExpertId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) \r\n"
+			+ "	ELSE (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.EmpName,', ',d.Designation) FROM employee c, employee_desig d WHERE c.EmpId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) END) AS 'Presenter',\r\n"
+			+ "	(SELECT d.DesigId FROM employee c, employee_desig d WHERE c.EmpId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) AS 'DesigId'\r\n"
 			+ "FROM committee_schedule a, committee_schedules_agenda b\r\n"
-			+ "WHERE a.ScheduleId=b.ScheduleId AND b.IsActive=1 AND a.ScheduleId=:ScheduleId\r\n"
-			+ "ORDER BY b.ParentScheduleAgendaId,b.AgendaPriority";
+			+ "WHERE a.ScheduleId=b.ScheduleId AND b.IsActive=1 AND a.ScheduleId=:ScheduleId";
 	@Override
 	public List<Object[]> getCCMScheduleAgendaListByCCMScheduleId(String ccmScheduleId) throws Exception {
 		try {
@@ -243,12 +243,13 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String GETCOMMITTEEMAINIDBYCOMMITTEECODE = "SELECT a.CommitteeMainId FROM committee_main a, committee b WHERE a.CommitteeId=b.CommitteeId AND b.CommitteeShortName='CCM' AND a.ProjectId='0' AND a.DivisionId='0' AND a.InitiationId='0' AND CURDATE() BETWEEN a.ValidFrom AND a.ValidTo AND a.IsActive=1 AND b.LabCode=:LabCode ORDER BY a.CommitteeMainId DESC LIMIT 1";
+	private static final String GETCOMMITTEEMAINIDBYCOMMITTEECODE = "SELECT a.CommitteeMainId FROM committee_main a, committee b WHERE a.CommitteeId=b.CommitteeId AND b.CommitteeShortName=:CommitteeShortName AND a.ProjectId='0' AND a.DivisionId='0' AND a.InitiationId='0' AND CURDATE() BETWEEN a.ValidFrom AND a.ValidTo AND a.IsActive=1 AND b.LabCode=:LabCode ORDER BY a.CommitteeMainId DESC LIMIT 1";
 	@Override
-	public Long getCommitteeMainIdByCommitteeCode(String labCode) throws Exception {
+	public Long getCommitteeMainIdByCommitteeCode(String committeeCode) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETCOMMITTEEMAINIDBYCOMMITTEECODE);
-			query.setParameter("LabCode", labCode);
+			//query.setParameter("LabCode", labCode);
+			query.setParameter("CommitteeShortName", committeeCode);
 			BigInteger committeeMainId = (BigInteger)query.getSingleResult();
 			return committeeMainId.longValue();
 		}catch ( Exception e ) {
@@ -258,12 +259,13 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String GETCOMMITTEEMIDBYCOMMITTEECODE = "SELECT a.committeeId FROM committee a WHERE a.CommitteeShortName='CCM' AND a.LabCode=:LabCode AND a.IsActive=1";
+	private static final String GETCOMMITTEEMIDBYCOMMITTEECODE = "SELECT a.committeeId FROM committee a WHERE a.CommitteeShortName=:CommitteeShortName AND a.IsActive=1";
 	@Override
-	public Long getCommitteeIdByCommitteeCode(String labCode) throws Exception {
+	public Long getCommitteeIdByCommitteeCode(String committeeCode) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETCOMMITTEEMIDBYCOMMITTEECODE);
-			query.setParameter("LabCode", labCode);
+			//query.setParameter("LabCode", labCode);
+			query.setParameter("CommitteeShortName", committeeCode);
 			BigInteger committeeMainId = (BigInteger)query.getSingleResult();
 			return committeeMainId.longValue();
 		}catch ( Exception e ) {
@@ -273,5 +275,36 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
+	private static final String GETLATESTSCHEDULEID1 = "SELECT a.ScheduleId FROM committee_schedule a WHERE a.MeetingId LIKE :SequenceNo ORDER BY ScheduleDate DESC LIMIT 1 OFFSET 1";
+	private static final String GETLATESTSCHEDULEID2 = "SELECT a.ScheduleId FROM committee_schedule a WHERE a.MeetingId LIKE :SequenceNo ORDER BY ScheduleDate DESC LIMIT 1";
+	@Override
+	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception {
+
+		try {
+			Query query = manager.createNativeQuery(meetingType.equalsIgnoreCase("C")?GETLATESTSCHEDULEID1:GETLATESTSCHEDULEID2);
+			query.setParameter("SequenceNo", sequenceNo);
+			BigInteger scheduleId =  (BigInteger)query.getSingleResult();
+			return scheduleId.longValue();
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl getLatestScheduleId "+ e);
+			return 0L;
+		}
+	}
 	
+	private static final String GETLATESTSCHEDULEMINUTESTIDS = "SELECT (CAST(ScheduleMinutesId AS CHAR)) AS 'ScheduleMinutesId' FROM committee_schedules_minutes_details WHERE ScheduleId =:ScheduleId";
+	@Override
+	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception {
+		List<String> list = new ArrayList<>();
+		try {
+			Query query = manager.createNativeQuery(GETLATESTSCHEDULEMINUTESTIDS);
+			query.setParameter("ScheduleId", scheduleId);
+			list =  (List<String>)query.getResultList();
+			return list;
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl getLatestScheduleMinutesIds "+ e);
+			return null;
+		}
+	}
 }

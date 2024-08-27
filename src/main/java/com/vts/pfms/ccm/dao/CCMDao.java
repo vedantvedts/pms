@@ -22,7 +22,10 @@ public interface CCMDao {
 	public int ccmScheduleAgendaDelete(String scheduleAgendaId, String modifiedby, String modifiedDate) throws Exception;
 	public int ccmScheduleSubAgendaDelete(String scheduleAgendaId, String modifiedby, String modifiedDate) throws Exception;
 	public int updateCCMScheduleAgendaDuration(int orgDuration, int duration, Long scheduleAgendaId) throws Exception;
-	public Long getCommitteeMainIdByCommitteeCode(String labCode) throws Exception;
-	public Long getCommitteeIdByCommitteeCode(String labCode) throws Exception;
+	public Long getCommitteeMainIdByCommitteeCode(String committeeCode) throws Exception;
+	public Long getCommitteeIdByCommitteeCode(String committeeCode) throws Exception;
+	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception;
+	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception;
+	
 	
 }

@@ -10,7 +10,10 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,6 +76,9 @@ public class CCMController {
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
+	@Value("${File_Size}")
+	String file_size;
+	
 	@RequestMapping(value="CCMModules.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String ccmModules(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
@@ -79,8 +86,8 @@ public class CCMController {
 		logger.info(new Date() +" Inside CCMModules.htm "+UserId);
 		try {
 			
-			req.setAttribute("committeeId", String.valueOf(service.getCommitteeIdByCommitteeCode(labcode)));
-			req.setAttribute("committeeMainId", String.valueOf(service.getCommitteeMainIdByCommitteeCode(labcode)));
+			req.setAttribute("committeeId", String.valueOf(service.getCommitteeIdByCommitteeCode("CCM")));
+			req.setAttribute("committeeMainId", String.valueOf(service.getCommitteeMainIdByCommitteeCode("CCM")));
 			return "ccm/CCMModules";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside CCMModules.htm "+UserId, e);
@@ -158,9 +165,10 @@ public class CCMController {
 	}
 	
 	@RequestMapping(value="CCMSchedule.htm", method= {RequestMethod.GET, RequestMethod.POST})
-	public String ccmSchedule(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+	public String ccmSchedule(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
 		logger.info(new Date() +" Inside CCMSchedule.htm "+UserId);
 		try {
 			
@@ -188,10 +196,20 @@ public class CCMController {
 			req.setAttribute("labcode", labcode);
 			req.setAttribute("committeeMainId", req.getParameter("committeeMainId"));
 			req.setAttribute("committeeId", req.getParameter("committeeId"));
+			req.setAttribute("committeeFlag", req.getParameter("committeeFlag"));
 			
 			if(ccmScheduleId!=null) {
 				req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
 				req.setAttribute("ccmScheduleId", ccmScheduleId);
+				Map md=model.asMap();
+				if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I")) 
+				{
+					if(md.get("otp")!=null) {
+						req.setAttribute("otp", md.get("otp"));
+					}
+				}
+				
+				req.setAttribute("committeeinvitedlist", committeeservice.CommitteeAtendance(ccmScheduleId));	
 			}
 			
 			return "ccm/CCMSchedule";
@@ -205,7 +223,6 @@ public class CCMController {
 	@RequestMapping(value="CCMScheduleDetailsSubmit.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String ccmScheduleDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
-		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside CCMScheduleDetailsSubmit.htm "+UserId);
 		try {
 			
@@ -260,7 +277,9 @@ public class CCMController {
 				schedule.setLabCode(labcode);
 				schedule.setCommitteeId(Long.parseLong(req.getParameter("committeeId")));
 				schedule.setCommitteeMainId(Long.parseLong(req.getParameter("committeeMainId")));
+				schedule.setConfidential(4);
 				schedule.setScheduleType("C");
+				schedule.setScheduleFlag("MSC");
 				schedule.setCreatedBy(UserId);
 				schedule.setCreatedDate(sdtf.format(new Date()));
 				schedule.setIsActive(1);
@@ -314,14 +333,18 @@ public class CCMController {
 			if(fileExtention.equalsIgnoreCase(".pdf"))
 			pfmsFileUtils.addWatermarktoCCMPdf(filePath +File.separator+ file,filePath +File.separator+ file+"(1)", fileName);
 			
-			File my_file = new File(filePath+File.separator+file); 
-	        res.setHeader("Content-disposition","inline; filename="+fileName+fileExtention); 
+			File my_file = null;
+			Path filepath = Paths.get(filePath, file);
+			my_file = filepath.toFile();
+	        res.setHeader("Content-disposition","inline; filename="+fileName+fileExtention);
+	        String mimeType = getEnoteMimeType(my_file.getName()); 
+	        res.setContentType(mimeType);
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
 	        byte[] buffer = new byte[4096];
 	        int length;
-	        while ((length = in.read(buffer)) > 0){
-	           out.write(buffer, 0, length);
+	        while ((length = in.read(buffer)) > 0) {
+	            out.write(buffer, 0, length);
 	        }
 	        in.close();
 	        out.flush();
@@ -568,4 +591,137 @@ public class CCMController {
 		}
 	}
 	
+    private String getEnoteMimeType(String filename) {
+	    String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+	    switch (extension) {
+	        case "pdf":
+	            return "application/pdf";
+	        case "doc":
+	            return "application/msword";
+	        case "docx":
+	            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+	        case "xls":
+	            return "application/vnd.ms-excel";
+	        case "xlsx":
+	            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	        case "png":
+	            return "application/png";
+	        default:
+	            return "application/octet-stream";
+	    }
+	}
+	
+    @RequestMapping(value="CCMPresentation.htm", method= {RequestMethod.POST, RequestMethod.GET})
+    public String ccmPresentation(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+    	String UserId = (String) ses.getAttribute("Username");
+    	String labcode = (String)ses.getAttribute("labcode");
+    	logger.info(new Date()+" Inside CCMPresentation.htm "+UserId);
+    	try {
+    		String committeeId = req.getParameter("committeeId");
+    		String tabName = req.getParameter("tabName")!=null?req.getParameter("tabName"):"ATR";
+    		
+    		if(tabName.equalsIgnoreCase("ATR")) {
+    			
+    			Long scheduleId = service.getLatestScheduleId("%/CCM/%", "C");
+    			scheduleId = scheduleId!=null?scheduleId:0L;
+    			List<Object[]> ReviewMeetingList = printservice.ReviewMeetingList("0", "CCM");
+    			Map<Integer,String> mapCCM = new HashMap<>();
+         		int ccmCount=0;
+
+         		for (Object []obj:ReviewMeetingList) {
+         			mapCCM.put(++ccmCount, obj[3].toString());
+         		}
+         		
+    			req.setAttribute("committeeData", printservice.getCommitteeData(committeeId));
+    			req.setAttribute("ccmActions", printservice.LastPMRCActions("0", committeeId));
+        		req.setAttribute("latestScheduleMinutesIds", service.getLatestScheduleMinutesIds(scheduleId+""));
+        		req.setAttribute("ccmSchedule", service.getCCMScheduleById(scheduleId+""));
+         		req.setAttribute("mapCCM", mapCCM);
+         		
+    		}else if(tabName!=null && tabName.equalsIgnoreCase("DMC")) {
+    			
+    			String committeeIdDMC = service.getCommitteeIdByCommitteeCode("DMC")+"";
+    			if(committeeIdDMC==null || (committeeIdDMC!=null && committeeIdDMC.isEmpty())) {
+    				committeeIdDMC = "0";
+    			}
+    			Long scheduleId = service.getLatestScheduleId("%/DMC/%", "D");
+    			scheduleId = scheduleId!=null?scheduleId:0L;
+    			List<Object[]> ReviewMeetingList = printservice.ReviewMeetingList("0", "DMC");
+    			Map<Integer,String> mapDMC = new HashMap<>();
+         		int ccmCount=0;
+
+         		for (Object []obj:ReviewMeetingList) {
+         			mapDMC.put(++ccmCount, obj[3].toString());
+         		}
+         		
+    			req.setAttribute("committeeData", printservice.getCommitteeData(committeeIdDMC));
+    			req.setAttribute("dmcActions", printservice.LastPMRCActions("0", committeeIdDMC));
+        		req.setAttribute("latestScheduleMinutesIds", service.getLatestScheduleMinutesIds(scheduleId+""));
+        		req.setAttribute("dmcSchedule", service.getCCMScheduleById(scheduleId+""));
+         		req.setAttribute("mapDMC", mapDMC);
+    			req.setAttribute("committeeIdDMC", committeeIdDMC);
+    			req.setAttribute("committeeMainId", service.getCommitteeMainIdByCommitteeCode("DMC")+"");
+    		}
+    		
+    		req.setAttribute("committeeId", committeeId);
+    		req.setAttribute("tabName", tabName);
+    		req.setAttribute("filesize",file_size);
+    		
+    		return "ccm/CCMPresentation";
+    	}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMPresentation.htm  "+UserId, e); 
+			return "static/Error";
+		}
+    }
+    
+    @RequestMapping(value="DCMScheduleDetailsSubmit.htm", method= {RequestMethod.POST, RequestMethod.GET})
+    public String dcmScheduleDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+	    String UserId = (String)ses.getAttribute("Username");
+	    String labcode = (String)ses.getAttribute("labcode");
+	    logger.info(new Date() + " Inside DCMScheduleDetailsSubmit.htm " + UserId);
+	    
+	    try {
+	    	String meetingDate = req.getParameter("meetingDate");
+	    	String action = req.getParameter("action");
+	    	String committeeScheduleId = req.getParameter("committeeScheduleId");
+			
+			CommitteeSchedule schedule = action!=null && action.equalsIgnoreCase("Edit")?service.getCCMScheduleById(committeeScheduleId):new CommitteeSchedule();
+			schedule.setScheduleDate(new java.sql.Date(rdf.parse(meetingDate).getTime()));
+			
+			if(action!=null && action.equalsIgnoreCase("Add")) {
+				schedule.setScheduleStartTime("10:00:00");
+				schedule.setMeetingVenue("NIL");
+				schedule.setLabCode(labcode);
+				schedule.setCommitteeId(Long.parseLong(req.getParameter("committeeIdDMC")));
+				schedule.setCommitteeMainId(Long.parseLong(req.getParameter("committeeMainId")));
+				schedule.setConfidential(4);
+				schedule.setScheduleType("D");
+				schedule.setScheduleFlag("MKV");
+				schedule.setCreatedBy(UserId);
+				schedule.setCreatedDate(sdtf.format(new Date()));
+				schedule.setIsActive(1);
+			}else {
+				schedule.setModifiedBy(UserId);
+				schedule.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result = service.addCCMSchedule(schedule);
+			if(result!=0) {
+				redir.addAttribute("result", "Schedule Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Schedule Details "+action+" UnSuccessful");
+			}
+			
+			redir.addAttribute("committeescheduleid", String.valueOf(result));
+			redir.addAttribute("dmcFlag", "Y");
+			redir.addAttribute("committeeId", req.getParameter("committeeIdDMC"));
+			
+			return "redirect:/CommitteeScheduleMinutes.htm";
+	    }catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside DCMScheduleDetailsSubmit.htm  "+UserId, e); 
+			return "static/Error";
+		}
+    }
 }

@@ -255,6 +255,7 @@ List<Object[]> hlo1=(List<Object[]>)request.getAttribute("MeetingApprovalMinutes
 																	<%-- <input type="hidden" name="empid"	value="<%=obj[7] %>" />
 																	<input type="hidden" name="committeename"	value="<%=obj[1] %>" />
 																	<input type="hidden" name="committeemainid"	value="<%=obj[0] %>" /> --%>
+																	<input type="hidden" name="committeename"	value="<%=obj[1] %>" />
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 																</form> 

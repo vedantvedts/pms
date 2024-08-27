@@ -91,6 +91,11 @@ h5,h6{
 	List<IndustryPartner> industryPartnerList = (List<IndustryPartner>)request.getAttribute("industryPartnerList");
 	/* --------- end -------------- */
 	//
+	
+	List<Object[]> agendaList=(List<Object[]>) request.getAttribute("agendaList");
+	String ccmFlag = (String)request.getAttribute("ccmFlag");
+	String committeeId = (String)request.getAttribute("committeeId");
+	String committeemainid = (String)request.getAttribute("committeemainid");
 	%>		
 		
 	<%	String ses = (String) request.getParameter("result");
@@ -384,6 +389,7 @@ h5,h6{
 									<th><label class="control-label">Presenter</label></th>
 								</tr>
 									<%
+										if(agendalist!=null && agendalist.size()>0) {
 										int count1 = 1;
 										for (Object[] obj : agendalist) {
 									%>
@@ -435,12 +441,77 @@ h5,h6{
 												<input type="hidden" name="internallabcode" value="<%=obj[14] %>" />	
 												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">																						
 												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+													<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
+												<%} %>
 											</form>
 										
 										<%} %>	
 										</td>										
 									</tr>
 								<%	count1++; }	%>
+								<% }else if(agendaList!=null && agendaList.size()>0) {
+										int count1 = 1;
+										for (Object[] obj : agendaList) {
+											if(obj[6]!=null && !obj[6].toString().equalsIgnoreCase("0")) {
+									%>
+								<tr>
+									<td>
+										<label class="control-label"> <%=count1%> .</label> 
+									</td>
+									<td>
+										<label class="control-label"><%=obj[4] %> </label>
+									</td>
+									<td>
+										&emsp; :&emsp;
+									</td>
+									<td> 
+										<%=obj[9] %> (<%=obj[5]%>) 	
+									</td>
+									
+									
+										<td style="padding-left: 10px">	
+										<% int count=0;
+ 										for(int i=0;i<committeeinvitedlist.size();i++)
+										{ 	 
+ 											count=0;
+ 											ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CH","CI","I","P"));									
+											if( (membertypes.contains(committeeinvitedlist.get(i)[3].toString()) && committeeinvitedlist.get(i)[0].equals(obj[6])))
+											{	
+												
+												if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
+													
+													 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+													
+												<%} 
+												
+											}
+											for(String str : InvitedList)
+											{
+												if(str.equalsIgnoreCase(obj[6]+"_"+obj[5])){
+													count++;
+													break;
+												}
+											}
+											
+										}
+										if(count==0){ %>
+										
+											<form  action="CommitteeInvitationCreate.htm" method="POST" name="myfrm1" id="myfrm1">
+												<button type="submit" class="btn" onclick="return confirm('Are you sure To Add this Member to Invitation List?')" data-toggle="tooltip" data-placement="top" title="Member Not Added to Invitation List (Click Here to Add)"> <i class="fa fa-plus-square" style="color: green;margin: 1px;" aria-hidden="true"></i> </button>											
+												<input type="hidden" name="internalmember" value="<%=obj[6]%>,P,<%=obj[10]%>">
+												<input type="hidden" name="internallabcode" value="<%=obj[5] %>" />	
+												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">																						
+												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+												<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+													<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
+												<%} %>
+											</form>
+										
+										<%} %>	
+										</td>										
+									</tr>
+								<%	count1++; } }	}%>
 							</table>							
 						</div>					
 						<div class="col-md-2">	</div>
@@ -764,6 +835,7 @@ h5,h6{
 				
 				<!-- Special member end -->
 								<!-- Prudhvi - 27/03/2024 start-->
+				<%if(ccmFlag==null || (ccmFlag!=null && !ccmFlag.equalsIgnoreCase("Y"))) {%>					
 				<!-- ---------------------- Industry Partner start------------------------------ -->
 						
 						<div class="col-md-4">
@@ -832,6 +904,7 @@ h5,h6{
 						</div>
 					
 				<!-- ---------------------- Industry Partner end------------------------------ -->		
+				<%} %>
 				<!-- Prudhvi - 27/03/2024 end-->
 						
 					</div>		
@@ -842,11 +915,22 @@ h5,h6{
 	          					<td>
 						 		</td>
 						 		<td>
-					            	<form method="post" action="CommitteeScheduleView.htm" id="backform111">
+						 			<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+				          				<form method="post" action="CCMSchedule.htm" id="backfrm1" >
+											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+											<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleid %>">
+											<input type="hidden" name="committeeMainId" value="<%=committeemainid %>">
+											<input type="hidden" name="committeeId" value="<%=committeeId %>">
+											<button class="btn btn-info btn-sm  shadow-nohover back" onclick='$("#backform111").submit()'>Back</button>
+										</form> 
+	          				
+	          						<%} else{%>
+						            	<form method="post" action="CommitteeScheduleView.htm" id="backform111">
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 											<input type="hidden" name="scheduleid" value="<%=committeescheduleid %>">
 											<button class="btn btn-info btn-sm  shadow-nohover back" onclick='$("#backform111").submit()'>Back</button>
-									</form>
+										</form>
+									<%} %>	
 						 		</td>
 						 		<td>			 		
 						 		
@@ -855,6 +939,9 @@ h5,h6{
 						            	<form method="post" action="SendInvitationLetter.htm" id="inviteform">
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 											<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
+											<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+												<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+											<%} %>	
                								<button type="submit" onclick="inviteform()" class=" btn btn-sm btn-warning prints" form="inviteform"  ><i class="fa fa-paper-plane-o" aria-hidden="true"></i> SEND INVITATION</button>
 										</form>
 									<%} %>	  
@@ -862,8 +949,7 @@ h5,h6{
 							 		</td>
 							 		<td>
 								 		<button type="button" class="btn btn-sm add" id="addrep" onclick="showaddladd();">Add Additional Members</button>
-										<button type="button" class="btn btn-sm add" id="addrep" onclick="showrepadd();">Add Representative</button>
-							 		
+								 		<button type="button" class="btn btn-sm add" id="addrep" onclick="showrepadd();">Add Representative</button>
 							 		</td>
 							 	</tr>
 		            	</table>
@@ -929,7 +1015,9 @@ h5,h6{
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 	 									<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
 	 									<input type="hidden" name="rep" id="rep1" value="0" />
-									
+										<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
+										<%} %>
 									</td>
 								</tr>
 							</table>
@@ -972,7 +1060,9 @@ h5,h6{
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 		 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
 		 								<input type="hidden" name="rep" id="rep2" value="0" />
-									
+										<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
+										<%} %>
 									</td>
 									<td style="width:70%">
 										<div class="input select ">
@@ -1019,7 +1109,10 @@ h5,h6{
 										</div>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 			 							<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
-			 							<input type="hidden" name="rep" id="rep3" value="0" />				
+			 							<input type="hidden" name="rep" id="rep3" value="0" />	
+			 							<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
+										<%} %>			
 			 						</td>
 								</tr>
 							</table>
@@ -1036,7 +1129,9 @@ h5,h6{
 					</form>
 	<!-- --------------------------------External Members (Outside DRDO)----------------------------------------------- -->
 		<!-- Prudhvi - 27/03/2024 start-->
+		
 	<!-- --------------------------------Industry Partner----------------------------------------------- -->
+	<%if(ccmFlag==null || (ccmFlag!=null && !ccmFlag.equalsIgnoreCase("Y"))) {%>	
 					<form  action="CommitteeInvitationCreate.htm" method="POST" name="myfrm1" id="myfrm1">
 					<div class="row">	
 						
@@ -1066,6 +1161,9 @@ h5,h6{
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 		 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
 		 								<input type="hidden" name="rep" id="rep4" value="0" />
+		 								<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
+										<%} %>
 									</td>
 									<td style="width:70%">
 										<div class="input select ">
@@ -1085,6 +1183,7 @@ h5,h6{
 						
 					</div>
 					</form>
+					<%} %>
 	<!-- --------------------------------Industry Partner----------------------------------------------- -->
 	<!-- Prudhvi - 27/03/2024 end-->
 			<!--   Special Invitaion  -->
@@ -1105,7 +1204,7 @@ h5,h6{
 								<tr class="tr_clone_deliverables2">
 									<td style="width:30%">							
 										<div class="input select">
-											<select class="form-control" name="specialLabCode" id="sepcialLab_1" tabindex="-1"  style=""  onchange="specialname(this)" required>
+											<select class="form-control specialselect specialLabCode" name="specialLabCode" id="sepcialLab_1" tabindex="-1"  style="width: 100%;" onchange="specialname(this)" required>
 												<option disabled="true"  selected value="">Lab Name</option>
 													<% for (Object[] obj : clusterlablist) {%>
 												<option value="<%=obj[3]%>"><%=obj[3]%></option>
@@ -1118,7 +1217,7 @@ h5,h6{
 									</td>
 									<td style="width:70%">
 										<div class="input select ">
-											<select class="form-control" name="SpecialMember" id="specialMembers_1" data-live-search="true"   data-placeholder="Select Members">
+											<select class="form-control specialselect SpecialMember" name="SpecialMember" id="specialMembers_1" data-live-search="true"  style="width: 100%;" data-placeholder="Select Members">
 											</select>
 										</div>
 									</td>
@@ -1133,8 +1232,11 @@ h5,h6{
 							
 								<button class="btn btn-primary btn-sm add" name="submit" value="submit" type="submit"  onclick="return confirm('Are you Sure to Add these Members ?');">SUBMIT</button>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
-		 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
-		 								<input type="hidden" name="rep" id="rep2" value="0" />	
+ 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
+ 								<input type="hidden" name="rep" id="rep2" value="0" />
+ 								<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+									<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
+								<%} %>	
 						</div>
 						
 					</div>
@@ -1296,27 +1398,38 @@ function specialname(ele){
 } 
 	}
 	
-	
+$('.specialselect').select2();
+var specialcount = 1;
+
 $("#deliverablesTable2").on('click','.btn_add_deliverables2' ,function() {
-		console.log("HIIi")
-		var $tr = $('.tr_clone_deliverables2').last('.tr_clone_deliverables2');
-		var $clone = $tr.clone();
-		$tr.after($clone);
-		var cl=$('.tr_clone_deliverables2').length;
 		
-		console.log($clone)
-		var newId="";
-		$clone.find('select').each(function() {
-			var $select = $(this);
-			var oldId = $select.attr('id');
-			var newId=oldId.split("_")[0]+"_"+cl
-			$select.attr('id', newId);
+	$('.specialselect').select2("destroy");
+	
+	var $tr = $('.tr_clone_deliverables2').last();
+	var $clone = $tr.clone();
+	$tr.after($clone);
+	var cl=$('.tr_clone_deliverables2').length;
+	
+	++specialcount;
+	
+	$clone.find(".specialselect.specialLabCode").attr("id", 'sepcialLab_' + specialcount);
+	$clone.find(".specialselect.SpecialMember").attr("id", 'specialMembers_' + specialcount);
+	
+	$('.specialselect').select2();
+    $clone.find('.specialselect').select2('val', '');
+    
+	/* var newId="";
+	$clone.find('select').each(function() {
+		var $select = $(this);
+		var oldId = $select.attr('id');
+		var newId=oldId.split("_")[0]+"_"+cl
+		$select.attr('id', newId);
+	
 		
-			
-		});
+	}); */
 		
 	
-	});
+});
 /* Cloning (Removing) the table body rows for Deliverables2 */
 	$("#deliverablesTable2").on('click','.btn_rem_deliverables2' ,function() {
 		
@@ -1339,6 +1452,7 @@ $("#deliverablesTable2").on('click','.btn_add_deliverables2' ,function() {
  		$(document).ready(function(){
  		
  			$('#additionalmemadd').hide();
+ 			
  		})
  		
  

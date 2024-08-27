@@ -199,7 +199,8 @@ public class CCMServiceImpl implements CCMService{
 		if(schedule.getScheduleId()==null) {
 			LocalDate localDate = LocalDate.parse(schedule.getScheduleDate().toString());
 			String month = localDate.getMonth().toString().substring(0, 3);
-			String seq = schedule.getLabCode()+"/CCM/"+(localDate.getYear())+"/"+month+"/";
+			String scheduleType = schedule.getScheduleType();
+			String seq = schedule.getLabCode()+(scheduleType.equalsIgnoreCase("C")?"/CCM/":"/DMC/")+(localDate.getYear())+"/"+month+"/";
 			long maxCCMScheduleIdForMonth = dao.getMaxCCMScheduleIdForMonth(seq);
 			schedule.setMeetingId(seq+(maxCCMScheduleIdForMonth+1));
 		}
@@ -515,14 +516,27 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public Long getCommitteeMainIdByCommitteeCode(String labCode) throws Exception {
+	public Long getCommitteeMainIdByCommitteeCode(String committeeCode) throws Exception {
 		
-		return dao.getCommitteeMainIdByCommitteeCode(labCode);
+		return dao.getCommitteeMainIdByCommitteeCode(committeeCode);
 	}
 
 	@Override
-	public Long getCommitteeIdByCommitteeCode(String labCode) throws Exception {
+	public Long getCommitteeIdByCommitteeCode(String committeeCode) throws Exception {
 		
-		return dao.getCommitteeIdByCommitteeCode(labCode);
+		return dao.getCommitteeIdByCommitteeCode(committeeCode);
 	}
+
+	@Override
+	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception {
+		
+		return dao.getLatestScheduleId(sequenceNo, meetingType);
+	}
+
+	@Override
+	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception {
+		
+		return dao.getLatestScheduleMinutesIds(scheduleId);
+	}
+	
 }

@@ -64,6 +64,10 @@ h5,h6{
 		String committeemainid=(String)request.getAttribute("committeemainid");
 		
 		List<Object[]> committeeallmemberlist=(List<Object[]>) request.getAttribute("committeeallmemberlist");
+		
+		List<Object[]> agendaList=(List<Object[]>) request.getAttribute("agendaList");
+		String ccmFlag = (String)request.getAttribute("ccmFlag");
+		String committeeId = (String)request.getAttribute("committeeId");
 	%>
 
 	<%
@@ -285,7 +289,8 @@ h5,h6{
 									
 								</div>
 								<%} %>
-																
+								
+								<%if(ccmFlag==null || (ccmFlag!=null && !ccmFlag.equalsIgnoreCase("Y"))) {%>								
 								<!-- Prudhvi - 27/03/2024 start-->
 								<%if(committeeallmemberlist.size()>(count+count1)){ %>
 								
@@ -322,7 +327,7 @@ h5,h6{
 								</div>
 								<%} %>
 								<!-- Prudhvi - 27/03/2024 end-->
-								
+								<%} %>
 								
 							</div>
 							<div class="row">
@@ -338,6 +343,7 @@ h5,h6{
 										<th><label class="control-label">Presenter</label></th>
 									</tr>
 										<%
+											if(agendalist!=null && agendalist.size()>0) {
 											int count4 = 1;
 											for (Object[] obj : agendalist) {
 										%>
@@ -359,6 +365,31 @@ h5,h6{
 											
 									</tr>
 									<%	count4++; }	%>
+									<%} else if(agendaList!=null && agendaList.size()>0) { 
+										int count4 = 1;
+										for (Object[] obj : agendaList) {
+											if(obj[6]!=null && !obj[6].toString().equalsIgnoreCase("0")) {
+									%>
+									<tr>
+										<td>
+											<label class="control-label"> <%=count4%>)</label>
+										</td>
+										<td>
+											<label class="control-label"><%=obj[4] %> </label>
+										</td>
+										<td>
+											&emsp; :&emsp;
+										</td>
+										<td>
+											
+												<%=obj[9] %>
+											 (<%=obj[5]%>) 
+											<input type="hidden" name="empid" value="<%=obj[6]%>,P,<%=obj[10] %>">
+											<input type="hidden" name="Labcode" value="<%=obj[5] %>" />	
+										</td>
+											
+									</tr>
+									<%count4++;} } }%>
 								</table>
 												
 							</div>
@@ -376,6 +407,7 @@ h5,h6{
 					            	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 									<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
 									<input type="hidden" name="Committeeidmainid" value="<%=committeemainid%>">
+									<input type="hidden" name="ccmFlag" value="<%=ccmFlag%>">
 									<button class="btn btn-info btn-sm  shadow-nohover back" type="button" onclick="submitForm('backfrm1');">Back</button>
 								</div>
 							</div>
@@ -385,13 +417,21 @@ h5,h6{
 			</div>
 		</div>        			
 	 </div> 
-</form>		
-	          				<form method="post" action="CommitteeScheduleView.htm" id="backfrm1" >
-								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-								<input type="hidden" name="scheduleid" value="<%=committeescheduleid %>">
-								<!-- <button class="btn btn-info btn-sm  shadow-nohover back" formaction="CommitteeScheduleView.htm">Back</button> -->
-							</form> 
+</form>						<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+		          				<form method="post" action="CCMSchedule.htm" id="backfrm1" >
+									<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+									<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleid %>">
+									<input type="hidden" name="committeeMainId" value="<%=committeemainid %>">
+									<input type="hidden" name="committeeId" value="<%=committeeId %>">
+									<!-- <button class="btn btn-info btn-sm  shadow-nohover back" formaction="CommitteeScheduleView.htm">Back</button> -->
+								</form> 
 	          				
+	          				<%} else{%>
+		          				<form method="post" action="CommitteeScheduleView.htm" id="backfrm1" >
+									<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+									<input type="hidden" name="scheduleid" value="<%=committeescheduleid %>">
+								</form> 
+	          				<%} %>	
 	          				 			
 	      					
 

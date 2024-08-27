@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"   pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -299,6 +300,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 
 Object[] committeescheduleeditdata=(Object[])request.getAttribute("committeescheduleeditdata");
 List<Object[]> committeeagendalist=(List<Object[]>)request.getAttribute("committeeagendalist");
+
 List<Object[]> dis=(List<Object[]>)request.getAttribute("minutesspeclist");
 List<Object[]> minutesoutcomelist=(List<Object[]>)request.getAttribute("minutesoutcomelist");
 String committscheduleid=(String) request.getAttribute("committscheduleid");
@@ -324,6 +326,15 @@ if(formname!=null){
 }  */
 	String scheduleId="";
 scheduleId=committeescheduleeditdata[6].toString();
+
+String ccmFlag = (String) request.getAttribute("ccmFlag");
+String committeeMainId = (String) request.getAttribute("committeeMainId");
+String committeeId = (String) request.getAttribute("committeeId");
+
+List<Object[]> agendaList = (List<Object[]>)request.getAttribute("agendaList");
+
+String dmcFlag = (String) request.getAttribute("dmcFlag");
+
 %>
 
 
@@ -385,10 +396,31 @@ scheduleId=committeescheduleeditdata[6].toString();
 		<%} %>
 		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
 		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
+		<input type="hidden" name="membertype" value="<%=membertype%>">
 		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
 		<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
-		<input type="hidden" name="membertype" value="<%=membertype%>">
-		<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>			
+		<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+
+			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+			<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+			<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+			<input type="hidden" name="committeeId" value="<%=committeeId %>">
+			<button  class="btn  btn-sm back" formaction="CCMSchedule.htm" style=" font-size:12px;" >BACK</button>
+	          				
+		<%}%>
+		<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) { %>
+			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+			<input type="hidden" name="committeeId" value="<%=committeeId %>">
+			<input type="hidden" name="tabName" value="DMC">
+			<button  class="btn  btn-sm back" formaction="CCMPresentation.htm" style=" font-size:12px;" >BACK</button>
+	          				
+	    <%}%>
+		<%if(ccmFlag==null && dmcFlag==null) {%>
+			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+			<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">
+			<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>
+
+		<%} %>	
 	</form>
 	
 	
@@ -402,6 +434,7 @@ scheduleId=committeescheduleeditdata[6].toString();
 <div class="col-md-5" >
 	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
     	<div class="card-body" style="margin-top: -8px" >
+    	<%if(dmcFlag==null || (dmcFlag!=null && !dmcFlag.equalsIgnoreCase("Y"))) {%>
          <div class="panel panel-info" style="margin-top: 10px;" >
       		<div class="panel-heading ">
         		<h4 class="panel-title">
@@ -591,8 +624,8 @@ scheduleId=committeescheduleeditdata[6].toString();
 	       
    </div>   
 
-   
-    
+ <%} %>  
+ <%if((ccmFlag==null && dmcFlag==null) || (ccmFlag!=null && !ccmFlag.equalsIgnoreCase("Y")) || (dmcFlag!=null && !dmcFlag.equalsIgnoreCase("Y"))) {%>   
   <!-- 3rd Row New-->
  
  <div class="panel panel-info">
@@ -610,7 +643,7 @@ scheduleId=committeescheduleeditdata[6].toString();
    			<%int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145;int collapse=140;String temp=null;int form6=565;int form7=123;
    
    
-    if(!committeeagendalist.isEmpty()){
+    if(committeeagendalist!=null && committeeagendalist.size()>0){
     	
  	  for(Object[] hlo1:committeeagendalist){
  	
@@ -1103,6 +1136,7 @@ scheduleId=committeescheduleeditdata[6].toString();
   
   <!-- 4th row Discussion -->
   
+
   
   <div class="panel panel-info">
 	
@@ -1470,7 +1504,151 @@ scheduleId=committeescheduleeditdata[6].toString();
 <%} %> --%>
 <!--  New code end-->
 
+<!-- CCM part MOM  -->
+
+<%} else{%>
+<%
+minutesoutcomelist = minutesoutcomelist!=null && minutesoutcomelist.size()>0 ? minutesoutcomelist.stream().limit(3).collect(Collectors.toList()): null;
+int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145;int collapse=140;String temp="0";int form6=565;int form7=123;long scheduleagendaid=0; 
+%>
+
+	<div class="panel panel-info">
+		
+		<div class="panel-heading">
+	    	
+	    	<h4 class="panel-title">
+	           <span  style="font-size:14px"> <%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>. Discussion </span>
+	        </h4>
+	        
+	       	<div style="float: right !important; margin-top:-20px; " > 
+	       		<%int collapse3=484; %>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapse3%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Out<%=scheduleagendaid %>5"></i></a>
+	       	</div>
+	       	
+	    </div>
+	      
+	  	<div id="<%=collapse3%><%=collapse%>" class="panel-collapse collapse in">
+	  	<div class="scrollclass" style="height:200px;overflow-y: auto">
+	   <%int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700;
+	   if(dis!=null && !dis.isEmpty()){
+			for(Object[] hlod:dis){
+				 if("4".equalsIgnoreCase(hlod[0].toString())&&temp.equalsIgnoreCase(hlod[3].toString())&&"0".equalsIgnoreCase(hlod[4].toString())){
+		
+	   %>
+	   
+	  			<div class="row" style="margin-right: 0px; margin-left: 0px;">  
+	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	     				<div class="panel panel-info">
+	      					<div class="panel-heading">
+	        					<h4 class="panel-title">
+	          						<span  style="font-size:14px"><%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>.<%=unit13 %>.
+	          						<!-- newly added by sankha  on 12/10 -->
+	          						<%if(hlod[5].toString().length()>30) {%>    
+										<%=hlod[5].toString().substring(0,20) +"..."%>
+									<%}else{ %>
+										    <%=hlod[5].toString() %>
+									<%} %></span>
+									<!-- end -->      						
+	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8] %>)</span>  </h4>
+	       						<div   style="float: right !important; margin-top:-23px; ">
+								 	<table style="text-align: center;" >
+						     			<thead>
+							             	<tr>
+							                 	<th ></th>       
+							             	</tr>
+							         	 </thead>
+							         	<tbody>
+							         	
+							         	
+						
+						      	
+						      				<tr>
+						
+									      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+									      			<form  id="myForm<%=temp %>R<%=form13 %>" action="MinutesSpecEdit.htm" method="post">
+									                	
+									                		<input type="hidden" name="specname" value="Discussion">
+									                		<input type="hidden" name="scheduleid"	value="<%=hlod[6] %>" />
+															<input type="hidden" name="minutesid"	value="<%=hlod[0] %>" />
+															<input type="hidden" name="scheduleminutesid" 	value="<%=hlod[1] %>" /> 
+										                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
+									                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form18 %>" />
+															<input class="form-control" type="hidden" name="unit1" value="#5Out<%=scheduleagendaid %>" readonly="readonly">				
+									          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameEditA('myForm<%=temp %>R<%=form13 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+									          			
+									       			</form>
+									      		</td>
+									      		
+						      				</tr>
+						       			</tbody>
+						      	
+						      		</table>
+	      							<br>
+	      		
+	       						</div>
+	       			
+	       		
+	           				</div>
+	  					</div>
+					</div>
+				</div>
+				
+	<%unitcount13++;countloop++;form13++;form18++;unit13++;}}}%>
+	</div>
+	
+	   			<div class="row">  
+	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	     				<div class="panel panel-info">
+	      					<div class="panel-heading">
+	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>R<%=form18 %>">
+	        					<h4 class="panel-title">
+	          						<span  style="font-size:14px"><%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>.<%=unit13 %>.</span>  </h4>
+	          						<div style="margin-top:-22px; margin-left: 55px;">
+	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
+	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
+												<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+											<%} %>
+										</select>
+	          						
+	          						
+	          						
+	          						
+	          						</div>
+	          						<div style="margin-top:-26px; margin-left: 240px;">
+	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						
+
+	        					    </div>
+	        					    <input type="hidden" name="specname" value="Discussion">
+	        					    <input class="form-control" type="hidden" name="agendasubid" value="0" readonly="readonly">
+									<input class="form-control" type="hidden" name="minutesid" value="4" readonly="readonly">
+									<input class="form-control" type="hidden" name="scheduleagendaid" value="<%=scheduleagendaid %>" readonly="readonly">
+	        					    <input class="form-control" type="hidden" name="committeescheduleid" value="<%=committscheduleid %>" readonly="readonly">
+								    <input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form18 %>" />
+								     <input type="hidden" name="unitid" value="<%=temp %>" />
+								    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
+								    <input class="form-control" type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
+								    <input class="form-control" type="hidden" name="unit1" value="#5Out<%=scheduleagendaid %>" readonly="readonly">
+									
+	       						</form>
+	       					    
+	           				</div>
+	  					</div>
+					</div>
+				</div>
+	    
+			
+	  			
+	
+	     </div>   <!-- Agenda collapse end -->     
+	 </div>
+<%} %>
+
+
+
+
 <!-- Modal for Attachment -->
+
 
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="attachmentModal">
   <div class="modal-dialog modal-lg">
@@ -1537,7 +1715,16 @@ function showAttachmentModal(){
 				<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">	
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<input type="hidden" name="minutesback" value="minutesback"/>
-				
+				<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+					<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+					<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+					<input type="hidden" name="committeeId" value="<%=committeeId %>">
+					<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+				<%} %>
+				<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>
+					<input type="hidden" name="committeeId" value="<%=committeeId %>">
+					<input type="hidden" name="dmcFlag" value="<%=dmcFlag %>">
+				<%} %>
 			</form>
 		
 		
@@ -1574,6 +1761,16 @@ function showAttachmentModal(){
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
 												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">
+												<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+													<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+													<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+													<input type="hidden" name="committeeId" value="<%=committeeId %>">
+													<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+												<%} %>
+												<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>
+													<input type="hidden" name="committeeId" value="<%=committeeId %>">
+													<input type="hidden" name="dmcFlag" value="<%=dmcFlag %>">
+												<%} %>
 											</form>									
 										</td>
 									</tr>
@@ -1584,6 +1781,16 @@ function showAttachmentModal(){
 				<form method="post" action="MinutesAttachment.htm" enctype="multipart/form-data" id="attachmentfrm" name="attachmentfrm" >					
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>"> 
+					<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+						<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+						<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+						<input type="hidden" name="committeeId" value="<%=committeeId %>">
+						<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+					<%} %>
+					<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>
+						<input type="hidden" name="committeeId" value="<%=committeeId %>">
+						<input type="hidden" name="dmcFlag" value="<%=dmcFlag %>">
+					<%} %>
 					<table>
 						<tr>
 							<td>
@@ -1625,6 +1832,7 @@ function showAttachmentModal(){
 	
 	<div class="card" style="margin-top: 2%;">
     	<div class="card-body">
+    		<%if(dmcFlag==null) {%>
             <form name="specadd" id="specadd" action="CommitteeMinutesSubmit.htm" method="post">
   
    				<div class="row"  style="margin-bottom: 10px;">
@@ -1707,6 +1915,13 @@ function showAttachmentModal(){
 										<input type="hidden" name="schedulesubid" value="1" readonly="readonly">
 										<input type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
 										<input type="hidden" name="committeename" value="<%=committeescheduleeditdata[8]%>">
+										
+										<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+											<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+											<input type="hidden" name="committeeId" value="<%=committeeId %>">
+											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+										<%} %>
 								</div>
   							</div>
   						</div>
@@ -1715,9 +1930,37 @@ function showAttachmentModal(){
  				</div>  
 
 	 		</form>
+	 		<%} %>
 	 		
 	 		<!-- AIR -->
-	 		<form name="specadd" id="specair" action="CommitteeMinutesSubmit.htm" method="post">
+	 		<%if(dmcFlag!=null) {%>
+	 			<form action="#">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+					<input type="hidden" name="committeeIdDMC" value="<%=committeeId %>">
+					<input type="hidden" name="committeeId" value="<%=committeeId %>">
+					<input type="hidden" name="committeeScheduleId" value="<%=committscheduleid %>">
+					<input type="hidden" name="dmcFlag" value="Y">
+					<div class="row mb-3">
+						
+						<div class="col-md-2 ">
+							<label class="">Schedule Date: </label>
+						</div>
+						<div class="col-md-3 ">
+							<input type="text" class="form-control" name="meetingDate" id="meetingDate" <%if(committeescheduleeditdata!=null) {%>value="<%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())) %>"<%} %> style="height: 32px;" readonly>
+						</div>
+						
+						<div class="col-md-2 left">
+							<button type="submit" class="btn btn-sm fw-bold edit mr-2" name="action" value="Edit" formmethod="post" formaction="DCMScheduleDetailsSubmit.htm" onclick="return confirm('Are you Sure to Update Schedule?')">
+								Update
+							</button>
+						</div>
+						
+					</div>
+					
+				</form>
+				<hr class="mb-2">
+	 		<%} %>
+	 		<form name="specadd" id="specair" action="CommitteeMinutesSubmit.htm" method="post" <%if(dmcFlag!=null) {%>style="display: none;"<%} %> >
   
    				<div class="row"  style="margin-bottom: 10px;">
    					
@@ -1800,6 +2043,18 @@ function showAttachmentModal(){
 										<input type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
 										<input type="hidden" name="committeename" value="<%=committeescheduleeditdata[8]%>">
 										<input type="hidden" name="OutComeAirHead"  id="OutComeAirHead" value="">
+										
+										<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+											<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+											<input type="hidden" name="committeeId" value="<%=committeeId %>">
+											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+										<%} %>
+										
+										<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>
+											<input type="hidden" name="committeeId" value="<%=committeeId %>">
+											<input type="hidden" name="dmcFlag" value="<%=dmcFlag %>">
+										<%} %>
 								</div>
   							</div>
   						</div>
@@ -1870,6 +2125,16 @@ function showAttachmentModal(){
 				<form method="post" action="MinutesAttachment.htm" enctype="multipart/form-data" id="attachmentfrm" name="attachmentfrm" >					
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
+					<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+						<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+						<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+						<input type="hidden" name="committeeId" value="<%=committeeId %>">
+						<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+					<%} %>
+					<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>
+						<input type="hidden" name="committeeId" value="<%=committeeId %>">
+						<input type="hidden" name="dmcFlag" value="<%=dmcFlag %>">
+					<%} %>
 					<table>
 						<tr>
 							<td>
@@ -2809,6 +3074,20 @@ function sendEmails(a){
 			}
 		}) 
 }
+
+<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) { %>
+	$('#meetingDate').daterangepicker({
+	    "singleDatePicker": true,
+	    "linkedCalendars": false,
+	    "showCustomRangeLabel": true,
+	    "cancelClass": "btn-default",
+	    "showDropdowns": true,
+	    /* "drops": "up", */
+	    "locale": {
+	        format: 'DD-MM-YYYY'
+	    }
+	});
+<%} %>
 </script>
 
 </body>

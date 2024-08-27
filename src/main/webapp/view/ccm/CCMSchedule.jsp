@@ -1,3 +1,4 @@
+<%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Map"%>
@@ -37,8 +38,8 @@ label {
 }
 
 .tabpanes {
-	min-height: 600px;
-    max-height: 600px;
+	min-height: 637px;
+    max-height: 637px;
     overflow: auto;
     scrollbar-width: thin;
   	scrollbar-color: #216583 #f8f9fa;
@@ -155,6 +156,7 @@ input,select,table,div,label,span {
 	margin-left: 0.25rem;
 	margin-top: 0.25rem;
 	width: 97%;
+	border-radius: 0.75rem;
 }
 
 .panel-buttons {
@@ -167,6 +169,10 @@ input,select,table,div,label,span {
 	color: white;
 	font-weight: bold;
 	text-decoration: none;
+}
+
+.fs-custom {
+	font-size: 0.95rem;
 }
 </style>
 
@@ -185,6 +191,71 @@ input,select,table,div,label,span {
 	border: none !important;
 	display: block;
     padding: .5rem 1rem;
+}
+
+</style>
+
+<!-- Custom Button outlines -->
+<style type="text/css">
+
+.btn-participants, .btn-agenda-forward, .btn-agenda-forwarded, .btn-agenda-resubmit, .btn-minutes-approval {
+	color: #0e49b5; 
+	border-color: #0e49b5; 
+	background-color: transparent;
+    background-image: none;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.btn-participants:hover, .btn-agenda-forward:hover, .btn-agenda-forwarded:hover, btn-agenda-resubmit:hover, .btn-minutes-approval:hover {
+    color: #fff;
+    background-color: #0e49b5; 
+    border-color: #0e49b5; 
+}
+
+.btn-kick-off {
+	color: #06623b; 
+	border-color: #06623b;
+	background-color: transparent;
+    background-image: none;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.btn-kick-off:hover {
+    color: #fff; 
+    background-color: #06623b;
+    border-color: #06623b;
+}
+ 
+.btn-kicked-off {
+	color: #81b214;
+	border-color: #81b214;
+	background-color: transparent;
+    background-image: none;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.btn-kicked-off:hover {
+    color: #fff; 
+    background-color: #81b214;
+    border-color: #81b214; 
+}
+
+.btn-attendance {
+	color: #16697a;
+	border-color: #16697a;
+	background-color: transparent;
+    background-image: none;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.btn-attendance:hover {
+    color: #fff; 
+    background-color: #16697a; 
+    border-color: #16697a; 
 }
 
 </style>
@@ -238,6 +309,7 @@ long ccmScheduleId = ccmSchedule!=null?ccmSchedule.getCCMScheduleId():0; */
 String ccmScheduleId = request.getAttribute("ccmScheduleId")!=null?(String)request.getAttribute("ccmScheduleId"):"0";
 String committeeMainId = request.getAttribute("committeeMainId")!=null?(String)request.getAttribute("committeeMainId"):"0";
 String committeeId = request.getAttribute("committeeId")!=null?(String)request.getAttribute("committeeId"):"0";
+String committeeFlag = request.getAttribute("committeeFlag")!=null?(String)request.getAttribute("committeeFlag"):"N";
 
 List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 
@@ -248,6 +320,13 @@ CommitteeSchedule ccmSchedule = ccmScheduleList!=null && ccmScheduleList.size()>
 List<Object[]> allLabList = (List<Object[]>) request.getAttribute("allLabList");
 List<Object[]> labEmpList=(List<Object[]>)request.getAttribute("labEmpList");
 String labcode =  (String)request.getAttribute("labcode");
+
+String ScheduleFlag = ccmSchedule!=null && ccmSchedule.getScheduleFlag()!=null? ccmSchedule.getScheduleFlag() : "MSC";
+LocalDate todaydate= LocalDate.now();
+LocalDate scheduledate = ccmSchedule!=null && ccmSchedule.getScheduleDate()!=null? LocalDate.parse(ccmSchedule.getScheduleDate().toString()):todaydate;
+String otp=(String)request.getAttribute("otp");
+
+List<Object[]> invitedlist = (List<Object[]>)request.getAttribute("committeeinvitedlist");
 %>
 	<% String ses=(String)request.getParameter("result");
 	 	String ses1=(String)request.getParameter("resultfail");
@@ -293,49 +372,57 @@ String labcode =  (String)request.getAttribute("labcode");
        		</div>
        	
        		<div class="card-body">
-       			<div class="row ml-2 mr-2">
-       				<div class="col-md-2 p-0">
-       					<div class="card">
-     						<div class="card-header center" style="background-color: transparent;">
-     							<h5 class="text-dark" style="font-weight: bold;">List of CCM</h5>
+       			<div class="row ml-2 ">
+       				<div class="col-md-2 p-0 mt-2 mb-2">
+       					<div class="card" style="border-color: #007bff;">
+     						<div class="card-header center" style="background-color: transparent;border-color: #007bff;">
+     							<h5 class="" style="font-weight: bold;color: #8b550c;">List of CCM</h5>
      						</div>
    							<div class="card-body ccmSideBar">
-   								<form action="CCMSchedule.htm" method="GET">
-									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-									<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
-									<input type="hidden" name="committeeId" value="<%=committeeId%>">
-									<div class="row">
-   										<div class="col-md-12">
-     										<button class="btn btn-primary ccmSideBarButton" type="submit" data-toggle="tooltip" data-placement="top" title="New CCM for Chosen Month">
+								<div class="row">
+  									<div class="col-md-12">
+  										<form action="CCMSchedule.htm" method="GET">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+											<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
+											<input type="hidden" name="committeeId" value="<%=committeeId%>">
+     										<button type="submit" class="btn btn-outline-primary fw-bold ccmSideBarButton" <%if(0L==Long.parseLong(ccmScheduleId)) {%> style="background-color: green;color: white;border-color: green;" <%} %> data-toggle="tooltip" data-placement="top" title="New CCM for Chosen Month">
      											Add New CCM
      										</button>
-   										</div>
-    								</div>
-    								<%
-    								if(ccmScheduleList!=null && ccmScheduleList.size()>0) {
-    								for(CommitteeSchedule schedule : ccmScheduleList) {%>
-    									<div class="row">
-    										<div class="col-md-12">
-	     										<button class="btn btn-secondary viewbtn ccmSideBarButton" type="submit" name="ccmScheduleId" value="<%=schedule.getScheduleId()%>"  data-toggle="tooltip" data-placement="top" title="<%=schedule.getMeetingId() %>">
+	     								</form>		
+  									</div>
+   								</div>
+    							
+   								<%
+   								if(ccmScheduleList!=null && ccmScheduleList.size()>0) {
+   								for(CommitteeSchedule schedule : ccmScheduleList) {%>
+   									<div class="row">
+   										<div class="col-md-12">
+   											<form action="CCMSchedule.htm" method="GET">
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+												<input type="hidden" name="committeeMainId" value="<%=schedule.getCommitteeMainId()%>">
+												<input type="hidden" name="committeeId" value="<%=schedule.getCommitteeId()%>">
+	     										<button class="btn btn-outline-primary viewbtn fw-bold ccmSideBarButton" type="submit" name="ccmScheduleId" value="<%=schedule.getScheduleId()%>"  
+	     										data-toggle="tooltip" data-placement="top" title="<%=schedule.getMeetingId() %>" <%if(schedule.getScheduleId()==Long.parseLong(ccmScheduleId)) {%> style="background-color: green;color: white;border-color: green;" <%} %> >
 	     											<%=schedule.getMeetingId() %>
 	     										</button>
-    										</div>
-    									</div>
-    								<%} } else{%>
-    									<div class="row">
-    										<div class="col-md-12">
-    											<button type="button" class="btn btn-secondary viewbtn ccmSideBarButton" data-toggle="tooltip" data-placement="top" title="No Meetings Scheduled">
-													<span style="font-weight: bold;">No Meetings</span>
-												</button>
-    										</div>
-    									</div>
-    								<%} %>
-   								</form>
+	     									</form>
+   										</div>
+   									</div>
+   								<%} } else{%>
+   									<div class="row">
+   										<div class="col-md-12">
+   											<button type="button" class="btn btn-outline-secondary fw-bold viewbtn ccmSideBarButton" data-toggle="tooltip" data-placement="top" title="No Meetings Scheduled">
+												<span style="font-weight: bold;">No Meetings</span>
+											</button>
+   										</div>
+   									</div>
+   								<%} %>
+   								
    							</div>
        					</div>
        				</div>
        				<div class="col-md-10">
-       					<div class="row">
+       					<%-- <div class="row">
        						<div class="col-md-12">
        							<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
 
@@ -365,11 +452,11 @@ String labcode =  (String)request.getAttribute("labcode");
             			
               					</ul>
        						</div>
-       					</div>
+       					</div> --%>
        					<div class="row">
        						<div class="col-md-12">
        							<!-- This is for Tab Panes -->
-         						<div class="card mr-2 mb-2 ">
+         						<div class="card mr-2 mb-2 mt-2" style="border-color: #007bff;">
          							<div class="tab-content text-center" style="">
          								<!-- *********** Meeting Schedule Details ***********      --> 
 				               			<%if(tabId!=null && tabId.equalsIgnoreCase("1")){ %> 
@@ -406,7 +493,7 @@ String labcode =  (String)request.getAttribute("labcode");
 					        									<%if(ccmSchedule!=null) {%>
 					        										<input type="hidden" name="ccmScheduleId" id="ccmScheduleId" value="<%=ccmScheduleId%>">
 						        									<div class="col-md-3 left">
-						        										<button type="submit" class=" btn btn-sm edit" name="action" value="Edit" onclick="return confirm('Are You Sure to Update?')" data-toggle="tooltip" data-placement="top" title="Update Schedule Details" >UPDATE</button>
+						        										<button type="submit" class=" btn btn-sm edit ccm-btn" name="action" value="Edit" onclick="return confirm('Are You Sure to Update?')" data-toggle="tooltip" data-placement="top" title="Update Schedule Details" >UPDATE</button>
 						        									</div>
 					        									<%} %>
 							        						</div>
@@ -514,13 +601,13 @@ String labcode =  (String)request.getAttribute("labcode");
 										        										<input type="hidden" name="ccmScheduleId" id="ccmScheduleId" value="<%=ccmScheduleId%>">
 										        										<input type="hidden" name="monthyear" value="<%=monthyear %>">
 													               						<input type="hidden" name="tabId" value="<%=tabId %>">
-																						<button type="submit" class="btn btn-sm" name="scheduleAgendaId" value="<%=level1[0] %>" formmethod="post" formaction="CCMScheduleAgendaEdit.htm" onclick="return confirm('Are you sure To Edit this Agenda?')" data-toggle="tooltip" data-placement="top" title="Edit Agenda">
+																						<button type="submit" class="btn btn-sm ccm-btn" name="scheduleAgendaId" value="<%=level1[0] %>" formmethod="post" formaction="CCMScheduleAgendaEdit.htm" onclick="return confirm('Are you sure To Edit this Agenda?')" data-toggle="tooltip" data-placement="top" title="Edit Agenda">
 																							<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																						</button>
-																						<button type="submit" class="btn btn-sm" name="scheduleAgendaId" value="<%=level1[0] %>" formmethod="get" formaction="CCMScheduleAgendaDelete.htm" onclick="return confirm('Are you sure To Delete this Agenda?')" data-toggle="tooltip" data-placement="top" title="Delete Agenda"> 
+																						<button type="submit" class="btn btn-sm ccm-btn" name="scheduleAgendaId" value="<%=level1[0] %>" formmethod="get" formaction="CCMScheduleAgendaDelete.htm" onclick="return confirm('Are you sure To Delete this Agenda?')" data-toggle="tooltip" data-placement="top" title="Delete Agenda"> 
 																							<i class="fa fa-trash" aria-hidden="true"></i>
 																						</button>
-																						<button type="button" class="btn btn-sm " onclick="openSubAgendaAddModal('<%=level1[0] %>','<%=level1[3] %>', '<%=count %>')" formnovalidate="formnovalidate"  data-placement="top" title="Add New Sub Agenda/s">
+																						<button type="button" class="btn btn-sm ccm-btn" onclick="openSubAgendaAddModal('<%=level1[0] %>','<%=level1[3] %>', '<%=count %>')" formnovalidate="formnovalidate"  data-placement="top" title="Add New Sub Agenda/s">
 																							<i class="btn fa fa-plus" style="color: green; padding: 0px  ;"></i>
 																						</button>
 																					</form>	
@@ -608,10 +695,10 @@ String labcode =  (String)request.getAttribute("labcode");
 															        										<input type="hidden" name="parentScheduleAgendaId" value="<%=level1[0]%>">
 															        										<input type="hidden" name="monthyear" value="<%=monthyear %>">
 																		               						<input type="hidden" name="tabId" value="<%=tabId %>">
-																											<button type="submit" class="btn btn-sm" name="scheduleAgendaId" value="<%=level2[0] %>" formmethod="post" formaction="CCMScheduleAgendaEdit.htm" onclick="return confirm('Are you sure To Edit this Agenda?')" data-toggle="tooltip" data-placement="top" title="Edit Sub Agenda">
+																											<button type="submit" class="btn btn-sm ccm-btn" name="scheduleAgendaId" value="<%=level2[0] %>" formmethod="post" formaction="CCMScheduleAgendaEdit.htm" onclick="return confirm('Are you sure To Edit this Agenda?')" data-toggle="tooltip" data-placement="top" title="Edit Sub Agenda">
 																												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																											</button>
-																											<button type="submit" class="btn btn-sm" name="scheduleAgendaId" value="<%=level2[0] %>" formmethod="get" formnovalidate="formnovalidate" formaction="CCMScheduleSubAgendaDelete.htm" onclick="return confirm('Are you sure To Delete this Agenda?')" data-toggle="tooltip" data-placement="top" title="Delete Sub Agenda"> 
+																											<button type="submit" class="btn btn-sm ccm-btn" name="scheduleAgendaId" value="<%=level2[0] %>" formmethod="get" formnovalidate="formnovalidate" formaction="CCMScheduleSubAgendaDelete.htm" onclick="return confirm('Are you sure To Delete this Agenda?')" data-toggle="tooltip" data-placement="top" title="Delete Sub Agenda"> 
 																												<i class="fa fa-trash" aria-hidden="true"></i>
 																											</button>
 																										</form>	
@@ -642,7 +729,7 @@ String labcode =  (String)request.getAttribute("labcode");
 																					<input type="hidden" name="committeeId" value="<%=committeeId%>">
 												               						<input type="hidden" name="agendaPriority" id="agendaPriorityMainForm">
 												               						<input type="hidden" name="scheduleAgendaId" id="scheduleAgendaIdMainForm">
-																					<button type="button" class="btn btn-sm edit" onclick="updateMainPriority()" data-toggle="tooltip" data-placement="top" title="Update Agenda Priority">UPDATE</button>
+																					<button type="button" class="btn btn-sm edit ccm-btn" onclick="updateMainPriority()" data-toggle="tooltip" data-placement="top" title="Update Agenda Priority">UPDATE</button>
 																				</form>
 																			</td>
 																			<td colspan="8"></td>
@@ -653,7 +740,7 @@ String labcode =  (String)request.getAttribute("labcode");
 														</div>
 													
 														<div class="mt-2 left">
-															<h5 style="text-decoration: underline;font-weight: bold;">Add More Agenda : </h5>
+															<h5 class="ccm-agenda-field" style="text-decoration: underline;font-weight: bold;">Add More Agenda : </h5>
 														</div>	
 		        									<%} %>
 		        									
@@ -795,7 +882,7 @@ String labcode =  (String)request.getAttribute("labcode");
 															</div>
 														</div>
 														<div class="form-group" align="center" >
-															<button type="submit" class="btn btn-sm btn-primary btn-sm submit" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?');" >SUBMIT</button>
+															<button type="submit" class="btn btn-sm btn-primary btn-sm submit ccm-btn" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?');" >SUBMIT</button>
 														</div>
 													</form>
 		        								</div>
@@ -805,27 +892,106 @@ String labcode =  (String)request.getAttribute("labcode");
 				        						<div>
 				        						</div>
 				        						<div class="panel-buttons">
-				        							<form action="#">
+				        							<form action="#" method="post">
 				        								<input type="hidden" name="ccmScheduleId" value="<%=ccmScheduleId %>">
+				        								<input type="hidden" name="committeescheduleid" value="<%=ccmScheduleId %>">
+				        								<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+				        								<input type="hidden" name="committeeId" value="<%=committeeId %>">
 				        								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				        								<input type="hidden" name="ccmFlag" value="Y">
 				        								<%if(agendaList!=null && agendaList.size()>0) {%>
 				        									
-				        									<button type="submit" class="btn btn-sm back" name="committeescheduleid" value="<%=ccmScheduleId %>" formaction="CommitteeInvitations.htm" style="background-color: #0e49b5;color: white;">
-				        										Participants
-				        									</button>
-				        									<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="CCMAgendaPresentation.htm" formmethod="post" formtarget="_blank" title="Agenda Presentation">
+				        									<button type="submit" class="btn btn-sm btn-outline-success" formaction="CCMAgendaPresentation.htm" formmethod="post" formtarget="_blank" title="Agenda Presentation">
 																<img alt="" src="view/images/presentation.png" style="width:19px !important">
 															</button>
-						        							<!-- <button class="btn btn-sm btn-info shadow-nohover btn-print" formaction="CCMScheduleAgendaPdfDownload.htm" formtarget="_blank" data-toggle="tooltip" title="Download Agenda">
-						        								Print Agenda
-						        							</button> -->
+															&nbsp;
+															<button type="submit" class="btn btn-sm btn-participants" name="committeescheduleid" value="<%=ccmScheduleId %>" formaction="CommitteeInvitations.htm" data-toggle="tooltip" title="Add Participants">
+				        										Participants <i class="fa fa-users" aria-hidden="true"></i>
+				        									</button>
+				        									&nbsp;
+				        									
+				        									<!-- Agenda Approval -->
+				        									<%if(ScheduleFlag.equalsIgnoreCase("MSC") && (invitedlist!=null && invitedlist.size()>0) ) { %>
+				        										<button type="submit" class="btn btn-sm btn-agenda-forward" formaction="MeetingAgendaApproval.htm" onclick="checkagenda()" name="sub" value="Agenda Approval" data-toggle="tooltip" title="Agenda Forward">
+				        											Agenda <i class="fa fa-forward" aria-hidden="true"></i>
+				        										</button>
+															<%} %>
+															<%if(ScheduleFlag.equalsIgnoreCase("MAF")){ %>
+																<button type="button"  class="btn btn-sm btn-agenda-forwarded" formaction="MeetingAgendaApproval.htm">
+																	<i class="fa fa-forward" aria-hidden="true" style="font-size: 1.0rem"></i> Agenda Forwarded 
+																</button>
+															<%} %>
+															<%if(ScheduleFlag.equalsIgnoreCase("MAR")){ %>
+																<button type="submit" class="btn btn-sm btn-agenda-resubmit" formaction="MeetingAgendaApproval.htm" onclick="checkagenda()" name="sub" value="Re-Submit Agenda Approval" >
+																	Re-Submit Agenda Approval
+																</button>
+															<%} %>
+															<%if(ScheduleFlag.equalsIgnoreCase("MAA") || ScheduleFlag.equalsIgnoreCase("MKO") || ScheduleFlag.equalsIgnoreCase("MKV") || ScheduleFlag.equalsIgnoreCase("MMF") || ScheduleFlag.equalsIgnoreCase("MMA") || ScheduleFlag.equalsIgnoreCase("MMR") ){ %>
+																<button type="button" class="btn btn-sm fw-bold fs-custom btn-outline-success btn-agenda-approved"> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Agenda Approved </button>
+															<%} %>
+															&nbsp;
+															
+															<!-- Agenda Approval End -->
+															<!-- Meeting Kick off -->
+															<%if(ScheduleFlag.equalsIgnoreCase("MAA") && !todaydate.isBefore(scheduledate) ){ %>
+																<button type="submit" class="btn btn-sm btn-kick-off" formaction="KickOffMeeting.htm" name="sub" value="&#xf017; &nbsp;&nbsp;Kick Off Meeting"  onclick="return confirm('Are you to sure to Kick off the Meeting?')">
+																	 <i class="fa fa-clock-o" aria-hidden="true"></i> Kick Off Meeting 
+																</button>
+															<%} %>
+										
+															<%if( ScheduleFlag.equalsIgnoreCase("MKO") ){ %>
+																			
+																<div style="margin-left:1%;display: -webkit-box;">
+																	<span style="font-weight: 600">Enter OTP : </span>
+																	<input  class="form-control" type="password" id="otp" name="otpvalue" maxlength="4" <%if(otp!=null){ %>value="<%=otp %>" <%} %> required="required" style="padding: .15rem .75rem !important;margin: 0px 15px;width:40% !important">
+																	<input type="submit" id="submit" name="sub"  class="btn  btn-sm submit" value="Validate" formaction="KickOffMeeting.htm" style="color:white" /> 
+																	<input type="submit" id="submit" name="sub"  class="btn  btn-sm view" value="Resend OTP" formaction="KickOffMeeting.htm" onclick="resendotp()"   style="color:white;margin: 0px 5px" /> 
+																	
+																</div>
+																		
+															<%} %>
+															
+															<%if(ScheduleFlag.equalsIgnoreCase("MKV") || ScheduleFlag.equalsIgnoreCase("MMF") || ScheduleFlag.equalsIgnoreCase("MMA") || ScheduleFlag.equalsIgnoreCase("MMR") ){ %>
+																<button type="button"  class="btn btn-sm btn-kicked-off"> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Meeting Kicked Off </button>
+															<%} %>	
+															<!-- Meeting Kick off End -->
+															
+															&nbsp;
+															<!-- Minutes of Meeting Approval -->
+															<%if(ScheduleFlag.equalsIgnoreCase("MKV") ){ %>
+														
+																<button type="submit" id="submit" class="btn btn-sm btn-attendance" value="Attendance" formaction="CommitteeAttendance.htm">
+																	Attendance 
+																</button>
+																<input type="hidden" name="membertype" value="CC" />
+															
+															<%} %>
+															
+															&nbsp;
+															<%if(ScheduleFlag.equalsIgnoreCase("MKV") || ScheduleFlag.equalsIgnoreCase("MMR") ){ %>
+																
+																<button type="submit" id="submit" class="btn btn-sm fw-bold fs-custom btn-outline-info btn-minutes" value="Minutes" formaction="CommitteeScheduleMinutes.htm" >
+																	Minutes
+																</button>
+						
+															<%} %>
+															
+															&nbsp;
+															<%if(Arrays.asList("MKV","MMR","MMF","MMS","MMA").contains(ScheduleFlag)){ %>
+																
+																<button type="submit" id="submit" name="sub" class="btn btn-sm btn-minutes-approval" value="Minutes Approval" formaction="MeetingMinutesApproval.htm">
+																	Minutes Approval
+																</button> 
+						
+															<%} %>	
+															<!-- Minutes of Meeting Approval End-->
 					        							<%} %>
 				        							</form>
 					        							
 				        						</div>
 				        						<div class="navigation_btn panel-bottom">
-	            									<a class="btn btn-info btn-sm shadow-nohover back" href="#" style="color: white!important;text-transform: capitalize;">back</a>
-													<button class="btn btn-info btn-sm next">Next</button>
+	            									<a class="btn btn-info btn-sm shadow-nohover back" <%if(committeeFlag!=null && committeeFlag.equalsIgnoreCase("Y")) {%> href="CCMCommitteeConstitution.htm?committeeMainId=<%=committeeMainId%>&committeeId=<%=committeeId%>" <%} else{%> href="CCMModules.htm" <%} %> style="color: white!important;text-transform: capitalize;">back</a>
+													<!-- <button class="btn btn-info btn-sm next">Next</button> -->
 												</div>
 				        					</div>
 					               				
@@ -836,7 +1002,7 @@ String labcode =  (String)request.getAttribute("labcode");
 				               			<%} %>
 				               			
          								<!-- *********** Agenda Details ***********      --> 
-				               			<%if(tabId!=null && tabId.equalsIgnoreCase("2")){ %> 
+				               			<%-- <%if(tabId!=null && tabId.equalsIgnoreCase("2")){ %> 
 				         					<div class="tab-pane active" id="agendadetails" role="tabpanel">
 				         				<%}else{ %>
 				              				<div class="tab-pane " id="agendadetails" role="tabpanel">
@@ -851,7 +1017,8 @@ String labcode =  (String)request.getAttribute("labcode");
 				         					</div>
 				         				<%}else{ %>
 				              				</div>
-				               			<%} %>
+				               			<%} %> --%>
+				               			
                						</div>
                					</div>
        						</div>
@@ -941,7 +1108,7 @@ String labcode =  (String)request.getAttribute("labcode");
                         
                         <div class="center">
                         	<div class="form-group" align="center" >
-								<button type="submit" class="btn btn-sm btn-primary btn-sm submit" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?');" >SUBMIT</button>
+								<button type="submit" class="btn btn-sm btn-primary btn-sm submit ccm-btn" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?');" >SUBMIT</button>
 							</div>
                         </div>
 					</form>
@@ -1009,7 +1176,7 @@ String labcode =  (String)request.getAttribute("labcode");
 				%>
 					EditAgendaPresentors('<%=count+"_"+countA%>','<%=level2[6]%>');
 	 			<%} } %>
-	 	<%} count++; } }%>
+	 	<% count++; } } }%>
 
 	});
 	/* --------------------- Agenda Cloning --------------------------- */
@@ -1204,32 +1371,31 @@ String labcode =  (String)request.getAttribute("labcode");
 		var $prepsLabCode = $('#prepsLabCode_Edit_'+$AddrowId).val();
 		
 		if($prepsLabCode !="" && $prepsLabCode !="null" && $prepsLabCode !=null){
-		$.ajax({		
-			type : "GET",
-			url : "CommitteeAgendaPresenterList.htm",
-			data : {
-				PresLabCode : $prepsLabCode,
+			$.ajax({		
+				type : "GET",
+				url : "CommitteeAgendaPresenterList.htm",
+				data : {
+					PresLabCode : $prepsLabCode,
+					
+					   },
+				datatype : 'json',
+				success : function(result) {
+	
+				var result = JSON.parse(result);	
+				var values = Object.keys(result).map(function(e) {return result[e]});
 				
-				   },
-			datatype : 'json',
-			success : function(result) {
-
-			var result = JSON.parse(result);	
-			var values = Object.keys(result).map(function(e) {return result[e]});
-			
-			var s = '';
+				var s = '';
 				s += '<option value="0">Choose...</option>';
-						 for (i = 0; i < values.length; i++) {									
-							s += '<option value="'+values[i][0]+'">'
-									+values[i][1] + " (" +values[i][3]+")" 
-									+ '</option>';
-						} 
-						 
-						$('#presenterId_Edit_'+$AddrowId).html(s);
-						$('#presenterId_Edit_'+$AddrowId).val(PresentorID).trigger('change');
-					}
-				});
-			}
+				for (i = 0; i < values.length; i++) {									
+					s += '<option value="'+values[i][0]+'">'+values[i][1] + " (" +values[i][3]+")"+ '</option>';
+				} 
+							 
+				$('#presenterId_Edit_'+$AddrowId).html(s);
+				$('#presenterId_Edit_'+$AddrowId).val(PresentorID).trigger('change');
+				
+				}
+			});
+		}
 	}
 	
 	/* --------------------- Agenda Presenters (Edit) End--------------------------- */
@@ -1557,6 +1723,43 @@ String labcode =  (String)request.getAttribute("labcode");
 		$('#agendaItemBtn_'+addEdit+''+mainLevel+(subLevel=='0'?'':('_'+subLevel))).html(data!=''?data:'Enter Agenda Item');
 
 	});
+	
+	
+	function checkagenda(){
+		
+		<%if(agendaList!=null && agendaList.size()==0){%>
+		
+			alert('Kindly Add Agenda Inorder to Forward ..!');
+			event.preventDefault();
+		
+		<%}else{%>
+		
+		if(confirm('Are you sure to Forward for Agenda Approval')==false){
+			 
+			 event.preventDefault();
+		 }
+		<%}%>
+		
+	}
+
+	function resendotp(){
+		
+		$('#otp').prop('required',false);
+	}
+	
+	<% if(ScheduleFlag.equalsIgnoreCase("MSC") || ScheduleFlag.equalsIgnoreCase("MAR")) {%>
+		$('.ccm-btn').show();
+		$('.ccm-agenda-field').show();
+		$('#agendaForm').show();
+		$('.form-control').prop('disabled', false);
+	<%} else{%>
+		$('.ccm-btn').hide();
+		$('.ccm-agenda-field').hide();
+		$('#agendaForm').hide();
+		$('.form-control').prop('disabled', true);
+	<%} %>
+	
+	
 	/* --------------------- Validations --------------------------------------------------------------------------------------------------- */
 </script>
 

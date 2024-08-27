@@ -26,7 +26,9 @@ public interface CCMService {
 	public long ccmScheduleAgendaDelete(String scheduleAgendaId, String userId, String ccmScheduleId,String agendaPriority) throws Exception;
 	public long addCCMAgendaDetails(HttpServletRequest req, HttpSession ses, MultipartFile[] attachments) throws Exception;
 	public int ccmScheduleSubAgendaDelete(String scheduleAgendaId, String userId, String ccmScheduleId, String agendaPriority, String parentScheduleAgendaId) throws Exception;
-	public Long getCommitteeMainIdByCommitteeCode(String labCode) throws Exception;
-	public Long getCommitteeIdByCommitteeCode(String labCode) throws Exception;
+	public Long getCommitteeMainIdByCommitteeCode(String committeeCode) throws Exception;
+	public Long getCommitteeIdByCommitteeCode(String committeeCode) throws Exception;
+	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception;
+	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception;
 	
 }
