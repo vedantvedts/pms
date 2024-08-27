@@ -1,7 +1,6 @@
 package com.vts.pfms.committee.service;
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,17 +24,13 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -86,11 +81,6 @@ import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
-
-
-import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Service
 public class CommitteeServiceImpl implements CommitteeService{
@@ -982,7 +972,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		approval.setActionDate(sdf1.format(new Date()));
 		
 		
-		Object[] CommitteeScheduleData=dao.CommitteeScheduleData(ScheduleId);
+		Object[] scheduleData =dao.CommitteeScheduleData(ScheduleId);
 		
 		Object[] NotificationData=dao.NotificationData(ScheduleId,EmpId,"MAF");
 		if(NotificationData!=null) {
@@ -996,18 +986,22 @@ public class CommitteeServiceImpl implements CommitteeService{
 		notification.setCreatedBy(UserId);
 		notification.setCreatedDate(sdf1.format(new Date()));
 		notification.setIsActive(1);
-		notification.setNotificationUrl("CommitteeScheduleView.htm?scheduleid="+Long.parseLong(ScheduleId));
+		if(scheduleData[8].toString().equalsIgnoreCase("CCM")) {
+			notification.setNotificationUrl("CCMSchedule.htm?ccmScheduleId="+ScheduleId+"&committeeMainId="+scheduleData[1].toString()+"&committeeId="+scheduleData[7].toString());
+		}else {
+			notification.setNotificationUrl("CommitteeScheduleView.htm?scheduleid="+ScheduleId);
+		}
 		
 		if(Option.equalsIgnoreCase("approve")) {
 			schedule.setScheduleFlag("MAA");
 			approval.setMeetingStatus("MAA");
-			notification.setNotificationMessage("Agenda Approved for " + CommitteeScheduleData[8].toString());
+			notification.setNotificationMessage("Agenda Approved for " + scheduleData[8].toString());
 			notification.setStatus("MAA");
 		}
 		if(Option.equalsIgnoreCase("return")) {
 			schedule.setScheduleFlag("MAR");
 			approval.setMeetingStatus("MAR");
-			notification.setNotificationMessage("Agenda Returned for " + CommitteeScheduleData[8].toString());
+			notification.setNotificationMessage("Agenda Returned for " + scheduleData[8].toString());
 			notification.setStatus("MAR");
 		}
 		
@@ -1555,7 +1549,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		approval.setActionDate(sdf1.format(new Date()));
 		
 		Object[] NotificationData=dao.NotificationData(ScheduleId,EmpId,"MMF");
-		Object[] CommitteeScheduleData=dao.CommitteeScheduleData(ScheduleId);
+		Object[] scheduleData = dao.CommitteeScheduleData(ScheduleId);
 		
 		if(NotificationData!=null) {
 			notification.setEmpId(Long.parseLong(NotificationData[1].toString()));
@@ -1568,18 +1562,22 @@ public class CommitteeServiceImpl implements CommitteeService{
 		notification.setCreatedBy(UserId);
 		notification.setCreatedDate(sdf1.format(new Date()));
 		notification.setIsActive(1);
-		notification.setNotificationUrl("CommitteeScheduleView.htm?scheduleid="+Long.parseLong(ScheduleId));
+		if(scheduleData[8].toString().equalsIgnoreCase("CCM")) {
+			notification.setNotificationUrl("CCMSchedule.htm?ccmScheduleId="+ScheduleId+"&committeeMainId="+scheduleData[1].toString()+"&committeeId="+scheduleData[7].toString());
+		}else {
+			notification.setNotificationUrl("CommitteeScheduleView.htm?scheduleid="+ScheduleId);
+		}
 		try {
 			if(Option.equalsIgnoreCase("approve")) {
 				schedule.setScheduleFlag("MMA");
 				approval.setMeetingStatus("MMA");
-				notification.setNotificationMessage("Minutes Approved for " + CommitteeScheduleData[8].toString());
+				notification.setNotificationMessage("Minutes Approved for " + scheduleData[8].toString());
 				notification.setStatus("MMA");
 			}
 			if(Option.equalsIgnoreCase("return")) {
 				schedule.setScheduleFlag("MMR");
 				approval.setMeetingStatus("MMR");
-				notification.setNotificationMessage("Minutes Returned for " + CommitteeScheduleData[8].toString());
+				notification.setNotificationMessage("Minutes Returned for " + scheduleData[8].toString());
 				notification.setStatus("MMR");
 			}
 		}catch (Exception e) {
@@ -3543,10 +3541,16 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 			revurl="CommitteeFlow.htm?committeemainid="+pe.getCommitteeMainId().toString();
 			lastUrl="CommitteeMainMembers.htm?committeemainid="+pe.getCommitteeMainId();
 		}else {
+			Object[] scheduleData = dao.CommitteeScheduleData(pe.getScheduleId().toString());
 			msg="MOM with RefNo "+pe.getRefNo()+",";
 			url ="MoMApprovalList.htm";
 			revurl="MeetingMinutesApproval.htm?committeescheduleid="+pe.getScheduleId().toString();
-			lastUrl="CommitteeScheduleView.htm?scheduleid="+pe.getScheduleId();
+			if(scheduleData[8].toString().equalsIgnoreCase("CCM")) {
+				lastUrl=("CCMSchedule.htm?ccmScheduleId="+pe.getScheduleId()+"&committeeMainId="+scheduleData[1].toString()+"&committeeId="+scheduleData[7].toString());
+			}else {
+				lastUrl="CommitteeScheduleView.htm?scheduleid="+pe.getScheduleId();
+			}
+			
 		}
 		
 		PfmsNotification notification=new PfmsNotification();
@@ -3658,4 +3662,5 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
     public long addAgendaLinkFile(CommitteeScheduleAgendaDocs docs) throws Exception {
     	return dao.addAgendaLinkFile(docs);
     }
+    
 }

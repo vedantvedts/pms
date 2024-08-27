@@ -322,6 +322,6 @@ public interface CommitteeDao {
 	public List<Object[]> getAgendaAttachId(String agendaid)throws Exception;
 	public long addAgendaLinkFile(CommitteeScheduleAgendaDocs docs)throws Exception;
 	public Object createView(String projectId)throws Exception;
-
+	
 
 }
