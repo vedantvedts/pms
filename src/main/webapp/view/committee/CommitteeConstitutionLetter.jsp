@@ -44,7 +44,7 @@ SimpleDateFormat sdf = fc.getRegularDateFormat();
 SimpleDateFormat sdf1 = fc.getSqlDateFormat();
 SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+Object[]CommitteMainEnoteList = (Object[])request.getAttribute("CommitteMainEnoteList");
 List<String>memtypes=Arrays.asList("CH","PS","CS");
 List<Object[]>committeeallmemberslistwithCC=committeeallmemberslist.stream().filter(i->i[8].toString().equalsIgnoreCase("CC")).collect(Collectors.toList());
 List<Object[]>committeeallmemberslistwithoutMs=committeeallmemberslist.stream().filter(i->!memtypes.contains(i[8].toString()) && !i[8].toString().equalsIgnoreCase("CC")).collect(Collectors.toList());
@@ -225,21 +225,26 @@ p{
 	<br>
 	<div align="center" style="text-align: center">
 	<%if(committeemaindata[9].toString().equalsIgnoreCase("A")){ %>
+	 <%if(CommitteMainEnoteList!=null && !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
+	 Committee Recommended by Director, <%=(String)session.getAttribute("labcode") %> for competent Approval Authority.
+	 <%}else{ %>
 	 Approved
+	 <br>
+	<br>
+	<div align="center" style="text-align: center">
+		<%if(committeemaindata[9].toString().equalsIgnoreCase("A")){ %>Director<%} %>
+	</div>
+	 <%} %>
 	<%}else{ %>
 	 Not Approved
 	<%} %>
 	
 	</div>
-	<br>
-	<br>
-	<div align="center" style="text-align: center">
-	Director
-	</div>
+	
 	<br><br>
 	
 	<div style="text-align: left;font-size: 13px;">
-	Initiated By : <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%>
+	Initiated By : <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[18]!=null ){ %> <%=CommitteMainEnoteList[18].toString() %>, <%=CommitteMainEnoteList[19].toString() %>  <%}else{ %>  <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%> <%} %>
 	</div>
 <!-- 	<div style="margin-top:30px;margin-left:10px;">Recommended Officer :- </div>
 	<div style="margin-top:10px;margin-left:10px;">Approving Officer :-</div> -->

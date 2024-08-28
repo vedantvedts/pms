@@ -291,6 +291,17 @@ String type=(String)request.getAttribute("type");
 				                	</tr>	
 				                	
 				                	</table>
+				                	
+				           <br><div class="col-md-12" >
+				                <%if(CommitteMainEnoteList[22]!=null && !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
+				                	<%if(NewApprovalList[5]!=null) {%>
+				                <h6>Please Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[5] %>.</h6>
+				                <%}else if(NewApprovalList[3]!=null){ %>
+				             <h6>Please Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[3] %>.</h6>
+				                <%}else if(NewApprovalList[1]!=null){ %>
+				             <h6>Please Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[1] %>.</h6>
+				                <%}} %>
+				                </div>	
 				                	</div>
 </body>
 <script type="text/javascript">

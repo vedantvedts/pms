@@ -3515,7 +3515,20 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		pe.setModifiedDate(sdf1.format(new Date()));
 		
 		dao.addPmsEnote(pe);
-		
+		if(pe.getEnoteFrom().equalsIgnoreCase("C")&&  EnoteStatusCodeNext.equalsIgnoreCase("APR") && !pe.getSessionLabCode().equalsIgnoreCase(pe.getAppprovingOfficerLabCode())) {
+			System.out.println("Hiiiii");
+			pe.setEnoteStatusCode("APR");
+			pe.setEnoteStatusCodeNext("APR");
+			pe.setModifiedBy(Username);
+			pe.setModifiedDate(sdf1.format(new Date()));
+			dao.addPmsEnote(pe);
+			//update committe_Main
+			CommitteeConstitutionApprovalDto dto = new CommitteeConstitutionApprovalDto();
+			dto.setCommitteeMainId(pe.getCommitteeMainId()+"");
+			dto.setActionBy(Username);
+			dto.setActionDate(sdf1.format(new Date()));
+			dao.NewCommitteeMainIsActiveUpdate(dto);;
+		}
 		
 		
 		PmsEnoteTransaction transaction= PmsEnoteTransaction.builder()

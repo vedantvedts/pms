@@ -873,6 +873,7 @@ public class CommitteeController {
 			}
 			req.setAttribute("employeelist", service.EmployeeList(LabCode));
 			req.setAttribute("committeemainid", committeemainid);
+			req.setAttribute("AllLabList", service.AllLabList());
 			return "committee/CommitteeFlowAdd";
 		}
 		catch (Exception e) {
@@ -988,6 +989,7 @@ public class CommitteeController {
 	{
 		String Username=(String)ses.getAttribute("Username");
 		Long EmpId = (Long)ses.getAttribute("EmpId");
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside EnoteForward.htm "+Username);
 		try
 		{
@@ -1035,6 +1037,7 @@ public class CommitteeController {
 			pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
 			}
 			pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
+			pe.setAppprovingOfficerLabCode(req.getParameter("AppprovingOfficerLabCode"));;
 			if(pe.getCreatedBy()==null) {
 			pe.setCreatedBy(Username);	
 			pe.setCreatedDate(sdf1.format(new Date()));	
@@ -1075,6 +1078,7 @@ public class CommitteeController {
 			}
 			
 			String remarks= req.getParameter("Remarks");
+			pe.setSessionLabCode(labcode);
 			long result = service.EnoteForward(pe,remarks,EmpId,flow,Username);
 			if(flow!=null && flow.equalsIgnoreCase("REV")) {
 				if(result>0) {
@@ -4429,6 +4433,10 @@ public class CommitteeController {
 			req.setAttribute("email","N");
 			req.setAttribute("constitutionapprovalflow",service.ConstitutionApprovalFlowData (committeemainid));
 			
+			
+			Object[]CommitteMainEnoteList= service.CommitteMainEnoteList(committeemainid,"0");
+			req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
+			
 			req.setAttribute("constitutionapprovalflowData", service.allconstitutionapprovalflowData(committeemainid));
 			return "committee/CommitteeConstitutionLetter" ;
 		}
@@ -4484,7 +4492,8 @@ public class CommitteeController {
 		req.setAttribute("flag", "Y");
 		req.setAttribute("constitutionapprovalflow",service.ConstitutionApprovalFlowData (committeemainid));
 		String filename=committeeedata[1]+" Formation Letter"+"("+  (committeemaindata[12]!=null?committeemaindata[12].toString():committeemaindata[5].toString())+ ")";		
-		
+		Object[]CommitteMainEnoteList= service.CommitteMainEnoteList(committeemainid,"0");
+		req.setAttribute("CommitteMainEnoteList", CommitteMainEnoteList);
 		String path=req.getServletContext().getRealPath("/view/temp");
 		req.setAttribute("path",path); 
 		CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);

@@ -84,6 +84,7 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 String EmpId = (Long)session.getAttribute("EmpId")+"";
 List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist");
+List<Object[]>AllLabList = (List<Object[]>)request.getAttribute("AllLabList");
 List<String> forwardstatus = Arrays.asList("INI","RR1","RR2","RR3","RR4","RR5","RAP","REV");
 List<String> reforwardstatus = Arrays.asList("RR1","RR2","RR3","RR4","RR5","RAP");
 Object[]NewApprovalList = (Object[])request.getAttribute("NewApprovalList");
@@ -122,6 +123,7 @@ String ses=(String)request.getParameter("result");
                     <%} %>
 
     <br />
+    
 <div class="container-fluid" style="margin-top: -1%;">
 	<div class="row">
 		<div class="col-md-12">	
@@ -269,14 +271,22 @@ String ses=(String)request.getParameter("result");
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Approving Officer: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-2">
+					<select class="form-control selectdee" style="width: 80%;" name="AppprovingOfficerLabCode" id="AppprovingOfficerLabCode" required="required"  onchange="chooseEmp()">
+					<option   selected value="">SELECT</option>
+					<%for(Object[]obj:AllLabList){ %>
+					<option value="<%=obj[3].toString()%>"  <%if (CommitteMainEnoteList!=null &&  CommitteMainEnoteList[22]!=null && obj[3].toString().equalsIgnoreCase(CommitteMainEnoteList[22].toString())) {%> selected  <%} %>><%=obj[3].toString() %></option>
+					<%} %>
+					</select>
+					</div>
+					<div class="col-md-3">
 					<select class="form-control selectdee" name="ApprovingOfficer" id="ApprovingOfficer" required="required"  
 					<%if(CommitteMainEnoteList!=null && !forwardstatus.contains(CommitteMainEnoteList[15].toString())) {%>disabled="disabled" <%} %>
 					>
-					<option   selected value="">SELECT</option>
-					<%for(Object[]obj:employeelist){ %>
+				<!-- 	<option   selected value="">SELECT</option> -->
+				<%-- 	<%for(Object[]obj:employeelist){ %>
 					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[13]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[13].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
-					<%} %>
+					<%} %> --%>
 					</select>
 					</div>
 				
@@ -319,7 +329,7 @@ String ses=(String)request.getParameter("result");
 				 	<div align="center" style="margin-top:1%;display: flex;justify-content: center;">
 				 	<form action="#">
 				<label class="control-label" style="margin-bottom: 4px !important;">Status History: &nbsp;</label>
-				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20].toString() %> 
+				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value=" <%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20].toString() %> 
 				<i class="fa fa-external-link" aria-hidden="true"></i></button>
 				</form>
 				
@@ -335,7 +345,7 @@ String ses=(String)request.getParameter("result");
 					<%} %>
 					</div>
 					<%if(NewApprovalList!=null ){ %>
-							 	<div class="row"  style="text-align: center;" >
+							 	<div class="row mb-3"  style="text-align: center;" >
 				                <table  align="center" >
 				                	<tr>
 				                	
@@ -407,13 +417,25 @@ String ses=(String)request.getParameter("result");
 				                		<br>
 				                			Approving Officer
 				                			<br>
-				                			<%=NewApprovalList[7].toString() %>
+				                			<%=NewApprovalList[7].toString() %>, <%=NewApprovalList[9].toString() %>
+				                	
 				                		</td>
 				                		<%} %>
 				                			                		
 				                	</tr>	
 				                	
 				                	</table>
+				                	
+				                <br><div class="col-md-12" >
+				                <%if(CommitteMainEnoteList[22]!=null && !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
+				                	<%if(NewApprovalList[5]!=null) {%>
+				                <h6>Please Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[5] %>.</h6>
+				                <%}else if(NewApprovalList[3]!=null){ %>
+				             <h6>Please Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[3] %>.</h6>
+				                <%}else if(NewApprovalList[1]!=null){ %>
+				             <h6>Please Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[1] %>.</h6>
+				                <%}} %>
+				                </div>	
 				                	</div>
 					<%} %>
 					</div>
@@ -574,6 +596,48 @@ String ses=(String)request.getParameter("result");
 			
 					 $('#Forward').prop('disabled', false);
 				}
+			}
+			
+			$( document ).ready(function() {
+				<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[13]!=null){%>
+				var value = "<%=CommitteMainEnoteList[13].toString()%>";
+				chooseEmp(value);
+				<%}%>;
+				
+			});
+			
+			
+			function chooseEmp(value){
+				var labCode=$('#AppprovingOfficerLabCode').val();
+				$.ajax({
+						
+						type : "GET",
+						url : "ActionAssigneeEmployeeList.htm",
+						data : {
+							LabCode : labCode,	
+						},
+						datatype : 'json',
+						success : function(result) {
+							var result = JSON.parse(result);
+							var values = Object.keys(result).map(function(e) {
+								return result[e]
+							});
+						
+							var s = '';
+							s += '<option   value="">SELECT</option>';
+						/* 	if($AssigneeLabCode == '@EXP'){
+								
+							} */
+							for (i = 0; i < values.length; i++) 
+							{
+
+								s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+							} 
+							
+							$('#ApprovingOfficer').html(s);
+						 $('#ApprovingOfficer').val(''+value).trigger('change'); 
+						}
+					});
 			}
 			</script>		
 					

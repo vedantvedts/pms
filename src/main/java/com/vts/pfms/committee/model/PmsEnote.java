@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -33,6 +34,7 @@ public class PmsEnote {
 	private String Rec3_Role;
 	private Long ApprovingOfficer;
 	private String Approving_Role;
+	private String AppprovingOfficerLabCode;
 	private String EnoteFrom;
 	private String EnoteStatusCode;
 	private String EnoteStatusCodeNext;
@@ -42,5 +44,8 @@ public class PmsEnote {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
+	
+	@Transient
+	private String sessionLabCode;
 	
 }
