@@ -40,6 +40,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.PfmsFileUtils;
+import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.service.CCMService;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
 import com.vts.pfms.committee.model.CommitteeSchedule;
@@ -624,7 +625,7 @@ public class CCMController {
 			/* ----------------------- ATR Start -------------------------- */
     		if(tabName.equalsIgnoreCase("ATR")) {
     			
-    			Long scheduleId = service.getLatestScheduleId("%/CCM/%", "C");
+    			Long scheduleId = service.getSecondLatestScheduleId("C");
     			scheduleId = scheduleId!=null?scheduleId:0L;
     			List<Object[]> ReviewMeetingList = printservice.ReviewMeetingList("0", "CCM");
     			Map<Integer,String> mapCCM = new HashMap<>();
@@ -642,6 +643,7 @@ public class CCMController {
          		
     		}
     		/* -----------------------  ATR End -------------------------- */
+    		
     		/* ----------------------- DMC Start -------------------------- */
     		else if(tabName!=null && tabName.equalsIgnoreCase("DMC")) {
     			
@@ -649,7 +651,7 @@ public class CCMController {
     			if(committeeIdDMC==null || (committeeIdDMC!=null && committeeIdDMC.isEmpty())) {
     				committeeIdDMC = "0";
     			}
-    			Long scheduleId = service.getLatestScheduleId("%/DMC/%", "D");
+    			Long scheduleId = service.getLatestScheduleId("D");
     			scheduleId = scheduleId!=null?scheduleId:0L;
     			List<Object[]> ReviewMeetingList = printservice.ReviewMeetingList("0", "DMC");
     			Map<Integer,String> mapDMC = new HashMap<>();
@@ -666,8 +668,19 @@ public class CCMController {
          		req.setAttribute("mapDMC", mapDMC);
     			req.setAttribute("committeeIdDMC", committeeIdDMC);
     			req.setAttribute("committeeMainId", service.getCommitteeMainIdByCommitteeCode("DMC")+"");
+    			
     		}
     		/* ----------------------- DMC End -------------------------- */
+    		
+    		/* ----------------------- Achievements Start -------------------------- */
+    		else if (tabName!=null && tabName.equalsIgnoreCase("Achievements")) {
+    			Long scheduleId = service.getLatestScheduleId("C");
+    			req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(scheduleId));
+    			req.setAttribute("clusterLabList", service.getClusterLabListByClusterId(clusterid));
+    			req.setAttribute("scheduleId", scheduleId+"");
+    		}
+    		/* ----------------------- Achievements End -------------------------- */
+    		
     		req.setAttribute("committeeId", committeeId);
     		req.setAttribute("tabName", tabName);
     		req.setAttribute("filesize",file_size);
@@ -729,4 +742,74 @@ public class CCMController {
 			return "static/Error";
 		}
     }
+    
+    @RequestMapping(value="CCMAchievementSubmit.htm", method= {RequestMethod.POST, RequestMethod.GET})
+    public String ccmAchievementSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+    	String UserId = (String)ses.getAttribute("Username");
+	    String labcode = (String)ses.getAttribute("labcode");
+	    logger.info(new Date() + " Inside CCMAchievementSubmit.htm " + UserId);
+	    
+	    try {
+	    	String action = req.getParameter("action");
+	    	String achievementId = req.getParameter("achievementId");
+	    	
+	    	CCMAchievements  achmnts = action.equalsIgnoreCase("Add")? new CCMAchievements() : service.getCCMAchievementsById(achievementId);
+	    	achmnts.setScheduleId(Long.parseLong(req.getParameter("scheduleId")));
+	    	achmnts.setLabCode(req.getParameter("labCode"));
+	    	achmnts.setAchievement(req.getParameter("achievement"));
+	    	if(action.equalsIgnoreCase("Add")) {
+	    		achmnts.setCreatedBy(UserId);
+	    		achmnts.setCreatedDate(sdtf.format(new Date()));
+	    		achmnts.setIsActive(1);
+	    	}else {
+	    		achmnts.setModifiedBy(UserId);
+	    		achmnts.setModifiedDate(sdtf.format(new Date()));
+	    	}
+
+			long result = service.addCCMAchievements(achmnts);
+			
+			if(result!=0) {
+				redir.addAttribute("result", "Achievement Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Achievement Details "+action+" UnSuccessful");
+			}
+			
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("tabName", "Achievements");
+			
+	    	return "redirect:/CCMPresentation.htm";
+	    }catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMAchievementSubmit.htm  "+UserId, e); 
+			return "static/Error";
+		}
+    }
+
+	@RequestMapping(value = "CCMAchievementDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String ccmAchievementDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CCMAchievementDelete.htm "+UserId);
+		try
+		{
+			String achievementId = req.getParameter("achievementId");
+	
+			int result = service.ccmAchievementDelete(achievementId);
+			
+			if (result != 0) {
+				redir.addAttribute("result", " Achievement Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Achievement Delete Unsuccessful");
+			}
+	
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("tabName", "Achievements");
+			
+	    	return "redirect:/CCMPresentation.htm";
+		}catch (Exception e) {
+	        logger.error(new Date() + " Inside CCMAchievementDelete.htm " + UserId, e);
+	        e.printStackTrace();
+	        return "static/Error";
+	    }
+	}
+	
 }

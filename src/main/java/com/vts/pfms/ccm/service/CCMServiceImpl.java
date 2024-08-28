@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.ccm.dao.CCMDao;
+import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.committee.dao.CommitteeDao;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
 import com.vts.pfms.committee.model.CommitteeMain;
@@ -528,11 +529,17 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception {
+	public Long getLatestScheduleId(String scheduleType) throws Exception {
 		
-		return dao.getLatestScheduleId(sequenceNo, meetingType);
+		return dao.getLatestScheduleId(scheduleType);
 	}
 
+	@Override
+	public Long getSecondLatestScheduleId(String scheduleType) throws Exception {
+		
+		return dao.getSecondLatestScheduleId(scheduleType);
+	}
+	
 	@Override
 	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception {
 		
@@ -550,5 +557,29 @@ public class CCMServiceImpl implements CCMService{
 		
 		return dao.getScheduleListByScheduleType(scheduleType);
 	}
-	
+
+	@Override
+	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId) throws Exception {
+		
+		return dao.getCCMAchievementsByScheduleId(scheduleId);
+	}
+
+	@Override
+	public CCMAchievements getCCMAchievementsById(String achievementId) throws Exception {
+		
+		return dao.getCCMAchievementsById(achievementId);
+	}
+
+	@Override
+	public long addCCMAchievements(CCMAchievements achmnts) throws Exception {
+		
+		return dao.addCCMAchievements(achmnts);
+	}
+
+	@Override
+	public int ccmAchievementDelete(String achievementId) throws Exception {
+		
+		return dao.ccmAchievementDelete(achievementId);
+	}
+
 }

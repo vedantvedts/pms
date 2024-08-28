@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
@@ -28,9 +29,14 @@ public interface CCMService {
 	public int ccmScheduleSubAgendaDelete(String scheduleAgendaId, String userId, String ccmScheduleId, String agendaPriority, String parentScheduleAgendaId) throws Exception;
 	public Long getCommitteeMainIdByCommitteeCode(String committeeCode) throws Exception;
 	public Long getCommitteeIdByCommitteeCode(String committeeCode) throws Exception;
-	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception;
+	public Long getLatestScheduleId(String scheduleType) throws Exception;
+	public Long getSecondLatestScheduleId(String scheduleType) throws Exception;
 	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception;
 	public List<Object[]> getClusterLabListByClusterId(String clusterId) throws Exception;
 	public List<CommitteeSchedule> getScheduleListByScheduleType(String scheduleType) throws Exception;
+	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId) throws Exception;
+	public CCMAchievements getCCMAchievementsById(String achievementId) throws Exception;
+	public long addCCMAchievements(CCMAchievements achmnts) throws Exception;
+	public int ccmAchievementDelete(String achievementId) throws Exception;
 	
 }

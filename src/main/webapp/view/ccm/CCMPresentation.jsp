@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.ccm.model.CCMAchievements"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
@@ -21,8 +22,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+<script src="${ckeditor}"></script>
+
 <spring:url value="/resources/css/slides-style.css" var="SlidesStyleCSS" />
 <link href="${SlidesStyleCSS}" rel="stylesheet" />
+
 
 <style type="text/css">
 label {
@@ -157,7 +163,7 @@ input,select,table,div,label,span {
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
-  	scrollbar-color: #007bff #f8f9fa;
+  	scrollbar-color: #4B70F5 #f8f9fa;
 }
 
 .ccmSideBarButton {
@@ -263,7 +269,7 @@ input,select,table,div,label,span {
     
 .open-modal-button {
    right: 10px;
-   background-color: #007bff;
+   background-color: #4B70F5;
    color: #fff;
    padding: 5px;
    border: none;
@@ -279,10 +285,13 @@ input,select,table,div,label,span {
 <body>
 
 	<%
-	String committeeId = (String)request.getAttribute("committeeId");
-	String committeeIdDMC = (String)request.getAttribute("committeeIdDMC");
+		String committeeId = (String)request.getAttribute("committeeId");
+		String committeeIdDMC = (String)request.getAttribute("committeeIdDMC");
 		String tabName = (String)request.getAttribute("tabName");
 		String filesize = (String) request.getAttribute("filesize");
+		
+		String labcode = (String)session.getAttribute("labcode");
+    	String clusterid = (String)session.getAttribute("clusterid");
 	%>
 
 	<% String ses=(String)request.getParameter("result");
@@ -370,7 +379,7 @@ input,select,table,div,label,span {
  						<div class="card mr-2 mb-2 mt-2" style="border-color: #007bff;">
  							<div class="tab-content text-center" style="">
  								<div class="tab-pane active" id="meetingschedule" role="tabpanel">
- 										
+ 									<!-- ----------------------------------------------- ATR --------------------------------------------------- -->	
 									<%if(tabName!=null && tabName.equalsIgnoreCase("ATR")) {
 										
 									    List<Object[]> ccmActions = (List<Object[]>) request.getAttribute("ccmActions");
@@ -411,9 +420,9 @@ input,select,table,div,label,span {
  												</div>
  											</div> --%>
 	 										<table class="table table-bordered table-hover table-striped table-condensed " id="atrTable">
-												<thead style="background-color: #007bff; color: #ffff !important;">
-													<tr>
-														<th colspan="6"> <h5>Action Taken Report of CCM(<%=seqDate %>)</h5></th>
+												<thead style="background-color: #4B70F5; color: #ffff !important;">
+													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
+														<th colspan="6" style="border-radius: 1rem;"> <h5>Action Taken Report of CCM(<%=seqDate %>)</h5></th>
 													</tr>
 													<tr>
 														<th style="width: 15px !important; text-align: center;">SN</th>
@@ -428,11 +437,7 @@ input,select,table,div,label,span {
 												</thead>
 	
 												<tbody>
-													<% if (ccmActionsToListMap.size() == 0) { %>
-														<tr>
-															<td colspan="6" style="text-align: center;">No Data Available</td>
-														</tr>
-													<% } else if (ccmActionsToListMap.size() > 0) {
+													<% if (ccmActionsToListMap!=null && ccmActionsToListMap.size() > 0) {
 															int slno = 0;String key="";
 															for (Map.Entry<String, List<Object[]>> map : ccmActionsToListMap.entrySet()) {
 					                   							
@@ -445,7 +450,7 @@ input,select,table,div,label,span {
 															<td style="text-align: center;">
 															
 																<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
-																	<button type="button" class="btn btn-sm btn-primary" style="border-radius: 50px;font-weight: bold;background-color: #8b5520;" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
+																	<button type="button" class="btn btn-sm btn-primary" style="border-radius: 50px;font-weight: bold;background-color: #402E7A;" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
 																		<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("CCM")){ %>
 																		<%for (Map.Entry<Integer, String> entry : mapCCM.entrySet()) {
 																			Date date = inputFormat.parse(obj[1].toString().split("/")[2]);
@@ -504,14 +509,18 @@ input,select,table,div,label,span {
 															</td>
 										
 														</tr>
-													<% ++i;}} }%>
+													<% ++i;}} } else{%>
+														<tr>
+															<td colspan="6" style="text-align: center;">No Data Available</td>
+														</tr>
+													<%} %>
 												</tbody>
 											</table>
 											
 	 										<table class="table table-bordered table-hover table-striped table-condensed " id="prevatrTable" >
-												<thead style="background-color: #007bff; color: #ffff !important;">
-													<tr>
-														<th colspan="6"> <h5>Pending Points from Prev CCM</h5></th>
+												<thead style="background-color: #4B70F5; color: #ffff !important;">
+													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
+														<th colspan="6" style="border-radius: 1rem;"> <h5>Pending Points from Prev CCM</h5></th>
 													</tr>
 													<tr >
 														<th style="width: 15px !important; text-align: center;">SN</th>
@@ -526,11 +535,7 @@ input,select,table,div,label,span {
 												</thead>
 	
 												<tbody>
-													<% if (prevccmActionsToListMap.size() == 0) { %>
-														<tr>
-															<td colspan="6" style="text-align: center;">No Data Available</td>
-														</tr>
-													<% } else if (prevccmActionsToListMap.size() > 0) {
+													<% if (prevccmActionsToListMap!=null && prevccmActionsToListMap.size() > 0) {
 															int slno = 0;String key="";
 															for (Map.Entry<String, List<Object[]>> map : prevccmActionsToListMap.entrySet()) {
 					                   							
@@ -543,7 +548,7 @@ input,select,table,div,label,span {
 															<td style="text-align: center;">
 															
 																<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
-																	<button type="button" class="btn btn-sm btn-primary" style="border-radius: 50px;font-weight: bold;background-color: #8b5520;" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
+																	<button type="button" class="btn btn-sm btn-primary" style="border-radius: 50px;font-weight: bold;background-color: #402E7A;" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
 																		<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("CCM")){ %>
 																		<%for (Map.Entry<Integer, String> entry : mapCCM.entrySet()) {
 																			Date date = inputFormat.parse(obj[1].toString().split("/")[2]);
@@ -601,7 +606,11 @@ input,select,table,div,label,span {
 															</td>
 										
 														</tr>
-													<% i++; }} }%>
+													<% i++; }} } else {%>
+														<tr>
+															<td colspan="6" style="text-align: center;">No Data Available</td>
+														</tr>
+													<%} %>
 												</tbody>
 											</table>
 											
@@ -614,6 +623,8 @@ input,select,table,div,label,span {
 												Pending Points 
 											</button>
 										</div>
+									<!-- ----------------------------------------------- ATR End --------------------------------------------------- -->	
+									<!-- ----------------------------------------------- DMC --------------------------------------------------- -->	
 									<%} else if(tabName!=null && tabName.equalsIgnoreCase("DMC")) {
 										
 										String committeeMainId = (String)request.getAttribute("committeeMainId");
@@ -643,10 +654,10 @@ input,select,table,div,label,span {
 										String todayDate = outputFormat.format(new Date()).toString();	
 									%>
 										<div class="container-fluid mt-3 tabpanes1">
-											<table class="table table-bordered table-hover table-striped table-condensed " id="prevatrTable" >
-												<thead style="background-color: #007bff; color: #ffff !important;">
-													<tr>
-														<th colspan="6"> <h5>DMC Approval</h5></th>
+											<table class="table table-bordered table-hover table-striped table-condensed " >
+												<thead style="background-color: #4B70F5; color: #ffff !important;">
+													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
+														<th colspan="6" style="border-radius: 1rem;"> <h5>DMC Approval</h5></th>
 													</tr>
 													<tr >
 														<th style="width: 15px !important; text-align: center;">SN</th>
@@ -660,11 +671,7 @@ input,select,table,div,label,span {
 													</tr>
 												</thead>
 												<tbody>
-													<% if (prevdmcActionsToListMap.size() == 0) { %>
-														<tr>
-															<td colspan="6" style="text-align: center;">No Data Available</td>
-														</tr>
-													<% } else if (prevdmcActionsToListMap.size() > 0) {
+													<% if (prevdmcActionsToListMap!=null && prevdmcActionsToListMap.size() > 0) {
 															int slno = 0;String key="";
 															for (Map.Entry<String, List<Object[]>> map : prevdmcActionsToListMap.entrySet()) {
 					                   							
@@ -677,7 +684,7 @@ input,select,table,div,label,span {
 															<td style="text-align: center;">
 															
 																<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
-																	<button type="button" class="btn btn-sm btn-primary" style="border-radius: 50px;font-weight: bold;background-color: #8b5520;" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
+																	<button type="button" class="btn btn-sm btn-primary" style="border-radius: 50px;font-weight: bold;background-color: #402E7A;" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
 																		<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("DMC")){ %>
 																		<%for (Map.Entry<Integer, String> entry : mapDMC.entrySet()) {
 																			Date date = inputFormat.parse(obj[1].toString().split("/")[2]);
@@ -735,7 +742,11 @@ input,select,table,div,label,span {
 															</td>
 										
 														</tr>
-													<% i++; }} }%>
+													<% i++; }} } else {%>
+														<tr>
+															<td colspan="6" style="text-align: center;">No Data Available</td>
+														</tr>
+													<%} %>
 												</tbody>
 											</table>	
 										</div>	
@@ -771,6 +782,138 @@ input,select,table,div,label,span {
 											</form>
 											
 										</div>	
+									<!-- ----------------------------------------------- DMC End --------------------------------------------------- -->		
+									<!-- ----------------------------------------------- Achievements --------------------------------------------------- -->		
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Achievements")) {
+											List<CCMAchievements> ccmAchievementsList = (List<CCMAchievements>) request.getAttribute("ccmAchievementsList");
+											List<Object[]> clusterLabList = (List<Object[]>) request.getAttribute("clusterLabList");
+											String scheduleId = (String) request.getAttribute("scheduleId");
+											
+											Object[] clusterLabDetails = clusterLabList!=null && clusterLabList.size()>0? clusterLabList.stream()
+																		 .filter(e -> e[3].toString().equalsIgnoreCase("Y"))
+																		 .collect(Collectors.toList()).get(0): null;
+											String clusterLab = "Y";
+											if(clusterLabDetails!=null && !clusterLabDetails[2].toString().equalsIgnoreCase(labcode)){
+												ccmAchievementsList = ccmAchievementsList.stream().filter(e -> e.getLabCode().equalsIgnoreCase(labcode)).collect(Collectors.toList());
+												clusterLab = "N";
+											}
+
+									%>
+										<div class="container-fluid mt-3 tabpanes1">
+											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
+														<th colspan="6" style="border-radius: 1rem;"> <h5>Achievements</h5></th>
+													</tr>
+													<tr >
+														<th style="width: 5%;">SN</th>
+														<th style="width: 15%;">Lab</th>
+														<th style="width: 70%;">Achievement</th>
+														<th style="width: 10%;">Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<%if(ccmAchievementsList!=null && ccmAchievementsList.size()>0) {
+														int slno=0;
+														for(CCMAchievements achmnts : ccmAchievementsList) {
+													%>
+														<tr>
+															<td class="center"><%=++slno %></td>
+															<td><%=achmnts.getLabCode() %></td>
+															<td><%=achmnts.getAchievement() %></td>
+															<td class="center">
+																<form action="#">
+																	<input type="hidden" name="action" value="Edit">
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() %></textarea>
+																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>')" data-toggle="tooltip" data-placement="top" title="Edit Achievement">
+																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+																	</button>
+																	<button type="submit" class="btn btn-lg" name="achievementId" value="<%=achmnts.getAchievementId() %>" formmethod="get" formaction="CCMAchievementDelete.htm" onclick="return confirm('Are you sure To Delete this Achievement?')" data-toggle="tooltip" data-placement="top" title="Delete Achievement"> 
+																		<i class="fa fa-trash" aria-hidden="true"></i>
+																	</button>
+																</form>
+															</td>
+														</tr>
+													<%}} else{%>
+														<tr>
+															<td colspan="6" style="text-align: center;">No Data Available</td>
+														</tr>
+													<%} %>
+												</tbody>
+											</table>
+										</div>
+										<div class="center mt-2 mb-2">
+											
+												<div class="row">
+													<div class="col-md-4">
+													</div>
+													<div class="col-md-4 center">
+														<button type="button" class="btn btn-sm fw-bold add" data-toggle="tooltip" data-target="modal" title="Add Achievement" onclick="openAchievementsModal()"
+														<%if(clusterLab.equalsIgnoreCase("N") && ccmAchievementsList.size()>0) {%>disabled<%} %> >
+															ADD ACHIEVEMENT
+														</button>
+													</div>
+													
+													<div class="col-md-4 right">
+														
+													</div>
+													
+												</div>
+											
+											
+										</div>	
+										
+										<div class="modal fade bd-example-modal-lg" id="ckEditorModal" tabindex="-1" role="dialog" aria-labelledby="ckEditorModal" aria-hidden="true" style="margin-top: 5%;">
+											<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
+												<div class="modal-content">
+													<div class="modal-header bg-primary text-light">
+											        	<h5 class="modal-title">Achievement</h5>
+												        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+												          <span aria-hidden="true" style="color:red;">&times;</span>
+												        </button>
+											      	</div>
+									     			<div class="modal-body">
+									     				<form action="CCMAchievementSubmit.htm" method="post" id="achmntForm">
+									     					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+									     					<input type="hidden" name="scheduleId" value="<%=scheduleId%>">
+									     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+									     					<input type="hidden" name="achievementId" id="achievementId">
+									     					
+									     					<%if(clusterLab.equalsIgnoreCase("N")) {%>
+									     						<input type="hidden" id="labCode" name="labCode" value="<%=labcode%>">
+									     					<%} else {%>
+									     						<div class="row">
+									     							<div class="col-md-1">
+									     								<label class="mt-2">Lab: </label>
+									     							</div>
+									     							<div class="col-md-3 mb-2">
+																		<select class="form-control selectdee" id="labCode" name="labCode" style="width: 200px;">
+																			<option value="" selected disabled>---Select---</option>
+																			<%if(clusterLabList!=null && clusterLabList.size()>0) {
+																				for(Object[] obj : clusterLabList) {
+																			%>
+																				<option value="<%=obj[2]%>" ><%=obj[2] %></option>
+																			<%} }%>
+																		</select>
+									     							</div>
+									     							<div class="col-md-8"></div>
+									     						</div>
+										     					
+									     					<%} %>
+									     					
+									     					<textarea class="achievement" name="achievement" id="achievement" style="display: none;"></textarea>
+											         		
+											         		<div id="Editor" class="center"></div>
+											         		
+											         		<div class="center mt-2">
+											         			<button type="submit" name="action" value="Add" class="btn btn-sm submit btn-achmnts" onclick="submitAchmnts()">Submit</button>
+											         		</div>
+										         		</form>
+										         	</div>
+									    		</div>
+									  		</div>
+										</div>
+									<!-- ----------------------------------------------- Achievements End--------------------------------------------------- -->		
 									<%} else {%>
 										<div class="container-fluid mt-3 tabpanes2">
 										</div>			
@@ -1169,26 +1312,172 @@ input,select,table,div,label,span {
 			}
 		}
 	}
-	
-	// Show modal on button click
-	document.getElementById('modalBtn').addEventListener('click', function() {
-	    document.getElementById('fixedModal').style.display = 'block';
-	});
 
-	// Close modal on close button click
-	document.getElementById('closeModalBtn').addEventListener('click', function() {
-	    document.getElementById('fixedModal').style.display = 'none';
-	});
-
-	document.addEventListener('DOMContentLoaded', function() {
-		document.getElementById('fixedModal').style.display = 'block';
-    });
 	
-	$( document ).ready(function() {
- 	   setTimeout(() => { 
- 		  document.getElementById('fixedModal').style.display = 'none';
-		}, 5000);
- 	});
-</script>	
+	/* ---------------------CK Editor Config --------------------------------------------------------------------------------------------------- */
+
+	var editor_config = {
+			toolbar : [
+					{
+						name : 'clipboard',
+						items : [ 'Undo', 'Redo' ]
+					},
+					{
+						name : 'basicstyles',
+						items : [ 'Bold', 'Italic', 'Underline', 'Strike',
+								  'Subscript', 'Superscript' ]
+					},
+
+					{
+						name : 'paragraph',
+						items : [ 'NumberedList', 'BulletedList', '-',
+								'Outdent', 'Indent']
+					},
+
+					{
+						name : 'styles',
+						items : [ 'Format', 'Font', 'FontSize' ]
+					},
+					{
+						name : 'colors',
+						items : [ 'TextColor', 'BGColor', 'CopyFormatting' ]
+					},
+					{
+						name : 'align',
+						items : [ 'JustifyLeft', 'JustifyCenter',
+								'JustifyRight', 'JustifyBlock' ]
+					}, {
+						name : 'document',
+						items : [ 'Source' ]
+					} ],
+
+			removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+
+			customConfig : '',
+
+			disallowedContent : 'img{width,height,float}',
+			extraAllowedContent : 'img[width,height,align]',
+
+			height : 200,
+
+			contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
+
+			bodyClass : 'document-editor',
+
+			format_tags : 'p;h1;h2;h3;pre',
+
+			removeDialogTabs : 'image:advanced;link:advanced',
+
+			stylesSet : [
+
+			{
+				name : 'Marker',
+				element : 'span',
+				attributes : {
+					'class' : 'marker'
+				}
+			}, {
+				name : 'Cited Work',
+				element : 'cite'
+			}, {
+				name : 'Inline Quotation',
+				element : 'q'
+			},
+
+			{
+				name : 'Special Container',
+				element : 'div',
+				styles : {
+					padding : '5px 10px',
+					background : '#eee',
+					border : '1px solid #ccc'
+				}
+			}, {
+				name : 'Compact table',
+				element : 'table',
+				attributes : {
+					cellpadding : '6',
+					cellspacing : '0',
+					border : '1',
+					bordercolor : '#ccc'
+				},
+				styles : {
+					'border-collapse' : 'collapse'
+				}
+			}, {
+				name : 'Borderless Table',
+				element : 'table',
+				styles : {
+					'border-style' : 'hidden',
+					'background-color' : '#E6E6FA'
+				}
+			}, {
+				name : 'Square Bulleted List',
+				element : 'ul',
+				styles : {
+					'list-style-type' : 'square'
+				}
+			}, {
+				filebrowserUploadUrl : '/path/to/upload-handler'
+			}, ]
+		};
+	
+	CKEDITOR.replace('Editor', editor_config);
+	/* ---------------------CK Editor Config End --------------------------------------------------------------------------------------------------- */
+	
+	
+	/* --------------------- Open Achievements Modal --------------------------------------------------------------------------------------------------- */
+	
+	function openAchievementsModal() {
+		$('#ckEditorModal').modal('show');
+		$('.btn-achmnts').val('Add');
+		$('#achievementId').val('0');
+	}
+	
+	function submitAchmnts(){
+		var data = CKEDITOR.instances['Editor'].getData();
+					
+		$('#achievement').val(data);
+		
+		if(confirm('Are you Sure to Submit?')) {
+			$('#achmntForm').submit()
+		}else{
+			event.preventDefault();
+		}
+	}
+	
+	function openAchievementsModalEdit(slno, achievementId) {
+		$('#ckEditorModal').modal('show');
+		$('#achievementId').val(achievementId);
+		$('.btn-achmnts').val('Edit');
+		
+		var html = $('#achievement_'+slno).val();
+		CKEDITOR.instances['Editor'].setData(html);
+	}
+	/* --------------------- Open Achievements Modal End --------------------------------------------------------------------------------------------------- */
+
+	</script>	
+	
+	<script type="text/javascript">
+		// Show modal on button click
+		document.getElementById('modalBtn').addEventListener('click', function() {
+		    document.getElementById('fixedModal').style.display = 'block';
+		});
+	
+		// Close modal on close button click
+		document.getElementById('closeModalBtn').addEventListener('click', function() {
+		    document.getElementById('fixedModal').style.display = 'none';
+		});
+	
+		document.addEventListener('DOMContentLoaded', function() {
+			document.getElementById('fixedModal').style.display = 'block';
+	    });
+		
+		$( document ).ready(function() {
+	 	   setTimeout(() => { 
+	 		  document.getElementById('fixedModal').style.display = 'none';
+			}, 5000);
+	 	});
+	</script>
 </body>
 </html>

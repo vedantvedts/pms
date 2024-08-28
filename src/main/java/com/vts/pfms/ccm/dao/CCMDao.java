@@ -2,6 +2,7 @@ package com.vts.pfms.ccm.dao;
 
 import java.util.List;
 
+import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
@@ -24,10 +25,14 @@ public interface CCMDao {
 	public int updateCCMScheduleAgendaDuration(int orgDuration, int duration, Long scheduleAgendaId) throws Exception;
 	public Long getCommitteeMainIdByCommitteeCode(String committeeCode) throws Exception;
 	public Long getCommitteeIdByCommitteeCode(String committeeCode) throws Exception;
-	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception;
+	public Long getLatestScheduleId(String meetingType) throws Exception;
+	public Long getSecondLatestScheduleId(String scheduleType) throws Exception;
 	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception;
 	public List<Object[]> getClusterLabListByClusterId(String clusterId) throws Exception;
 	public List<CommitteeSchedule> getScheduleListByScheduleType(String scheduleType) throws Exception;
-	
+	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId) throws Exception;
+	public CCMAchievements getCCMAchievementsById(String achievementId) throws Exception;
+	public long addCCMAchievements(CCMAchievements achmnts) throws Exception;
+	public int ccmAchievementDelete(String achievementId) throws Exception;
 	
 }

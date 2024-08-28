@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
@@ -275,19 +276,34 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String GETLATESTSCHEDULEID1 = "SELECT a.ScheduleId FROM committee_schedule a WHERE a.MeetingId LIKE :SequenceNo ORDER BY ScheduleDate DESC LIMIT 1 OFFSET 1";
-	private static final String GETLATESTSCHEDULEID2 = "SELECT a.ScheduleId FROM committee_schedule a WHERE a.MeetingId LIKE :SequenceNo ORDER BY ScheduleDate DESC LIMIT 1";
+	private static final String GETLATESTSCHEDULEID = "SELECT a.ScheduleId FROM committee_schedule a WHERE a.ScheduleType=:ScheduleType ORDER BY ScheduleDate DESC LIMIT 1";
 	@Override
-	public Long getLatestScheduleId(String sequenceNo, String meetingType) throws Exception {
+	public Long getLatestScheduleId(String scheduleType) throws Exception {
 
 		try {
-			Query query = manager.createNativeQuery(meetingType.equalsIgnoreCase("C")?GETLATESTSCHEDULEID1:GETLATESTSCHEDULEID2);
-			query.setParameter("SequenceNo", sequenceNo);
+			Query query = manager.createNativeQuery(GETLATESTSCHEDULEID);
+			query.setParameter("ScheduleType", scheduleType);
 			BigInteger scheduleId =  (BigInteger)query.getSingleResult();
 			return scheduleId.longValue();
 		}catch ( Exception e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl getLatestScheduleId "+ e);
+			return 0L;
+		}
+	}
+	
+	private static final String GETSECONDLATESTSCHEDULEID = "SELECT a.ScheduleId FROM committee_schedule a WHERE a.ScheduleType=:ScheduleType ORDER BY ScheduleDate DESC LIMIT 1 OFFSET 1";
+	@Override
+	public Long getSecondLatestScheduleId(String scheduleType) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(GETSECONDLATESTSCHEDULEID);
+			query.setParameter("ScheduleType", scheduleType);
+			BigInteger scheduleId =  (BigInteger)query.getSingleResult();
+			return scheduleId.longValue();
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl getSecondLatestScheduleId "+ e);
 			return 0L;
 		}
 	}
@@ -308,7 +324,7 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String GETCLUSTERLABLISTBYCLUSTERID ="SELECT a.LabId, a.LabName, a.LabCode, b.IsCluster FROM cluster_lab a, lab_master b WHERE a.LabId=b.LabId AND a.ClusterId=:ClusterId ORDER BY a.LabCode";
+	private static final String GETCLUSTERLABLISTBYCLUSTERID ="SELECT a.LabId, a.LabName, a.LabCode, b.IsCluster, a.ClusterId FROM cluster_lab a, lab_master b WHERE a.LabId=b.LabId AND a.ClusterId=:ClusterId ORDER BY a.LabCode";
 	@Override
 	public List<Object[]> getClusterLabListByClusterId(String clusterId) throws Exception
 	{
@@ -338,4 +354,57 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
+	@Override
+	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId) throws Exception {
+		try {
+			Query query = manager.createQuery("FROM CCMAchievements WHERE ScheduleId =:ScheduleId AND IsActive=1");
+			query.setParameter("ScheduleId", scheduleId);
+			return (List<CCMAchievements>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getCCMAchievementsByScheduleId "+e);
+			return null;
+		}
+	}
+	
+	@Override
+	public CCMAchievements getCCMAchievementsById(String achievementId) throws Exception {
+		try {
+			return manager.find(CCMAchievements.class, Long.parseLong(achievementId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getCCMAchievementsById "+e);
+			return null;
+		}
+		
+	}
+
+	@Override
+	public long addCCMAchievements(CCMAchievements achmnts) throws Exception {
+		try {
+			manager.persist(achmnts);
+			manager.flush();
+			return achmnts.getAchievementId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl addCCMAchievements "+e);
+			return 0;
+		}
+	}
+	
+	private static final String CCMACHIEVEMENTDELETE = "UPDATE pfms_ccm_achievements SET IsActive=0 WHERE AchievementId=:AchievementId";
+	@Override
+	public int ccmAchievementDelete(String achievementId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(CCMACHIEVEMENTDELETE);
+			query.setParameter("AchievementId", achievementId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl ccmAchievementDelete "+e);
+			return 0;
+		}
+		
+	}
 }
