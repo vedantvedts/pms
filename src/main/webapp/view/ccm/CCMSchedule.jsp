@@ -774,7 +774,7 @@ List<Object[]> invitedlist = (List<Object[]>)request.getAttribute("committeeinvi
 																				<button type="button" class="form-control main agendaItemBtn" id="agendaItemBtn_1" onclick="openEditor('', '1', '0')" style="border: 1px solid #ced4da;height: 35px;width: 22rem;">
 																					Enter Agenda Item
 																				</button>
-																				<textarea class="form-control main agendaItem" name="agenda[0].agendaItem" id="agendaItem_1" style="display: none;"></textarea>
+																				<textarea class="form-control main agendaItem" name="agenda[0].agendaItem" id="agendaItem_1" style="display: none;">Enter Agenda Item</textarea>
 																			</td>
 															         		 
 															         		 <td style="width: 10%;">
@@ -896,10 +896,15 @@ List<Object[]> invitedlist = (List<Object[]>)request.getAttribute("committeeinvi
 				        								<input type="hidden" name="ccmScheduleId" value="<%=ccmScheduleId %>">
 				        								<input type="hidden" name="committeescheduleid" value="<%=ccmScheduleId %>">
 				        								<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+				        								<input type="hidden" name="committeemainid" value="<%=committeeMainId %>">
 				        								<input type="hidden" name="committeeId" value="<%=committeeId %>">
 				        								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				        								<input type="hidden" name="ccmFlag" value="Y">
 				        								<%if(agendaList!=null && agendaList.size()>0) {%>
+				        									
+				        									<input type="hidden" name="meetingid" value="<%=ccmSchedule.getMeetingId()%>">
+				        									<input type="hidden" name="meetingdate" value="<%=ccmSchedule.getScheduleDate()%>">
+				        									<input type="hidden" name="meetingtime" value="<%=ccmSchedule.getScheduleStartTime()%>">
 				        									
 				        									<button type="submit" class="btn btn-sm btn-outline-success" formaction="CCMAgendaPresentation.htm" formmethod="post" formtarget="_blank" title="Agenda Presentation">
 																<img alt="" src="view/images/presentation.png" style="width:19px !important">
@@ -941,12 +946,12 @@ List<Object[]> invitedlist = (List<Object[]>)request.getAttribute("committeeinvi
 										
 															<%if( ScheduleFlag.equalsIgnoreCase("MKO") ){ %>
 																			
-																<div style="margin-left:1%;display: -webkit-box;">
-																	<span style="font-weight: 600">Enter OTP : </span>
-																	<input  class="form-control" type="password" id="otp" name="otpvalue" maxlength="4" <%if(otp!=null){ %>value="<%=otp %>" <%} %> required="required" style="padding: .15rem .75rem !important;margin: 0px 15px;width:40% !important">
+																<div style="margin-left:1%;display: inline-flex; align-items: flex-start;">
+																	<span style="font-weight: 600">Enter OTP : &nbsp;</span>
+																	<input type="hidden" name="otpvalue" <%if(otp!=null){ %>value="<%=otp %>"<%} %>>
+																	<input  class="form-control" type="password" id="otp" name="otpvalue1" maxlength="4" <%if(otp!=null){ %>value="<%=otp%>" <%} %> required="required" style="padding: .15rem .75rem !important;margin: 0px 15px;width:40% !important">
 																	<input type="submit" id="submit" name="sub"  class="btn  btn-sm submit" value="Validate" formaction="KickOffMeeting.htm" style="color:white" /> 
 																	<input type="submit" id="submit" name="sub"  class="btn  btn-sm view" value="Resend OTP" formaction="KickOffMeeting.htm" onclick="resendotp()"   style="color:white;margin: 0px 5px" /> 
-																	
 																</div>
 																		
 															<%} %>

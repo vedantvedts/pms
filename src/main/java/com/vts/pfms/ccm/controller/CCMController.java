@@ -645,7 +645,7 @@ public class CCMController {
     		/* -----------------------  ATR End -------------------------- */
     		
     		/* ----------------------- DMC Start -------------------------- */
-    		else if(tabName!=null && tabName.equalsIgnoreCase("DMC")) {
+    		else if(tabName.equalsIgnoreCase("DMC")) {
     			
     			String committeeIdDMC = service.getCommitteeIdByCommitteeCode("DMC")+"";
     			if(committeeIdDMC==null || (committeeIdDMC!=null && committeeIdDMC.isEmpty())) {
@@ -671,16 +671,52 @@ public class CCMController {
     			
     		}
     		/* ----------------------- DMC End -------------------------- */
+
+    		/* ----------------------- EB Calendar Start -------------------------- */
+    		else if(tabName.equalsIgnoreCase("EB Calendar")) {
+    			
+    		}
+    		/* ----------------------- EB Calendar End -------------------------- */
+    		
+    		/* ----------------------- PMRC Calendar Start -------------------------- */
+    		else if(tabName.equalsIgnoreCase("PMRC Calendar")) {
+    			
+    		}
+    		/* ----------------------- PMRC Calendar End -------------------------- */
+    		
+    		/* ----------------------- ASP Status Start -------------------------- */
+    		else if(tabName.equalsIgnoreCase("ASP Status")) {
+    			
+    		}
+    		/* ----------------------- ASP Status End -------------------------- */
+    		
+    		/* ----------------------- Project Closure Start -------------------------- */
+    		else if(tabName.equalsIgnoreCase("Project Closure")) {
+    			
+    		}
+    		/* ----------------------- Project Closure End -------------------------- */
+    		
+    		/* ----------------------- Cash Out Go Status Start -------------------------- */
+    		else if(tabName.equalsIgnoreCase("Cash Out Go Status")) {
+    			
+    		}
+    		/* ----------------------- Cash Out Go Status End -------------------------- */
+    		
+    		/* ----------------------- Test & Trials Start -------------------------- */
+    		else if(tabName.equalsIgnoreCase("Test & Trials")) {
+    			
+    		}
+    		/* ----------------------- Test & Trials End -------------------------- */
     		
     		/* ----------------------- Achievements Start -------------------------- */
-    		else if (tabName!=null && tabName.equalsIgnoreCase("Achievements")) {
+    		else if (tabName.equalsIgnoreCase("Achievements")) {
     			Long scheduleId = service.getLatestScheduleId("C");
     			req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(scheduleId));
-    			req.setAttribute("clusterLabList", service.getClusterLabListByClusterId(clusterid));
     			req.setAttribute("scheduleId", scheduleId+"");
     		}
     		/* ----------------------- Achievements End -------------------------- */
     		
+    		req.setAttribute("clusterLabList", service.getClusterLabListByClusterId(clusterid));
     		req.setAttribute("committeeId", committeeId);
     		req.setAttribute("tabName", tabName);
     		req.setAttribute("filesize",file_size);
@@ -755,9 +791,9 @@ public class CCMController {
 	    	
 	    	CCMAchievements  achmnts = action.equalsIgnoreCase("Add")? new CCMAchievements() : service.getCCMAchievementsById(achievementId);
 	    	achmnts.setScheduleId(Long.parseLong(req.getParameter("scheduleId")));
-	    	achmnts.setLabCode(req.getParameter("labCode"));
 	    	achmnts.setAchievement(req.getParameter("achievement"));
 	    	if(action.equalsIgnoreCase("Add")) {
+	    		achmnts.setLabCode(req.getParameter("labCode"));
 	    		achmnts.setCreatedBy(UserId);
 	    		achmnts.setCreatedDate(sdtf.format(new Date()));
 	    		achmnts.setIsActive(1);

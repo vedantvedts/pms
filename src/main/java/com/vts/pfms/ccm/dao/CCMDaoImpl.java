@@ -114,7 +114,7 @@ public class CCMDaoImpl implements CCMDao{
 			+ "	ELSE (SELECT CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.EmpName,', ',d.Designation) FROM employee c, employee_desig d WHERE c.EmpId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) END) AS 'Presenter',\r\n"
 			+ "	(SELECT d.DesigId FROM employee c, employee_desig d WHERE c.EmpId=b.PresenterId AND c.DesigId=d.DesigId LIMIT 1) AS 'DesigId'\r\n"
 			+ "FROM committee_schedule a, committee_schedules_agenda b\r\n"
-			+ "WHERE a.ScheduleId=b.ScheduleId AND b.IsActive=1 AND a.ScheduleId=:ScheduleId";
+			+ "WHERE a.ScheduleId=b.ScheduleId AND b.IsActive=1 AND a.ScheduleId=:ScheduleId ORDER BY b.AgendaPriority";
 	@Override
 	public List<Object[]> getCCMScheduleAgendaListByCCMScheduleId(String ccmScheduleId) throws Exception {
 		try {
