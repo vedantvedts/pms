@@ -1,196 +1,199 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="ISO-8859-1">
-<title>ERROR</title>
-<style type="text/css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMS | 404</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFFFFF; /* White background */
+            color: #021B79; /* Dark Blue for text */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-/* reset */
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
-article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
-ol,ul{list-style:none;margin:0px;padding:0px;}
-blockquote,q{quotes:none;}
-blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
-table{border-collapse:collapse;border-spacing:0;}
-/* start editing from here */
-a{text-decoration:none;}
-.txt-rt{text-align:right;}/* text align right */
-.txt-lt{text-align:left;}/* text align left */
-.txt-center{text-align:center;}/* text align center */
-.float-rt{float:right;}/* float right */
-.float-lt{float:left;}/* float left */
-.clear{clear:both;}/* clear float */
-.pos-relative{position:relative;}/* Position Relative */
-.pos-absolute{position:absolute;}/* Position Absolute */
-.vertical-base{	vertical-align:baseline;}/* vertical align baseline */
-.vertical-top{	vertical-align:top;}/* vertical align top */
-.underline{	padding-bottom:5px;	border-bottom: 1px solid #eee; margin:0 0 20px 0;}/* Add 5px bottom padding and a underline */
-nav.vertical ul li{	display:block;}/* vertical menu */
-nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
-img{max-width:100%;}
-/*end reset*
- */
-body{
-	background: url(view/images/Error/bg1.png);
-	font-family: "Century Gothic",Arial, Helvetica, sans-serif;
-	}
-.content p{
-	margin: 18px 0px 45px 0px;
-}
-.content p{
-	font-family: "Century Gothic";
-	font-size:2em;
-	color:#666;
-	text-align:center;
-}
-.content p span,.logo h1 a{
-	color:#e54040;
-}
-.content{
-	text-align:center;
-	padding:115px 0px 0px 0px;
-}
-.content a{
-	color:#fff;
-	font-family: "Century Gothic";
-	background: #666666; /* Old browsers */
-	background: -moz-linear-gradient(top,  #666666 0%, #666666 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(100%,#666666)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #666666 0%,#666666 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #666666 0%,#666666 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #666666 0%,#666666 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #666666 0%,#666666 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#666666',GradientType=0 ); /* IE6-9 */
-	padding: 15px 20px;
-	border-radius: 1em;
-}
-.content a:hover{
-	color:#e54040;
-}
-.logo{
-	text-align:center;
-	-webkit-box-shadow: 0 8px 6px -6px rgb(97, 97, 97);
-	-moz-box-shadow: 0 8px 6px -6px  rgb(97, 97, 97);
-	box-shadow: 0 8px 6px -6px  rgb(97, 97, 97);
-}
-.logo h1{
-	font-size:2em;
-	font-family: "Century Gothic";
-	background: #666666; /* Old browsers */
-	background: -moz-linear-gradient(top,  #666666 0%, #666666 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(100%,#666666)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #666666 0%,#666666 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #666666 0%,#666666 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #666666 0%,#666666 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #666666 0%,#666666 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#666666',GradientType=0 ); /* IE6-9 */	
-	padding: 10px 10px 18px 10px;
-}
-.logo h1 a{
-	font-size:1em;
-}
-.copy-right{
-	padding-top:20px;
-}
-.copy-right p{
-	font-size:0.9em;
-}
-.copy-right p a{
-	background:none;
-	color:#e54040;
-	padding:0px 0px 5px 0px;
-	font-size:0.9em;
-}
-.copy-right p a:hover{
-	color:#666;
-}
-/*------responive-design--------*/
-@media screen and (max-width: 1366px)	{
-	.content {
-		padding: 58px 0px 0px 0px;
-	}
-}
-@media screen and (max-width:1280px)	{
-	.content {
-		padding: 58px 0px 0px 0px;
-	}
-}
-@media screen and (max-width:1024px)	{
-	.content {
-		padding: 58px 0px 0px 0px;
-	}
-	.content p {
-		font-size: 1.5em;
-	}
-	.copy-right p{
-		font-size:0.9em;
-	}
-}
-@media screen and (max-width:640px)	{
-	.content {
-		padding: 58px 0px 0px 0px;
-	}
-	.content p {
-		font-size: 1.3em;
-	}
-	.copy-right p{
-		font-size:0.9em;
-	}
-}
-@media screen and (max-width:460px)	{
-	.content {
-		padding:20px 0px 0px 0px;
-		margin:0px 12px;
-	}
-	.content p {
-		font-size:0.9em;
-	}
-	.copy-right p{
-		font-size:0.8em;
-	}
-}
-@media screen and (max-width:320px)	{
-	.content {
-		padding:30px 0px 0px 0px;
-		margin:0px 12px;
-	}
-	.content a {
-		padding:10px 15px;
-		font-size:0.8em;
-	}
-	.content p {
-		margin: 18px 0px 22px 0px;
-	}
-}
+        h1 {
+            font-size: 128px;
+            margin: 0;
+            color: #FFA500; /* Orange for large 404 text */
+        }
 
-</style>
+        h2 {
+            font-size: 32px;
+            margin: 20px 0;
+            color: #021B79; /* Dark Blue for secondary heading */
+        }
 
+        p {
+            font-size: 18px;
+            color: #0575E6; /* Lighter Blue for message text */
+            margin-bottom: 40px;
+        }
+
+        a {
+            color: #FFFFFF;
+            background-color: #021B79;
+            text-decoration: none;
+            font-size: 20px;
+            padding: 10px 20px;
+            border: 2px solid #021B79; /* Dark Blue border */
+            border-radius: 5px;
+            
+            transition: background-color 0.3s, color 0.3s,box-shadow 0.3s;
+        }
+
+        a:hover {
+            background-color: #021B79;
+            color: #FFFFFF;
+            box-shadow: 0px 5px 15px #000030
+        }
+
+        .background-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            background-color: #FFA500; /* Orange bubbles */
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 10s infinite;
+        }
+
+        .bubble.blue {
+            background-color: #0575E6; /* Light Blue bubbles */
+        }
+         .bubble.darkblue {
+            background-color: #021B79; /* Dark Blue bubbles */
+        }
+        
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);opacity: 0.1;
+            }
+            35% {
+                transform: translateY(0) scale(1.1);opacity: 0.3;
+            }
+            70% {
+                transform: translateY(0) scale(1.3);opacity: 0.5;
+            }
+            100% {
+                transform: translateY(0) scale(1);opacity: 0.1;
+            }
+        }
+
+        /* Bubble sizes and positions */
+        .bubble.bubble-1 {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            left: 15%;
+            animation-duration: 4s;
+        }
+
+        .bubble.bubble-2 {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            right: 20%;
+            animation-duration: 6s;
+        }
+
+        .bubble.bubble-3 {
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 70%;
+            animation-duration: 5s;
+        }
+
+        .bubble.bubble-4 {
+            width: 250px;
+            height: 250px;
+            bottom: 15%;
+            right: 4%;
+            animation-duration: 4s;
+        }
+        .bubble.bubble-5 {
+            width: 220px;
+            height: 220px;
+            bottom: 15%;
+            right: 40%;
+            animation-duration: 10s;
+        }
+        .bubble.bubble-6 {
+            width: 200px;
+            height: 200px;
+            bottom: 40%;
+            right: 85%;
+            animation-duration: 10s;
+        }
+        .bubble.bubble-7 {
+            width: 230px;
+            height: 230px;
+            bottom: 80%;
+            right: 30%;
+            animation-duration: 6.5s;
+        }
+        
+        .bubble.bubble-8 {
+            width: 100px;
+            height: 100px;
+            top: 18%;
+            left: 24%;
+            animation-duration: 6s;
+        }
+        
+        .bubble.bubble-9 {
+            width: 280px;
+            height: 280px;
+            top: 10%;
+            left: 35%;
+            animation-duration: 5s;
+        }
+        
+        .bubble.bubble-10 {
+            width: 220px;
+            height: 220px;
+            top: 90%;
+            right: 55%;
+            animation-duration: 3.5s;
+        }
+    </style>
 </head>
 <body>
-  <!--start-wrap---> 
-  <div class="wrap"> 
-   <!--start-header----> 
-   <div class="header"> 
-    <div class="logo"> 
-     <h1><a href="#">Ohh</a></h1> 
-    </div> 
-   </div> 
-   <!--End-header----> 
-   <!--start-content------> 
-   <div class="content"> 
-    <img src="view/images/Error/error-img.png" title="error" /> 
-    <p><span><label>O</label>hh.....</span>You Requested the page that is no longer There.</p> 
-    <a href="MainDashBoard.htm">Back To Home</a> 
-    <div class="copy-right"> 
-     <p>&copy; <script type="text/javascript">
-  document.write(new Date().getFullYear());
-</script> Ohh. All Rights Reserved | Design by </p> 
-    </div> 
-   </div> 
-   <!--End-Cotent------> 
-  </div> 
-  <!--End-wrap--->   
+    <div class="background-bubbles">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2 darkblue"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4 blue"></div>
+        <div class="bubble bubble-5 "></div>
+        <div class="bubble bubble-6 blue"></div>
+        <div class="bubble bubble-7 "></div>
+        <div class="bubble bubble-8"></div>
+        <div class="bubble bubble-9 blue"></div>
+        <div class="bubble bubble-10 darkblue"></div>
+    </div>
+
+    <h1>404</h1>
+    <h2>Page not found</h2>
+    <p>Oops! The page you are looking for does not exist.</p>
+    <a href="MainDashBoard.htm">Back to Home</a>
 </body>
 </html>
