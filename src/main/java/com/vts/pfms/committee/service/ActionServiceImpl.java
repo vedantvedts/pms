@@ -2541,5 +2541,15 @@ public long oldRfaUploadEditSubmit(OldRfaUploadDto rfadto) throws Exception {
 		 return 0;
 	}
   }
+@Override
+public List<Object[]> getMeetingList(long ProjectId, String fromDate, String toDate) throws Exception {
+	// TODO Auto-generated method stub
+	return dao.getMeetingList(ProjectId,fromDate,toDate);
+}
 
+@Override
+public List<Object[]> getMeetingAction(long MeetingId, String loginType, String empId) throws Exception {
+	
+	return dao.getMeetingAction(MeetingId,loginType,empId);
+}
 }

@@ -193,4 +193,7 @@ public interface ActionDao {
 	public OldRfaUpload getOldRfaDetails(Long rfaFileUploadId)throws Exception;
 	public long oldRfaUploadEditSubmit(OldRfaUpload rfaModel)throws Exception;
 	public int getActionCountByCommittee(String projectId, String type, String committeeShortName) throws Exception;
+	
+	public List<Object[]> getMeetingList(long projectId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> getMeetingAction(long meetingId, String loginType, String empId) throws Exception;
 }

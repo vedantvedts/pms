@@ -1968,4 +1968,54 @@ public class ActionDaoImpl implements ActionDao{
 		BigInteger count=(BigInteger)query.getSingleResult();
 			return count.intValue();
 	}
+	
+	
+	private static final String getMeetingList="SELECT cs.scheduleid,cs.MeetingId,cs.scheduledate,cs.ScheduleStartTime,cs.MeetingVenue, c.committeeshortname,e.EmpName,csi.EmpId,csi.MemberType\r\n"
+			+ "  FROM committee_schedule cs,committee c,committee_schedules_invitation csi, employee e WHERE  cs.ScheduleId= csi.CommitteeScheduleId AND cs.committeeid=c.committeeid\r\n"
+			+ " AND cs.isActive=1 AND cs.projectid=:projectId AND csi.MemberType='CS' AND csi.EmpId=e.EmpId  AND cs.ScheduleDate BETWEEN :fromDate AND :toDate ORDER BY cs.scheduledate\r\n"
+			+ " ";
+	@Override
+	public List<Object[]> getMeetingList(long projectId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(getMeetingList);
+			query.setParameter("projectId", projectId);
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+			
+			return (List<Object[]>)query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String getMeetingAction=" SELECT DISTINCT aas.actionno,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS 'assigneemp',dc.designation, CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assignoremp' ,\r\n"
+			+ "e.designation AS desig,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionflag,a.actionmainid,\r\n"
+			+ "(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(f.actionsubid) FROM action_sub f WHERE f.actionassignid = aas.actionassignid) )AS progress ,\r\n"
+			+ "aas.actionassignid,a.actionlinkid,a.actionlevel ,a.projectid,aas.assignee,aas.assignor \r\n"
+			+ "FROM action_main a,  employee ab ,employee_desig dc ,  employee d  ,employee_desig e , action_assign aas,\r\n"
+			+ "committee_main cc, committee_schedule cs, committee_schedules_minutes_details csm\r\n"
+			+ "WHERE aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid \r\n"
+			+ "AND  aas.assignor=d.empid  AND a.actionmainid=aas.actionmainid AND d.isactive='1' AND e.desigid=d.desigid \r\n"
+			+ "AND a.scheduleminutesid=csm.scheduleminutesid AND csm.scheduleid=cs.scheduleid\r\n"
+			+ "AND cs.committeeid=cc.committeeid AND  cs.projectid=cc.projectid AND cc.projectid=a.projectid \r\n"
+			+ " AND cs.scheduleid=:meetingId  AND (CASE \r\n"
+			+ "WHEN :loginType IN ('A','Z','E','L','P') \r\n"
+			+ "THEN 1=1 ELSE aas.assignee=:empId END)\r\n"
+			+ "     \r\n"
+			+ "ORDER BY  actionmainid DESC;";
+	@Override
+	public List<Object[]> getMeetingAction(long meetingId, String loginType, String empId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(getMeetingAction);
+			query.setParameter("meetingId", meetingId);
+			query.setParameter("loginType", loginType);
+			query.setParameter("empId", empId);
+			
+			return (List<Object[]>)query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

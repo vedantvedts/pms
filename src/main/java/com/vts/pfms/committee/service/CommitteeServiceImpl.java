@@ -3675,5 +3675,8 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
     public long addAgendaLinkFile(CommitteeScheduleAgendaDocs docs) throws Exception {
     	return dao.addAgendaLinkFile(docs);
     }
-    
+    @Override
+    public List<Object[]> MomeNoteApprovalList(long empId, String fromDate, String toDate) throws Exception {
+    	return dao.MomeNoteApprovalList(empId,fromDate,toDate);
+    }
 }

@@ -197,42 +197,40 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 		
 		<div align="center" >
 		
-			<table style="align: center;margin-left:90px !important;  font-size: 16px" >
+			
 			<%
 			if(LabList!=null){
 			 %>
 
-				<tr>		
-				<th colspan="8" style="text-align: center; font-weight: 700;">
+			
 					<br><br><br><br><br><br><br><br><br><br><br>
+					<div align="center" >
 						<img class	="logo" style="width:100px;height: 100px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt=	Configurat	on"<%}else	{ %> alt="File Not Found" <%} %> >
-					</th>
-				</tr>
-				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;"></th>
-				</tr>
-				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>LAB NAME<%} %></th>
-				</tr>
+					</div>
+				
+				
+					<div align="center" >
+					<h1 style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>LAB NAME<%} %></h1>
+				</div>
 
 
 				
 			
 			
-			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
-			</tr>
-			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
-			</tr>
-			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=LabList[2] %><%}else{ %>LAB NAME<%} %></th>
-			</tr> 
+			<div align="center" >
+				<h1 style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</h1>
+			</div>
+				<div align="center" >
+				<h1 style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</h1>
+			</div>
+			<div align="center" >
+				<h1  style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=LabList[2] %><%}else{ %>LAB NAME<%} %></h1>
+		</div>
 
 				<% } %>
 
 
-			</table>			 
+				 
 		
 		</div>
 		

@@ -107,7 +107,7 @@ display:none;
 				   	<%if(EnoteApprovedList!=null && EnoteApprovedList.size()>99){ %>
 				   		99+
 				   		<%}else{ %>
-				   		<%="0"%>
+				   		<%=EnoteApprovedList!=null ?EnoteApprovedList.size():"0"%>
 						<%} %>	   			
 				   </span>  
 				</span> 
@@ -235,7 +235,6 @@ display:none;
 							<thead>
 								<tr >
 									<th style="text-align: center;width:20px;;">SN</th>
-									<th style="text-align: center;width:10%;">Committee ShortName</th>
 									<th style="text-align: center;width:5%;">Project</th>
 									<th style="text-align: center;width:10%;">Ref No & Date</th>
 									<th style="text-align: center;width:196px">Subject</th>
@@ -252,7 +251,6 @@ display:none;
 						<tr>
 						<td style="text-align: center;width:20px;"><%=++count %></td>
 						<td style="text-align: center;"><%=obj[10].toString() %></td>
-						<td style="text-align: center;"><%=obj[11].toString() %></td>
 						<td style="text-align: center;"> 
 							<%if (obj[1]!=null){%>
 							<%=obj[1] .toString() %>
@@ -279,20 +277,22 @@ display:none;
 							</td>
 							<td style="text-align: center;">
 							<div style="display: flex;justify-content: space-evenly;align-items: center;">
-							<!-- Committee Letter -->
+							<%-- <!-- Committee Letter -->
 					<form action="CommitteeConstitutionLetterDownload.htm" target="_blank">
 					<button type="submit" class="btn btn-sm edit" data-toggle="tooltip" data-placement="top" title="Committee Constitution Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="committeemainid" value="<%=obj[12].toString()%>">
-					</form>
+					</form>--%>
 							<!-- Enote Print -->
 				<form action="CommitteeEnotePrint.htm" target="_blank">
 					<button type="submit" class="btn btn-sm edit" style="background: #E76F51;border-color: #E76F51" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="EnoteId" value="<%=obj[0].toString()%>">
-						<input type="hidden" name="committeemainid" value="<%=obj[12].toString()%>">
+						<input type="hidden" name="committeemainid" value="<%=obj[11].toString()%>">
+						<input type="hidden" name="scheduleid" value="<%=obj[12].toString()%>">
+					<input type="hidden" name="type" value="S">
 					</form>
-							</div>
+							</div> 
 							</td>
 						</tr>
 						<%}} %>

@@ -178,6 +178,7 @@ List<Object[]> EnoteTransactionList = (List<Object[]>)request.getAttribute("Enot
 				    System.out.println(extractedWord); // This will display "Recommended"
 				}
 				%>
+				
 				<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=extractedWord%> at <%=time.format(object[4]) %></h2> 
 				<p style="background-color:  #f0f2f5;">
 					<span class="remarks_title">Action By : </span>

@@ -3299,95 +3299,120 @@ private static final String ENOTEAPPROVELIST="SELECT a.EnoteId,a.RefNo,a.RefDate
 		manager.flush();
 		return docs.getAgendaDocid();
 	}
-	@Override
-	public Object createView(String projectId) throws Exception {
-		// TODO Auto-generated method stub
-		
-		String sql = "CREATE OR REPLACE\r\n"
-				+ "VIEW test"+projectId
-				+ "\r\n"
-				+ "    AS\r\n"
-				+ "SELECT t.mile,t.id,t.aid,t.bid,t.cid,t.did,t.eid,t.startdate,t.enddate,t.orgenddate,\r\n"
-				+ "t.main,t.a,t.b,t.c,t.d,t.e,t.activitytype,t.progressstatus,\r\n"
-				+ "t.activitystatus,t.activitystatusid,t.revisionno,\r\n"
-				+ "t.levelid,t.ActivityShort,t.statusremarks,t.dateofcompletion,t.projectid,t.progressdate,\r\n"
-				+ "(CASE WHEN 1='1' THEN (SELECT MAX(ScheduleDate) FROM committee_schedule WHERE projectid=:ProjectId AND Scheduleflag IN ('MKV','MMR','MMF','MMS','MMA') AND CommitteeId=1 AND  ScheduleDate< CURDATE() AND isactive='1' ORDER BY ScheduleDate DESC )\r\n"
-				+ "	WHEN 1='2' THEN (SELECT MAX(ScheduleDate) FROM committee_schedule WHERE projectid=:ProjectId AND Scheduleflag IN ('MKV','MMR','MMF','MMS','MMA') AND CommitteeId=1 AND  ScheduleDate< CURDATE() AND isactive='1' ORDER BY ScheduleDate DESC )\r\n"
-				+ "	END\r\n"
-				+ ")AS 'lastmeetingdate',t.point5,t.point6,t.point9 FROM (\r\n"
-				+ "SELECT c.milestoneno AS mile,c.milestoneactivityid AS id,0 AS aid,0 AS bid,0 AS cid,0 AS did,0 AS eid,c.startdate,c.enddate,c.orgenddate,\r\n"
-				+ "c.activityname AS main,\" \" AS a,\" \" AS b,\" \" AS c,\" \" AS d,\" \" AS e,f.activitytype,c.progressstatus,\r\n"
-				+ "b.activitystatus,c.activitystatusid,c.revisionno,0 AS levelid,b.ActivityShort,c.statusremarks,c.dateofcompletion,c.projectid,DATE(c.modifieddate) AS 'progressdate' ,\"Y\"AS point5 ,\"Y\"AS point6, \"Y\"AS point9\r\n"
-				+ "FROM milestone_activity_status b, milestone_activity c ,milestone_activity_type f\r\n"
-				+ "WHERE c.activitystatusid=b.activitystatusid  AND f.ActivityTypeId=c.ActivityType\r\n"
-				+ "AND   c.projectid=:ProjectId\r\n"
-				+ "UNION\r\n"
-				+ "SELECT c.milestoneno AS mile,a.parentactivityid AS id,a.activityid AS aid,0 AS bid,0 AS cid,0 AS did,0 AS eid,a.startdate,a.enddate,a.orgenddate,\r\n"
-				+ "c.activityname AS main,a.activityname AS a,\" \" AS b,\" \" AS c,\" \" AS d,\" \" AS e,f.activitytype,a.progressstatus,\r\n"
-				+ "b.activitystatus,a.activitystatusid,c.revisionno,1 AS levelid,b.ActivityShort,a.statusremarks,a.dateofcompletion,c.projectid, IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= a.ActivityId AND o.isactive='1' AND o.progress=a.progressstatus ),DATE(a.modifieddate) )AS 'progressdate',a.point5,a.point6,a.point9\r\n"
-				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f\r\n"
-				+ "WHERE a.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=a.ActivityType\r\n"
-				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
-				+ "UNION\r\n"
-				+ "SELECT c.milestoneno AS mile,g.parentactivityid AS id,a.activityid AS aid,g.activityid AS bid,0 AS cid,0 AS did,0 AS eid,g.startdate,g.enddate,g.orgenddate,\r\n"
-				+ "c.activityname AS main,a.activityname AS a,g.activityname AS b,\" \" AS c,\" \" AS d,\" \" AS e,f.activitytype,g.progressstatus,\r\n"
-				+ "b.activitystatus,g.activitystatusid,c.revisionno ,2 AS levelid,b.ActivityShort,g.statusremarks,g.dateofcompletion,c.projectid, IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= g.ActivityId AND o.isactive='1' AND o.progress=g.progressstatus ), DATE(g.modifieddate))AS 'progressdate',g.point5,g.point6,g.point9\r\n"
-				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f,milestone_activity_level g\r\n"
-				+ "WHERE g.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=g.ActivityType\r\n"
-				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
-				+ "AND  g.parentactivityid=a.activityid AND g.activitylevelid='2' \r\n"
-				+ "UNION\r\n"
-				+ "SELECT c.milestoneno AS mile,h.parentactivityid AS id,a.activityid AS aid,g.activityid AS bid,h.activityid AS cid,0 AS did,0 AS eid,h.startdate,h.enddate,h.orgenddate,\r\n"
-				+ "c.activityname AS main,a.activityname AS a,g.activityname AS b,h.activityname AS c,\" \" AS d,\" \" AS e,f.activitytype,h.progressstatus,\r\n"
-				+ "b.activitystatus,h.activitystatusid,c.revisionno,3 AS levelid,b.ActivityShort,a.statusremarks,h.dateofcompletion,c.projectid, IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= h.ActivityId AND o.isactive='1' AND o.progress=h.progressstatus ), DATE(h.modifieddate)) AS 'progressdate',h.point5,h.point6,h.point9\r\n"
-				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f,\r\n"
-				+ "milestone_activity_level g,milestone_activity_level h\r\n"
-				+ "WHERE h.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=h.ActivityType\r\n"
-				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
-				+ "AND  g.parentactivityid=a.activityid AND g.activitylevelid='2' AND  h.parentactivityid=g.activityid AND h.activitylevelid='3'\r\n"
-				+ "UNION\r\n"
-				+ "SELECT c.milestoneno AS mile,i.parentactivityid AS id,a.activityid AS aid,g.activityid AS bid,h.activityid AS cid,i.activityid AS did,0 AS eid,i.startdate,i.enddate,i.orgenddate,\r\n"
-				+ "c.activityname AS main,a.activityname AS a,g.activityname AS b,h.activityname AS c,i.activityname AS d,\" \" AS e,f.activitytype,i.progressstatus,\r\n"
-				+ "b.activitystatus,i.activitystatusid,c.revisionno ,4 AS levelid,b.ActivityShort,a.statusremarks,i.dateofcompletion,c.projectid,IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= i.ActivityId AND o.isactive='1' AND o.progress=i.progressstatus ) , DATE (i.modifieddate))AS 'progressdate',i.point5,i.point6,i.point9\r\n"
-				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f,\r\n"
-				+ "milestone_activity_level g,milestone_activity_level h,milestone_activity_level i\r\n"
-				+ "WHERE i.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=i.ActivityType\r\n"
-				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
-				+ "AND  g.parentactivityid=a.activityid AND g.activitylevelid='2' AND  h.parentactivityid=g.activityid AND h.activitylevelid='3'\r\n"
-				+ "AND  i.parentactivityid=h.activityid AND i.activitylevelid='4' \r\n"
-				+ "UNION\r\n"
-				+ "SELECT c.milestoneno AS mile,j.parentactivityid AS id,a.activityid AS aid,g.activityid AS bid,h.activityid AS cid,i.activityid AS did,j.activityid AS eid,j.startdate,j.enddate,j.orgenddate,\r\n"
-				+ "c.activityname AS main,a.activityname AS a,g.activityname AS b,h.activityname AS c,i.activityname AS d,j.activityname AS e,f.activitytype,j.progressstatus,\r\n"
-				+ "b.activitystatus,j.activitystatusid,c.revisionno ,5 AS levelid,b.ActivityShort,a.statusremarks,j.dateofcompletion,c.projectid,IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= j.ActivityId AND o.isactive='1' AND o.progress=j.progressstatus ), DATE (j.modifieddate)) AS 'progressdate',j.point5,j.point6,j.point9\r\n"
-				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f,\r\n"
-				+ "milestone_activity_level g,milestone_activity_level h,milestone_activity_level i,milestone_activity_level j\r\n"
-				+ "WHERE j.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=j.ActivityType\r\n"
-				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
-				+ "AND  g.parentactivityid=a.activityid AND g.activitylevelid='2' AND  h.parentactivityid=g.activityid AND h.activitylevelid='3'\r\n"
-				+ "AND  i.parentactivityid=h.activityid AND i.activitylevelid='4' AND  j.parentactivityid=i.activityid AND j.activitylevelid='5'\r\n"
-				+ "ORDER BY  mile,id,aid,bid,cid,did,eid ASC \r\n"
-				+ ") \r\n"
-				+ "\r\n"
-				+ "t ORDER  BY t.mile,t.aid,t.bid,t.cid,t.did,t.eid;\r\n"
-				+ "";
-		
-		Query query = manager.createNativeQuery(sql);
-		query.setParameter("ProjectId", projectId);
-		
-		query.executeUpdate();
-		
-		if(projectId.equalsIgnoreCase("23")) {
-			String sql1 = "select * from test"+projectId;
-			Query query1=manager.createNativeQuery(sql1);
-			
-			List<Object[]>list = (List<Object[]>)query1.getResultList();
-			System.out.println("list size----------------&&&&&&&&&&&&&&"+list.size());
-			
-		}
-		
-		
-		return null;
-	}
+//	@Override
+//	public Object createView(String projectId) throws Exception {
+//		// TODO Auto-generated method stub
+//		
+//		String sql = "CREATE OR REPLACE\r\n"
+//				+ "VIEW test"+projectId
+//				+ "\r\n"
+//				+ "    AS\r\n"
+//				+ "SELECT t.mile,t.id,t.aid,t.bid,t.cid,t.did,t.eid,t.startdate,t.enddate,t.orgenddate,\r\n"
+//				+ "t.main,t.a,t.b,t.c,t.d,t.e,t.activitytype,t.progressstatus,\r\n"
+//				+ "t.activitystatus,t.activitystatusid,t.revisionno,\r\n"
+//				+ "t.levelid,t.ActivityShort,t.statusremarks,t.dateofcompletion,t.projectid,t.progressdate,\r\n"
+//				+ "(CASE WHEN 1='1' THEN (SELECT MAX(ScheduleDate) FROM committee_schedule WHERE projectid=:ProjectId AND Scheduleflag IN ('MKV','MMR','MMF','MMS','MMA') AND CommitteeId=1 AND  ScheduleDate< CURDATE() AND isactive='1' ORDER BY ScheduleDate DESC )\r\n"
+//				+ "	WHEN 1='2' THEN (SELECT MAX(ScheduleDate) FROM committee_schedule WHERE projectid=:ProjectId AND Scheduleflag IN ('MKV','MMR','MMF','MMS','MMA') AND CommitteeId=1 AND  ScheduleDate< CURDATE() AND isactive='1' ORDER BY ScheduleDate DESC )\r\n"
+//				+ "	END\r\n"
+//				+ ")AS 'lastmeetingdate',t.point5,t.point6,t.point9 FROM (\r\n"
+//				+ "SELECT c.milestoneno AS mile,c.milestoneactivityid AS id,0 AS aid,0 AS bid,0 AS cid,0 AS did,0 AS eid,c.startdate,c.enddate,c.orgenddate,\r\n"
+//				+ "c.activityname AS main,\" \" AS a,\" \" AS b,\" \" AS c,\" \" AS d,\" \" AS e,f.activitytype,c.progressstatus,\r\n"
+//				+ "b.activitystatus,c.activitystatusid,c.revisionno,0 AS levelid,b.ActivityShort,c.statusremarks,c.dateofcompletion,c.projectid,DATE(c.modifieddate) AS 'progressdate' ,\"Y\"AS point5 ,\"Y\"AS point6, \"Y\"AS point9\r\n"
+//				+ "FROM milestone_activity_status b, milestone_activity c ,milestone_activity_type f\r\n"
+//				+ "WHERE c.activitystatusid=b.activitystatusid  AND f.ActivityTypeId=c.ActivityType\r\n"
+//				+ "AND   c.projectid=:ProjectId\r\n"
+//				+ "UNION\r\n"
+//				+ "SELECT c.milestoneno AS mile,a.parentactivityid AS id,a.activityid AS aid,0 AS bid,0 AS cid,0 AS did,0 AS eid,a.startdate,a.enddate,a.orgenddate,\r\n"
+//				+ "c.activityname AS main,a.activityname AS a,\" \" AS b,\" \" AS c,\" \" AS d,\" \" AS e,f.activitytype,a.progressstatus,\r\n"
+//				+ "b.activitystatus,a.activitystatusid,c.revisionno,1 AS levelid,b.ActivityShort,a.statusremarks,a.dateofcompletion,c.projectid, IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= a.ActivityId AND o.isactive='1' AND o.progress=a.progressstatus ),DATE(a.modifieddate) )AS 'progressdate',a.point5,a.point6,a.point9\r\n"
+//				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f\r\n"
+//				+ "WHERE a.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=a.ActivityType\r\n"
+//				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
+//				+ "UNION\r\n"
+//				+ "SELECT c.milestoneno AS mile,g.parentactivityid AS id,a.activityid AS aid,g.activityid AS bid,0 AS cid,0 AS did,0 AS eid,g.startdate,g.enddate,g.orgenddate,\r\n"
+//				+ "c.activityname AS main,a.activityname AS a,g.activityname AS b,\" \" AS c,\" \" AS d,\" \" AS e,f.activitytype,g.progressstatus,\r\n"
+//				+ "b.activitystatus,g.activitystatusid,c.revisionno ,2 AS levelid,b.ActivityShort,g.statusremarks,g.dateofcompletion,c.projectid, IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= g.ActivityId AND o.isactive='1' AND o.progress=g.progressstatus ), DATE(g.modifieddate))AS 'progressdate',g.point5,g.point6,g.point9\r\n"
+//				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f,milestone_activity_level g\r\n"
+//				+ "WHERE g.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=g.ActivityType\r\n"
+//				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
+//				+ "AND  g.parentactivityid=a.activityid AND g.activitylevelid='2' \r\n"
+//				+ "UNION\r\n"
+//				+ "SELECT c.milestoneno AS mile,h.parentactivityid AS id,a.activityid AS aid,g.activityid AS bid,h.activityid AS cid,0 AS did,0 AS eid,h.startdate,h.enddate,h.orgenddate,\r\n"
+//				+ "c.activityname AS main,a.activityname AS a,g.activityname AS b,h.activityname AS c,\" \" AS d,\" \" AS e,f.activitytype,h.progressstatus,\r\n"
+//				+ "b.activitystatus,h.activitystatusid,c.revisionno,3 AS levelid,b.ActivityShort,a.statusremarks,h.dateofcompletion,c.projectid, IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= h.ActivityId AND o.isactive='1' AND o.progress=h.progressstatus ), DATE(h.modifieddate)) AS 'progressdate',h.point5,h.point6,h.point9\r\n"
+//				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f,\r\n"
+//				+ "milestone_activity_level g,milestone_activity_level h\r\n"
+//				+ "WHERE h.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=h.ActivityType\r\n"
+//				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
+//				+ "AND  g.parentactivityid=a.activityid AND g.activitylevelid='2' AND  h.parentactivityid=g.activityid AND h.activitylevelid='3'\r\n"
+//				+ "UNION\r\n"
+//				+ "SELECT c.milestoneno AS mile,i.parentactivityid AS id,a.activityid AS aid,g.activityid AS bid,h.activityid AS cid,i.activityid AS did,0 AS eid,i.startdate,i.enddate,i.orgenddate,\r\n"
+//				+ "c.activityname AS main,a.activityname AS a,g.activityname AS b,h.activityname AS c,i.activityname AS d,\" \" AS e,f.activitytype,i.progressstatus,\r\n"
+//				+ "b.activitystatus,i.activitystatusid,c.revisionno ,4 AS levelid,b.ActivityShort,a.statusremarks,i.dateofcompletion,c.projectid,IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= i.ActivityId AND o.isactive='1' AND o.progress=i.progressstatus ) , DATE (i.modifieddate))AS 'progressdate',i.point5,i.point6,i.point9\r\n"
+//				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f,\r\n"
+//				+ "milestone_activity_level g,milestone_activity_level h,milestone_activity_level i\r\n"
+//				+ "WHERE i.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=i.ActivityType\r\n"
+//				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
+//				+ "AND  g.parentactivityid=a.activityid AND g.activitylevelid='2' AND  h.parentactivityid=g.activityid AND h.activitylevelid='3'\r\n"
+//				+ "AND  i.parentactivityid=h.activityid AND i.activitylevelid='4' \r\n"
+//				+ "UNION\r\n"
+//				+ "SELECT c.milestoneno AS mile,j.parentactivityid AS id,a.activityid AS aid,g.activityid AS bid,h.activityid AS cid,i.activityid AS did,j.activityid AS eid,j.startdate,j.enddate,j.orgenddate,\r\n"
+//				+ "c.activityname AS main,a.activityname AS a,g.activityname AS b,h.activityname AS c,i.activityname AS d,j.activityname AS e,f.activitytype,j.progressstatus,\r\n"
+//				+ "b.activitystatus,j.activitystatusid,c.revisionno ,5 AS levelid,b.ActivityShort,a.statusremarks,j.dateofcompletion,c.projectid,IFNULL((SELECT MAX(o.ProgressDate) FROM milestone_activity_sub o WHERE o.ActivityId= j.ActivityId AND o.isactive='1' AND o.progress=j.progressstatus ), DATE (j.modifieddate)) AS 'progressdate',j.point5,j.point6,j.point9\r\n"
+//				+ "FROM milestone_activity_level a,milestone_activity_status b, milestone_activity c ,milestone_activity_type f,\r\n"
+//				+ "milestone_activity_level g,milestone_activity_level h,milestone_activity_level i,milestone_activity_level j\r\n"
+//				+ "WHERE j.activitystatusid=b.activitystatusid AND   a.parentactivityid=c.milestoneactivityid AND a.activitylevelid='1' AND f.ActivityTypeId=j.ActivityType\r\n"
+//				+ "AND  a.revision=c.revisionno AND c.projectid=:ProjectId\r\n"
+//				+ "AND  g.parentactivityid=a.activityid AND g.activitylevelid='2' AND  h.parentactivityid=g.activityid AND h.activitylevelid='3'\r\n"
+//				+ "AND  i.parentactivityid=h.activityid AND i.activitylevelid='4' AND  j.parentactivityid=i.activityid AND j.activitylevelid='5'\r\n"
+//				+ "ORDER BY  mile,id,aid,bid,cid,did,eid ASC \r\n"
+//				+ ") \r\n"
+//				+ "\r\n"
+//				+ "t ORDER  BY t.mile,t.aid,t.bid,t.cid,t.did,t.eid;\r\n"
+//				+ "";
+//		
+//		Query query = manager.createNativeQuery(sql);
+//		query.setParameter("ProjectId", projectId);
+//		
+//		query.executeUpdate();
+//		
+//		if(projectId.equalsIgnoreCase("23")) {
+//			String sql1 = "select * from test"+projectId;
+//			Query query1=manager.createNativeQuery(sql1);
+//			
+//			List<Object[]>list = (List<Object[]>)query1.getResultList();
+//			System.out.println("list size----------------&&&&&&&&&&&&&&"+list.size());
+//			
+//		}
+//		
+//		
+//		return null;
+//	}
 	
+	private static final String MOMAPRVLIST = "SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,\r\n"
+			+ "c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,\r\n"
+			+ "p.ProjectShortName,a.CommitteeMainId,a.ScheduleId FROM pms_enote a,employee b,pms_enote_trans c,\r\n"
+			+ "dak_enote_status d, committee_main m ,committee cm, project_master p,committee_schedule cs WHERE a.InitiatedBy=b.EmpId\r\n"
+			+ " AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId  AND cs.ScheduleId=a.ScheduleId AND m.CommitteeMainId=cs.CommitteeMainId\r\n"
+			+ "AND m.projectid = p.projectid AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND\r\n"
+			+ "c.ActionBy=:empId AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate AND a.EnoteFrom='S'  GROUP BY a.EnoteId 	 \r\n"
+			+ "UNION\r\n"
+			+ "SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,\r\n"
+			+ "c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,\r\n"
+			+ "'Non-project',a.CommitteeMainId,a.ScheduleId FROM pms_enote a,employee b,pms_enote_trans c,\r\n"
+			+ "dak_enote_status d, committee_main m ,committee cm, committee_schedule cs WHERE a.InitiatedBy=b.EmpId\r\n"
+			+ "AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId  AND cs.ScheduleId=a.ScheduleId AND m.CommitteeMainId=cs.CommitteeMainId\r\n"
+			+ "AND m.projectid = '0' AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND\r\n"
+			+ "c.ActionBy=:empId AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate AND a.EnoteFrom='S'  GROUP BY a.EnoteId";
+	
+		@Override
+		public List<Object[]> MomeNoteApprovalList(long empId, String fromDate, String toDate) throws Exception {
+			Query query = manager.createNativeQuery(MOMAPRVLIST);
+			
+			query.setParameter("empId", empId);
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("tdate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}
 }
 

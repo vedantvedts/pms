@@ -935,7 +935,7 @@ public class CommitteeController {
 			req.setAttribute("EnotePrintDetails", EnotePrintDetails);
 			req.setAttribute("EnotePrintDetails", EnotePrintDetails);
 			String filename="Committee_ENote_Print";
-			
+			req.setAttribute("NewApprovalList", service.NewApprovalList(service.CommitteMainEnoteList(committeemainid,scheduleid)[0].toString()));
 			if(type.equalsIgnoreCase("S")) {
 				filename="MOM_ENote_Print";
 			}
@@ -1151,7 +1151,7 @@ public class CommitteeController {
 			String action= req.getParameter("action");
 			String flag = req.getParameter("flag");
 			String flow =req.getParameter("flow");
-
+			String labcode = (String)ses.getAttribute("labcode");
 			System.out.println("flow" +flow);
 
 			long flagcount=0;
@@ -1188,6 +1188,7 @@ public class CommitteeController {
 				}
 				if(req.getParameter("ApprovingOfficer")!=null) {
 					pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
+					pe.setAppprovingOfficerLabCode(labcode);
 				}
 				pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
 				if(pe.getCreatedBy()==null) {
@@ -1378,8 +1379,8 @@ public class CommitteeController {
 				toDate=sdf2.format(rdf.parse(toDate));
 			}
 			List<Object[]> eNotePendingList =service.eNotePendingList(EmpId,"S");
-			List<Object[]> eNoteApprovalList=service.eNoteApprovalList(EmpId,fromDate,toDate);
-			//req.setAttribute("eNoteApprovalList", eNoteApprovalList);
+			List<Object[]> eNoteApprovalList=service.MomeNoteApprovalList(EmpId,fromDate,toDate);
+			req.setAttribute("eNoteApprovalList", eNoteApprovalList);
 			req.setAttribute("EnoteApprovalPendingList", eNotePendingList);
 			req.setAttribute("frmDt", fromDate);
 			req.setAttribute("toDt",   toDate);

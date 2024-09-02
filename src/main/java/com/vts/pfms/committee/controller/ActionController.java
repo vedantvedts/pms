@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,7 +156,7 @@ public class ActionController {
 	
 	
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-	
+	SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	@RequestMapping(value = "ActionLaunch.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -4864,4 +4865,102 @@ public class ActionController {
     		}
         		return "redirect:/OldRfaUpload.htm";
         	}
+            
+            //MeetingDateWiseReport.htm
+            @RequestMapping(value = "MeetingDateWiseReport.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String MeetingDateWiseReport(Model model,HttpServletRequest req,HttpServletResponse res ,HttpSession ses, RedirectAttributes redir)throws Exception
+        	{
+            	String UserId = (String) ses.getAttribute("Username");
+        		String LabCode = (String) ses.getAttribute("labcode");
+        		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+    			String LoginType=(String)ses.getAttribute("LoginType");
+        		logger.info(new Date() +"Inside MeetingDateWiseReport.htm "+UserId);
+        		try {
+        			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
+        			req.setAttribute("ProjectsList",projectdetailslist);
+
+        			 //projectid
+        			 //fromDate
+        			 //toDate
+        			String projectid=req.getParameter("projectid");
+        			System.out.println("projectid-----"+projectid);
+        			String fromDate=req.getParameter("fromDate");
+        			String toDate=req.getParameter("toDate");
+        			System.out.println("fromDate-----"+fromDate);
+        			System.out.println("toDate-----"+toDate);
+        			
+        			
+        			
+        			Calendar cal = new GregorianCalendar(); 
+       			cal.add(Calendar.DAY_OF_MONTH, -30); 
+       			Date prevdate = cal.getTime();
+        			if(fromDate== null || toDate==null) 
+        			{
+        				fromDate = new SimpleDateFormat("yyyy-MM-dd").format(prevdate);
+        				//fromDate=DateTimeFormatUtil.getFinancialYearStartDateSqlFormat();
+        				toDate  = LocalDate.now().toString();
+        			}else
+        			{
+        				fromDate=sdf3.format(sdf.parse(fromDate));
+        				toDate=sdf3.format(sdf.parse(toDate));
+        			}
+        			
+        			System.out.println("fromDate-****----"+fromDate);
+        			System.out.println("toDate***----"+toDate);
+        			
+        			if(projectid==null || projectid.equals("null"))
+          			{
+          				projectid=projectdetailslist.get(0)[0].toString();
+          			}
+        			
+        			//meeting list
+        			List<Object[]>getMeetingList=service.getMeetingList(Long.parseLong(projectid),fromDate,toDate);
+        			
+        			req.setAttribute("getMeetingList", getMeetingList);
+        			
+        			
+        			req.setAttribute("projectid", projectid);
+        			req.setAttribute("fromDate", fromDate);
+        			req.setAttribute("toDate", toDate);
+        			
+        			
+        			return "action/MeetingDateWiseReport"; 
+        		}catch (Exception e) {
+					e.printStackTrace();
+				}
+        		return null;
+        		
+        	
+        	}
+            
+            //MeetingActionDetails.htm
+            @RequestMapping(value = "MeetingActionDetails.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String MeetingActionDetails(Model model,HttpServletRequest req,HttpServletResponse res ,HttpSession ses, RedirectAttributes redir)throws Exception
+        	{
+            	String UserId = (String) ses.getAttribute("Username");
+        		String LabCode = (String) ses.getAttribute("labcode");
+        		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+    			String LoginType=(String)ses.getAttribute("LoginType");
+        		logger.info(new Date() +"Inside MeetingDateWiseReport.htm "+UserId);
+        		try {
+        			//MeetingId
+        			String MeetingId = (String) req.getParameter("MeetingId");
+        			System.out.println("MeetingId-----"+MeetingId);
+        			System.out.println("EmpId----"+EmpId);
+        			//list of action items 
+        			List<Object[]>actionList=service.getMeetingAction(Long.parseLong(MeetingId),LoginType,EmpId);
+        			req.setAttribute("actionList", actionList);
+        			req.setAttribute("text", "R");
+        			//meettingid
+        			req.setAttribute("meettingid", MeetingId);
+        			req.setAttribute("LoginType", LoginType);
+        			req.setAttribute("EmpId", EmpId);
+        			
+        			return "action/ActionMeeting"; 
+        		}catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+        		}
+            
 }
