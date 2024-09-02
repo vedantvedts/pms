@@ -562,7 +562,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 					<div class="col-md-8">
  					<input class="form-control" type="file" id="imageUpload" name="image" accept="image/*" required="required">					
 					</div>
-					<%if(SpecProducTree!=null && SpecProducTree.size()>0) {%>
+					<%if(SpecProducTree!=null && SpecProducTree.size()>0 && !projectId.equalsIgnoreCase("0")) {%>
 					<div class="col-md-1">
 					<a class="btn" target="blank" data-toggle="tooltip" data-placement="top" data-original-data="Tooltip on Top" title="Product Tree"    href="ProductTree.htm?ProjectId=<%=projectId%>"><img alt="" src="view/images/tree.png" ></a>
 					</div>

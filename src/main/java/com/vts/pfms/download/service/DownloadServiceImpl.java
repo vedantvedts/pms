@@ -43,7 +43,6 @@ public class DownloadServiceImpl implements DownloadService
 	
 	@Override
 	public Long TemplateAttributesAdd(TemplateAttributes ta) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.TemplateAttributesAdd(ta);
 	}
 	

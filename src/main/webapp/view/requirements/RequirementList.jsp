@@ -15,6 +15,10 @@
 <meta charset="ISO-8859-1">
 <title>PMS</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+<script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -450,7 +454,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
 			<%int count=0;
 				for(Object []obj:subReqList) {%>
-				<div>	<button  type="button" class="btn btn-secondary viewbtn mt-2" style="width:88%" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
+				<div>	<button  type="button" class="btn btn-secondary  mt-2" style="width:88%" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
 						 <%=(++count)+". "+ obj[3] %>
 					</button>
 					<button style="width:10%;background: white;" class="btn btn-sm" onclick="openSubReqModal(<%=obj[14].toString()%>,<%=obj[0].toString()%>)" data-toggle="tooltip" data-placement="bottom" data-original-data="" title="ADD REQ">
@@ -466,7 +470,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 						%>	
 			
 				
-							<button type="button" class="btn btn-secondary viewbtn mt-2" id="<%=obj1[0] %>" value="<%=obj1[0]%>"  onclick="showDetailss(<%=obj1[0].toString()%>,<%=obj[0].toString()%>)" >
+							<button type="button" class="btn btn-secondary viewbtn mt-2" id="<%=obj1[0] %>" value="<%=obj1[0]%>/<%=obj[0].toString()%>"  <%-- onclick="showDetailss(<%=obj1[0].toString()%>,<%=obj[0].toString()%>)"  --%>>
 								<i class="fa fa-caret-right" aria-hidden="true" style="color:white;"></i> &nbsp;  
 								<%=count+"."+(++subcount)+". "+  obj1[1] %>
 							</button>
@@ -482,11 +486,10 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 						<div class="row">
 							<div class="col-md-12">
 								<div class="row">
-								<!-- 	<div class="col-md-2" id="reqName"></div> -->
-									
-
+							<div class="col-md-4" id="reqName" style="font-size: 1.4rem;font-weight: 600;"></div>
 								</div> 
 							</div>
+							
 							<div class="col-md-9" style="margin-top: 1%">
 								<h5 style="font-size: 22px; color: #005086; width: fit-content">Brief
 								</h5>
@@ -499,12 +502,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 							</div>
 							<div class="col-md-12" id="subDivs" style="display:none;">
 								<div class="row">
-								<!-- 	<div class="col-md-3" style="">
-										<h5 style="font-size: 22px; color: #005086;">Linked
-											Requirements:</h5>
-										<span id="linked" style="font-size: 18px;"></span>
-
-									</div> -->
+								
 
 									<div class="col-md-4" style="">
 										<div class="row">
@@ -590,7 +588,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									<div class="col-md-7" style="margin-top: 1%;">
 										<div class="form-group">
 											<%if ((ProjectParaDetails != null) && (!ProjectParaDetails.isEmpty())) {%>
-												<select class="form-control selectdee" name="LinkedPara" id="LinkedPara" data-width="80%" data-live-search="true" multiple onchange="">
+												<select class="form-control selectdee" name="LinkedPara" id="LinkedPara" data-width="80%" data-live-search="true" multiple onchange="getParaDetails()">
 													<option value="" disabled="disabled">---Choose----</option>
 													<%for (Object[] obj : ProjectParaDetails) {%>
 														<option value="<%=obj[0]%>"><%=obj[3]%></option>
@@ -676,7 +674,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row mt-2">
 									<div class="col-md-6">
 										<label style="margin: 0px; font-size: 17px; color: #07689f">
-											Requirement Description:<span class="mandatory" style="color: red;">*</span>
+											Requirement Description:<span class="mandatory" style="color: red;">*</span> 
 										</label>
 									</div>
 								</div>
@@ -686,7 +684,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row">
 									<div class="col-md-12" id="textarea" style="">
 										<div class="form-group">
-											<textarea  name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+										<div id="Editor" class="center"></div>
+											<textarea  name="description" style="display: none;" class="form-control" id="descriptionadds" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 										</div>
 									</div>
 								</div>
@@ -722,7 +721,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row ">
 									<div class="col-md-3">
 										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
-											Test:
+											Test Type:
 										</label>
 									</div>
 									
@@ -842,7 +841,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 						
 							<div class="col-md-12" align="center" style="margin-top: 3%;">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							<button type="submit" class="btn btn-primary btn-sm submit btn-req" id="add" name="action" value="SUBMIT" onclick="return confirm('Are you sure to submit?');">SUBMIT</button>
+							<button type="submit" class="btn btn-primary btn-sm submit btn-req" id="add" name="action" value="SUBMIT" onclick="submitReq()">SUBMIT</button>
 							<input type="hidden" name="projectId" value=<%=projectId %>>
 							<input type="hidden" name="initiationId" value=<%=initiationId %>>
 							<input type="hidden" name="project" value=<%=project %>>
@@ -868,7 +867,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									<div class="col-md-7" style="margin-top: 1%;">
 										<div class="form-group">
 											<%if ((ProjectParaDetails != null) && (!ProjectParaDetails.isEmpty())) {%>
-												<select class="form-control selectdee" name="LinkedPara" id="LinkedParaEdit" data-width="80%" data-live-search="true" multiple onchange="">
+												<select class="form-control selectdee" name="LinkedPara" id="LinkedParaEdit" data-width="80%" data-live-search="true" multiple onchange="getParaDetailsEdit()">
 													<option value="" disabled="disabled">---Choose----</option>
 													<%for (Object[] obj : ProjectParaDetails) {%>
 														<option value="<%=obj[0]%>"><%=obj[3]%></option>
@@ -971,7 +970,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row">
 									<div class="col-md-12" id="textarea" style="">
 										<div class="form-group">
-											<textarea  name="description" class="form-control" id="descriptionedit" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+											<div id="Editor1" class="center"></div>
+											<textarea  name="description" style="display: none;" class="form-control" id="descriptionedit" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 										</div>
 									</div>
 								</div>
@@ -981,7 +981,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row">
 									<div class="col-md-3">
 										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
-											Demonstration:<span class="mandatory" style="color: red;"></span>
+											Demonstration:
 										</label>
 									</div>
 									
@@ -1007,7 +1007,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row ">
 									<div class="col-md-3">
 										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
-											Test:<span class="mandatory" style="color: red;">*</span>
+											Test Type:
 										</label>
 									</div>
 									
@@ -1032,7 +1032,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row">
 									<div class="col-md-3">
 										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
-											Analysis:<span class="mandatory" style="color: red;">*</span>
+											Analysis:
 										</label>
 									</div>
 									
@@ -1059,7 +1059,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row ">
 									<div class="col-md-3">
 									<label style="margin-top: 15px; font-size: 17px; color: #07689f">
-										Inspection:<span class="mandatory" style="color: red;">*</span>
+										Inspection:
 									</label>
 									</div>
 									
@@ -1084,7 +1084,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<div class="row ">
 									<div class="col-md-3">
 									<label style="margin-top: 15px; font-size: 17px; color: #07689f">
-										Special Methods:<span class="mandatory" style="color: red;">*</span>
+										Special Methods:
 									</label>
 									</div>
 										<div class="col-md-7" style="margin-top: 1%;">
@@ -1123,7 +1123,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 							
 						<div class="col-md-12" align="center" style="margin-top: 3%;">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							<button type="submit" class="btn btn-primary btn-sm edit btn-req" id="add" name="action" value="SUBMIT" onclick="return confirm('Are you sure to submit?');">UPDATE</button>
+							<button type="submit" class="btn btn-primary btn-sm edit btn-req" id="add" name="action" value="SUBMIT" onclick="updateReq()">UPDATE</button>
 							<input type="hidden" name="projectId" value=<%=projectId %>>
 							<input type="hidden" name="initiationId" value=<%=initiationId %>>
 							<input type="hidden" name="project" value=<%=project %>>
@@ -1357,7 +1357,7 @@ var isOpen=false;
 var tempVal=0;
 function showDetails(InitiationReqId,type){
 	$('.viewbtn').css("background","#055C9D");
-	$('#'+InitiationReqId).css("background","green");
+	/* $('#'+InitiationReqId).css("background","green"); */
 	
 	$('#row1').show();
 	$('#row2').hide();
@@ -1400,7 +1400,7 @@ function showDetails(InitiationReqId,type){
 			success:function(result){
 				 var ajaxresult=JSON.parse(result);
 				$('#brief').html(ajaxresult[2]);
-				
+				$('#reqName').html("")
 				if(ajaxresult[5]==null){
 					$('#Prioritytext').html("-");
 				}else{
@@ -1437,8 +1437,15 @@ function showDetails(InitiationReqId,type){
 	$('#subDivs').hide();
 	
 }
-
+var templengthEdit=0;
 var map = new Map();
+$('.viewbtn').hover(function() {
+    var subId = $(this).val().split("/")[0];
+    var Id = $(this).val().split("/")[1];
+    
+    console.log($(this).val())
+    showDetailss(subId, Id);
+});
 function showDetailss(subId,Id){
 	$('.viewbtn').css("background","#055C9D");
 	$('#'+subId).css("background","green");
@@ -1457,7 +1464,7 @@ function showDetailss(subId,Id){
 			 var ajaxresult=JSON.parse(result);
 			 console.log(ajaxresult)
 			$('#brief').html(ajaxresult[2]+" (" +ajaxresult[4]+" )");
-			
+				$('#reqName').html("Requirement Id - "+ajaxresult[4])
 			if(ajaxresult[5]!=null){
 				$('#Prioritytext').html(ajaxresult[5]);
 			}else{
@@ -1562,6 +1569,7 @@ function edit1(InitiationReqId){
 				 var ajaxresult=JSON.parse(result);
 				console.log(ajaxresult);
 				 $('#descriptionedit').val(ajaxresult[3])
+				 CKEDITOR.instances['Editor1'].setData(ajaxresult[3]);
 				 $('#needtypeedit').val(ajaxresult[8])
 				 $('#priorityedit').val(ajaxresult[5])
 				 $('#remarksedit').val(ajaxresult[9])
@@ -1606,7 +1614,7 @@ function edit1(InitiationReqId){
 				
 					 $('#specialMethodsedit').val(methods).trigger('change');
 				 }
-		
+				 templengthEdit=$('#LinkedParaEdit').val().length
 			 var reqtypeName =ajaxresult[4].split("_")[0];  
 		      
 		        var matchingKey = null;
@@ -1703,8 +1711,198 @@ $( document ).ready(function() {
 });
 <%}%>
 
+var editor_config = {
+	    toolbar: [
+	        {
+	            name: 'paragraph',
+	            items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+	        },
+	        {
+	            name: 'styles',
+	            items: ['Format', 'Font', 'FontSize']
+	        },
+	        {
+	            name: 'align',
+	            items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+	        }
+	    ],
+	    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+	    customConfig: '',
+	    disallowedContent: 'img{width,height,float}',
+	    extraAllowedContent: 'img[width,height,align]',
+	    height: 200,
+	    contentsCss: [CKEDITOR.basePath + 'mystyles.css'],
+	    bodyClass: 'document-editor',
+	    format_tags: 'p;h1;h2;h3;pre',
+	    removeDialogTabs: 'image:advanced;link:advanced',
+	    stylesSet: [
+	        {
+	            name: 'Marker',
+	            element: 'span',
+	            attributes: { 'class': 'marker' }
+	        },
+	        {
+	            name: 'Cited Work',
+	            element: 'cite'
+	        },
+	        {
+	            name: 'Inline Quotation',
+	            element: 'q'
+	        },
+	        {
+	            name: 'Special Container',
+	            element: 'div',
+	            styles: {
+	                padding: '5px 10px',
+	                background: '#eee',
+	                border: '1px solid #ccc'
+	            }
+	        },
+	        {
+	            name: 'Compact table',
+	            element: 'table',
+	            attributes: {
+	                cellpadding: '5',
+	                cellspacing: '0',
+	                border: '1',
+	                bordercolor: '#ccc'
+	            },
+	            styles: { 'border-collapse': 'collapse' }
+	        },
+	        {
+	            name: 'Borderless Table',
+	            element: 'table',
+	            styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' }
+	        },
+	        {
+	            name: 'Square Bulleted List',
+	            element: 'ul',
+	            styles: { 'list-style-type': 'square' }
+	        }
+	    ],
+	    enterMode: CKEDITOR.ENTER_BR,
+	    shiftEnterMode: CKEDITOR.ENTER_P,
+	    on: {
+	        instanceReady: function() {
+	            this.dataProcessor.htmlFilter.addRules({
+	                elements: {
+	                    p: function(element) {
+	                        if (element.children.length == 1 && element.children[0].name == 'br') {
+	                            return false;
+	                        }
+	                    }
+	                }
+	            });
+	        }
+	    }
+	};
+CKEDITOR.replace('Editor', editor_config);
+CKEDITOR.replace('Editor1', editor_config);
+var list=[];
+$( document ).ready(function() {
+
+	   $.ajax({
+        type: 'GET',
+        url: 'RequirementParaDetails.htm',
+        datatype: 'json',
+        data: {
+            reqInitiationId: <%=reqInitiationId%>,
+        },
+        success: function(result) {
+            list = JSON.parse(result);
+        }
+    });
+	   
+});
 
 
+var templength=0;
+var currentLength =0;
+function getParaDetails(){
+
+	  var selectedOptions=$('#LinkedPara').val()
+	   
+	   var html="";
+   for (var j = 0; j < selectedOptions.length; j++) {
+		 for(var i=0;i<list.length;i++){
+			 if(list[i][0]==selectedOptions[j]){
+				 console.log(list[i][4])
+				 html=html+(j+1)+"."+list[i][4]+'<br>'
+			 }
+		 }
+		     
+	} 
+
+   CKEDITOR.instances['Editor'].setData(html);
+	var data =  CKEDITOR.instances['Editor'].getData();
+	
+	$('#descriptionadds').val(data)
+}
+
+function getParaDetailsEdit(){
+	console.log(templengthEdit+"--")
+	
+	var curLength = $('#LinkedParaEdit').val().length;
+	
+	console.log(curLength+"///")
+	
+	if(curLength>templengthEdit){
+		 $.ajax({
+			   type:'GET',
+				url:'RequirementParaDetails.htm',
+				datatype:'json',
+				data:{
+					reqInitiationId:<%=reqInitiationId%>,
+				},
+				success:function(result){
+					var ajaxresult=JSON.parse(result);
+				/* 
+					var html="";
+					for(var i=0;i<ajaxresult.length;i++){
+						if(ajaxresult[i][0]==latestSelectedValue && ajaxresult[i][4]!=null){
+							html=ajaxresult[i][4];
+							html=currentLength+"."+html+'<br>'
+						}
+					}
+					
+					var editorData = CKEDITOR.instances['Editor1'].getData();
+					CKEDITOR.instances['Editor1'].setData(editorData+html);
+					var data =CKEDITOR.instances['Editor'1].getData();
+					
+					$('#descriptionedit').val(data); */
+			
+				}
+				
+			
+		   })
+	}
+}
+
+
+function submitReq(){
+	var data =CKEDITOR.instances['Editor'].getData();
+	
+	$('#descriptionadds').val(data);
+	
+	if(confirm('Are you sure to submit?')){
+		
+	}else{
+		event.preventDefault();
+		return false;
+	}
+}
+
+
+function updateReq(){
+	var data =CKEDITOR.instances['Editor1'].getData();
+	$('#descriptionedit').val(data);
+	if(confirm('Are you sure to submit?')){
+		
+	}else{
+		event.preventDefault();
+		return false;
+	}
+}
 </script>
 
 </body>

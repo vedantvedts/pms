@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -197,7 +198,7 @@ FormatConverter fc = new FormatConverter();
 														<td style="width: 300px;"><input type="text" class="form-control form-control" name="MilestoneActivity" id="MilestoneActivity0" required="required" placeholder="Maximum 4000 Chararcters" maxlength="4000"></td>                               	
 														<td style="width: 150px;">
 														<select class="form-control selectdee" name="Milestonestarted" id="Milestonestarted0">
-														<option value="0 0"  selected="selected"	hidden="true">MIL-0</option>
+														<option value="0 0 <%=LocalDate.now() %>"  selected="selected"	hidden="true">MIL-0</option>
 												 	    <%if(MilestoneTotalMonth.size()!=0){ %>
 														<%for(Object []obj:MilestoneTotalMonth) {%>
 															<option value="<%=obj[0]+" "+obj[1]%>">MIL-<%=obj[1] %></option>

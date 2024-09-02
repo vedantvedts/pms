@@ -419,7 +419,7 @@ for(Object[]obj:AppendixList){
 		</div>
 		</div>
 		
-		<!-- panel 3  -->
+	<!-- 	
 		<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
 		<div class="panel-heading ">
 		<h4 class="panel-title" >
@@ -428,7 +428,7 @@ for(Object[]obj:AppendixList){
 		</div>
 		</div>
 		
-		<!-- panel 4  -->
+		
 		<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
 		<div class="panel-heading ">
 		<h4 class="panel-title" >
@@ -436,7 +436,7 @@ for(Object[]obj:AppendixList){
 				<button class="btn btn-sm btn-info spansub" style="float:right" onclick="showTest()">UPLOAD</button>
 		</h4>
 		</div>
-		</div>
+		</div> -->
 		
 <%-- 	         	    <div class="row" id="inputDiv" style="">  
    					<div class="col-md-11 mt-1"  align="left"  style="margin-left: 10px;">

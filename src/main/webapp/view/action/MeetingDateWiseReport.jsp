@@ -145,7 +145,7 @@ String toDate = today.toString();
 																	  	<input type="hidden" name="FromDate" value="<%=fromDate1 %>">
 																	  	<input type="hidden" name="ToDate" value="<%=toDate1 %>">
 																	  	<input type="hidden" name="ProjectId" value="<%=projectid %>">
-																	  	
+																	  	<input type="hidden" name="Meeting" value="<%=obj[1]%>">
     <button type="submit" formaction="MeetingActionDetails.htm" value="<%=obj[0] %>" name="MeetingId" ><i class="fa fa-eye" aria-hidden="true"></i></button>
 </form>
 				

@@ -275,9 +275,9 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
                         <i class="fa fa-check mr-2"></i>
                         <span class="font-weight-bold large text-uppercase">Details</span></a>
 					
-					 <a class="nav-link mb-3 shadow custom_width" id="v-pills-requirement-tab" data-toggle="pill" href="#v-pills-requirement" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+<!-- 					 <a class="nav-link mb-3 shadow custom_width" id="v-pills-requirement-tab" data-toggle="pill" href="#v-pills-requirement" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                    <i class="fa fa-list-alt" aria-hidden="true"></i>
-                     <span class="font-weight-bold large text-uppercase">Requirement</span></a>
+                     <span class="font-weight-bold large text-uppercase">Requirement</span></a> -->
                         
                     <a class="nav-link mb-3 shadow custom_width" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                         <i class="fa fa-star mr-2"></i>

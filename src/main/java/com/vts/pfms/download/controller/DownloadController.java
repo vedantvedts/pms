@@ -212,16 +212,6 @@ public class DownloadController {
   		try {
   			
   			TemplateAttributes ta= new TemplateAttributes();
-  			//String Projectid =req.getParameter("projectid");
-  			//String initiationid=req.getParameter("initiationid");
-  			// ismain =req.getParameter("ismain");
-  		
-  		//System.out.println("@@@@@@@@@@projectid@@@@@projectid"+Projectid);
-  		//System.out.println("@@@@@@@@initiationid"+initiationid);
-  		//System.out.println("@@@@@@@@ismain"+ismain);
-		
-
-  	
   			String HeaderFontSize= req.getParameter("HeaderFontSize");
   			String HeaderFontWeight = req.getParameter("HeaderFontWeight");
   			
@@ -238,31 +228,6 @@ public class DownloadController {
   			
   			String FontFamily=req.getParameter("FontFamily");
   			
-  			//String mainTableWidth = req.getParameter("mainTableWidth");
-  			//String subTableWidth = req.getParameter("subTableWidth");
-  			
-  			//if(ismain != null && ismain.equalsIgnoreCase("N")) {
-  			//	ta.setProjectId(Long.parseLong(Projectid));	
-  			
-  		//	}
-  			
-  		//	else
-  			//{
-  				//ta.setInitiationId(0);
-  			//}
-  			
-  			
-  			//if(ismain != null && ismain.equalsIgnoreCase("Y")) {
-  			//	ta.setInitiationId(Long.parseLong(initiationid));
-  			
-  			//}
-  			
-  		//	else
-  		//	{
-  				//ta.setProjectId(0);
-  		//	}
-  			
-  			
   			
   			ta.setHeaderFontSize(Integer.parseInt(HeaderFontSize));
   			ta.setHeaderFontWeight(HeaderFontWeight);
@@ -278,24 +243,15 @@ public class DownloadController {
   			ta.setCreatedBy(Username);
   			ta.setCreatedDate(LocalDate.now().toString());
   			ta.setIsActive(1);
+  			ta.setRestictionOnUse(req.getParameter("RestictionOnUse"));
+  			
+  			System.out.println(ta.toString());
   			Long result= service.TemplateAttributesAdd(ta);
-  			System.out.println("result@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+result);
   			if(result>0) {
   				redir.addFlashAttribute("result", "Template Attributes set successfully.");
   			}else {
   				redir.addFlashAttribute("resultfail", "Template Attributes set successfully.");
   			}
-  			
-  			//redir.addFlashAttribute("ismain",req.getParameter("ismain"));
-  			//String ismain1 = req.getParameter("ismain");
-
-  		// Add 'ismain' as a flash attribute
-  		//redir.addFlashAttribute("ismain", ismain);
-  		//	if(ismain1!= null && ismain1.equalsIgnoreCase("N")) {
-  			//	redir.addFlashAttribute("projectid",req.getParameter("projectid"));
-  		//	}else if(ismain1!= null && ismain1.equalsIgnoreCase("Y")){
-  		//		redir.addFlashAttribute("initiationid",req.getParameter("initiationid"));
-  			//}
   			  List<Object[]> ProjectList = proservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
   			redir.addFlashAttribute("ProjectList", ProjectList);
   		}
@@ -345,8 +301,8 @@ public class DownloadController {
   		
   			AttributId.setModifiedBy(Username);
   			AttributId.setModifiedDate(LocalDate.now().toString());
-  			AttributId.setIsActive(0);
-  		
+  			AttributId.setIsActive(1);
+  			AttributId.setRestictionOnUse(req.getParameter("RestictionOnUse"));
   			
   			
   			

@@ -168,7 +168,7 @@ FormatConverter fc = new FormatConverter();
 		                     <div class="col-md-4 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Deliverable</label>
-										<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable"  <% if (ProjectEditData[12]!=null){ %>  value="<%=ProjectEditData[12]%>" <%}else {%> value="" <%} %> >
+										<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" placeholder="max 255 characters"  <% if (ProjectEditData[12]!=null){ %>  value="<%=ProjectEditData[12]%>" <%}else {%> value="" <%} %>maxlength="250" >
 		                        </div>
 		                    </div> 
 		                    
@@ -187,7 +187,7 @@ FormatConverter fc = new FormatConverter();
 	                        	<div class="form-group" id="Remarks" style="display:none;">
 		                            <label class="control-label">Remarks</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" <%if(ProjectEditData[16]!=null) {%>value="<%=ProjectEditData[16]%>" <%} %>  >
+		  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" <%if(ProjectEditData[16]!=null) {%>value="<%=ProjectEditData[16]%>" <%} %> maxlength="255" placeholder="max 255 characters" >
 		                        </div>
 	       					</div> 
 

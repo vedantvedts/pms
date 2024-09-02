@@ -170,7 +170,8 @@ public class RequirementsController {
 				initiationId = reqInitiation.getInitiationId().toString();
 				productTreeMainId = reqInitiation.getProductTreeMainId().toString();
 				projectType = projectId.equals("0")?"I":"M";
-
+				String version =reqInitiation.getReqVersion().toString();
+				req.setAttribute("DocumentVersion", version);
 				reqInitiationId = service.getFirstVersionReqInitiationId(initiationId, projectId, productTreeMainId)+"";
 			}else {
 				projectType = req.getParameter("projectType");
@@ -297,6 +298,7 @@ public class RequirementsController {
 			req.setAttribute("SQRFile", projectservice.SqrFiles(reqInitiationId)); 
 			req.setAttribute("paracounts", req.getParameter("paracounts")==null?"1":req.getParameter("paracounts"));
 			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
+			req.setAttribute("TotalSqr", service.getAllSqr(reqInitiationId));
 		}catch(Exception e) {
 			logger.error(new Date() +" Inside RequirementParaMain.htm "+UserId, e);
 		}
@@ -1676,6 +1678,7 @@ public class RequirementsController {
 				String []valuesArray = values.get(i).split("/");
 				//					pir.setInitiationId(Long.parseLong(initiationId));
 				//					pir.setProjectId(Long.parseLong(projectId));
+				System.out.println(Arrays.toString(valuesArray)+"--"+values);
 				pir.setCategory("N");
 				pir.setNeedType("N");
 				pir.setReqMainId(Long.parseLong(valuesArray[0]));
@@ -1936,7 +1939,12 @@ public class RequirementsController {
 			String priority = req.getParameter("priority");
 			String needtype  = req.getParameter("needtype");
 			String reqInitiationId  = req.getParameter("reqInitiationId");
-
+			
+			String reqType = req.getParameter("reqType");
+			String[]reqTypes=reqType.split("/");
+			String requirementId="";
+			
+			
 			String Demonstration = null;
 
 			if(req.getParameterValues("Demonstration")!=null) {
@@ -1970,9 +1978,34 @@ public class RequirementsController {
 				LinkedPara=Arrays.asList(req.getParameterValues("LinkedPara")).toString().replace("[","").replace("]", "");
 			}
 
-			System.out.println("LinkedPara  "+req.getParameterValues("LinkedPara"));
 
+		
 			PfmsInititationRequirement pir = service.getPfmsInititationRequirementById(InitiationReqId);
+			
+			
+			String ReqMainId=reqTypes[0];
+			if(!ReqMainId.equalsIgnoreCase(pir.getReqMainId()+"")) {
+			System.out.println(InitiationReqId+"length--"+ReqMainId);
+			List<Object[]>reqTypeList=service.getreqTypeList(ReqMainId,MainInitiationReqId);
+			int length=0;
+
+			if(reqTypeList!=null && reqTypeList.size()>0) {
+				length=reqTypeList.size();
+			}
+		
+			if (length < 9) {
+				requirementId = reqTypes[1]+ ("_000" + ( (length+1) * 10));
+			} else if (length < 99) {
+				requirementId = reqTypes[1]+ ("_00" + ( (length+1) * 10));
+			} else {
+				requirementId = reqTypes[1]+ ("_0" + ( (length+1) * 10));
+			}
+			pir.setRequirementId(requirementId);
+			pir.setReqMainId(Long.parseLong(ReqMainId));
+			pir.setRequirementBrief(reqTypes[2]);
+			}
+			
+			
 			pir.setRequirementDesc(description);
 			pir.setNeedType(needtype);
 			pir.setPriority(priority);
@@ -1987,6 +2020,7 @@ public class RequirementsController {
 			pir.setLinkedPara(LinkedPara);
 			pir.setCriticality(req.getParameter("criticality"));
 			pir.setReqInitiationId(Long.parseLong(reqInitiationId));
+		
 			long count =0;
 			count=service.addOrUpdatePfmsInititationRequirement(pir);
 

@@ -35,7 +35,7 @@ public class TemplateAttributes {
 	private int  SuperHeaderFontsize;
 	private String SuperHeaderFontWeight;
 	private String FontFamily;
-	
+	private String RestictionOnUse;
 	private String CreatedBy;
 	
 	private String CreatedDate;

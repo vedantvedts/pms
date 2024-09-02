@@ -453,6 +453,10 @@ public class ActionController {
 			req.setAttribute("projectid", req.getParameter("projectid"));
 			req.setAttribute("committeeid", req.getParameter("committeeid"));
 			req.setAttribute("meettingid", req.getParameter("meettingid"));
+			req.setAttribute("fromDate", req.getParameter("fromDate"));
+			req.setAttribute("toDate", req.getParameter("toDate"));
+			
+			req.setAttribute("MeetingNumbr", req.getParameter("Meeting"));
 		}
 		catch (Exception e) 
 		{
@@ -4949,16 +4953,23 @@ public class ActionController {
         		try {
         			//MeetingId
         			String MeetingId = (String) req.getParameter("MeetingId");
+        			String MeetingNumbr = (String) req.getParameter("Meeting");
         			System.out.println("MeetingId-----"+MeetingId);
         			System.out.println("EmpId----"+EmpId);
         			//list of action items 
         			List<Object[]>actionList=service.getMeetingAction(Long.parseLong(MeetingId),LoginType,EmpId);
         			req.setAttribute("actionList", actionList);
+        			req.setAttribute("FromDate", req.getParameter("FromDate"));
+        			req.setAttribute("ToDate", req.getParameter("ToDate"));
+        			req.setAttribute("MeetingNumbr", MeetingNumbr);
         			req.setAttribute("text", "R");
-        			//meettingid
+        			
+        			req.setAttribute("flag", "M");
+        			
         			req.setAttribute("meettingid", MeetingId);
         			req.setAttribute("LoginType", LoginType);
         			req.setAttribute("EmpId", EmpId);
+        			req.setAttribute("MeetingNumbr", MeetingNumbr);
         			
         			return "action/ActionMeeting"; 
         		}catch (Exception e) {

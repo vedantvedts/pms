@@ -82,6 +82,14 @@ input[type=radio] {
 	-webkit-box-shadow: inset 0 0 6px black;
  	transition: 0.5s;
 }
+#risk-vertical li{
+list-style-type: inherit;
+text-align: justify;
+}
+#risk-vertical table{
+border:1px solid red;
+}
+
 .sidelabel{
 font-weight:600;
 font-size: 15px;

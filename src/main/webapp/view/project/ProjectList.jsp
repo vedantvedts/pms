@@ -173,7 +173,7 @@ Project List</h3>
 	   <table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
 	   <thead style=" text-align: center;">
 	   <tr>
-	   <th style="width: 5%;">Select</th>
+	   <th style="width: 3%;">Select</th>
 			<th style="width: 3%;">SN</th>
 			<th style="width:10%" class="text-nowrap">ProjectMain Code</th>
 			<th style="width:10%" class="text-nowrap">Project Code</th>

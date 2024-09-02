@@ -521,8 +521,8 @@ The product Tree shall comprises the complete physical products / subsystems of 
 	</div>
 		<%if(SpecProducTree!=null && SpecProducTree.size()>0) {%>
 	<%if(new File(filePath+SpecProducTree.get(0)[1].toString()+SpecProducTree.get(0)[3].toString()).exists()){ %>
-			<br><div style="text-align: left;margin-left: 20px">	</div>
-						<img class="logo" style="width:300px;margin-bottom: 5px" src="data:image/png;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+SpecProducTree.get(0)[1].toString()+SpecProducTree.get(0)[3].toString())))%>" > 											
+			<br>
+						<img  style="margin-bottom: 5px;width:500px; height:300px;border:1px solid red;" src="data:image/png;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+SpecProducTree.get(0)[1].toString()+SpecProducTree.get(0)[3].toString())))%>" > 											
 											<%}} %>
 	<p style="text-align: center; page-break-before: always;font-family: <%= FontFamily %>;"></p>
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">

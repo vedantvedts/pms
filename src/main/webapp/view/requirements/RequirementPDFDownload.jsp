@@ -63,6 +63,8 @@ List<Object[]>VerificationDataList=(List<Object[]>)request.getAttribute("Verific
 List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
 
 String projectShortName =(String)request.getAttribute("projectShortName");
+String docnumber =(String)request.getAttribute("docnumber");
+
 %>
 <style>
     /* Define header and footer styles */
@@ -109,9 +111,17 @@ td {
 	margin-bottom: 69px;
 	border: 2px solid black;
 	
+	@bottom-left{
+		content :"<%=docnumber!=null?"1901-"+docnumber:""%>";
+		margin-bottom: 50px;
+	width:200px;;
+	font-size:10px;
+	}
+	
 	 @ bottom-right { content : "Page " counter(page) " of " counter( pages);
 	margin-bottom: 50px;
 	width:100px;;
+	font-size:10px;
 }
 @
 top-right {
@@ -141,10 +151,10 @@ top-center {
 }
 @
 bottom-center {
-	font-size: 13px;
-	/* margin-bottom: 30px; */
+	font-size: 10px;
 	margin-right:20px;
-	content:"This information given in this document is not to be published or communicated either directly or indirectly , to the press  or to any personnel not authorized to recieve it."
+	content:"This document contains proprietary information of LRDE, DRDO";
+	width:300px;;
 }
 .border-black {
 	border: 1px solid black !important;
@@ -227,9 +237,7 @@ margin-left:15x;
 <br><br><br><br><br><br><br><br><br><br><br><br>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
-				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM REQUIREMENTS</h4>
-			
-				
+				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM REQUREMENTS FOR PROJECT <%=projectShortName %> </h4>
 					<div align="center" >
 						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
 							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
@@ -260,8 +268,16 @@ margin-left:15x;
 					-
 					<%} %>
 				</h4>
-<div style="text-align: right;margin-right:20px;">
+<%-- <div style="text-align: right;margin-right:20px;">
     <span style="font-weight: bold;font-family: <%= FontFamily %>;"><%= month.toString().substring(0,3) %> <%= year %></span>
+   </div> --%>
+   <br><br><br>
+   <div style="height:80px;border:1px solid black;margin: 10px;">
+   <div align="center" style="font-weight: bold;font-size:10px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</div>
+   <div style="text-align: justify;padding: 5px;font-size:10px;">
+   This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.
+   </div>
+   
    </div>
 			</div>
 			<br>
@@ -348,14 +364,16 @@ margin-left:15x;
 			</table> -->
 				<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Requirements Document Template</span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Requirements Document for <%=projectShortName %></span></td>
 					</tr>
 					<tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Requirements Document</span></td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Requirement Document</span></td>
 					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"></span></td>
 					</tr>
 				    <tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:</td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:
+						<%if(docnumber!=null) {%>(<%=docnumber %>)<%} %>
+					</td>
 					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
 					</tr>
 					<tr>

@@ -46,6 +46,9 @@ h6{
   String projectid=(String)request.getAttribute("projectid");
   String committeeid=(String)request.getAttribute("committeeid");
   String meettingid=(String)request.getAttribute("meettingid");
+  String MeetingNumbr=(String)request.getAttribute("MeetingNumbr");
+  String fromDate=(String)request.getAttribute("fromDate");
+  String toDate=(String)request.getAttribute("toDate");
   String flag=(String)request.getAttribute("flag");
   String ActionPath=(String)request.getAttribute("ActionPath");
   int length=0;
@@ -140,6 +143,10 @@ h6{
 	                          	 <input type="hidden" name="projectid" value="<%=projectid!=null?projectid:"0" %>" /> 
 	          					<%}else if(flag.equalsIgnoreCase("action")){ %>
 	          					<a type="button" class="btn  btn-sm back" href="AssigneeList.htm" >BACK</a>
+				            	<%}else if(flag.equalsIgnoreCase("M")){ %> 
+	          					<a type="button" class="btn  btn-sm back" href="MeetingActionDetails.htm?MeetingId=<%=meettingid %>&fromDate=<%=fromDate %>&toDate=<%=toDate %>&Meeting=<%=MeetingNumbr %>" >BACK</a>
+				            	
+				            	
 				            	<%}else{ %>
 	          					<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=empId %>" >BACK</a>
 	          					<%} %>

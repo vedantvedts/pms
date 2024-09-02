@@ -388,7 +388,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 							</h4>
 						</div>
 					</div>
-					<!-- panel 3  -->
+			<!-- 	
 					<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
 						<div class="panel-heading ">
 							<h4 class="panel-title" >
@@ -397,7 +397,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 						</div>
 					</div>
 		
-					<!-- panel 4  -->
+				
 					<div class="panel panel-info" style="margin: 10px 10px 0px 10px;">
 						<div class="panel-heading ">
 							<h4 class="panel-title" >
@@ -405,7 +405,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<button class="btn btn-sm btn-info spansub" style="float:right" onclick="showTest()">UPLOAD</button>
 							</h4>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="col-md-6 mt-2 bg-light" <%if(AcronymsList.size()==0 && PerformanceList.size()==0) {%> style="display:none;"<%}else{ %> style="display:block;" <%} %>>

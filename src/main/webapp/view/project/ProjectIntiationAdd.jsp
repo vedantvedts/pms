@@ -269,14 +269,16 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                    <div class="col-md-4">
 						<div class="form-group"> 
 						<label class="control-label">Deliverable</label>
-							<select class="form-control selectdee" name="Deliverables" id="DeliverablesOutput" multiple>
+						<!-- 	<select class="form-control selectdee" name="Deliverables" id="DeliverablesOutput" multiple>
 												<option>Prototype</option>
 												<option>Limited Series Production</option>
 												<option>Technology</option>
 												<option>Assembly or sub-assembly</option>
 												<option>Process</option>
 												<option> Others </option>
-												</select>
+												</select> -->
+			<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" placeholder="max 255 characters"  maxlength="250" >
+												
 						</div>	                    
 	                    </div> 
 	                </div>

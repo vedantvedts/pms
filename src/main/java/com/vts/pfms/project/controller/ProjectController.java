@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -414,7 +416,8 @@ public class ProjectController
 			if(!reqInitiationId.equals("0")) {
 				reqInitiation = reqService.getRequirementInitiationById(reqInitiationId);
 				initiationId = reqInitiation.getInitiationId().toString();
-				
+				String version =reqInitiation.getReqVersion().toString();
+				req.setAttribute("DocumentVersion", version);
 				reqInitiationId = reqService.getFirstVersionReqInitiationId(initiationId, "0", "0")+"";
 			}else {
 				initiationId = req.getParameter("initiationId");
@@ -3209,6 +3212,7 @@ public class ProjectController
 			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId)); //changed the code here pass the projectId
 			req.setAttribute("paracounts", req.getParameter("paracounts")==null?"1":req.getParameter("paracounts"));
 			req.setAttribute("reqInitiation", reqService.getRequirementInitiationById(reqInitiationId));
+			req.setAttribute("TotalSqr", reqService.getAllSqr(reqInitiationId));
 		}catch(Exception e) {
 			logger.error(new Date() +" Inside RequirementPara.htm "+UserId, e);
 		}
@@ -3406,15 +3410,6 @@ public class ProjectController
 		logger.info(new Date() +"Inside RequirementParaDetails.htm "+UserId);
 		List<Object[]>RequirementParaDetails=null;
 		try {
-
-//			String projectId=req.getParameter("projectId");
-//			if(projectId!=null) {
-//				RequirementParaDetails =	service.ReqParaDetailsMain(projectId);
-//			}else {
-//
-//				RequirementParaDetails=service.ReqParaDetails(req.getParameter("initiationid"));
-//			}
-			
 			RequirementParaDetails = service.ReqParaDetailsMain(req.getParameter("reqInitiationId"));
 		}
 		catch(Exception e){
@@ -3424,6 +3419,42 @@ public class ProjectController
 		Gson json = new Gson();
 		return json.toJson(RequirementParaDetails);
 	}
+	@RequestMapping(value="Importpara.htm",method = {RequestMethod.GET})
+	public @ResponseBody String sub(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside Importpara.htm "+UserId);
+		long count =0;
+		try {
+			String checkedValues= req.getParameter("checkedValues");
+			String reqInitiationId = req.getParameter("reqInitiationId");
+			String sqrid = req.getParameter("sqrid");
+			
+			
+			String []paraids=checkedValues.split(",");
+		
+			
+			for(String s:paraids) {
+				Object[]para = service.getParaDetails(s);
+				RequirementparaModel rm=new RequirementparaModel();
+				rm.setParaNo(para[3].toString());
+				rm.setParaDetails(para[4]!=null? para[4].toString():"");
+				rm.setSqrId(Long.parseLong(sqrid));
+				rm.setReqInitiationId(Long.parseLong(reqInitiationId));;
+				rm.setCreatedBy(UserId);
+				rm.setCreatedDate(sdf1.format(new Date()));
+				rm.setIsActive(1);
+				 count=service.RequirementParaSubmit(rm);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside RequirementParaDetails.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	
+	
 	@RequestMapping(value = "ProjectOtherReqAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectOtherReqAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -6298,27 +6329,16 @@ public class ProjectController
 
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 
-//			String initiationId = req.getParameter("initiationId");
-//			String ProjectId = req.getParameter("projectId");
+
 			String reqInitiationId = req.getParameter("reqInitiationId");
 			RequirementInitiation reqini = reqService.getRequirementInitiationById(reqInitiationId);
+			if(reqini==null) {
+				redir.addAttribute("resultfail","PDF can not be generated.Please fill the Data!");
+			return;			
+			}
 			Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
-//			if(initiationId==null) {
-//				initiationId="0";
-//
-//
-//				String projectShortName=service.ProjectEditData1(ProjectId)[4].toString();
-//				req.setAttribute("projectShortName", projectShortName);
-//			}
-//
-//			if(ProjectId==null) {
-//				ProjectId="0";
-//
-//				String projectShortName=service.ProjectEditData(initiationId).get(0)[6].toString();
-//				req.setAttribute("projectShortName", projectShortName);
-//			}
-			
+
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
@@ -6335,7 +6355,9 @@ public class ProjectController
 			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(reqInitiationId));
 			req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(reqInitiationId));
 			req.setAttribute("Verifications", reqService.getVerifications(reqInitiationId));
+			req.setAttribute("docnumber", req.getParameter("docnumber"));
 			
+			System.out.println("req.getParameter(\"docnumber\")"+req.getParameter("docnumber"));;
 			String filename="ProjectRequirement";
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
@@ -9425,7 +9447,7 @@ public class ProjectController
 			String projectId =req.getParameter("projectId");
 			String productTreeMainId =req.getParameter("productTreeMainId");
 			String reqInitiationId = req.getParameter("reqInitiationId");
-			
+			 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			if(initiationId==null) {
 				initiationId="0";
 			}
@@ -9440,7 +9462,8 @@ public class ProjectController
 			if(reqInitiationId.equals("0") ) {					
 				reqInitiationId = Long.toString(reqService.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null, null));
 			}
-
+			System.out.println(req.getParameter("pdc"));
+		
 			RequirementSummary rs = new RequirementSummary();
 //			rs.setProjectId(Long.parseLong(projectId));
 //			rs.setInitiationId(Long.parseLong(initiationid));
@@ -9455,6 +9478,7 @@ public class ProjectController
 			rs.setCreatedDate(sdf1.format(new Date()));
 			rs.setIsActive(1);	
 			rs.setReqInitiationId(Long.parseLong(reqInitiationId));
+			rs.setReleaseDate(req.getParameter("pdc"));		
 			String action = req.getParameter("btn");
 			String result="Document Summary added successfully";
 			long count=0l;
@@ -9757,7 +9781,8 @@ public class ProjectController
 			if(initiationReqList!=null && initiationReqList.size()>0) {
 				reqInitiationId=initiationReqList.get(0)[0].toString();
 				RequirementList=reqService.RequirementList(reqInitiationId);
-			}
+				req.setAttribute("reqInitiationId", reqInitiationId);			}
+		
 			req.setAttribute("RequirementList", RequirementList);
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));			
 			req.setAttribute("SpecsId", req.getParameter("SpecsId")==null?"0":req.getParameter("SpecsId") );			
@@ -9766,7 +9791,15 @@ public class ProjectController
 		}
 		return "requirements/SpecsDetails";
 	}
+	@RequestMapping(value="RequirementListsForSpecification.htm",method=RequestMethod.GET)
+	public @ResponseBody String RequirementListsForSpecification(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+
+		List<Object[]>RequirementList=reqService.RequirementList(req.getParameter("reqInitiationId"));
+		
+		Gson json = new Gson();
 	
+		return json.toJson(RequirementList);
+	}
 	@RequestMapping(value="specificationAdd.htm",method=RequestMethod.POST)
 	public String specificationAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 

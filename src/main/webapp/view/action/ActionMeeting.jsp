@@ -134,6 +134,11 @@ String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
 String meettingid =(String)request.getAttribute("meettingid");
 String LoginType =(String)request.getAttribute("LoginType");
+String fromDate=(String)request.getAttribute("FromDate");
+String toDate=(String)request.getAttribute("ToDate");
+
+//MeetingNumbr
+String MeetingNumbr =(String)request.getAttribute("MeetingNumbr");
 %>
 
 
@@ -144,7 +149,7 @@ String LoginType =(String)request.getAttribute("LoginType");
 				<div class="card shadow-nohover">
            <div class="card-header ">  
 					<div class="row">
-						<h4 class="col-md-4">Meeting Action List</h4>  
+						<h4 class="col-md-8">Meeting Action List (MeetingId-<%=MeetingNumbr %> )</h4>  
 							<!-- <table>
 							<tr>
 							<td style="width: 85%;"></td>
@@ -181,7 +186,7 @@ String LoginType =(String)request.getAttribute("LoginType");
 															<th >Action Item</th>																											 	
 														 	<th >Assigner</th>
 														 	<th >Progress</th>
-														 	<!-- <th class="width-140px">Action</th> -->
+														  <th class="width-140px">Action</th> 
 														</tr>
 													</thead>
 													<tbody>
@@ -233,7 +238,7 @@ String LoginType =(String)request.getAttribute("LoginType");
 															</div>
 															</div> <%} %>
 															</td>	
-															<%-- <td class="left width">		
+															 <td class="left width">		
 															<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
 																	style="display: inline">
                                                                   <%if(obj[8].toString().equalsIgnoreCase("A") || obj[8].toString().equalsIgnoreCase("B")|| obj[8].toString().equalsIgnoreCase("I")|| obj[8].toString().equalsIgnoreCase("K")){ %>
@@ -278,16 +283,19 @@ String LoginType =(String)request.getAttribute("LoginType");
 																	<input type="hidden" name="ActionNo" value="<%=obj[0]%>"/>
 																	<input type="hidden" name="ActionAssignid" value="<%=obj[12]%>"/>
 																	<input type="hidden" name="ProjectId" value="<%=obj[15]%>"/>
-																	<input type="hidden" name="flag" value="T"/>
+																	<input type="hidden" name="flag" value="M"/>
 																	<input type="hidden" name="empId" value="<%=empId%>">
 																	<input type="hidden" name="projectid" value="<%=projectid%>">
 																	<input type="hidden" name="committeeid" value="<%=committeeid%>">
-																	<input type="hidden" name="meettingid" value="<%=scheduleid%>">
+																	 <input type="hidden" name="meettingid" value="<%=meettingid%>"> 
+																	  <input type="hidden" name="fromDate" value="<%=fromDate%>"> 
+																	   <input type="hidden" name="toDate" value="<%=toDate%>">
+																	   <input type="hidden" name="Meeting" value="<%=MeetingNumbr%>">  
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																	
 																</form> 
 															
-															</td>		 --%>
+															</td>		 
 															</tr>
 																<% }									   					
 															}%>
