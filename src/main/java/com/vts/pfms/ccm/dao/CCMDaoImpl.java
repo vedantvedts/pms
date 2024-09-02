@@ -19,6 +19,7 @@ import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
+import com.vts.pfms.login.PFMSCCMData;
 
 @Repository
 @Transactional
@@ -406,5 +407,32 @@ public class CCMDaoImpl implements CCMDao{
 			return 0;
 		}
 		
+	}
+	
+	private static final String GETCASHOUTGOLIST = "SELECT CCMDataId, ClusterId, LabCode, ProjectId, ProjectCode, BudgetHeadId, BudgetHeadDescription, AllotmentCost, Expenditure, Balance, Q1CashOutGo, Q2CashOutGo, Q3CashOutGo, Q4CashOutGo, Required, CreatedDate, (Q1CashOutGo+Q2CashOutGo+Q3CashOutGo+Q4CashOutGo) AS 'Total COG' FROM pfms_ccm_data WHERE LabCode=:LabCode ORDER BY LabCode, FIELD(BudgetHeadDescription, 'Revenue','Capital','Miscellaneous'), ProjectId";
+	@Override
+	public List<Object[]> getCashOutGoList(String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETCASHOUTGOLIST);
+			query.setParameter("LabCode", labCode);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getCashOutGoList "+e);
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	@Override
+	public long addPFMSCCMData(PFMSCCMData ccmData) throws Exception {
+		try {
+			manager.persist(ccmData);
+			manager.flush();
+			return ccmData.getCCMDataId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl addPFMSCCMData "+e);
+			return 0;
+		}
 	}
 }

@@ -177,7 +177,14 @@ String committeeId = (String) request.getAttribute("committeeId");
 								<%} %>
 							</tbody>
 				    
-			             </table>	
+			             </table>
+			             <%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
+							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+							<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleid %>">
+							<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
+							<input type="hidden" name="committeeId" value="<%=committeeId %>">
+							<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
+						<%}%>	
 			           </form>								
 
 					 </div> 

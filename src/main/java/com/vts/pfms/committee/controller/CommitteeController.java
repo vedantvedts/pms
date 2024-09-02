@@ -6375,6 +6375,15 @@ public class CommitteeController {
 					return"redirect:/RODAttendance.htm";
 				}
 				/* ------------------ end ----------------------- */
+				
+				// CCM Handling
+				String ccmFlag = req.getParameter("ccmFlag");
+				if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+					redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+					redir.addAttribute("committeeId", req.getParameter("committeeId"));
+					redir.addAttribute("ccmFlag", ccmFlag);			
+				}
+				
 				return "redirect:/CommitteeAttendance.htm";
 			}
 			catch (Exception e)

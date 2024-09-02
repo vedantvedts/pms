@@ -38,6 +38,7 @@ import com.vts.pfms.committee.model.CommitteeMain;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
+import com.vts.pfms.login.PFMSCCMData;
 
 @Service
 public class CCMServiceImpl implements CCMService{
@@ -582,4 +583,15 @@ public class CCMServiceImpl implements CCMService{
 		return dao.ccmAchievementDelete(achievementId);
 	}
 
+	@Override
+	public List<Object[]> getCashOutGoList(String labCode) throws Exception {
+		
+		return dao.getCashOutGoList(labCode);
+	}
+
+	@Override
+	public long addPFMSCCMData(PFMSCCMData ccmData) throws Exception {
+		
+		return dao.addPFMSCCMData(ccmData);
+	}
 }

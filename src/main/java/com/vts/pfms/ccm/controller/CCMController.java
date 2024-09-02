@@ -3,10 +3,13 @@ package com.vts.pfms.ccm.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -19,9 +22,26 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -46,6 +66,9 @@ import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.service.CommitteeService;
+import com.vts.pfms.login.PFMSCCMData;
+import com.vts.pfms.pfts.model.PFTSFile;
+import com.vts.pfms.print.model.ProjectOverallFinance;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.utils.PMSLogoUtil;
 
@@ -699,6 +722,24 @@ public class CCMController {
     		/* ----------------------- Cash Out Go Status Start -------------------------- */
     		else if(tabName.equalsIgnoreCase("Cash Out Go Status")) {
     			
+    			String labCode = req.getParameter("labCode");
+    			labCode = labCode!=null?labCode:labcode;
+    			req.setAttribute("cashOutGoList", service.getCashOutGoList(labCode));
+    			req.setAttribute("labCode", labCode);
+    			
+    			LocalDate now = LocalDate.now();
+    			int monthValue = now.getMonthValue();
+    			int quarter = 1;
+    			
+    			if(monthValue>=7 && monthValue<=9) {
+    				quarter = 2;
+    			}else if(monthValue>=10 && monthValue<=12) {
+    				quarter = 3;
+    			}else if(monthValue>=1 && monthValue<=3) {
+    				quarter = 4;
+    			}
+    			
+    			req.setAttribute("quarter", quarter);
     		}
     		/* ----------------------- Cash Out Go Status End -------------------------- */
     		
@@ -848,4 +889,321 @@ public class CCMController {
 	    }
 	}
 	
+	@RequestMapping(value="CCMCashOutGoStatusExcel.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public void ccmCashOutGoStatusExcel( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CCMCashOutGoStatusExcel.htm "+UserId);
+		try {
+			XSSFWorkbook workbook = new XSSFWorkbook();
+			XSSFSheet sheet = workbook.createSheet("CCM Cash Out Go Status");
+			XSSFRow row = sheet.createRow(0);
+
+			// Create a bold font style for headers
+			Font headerFont = workbook.createFont();
+			headerFont.setBold(true);
+
+			// Create a cell style for headers
+			CellStyle headerCellStyle = workbook.createCellStyle();
+			headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+			headerCellStyle.setFont(headerFont);
+
+			// Create a cell style for center alignment and text wrapping
+			CellStyle centerWrapCellStyle = workbook.createCellStyle();
+			centerWrapCellStyle.setAlignment(HorizontalAlignment.CENTER);
+			centerWrapCellStyle.setWrapText(true);
+			centerWrapCellStyle.setFont(headerFont);
+
+			// Create and style cells
+			Cell cell0 = row.createCell(0);
+			cell0.setCellValue("SN");
+			cell0.setCellStyle(headerCellStyle);
+			sheet.setColumnWidth(0, 2000);
+
+			Cell cell1 = row.createCell(1);
+			cell1.setCellValue("Project Code");
+			cell1.setCellStyle(headerCellStyle);
+			sheet.setColumnWidth(1, 7000);
+
+			Cell cell2 = row.createCell(2, CellType.STRING);
+			cell2.setCellValue("Budget Head");
+			cell2.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(2, 8000);
+
+			Cell cell3 = row.createCell(3);
+			cell3.setCellValue("Allotment \n(In Rs)");
+			cell3.setCellStyle(headerCellStyle);
+			cell3.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(3, 5000);
+			
+			Cell cell4 = row.createCell(4);
+			cell4.setCellValue("Expenditure \n(In Rs)");
+			cell4.setCellStyle(headerCellStyle);
+			cell4.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(4, 5000);
+			
+			Cell cell5 = row.createCell(5);
+			cell5.setCellValue("Balance \n(In Rs)");
+			cell5.setCellStyle(headerCellStyle);
+			cell5.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(5, 5000);
+			
+			Cell cell6 = row.createCell(6);
+			cell6.setCellValue("COG Q1 \n(In Rs)");
+			cell6.setCellStyle(headerCellStyle);
+			cell6.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(6, 5000);
+			
+			Cell cell7 = row.createCell(7);
+			cell7.setCellValue("COG Q2 \n(In Rs)");
+			cell7.setCellStyle(headerCellStyle);
+			cell7.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(7, 5000);
+			
+			Cell cell8 = row.createCell(8);
+			cell8.setCellValue("COG Q3 \n(In Rs)");
+			cell8.setCellStyle(headerCellStyle);
+			cell8.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(8, 5000);
+			
+			Cell cell9 = row.createCell(9);
+			cell9.setCellValue("COG Q4 \n(In Rs)");
+			cell9.setCellStyle(headerCellStyle);
+			cell9.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(9, 5000);
+			
+			Cell cell10 = row.createCell(10);
+			cell10.setCellValue("Addl(-)/Surr(+) \n(In Rs)");
+			cell10.setCellStyle(headerCellStyle);
+			cell10.setCellStyle(centerWrapCellStyle);
+			sheet.setColumnWidth(10, 5000);
+
+			res.setContentType("application/vnd.ms-excel");
+			res.setHeader("Content-Disposition", "attachment; filename=CCMCashOutGoStatusExcel.xls");
+
+			// Write the workbook to the response output stream
+			workbook.write(res.getOutputStream());
+			workbook.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	@RequestMapping(value="CCMCashOutGoStatusExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String ccmCashOutGoStatusExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+
+		String UserId = (String) ses.getAttribute("Username");
+		String clusterid = (String)ses.getAttribute("clusterid");
+		logger.info(new Date()+" Inside CCMCashOutGoStatusExcelUpload.htm "+UserId);
+		try {
+			String labCode = req.getParameter("labCode");
+			Double emptyCost = 0.00;
+			if(ServletFileUpload.isMultipartContent(req)) {
+				List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));	
+				Part filePart = req.getPart("filename");
+				List<ProjectOverallFinance>list = new ArrayList<>();
+				InputStream fileData = filePart.getInputStream();
+
+				Long count =0l;
+				Workbook workbook = new XSSFWorkbook(fileData);
+				Sheet sheet  = workbook.getSheetAt(0);
+				int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
+
+				for (int i=1;i<=rowCount;i++) {
+					
+					PFMSCCMData ccmData = new PFMSCCMData();
+					ccmData.setClusterId(Long.parseLong(clusterid));
+					ccmData.setLabCode(labCode);
+					ccmData.setProjectId(-1L);
+					ccmData.setBudgetHeadId(-1L);
+					
+					int cellcount= sheet.getRow(i).getLastCellNum();
+
+					Row row = sheet.getRow(i);
+					DecimalFormat df = new DecimalFormat("#");
+
+					for(int j=1;j<cellcount;j++) {
+						Cell cell = row.getCell(j);
+
+						if(cell!=null) {
+							if(j==1) {
+								
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setProjectCode(df.format(sheet.getRow(i).getCell(j).getNumericCellValue()));
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setProjectCode(sheet.getRow(i).getCell(j).getStringCellValue());
+									break;	 
+								}
+							}
+
+							if(j==2) {
+
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setBudgetHeadDescription(sheet.getRow(i).getCell(j).getStringCellValue());
+									break;	 
+
+								}
+							}
+
+							if(j==3) {
+								
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setAllotmentCost( BigDecimal.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()) );
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setAllotmentCost( BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue())) );
+									break;	 
+								}
+								
+							}
+
+							if(j==4) {
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setExpenditure( BigDecimal.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()) );
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setExpenditure( BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue())) );
+									break;		 
+								}
+							}
+							
+							if(j==5) {
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setBalance( BigDecimal.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()) );
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setBalance( BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue())) );
+									break;		 
+								}
+								
+							}
+							
+							if(j==6) {
+								
+								System.out.println("sheet.getRow(i).getCell(j).getCellType(): "+sheet.getRow(i).getCell(j).getCellType());
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setQ1CashOutGo( BigDecimal.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()) );
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setQ1CashOutGo( BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue())) );
+									break;		 
+								}
+								
+							}
+							
+							if(j==7) {
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setQ2CashOutGo( BigDecimal.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()) );
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setQ2CashOutGo( BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue())) );
+									break;		 
+								}
+							}
+							
+							if(j==8) {
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setQ3CashOutGo( BigDecimal.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()) );
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setQ3CashOutGo( BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue())) );
+									break;		 
+								}
+							}
+							
+							if(j==9) {
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setQ4CashOutGo( BigDecimal.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()) );
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setQ4CashOutGo( BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue())) );
+									break;		 
+								}
+							}
+							
+							if(j==10) {
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:
+									break;
+								case Cell.CELL_TYPE_NUMERIC:
+									ccmData.setRequired( BigDecimal.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()) );
+									break;
+								case Cell.CELL_TYPE_STRING:
+									ccmData.setRequired( BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue())) );
+									break;		 
+								}
+							}
+							
+						}
+					}
+
+					if(ccmData.getAllotmentCost()==null) ccmData.setAllotmentCost( BigDecimal.valueOf(emptyCost) );
+					if(ccmData.getExpenditure()==null) ccmData.setExpenditure( BigDecimal.valueOf(emptyCost) );
+					if(ccmData.getBalance()==null) ccmData.setBalance( BigDecimal.valueOf(emptyCost) );
+					if(ccmData.getQ1CashOutGo()==null) ccmData.setQ1CashOutGo( BigDecimal.valueOf(emptyCost) );
+					if(ccmData.getQ2CashOutGo()==null) ccmData.setQ1CashOutGo( BigDecimal.valueOf(emptyCost) );
+					if(ccmData.getQ3CashOutGo()==null) ccmData.setQ1CashOutGo( BigDecimal.valueOf(emptyCost) );
+					if(ccmData.getQ4CashOutGo()==null) ccmData.setQ1CashOutGo( BigDecimal.valueOf(emptyCost) );
+					if(ccmData.getRequired()==null) ccmData.setRequired( BigDecimal.valueOf(emptyCost) );
+					
+					ccmData.setCreatedDate(sdf.format(new Date()));
+
+					if(ccmData.getProjectCode()!=null) {
+						count=count+service.addPFMSCCMData(ccmData);
+					}
+				}
+				if(count>0) {
+					redir.addAttribute("result","CCM Cash Out Go Added Successfully ");
+				}else {
+					redir.addAttribute("resultfail","Something went worng");
+				}
+
+			}
+			
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("tabName", req.getParameter("tabName"));
+			redir.addAttribute("labCode", labCode);
+			
+			return "redirect:/CCMPresentation.htm";
+		} catch (Exception e) {
+			logger.error(new Date()+" Inside CCMCashOutGoStatusExcelUpload.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+
+
+	}
 }

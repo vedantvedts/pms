@@ -24,6 +24,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+
+<spring:url value="/resources/js/excel.js" var="excel" />
+<script src="${excel}"></script>
+
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
@@ -280,6 +284,17 @@ input,select,table,div,label,span {
    cursor: pointer;
    z-index: 1001; /* Make sure the button is above the modal */
 }
+
+.data-table {
+	overflow-y: auto; 
+	overflow-x: auto; 
+}
+
+.data-table thead {
+    position: sticky;
+    top: 0; /* Stick the thead to the top */
+    z-index: 1; /* Ensure thead is above tbody */
+}
 </style>
 
 
@@ -297,7 +312,7 @@ input,select,table,div,label,span {
 		
     	List<Object[]> clusterLabList = (List<Object[]>) request.getAttribute("clusterLabList");
     	Object[] clusterLabDetails = clusterLabList!=null && clusterLabList.size()>0 ?clusterLabList.stream().filter(e -> e[3].toString().equalsIgnoreCase("Y")).collect(Collectors.toList()).get(0) :null;
-		String clusterLab = clusterLabDetails!=null && !clusterLabDetails[2].toString().equalsIgnoreCase(labcode)?"N":"Y";
+		String clusterLab = clusterLabDetails!=null && clusterLabDetails[2].toString().equalsIgnoreCase(labcode)?"Y":"N";
 		
 		List<Object[]> clusterLabListFilter = new ArrayList<>();
 		
@@ -434,7 +449,7 @@ input,select,table,div,label,span {
  													</h4>
  												</div>
  											</div> --%>
-	 										<table class="table table-bordered table-hover table-striped table-condensed " id="atrTable">
+	 										<table class="table table-bordered table-hover table-striped table-condensed data-table" id="atrTable">
 												<thead style="background-color: #4B70F5; color: #ffff !important;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>Action Taken Report of CCM(<%=seqDate %>)</h5></th>
@@ -532,7 +547,7 @@ input,select,table,div,label,span {
 												</tbody>
 											</table>
 											
-	 										<table class="table table-bordered table-hover table-striped table-condensed " id="prevatrTable" >
+	 										<table class="table table-bordered table-hover table-striped table-condensed data-table" id="prevatrTable" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>Pending Points from Prev CCM</h5></th>
@@ -674,7 +689,7 @@ input,select,table,div,label,span {
 										String todayDate = outputFormat.format(new Date()).toString();	
 									%>
 										<div class="container-fluid mt-3 tabpanes1">
-											<table class="table table-bordered table-hover table-striped table-condensed " >
+											<table class="table table-bordered table-hover table-striped table-condensed data-table" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>DMC Approval</h5></th>
@@ -861,14 +876,236 @@ input,select,table,div,label,span {
 									<!-- ----------------------------------------------- Project Closure End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Cash Out Go Status --------------------------------------------------- -->	
-									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Cash Out Go Status")) { %>
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Cash Out Go Status")) { 
+										String labCode = (String)request.getAttribute("labCode");
+										int quarter = (int)request.getAttribute("quarter");
+										List<Object[]> cashOutGoList = (List<Object[]>)request.getAttribute("cashOutGoList");
+										
+									%>
 										<div class="container-fluid mt-3 tabpanes2">
-											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+											<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
-														<th colspan="6" style="border-radius: 1rem;"> <h5>Cash Out Go Status</h5></th>
+														<th colspan="<%=12-quarter %>" style="border-radius: 1rem;"> <h5>Cash Out Go Status</h5></th>
+													</tr>
+													<%if(clusterLab.equalsIgnoreCase("Y") || (cashOutGoList!=null && cashOutGoList.size()==0)) {%>
+														<tr style="background-color: #ffff;">
+															<th colspan="<%=12-quarter %>" >
+																<%if(cashOutGoList!=null && cashOutGoList.size()==0) {%>
+																	<div style="display: inline-flex; align-items: flex-start;float: left;">
+																		<form action="CCMCashOutGoStatusExcelUpload.htm" method="post" id="excelForm" enctype="multipart/form-data">
+																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+													     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+													     					<input type="hidden" name="tabName" value="<%=tabName%>">
+													     					<input type="hidden" name="labCode" value="<%=labCode%>">
+													     					<div style="display: inline-flex; align-items: flex-start;">
+																				<label style="width: 5rem;margin-top: 0.5rem;">Upload : </label>
+																				&nbsp;
+																				 <input class="form-control" type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+																			</div>
+																			&nbsp;&nbsp;
+																			<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to upload?')" data-toggle="tooltip" title="Upload">
+																				<i class="fa fa-upload"></i>
+																			</button>
+																		</form>
+																	</div>
+																	<div style="display: inline-flex; align-items: flex-start;float: left;margin-left: 3rem;">
+																		<form action="CCMCashOutGoStatusExcel.htm" method="post">
+																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+																			<div style="">
+																				<button class="btn btn-sm" data-toggle="tooltip" type="submit" data-toggle="tooltip" data-placement="top"  title="Download Format" style="margin-top: 0.5rem;" >
+																					<i class="fa fa-download fa-lg" aria-hidden="true"></i>&nbsp; Sample Format
+																				</button>
+																			</div>	
+																		</form>
+																	</div>
+																<%} %>
+																<%if(clusterLab.equalsIgnoreCase("Y")) {%>
+																	<div style="display: inline-flex; align-items: flex-end;float: right;">
+																		<form action="CCMPresentation.htm" method="get">
+																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+													     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+													     					<input type="hidden" name="tabName" value="<%=tabName%>">
+													     					<div style="display: inline-flex; align-items: flex-end;">
+																				<label>Lab : </label>
+																				&nbsp;
+																				<select class="form-control selectdee" id="labCode" name="labCode" onchange="this.form.submit()" required style="width: 200px;">
+																					<option value="0" disabled="disabled">---Select---</option>
+																					<%if(clusterLabList!=null && clusterLabList.size()>0) {
+																						for(Object[] obj : clusterLabList) {
+																					%>
+																						<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
+																					<%} }%>
+																				</select>
+																			</div>
+																		</form>
+																	</div>
+																<%} %>	
+															</th>
+														</tr>
+													<%} %>	
+													<tr>
+														<th>SN</th>
+														<th>Project</th>
+														<!-- <th>Budget Head</th> -->
+														<th>Allotment</th>
+														<th>Expenditure</th>
+														<th>Balance</th>
+														<%if(quarter<=1) {%>
+															<th>COG Q1</th>
+														<%} %>
+														<%if(quarter<=2) {%>
+															<th>COG Q2</th>
+														<%} %>
+														<%if(quarter<=3) {%>
+															<th>COG Q3</th>
+														<%} %>
+														<%if(quarter<=4) {%>
+															<th>COG Q4</th>
+														<%} %>
+														<th>Total COG</th>
+														<th>Addl(-)/Surr(+)</th>
 													</tr>
 												</thead>
+												<tbody>
+													<%if(cashOutGoList!=null && cashOutGoList.size()>0) {
+														int slno=0; 
+														Double allotment = 0.00, expenditure = 0.00, balance = 0.00, cogQ1 = 0.00, cogQ2 = 0.00, cogQ3 = 0.00, cogQ4 = 0.00, cogTotal = 0.00, addl = 0.00,
+																totoalAllotment = 0.00, totoalExpenditure = 0.00, totoalBalance = 0.00, totoalCOGQ1 = 0.00, totalCOGQ2 = 0.00, totalCOGQ3 = 0.00, totalCOGQ4 = 0.00, totalcogTotal = 0.00, totalAddl = 0.00;
+														String budgetHead ="";
+														for(Object[] obj : cashOutGoList) {
+													%>
+														<%if(!budgetHead.equalsIgnoreCase(obj[6].toString()) || slno==0 ) { %>
+														 	<%if(slno!=0) {%>
+															 	<tr>
+																	<td class="right" colspan="2"><b>Total Amount (<%=budgetHead %>) : </b> </td>
+																	<td class="right"><%=String.format("%.0f", allotment) %></td>
+																	<td class="right"><%=String.format("%.0f", expenditure) %></td>
+																	<td class="right"><%=String.format("%.0f", balance) %></td>
+																	<%if(quarter<=1) {%>
+																		<td class="right"><%=String.format("%.0f", cogQ1) %></td>
+																	<%} %>
+																	<%if(quarter<=2) {%>
+																		<td class="right"><%=String.format("%.0f", cogQ2) %></td>
+																	<%} %>
+																	<%if(quarter<=3) {%>
+																		<td class="right"><%=String.format("%.0f", cogQ3) %></td>
+																	<%} %>
+																	<%if(quarter<=4) {%>
+																		<td class="right"><%=String.format("%.0f", cogQ4) %></td>
+																	<%} %>
+																	<td class="right"><b><%=String.format("%.0f", cogTotal) %></b></td>
+																	<td class="right"><b><%=String.format("%.0f", addl) %></b></td>
+																</tr>	
+														 	<%} %>
+														 	<%budgetHead = obj[6].toString(); %>
+															<tr>
+																<td colspan="<%=12-quarter %>" class="center" style="background-color: aliceblue;"><b>Budget Head : <%=budgetHead %></b></td>
+															</tr>
+														<%
+															totoalAllotment+=allotment;
+															totoalExpenditure+=expenditure;
+															totoalBalance+=balance;
+															totoalCOGQ1+=cogQ1;
+															totalCOGQ2+=cogQ2;
+															totalCOGQ3+=cogQ3;
+															totalCOGQ4+=cogQ4;
+															totalcogTotal+=cogTotal;
+															totalAddl+=addl;
+														
+															allotment = expenditure = balance = cogQ1 = cogQ2 = cogQ3 = cogQ4 = cogTotal = addl = 0.00;
+														} 
+															allotment+=Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00");
+															expenditure+=Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00");
+															balance+=Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00");
+															cogQ1+=Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00");
+															cogQ2+=Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00");
+															cogQ3+=Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00");
+															cogQ4+=Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00");
+															cogTotal+=Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00");
+															addl+=Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00");
+														%>
+														<tr>
+															<td class="center"><%=++slno %></td>
+															<td ><%=obj[4] %></td>
+															<%-- <td><%=obj[6] %></td> --%>
+															<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")) %></td>
+															<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")) %></td>
+															<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00")) %></td>
+															<%if(quarter<=1) {%>
+																<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00")) %></td>
+															<%} %>
+															<%if(quarter<=2) {%>
+																<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00")) %></td>
+															<%} %>
+															<%if(quarter<=3) {%>
+																<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00")) %></td>
+															<%} %>
+															<%if(quarter<=4) {%>
+																<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00")) %></td>
+															<%} %>
+															<td class="right"><b><%=String.format("%.0f", Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00")) %></b></td>
+															<td class="right"><b><%=String.format("%.0f", Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00")) %></b></td>
+														</tr>
+														<%if(slno==cashOutGoList.size()) { %>
+														 	<tr>
+																<td class="right" colspan="2"> <b>Total Amount (<%=budgetHead %>) :</b> </td>
+																<td class="right"><%=String.format("%.0f", allotment) %></td>
+																<td class="right"><%=String.format("%.0f", expenditure) %></td>
+																<td class="right"><%=String.format("%.0f", balance) %></td>
+																<%if(quarter<=1) {%>
+																	<td class="right"><%=String.format("%.0f", cogQ1) %></td>
+																<%} %>
+																<%if(quarter<=2) {%>
+																	<td class="right"><%=String.format("%.0f", cogQ2) %></td>
+																<%} %>
+																<%if(quarter<=3) {%>
+																	<td class="right"><%=String.format("%.0f", cogQ3) %></td>
+																<%} %>
+																<%if(quarter<=4) {%>
+																	<td class="right"><%=String.format("%.0f", cogQ4) %></td>
+																<%} %>
+																<td class="right"><b><%=String.format("%.0f", cogTotal) %></b></td>
+																<td class="right"><b><%=String.format("%.0f", addl) %></b></td>
+															</tr>	
+															<%
+																totoalAllotment+=allotment;
+																totoalExpenditure+=expenditure;
+																totoalBalance+=balance;
+																totoalCOGQ1+=cogQ1;
+																totalCOGQ2+=cogQ2;
+																totalCOGQ3+=cogQ3;
+																totalCOGQ4+=cogQ4;
+																totalcogTotal+=cogTotal;
+																totalAddl+=addl;
+															%>
+															<tr>
+																<td class="right" colspan="2"> <b>Grand Total Amount :</b> </td>
+																<td class="right"><%=String.format("%.0f", totoalAllotment) %></td>
+																<td class="right"><%=String.format("%.0f", totoalExpenditure) %></td>
+																<td class="right"><%=String.format("%.0f", totoalBalance) %></td>
+																<%if(quarter<=1) {%>
+																	<td class="right"><%=String.format("%.0f", totoalCOGQ1) %></td>
+																<%} %>
+																<%if(quarter<=2) {%>
+																	<td class="right"><%=String.format("%.0f", totalCOGQ2) %></td>
+																<%} %>
+																<%if(quarter<=3) {%>
+																	<td class="right"><%=String.format("%.0f", totalCOGQ3) %></td>
+																<%} %>
+																<%if(quarter<=4) {%>
+																	<td class="right"><%=String.format("%.0f", totalCOGQ4) %></td>
+																<%} %>
+																<td class="right"><b><%=String.format("%.0f", totalcogTotal) %></b></td>
+																<td class="right"><b><%=String.format("%.0f", totalAddl) %></b></td>
+															</tr>	
+														<% } %>
+													<%} } else{%>
+														<tr>
+															<td colspan="<%=12-quarter %>" class="center">No Data Available</td>
+														</tr>
+													<%} %>
+												</tbody>
 											</table>
 										</div>
 													
@@ -907,7 +1144,7 @@ input,select,table,div,label,span {
 
 									%>
 										<div class="container-fluid mt-3 tabpanes1">
-											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+											<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>Achievements</h5></th>
@@ -1582,8 +1819,119 @@ input,select,table,div,label,span {
 		CKEDITOR.instances['Editor'].setData(html);
 	}
 	/* --------------------- Open Achievements Modal End --------------------------------------------------------------------------------------------------- */
+	
+	/* --------------------- Excel File Upload --------------------------------------------------------------------------------------------------- */
+	
+	var excel_file = document.getElementById('excel_file');
 
+	excel_file.addEventListener('change', (event) => {
+	
+		var reader = new FileReader();
+	    reader.readAsArrayBuffer(event.target.files[0]);
+	
+	    reader.onload = function (event){
+	    
+	    	var data = new Uint8Array(reader.result);
+	    	
+	    	var work_book = XLSX.read(data, {type:'array'});
+	    	
+	    	var sheet_name = work_book.SheetNames;
+	    	
+	    	var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]],{header:1});
+	    	
+	
+	    	var checkExcel = 0;
+	    	table_output = '';
+	    	var html="";
+	    	var duplicate=[];
+	    	
+	    	var estimatedCost =[];
+	    	var demandNo =[];
+	    	var demandDate =[];
+	    	if(sheet_data.length > 0){
+	    		for(var row = 0; row < sheet_data.length ; row ++){
+	    			if(row>0){
+	    				table_output += '<tr>'
+	    					duplicate.push(sheet_data[row][1])
+	    			}
+	    			var html="";
+	    			
+	   				for(var cell =0;cell<=4;cell++){
+	   					if(row==0){
+	   			 	 	if(cell==0 && "SN"!= sheet_data[row][cell]){checkExcel++;}
+	   					if(cell==1 && "Project Code"!= sheet_data[row][cell]){checkExcel++;}
+	   					if(cell==2 && "Budget Head"!= sheet_data[row][cell]){checkExcel++;}
+	   					if(cell==3 && !sheet_data[row][cell].startsWith("Allotment")){checkExcel++;}
+	   					if(cell==4 && !sheet_data[row][cell].startsWith("Expenditure")){checkExcel++;}
+	   					if(cell==5 && !sheet_data[row][cell].startsWith("Balance")){checkExcel++;}
+	   					if(cell==6 && !sheet_data[row][cell].startsWith("COG Q1")){checkExcel++;}
+	   					if(cell==7 && !sheet_data[row][cell].startsWith("COG Q2")){checkExcel++;}
+	   					if(cell==8 && !sheet_data[row][cell].startsWith("COG Q3")){checkExcel++;}
+	   					if(cell==9 && !sheet_data[row][cell].startsWith("COG Q4")){checkExcel++;}
+	   					if(cell==10 && !sheet_data[row][cell].startsWith("Addl(-)/Surr(+)")){checkExcel++;}
+	   					}
+	   					
+	   					if(row>0){
+	   						if(cell==0){
+    	    					html=html+'<td colspan="1" style="text-align:center">'+sheet_data[row][cell]+'</td>';	
+    	    				}else if(cell==1){
+    	    					var projectCode = sheet_data[row][cell];
+    	    					
+    	    					if(projectCode===undefined ||  projectCode.length==0 ){
+	    							alert("Project Code can not be blank");
+	    							excel_file.value = '';
+	    			    			return;
+	    						}
+    	    					
+    	    					if((projectCode+"").length>50){
+	    							alert("Project Code length should be of 50 Chareacters. Project Code length is too much for "+projectCode);
+	    							excel_file.value = '';
+	    			    			return;
+	    						}
+    	    					
+    	    					html=html+'<td colspan="2" style="text-align:center">'+sheet_data[row][cell]+'</td>';
+    	    				}else if(cell==2) {
+								var budgetHead = sheet_data[row][cell];
+    	    					
+    	    					if(budgetHead===undefined ||  budgetHead.length==0 ){
+	    							alert("Budget Head can not be blank");
+	    							excel_file.value = '';
+	    			    			return;
+	    						}
+    	    					
+    	    					if((budgetHead+"").length>25){
+	    							alert("Budget Head length should be of 25 Chareacters. Budget Head length is too much for "+budgetHead);
+	    							excel_file.value = '';
+	    			    			return;
+	    						}
+    	    					
+    	    					html=html+'<td colspan="2" style="text-align:center">'+sheet_data[row][cell]+'</td>';
+    	    				}
+	   						
+	   					}
+	   					
+	   					if(checkExcel>0){
+	   		    			alert("Please Download the CCM Cash Out Go Status Excel format and upload it.");
+	   		     			excel_file.value = '';
+	   		  				return;
+	   		    		}
+	   		    	  	
+	   				}
+	   				
+	    		}
+	    		
+	    		if(table_output.length<1){
+   		    	  	alert("No Data available in this Excel Sheet!")
+		    		excel_file.value = '';
+		    	} 
+	    	}
+    	
+    	}
+	});
+	
+	/* --------------------- Excel File Upload --------------------------------------------------------------------------------------------------- */
 	</script>	
+	
 	
 	<script type="text/javascript">
 		// Show modal on button click

@@ -12,6 +12,7 @@ import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
+import com.vts.pfms.login.PFMSCCMData;
 
 public interface CCMService {
 
@@ -38,5 +39,7 @@ public interface CCMService {
 	public CCMAchievements getCCMAchievementsById(String achievementId) throws Exception;
 	public long addCCMAchievements(CCMAchievements achmnts) throws Exception;
 	public int ccmAchievementDelete(String achievementId) throws Exception;
-	
+	public List<Object[]> getCashOutGoList(String labCode) throws Exception;
+	public long addPFMSCCMData(PFMSCCMData ccmData) throws Exception;
+
 }
