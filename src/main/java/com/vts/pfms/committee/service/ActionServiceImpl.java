@@ -428,12 +428,13 @@ public class ActionServiceImpl implements ActionService {
 			String ProjectCode=null;
 			long mainid=0l;
 			Object[] comishortname= null;
-			
 			try
 			{
 				lab=dao.LabDetails();
 				
+				if(main.getActionType().toString().equalsIgnoreCase("S")) {
 				comishortname = dao.CommitteeShortName(main.getScheduleMinutesId());
+				}
 				
 				if(!main.getScheduleMinutesId().equalsIgnoreCase("0") && main.getActionType().equalsIgnoreCase("S")) {
 					List<Object[]>mainIds = dao.getMainIds(main.getScheduleMinutesId());
@@ -552,7 +553,7 @@ public class ActionServiceImpl implements ActionService {
 			result=	dao.ActionMainInsert(actionmain);
 			}
 			
-			
+			System.out.println("hii"+ result);
 			//changed on 06-11
 			if(assign.getMultipleAssigneeList().size()>0) {
 				for(int i=0;i<assign.getMultipleAssigneeList().size();i++) {

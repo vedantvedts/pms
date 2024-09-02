@@ -388,7 +388,11 @@ public class ActionController {
 			assign.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			assign.setPDCOrg(req.getParameter("MainPDC"));
 			assign.setMultipleAssigneeList(emp);
+			
+			
 			long count =service.ActionMainInsert(mainDto , assign);
+			
+		
 			if (count > 0) {
 				redir.addAttribute("result", "Action Added Successfully");
 			} else {
