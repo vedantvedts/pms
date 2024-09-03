@@ -594,4 +594,10 @@ public class CCMServiceImpl implements CCMService{
 		
 		return dao.addPFMSCCMData(ccmData);
 	}
+	
+	@Override
+	public List<Object[]> getProjectListByLabCode(String labCode) throws Exception {
+		
+		return dao.getProjectListByLabCode(labCode);
+	}
 }

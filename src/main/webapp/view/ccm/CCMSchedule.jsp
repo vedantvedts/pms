@@ -259,6 +259,7 @@ input,select,table,div,label,span {
 }
 
 </style>
+<!-- Custom Button outlines End-->
 
 </head>
 <body>
@@ -321,12 +322,24 @@ List<Object[]> allLabList = (List<Object[]>) request.getAttribute("allLabList");
 List<Object[]> labEmpList=(List<Object[]>)request.getAttribute("labEmpList");
 String labcode =  (String)request.getAttribute("labcode");
 
-String ScheduleFlag = ccmSchedule!=null && ccmSchedule.getScheduleFlag()!=null? ccmSchedule.getScheduleFlag() : "MSC";
+String ScheduleFlag = "MSC";
 LocalDate todaydate= LocalDate.now();
 LocalDate scheduledate = ccmSchedule!=null && ccmSchedule.getScheduleDate()!=null? LocalDate.parse(ccmSchedule.getScheduleDate().toString()):todaydate;
+
 String otp=(String)request.getAttribute("otp");
 
 List<Object[]> invitedlist = (List<Object[]>)request.getAttribute("committeeinvitedlist");
+
+if(ccmSchedule!=null) {
+	ScheduleFlag = ccmSchedule.getScheduleFlag()!=null? ccmSchedule.getScheduleFlag() : ScheduleFlag;
+	scheduledate = ccmSchedule.getScheduleDate()!=null? LocalDate.parse(ccmSchedule.getScheduleDate().toString()):todaydate;
+	
+	String scheduleMonthStartDate = scheduledate.with(TemporalAdjusters.firstDayOfMonth()).toString();
+	String scheduleMonthEndDate = scheduledate.with(TemporalAdjusters.lastDayOfMonth()).toString();
+	
+	minDate = fc.sdfTordf(scheduleMonthStartDate);
+	endDate = fc.sdfTordf(scheduleMonthEndDate);
+}
 %>
 	<% String ses=(String)request.getParameter("result");
 	 	String ses1=(String)request.getParameter("resultfail");
@@ -1144,6 +1157,7 @@ List<Object[]> invitedlist = (List<Object[]>)request.getAttribute("committeeinvi
     		</div>
   		</div>
 	</div>
+	
 <script type="text/javascript">
 	
 	/* --------------------- Date Time Picker --------------------------- */
@@ -1766,6 +1780,7 @@ List<Object[]> invitedlist = (List<Object[]>)request.getAttribute("committeeinvi
 	
 	
 	/* --------------------- Validations --------------------------------------------------------------------------------------------------- */
+
 </script>
 
 

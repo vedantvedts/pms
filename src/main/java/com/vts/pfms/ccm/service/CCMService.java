@@ -41,5 +41,6 @@ public interface CCMService {
 	public int ccmAchievementDelete(String achievementId) throws Exception;
 	public List<Object[]> getCashOutGoList(String labCode) throws Exception;
 	public long addPFMSCCMData(PFMSCCMData ccmData) throws Exception;
+	public List<Object[]> getProjectListByLabCode(String labCode) throws Exception;
 
 }

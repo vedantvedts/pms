@@ -715,7 +715,8 @@ public class CCMController {
     		
     		/* ----------------------- Project Closure Start -------------------------- */
     		else if(tabName.equalsIgnoreCase("Project Closure")) {
-    			
+    			Long scheduleId = service.getLatestScheduleId("C");
+    			req.setAttribute("scheduleId", scheduleId+"");
     		}
     		/* ----------------------- Project Closure End -------------------------- */
     		

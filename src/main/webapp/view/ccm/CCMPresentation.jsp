@@ -817,6 +817,26 @@ input,select,table,div,label,span {
 											</form>
 											
 										</div>	
+										<!------------------------ DMC Schedule Modal -------------------------------------------->
+										<div id="fixedModal" class="modal-fixed-bottom-right" style="display: none;">
+										    <div class="modal-content">
+										        <div class="modal-header" style="">
+										            <h5 class="modal-title" style="">Schedule New DMC</h5>
+										            <button type="button" class="close" id="closeModalBtn" aria-label="Close">
+										                <span aria-hidden="true">&times;</span>
+										            </button>
+										        </div>
+										        <div class="modal-body">
+										            <input type="text" form="dmcScheduleForm" class="form-control" name="meetingDate" id="meetingDate" style="" readonly>
+										        </div>
+										        <div class="center">
+										        	<button type="button" form="dmcScheduleForm" class="btn btn-sm fw-bold submit" onclick="validateDMCSchedule('<%=committeeIdDMC%>','<%=(String)request.getAttribute("committeeMainId")%>')">
+														Submit
+													</button>
+									        	</div>
+										    </div>
+										</div>
+										<!------------------------ DMC Schedule Modal End -------------------------------------------->
 									<!-- ----------------------------------------------- DMC End --------------------------------------------------- -->
 									
 									<!-- ----------------------------------------------- EB Calendar --------------------------------------------------- -->	
@@ -862,17 +882,88 @@ input,select,table,div,label,span {
 									<!-- ----------------------------------------------- ASP Status End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Project Closure --------------------------------------------------- -->	
-									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Project Closure")) { %>
-										<div class="container-fluid mt-3 tabpanes2">
-											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Project Closure")) { 
+											String scheduleId = (String) request.getAttribute("scheduleId");
+									%>
+										<div class="container-fluid mt-3 tabpanes1">
+											<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
-														<th colspan="6" style="border-radius: 1rem;"> <h5>Project Closure</h5></th>
+														<th colspan="8" style="border-radius: 1rem;"> <h5>Project Closure</h5></th>
+													</tr>
+													<tr>
+														<th>Lab</th>
+														<th>Project</th>
+														<th>Date of Sanction /<br> PDC</th>
+														<th>Recommendation</th>
+														<th>TCR Status</th>
+														<th>ACR Status</th>
+														<th>Activity Status</th>
 													</tr>
 												</thead>
+												<tbody>
+														<tr>
+															<td colspan="7" class="center">No Data Available</td>
+														</tr>
+												</tbody>
 											</table>
 										</div>
-													
+										<div class="center mt-2 mb-2">
+											<div class="row">
+												<div class="col-md-4"></div>
+												<div class="col-md-4 center">
+													<button type="button" class="btn btn-sm fw-bold add" data-toggle="tooltip" data-target="modal" title="Add Closure Status" onclick="openClosureStatusModal()" >
+														ADD CLOSURE STATUS
+													</button>
+												</div>
+												<div class="col-md-4 right"></div>
+											</div>
+										</div>	
+										
+										<div class="modal fade bd-example-modal-lg" id="closureStatusModal" tabindex="-1" role="dialog" aria-labelledby="closureStatusModal" aria-hidden="true" style="margin-top: 5%;">
+											<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
+												<div class="modal-content">
+													<div class="modal-header bg-primary text-light">
+											        	<h5 class="modal-title">Closure Status</h5>
+												        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+												          <span aria-hidden="true" style="color:red;">&times;</span>
+												        </button>
+											      	</div>
+									     			<div class="modal-body">
+									     				<form action="CCMClosureStatusSubmit.htm" method="post" id="closureStatusForm">
+									     					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+									     					<input type="hidden" name="scheduleId" value="<%=scheduleId%>">
+									     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+									     					<input type="hidden" name="ccmClosureId" id="ccmClosureId">
+									     					
+								     						<div class="row">
+								     							<div class="col-md-1">
+								     								<label class="mt-2">Lab: </label>
+								     							</div>
+								     							<div class="col-md-3 mb-2 labCodeSelectDiv">
+																	<select class="form-control selectdee" id="labCode" name="labCode" required style="width: 200px;" <%if(clusterLab.equalsIgnoreCase("N")) {%> disabled<%} %>>
+																		<option value="0">---Select---</option>
+																		<%if(clusterLabList!=null && clusterLabList.size()>0) {
+																			for(Object[] obj : clusterLabList) {
+																		%>
+																			<option value="<%=obj[2]%>" <%if(labcode.equalsIgnoreCase(obj[2].toString())) {%>selected <%} %> ><%=obj[2] %></option>
+																		<%} }%>
+																	</select>
+								     							</div>
+								     							<div class="col-md-3 mt-2 labCodeSpanDiv left" style="display: none;">
+								     								<span id="showLabCode"></span>
+								     							</div>
+								     							<div class="col-md-8"></div>
+								     						</div>
+										     					
+											         		<div class="center mt-2">
+											         			<button type="submit" name="action" value="Add" class="btn btn-sm submit btn-closurestatus">Submit</button>
+											         		</div>
+										         		</form>
+										         	</div>
+									    		</div>
+									  		</div>
+										</div>			
 									<!-- ----------------------------------------------- Project Closure End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Cash Out Go Status --------------------------------------------------- -->	
@@ -1187,27 +1278,19 @@ input,select,table,div,label,span {
 											</table>
 										</div>
 										<div class="center mt-2 mb-2">
-											
-												<div class="row">
-													<div class="col-md-4">
-													</div>
-													<div class="col-md-4 center">
-														<button type="button" class="btn btn-sm fw-bold add" data-toggle="tooltip" data-target="modal" title="Add Achievement" onclick="openAchievementsModal()"
-														<%if(clusterLab.equalsIgnoreCase("N") && ccmAchievementsList.size()>0) {%>disabled<%} %> >
-															ADD ACHIEVEMENT
-														</button>
-													</div>
-													
-													<div class="col-md-4 right">
-														
-													</div>
-													
+											<div class="row">
+												<div class="col-md-4"></div>
+												<div class="col-md-4 center">
+													<button type="button" class="btn btn-sm fw-bold add" data-toggle="tooltip" data-target="modal" title="Add Achievement" onclick="openAchievementsModal()"
+													<%if(clusterLab.equalsIgnoreCase("N") && ccmAchievementsList.size()>0) {%>disabled<%} %> >
+														ADD ACHIEVEMENT
+													</button>
 												</div>
-											
-											
+												<div class="col-md-4 right"></div>
+											</div>
 										</div>	
 										
-										<div class="modal fade bd-example-modal-lg" id="ckEditorModal" tabindex="-1" role="dialog" aria-labelledby="ckEditorModal" aria-hidden="true" style="margin-top: 5%;">
+										<div class="modal fade bd-example-modal-lg" id="achievementsModal" tabindex="-1" role="dialog" aria-labelledby="achievementsModal" aria-hidden="true" style="margin-top: 5%;">
 											<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
 												<div class="modal-content">
 													<div class="modal-header bg-primary text-light">
@@ -1374,27 +1457,6 @@ input,select,table,div,label,span {
 	</div>
 
 	<!-- -------------------------------------------------------------- action modal end ----------------------------------------------------- -->
-	
-	<!-- Modal Structure -->
-	<div id="fixedModal" class="modal-fixed-bottom-right" style="display: none;">
-	    <div class="modal-content">
-	        <div class="modal-header" style="">
-	            <h5 class="modal-title" style="">Schedule New DMC</h5>
-	            <button type="button" class="close" id="closeModalBtn" aria-label="Close">
-	                <span aria-hidden="true">&times;</span>
-	            </button>
-	        </div>
-	        <div class="modal-body">
-	            <input type="text" form="dmcScheduleForm" class="form-control" name="meetingDate" id="meetingDate" style="" readonly>
-	        </div>
-	        <div class="center">
-	        	<button type="button" form="dmcScheduleForm" class="btn btn-sm fw-bold submit" onclick="validateDMCSchedule('<%=committeeIdDMC%>','<%=(String)request.getAttribute("committeeMainId")%>')">
-					Submit
-				</button>
-        	</div>
-	    </div>
-	</div>
-	
 	
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -1777,7 +1839,7 @@ input,select,table,div,label,span {
 	/* --------------------- Open Achievements Modal --------------------------------------------------------------------------------------------------- */
 	
 	function openAchievementsModal() {
-		$('#ckEditorModal').modal('show');
+		$('#achievementsModal').modal('show');
 		$('.btn-achmnts').val('Add');
 		$('#achievementId').val('0');
 		
@@ -1808,7 +1870,7 @@ input,select,table,div,label,span {
 	
 	function openAchievementsModalEdit(slno, achievementId, labCode) {
 		
-		$('#ckEditorModal').modal('show');
+		$('#achievementsModal').modal('show');
 		$('#achievementId').val(achievementId);
 		$('.btn-achmnts').val('Edit');
 		$('.labCodeSelectDiv').hide();
@@ -1929,7 +1991,18 @@ input,select,table,div,label,span {
     	}
 	});
 	
-	/* --------------------- Excel File Upload --------------------------------------------------------------------------------------------------- */
+	/* --------------------- Excel File Upload End --------------------------------------------------------------------------------------------------- */
+	/* --------------------- Closure Status Modal --------------------------------------------------------------------------------------------------- */
+	function openClosureStatusModal(){
+		$('#closureStatusModal').modal('show');
+		$('.btn-closurestatus').val('Add');
+		$('#ccmClosureId').val('0');
+		
+		$('.labCodeSelectDiv').show();
+		$('.labCodeSpanDiv').hide();
+	}
+	/* --------------------- Closure Status Modal End --------------------------------------------------------------------------------------------------- */
+	
 	</script>	
 	
 	

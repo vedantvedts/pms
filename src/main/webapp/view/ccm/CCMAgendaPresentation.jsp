@@ -22,6 +22,23 @@
 
 <meta charset="ISO-8859-1">
 
+<style type="text/css">
+.custom-checkbox {
+	transform : scale(1.5);
+}
+label {
+	font-weight: 800;
+	font-size: 16px;
+}
+body { 
+   font-family : "Lato", Arial, sans-serif !important;
+   overflow-x: hidden;
+}
+
+input,select,table,div,label,span {
+	font-family : "Lato", Arial, sans-serif !important;
+}
+</style>
 </head>
 <body style="background-color: #F9F2DF66;">
 	<%
@@ -137,22 +154,11 @@
 				
 				<div class="content" >
 
-					<%-- <div class="row" style="float: right;">
-						<form  action="#" method="post" id="myfrm" target="_blank" style="float: right;margin-right: 25px;padding: 5px;">
-							
-							<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
-								<input type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get" data-toggle="tooltip" data-placement="bottom" title="Briefing Paper" >
-							<%}%>
-								
-							<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="BriefingPresentation.htm"  formmethod="post" formtarget="_blank"  data-toggle="tooltip" data-placement="bottom" title="Presentation"  >
-									<img src="view/images/presentation.png" style="width:19px !important">
-							</button>
-								<input type="hidden" name="scheduleid" value="<%=scheduleid%>">	
-								<input type="hidden" name="committeeid" value="<%=committeeid%>">
-								<input type="hidden" name="projectid" value="<%=projectid %>">
-								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-							</form>	
-					</div> --%>
+					<div class="mt-2 mb-2" style="float: right;">
+						<button type="button" class="btn btn-sm submit"data-toggle="tooltip" data-placement="bottom" title="Presentation Topics" onclick="openpresentationTopicsModal()" >
+							<i class="fa fa-th-list" aria-hidden="true"></i> Topics
+						</button>
+					</div>
 							
 								
 		         	<table class="table table-bordered table-hover table-condensed " style="margin-top:10px;width:100% ">
@@ -292,6 +298,82 @@
 		</ol>
 	</div>
 
+	
+	<div class="modal fade bd-example-modal-lg" id="presentationTopicsModal" tabindex="-1" role="dialog" aria-labelledby="presentationTopicsModal" aria-hidden="true" style="margin-top: 5%;">
+		<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
+			<div class="modal-content">
+				<div class="modal-header bg-primary text-light">
+		        	<h5 class="modal-title">Presentation Topics</h5>
+			        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" style="color:red;">&times;</span>
+			        </button>
+		      	</div>
+     			<div class="modal-body">
+     				<form action="CCMAgendaPresentation.htm" method="post" id="presentationTopicsForm">
+     					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+     					<input type="hidden" name="scheduleid" value="<%=ccmSchedule.getScheduleId()%>">
+		         		
+		         		<div class="form-group">
+			         		<div class="row ml-3 mr-3">
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="ATR">
+			         				&nbsp;&nbsp;&nbsp;<label>Action Taken Report</label>
+			         			</div>
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="DMC">
+			         				&nbsp;&nbsp;&nbsp;<label>DMC</label>
+			         			</div>
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="EB Calendar">
+			         				&nbsp;&nbsp;&nbsp;<label>EB Calendar</label>
+			         			</div>
+			         		</div>
+			         	</div>	
+			         	
+		         		<div class="form-group">
+			         		<div class="row ml-3 mr-3">
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="PMRC Calendar">
+			         				&nbsp;&nbsp;&nbsp;<label>PMRC Calendar</label>
+			         			</div>
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="ASP Status">
+			         				&nbsp;&nbsp;&nbsp;<label>ASP Status</label>
+			         			</div>
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="Project Closure">
+			         				&nbsp;&nbsp;&nbsp;<label>Project Closure</label>
+			         			</div>
+			         		</div>
+			         	</div>	
+			         	
+		         		<div class="form-group">
+			         		<div class="row ml-3 mr-3">
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="Cash Out Go Status">
+			         				&nbsp;&nbsp;&nbsp;<label>Cash Out Go Status</label>
+			         			</div>
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="Test & Trials">
+			         				&nbsp;&nbsp;&nbsp;<label>Test & Trials</label>
+			         			</div>
+			         			<div class="col-md-4">
+			         				<input type="checkbox" class=" custom-checkbox" name="topicName" value="Achievements">
+			         				&nbsp;&nbsp;&nbsp;<label>Achievements</label>
+			         			</div>
+			         		</div>
+			         	</div>	
+			         	
+		         		<div class="center mt-2">
+		         			<button type="button" name="action" value="Save" class="btn btn-sm submit btn-presentationTopics">Save</button>
+		         			<!-- <button type="button" name="action" value="Save & Freeze" class="btn btn-sm add btn-presentationTopics">Save & Freeze</button> -->
+		         		</div>
+	         		</form>
+	         	</div>
+    		</div>
+  		</div>
+	</div>
+	
 <script type="text/javascript">
 
 $('.carousel').carousel({
@@ -317,9 +399,15 @@ $('[data-toggle="tooltip"]').tooltip()
 	    }
 	}	
 /* --------------------- Expand Button Handle for Agenda List End --------------------------- */
+
+
+/* ----------------------- Agenda Presentation Modal ---------------------------------------------------------------------------------- */
+function openpresentationTopicsModal() {
+	$('#presentationTopicsModal').modal('show');
+}
+/* ----------------------- Agenda Presentation Modal End ---------------------------------------------------------------------------------- */
+
 </script>
-
-
 
 </body>
 </html>
