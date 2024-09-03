@@ -387,5 +387,8 @@ public interface ProjectDao {
 	
 	public PfmsInitiation getPfmsInitiationById(String initiationId) throws Exception;
 	public long ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule) throws Exception;
+	public Object[] getParaDetails(String paraid)throws Exception;
 
+	
+	
 }

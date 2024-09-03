@@ -138,6 +138,7 @@ public interface RequirementService {
 	public void SpecsInitiationPdfFreeze(HttpServletRequest req, HttpServletResponse resp, String specsInitiationId,
 			String labcode)throws Exception;
 
+	public List<Object[]> getAllSqr(String reqInitiationId)throws Exception;
 
 	
 }

@@ -3783,7 +3783,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	//private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid FROM pfms_initiation_req_summary a WHERE a.InitiationId =:InitiationId AND a.isactive='1'";
-	private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid,a.preparedby,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1' FROM pfms_initiation_req_summary a WHERE a.ReqInitiationId =:ReqInitiationId AND a.isactive='1'";
+	private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid,a.preparedby,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1',a.ReleaseDate FROM pfms_initiation_req_summary a WHERE a.ReqInitiationId =:ReqInitiationId AND a.isactive='1'";
 	@Override
 	public List<Object[]> getDocumentSummary(String reqInitiationId) throws Exception {
 
@@ -3795,7 +3795,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 
-	private static final String DOCSUMUPD="UPDATE pfms_initiation_req_summary SET AdditionalInformation=:AdditionalInformation,Abstract=:Abstract,Keywords=:Keywords,Distribution=:Distribution , reviewer=:reviewer,approver=:approver,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,PreparedBy=:PreparedBy WHERE SummaryId=:SummaryId AND isactive='1'";
+	private static final String DOCSUMUPD="UPDATE pfms_initiation_req_summary SET AdditionalInformation=:AdditionalInformation,Abstract=:Abstract,Keywords=:Keywords,Distribution=:Distribution , reviewer=:reviewer,approver=:approver,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,PreparedBy=:PreparedBy,ReleaseDate=:ReleaseDate WHERE SummaryId=:SummaryId AND isactive='1'";
 
 
 	@Override
@@ -3811,6 +3811,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("ModifiedDate", rs.getModifiedDate());			
 		query.setParameter("SummaryId", rs.getSummaryId());	
 		query.setParameter("PreparedBy", rs.getPreparedBy());	
+		query.setParameter("ReleaseDate", rs.getReleaseDate());	
 
 
 		return query.executeUpdate();
@@ -4044,5 +4045,17 @@ public class ProjectDaoImpl implements ProjectDao {
 		manager.flush();
 		return pfmsinitiationschedule.getInitiationScheduleId();
 	}
+	
+	private static final String PARAS="SELECT paraid,sqrid,ReqInitiationId,parano,paradetails FROM pfms_initiation_sqr_para WHERE Paraid=:paraid AND isactive=1 ";
+	@Override
+	public Object[] getParaDetails(String paraid) throws Exception {
+		
+		Query query = manager.createNativeQuery(PARAS);
+		
+		query.setParameter("paraid", paraid);
+		
+		return (Object[])query.getSingleResult();
+	}
+	
 }
 

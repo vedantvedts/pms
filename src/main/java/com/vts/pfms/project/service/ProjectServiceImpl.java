@@ -1064,7 +1064,7 @@ public class ProjectServiceImpl implements ProjectService {
 		PfmsInitiation pfmsinitiation = new PfmsInitiation();
 		PfmsApproval pfmsapproval = new PfmsApproval();
 		PfmsNotification notification = new PfmsNotification();
-		
+		BigInteger DivisionHeadId = dao.DivisionHeadId(EmpId);
 		pfmsinitiation.setInitiationId(Long.parseLong(InitiationId));
 		pfmsinitiation.setProjectStatus("PST");
 		pfmsinitiation.setModifiedBy(UserId);
@@ -1072,11 +1072,11 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		pfmsapproval.setInitiationId(Long.parseLong(InitiationId));
 		pfmsapproval.setProjectStatus("PST");
-		pfmsapproval.setEmpId(Long.parseLong(EmpId));
+		pfmsapproval.setEmpId(DivisionHeadId.longValue());
 		pfmsapproval.setActionBy(UserId);
 		pfmsapproval.setActionDate(sdf1.format(new Date()));
 		
-		BigInteger DivisionHeadId = dao.DivisionHeadId(EmpId);
+		
 		
 		notification.setEmpId(DivisionHeadId.longValue());
 		notification.setNotificationby(Long.parseLong(EmpId));
@@ -3298,6 +3298,7 @@ public Object[] SqrFiles(String reqInitiationId) throws Exception {
 	
 	return dao.SqrFiles(reqInitiationId);
 }
+
 @Override
 public long RequirementParaSubmit(RequirementparaModel rpm) throws Exception {
 
@@ -3538,6 +3539,10 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 				return 0L;
 			}
 			
+		}
+		@Override
+		public Object[] getParaDetails(String paraid) throws Exception {
+			return dao.getParaDetails(paraid);
 		}
 		
 		

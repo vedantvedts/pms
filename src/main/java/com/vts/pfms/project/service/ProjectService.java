@@ -366,6 +366,5 @@ public interface ProjectService {
 	public List<Object[]> SpecProducTreeDetails(String specsInitiationId) throws Exception;
 	
 	public long projectScheduleAllPeriodEditSubmit(String initiationId) throws Exception;
-
-	
+	public Object[] getParaDetails(String paraid)throws Exception;
 }

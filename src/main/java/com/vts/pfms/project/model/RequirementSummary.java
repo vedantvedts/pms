@@ -14,6 +14,7 @@ import lombok.Data;
 public class RequirementSummary {
 
 	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long SummaryId;
@@ -32,4 +33,5 @@ public class RequirementSummary {
 //	private Long ProjectId;
 	private String PreparedBy;
 	private Long ReqInitiationId;
+	private String ReleaseDate;
 }

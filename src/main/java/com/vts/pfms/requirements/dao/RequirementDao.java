@@ -132,5 +132,7 @@ public interface RequirementDao {
 
 
 	public List<Object[]> projectSpecificationPendingList(String empId, String labcode) throws Exception;
-	
+
+
+	public List<Object[]> getAllSqr(String reqInitiationId)throws Exception;
 }

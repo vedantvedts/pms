@@ -1074,4 +1074,12 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 
 	}
+	private static final String ALLSQR ="select * from pfms_initiation_sqr where reqInitiationId <> :reqInitiationId";
+	@Override
+	public List<Object[]> getAllSqr(String reqInitiationId) throws Exception {
+	Query query = manager.createNativeQuery(ALLSQR);
+	query.setParameter("reqInitiationId", reqInitiationId);
+	return (List<Object[]>)query.getResultList();
+	}
+	
 }

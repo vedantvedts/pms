@@ -1604,53 +1604,7 @@ public class RequirementsController {
 		return "requirements/RequirementList";
 	}
 
-	//	   @RequestMapping(value="RequirementAddList.htm",method = {RequestMethod.GET})
-	//		public @ResponseBody String RequirementAddList(HttpServletRequest req, HttpSession ses,@RequestParam("initiationId")String initiationId,@RequestParam("projectId")String projectId,@RequestParam("selectedValues")String selectedValues ) throws Exception {
-	//			String UserId = (String)ses.getAttribute("Username");
-	//			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-	//			logger.info(new Date() +"Inside RequirementAddList.htm ");
-	//			long count =0l;
-	//			try {
-	//				String productTreeMainId = req.getParameter("productTreeMainId");
-	//				String reqInitiationId = req.getParameter("reqInitiationId");
-	//
-	//				if(productTreeMainId==null) {
-	//					productTreeMainId="0";
-	//				}
-	//				if(reqInitiationId.equals("0") ) {					
-	//					reqInitiationId = Long.toString(service.requirementInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId));
-	//				}
-	//				
-	//				List<String>values=Arrays.asList(selectedValues.split(","));
-	//				for(int i=0;i<values.size();i++) {
-	//					PfmsInititationRequirement pir = new PfmsInititationRequirement();
-	//					String []valuesArray = values.get(i).split("/");
-	////					pir.setInitiationId(Long.parseLong(initiationId));
-	////					pir.setProjectId(Long.parseLong(projectId));
-	//					pir.setCategory("N");
-	//					pir.setNeedType("N");
-	//					pir.setReqMainId(Long.parseLong(valuesArray[0]));
-	//					pir.setRequirementBrief(valuesArray[1]);
-	//					pir.setRequirementId(valuesArray[2]);
-	//					pir.setReqTypeId(0l);
-	//					pir.setLinkedDocuments("");
-	//					pir.setLinkedPara("");
-	//					pir.setLinkedRequirements("");
-	//					pir.setCreatedBy(UserId);
-	//					pir.setParentId(0l);
-	//					pir.setReqInitiationId(Long.parseLong(reqInitiationId));
-	//					count =service.addPfmsInititationRequirement(pir);
-	//				}
-	//				
-	//				
-	//			}
-	//			catch(Exception e){
-	//				e.printStackTrace();
-	//				logger.error(new Date() +" Inside RequirementAddList.htm", e);
-	//			}
-	//			Gson json = new Gson();
-	//			return json.toJson(count);
-	//		}
+
 
 	@RequestMapping(value="RequirementAddList.htm",method = {RequestMethod.GET})
 	public String RequirementAddList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {

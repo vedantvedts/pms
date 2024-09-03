@@ -1261,5 +1261,9 @@ public class RequirementServiceImpl implements RequirementService {
 		// TODO Auto-generated method stub
 		return dao.projectSpecificationPendingList(empId,labcode);
 	}
+	@Override
+	public List<Object[]> getAllSqr(String reqInitiationId) throws Exception {
+		return dao.getAllSqr(reqInitiationId);
+	}
 	
 }
