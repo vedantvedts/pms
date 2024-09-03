@@ -10,6 +10,7 @@
 <head>
 <title>PMS Login</title>
 
+
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 <spring:url value="/resources/css/LoginPage.css" var="loginPageCss" />
 <link href="${loginPageCss}" rel="stylesheet" />
@@ -91,7 +92,7 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
         			</div>
       			</div>
      			<div class="logo">
-     				<a href="#" title="PMS"><span class="c"  style="margin-top: 2% !important;font-size: 113% !important;">PROJECT MANAGEMENT SYSTEM  (VER 1.7)</span></a>
+     				<a href="#" title="PMS"><span class="c"  style="margin-top: 2% !important;font-size: 113% !important;">PROJECT MANAGEMENT SYSTEM  (VER 1.6.1)</span></a>
      			</div>
      		
      			
