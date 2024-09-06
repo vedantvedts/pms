@@ -106,7 +106,7 @@ td {
 @page {
 	size: 770px 1050px;
 	margin-top: 49px;
-	margin-left: 49px;
+	margin-left: 50px;
 	margin-right: 49px;
 	margin-bottom: 69px;
 	border: 2px solid black;
@@ -122,27 +122,20 @@ td {
 	margin-bottom: 50px;
 	width:100px;;
 	font-size:10px;
-}
+	}
+
 @
 top-right {
 
 	margin-top: 30px;
 	margin-right: 10px;
 }
-@
-top-left {
-	margin-top: 30px;
-	margin-left: 10px;
-	content:
-	
-}
-@
-top-left {
-	margin-top: 30px;
-	margin-left: 10px; <%--
-	content: "<%=Labcode%>";
-	--%>
-}
+@left-top {
+          	content: element(pageHeader);
+            font-size: 13px;
+            
+          }   
+
 @
 top-center {
 	font-size: 13px;
@@ -156,6 +149,14 @@ bottom-center {
 	content:"This document contains proprietary information of LRDE, DRDO";
 	width:300px;;
 }
+}
+#headerdiv {
+  position: running(pageHeader); /* This will be used for paged media */
+  justify-content: space-between; /* Distribute space between items */
+  align-items: center; /* Align items vertically in the center */
+  padding: 10px; /* Add some padding */
+}
+
 .border-black {
 	border: 1px solid black !important;
 	border-collapse: collapse !important;
@@ -197,6 +198,15 @@ margin-left:15x;
 </style>
 </head>
 <body>
+
+	<div id="headerdiv">
+	<div style="position: absolute; top: 450px; left:-422px; border:1px solid black; transform: rotate(-90deg); font-size: 10px; color: #000; width:900px;opacity:0.5; ">
+				  <!--   <b style="font-size: 12px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</b><br>
+				    <span style="text-decoration: none; font-size: 11px;">This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.</span> -->
+				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} %>
+				
+				</div>
+   </div>
   <%
    // Default font size
         if (DocTempAtrr != null && DocTempAtrr[0] != null) {
@@ -272,13 +282,7 @@ margin-left:15x;
     <span style="font-weight: bold;font-family: <%= FontFamily %>;"><%= month.toString().substring(0,3) %> <%= year %></span>
    </div> --%>
    <br><br><br>
-   <div style="height:80px;border:1px solid black;margin: 10px;">
-   <div align="center" style="font-weight: bold;font-size:10px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</div>
-   <div style="text-align: justify;padding: 5px;font-size:10px;">
-   This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.
-   </div>
-   
-   </div>
+
 			</div>
 			<br>
 			<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
@@ -292,7 +296,7 @@ margin-left:15x;
 				</h5>
 				
 			</div>
-			<table style="width: 650px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+			<table style="width: 635px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 				
 					<tr >
 					<td class="text-dark"  rowspan="2" style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Amendment No.</span></td>
@@ -326,7 +330,7 @@ margin-left:15x;
 				<h5  class="heading-color; "style="font-family: <%= FontFamily %>;">DISTRIBUTION LIST
 				</h5>
 						</div>
-						<table style="width: 650px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+						<table style="width: 635px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 					<tr >
 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
 					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 250px;text-align: center;"><span class="text-dark">NAME</span></td>
@@ -357,12 +361,12 @@ margin-left:15x;
 				</h4>
 							</div>
 	<!-- 	<table class="border-black"
-					style="width: 650px; margin-top: 10px; margin-bottom: 5px;">
+					style="width: 635px; margin-top: 10px; margin-bottom: 5px;">
 			<tr>
 			<td>1.Title: System Requirement Document Template</td>
 			</tr>
 			</table> -->
-				<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
+				<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Requirements Document for <%=projectShortName %></span></td>
 					</tr>
@@ -551,7 +555,7 @@ int snCount=0;
 <%} %> 
 
 <table class="border-black"
-					style="margin-left: 10px;margin-top:7px;width: 650px;margin-right:20px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+					style="margin-left: 10px;margin-top:7px;width: 635px;margin-right:20px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
 					<thead>
 						<tr class="border-black">
 							<th class="border-black"
@@ -826,7 +830,7 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 					</div>
 				<br>
 				<%}} %>
-				<table class="border-black" style="width: 650px; margin-left: 10px; margin-right:20px; margin-top: 10px; margin-bottom: 5px;font-family: <%=FontFamily%>;font-size: <%=ParaFontSize%>pt">
+				<table class="border-black" style="width: 635px; margin-left: 10px; margin-right:20px; margin-top: 10px; margin-bottom: 5px;font-family: <%=FontFamily%>;font-size: <%=ParaFontSize%>pt">
 					<thead>
 						<tr>
 							<th class="border-black"
@@ -887,7 +891,7 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 </h2>
 </div>
 				<table class="border-black"
-					style="width: 650px; margin-left: 10px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+					style="width: 635px; margin-left: 10px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
 					<thead>
 						<tr>
 							<th class="border-black"
@@ -1007,7 +1011,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
 	<h2 class="heading-colors" style="font-family: <%= FontFamily %>; margin-left: 20px; font-size: <%= SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.3	Appendix D - Test Verification Matrices</h2>			
 	
 			
-			 <table id="table1" style="font-family: Times New Roman;width: 650px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: 10px ;font-size: <%= ParaFontSize%>pt">
+			 <table id="table1" style="font-family: Times New Roman;width: 635px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: 10px ;font-size: <%= ParaFontSize%>pt">
 			 <thead>
             <tr>
                 <th class="text-dark" style="border: 1px solid black; width: 120px; text-align: center;"><span class="text-dark">Verification method</span></th>
