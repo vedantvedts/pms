@@ -51,4 +51,5 @@ public class PfmsInititationRequirement implements Serializable {
 	private String SpecialMethods;
 	private String Criticality;
 	private Long ReqInitiationId;
+	private String TestStage;
 }
