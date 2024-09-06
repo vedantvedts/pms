@@ -2213,7 +2213,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public long ProjectRequirementDelete(long initiationReqId) throws Exception {
 		return 0;
 	}
-	private static final String REQUIREMENTS="SELECT '0' as InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.criticality  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
+	private static final String REQUIREMENTS="SELECT '0' as InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.criticality,a.TestStage  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
 	@Override
 	public Object[] Requirement(long InitiationReqId) throws Exception {
 		Query query=manager.createNativeQuery(REQUIREMENTS);
@@ -3816,7 +3816,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		return query.executeUpdate();
 	}
-	private static final String DOCTEMPATTRIBUTES="SELECT a.HeaderFontSize,a.HeaderFontWeight,a.SubHeaderFontsize, a.SubHeaderFontweight,a.ParaFontSize,a.ParaFontWeight,a.MainTableWidth, a.subTableWidth,a.AttributId,a.SuperHeaderFontsize,a.SuperHeaderFontWeight,a.FontFamily FROM  pfms_doc_template_attributes a";
+	private static final String DOCTEMPATTRIBUTES="SELECT a.HeaderFontSize,a.HeaderFontWeight,a.SubHeaderFontsize, a.SubHeaderFontweight,a.ParaFontSize,a.ParaFontWeight,a.MainTableWidth, a.subTableWidth,a.AttributId,a.SuperHeaderFontsize,a.SuperHeaderFontWeight,a.FontFamily,a.RestictionOnUse FROM  pfms_doc_template_attributes a";
 	@Override
 	public Object[] DocTempAttributes() throws Exception {
 

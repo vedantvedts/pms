@@ -46,6 +46,7 @@ import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
+import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -1253,17 +1254,18 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	@Override
 	public List<Object[]> projectSpecificationApprovedList(String empId, String fromdate, String todate)throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
 	public List<Object[]> projectSpecificationPendingList(String empId, String labcode) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.projectSpecificationPendingList(empId,labcode);
 	}
 	@Override
 	public List<Object[]> getAllSqr(String reqInitiationId) throws Exception {
 		return dao.getAllSqr(reqInitiationId);
 	}
-	
+	@Override
+	public long AddReqType(PfmsReqTypes pr) throws Exception {
+		return dao.AddReqType(pr);
+	}
 }

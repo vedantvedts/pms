@@ -548,7 +548,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								<hr>
 							</div>
 
-		 					<div class="col-md-12">
+		 					<div class="col-md-12" id="RemarksId">
 								<div class="row">
 									<div class="col-md-2" style="margin-top: 1%">
 										<h5
@@ -742,6 +742,31 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									
 								</div>
 							</div>	
+							
+							<div class="col-md-12">
+								<div class="row ">
+									<div class="col-md-3">
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Test Stage:
+										</label>
+									</div>
+									
+										<div class="col-md-9" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="TestStage" id="TestStageAdd" data-width="80%" data-live-search="true" >
+												<option value="" disabled="disabled" selected>---Choose----</option>
+												<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<option value="Verification">Verification</option>
+												<option value="Validation">Validation</option>
+												<option value="FAT">FAT</option>
+												<option value="SITE">SITE</option>
+												<option value="ATP">ATP</option>
+											</select>
+										</div>
+									</div>
+									</div>
+									</div>
+										
 									
 									
 							<div class="col-md-12">
@@ -1027,7 +1052,29 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>	
+													<div class="col-md-12">
+								<div class="row ">
+									<div class="col-md-3">
+										<label style="margin-top: 15px; font-size: 17px; color: #07689f">
+											Test Stage:
+										</label>
+									</div>
 									
+										<div class="col-md-9" style="margin-top: 1%;">
+										<div class="form-group">
+											<select class="form-control selectdee" name="TestStage" id="TestStageedit" data-width="80%" data-live-search="true" >
+												<option value="" disabled="disabled">---Choose----</option>
+												<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<option value="Verification">Verification</option>
+												<option value="Validation">Validation</option>
+												<option value="FAT">FAT</option>
+												<option value="SITE">SITE</option>
+												<option value="ATP">ATP</option>
+											</select>
+										</div>
+									</div>
+									</div>
+									</div>	
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-3">
@@ -1180,8 +1227,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
        						<span class="text-primary">No system requirements to Add</span>
          				</div>
        				<%} %>
-<!--        				<div align="center" class="mb-2"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">ADD NEW</button></div>
- -->      				<hr class="mb-2">
+        				<div align="center" class="mb-2"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">ADD NEW</button></div>
+    				<hr class="mb-2">
       				<div class="p-2" align="center">
 	      			    <input type="hidden" name="project" value="<%=project%>">
 		    			<input type="hidden" name="initiationId" value="<%=initiationId%>">
@@ -1289,17 +1336,21 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <h5 class="modal-title" id="staticBackdropLabel" style="font-weight:bold;">Add Requirement Type</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <label> Requirement Code:</label>
+        <input type="text" class="form-control" name="ReqCode" id="ReqCode" maxlength="3">
+        <br>
+          <label> Requirement Name:</label>
+        <input type="text" class="form-control" name="ReqCodeName" id="ReqCodeName" maxlength="250" placeholder="Max 250 Characters">
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
+      <div class="mt-2 mb-2">
+        <div align="center"><button type="button" class="btn btn-sm submit" onclick="submitReqType()">submit</button></div>
+       
       </div>
     </div>
   </div>
@@ -1362,6 +1413,7 @@ function showDetails(InitiationReqId,type){
 	$('#row1').show();
 	$('#row2').hide();
 	$('#row3').hide();
+	$('#RemarksId').hide();
 	if(tempVal!=InitiationReqId){
 		isOpen=false;
 		tempVal=InitiationReqId;
@@ -1454,6 +1506,7 @@ function showDetailss(subId,Id){
 	$('#row1').show();
 	$('#row2').hide();
 	$('#row3').hide();
+	$('#RemarksId').show();
 	$.ajax({
 		url:'RequirementJsonValue.htm',
 		datatype:'json',
@@ -1624,8 +1677,12 @@ function edit1(InitiationReqId){
 		                matchingKey = key;
 		            }
 		        });
+		    	
+		        if(ajaxresult[20]!=null){
+					 $('#TestStageedit').val(ajaxresult[20]).trigger('change');
+				 }
 				$('#reqTypeedit').val(matchingKey)
-		        console.log("Matching Key:", matchingKey);
+		    
 			}
 		})
 
@@ -1901,6 +1958,43 @@ function updateReq(){
 	}else{
 		event.preventDefault();
 		return false;
+	}
+}
+
+
+function submitReqType(){
+	var ReqCode = $('#ReqCode').val().trim();
+	
+	var ReqCodeName = $('#ReqCodeName').val().trim();
+	
+	
+	if(ReqCode.length==0||ReqCodeName.length==0){
+		alert("Please fill all the Details !")
+	}else{
+		if(confirm('Are you sure to submit?')){
+			$.ajax({
+				type:'GET',
+				url:'AddReqType.htm',
+				datatype:'json',
+				data:{
+					ReqCode:ReqCode,
+					ReqCodeName:ReqCodeName,
+				},
+				success:function(result){
+					
+					if(Number(JSON.parse(result))>0){
+						alert("Requirement Type Added successfully.")
+					}
+					location.reload();
+				}
+			})
+			
+			
+			
+		}else{
+			event.preventDefault();
+			return false;
+		}
 	}
 }
 </script>

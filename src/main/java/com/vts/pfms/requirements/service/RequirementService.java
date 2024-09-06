@@ -12,6 +12,7 @@ import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
+import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
@@ -139,6 +140,8 @@ public interface RequirementService {
 			String labcode)throws Exception;
 
 	public List<Object[]> getAllSqr(String reqInitiationId)throws Exception;
+
+	long AddReqType(PfmsReqTypes pr)throws Exception;
 
 	
 }

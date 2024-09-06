@@ -23,6 +23,7 @@ import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
+import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -1082,4 +1083,10 @@ public class RequirementDaoImpl implements RequirementDao {
 	return (List<Object[]>)query.getResultList();
 	}
 	
+	@Override
+	public long AddReqType(PfmsReqTypes pr) throws Exception {
+	manager.persist(pr);
+	manager.flush();
+		return pr.getRequirementId();
+	}
 }

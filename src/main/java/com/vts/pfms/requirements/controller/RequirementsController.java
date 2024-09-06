@@ -64,6 +64,7 @@ import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
+import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
@@ -1852,6 +1853,7 @@ public class RequirementsController {
 			pir.setLinkedPara(LinkedPara);
 			pir.setCriticality(req.getParameter("criticality"));
 			pir.setReqInitiationId(Long.parseLong(reqInitiationId));
+			pir.setTestStage(req.getParameter("TestStage"));
 			long count =0;
 			count=service.addPfmsInititationRequirement(pir);
 
@@ -1974,12 +1976,12 @@ public class RequirementsController {
 			pir.setLinkedPara(LinkedPara);
 			pir.setCriticality(req.getParameter("criticality"));
 			pir.setReqInitiationId(Long.parseLong(reqInitiationId));
-		
+			pir.setTestStage(req.getParameter("TestStage"));
 			long count =0;
 			count=service.addOrUpdatePfmsInititationRequirement(pir);
 
 			if(count>0) {
-				redir.addAttribute("result","Requirements Updated successfully");
+				redir.addAttribute("result","Requirements for "+requirementId+" Updated successfully");
 			}else {
 				redir.addAttribute("resultfail","Requirements Updated  unsuccessful");
 			}
@@ -3004,5 +3006,34 @@ public class RequirementsController {
 			logger.error(new Date() +" Inside ProjectRequirementAmendSubmit.htm "+UserId, e);
 			return "static/Error";
 		}
+	}
+	
+	@RequestMapping(value="AddReqType.htm")
+	public @ResponseBody String AddReqType(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
+
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside ProjectRequirementAmendSubmit.htm"+UserId);
+		
+		
+		try {
+			PfmsReqTypes pr = new PfmsReqTypes();
+			
+			pr.setReqCode(req.getParameter("ReqCode"));
+			pr.setReqName(req.getParameter("ReqCodeName"));
+			pr.setReqParentId(0l);
+			
+			long result = service.AddReqType(pr);
+			
+			Gson json = new Gson();
+			
+			return json.toJson(result);
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return null;
 	}
 }
