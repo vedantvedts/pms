@@ -299,6 +299,7 @@ keyframes blinker { 50% {
 	String project = (String) request.getAttribute("project");
 	String[] projectDetails = project.split("/");
 	List<Object[]> ParaDetails = (List<Object[]>) request.getAttribute("ParaDetails");
+	List<Object[]> TotalSqr = (List<Object[]>) request.getAttribute("TotalSqr");
 	String paracounts = (String) request.getAttribute("paracounts");
 	
 	//RequirementInitiation reqInitiation = (RequirementInitiation)request.getAttribute("reqInitiation");
@@ -306,12 +307,25 @@ keyframes blinker { 50% {
 	//List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
 	%>
 	<nav class="navbar navbar-light bg-light justify-content-between"
-		style="margin-top: -1%">
+		style="margin-top: -1%;display: flex;">
 		<a class="navbar-brand"> <b
 			style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left"><span
 				style="color: #31708f">SQR para for Project <%=projectDetails[1]%>
 			</span> <span style="color: #31708f; font-size: 19px"> <%-- <%=projectDetails[1].toString() %> --%></span></b>
 		</a>
+	<div class="col-md-6">
+	<%
+	if (SQRFile != null) {
+	%>
+		<label>Import SQR : -</label>
+	<select id="sqrImport" class="form-control selectdee" style="width:30%"  onchange="importSqr()">
+	<option  selected="selected" disabled="disabled">SELECT</option>
+	<%for(Object[]obj:TotalSqr){ %>
+	<option value="<%=obj[14].toString() %>"><%=obj[4].toString() %></option>
+	<%} %>
+	</select>
+	<%} %>
+	</div>
 		<form action="#">
 			<button class="btn bg-transparent"
 				formaction="RequirementParaDownload.htm" formmethod="get"
@@ -322,12 +336,10 @@ keyframes blinker { 50% {
 			<input type="hidden" name="project" value="<%=project%>"> 
 			<input type="hidden" name="initiationId" value="<%=initiationId%>">
 			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
-			<%-- <button type="button" class="btn btn-sm btn-success font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq">Other Requirements</button> 
- -->	
- 		 <%if(SQRFile==null){ %>
- 		<button class="btn btn-sm btn-success mt-1" formaction="ProjectIntiationListSubmit.htm" formmethod="post" formnovalidate="formnovalidate" name="sub" value="Details">ADD SQR</button>
+
+ 
  		
- 		<%} %> --%>
+
 			<button class="btn btn-info btn-sm  back ml-2 mt-1"
 				formaction="ProjectOverAllRequirement.htm" formmethod="get"
 				formnovalidate="formnovalidate" style="float: right;">BACK</button>
@@ -705,7 +717,35 @@ keyframes blinker { 50% {
 			</div>
 		</div>
 	</div>
+<!--Modal for import Para  -->
 
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Import Para </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+      <div class="row m-2 mainProject" ><input id="mainProject" style="transform:scale(1.5)" type="checkbox"  >&nbsp; Select All</div>
+       <div class="row" id="modalBody">
+       
+       
+       
+       </div>
+       <div align="center" id="submit" class="mt-2"> 
+       	<input type="hidden" id="reqInitiationId" value="<%=reqInitiationId%>">
+		<input type="hidden" id="sqrid" value="<%=SQRFile!=null&& SQRFile[7]!=null ?  SQRFile[7].toString():""%>"> 
+       <button class="btn btn-sm submit" onclick="submitImportSqr()">SUBMIT</button>
+       </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
 	<script>
 	var inputValue; 
 	function showSpan(a){
@@ -721,121 +761,89 @@ keyframes blinker { 50% {
 		document.getElementById("input"+a).readOnly=true;
 	}
 	var editor_config = {
-			toolbar : [
-					{
-						name : 'clipboard',
-						items : [ 'PasteFromWord', '-', 'Undo', 'Redo' ]
-					},
-					{
-						name : 'basicstyles',
-						items : [ 'Bold', 'Italic', 'Underline', 'Strike',
-								'RemoveFormat', 'Subscript', 'Superscript' ]
-					},
-					{
-						name : 'links',
-						items : [ 'Link', 'Unlink' ]
-					},
-					{
-						name : 'paragraph',
-						items : [ 'NumberedList', 'BulletedList', '-',
-								'Outdent', 'Indent', '-', 'Blockquote' ]
-					},
-					{
-						name : 'insert',
-						items : [ 'Image', 'Table' ]
-					},
-					{
-						name : 'editing',
-						items : [ 'Scayt' ]
-					},
-					'/',
-
-					{
-						name : 'styles',
-						items : [ 'Format', 'Font', 'FontSize' ]
-					},
-					{
-						name : 'colors',
-						items : [ 'TextColor', 'BGColor', 'CopyFormatting' ]
-					},
-					{
-						name : 'align',
-						items : [ 'JustifyLeft', 'JustifyCenter',
-								'JustifyRight', 'JustifyBlock' ]
-					}, {
-						name : 'document',
-						items : [ 'Print', 'PageBreak', 'Source' ]
-					} ],
-
-			removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-
-			customConfig : '',
-
-			disallowedContent : 'img{width,height,float}',
-			extraAllowedContent : 'img[width,height,align]',
-
-			height : 280,
-
-			contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
-
-			bodyClass : 'document-editor',
-
-			format_tags : 'p;h1;h2;h3;pre',
-
-			removeDialogTabs : 'image:advanced;link:advanced',
-
-			stylesSet : [
-
-			{
-				name : 'Marker',
-				element : 'span',
-				attributes : {
-					'class' : 'marker'
-				}
-			}, {
-				name : 'Cited Work',
-				element : 'cite'
-			}, {
-				name : 'Inline Quotation',
-				element : 'q'
-			},
-
-			{
-				name : 'Special Container',
-				element : 'div',
-				styles : {
-					padding : '5px 10px',
-					background : '#eee',
-					border : '1px solid #ccc'
-				}
-			}, {
-				name : 'Compact table',
-				element : 'table',
-				attributes : {
-					cellpadding : '5',
-					cellspacing : '0',
-					border : '1',
-					bordercolor : '#ccc'
-				},
-				styles : {
-					'border-collapse' : 'collapse'
-				}
-			}, {
-				name : 'Borderless Table',
-				element : 'table',
-				styles : {
-					'border-style' : 'hidden',
-					'background-color' : '#E6E6FA'
-				}
-			}, {
-				name : 'Square Bulleted List',
-				element : 'ul',
-				styles : {
-					'list-style-type' : 'square'
-				}
-			}, {
-				filebrowserUploadUrl : '/path/to/upload-handler'
-			}, ]
+		    toolbar: [
+		        {
+		            name: 'paragraph',
+		            items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+		        },
+		        {
+		            name: 'styles',
+		            items: ['Format', 'Font', 'FontSize']
+		        },
+		        {
+		            name: 'align',
+		            items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+		        }
+		    ],
+		    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+		    customConfig: '',
+		    disallowedContent: 'img{width,height,float}',
+		    extraAllowedContent: 'img[width,height,align]',
+		    height: 200,
+		    contentsCss: [CKEDITOR.basePath + 'mystyles.css'],
+		    bodyClass: 'document-editor',
+		    format_tags: 'p;h1;h2;h3;pre',
+		    removeDialogTabs: 'image:advanced;link:advanced',
+		    stylesSet: [
+		        {
+		            name: 'Marker',
+		            element: 'span',
+		            attributes: { 'class': 'marker' }
+		        },
+		        {
+		            name: 'Cited Work',
+		            element: 'cite'
+		        },
+		        {
+		            name: 'Inline Quotation',
+		            element: 'q'
+		        },
+		        {
+		            name: 'Special Container',
+		            element: 'div',
+		            styles: {
+		                padding: '5px 10px',
+		                background: '#eee',
+		                border: '1px solid #ccc'
+		            }
+		        },
+		        {
+		            name: 'Compact table',
+		            element: 'table',
+		            attributes: {
+		                cellpadding: '5',
+		                cellspacing: '0',
+		                border: '1',
+		                bordercolor: '#ccc'
+		            },
+		            styles: { 'border-collapse': 'collapse' }
+		        },
+		        {
+		            name: 'Borderless Table',
+		            element: 'table',
+		            styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' }
+		        },
+		        {
+		            name: 'Square Bulleted List',
+		            element: 'ul',
+		            styles: { 'list-style-type': 'square' }
+		        }
+		    ],
+		    enterMode: CKEDITOR.ENTER_BR,
+		    shiftEnterMode: CKEDITOR.ENTER_P,
+		    on: {
+		        instanceReady: function() {
+		            this.dataProcessor.htmlFilter.addRules({
+		                elements: {
+		                    p: function(element) {
+		                        if (element.children.length == 1 && element.children[0].name == 'br') {
+		                            return false;
+		                        }
+		                    }
+		                }
+		            });
+		        }
+		    }
 		};
 		CKEDITOR.replace('Editor', editor_config);
 		function showsqrModal(){
@@ -913,6 +921,94 @@ keyframes blinker { 50% {
 		function show(){
 			
 		}
+		
+
+		function importSqr(){
+
+			var value= $('#sqrImport').val();
+			console.log(value)
+			
+			$.ajax({
+		            type: 'GET',
+		            url: 'RequirementParaDetails.htm',
+		            datatype: 'json',
+		            data: {
+		                reqInitiationId: value,
+		            },
+		            success: function(result) {
+		                var ajaxresult = JSON.parse(result);
+		                console.log(ajaxresult);
+		                var html= "";
+		                if(ajaxresult.length>0){
+		                	for(var i=0;i<ajaxresult.length;i++){
+		                	
+		                		html = html+'<div class="col-md-2"><input class="sqrIds" type="checkbox"  name="sqrids" value="'+ajaxresult[i][0]+'"><span style="font-size:16px;"> '+ajaxresult[i][3]+'</span></div>'
+		                		
+		                	}
+		                	$('#submit').show();
+		                	$('.mainProject').show();
+		                	$('#modalBody').html(html);
+		                	
+		                }else{
+		                	$('#submit').hide();
+		                	$('.mainProject').hide();
+		                	
+		                	$('#modalBody').html("No parars are there for this SQR");
+		                }
+		                
+		                
+			            $('#exampleModal1').modal('show');
+		            }
+
+			});
+		}
+		  $('#mainProject').change(function() {
+			    
+		      var isChecked = $(this).prop('checked');
+		      
+		    
+		      $('input:checkbox.sqrIds').prop('checked', isChecked);
+		    });
+		    
+		    var initialChecked = $('#mainProject').prop('checked');
+		    $('input:checkbox.sqrIds').prop('checked', initialChecked);
+		function submitImportSqr(){
+			var checkedValues = [];
+			$('input[name="sqrids"]:checked').each(function() {
+			    checkedValues.push($(this).val());
+			});
+			var reqInitiationId = $('#reqInitiationId').val();
+			var sqrid = $('#sqrid').val();
+			console.log(checkedValues)
+			if(checkedValues.length>0){
+				
+			if(confirm('Are you sure to submit?')){	
+			$.ajax({
+				type:'GET',
+				url:'Importpara.htm',
+				data:{
+					checkedValues:checkedValues+"",
+					reqInitiationId:reqInitiationId,
+					sqrid:sqrid,
+				},
+				datatype:'json',
+				success:function(result){
+				var ajaxresult=JSON.parse(result);
+				if(ajaxresult>0){
+					alert("Paras imported Successfully");
+			        location.reload();
+				}
+				}
+			})
+			}else{
+				event.preventDefault();
+				return false;
+			}
+			
+			}
+
+			
+		}
 </script>
 
 <%-- <script type="text/javascript">
@@ -922,6 +1018,7 @@ keyframes blinker { 50% {
 	    $('.btn-req').prop('disabled',true);
 	<%} %>
 </script> --%>
+
 
 </body>
 </html>

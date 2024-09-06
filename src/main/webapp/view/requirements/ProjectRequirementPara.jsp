@@ -299,10 +299,11 @@ keyframes blinker { 50% {
 	List<Object[]> ParaDetails = (List<Object[]>) request.getAttribute("ParaDetails");
 	String paracounts = (String) request.getAttribute("paracounts");
 	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
+	List<Object[]> TotalSqr = (List<Object[]>) request.getAttribute("TotalSqr");
 	
 	%>
 	<nav class="navbar navbar-light bg-light justify-content-between"
-		style="margin-top: -1%">
+		style="margin-top: -1%;display: flex;">
 		<a class="navbar-brand"> 
 			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
 				<span style="color: #31708f">
@@ -316,6 +317,20 @@ keyframes blinker { 50% {
 				</span>
 			</b>
 		</a>
+		<div class="col-md-6">
+	<%
+	if (SQRFile != null) {
+	%>
+	
+		<label>Import SQR : -</label>
+	<select id="sqrImport" class="form-control selectdee" style="width:30%"  onchange="importSqr()">
+	<option  selected="selected" disabled="disabled">SELECT</option>
+	<%for(Object[]obj:TotalSqr){ %>
+	<option value="<%=obj[14].toString() %>"><%=obj[4].toString() %></option>
+	<%} %>
+	</select>
+	<%} %>
+	</div>
 		<form action="#">
 			<button class="btn bg-transparent"
 				formaction="RequirementParaDownload.htm" formmethod="get"
@@ -429,9 +444,11 @@ keyframes blinker { 50% {
 											</span>
 										</h4>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  
+											
 										<input type="hidden" name="projectId" value="<%=projectId%>">
 										<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 										<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+										<input type="hidden" name="sqrid" value="<%=SQRFile[7].toString()%>"> 
 										<button class="btn bg-transparent buttonEd" type="button"
 											style="display: none;" id="btnEditor1" onclick="">
 											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -688,6 +705,38 @@ keyframes blinker { 50% {
 		</div>
 	</div>
 
+
+<!--Modal for import Para  -->
+
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Import Para </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+      <div class="row m-2 mainProject" ><input id="mainProject" style="transform:scale(1.5)" type="checkbox"  >&nbsp; Select All</div>
+       <div class="row" id="modalBody">
+       
+       
+       
+       </div>
+       <div align="center" id="submit" class="mt-2"> 
+       	<input type="hidden" id="reqInitiationId" value="<%=reqInitiationId%>">
+			<input type="hidden" id="sqrid" value="<%=SQRFile!=null&& SQRFile[7]!=null ?  SQRFile[7].toString():""%>"> 
+
+       <button class="btn btn-sm submit" onclick="submitImportSqr()">SUBMIT</button>
+       </div>
+      </div>
+    
+    </div>
+    
+  </div>
+</div>
 	<script>
 	var inputValue; 
 	function showSpan(a){
@@ -892,6 +941,93 @@ keyframes blinker { 50% {
 			}
 			}
 	
+		
+		function importSqr(){
+
+			var value= $('#sqrImport').val();
+			console.log(value)
+			
+			$.ajax({
+		            type: 'GET',
+		            url: 'RequirementParaDetails.htm',
+		            datatype: 'json',
+		            data: {
+		                reqInitiationId: value,
+		            },
+		            success: function(result) {
+		                var ajaxresult = JSON.parse(result);
+		                console.log(ajaxresult);
+		                var html= "";
+		                if(ajaxresult.length>0){
+		                	for(var i=0;i<ajaxresult.length;i++){
+		                	
+		                		html = html+'<div class="col-md-2"><input class="sqrIds" type="checkbox"  name="sqrids" value="'+ajaxresult[i][0]+'"><span style="font-size:16px;"> '+ajaxresult[i][3]+'</span></div>'
+		                		
+		                	}
+		                	$('#submit').show();
+		                	$('.mainProject').show();
+		                	$('#modalBody').html(html);
+		                	
+		                }else{
+		                	$('#submit').hide();
+		                	$('.mainProject').hide();
+		                	
+		                	$('#modalBody').html("No parars are there for this SQR");
+		                }
+		                
+		                
+			            $('#exampleModal1').modal('show');
+		            }
+
+			});
+		}
+		  $('#mainProject').change(function() {
+			    
+		      var isChecked = $(this).prop('checked');
+		      
+		    
+		      $('input:checkbox.sqrIds').prop('checked', isChecked);
+		    });
+		    
+		    var initialChecked = $('#mainProject').prop('checked');
+		    $('input:checkbox.sqrIds').prop('checked', initialChecked);
+		function submitImportSqr(){
+			var checkedValues = [];
+			$('input[name="sqrids"]:checked').each(function() {
+			    checkedValues.push($(this).val());
+			});
+			var reqInitiationId = $('#reqInitiationId').val();
+			var sqrid = $('#sqrid').val();
+			console.log(checkedValues)
+			if(checkedValues.length>0){
+				
+			if(confirm('Are you sure to submit?')){	
+			$.ajax({
+				type:'GET',
+				url:'Importpara.htm',
+				data:{
+					checkedValues:checkedValues+"",
+					reqInitiationId:reqInitiationId,
+					sqrid:sqrid,
+				},
+				datatype:'json',
+				success:function(result){
+				var ajaxresult=JSON.parse(result);
+				if(ajaxresult>0){
+					alert("Paras imported Successfully");
+			        location.reload();
+				}
+				}
+			})
+			}else{
+				event.preventDefault();
+				return false;
+			}
+			
+			}
+
+			
+		}
 </script>
 </body>
 </html>
