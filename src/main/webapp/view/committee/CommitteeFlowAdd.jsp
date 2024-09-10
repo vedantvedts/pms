@@ -273,7 +273,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important">Approving Officer: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
 					</div>
 					<div class="col-md-2">
-					<select class="form-control selectdee" style="width: 80%;" name="AppprovingOfficerLabCode" id="AppprovingOfficerLabCode" required="required"  onchange="chooseEmp()">
+					<select class="form-control selectdee" style="width: 80%;" name="ApprovingOfficerLabCode" id="ApprovingOfficerLabCode" required="required"  onchange="chooseEmp()">
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:AllLabList){ %>
 					<option value="<%=obj[3].toString()%>"  <%if (CommitteMainEnoteList!=null &&  CommitteMainEnoteList[22]!=null && obj[3].toString().equalsIgnoreCase(CommitteMainEnoteList[22].toString())) {%> selected  <%} %>><%=obj[3].toString() %></option>
@@ -330,7 +330,7 @@ String ses=(String)request.getParameter("result");
 				 	<div align="center" style="margin-top:1%;display: flex;justify-content: center;">
 				 	<form action="#">
 				<label class="control-label" style="margin-bottom: 4px !important;">Status History: &nbsp;</label>
-				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value=" <%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20].toString() %> 
+				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value=" <%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20].toString() %> 
 				<i class="fa fa-external-link" aria-hidden="true"></i></button>
 				</form>
 				
@@ -609,7 +609,7 @@ String ses=(String)request.getParameter("result");
 			
 			
 			function chooseEmp(value){
-				var labCode=$('#AppprovingOfficerLabCode').val();
+				var labCode=$('#ApprovingOfficerLabCode').val();
 				$.ajax({
 						
 						type : "GET",
@@ -632,7 +632,7 @@ String ses=(String)request.getParameter("result");
 							for (i = 0; i < values.length; i++) 
 							{
 
-								s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+								s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3] + '</option>';
 							} 
 							
 							$('#ApprovingOfficer').html(s);

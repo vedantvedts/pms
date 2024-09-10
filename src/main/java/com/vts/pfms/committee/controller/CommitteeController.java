@@ -1037,7 +1037,7 @@ public class CommitteeController {
 			pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
 			}
 			pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
-			pe.setAppprovingOfficerLabCode(req.getParameter("AppprovingOfficerLabCode"));;
+			pe.setApprovingOfficerLabCode(req.getParameter("ApprovingOfficerLabCode"));;
 			if(pe.getCreatedBy()==null) {
 			pe.setCreatedBy(Username);	
 			pe.setCreatedDate(sdf1.format(new Date()));	
@@ -1188,7 +1188,7 @@ public class CommitteeController {
 				}
 				if(req.getParameter("ApprovingOfficer")!=null) {
 					pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
-					pe.setAppprovingOfficerLabCode(labcode);
+					pe.setApprovingOfficerLabCode(labcode);
 				}
 				pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
 				if(pe.getCreatedBy()==null) {

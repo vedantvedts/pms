@@ -3138,7 +3138,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return pmsenote.getEnoteId();
 	}
 	
-	private static final String COMMENOTELIST = "SELECT a.EnoteId , a.RefNo , a.RefDate , a.Subject , a.Comment , a.CommitteeMainId , a.ScheduleId ,a.Recommend1,a.Rec1_Role,a.Recommend2,a.Rec2_Role , a.Recommend3, a.Rec3_Role , a.ApprovingOfficer,a.Approving_Role,a.EnoteStatusCode,a.EnoteStatusCodeNext,a.InitiatedBy,e.empname , d.designation , ds.EnoteStatus,ds.EnoteStatusColor,a.AppprovingOfficerLabCode  FROM pms_enote a , employee e , employee_desig d , dak_enote_status ds WHERE a.CommitteeMainId = :CommitteeMainId AND a.EnoteStatusCode=ds.EnoteStatusCode AND a.ScheduleId=:ScheduleId AND a.InitiatedBy = e.empid AND e.desigid = d.desigid AND a.isactive ='1'";
+	private static final String COMMENOTELIST = "SELECT a.EnoteId , a.RefNo , a.RefDate , a.Subject , a.Comment , a.CommitteeMainId , a.ScheduleId ,a.Recommend1,a.Rec1_Role,a.Recommend2,a.Rec2_Role , a.Recommend3, a.Rec3_Role , a.ApprovingOfficer,a.Approving_Role,a.EnoteStatusCode,a.EnoteStatusCodeNext,a.InitiatedBy,e.empname , d.designation , ds.EnoteStatus,ds.EnoteStatusColor,a.ApprovingOfficerLabCode  FROM pms_enote a , employee e , employee_desig d , dak_enote_status ds WHERE a.CommitteeMainId = :CommitteeMainId AND a.EnoteStatusCode=ds.EnoteStatusCode AND a.ScheduleId=:ScheduleId AND a.InitiatedBy = e.empid AND e.desigid = d.desigid AND a.isactive ='1'";
 	@Override
 	public Object[] CommitteMainEnoteList(String CommitteeMainId,String ScheduleId) throws Exception {
 
@@ -3221,7 +3221,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.Recommend3 AND e.desigid=d.desigid )AS 'Recommend3Officer'\r\n"
 			+ ",p.Recommend3\r\n"
 			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.ApprovingOfficer AND e.desigid=d.desigid )AS 'Approving Officer'\r\n"
-			+ ",p.Approving_Role,p.AppprovingOfficerLabCode\r\n"
+			+ ",p.Approving_Role,p.ApprovingOfficerLabCode\r\n"
 			+ " FROM pms_enote p WHERE p.EnoteId=:EnoteId";
 @Override
 public Object[] NewApprovalList(String EnoteId) throws Exception {

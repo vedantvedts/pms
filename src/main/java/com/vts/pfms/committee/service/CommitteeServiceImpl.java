@@ -3515,7 +3515,7 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		pe.setModifiedDate(sdf1.format(new Date()));
 		
 		dao.addPmsEnote(pe);
-		if(pe.getEnoteFrom().equalsIgnoreCase("C")&&  EnoteStatusCodeNext.equalsIgnoreCase("APR") && !pe.getSessionLabCode().equalsIgnoreCase(pe.getAppprovingOfficerLabCode())) {
+		if(pe.getEnoteFrom().equalsIgnoreCase("C")&&  EnoteStatusCodeNext.equalsIgnoreCase("APR") && !pe.getSessionLabCode().equalsIgnoreCase(pe.getApprovingOfficerLabCode())) {
 			System.out.println("Hiiiii");
 			pe.setEnoteStatusCode("APR");
 			pe.setEnoteStatusCodeNext("APR");

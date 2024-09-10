@@ -34,7 +34,7 @@ public class PmsEnote {
 	private String Rec3_Role;
 	private Long ApprovingOfficer;
 	private String Approving_Role;
-	private String AppprovingOfficerLabCode;
+	private String ApprovingOfficerLabCode;
 	private String EnoteFrom;
 	private String EnoteStatusCode;
 	private String EnoteStatusCodeNext;
