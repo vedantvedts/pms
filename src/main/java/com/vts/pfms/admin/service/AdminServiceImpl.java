@@ -831,4 +831,8 @@ public class AdminServiceImpl implements AdminService{
 			// TODO Auto-generated method stub
 			return dao.getFormUrlList(loginType);
 		}
+		@Override
+		public List<Object[]> getAllUrlList(String loginType)  {
+			return dao.getAllUrlList(loginType);
+		}
 }

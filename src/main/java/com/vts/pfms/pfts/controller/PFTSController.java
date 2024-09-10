@@ -53,10 +53,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.google.gson.Gson;
+import com.vts.pfms.FormatConverter;
 import com.vts.pfms.master.dto.DemandDetails;
 import com.vts.pfms.pfts.dto.DemandOrderDetails;
 import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
+import com.vts.pfms.pfts.model.PftsFileMilestone;
+import com.vts.pfms.pfts.model.PftsFileMilestoneRev;
 import com.vts.pfms.pfts.model.PftsFileOrder;
 import com.vts.pfms.pfts.service.PFTSService;
 import com.vts.pfms.print.model.ProjectOverallFinance;
@@ -74,8 +77,10 @@ public class PFTSController {
     private String uri;
 	
 	private static final Logger logger=LogManager.getLogger(PFTSController.class);
+	FormatConverter fc = new FormatConverter();
 	SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat sdf1= fc.getSqlDateAndTimeFormat();
 
 	
 	@RequestMapping(value = "ProcurementStatus.htm" ,method= {RequestMethod.GET,RequestMethod.POST})
@@ -91,8 +96,6 @@ public class PFTSController {
 		try {
 			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 			
-			System.out.println(projectId+"-----projectId");
-			
 			if(projectlist.size()==0) 
 		    {				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -107,6 +110,7 @@ public class PFTSController {
 			req.setAttribute("projectslist",projectlist );
 			req.setAttribute("fileStatusList",service.getFileStatusList(projectId));
 			req.setAttribute("pftsStageList", service.getpftsStageList());
+			req.setAttribute("pftsMilestoneList", service.getpftsMilestoneList());
 			req.setAttribute("projectId",projectId);
 			String projectcode = service.ProjectData(projectId)[1].toString();
 			req.setAttribute("projectcode",projectcode);
@@ -1127,6 +1131,193 @@ public class PFTSController {
 				
 			}
 		 
+		@RequestMapping(value="addProcurementMilestone.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+		public String addProcurementMilestone (RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses) throws Exception {
 		
+			String UserId = (String) ses.getAttribute("Username");
+			String [] statusId = req.getParameterValues("statusId");
+			String pftsFileId = req.getParameter("pftsFileId");
+			String projectid = req.getParameter("ProjectId");
+			String action = req.getParameter("action");
+			String demandnumber = req.getParameter("demandnumber");
+			String [] probabaleDate = req.getParameterValues("probabaleDate");
+			
+			try {
+				long result=0;
+				if(pftsFileId!=null) {
+					if(action.equalsIgnoreCase("add")) {
+						for(int i=0; i<statusId.length; i++) {
+							PftsFileMilestone mile = new PftsFileMilestone();
+							mile.setPftsFileId(Long.parseLong(pftsFileId));
+							mile.setPftsStatusId(Long.parseLong(statusId[i]));
+							mile.setProbableDate(sdf.format(inputFormat.parse(probabaleDate[i])));
+							mile.setRevision(0);
+							mile.setSetBaseline("N");
+							mile.setCreatedBy(UserId);
+							mile.setCreatedDate(sdf1.format(new Date()));
+							mile.setIsActive(1);
+							result=service.addProcurementMilestone(mile);
+							
+							if(result>0) {
+								redir.addAttribute("result","Milstone Added Successfully For Demand No. "+demandnumber);
+							}else {
+								redir.addAttribute("resultfail","Something went worng");
+							}
+						}
+					}else if (action.equalsIgnoreCase("edit")) {
+						for(int i=0; i<statusId.length; i++) {
+							PftsFileMilestone mile =service.getEditMilestoneData(Long.parseLong(statusId[i]));
+							mile.setProbableDate(sdf.format(inputFormat.parse(probabaleDate[i])));
+							mile.setModifiedBy(UserId);
+							mile.setModifiedDate(sdf1.format(new Date()));
+							result=service.editProcurementMilestone(mile);
+							
+							if(result>0) {
+								redir.addAttribute("result","Milstone Edited Successfully For Demand No. "+demandnumber);
+							}else {
+								redir.addAttribute("resultfail","Something went worng");
+							}
+						}
+					}else if(action.equalsIgnoreCase("baseline")) {
+						for(int i=0; i<statusId.length; i++) {
+							PftsFileMilestone mile =service.getEditMilestoneData(Long.parseLong(statusId[i]));
+							mile.setProbableDate(sdf.format(inputFormat.parse(probabaleDate[i])));
+							mile.setSetBaseline("Y");
+							mile.setModifiedBy(UserId);
+							mile.setModifiedDate(sdf1.format(new Date()));
+							result=service.editProcurementMilestone(mile);
+							
+							if(result>0) {
+								redir.addAttribute("result","Milstone Baseline Set Successfully For Demand No. "+demandnumber);
+							}else {
+								redir.addAttribute("resultfail","Something went worng");
+							}
+						}
+					}else if (action.equalsIgnoreCase("revision")) {
+						for(int i=0; i<statusId.length; i++) {
+							PftsFileMilestone mile =service.getEditMilestoneData(Long.parseLong(statusId[i]));
+							
+							PftsFileMilestoneRev rev = new PftsFileMilestoneRev();
+							rev.setPftsMilestoneId(mile.getPftsMilestoneId());
+							rev.setProbableDate(mile.getProbableDate());
+							rev.setRevision(mile.getRevision());
+							rev.setCreatedBy(UserId);
+							rev.setCreatedDate(sdf1.format(new Date()));
+							rev.setIsActive(mile.getIsActive());
+							service.addProcurementMilestoneRev(rev);
+							
+							mile.setProbableDate(sdf.format(inputFormat.parse(probabaleDate[i])));
+							mile.setRevision(mile.getRevision()+1);
+							mile.setModifiedBy(UserId);
+							mile.setModifiedDate(sdf1.format(new Date()));
+							result=service.editProcurementMilestone(mile);
+						
+							if(result>0) {
+								redir.addAttribute("result","Milstone Revised Successfully For Demand No. "+demandnumber);
+							}else {
+								redir.addAttribute("resultfail","Something went worng");
+							}
+						}
+					}
+				
+				}
+		
+			}catch (Exception e) {
+				e.printStackTrace();
+			} 
+			
+			redir.addAttribute("projectid", projectid);
+			return "redirect:/ProcurementStatus.htm";
+		}
+		
+		@RequestMapping(value = "pftsMilestoneView.htm" , method = RequestMethod.GET)
+		public String pftsMilestoneView (RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses) throws Exception {
+			String UserId = (String) ses.getAttribute("Username");
+			String PftsFileId = req.getParameter("PftsFileId");
+			String ProjectId = req.getParameter("ProjectId");
+			logger.info(new Date() +"Inside checkManualDemandNo.htm "+UserId);		
+			try {
+				req.setAttribute("pftsMilestoneList", service.getpftsMilestoneList());
+				req.setAttribute("pftsMileDemandList", service.getpftsMileDemandList(PftsFileId));
+				req.setAttribute("pftsProjectDate", service.getpftsProjectDate(ProjectId));
+				req.setAttribute("PftsFileId", PftsFileId);
+				req.setAttribute("ProjectId", ProjectId);
+				req.setAttribute("demandNumber", req.getParameter("demandNumber"));
+				return"pfts/FileMilestoneView";
+			}catch (Exception e) 
+			{			
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside checkManualDemandNo.htm "+UserId, e); 
+				return "static/Error";
+			}
+
+		}
+		
+		
+		@RequestMapping(value = "getpftsActualDate.htm", method = RequestMethod.GET)
+		public @ResponseBody String getpftsActualDate(HttpServletRequest req, HttpSession ses) throws Exception
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			String PftsFileId = req.getParameter("PftsFileId");
+			logger.info(new Date() +"Inside getpftsActualDate.htm "+UserId);		
+			try {
+					Object[] pftsActualDate=service.getpftsActualDate(PftsFileId);
+					Gson json = new Gson();
+					return json.toJson(pftsActualDate);
+			}catch (Exception e) 
+			{			
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside getpftsActualDate.htm "+UserId, e); 
+				return null;
+			}
+		}
+		
+		
+		@RequestMapping(value = "filestatus.htm", method = RequestMethod.GET)
+		public @ResponseBody String filestatus(HttpServletRequest request, HttpSession ses) throws Exception
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside getStatusEvent.htm "+UserId);		
+			try {
+					List<Object[]> pftsMilestoneList=service.getpftsMilestoneList();
+					Gson json = new Gson();
+					return json.toJson(pftsMilestoneList);
+			}catch (Exception e) 
+			{			
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside fileopen.htm "+UserId, e); 
+				return null;
+			}
+		}
+		
+		@RequestMapping(value = "getActualStatus.htm", method = RequestMethod.GET)
+		public @ResponseBody String getActualStatus(HttpServletRequest request, HttpSession ses) throws Exception
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside getStatusEvent.htm "+UserId);		
+			try {
+				
+				String projectId = request.getParameter("projectId");
+				String demandId = request.getParameter("demandId");
+				Object[] getActualStatus=service.getActualStatus(projectId,demandId);
+				List<String[]> list = new ArrayList<String[]>();
+			
+				for(int i=0;i<getActualStatus.length;i++)
+				{
+					String[] array = new String[2];
+					array[0]=(i + 1)+"";
+					array[1]=getActualStatus[i]!=null ? getActualStatus[i].toString() : null;
+				    list.add(array);
+				}
+				Gson json = new Gson();
+				return json.toJson(list);
+			}catch (Exception e) 
+			{			
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside fileopen.htm "+UserId, e); 
+				return null;
+			}
+
+		}
 }
 

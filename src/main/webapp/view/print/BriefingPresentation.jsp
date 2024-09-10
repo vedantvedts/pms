@@ -2309,13 +2309,13 @@
 					<% } %>
 
 			
-							 		<table  style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;width: 1370px;font-size: 12px;" >
+							 		<table  style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;width: 1375px;font-size: 12px;" >
 									<thead>
 										<tr>
-											<th colspan="25" style="text-align: right; border: 0px;"><span class="currency">(In &#8377; Lakhs)</span></th>
+											<th colspan="29" style="text-align: right; border: 0px;"><span class="currency">(In &#8377; Lakhs)</span></th>
 										</tr>
 										<tr>
-											<th colspan="25" ><span class="mainsubtitle">Procurement Status</span></th>
+											<th colspan="29" ><span class="mainsubtitle">Procurement Status</span></th>
 									 	</tr>
 									 	<tr>
 											<th style="width: 40x">SN</th>
@@ -2341,8 +2341,12 @@
 											<th style="width: 35px">17</th>
 											<th style="width: 35px">18</th>
 											<th style="width: 35px">19</th>
-											<th style="width: 150px">PDC</th>
-											<th style="width: 150px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
+											<th style="width: 35px">20</th>
+											<th style="width: 35px">21</th>
+											<th style="width: 35px">22</th>
+											<th style="width: 35px">23</th>
+											<th style="width: 35px">24</th>
+											<th style="width: 35px">25</th>
 									 	</tr>
 									</thead>
 									<tbody>
@@ -2371,10 +2375,10 @@
 												<% int filestatus = Integer.parseInt(proc[13].toString());
 													int tempstatus = filestatus;
 												%>
-												<%for(int tdc=1;tdc<=19;tdc++){ %>
+												<%for(int tdc=1;tdc<=25;tdc++){ %>
 												
 													<%if(filestatus>11){  filestatus--;  } %>
-													<%if(filestatus>19){  filestatus--;  } %>
+													<%if(filestatus>25){  filestatus--;  } %>
 													
 													
 													<%if(tdc < (tempstatus)){ %>
@@ -2386,12 +2390,6 @@
 													<%} %>
 													
 												<%} %>
-												<td style="text-align: center;">
-													<%if(proc[14]!=null){ %> <%=sdf.format(sdf1.parse(proc[14].toString()))%> <%}else{ %> - <%} %>
-												</td>
-												<td style="text-align: center;">
-													<%if(proc[15]!=null){ %> <%=sdf.format(sdf1.parse(proc[15].toString()))%> <%}else{ %> - <%} %>
-												</td>
 											</tr>
 									<%}if(envisagedDemandlist!=null && envisagedDemandlist.size()>0){
 										for(Object[] envi : envisagedDemandlist){psn++; %>
@@ -2419,73 +2417,94 @@
 												<td></td>
 												<td></td>
 												<td></td>
-												<td style="text-align: center;">-</td>
-												<td style="text-align: center;">-</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
 												</tr>
 										<%}} %>
 
 										
 										<%if(psn ==0 && envisagedDemandlist.size()==0 ){ %>
 											<tr>
-										      <td colspan="25" style="text-align: center;">Nil</td>
+										      <td colspan="29" style="text-align: center;">Nil</td>
 										   </tr>
 										<%} %>
 										
 								 	</tbody>
 								</table>
 								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:1370px !important;  border-collapse:collapse;font-size: 12px;" >
-										<tr>
-										<td style="width: 3%;">0</td>
-										<td style="width: 22%;">Demand to be Initiated</td>
-											<td>5</td>
-										<td>Receipt of Quotations</td>
-										<td>10</td>
-										<td>Order Placement</td>
-											<td>15</td>
-										<td>Delivery at Stores</td>
-									
+								    <tr>
+										<td>0</td>
+										<td>Demand to be Initiated</td>
+										<td>7</td>
+										<td>TCEC Approved</td>
+										<td>14</td>
+										<td>CDR</td>
+										<td>21</td>
+										<td>Inward Inspection Clearance</td>
 									</tr>
 									<tr>
-									<td style="width: 3%;">1</td>
-										<td style="width: 22%;">Demand Released from Division</td>
-										<td style="width: 3%;">6</td>
-										<td style="width: 22%;">Tender Opening</td>
-										<td style="width: 3%;">11</td>
-										<td style="width: 22%;">Revised DP</td>
-										<td style="width: 3%;">16</td>
-										<td style="width: 22%;">Inward Inspection Clerance</td>
-									
+							            <td>1</td>
+										<td>Demand Initiated</td>
+										<td>8</td>
+										<td>TPC Approved</td>
+										<td>15</td>
+										<td>Acceptance of Critical BoM by Dev Partner</td>
+										<td>22</td>
+										<td>Payment Process</td>
 									</tr>
 									<tr>
 										<td>2</td>
 										<td>SPC Cleared</td>
-									    <td>7</td>
-										<td>TCEC Approved</td>
-										<td>12</td>
-										<td>Realization in progress</td>
-										<td>17</td>
-										<td>Payment Process</td>
-									
+									    <td>9</td>
+										<td>Financial Sanction</td>
+										<td>16</td>
+										<td>Realization Completed</td>
+										<td>23</td>
+										<td>Partially Paid</td>
 									</tr>
 									<tr>
 										<td>3</td>
 										<td>EPC Approved</td>
-									    <td>8</td>
-										<td>TPC Approved</td>
-										<td>13</td>
-										<td>Realization Completed</td>
-										<td>18</td>
-										<td>Partialy Paid</td>
+									    <td>10</td>
+										<td>Order Placement</td>
+										<td>17</td>
+										<td>FAT Completed</td>
+										<td>24</td>
+										<td>Payment Released</td>
 									</tr>
 									<tr>
 										<td>4</td>
 										<td>Tender Enquiry Floated</td>
-										<td>9</td>
-										<td>Financial Sanction</td>
-										<td>14</td>
+										<td>11</td>
+										<td>PDR</td>
+										<td>18</td>
 										<td>ATP/QTP Completed</td>
+										<td>25</td>
+										<td>Available for Integration</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>Receipt of Quotations</td>
+										<td>12</td>
+										<td>SO for Critical BoM by Dev Partner</td>
 										<td>19</td>
-										<td>Payment Released</td>
+										<td>Delivery at Stores</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>6</td>
+										<td>Tender Opening</td>
+										<td>13</td>
+										<td>DDR</td>
+										<td>20	</td>
+										<td>SAT / SoFT</td>
+										<td></td>
+										<td></td>
 									</tr>
 								</table>
 						<% } %>

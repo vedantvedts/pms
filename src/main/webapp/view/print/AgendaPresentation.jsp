@@ -213,7 +213,7 @@
 			                       	<th style="width: 10%;">Remarks</th> -->
 			                       	<th style="width: 24%;">Presenter</th>
 			                       	<th style="width: 14%;">Duration</th>
-			                       <!-- 	<th style="width: 10%;">Attachment</th> -->
+			                     	<th style="width: 10%;">Attachment</th> 
 			                    </tr>
 			              	</thead> 
 			              	<tbody>

@@ -110,29 +110,26 @@ border: 1px solid black;
 }
 
 }
+.input-group-text {
+	font-weight: bold;
+}
 
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
 
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
 
-		.input-group-text {
-			font-weight: bold;
-		}
+.card b {
+	font-size: 20px;
+}
 
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		input::-webkit-outer-spin-button,
+input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
@@ -175,7 +172,28 @@ input[type=number] {
     opacity: 1;
   }
 }
-		
+
+.custom-style {
+    background-color: #fff3ab; 
+    color: #333; 
+    border: 1px solid #ddc67b;
+    pointer-events: none; 
+    user-select: none; 
+}
+
+.custom-sn-style {
+    background-color: #5d7cf4; 
+    color: white; 
+    border: 1px solid #497bd9;
+    pointer-events: none; 
+    user-select: none; 
+}
+
+.form-row{
+   height: 36px;
+}
+
+
 </style>
 
 
@@ -191,6 +209,7 @@ SimpleDateFormat sdf1=fc.getSqlDateFormat(); int addcount=0;
 NFormatConvertion nfc=new NFormatConvertion();
 
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
+List<Object[]> pftsMilestoneList=(List<Object[]>)request.getAttribute("pftsMilestoneList");
 List<Object[]> fileStatusList=(List<Object[]>)request.getAttribute("fileStatusList");
 String projectId=request.getAttribute("projectId").toString();
 String projectcode=request.getAttribute("projectcode").toString();
@@ -199,7 +218,12 @@ List<Object[]> pftsStageList1=pftsStageList.stream().filter(i->Integer.parseInt(
 List<Object[]> pftsStageList2=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())>=10).collect(Collectors.toList());
 List<Object[]> pftsStageList3=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())>10).collect(Collectors.toList());
 Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
-
+List<Integer> status = Arrays.asList(1,3,6,10,11,12,13,14,15,17,19,20,25);
+List<Object[]> milestoneStatus = new ArrayList<Object[]>();
+List<Object[]> milestoneList = new ArrayList<Object[]>();
+for(Integer i:status){
+	milestoneStatus.add(pftsStageList.get(i-1));
+}
 %>
 <%
 	String ses=(String)request.getParameter("result"); 
@@ -217,12 +241,6 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	        </div>
 	    </div>
     <%} %>
-
-    
-
-
-
-	
 <br>
 <div class="container-fluid">
 		<div class="row">
@@ -314,6 +332,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                                      <th>Item Nomenclature</th>
 	                                      <th>Estimated cost</th>
 	                                      <th>Status</th>
+	                                      <th>Procurement Milestone</th>
 	                                      <th>Order Details</th>
 	                                     </tr>
 	                                 </thead>
@@ -321,7 +340,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                                      <%if(fileStatusList!=null){ int SN=1;%>
 	                                      <%for(Object[] fileStatus:fileStatusList){ %>
 	                                      <tr>
-                                            <td><%=SN++%></td>
+                                            <td style="text-align: center;"><%=SN++%></td>
                                             <td><% if(fileStatus[1]!=null){ %> <%=fileStatus[1]%><%}else %>--</td>
                                             <td><%=fileStatus[4]%></td>
                                             <td style="text-align: right;">
@@ -398,6 +417,190 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
                                                </tr>
                                               </table>
                                             </td>
+                                            <td  style="text-align: center;">
+                                            <button class="btn btn" type="button" style="background: #5d22ed;" onclick="openMilestoneModal('<%=fileStatus[0]%>','<%=fileStatus[1]%>','<%=fileStatus[4]%>')"
+                                             data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Add Procurement Milestone">
+                                            <i class="fa fa-list" aria-hidden="true" style="color: white;font-size: 17px;"></i>
+                                            </button>
+                                               <%
+												 if (pftsMilestoneList != null) {
+													   milestoneList = pftsMilestoneList.stream()
+													               .filter(e -> e[1].equals(fileStatus[0]))
+													               .collect(Collectors.toList());
+												  }
+											    %>
+                                            <%if(milestoneList!=null && milestoneList.size()>0 ){ %>
+                                           <form action="pftsMilestoneView.htm" method="get" style="display: inline;">
+                                              <button class="btn btn" type="submit" id="viewBtn" style="background: #5d22ed; color: white;" name="PftsFileId" value="<%=fileStatus[0]%>">View</button>
+                                              <input type="hidden" name="ProjectId" value="<%=fileStatus[19]%>">
+                                              <input type="hidden" name="demandNumber" value="<%=fileStatus[1]%>">
+                                           </form>
+                                           <%} %>
+                                            <div class="modal fade bd-example-modal-lg" id="milestoneModal_<%=fileStatus[0] %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											  <div class="modal-dialog modal-lg" role="document">
+											    <div class="modal-content" style="width: 115%;margin-left: -9%">
+											      <div class="modal-header">
+											        <h5 class="modal-title" id="milestoneModalLabel">
+											        <span style="color: #FF3D00;font-weight: 600">Demand No : <%=fileStatus[1]%></span>
+											        </h5>
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true">&times;</span>
+											        </button>
+											      </div>
+											      <div class="modal-body">
+													 <div class="container">
+													       <form action="addProcurementMilestone.htm" method="post">
+													        <!-- Labels for all fields -->
+													        <div class="form-row">
+													         <div class="form-group col-md-1" align="center">
+													                <label for="sn">SN</label>
+													            </div>
+													            <div class="form-group col-md-5" align="center">
+													                <label for="name">Status Name</label>
+													            </div>
+													             <div class="form-group col-md-3" align="center">
+													                <label for="date">Probable Date</label>
+													            </div>
+													            <div class="form-group col-md-3" align="center">
+													                <label for="date">Actual Date</label>
+													            </div>
+													        </div>
+													     
+													        <% 
+													        int count=0;
+													        if(milestoneList!=null && milestoneList.size()>0 && milestoneList.stream().filter(e -> e[1].equals(fileStatus[0])).findAny().isPresent()){
+													        	for(Object[] obj : milestoneList) { 
+													        	%>
+													            <div class="form-row">
+													                <div class="form-group col-md-1">
+													                   <input class="form-control custom-sn-style" type="text" value="<%=++count %>" style="font-size: 16px; line-height:17px;font-weight: 500; text-align: center;">
+													                   <input type="hidden" name="statusId" value="<%= obj[0] %>">
+													                </div>
+													                <div class="form-group col-md-5">
+											                            <input type="text" class="form-control custom-style" id="statusname_<%= obj[0] %>" name="statusName" value="<%= obj[11] %>" style="font-size: 16px; line-height:17px;font-weight: 500;">
+											                        </div>
+													                <div class="form-group col-md-3">
+													                   <% if(obj[7].toString().equalsIgnoreCase("1")){%>
+											                                 <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(fileStatus[2].toString()) %>" disabled style="line-height: 17px;">
+											                           <%}else if(obj[7].toString().equalsIgnoreCase("3") && fileStatus[11]!=null){%>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("6") && fileStatus[12]!=null){ %>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("10") && fileStatus[13]!=null){%>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("11") && fileStatus[14]!=null){ %>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("12") && fileStatus[21]!=null){%>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("13") && fileStatus[15]!=null){ %>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("15") && fileStatus[22]!=null){%>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("25") && fileStatus[18]!=null){ %>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("14") && fileStatus[16]!=null){%>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("17") && fileStatus[17]!=null){ %>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("19") && fileStatus[20]!=null){%>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else if(obj[7].toString().equalsIgnoreCase("20") && fileStatus[23]!=null){ %>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%}else{ %>
+													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                   <%} %>
+													                </div>
+													               <div class="form-group col-md-3">
+																	 <%
+																	     Object inputValue = "";
+																	     if (obj[7].toString().equalsIgnoreCase("3")) {
+																	    	 inputValue = (fileStatus[11] != null) ? fc.sdfTordf(fileStatus[11].toString()) : "";
+																	     } else if (obj[7].toString().equalsIgnoreCase("6")) {
+																	    	 inputValue = (fileStatus[12] != null) ? fc.sdfTordf(fileStatus[12].toString()) : "";
+																	     } else if (obj[7].toString().equalsIgnoreCase("10")) {
+																	    	 inputValue = (fileStatus[13] != null) ? fc.sdfTordf(fileStatus[13].toString()) : "";
+																	     } else if (obj[7].toString().equalsIgnoreCase("11")) {
+																	    	 inputValue = (fileStatus[14] != null) ? fc.sdfTordf(fileStatus[14].toString()) : "";
+																	     } else if (obj[7].toString().equalsIgnoreCase("12")) {
+																	         inputValue = (fileStatus[21] != null) ? fc.sdfTordf(fileStatus[21].toString()) : "";
+																	     } else if (obj[7].toString().equalsIgnoreCase("13")) {
+																	         inputValue = (fileStatus[15] != null) ? fc.sdfTordf(fileStatus[15].toString()) : "";
+																	     } else if (obj[7].toString().equalsIgnoreCase("15")) {
+																	         inputValue = (fileStatus[22] != null) ? fc.sdfTordf(fileStatus[22].toString()) : "";
+																	     } else if (obj[7].toString().equalsIgnoreCase("25")) {
+																	         inputValue = (fileStatus[18] != null) ? fc.sdfTordf(fileStatus[18].toString()) : "";
+																	     } else if (obj[7].toString().equalsIgnoreCase("1")) {
+																	         inputValue = (fileStatus[2] != null) ? fc.sdfTordf(fileStatus[2].toString()) : "";
+																	     }else if (obj[7].toString().equalsIgnoreCase("14")) {
+																	         inputValue = (fileStatus[16] != null) ? fc.sdfTordf(fileStatus[16].toString()) : "";
+																	     }else if (obj[7].toString().equalsIgnoreCase("17")) {
+																	         inputValue = (fileStatus[17] != null) ? fc.sdfTordf(fileStatus[17].toString()) : "";
+																	     }else if (obj[7].toString().equalsIgnoreCase("19")) {
+																	         inputValue = (fileStatus[20] != null) ? fc.sdfTordf(fileStatus[20].toString()) : "";
+																	     }else if (obj[7].toString().equalsIgnoreCase("20")) {
+																	         inputValue = (fileStatus[23] != null) ? fc.sdfTordf(fileStatus[23].toString()) : "";
+																	     }
+																	 %>
+																	 <input type="text" class="form-control date-picker1" id="actualdate_<%= obj[0] %>" name="actualDate" value="<%=inputValue%>" disabled style="line-height: 17px;">
+																	</div>
+													            </div>
+													        <% }
+													        }else{
+													        for(Object[] data : milestoneStatus) { %>
+													            <div class="form-row">
+													                <div class="form-group col-md-1">
+													                   <input class="form-control custom-sn-style" type="text" value="<%=++count %>" style="font-size: 16px; line-height:17px;font-weight: 500; text-align: center;">
+													                   <input type="hidden" name="statusId" value="<%= data[0] %>">
+													                </div>
+													                <div class="form-group col-md-5">
+											                            <input type="text" class="form-control custom-style" id="name_<%= data[0] %>" name="statusName" value="<%= data[2] %>" style="font-size: 16px; line-height:17px;font-weight: 500;">
+											                        </div>
+													                <div class="form-group col-md-3">
+													                    <input type="text" class="form-control date-picker" id="date_<%= data[0] %>" name="probabaleDate" style="line-height: 17px;">
+													                </div>
+													                <div class="form-group col-md-3">
+													                    <input type="text" class="form-control" id="date_<%= data[0] %>" value="NA" name="actualDate" disabled style="line-height: 17px;">
+													                </div>
+													            </div>
+													        <% } 
+													        }
+													        %>
+													        <br>
+													        <div align="center">
+															 <%
+															if (milestoneList.stream().filter(e -> e[1].equals(fileStatus[0]) && e[9].toString().equalsIgnoreCase("Y")).findAny().isPresent()) { 
+															%>
+															    <button type="submit" class="btn btn-primary" name="action" value="revision" onclick="return confirm('Are You Sure To Make a Revision?')">MAKE REVISION</button>
+															<% 
+															} else if (milestoneList.stream().filter(e -> e[1].equals(fileStatus[0])).findAny().isPresent()) { 
+															%>
+															    <button type="submit" name="action" value="edit" class="btn btn-warning" onclick="return confirm('Are You Sure To Edit?')">EDIT</button>
+															    <% 
+															    if (milestoneList.stream().filter(e -> e[9].toString().equalsIgnoreCase("N")).findAny().isPresent()) { 
+															    %>
+															     <button type="submit" class="btn btn-success" name="action" value="baseline" onclick="return confirm('Once You Set Baseline, You Cannot Edit. Are You Sure To Proceed??')">SET BASELINE</button>
+															    <% 
+															    } 
+															%>
+															<% 
+															} else { 
+															%>
+															    <button type="submit" name="action" value="add" class="btn btn-success" onclick="return confirm('Are You Sure To Submit?')">SUBMIT</button>
+															<% 
+															} 
+															%>
+													        <input type="hidden" name="pftsFileId" id="pftsFileId" value="<%=fileStatus[0]%>">
+													        <input type="hidden" name="demandnumber" value="<%=fileStatus[1]%>">
+													        <input type="hidden" name="ProjectId" value="<%=projectId%>">
+													        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+													        </div>
+													    </form>
+													</div>
+											      </div>
+											    </div>
+											  </div>
+											</div>
+                                            </td>
                                             <td style="text-align: center;">
                                             <%if(fileStatus[1]!=null && Long.parseLong(fileStatus[7].toString())>=10){ %>
                                             <%if(fileStatus[10]!=null && fileStatus[10].toString().equalsIgnoreCase("M")){ %>
@@ -435,6 +638,8 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 					</div>
 			</div>
 		</div>
+		
+
 		
 		<!-- Excel Upload-->
 <div class="modal fade bd-example-modal-lg" id="MANUALDEMANDS" >
@@ -548,7 +753,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 								<%
 								int i = 0;
 								for (Object[] obj1 : pftsStageList) {
-									if (i == 7)
+									if (i == 9)
 										break;
 								%>
 								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString()%>
@@ -561,8 +766,8 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 							<div>
 								<%
 								int j = 0;
-								for (Object[] obj1 : pftsStageList.stream().skip(7).collect(Collectors.toList())) {
-									if (j == 7)
+								for (Object[] obj1 : pftsStageList.stream().skip(9).collect(Collectors.toList())) {
+									if (j == 9)
 										break;
 								%>
 								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString()%>
@@ -575,8 +780,8 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 							<div>
 								<%
 								int k = 0;
-								for (Object[] obj1 : pftsStageList.stream().skip(14).collect(Collectors.toList())) {
-									if (k == 7)
+								for (Object[] obj1 : pftsStageList.stream().skip(18).collect(Collectors.toList())) {
+									if (k == 9)
 										break;
 								%>
 								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString() %>
@@ -819,8 +1024,6 @@ function addIbis() {
              }
         }
 }
-
-
 
 function openEnviform(PftsFileId) {
 	
@@ -1473,9 +1676,6 @@ excel_file.addEventListener('change', (event) => {
     			return;
     		}
     		
-    		
-    		
-    		
     		   var map = {};
     		   var duplicates = [];
     			
@@ -1487,17 +1687,12 @@ excel_file.addEventListener('change', (event) => {
     		        }
     		    }
     
-    	
-    		
     	 	if(duplicates.length>0){
     			alert("Duplicate Demand numbers are there in Excel ("+duplicates+ ")");
     			excel_file.value = '';
     			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
     			return;
     		} 
-    		   
-    		   
-    		
     	  	if(table_output.length>0){
     			$('#overalltbody').html(table_output)
     		} else{
@@ -1505,11 +1700,63 @@ excel_file.addEventListener('change', (event) => {
     			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data is their in Excel Sheet</td></tr>');
     			excel_file.value = '';
     		} 
-    		
     	}
-    	
     }
 });
+
+function openMilestoneModal(pftsid,demandNo,item){
+	$('#milestoneModal_'+pftsid).modal('show');
+
+	$('.date-picker').each(function() {
+	    $(this).daterangepicker({
+	        "singleDatePicker": true,
+	        "linkedCalendars": false,
+	        "showCustomRangeLabel": true,
+	        /* "startDate": new Date(), */
+	        "cancelClass": "btn-default",
+	        "showDropdowns": true,
+	        "drops": "down", 
+	        "locale": {
+	            "format": 'DD-MM-YYYY' 
+	        }
+	    }).on('show.daterangepicker', function(ev, picker) {
+	        // Dynamically adjust the drop direction based on input position
+	        var $this = $(this);
+	        var pickerTop = $this.offset().top;
+	        var modalTop = $('#milestoneModal_'+pftsid).offset().top;
+	        var modalHeight = $('#milestoneModal_'+pftsid).outerHeight();
+	        // Check if the picker goes out of the modal
+	        if ((pickerTop - modalTop) > (modalHeight / 2)) {
+	            picker.drops = 'up'; // If in lower half, open upwards
+	        } else {
+	            picker.drops = 'down'; // Otherwise, open downwards
+	        }
+	        picker.move(); 
+	    });
+	});
+	
+}
+
+$('.date-picker1').each(function() {
+    $(this).daterangepicker({
+        "singleDatePicker": true,
+        "linkedCalendars": false,
+        "showCustomRangeLabel": true,
+        "autoUpdateInput": false, 
+        "cancelClass": "btn-default",
+        "showDropdowns": true,
+        "drops": "down", 
+        "locale": {
+            "format": 'DD-MM-YYYY'
+        }
+    });
+
+    if ($(this).val() === "") {
+        $(this).val('--'); 
+    }
+
+});
+
 </script>
 </body>
 </html>

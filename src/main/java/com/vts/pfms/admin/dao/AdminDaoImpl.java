@@ -1126,4 +1126,18 @@ public class AdminDaoImpl implements AdminDao{
 	}
        return null;
 	}
+	
+	public static final String GETALLURLLIST="SELECT * FROM pfms_form_url WHERE LoginType=:loginType";
+	@Override
+	public List<Object[]> getAllUrlList(String loginType)  {
+	  try {
+	    	Query query = manager.createNativeQuery(GETALLURLLIST);
+	   		query.setParameter("loginType", loginType);
+	   		List<Object[]>allurllist = (List<Object[]>)query.getResultList();
+	   		return allurllist;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

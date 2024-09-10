@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
+import com.vts.pfms.pfts.model.PftsFileMilestone;
+import com.vts.pfms.pfts.model.PftsFileMilestoneRev;
 import com.vts.pfms.pfts.model.PftsFileOrder;
 
 public interface PFTSDao {
@@ -33,4 +35,13 @@ public interface PFTSDao {
 	public long manualDemandEditSubmit(PFTSFileDto pftsDto)throws Exception;
 	public List<Object[]> getDemandNoList()throws Exception;
 	public void updatePftsFileId(String fileId)throws Exception;
+	public long addProcurementMilestone(PftsFileMilestone mile)throws Exception;
+	public List<Object[]> getpftsMilestoneList()throws Exception;
+	public long editProcurementMilestone(PftsFileMilestone mile)throws Exception;
+	public PftsFileMilestone getEditMilestoneData(long pftsMilestoneId)throws Exception;
+	public long addProcurementMilestoneRev(PftsFileMilestoneRev rev)throws Exception;
+	public Object[] getActualStatus(String projectId, String demandId)throws Exception;
+	public List<Object[]> getpftsMileDemandList(String PftsFileId)throws Exception;
+	public Object[] getpftsActuallDate(String pftsFileId)throws Exception;
+	public Object[] getpftsProjectDate(String projectId)throws Exception;
 }

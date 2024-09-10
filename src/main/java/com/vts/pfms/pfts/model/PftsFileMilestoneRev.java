@@ -10,16 +10,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="pfts_file_ms")
-public class PftsFileMilestone {
+@Table(name="pfts_file_ms_rev")
+public class PftsFileMilestoneRev {
+	
 	@Id	
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private long PftsMileStoneRevId;
 	private long PftsMilestoneId;
-	private long PftsFileId;
-	private long PftsStatusId;
 	private String ProbableDate;
 	private long Revision;
-	private String SetBaseline;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

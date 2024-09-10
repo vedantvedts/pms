@@ -11,11 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vts.pfms.master.dto.DemandDetails;
-import com.vts.pfms.pfts.controller.FileStatusController;
 import com.vts.pfms.pfts.dao.PFTSDao;
 import com.vts.pfms.pfts.dto.DemandOrderDetails;
 import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
+import com.vts.pfms.pfts.model.PftsFileMilestone;
+import com.vts.pfms.pfts.model.PftsFileMilestoneRev;
 import com.vts.pfms.pfts.model.PftsFileOrder;
 
 @Service
@@ -94,118 +95,99 @@ public class PFTSServiceImp implements PFTSService{
 		switch(statusId) {
 		    case "2" :
 		    	update="SpcDate";
-		    break ;	
+		    break ;
+		    
 		    case "3":
 		    	update="EPCDate";
             break;
+            
 		    case "4":
 		    	update="TenderDate";
 		    break;	
 		    
-		/* Added by Dinesh - Receipt of Quotations */
 		    case "5":
 		    	update="QuotationsDate";
 			break;	
 			
 		    case "6":
 		    	update="TocDate";
-			break;	
+			break;
+			
 		    case "7":
 		    	update="TecDate";
 		    break;
+		    
 		    case "8":
 		    	update="TpcDate";
 		    break;	
+		    
 		    case "9":
 		    	update="SanctionDate";
 			break;	
+			
 		    case "10":
 		    	update="OrderDate";
 			break;	
+			
 		    case "11":
-		    	update="RevisedDp";
+		    	update="PDRDate";
 			break;	
 			
-		/* Added by Dinesh - Issue of CDEC / EDEC */
 		    case "12":
-		    	update="CDECEDECDate";
+		    	update="CriticalDate";
 			break;
 			
 		    case "13":
-		    	update="RealizationDate";
-			break;
-		   
-		/* Added by Dinesh - ATP/QTP Completed */
+		    	update="DDRDate";
+		    	break;
+			
 		    case "14":
-		    	update="ATPQTPDate ";
+		    	update="CDRDate";
 			break;
 			
 		    case "15":
-		    	update="DeliveryDate";
-	        break;
+		    	update="AcceptanceDate";
+		    	break;
 		   
 		    case "16":
+		    	update="RealizationDate ";
+			break;
+			
+		    case "17":
+		    	update="FATDate";
+	        break;
+		   
+		    case "18":
+		    	update="ATPQTPDate";
+		    break;
+		    
+		    case "19":
+		    	update="DeliveryDate";
+			break;	
+			
+		    case "20":
+		    	update="SATDate";
+		    break;	
+		    
+		    case "21":
 		    	update="InspectionDate";
 		    break;
-		    case "17":
+		    
+		    case "22":
 		    	update="PaymentDate";
-			break;	
-		    case "18":
+		    	break;
+		    	
+		    case "23":
 		    	update="PartialChequeDate";
-		    break;	
-		    case "19":
+		    	break;
+		    	
+		    case "24":
 		    	update="FinalChequeDate";
-		    break;
-		    
-		  
-		    /*       Old Code        */
-		    
-//		    case "2" :
-//		    	update="SpcDate";
-//		    break ;	
-//		    case "3":
-//		    	update="EPCDate";
-//            break;
-//		    case "4":
-//		    	update="TenderDate";
-//		    break;	
-//		    case "5":
-//		    	update="TocDate";
-//			break;	
-//		    case "6":
-//		    	update="TecDate";
-//		    break;
-//		    case "7":
-//		    	update="TpcDate";
-//		    break;	
-//		    case "8":
-//		    	update="SanctionDate";
-//			break;	
-//		    case "9":
-//		    	update="OrderDate";
-//			break;	
-//		    case "10":
-//		    	update="RevisedDp";
-//			break;	
-//		    case "11":
-//		    	update="ReceiptDate";
-//			break;
-//		    case "12":
-//		    	update="InspectionDate";
-//		    break;
-//		    case "13":
-//		    	update="CrvDate";
-//	        break;
-//		    case "14":
-//		    	update="PaymentDate";
-//			break;	
-//		    case "15":
-//		    	update="PartialChequeDate";
-//		    break;	
-//		    case "16":
-//		    	update="FinalChequeDate";
-//		    break;
-		    
+		    	break;
+		    	
+		    case "25":
+		    	update="IntegrationDate";
+		    	break;
 		}
 		
 		Date eventDateSql=new java.sql.Date(rdf.parse(eventDate).getTime());
@@ -322,5 +304,58 @@ public class PFTSServiceImp implements PFTSService{
 		
 		return dao.getDemandNoList();
 	}
+	
+	@Override
+	public long addProcurementMilestone(PftsFileMilestone mile) throws Exception {
+	
+		return dao.addProcurementMilestone(mile);
+	}
+	
+	@Override
+	public List<Object[]> getpftsMilestoneList() throws Exception {
+		
+		return dao.getpftsMilestoneList();
+	}
+	
+	@Override
+	public long editProcurementMilestone(PftsFileMilestone mile) throws Exception {
+		
+		return dao.editProcurementMilestone(mile);
+	}
 
+	@Override
+	public PftsFileMilestone getEditMilestoneData(long pftsMilestoneId) throws Exception {
+		
+		return  dao.getEditMilestoneData(pftsMilestoneId);
+	}
+	
+	@Override
+	public long addProcurementMilestoneRev(PftsFileMilestoneRev rev) throws Exception {
+		
+		return dao.addProcurementMilestoneRev(rev);
+	}
+	
+	@Override
+	public Object[] getActualStatus(String projectId, String demandId) throws Exception {
+		
+		return dao.getActualStatus(projectId,demandId);
+	}
+	
+	@Override
+	public List<Object[]> getpftsMileDemandList(String pftsStatusId) throws Exception {
+
+		return dao.getpftsMileDemandList(pftsStatusId);
+	}
+	
+	@Override
+	public Object[] getpftsActualDate(String pftsFileId) throws Exception {
+
+		return dao.getpftsActuallDate(pftsFileId);
+	}
+	
+	@Override
+	public Object[] getpftsProjectDate(String projectId) throws Exception {
+		
+		return dao.getpftsProjectDate(projectId);
+	}
 }

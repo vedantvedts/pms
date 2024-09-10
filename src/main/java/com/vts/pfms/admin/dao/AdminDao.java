@@ -113,4 +113,5 @@ public interface AdminDao {
 	public long getTypeOfHostCount(String hostType) throws Exception;
 	public List<Object[]> hasroleAccess(String url, String logintype)throws Exception;
 	public List<Object[]> getFormUrlList(String loginType);
+	public List<Object[]> getAllUrlList(String loginType);
   }

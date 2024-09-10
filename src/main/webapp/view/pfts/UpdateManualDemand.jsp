@@ -245,7 +245,7 @@ font-weight: bold;
 								<%
 								int i = 0;
 								for (Object[] obj1 : fileStage) {
-									if (i == 7)
+									if (i == 9)
 										break;
 								%>
 								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString()%>
@@ -258,8 +258,8 @@ font-weight: bold;
 							<div>
 								<%
 								int j = 0;
-								for (Object[] obj1 : fileStage.stream().skip(7).collect(Collectors.toList())) {
-									if (j == 7)
+								for (Object[] obj1 : fileStage.stream().skip(9).collect(Collectors.toList())) {
+									if (j == 9)
 										break;
 								%>
 								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString()%>
@@ -272,8 +272,8 @@ font-weight: bold;
 							<div>
 								<%
 								int k = 0;
-								for (Object[] obj1 : fileStage.stream().skip(14).collect(Collectors.toList())) {
-									if (k == 7)
+								for (Object[] obj1 : fileStage.stream().skip(18).collect(Collectors.toList())) {
+									if (k == 9)
 										break;
 								%>
 								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString() %>

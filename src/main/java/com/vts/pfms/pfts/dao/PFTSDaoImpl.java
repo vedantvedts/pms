@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.pfts.dto.PFTSFileDto;
 import com.vts.pfms.pfts.model.PFTSFile;
+import com.vts.pfms.pfts.model.PftsFileMilestone;
+import com.vts.pfms.pfts.model.PftsFileMilestoneRev;
 import com.vts.pfms.pfts.model.PftsFileOrder;
 
 @Transactional
@@ -24,7 +26,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	
 	
 	private static final String PROJECTSLIST="SELECT projectid, projectcode, projectname FROM project_master";
-	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks,f.demandtype FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag,f.Remarks,f.demandtype FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
+	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag,f.Remarks,f.demandtype,f.EPCDate,f.TocDate,f.OrderDate,f.PDRDate,f.DDRDate,f.CDRDate,f.FATDate,f.IntegrationDate,f.ProjectId,f.DeliveryDate,f.CriticalDate,f.AcceptanceDate,f.SATDate FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag,f.Remarks,f.demandtype,f.EPCDate,f.TocDate,f.OrderDate,f.PDRDate,f.DDRDate,f.CDRDate,f.FATDate,f.IntegrationDate,f.ProjectId,f.DeliveryDate,f.CriticalDate,f.AcceptanceDate,f.SATDate FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
 	private static final String PrevDemandFile ="SELECT ProjectId, DemandNo, DemandDate, ItemNomenclature, EstimatedCost FROM pfts_file WHERE ProjectId=:projectid";
 	private static final String StatusList="SELECT s.PftsStatusId, s.PftsStatus, s.PftsStageName FROM pfts_status s WHERE s.PftsStatusId > (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) AND CASE WHEN (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) < 10 THEN s.PftsStatusId <= 10 ELSE TRUE END ORDER BY pftsstatusid ";
 	private static final String updateCostDetails="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
@@ -280,11 +282,110 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public void updatePftsFileId(String fileId) throws Exception {
 		// TODO Auto-generated method stub
-		
 			String updateOrder="UPDATE pfts_file_order SET IsActive='0' WHERE PftsFileId=:PftsFileId";
 			Query query = manager.createNativeQuery(updateOrder);
 			query.setParameter("PftsFileId", fileId);
 			query.executeUpdate();
-			
 	}
+	
+	@Override
+	public long addProcurementMilestone(PftsFileMilestone mile) throws Exception {
+		try {
+			manager.persist(mile);
+			manager.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mile.getPftsMilestoneId();
+	}
+	
+	private static final String GETPFTSMILEDATA="SELECT a.PftsMileStoneId,a.PftsFileId,b.DemandType,b.ProjectId,b.DemandNo,b.DemandDate,a.ProbableDate,a.PftsStatusId,b.PftsStatusId AS 'mainFileStatusId',a.SetBaseline,a.Revision,c.PftsStageName FROM pfts_file_ms a, pfts_file b, pfts_status c WHERE a.PftsFileId=b.PftsFileId AND a.PftsStatusId=c.PftsStatusId AND a.IsActive='1'";
+	@Override
+	public List<Object[]> getpftsMilestoneList() throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPFTSMILEDATA);
+			return (List<Object[]>)query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public long editProcurementMilestone(PftsFileMilestone mile) throws Exception {
+		manager.merge(mile);
+		manager.flush();
+		return mile.getPftsFileId();
+	}
+	
+	@Override
+	public PftsFileMilestone getEditMilestoneData(long pftsMilestoneId) throws Exception {
+		 return manager.find(PftsFileMilestone.class, pftsMilestoneId);
+	}
+	
+	@Override
+	public long addProcurementMilestoneRev(PftsFileMilestoneRev rev) throws Exception {
+		try {
+			manager.persist(rev);
+			manager.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rev.getPftsMileStoneRevId();
+	}
+	
+	private static final String ACTUALSTATUSDATE="SELECT DemandDate,EPCDate,TocDate,OrderDate,PDRDate,DDRDate,CDRDate,FATDate,IntegrationDate,CriticalDate,AcceptanceDate,SATDate FROM pfts_file WHERE ProjectId=:ProjectId AND DemandNo=:DemandNo AND IsActive='1'";
+	@Override
+	public Object[] getActualStatus(String projectId, String demandId) throws Exception {
+		try {
+			
+			Query query = manager.createNativeQuery(ACTUALSTATUSDATE);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("DemandNo", demandId);
+			return (Object[])query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static final String GETMILEDEMANDLIST="SELECT a.PftsMileStoneId,a.PftsFileId,b.DemandType,b.ProjectId,b.DemandNo,b.DemandDate,a.ProbableDate,a.PftsStatusId,b.PftsStatusId AS 'mainFileStatusId',a.SetBaseline,a.Revision,c.PftsStageName FROM pfts_file_ms a, pfts_file b, pfts_status c WHERE a.PftsFileId=:PftsFileId AND a.PftsFileId=b.PftsFileId AND a.PftsStatusId=c.PftsStatusId AND a.IsActive='1'";
+	@Override
+	public List<Object[]> getpftsMileDemandList(String PftsFileId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETMILEDEMANDLIST);
+			query.setParameter("PftsFileId", PftsFileId);
+			return (List<Object[]>)query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static final String GETPFTSSCTUALDATE="SELECT PftsFileId,DemandNo,DemandDate,EPCDate,TocDate,OrderDate,PDRDate,DDRDate,CDRDate,FATDate,IntegrationDate,CriticalDate,AcceptanceDate,SATDate,DeliveryDate FROM pfts_file WHERE PftsFileId=:pftsFileId AND IsActive='1'";
+	@Override
+	public Object[] getpftsActuallDate(String pftsFileId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPFTSSCTUALDATE);
+			query.setParameter("pftsFileId",pftsFileId);
+			return (Object[])query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static final String GETPFTSPRIJECRDATE="SELECT ProjectCode,ProjectShortName,SanctionDate,PDC FROM project_master WHERE ProjectId=:ProjectId";
+	@Override
+	public Object[] getpftsProjectDate(String projectId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPFTSPRIJECRDATE);
+			query.setParameter("ProjectId", projectId);
+			return (Object[]) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
