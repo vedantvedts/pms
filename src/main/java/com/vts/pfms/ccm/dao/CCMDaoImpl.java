@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.ccm.model.CCMAchievements;
+import com.vts.pfms.ccm.model.CCMPresentationSlides;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
@@ -309,7 +310,7 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String GETLATESTSCHEDULEMINUTESTIDS = "SELECT (CAST(ScheduleMinutesId AS CHAR)) AS 'ScheduleMinutesId' FROM committee_schedules_minutes_details WHERE ScheduleId =:ScheduleId";
+	private static final String GETLATESTSCHEDULEMINUTESTIDS = "SELECT (CAST(ScheduleMinutesId AS CHAR)) AS 'ScheduleMinutesId' FROM committee_schedules_minutes_details WHERE ScheduleId=:ScheduleId";
 	@Override
 	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception {
 		List<String> list = new ArrayList<>();
@@ -356,10 +357,11 @@ public class CCMDaoImpl implements CCMDao{
 	}
 	
 	@Override
-	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId) throws Exception {
+	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId, String topicType) throws Exception {
 		try {
-			Query query = manager.createQuery("FROM CCMAchievements WHERE ScheduleId =:ScheduleId AND IsActive=1");
+			Query query = manager.createQuery("FROM CCMAchievements WHERE TopicType=:TopicType AND ScheduleId =:ScheduleId AND IsActive=1");
 			query.setParameter("ScheduleId", scheduleId);
+			query.setParameter("TopicType", topicType);
 			return (List<CCMAchievements>)query.getResultList();
 			
 		}catch (Exception e) {
@@ -450,4 +452,76 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 
+	@Override
+	public CCMPresentationSlides getCCMPresentationSlidesByScheduleId(String scheduleId) throws Exception {
+		try {
+			Query query = manager.createQuery("FROM CCMPresentationSlides WHERE ScheduleId=:ScheduleId AND IsActive=1");
+			query.setParameter("ScheduleId", Long.parseLong(scheduleId));
+			
+			List<CCMPresentationSlides> list = (List<CCMPresentationSlides>)query.getResultList();
+			return list.size()>0?list.get(0):null;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getCCMPresentationSlidesByScheduleId "+e);
+			return null;
+		}
+	}
+
+	@Override
+	public CCMPresentationSlides getCCMPresentationSlidesById(String ccmPresSlideId) throws Exception {
+		try {
+			return manager.find(CCMPresentationSlides.class, Long.parseLong(ccmPresSlideId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getCCMPresentationSlidesById "+e);
+			return null;
+		}
+		
+	}
+
+	@Override
+	public long addCCMPresentationSlides(CCMPresentationSlides slide) throws Exception {
+		try {
+			manager.persist(slide);
+			manager.flush();
+			return slide.getCCMPresSlideId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl addCCMPresentationSlides "+e);
+			return 0;
+		}
+	}
+
+	private static final String GETLASTSCHEDULEIDFROMCURRENTSCHEDULEID = "SELECT a.ScheduleId FROM committee_schedule a WHERE a.ScheduleType='C' AND a.ScheduleDate<(SELECT b.ScheduleDate FROM committee_schedule b WHERE b.ScheduleId=:ScheduleId) ORDER BY a.ScheduleDate DESC LIMIT 1";
+	@Override
+	public Long getLastScheduleIdFromCurrentScheduleId(String ccmScheduleId) throws Exception {
+
+		try {
+			Query query = manager.createNativeQuery(GETLASTSCHEDULEIDFROMCURRENTSCHEDULEID);
+			query.setParameter("ScheduleId", ccmScheduleId);
+			BigInteger scheduleId =  (BigInteger)query.getSingleResult();
+			return scheduleId.longValue();
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl getLastScheduleIdFromCurrentScheduleId "+ e);
+			return 0L;
+		}
+	}
+
+	private static final String GETPREVIOUSSCHEDULEMINUTESTIDS = "SELECT (CAST(ScheduleMinutesId AS CHAR)) AS 'ScheduleMinutesId' FROM committee_schedules_minutes_details a, committee_schedule b WHERE a.ScheduleId=b.ScheduleId AND b.ScheduleType='C' AND b.ScheduleDate<(SELECT c.ScheduleDate FROM committee_schedule c WHERE c.ScheduleId=:ScheduleId)";
+	@Override
+	public List<String> getPreviousScheduleMinutesIds(String scheduleId) throws Exception {
+		List<String> list = new ArrayList<>();
+		try {
+			Query query = manager.createNativeQuery(GETPREVIOUSSCHEDULEMINUTESTIDS);
+			query.setParameter("ScheduleId", scheduleId);
+			list =  (List<String>)query.getResultList();
+			return list;
+		}catch ( Exception e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMDaoImpl getPreviousScheduleMinutesIds "+ e);
+			return null;
+		}
+	}
+	
 }

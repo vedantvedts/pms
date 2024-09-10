@@ -309,6 +309,7 @@ input,select,table,div,label,span {
 		String committeeIdDMC = (String)request.getAttribute("committeeIdDMC");
 		String tabName = (String)request.getAttribute("tabName");
 		String filesize = (String) request.getAttribute("filesize");
+		String ccmScheduleId = (String) request.getAttribute("ccmScheduleId");
 		
     	List<Object[]> clusterLabList = (List<Object[]>) request.getAttribute("clusterLabList");
     	Object[] clusterLabDetails = clusterLabList!=null && clusterLabList.size()>0 ?clusterLabList.stream().filter(e -> e[3].toString().equalsIgnoreCase("Y")).collect(Collectors.toList()).get(0) :null;
@@ -379,8 +380,8 @@ input,select,table,div,label,span {
      										<button type="submit" class="btn btn-outline-primary fw-bold ccmSideBarButton" name="tabName" value="ASP Status" data-toggle="tooltip" data-placement="top" title="ASP Status">
      											<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp; <%=++tabCount %>. ASP Status 
      										</button>
-     										<button type="submit" class="btn btn-outline-primary fw-bold ccmSideBarButton" name="tabName" value="Project Closure" data-toggle="tooltip" data-placement="top" title="Project Closure">
-     											<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp; <%=++tabCount %>. Project Closure
+     										<button type="submit" class="btn btn-outline-primary fw-bold ccmSideBarButton" name="tabName" value="Closure Status" data-toggle="tooltip" data-placement="top" title="Closure Status">
+     											<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp; <%=++tabCount %>. Closure Status
      										</button>
      										<button type="submit" class="btn btn-outline-primary fw-bold ccmSideBarButton" name="tabName" value="Cash Out Go Status" data-toggle="tooltip" data-placement="top" title="Cash Out Go Status">
      											<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp; <%=++tabCount %>. Cash Out Go Status
@@ -390,6 +391,9 @@ input,select,table,div,label,span {
      										</button>
      										<button type="submit" class="btn btn-outline-primary fw-bold ccmSideBarButton" name="tabName" value="Achievements" data-toggle="tooltip" data-placement="top" title="Achievements">
      											<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp; <%=++tabCount %>. Achievements
+     										</button>
+     										<button type="submit" class="btn btn-outline-primary fw-bold ccmSideBarButton" name="tabName" value="Others" data-toggle="tooltip" data-placement="top" title="Others">
+     											<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp; <%=++tabCount %>. Others
      										</button>
 	     								</form>		
   									</div>
@@ -665,7 +669,7 @@ input,select,table,div,label,span {
 											dmcActions = dmcActions.stream().filter(e -> e[19].toString().equalsIgnoreCase(labcode)).collect(Collectors.toList());
 									    }
 										
-										List<String> latestScheduleMinutesIds = (List<String>) request.getAttribute("latestScheduleMinutesIds");
+										//List<String> latestScheduleMinutesIds = (List<String>) request.getAttribute("latestScheduleMinutesIds");
 										
 										//Map<String, List<Object[]>> dmcActionsToListMap = dmcActions!=null && dmcActions.size()>0? dmcActions.stream()
 										//												.filter(e -> latestScheduleMinutesIds.contains(e[18].toString()))
@@ -881,15 +885,15 @@ input,select,table,div,label,span {
 													
 									<!-- ----------------------------------------------- ASP Status End --------------------------------------------------- -->	
 									
-									<!-- ----------------------------------------------- Project Closure --------------------------------------------------- -->	
-									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Project Closure")) { 
-											String scheduleId = (String) request.getAttribute("scheduleId");
+									<!-- ----------------------------------------------- Closure Status --------------------------------------------------- -->	
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Closure Status")) { 
+											
 									%>
 										<div class="container-fluid mt-3 tabpanes1">
 											<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
-														<th colspan="8" style="border-radius: 1rem;"> <h5>Project Closure</h5></th>
+														<th colspan="8" style="border-radius: 1rem;"> <h5>Closure Status</h5></th>
 													</tr>
 													<tr>
 														<th>Lab</th>
@@ -932,7 +936,7 @@ input,select,table,div,label,span {
 									     			<div class="modal-body">
 									     				<form action="CCMClosureStatusSubmit.htm" method="post" id="closureStatusForm">
 									     					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
-									     					<input type="hidden" name="scheduleId" value="<%=scheduleId%>">
+									     					<input type="hidden" name="scheduleId" value="<%=ccmScheduleId%>">
 									     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
 									     					<input type="hidden" name="ccmClosureId" id="ccmClosureId">
 									     					
@@ -964,7 +968,7 @@ input,select,table,div,label,span {
 									    		</div>
 									  		</div>
 										</div>			
-									<!-- ----------------------------------------------- Project Closure End --------------------------------------------------- -->	
+									<!-- ----------------------------------------------- Closure Status End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Cash Out Go Status --------------------------------------------------- -->	
 									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Cash Out Go Status")) { 
@@ -1020,7 +1024,7 @@ input,select,table,div,label,span {
 													     					<div style="display: inline-flex; align-items: flex-end;">
 																				<label>Lab : </label>
 																				&nbsp;
-																				<select class="form-control selectdee" id="labCode" name="labCode" onchange="this.form.submit()" required style="width: 200px;">
+																				<select class="form-control selectdee" id="labCodeCOG" name="labCode" onchange="this.form.submit()" required style="width: 200px;">
 																					<option value="0" disabled="disabled">---Select---</option>
 																					<%if(clusterLabList!=null && clusterLabList.size()>0) {
 																						for(Object[] obj : clusterLabList) {
@@ -1203,23 +1207,83 @@ input,select,table,div,label,span {
 									<!-- ----------------------------------------------- Cash Out Go Status End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Test & Trials --------------------------------------------------- -->	
-									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Test & Trials")) { %>
-										<div class="container-fluid mt-3 tabpanes2">
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Test & Trials")) { 
+										List<CCMAchievements> ccmAchievementsList = (List<CCMAchievements>) request.getAttribute("ccmAchievementsList");
+										
+										if(clusterLabList!=null && clusterLabList.size()>0) {
+
+											Set<String> achmntLabCodes = ccmAchievementsList.stream().map(CCMAchievements::getLabCode).collect(Collectors.toSet());
+
+											// Filter the clusterLabList to exclude records already in ccmAchievementsList
+											clusterLabListFilter = clusterLabList.stream().filter(e -> !achmntLabCodes.contains(e[2].toString())).collect(Collectors.toList());
+										}
+										
+										if(clusterLab.equalsIgnoreCase("N")){
+											ccmAchievementsList = ccmAchievementsList.stream().filter(e -> e.getLabCode().equalsIgnoreCase(labcode)).collect(Collectors.toList());
+										}
+									%>
+										<div class="container-fluid mt-3 tabpanes1">
 											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>Test & Trials</h5></th>
 													</tr>
+													<tr >
+														<th style="width: 5%;">SN</th>
+														<th style="width: 15%;">Lab</th>
+														<th style="width: 70%;">Test & Trials</th>
+														<th style="width: 10%;">Action</th>
+													</tr>
 												</thead>
+												<tbody>
+													<%if(ccmAchievementsList!=null && ccmAchievementsList.size()>0) {
+														int slno=0;
+														for(CCMAchievements achmnts : ccmAchievementsList) {
+													%>
+														<tr>
+															<td class="center"><%=++slno %></td>
+															<td><%=achmnts.getLabCode() %></td>
+															<td><%=achmnts.getAchievement() %></td>
+															<td class="center">
+																<form action="#">
+																	<input type="hidden" name="action" value="Edit">
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() %></textarea>
+																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
+																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
+																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+																	</button>
+																	<button type="submit" class="btn btn-lg" name="achievementId" value="<%=achmnts.getAchievementId() %>" formmethod="get" formaction="CCMAchievementDelete.htm" onclick="return confirm('Are you sure To Delete this Achievement?')" data-toggle="tooltip" data-placement="top" title="Delete Achievement"> 
+																		<i class="fa fa-trash" aria-hidden="true"></i>
+																	</button>
+																</form>
+															</td>
+														</tr>
+													<%}} else{%>
+														<tr>
+															<td colspan="6" style="text-align: center;">No Data Available</td>
+														</tr>
+													<%} %>
+												</tbody>
 											</table>
 										</div>
-													
+										
+										<div class="center mt-2 mb-2">
+											<div class="row">
+												<div class="col-md-4"></div>
+												<div class="col-md-4 center">
+													<button type="button" class="btn btn-sm fw-bold add" data-toggle="tooltip" data-target="modal" title="Add Test & Trials" onclick="openAchievementsModal('T')"
+														<%if(clusterLab.equalsIgnoreCase("N") && ccmAchievementsList.size()>0) {%>disabled<%} %> >
+														ADD TEST & TRIALS
+													</button>
+												</div>
+												<div class="col-md-4 right"></div>
+											</div>
+										</div>				
 									<!-- ----------------------------------------------- Test & Trials End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Achievements --------------------------------------------------- -->		
 									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Achievements")) {
 											List<CCMAchievements> ccmAchievementsList = (List<CCMAchievements>) request.getAttribute("ccmAchievementsList");
-											String scheduleId = (String) request.getAttribute("scheduleId");
 											
 											if(clusterLabList!=null && clusterLabList.size()>0) {
 
@@ -1260,7 +1324,8 @@ input,select,table,div,label,span {
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
 																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() %></textarea>
-																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>')" data-toggle="tooltip" data-placement="top" title="Edit Achievement">
+																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
+																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																	</button>
 																	<button type="submit" class="btn btn-lg" name="achievementId" value="<%=achmnts.getAchievementId() %>" formmethod="get" formaction="CCMAchievementDelete.htm" onclick="return confirm('Are you sure To Delete this Achievement?')" data-toggle="tooltip" data-placement="top" title="Delete Achievement"> 
@@ -1281,8 +1346,8 @@ input,select,table,div,label,span {
 											<div class="row">
 												<div class="col-md-4"></div>
 												<div class="col-md-4 center">
-													<button type="button" class="btn btn-sm fw-bold add" data-toggle="tooltip" data-target="modal" title="Add Achievement" onclick="openAchievementsModal()"
-													<%if(clusterLab.equalsIgnoreCase("N") && ccmAchievementsList.size()>0) {%>disabled<%} %> >
+													<button type="button" class="btn btn-sm fw-bold add" data-toggle="tooltip" data-target="modal" title="Add Achievement" onclick="openAchievementsModal('A')"
+														<%if(clusterLab.equalsIgnoreCase("N") && ccmAchievementsList.size()>0) {%>disabled<%} %> >
 														ADD ACHIEVEMENT
 													</button>
 												</div>
@@ -1290,60 +1355,21 @@ input,select,table,div,label,span {
 											</div>
 										</div>	
 										
-										<div class="modal fade bd-example-modal-lg" id="achievementsModal" tabindex="-1" role="dialog" aria-labelledby="achievementsModal" aria-hidden="true" style="margin-top: 5%;">
-											<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
-												<div class="modal-content">
-													<div class="modal-header bg-primary text-light">
-											        	<h5 class="modal-title">Achievement</h5>
-												        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
-												          <span aria-hidden="true" style="color:red;">&times;</span>
-												        </button>
-											      	</div>
-									     			<div class="modal-body">
-									     				<form action="CCMAchievementSubmit.htm" method="post" id="achmntForm">
-									     					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
-									     					<input type="hidden" name="scheduleId" value="<%=scheduleId%>">
-									     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
-									     					<input type="hidden" name="achievementId" id="achievementId">
-									     					
-									     					<%if(clusterLab.equalsIgnoreCase("N")) {%>
-									     						<input type="hidden" id="labCode" name="labCode" value="<%=labcode%>">
-									     					<%} else {%>
-									     						<div class="row">
-									     							<div class="col-md-1">
-									     								<label class="mt-2">Lab: </label>
-									     							</div>
-									     							<div class="col-md-3 mb-2 labCodeSelectDiv">
-																		<select class="form-control selectdee" id="labCode" name="labCode" required style="width: 200px;">
-																			<option value="0">---Select---</option>
-																			<%if(clusterLabListFilter!=null && clusterLabListFilter.size()>0) {
-																				for(Object[] obj : clusterLabListFilter) {
-																			%>
-																				<option value="<%=obj[2]%>" ><%=obj[2] %></option>
-																			<%} }%>
-																		</select>
-									     							</div>
-									     							<div class="col-md-3 mt-2 labCodeSpanDiv left" style="display: none;">
-									     								<span id="showLabCode"></span>
-									     							</div>
-									     							<div class="col-md-8"></div>
-									     						</div>
-										     					
-									     					<%} %>
-									     					
-									     					<textarea class="achievement" name="achievement" id="achievement" style="display: none;"></textarea>
-											         		
-											         		<div id="Editor" class="center"></div>
-											         		
-											         		<div class="center mt-2">
-											         			<button type="submit" name="action" value="Add" class="btn btn-sm submit btn-achmnts" onclick="submitAchmnts()">Submit</button>
-											         		</div>
-										         		</form>
-										         	</div>
-									    		</div>
-									  		</div>
-										</div>
 									<!-- ----------------------------------------------- Achievements End--------------------------------------------------- -->	
+									
+									<!-- ----------------------------------------------- Others --------------------------------------------------- -->	
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Others")) { %>
+										<div class="container-fluid mt-3 tabpanes2">
+											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
+														<th colspan="6" style="border-radius: 1rem;"> <h5>Others</h5></th>
+													</tr>
+												</thead>
+											</table>
+										</div>
+													
+									<!-- ----------------------------------------------- Others End --------------------------------------------------- -->
 										
 									<%} else {%>
 										<div class="container-fluid mt-3 tabpanes2">
@@ -1457,6 +1483,93 @@ input,select,table,div,label,span {
 	</div>
 
 	<!-- -------------------------------------------------------------- action modal end ----------------------------------------------------- -->
+	
+	<!-- -------------------------------------------------------------- Achievements Modal ----------------------------------------------------- -->
+	<div class="modal fade bd-example-modal-lg" id="achievementsModal" tabindex="-1" role="dialog" aria-labelledby="achievementsModal" aria-hidden="true" style="margin-top: 5%;">
+		<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
+			<div class="modal-content">
+				<div class="modal-header bg-primary text-light">
+		       		<h5 class="modal-title modal-heading"></h5>
+			        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" style="color:red;">&times;</span>
+			        </button>
+		      	</div>
+	    		<div class="modal-body">
+	    			<form action="CCMAchievementSubmit.htm" method="post" id="achmntForm" enctype="multipart/form-data">
+    					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+    					<input type="hidden" name="scheduleId" value="<%=ccmScheduleId%>">
+    					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+    					<input type="hidden" name="achievementId" id="achievementId">
+    					<input type="hidden" name="topicType" id="topicType">
+    					<input type="hidden" name="action" id="achmntsAction">
+    					<%if(clusterLab.equalsIgnoreCase("N")) {%>
+    						<input type="hidden" id="labCode" name="labCode" value="<%=labcode%>">
+    					<%} else {%>
+    						<div class="row">
+    							<div class="col-md-1">
+    								<label class="mt-2">Lab: </label>
+    							</div>
+    							<div class="col-md-3 mb-2 labCodeSelectDiv">
+									<select class="form-control selectdee" id="labCode" name="labCode" required style="width: 200px;">
+										<option value="0">---Select---</option>
+										<%if(clusterLabListFilter!=null && clusterLabListFilter.size()>0) {
+											for(Object[] obj : clusterLabListFilter) {
+										%>
+											<option value="<%=obj[2]%>" ><%=obj[2] %></option>
+										<%} }%>
+									</select>
+    							</div>
+    							<div class="col-md-3 mt-2 labCodeSpanDiv left" style="display: none;">
+    								<span id="showLabCode"></span>
+    							</div>
+    							<div class="col-md-8"></div>
+    						</div>
+	     					
+	    				<%} %>
+	    					
+	    				<textarea class="achievement" name="achievement" id="achievement" style="display: none;"></textarea>
+		         		
+		         		<div id="Editor" class="center"></div>
+		         		
+		         		<div class="row mt-2">
+		 					<div class="col-md-4 left">
+								<div class="form-group">
+									<label><b> Image : </b></label>
+									<button type="submit" class="btn btn-sm attachments" name="attachmentName" id="attachmentName1" value="image" formaction="CCMAchievementsAttachmentDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+	                      				<i class="fa fa-file-image-o" aria-hidden="true" style="color: #8b22cd;"></i>
+	                      			</button>
+									<input class="form-control form-control" type="file" name="attachment1" accept="image/png, image/jpeg" required="required" maxlength="3" style="font-size: 15px;">
+								</div>
+							</div>
+							<div class="col-md-4 left">
+								<div class="form-group">
+									<label><b> Attachment : </b></label>
+									<button type="submit" class="btn btn-sm attachments" name="attachmentName" id="attachmentName2" value="pdf" formaction="CCMAchievementsAttachmentDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+	                      				<i class="fa fa-download"></i>
+	                      			</button>
+									<input class="form-control form-control" type="file" name="attachment2" accept="application/pdf, application/vnd.ms-excel, .pptx" maxlength="3" style="font-size: 15px;">
+								</div>
+							</div>
+							<div class="col-md-4 left">
+								<div class="form-group">
+									<label><b> Attachment video : </b></label>
+									<button type="submit" class="btn btn-sm attachments" name="attachmentName" id="attachmentName3" value="video" formaction="CCMAchievementsAttachmentDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+	                      				<i class="fa fa-file-video-o" aria-hidden="true" style="color: #a92525;"></i>
+	                      			</button>
+									<input class="form-control form-control" type="file" name="attachment3" accept="video/*" maxlength="3" style="font-size: 15px;">
+								</div>
+							</div>
+						</div>
+		         		<div class="center mt-2">
+		         			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+		         			<button type="submit" class="btn btn-sm submit btn-achmnts" formmethod="post" onclick="submitAchmnts()">Submit</button>
+		         		</div>
+	         		</form>
+	         	</div>
+	   		</div>
+	 	</div>
+	</div>
+	<!-- -------------------------------------------------------------- Achievements Modal End ----------------------------------------------------- -->
 	
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -1838,15 +1951,20 @@ input,select,table,div,label,span {
 	
 	/* --------------------- Open Achievements Modal --------------------------------------------------------------------------------------------------- */
 	
-	function openAchievementsModal() {
+	function openAchievementsModal(topicType) {
 		$('#achievementsModal').modal('show');
-		$('.btn-achmnts').val('Add');
+		
+		$('.modal-heading').html(topicType==='A'?'Achievements':'Test & Trials');
+		
+		$('#achmntsAction').val('Add');
 		$('#achievementId').val('0');
+		$('#topicType').val(topicType);
 		
 		$('.labCodeSelectDiv').show();
 		$('.labCodeSpanDiv').hide();
+		$('.attachments').hide();
 		
-		CKEDITOR.instances['Editor'].setData('Enter Achievement Details');
+		CKEDITOR.instances['Editor'].setData('Enter Details');
 	}
 	
 	function submitAchmnts(){
@@ -1868,14 +1986,38 @@ input,select,table,div,label,span {
 		
 	}
 	
-	function openAchievementsModalEdit(slno, achievementId, labCode) {
+	function openAchievementsModalEdit(slno, achievementId, labCode, topicType, image, attachment, video) {
 		
 		$('#achievementsModal').modal('show');
+		
+		$('.modal-heading').html(topicType==='A'?'Achievements':'Test & Trials');
+		
 		$('#achievementId').val(achievementId);
-		$('.btn-achmnts').val('Edit');
+		$('#achmntsAction').val('Edit');
+		$('#showLabCode').html(labCode);
+		$('#topicType').val(topicType);
+		
 		$('.labCodeSelectDiv').hide();
 		$('.labCodeSpanDiv').show();
-		$('#showLabCode').html(labCode);
+		
+		if(image==null || image=="null" || image==""){
+			$('#attachmentName1').hide();
+		}else{
+			$('#attachmentName1').show();
+		}
+		
+		if(attachment==null || attachment=="null" || attachment==""){
+			$('#attachmentName2').hide();		
+		}
+		else{
+			$('#attachmentName2').show();
+		}
+		
+		if(video==null || video=="null" || video==""){
+			$('#attachmentName3').hide();
+		}else{
+			$('#attachmentName3').show();
+		}
 		
 		var html = $('#achievement_'+slno).val();
 		CKEDITOR.instances['Editor'].setData(html);

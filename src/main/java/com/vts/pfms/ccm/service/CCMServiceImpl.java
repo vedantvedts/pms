@@ -17,6 +17,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.ccm.dao.CCMDao;
 import com.vts.pfms.ccm.model.CCMAchievements;
+import com.vts.pfms.ccm.model.CCMPresentationSlides;
 import com.vts.pfms.committee.dao.CommitteeDao;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
 import com.vts.pfms.committee.model.CommitteeMain;
@@ -560,9 +562,9 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId) throws Exception {
+	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId, String topicType) throws Exception {
 		
-		return dao.getCCMAchievementsByScheduleId(scheduleId);
+		return dao.getCCMAchievementsByScheduleId(scheduleId, topicType);
 	}
 
 	@Override
@@ -572,7 +574,32 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public long addCCMAchievements(CCMAchievements achmnts) throws Exception {
+	public long addCCMAchievements(CCMAchievements achmnts, MultipartFile imageAttachment, MultipartFile pdfAttachment, MultipartFile videoAttachment, String clusterId) throws Exception {
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+		List<Object[]> clusterLabList = dao.getClusterLabListByClusterId(clusterId);
+		String clusterLabCode = clusterLabList!=null && clusterLabList.size()>0 ?clusterLabList.stream().filter(e -> e[3].toString().equalsIgnoreCase("Y")).collect(Collectors.toList()).get(0)[2].toString():"";
+		String Path = clusterLabCode + "\\CCM\\Achievements\\";
+		
+		// Image file save handling
+		if (imageAttachment != null && !imageAttachment.isEmpty()) {
+			 achmnts.setImageName("Image-" + timestampstr + "." + imageAttachment.getOriginalFilename().split("\\.")[1]);
+             saveFile(uploadpath + Path, achmnts.getImageName(), imageAttachment);
+         }
+		
+		// PDF / PPT file save handling
+		if (pdfAttachment != null && !pdfAttachment.isEmpty()) {
+			 achmnts.setAttachmentName("Attachment-" + timestampstr + "." + pdfAttachment.getOriginalFilename().split("\\.")[1]);
+            saveFile(uploadpath + Path, achmnts.getAttachmentName(), pdfAttachment);
+        }
+		
+		// Video file save handling
+		if (videoAttachment != null && !videoAttachment.isEmpty()) {
+			achmnts.setVideoName("Video-" + timestampstr + "." + videoAttachment.getOriginalFilename().split("\\.")[1]);
+			saveFile(uploadpath + Path, achmnts.getVideoName(), videoAttachment);
+		}
 		
 		return dao.addCCMAchievements(achmnts);
 	}
@@ -600,4 +627,35 @@ public class CCMServiceImpl implements CCMService{
 		
 		return dao.getProjectListByLabCode(labCode);
 	}
+
+	@Override
+	public CCMPresentationSlides getCCMPresentationSlidesByScheduleId(String scheduleId) throws Exception {
+		
+		return dao.getCCMPresentationSlidesByScheduleId(scheduleId);
+	}
+	
+	@Override
+	public CCMPresentationSlides getCCMPresentationSlidesById(String ccmPresSlideId) throws Exception {
+		
+		return dao.getCCMPresentationSlidesById(ccmPresSlideId);
+	}
+	
+	@Override
+	public long addCCMPresentationSlides(CCMPresentationSlides slide) throws Exception {
+
+		return dao.addCCMPresentationSlides(slide);
+	}
+	
+	@Override
+	public Long getLastScheduleIdFromCurrentScheduleId(String ccmScheduleId) throws Exception {
+
+		return dao.getLastScheduleIdFromCurrentScheduleId(ccmScheduleId);
+	}
+	
+	@Override
+	public List<String> getPreviousScheduleMinutesIds(String scheduleId) throws Exception {
+
+		return dao.getPreviousScheduleMinutesIds(scheduleId);
+	}
+	
 }

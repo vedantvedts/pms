@@ -8,27 +8,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name="pfms_ccm_achievements")
-public class CCMAchievements implements Serializable {
+@Table(name="pfms_ccm_presentation_slides")
+public class CCMPresentationSlides implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long AchievementId;
+	private Long CCMPresSlideId;
 	private Long ScheduleId;
-	private String LabCode;
-	private String TopicType;
-	private String Achievement;
-	private String ImageName;
-	private String AttachmentName;
-	private String VideoName;
+	private String SlideName;
+	private String FreezeStatus;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

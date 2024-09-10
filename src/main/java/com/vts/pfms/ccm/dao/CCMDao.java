@@ -3,6 +3,7 @@ package com.vts.pfms.ccm.dao;
 import java.util.List;
 
 import com.vts.pfms.ccm.model.CCMAchievements;
+import com.vts.pfms.ccm.model.CCMPresentationSlides;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
@@ -31,12 +32,17 @@ public interface CCMDao {
 	public List<String> getLatestScheduleMinutesIds(String scheduleId) throws Exception;
 	public List<Object[]> getClusterLabListByClusterId(String clusterId) throws Exception;
 	public List<CommitteeSchedule> getScheduleListByScheduleType(String scheduleType) throws Exception;
-	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId) throws Exception;
+	public List<CCMAchievements> getCCMAchievementsByScheduleId(Long scheduleId, String topicType) throws Exception;
 	public CCMAchievements getCCMAchievementsById(String achievementId) throws Exception;
 	public long addCCMAchievements(CCMAchievements achmnts) throws Exception;
 	public int ccmAchievementDelete(String achievementId) throws Exception;
 	public List<Object[]> getCashOutGoList(String labCode) throws Exception;
 	public long addPFMSCCMData(PFMSCCMData ccmData) throws Exception;
 	public List<Object[]> getProjectListByLabCode(String labCode) throws Exception;
+	public CCMPresentationSlides getCCMPresentationSlidesByScheduleId(String scheduleId) throws Exception;
+	public CCMPresentationSlides getCCMPresentationSlidesById(String ccmPresSlideId) throws Exception;
+	public long addCCMPresentationSlides(CCMPresentationSlides slide) throws Exception;
+	public Long getLastScheduleIdFromCurrentScheduleId(String ccmScheduleId) throws Exception;
+	public List<String> getPreviousScheduleMinutesIds(String scheduleId) throws Exception;
 	
 }
