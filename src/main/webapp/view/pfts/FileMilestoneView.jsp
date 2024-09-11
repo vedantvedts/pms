@@ -110,7 +110,9 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 			    for (int q = 1; q <= 4; q++) { 
 			        if (year == objYear && q == quarter) { 
 			%>
-			<td id="tdid_<%= obj[7] %>_<%= year %>_Q<%= q %>" style="background-color: green;"></td>
+			<td id="tdid_<%= obj[7] %>_<%= year %>_Q<%= q %>" style="background-color: green;">
+			<input type="hidden"id="tdcell_<%= obj[7] %>_<%= year %>_Q<%= q %>"  value="<%= obj[7] %>">
+			</td>
 			<% } else {%>
 			<td id="tdid_<%= obj[7] %>_<%= year %>_Q<%= q %>"></td>
 			<%}}startCal.add(Calendar.YEAR, 1); } %>
@@ -144,78 +146,92 @@ $(document).ready(function() {
             	var year = new Date(ajaxresult[2]).getFullYear();
             	var month = new Date(ajaxresult[2]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_1_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_1_'+year+'_'+quarter).val());
+            	sameQuarter(value1,1,year,quarter);
             }
             if(ajaxresult[3]!=null){
             	var year = new Date(ajaxresult[3]).getFullYear();
             	var month = new Date(ajaxresult[3]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_3_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_3_'+year+'_'+quarter).val());
+            	sameQuarter(value1,3,year,quarter); 
             }
             if(ajaxresult[4]!=null){
             	var year = new Date(ajaxresult[4]).getFullYear();
             	var month = new Date(ajaxresult[4]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_6_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_6_'+year+'_'+quarter).val());
+            	sameQuarter(value1,6,year,quarter);
             }
             if(ajaxresult[5]!=null){
             	var year = new Date(ajaxresult[5]).getFullYear();
             	var month = new Date(ajaxresult[5]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_10_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_10_'+year+'_'+quarter).val());
+            	sameQuarter(value1,10,year,quarter);
             }
             if(ajaxresult[6]!=null){
             	var year = new Date(ajaxresult[6]).getFullYear();
             	var month = new Date(ajaxresult[6]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_11_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_11_'+year+'_'+quarter).val());
+            	sameQuarter(value1,11,year,quarter);
             }
             if(ajaxresult[11]!=null){
             	var year = new Date(ajaxresult[11]).getFullYear();
             	var month = new Date(ajaxresult[11]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_12_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_12_'+year+'_'+quarter).val());
+            	sameQuarter(value1,12,year,quarter);
             }
             if(ajaxresult[7]!=null){
             	var year = new Date(ajaxresult[7]).getFullYear();
             	var month = new Date(ajaxresult[7]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_13_'+year+'_'+quarter).css('background-color','#ffae00'); 
-            } if(ajaxresult[8]!=null){
+            	var value1=Number($('#tdcell_13_'+year+'_'+quarter).val());
+            	sameQuarter(value1,13,year,quarter); 
+            } 
+            if(ajaxresult[8]!=null){
             	var year = new Date(ajaxresult[8]).getFullYear();
             	var month = new Date(ajaxresult[8]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_14_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_14_'+year+'_'+quarter).val());
+            	sameQuarter(value1,14,year,quarter);
             }
             if(ajaxresult[12]!=null){
             	var year = new Date(ajaxresult[12]).getFullYear();
             	var month = new Date(ajaxresult[12]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_15_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_15_'+year+'_'+quarter).val());
+            	sameQuarter(value1,15,year,quarter);
             }
             if(ajaxresult[9]!=null){
             	var year = new Date(ajaxresult[9]).getFullYear();
             	var month = new Date(ajaxresult[9]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_17_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_17_'+year+'_'+quarter).val());
+            	sameQuarter(value1,17,year,quarter);
             }
             if(ajaxresult[14]!=null){
             	var year = new Date(ajaxresult[14]).getFullYear();
             	var month = new Date(ajaxresult[14]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_19_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_19_'+year+'_'+quarter).val());
+            	sameQuarter(value1,19,year,quarter); 
             }
             if(ajaxresult[13]!=null){
             	var year = new Date(ajaxresult[13]).getFullYear();
             	var month = new Date(ajaxresult[13]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_20_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_20_'+year+'_'+quarter).val());
+            	sameQuarter(value1,20,year,quarter);
             }
             if(ajaxresult[10]!=null){
             	var year = new Date(ajaxresult[10]).getFullYear();
             	var month = new Date(ajaxresult[10]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	$('#tdid_25_'+year+'_'+quarter).css('background-color','#ffae00'); 
+            	var value1=Number($('#tdcell_25_'+year+'_'+quarter).val());
+            	sameQuarter(value1,25,year,quarter); 
             }
         },
         error: function(xhr, status, error) {
@@ -243,6 +259,14 @@ function getQuarter(month) {
     } else {
         return '';
     }
+}
+
+function sameQuarter(value1,id,year,quarter){
+	if(value1>0){
+		$('#tdid_'+id+'_'+year+'_'+quarter).css('background-color','#462fb7'); 
+	}else{
+	$('#tdid_'+id+'_'+year+'_'+quarter).css('background-color','#ffae00'); 
+	}
 }
 
 </script>
