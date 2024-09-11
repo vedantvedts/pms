@@ -3,7 +3,9 @@ package com.vts.pfms.ccm.dao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -411,18 +413,27 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 	
-	private static final String GETCASHOUTGOLIST = "SELECT CCMDataId, ClusterId, LabCode, ProjectId, ProjectCode, BudgetHeadId, BudgetHeadDescription, AllotmentCost, Expenditure, Balance, Q1CashOutGo, Q2CashOutGo, Q3CashOutGo, Q4CashOutGo, Required, CreatedDate, (Q1CashOutGo+Q2CashOutGo+Q3CashOutGo+Q4CashOutGo) AS 'Total COG' FROM pfms_ccm_data WHERE LabCode=:LabCode ORDER BY LabCode, FIELD(BudgetHeadDescription, 'Revenue','Capital','Miscellaneous'), ProjectId";
+	private static final String GETCASHOUTGOLIST = "SELECT CCMDataId, ClusterId, LabCode, ProjectId, ProjectCode, BudgetHeadId, BudgetHeadDescription, AllotmentCost, Expenditure, Balance, Q1CashOutGo, Q2CashOutGo, Q3CashOutGo, Q4CashOutGo, Required, CreatedDate, (Q1CashOutGo+Q2CashOutGo+Q3CashOutGo+Q4CashOutGo) AS 'Total COG' FROM pfms_ccm_data ORDER BY LabCode, FIELD(BudgetHeadDescription, 'Revenue','Capital','Miscellaneous'), ProjectId";
 	@Override
-	public List<Object[]> getCashOutGoList(String labCode) throws Exception {
+	public HashMap<String, List<Object[]> > getCashOutGoList() throws Exception {
+		
+		HashMap<String, List<Object[]> > cogList = new HashMap<String, List<Object[]>>();
 		try {
+			
 			Query query = manager.createNativeQuery(GETCASHOUTGOLIST);
-			query.setParameter("LabCode", labCode);
-			return (List<Object[]>)query.getResultList();
+			//query.setParameter("LabCode", labCode);
+			List<Object[]> list = (List<Object[]>)query.getResultList();
+			
+			if(list!=null && list.size()>0) {
+				 // Group by LabCode
+	            cogList = list.stream().collect(Collectors.groupingBy(obj -> obj[2].toString(), HashMap::new, Collectors.toList()));
+			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl getCashOutGoList "+e);
-			return new ArrayList<Object[]>();
 		}
+		return cogList;
 	}
 	
 	@Override

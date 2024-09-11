@@ -72,6 +72,7 @@ input,select,table,div,label,span {
 		//String previewFlag = (String)request.getParameter("previewFlag");
 		//slideShow = previewFlag!=null?previewFlag:slideShow;
 	
+		int cogListSize = 0;
 	%>
 
 	<% String ses=(String)request.getParameter("result");
@@ -190,14 +191,14 @@ input,select,table,div,label,span {
 				<div class="content" >
 
 					<div class="mt-2 mb-2" style="float: right;">
-						<button type="button" class="btn btn-sm submit"data-toggle="tooltip" data-placement="bottom" title="Presentation Topics" onclick="openpresentationTopicsModal()" >
+						<button type="button" class="btn btn-sm submit"data-toggle="tooltip" data-placement="bottom" title="ATR Topics" onclick="openpresentationTopicsModal()" >
 							<i class="fa fa-th-list" aria-hidden="true"></i> Topics
 						</button>
 					</div>
 							
 								
 		         	<table class="table table-bordered table-hover table-condensed " style="margin-top:10px;width:100% ">
-		     	      	<thead>
+		     	      	<thead style="background-color: #4B70F5; color: #ffff !important;">
 		            		<tr>
 		            			<th>Expand</th>
 		                    	<th style="width: 5%;">SN</th>
@@ -818,7 +819,15 @@ input,select,table,div,label,span {
 			<%} %>
 			<!-- ---------------------------------------- Closure Status Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- Cash Out Go Status Slide ---------------------------------------------------  -->
-			<%if(slideNames.contains("Cash Out Go Status")) { %>
+			<%if(slideNames.contains("Cash Out Go Status")) { 
+				HashMap<String, List<Object[]> > cogList = (HashMap<String, List<Object[]> >) request.getAttribute("cashOutGoList");
+				int quarter = (int)request.getAttribute("quarter");
+				
+				cogListSize = cogList.size();
+				for (Map.Entry<String, List<Object[]>> entry : cogList.entrySet()) {
+				    List<Object[]> cashOutGoList = entry.getValue(); 
+				
+			%>
 				<div class="carousel-item">
 	
 					<div class="content-header row ">
@@ -830,7 +839,7 @@ input,select,table,div,label,span {
 							<b style="margin-left: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-8">
-							<h3>Cash Out Go Status</h3>
+							<h3>Cash Out Go Status - <%=entry.getKey() %> </h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -842,9 +851,180 @@ input,select,table,div,label,span {
 					</div>
 					
 					<div class="content" >
+						<div class="container-fluid mt-3 tabpanes2">
+							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
+								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+									<%-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
+										<th colspan="<%=12-quarter %>" style="border-radius: 1rem;"> <h5>Cash Out Go Status</h5></th>
+									</tr> --%>
+									
+									<tr>
+										<th>SN</th>
+										<th>Project</th>
+										<!-- <th>Budget Head</th> -->
+										<th>Allotment</th>
+										<th>Expenditure</th>
+										<th>Balance</th>
+										<%if(quarter<=1) {%>
+											<th>COG Q1</th>
+										<%} %>
+										<%if(quarter<=2) {%>
+											<th>COG Q2</th>
+										<%} %>
+										<%if(quarter<=3) {%>
+											<th>COG Q3</th>
+										<%} %>
+										<%if(quarter<=4) {%>
+											<th>COG Q4</th>
+										<%} %>
+										<th>Total COG</th>
+										<th>Addl(-)/Surr(+)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(cashOutGoList!=null && cashOutGoList.size()>0) {
+										int slno=0; 
+										Double allotment = 0.00, expenditure = 0.00, balance = 0.00, cogQ1 = 0.00, cogQ2 = 0.00, cogQ3 = 0.00, cogQ4 = 0.00, cogTotal = 0.00, addl = 0.00,
+												totoalAllotment = 0.00, totoalExpenditure = 0.00, totoalBalance = 0.00, totoalCOGQ1 = 0.00, totalCOGQ2 = 0.00, totalCOGQ3 = 0.00, totalCOGQ4 = 0.00, totalcogTotal = 0.00, totalAddl = 0.00;
+										String budgetHead ="";
+										for(Object[] obj : cashOutGoList) {
+									%>
+										<%if(!budgetHead.equalsIgnoreCase(obj[6].toString()) || slno==0 ) { %>
+										 	<%if(slno!=0) {%>
+											 	<tr>
+													<td class="right" colspan="2"><b>Total Amount (<%=budgetHead %>) : </b> </td>
+													<td class="right"><%=String.format("%.0f", allotment) %></td>
+													<td class="right"><%=String.format("%.0f", expenditure) %></td>
+													<td class="right"><%=String.format("%.0f", balance) %></td>
+													<%if(quarter<=1) {%>
+														<td class="right"><%=String.format("%.0f", cogQ1) %></td>
+													<%} %>
+													<%if(quarter<=2) {%>
+														<td class="right"><%=String.format("%.0f", cogQ2) %></td>
+													<%} %>
+													<%if(quarter<=3) {%>
+														<td class="right"><%=String.format("%.0f", cogQ3) %></td>
+													<%} %>
+													<%if(quarter<=4) {%>
+														<td class="right"><%=String.format("%.0f", cogQ4) %></td>
+													<%} %>
+													<td class="right"><b><%=String.format("%.0f", cogTotal) %></b></td>
+													<td class="right"><b><%=String.format("%.0f", addl) %></b></td>
+												</tr>	
+										 	<%} %>
+										 	<%budgetHead = obj[6].toString(); %>
+											<tr>
+												<td colspan="<%=12-quarter %>" class="center" style="background-color: aliceblue;"><b>Budget Head : <%=budgetHead %></b></td>
+											</tr>
+										<%
+											totoalAllotment+=allotment;
+											totoalExpenditure+=expenditure;
+											totoalBalance+=balance;
+											totoalCOGQ1+=cogQ1;
+											totalCOGQ2+=cogQ2;
+											totalCOGQ3+=cogQ3;
+											totalCOGQ4+=cogQ4;
+											totalcogTotal+=cogTotal;
+											totalAddl+=addl;
+										
+											allotment = expenditure = balance = cogQ1 = cogQ2 = cogQ3 = cogQ4 = cogTotal = addl = 0.00;
+										} 
+											allotment+=Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00");
+											expenditure+=Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00");
+											balance+=Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00");
+											cogQ1+=Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00");
+											cogQ2+=Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00");
+											cogQ3+=Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00");
+											cogQ4+=Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00");
+											cogTotal+=Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00");
+											addl+=Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00");
+										%>
+										<tr>
+											<td class="center"><%=++slno %></td>
+											<td ><%=obj[4] %></td>
+											<%-- <td><%=obj[6] %></td> --%>
+											<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")) %></td>
+											<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")) %></td>
+											<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00")) %></td>
+											<%if(quarter<=1) {%>
+												<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00")) %></td>
+											<%} %>
+											<%if(quarter<=2) {%>
+												<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00")) %></td>
+											<%} %>
+											<%if(quarter<=3) {%>
+												<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00")) %></td>
+											<%} %>
+											<%if(quarter<=4) {%>
+												<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00")) %></td>
+											<%} %>
+											<td class="right"><b><%=String.format("%.0f", Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00")) %></b></td>
+											<td class="right"><b><%=String.format("%.0f", Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00")) %></b></td>
+										</tr>
+										<%if(slno==cashOutGoList.size()) { %>
+										 	<tr>
+												<td class="right" colspan="2"> <b>Total Amount (<%=budgetHead %>) :</b> </td>
+												<td class="right"><%=String.format("%.0f", allotment) %></td>
+												<td class="right"><%=String.format("%.0f", expenditure) %></td>
+												<td class="right"><%=String.format("%.0f", balance) %></td>
+												<%if(quarter<=1) {%>
+													<td class="right"><%=String.format("%.0f", cogQ1) %></td>
+												<%} %>
+												<%if(quarter<=2) {%>
+													<td class="right"><%=String.format("%.0f", cogQ2) %></td>
+												<%} %>
+												<%if(quarter<=3) {%>
+													<td class="right"><%=String.format("%.0f", cogQ3) %></td>
+												<%} %>
+												<%if(quarter<=4) {%>
+													<td class="right"><%=String.format("%.0f", cogQ4) %></td>
+												<%} %>
+												<td class="right"><b><%=String.format("%.0f", cogTotal) %></b></td>
+												<td class="right"><b><%=String.format("%.0f", addl) %></b></td>
+											</tr>	
+											<%
+												totoalAllotment+=allotment;
+												totoalExpenditure+=expenditure;
+												totoalBalance+=balance;
+												totoalCOGQ1+=cogQ1;
+												totalCOGQ2+=cogQ2;
+												totalCOGQ3+=cogQ3;
+												totalCOGQ4+=cogQ4;
+												totalcogTotal+=cogTotal;
+												totalAddl+=addl;
+											%>
+											<tr>
+												<td class="right" colspan="2"> <b>Grand Total Amount :</b> </td>
+												<td class="right"><%=String.format("%.0f", totoalAllotment) %></td>
+												<td class="right"><%=String.format("%.0f", totoalExpenditure) %></td>
+												<td class="right"><%=String.format("%.0f", totoalBalance) %></td>
+												<%if(quarter<=1) {%>
+													<td class="right"><%=String.format("%.0f", totoalCOGQ1) %></td>
+												<%} %>
+												<%if(quarter<=2) {%>
+													<td class="right"><%=String.format("%.0f", totalCOGQ2) %></td>
+												<%} %>
+												<%if(quarter<=3) {%>
+													<td class="right"><%=String.format("%.0f", totalCOGQ3) %></td>
+												<%} %>
+												<%if(quarter<=4) {%>
+													<td class="right"><%=String.format("%.0f", totalCOGQ4) %></td>
+												<%} %>
+												<td class="right"><b><%=String.format("%.0f", totalcogTotal) %></b></td>
+												<td class="right"><b><%=String.format("%.0f", totalAddl) %></b></td>
+											</tr>	
+										<% } %>
+									<%} } else{%>
+										<tr>
+											<td colspan="<%=12-quarter %>" class="center">No Data Available</td>
+										</tr>
+									<%} %>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			<%} %>
+			<%} }%>
 			<!-- ---------------------------------------- Cash Out Go Status Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- Test & Trials Slide ---------------------------------------------------  -->
 			<%if(slideNames.contains("Test & Trials")) { 
@@ -1057,11 +1237,21 @@ input,select,table,div,label,span {
 			<%
 			if(slideNames.size()>0) {
 				int count = 1;
+				int count2 = 1;
 				for(String slideName : slideNames) {%>
 				
-				<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=count %></b></li>
 				<%if(slideName.equalsIgnoreCase("ATR")) {%>
-					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Pending Points"><b><%=count %></b></li>
+					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=++count2 %></b></li>
+					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Pending Points"><b><%=++count2 %></b></li>
+				<%} else if(slideName.equalsIgnoreCase("Cash Out Go Status")) {%>
+					<%
+					++count2;
+					char a = 'a';
+					for(int i=0;i<cogListSize;i++) {%>
+						<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=count2 %> (<%=a++ %>)</b></li>
+					<%} %>
+				<%} else{%>
+					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=++count2 %></b></li>
 				<%} %>
 			<%} }%>
 			<li style="background-color:  white;width: 55px;margin-left: 20px;">

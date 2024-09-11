@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -611,9 +612,9 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public List<Object[]> getCashOutGoList(String labCode) throws Exception {
+	public HashMap<String, List<Object[]> > getCashOutGoList() throws Exception {
 		
-		return dao.getCashOutGoList(labCode);
+		return dao.getCashOutGoList();
 	}
 
 	@Override

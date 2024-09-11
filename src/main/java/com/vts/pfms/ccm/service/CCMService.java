@@ -1,5 +1,6 @@
 package com.vts.pfms.ccm.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public interface CCMService {
 	public CCMAchievements getCCMAchievementsById(String achievementId) throws Exception;
 	public long addCCMAchievements(CCMAchievements achmnts, MultipartFile imageAttachment, MultipartFile pdfAttachment, MultipartFile videoAttachment, String clusterId) throws Exception;
 	public int ccmAchievementDelete(String achievementId) throws Exception;
-	public List<Object[]> getCashOutGoList(String labCode) throws Exception;
+	public HashMap<String, List<Object[]>> getCashOutGoList() throws Exception;
 	public long addPFMSCCMData(PFMSCCMData ccmData) throws Exception;
 	public List<Object[]> getProjectListByLabCode(String labCode) throws Exception;
 	public CCMPresentationSlides getCCMPresentationSlidesByScheduleId(String scheduleId) throws Exception;

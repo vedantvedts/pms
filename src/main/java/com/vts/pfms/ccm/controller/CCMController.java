@@ -104,7 +104,29 @@ public class CCMController {
 	
 	@Value("${File_Size}")
 	String file_size;
-	
+
+    private String getMimeType(String filename) {
+	    String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+	    switch (extension) {
+	        case "pdf":
+	            return "application/pdf";
+	        case "doc":
+	            return "application/msword";
+	        case "docx":
+	            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+	        case "xls":
+	            return "application/vnd.ms-excel";
+	        case "xlsx":
+	            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	        case "png":
+	            return "application/png";
+	        case "mp4":
+	        	return "video/mp4";
+	        default:
+	            return "application/octet-stream";
+	    }
+	}
+    
 	@RequestMapping(value="CCMModules.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String ccmModules(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
@@ -658,6 +680,26 @@ public class CCMController {
     			
     		/* ----------------------- DMC End -------------------------- */
 			
+			/* ----------------------- Cash Out Go Status Start -------------------------- */
+    	
+			req.setAttribute("cashOutGoList", service.getCashOutGoList());
+			
+			LocalDate now = LocalDate.now();
+			int monthValue = now.getMonthValue();
+			int quarter = 1;
+			
+			if(monthValue>=7 && monthValue<=9) {
+				quarter = 2;
+			}else if(monthValue>=10 && monthValue<=12) {
+				quarter = 3;
+			}else if(monthValue>=1 && monthValue<=3) {
+				quarter = 4;
+			}
+			
+			req.setAttribute("quarter", quarter);
+    		
+    		/* ----------------------- Cash Out Go Status End -------------------------- */
+			
 			/* ----------------------- Test & Trials Start -------------- */
     		
     		req.setAttribute("ccmTestAndTrialsList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "T"));
@@ -676,28 +718,6 @@ public class CCMController {
 			return "static/Error";
 			
 		}
-	}
-	
-    private String getMimeType(String filename) {
-	    String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
-	    switch (extension) {
-	        case "pdf":
-	            return "application/pdf";
-	        case "doc":
-	            return "application/msword";
-	        case "docx":
-	            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-	        case "xls":
-	            return "application/vnd.ms-excel";
-	        case "xlsx":
-	            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	        case "png":
-	            return "application/png";
-	        case "mp4":
-	        	return "video/mp4";
-	        default:
-	            return "application/octet-stream";
-	    }
 	}
 	
     @RequestMapping(value="CCMPresentation.htm", method= {RequestMethod.POST, RequestMethod.GET})
@@ -791,7 +811,7 @@ public class CCMController {
     			
     			String labCode = req.getParameter("labCode");
     			labCode = labCode!=null?labCode:labcode;
-    			req.setAttribute("cashOutGoList", service.getCashOutGoList(labCode));
+    			req.setAttribute("cashOutGoList", service.getCashOutGoList().get(labCode));
     			req.setAttribute("labCode", labCode);
     			
     			LocalDate now = LocalDate.now();
