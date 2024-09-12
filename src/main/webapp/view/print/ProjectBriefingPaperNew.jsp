@@ -2290,7 +2290,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 									</tr>
 									<tr>
 										<td>3</td>
-										<td>EPC Approved</td>
+										<td>Demand Approved</td>
 									    <td>10</td>
 										<td>Order Placement</td>
 										<td>17</td>
