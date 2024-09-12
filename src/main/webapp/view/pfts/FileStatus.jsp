@@ -481,31 +481,31 @@ for(Integer i:status){
 											                        </div>
 													                <div class="form-group col-md-3">
 													                   <% if(obj[7].toString().equalsIgnoreCase("1")){%>
-											                                 <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(fileStatus[2].toString()) %>" disabled style="line-height: 17px;">
+											                                 <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(fileStatus[2].toString()) %>" readonly style="line-height: 17px;">
 											                           <%}else if(obj[7].toString().equalsIgnoreCase("3") && fileStatus[11]!=null){%>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("6") && fileStatus[12]!=null){ %>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("10") && fileStatus[13]!=null){%>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("11") && fileStatus[14]!=null){ %>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("12") && fileStatus[21]!=null){%>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("13") && fileStatus[15]!=null){ %>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("15") && fileStatus[22]!=null){%>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("25") && fileStatus[18]!=null){ %>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("14") && fileStatus[16]!=null){%>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("17") && fileStatus[17]!=null){ %>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("19") && fileStatus[20]!=null){%>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else if(obj[7].toString().equalsIgnoreCase("20") && fileStatus[23]!=null){ %>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" disabled value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%}else{ %>
 													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
 													                   <%} %>
