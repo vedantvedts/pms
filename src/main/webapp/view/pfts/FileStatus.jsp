@@ -382,7 +382,7 @@ for(Integer i:status){
                                                      <%}%>
                                                     </td>
                                                     <td>
-                                                    <%if(Long.parseLong(fileStatus[7].toString())!=19){ %>
+                                                    <%if(Long.parseLong(fileStatus[7].toString())!=25){ %>
                                                      <%if(fileStatus[10]!=null && fileStatus[10].toString().equals("I")) {%> 
                                                      <button class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Demand Status" onclick="openEditform('<%=fileStatus[0]%>','<%=fileStatus[1]%>',<%=fileStatus[7]%>,'<%=fileStatus[4]%>','<%=fileStatus[10]%>')"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                                    <%}else{ %>
@@ -402,11 +402,11 @@ for(Integer i:status){
 	                                                   <input type="hidden" name="projectId" value=<%=projectId%> />
 	                                                   <input type="hidden" name="demandNo" value="<%=fileStatus[1]%>" />
 	                                                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                                                   <%if(Long.parseLong(fileStatus[7].toString())!=19){ %>                                         
+	                                                   <%if(Long.parseLong(fileStatus[7].toString())!=25){ %>                                         
 	                                                   <button class="btn btn-sm" data-toggle="tooltip" title="Demand Inactive" onclick="return confirm('Are You Sure To InActive ?')"><i class="fa fa-times" aria-hidden="true"></i></button>
-	                                                   <button class="btn btn-sm" type="button" onclick="openPDCform('<%=fileStatus[0]%>')">
+	                                                  <%--  <button class="btn btn-sm" type="button" onclick="openPDCform('<%=fileStatus[0]%>')">
                                                   	  	<i class="fa fa-calendar" aria-hidden="true"></i>
-                                                  	   </button>
+                                                  	   </button> --%>
                                                   	   <%} %>
 	                                                   <%if(Long.parseLong(fileStatus[7].toString())>9 && fileStatus[10]!=null && !fileStatus[10].toString().equalsIgnoreCase("M")){ %>
 	                                                   <button class="btn btn-sm " data-toggle="tooltip" title="Refresh Demand" formaction="FileOrderRetrive.htm" title="Refresh Order"> <i class="fa fa-refresh" aria-hidden="true"></i></button>
