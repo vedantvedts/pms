@@ -3784,7 +3784,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	//private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid FROM pfms_initiation_req_summary a WHERE a.InitiationId =:InitiationId AND a.isactive='1'";
-	private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid,a.preparedby,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1',a.ReleaseDate FROM pfms_initiation_req_summary a WHERE a.ReqInitiationId =:ReqInitiationId AND a.isactive='1'";
+	private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname),', ', d.designation)FROM employee e,employee_desig d WHERE  e.desigid=d.desigid AND e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname),', ', d.designation)FROM employee e,employee_desig d WHERE  e.desigid=d.desigid AND e.empid=a.reviewer ) AS 'Reviewer1',\r\n"
+			+ "a.summaryid,a.preparedby,(SELECT CONCAT(CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname),', ', d.designation)FROM employee e,employee_desig d WHERE  e.desigid=d.desigid AND e.empid=a.PreparedBy)\r\n"
+			+ " AS 'PreparedBy1',a.ReleaseDate FROM pfms_initiation_req_summary a WHERE a.ReqInitiationId =:ReqInitiationId AND a.isactive='1'";
 	@Override
 	public List<Object[]> getDocumentSummary(String reqInitiationId) throws Exception {
 
