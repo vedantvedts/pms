@@ -3524,7 +3524,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		manager.flush();
 		return psf.getSqrId();
 	}
-	private static final String SQRFILES="SELECT a.User,a.refNo,a.ReqInitiationId,a.authority,a.version,a.createdDate,a.sqrNo,a.sqrid,a.PreviousSqrNo,a.MeetingReference,a.PriorityDevelopment,a.FilePath,a.FileName FROM pfms_initiation_sqr a WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
+	private static final String SQRFILES="SELECT a.User,a.refNo,a.ReqInitiationId,a.authority,a.version,a.createdDate,a.sqrNo,a.sqrid,a.PreviousSqrNo,a.MeetingReference,a.PriorityDevelopment,a.FilePath,a.FileName,a.Title,a.QRType FROM pfms_initiation_sqr a WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
 	@Override
 	public Object[] SqrFiles(String reqInitiationId) throws Exception {
 		Query query =manager.createNativeQuery(SQRFILES);
@@ -3543,7 +3543,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		manager.flush();
 		return rpm.getParaId();
 	}
-	private static final String PARADETAILS="SELECT paraid,sqrid,ReqInitiationId,parano,paradetails FROM pfms_initiation_sqr_para WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
+	private static final String PARADETAILS="SELECT paraid,sqrid,ReqInitiationId,parano,paradetails,SINo FROM pfms_initiation_sqr_para WHERE ReqInitiationId=:ReqInitiationId AND isactive=1 ORDER BY SINo";
 	@Override
 	public List<Object[]> ReParaDetails(String reqInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(PARADETAILS);
@@ -3766,7 +3766,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	//private static final String REQMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.initiationid =:initiationid AND c.isactive =1 ORDER BY b.desigid ASC";
-	private static final String REQMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.ReqInitiationId =:ReqInitiationId AND c.isactive =1 ORDER BY b.desigid ASC";
+	private static final String REQMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.ReqInitiationId =:ReqInitiationId AND c.isactive =1 ORDER BY a.srno ASC";
 
 	@Override
 	public List<Object[]> reqMemberList(String reqInitiationId) throws Exception {
@@ -3833,7 +3833,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			return null;
 		}
 	}
-	private static final String PARADETAILSMAIN="SELECT paraid,sqrid,ReqInitiationId,parano,paradetails FROM pfms_initiation_sqr_para WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
+	private static final String PARADETAILSMAIN="SELECT paraid,sqrid,ReqInitiationId,parano,paradetails,SINo FROM pfms_initiation_sqr_para WHERE ReqInitiationId=:ReqInitiationId AND isactive=1 ORDER BY SINo";
 	@Override
 	public List<Object[]> ReParaDetailsMain(String reqInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(PARADETAILSMAIN);
