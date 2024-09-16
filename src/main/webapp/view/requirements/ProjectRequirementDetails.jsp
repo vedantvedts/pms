@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
@@ -39,10 +40,12 @@ Object[]DocumentSummary=null;
 List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
 List<Object[]>ApplicableDocumentList=(List<Object[]>)request.getAttribute("ApplicableDocumentList");
 List<Object[]>ApplicableTotalDocumentList=(List<Object[]>)request.getAttribute("ApplicableTotalDocumentList");
-
+String DocumentVersion = (String)request.getAttribute("DocumentVersion");
 if(DocumentSummaryList.size()>0){
 	DocumentSummary=DocumentSummaryList.get(0);
 }
+
+FormatConverter fc = new FormatConverter();
 
 //RequirementInitiation reqInitiation = (RequirementInitiation)request.getAttribute("reqInitiation");
 //String status = reqInitiation!=null?reqInitiation.getReqStatusCode():"RIN";
@@ -111,7 +114,7 @@ if(DocumentSummaryList.size()>0){
 			<div class="requirementid mt-2 ml-2" style="height: 90%;">
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Requirement Document</span> 
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDocPDF()"><img alt="" src="view/images/pdf.png" >&nbsp;Requirement Document</span> 
-		       	<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span>
+		       	<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp; QUALITATIVE REQUIREMENT</span>
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
 			    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
@@ -200,14 +203,14 @@ if(DocumentSummaryList.size()>0){
 							<td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td>
 						</tr>
 						<tr>
-							<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Requirements Document Template</span></td>
+							<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Requirements Document for <%=projectDetails[1] %></span></td>
 						</tr>
 						<tr>
 							<td class="text-primary">2.&nbsp; Type of Document:<span class="text-dark">System Requirements Document</span></td>
 							<td class="text-primary">3.&nbsp; Classification: <span class="text-dark"><%=classification %></span></td>
 						</tr>
 				    	<tr >
-							<td class="text-primary">4.&nbsp; Document Number:</td>
+							<td class="text-primary">4.&nbsp; Document Number: <%if(DocumentSummary!=null && DocumentSummary[11]!=null) {%><span style="color:black;font-weight:400;">  SRD-<%=DocumentSummary[11].toString().replaceAll("-", "")%>-<%=session.getAttribute("labcode") %>-<%=projectDetails[1] %>-V<%=DocumentVersion %> <%} %></td>
 							<td class="text-primary">5.&nbsp; Month Year: <span style="color:black;"><%=months.toString().substring(0,3) %>&nbsp;&nbsp;<%=years %></span></td>
 						</tr>
 						<tr>
@@ -330,6 +333,13 @@ if(DocumentSummaryList.size()>0){
    							</div>
    						</div>
    						<div class="row mt-2">
+   						<div class="col-md-2">
+			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Release Date:</label>
+			   				</div>
+			   				<div class="col-md-2">
+			   				<input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" <%if(DocumentSummary!=null && DocumentSummary[11]!=null){%> value="<%=DocumentSummary[11].toString() %>" <%}%> class="form-control form-control">
+			   				</div>
+   						
 			   				<div class="col-md-2">
 						   		<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By:</label>
 						   	</div>
@@ -345,6 +355,7 @@ if(DocumentSummaryList.size()>0){
    				
    							</div>
    						</div>
+   						
    						<div class="row mt-2">
 			   				<div class="col-md-2">
 			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
@@ -420,6 +431,8 @@ if(DocumentSummaryList.size()>0){
 			<input type="hidden" name="projectId" value="<%=projectId%>"> 
 			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
 			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 
+			
+				<input type="hidden" name="docnumber" value="<%if(DocumentSummary!=null && DocumentSummary[11]!=null) {%> SRD-<%=DocumentSummary[11].toString().replaceAll("-", "")%>-<%=session.getAttribute("labcode") %>-<%=projectDetails[1] %>-V<%=DocumentVersion %> <%} %>">
 		</form>
 		<!-- End -->
   
@@ -871,6 +884,13 @@ function DownloadDoc(){
 	$('#Downloadbtn').click();
 	}
 function DownloadDocPDF(){
+	var reqInitiationId= "<%=reqInitiationId%>";
+	if(reqInitiationId==="0"){
+		alert("Please fill the data to see the PDF!");
+		return false;
+	}
+	
+	
 	$('#Downloadbtnpdf').click();
 	}
 	
@@ -918,6 +938,19 @@ function DownloadDocPDF(){
 
 	    }) --%>
 	}
+
+	$('#pdc-date').daterangepicker({
+		
+		"singleDatePicker": true,
+		"showDropdowns": true,
+		"cancelClass": "btn-default",
+		<%if(DocumentSummary==null || DocumentSummary[11]==null) {%>
+		"startDate":new Date() ,
+	<%}%>
+		locale: {
+	    	format: 'DD-MM-YYYY'
+			}
+	});
 </script>
 
 <%-- <script type="text/javascript">

@@ -139,4 +139,11 @@ public interface RequirementDao {
 
 
 	long AddReqType(PfmsReqTypes pr)throws Exception;
+
+
+	long deleteSqr(String paraId)throws Exception;
+
+
+	long updateSerialParaNo(String para, String sn)throws Exception;
+	public long deleteInitiationReq(String InitiationReqId) throws Exception;
 }

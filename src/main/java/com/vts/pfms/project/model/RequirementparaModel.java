@@ -28,4 +28,6 @@ public class RequirementparaModel {
 	private int IsActive;
 //	private Long ProjectId;
 	private Long ReqInitiationId;
+	
+	private Long SINo;
 }

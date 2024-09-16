@@ -160,6 +160,11 @@ top-right {
 	margin-top: 30px;
 	margin-right: 10px;
 }
+@left-top {
+          	content: element(pageHeader);
+            font-size: 13px;
+            
+          } 
 @
 top-left {
 	margin-top: 30px;
@@ -242,11 +247,25 @@ margin-left:8px;
 #table1{
 margin-left:15x;
 }
+#headerdiv {
+  position: running(pageHeader); /* This will be used for paged media */
+  justify-content: space-between; /* Distribute space between items */
+  align-items: center; /* Align items vertically in the center */
+  padding: 10px; /* Add some padding */
+}
 
 
 </style>
 </head>
 <body>
+<div id="headerdiv">
+	<div style="position: absolute; top: 450px; left:-422px; border:1px solid black; transform: rotate(-90deg); font-size: 10px; color: #000; width:900px;opacity:0.5; ">
+				  <!--   <b style="font-size: 12px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</b><br>
+				    <span style="text-decoration: none; font-size: 11px;">This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.</span> -->
+				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} %>
+				
+				</div>
+   </div>
 	<div class="heading-container"
 		style="text-align: center; position: relative;"></div>
 

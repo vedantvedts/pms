@@ -109,10 +109,10 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 }
 
 .viewbtn {
-	width: 100%;
+	width: 80%;
 	margin-top: 4%;
 	background: #055C9D;
-	font-size: 1rem;
+	font-size: 15px;
 	font-family: font-family : 'Muli';
 	text-align: justify
 }
@@ -454,10 +454,10 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
 			<%int count=0;
 				for(Object []obj:subReqList) {%>
-				<div>	<button  type="button" class="btn btn-secondary  mt-2" style="width:88%" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
+				<div>	<button  type="button" class="btn btn-secondary  mt-2" style="width:84%;font-size: 13px;" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
 						 <%=(++count)+". "+ obj[3] %>
-					</button>
-					<button style="width:10%;background: white;" class="btn btn-sm" onclick="openSubReqModal(<%=obj[14].toString()%>,<%=obj[0].toString()%>)" data-toggle="tooltip" data-placement="bottom" data-original-data="" title="ADD REQ">
+					</button>&nbsp;
+					<button style="width:10%;background: white;" class="btn btn-sm" onclick="openSubReqModal(<%=obj[14].toString()%>,<%=obj[0].toString()%>)" data-toggle="tooltip" data-placement="top" data-original-data="" title="">
 						<i class="fa fa-plus-square" aria-hidden="true"></i>
 					</button> </div>
 					<div class="col-md-10 subDiv" id="subDiv<%=obj[0].toString()%>" style="display:none;" >
@@ -473,6 +473,9 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 							<button type="button" class="btn btn-secondary viewbtn mt-2" id="<%=obj1[0] %>" value="<%=obj1[0]%>/<%=obj[0].toString()%>"  <%-- onclick="showDetailss(<%=obj1[0].toString()%>,<%=obj[0].toString()%>)"  --%>>
 								<i class="fa fa-caret-right" aria-hidden="true" style="color:white;"></i> &nbsp;  
 								<%=count+"."+(++subcount)+". "+  obj1[1] %>
+							</button>
+							<button class="btn btn-sm bg-transparent" type="button" onclick="deleteReq(<%=obj1[0] %>)">
+							<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 							</button>
 						<%} }%>
 					</div>
@@ -1768,75 +1771,108 @@ $( document ).ready(function() {
 });
 <%}%>
 
+
 var editor_config = {
-	    toolbar: [
-	        {
-	            name: 'paragraph',
-	            items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
-	        },
-	        {
-	            name: 'styles',
-	            items: ['Format', 'Font', 'FontSize']
-	        },
-	        {
-	            name: 'align',
-	            items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
-	        }
-	    ],
-	    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-	    customConfig: '',
-	    disallowedContent: 'img{width,height,float}',
-	    extraAllowedContent: 'img[width,height,align]',
-	    height: 200,
-	    contentsCss: [CKEDITOR.basePath + 'mystyles.css'],
-	    bodyClass: 'document-editor',
-	    format_tags: 'p;h1;h2;h3;pre',
-	    removeDialogTabs: 'image:advanced;link:advanced',
-	    stylesSet: [
-	        {
-	            name: 'Marker',
-	            element: 'span',
-	            attributes: { 'class': 'marker' }
-	        },
-	        {
-	            name: 'Cited Work',
-	            element: 'cite'
-	        },
-	        {
-	            name: 'Inline Quotation',
-	            element: 'q'
-	        },
-	        {
-	            name: 'Special Container',
-	            element: 'div',
-	            styles: {
-	                padding: '5px 10px',
-	                background: '#eee',
-	                border: '1px solid #ccc'
-	            }
-	        },
-	        {
-	            name: 'Compact table',
-	            element: 'table',
-	            attributes: {
-	                cellpadding: '5',
-	                cellspacing: '0',
-	                border: '1',
-	                bordercolor: '#ccc'
-	            },
-	            styles: { 'border-collapse': 'collapse' }
-	        },
-	        {
-	            name: 'Borderless Table',
-	            element: 'table',
-	            styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' }
-	        },
-	        {
-	            name: 'Square Bulleted List',
-	            element: 'ul',
-	            styles: { 'list-style-type': 'square' }
-	        }
-	    ],
+		toolbar : [
+			
+				{
+					name : 'basicstyles',
+					items : [ 'Bold', 'Italic', 'Underline', 'Strike',
+							'RemoveFormat', 'Subscript', 'Superscript' ]
+				},
+			
+				{
+					name : 'paragraph',
+					items : [ 'NumberedList', 'BulletedList', '-',
+							'Outdent', 'Indent', '-', 'Blockquote' ]
+				},
+			
+			
+		
+
+				{
+					name : 'styles',
+					items : [ 'Format', 'Font', 'FontSize' ]
+				},
+				{
+					name : 'colors',
+					items : [ 'TextColor', 'BGColor', 'CopyFormatting' ]
+				},
+				{
+					name : 'align',
+					items : [ 'JustifyLeft', 'JustifyCenter',
+							'JustifyRight', 'JustifyBlock' ]
+				} ],
+
+		removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+
+		customConfig : '',
+
+		disallowedContent : 'img{width,height,float}',
+		extraAllowedContent : 'img[width,height,align]',
+
+		height : 280,
+
+		contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
+
+		bodyClass : 'document-editor',
+
+		format_tags : 'p;h1;h2;h3;pre',
+
+		removeDialogTabs : 'image:advanced;link:advanced',
+
+		stylesSet : [
+
+		{
+			name : 'Marker',
+			element : 'span',
+			attributes : {
+				'class' : 'marker'
+			}
+		}, {
+			name : 'Cited Work',
+			element : 'cite'
+		}, {
+			name : 'Inline Quotation',
+			element : 'q'
+		},
+
+		{
+			name : 'Special Container',
+			element : 'div',
+			styles : {
+				padding : '5px 10px',
+				background : '#eee',
+				border : '1px solid #ccc'
+			}
+		}, {
+			name : 'Compact table',
+			element : 'table',
+			attributes : {
+				cellpadding : '5',
+				cellspacing : '0',
+				border : '1',
+				bordercolor : '#ccc'
+			},
+			styles : {
+				'border-collapse' : 'collapse'
+			}
+		}, {
+			name : 'Borderless Table',
+			element : 'table',
+			styles : {
+				'border-style' : 'hidden',
+				'background-color' : '#E6E6FA'
+			}
+		}, {
+			name : 'Square Bulleted List',
+			element : 'ul',
+			styles : {
+				'list-style-type' : 'square'
+			}
+		}, {
+			filebrowserUploadUrl : '/path/to/upload-handler'
+		}, ],
 	    enterMode: CKEDITOR.ENTER_BR,
 	    shiftEnterMode: CKEDITOR.ENTER_P,
 	    on: {
@@ -1853,6 +1889,7 @@ var editor_config = {
 	        }
 	    }
 	};
+
 CKEDITOR.replace('Editor', editor_config);
 CKEDITOR.replace('Editor1', editor_config);
 var list=[];
@@ -1995,6 +2032,34 @@ function submitReqType(){
 			event.preventDefault();
 			return false;
 		}
+	}
+}
+
+function deleteReq(a){
+	console.log("a"+a)
+	if(confirm('Are you sure to delete?')){
+		$.ajax({
+			type:'GET',
+			url:'deleteInitiationReq.htm',
+			datatype:'json',
+			data:{
+				InitiationReqId:a,
+			},
+			success:function(result){
+				
+				var ajaxresult = JSON.parse(result);
+				console.log(ajaxresult)
+				if(Number(ajaxresult)>0){
+					alert("Requirement Deleted Successfully!")
+				}
+				window.location.reload();
+			}
+			
+		})
+		
+	}else{
+		event.preventDefault();
+		return false;
 	}
 }
 </script>

@@ -108,6 +108,7 @@ for(Object[]obj:SpecContentsDetails){
 								 <input type="hidden" name="projectId" value="<%=projectId%>">
 								<input type="hidden" name="initiationId" value="<%=initiationId%>">
 								<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>"> 
+								<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 								<button type="submit" class="btn btn-primary btn-sm back">Back</button>
 							</form>
 						</div>

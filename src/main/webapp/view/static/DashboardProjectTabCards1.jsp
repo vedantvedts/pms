@@ -2453,7 +2453,22 @@ $(function() {
 
 	});
 
+function sendMail(){
+	console.log("hiii")
+	Swal.fire({
+	    title: 'Loading...',
+	    allowOutsideClick: false,
+	    didOpen: () => {
+	        Swal.showLoading()
+	    }
+	});
 
+	// Simulate a delay (e.g., fetching data)
+	setTimeout(() => {
+	    // Close the loading indicator
+	    Swal.close();
+	}, 3000);
+}
 </script>
 
 

@@ -19,6 +19,8 @@ public class ProjectSqrFile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long SqrId;
 //	private Long InitiationId;
+	private String QRType;
+	private String Title;
 	private  String User;
 	private String RefNo;
 	private String SqrNo;

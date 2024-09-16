@@ -403,6 +403,21 @@ public class RfpMainServiceImpl implements RfpMainService {
 					health.setBalance(Double.parseDouble("0.00"));
 				}
 				
+				health.setPJBHeld(Long.parseLong(data[32].toString()));
+				health.setPJBPending(Long.parseLong(data[33].toString()));
+				health.setPJBTotal(Long.parseLong(data[34].toString()));
+				health.setPJBTotalToBeHeld(Long.parseLong(data[35].toString()));
+				
+				health.setPMBHeld(Long.parseLong(data[36].toString()));
+				health.setPMBPending(Long.parseLong(data[37].toString()));
+				health.setPMBTotal(Long.parseLong(data[38].toString()));
+				health.setPMBTotalToBeHeld(Long.parseLong(data[39].toString()));
+				
+				health.setABHeld(Long.parseLong(data[40].toString()));
+				health.setABPending(Long.parseLong(data[41].toString()));
+				health.setABTotal(Long.parseLong(data[42].toString()));
+				health.setABTotalToBeHeld(Long.parseLong(data[43].toString()));
+				
 				health.setCreatedBy(UserName);
 				health.setCreatedDate(sdf1.format(new Date()));
 				health.setTodayChanges(Long.parseLong(data[25].toString()));

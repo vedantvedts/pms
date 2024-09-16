@@ -1459,6 +1459,8 @@ public class ProjectController
 			psf.setPreviousSqrNo(req.getParameter("previousSQRNo"));
             psf.setMeetingReference(req.getParameter("MeetingReference"));
 			 psf.setPriorityDevelopment(req.getParameter("PriorityDevelopment"));
+				psf.setQRType(req.getParameter("QrType"));
+				psf.setTitle(req.getParameter("Qrtitle"));
 			long count=service.ProjectSqrSubmit(psf,FileAttach,UserId,LabCode);
 			if (count > 0) {
 				redir.addAttribute("result", "SQR document uploaded Successfully");
@@ -3285,6 +3287,7 @@ public class ProjectController
 //			rpm.setInitiationId(Long.parseLong(initiationid));
 //			rpm.setProjectId(Long.parseLong(ProjectId));
 			rpm.setReqInitiationId(Long.parseLong(reqInitiationId));
+			rpm.setSINo(Long.parseLong(req.getParameter("serialNumber")));
 			rpm.setParaNo(req.getParameter("ParaNo"));
 			rpm.setCreatedBy(UserId);
 			rpm.setCreatedDate(sdf1.format(new Date()));
@@ -6358,7 +6361,6 @@ public class ProjectController
 			req.setAttribute("Verifications", reqService.getVerifications(reqInitiationId));
 			req.setAttribute("docnumber", req.getParameter("docnumber"));
 			
-			System.out.println("req.getParameter(\"docnumber\")"+req.getParameter("docnumber"));;
 			String filename="ProjectRequirement";
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
@@ -6375,9 +6377,31 @@ public class ProjectController
 			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
 			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
 			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			int totalPages = pdfDocument.getNumberOfPages();
+			System.out.println("Total Number of Pages: " + totalPages); //
+			req.setAttribute("totalPages", totalPages);
+			
+			
+			
 			pdfDocument.close();
 			pdf1.close();	       
 			pdfw.close();
+			
+			CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/requirements/RequirementPDFDownload.jsp").forward(req, customResponse1);
+			String html1 = customResponse1.getOutput();
+
+			ConverterProperties converterProperties1= new ConverterProperties();
+			FontProvider dfp1 = new DefaultFontProvider(true, true, true);
+			converterProperties1.setFontProvider(dfp1);
+			HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties1);
+			PdfWriter pdfw1=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf2=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument1 = new PdfDocument(pdf2, pdfw1);
+			pdfDocument1.close();
+			pdf2.close();	       
+			pdfw1.close();
+			
 			res.setContentType("application/pdf");
 			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 			File f=new File(path+"/"+filename+".pdf");
@@ -6420,7 +6444,7 @@ public class ProjectController
 
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 
-//			String initiationid=req.getParameter("initiationId");
+
 			String reqInitiationId = req.getParameter("reqInitiationId");
 			RequirementInitiation reqini = reqService.getRequirementInitiationById(reqInitiationId);
 			if(reqini!=null) {
@@ -6428,37 +6452,17 @@ public class ProjectController
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
 			}
 			
-//			String ProjectId=req.getParameter("projectId");
-//			if(initiationid==null) {
-//				initiationid="0";
-//
-//
-//				String projectShortName=service.ProjectEditData1(ProjectId)[4].toString();
-//				req.setAttribute("projectShortName", projectShortName);
-//			}
-//
-//			if(ProjectId==null) {
-//				ProjectId="0";
-//
-//				String projectShortName=service.ProjectEditData(initiationid).get(0)[6].toString();
-//				req.setAttribute("projectShortName", projectShortName);
-//			}
-//			Object[] PfmsInitiationList= null;
+
 			String filename="ProjectRequirement";
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
-			//req.setAttribute("PfmsInitiationList", PfmsInitiationList);
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
-			//req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
 			req.setAttribute("RequirementList", reqService.RequirementList(reqInitiationId));
-			//req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
 			req.setAttribute("uploadpath", uploadpath);
-			//req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
 			req.setAttribute("ReqIntro", service.RequirementIntro(reqInitiationId));
-			//		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
-			//		  	req.setAttribute("Verifications", service.getVerificationList(initiationid));
+	
 			req.setAttribute("MemberList", service.reqMemberList(reqInitiationId));
 			req.setAttribute("DocumentSummary", service.getDocumentSummary(reqInitiationId));
 			req.setAttribute("ProjectParaDetails", reqService.getProjectParaDetails(reqInitiationId));
@@ -6469,46 +6473,12 @@ public class ProjectController
 			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(reqInitiationId));
 			req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(reqInitiationId));
 			req.setAttribute("Verifications", reqService.getVerifications(reqInitiationId));
-			//			Object[]VerificationExcelData=service.getVerificationExcelData(initiationid,ProjectId);
-			//			File my_file=null;
-			//			my_file=new File(uploadpath+VerificationExcelData[1]+File.separator+VerificationExcelData[2]);
-			//			
-			//			if(my_file!=null) {
-			//				String htmlContent = convertExcelToHtml(new FileInputStream(my_file));
-			//		        req.setAttribute("htmlContent", htmlContent);
-			//			}
+		
 
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
 
-			//			ConverterProperties converterProperties = new ConverterProperties();
-			//	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-			//	    	converterProperties.setFontProvider(dfp);
-			//
-			//			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
-			//			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-			//			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-			//			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-			//			pdfDocument.close();
-			//			pdf1.close();	       
-			//	        pdfw.close();
-			//			res.setContentType("application/pdf");
-			//	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-			//	        File f=new File(path+"/"+filename+".pdf");
-			//	      
-			//	        OutputStream out = res.getOutputStream();
-			//			FileInputStream in = new FileInputStream(f);
-			//			byte[] buffer = new byte[4096];
-			//			int length;
-			//			while ((length = in.read(buffer)) > 0) {
-			//				out.write(buffer, 0, length);
-			//			}
-			//			in.close();
-			//			out.flush();
-			//			out.close();
-			//			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
-			//	        Files.delete(pathOfFile2);	
 
 
 		}catch(Exception e) {
@@ -6563,6 +6533,11 @@ public class ProjectController
 			RequirementInitiation reqini = reqService.getRequirementInitiationById(reqInitiationId);
 			Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"" , reqini.getInitiationId()!=0?"P":"E");
 			
+			Object[] DocTempAttributes =null;
+
+			DocTempAttributes=service.DocTempAttributes();
+
+			req.setAttribute("DocTempAttributes", DocTempAttributes);
 //			Object[] PfmsInitiationList= service.ProjectDetailes(initiation.getInitiationId()).get(0);
 			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId));
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
@@ -6610,6 +6585,37 @@ public class ProjectController
 
 	}
 
+	@RequestMapping(value = "RequirementParaDownloads.htm" )
+	public String RequirementParaDownloads(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside RequirementParaDownloads.htm "+UserId);
+		try {
+			String reqInitiationId = req.getParameter("reqInitiationId");
+			RequirementInitiation reqini = reqService.getRequirementInitiationById(reqInitiationId);
+			Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"" , reqini.getInitiationId()!=0?"P":"E");
+			
+			Object[] DocTempAttributes =null;
+
+			DocTempAttributes=service.DocTempAttributes();
+
+			req.setAttribute("DocTempAttributes", DocTempAttributes);
+//			Object[] PfmsInitiationList= service.ProjectDetailes(initiation.getInitiationId()).get(0);
+			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId));
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("projectDetails", projectDetails);
+			req.setAttribute("LabList", service.LabListDetails(LabCode));
+			req.setAttribute("SQRFile", service.SqrFiles(reqInitiationId)); 
+			req.setAttribute("reqInitiationId", reqInitiationId); 
+	
+		}
+		catch(Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside RequirementParaDownloads.htm "+UserId,e);
+		}
+		return "print/RequirementParaDownloads";
+	}
 
 	//Sanction statement;
 	@RequestMapping(value = "ProjectSanctionDetailsDownload.htm" )
@@ -9536,7 +9542,8 @@ public class ProjectController
 			if(projectType.equalsIgnoreCase("M")) {
 				String projectId=req.getParameter("projectId");
 				String productTreeMainId = req.getParameter("productTreeMainId");
-
+				
+				System.out.println("productTreeMainId----"+productTreeMainId+"--"+projectId);
 				List<Object[]> projectList = service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
 				projectId = projectId!=null?projectId: (projectList.size()>0?projectList.get(0)[0].toString():"0");
 
@@ -9548,7 +9555,9 @@ public class ProjectController
 				req.setAttribute("projectId", projectId);
 				req.setAttribute("productTreeList", productTreeList );
 				req.setAttribute("productTreeMainId", productTreeMainId);
-				req.setAttribute("initiationSpecList", service.initiationSpecList(projectId, "0",productTreeMainId));
+				req.setAttribute("initiationSpecList", service.initiationSpecList(projectId,productTreeMainId,"0"));
+				
+				System.out.println(service.initiationSpecList(projectId, "0",productTreeMainId).size());
 				req.setAttribute("getSpecsPlanApprovalFlowData", reqService.getSpecsPlanApprovalFlowData(projectId,"0",productTreeMainId));
 			}else {
 				String initiationId = req.getParameter("initiationId");

@@ -336,9 +336,13 @@ keyframes blinker { 50% {
 			<input type="hidden" name="project" value="<%=project%>"> 
 			<input type="hidden" name="initiationId" value="<%=initiationId%>">
 			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
-
+		<button class="btn bg-transparent"
+				formaction="RequirementParaDownloads.htm" formmethod="get"
+				formnovalidate="formnovalidate" formtarget="_blank">
+				<i class="fa fa-download text-success" aria-hidden="true"></i>
+			</button>
  
- 		
+ 			
 
 			<button class="btn btn-info btn-sm  back ml-2 mt-1"
 				formaction="ProjectOverAllRequirement.htm" formmethod="get"
@@ -390,10 +394,10 @@ keyframes blinker { 50% {
 						<form action="#">
 							<div class="panel panel-info" style="margin-top: 10px;">
 								<div class="panel-heading ">
-
+				
 									<h4 class="panel-title">
-										<span class="ml-2" style="font-size: 14px">Para - <%=++count%>
-											&nbsp;&nbsp;&nbsp; 
+										<input type="number" class="form-control inputx serial" style="width: 8%" value="<%=obj[5]!=null?obj[5].toString():"0"%>" min="0" max="<%=ParaDetails.size()%>">
+										<input class="paraidclass" type="hidden" value="<%=obj[0].toString()%>">
 											<input type="hidden" id="paracount<%=obj[0].toString()%>" name="paracount" value="<%=count%>"> 
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 											<input type="hidden" name="project" value="<%=project%>"> 
@@ -431,6 +435,10 @@ keyframes blinker { 50% {
 									<input type="hidden" name="project" value="<%=project%>"> 
 									<input type="hidden" name="initiationId" value="<%=initiationId%>">
 									<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+										<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSqr(<%=obj[0].toString()%>)">
+									<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
+									</button>
+									
 									<button class="btn bg-transparent buttonEd" type="button"
 										style="display: block;" id="btnEditor<%=count%>"
 										onclick="showEditor(<%=obj[0].toString()%>,'<%=obj[3].toString()%>')"
@@ -467,6 +475,7 @@ keyframes blinker { 50% {
 									<input type="hidden" name="project" value="<%=project%>"> 
 									<input type="hidden" name="initiationId" value="<%=initiationId%>">
 									<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>">
+									<input type="hidden" name="serialNumber" value="<%=ParaDetails!=null?ParaDetails.size()+1:"0" %>">
 									<button class="btn bg-transparent buttonEd" type="button"
 										style="display: none;" id="btnEditor1" onclick="">
 										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -474,6 +483,7 @@ keyframes blinker { 50% {
 								</form>
 							</div>
 						</div>
+						<div align="left"><button class="btn btn-sm edit" onclick="getValues()">UPDATE ORDER</button></div>
 
 					</div>
 				</div>
@@ -594,8 +604,39 @@ keyframes blinker { 50% {
 					if (SQRFile == null) {
 					%> --%>
 					<form action="ProjectSqrSubmit.htm" method="post" enctype="multipart/form-data">
-						<div id="modalbody" class="mt-2" style="padding: 20px; display: block; background: aliceblue">
+						
+						<div class="row mt-2">
+									<div class="col-md-4">
+									&nbsp;&nbsp;
+										<label style="font-size: 17px;color: #07689f; font-weight: bold">Title :</label> 
+										<span class="mandatory" style="color: red;">*</span>
+									</div>
+									<div class="col-md-6">
+									
+										<input class="form-control modals" type="text" name="Qrtitle" maxlength="10" placeholder="Enter Maximum 10 characters" 
+										value="<%if (SQRFile != null && SQRFile[13] != null) {%><%=SQRFile[13].toString()%><%}%>" required style="width: 440px;">
+									</div>
+									
+								</div>
+								<br>
 							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-4">
+										<label style="font-size: 17px; color: #07689f; font-weight: bold">QR Type :</label>
+										<span class="mandatory" style="color: red;">*</span>
+									</div>
+									<div class="col-md-6">
+										<select class="form-control modals" required name="QrType">
+											<option value="0">SELECT</option>
+											<option value="Q" <%if (SQRFile != null && SQRFile[14].toString().equalsIgnoreCase("Q")) {%>selected <%}%>>QR</option>
+											<option value="P" <%if (SQRFile != null && SQRFile[14].toString().equalsIgnoreCase("P")) {%>selected <%}%>>PSQR</option>
+											<option value="G" <%if (SQRFile != null && SQRFile[14].toString().equalsIgnoreCase("G")) {%>selected <%}%>>GSQR</option>
+											<option value="J" <%if (SQRFile != null && SQRFile[14].toString().equalsIgnoreCase("J")) {%>selected <%}%>>JSQR</option>
+										</select>
+										<br>
+									</div>
+									</div>
+							
 								<div class="row">
 									<div class="col-md-4">
 										<label style="font-size: 17px; color: #07689f; font-weight: bold">User :</label>
@@ -760,91 +801,127 @@ keyframes blinker { 50% {
 		document.getElementById("input"+a).value=inputValue;
 		document.getElementById("input"+a).readOnly=true;
 	}
-	var editor_config = {
-		    toolbar: [
-		        {
-		            name: 'paragraph',
-		            items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
-		        },
-		        {
-		            name: 'styles',
-		            items: ['Format', 'Font', 'FontSize']
-		        },
-		        {
-		            name: 'align',
-		            items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
-		        }
-		    ],
-		    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-		    customConfig: '',
-		    disallowedContent: 'img{width,height,float}',
-		    extraAllowedContent: 'img[width,height,align]',
-		    height: 200,
-		    contentsCss: [CKEDITOR.basePath + 'mystyles.css'],
-		    bodyClass: 'document-editor',
-		    format_tags: 'p;h1;h2;h3;pre',
-		    removeDialogTabs: 'image:advanced;link:advanced',
-		    stylesSet: [
-		        {
-		            name: 'Marker',
-		            element: 'span',
-		            attributes: { 'class': 'marker' }
-		        },
-		        {
-		            name: 'Cited Work',
-		            element: 'cite'
-		        },
-		        {
-		            name: 'Inline Quotation',
-		            element: 'q'
-		        },
-		        {
-		            name: 'Special Container',
-		            element: 'div',
-		            styles: {
-		                padding: '5px 10px',
-		                background: '#eee',
-		                border: '1px solid #ccc'
-		            }
-		        },
-		        {
-		            name: 'Compact table',
-		            element: 'table',
-		            attributes: {
-		                cellpadding: '5',
-		                cellspacing: '0',
-		                border: '1',
-		                bordercolor: '#ccc'
-		            },
-		            styles: { 'border-collapse': 'collapse' }
-		        },
-		        {
-		            name: 'Borderless Table',
-		            element: 'table',
-		            styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' }
-		        },
-		        {
-		            name: 'Square Bulleted List',
-		            element: 'ul',
-		            styles: { 'list-style-type': 'square' }
-		        }
-		    ],
-		    enterMode: CKEDITOR.ENTER_BR,
-		    shiftEnterMode: CKEDITOR.ENTER_P,
-		    on: {
-		        instanceReady: function() {
-		            this.dataProcessor.htmlFilter.addRules({
-		                elements: {
-		                    p: function(element) {
-		                        if (element.children.length == 1 && element.children[0].name == 'br') {
-		                            return false;
-		                        }
-		                    }
-		                }
-		            });
-		        }
-		    }
-		};
+
+	
+	
+		var editor_config = {
+				toolbar : [
+					
+						{
+							name : 'basicstyles',
+							items : [ 'Bold', 'Italic', 'Underline', 'Strike',
+									'RemoveFormat', 'Subscript', 'Superscript' ]
+						},
+					
+						{
+							name : 'paragraph',
+							items : [ 'NumberedList', 'BulletedList', '-',
+									'Outdent', 'Indent', '-', 'Blockquote' ]
+						},
+					
+					
+				
+
+						{
+							name : 'styles',
+							items : [ 'Format', 'Font', 'FontSize' ]
+						},
+						{
+							name : 'colors',
+							items : [ 'TextColor', 'BGColor', 'CopyFormatting' ]
+						},
+						{
+							name : 'align',
+							items : [ 'JustifyLeft', 'JustifyCenter',
+									'JustifyRight', 'JustifyBlock' ]
+						} ],
+
+				removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+
+				customConfig : '',
+
+				disallowedContent : 'img{width,height,float}',
+				extraAllowedContent : 'img[width,height,align]',
+
+				height : 280,
+
+				contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
+
+				bodyClass : 'document-editor',
+
+				format_tags : 'p;h1;h2;h3;pre',
+
+				removeDialogTabs : 'image:advanced;link:advanced',
+
+				stylesSet : [
+
+				{
+					name : 'Marker',
+					element : 'span',
+					attributes : {
+						'class' : 'marker'
+					}
+				}, {
+					name : 'Cited Work',
+					element : 'cite'
+				}, {
+					name : 'Inline Quotation',
+					element : 'q'
+				},
+
+				{
+					name : 'Special Container',
+					element : 'div',
+					styles : {
+						padding : '5px 10px',
+						background : '#eee',
+						border : '1px solid #ccc'
+					}
+				}, {
+					name : 'Compact table',
+					element : 'table',
+					attributes : {
+						cellpadding : '5',
+						cellspacing : '0',
+						border : '1',
+						bordercolor : '#ccc'
+					},
+					styles : {
+						'border-collapse' : 'collapse'
+					}
+				}, {
+					name : 'Borderless Table',
+					element : 'table',
+					styles : {
+						'border-style' : 'hidden',
+						'background-color' : '#E6E6FA'
+					}
+				}, {
+					name : 'Square Bulleted List',
+					element : 'ul',
+					styles : {
+						'list-style-type' : 'square'
+					}
+				}, {
+					filebrowserUploadUrl : '/path/to/upload-handler'
+				}, ],
+			    enterMode: CKEDITOR.ENTER_BR,
+			    shiftEnterMode: CKEDITOR.ENTER_P,
+			    on: {
+			        instanceReady: function() {
+			            this.dataProcessor.htmlFilter.addRules({
+			                elements: {
+			                    p: function(element) {
+			                        if (element.children.length == 1 && element.children[0].name == 'br') {
+			                            return false;
+			                        }
+			                    }
+			                }
+			            });
+			        }
+			    }
+			};
+	
 		CKEDITOR.replace('Editor', editor_config);
 		function showsqrModal(){
 		$('#sqrModal').modal('show');
@@ -1009,6 +1086,84 @@ keyframes blinker { 50% {
 
 			
 		}
+		
+	function deleteSqr(paraId){
+			
+			var paraId = paraId;
+			console.log(paraId);
+			
+			if(confirm('Are you sure to submit?')){
+			$.ajax({
+				type:'GET',
+				url:'deleteSqr.htm',
+				datatype:'json',
+				data:{
+					paraId:paraId,
+				},
+				success:function(result){
+					
+					var ajaxresult = JSON.parse(result);
+					console.log(ajaxresult)
+					if(Number(ajaxresult)>0){
+						alert("Para Deleted Successfully!")
+					}
+					window.location.reload();
+				}
+				
+			})
+			}else{
+				event.preventDefault();
+				return false;
+			}
+			
+		}
+	
+	
+	function getValues(){
+		let serialValues = [];
+		 var arr = document.getElementsByClassName("serial");
+		 var arr2 = document.getElementsByClassName("paraidclass");
+	
+	
+		 var arr1 = [];
+		 var arr3 = [];
+			for (var i=0;i<arr.length;i++){
+				arr1.push(arr[i].value);
+			}
+			for (var i=0;i<arr2.length;i++){
+				arr3.push(arr2[i].value);
+	
+			}
+	
+			 let result = false;
+			    const s = new Set(arr1);
+			    
+			    console.log(s)
+			    if(arr.length !== s.size){
+			       result = true;
+			    }
+			    
+			   if(result){
+				   alert("Two para can not have same serial Number.")
+			   } else{
+				 
+				   $.ajax({
+					 type:'GET',
+					 url:'UpdateSqrSerial.htm',
+					 data:{
+						 serialNo:arr1+"",
+						 paraid:arr3+"",
+					 },
+					 dataype:'json',
+					 success:function(result){
+						 window.location.reload();
+					 }
+				   })
+				   
+				   
+			   }
+	    console.log(result);
+	}
 </script>
 
 <%-- <script type="text/javascript">

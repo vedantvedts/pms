@@ -55,9 +55,15 @@
 <script src="${FileSaver}"></script>
 <spring:url value="/resources/js/jquery.wordexport.js" var="wordexport" />
 <script src="${wordexport}"></script>
+<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+<script src="${pdfmake}"></script>
+<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+<script src="${pdfmakefont}"></script>
+<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+<script src="${htmltopdf}"></script>
 <meta charset="ISO-8859-1">
 <title>Requirement Document</title>
-<%
+<%-- <%
 List<Object[]>OtherRequirements=(List<Object[]>)request.getAttribute("OtherRequirements");
 String lablogo=(String)request.getAttribute("lablogo");
 /* Object[]PfmsInitiationList=(Object[])request.getAttribute("PfmsInitiationList"); */
@@ -171,9 +177,9 @@ top-left {
 @
 top-left {
 	margin-top: 30px;
-	margin-left: 10px; <%--
+	margin-left: 10px; 
 	content: "<%=Labcode%>";
-	--%>
+	
 }
 @
 top-center {
@@ -222,7 +228,7 @@ span {
 		</button>
 	</div>
 	<div class="source-html-outer">
-<%-- <div class="static-header">
+<div class="static-header">
     <div class="logo-container">
         <img class="logo" 
             <%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration" <%} else {%> alt="File Not Found" <%}%>>
@@ -231,7 +237,7 @@ span {
         <img class="logo" 
             <%if (labImg != null) {%> src="data:image/png;base64,<%=labImg%>" alt="Configuration" <%} else {%> alt="File Not Found" <%}%>>
     </div>
-</div> --%>
+</div>
 		<div id="source-html">
     <!-- Your existing HTML content goes here -->
     <!-- ... -->
@@ -399,18 +405,18 @@ span {
 							<%} else {%> alt="File Not Found" <%}%>>
 				</div>
 				<br><br><br><br><br><br>
-			<%-- 		<div align="center" >
+					<div align="center" >
 						<img class="logo" style="width: 100px; height: 100px; margin-bottom: 5px"
 							<%if (labImg != null) {%> src="data:image/png;base64,<%=labImg%>" alt="Configuration"
 							<%} else {%> alt="File Not Found" <%}%>>
-				</div> --%>
+				</div>
 				<div>
 				</div>
 					<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;font-family: <%= FontFamily %>;">
 				<h4 style="font-size: 18pt; !important;font-family: <%= FontFamily %>;" class="heading-color">SYSTEM
 					REQUIREMENTS DOCUMENT</h4>
-				<%-- <h4 style="font-size: 14px;">For</h4>
+				<h4 style="font-size: 14px;">For</h4>
 				<h4 style="">
 					Project:
 					<%=PfmsInitiationList[7].toString()%>
@@ -420,7 +426,7 @@ span {
 				<span style="text-decoration: underline;">Requirement No.:</span>
 				<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
 					<%} else {%>-<%}%>
-				</h4> --%>
+				</h4>
 				<div align="center">
 					<h5  style="font-size: 20px;font-family: <%= FontFamily %>;">
 				<%
@@ -643,7 +649,7 @@ span {
 3.Select "Automatic Table 1" from the options provided.<br>
 4.After adding Contents remove this lines
 </p>
-									<%-- <%if(ReqIntro!=null) {%>
+									<%if(ReqIntro!=null) {%>
 			<h4 style="margin-left: 10px"><%=++contentCount %>. &nbsp;SCOPE</h4>
 			<h4 style="margin-left: 20px"><%=contentCount %>.1 Introduction</h4>
 			<h4 style="margin-left: 20px"><%=contentCount %>.2 System Block Diagram</h4>
@@ -693,7 +699,7 @@ span {
 			<h4 style="margin-left: 20px"><%=contentCount %>.1 Appendix A - Acronyms and Definitions</h4>
 			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix B - Key Performance Parameters/Key System Attributes</h4>
 			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix C - Requirements Traceablity Matrices</h4>
-			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix B - Test Verification Matrices</h4> --%>
+			<h4 style="margin-left: 20px"><%=contentCount %>.2 Appendix B - Test Verification Matrices</h4>
 			<p style="text-align: center; page-break-before: always;font-family: <%= FontFamily %>;">&nbsp;</p>
 					
 			<div style="page-break-before: always"></div>
@@ -715,7 +721,7 @@ span {
 					
 				</div>
 			</div>
-			<%-- <div>
+			<div>
 				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>2
 					&nbsp;System Block Diagram
 				</h2>
@@ -724,7 +730,7 @@ span {
 					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
-			</div> --%>
+			</div>
 			<div>
 				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>2
 					&nbsp;System Overview
@@ -752,7 +758,7 @@ span {
 					<%} %>
 				</div>
 			</div>
-		<%-- 	<div>
+			<div>
 				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>5
 					&nbsp;Applicable Standards
 				</h2>
@@ -761,7 +767,7 @@ span {
 					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
-			</div> --%>
+			</div>
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-color">
     <%= ++maincount %>.&nbsp;Applicable Documents</h1>
 	<%if(ApplicableTotalDocumentList!=null && ApplicableTotalDocumentList.size()>0) {
@@ -1047,7 +1053,7 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null && !
 
 
 
-<%-- 			 <%if(!RequirementList.isEmpty()){ %>
+			 <%if(!RequirementList.isEmpty()){ %>
 			<div style="page-break-before: always;"></div>
 			<div>
 				<!-- <div align="center"> -->
@@ -1219,12 +1225,12 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null && !
 				<div align="center" style="margin-top: 350px">
 					<h4 style="font-family: <%= FontFamily %>;">No Data Available !</h4>
 				</div>
-				<%} }%>  --%>
+				<%} }%> 
 							
 				
 				
 				
-<%-- <h1 style="font-family: <%= FontFamily %>;margin-left: 10px; font-size: <%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>">
+<h1 style="font-family: <%= FontFamily %>;margin-left: 10px; font-size: <%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>">
 <br><%=++maincount %>.&nbsp;
 APPLICABLE DOCUMENTS</h1>
 	<hr style="width: 100%;">
@@ -1272,9 +1278,9 @@ APPLICABLE DOCUMENTS</h1>
 				<div style="margin-top: 300px" align="center">
 					<h4>No Data Available !</h4>
 				</div>
-				<%}} %> --%>
+				<%}} %>
 				
-			<%--	<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
+				<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
 				<div style="page-break-before: always"></div>
 				<div align="center">
 					<h1 style="font-size: 16px !important; margin-left: 50px;"
@@ -1383,7 +1389,7 @@ APPLICABLE DOCUMENTS</h1>
 						<%}%>
 					</tbody>
 				</table>
-				<%}%> --%>
+				<%}%>
 				<div >
 				<h1 style="font-family: <%= FontFamily %>;font-size: <%= fontSize%>pt; font-weight:<%=HeaderFontWeight%>;color: black !important;" class="heading-color">
     			<br><%=++maincount %>. Verification Provisions
@@ -1462,7 +1468,7 @@ APPLICABLE DOCUMENTS</h1>
 									
 				<h1 style="font-family: <%= FontFamily %>;font-size:<%= fontSize%>pt;font-weight:<%=HeaderFontWeight%>;margin-left: 5px;"><%=++maincount %>.	REQUIREMENTS TRACEABILITY</h1>	
 		<!-- traceability -->			
-	<%-- 					<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
+						<% if(RequirementList!=null && ParaDetails!=null && !ParaDetails.isEmpty()&&!RequirementList.isEmpty()) { %>
 				<div style="page-break-before: always"></div>
 				<div align="center">
 					<h3 style="font-size: 16px !important; margin-left: 50px;"
@@ -1569,7 +1575,7 @@ APPLICABLE DOCUMENTS</h1>
 						<%}%>
 					</tbody>
 				</table>
-				<%}%>		 --%>
+				<%}%>		
 					
 			<% if(RequirementList!=null && ProjectParaDetails!=null && !ProjectParaDetails.isEmpty()&&!RequirementList.isEmpty()) {   
 				List<Object[]>subList= RequirementList.stream().filter(e->e[15]!=null && !e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
@@ -1686,9 +1692,9 @@ This appendix contains acronyms and provides standard definitions for terminolog
     Sample Key performance Parameters / Key System Attributes are shown above. Modify the Key performance Parameters / Key System Atributes based on your specific project constraints. 
 </h4>
 
-		<%-- 	<h2 style="font-family: <%= FontFamily %>;margin-left: 20px;font-size: <%=SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.3	Appendix C - Requirements Traceability Matrices
+			<h2 style="font-family: <%= FontFamily %>;margin-left: 20px;font-size: <%=SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.3	Appendix C - Requirements Traceability Matrices
 </h2>	
-			<h4 style="font-family: <%= FontFamily %>;margin-left: 20px ;font-weight:normal;font-size: <%= ParaFontSize%>pt">  The Traceability to next level should be provided in - SSS Type A. Traceability to OR already provided in Sec 5.1</h4> --%>
+			<h4 style="font-family: <%= FontFamily %>;margin-left: 20px ;font-weight:normal;font-size: <%= ParaFontSize%>pt">  The Traceability to next level should be provided in - SSS Type A. Traceability to OR already provided in Sec 5.1</h4>
 	<h2 style="font-family: <%= FontFamily %>; margin-left: 20px; font-size: <%= SubHeaderFontsize%>pt; font-weight:<%=SubHeaderFontweight%>"><%=maincount %>.3	Appendix D - Test Verification Matrices</h2>			
 			<div style="font-family: <%= FontFamily %>;">
 			
@@ -1744,8 +1750,751 @@ This appendix contains acronyms and provides standard definitions for terminolog
 
 			</div>
 		</div>
-			</div>
+			</div> --%>
+			<body>
+		  <button onclick="generatePDF()">Download PDF</button>
+
+
+
+			<div id="verification">
+			<table>
+			<tbody>
+				 <%
+				 Object[]LabList=(Object[])request.getAttribute("LabList");
+				 List<Object[]>VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
+				 String lablogo=(String)request.getAttribute("lablogo");
+				 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
+				 String FontFamily="Times New Roman";
+				 if(DocTempAtrr!=null && DocTempAtrr[11]!=null){
+	                	FontFamily= DocTempAtrr[11].toString();
+	                }
+					 int countSN=0;
+					 int SN=0;
+					 String data="";
+					 int subcount=0;
+	                   	for(Object[]obj:VerificationDataList){
+	                   	++SN;
+	                   	%>
+						<tr>
+						<td class="border-black">
+							 <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=++countSN %><%} %>
+							</td>
+							<td class="border-black">
+							   <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=obj[2] %><%} %>
+							 </td>
+							<%if(!data.equalsIgnoreCase(obj[2].toString())){
+								subcount=0;
+							} %> 
+							<td class="border-black"style="padding: 5px; text-align: justify;  border-collapse: collapse;">  <%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %></td>
+							<td class="border-black"style="padding: 5px; text-align: justify;  border-collapse: collapse;"><%=obj[4]%></td>
+						</tr>
+					 <%
+					 data = obj[2].toString();
+	                 } %>
+					</tbody>
+				</table>	
+</div>
+
+<%List<Object[]>MemberList=(List<Object[]>)request.getAttribute("MemberList"); %>
+<div id="MemberList">
+				
+					<table style="width:480px; border:1px solid black; border-collapse:collapse;margin-left:100px;"> 
+					<thead>
+					<tr >
+					<th style="width:20px;font-weight:bold;">S.No</th>
+					<th style="width:250px;">NAME</th>
+					<th style="width:120px;">Designation</th>
+					<th style="width:90px;">Division/Lab</th>
+					</tr>
+					</thead>
+					<tbody>
+            <% 
+    if (MemberList != null) {
+        int i = 1;
+        for (Object[] mlist : MemberList) {
+%>
+			<tr>
+				<td style="width:5%;"><%=i++ + "."%></td>
+				<td style="width:25%;"><%=mlist[1]%></td>
+				<td style="width:10%;"><%=mlist[2]%></td>
+				<td style="width:25%;"><%=mlist[3]%></td>
+			</tr>
+			<%
+			}
+			}
+			%>
+</tbody>
+ </table>
+
+</div>
+
+
+<%List<Object[]> DocumentSummary=(List<Object[]>)request.getAttribute("DocumentSummary"); %>
+			<div id="docSummary">
+			<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;text-align:left;">1.&nbsp; Title: <span class="text-darks">System Requirements Document for </span></td>
+					</tr>
+					<tr >
+					<td class="text-darks" style="border:1px solid black;">2.&nbsp; Type of Document:<span class="text-darks">System Requirement Document</span></td>
+					<td class="text-darks" style="border:1px solid black;">3.&nbsp; Classification: <span class="text-darks"></span></td>
+					</tr>
+				    <tr >
+					<td class="text-darks" style="border:1px solid black;">4.&nbsp; Document Number:
+						
+					</td>
+					<td class="text-darks" style="border:1px solid black;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"></span> </td>
+					</tr>
+					<tr>
+					<td class="text-darks" style="border:1px solid black;">6.&nbsp; Number of Pages:  ${totalPages}</td>
+					<td class="text-darks" style="border:1px solid black;">7.&nbsp; Related Document:</td>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
+				</td>
+					</tr>
+				     <tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;">9.&nbsp; Pro Project Name: <span class="text-darks"> </span></td>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;">10.&nbsp; Abstract:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;">11.&nbsp; Keywords:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;">12.&nbsp; Organization and address:
+						<span class="text-darks" >		<%
+										if (LabList!=null && LabList[1] != null) {
+										%><%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+										<%
+										} else {
+										%>-<%
+										}
+										%>
+																	Government of India, Ministry of Defence,Defence
+										Research & Development Organization
+										<%
+									if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) {
+									%>
+									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+									<%}else{ %>
+									-
+									<%} %>
+								</span>
+							</td>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black; ">13.&nbsp; Distribution:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span>
+					</td>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black; ">14.&nbsp; Revision:</td>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black; ">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
+					</tr>
+					<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
+					</tr>
+					</table>
+					</div>
+
+
+<%List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");%>
+		<div id="abbreviationDiv">
+		
+			<h4 style="font-size:16px;text-align: center;"> Abbreviations used in the Manual to be listed and arranged in alphabetical order</h4>
+		<%  if (AbbreviationDetails != null && !AbbreviationDetails.isEmpty()) { %>	
+    <table style="margin-left:50px;">
+        <thead>
+         <tr>
+        <th><span >S.No</span></th>
+        <th><span >Abbreviations</span></th>
+        <th><span >Full Forms</span></th>
+           </tr>
+        </thead>
+        <tbody>
+                <% 
+          int i = 1;
+        for (Object[] alist : AbbreviationDetails) {
+%>
+              <tr>
+                <td ><%=  i+++"."%></td>
+                <td><%= alist[1] %></td>
+                <td ><%= alist[2] %></td>
+            </tr>
+  
+   
+              <% 
+   }} 
+%>
+     </tbody>
+    </table>
+		</div>
+		
+		
+		<!-- Scopediv -->
+	
+		<%Object[]ReqIntro=(Object[])request.getAttribute("ReqIntro"); %>
+		<div id="scopeDiv">
 			
+				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.1
+					&nbsp;System Identification
+				</h2>
+					<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=ReqIntro[1]%>
+					<%}else {%>
+					Guidance: 
+					This paragraph should contain a full identification of the system to which this document applies.  
+					<%} %>
+				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.2
+					&nbsp;System Overview
+				</h2>
+					<%if(ReqIntro!=null && ReqIntro[3]!=null) {%><%=ReqIntro[3]%>
+					<%}else {%>
+					Guidance:  
+					This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites.
+					<%} %>
+				
+		
+				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.3
+					&nbsp;Document Overview
+				</h2>
+					<%if(ReqIntro!=null && ReqIntro[4]!=null) {%><%=ReqIntro[4]%>
+					<%}else {%>
+					This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. 
+					<%} %>
+		</div>
+		
+		
+		<!--Req Div  -->
+			<div id="reqDiv">
+		<%List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
+		List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
+		%>
+		<%if(!RequirementList.isEmpty()) {
+List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+int mainReqCount=0;
+for(Object[]obj:mainReqList){
+%>
+<div style="padding:none;"><h2  class="heading-colors" style="font-size: 16px;"> <%="2."+(++mainReqCount) %> &nbsp;<%=obj[3].toString() %></h2></div>
+<%if(obj[4]!=null) {%><div style="padding:0px;" class="heading-colors"><%=obj[4].toString()%></div><%}else{ %><span></span><%} %>
+<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15]!=null&&e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());%>
+<%
+String ReqName="";
+int subReqCount=0;
+for(Object[]obj1:subMainReqList) {
+int snCount=0;
+%>
+ <%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
+<h3 class="heading-colors" style="font-size: 15px;"><%="2."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3].toString() %></h3>
+<%} %> 
+
+<table class="border-black"
+					style="margin-left: 10px;margin-top:7px;width: 635px;margin-right:20px; margin-bottom: 5px;">
+					<thead>
+						<tr class="border-black">
+							<th class="border-black"
+								style="width: 20px;  border: 1px solid black;text-align:center; border-collapse: collapse;">SN</th>
+							<th class="border-black"
+								style="width: 130px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Attribute</th>
+							<th class="border-black"
+								style=" border: 1px solid black; border-collapse: collapse;">Content</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr class="border-black">
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">ID</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj1[1].toString() %></td>
+						</tr>
+						
+						
+							<tr class="border-black">
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> QR Para </td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								
+								<%if(obj1[12]!=null) {
+									String [] a=obj1[12].toString().split(", ");
+									for(String s:a){
+								%> 
+								
+								 <%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining("")) %> <br>
+								<%}}else{ %>
+								-
+								<%} %>
+								
+								</td>
+						</tr>
+						
+						<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Priority</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[5]!=null) {%> <%=obj1[5].toString() %>
+								<%}else{%>-<%} %>
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Criticality</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[21]!=null) {%> <%=obj1[21].toString() %>
+								<%}else{%>-<%} %>
+							</td>
+						</tr>
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; font-weight: 600; border: 1px solid black; border-collapse: collapse;">Type</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[6]!=null) {%> <%if(obj1[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %>
+								<%if(obj1[6].toString().equalsIgnoreCase("E")) {%>Essential<%} %> <%}else {%>-<%} %>
+							</td>
+						</tr>
+						<tr>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;" ><%=++snCount %>.</td>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;"colspan="2">Description</td>
+							<%-- <td class="border-black"
+								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+								<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
+							</td> --%>
+						</tr>
+						<tr>
+						<td class="border-black" colspan="3"
+								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+								<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
+							</td>
+						</tr>
+						<tr>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Remarks</td>
+							<td class="border-black"
+								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+								<%if(obj1[7]!=null){ %> <%=obj1[7].toString() %> <%}else{ %>-<%} %>
+							</td>
+						</tr>
+						<tr>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Constraints</td>
+							<td class="border-black"
+								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+								<%if(obj1[9]!=null){ %> <%=obj1[9].toString() %> <%}else{ %>-<%} %>
+							</td>
+						</tr>
+						
+						
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Demonstration</td>
+								<td class="border-black" style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								
+								<%if(obj1[16]!=null) {
+								List<Object[]>DemonList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+								String [] a=obj1[16].toString().split(", ");
+								for(int i=0;i<a.length;i++){
+								%>
+								
+								<%=	a[i] +" . "+ DemonList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+								<%} %>
+								<%}else{%>-<%} %>
+							   
+							</td>
+						</tr>
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style="text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Test</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[17]!=null) {
+									List<Object[]>TestList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
+									String [] a=obj1[17].toString().split(", ");
+									for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+							</td>
+						</tr>
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Design/Analysis</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[18]!=null) {
+									List<Object[]>AnalysisList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("3")).collect(Collectors.toList());
+									String [] a=obj1[18].toString().split(", ");
+									for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+							</td>
+						</tr>
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Inspection</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[19]!=null) {
+									List<Object[]>InspectionList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("4")).collect(Collectors.toList());
+									String [] a=obj1[19].toString().split(", ");
+								for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+							</td>
+						</tr>
+						
+						
+							<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Special Methods</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+								<%if(obj1[20]!=null) {
+									List<Object[]>specialList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("5")).collect(Collectors.toList());
+									String [] a=obj1[20].toString().split(", ");
+									for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+							</td>
+						</tr>
+					</tbody>
+					
+</table>
+
+<%
+ReqName=obj1[3].toString();
+} %>
+<%}%>
+
+<%
+List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+%>
+<%if(nonMainReqList!=null && !nonMainReqList.isEmpty()) { %>
+<div style="padding:none;"><h2 class="heading-colors" style="font-size: 16px;"><%="2."+(++mainReqCount) %>  &nbsp; Precedence and Criticality of Requirements</h2></div>
+<table class="border-black"style="margin-left: 20px;;width: 400px; margin-bottom: 5px;">
+					<thead>
+						<tr>
+							<th class="border-black"style="width: 10px;  border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black"style="width: 150px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Requirement ID</th>
+							<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Priority</th>
+							<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Criticality</th>
+						
+						</tr>
+						</thead>
+						<tbody>
+						<%int rcount=0;
+						for(Object[]obj:nonMainReqList) {
+						if(obj[21]!=null){
+						%>
+						<tr>
+						<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%=++rcount %></td>
+							<td class="border-black" style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %></td>
+							<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
+							<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[21]!=null) {%> <%=obj[21].toString() %>
+								<%}else{%>-<%} %></td>
+						</tr>
+						<%}} %>
+						</tbody>
+						</table>
+<% } %>
+
+<%} %>
+		</div>
+		
+		
+		<%List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");%>
+		<div id="verificationDiv">
+				<%if(Verifications!= null &&   !Verifications.isEmpty()) {
+				int verificationCount=1;
+				int j=0;
+				for(Object[]obj:Verifications){
+				%>
+			<h3 class="heading-colors" style="font-size: 16px; ">
+		   <%="3"+"."+(verificationCount)%>.<%=++j %>
+			<%=obj[1].toString() %>
+				</h3>
+				<%if(obj[3]!=null){ %><%=obj[3].toString()%>
+				<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No
+					details filled&nbsp;&nbsp;-</p>
+						<%}%>
+				<%}} %>
+		</div>
+		
+    <script>
+    function generatePDF() {
+    	
+    	var verification = document.getElementById('verification').innerHTML;
+    	var MemberList = document.getElementById('MemberList').innerHTML;
+    	var docSummary = document.getElementById('docSummary').innerHTML;
+    	var abbreviationDiv = document.getElementById('abbreviationDiv').innerHTML;
+    	var scopeDiv = document.getElementById('scopeDiv').innerHTML;
+    	var reqDiv = document.getElementById('reqDiv').innerHTML;
+    	var verificationDiv = document.getElementById('verificationDiv').innerHTML;
+
+        var docDefinition = {
+            content: [
+                // Table of Contents
+                  {
+                        text: 'SYSTEM REQUREMENTS FOR PROJECT ', style: 'DocumentName', alignment: 'center',fontSize: 18,margin: [0, 200, 0, 20]
+                      },
+                      {
+                        text: '', style: 'DocumentSubName', alignment: 'center',
+                      },
+                      {
+                
+                      },
+                      <%if(lablogo!=null){%>
+                      {
+                          image: 'data:image/png;base64,<%=lablogo%>',
+                          width: 95, height: 95,
+                          alignment: 'center',
+                          margin: [0, 20, 0, 20]
+                        },
+                        
+                      <%}%>
+                      {
+                     	 text:<%if(LabList!=null && LabList[1] != null) {%>'<%=LabList[1].toString()+"("+LabList[0].toString()+")"%>'<%}else {%>'-'<%}%>,
+                     	 alignment: 'center',
+                     	 fontSize: 16,
+                     	 bold: true,
+                     	 margin: [0, 20, 0, 20]
+                       },
+                      {
+                        text: 'Government of India, Ministry of Defence \n\n' + 'Defence Research & Development Organization',
+                        alignment: 'center',
+                        bold: true,
+                        fontSize: 16,
+                      },
+                      {
+                    	 text:	<%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
+     					'<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>'
+    					<%}else{ %>
+    					'-'
+    					<%} %>,
+    					alignment: 'center',
+                        bold: true,
+                        fontSize: 16,
+                      },
+                     
+                  
+                
+                
+                
+                {
+                    toc: {
+                        title: { text: 'INDEX', style: 'header',pageBreak: 'before' }
+                      
+                    }
+                },
+
+                // Chapter 1
+                {
+                    text: 'Distribution List',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter1',
+                    pageBreak: 'before',
+            		alignment:'center',
+                },
+                htmlToPdfmake(MemberList),
+            
+
+       	       // Chapter 2
+                {
+                    text: 'Document Summary',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter2',
+                    pageBreak: 'before'
+                },
+               
+                htmlToPdfmake(docSummary),
+                // Chapter 3
+                 {
+                    text: 'Abbreviation',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter3',
+                    pageBreak: 'before',
+                    alignment:'center',
+                },
+                htmlToPdfmake(abbreviationDiv),
+                // Chapter 4
+                {
+                   text: '1.Scope',
+                   style: 'chapterHeader',
+                   tocItem: true,
+                   id: 'chapter4',
+                   pageBreak: 'before',
+                
+               },
+               htmlToPdfmake(scopeDiv),
+               //chapter5
+               {
+                   text: '2.Requirements',
+                   style: 'chapterHeader',
+                   tocItem: true,
+                   id: 'chapter5',
+                   pageBreak: 'before',
+                
+               },
+               htmlToPdfmake(reqDiv),
+                {
+                    text: '3.Verification Provisions',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter6',
+                    pageBreak: 'before'
+                },
+                // Verification Table
+                htmlToPdfmake(verificationDiv),
+                htmlToPdfmake(verification)
+                // chapter 4 
+               
+                
+            ],
+
+            // Styles for headers and text
+            styles: {
+                header: { fontSize: 19, bold: true, margin: [0, 0, 0, 10] },
+                chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] }
+            },
+
+            // Footer for page numbers
+footer: function(currentPage, pageCount) {
+    if (currentPage > 2) {
+        return {
+            stack: [
+                // First line at the top of the footer
+                {
+                    canvas: [
+                        {
+                            type: 'line',
+                            x1: 30, y1: 0,   // Start of the line (left side)
+                            x2: 565, y2: 0,  // End of the line (right side)
+                            lineWidth: 1
+                        }
+                    ]
+                },
+                // Footer content with document number and page number
+                {
+                    columns: [
+                        {
+                            text: 'Document Number',
+                            alignment: 'left',
+                            margin: [30, 0, 0, 0],
+                            fontSize: 8
+                        },
+                        {
+                            text: (currentPage).toString() + ' of ' + pageCount,
+                            alignment: 'right',
+                            margin: [0, 0, 30, 0],
+                            fontSize: 8
+                        }
+                    ]
+                },
+                // Sentence on the next line
+                {
+                    text: 'This document contains proprietary information of <%=session.getAttribute("labcode")%>, DRDO',
+                    alignment: 'center',
+                    fontSize: 8,
+                    margin: [0, 5, 0, 0]  // Add some margin above to create space
+                }
+            ]
+        };
+    } else {
+        return ''; // No footer for the first two pages
+    }
+}
+,
+header: function(currentPage, pageCount) {
+    return {
+        stack: [
+            {
+                columns: [
+                    {
+                        text: 'Restricted',
+                        alignment: 'center',
+                        margin: [0, 10, 0, 0], // Adjust margins as needed
+                        fontSize: 8,
+                        bold: true
+                    },
+                  
+                ]
+            }
+            // Line under the header
+        /*     {
+                canvas: [
+                    {
+                        type: 'line',
+                        x1: 30, y1: 0,   // Start of the line (left side)
+                        x2: 565, y2: 0,  // End of the line (right side)
+                        lineWidth: 1
+                    }
+                ],
+                margin: [0, 1, 0, 10]  // Adjust margin to add space between the line and header content
+            } */
+        ]
+    };
+},
+            // Default style for the text
+            defaultStyle: {
+                fontSize: 12
+            }
+        };
+
+        pdfMake.createPdf(docDefinition).download('toc_with_table.pdf');
+    }
+        </script>
 </body>
  
 </html>

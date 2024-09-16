@@ -509,8 +509,16 @@ FormatConverter fc = new FormatConverter();
 	                        	<input type="hidden" name="reqInitiationId" value="0">
 	                 		</form>
 	                    </div>
-	                    <%} %>
-	                    
+	                    <%}else{ %>
+	                          <div style="text-align: center;">
+	                   	<form action="TraceabilityMatrix.htm" id="myform21" method="post">
+	                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                        	<button class="btn btn-sm btn-primary" type="submit" name="Action" id="addAction"  style="">See Traceabilities</button>
+	                        	
+	                        	<input type="hidden" name="reqInitiationId" value="<%=initiationReqList.get(0)[0].toString()%>">
+	                 		</form>
+	                 		      </div>
+	                   <%} %> 
 	                    <div class="row">
 		 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Requirement</b></div>
 		 	    		</div>

@@ -2118,6 +2118,7 @@ public class RequirementsController {
 			String reqInitiationId =req.getParameter("reqInitiationId");
 
 			Object[] sqrfile=projectservice.SqrFiles(reqInitiationId);
+			System.out.println(reqInitiationId+"reqInitiationId");
 
 			File my_file = new File(uploadpath+ File.separator + File.separator +sqrfile[11]+File.separator+sqrfile[12]);
 			if (my_file.exists()) {
@@ -2250,6 +2251,9 @@ public class RequirementsController {
 			RequirementInitiation reqInitiation = service.getRequirementInitiationById(reqInitiationId);
 			String reqStatusCode = reqInitiation.getReqStatusCode();
 
+			System.out.println(reqInitiationId+"---reqInitiationId");
+			System.out.println(reqStatusCode+"---reqStatusCode");
+			
 			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
 
 			long result = service.projectRequirementApprovalForward(reqInitiationId,action,remarks,EmpId,labcode,UserId);
@@ -2450,7 +2454,22 @@ public class RequirementsController {
 					}
 				}
 			}
-
+				String specid = "";
+				
+				if(req.getParameterValues("SpecId")!=null) {
+					System.out.println("req.getParameterValues(\"SpecId\")"+Arrays.asList(req.getParameterValues("SpecId")));
+					String[] SpecId= req.getParameterValues("SpecId");
+					for(int i=0;i<SpecId.length;i++) {
+						specid=specid+SpecId[i];
+						if(i!=SpecId.length-1) {
+							specid=specid+",";
+						}
+					}
+				}
+				
+				Td.setSpecificationId(specid);
+			
+			
 			Td.setObjective(req.getParameter("Objective"));
 			Td.setDescription(req.getParameter("Description"));
 			Td.setPreConditions(req.getParameter("PreConditions"));
@@ -2465,7 +2484,7 @@ public class RequirementsController {
 			Td.setSchedule(req.getParameter("Schedule"));
 			Td.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
 			Td.setRemarks(req.getParameter("remarks"));
-			Td.setSpecificationId(req.getParameter("SpecId"));
+			
 			Td.setStageApplicable(StageApplicable);
 
 			if(action!=null && action.equalsIgnoreCase("Edit")) {
@@ -3035,5 +3054,86 @@ public class RequirementsController {
 		}
 		
 		return null;
+	}
+	@RequestMapping(value="TraceabilityMatrix.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String TraceabilityMatrix(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside TraceabilityMatrix.htm"+UserId);
+		try {
+			
+			String reqInitiationId = req.getParameter("reqInitiationId");
+			System.out.println("reqInitiationId"+reqInitiationId);
+			req.setAttribute("ProjectParaDetails", service.getProjectParaDetails(reqInitiationId));
+			req.setAttribute("RequirementList", service.RequirementList(reqInitiationId));
+
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return "requirements/TraceabilityMatrix";
+		}
+	
+	@RequestMapping(value="deleteSqr.htm", method= {RequestMethod.GET})
+	public @ResponseBody  String deleteSqr(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside deleteSqr.htm"+UserId);
+		long count=0;
+		try {
+		String paraId = req.getParameter("paraId");
+		count  = service.deleteSqr(paraId);
+		}catch (Exception e) {
+		
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="deleteInitiationReq.htm", method= {RequestMethod.GET})
+	public @ResponseBody  String deleteInitiationReq(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside deleteInitiationReq.htm"+UserId);
+		long count=0;
+		try {
+		String InitiationReqId = req.getParameter("InitiationReqId");
+		count  = service.deleteInitiationReq(InitiationReqId);
+		}catch (Exception e) {
+		
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="UpdateSqrSerial.htm", method= {RequestMethod.GET})
+	public @ResponseBody  String UpdateSqrSerial(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside UpdateSqrSerial.htm"+UserId);
+		long count=0;
+		try {
+		String paraId = req.getParameter("paraid");
+		String serialNo = req.getParameter("serialNo");
+		
+		
+		String []paraIds = paraId.split(",");
+		String []serialNoS = serialNo.split(",");
+		
+		
+		for(int i=0;i<paraIds.length;i++) {
+			String para=paraIds[i];
+			String sn=serialNoS[i];
+			count = service.updateSerialParaNo(para,sn);
+		}
+		
+		}catch (Exception e) {
+		
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
 	}
 }

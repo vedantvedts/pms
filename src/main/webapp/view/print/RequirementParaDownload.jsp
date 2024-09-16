@@ -13,6 +13,8 @@ Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 Object[] sqrFile = (Object[])request.getAttribute("SQRFile");
 Object[] LabList = (Object[])request.getAttribute("LabList");
 List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails");
+Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
+String FontFamily="Times New Roman";
 %>
 <style>
 
@@ -27,7 +29,7 @@ List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails")
 		@page{             
           size: 790px 1050px;
           margin-top: 49px;
-          margin-left: 49px;
+          margin-left: 70px;
           margin-right: 49px;
           margin-buttom: 49px; 	
           border: 2px solid black;    
@@ -62,12 +64,23 @@ List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails")
            margin-bottom: 30px;
          
           }
+          @left-top {
+          	content: element(pageHeader);
+            font-size: 13px;
+            
+          } 
           @bottom-left { 
            font-size: 13px;
-	        margin-bottom: 30px;
-	      content: "<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12]:"-"%>"; 
+	       margin-bottom: 30px;
+	       content: "<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12]:"-"%>"; 
           }   
  }
+ #headerdiv {
+  position: running(pageHeader); /* This will be used for paged media */
+  justify-content: space-between; /* Distribute space between items */
+  align-items: center; /* Align items vertically in the center */
+  padding: 10px; /* Add some padding */
+}
  .border-black{
 	 border:1px solid black !important;
 	 border-collapse: collapse !important;
@@ -78,7 +91,7 @@ List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails")
  }
  p{
 	 text-align: justify !important;
-	 padding:12px;
+	
  }
  span{
 	 background: white !important;
@@ -99,6 +112,59 @@ List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails")
 </style>
 </head>
 <body>
+
+<div id="headerdiv">
+	<div style="position: absolute; top: 470px; left:-400px;  transform: rotate(-90deg); font-size: 7px; color: #000; width:900px;opacity:0.5; ">
+				  <!--   <b style="font-size: 12px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</b><br>
+				    <span style="text-decoration: none; font-size: 11px;">This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.</span> -->
+				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} %>
+				
+				</div>
+   </div>
+ <div class="heading-container" style="text-align: center; position: relative;">
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+			<div align="center"></div>
+			<div style="text-align: center; margin-top: 75px;">
+				<h4 style="font-size: 18pt;;font-family:""; !important;" class="heading-color ">QR PARA  </h4>
+					<div align="center" >
+						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
+							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
+							<%} else {%> alt="File Not Found" <%}%>>
+				</div>
+				<br> <br>
+				<div align="center">
+					<h4 style="font-size: 20px;font-family: "";">
+				<%
+				if(LabList!=null && LabList[1] != null) {
+				%>
+				<%=LabList[1].toString()+"("+LabList[0].toString()+")"%>
+				<%
+				}else {
+				%>-<%
+				}
+				%>
+					</h4>
+					<h4 style="font-family: "";">
+						Government of India, Ministry of Defence<br>Defence Research
+						& Development Organization
+					</h4>
+				</div>
+				<h4 style="font-family: "";">
+					<%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
+					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
+					<%}else{ %>
+					-
+					<%} %>
+				</h4>
+<%-- <div style="text-align: right;margin-right:20px;">
+    <span style="font-weight: bold;font-family: "";"><%= month.toString().substring(0,3) %> <%= year %></span>
+   </div> --%>
+   <br><br><br>
+
+			</div>
+			<br>
 	<div style="page-break-before:always"></div> 
 	<div style="text-align: center;width: 650px !important;">
 		<h3 style="text-transform:uppercase;">DRAFT GENERAL STAFF QUALITATIVE REQUIREMENT FOR 
@@ -160,15 +226,15 @@ List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails")
 				<td><%=sqrFile!=null && sqrFile[10]!=null?(sqrFile[10].toString().equalsIgnoreCase("E")?"Early":(sqrFile[10].toString().equalsIgnoreCase("I")?"Immediate":"Late")):"-" %></td>
 			</tr>
 		</table>
-		
+			<div style="page-break-before:always"></div> 
 		<h4 style="text-decoration: underline;">INTRODUCTION AND OPERATIONAL EMPLOYEMENT OF EQUIPMENT</h4>
 		<%if(!ParaDetails.isEmpty()) {
 			int count=0;
 			for(Object[]obj:ParaDetails){
 		%>
-				<div align="left" style="padding:10px">
+				<div align="left" style="padding:4px">
 					<span style="font-weight: 600; ">
-						<%=++slno %>. &nbsp;&nbsp;Para<%="-"+(++count) %>- <%=obj[3].toString() %> 
+						 <%=obj[3].toString() %> 
 					</span>
 				</div>
 				<%if(obj[4]!=null){ %>

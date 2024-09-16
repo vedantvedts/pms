@@ -106,13 +106,13 @@ td {
 @page {
 	size: 770px 1050px;
 	margin-top: 49px;
-	margin-left: 50px;
+	margin-left: 70px;
 	margin-right: 49px;
 	margin-bottom: 69px;
 	border: 2px solid black;
 	
 	@bottom-left{
-		content :"<%=docnumber!=null?"1901-"+docnumber:""%>";
+		content :"<%=docnumber!=null?"1901-"+docnumber:(DocumentSummary!=null && DocumentSummary.get(0)[11]!=null?"1901-SRD-"+DocumentSummary.get(0)[11].toString().replaceAll("-", "")+"-"+session.getAttribute("labcode") +projectShortName+"-V.1.0":"" )%>";
 		margin-bottom: 50px;
 	width:200px;;
 	font-size:10px;
@@ -146,7 +146,7 @@ top-center {
 bottom-center {
 	font-size: 10px;
 	margin-right:20px;
-	content:"This document contains proprietary information of LRDE, DRDO";
+	content:"RESTRICTED";
 	width:300px;;
 }
 }
@@ -200,7 +200,7 @@ margin-left:15x;
 <body>
 
 	<div id="headerdiv">
-	<div style="position: absolute; top: 450px; left:-422px; border:1px solid black; transform: rotate(-90deg); font-size: 10px; color: #000; width:900px;opacity:0.5; ">
+	<div style="position: absolute; top: 450px; left:-400px;  transform: rotate(-90deg); font-size: 10px; color: #000; width:900px;opacity:0.5; ">
 				  <!--   <b style="font-size: 12px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</b><br>
 				    <span style="text-decoration: none; font-size: 11px;">This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.</span> -->
 				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} %>
@@ -330,7 +330,7 @@ margin-left:15x;
 				<h5  class="heading-color; "style="font-family: <%= FontFamily %>;">DISTRIBUTION LIST
 				</h5>
 						</div>
-						<table style="width: 635px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+						<table style="width: 635px!important;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 					<tr >
 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
 					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 250px;text-align: center;"><span class="text-dark">NAME</span></td>
@@ -345,9 +345,9 @@ margin-left:15x;
 %>
  <tr>
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%=  i+++"."%></td>
-                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
-                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
-                 <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
+                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;text-align:left;"><%= mlist[1] %></td>
+                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;text-align:left;"><%= mlist[2] %></td>
+                 <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;text-align:left;"><%= mlist[3] %></td>
                              </tr>
  <% 
    }} 
@@ -366,7 +366,7 @@ margin-left:15x;
 			<td>1.Title: System Requirement Document Template</td>
 			</tr>
 			</table> -->
-				<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
+				<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;padding:5px;">
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Requirements Document for <%=projectShortName %></span></td>
 					</tr>
@@ -381,7 +381,7 @@ margin-left:15x;
 					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
 					</tr>
 					<tr>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages: </td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages:  ${totalPages}</td>
 					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
 					</tr>
 					<tr>
@@ -1060,7 +1060,5 @@ This appendix contains acronyms and provides standard definitions for terminolog
            </tbody>
 			</table>
 			</div>
-
-		
 </body>
 </html>

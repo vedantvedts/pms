@@ -440,7 +440,7 @@ td
 								<div class="col-md-4">
 									<button type="submit" class="btn btn-warning btn-sm edit"  onclick="return back()" >Send Back </button>
 									<%if(Assignee[19]!=null && Long.parseLong(Assignee[19].toString())>1){%>
-										<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="CloseAction(<%=Assignee[18] %>)" > Close Action</button>
+										<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="CloseAction('<%=Assignee[18] %>')" > Close Action</button>
 					        		<%}else{%>
 						        			<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="return  close5()" formaction="CloseSubmit.htm"> Close Action</button>
 					        		<%}%>
@@ -460,10 +460,6 @@ td
 							</div>
 							                                 
 						</form>
-						
-						
-						
-		
 		    		<br>
 		    		<hr><br>
 		    		<form method="post"  action="ExtendPdc.htm" >
@@ -658,9 +654,11 @@ td
 			</div>
 		</div>
 	</div>
-<%if(Assignee[20]!=null && Long.parseLong(Assignee[20].toString())>1){
+<%if(Assignee[19]!=null && Long.parseLong(Assignee[19].toString())>1){
 	List<Object[]> actionslist = (List<Object[]>)request.getAttribute("actionslist");
+
 %>	
+
 <div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
 				<div class="modal-dialog "  role="document" style="max-width:80rem;overflow-x:auto;" >
 					<div class="modal-content">
@@ -1129,8 +1127,8 @@ td
 		 	<div >
 				<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="return  closeAction1()" formmethod="post" formaction="CloseSubmit.htm"> Close Action</button>
 				<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
-				<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
-				<input type="hidden" name="LevelCount" value="<%=Assignee[20] %>" />
+				<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
+				<input type="hidden" name="LevelCount" value="<%=Assignee[19] %>" />
 				<input type="hidden" name="Remarks" id="actionremarks"  />
 				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 			</div>
@@ -1211,6 +1209,9 @@ td
 <!-- ------------------------------- tree script ------------------------------- -->
 <script type="text/javascript">
 
+function CloseAction(assignid) {
+	$('#ActionAssignfilemodal').modal('toggle');
+}
 $(function () {
     $('.genealogy-tree ul').hide();
     $('.genealogy-tree>ul').show();
@@ -1369,9 +1370,6 @@ function closeAction1(){
 
 }
 
-	function CloseAction(assignid) {
-		$('#ActionAssignfilemodal').modal('toggle');
-	}
 
 </script>  
 <%}%>

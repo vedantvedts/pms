@@ -273,13 +273,6 @@ public class LoginController {
 		String Meeting = req.getParameter("Meeting");
 		String Mile = req.getParameter("Mile");
 		int projectid = Integer.parseInt(req.getParameter("USubmit").toString());
-		System.out.println("input submit value is "+projectid);
-		System.out.println("Procurement "+procurement);
-		System.out.println("actionpoints "+actionpoints);
-		System.out.println("riskdetails "+riskdetails);
-		System.out.println("Meeting "+Meeting);
-		System.out.println("Mile "+Mile);
-		System.out.println(ses.getAttribute("empNo"));
 		LocalDate currentDate = LocalDate.now();
 		service.weeklyupdate(Integer.parseInt(ses.getAttribute("EmpId").toString()), ses.getAttribute("empNo").toString(),currentDate.toString(), procurement, actionpoints, riskdetails, Meeting, Mile, projectid);
 		LocalDate today = LocalDate.now();
@@ -622,8 +615,8 @@ public class LoginController {
            //req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
 			req.setAttribute("ibasUri", ibasUri);
 			req.setAttribute("interval", interval);
-			req.setAttribute("ibasV3Uri", "http:8082/ibas");
-			req.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(EmpId, LoginType).size());
+//			req.setAttribute("ibasV3Uri", "http:8082/ibas");
+//			req.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(EmpId, LoginType).size());
 			req.setAttribute("mytasklist", headerservice.MyTaskList(EmpId));
 			req.setAttribute("approvallist", headerservice.ApprovalList(EmpId, LoginType));
 			req.setAttribute("mytaskdetails",
@@ -636,8 +629,8 @@ public class LoginController {
 		
 			String DashBoardId = (String) ses.getAttribute("DashBoardId");
 			List<Object[]>projecthealthdata = rfpmainservice.ProjectHealthData(LabCode);
-			Object[]projecthealthtotal = rfpmainservice.ProjectHealthTotalData(ProjectId, EmpId, LoginType, LabCode, "Y");
-			List<Object[]>DashboardFinance = rfpmainservice.DashboardFinance(LoginType, EmpId, LabCode, ClusterId);
+			//Object[]projecthealthtotal = rfpmainservice.ProjectHealthTotalData(ProjectId, EmpId, LoginType, LabCode, "Y");
+			//List<Object[]>DashboardFinance = rfpmainservice.DashboardFinance(LoginType, EmpId, LabCode, ClusterId);
 			if(DashBoardId!=null && !DashBoardId.equalsIgnoreCase("0")) {
 			ProjectDashBoardFavourite pd=headerservice.findProjectDashBoardFavourite(Long.parseLong(DashBoardId));
 			
@@ -655,18 +648,18 @@ public class LoginController {
 			}
 			
 			projecthealthdata = projecthealthdata.stream().filter(e->DashBoardProjects.contains(e[2].toString())).collect(Collectors.toList());
-			projecthealthtotal = headerservice.projecthealthtotalDashBoardwise(DashBoardId,LabCode);
-			DashboardFinance = headerservice.DashboardFinanceProjectWise(DashBoardId,LabCode);
+			//projecthealthtotal = headerservice.projecthealthtotalDashBoardwise(DashBoardId,LabCode);
+			//DashboardFinance = headerservice.DashboardFinanceProjectWise(DashBoardId,LabCode);
 			}
 			req.setAttribute("projecthealthdata", projecthealthdata);
-			req.setAttribute("projecthealthtotal",projecthealthtotal);
+			//req.setAttribute("projecthealthtotal",projecthealthtotal);
 
 			// req.setAttribute("clusterlablist", headerservice.LabList());
 			// req.setAttribute("clusterlist", comservice.ClusterList());
 			// req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
 			req.setAttribute("DashboardFinanceCashOutGo",
 					rfpmainservice.DashboardFinanceCashOutGo(LoginType, EmpId, LabCode, ClusterId));
-			req.setAttribute("DashboardFinance", DashboardFinance);
+			//req.setAttribute("DashboardFinance", DashboardFinance);
 
 			String DGName = Optional.ofNullable(
 					headerservice.LabMasterList(ClusterId).stream().filter(e -> "Y".equalsIgnoreCase(e[2].toString()))
@@ -767,14 +760,6 @@ public class LoginController {
 				req.setAttribute("rfaInspectionCount",Actservice.RfaInspectionList(EmpId).size());
 				req.setAttribute("rfaInspectionAprCount",Actservice.RfaInspectionApprovalList(EmpId).size());
 				}
-				/*
-				 * for(Object[] obj:rfpmainservice.ProjectList(LoginType,LoginId)) {
-				 * 
-				 * req.setAttribute("Quater"+obj[0],
-				 * rfpmainservice.ProjectQuaters(obj[0].toString()));
-				 * 
-				 * }
-				 */
 
 			}
 

@@ -1089,4 +1089,37 @@ public class RequirementDaoImpl implements RequirementDao {
 	manager.flush();
 		return pr.getRequirementId();
 	}
+	
+	
+	private static final String DELSQR = "UPDATE pfms_initiation_sqr_para SET IsActive='0' WHERE ParaId=:ParaId ";
+	@Override
+	public long deleteSqr(String paraId) throws Exception {
+
+		Query query = manager.createNativeQuery(DELSQR);
+		query.setParameter("ParaId", paraId);
+		return query.executeUpdate();
+	}
+	
+	private static final String UPDATESL="UPDATE pfms_initiation_sqr_para SET SINo=:SINo WHERE ParaId=:para";
+	
+	@Override
+	public long updateSerialParaNo(String para, String SINo) throws Exception {
+
+		
+		Query query =  manager.createNativeQuery(UPDATESL);
+		
+		query.setParameter("para", para);
+		query.setParameter("SINo", SINo);
+		return query.executeUpdate();
+	}
+	
+	private static final String DELETEINITIATIONREQ = "UPDATE pfms_initiation_req SET IsActive='0' WHERE InitiationReqId=:InitiationReqId ";
+	@Override
+	public long deleteInitiationReq(String InitiationReqId) throws Exception {
+
+		Query query = manager.createNativeQuery(DELETEINITIATIONREQ);
+		query.setParameter("InitiationReqId", InitiationReqId);
+		return query.executeUpdate();
+	}
+	
 }

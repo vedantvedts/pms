@@ -1268,4 +1268,18 @@ public class RequirementServiceImpl implements RequirementService {
 	public long AddReqType(PfmsReqTypes pr) throws Exception {
 		return dao.AddReqType(pr);
 	}
+	
+	@Override
+	public long deleteSqr(String paraId) throws Exception {
+		return dao.deleteSqr(paraId);
+	}
+	@Override
+	public long updateSerialParaNo(String para, String sn) throws Exception {
+		return dao.updateSerialParaNo(para,sn);
+	}
+	@Override
+	public long deleteInitiationReq(String InitiationReqId) throws Exception
+	{
+		return dao.deleteInitiationReq(InitiationReqId);
+	}
 }

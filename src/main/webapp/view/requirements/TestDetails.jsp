@@ -674,7 +674,7 @@ margin-left: -21px;
 														</label>
 													</div>
 									
-													<div class="col-md-2">
+													<div class="col-md-4">
 														<%if ((specificationList != null) && specificationList.size()>0 ) {%>
 															<select required="required" class="form-control selectdee" name="SpecId" id="select" data-width="80%" data-live-search="true" multiple onchange="">
 																<option value="" disabled="disabled">---Choose----</option>
@@ -687,10 +687,9 @@ margin-left: -21px;
 														<%} %>
 													</div>
 													
-													<div class="col-md-3">
-													</div>	
+												
 														
-													<div class="col-md-1">
+													<div class="col-md-2">
 														<label style="font-size: 17px;  margin-left: 0.1rem; color: #07689f">Test Name<span	class="mandatory" style="color: red;">*</span></label>
 													</div>
 													<div class="col-md-5">
@@ -959,16 +958,26 @@ margin-left: -21px;
 											    				<div class="col-md-1">
 											       					 <label style="font-size: 17px;  color: #07689f">Spec Id <span class="mandatory" style="color: red;">*</span></label>
 											   					</div>
+											    			
+											    					<div class="col-md-4">
+														<%if ((specificationList != null) && specificationList.size()>0 ) {%>
+															<select required="required" class="form-control selectdee" name="SpecId" id="SpecIdEdit" data-width="80%" data-live-search="true" multiple onchange="">
+																<option value="" disabled="disabled">---Choose----</option>
+																<%for (Object[] obj : specificationList) {%>
+																	<option value="<%=obj[0]%>"><%=obj[1]%></option>
+																<%}%>
+															</select>
+														<%} else {%>
+															<input class="form-control" name="" id="linkedRequirements"  readonly placeholder="No requirements specified for Project">
+														<%} %>
+													</div>
+											    			
+											    				
 											    				<div class="col-md-2">
-											    					<input type="text" name="name" class="form-control" id="editSpecId" maxlength="255" required="required" placeholder="Maximum 250 Characters"  readonly>
-											    				</div>
-											    				<div class="col-md-3">
-													    		</div>
-											    				<div class="col-md-1">
 											        				<label style="font-size: 17px; margin-top: 7%;  color: #07689f">Test Name <span class="mandatory" style="color: red;">*</span></label>
 											    				</div>
-													   			 <div class="col-md-5">
-													        		<input type="text" name="TestName" class="form-control" id="EName" maxlength="255" required="required" placeholder="Maximum 250 Characters" >
+													   			 <div class="col-md-4">
+													        		<input type="text" name="name" class="form-control" id="EName" maxlength="255" required="required" placeholder="Maximum 250 Characters" >
 													    		</div>
 															</div>
 														</div>
@@ -1034,7 +1043,7 @@ margin-left: -21px;
 															<div class="row">
 																<div class="col-md-2">
 																	<label style="font-size: 17px;color: #07689f;">
-																		Tool-Setup <span class="mandatory" style="color: red;">*</span>
+																		Test-Setup <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
 																								
@@ -1209,7 +1218,7 @@ margin-left: -21px;
 													<input type="hidden" name="testId" id="edittestId" value="">  
 													<div class="form-group" align="center" style="margin-top: 3%;">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-														<button type="submit" class="btn btn-sm btn-warning edit mt-2" id="add" name="action" value="Add" onclick="return editCheck('myform2');">Update</button>
+														<button type="submit" class="btn btn-sm btn-warning edit mt-2" id="add" name="action" value="edit" onclick="return editCheck('myform2');">Update</button>
 													</div>
 												</div>
 												
@@ -1510,10 +1519,11 @@ function edit(value){
 		},
 	success:function(result){
 		 var ajaxresult=JSON.parse(result);
-		 console.log(result);
+		 console.log(ajaxresult);
 		 if(ajaxresult!=null){
 		$('#edittestId').val(ajaxresult[0]);
-		$('#editSpecId').val(ajaxresult[19]);
+		var specid= ajaxresult[19].split(",");
+		$('#SpecIdEdit').val(specid).trigger('change');
 		$('#reqName1').val(ajaxresult[1]);
 		$('#EName').val(ajaxresult[2]);
 		$('#EditObjective').val(ajaxresult[3]);

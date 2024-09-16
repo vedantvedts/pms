@@ -54,4 +54,22 @@ public class ProjectHealth {
 		private String CreatedDate;
 		private String ModifiedBy;
 		private String ModifiedDate;
+		
+		//Newly Added		
+		private Long PJBHeld;
+		private Long PJBPending;
+		private Long PJBTotal;
+		
+		private Long PMBHeld;
+		private Long PMBPending;
+		private Long PMBTotal;
+		
+		private Long ABHeld;
+		private Long ABPending;
+		private Long ABTotal;
+		
+		private Long PJBTotalToBeHeld;
+		private Long PMBTotalToBeHeld;
+		private Long ABTotalToBeHeld;
+		
 }
