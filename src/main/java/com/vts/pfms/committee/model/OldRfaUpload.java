@@ -18,6 +18,7 @@ public class OldRfaUpload {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long RfaFileUploadId;
 	private String LabCode;
+	private Long ProjectId;
 	private String RfaNo;
 	private String RfaDate;
 	private String RfaFile;

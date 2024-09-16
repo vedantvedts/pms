@@ -187,6 +187,8 @@
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("RfaTransactionList");
 String rfaNo = statuslist.get(0)[1].toString();
+String currentStatus = statuslist.get(statuslist.size()-1)[9].toString();
+String actionDate = statuslist.get(statuslist.size()-1)[5].toString();
 List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgnoreCase("AV"))
 									.map(e->e[10].toString())
 									.distinct() 
@@ -217,7 +219,12 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 					<span class="month"><%=month.format(object[5]) %></span>
 					<span class="year"><%=year.format(object[5]) %></span>
 				</span>
-				<h2 style="background-color:<%=object[8]%>;--my-color-var: <%=object[8]%>" ><%=object[7]%> at <%=time.format(object[5]) %></h2> 
+				<%if(currentStatus.equalsIgnoreCase(object[9].toString()) && actionDate.equalsIgnoreCase(object[5].toString()) && !currentStatus.equalsIgnoreCase("ARC")){ %>
+				<h2 style="background-color:red;--my-color-var: red" ><%=object[7]%> at <%=time.format(object[5]) %></h2>
+				<%}else{%>
+				<h2 style="background-color:green;--my-color-var: green" ><%=object[7]%> at <%=time.format(object[5]) %></h2>
+				<%}%>
+				<%-- <h2 style="background-color:<%=object[8]%>;--my-color-var: <%=object[8]%>" ><%=object[7]%> at <%=time.format(object[5]) %></h2> --%> 
 				<p style="background-color:  #f0f2f5;">
 					<span class="remarks_title">Action By : </span>
 					<%=object[3] %>, <%=object[4] %><br>

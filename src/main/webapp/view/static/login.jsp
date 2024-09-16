@@ -105,9 +105,9 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 					  <li class="nav-item"  onclick="$('#footer').show();">
 						 <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" ><i class="fa fa-home" aria-hidden="true"></i>&nbsp;Home</a>
 					  </li> 
-					  <li class="nav-item">
+					<!--   <li class="nav-item">
 					    <a class="nav-link" href="LoginPage/PPFMDoc2016.htm" target="_blank" ><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp; PPFM-2016</a>
-					  </li>
+					  </li> -->
 					  <li class="nav-item">
 					    <a class="nav-link" href="LoginPage/DPFMDoc2021.htm" target="_blank" ><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp; DPFM-2021</a>
 					  </li>

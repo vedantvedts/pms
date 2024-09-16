@@ -2451,12 +2451,13 @@ public Long oldRfaUploadSubmit(OldRfaUploadDto rfadto)
 	
 	String rfaNo = rfadto.getRfaNo().replaceAll("/", "_");
 	
-	Path rfaPath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",rfaNo);
-	Path rfaPath1 = Paths.get(rfadto.getLabCode(),"OldRFAFiles",rfaNo);
+	Path rfaPath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",rfadto.getProjecCode(),rfaNo);
+	Path rfaPath1 = Paths.get(rfadto.getLabCode(),"OldRFAFiles",rfadto.getProjecCode(),rfaNo);
 	
 	OldRfaUpload rfaUpload = new OldRfaUpload();
 	rfaUpload.setRfaNo(rfadto.getRfaNo());
 	rfaUpload.setLabCode(rfadto.getLabCode());
+	rfaUpload.setProjectId(rfadto.getProjectId());
 	rfaUpload.setRfaDate(sdf.format(rdf.parse(rfadto.getRfaDate())));
 	rfaUpload.setPath(rfaPath1.toString());
 	rfaUpload.setCreatedBy(rfadto.getCreatedBy());
@@ -2475,17 +2476,17 @@ public Long oldRfaUploadSubmit(OldRfaUploadDto rfadto)
  }
 
 @Override
-public List<Object[]> getoldRfaUploadList(String labCode) throws Exception {
-	return dao.getoldRfaUploadList(labCode);
+public List<Object[]> getoldRfaUploadList(String labCode,String projectId) throws Exception {
+	return dao.getoldRfaUploadList(labCode,projectId);
 }
 
 @Override
 public long oldRfaUploadEditSubmit(OldRfaUploadDto rfadto) throws Exception {
 	
 	OldRfaUpload oldRfaDetails = dao.getOldRfaDetails(rfadto.getRfaFileUploadId());
-	Path filePath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",oldRfaDetails.getRfaNo().replace("/", "_"));
-	Path newRenamedFilePath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",rfadto.getRfaNo().replace("/", "_"));
-	Path rfaPath = Paths.get(rfadto.getLabCode(), "OldRFAFiles",rfadto.getRfaNo().replace("/", "_"));
+	Path filePath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",rfadto.getProjecCode(),oldRfaDetails.getRfaNo().replace("/", "_"));
+	Path newRenamedFilePath = Paths.get(uploadpath,rfadto.getLabCode(), "OldRFAFiles",rfadto.getProjecCode(),rfadto.getRfaNo().replace("/", "_"));
+	Path rfaPath = Paths.get(rfadto.getLabCode(), "OldRFAFiles",rfadto.getProjecCode(),rfadto.getRfaNo().replace("/", "_"));
 	try {
 		
 		if(!rfadto.getRfaFile().isEmpty()) {
@@ -2501,12 +2502,14 @@ public long oldRfaUploadEditSubmit(OldRfaUploadDto rfadto) throws Exception {
 		}
 		
 		if(!rfadto.getClosureFile().isEmpty()) {
-		     Path oldFilePath=filePath.resolve(oldRfaDetails.getClosureFile());
-			 File oldFile = oldFilePath.toFile();
-		     if (oldFile.exists()) {
-		    	// Delete the old file
-		    	 oldFile.delete();
-		     }
+			if(oldRfaDetails.getClosureFile()!=null) {
+			     Path oldFilePath=filePath.resolve(oldRfaDetails.getClosureFile());
+				 File oldFile = oldFilePath.toFile();
+			     if (oldFile.exists()) {
+			    	// Delete the old file
+			    	 oldFile.delete();
+			     }
+			 }
 		     MultipartFile file = rfadto.getClosureFile();
 		     Path theDir = filePath.resolve(file.getOriginalFilename());
 		     file.transferTo(theDir.toFile());

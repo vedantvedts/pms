@@ -73,7 +73,7 @@ String EmpId=(String)request.getAttribute("EmpId");
         
         		<div class="card-body">
                      <div class="row">
-		                    <div class="col-md-2">
+		                    <div class="col-md-6">
 		                        <div class="form-group">
 		                            <label class="control-label">Project</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>

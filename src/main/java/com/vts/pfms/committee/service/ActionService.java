@@ -161,7 +161,7 @@ public interface ActionService {
 	public  List<Object[]>  ActionReportsNew(String empId, String string, String string2, String string3, String labCode,
 			String logintype)throws Exception;
 	public Long oldRfaUploadSubmit(OldRfaUploadDto rfadto)throws Exception;
-	public List<Object[]> getoldRfaUploadList(String labCode)throws Exception;
+	public List<Object[]> getoldRfaUploadList(String labCode, String projectId)throws Exception;
 	public long oldRfaUploadEditSubmit(OldRfaUploadDto rfadto)throws Exception;
 	
 	public List<Object[]> getMeetingList(long ProjectId, String fromDate, String toDate) throws Exception;

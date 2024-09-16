@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
 /* @Table(name = "pfms_rtmddo") */
- @Table(name="pfms_initiation_Approver") 
+ @Table(name="pfms_initiation_approver") 
 public class PfmsRtmddo  implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

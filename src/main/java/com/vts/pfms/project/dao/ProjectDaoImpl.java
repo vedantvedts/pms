@@ -163,10 +163,10 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String TCCPROJECTLIST="SELECT projecttitle,projectshortname, initiationid FROM pfms_initiation WHERE projectstatus='PTA' AND isactive='1' ";
 	private static final String EXPERTLIST="SELECT a.expertid,a.expertname,b.designation FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
 	private static final String DIVISIONHEADID="SELECT a.divisionheadid FROM division_master a, employee b WHERE a.divisionid=b.divisionid AND b.empid=:empid";
-	private static final String RTMDDOID="SELECT empid FROM pfms_initiation_Approver WHERE isactive=1 AND Type='DO-RTMD' " ;
+	private static final String RTMDDOID="SELECT empid FROM pfms_initiation_approver WHERE isactive=1 AND Type='DO-RTMD' " ;
 	private static final String TCCCHAIRPERSONID="SELECT labauthorityid FROM lab_master WHERE labcode=:labcode";
 	private static final String CCMCHAIRPERSONID="SELECT labdgid FROM lab_master WHERE labcode=:labcode";
-	private static final String ADID="SELECT empid FROM pfms_initiation_Approver WHERE isactive=1 AND TYPE='AD';";  
+	private static final String ADID="SELECT empid FROM pfms_initiation_approver WHERE isactive=1 AND TYPE='AD';";  
 	private static final String APPSTATUSLIST="SELECT a.status, a.statusaction FROM pfms_project_authority_actionlist  a WHERE projectauthorityid=:AuthoId";
 	private static final String PROJECTSTAGEDETAILSLIST ="SELECT projectstageid,projectstagecode,projectstage FROM pfms_project_stage";
 	private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,ppd.proclimit,ppd.LastPmrcDate,ppd.LastEBDate FROM pfms_project_data ppd, pfms_project_stage pps WHERE ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
@@ -1948,7 +1948,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 
-	private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_initiation_Approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:Labcode ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
+	private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_initiation_approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:Labcode ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
 	@Override
 	public List<Object[]>  DoRtmdAdEmpData(String Labcode) throws Exception
 	{
@@ -3203,7 +3203,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		return a+"";
 	}
 
-	private static final String DOCFLWDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_initiation_Approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:labcode AND pr.initiationid=:initiationid ORDER BY FIELD (pr.type,'Reviewer','Approver')";
+	private static final String DOCFLWDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_initiation_approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:labcode AND pr.initiationid=:initiationid ORDER BY FIELD (pr.type,'Reviewer','Approver')";
 	@Override
 	public List<Object[]> DocumentApprovalFlowData(String labCode, String initiationid) throws Exception {
 		Query query=manager.createNativeQuery(DOCFLWDATA);
