@@ -611,10 +611,10 @@ keyframes blinker { 50% {
 									<div class="col-md-6">
 										<select class="form-control modals" required name="QrType">
 											<option value="0">SELECT</option>
-											<option value="Q" <%if (SQRFile != null && SQRFile[14].toString().equalsIgnoreCase("Q")) {%>selected <%}%>>QR</option>
-											<option value="P" <%if (SQRFile != null && SQRFile[14].toString().equalsIgnoreCase("P")) {%>selected <%}%>>PSQR</option>
-											<option value="G" <%if (SQRFile != null && SQRFile[14].toString().equalsIgnoreCase("G")) {%>selected <%}%>>GSQR</option>
-											<option value="J" <%if (SQRFile != null && SQRFile[14].toString().equalsIgnoreCase("J")) {%>selected <%}%>>JSQR</option>
+											<option value="Q" <%if (SQRFile != null&& SQRFile[14]!=null && SQRFile[14].toString().equalsIgnoreCase("Q")) {%>selected <%}%>>QR</option>
+											<option value="P" <%if (SQRFile != null&& SQRFile[14]!=null && SQRFile[14].toString().equalsIgnoreCase("P")) {%>selected <%}%>>PSQR</option>
+											<option value="G" <%if (SQRFile != null&& SQRFile[14]!=null && SQRFile[14].toString().equalsIgnoreCase("G")) {%>selected <%}%>>GSQR</option>
+											<option value="J" <%if (SQRFile != null&& SQRFile[14]!=null && SQRFile[14].toString().equalsIgnoreCase("J")) {%>selected <%}%>>JSQR</option>
 										</select>
 										<br>
 									</div>
