@@ -243,7 +243,7 @@ float: right;
 		<nav class="navbar navbar-light bg-light justify-content-between" style="margin-top: -1%">
 			<a class="navbar-brand"> 
 				<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
-					<span style="color: #31708f">Requirement Introduction for Project -</span>
+					<span style="color: #31708f">Scope for Project -</span>
 					<span style="color: #31708f; font-size: 19px">
 						<%if(projectDetails!=null) {%>
 							<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
