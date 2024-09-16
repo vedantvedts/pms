@@ -1157,7 +1157,14 @@ keyframes blinker { 50% {
 				arr3.push(arr2[i].value);
 	
 			}
-	
+			var max= '<%=ParaDetails.size()%>'
+				
+				for(var i=0;i<arr1.length;i++ ){
+					if(Number(arr1[i])>Number(max)){
+						alert("Serial Number should be less than "+max);
+						return false;
+					}
+				}
 			 let result = false;
 			    const s = new Set(arr1);
 			    
