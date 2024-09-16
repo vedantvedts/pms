@@ -11,8 +11,8 @@
 <meta charset="ISO-8859-1">
 <title>PMS</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-<spring:url value="/resources/css/Overall.css" var="StyleCSS" />
-<link href="${StyleCSS}" rel="stylesheet" />
+<%-- <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
+<link href="${StyleCSS}" rel="stylesheet" /> --%>
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
