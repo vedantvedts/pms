@@ -10,12 +10,20 @@
 <meta charset="ISO-8859-1">
 <title>PMS</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-<spring:url value="/resources/css/Overall.css" var="StyleCSS" />
-<link href="${StyleCSS}" rel="stylesheet" />
-<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<%-- <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
+<link href="${StyleCSS}" rel="stylesheet" /> --%>
+<%-- <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
-<link href="${contentCss}" rel="stylesheet" />
+<link href="${contentCss}" rel="stylesheet" /> --%>
+
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+
+
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
+
 <style>
 .bs-example {
 	margin: 20px;
@@ -24,7 +32,10 @@
 .accordion .fa {
 	margin-right: 0.5rem;
 }
-
+ 
+.note-editable {
+  line-height: 1.0;
+}
 .spansub {
 	width: 49px;
 	height: 24px;
@@ -33,6 +44,11 @@
 	text-align: justify;
 	display: inline-block;
 }
+
+.note-editing-area{
+
+
+} 
 
 .fa-times {
 	color: red;
@@ -337,6 +353,11 @@ keyframes blinker { 50% {
 				formnovalidate="formnovalidate" formtarget="_blank">
 				<i class="fa fa-download text-success" aria-hidden="true"></i>
 			</button>
+					<button class="btn bg-transparent"
+				formaction="RequirementParaDownloads.htm" formmethod="get"
+				formnovalidate="formnovalidate" formtarget="_blank">
+				<i class="fa fa-download text-success" aria-hidden="true"></i>
+			</button>
 			<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectRequirementDetails.htm" formmethod="get" formnovalidate="formnovalidate" style="float: right;">BACK</button>
 			<button type="button" class="btn btn-sm prints bg-secondary mt-1" style="border: white;" onclick="showsqrModal()">SQR</button>
 			<input type="hidden" name="projectId" value=<%=projectId%>> 
@@ -422,7 +443,7 @@ keyframes blinker { 50% {
 									<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 									</button>
 										<button class="btn bg-transparent buttonEd" type="button"
-											style="display: block;" id="btnEditor<%=count%>"
+											style="display: block;" id="btnEditor<%=obj[0].toString()%>"
 											onclick="showEditor(<%=obj[0].toString()%>,'<%=obj[3].toString()%>')"
 											data-toggle="tooltip" data-placement="left"
 											data-original-data="" title=""
@@ -788,7 +809,7 @@ keyframes blinker { 50% {
 		document.getElementById("input"+a).value=inputValue;
 		document.getElementById("input"+a).readOnly=true;
 	}
-
+/* 
 	var editor_config = {
 			toolbar : [
 				
@@ -907,7 +928,25 @@ keyframes blinker { 50% {
 		    }
 		};
 
-		CKEDITOR.replace('Editor', editor_config);
+		CKEDITOR.replace('Editor', editor_config); */
+		
+		$(document).ready(function() {
+			 $('#Editor').summernote({
+				  width: 800,   //don't use px
+				
+				  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+				 
+			      lineHeights: ['0.5']
+			
+			 });
+
+		$('#Editor').summernote({
+		     
+			  tabsize: 2,
+		       height: 1000
+		    });
+		    
+		});
 		function showsqrModal(){
 		$('#sqrModal').modal('show');
 		}
@@ -944,7 +983,7 @@ keyframes blinker { 50% {
 						html=ajaxresult[i][4];
 					}
 				}
-				CKEDITOR.instances['Editor'].setData(html);
+				$('#Editor').summernote('code', html);
 				
 				if(html.length>1){ // if list [i][5] is empty show update button else submit button
 				$('#btn1').hide();
@@ -957,8 +996,10 @@ keyframes blinker { 50% {
 		})
 		}
 	   $('#myfrm').submit(function() {
-		 var data =CKEDITOR.instances['Editor'].getData();
-		 $('textarea[name=Details]').val(data);
+	
+		 
+		
+		  $('textarea[name=Details]').val($('#Editor').summernote('code'));
 		});
 		$(function () {
 		$('[data-toggle="tooltip"]').tooltip()

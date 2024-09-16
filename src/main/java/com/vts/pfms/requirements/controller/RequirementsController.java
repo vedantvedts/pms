@@ -297,7 +297,8 @@ public class RequirementsController {
 			req.setAttribute("reqInitiationId", reqInitiationId);
 			req.setAttribute("ParaDetails", projectservice.ReqParaDetailsMain(reqInitiationId));
 			req.setAttribute("SQRFile", projectservice.SqrFiles(reqInitiationId)); 
-			req.setAttribute("paracounts", req.getParameter("paracounts")==null?"1":req.getParameter("paracounts"));
+			String value=projectservice.ReqParaDetailsMain(reqInitiationId)!=null && projectservice.ReqParaDetailsMain(reqInitiationId).size()>0?projectservice.ReqParaDetailsMain(reqInitiationId).get(0)[0].toString():"1";
+			req.setAttribute("paracounts", req.getParameter("paracounts")==null?value:req.getParameter("paracounts"));
 			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
 			req.setAttribute("TotalSqr", service.getAllSqr(reqInitiationId));
 		}catch(Exception e) {

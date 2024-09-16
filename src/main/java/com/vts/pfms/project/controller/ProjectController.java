@@ -3212,7 +3212,8 @@ public class ProjectController
 			req.setAttribute("projectcode", projectcode);
 			req.setAttribute("SQRFile", service.SqrFiles(reqInitiationId)); //changed the code here pass the projectId
 			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId)); //changed the code here pass the projectId
-			req.setAttribute("paracounts", req.getParameter("paracounts")==null?"1":req.getParameter("paracounts"));
+			String value=service.ReqParaDetailsMain(reqInitiationId)!=null && service.ReqParaDetailsMain(reqInitiationId).size()>0?service.ReqParaDetailsMain(reqInitiationId).get(0)[0].toString():"1";
+			req.setAttribute("paracounts", req.getParameter("paracounts")==null?value:req.getParameter("paracounts"));
 			req.setAttribute("reqInitiation", reqService.getRequirementInitiationById(reqInitiationId));
 			req.setAttribute("TotalSqr", reqService.getAllSqr(reqInitiationId));
 		}catch(Exception e) {
@@ -3374,12 +3375,12 @@ public class ProjectController
 			long count=service.RequirementParaEdit(rpm);
 			if (count > 0) {
 				if(req.getParameter("Details")==null) {
-					redir.addAttribute("result", "para - " +req.getParameter("paracount") +" updated successfully");
+					redir.addAttribute("result", req.getParameter("ParaNo") +" updated successfully");
 				}else {
-					redir.addAttribute("result", "para - " +req.getParameter("paracount") +" details updated successfully");
+					redir.addAttribute("result", req.getParameter("ParaNo") +" details updated successfully");
 				}
 				if(initiation!=null && initiation.equalsIgnoreCase("S")) {
-					redir.addAttribute("paracounts",req.getParameter("paracount"));
+					redir.addAttribute("paracounts",req.getParameter("paraid"));
 					redir.addAttribute("initiationId", req.getParameter("initiationId"));
 					redir.addAttribute("project", req.getParameter("project"));
 					redir.addAttribute("reqInitiationId", req.getParameter("reqInitiationId"));
@@ -3387,7 +3388,7 @@ public class ProjectController
 
 				}
 				else {
-					redir.addAttribute("paracounts",req.getParameter("paracount"));
+					redir.addAttribute("paracounts",req.getParameter("paraid"));
 					redir.addAttribute("projectId", req.getParameter("projectId"));
 					redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
 					redir.addAttribute("reqInitiationId", req.getParameter("reqInitiationId"));
@@ -3396,7 +3397,7 @@ public class ProjectController
 
 			} else {
 				redir.addAttribute("resultfail", " para update Unsuccessful");
-				redir.addAttribute("paracounts",req.getParameter("paracount"));
+				redir.addAttribute("paracounts",req.getParameter("paraid"));
 				redir.addAttribute("initiationId", req.getParameter("initiationId"));
 				redir.addAttribute("project", req.getParameter("project"));
 				redir.addAttribute("reqInitiationId", req.getParameter("reqInitiationId"));
@@ -3686,6 +3687,7 @@ public class ProjectController
 				}else {
 					redir.addAttribute("projectId", projectId);
 					redir.addAttribute("attributes", attributes);
+					redir.addAttribute("project", req.getParameter("project"));
 					redir.addAttribute("reqInitiationId", reqInitiationId);
 					return "redirect:/ProjectRequiremntIntroductionMain.htm";
 				}

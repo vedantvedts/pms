@@ -17,6 +17,13 @@
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+
+
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
+
 <style>
 .bs-example {
 	margin: 20px;
@@ -440,7 +447,7 @@ keyframes blinker { 50% {
 									</button>
 									
 									<button class="btn bg-transparent buttonEd" type="button"
-										style="display: block;" id="btnEditor<%=count%>"
+										style="display: block;" id="btnEditor<%=obj[0].toString()%>"
 										onclick="showEditor(<%=obj[0].toString()%>,'<%=obj[3].toString()%>')"
 										data-toggle="tooltip" data-placement="left"
 										data-original-data="" title=""
@@ -804,7 +811,7 @@ keyframes blinker { 50% {
 
 	
 	
-		var editor_config = {
+	/* 	var editor_config = {
 				toolbar : [
 					
 						{
@@ -922,7 +929,24 @@ keyframes blinker { 50% {
 			    }
 			};
 	
-		CKEDITOR.replace('Editor', editor_config);
+		CKEDITOR.replace('Editor', editor_config); */
+		$(document).ready(function() {
+			 $('#Editor').summernote({
+				  width: 800,   //don't use px
+				
+				  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+				 
+			      lineHeights: ['0.5']
+			
+			 });
+
+		$('#Editor').summernote({
+		     
+			  tabsize: 2,
+		       height: 1000
+		    });
+		    
+		});
 		function showsqrModal(){
 		$('#sqrModal').modal('show');
 		}
@@ -959,8 +983,8 @@ keyframes blinker { 50% {
 						html=ajaxresult[i][4];
 					}
 				}
-				CKEDITOR.instances['Editor'].setData(html);
-				
+				$('#Editor').summernote('code', html);
+			
 				if(html.length>1){ // if list [i][5] is empty show update button else submit button
 				$('#btn1').hide();
 				$('#btn2').show();
@@ -972,8 +996,7 @@ keyframes blinker { 50% {
 		})
 		}
 	   $('#myfrm').submit(function() {
-		 var data =CKEDITOR.instances['Editor'].getData();
-		 $('textarea[name=Details]').val(data);
+		   $('textarea[name=Details]').val($('#Editor').summernote('code'));
 		});
 		$(function () {
 		$('[data-toggle="tooltip"]').tooltip()

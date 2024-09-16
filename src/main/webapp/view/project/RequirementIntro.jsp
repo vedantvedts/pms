@@ -564,7 +564,7 @@ float: right;
 				url:'RequirementIntro.htm',
 				datatype:'json',
 				data:{
-					initiationId:<%=initiationId%>,
+					reqInitiationId:<%=reqInitiationId%>,
 				},
 				success:function(result){
 					
