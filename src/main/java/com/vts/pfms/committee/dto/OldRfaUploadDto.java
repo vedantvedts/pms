@@ -9,6 +9,8 @@ public class OldRfaUploadDto {
 	
 	private Long RfaFileUploadId;
 	private String LabCode;
+	private Long ProjectId;
+	private String ProjecCode;
 	private String RfaNo;
 	private String RfaDate;
 	private MultipartFile RfaFile;

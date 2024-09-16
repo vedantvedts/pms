@@ -47,11 +47,11 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String PFMSLOGINREVOKE="DELETE from pfms_login_role_security WHERE loginid=:loginid";
 	private static final String PFMSLOGINTYPEREVOKE="UPDATE login set modifiedby=:modifiedby, modifieddate=:modifieddate WHERE loginid=:loginid";
 	private static final String EMPLOYEELISTALL="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',b.designation,a.labcode FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
-	private static final String RTMDDO="SELECT 'empid1',a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',b.designation,c.validfrom,c.validto  FROM employee a,employee_desig b,pfms_initiation_Approver c WHERE a.empid=c.empid AND c.isactive='1' AND a.isactive='1' AND a.DesigId=b.DesigId AND c.type='DO-RTMD'";
+	private static final String RTMDDO="SELECT 'empid1',a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',b.designation,c.validfrom,c.validto  FROM employee a,employee_desig b,pfms_initiation_approver c WHERE a.empid=c.empid AND c.isactive='1' AND a.isactive='1' AND a.DesigId=b.DesigId AND c.type='DO-RTMD'";
 	//private static final String NOTIFICATIONLIST="SELECT notificationdate,notificationmessage,notificationurl,notificationid FROM pfms_notification WHERE empid=:empid and isactive=1";
 	// new code
 	private static final String NOTIFICATIONLIST="SELECT notificationdate, notificationmessage, notificationurl, notificationid FROM pfms_notification WHERE empid =:empid AND isactive = 1 ORDER BY CreatedDate DESC LIMIT 0, 1000";
-	private static final String RTMDDOUPDATE="update pfms_initiation_Approver set isactive='0' WHERE Type=:type";
+	private static final String RTMDDOUPDATE="update pfms_initiation_approver set isactive='0' WHERE Type=:type";
 	private static final String DIVISIONLIST ="select divisionid,divisioncode from division_master where isactive='1'";
 	private static final String LOGINDELETE="update login set isactive=:isactive,modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";
 	private static final String AUDITSTAMPING="SELECT a.username,a.logindate, a.logindatetime,a.ipaddress, a.macaddress, ( CASE WHEN a.logouttype='L' THEN 'Logout' ELSE 'Session Expired' END ) AS logouttype, 	a.logoutdatetime FROM auditstamping a WHERE a.`LoginDate` BETWEEN :fromdate AND :todate AND a.loginid=:loginid ORDER BY a.`LoginDateTime` DESC ";
@@ -63,7 +63,7 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String LOGINUPDATE="update login set divisionid=:divisionid ,formroleid=:formroleid,logintype=:logintype,empid=:empid, Pfms=:pfms, modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";
 	private final static String CHECKUSER = "SELECT COUNT(LoginId) FROM pfms_login_role_security WHERE LoginId=:loginid";
 	private final static String UPDATEPFMSLOGINROLE="UPDATE pfms_login_role_security SET RoleId=:roleid WHERE LoginId=:loginid";
-	private static final String CURRENTADDORTMT="SELECT r.RtmddoId, r.EmpId, r.ValidFrom, r.ValidTo, r.Type,r.labcode FROM pfms_initiation_Approver r WHERE r.IsActive=1 ORDER BY r.Type DESC";
+	private static final String CURRENTADDORTMT="SELECT r.RtmddoId, r.EmpId, r.ValidFrom, r.ValidTo, r.Type,r.labcode FROM pfms_initiation_approver r WHERE r.IsActive=1 ORDER BY r.Type DESC";
 	private static final String DIVISIONLIST1 ="SELECT a.divisionid,a.divisioncode,a.divisionname, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' ,c.groupname ,a.labcode, d.Designation FROM division_master a,employee b,division_group c, employee_desig d WHERE a.isactive='1' AND b.DesigId = d.DesigId and a.divisionheadid=b.empid AND a.groupid=c.groupid AND a.labcode=:labcode ORDER BY a.divisionid desc";
 	private static final String DIVISIONADDCHECK="SELECT SUM(IF(DivisionCode =:divisionCode,1,0))   AS 'dCode',SUM(IF(DivisionName = :divisionName,1,0)) AS 'dName' FROM division_master where isactive=1 ";
 	private static final String DIVISIONUPDATE="UPDATE division_master SET divisioncode=:divisioncode, divisionname=:divisionname, divisionheadid=:divisionheadid , groupid=:groupid, modifiedby=:modifiedby, modifieddate=:modifieddate, isactive=:isactive WHERE divisionid=:divisionid";

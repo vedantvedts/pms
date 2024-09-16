@@ -872,7 +872,7 @@ public class ActionDaoImpl implements ActionDao{
 		}
 
 	
-	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,aas.progress,am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name',CASE WHEN aas.assigneelabcode <> '@EXP' THEN (SELECT CONCAT(IFNULL(asi.title,''), asi.empname) FROM employee asi WHERE aas.assignee= asi.empid)  ELSE (SELECT CONCAT(IFNULL(asi.title,''), asi.expertname)  FROM expert asi WHERE aas.assignee= asi.expertid )END AS 'assignee name' ,am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus' FROM action_main am, action_Assign aas, employee asn WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.actionassignid=:assignid";
+	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,aas.progress,am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name',CASE WHEN aas.assigneelabcode <> '@EXP' THEN (SELECT CONCAT(IFNULL(asi.title,''), asi.empname) FROM employee asi WHERE aas.assignee= asi.empid)  ELSE (SELECT CONCAT(IFNULL(asi.title,''), asi.expertname)  FROM expert asi WHERE aas.assignee= asi.expertid )END AS 'assignee name' ,am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus' FROM action_main am, action_assign aas, employee asn WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.actionassignid=:assignid";
 	
 	@Override
 	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
@@ -1909,13 +1909,14 @@ public class ActionDaoImpl implements ActionDao{
 	    }
 	}
 	
-	private static final String OLDRFAUPLOADLIST="SELECT RfaFileUploadId,RfaNo,RfaDate,RfaFile,ClosureFile,Path FROM pfms_rfa_oldfile WHERE LabCode=:labCode AND IsActive='1'";
+	private static final String OLDRFAUPLOADLIST="SELECT RfaFileUploadId,RfaNo,RfaDate,RfaFile,ClosureFile,Path FROM pfms_rfa_oldfile WHERE LabCode=:labCode AND ProjectId=:projectId AND IsActive='1'";
 	@Override
-	public List<Object[]> getoldRfaUploadList(String labCode) throws Exception {
+	public List<Object[]> getoldRfaUploadList(String labCode, String projectId) throws Exception {
 		
 		try {
 			Query query = manager.createNativeQuery(OLDRFAUPLOADLIST);
 			query.setParameter("labCode", labCode);
+			query.setParameter("projectId", projectId);
 			return (List<Object[]>)query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();

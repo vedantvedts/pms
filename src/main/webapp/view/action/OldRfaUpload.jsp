@@ -95,8 +95,14 @@ SimpleDateFormat sdf1=fc.getSqlDateFormat();
 
 SimpleDateFormat sdf2=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf3=new SimpleDateFormat("yyyy-MM-dd");
-
-List<Object[]> oldRfaUploadList=(List<Object[]>) request.getAttribute("oldRfaUploadList"); %>
+List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+List<Object[]> oldRfaUploadList=(List<Object[]>) request.getAttribute("oldRfaUploadList");
+String projectId=(String)request.getAttribute("projectId");
+String projectCode=ProjectList.stream().filter(project -> project[0] != null && project[0].toString().equals(projectId)) 
+                                       .map(project -> project[4] != null ? project[4].toString() : null)
+                                       .findFirst()
+                                       .orElse(null);
+%>
 
 	<%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
@@ -120,13 +126,24 @@ List<Object[]> oldRfaUploadList=(List<Object[]>) request.getAttribute("oldRfaUpl
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
                  
-                 <div class="card-header ">  
-
-					<div class="row">
-						<h5 class="col-md-2">OLD RFA List</h5>  
-							
-		   				</div>	   							
-
+                 <div class="card-header"  style="display: flex;justify-content: space-between;">  
+					<div >
+						<h5>OLD RFA List</h5>  
+		   		    </div>
+		   		    <form action="OldRfaUpload.htm" method="post" id="rfaFormSubmit">
+		   		     <div class="form-group" style="margin-top: -7px !important;">
+		   		          <label>Project : </label>
+                           <select class="form-control selectdee " id="projectDropdown"  name="projectId" required="required" >
+								<option disabled="disabled"  selected value="">Choose...</option>
+									<% for (Object[] obj : ProjectList) {
+									String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+									%>
+								<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
+								<%} %>
+  						</select>
+	                   </div>
+	                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	                  </form>						
 					</div>
                  
 					<form action="#" method="post" id="myFrom" >
@@ -155,10 +172,10 @@ List<Object[]> oldRfaUploadList=(List<Object[]>) request.getAttribute("oldRfaUpl
 										   <td style="text-align: center;"><%=obj[1] %></td>
 										   <td style="text-align: center;"><%=sdf.format(obj[2])%></td>
 										   <td style="text-align: center;"><%if(obj[3]!=null){%>
-										   <a href="OldRfaFileDownload.htm?id=<%=obj[0]%>&rfano=<%=obj[1] %>&file1=<%=obj[3]%>" target="_blank"><%=obj[3]%></a><%}else{ %>--<%} %>
+										   <a href="OldRfaFileDownload.htm?id=<%=obj[0]%>&rfano=<%=obj[1] %>&file1=<%=obj[3]%>&projectCode=<%=projectCode %>" target="_blank"><%=obj[3]%></a><%}else{ %>--<%} %>
 										   </td>
 										   <td style="text-align: center;"><%if(obj[4]!=null){%>
-										   <a href="OldRfaFileDownload.htm?id=<%=obj[0]%>&rfano=<%=obj[1] %>&file2=<%=obj[4]%>" target="_blank"><%=obj[4]%></a><%}else{ %>--<%} %>
+										   <a href="OldRfaFileDownload.htm?id=<%=obj[0]%>&rfano=<%=obj[1] %>&file2=<%=obj[4]%>&projectCode=<%=projectCode %>" target="_blank"><%=obj[4]%></a><%}else{ %>--<%} %>
 										   </td>
 										   <td style="text-align: center;">
 										       <button class="btn bg-transparent"
@@ -175,13 +192,12 @@ List<Object[]> oldRfaUploadList=(List<Object[]>) request.getAttribute("oldRfaUpl
 							</div>
 						</div>
 						<div align="center" style="margin-bottom: 20px">
-
-							<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
 							<button class="btn add" type="button" onclick="rfaAddModal()">ADD</button>
 							<a class="btn btn-info shadow-nohover back" href="MainDashBoard.htm">BACK</a>
 						</div>
 						<input type="hidden" name="sub" value="add">
+						<input type="hidden" name="projectId" value="<%=projectId%>">
+						<input type="hidden" name="projectCode" value="<%=projectCode%>">
 					</form>
 				</div>
 			</div>
@@ -247,6 +263,8 @@ List<Object[]> oldRfaUploadList=(List<Object[]>) request.getAttribute("oldRfaUpl
 		          <br>
 		        <div class="form-group" align="center" >
 					 <button type="button" class="btn btn-primary btn-sm submit" id="rfaSubmit"></button>
+					 <input type="hidden" name="projectId" value="<%=projectId%>">
+					 <input type="hidden" name="projecCode" value="<%=projectCode%>">
 					 <input type="hidden" name="rfaUploadId" id="rfaUploadId" value="">
 					 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 				</div>
@@ -260,11 +278,20 @@ List<Object[]> oldRfaUploadList=(List<Object[]>) request.getAttribute("oldRfaUpl
 </body>
 <script type="text/javascript">
 $(document).ready(function(){
-	  $("#myTable").DataTable({
-	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
-	 "pagingType": "simple"
 	
-});
+  $("#myTable").DataTable({
+ "lengthMenu": [  5,10,25, 50, 75, 100 ],
+ "pagingType": "simple"
+    });
+  
+  $('#projectDropdown').change(function(){
+	   var form = document.getElementById("rfaFormSubmit");
+	 
+   if (form) {
+             form.submit();
+         }
+    });
+  
 });
 $('#rfadate').daterangepicker({
 	"singleDatePicker" : true,
@@ -356,7 +383,7 @@ function rfaAddModal(){
     $('#closurefile').val('');
     $('#closurefileName').html('');
     // Set form action and modal title for "Add" operation
-    $('form').attr('action', 'OldRfaUploadSubmit.htm');
+    $('#modalForm').attr('action', 'OldRfaUploadSubmit.htm');
     $('#modal-title').text('Add New RFA Details');
     $('#rfaSubmit').text('Submit').off('click').on('click', function(e) {
         e.preventDefault();
@@ -384,7 +411,7 @@ function rfaEditModal(uploadId,rfano,rfadate,rfafile,closurefile){
     $('#closurefileName').html(closurefile !== 'null' ? closurefile : '');
 
     // Set form action and modal title for "Edit" operation
-    $('form').attr('action', 'OldRfaUploadEditSubmit.htm'); // Set the correct action for edit
+    $('#modalForm').attr('action', 'OldRfaUploadEditSubmit.htm'); // Set the correct action for edit
     $('#modal-title').text('Edit RFA Details');
     $('#rfaSubmit').text('Update').off('click').on('click', function(e) {
         e.preventDefault();

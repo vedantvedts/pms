@@ -4744,11 +4744,24 @@ public class ActionController {
         	{
             	String UserId = (String) ses.getAttribute("Username");
         		String LabCode = (String) ses.getAttribute("labcode");
+         		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+    			String LoginType=(String)ses.getAttribute("LoginType");
+    			String projectId=(String)req.getParameter("projectId");
         		logger.info(new Date() +"Inside OldRfaUpload.htm "+UserId);
         		try {
-        			
-        	    List<Object[]> oldRfaUploadList = service.getoldRfaUploadList(LabCode);
+        		List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
+				 if(projectId==null) {
+			        	try {
+			        		Object[] pro=projectdetailslist.get(0);
+			        		projectId=pro[0].toString();
+			        	}catch (Exception e) {
+							e.printStackTrace();
+						}
+			        }
+        	    List<Object[]> oldRfaUploadList = service.getoldRfaUploadList(LabCode,projectId);
         	    req.setAttribute("oldRfaUploadList", oldRfaUploadList);
+        		req.setAttribute("ProjectList", projectdetailslist);
+        		req.setAttribute("projectId", projectId);
      		
     	 	}catch (Exception e) {
     			e.printStackTrace();
@@ -4757,25 +4770,32 @@ public class ActionController {
         		return "action/OldRfaUpload";
         	}
             
+            
             @RequestMapping(value = "OldRfaUploadSubmit.htm" , method={RequestMethod.POST,RequestMethod.GET})
         	public String OldRfaUploadSubmit(Model model,HttpServletRequest req,HttpServletResponse res ,HttpSession ses, RedirectAttributes redir,
         		    @RequestParam(name = "rfafile", required = false) MultipartFile rfafile,
          			@RequestParam(name = "closurefile", required = false) MultipartFile closurefile,
      				@RequestParam("oldrfano") String oldrfano,
+     				@RequestParam("projectId") String projectId,
+     				@RequestParam("projecCode") String projecCode,
      				@RequestParam("rfadate") String rfadate)throws Exception
         	{
             	String UserId = (String) ses.getAttribute("Username");
         		String LabCode = (String) ses.getAttribute("labcode");
         		logger.info(new Date() +"Inside OldRfaUploadSubmit.htm "+UserId);
         		try {
-        			
+        			        			
         			OldRfaUploadDto rfadto = new OldRfaUploadDto();
         			rfadto.setLabCode(LabCode);
+        			rfadto.setProjectId(Long.parseLong(projectId));
+        			rfadto.setProjecCode(projecCode);
         			rfadto.setRfaNo(oldrfano);
         			rfadto.setRfaDate(rfadate);
         			rfadto.setRfaFile(rfafile);
         			rfadto.setClosureFile(closurefile);
         			rfadto.setCreatedBy(UserId);
+        			
+        			System.out.println("projecCode############"+projecCode);
 
         			long count = service.oldRfaUploadSubmit(rfadto);
         			if(count>0) {
@@ -4784,8 +4804,7 @@ public class ActionController {
         				redir.addAttribute("result","RFA Add unsuccessful");
         			}
         			
-        			List<Object[]> oldRfaUploadList = service.getoldRfaUploadList(LabCode);
-             	    req.setAttribute("oldRfaUploadList", oldRfaUploadList);
+             	    redir.addAttribute("projectId", projectId);
         			
     	 	}catch (Exception e) {
     			e.printStackTrace();
@@ -4803,19 +4822,20 @@ public class ActionController {
         		try
         		{
         			String oldrfano=req.getParameter("rfano");
+        			String projectCode=req.getParameter("projectCode");
         			String rfafile=req.getParameter("file1");
         			String closurefile=req.getParameter("file2");
         			String rfaNo = oldrfano.replaceAll("/", "_");
         			res.setContentType("application/pdf");
         			File my_file=null;
         			if(rfafile!=null) {
-        				Path filepath = Paths.get(uploadpath,LabCode,"OldRFAFiles",rfaNo,rfafile);
-        				my_file = filepath.toFile();
+        				Path filepath1 = Paths.get(uploadpath,LabCode,"OldRFAFiles",projectCode,rfaNo,rfafile);
+        				my_file = filepath1.toFile();
         				res.setHeader("Content-Disposition", "inline; filename=\""+rfafile +"\"");
         			}
         			if(closurefile!=null) {
-        				Path filepath = Paths.get(uploadpath,LabCode,"OldRFAFiles",rfaNo,closurefile);
-        				my_file = filepath.toFile();
+        				Path filepath2 = Paths.get(uploadpath,LabCode,"OldRFAFiles",projectCode,rfaNo,closurefile);
+        				my_file = filepath2.toFile();
         				res.setHeader("Content-Disposition", "inline; filename=\""+closurefile+"\"");
         			}
         			OutputStream out = res.getOutputStream();
@@ -4841,6 +4861,8 @@ public class ActionController {
          			@RequestParam(name = "closurefile", required = false) MultipartFile closurefile,
      				@RequestParam("oldrfano") String oldrfano,
      				@RequestParam("rfaUploadId") String rfaUploadId,
+     				@RequestParam("projectId") String projectId,
+     				@RequestParam("projecCode") String projecCode,
      				@RequestParam("rfadate") String rfadate)throws Exception
         	{
             	String UserId = (String) ses.getAttribute("Username");
@@ -4851,12 +4873,13 @@ public class ActionController {
         			OldRfaUploadDto rfadto = new OldRfaUploadDto();
         			rfadto.setRfaFileUploadId(Long.parseLong(rfaUploadId));
         			rfadto.setLabCode(LabCode);
+        			rfadto.setProjecCode(projecCode);
         			rfadto.setRfaNo(oldrfano);
         			rfadto.setRfaDate(rfadate);
         			rfadto.setRfaFile(rfafile);
         			rfadto.setClosureFile(closurefile);
         			rfadto.setModifiedBy(UserId);
-        			
+        			        			
         			long count = service.oldRfaUploadEditSubmit(rfadto);
         			if(count>0) {
         				redir.addAttribute("result","RFA Edited successfully");
@@ -4864,8 +4887,7 @@ public class ActionController {
         				redir.addAttribute("result","RFA Edit unsuccessful");
         			}
         			
-        			List<Object[]> oldRfaUploadList = service.getoldRfaUploadList(LabCode);
-             	    req.setAttribute("oldRfaUploadList", oldRfaUploadList);
+             	    redir.addAttribute("projectId", projectId);
         			
     	 	}catch (Exception e) {
     			e.printStackTrace();
