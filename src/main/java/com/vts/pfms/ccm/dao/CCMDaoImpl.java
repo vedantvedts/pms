@@ -534,5 +534,22 @@ public class CCMDaoImpl implements CCMDao{
 			return null;
 		}
 	}
-	
+
+	private static final String GETPMRCEBCALENDARDATA = "CALL pfms_ccm_calendar_data(:MonthStartDate, :Meeting, :Days, :ClusterId)";
+	@Override
+	public List<Object[]> getEBPMRCCalendarData(String monthStartDate , String meeting, String clusterId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPMRCEBCALENDARDATA);
+			query.setParameter("MonthStartDate", monthStartDate);
+			query.setParameter("Meeting", meeting);
+			query.setParameter("Days", meeting.equalsIgnoreCase("EB")?180:90);
+			query.setParameter("ClusterId", clusterId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getEBPMRCCalendarData "+e);
+			return new ArrayList<Object[]>();
+		}
+	}
+
 }

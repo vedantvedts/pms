@@ -219,7 +219,7 @@ public class CCMServiceImpl implements CCMService{
 	        String UserId = (String)ses.getAttribute("Username");
 	        String labcode = (String)ses.getAttribute("labcode");
 
-	        String Path = labcode + "\\CCM\\";
+	        Path path = Paths.get(uploadpath, labcode, "CCM");
 	        
 	        // agenda 
 	        int i = 0;
@@ -248,7 +248,7 @@ public class CCMServiceImpl implements CCMService{
 	                MultipartFile attachment = fileMap.get("agenda[" + i + "].attachment");
 	                if (attachment != null && !attachment.isEmpty()) {
 	                    agenda.setFileName("File-" + timestampstr + "." + FilenameUtils.getExtension(attachment.getOriginalFilename()));
-	                    saveFile(uploadpath + Path, agenda.getFileName(), attachment);
+	                    saveFile1(path, agenda.getFileName(), attachment);
 	                } else {
 	                    agenda.setFileName(null);
 	                }
@@ -282,7 +282,7 @@ public class CCMServiceImpl implements CCMService{
 	                        MultipartFile subattachment = fileMap.get("agenda[" + i + "].subAgendas[" + j + "].attachment");
 	                        if (subattachment != null && !subattachment.isEmpty()) {
 	                            subagenda.setFileName("File-" + timestampstr2 + "." + FilenameUtils.getExtension(subattachment.getOriginalFilename()));
-	                            saveFile(uploadpath + Path, subagenda.getFileName(), subattachment);
+	                            saveFile1(path, subagenda.getFileName(), subattachment);
 	                        } else {
 	                            subagenda.setFileName(null);
 	                        }
@@ -353,6 +353,27 @@ public class CCMServiceImpl implements CCMService{
 		}
 	}
 
+	public static int saveFile1(Path uploadPath, String fileName, MultipartFile multipartFile) throws IOException {
+		logger.info(new Date() + "Inside SERVICE saveFile ");
+		int result = 1;
+
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
+		}
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			result = 0;
+			throw new IOException("Could not save image file: " + fileName, ioe);
+		} catch (Exception e) {
+			result = 0;
+			logger.error(new Date() + "Inside SERVICE saveFile " + e);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	@Override
 	public List<Object[]> getCCMScheduleAgendaListByCCMScheduleId(String ccmScheduleId) throws Exception {
 		
@@ -377,10 +398,11 @@ public class CCMServiceImpl implements CCMService{
 			Timestamp instant = Timestamp.from(Instant.now());
 	        String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-	        String Path = labcode + "\\CCM\\";
+	        Path path = Paths.get(uploadpath, labcode, "CCM");
+
 			if (attachment != null && !attachment.isEmpty()) {
                 agenda.setFileName("File-" + timestampstr + "." + FilenameUtils.getExtension(attachment.getOriginalFilename()));
-                saveFile(uploadpath + Path, agenda.getFileName(), attachment);
+                saveFile1(path, agenda.getFileName(), attachment);
             } 
 			return dao.addCCMScheduleAgenda(agenda);
 		}catch (Exception e) {
@@ -446,7 +468,8 @@ public class CCMServiceImpl implements CCMService{
 			String[] duration = req.getParameterValues("duration");
 			
 
-	        String Path = labcode + "\\CCM\\";
+	        Path path = Paths.get(uploadpath, labcode, "CCM");
+
 			int subPriority = dao.getMaxAgendaPriority(ccmScheduleId, scheduleAgendaId);
 			
 			int totalDuration = 0;
@@ -470,7 +493,7 @@ public class CCMServiceImpl implements CCMService{
 				
                 if (attachments[i] != null && !attachments[i].isEmpty()) {
                     agenda.setFileName("File-" + timestampstr + "." + FilenameUtils.getExtension(attachments[i].getOriginalFilename()));
-                    saveFile(uploadpath + Path, agenda.getFileName(), attachments[i]);
+                    saveFile1(path, agenda.getFileName(), attachments[i]);
                 } else {
                     agenda.setFileName(null);
                 }
@@ -582,24 +605,25 @@ public class CCMServiceImpl implements CCMService{
 		
 		List<Object[]> clusterLabList = dao.getClusterLabListByClusterId(clusterId);
 		String clusterLabCode = clusterLabList!=null && clusterLabList.size()>0 ?clusterLabList.stream().filter(e -> e[3].toString().equalsIgnoreCase("Y")).collect(Collectors.toList()).get(0)[2].toString():"";
-		String Path = clusterLabCode + "\\CCM\\Achievements\\";
 		
+        Path path = Paths.get(uploadpath, clusterLabCode, "CCM", "Achievements");
+
 		// Image file save handling
 		if (imageAttachment != null && !imageAttachment.isEmpty()) {
 			 achmnts.setImageName("Image-" + timestampstr + "." + imageAttachment.getOriginalFilename().split("\\.")[1]);
-             saveFile(uploadpath + Path, achmnts.getImageName(), imageAttachment);
+             saveFile1(path, achmnts.getImageName(), imageAttachment);
          }
 		
 		// PDF / PPT file save handling
 		if (pdfAttachment != null && !pdfAttachment.isEmpty()) {
 			 achmnts.setAttachmentName("Attachment-" + timestampstr + "." + pdfAttachment.getOriginalFilename().split("\\.")[1]);
-            saveFile(uploadpath + Path, achmnts.getAttachmentName(), pdfAttachment);
+            saveFile1(path, achmnts.getAttachmentName(), pdfAttachment);
         }
 		
 		// Video file save handling
 		if (videoAttachment != null && !videoAttachment.isEmpty()) {
 			achmnts.setVideoName("Video-" + timestampstr + "." + videoAttachment.getOriginalFilename().split("\\.")[1]);
-			saveFile(uploadpath + Path, achmnts.getVideoName(), videoAttachment);
+			saveFile1(path, achmnts.getVideoName(), videoAttachment);
 		}
 		
 		return dao.addCCMAchievements(achmnts);
@@ -659,4 +683,9 @@ public class CCMServiceImpl implements CCMService{
 		return dao.getPreviousScheduleMinutesIds(scheduleId);
 	}
 	
+	@Override
+	public List<Object[]> getEBPMRCCalendarData(String monthStartDate, String meeting, String clusterId) throws Exception {
+	
+		return dao.getEBPMRCCalendarData(monthStartDate, meeting, clusterId);
+	}
 }

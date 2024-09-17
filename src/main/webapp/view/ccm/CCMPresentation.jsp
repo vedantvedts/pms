@@ -341,12 +341,25 @@ input,select,table,div,label,span {
 		<div class="card shadow-nohover">
  			<div class="card-header" style="background-color: transparent;height: 3rem;">
  				<div class="row">
- 					<div class="col-md-2">
- 						<h3 class="text-dark" style="font-weight: bold;">CCM Presentation</h3>
+ 					<div class="col-md-3">
+ 						<h3 class="text-dark" style="font-weight: bold;">CCM Presentation
+ 							<a class="btn btn-info btn-sm shadow-nohover back mb-2" href="CCMModules.htm">
+	 							<i class="fa fa-home" aria-hidden="true" style="font-size: 1rem;"></i> 
+	 							CCM
+ 							</a> 
+ 						</h3>
  					</div>
- 					<div class="col-md-8"></div>
+ 					<div class="col-md-7"></div>
  					<div class="col-md-2 right">
-	 					
+	 					<form action="#" method="post">
+							<input type="hidden" name="ccmScheduleId" value="<%=ccmScheduleId %>">
+							<input type="hidden" name="committeeId" value="<%=committeeId %>">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				        									
+    						<button type="submit" class="btn btn-sm btn-outline-success" formaction="CCMAgendaPresentation.htm" formmethod="post" formtarget="_blank" title="Agenda Presentation">
+								<img alt="" src="view/images/presentation.png" style="width:19px !important">
+							</button>
+						</form>
  					</div>
  					
  				</div>
@@ -844,31 +857,198 @@ input,select,table,div,label,span {
 									<!-- ----------------------------------------------- DMC End --------------------------------------------------- -->
 									
 									<!-- ----------------------------------------------- EB Calendar --------------------------------------------------- -->	
-									<%} else if(tabName!=null && tabName.equalsIgnoreCase("EB Calendar")) { %>
-										<div class="container-fluid mt-3 tabpanes2">
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("EB Calendar")) { 
+										List<Object[]> ebCalendarData = (List<Object[]>) request.getAttribute("ebCalendarData");
+										String previousMonth = (String) request.getAttribute("previousMonth");
+										String currentMonth = (String) request.getAttribute("currentMonth");
+										int year = (int) request.getAttribute("year");
+									%>
+										<div class="container-fluid mt-3 tabpanes1">
 											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>EB Calendar</h5></th>
 													</tr>
+													<tr>
+														<th>Lab</th>
+														<th>EB Proposed - <%=previousMonth+" & "+year %></th>
+														<th>EB Held - <%=previousMonth+" & "+year %></th>
+														<th>EB Proposed - <%=currentMonth+" & "+year %></th>
+													</tr>
 												</thead>
+												<tbody>
+													<%if(ebCalendarData!=null && ebCalendarData.size()>0) {
+														for(Object[] obj : ebCalendarData) {
+													%>
+														<tr>
+															<td style="width: 10%;"><%=obj[0] %></td>
+															<td style="width: 30%;">
+																<%if(obj[1]!=null) {
+																	String[] split = obj[1].toString().split(", ");
+																	StringBuilder result = new StringBuilder();
+																	for (int i = 0; i < split.length; i++) {
+																        String[] parts = split[i].split("/");
+																        if (parts.length == 2) {
+																            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
+																            if (i < split.length - 1) {
+																                result.append(", ");
+																            }
+																        }
+																    }
+																	 out.print(result.toString());
+																} else {
+																    out.print("-");
+																} %>
+															</td>
+															<td style="width: 30%;">
+																<%if(obj[2]!=null) {
+																	String[] split = obj[2].toString().split(", ");
+																	StringBuilder result = new StringBuilder();
+																	for (int i = 0; i < split.length; i++) {
+																        String[] parts = split[i].split("/");
+																        if (parts.length == 2) {
+																            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
+																            if (i < split.length - 1) {
+																                result.append(", ");
+																            }
+																        }
+																    }
+																	 out.print(result.toString());
+																} else {
+																    out.print("-");
+																} %>
+															</td>
+															<td style="width: 30%;">
+																<%if(obj[3]!=null) {%><%=obj[3] %><%} %>
+																
+																<% if(obj[1]!=null) {
+																	String[] split = obj[1].toString().split(", ");
+																	StringBuilder result = new StringBuilder();
+																	for (int i = 0; i < split.length; i++) {
+																        String[] parts = split[i].split("/");
+																        if (parts.length == 2 && parts[1].equalsIgnoreCase("red")) {
+																            result.append("<span style=\"color: blue;").append("\">").append(parts[0]).append("</span>");
+																            if (i < split.length - 1) {
+																                result.append(", ");
+																            }
+																        }
+																    }
+																	 out.print((obj[3]!=null?", ":"")+result.toString());
+																} %>
+																<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
+															</td>
+														</tr>
+													<%} }else {%>
+														<tr>
+															<td colspan="4" class="center">No Data Available</td>
+														</tr>
+													<%} %>
+												</tbody>
 											</table>
 										</div>
-													
+										<div class="center mt-3 mb-2">
+											<span style="color: #f502f5;">Conducted as per Schedule</span> |
+											<span style="color: red;">Planned but Not Conducted</span> |
+											<span style="color: blue;">Carry over From Prev Month</span>
+										</div>				
 									<!-- ----------------------------------------------- EB Calendar End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- PMRC Calendar --------------------------------------------------- -->	
-									<%} else if(tabName!=null && tabName.equalsIgnoreCase("PMRC Calendar")) { %>
-										<div class="container-fluid mt-3 tabpanes2">
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("PMRC Calendar")) {
+										List<Object[]> pmrcCalendarData = (List<Object[]>) request.getAttribute("pmrcCalendarData");
+										String previousMonth = (String) request.getAttribute("previousMonth");
+										String currentMonth = (String) request.getAttribute("currentMonth");
+										int year = (int) request.getAttribute("year");
+
+									%>
+										<div class="container-fluid mt-3 tabpanes1">
 											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>PMRC Calendar</h5></th>
 													</tr>
+													<tr>
+														<th>Lab</th>
+														<th>PMRC Proposed - <%=previousMonth+" & "+year %></th>
+														<th>PMRC Held - <%=previousMonth+" & "+year %></th>
+														<th>PMRC Proposed - <%=currentMonth+" & "+year %></th>
+													</tr>
 												</thead>
+												<tbody>
+													<%if(pmrcCalendarData!=null && pmrcCalendarData.size()>0) {
+														for(Object[] obj : pmrcCalendarData) {
+													%>
+														<tr>
+															<td style="width: 10%;"><%=obj[0] %></td>
+															<td style="width: 30%;">
+																<%if(obj[1]!=null) {
+																	String[] split = obj[1].toString().split(", ");
+																	StringBuilder result = new StringBuilder();
+																	for (int i = 0; i < split.length; i++) {
+																        String[] parts = split[i].split("/");
+																        if (parts.length == 2) {
+																            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
+																            if (i < split.length - 1) {
+																                result.append(", ");
+																            }
+																        }
+																    }
+																	 out.print(result.toString());
+																} else {
+																    out.print("-");
+																} %>
+															</td>
+															<td style="width: 30%;">
+																<%if(obj[2]!=null) {
+																	String[] split = obj[2].toString().split(", ");
+																	StringBuilder result = new StringBuilder();
+																	for (int i = 0; i < split.length; i++) {
+																        String[] parts = split[i].split("/");
+																        if (parts.length == 2) {
+																            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
+																            if (i < split.length - 1) {
+																                result.append(", ");
+																            }
+																        }
+																    }
+																	 out.print(result.toString());
+																} else {
+																    out.print("-");
+																} %>
+															</td>
+															<td style="width: 30%;">
+																<%if(obj[3]!=null) {%><%=obj[3] %><%} %>
+																
+																<% if(obj[1]!=null) {
+																	String[] split = obj[1].toString().split(", ");
+																	StringBuilder result = new StringBuilder();
+																	for (int i = 0; i < split.length; i++) {
+																        String[] parts = split[i].split("/");
+																        if (parts.length == 2 && parts[1].equalsIgnoreCase("red")) {
+																            result.append("<span style=\"color: blue;").append("\">").append(parts[0]).append("</span>");
+																            if (i < split.length - 1) {
+																                result.append(", ");
+																            }
+																        }
+																    }
+																	 out.print((obj[3]!=null?", ":"")+result.toString());
+																} %>
+																<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
+															</td>
+														</tr>
+													<%} }else {%>
+														<tr>
+															<td colspan="4" class="center">No Data Available</td>
+														</tr>
+													<%} %>
+												</tbody>
 											</table>
 										</div>
-													
+										<div class="center mt-3 mb-2">
+											<span style="color: #f502f5;">Conducted as per Schedule</span> |
+											<span style="color: red;">Planned but Not Conducted</span> |
+											<span style="color: blue;">Carry over From Prev Month</span>
+										</div>				
 									<!-- ----------------------------------------------- PMRC Calendar End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- ASP Status --------------------------------------------------- -->	

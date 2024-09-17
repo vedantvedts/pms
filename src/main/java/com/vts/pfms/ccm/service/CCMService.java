@@ -49,6 +49,7 @@ public interface CCMService {
 	public long addCCMPresentationSlides(CCMPresentationSlides slide) throws Exception;
 	public Long getLastScheduleIdFromCurrentScheduleId(String ccmScheduleId) throws Exception;
 	public List<String> getPreviousScheduleMinutesIds(String scheduleId) throws Exception;
-	
+	public List<Object[]> getEBPMRCCalendarData(String monthStartDate, String meeting, String clusterId) throws Exception;
+
 	
 }

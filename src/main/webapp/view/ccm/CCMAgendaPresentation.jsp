@@ -42,9 +42,13 @@ body {
 input,select,table,div,label,span {
 	font-family : "Lato", Arial, sans-serif !important;
 }
+
+.content-header {
+	background-color: darkblue !important;
+}
 </style>
 </head>
-<body style="background-color: #F9F2DF66;">
+<body style="background-color: #e7f9ff;">
 	<%
 		FormatConverter fc = new FormatConverter();
 		SimpleDateFormat sdf = fc.getRegularDateFormat();
@@ -72,7 +76,7 @@ input,select,table,div,label,span {
 		//String previewFlag = (String)request.getParameter("previewFlag");
 		//slideShow = previewFlag!=null?previewFlag:slideShow;
 	
-		int cogListSize = 0;
+		 ArrayList<String> cogLabList = new ArrayList<>();
 	%>
 
 	<% String ses=(String)request.getParameter("result");
@@ -174,7 +178,7 @@ input,select,table,div,label,span {
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:19px;" >
-						<b style="margin-left: -35px;"><%="" %></b>
+						<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>Agenda</h3>
@@ -352,7 +356,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>Action Taken Report of CCM(<%=seqDate %>)</h3>
@@ -467,7 +471,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>Pending Points from Prev CCM</h3>
@@ -605,7 +609,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>DMC Approval</h3>
@@ -703,7 +707,12 @@ input,select,table,div,label,span {
 			<%} %>
 			<!-- ---------------------------------------- DMC Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- EB Calendar Slide ---------------------------------------------------  -->
-			<%if(slideNames.contains("EB Calendar")) { %>
+			<%if(slideNames.contains("EB Calendar")) { 
+				List<Object[]> ebCalendarData = (List<Object[]>) request.getAttribute("ebCalendarData");
+				String previousMonth = (String) request.getAttribute("previousMonth");
+				String currentMonth = (String) request.getAttribute("currentMonth");
+				int year = (int) request.getAttribute("year");
+			%>
 				<div class="carousel-item">
 	
 					<div class="content-header row ">
@@ -712,7 +721,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>EB Calendar</h3>
@@ -727,12 +736,105 @@ input,select,table,div,label,span {
 					</div>
 					
 					<div class="content" >
+						<div class="container-fluid mt-3 tabpanes1">
+							<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
+										<th colspan="6" style="border-radius: 1rem;"> <h5>EB Calendar</h5></th>
+									</tr> -->
+									<tr>
+										<th>Lab</th>
+										<th>EB Proposed - <%=previousMonth+" & "+year %></th>
+										<th>EB Held - <%=previousMonth+" & "+year %></th>
+										<th>EB Proposed - <%=currentMonth+" & "+year %></th>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(ebCalendarData!=null && ebCalendarData.size()>0) {
+										for(Object[] obj : ebCalendarData) {
+									%>
+										<tr>
+											<td style="width: 10%;"><%=obj[0] %></td>
+											<td style="width: 30%;">
+												<%if(obj[1]!=null) {
+													String[] split = obj[1].toString().split(", ");
+													StringBuilder result = new StringBuilder();
+													for (int i = 0; i < split.length; i++) {
+												        String[] parts = split[i].split("/");
+												        if (parts.length == 2) {
+												            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
+												            if (i < split.length - 1) {
+												                result.append(", ");
+												            }
+												        }
+												    }
+													 out.print(result.toString());
+												} else {
+												    out.print("-");
+												} %>
+											</td>
+											<td style="width: 30%;">
+												<%if(obj[2]!=null) {
+													String[] split = obj[2].toString().split(", ");
+													StringBuilder result = new StringBuilder();
+													for (int i = 0; i < split.length; i++) {
+												        String[] parts = split[i].split("/");
+												        if (parts.length == 2) {
+												            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
+												            if (i < split.length - 1) {
+												                result.append(", ");
+												            }
+												        }
+												    }
+													 out.print(result.toString());
+												} else {
+												    out.print("-");
+												} %>
+											</td>
+											<td style="width: 30%;">
+												<%if(obj[3]!=null) {%><%=obj[3] %><%} %>
+												
+												<% if(obj[1]!=null) {
+													String[] split = obj[1].toString().split(", ");
+													StringBuilder result = new StringBuilder();
+													for (int i = 0; i < split.length; i++) {
+												        String[] parts = split[i].split("/");
+												        if (parts.length == 2 && parts[1].equalsIgnoreCase("red")) {
+												            result.append("<span style=\"color: blue;").append("\">").append(parts[0]).append("</span>");
+												            if (i < split.length - 1) {
+												                result.append(", ");
+												            }
+												        }
+												    }
+													 out.print((obj[3]!=null?", ":"")+result.toString());
+												} %>
+												<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
+											</td>
+										</tr>
+									<%} }else {%>
+										<tr>
+											<td colspan="4" class="center">No Data Available</td>
+										</tr>
+									<%} %>
+								</tbody>
+							</table>
+						</div>
+						<div class="center mt-3 mb-2">
+							<span style="color: #f502f5;">Conducted as per Schedule</span> |
+							<span style="color: red;">Planned but Not Conducted</span> |
+							<span style="color: blue;">Carry over From Prev Month</span>
+						</div>				
 					</div>
 				</div>
 			<%} %>
 			<!-- ---------------------------------------- EB Calendar Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- PMRC Calendar Slide ---------------------------------------------------  -->
-			<%if(slideNames.contains("PMRC Calendar")) { %>
+			<%if(slideNames.contains("PMRC Calendar")) { 
+				List<Object[]> pmrcCalendarData = (List<Object[]>) request.getAttribute("pmrcCalendarData");
+				String previousMonth = (String) request.getAttribute("previousMonth");
+				String currentMonth = (String) request.getAttribute("currentMonth");
+				int year = (int) request.getAttribute("year");
+			%>
 				<div class="carousel-item">
 	
 					<div class="content-header row ">
@@ -741,7 +843,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>PMRC Calendar</h3>
@@ -756,6 +858,94 @@ input,select,table,div,label,span {
 					</div>
 					
 					<div class="content" >
+						<div class="container-fluid mt-3 tabpanes1">
+							<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
+										<th colspan="6" style="border-radius: 1rem;"> <h5>PMRC Calendar</h5></th>
+									</tr> -->
+									<tr>
+										<th>Lab</th>
+										<th>PMRC Proposed - <%=previousMonth+" & "+year %></th>
+										<th>PMRC Held - <%=previousMonth+" & "+year %></th>
+										<th>PMRC Proposed - <%=currentMonth+" & "+year %></th>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(pmrcCalendarData!=null && pmrcCalendarData.size()>0) {
+										for(Object[] obj : pmrcCalendarData) {
+									%>
+										<tr>
+											<td style="width: 10%;"><%=obj[0] %></td>
+											<td style="width: 30%;">
+												<%if(obj[1]!=null) {
+													String[] split = obj[1].toString().split(", ");
+													StringBuilder result = new StringBuilder();
+													for (int i = 0; i < split.length; i++) {
+												        String[] parts = split[i].split("/");
+												        if (parts.length == 2) {
+												            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
+												            if (i < split.length - 1) {
+												                result.append(", ");
+												            }
+												        }
+												    }
+													 out.print(result.toString());
+												} else {
+												    out.print("-");
+												} %>
+											</td>
+											<td style="width: 30%;">
+												<%if(obj[2]!=null) {
+													String[] split = obj[2].toString().split(", ");
+													StringBuilder result = new StringBuilder();
+													for (int i = 0; i < split.length; i++) {
+												        String[] parts = split[i].split("/");
+												        if (parts.length == 2) {
+												            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
+												            if (i < split.length - 1) {
+												                result.append(", ");
+												            }
+												        }
+												    }
+													 out.print(result.toString());
+												} else {
+												    out.print("-");
+												} %>
+											</td>
+											<td style="width: 30%;">
+												<%if(obj[3]!=null) {%><%=obj[3] %><%} %>
+												
+												<% if(obj[1]!=null) {
+													String[] split = obj[1].toString().split(", ");
+													StringBuilder result = new StringBuilder();
+													for (int i = 0; i < split.length; i++) {
+												        String[] parts = split[i].split("/");
+												        if (parts.length == 2 && parts[1].equalsIgnoreCase("red")) {
+												            result.append("<span style=\"color: blue;").append("\">").append(parts[0]).append("</span>");
+												            if (i < split.length - 1) {
+												                result.append(", ");
+												            }
+												        }
+												    }
+													 out.print((obj[3]!=null?", ":"")+result.toString());
+												} %>
+												<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
+											</td>
+										</tr>
+									<%} }else {%>
+										<tr>
+											<td colspan="4" class="center">No Data Available</td>
+										</tr>
+									<%} %>
+								</tbody>
+							</table>
+						</div>
+						<div class="center mt-3 mb-2">
+							<span style="color: #f502f5;">Conducted as per Schedule</span> |
+							<span style="color: red;">Planned but Not Conducted</span> |
+							<span style="color: blue;">Carry over From Prev Month</span>
+						</div>				
 					</div>
 				</div>
 			<%} %>
@@ -770,7 +960,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>ASP Status</h3>
@@ -799,7 +989,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>Closure Status</h3>
@@ -823,10 +1013,9 @@ input,select,table,div,label,span {
 				HashMap<String, List<Object[]> > cogList = (HashMap<String, List<Object[]> >) request.getAttribute("cashOutGoList");
 				int quarter = (int)request.getAttribute("quarter");
 				
-				cogListSize = cogList.size();
 				for (Map.Entry<String, List<Object[]>> entry : cogList.entrySet()) {
 				    List<Object[]> cashOutGoList = entry.getValue(); 
-				
+				    cogLabList.add(entry.getKey());
 			%>
 				<div class="carousel-item">
 	
@@ -836,7 +1025,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>Cash Out Go Status - <%=entry.getKey() %> </h3>
@@ -1038,7 +1227,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>Test & Trials</h3>
@@ -1121,7 +1310,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>Achievements</h3>
@@ -1202,7 +1391,7 @@ input,select,table,div,label,span {
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%="" %></b>
+							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-8">
 							<h3>Others</h3>
@@ -1247,8 +1436,8 @@ input,select,table,div,label,span {
 					<%
 					++count2;
 					char a = 'a';
-					for(int i=0;i<cogListSize;i++) {%>
-						<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=count2 %> (<%=a++ %>)</b></li>
+					for(int i=0;i<cogLabList.size();i++) {%>
+						<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName+" - "+cogLabList.get(i) %>"><b><%=count2 %> (<%=a++ %>)</b></li>
 					<%} %>
 				<%} else{%>
 					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=++count2 %></b></li>

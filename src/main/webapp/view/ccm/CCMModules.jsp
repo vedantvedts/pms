@@ -129,7 +129,7 @@ String committeeId = (String)request.getAttribute("committeeId");
  						event.preventDefault();
  					}
  				}else{
- 					window.open(url, '_blank');
+ 					window.location.href = url;
  				}
  				
  			} else if (url === 'CCMSchedule.htm') {
@@ -148,11 +148,12 @@ String committeeId = (String)request.getAttribute("committeeId");
  					}
  				}else{
  					url += '?' + parameters;
- 					window.open(url, '_blank');
+ 					window.location.href = url;
  				}
  			} else if(url === 'CCMPresentation.htm') {
  				url += '?' + parameters;
-				window.open(url, '_blank');
+				//window.open(url, '_blank');
+ 				window.location.href = url;
  			} else {
  				window.open(url, '_blank');
  			}

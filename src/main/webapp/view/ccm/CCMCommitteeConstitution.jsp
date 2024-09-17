@@ -111,14 +111,22 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
- 			<div class="card-header" style="background-color: #055C9D;">
+ 			<div class="card-header" style="background-color: transparent;">
  				<div class="row">
  					<div class="col-md-3">
- 						<h3 class="text-white">Committee Constitution</h3>
+ 						<h3 class="text-dark">Committee Constitution
+ 							<a class="btn btn-info btn-sm shadow-nohover back mb-2" href="CCMModules.htm">
+	 							<i class="fa fa-home" aria-hidden="true" style="font-size: 1rem;"></i> 
+	 							CCM
+ 							</a> 
+ 						</h3>
  					</div>
  					<div class="col-md-8"></div>
  					<div class="col-md-1">
- 						<a class="btn btn-info btn-sm shadow-nohover back" id="schedule-btn" href="CCMSchedule.htm?committeeFlag=Y&committeeMainId=<%=committeeMainId%>&committeeId=<%=committeeId%>">Schedule</a>
+ 						<a class="btn btn-info btn-sm shadow-nohover back" id="schedule-btn" href="CCMSchedule.htm?committeeFlag=Y&committeeMainId=<%=committeeMainId%>&committeeId=<%=committeeId%>">
+ 							<i class="fa fa-clock-o" aria-hidden="true"></i>
+ 							Schedule
+ 						</a>
  					</div>
  				</div>
        		</div>

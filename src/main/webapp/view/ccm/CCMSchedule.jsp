@@ -126,7 +126,7 @@ input,select,table,div,label,span {
 }
 
 .fw-bold {
-	font-weight: bold;
+	font-weight: bold !important;
 }
 .select2-selection__rendered{
 	text-align: left !important;
@@ -363,7 +363,12 @@ if(ccmSchedule!=null) {
  			<div class="card-header" style="background-color: transparent;height: 3rem;">
  				<div class="row">
  					<div class="col-md-2">
- 						<h3 class="text-dark" style="font-weight: bold;">Schedule CCM</h3>
+ 						<h3 class="text-dark" style="font-weight: bold;">Schedule CCM
+ 							<a class="btn btn-info btn-sm shadow-nohover back mb-2" href="CCMModules.htm">
+	 							<i class="fa fa-home" aria-hidden="true" style="font-size: 1rem;"></i> 
+	 							CCM
+ 							</a> 
+ 						</h3>
  					</div>
  					<div class="col-md-8"></div>
  					<div class="col-md-2 right">

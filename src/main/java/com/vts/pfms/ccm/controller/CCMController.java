@@ -375,7 +375,8 @@ public class CCMController {
 
 			String file = agenda.getFileName();
 			String fileExtention = "."+ (file.split("\\.")[1]);
-			String filePath = uploadpath+labcode +"\\CCM\\";
+			//String filePath = uploadpath+labcode +"\\CCM\\";
+			String filePath = Paths.get(uploadpath, labcode, "CCM").toString();
 			String fileName = "Annex-"+(count)+(subCount!=null && !subCount.equalsIgnoreCase("0")?("-"+subCount):"");
 			
 			if(fileExtention.equalsIgnoreCase(".pdf"))
@@ -620,12 +621,14 @@ public class CCMController {
 	{
     	String UserId = (String) ses.getAttribute("Username");
     	String labcode = (String)ses.getAttribute("labcode");
+    	String clusterid = (String)ses.getAttribute("clusterid");
 		logger.info(new Date() +"Inside CCMAgendaPresentation.htm "+UserId);		
     	try {
     		String ccmScheduleId = req.getParameter("ccmScheduleId");
     		String ccmCommitteeId = req.getParameter("committeeId");
     		
-    		req.setAttribute("ccmScheduleData", service.getCCMScheduleById(ccmScheduleId));
+    		CommitteeSchedule ccmSchedule = service.getCCMScheduleById(ccmScheduleId);
+    		req.setAttribute("ccmScheduleData", ccmSchedule);
 	    	req.setAttribute("labInfo", printservice.LabDetailes(labcode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
 	    	req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
@@ -634,6 +637,12 @@ public class CCMController {
 	    	req.setAttribute("ccmScheduleId", ccmScheduleId);
 	    	req.setAttribute("ccmCommitteeId", ccmCommitteeId);
 	    	
+	    	LocalDate now = LocalDate.now();
+	    	LocalDate scheduleDate = LocalDate.parse(ccmSchedule.getScheduleDate().toString());
+			
+	    	req.setAttribute("previousMonth", scheduleDate.minusMonths(1).getMonth().toString());
+			req.setAttribute("currentMonth", scheduleDate.getMonth().toString());
+			req.setAttribute("year", scheduleDate.getYear());
 	    	/* ----------------------- ATR Start -------------------------- */
     			
 			List<Object[]> ccmMeetingList = printservice.ReviewMeetingList("0", "CCM");
@@ -680,11 +689,23 @@ public class CCMController {
     			
     		/* ----------------------- DMC End -------------------------- */
 			
+			/* ----------------------- EB Calendar Start -------------------------- */
+			
+			req.setAttribute("ebCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "EB", clusterid));
+    		
+    		/* ----------------------- EB Calendar End -------------------------- */
+    		
+    		/* ----------------------- PMRC Calendar Start -------------------------- */
+
+			req.setAttribute("pmrcCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "PMRC", clusterid));
+    		
+    		/* ----------------------- PMRC Calendar End -------------------------- */
+    		
 			/* ----------------------- Cash Out Go Status Start -------------------------- */
     	
 			req.setAttribute("cashOutGoList", service.getCashOutGoList());
 			
-			LocalDate now = LocalDate.now();
+			
 			int monthValue = now.getMonthValue();
 			int quarter = 1;
 			
@@ -770,7 +791,7 @@ public class CCMController {
          		for (Object []obj:ReviewMeetingList) {
          			mapDMC.put(++dmcCount, obj[3].toString());
          		}
-         		
+       
     			req.setAttribute("committeeData", printservice.getCommitteeData(committeeIdDMC));
     			req.setAttribute("dmcActions", printservice.LastPMRCActions("0", committeeIdDMC));
         		//req.setAttribute("latestScheduleMinutesIds", service.getLatestScheduleMinutesIds(scheduleId+""));
@@ -784,13 +805,21 @@ public class CCMController {
 
     		/* ----------------------- EB Calendar Start -------------------------- */
     		else if(tabName.equalsIgnoreCase("EB Calendar")) {
-    			
+    			LocalDate now = LocalDate.now();
+    			req.setAttribute("ebCalendarData", service.getEBPMRCCalendarData(now.withDayOfMonth(1).toString(), "EB", clusterid));
+    			req.setAttribute("previousMonth", now.minusMonths(1).getMonth().toString());
+    			req.setAttribute("currentMonth", now.getMonth().toString());
+    			req.setAttribute("year", now.getYear());
     		}
     		/* ----------------------- EB Calendar End -------------------------- */
     		
     		/* ----------------------- PMRC Calendar Start -------------------------- */
     		else if(tabName.equalsIgnoreCase("PMRC Calendar")) {
-    			
+    			LocalDate now = LocalDate.now();
+    			req.setAttribute("pmrcCalendarData", service.getEBPMRCCalendarData(now.withDayOfMonth(1).toString(), "PMRC", clusterid));
+    			req.setAttribute("previousMonth", now.minusMonths(1).getMonth().toString());
+    			req.setAttribute("currentMonth", now.getMonth().toString());
+    			req.setAttribute("year", now.getYear());
     		}
     		/* ----------------------- PMRC Calendar End -------------------------- */
     		
@@ -1323,8 +1352,8 @@ public class CCMController {
 			String clusterLabCode = clusterLabList!=null && clusterLabList.size()>0 ?clusterLabList.stream().filter(e -> e[3].toString().equalsIgnoreCase("Y")).collect(Collectors.toList()).get(0)[2].toString():"";
 			
 			String fileName = attachmentName.equalsIgnoreCase("pdf")?achmnts.getAttachmentName():(attachmentName.equalsIgnoreCase("video")?achmnts.getVideoName():achmnts.getImageName());
-			String filePath = uploadpath+clusterLabCode +"\\CCM\\Achievements\\";
-			 
+			//String filePath = uploadpath+clusterLabCode +"\\CCM\\Achievements\\";
+			String filePath = Paths.get(uploadpath, clusterLabCode, "CCM", "Achievements").toString(); 
 			File my_file = null;
 			
 			Path filepath = null;
