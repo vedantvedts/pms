@@ -154,7 +154,7 @@ String seslabid=(String)session.getAttribute("labid");
               <div class="form-group">
 					<label >Division:<span class="mandatory" style="color: red;">*</span></label>
 					<select class="form-control selectdee" name="Division" id="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
-									<option value="" disabled="disabled" selected="selected" hidden="true">--Select--</option>
+									<option value="0" selected="selected" hidden="true">--Select--</option>
 								<% for ( Object[]  obj :DivisionList) {%>
 								<option value="<%=obj[0] %>" <%if(OfficerEditData[6].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>> <%=obj[1] %></option>
 								<%} %>
@@ -166,7 +166,7 @@ String seslabid=(String)session.getAttribute("labid");
 	<div class="form-group">
 		<label >Superior Officer:<span class="mandatory" style="color: red;">*</span></label>
 		<select class="form-control selectdee" name="superiorOfficer" id="superiorOfficer" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
-			<option value="" disabled="disabled" selected="selected" hidden="true">--Select--</option>
+			<option value="0" selected="selected" hidden="true">--Select--</option>
 			<% for ( Object[]  obj :OfficerList) {%>
 				<option value="<%=obj[0] %>" <%if(OfficerEditData[12].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>><%=obj[2]+", "+obj[3] %></option>
 			<%} %>

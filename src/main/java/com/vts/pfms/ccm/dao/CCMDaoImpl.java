@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.ccm.model.CCMAchievements;
+import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeSchedule;
@@ -384,7 +385,7 @@ public class CCMDaoImpl implements CCMDao{
 		}
 		
 	}
-
+	
 	@Override
 	public long addCCMAchievements(CCMAchievements achmnts) throws Exception {
 		try {
@@ -552,4 +553,72 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 
+	@Override
+	public CCMClosureStatus getCCMClosureStatusById(String ccmClosureId) throws Exception {
+		try {
+			return manager.find(CCMClosureStatus.class, Long.parseLong(ccmClosureId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getCCMClosureStatusById "+e);
+			return null;
+		}
+		
+	}
+
+	@Override
+	public long addCCMClosureStatus(CCMClosureStatus  closure) throws Exception {
+		try {
+			manager.persist(closure);
+			manager.flush();
+			return closure.getCCMClosureId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl addCCMClosureStatus "+e);
+			return 0;
+		}
+	}
+
+	private static final String GETCLOSURESTATUSLIST = "SELECT a.CCMClosureId, a.LabCode, b.ProjectCode, b.ProjectShortName, b.ProjectName, \r\n"
+			+ "(SELECT c.Category FROM pfms_category c WHERE b.ProjectCategory=c.CategoryId LIMIT 1) AS 'Category', b.TotalSanctionCost,\r\n"
+			+ "( SELECT CONCAT(IFNULL(CONCAT(d.title,' '),(IFNULL(CONCAT(d.Salutation, ' '), ''))), d.empname,', ', e.Designation) FROM employee d,employee_desig e WHERE d.EmpId=b.ProjectDirector AND d.DesigId=e.DesigId LIMIT 1) AS 'PD',\r\n"
+			+ "b.SanctionDate, b.PDC, a.Recommendation, a.TCRStatus, a.ACRStatus, a.ActivityStatus\r\n"
+			+ "FROM pfms_ccm_closure a, project_master b WHERE a.ProjectId=b.Projectid AND a.IsActive=1 AND a.ScheduleId=:ScheduleId ORDER BY a.LabCode, a.ProjectId\r\n"
+			+ "";
+	@Override
+	public HashMap<String, List<Object[]> > getClosureStatusList(String scheduleId) throws Exception {
+		
+		HashMap<String, List<Object[]> > cogList = new HashMap<String, List<Object[]>>();
+		try {
+			
+			Query query = manager.createNativeQuery(GETCLOSURESTATUSLIST);
+			query.setParameter("ScheduleId", scheduleId);
+			List<Object[]> list = (List<Object[]>)query.getResultList();
+			
+			if(list!=null && list.size()>0) {
+				 // Group by LabCode
+	            cogList = list.stream().collect(Collectors.groupingBy(obj -> obj[1].toString(), HashMap::new, Collectors.toList()));
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getClosureStatusList "+e);
+		}
+		return cogList;
+	}
+
+	private static final String CCMCLOSURESTATUSDELETE = "UPDATE pfms_ccm_closure SET IsActive=0 WHERE CCMClosureId=:CCMClosureId";
+	@Override
+	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(CCMCLOSURESTATUSDELETE);
+			query.setParameter("CCMClosureId", ccmClosureId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl ccmClosureStatusDelete "+e);
+			return 0;
+		}
+		
+	}
+	
 }

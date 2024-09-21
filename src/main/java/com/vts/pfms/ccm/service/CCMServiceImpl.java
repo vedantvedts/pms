@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.ccm.dao.CCMDao;
 import com.vts.pfms.ccm.model.CCMAchievements;
+import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
 import com.vts.pfms.committee.dao.CommitteeDao;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
@@ -688,4 +689,67 @@ public class CCMServiceImpl implements CCMService{
 	
 		return dao.getEBPMRCCalendarData(monthStartDate, meeting, clusterId);
 	}
+
+	@Override
+	public CCMClosureStatus getCCMClosureStatusById(String ccmClosureId) throws Exception {
+		
+		return dao.getCCMClosureStatusById(ccmClosureId);
+	}
+	
+	@Override
+	public long addCCMClosureStatus(HttpServletRequest req, HttpSession ses) throws Exception {
+		String userId = (String)ses.getAttribute("Username");
+		try {
+			String scheduleId = req.getParameter("scheduleId");
+			String[] labCode = req.getParameterValues("labCode");
+			String[] projectId = req.getParameterValues("projectId");
+			String[] recommendation = req.getParameterValues("recommendation");
+			String[] tcrStatus = req.getParameterValues("tcrStatus");
+			String[] acrStatus = req.getParameterValues("acrStatus");
+			String[] activityStatus = req.getParameterValues("activityStatus");
+			
+			for(int i=0;i<labCode.length; i++) {
+				CCMClosureStatus  closure = new CCMClosureStatus();
+				closure.setScheduleId(Long.parseLong(scheduleId));
+				closure.setLabCode(labCode[i]);
+				closure.setProjectId(projectId[i]!=null?Long.parseLong(projectId[i]):-1);
+				closure.setRecommendation(recommendation[i]);
+				closure.setTCRStatus(tcrStatus[i]);
+				closure.setACRStatus(acrStatus[i]);
+				closure.setActivityStatus(activityStatus[i]);
+				closure.setCreatedBy(userId);
+				closure.setCreatedDate(sdtf.format(new Date()));
+				closure.setIsActive(1);
+                
+				dao.addCCMClosureStatus(closure);
+			}
+			
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMServiceImpl addCCMClosureStatus "+userId, e);
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public HashMap<String, List<Object[]>> getClosureStatusList(String scheduleId) throws Exception {
+		
+		return dao.getClosureStatusList(scheduleId);
+	}
+
+	@Override
+	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception {
+		
+		return dao.ccmClosureStatusDelete(ccmClosureId);
+	}
+
+	@Override
+	public long addCCMClosureStatus(CCMClosureStatus closure) throws Exception {
+		
+		return dao.addCCMClosureStatus(closure);
+	}
+	
 }

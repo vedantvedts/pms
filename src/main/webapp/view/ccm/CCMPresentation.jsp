@@ -432,13 +432,14 @@ input,select,table,div,label,span {
 									    }
 										
 										List<String> latestScheduleMinutesIds = (List<String>) request.getAttribute("latestScheduleMinutesIds");
+										List<String> currentScheduleMinutesIds = (List<String>) request.getAttribute("currentScheduleMinutesIds");
 										
 										Map<String, List<Object[]>> ccmActionsToListMap = ccmActions!=null && ccmActions.size()>0?ccmActions.stream()
 																						  .filter(e -> latestScheduleMinutesIds.contains(e[18].toString()))
 																						  .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
 										
 										Map<String, List<Object[]>> prevccmActionsToListMap = ccmActions!=null && ccmActions.size()>0?ccmActions.stream()
-																							 .filter(e -> !e[9].toString().equalsIgnoreCase("C") && !latestScheduleMinutesIds.contains(e[18].toString()))
+																							 .filter(e -> !e[9].toString().equalsIgnoreCase("C") && !latestScheduleMinutesIds.contains(e[18].toString()) && !currentScheduleMinutesIds.contains(e[18].toString()) )
 																							 .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
 										
 										Committee committee = (Committee) request.getAttribute("committeeData");
@@ -1067,7 +1068,8 @@ input,select,table,div,label,span {
 									
 									<!-- ----------------------------------------------- Closure Status --------------------------------------------------- -->	
 									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Closure Status")) { 
-											
+										String labCode = (String)request.getAttribute("labCode");
+										List<Object[]> closureStatusList = (List<Object[]>)request.getAttribute("closureStatusList");	
 									%>
 										<div class="container-fluid mt-3 tabpanes1">
 											<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
@@ -1075,20 +1077,82 @@ input,select,table,div,label,span {
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="8" style="border-radius: 1rem;"> <h5>Closure Status</h5></th>
 													</tr>
+													<%if(clusterLab.equalsIgnoreCase("Y")) {%>
+														<tr style="background-color: #ffff;">
+															<td colspan="8" >
+																
+																<div style="display: inline-flex; align-items: flex-end;float: right;">
+																	<form action="CCMPresentation.htm" method="get">
+																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+												     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+												     					<input type="hidden" name="tabName" value="<%=tabName%>">
+												     					<div style="display: inline-flex; align-items: flex-end;">
+																			<label>Lab : </label>
+																			&nbsp;
+																			<select class="form-control selectdee" id="labCodeClosureStatus" name="labCode" onchange="this.form.submit()" required style="width: 200px;">
+																				<option value="0" disabled="disabled">---Select---</option>
+																				<%if(clusterLabList!=null && clusterLabList.size()>0) {
+																					for(Object[] obj : clusterLabList) {
+																				%>
+																					<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
+																				<%} }%>
+																			</select>
+																		</div>
+																	</form>
+																</div>
+															
+															</td>
+														</tr>
+													<%} %>	
 													<tr>
 														<th>Lab</th>
 														<th>Project</th>
-														<th>Date of Sanction /<br> PDC</th>
+														<th>DoS /<br> PDC</th>
 														<th>Recommendation</th>
 														<th>TCR Status</th>
 														<th>ACR Status</th>
 														<th>Activity Status</th>
+														<th>Action</th>
 													</tr>
 												</thead>
 												<tbody>
+													<%if(closureStatusList!=null && closureStatusList.size()>0) { 
+														for(Object[] obj : closureStatusList) {
+													%>
 														<tr>
-															<td colspan="7" class="center">No Data Available</td>
+															<td><%=obj[1]!=null?obj[1]:"-" %></td>
+															<td>
+																<%=obj[3]!=null?obj[3]:"-" %> <br>
+																Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
+																Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(obj[6].toString())/10000000):"-" %> (In Cr) <br>
+																PD&emsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> 
+															</td>
+															<td class="center">
+																<%=obj[8]!=null?obj[8]:"-" %> / <br> <%=obj[9]!=null?obj[9]:"-" %> 
+															</td>
+															<td><%=obj[10]!=null?obj[10]:"-" %></td>
+															<td><%=obj[10]!=null?obj[11]:"-" %></td>
+															<td><%=obj[10]!=null?obj[12]:"-" %></td>
+															<td><%=obj[10]!=null?obj[13]:"-" %></td>
+															<td class="center">
+																<form action="#">
+																	<input type="hidden" name="action" value="Edit">
+																	<input type="hidden" name="tabName" value="<%=tabName%>">
+																	<button type="button" class="btn btn-lg" formmethod="post" data-toggle="tooltip" data-placement="top" title="Edit Closure Status"
+																	 onclick="openClosureStatusModalEdit('<%=obj[0]%>', '<%=obj[1]%>', '<%=obj[3]%>', '<%=obj[10]%>', '<%=obj[11]%>', '<%=obj[12]%>', '<%=obj[13]%>')">
+																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+																	</button>
+																	<button type="submit" class="btn btn-lg" name="ccmClosureId" value="<%=obj[0] %>" formmethod="get" formaction="CCMClosureStatusDelete.htm" onclick="return confirm('Are you sure To Delete?')" data-toggle="tooltip" data-placement="top" title="Delete Closure Status"> 
+																		<i class="fa fa-trash" aria-hidden="true"></i>
+																	</button>
+																</form>
+															</td>
 														</tr>
+													<%} } else{%>
+														<tr>
+															<td colspan="8" class="center">No Data Available</td>
+														</tr>
+													<%} %>	
 												</tbody>
 											</table>
 										</div>
@@ -1104,8 +1168,9 @@ input,select,table,div,label,span {
 											</div>
 										</div>	
 										
+										<!-- ------------------------------------------------------------- Closure Status Modal (Add)  ------------------------------------------------------------------------- -->
 										<div class="modal fade bd-example-modal-lg" id="closureStatusModal" tabindex="-1" role="dialog" aria-labelledby="closureStatusModal" aria-hidden="true" style="margin-top: 5%;">
-											<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
+											<div class="modal-dialog modal-lg" role="document" style="max-width: 1400px;">
 												<div class="modal-content">
 													<div class="modal-header bg-primary text-light">
 											        	<h5 class="modal-title">Closure Status</h5>
@@ -1118,36 +1183,126 @@ input,select,table,div,label,span {
 									     					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 									     					<input type="hidden" name="scheduleId" value="<%=ccmScheduleId%>">
 									     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
-									     					<input type="hidden" name="ccmClosureId" id="ccmClosureId">
+									     					<input type="hidden" name="tabName" value="<%=tabName%>">
 									     					
-								     						<div class="row">
-								     							<div class="col-md-1">
-								     								<label class="mt-2">Lab: </label>
-								     							</div>
-								     							<div class="col-md-3 mb-2 labCodeSelectDiv">
-																	<select class="form-control selectdee" id="labCode" name="labCode" required style="width: 200px;" <%if(clusterLab.equalsIgnoreCase("N")) {%> disabled<%} %>>
-																		<option value="0">---Select---</option>
-																		<%if(clusterLabList!=null && clusterLabList.size()>0) {
-																			for(Object[] obj : clusterLabList) {
-																		%>
-																			<option value="<%=obj[2]%>" <%if(labcode.equalsIgnoreCase(obj[2].toString())) {%>selected <%} %> ><%=obj[2] %></option>
-																		<%} }%>
-																	</select>
-								     							</div>
-								     							<div class="col-md-3 mt-2 labCodeSpanDiv left" style="display: none;">
-								     								<span id="showLabCode"></span>
-								     							</div>
-								     							<div class="col-md-8"></div>
-								     						</div>
-										     					
+									     					<table class="table table-hover table-bordered" style="width: 100%;" id="closureStatusTable">
+									     						<thead>
+										     						<tr>
+										     							<th style="width: 5%;">Lab <span class="mandatory">*</span></th>
+										     							<th style="width: 10%;">Project <span class="mandatory">*</span></th>
+										     							<th style="width: 20%;">Recommendation <span class="mandatory">*</span></th>
+										     							<th style="width: 20%;">TCR Status <span class="mandatory">*</span></th>
+										     							<th style="width: 20%;">ACR Status <span class="mandatory">*</span></th>
+										     							<th style="width: 20%;">Status of Activities <span class="mandatory">*</span></th>
+										     							<th style="width: 5%;"> 
+																			<button type="button" class="btn btn-sm tr_clone_add_closure_status" name="add" data-toggle="tooltip" data-placement="top" title="Add New Closure Status"> <i class="btn fa fa-plus" style="color: green; padding: 0px  ;"></i></button>
+																		</th>
+										     						</tr>
+									     						</thead>
+									     						<tbody class="tbody_clone_closure_status">
+									     							<tr class="tr_clone_closure_status">
+									     								<td class="left">
+									     									<select class="form-control selectitems labCodeClosure" id="labCodeClosure_1" name="labCode" required style="width: 100px;" onchange="getProjectList('1')">
+																				<%if(clusterLab.equalsIgnoreCase("N")) { 
+																					clusterLabList = clusterLabList.stream().filter(e -> e[2].toString().equalsIgnoreCase(labcode)).collect(Collectors.toList()) ;
+																				}%>
+																				<option value="" disabled selected>---Select---</option>
+																				<%if(clusterLabList!=null && clusterLabList.size()>0) {
+																					for(Object[] obj : clusterLabList) {
+																				%>
+																					<option value="<%=obj[2]%>" <%if(labcode.equalsIgnoreCase(obj[2].toString())) {%>selected <%} %> ><%=obj[2] %></option>
+																				<%} }%>
+																			</select>
+									     								</td>
+									     								<td>
+									     									<select class="form-control selectitems projectId" id="projectId_1" name="projectId" required style="width: 200px;">
+										  										<option disabled="disabled" value="" selected="selected">--Select--</option>
+										  										<!-- <option value="0">General</option> -->
+										  									</select>
+									     								</td>
+									     								<td>
+									     									<input type="text" class="form-control"  name="recommendation" placeholder="Enter Status" maxlength="1000" required>
+									     								</td>
+									     								<td>
+									     									<input type="text" class="form-control"  name="tcrStatus" placeholder="Enter Status" maxlength="1000" required>
+									     								</td>
+									     								<td>
+									     									<input type="text" class="form-control"  name="acrStatus" placeholder="Enter Status" maxlength="1000" required>
+									     								</td>
+									     								<td>
+									     									<input type="text" class="form-control"  name="activityStatus" placeholder="Enter Status" maxlength="1000" required>
+									     								</td>
+									     								<td class="center">
+																			<button type="button" class="btn btn-sm tr_clone_rem_closure_status" name="sub"  data-toggle="tooltip" data-placement="top" title="Remove Closure Status"> <i class="btn fa fa-minus" style="color: red;padding: 0px  ;"> </i></button>
+																		</td>
+									     							</tr>
+									     						</tbody>
+									     					</table>
+										     				
 											         		<div class="center mt-2">
-											         			<button type="submit" name="action" value="Add" class="btn btn-sm submit btn-closurestatus">Submit</button>
+											         			<button type="submit" name="action" value="Add" class="btn btn-sm submit btn-closurestatus" onclick="return confirm('Are you Sure to Submit?')">Submit</button>
 											         		</div>
 										         		</form>
 										         	</div>
 									    		</div>
 									  		</div>
-										</div>			
+										</div>	
+										<!-- ------------------------------------------------------------- Closure Status Modal (Add) End ------------------------------------------------------------------------- -->
+										
+										<!-- ------------------------------------------------------------- Closure Status Modal (Edit)  ------------------------------------------------------------------------- -->
+										<div class="modal fade bd-example-modal-lg" id="closureStatusModalEdit" tabindex="-1" role="dialog" aria-labelledby="closureStatusModalEdit" aria-hidden="true" style="margin-top: 5%;">
+											<div class="modal-dialog modal-lg" role="document" style="max-width: 1150px;">
+												<div class="modal-content">
+													<div class="modal-header bg-primary text-light">
+											        	<h5 class="modal-title">Closure Status Edit - <span id="closureStatusEditHeading"></span> </h5>
+												        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+												          <span aria-hidden="true" style="color:red;">&times;</span>
+												        </button>
+											      	</div>
+									     			<div class="modal-body">
+									     				<form action="CCMClosureStatusEditSubmit.htm" method="post" id="closureStatusFormEdit">
+									     					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+									     					<input type="hidden" name="scheduleId" value="<%=ccmScheduleId%>">
+									     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+									     					<input type="hidden" name="tabName" value="<%=tabName%>">
+									     					<input type="hidden" name="ccmClosureId" id="ccmClosureId">
+									     					
+									     					<div class="form-group">
+									     						<div class="row">
+										     						<div class="col-md-2 left"><label>Recommendation <span class="mandatory">*</span></label></div>
+										     						<div class="col-md-4">
+										     							<input type="text" class="form-control"  name="recommendation" id="recommendationEdit" placeholder="Enter Status" maxlength="1000" required>
+										     						</div>
+										     						<div class="col-md-2 left"><label>TCR Status <span class="mandatory">*</span></label></div>
+										     						<div class="col-md-4">
+										     							<input type="text" class="form-control"  name="tcrStatus" id="tcrStatusEdit" placeholder="Enter Status" maxlength="1000" required>
+										     						</div>
+										     					</div>
+									     					</div>
+									     					
+									     					<div class="form-group">
+										     					<div class="row">
+										     						<div class="col-md-2 left"><label>ACR Status: <span class="mandatory">*</span></label></div>
+										     						<div class="col-md-4">
+										     							<input type="text" class="form-control"  name="acrStatus" id="acrStatusEdit" placeholder="Enter Status" maxlength="1000" required>
+										     						</div>
+										     						<div class="col-md-2 left"><label>Status of Activities <span class="mandatory">*</span></label></div>
+										     						<div class="col-md-4">
+										     							<input type="text" class="form-control"  name="activityStatus" id="activityStatusEdit" placeholder="Enter Status" maxlength="1000" required>
+										     						</div>
+										     					</div>
+						     								</div>	
+										     				
+											         		<div class="center mt-2">
+											         			<button type="submit" name="action" value="Add" class="btn btn-sm submit btn-closurestatus" onclick="return confirm('Are you Sure to Submit?')">Submit</button>
+											         		</div>
+										         		</form>
+										         	</div>
+									    		</div>
+									  		</div>
+										</div>	
+										<!-- ------------------------------------------------------------- Closure Status Modal (Edit) End ------------------------------------------------------------------------- -->
+												
 									<!-- ----------------------------------------------- Closure Status End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Cash Out Go Status --------------------------------------------------- -->	
@@ -1165,8 +1320,8 @@ input,select,table,div,label,span {
 													</tr>
 													<%if(clusterLab.equalsIgnoreCase("Y") || (cashOutGoList!=null && cashOutGoList.size()==0)) {%>
 														<tr style="background-color: #ffff;">
-															<th colspan="<%=12-quarter %>" >
-																<%if(cashOutGoList!=null && cashOutGoList.size()==0) {%>
+															<td colspan="<%=12-quarter %>" >
+																<%if((cashOutGoList!=null && cashOutGoList.size()==0) || cashOutGoList==null) {%>
 																	<div style="display: inline-flex; align-items: flex-start;float: left;">
 																		<form action="CCMCashOutGoStatusExcelUpload.htm" method="post" id="excelForm" enctype="multipart/form-data">
 																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
@@ -1216,7 +1371,7 @@ input,select,table,div,label,span {
 																		</form>
 																	</div>
 																<%} %>	
-															</th>
+															</td>
 														</tr>
 													<%} %>	
 													<tr>
@@ -1538,17 +1693,77 @@ input,select,table,div,label,span {
 									<!-- ----------------------------------------------- Achievements End--------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Others --------------------------------------------------- -->	
-									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Others")) { %>
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("Others")) { 
+										List<CCMAchievements> ccmAchievementsList = (List<CCMAchievements>) request.getAttribute("ccmAchievementsList");
+										
+										if(clusterLabList!=null && clusterLabList.size()>0) {
+
+											Set<String> achmntLabCodes = ccmAchievementsList.stream().map(CCMAchievements::getLabCode).collect(Collectors.toSet());
+
+											// Filter the clusterLabList to exclude records already in ccmAchievementsList
+											clusterLabListFilter = clusterLabList.stream().filter(e -> !achmntLabCodes.contains(e[2].toString())).collect(Collectors.toList());
+										}
+										
+										if(clusterLab.equalsIgnoreCase("N")){
+											ccmAchievementsList = ccmAchievementsList.stream().filter(e -> e.getLabCode().equalsIgnoreCase(labcode)).collect(Collectors.toList());
+										}
+									%>
 										<div class="container-fluid mt-3 tabpanes2">
 											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>Others</h5></th>
 													</tr>
+													<tr >
+														<th style="width: 5%;">SN</th>
+														<th style="width: 15%;">Lab</th>
+														<th style="width: 70%;">Details</th>
+														<th style="width: 10%;">Action</th>
+													</tr>
 												</thead>
+												<tbody>
+													<%if(ccmAchievementsList!=null && ccmAchievementsList.size()>0) {
+														int slno=0;
+														for(CCMAchievements achmnts : ccmAchievementsList) {
+													%>
+														<tr>
+															<td class="center"><%=++slno %></td>
+															<td><%=achmnts.getLabCode() %></td>
+															<td><%=achmnts.getAchievement() %></td>
+															<td class="center">
+																<form action="#">
+																	<input type="hidden" name="action" value="Edit">
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() %></textarea>
+																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
+																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
+																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+																	</button>
+																	<button type="submit" class="btn btn-lg" name="achievementId" value="<%=achmnts.getAchievementId() %>" formmethod="get" formaction="CCMAchievementDelete.htm" onclick="return confirm('Are you sure To Delete?')" data-toggle="tooltip" data-placement="top" title="Delete Topic"> 
+																		<i class="fa fa-trash" aria-hidden="true"></i>
+																	</button>
+																</form>
+															</td>
+														</tr>
+													<%}} else{%>
+														<tr>
+															<td colspan="6" style="text-align: center;">No Data Available</td>
+														</tr>
+													<%} %>
+												</tbody>
 											</table>
 										</div>
-													
+										<div class="center mt-2 mb-2">
+											<div class="row">
+												<div class="col-md-4"></div>
+												<div class="col-md-4 center">
+													<button type="button" class="btn btn-sm fw-bold add" data-toggle="tooltip" data-target="modal" title="Add Achievement" onclick="openAchievementsModal('O')"
+														<%if(clusterLab.equalsIgnoreCase("N") && ccmAchievementsList.size()>0) {%>disabled<%} %> >
+														ADD OTHERS
+													</button>
+												</div>
+												<div class="col-md-4 right"></div>
+											</div>
+										</div>				
 									<!-- ----------------------------------------------- Others End --------------------------------------------------- -->
 										
 									<%} else {%>
@@ -1750,7 +1965,7 @@ input,select,table,div,label,span {
 	 	</div>
 	</div>
 	<!-- -------------------------------------------------------------- Achievements Modal End ----------------------------------------------------- -->
-	
+
 <script type="text/javascript">
 	$(document).ready(function(){
 	
@@ -2134,7 +2349,7 @@ input,select,table,div,label,span {
 	function openAchievementsModal(topicType) {
 		$('#achievementsModal').modal('show');
 		
-		$('.modal-heading').html(topicType==='A'?'Achievements':'Test & Trials');
+		$('.modal-heading').html(topicType==='A'?'Achievements': (topicType==='T'?'Test & Trials':'Others'));
 		
 		$('#achmntsAction').val('Add');
 		$('#achievementId').val('0');
@@ -2170,7 +2385,7 @@ input,select,table,div,label,span {
 		
 		$('#achievementsModal').modal('show');
 		
-		$('.modal-heading').html(topicType==='A'?'Achievements':'Test & Trials');
+		$('.modal-heading').html(topicType==='A'?'Achievements': (topicType==='T'?'Test & Trials':'Others'));
 		
 		$('#achievementId').val(achievementId);
 		$('#achmntsAction').val('Edit');
@@ -2204,6 +2419,100 @@ input,select,table,div,label,span {
 	}
 	/* --------------------- Open Achievements Modal End --------------------------------------------------------------------------------------------------- */
 	
+	/* --------------------- Closure Status Modal --------------------------------------------------------------------------------------------------- */
+	function openClosureStatusModal(){
+		$('#closureStatusModal').modal('show');
+		$('.btn-closurestatus').val('Add');
+		$('#ccmClosureId').val('0');
+		
+	}
+	
+	function getProjectList(rowId) {
+		
+		var labCodeClosure = $('#labCodeClosure_'+rowId).val();
+		$('#projectId_'+rowId).html('<option disabled="disabled" value="" selected="selected">--Select--</option>');
+		
+		$.ajax({
+			Type:'GET',
+			url:'GetProjectListByLabCode.htm',
+			datatype:'json',
+			data:{
+				labCode : labCodeClosure,
+			},
+			success:function(result){
+				var values = JSON.parse(result);
+				for (var i = 0; i < values.length; i++) {
+                    var data = values[i];
+                    var optionValue = data[0];
+                    var optionText = data[1] + "(" + data[2]+")"; 
+                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
+                    $('#projectId_'+rowId).append(option); 
+                }
+				
+				<%-- if(action=='Edit'){
+					<% if(roadMap!=null) {%>
+						$('#projectId').val('<%=roadMap.getProjectId()%>');
+					<%}%>
+					$('#projectId').select2();
+				} --%>
+				
+			}
+		});
+	}
+		
+	<%if(tabName!=null && tabName.equalsIgnoreCase("Closure Status")) {  %>
+		getProjectList('1');
+	<%}%> 
+
+	function openClosureStatusModalEdit(ccmclosureid, labcode, projectdet, recommendation, tcrstatus, acrstatus, activitystatus){
+		$('#closureStatusModalEdit').modal('show');
+		$('#ccmClosureId').val(ccmclosureid);
+		$('#recommendationEdit').val(recommendation);
+		$('#tcrStatusEdit').val(tcrstatus);
+		$('#acrStatusEdit').val(acrstatus);
+		$('#activityStatusEdit').val(activitystatus);
+		
+		$('#closureStatusEditHeading').html(projectdet+' ('+labcode+')');
+	}
+	
+	/* --------------------------------------- Closure Status Cloning Add  -----------------------------------------------  */
+	 
+	$('.selectitems').select2();
+	
+	var closureStatusCount = 1;
+	
+	$('#closureStatusTable').on('click','.tr_clone_add_closure_status', function(){
+		$('.selectitems').select2("destroy");
+		$tr = $('.tr_clone_closure_status').last();
+		$clone = $tr.clone();
+		$tr.after($clone);
+		
+		++closureStatusCount;
+		
+		$clone.find('.selectitems.labCodeClosure').attr('id', 'labCodeClosure_'+closureStatusCount).attr("onchange","getProjectList("+closureStatusCount+")");
+		$clone.find('.selectitems.projectId').attr('id', 'projectId_'+closureStatusCount);
+		
+		$clone.find("input").val("");
+		$('.selectitems').select2();
+	    $clone.find('.selectitems').select2('val', '');
+	    
+	    getProjectList(closureStatusCount);
+	});
+	/* --------------------------------------- Closure Status Cloning Add End -----------------------------------------------  */
+	/* --------------------- Closure Status Cloning Removal ----------------------------------------- */
+	$("#closureStatusTable").on('click', '.tr_clone_rem_closure_status', function() {
+	    var cl = $('.tr_clone_closure_status').length;
+	
+	    if (cl > 1) {
+	        var $tr = $(this).closest('.tr_clone_closure_status');
+	        $tr.remove();
+	    }
+	}); 
+	/* --------------------- Closure Status Cloning Removal End ----------------------------------------- */
+	
+	/* --------------------- Closure Status Modal End --------------------------------------------------------------------------------------------------- */
+	
+	<%if(tabName!=null && tabName.equalsIgnoreCase("Cash Out go Status")) {  %>
 	/* --------------------- Excel File Upload --------------------------------------------------------------------------------------------------- */
 	
 	var excel_file = document.getElementById('excel_file');
@@ -2314,17 +2623,8 @@ input,select,table,div,label,span {
 	});
 	
 	/* --------------------- Excel File Upload End --------------------------------------------------------------------------------------------------- */
-	/* --------------------- Closure Status Modal --------------------------------------------------------------------------------------------------- */
-	function openClosureStatusModal(){
-		$('#closureStatusModal').modal('show');
-		$('.btn-closurestatus').val('Add');
-		$('#ccmClosureId').val('0');
-		
-		$('.labCodeSelectDiv').show();
-		$('.labCodeSpanDiv').hide();
-	}
-	/* --------------------- Closure Status Modal End --------------------------------------------------------------------------------------------------- */
 	
+	<%}%>
 	</script>	
 	
 	

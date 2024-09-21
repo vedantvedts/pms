@@ -37,6 +37,7 @@ label {
 body { 
    font-family : "Lato", Arial, sans-serif !important;
    overflow-x: hidden;
+   background-color: #e7f9ff;
 }
 
 input,select,table,div,label,span {
@@ -46,9 +47,22 @@ input,select,table,div,label,span {
 .content-header {
 	background-color: darkblue !important;
 }
+
+.logo {
+	width: 65px !important;
+}
+
+.slideNames {
+	margin-top: 1rem;
+	margin-right: 3rem;
+}
+
+.refNoHeading {
+	margin-top: 1rem;
+}
 </style>
 </head>
-<body style="background-color: #e7f9ff;">
+<body>
 	<%
 		FormatConverter fc = new FormatConverter();
 		SimpleDateFormat sdf = fc.getRegularDateFormat();
@@ -71,12 +85,15 @@ input,select,table,div,label,span {
 		LabMaster labInfo = (LabMaster)request.getAttribute("labInfo");
 		String lablogo = (String)request.getAttribute("lablogo");
 		String drdologo = (String)request.getAttribute("drdologo");
+		String clusterLabs = (String)request.getAttribute("clusterLabs");
+		String thankYouImg = (String)request.getAttribute("thankYouImg");
 		String ccmCommitteeId = (String)request.getAttribute("ccmCommitteeId");
 		
 		//String previewFlag = (String)request.getParameter("previewFlag");
 		//slideShow = previewFlag!=null?previewFlag:slideShow;
 	
 		 ArrayList<String> cogLabList = new ArrayList<>();
+		 ArrayList<String> csLabList = new ArrayList<>();
 	%>
 
 	<% String ses=(String)request.getParameter("result");
@@ -101,66 +118,76 @@ input,select,table,div,label,span {
 			<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
 			<div class="carousel-item active">
 				<div class="content" align="center" style="height:93vh !important;padding-top: 15px;">
-					<div class="firstpage"  > 
-						<div align="center" ><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h2></div>
-						<div align="center" ><h3 style="color: #145374 !important">for</h3></div>
-							
-						<div align="center" >
-							<h3 style="color: #4C9100 !important" >Cluster Council Meeting </h3>
-				   		</div>
-						
-						<table class="executive home-table" style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
-							<tr>			
-								<th colspan="8" style="text-align: center; font-weight: 700;">
-								<img class="logo" style="width:120px;height: 120px;x"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
-								<br>
-								</th>
-								
+					<!-- <div class="firstpage"  >  -->
+						<table style="border-collapse: collapse;border: none;width: 100%;margin-top: 2rem;">
+							<tr>
+								<td style="width: 50%;border: none;vertical-align: middle;text-align: center;">
+									<img class="" style="" <%if(clusterLabs!=null ){ %> src="data:image/*;base64,<%=clusterLabs%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
+								</td>
+								<td style="width: 50%;border: none;">
+									<div align="center" ><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h2></div>
+									<div align="center" ><h3 style="color: #145374 !important">for</h3></div>
+										
+									<div align="center" >
+										<h3 style="color: #4C9100 !important" >Cluster Council Meeting </h3>
+							   		</div>
+									
+									<table class="executive home-table" style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
+										<tr>			
+											<th colspan="8" style="text-align: center; font-weight: 700;">
+											<img class="frontpagelogo" style="width:120px;height: 120px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
+											<br>
+											</th>
+											
+										</tr>
+									</table>	
+									
+									<table style="align: center;width: 100%;  "  >
+										<tr style="margin-top: 10px">
+											 <th  style="text-align: center;font-size: 18px;border:0px !important; "> Meeting Id </th></tr><tr>
+											 <th  style="text-align: center;font-size: 18px;border:0px !important;  "> <%if(ccmSchedule!=null && ccmSchedule.getMeetingId()!=null) {%> <%=ccmSchedule.getMeetingId() %> <%} else{%>-<%} %> </th>				
+										 </tr>
+									</table>
+									
+									<table style="width: 100%; "  >
+										<tr>
+											 <th  style="text-align: center; width: 50%;font-size: 18px;border:0px !important; ">  Meeting Date </th>
+											 <th  style="text-align: center;  width: 50%;font-size: 18px;border:0px !important;  "> Meeting Time </th>
+										</tr>
+										<tr>
+											 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important;"> <b> <%if(ccmSchedule!=null && ccmSchedule.getScheduleDate()!=null) {%> <%=fc.sdfTordf(ccmSchedule.getScheduleDate().toString()) %> <%} else{%>-<%} %> </b></td>
+											 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important; "> <b><%if(ccmSchedule!=null && ccmSchedule.getScheduleStartTime()!=null) {%> <%=ccmSchedule.getScheduleStartTime() %> <%} else{%>-<%} %></b></td>
+										</tr>
+									</table>
+									
+									<table style="align: center; width: 100%;margin-top: 1rem;"  >
+										<tr style="margin-top: 10px">
+											 <th  style="text-align: center;font-size: 18px;border:0px !important; "> Meeting Venue</th></tr><tr>
+											 <th  style="text-align: center;;font-size: 18px ;border:0px !important; "> <%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null) {%> <%=ccmSchedule.getMeetingVenue() %> <%} else{%>-<%} %> </th>				
+										 </tr>
+									</table>
+									
+									<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
+										<% if(labInfo!=null){ %>
+											<tr>
+												<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
+											</tr>
+										<%}%>
+										<tr>
+											<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
+										</tr>
+										<tr>
+											<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
+										</tr>
+										<tr>
+											<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> </th>
+										</tr>
+									</table>
+								</td>
 							</tr>
-						</table>	
-						
-						<table style="align: center;width: 650px;  "  >
-							<tr style="margin-top: 10px">
-								 <th  style="text-align: center;font-size: 18px;border:0px !important; "> Meeting Id </th></tr><tr>
-								 <th  style="text-align: center;font-size: 18px;border:0px !important;  "> <%if(ccmSchedule!=null && ccmSchedule.getMeetingId()!=null) {%> <%=ccmSchedule.getMeetingId() %> <%} else{%>-<%} %> </th>				
-							 </tr>
 						</table>
 						
-						<table style="align: left; width: 650px; "  >
-							<tr>
-								 <th  style="text-align: center; width: 50%;font-size: 18px;border:0px !important; ">  Meeting Date </th>
-								 <th  style="text-align: center;  width: 50%;font-size: 18px;border:0px !important;  "> Meeting Time </th>
-							</tr>
-							<tr>
-								 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important;"> <b> <%if(ccmSchedule!=null && ccmSchedule.getScheduleDate()!=null) {%> <%=fc.sdfTordf(ccmSchedule.getScheduleDate().toString()) %> <%} else{%>-<%} %> </b></td>
-								 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important; "> <b><%if(ccmSchedule!=null && ccmSchedule.getScheduleStartTime()!=null) {%> <%=ccmSchedule.getScheduleStartTime() %> <%} else{%>-<%} %></b></td>
-							</tr>
-						</table>
-						
-						<table style="align: center; width: 650px;"  >
-							<tr style="margin-top: 10px">
-								 <th  style="text-align: center;font-size: 18px;border:0px !important; "> Meeting Venue</th></tr><tr>
-								 <th  style="text-align: center;;font-size: 18px ;border:0px !important; "> <%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null) {%> <%=ccmSchedule.getMeetingVenue() %> <%} else{%>-<%} %> </th>				
-							 </tr>
-						</table>
-						
-						<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
-							<% if(labInfo!=null){ %>
-								<tr>
-									<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
-								</tr>
-							<%}%>
-							<tr>
-								<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
-							</tr>
-							<tr>
-								<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
-							</tr>
-							<tr>
-								<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> </th>
-							</tr>
-						</table>			
-					</div>
+					<!-- </div> -->
 					
 				</div>
 				
@@ -175,13 +202,13 @@ input,select,table,div,label,span {
 				<div class="content-header row ">
 					
 					<div class="col-md-1" >
-						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+						<img class="logo" style="margin-left: 5px;margin-top: -2px;"  <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
-						<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+					<div class="col-md-2" align="left" style="display: inherit;" >
+						<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 					</div>
-					<div class="col-md-8">
-						<h3>Agenda</h3>
+					<div class="col-md-7">
+						<h3 class="slideNames">Agenda</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%="" %></b>
@@ -355,11 +382,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>Action Taken Report of CCM(<%=seqDate %>)</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">Action Taken Report of CCM(<%=seqDate %>)</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -470,11 +497,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>Pending Points from Prev CCM</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">Pending Points from Prev CCM</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -608,11 +635,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>DMC Approval</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">DMC Approval</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -720,11 +747,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>EB Calendar</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">EB Calendar</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -842,11 +869,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>PMRC Calendar</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">PMRC Calendar</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -959,11 +986,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>ASP Status</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">ASP Status</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -980,7 +1007,14 @@ input,select,table,div,label,span {
 			<%} %>
 			<!-- ---------------------------------------- ASP Status Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- Closure Status Slide ---------------------------------------------------  -->
-			<%if(slideNames.contains("Closure Status")) { %>
+			<%if(slideNames.contains("Closure Status")) { 
+				HashMap<String, List<Object[]> > csList = (HashMap<String, List<Object[]> >) request.getAttribute("closureStatusList");
+				int quarter = (int)request.getAttribute("quarter");
+				
+				for (Map.Entry<String, List<Object[]>> entry : csList.entrySet()) {
+				    List<Object[]> closureStatusList = entry.getValue(); 
+				    csLabList.add(entry.getKey());
+			%>
 				<div class="carousel-item">
 	
 					<div class="content-header row ">
@@ -988,11 +1022,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>Closure Status</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">Closure Status - <%=entry.getKey() %></h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -1004,9 +1038,53 @@ input,select,table,div,label,span {
 					</div>
 					
 					<div class="content" >
+						<div class="container-fluid mt-3 tabpanes1">
+							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
+								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
+										<th colspan="7" style="border-radius: 1rem;"> <h5>Closure Status</h5></th>
+									</tr> -->
+									<tr>
+										<th>Lab</th>
+										<th>Project</th>
+										<th>DoS /<br> PDC</th>
+										<th>Recommendation</th>
+										<th>TCR Status</th>
+										<th>ACR Status</th>
+										<th>Activity Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(closureStatusList!=null && closureStatusList.size()>0) { 
+										for(Object[] obj : closureStatusList) {
+									%>
+										<tr>
+											<td><%=obj[1]!=null?obj[1]:"-" %></td>
+											<td>
+												<%=obj[3]!=null?obj[3]:"-" %> <br>
+												Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
+												Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(obj[6].toString())/10000000):"-" %> (In Cr) <br>
+												PD&emsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> 
+											</td>
+											<td class="center">
+												<%=obj[8]!=null?obj[8]:"-" %> / <br> <%=obj[9]!=null?obj[9]:"-" %> 
+											</td>
+											<td><%=obj[10]!=null?obj[10]:"-" %></td>
+											<td><%=obj[10]!=null?obj[11]:"-" %></td>
+											<td><%=obj[10]!=null?obj[12]:"-" %></td>
+											<td><%=obj[10]!=null?obj[13]:"-" %></td>
+										</tr>
+									<%} } else{%>
+										<tr>
+											<td colspan="7" class="center">No Data Available</td>
+										</tr>
+									<%} %>	
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			<%} %>
+			<%} }%>
 			<!-- ---------------------------------------- Closure Status Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- Cash Out Go Status Slide ---------------------------------------------------  -->
 			<%if(slideNames.contains("Cash Out Go Status")) { 
@@ -1024,11 +1102,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>Cash Out Go Status - <%=entry.getKey() %> </h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">Cash Out Go Status - <%=entry.getKey() %> </h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -1226,11 +1304,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>Test & Trials</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">Test & Trials</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -1309,11 +1387,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>Achievements</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">Achievements</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -1382,7 +1460,9 @@ input,select,table,div,label,span {
 			<%} %>
 			<!-- ---------------------------------------- Achievements Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- Others Slide ---------------------------------------------------  -->
-			<%if(slideNames.contains("Others")) { %>
+			<%if(slideNames.contains("Others")) { 
+				List<CCMAchievements> ccmOtherssList = (List<CCMAchievements>) request.getAttribute("ccmOtherssList");
+			%>
 				<div class="carousel-item">
 	
 					<div class="content-header row ">
@@ -1390,11 +1470,11 @@ input,select,table,div,label,span {
 						<div class="col-md-1" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
-						<div class="col-md-1" align="left" style="padding-top:19px;" >
-							<b style="margin-left: -35px;"><%=ccmSchedule.getMeetingId() %></b>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
-						<div class="col-md-8">
-							<h3>Others</h3>
+						<div class="col-md-7">
+							<h3 class="slideNames">Others</h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -1406,14 +1486,97 @@ input,select,table,div,label,span {
 					</div>
 					
 					<div class="content" >
+						<div class="container-fluid mt-3 tabpanes1">
+							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
+								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
+										<th colspan="6" style="border-radius: 1rem;"> <h5>Achievements</h5></th>
+									</tr> -->
+									<tr >
+										<th style="width: 5%;">SN</th>
+										<th style="width: 15%;">Lab</th>
+										<th style="width: 70%;">Details</th>
+										<th style="width: 10%;">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(ccmOtherssList!=null && ccmOtherssList.size()>0) {
+										int slno=0;
+										for(CCMAchievements achmnts : ccmOtherssList) {
+									%>
+										<tr>
+											<td class="center"><%=++slno %></td>
+											<td><%=achmnts.getLabCode() %></td>
+											<td><%=achmnts.getAchievement() %></td>
+											<td class="center">
+												<form action="#">
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+													<input type="hidden" name="achievementId" value="<%=achmnts.getAchievementId() %>">
+													<%if(achmnts.getImageName()!=null) {%>
+														<button type="submit" class="btn btn-sm attachments" name="attachmentName" value="image" formaction="CCMAchievementsAttachmentDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+						                      				<i class="fa fa-file-image-o fa-lg fa-2x" aria-hidden="true" style="color: #8b22cd;"></i>
+						                      			</button>
+					                      			<%} %>
+													<%if(achmnts.getAttachmentName()!=null) {%>
+														<button type="submit" class="btn btn-sm attachments" name="attachmentName" value="pdf" formaction="CCMAchievementsAttachmentDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+						                      				<i class="fa fa-file fa-lg fa-2x" style="color: green;"></i>
+						                      			</button>
+					                      			<%} %>
+													<%if(achmnts.getVideoName()!=null) {%>
+														<button type="submit" class="btn btn-sm attachments" name="attachmentName" value="video" formaction="CCMAchievementsAttachmentDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+						                      				<i class="fa fa-file-video-o fa-lg fa-2x" aria-hidden="true" style="color: #a92525;"></i>
+						                      			</button>
+					                      			<%} %>
+												</form>
+											</td>
+										</tr>
+									<%}} else{%>
+										<tr>
+											<td colspan="6" style="text-align: center;">No Data Available</td>
+										</tr>
+									<%} %>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			<%} %>
 			<!-- ---------------------------------------- Others Slide End ---------------------------------------------------  -->
+			
+			<!-- ---------------------------------------- Thank you Slide End ---------------------------------------------------  -->
+			<div class="carousel-item">
+	
+				<div class="content-header row ">
+					
+					<div class="col-md-1" >
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-2" align="left" style="display: inherit;">
+						<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
+					</div>
+					<div class="col-md-7">
+						<h3 class="slideNames">Thank You</h3>
+					</div>
+					<div class="col-md-1" align="right"  style="padding-top:19px;" >
+						<b style="margin-right: -35px;"><%="" %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					
+				</div>
+				
+				<div class="content" >
+					<img class="" style="width: 100%; height: 100%;" <%if(thankYouImg!=null ){ %> src="data:image/*;base64,<%=thankYouImg%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
+				</div>
+			</div>
+			<!-- ---------------------------------------- Thank you Slide End ---------------------------------------------------  -->
+			
 			<!-- ---------------------------------------- Presentation of Selected Slides End ------------------------------------------------------------------------------------  -->
-
+			
 		</div>
 
+		
 		<a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width: 0%; padding-left: 20px;"> <span aria-hidden="true">
 			<i class="fa fa-chevron-left fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Previous</span>
 		</a> <a class="carousel-control-next" href="#presentation-slides" role="button" data-slide="next" style="width: 0%; padding-right: 20px;"> <span aria-hidden="true">
@@ -1423,15 +1586,22 @@ input,select,table,div,label,span {
 		<ol class="carousel-indicators">
 			<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
 			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Agenda"><b>1</b></li>
-			<%
-			if(slideNames.size()>0) {
-				int count = 1;
+			<% int count = 1;
 				int count2 = 1;
+			if(slideNames.size()>0) {
+				
 				for(String slideName : slideNames) {%>
 				
 				<%if(slideName.equalsIgnoreCase("ATR")) {%>
 					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=++count2 %></b></li>
 					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Pending Points"><b><%=++count2 %></b></li>
+				<%} else if(slideName.equalsIgnoreCase("Closure Status")) {%>
+					<%
+					++count2;
+					char a = 'a';
+					for(int i=0;i<csLabList.size();i++) {%>
+						<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName+" - "+csLabList.get(i) %>"><b><%=count2 %> (<%=a++ %>)</b></li>
+					<%} %>
 				<%} else if(slideName.equalsIgnoreCase("Cash Out Go Status")) {%>
 					<%
 					++count2;
@@ -1443,6 +1613,7 @@ input,select,table,div,label,span {
 					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=++count2 %></b></li>
 				<%} %>
 			<%} }%>
+			<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="End"><b>End</b></li>
 			<li style="background-color:  white;width: 55px;margin-left: 20px;">
 				<a target="_blank" href="CCMScheduleAgendaPdfDownload.htm?ccmScheduleId=<%=ccmSchedule.getScheduleId() %>" data-toggle="tooltip" title="Download Agenda" ><i class="fa fa-download fa-2x" style="color: green;" aria-hidden="true"></i></a>	
 			</li>

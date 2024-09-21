@@ -388,7 +388,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 								</div>
 											
 								<div class="col-md-2 align-self-center">	
-									<button class="btn btn-sm submit btn-members" name="submit" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');"  >SUBMIT</button>
+									<button class="btn btn-sm submit btn-members" name="submit" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');"  >ADD</button>
 								</div>									
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>">
@@ -437,7 +437,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 									</table>
 								</div>
 								<div class="col-md-2 align-self-center">					
-									<button class="btn  btn-sm submit btn-members" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
+									<button class="btn  btn-sm submit btn-members" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >ADD</button>
 								</div>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>"> 
@@ -475,7 +475,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 									</table>
 								</div>
 								<div class="col-md-2 align-self-center">					
-									<button class="btn  btn-sm submit btn-members" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
+									<button class="btn  btn-sm submit btn-members" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >ADD</button>
 								</div>	
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />											
 								<input type="hidden" name="committeemainid" value="<%=committeeMainId%>"> 

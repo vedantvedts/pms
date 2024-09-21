@@ -159,7 +159,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
               <div class="form-group">
 					<label >Division:<span class="mandatory" style="color: red;">*</span></label>
 					<select class="form-control selectdee" id="Division" name="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-									<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+									<option value="0" selected="selected"	hidden="true">--Select--</option>
 											<%  for ( Object[]  obj :DivisionList) {%>			
 											<option value="<%=obj[0] %>"> <%=obj[1] %></option>			
 											<%} %>
@@ -172,7 +172,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 	<div class="form-group">
 		<label >Superior Officer:<span class="mandatory" style="color: red;">*</span></label>
 		<select class="form-control selectdee" id="superiorOfficer" name="superiorOfficer" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-			<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+			<option value="0" selected="selected" hidden="true">--Select--</option>
 			<%  for ( Object[]  obj :OfficerList) {%>			
 				<option value="<%=obj[0] %>"> <%=obj[2]+", "+obj[3] %></option>			
 			<%} %>

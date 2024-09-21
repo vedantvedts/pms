@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.vts.pfms.ccm.model.CCMAchievements;
+import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeSchedule;
@@ -46,5 +47,9 @@ public interface CCMDao {
 	public Long getLastScheduleIdFromCurrentScheduleId(String ccmScheduleId) throws Exception;
 	public List<String> getPreviousScheduleMinutesIds(String scheduleId) throws Exception;
 	public List<Object[]> getEBPMRCCalendarData(String monthStartDate, String meeting, String clusterId) throws Exception;
+	public CCMClosureStatus getCCMClosureStatusById(String ccmClosureId) throws Exception;
+	public long addCCMClosureStatus(CCMClosureStatus closure) throws Exception;
+	public HashMap<String, List<Object[]>> getClosureStatusList(String scheduleId) throws Exception;
+	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception;
 	
 }

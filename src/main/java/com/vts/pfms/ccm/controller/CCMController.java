@@ -30,7 +30,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
@@ -51,9 +50,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
@@ -62,6 +63,7 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.PfmsFileUtils;
 import com.vts.pfms.ccm.model.CCMAchievements;
+import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
 import com.vts.pfms.ccm.service.CCMService;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
@@ -69,9 +71,9 @@ import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.login.PFMSCCMData;
-import com.vts.pfms.pfts.model.PFTSFile;
 import com.vts.pfms.print.model.ProjectOverallFinance;
 import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.roadmap.service.RoadMapService;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -92,6 +94,9 @@ public class CCMController {
 	
 	@Autowired
 	PrintService printservice;
+
+	@Autowired
+	RoadMapService roadmapservice;
 	
 	@Autowired
 	PfmsFileUtils pfmsFileUtils;
@@ -130,7 +135,6 @@ public class CCMController {
 	@RequestMapping(value="CCMModules.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String ccmModules(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
-		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside CCMModules.htm "+UserId);
 		try {
 			
@@ -632,6 +636,8 @@ public class CCMController {
 	    	req.setAttribute("labInfo", printservice.LabDetailes(labcode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
 	    	req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
+	    	req.setAttribute("clusterLabs", LogoUtil.getClusterLabsAsBase64String());
+	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
 	    	req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
 	    	req.setAttribute("ccmPresentationSlides", service.getCCMPresentationSlidesByScheduleId(ccmScheduleId));
 	    	req.setAttribute("ccmScheduleId", ccmScheduleId);
@@ -700,6 +706,10 @@ public class CCMController {
 			req.setAttribute("pmrcCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "PMRC", clusterid));
     		
     		/* ----------------------- PMRC Calendar End -------------------------- */
+			
+			/* ----------------------- Closure Status Start -------------------------- */
+			
+    		req.setAttribute("closureStatusList", service.getClosureStatusList(ccmScheduleId));
     		
 			/* ----------------------- Cash Out Go Status Start -------------------------- */
     	
@@ -732,6 +742,11 @@ public class CCMController {
     		req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "A"));
     		
     		/* ----------------------- Achievements End -------------------------- */
+
+    		/* ----------------------- Others Start -------------------------- */
+    		req.setAttribute("ccmOtherssList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "O"));
+    		/* ----------------------- Others End -------------------------- */
+    		
 	    	return "ccm/CCMAgendaPresentation";
     	}catch (Exception e) {
 			e.printStackTrace(); 
@@ -769,6 +784,7 @@ public class CCMController {
     			req.setAttribute("committeeData", printservice.getCommitteeData(committeeId));
     			req.setAttribute("ccmActions", printservice.LastPMRCActions("0", committeeId));
         		req.setAttribute("latestScheduleMinutesIds", service.getLatestScheduleMinutesIds(scheduleId+""));
+        		req.setAttribute("currentScheduleMinutesIds", service.getLatestScheduleMinutesIds(ccmScheduleId+""));
         		req.setAttribute("ccmSchedule", service.getCCMScheduleById(scheduleId+""));
          		req.setAttribute("mapCCM", mapCCM);
          		
@@ -827,11 +843,14 @@ public class CCMController {
     		else if(tabName.equalsIgnoreCase("ASP Status")) {
     			
     		}
-    		/* ----------------------- ASP Status End -------------------------- */
+    		/* ----------------------- ASP Status End ---------------------------- */
     		
     		/* ----------------------- Closure Status Start -------------------------- */
     		else if(tabName.equalsIgnoreCase("Closure Status")) {
-    			
+    			String labCode = req.getParameter("labCode");
+    			labCode = labCode!=null?labCode:labcode;
+    			req.setAttribute("closureStatusList", service.getClosureStatusList(ccmScheduleId+"").get(labCode));
+    			req.setAttribute("labCode", labCode);
     		}
     		/* ----------------------- Closure Status End -------------------------- */
     		
@@ -861,21 +880,19 @@ public class CCMController {
     		
     		/* ----------------------- Test & Trials Start -------------------------- */
     		else if(tabName.equalsIgnoreCase("Test & Trials")) {
-    			
     			req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(ccmScheduleId, "T"));
     		}
     		/* ----------------------- Test & Trials End -------------------------- */
     		
     		/* ----------------------- Achievements Start -------------------------- */
     		else if (tabName.equalsIgnoreCase("Achievements")) {
-    			
     			req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(ccmScheduleId, "A"));
     		}
     		/* ----------------------- Achievements End -------------------------- */
     		
     		/* ----------------------- Others Start -------------------------- */
     		else if (tabName.equalsIgnoreCase("Others")) {
-    			
+    			req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(ccmScheduleId, "O"));
     		}
     		/* ----------------------- Others End -------------------------- */
     		
@@ -956,6 +973,7 @@ public class CCMController {
 	    	String action = req.getParameter("action");
 	    	String achievementId = req.getParameter("achievementId");
 	    	String topicType = req.getParameter("topicType");
+	    	String tabName = topicType.equalsIgnoreCase("A")?"Achievements":(topicType.equalsIgnoreCase("T")?"Test & Trials":"Others");
 	    	
 	    	CCMAchievements  achmnts = action.equalsIgnoreCase("Add")? new CCMAchievements() : service.getCCMAchievementsById(achievementId);
 	    	achmnts.setScheduleId(Long.parseLong(req.getParameter("scheduleId")));
@@ -974,13 +992,13 @@ public class CCMController {
 			long result = service.addCCMAchievements(achmnts, imageattch, pdfattach, videoAttach, clusterid);
 			
 			if(result!=0) {
-				redir.addAttribute("result", (topicType.equalsIgnoreCase("A")?"Achievement":"Test & Trail")+" Details "+action+"ed Successfully");
+				redir.addAttribute("result", tabName+" Details "+action+"ed Successfully");
 			}else {
-				redir.addAttribute("resultfail", (topicType.equalsIgnoreCase("A")?"Achievement":"Test & Trail")+" Details "+action+" UnSuccessful");
+				redir.addAttribute("resultfail", tabName+" Details "+action+" UnSuccessful");
 			}
 			
 			redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			redir.addAttribute("tabName",  topicType.equalsIgnoreCase("A")?"Achievements":"Test & Trials");
+			redir.addAttribute("tabName",  tabName);
 			
 	    	return "redirect:/CCMPresentation.htm";
 	    }catch (Exception e) {
@@ -1387,6 +1405,7 @@ public class CCMController {
 	@RequestMapping(value="CCMPresentationSlidesSubmit.htm", method= {RequestMethod.POST, RequestMethod.GET})
 	public String ccmPresentationSlidesSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CCMPresentationSlidesSubmit.htm "+UserId);
 		try {
 			String[] topicNames = req.getParameterValues("topicName");
 			String action = req.getParameter("action");
@@ -1425,4 +1444,108 @@ public class CCMController {
 			return "static/Error";
 		}
 	}
+
+	@RequestMapping(value = "GetProjectListByLabCode.htm", method = {RequestMethod.GET})
+	public @ResponseBody String GetProjectListByLabCode(HttpServletRequest req, HttpSession ses) throws Exception{
+		String Username=(String)ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside GetProjectListForRoadMap.htm"+Username);
+		Gson json = new Gson();
+		List<Object[]> getProjectList=null;
+		try {
+			String labCode = req.getParameter("labCode");
+			getProjectList=roadmapservice.getProjectList(labCode!=null?labCode:labcode);
+			} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside GetProjectListByLabCode.htm "+Username, e);
+			}
+		return json.toJson(getProjectList);
+
+	}
+	
+	@RequestMapping(value = "CCMClosureStatusSubmit.htm", method = {RequestMethod.GET, RequestMethod.POST})
+	public String ccmClosureStatusSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CCMClosureStatusSubmit.htm "+UserId);
+		try {
+			
+			long result = service.addCCMClosureStatus(req, ses);
+			
+			if(result!=0) {
+				redir.addAttribute("result", "Closure Status Details Submitted Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Closure Status Details Submit UnSuccessful");
+			}
+			
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("tabName",  req.getParameter("tabName"));
+			
+			return "redirect:/CCMPresentation.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMPresentationSlidesSubmit.htm "+UserId,e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="CCMClosureStatusEditSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String ccmClosureStatusEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CCMClosureStatusDelete.htm "+UserId);
+		try {
+			
+			CCMClosureStatus  closure = service.getCCMClosureStatusById(req.getParameter("ccmClosureId"));
+			closure.setRecommendation(req.getParameter("recommendation"));
+			closure.setTCRStatus(req.getParameter("tcrStatus"));
+			closure.setACRStatus(req.getParameter("acrStatus"));
+			closure.setActivityStatus(req.getParameter("activityStatus"));
+			closure.setModifiedBy(UserId);
+			closure.setModifiedDate(sdtf.format(new Date()));
+            
+			long result = service.addCCMClosureStatus(closure);
+			
+			if (result != 0) {
+				redir.addAttribute("result", "Closure Status Edited Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Closure Status Edit Unsuccessful");
+			}
+			
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("tabName", req.getParameter("tabName"));
+			
+			return "redirect:/CCMPresentation.htm";
+		}catch (Exception e) {
+			logger.error(new Date() + " Inside CCMClosureStatusEditSubmit.htm " + UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "CCMClosureStatusDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String ccmClosureStatusDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CCMClosureStatusDelete.htm "+UserId);
+		try
+		{
+			String ccmClosureId = req.getParameter("ccmClosureId");
+			
+			int result = service.ccmClosureStatusDelete(ccmClosureId);
+			
+			if (result != 0) {
+				redir.addAttribute("result", "Closure Status Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Closure Status Delete Unsuccessful");
+			}
+			
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("tabName", req.getParameter("tabName"));
+			
+			return "redirect:/CCMPresentation.htm";
+		}catch (Exception e) {
+			logger.error(new Date() + " Inside CCMClosureStatusDelete.htm " + UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+	
 }

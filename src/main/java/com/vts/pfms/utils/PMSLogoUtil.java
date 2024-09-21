@@ -72,4 +72,25 @@ public class PMSLogoUtil
 		return approvedDateFormatted;
 	}
 	
+
+	public String getClusterLabsAsBase64String() throws IOException
+	{
+		try {
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(LabLogoPath+"/images/lablogos/clusterLabs.png")));
+		}catch (FileNotFoundException e) {
+			System.err.println("File Not Found at Path "+LabLogoPath+"/images/lablogos/"+"lablogo"+".png");
+			return null;
+		}
+	}
+	
+	public String getThankYouImageAsBase64String() throws IOException
+	{
+		try {
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(LabLogoPath+"/images/lablogos/thankyou.png")));
+		}catch (FileNotFoundException e) {
+			System.err.println("File Not Found at Path "+LabLogoPath+"/images/lablogos/"+"lablogo"+".png");
+			return null;
+		}
+	}
+	
 }

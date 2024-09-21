@@ -33,7 +33,7 @@ public class MasterDaoImpl implements MasterDao {
 
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
+	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.empname) AS 'empname' , b.designation, a.extno, a.email, (SELECT c.divisionname FROM division_master c WHERE a.divisionid= c.divisionid LIMIT 1) AS 'divisionname', a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode FROM employee a,employee_desig b WHERE a.desigid= b.desigid  ORDER BY a.srno=0,a.srno";
 	private static final String DESIGNATIONLIST="SELECT desigid, desigcode, designation, desiglimit FROM employee_desig";
 	private static final String OFFICERDIVISIONLIST="SELECT divisionid, divisionname FROM division_master where isactive='1'";
 	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo , title , salutation, SuperiorOfficer from employee  where empid=:empid";
@@ -54,7 +54,7 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String DIVISIONDATA ="SELECT divisionid, divisioncode,divisionname FROM division_master WHERE divisionid=:divisionid";
 	private static final String DIVSIONEMPLOYEEREVOKE="UPDATE division_employee SET isactive=0,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate WHERE divisionemployeeid=:divisionempid";
 
-	private final static String OFFICERDETALIS="SELECT a.empid, a.empno,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' AND a.empid=:officerid"; 
+	private final static String OFFICERDETALIS="SELECT a.empid, a.empno,CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.empname) AS 'empname' , b.designation, a.extno, a.email, (SELECT c.divisionname FROM division_master c WHERE a.divisionid= c.divisionid LIMIT 1) AS 'divisionname', a.desigid, a.divisionid, a.SrNo FROM employee a,employee_desig b WHERE a.desigid= b.desigid AND a.isactive='1' AND a.empid=:officerid"; 
 	private final static String LISTOFSENIORITYNUMBER="SELECT SrNo, EmpId FROM employee WHERE SrNo !=0 ORDER BY SrNo ASC ";
 	private final static String UPDATESRNO="UPDATE employee SET SrNo=:srno WHERE EmpId=:empid";
 
