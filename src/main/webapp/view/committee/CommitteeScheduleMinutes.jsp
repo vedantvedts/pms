@@ -420,6 +420,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 			<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
 			<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
 			<input type="hidden" name="committeeId" value="<%=committeeId %>">
+			<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
 			<button  class="btn  btn-sm back" formaction="CCMSchedule.htm" style=" font-size:12px;" >BACK</button>
 	          				
 		<%}%>

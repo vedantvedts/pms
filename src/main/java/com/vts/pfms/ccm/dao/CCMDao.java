@@ -1,8 +1,8 @@
 package com.vts.pfms.ccm.dao;
 
-import java.util.HashMap;
 import java.util.List;
 
+import com.vts.pfms.ccm.model.CCMASPData;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -38,7 +38,7 @@ public interface CCMDao {
 	public CCMAchievements getCCMAchievementsById(String achievementId) throws Exception;
 	public long addCCMAchievements(CCMAchievements achmnts) throws Exception;
 	public int ccmAchievementDelete(String achievementId) throws Exception;
-	public HashMap<String, List<Object[]>> getCashOutGoList() throws Exception;
+	public List<Object[]> getCashOutGoList() throws Exception;
 	public long addPFMSCCMData(PFMSCCMData ccmData) throws Exception;
 	public List<Object[]> getProjectListByLabCode(String labCode) throws Exception;
 	public CCMPresentationSlides getCCMPresentationSlidesByScheduleId(String scheduleId) throws Exception;
@@ -49,7 +49,9 @@ public interface CCMDao {
 	public List<Object[]> getEBPMRCCalendarData(String monthStartDate, String meeting, String clusterId) throws Exception;
 	public CCMClosureStatus getCCMClosureStatusById(String ccmClosureId) throws Exception;
 	public long addCCMClosureStatus(CCMClosureStatus closure) throws Exception;
-	public HashMap<String, List<Object[]>> getClosureStatusList(String scheduleId) throws Exception;
+	public List<Object[]> getClosureStatusList(String scheduleId) throws Exception;
 	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception;
+	public List<Object[]> getCCMASPList() throws Exception;
+	public long addCCMASPData(CCMASPData aspData) throws Exception;
 	
 }

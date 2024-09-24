@@ -38,6 +38,7 @@
 	Object[] membersec=null; 
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 	
+	String ccmFlag = (String)request.getAttribute("ccmFlag");
 	%>
 <style type="text/css">
 
@@ -553,7 +554,9 @@ for(Object[] temp : invitedlist){
 					<%} %>			
 			</div>	
 			
-			 <%for (Object[] committeemin : committeeminutes) { 
+			 <%
+			 if(ccmFlag==null) {
+			 for (Object[] committeemin : committeeminutes) { 
 				 if ( committeemin[0].toString().equals("6")) { %>
 				 <br><br>
 			 <table style="margin-top: 0px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse: collapse;">
@@ -585,7 +588,7 @@ for(Object[] temp : invitedlist){
 				</table>
 			</div>
 				
-	<%}%>
+	<%} }%>
 	<br>
 	<div >
 		<div style="width: 650px;margin-left: 15px; ">

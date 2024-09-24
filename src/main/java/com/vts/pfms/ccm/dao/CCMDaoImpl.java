@@ -3,9 +3,7 @@ package com.vts.pfms.ccm.dao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -17,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.ccm.model.CCMASPData;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -416,25 +415,18 @@ public class CCMDaoImpl implements CCMDao{
 	
 	private static final String GETCASHOUTGOLIST = "SELECT CCMDataId, ClusterId, LabCode, ProjectId, ProjectCode, BudgetHeadId, BudgetHeadDescription, AllotmentCost, Expenditure, Balance, Q1CashOutGo, Q2CashOutGo, Q3CashOutGo, Q4CashOutGo, Required, CreatedDate, (Q1CashOutGo+Q2CashOutGo+Q3CashOutGo+Q4CashOutGo) AS 'Total COG' FROM pfms_ccm_data ORDER BY LabCode, FIELD(BudgetHeadDescription, 'Revenue','Capital','Miscellaneous'), ProjectId";
 	@Override
-	public HashMap<String, List<Object[]> > getCashOutGoList() throws Exception {
+	public List<Object[]> getCashOutGoList() throws Exception {
 		
-		HashMap<String, List<Object[]> > cogList = new HashMap<String, List<Object[]>>();
 		try {
 			
 			Query query = manager.createNativeQuery(GETCASHOUTGOLIST);
-			//query.setParameter("LabCode", labCode);
-			List<Object[]> list = (List<Object[]>)query.getResultList();
-			
-			if(list!=null && list.size()>0) {
-				 // Group by LabCode
-	            cogList = list.stream().collect(Collectors.groupingBy(obj -> obj[2].toString(), HashMap::new, Collectors.toList()));
-			}
+			return (List<Object[]>)query.getResultList();
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl getCashOutGoList "+e);
+			return new ArrayList<>();
 		}
-		return cogList;
 	}
 	
 	@Override
@@ -579,31 +571,26 @@ public class CCMDaoImpl implements CCMDao{
 	}
 
 	private static final String GETCLOSURESTATUSLIST = "SELECT a.CCMClosureId, a.LabCode, b.ProjectCode, b.ProjectShortName, b.ProjectName, \r\n"
-			+ "(SELECT c.Category FROM pfms_category c WHERE b.ProjectCategory=c.CategoryId LIMIT 1) AS 'Category', b.TotalSanctionCost,\r\n"
+			+ "(SELECT c.ProjectTypeShort FROM project_type c WHERE b.ProjectType=c.ProjectTypeId LIMIT 1) AS 'Category', b.TotalSanctionCost,\r\n"
 			+ "( SELECT CONCAT(IFNULL(CONCAT(d.title,' '),(IFNULL(CONCAT(d.Salutation, ' '), ''))), d.empname,', ', e.Designation) FROM employee d,employee_desig e WHERE d.EmpId=b.ProjectDirector AND d.DesigId=e.DesigId LIMIT 1) AS 'PD',\r\n"
 			+ "b.SanctionDate, b.PDC, a.Recommendation, a.TCRStatus, a.ACRStatus, a.ActivityStatus\r\n"
 			+ "FROM pfms_ccm_closure a, project_master b WHERE a.ProjectId=b.Projectid AND a.IsActive=1 AND a.ScheduleId=:ScheduleId ORDER BY a.LabCode, a.ProjectId\r\n"
 			+ "";
 	@Override
-	public HashMap<String, List<Object[]> > getClosureStatusList(String scheduleId) throws Exception {
+	public List<Object[]> getClosureStatusList(String scheduleId) throws Exception {
 		
-		HashMap<String, List<Object[]> > cogList = new HashMap<String, List<Object[]>>();
 		try {
 			
 			Query query = manager.createNativeQuery(GETCLOSURESTATUSLIST);
 			query.setParameter("ScheduleId", scheduleId);
-			List<Object[]> list = (List<Object[]>)query.getResultList();
-			
-			if(list!=null && list.size()>0) {
-				 // Group by LabCode
-	            cogList = list.stream().collect(Collectors.groupingBy(obj -> obj[1].toString(), HashMap::new, Collectors.toList()));
-			}
+			return (List<Object[]>)query.getResultList();
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl getClosureStatusList "+e);
+			return new ArrayList<>();
 		}
-		return cogList;
+
 	}
 
 	private static final String CCMCLOSURESTATUSDELETE = "UPDATE pfms_ccm_closure SET IsActive=0 WHERE CCMClosureId=:CCMClosureId";
@@ -621,4 +608,32 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 	
+	private static final String GETCCMASPLIST = "SELECT a.CCMASPId, a.LabCode, a.InitiationId, a.ProjectShortName, a.ProjectTitle, a.Category, a.ProjectCost, a.PDC, a.PDD, a.PDRPDC, a.PDRRev, a.PDRADC, a.TiECPDC, a.TiECRev, a.TiECADC, a.CECPDC, a.CECRev, a.CECADC, a.CCMPDC, a.CCMRev, a.CCMADC, a.DMCPDC, a.DMCRev, a.DMCADC, a.SanctionPDC, a.SanctionRev, a.SanctionADC,'' AS Remarks FROM pfms_ccm_asp a WHERE a.IsActive=1 ORDER BY a.LabCode, a.InitiationId";
+	@Override
+	public List<Object[]> getCCMASPList() throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(GETCCMASPLIST);
+			return (List<Object[]>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getCCMASPList "+e);
+			return new ArrayList<>();
+		}
+	}
+
+	@Override
+	public long addCCMASPData(CCMASPData aspData) throws Exception {
+		try {
+			manager.persist(aspData);
+			manager.flush();
+			return aspData.getCCMASPId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl addCCMASPData "+e);
+			return 0;
+		}
+	}
+
 }

@@ -3414,8 +3414,7 @@ public class CommitteeController {
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			
-			
-			
+			req.setAttribute("ccmFlag", req.getParameter("ccmFlag"));			
 			
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/committee/CommitteeMinutesViewAll.jsp").forward(req, customResponse);
@@ -4839,7 +4838,7 @@ public class CommitteeController {
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			
-			
+			req.setAttribute("ccmFlag", req.getParameter("ccmFlag"));
 			
 			
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);

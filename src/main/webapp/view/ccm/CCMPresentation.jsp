@@ -17,7 +17,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -318,6 +318,8 @@ input,select,table,div,label,span {
 		List<Object[]> clusterLabListFilter = new ArrayList<>();
 		
 		int tabCount = 0;
+		
+		FormatConverter fc = new FormatConverter();
 	%>
 
 	<% String ses=(String)request.getParameter("result");
@@ -449,7 +451,6 @@ input,select,table,div,label,span {
 										Map<Integer,String> mapCCM = (Map<Integer,String>)request.getAttribute("mapCCM");
 									
 										DecimalFormat df = new DecimalFormat("####################.##");
-										FormatConverter fc = new FormatConverter();
 										SimpleDateFormat sdf = fc.getRegularDateFormat();
 										SimpleDateFormat sdf1 = fc.getSqlDateFormat();
 									    SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
@@ -699,7 +700,6 @@ input,select,table,div,label,span {
 										Map<Integer,String> mapDMC = (Map<Integer,String>)request.getAttribute("mapDMC");
 									
 										DecimalFormat df = new DecimalFormat("####################.##");
-										FormatConverter fc = new FormatConverter();
 										SimpleDateFormat sdf = fc.getRegularDateFormat();
 										SimpleDateFormat sdf1 = fc.getSqlDateFormat();
 									    SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
@@ -1053,14 +1053,140 @@ input,select,table,div,label,span {
 									<!-- ----------------------------------------------- PMRC Calendar End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- ASP Status --------------------------------------------------- -->	
-									<%} else if(tabName!=null && tabName.equalsIgnoreCase("ASP Status")) { %>
+									<%} else if(tabName!=null && tabName.equalsIgnoreCase("ASP Status")) { 
+										String labCode = (String)request.getAttribute("labCode");
+										List<Object[]> aspStatusList = (List<Object[]>)request.getAttribute("aspList");
+									%>
 										<div class="container-fluid mt-3 tabpanes2">
 											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
-														<th colspan="6" style="border-radius: 1rem;"> <h5>ASP Status</h5></th>
+														<th colspan="9" style="border-radius: 1rem;"> <h5>ASP Status</h5></th>
+													</tr>
+													<%-- <%if(clusterLab.equalsIgnoreCase("Y") || (aspList!=null && aspList.size()==0) || aspList==null) {%> --%>
+														<tr style="background-color: #ffff;">
+															<td colspan="9" >
+																<%-- <%if((aspList!=null && aspList.size()==0) || aspList==null) {%> --%>
+																	<div style="display: inline-flex; align-items: flex-start;float: left;">
+																		<form action="CCMASPStatusExcelUpload.htm" method="post" id="excelForm" enctype="multipart/form-data">
+																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+													     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+													     					<input type="hidden" name="tabName" value="<%=tabName%>">
+													     					<input type="hidden" name="labCode" value="<%=labCode%>">
+													     					<div style="display: inline-flex; align-items: flex-start;">
+																				<label style="width: 5rem;margin-top: 0.5rem;">Upload : </label>
+																				&nbsp;
+																				 <input class="form-control" type="file" id="aspExcelFile" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+																			</div>
+																			&nbsp;&nbsp;
+																			<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to upload?')" data-toggle="tooltip" title="Upload">
+																				<i class="fa fa-upload"></i>
+																			</button>
+																		</form>
+																	</div>
+																	<div style="display: inline-flex; align-items: flex-start;float: left;margin-left: 3rem;">
+																		<form action="CCMASPStatusExcel.htm" method="post">
+																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+																			<div style="">
+																				<button class="btn btn-sm" data-toggle="tooltip" type="submit" data-toggle="tooltip" data-placement="top"  title="Download Format" style="margin-top: 0.5rem;" >
+																					<i class="fa fa-download fa-lg" aria-hidden="true"></i>&nbsp; Sample Format
+																				</button>
+																			</div>	
+																		</form>
+																	</div>
+																<%-- <%} %> --%>
+																<%if(clusterLab.equalsIgnoreCase("Y")) {%>
+																	<div style="display: inline-flex; align-items: flex-end;float: right;">
+																		<form action="CCMPresentation.htm" method="get">
+																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+													     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+													     					<input type="hidden" name="tabName" value="<%=tabName%>">
+													     					<div style="display: inline-flex; align-items: flex-end;">
+																				<label>Lab : </label>
+																				&nbsp;
+																				<select class="form-control selectdee" id="labCodeASP" name="labCode" onchange="this.form.submit()" required style="width: 200px;">
+																					<option value="0" disabled="disabled">---Select---</option>
+																					<%if(clusterLabList!=null && clusterLabList.size()>0) {
+																						for(Object[] obj : clusterLabList) {
+																					%>
+																						<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
+																					<%} }%>
+																				</select>
+																			</div>
+																		</form>
+																	</div>
+																<%} %>	
+															</td>
+														</tr>
+													<%-- <%} %>	 --%>
+													<tr>
+														<th rowspan="2" style="vertical-align: middle;">SN</th>
+														<th rowspan="2" style="vertical-align: middle;">Project</th>
+														<th colspan="6">Milestone Dates for</th>
+														<th rowspan="2" style="vertical-align: middle;">Remarks</th>
+													</tr>
+													<tr>
+														
+														<th>PDR/PRC</th>
+														<th>TiEC</th>
+														<th>CEC</th>
+														<th>CCM</th>
+														<th>DMC</th>
+														<th>Sanction</th>
 													</tr>
 												</thead>
+												<tbody>
+													<%if(aspStatusList!=null && aspStatusList.size()>0) { 
+														int slno = 0;
+														for(Object[] obj : aspStatusList) {
+													%>
+														<tr>
+															<td class="center"><%=++slno %></td>
+															<td>
+																<%=obj[3]!=null?obj[3]:"-" %> <br>
+																Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
+																Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(obj[6].toString())/10000000):"-" %> (In Cr) <br>
+																PDC&nbsp;&nbsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> (In Months) <br>
+																PD&emsp;&nbsp;: <%=obj[8]!=null?obj[8]:"-" %> <br>
+															</td>
+															<td>
+																Proposed &nbsp;: <span style="color: blue;"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></span> <br>
+																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[10]!=null?fc.sdfTordf(obj[10].toString()):"-" %></span> <br>
+																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[11]!=null?fc.sdfTordf(obj[11].toString()):"-" %></span>
+															</td>
+															<td>
+																Proposed &nbsp;: <span style="color: blue;"><%=obj[12]!=null?fc.sdfTordf(obj[12].toString()):"-" %></span> <br>
+																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[13]!=null?fc.sdfTordf(obj[13].toString()):"-" %></span> <br>
+																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[14]!=null?fc.sdfTordf(obj[14].toString()):"-" %></span>
+															</td>
+															<td>
+																Proposed &nbsp;: <span style="color: blue;"><%=obj[15]!=null?fc.sdfTordf(obj[15].toString()):"-" %></span> <br>
+																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[16]!=null?fc.sdfTordf(obj[16].toString()):"-" %></span> <br>
+																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[17]!=null?fc.sdfTordf(obj[17].toString()):"-" %></span>
+															</td>
+															<td>
+																Proposed &nbsp;: <span style="color: blue;"><%=obj[18]!=null?fc.sdfTordf(obj[18].toString()):"-" %></span> <br>
+																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[19]!=null?fc.sdfTordf(obj[19].toString()):"-" %></span> <br>
+																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[20]!=null?fc.sdfTordf(obj[20].toString()):"-" %></span>
+															</td>
+															<td>
+																Proposed &nbsp;: <span style="color: blue;"><%=obj[21]!=null?fc.sdfTordf(obj[21].toString()):"-" %></span> <br>
+																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[22]!=null?fc.sdfTordf(obj[22].toString()):"-" %></span> <br>
+																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[23]!=null?fc.sdfTordf(obj[23].toString()):"-" %></span>
+															</td>
+															<td>
+																Proposed &nbsp;: <span style="color: blue;"><%=obj[24]!=null?fc.sdfTordf(obj[24].toString()):"-" %></span> <br>
+																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[25]!=null?fc.sdfTordf(obj[25].toString()):"-" %></span> <br>
+																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[26]!=null?fc.sdfTordf(obj[26].toString()):"-" %></span>
+															</td>
+															<td><%=obj[27]!=null?obj[27]:"-" %></td>
+														</tr>
+													<%} } else{%>
+														<tr>
+															<td colspan="9" class="center">No Data Available</td>
+														</tr>
+													<%} %>	
+												</tbody>
 											</table>
 										</div>
 													
@@ -1105,22 +1231,24 @@ input,select,table,div,label,span {
 														</tr>
 													<%} %>	
 													<tr>
-														<th>Lab</th>
+														<!-- <th>Lab</th> -->
 														<th>Project</th>
 														<th>DoS /<br> PDC</th>
 														<th>Recommendation</th>
 														<th>TCR Status</th>
 														<th>ACR Status</th>
-														<th>Activity Status</th>
+														<th>Status of Activities</th>
 														<th>Action</th>
 													</tr>
 												</thead>
 												<tbody>
 													<%if(closureStatusList!=null && closureStatusList.size()>0) { 
+														int slno = 0;
 														for(Object[] obj : closureStatusList) {
+															++slno;
 													%>
 														<tr>
-															<td><%=obj[1]!=null?obj[1]:"-" %></td>
+															<%-- <td><%=obj[1]!=null?obj[1]:"-" %></td> --%>
 															<td>
 																<%=obj[3]!=null?obj[3]:"-" %> <br>
 																Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
@@ -1128,18 +1256,22 @@ input,select,table,div,label,span {
 																PD&emsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> 
 															</td>
 															<td class="center">
-																<%=obj[8]!=null?obj[8]:"-" %> / <br> <%=obj[9]!=null?obj[9]:"-" %> 
+																<%=obj[8]!=null?fc.sdfTordf(obj[8].toString()):"-" %> / <br> <%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %> 
 															</td>
 															<td><%=obj[10]!=null?obj[10]:"-" %></td>
-															<td><%=obj[10]!=null?obj[11]:"-" %></td>
-															<td><%=obj[10]!=null?obj[12]:"-" %></td>
-															<td><%=obj[10]!=null?obj[13]:"-" %></td>
+															<td><%=obj[11]!=null?obj[11]:"-" %></td>
+															<td><%=obj[12]!=null?obj[12]:"-" %></td>
+															<td><%=obj[13]!=null?obj[13]:"-" %></td>
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
 																	<input type="hidden" name="tabName" value="<%=tabName%>">
+																	<textarea id="recommendationEditData_<%=slno %>" style="display: none;"><%=obj[10] %></textarea>
+																	<textarea id="tcrStatusEditData_<%=slno %>" style="display: none;"><%=obj[11] %></textarea>
+																	<textarea id="acrStatusEditData_<%=slno %>" style="display: none;"><%=obj[12] %></textarea>
+																	<textarea id="activityStatusEditData_<%=slno %>" style="display: none;"><%=obj[13] %></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" data-toggle="tooltip" data-placement="top" title="Edit Closure Status"
-																	 onclick="openClosureStatusModalEdit('<%=obj[0]%>', '<%=obj[1]%>', '<%=obj[3]%>', '<%=obj[10]%>', '<%=obj[11]%>', '<%=obj[12]%>', '<%=obj[13]%>')">
+																	 onclick="openClosureStatusModalEdit('<%=obj[0]%>', '<%=obj[1]%>', '<%=obj[3]%>', '<%=slno%>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																	</button>
 																	<button type="submit" class="btn btn-lg" name="ccmClosureId" value="<%=obj[0] %>" formmethod="get" formaction="CCMClosureStatusDelete.htm" onclick="return confirm('Are you sure To Delete?')" data-toggle="tooltip" data-placement="top" title="Delete Closure Status"> 
@@ -1150,7 +1282,7 @@ input,select,table,div,label,span {
 														</tr>
 													<%} } else{%>
 														<tr>
-															<td colspan="8" class="center">No Data Available</td>
+															<td colspan="7" class="center">No Data Available</td>
 														</tr>
 													<%} %>	
 												</tbody>
@@ -1170,7 +1302,7 @@ input,select,table,div,label,span {
 										
 										<!-- ------------------------------------------------------------- Closure Status Modal (Add)  ------------------------------------------------------------------------- -->
 										<div class="modal fade bd-example-modal-lg" id="closureStatusModal" tabindex="-1" role="dialog" aria-labelledby="closureStatusModal" aria-hidden="true" style="margin-top: 5%;">
-											<div class="modal-dialog modal-lg" role="document" style="max-width: 1400px;">
+											<div class="modal-dialog modal-lg" role="document" style="max-width: 1500px;">
 												<div class="modal-content">
 													<div class="modal-header bg-primary text-light">
 											        	<h5 class="modal-title">Closure Status</h5>
@@ -1221,16 +1353,28 @@ input,select,table,div,label,span {
 										  									</select>
 									     								</td>
 									     								<td>
-									     									<input type="text" class="form-control"  name="recommendation" placeholder="Enter Status" maxlength="1000" required>
+									     									<button type="button" class="form-control statusadd recommendationBtn" id="recommendationBtn_1" onclick="openEditor('Recommendations', 'recommendation', '1')" style="border: 1px solid #ced4da;height: 35px;width: 15rem;">
+																				Enter Recommendations
+																			</button>
+																			<textarea class="form-control statusadd recommendation" name="recommendation" id="recommendation_1" style="display: none;"></textarea>
 									     								</td>
 									     								<td>
-									     									<input type="text" class="form-control"  name="tcrStatus" placeholder="Enter Status" maxlength="1000" required>
+									     									<button type="button" class="form-control statusadd tcrStatusBtn" id="tcrStatusBtn_1" onclick="openEditor('TCR Status', 'tcrStatus', '1')" style="border: 1px solid #ced4da;height: 35px;width: 15rem;">
+																				Enter TCR Status
+																			</button>
+																			<textarea class="form-control statusadd tcrStatus" name="tcrStatus" id="tcrStatus_1" style="display: none;"></textarea>
 									     								</td>
 									     								<td>
-									     									<input type="text" class="form-control"  name="acrStatus" placeholder="Enter Status" maxlength="1000" required>
+									     									<button type="button" class="form-control statusadd acrStatusBtn" id="acrStatusBtn_1" onclick="openEditor('ACR Status', 'acrStatus', '1')" style="border: 1px solid #ced4da;height: 35px;width: 15rem;">
+																				Enter ACR Status
+																			</button>
+																			<textarea class="form-control statusadd acrStatus" name="acrStatus" id="acrStatus_1" style="display: none;"></textarea>
 									     								</td>
 									     								<td>
-									     									<input type="text" class="form-control"  name="activityStatus" placeholder="Enter Status" maxlength="1000" required>
+									     									<button type="button" class="form-control statusadd activityStatusBtn" id="activityStatusBtn_1" onclick="openEditor('Status of Activities', 'activityStatus', '1')" style="border: 1px solid #ced4da;height: 35px;width: 15rem;">
+																				Enter Status of Activities
+																			</button>
+																			<textarea class="form-control statusadd activityStatus" name="activityStatus" id="activityStatus_1" style="display: none;"></textarea>
 									     								</td>
 									     								<td class="center">
 																			<button type="button" class="btn btn-sm tr_clone_rem_closure_status" name="sub"  data-toggle="tooltip" data-placement="top" title="Remove Closure Status"> <i class="btn fa fa-minus" style="color: red;padding: 0px  ;"> </i></button>
@@ -1271,11 +1415,17 @@ input,select,table,div,label,span {
 									     						<div class="row">
 										     						<div class="col-md-2 left"><label>Recommendation <span class="mandatory">*</span></label></div>
 										     						<div class="col-md-4">
-										     							<input type="text" class="form-control"  name="recommendation" id="recommendationEdit" placeholder="Enter Status" maxlength="1000" required>
+										     							<button type="button" class="form-control statusedit recommendationBtn" id="recommendationEditBtn_1" onclick="openEditor('Recommendations', 'recommendationEdit', '1')" style="border: 1px solid #ced4da;height: 35px;width: 15rem;">
+																			Enter Recommendations
+																		</button>
+																		<textarea class="form-control statusedit recommendation" name="recommendation" id="recommendationEdit_1" style="display: none;"></textarea>
 										     						</div>
 										     						<div class="col-md-2 left"><label>TCR Status <span class="mandatory">*</span></label></div>
 										     						<div class="col-md-4">
-										     							<input type="text" class="form-control"  name="tcrStatus" id="tcrStatusEdit" placeholder="Enter Status" maxlength="1000" required>
+										     							<button type="button" class="form-control statusedit tcrStatusBtn" id="tcrStatusEditBtn_1" onclick="openEditor('TCR Status', 'tcrStatusEdit', '1')" style="border: 1px solid #ced4da;height: 35px;width: 15rem;">
+																			Enter TCR Status
+																		</button>
+																		<textarea class="form-control statusedit tcrStatus" name="tcrStatus" id="tcrStatusEdit_1" style="display: none;"></textarea>
 										     						</div>
 										     					</div>
 									     					</div>
@@ -1284,11 +1434,17 @@ input,select,table,div,label,span {
 										     					<div class="row">
 										     						<div class="col-md-2 left"><label>ACR Status: <span class="mandatory">*</span></label></div>
 										     						<div class="col-md-4">
-										     							<input type="text" class="form-control"  name="acrStatus" id="acrStatusEdit" placeholder="Enter Status" maxlength="1000" required>
+										     							<button type="button" class="form-control statusedit acrStatusBtn" id="acrStatusEditBtn_1" onclick="openEditor('ACR Status', 'acrStatusEdit', '1')" style="border: 1px solid #ced4da;height: 35px;width: 15rem;">
+																			Enter ACR Status
+																		</button>
+																		<textarea class="form-control statusedit acrStatus" name="acrStatus" id="acrStatusEdit_1" style="display: none;"></textarea>
 										     						</div>
 										     						<div class="col-md-2 left"><label>Status of Activities <span class="mandatory">*</span></label></div>
 										     						<div class="col-md-4">
-										     							<input type="text" class="form-control"  name="activityStatus" id="activityStatusEdit" placeholder="Enter Status" maxlength="1000" required>
+										     							<button type="button" class="form-control statusedit activityStatusBtn" id="activityStatusEditBtn_1" onclick="openEditor('Status of Activities', 'activityStatusEdit', '1')" style="border: 1px solid #ced4da;height: 35px;width: 15rem;">
+																			Enter Activity Status
+																		</button>
+																		<textarea class="form-control statusedit activityStatus" name="activityStatus" id="activityStatusEdit_1" style="display: none;"></textarea>
 										     						</div>
 										     					</div>
 						     								</div>	
@@ -1318,10 +1474,10 @@ input,select,table,div,label,span {
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="<%=12-quarter %>" style="border-radius: 1rem;"> <h5>Cash Out Go Status</h5></th>
 													</tr>
-													<%if(clusterLab.equalsIgnoreCase("Y") || (cashOutGoList!=null && cashOutGoList.size()==0)) {%>
+													<%-- <%if(clusterLab.equalsIgnoreCase("Y") || (cashOutGoList!=null && cashOutGoList.size()==0) || cashOutGoList==null) {%> --%>
 														<tr style="background-color: #ffff;">
 															<td colspan="<%=12-quarter %>" >
-																<%if((cashOutGoList!=null && cashOutGoList.size()==0) || cashOutGoList==null) {%>
+																<%-- <%if((cashOutGoList!=null && cashOutGoList.size()==0) || cashOutGoList==null) {%> --%>
 																	<div style="display: inline-flex; align-items: flex-start;float: left;">
 																		<form action="CCMCashOutGoStatusExcelUpload.htm" method="post" id="excelForm" enctype="multipart/form-data">
 																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
@@ -1331,7 +1487,7 @@ input,select,table,div,label,span {
 													     					<div style="display: inline-flex; align-items: flex-start;">
 																				<label style="width: 5rem;margin-top: 0.5rem;">Upload : </label>
 																				&nbsp;
-																				 <input class="form-control" type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+																				 <input class="form-control" type="file" id="ccmExcelFile" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 																			</div>
 																			&nbsp;&nbsp;
 																			<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to upload?')" data-toggle="tooltip" title="Upload">
@@ -1349,7 +1505,7 @@ input,select,table,div,label,span {
 																			</div>	
 																		</form>
 																	</div>
-																<%} %>
+																<%-- <%} %> --%>
 																<%if(clusterLab.equalsIgnoreCase("Y")) {%>
 																	<div style="display: inline-flex; align-items: flex-end;float: right;">
 																		<form action="CCMPresentation.htm" method="get">
@@ -1373,7 +1529,7 @@ input,select,table,div,label,span {
 																<%} %>	
 															</td>
 														</tr>
-													<%} %>	
+													<%-- <%} %>	 --%>
 													<tr>
 														<th>SN</th>
 														<th>Project</th>
@@ -1965,7 +2121,31 @@ input,select,table,div,label,span {
 	 	</div>
 	</div>
 	<!-- -------------------------------------------------------------- Achievements Modal End ----------------------------------------------------- -->
-
+	
+	<!-- -------------------------------------------------------------- CK Editor Modal ----------------------------------------------------- -->
+	<div class="modal fade bd-example-modal-lg" id="ckEditorModal" tabindex="-1" role="dialog" aria-labelledby="ckEditorModal" aria-hidden="true" style="margin-top: 5%;">
+		<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
+			<div class="modal-content">
+				<div class="modal-header bg-primary text-light">
+		        	<h5 class="modal-title" id="ckEditorModalHeading" style="text-transform: capitalize;"></h5>
+			        <button type="button" class="close closeEditor" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" style="color:red;">&times;</span>
+			        </button>
+		      	</div>
+     			<div class="modal-body">
+	         		<div id="CKEditor" class="center"></div>
+	         		<input type="hidden" id="topicId">
+	         		<input type="hidden" id="topicBtnId">
+	         		<div class="center mt-2">
+	         			<button type="button" class="btn btn-primary closeEditor" data-dismiss="modal">Enter</button>
+	         		</div>
+	         		
+	         	</div>
+    		</div>
+  		</div>
+	</div>
+	<!-- -------------------------------------------------------------- CK Editor Modal End ----------------------------------------------------- -->
+	
 <script type="text/javascript">
 	$(document).ready(function(){
 	
@@ -2340,7 +2520,9 @@ input,select,table,div,label,span {
 			}, ]
 		};
 	
-	CKEDITOR.replace('Editor', editor_config);
+		CKEDITOR.replace('Editor', editor_config);
+		CKEDITOR.replace('CKEditor', editor_config);
+	
 	/* ---------------------CK Editor Config End --------------------------------------------------------------------------------------------------- */
 	
 	
@@ -2464,13 +2646,17 @@ input,select,table,div,label,span {
 		getProjectList('1');
 	<%}%> 
 
-	function openClosureStatusModalEdit(ccmclosureid, labcode, projectdet, recommendation, tcrstatus, acrstatus, activitystatus){
+	function openClosureStatusModalEdit(ccmclosureid, labcode, projectdet, slno){
 		$('#closureStatusModalEdit').modal('show');
 		$('#ccmClosureId').val(ccmclosureid);
-		$('#recommendationEdit').val(recommendation);
-		$('#tcrStatusEdit').val(tcrstatus);
-		$('#acrStatusEdit').val(acrstatus);
-		$('#activityStatusEdit').val(activitystatus);
+		$('#recommendationEditBtn_1').html($('#recommendationEditData_'+slno).val());
+		$('#recommendationEdit_1').val($('#recommendationEditData_'+slno).val());
+		$('#tcrStatusEditBtn_1').html($('#tcrStatusEditData_'+slno).val());
+		$('#tcrStatusEdit_1').val($('#tcrStatusEditData_'+slno).val());
+		$('#acrStatusEditBtn_1').html($('#acrStatusEditData_'+slno).val());
+		$('#acrStatusEdit_1').val($('#acrStatusEditData_'+slno).val());
+		$('#activityStatusEditBtn_1').html($('#activityStatusEditData_'+slno).val());
+		$('#activityStatusEdit_1').val($('#activityStatusEditData_'+slno).val());
 		
 		$('#closureStatusEditHeading').html(projectdet+' ('+labcode+')');
 	}
@@ -2489,15 +2675,29 @@ input,select,table,div,label,span {
 		
 		++closureStatusCount;
 		
+		$clone.find('.statusadd.recommendationBtn').attr('id', 'recommendationBtn_'+closureStatusCount).attr("onclick","openEditor('Recommendations', 'recommendation', "+closureStatusCount+')');  
+		$clone.find('.statusadd.recommendation').attr('id', 'recommendation_'+closureStatusCount);
+		$clone.find('.statusadd.tcrStatusBtn').attr('id', 'tcrStatusBtn_'+closureStatusCount).attr("onclick","openEditor('TCR Status', 'tcrStatus', "+closureStatusCount+')');
+		$clone.find('.statusadd.tcrStatus').attr('id', 'tcrStatus_'+closureStatusCount);
+		$clone.find('.statusadd.acrStatusBtn').attr('id', 'acrStatusBtn_'+closureStatusCount).attr("onclick","openEditor('ACR Status', 'acrStatus', "+closureStatusCount+')');
+		$clone.find('.statusadd.acrStatus').attr('id', 'acrStatus_'+closureStatusCount);
+		$clone.find('.statusadd.activityStatusBtn').attr('id', 'activityStatusBtn_'+closureStatusCount).attr("onclick","openEditor('Status of Activities', 'activityStatus', "+closureStatusCount+')');
+		$clone.find('.statusadd.activityStatus').attr('id', 'activityStatus_'+closureStatusCount);
 		$clone.find('.selectitems.labCodeClosure').attr('id', 'labCodeClosure_'+closureStatusCount).attr("onchange","getProjectList("+closureStatusCount+")");
 		$clone.find('.selectitems.projectId').attr('id', 'projectId_'+closureStatusCount);
 		
 		$clone.find("input").val("");
+		$clone.find("textarea").val("");
+	    $clone.find(".statusadd.recommendationBtn").html("Enter Recommendations");
+	    $clone.find(".statusadd.tcrStatusBtn").html("Enter TCR Status");
+	    $clone.find(".statusadd.acrStatusBtn").html("Enter ACR Status");
+	    $clone.find(".statusadd.activityStatusBtn").html("Enter Activity Status");
 		$('.selectitems').select2();
 	    $clone.find('.selectitems').select2('val', '');
 	    
 	    getProjectList(closureStatusCount);
 	});
+	
 	/* --------------------------------------- Closure Status Cloning Add End -----------------------------------------------  */
 	/* --------------------- Closure Status Cloning Removal ----------------------------------------- */
 	$("#closureStatusTable").on('click', '.tr_clone_rem_closure_status', function() {
@@ -2510,14 +2710,291 @@ input,select,table,div,label,span {
 	}); 
 	/* --------------------- Closure Status Cloning Removal End ----------------------------------------- */
 	
+	/* --------------------- Open Editor Modal ---------------------------------------------------------- */
+	
+	function openEditor(topicName, topicIdName, rowId) {
+		
+		$('#ckEditorModal').modal('show');
+		
+		var topicId = topicIdName+'_'+rowId;
+		var topicBtnId = topicIdName+'Btn_'+rowId;
+		
+		$('#topicId').val(topicId);
+		$('#topicBtnId').val(topicBtnId);
+		$('#ckEditorModalHeading').html(topicName);
+		
+		var html = $('#'+topicBtnId).html();
+		
+		CKEDITOR.replace('CKEditor', editor_config);
+		CKEDITOR.instances['CKEditor'].setData(html);
+	}
+	
+	$('.closeEditor').click(function(){
+		
+		var topicId = $('#topicId').val();
+		var topicBtnId = $('#topicBtnId').val();
+		
+		var data = CKEDITOR.instances['CKEditor'].getData();
+				
+		$('#'+topicId).val(data);
+		$('#'+topicBtnId).html(data);
+
+	});
+	
+	/* --------------------- Open Editor Modal End ---------------------------------------------------------- */
+	
 	/* --------------------- Closure Status Modal End --------------------------------------------------------------------------------------------------- */
 	
-	<%if(tabName!=null && tabName.equalsIgnoreCase("Cash Out go Status")) {  %>
-	/* --------------------- Excel File Upload --------------------------------------------------------------------------------------------------- */
 	
-	var excel_file = document.getElementById('excel_file');
+	/* --------------------- ASP Excel File Upload --------------------------------------------------------------------------------------------------- */
+	<%if(tabName!=null && tabName.equalsIgnoreCase("ASP Status")) {  %>
+	
+	const aspExcelFile = document.getElementById('aspExcelFile');
 
-	excel_file.addEventListener('change', (event) => {
+	 const errorMessages = {
+	            projectShortName: "Project Short Name",
+	            projectTitle: "Project Title",
+	            projectCost: "Project Cost",
+	            pdc: "PDC",
+	            pddName: "PDD Name",
+	            pdrPDC: "PDR/PRC PDC",
+	            pdrRev: "PDR/PRC Rev",
+	            pdrADC: "PDR/PRC ADC",
+	            tiecPDC: "TiEC PDC",
+	            tiecRev: "TiEC Rev",
+	            tiecADC: "TiEC ADC",
+	            cecPDC: "CEC PDC",
+	            cecRev: "CEC Rev",
+	            cecADC: "CEC ADC",
+	            ccmPDC: "CCM PDC",
+	            ccmRev: "CCM Rev",
+	            ccmADC: "CCM ADC",
+	            dmcPDC: "DMC PDC",
+	            dmcRev: "DMC Rev",
+	            dmcADC: "DMC ADC",
+	            sanctionPDC: "Sanction PDC",
+	            sanctionRev: "Sanction Rev",
+	            sanctionADC: "Sanction ADC",
+	           
+	        };
+	 
+	aspExcelFile.addEventListener('change', (event) => {
+	    const file = event.target.files[0];
+	    if (!file) return;
+
+	    const reader = new FileReader();
+	    reader.readAsArrayBuffer(file);
+
+	    reader.onload = function () {
+	        const data = new Uint8Array(reader.result);
+	        const workbook = XLSX.read(data, { type: 'array' });
+	        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+
+	        let checkExcel = 0;
+	        let tableOutput = '';
+	        const duplicate = [];
+
+	       
+
+	        if (sheetData.length > 0) {
+	            for (let row = 0; row < sheetData.length; row++) {
+	                if (row === 0) {
+	                    checkExcel += validateHeaders(sheetData[row]);
+	                    if (checkExcel > 0) {
+	                        showAlert("Please Download the CCM ASP Status Excel format and upload it.");
+	                        return;
+	                    }
+	                } else {
+	                    tableOutput += generateRow(sheetData[row]);
+	                    duplicate.push(sheetData[row][1]);
+
+	                    if (!validateRow(sheetData[row])) {
+	                        return;
+	                    }
+	                }
+	            }
+
+	            if (tableOutput.length < 1) {
+	                showAlert("No Data available in this Excel Sheet!");
+	                return;
+	            }
+	        }
+	    };
+	});
+
+	function validateHeaders(headerRow) {
+	    const expectedHeaders = [
+	        "SN", "Project Short Name", "Project Title", "Category", "Project Cost",
+	        "PDC", "PDD Name", "PDR/PRC PDC", "PDR/PRC Rev", "PDR/PRC ADC",
+	        "TiEC PDC", "TiEC Rev", "TiEC ADC", "CEC PDC", "CEC Rev", "CEC ADC",
+	        "CCM PDC", "CCM Rev", "CCM ADC", "DMC PDC", "DMC Rev", "DMC ADC",
+	        "Sanction PDC", "Sanction Rev", "Sanction ADC"
+	    ];
+
+	    let errors = 0;
+	    expectedHeaders.forEach((header, index) => {
+	        if (!headerRow[index] || !headerRow[index].startsWith(header)) {
+	            errors++;
+	        }
+	    });
+
+	    return errors;
+	}
+
+	function generateRow(rowData) {
+	    return rowData.map((cell, index) => '<td colspan="${index == 1 ? 2 : 1}" style="text-align:center">${cell}</td>').join('');
+	}
+
+	function validateRow(row) {
+	    const projectShortName = row[1];
+	    if (!validateField(projectShortName, errorMessages.projectShortName, 20)) return false;
+
+	    const projectTitle = row[2];
+	    if (!validateField(projectTitle, errorMessages.projectTitle, 255)) return false;
+
+	    const projectCost = row[4];
+	    if (!validateField(projectCost, errorMessages.projectCost, 15)) return false;
+
+	    const pdc = row[5];
+	    if (!validateField(pdc, errorMessages.pdc, 10)) return false;
+
+	    const pddName = row[6];
+	    if (!validateField(pddName, errorMessages.pddName, 255)) return false;
+
+	    /* ---------------------- PDR / PRC ------------------------------- */
+	    const pdrPDC = dateFormatter(row[7]);
+	    if (!validateField(pdrPDC, errorMessages.pdrPDC, 10)) return false;
+	    if (!validateDate(pdrPDC, errorMessages.pdrPDC)) return false;
+
+	    const pdrRev = dateFormatter(row[8]);
+	    if (!validateField(pdrRev, errorMessages.pdrRev, 10)) return false;
+	    if (!validateDate(pdrRev, errorMessages.pdrRev)) return false;
+	    
+	    const pdrADC = dateFormatter(row[9]);
+	    if (!validateField(pdrADC, errorMessages.pdrADC, 10)) return false;
+	    if (!validateDate(pdrADC, errorMessages.pdrADC)) return false;
+		
+	    /* ---------------------- PDR / PRC End ---------------------------- */
+	    
+	    /* ---------------------- TiEC ------------------------------------- */
+	    const tiecPDC = dateFormatter(row[10]);
+	    if (!validateField(tiecPDC, errorMessages.tiecPDC, 10)) return false;
+	    if (!validateDate(tiecPDC, errorMessages.tiecPDC)) return false;
+
+	    const tiecRev = dateFormatter(row[11]);
+	    if (!validateField(tiecRev, errorMessages.tiecRev, 10)) return false;
+	    if (!validateDate(tiecRev, errorMessages.tiecRev)) return false;
+	    
+	    const tiecADC = dateFormatter(row[12]);
+	    if (!validateField(tiecADC, errorMessages.tiecADC, 10)) return false;
+	    if (!validateDate(tiecADC, errorMessages.tiecADC)) return false;
+	    /* ---------------------- TiEC End --------------------------------- */
+	    
+	    /* ---------------------- CEC ------------------------------------- */
+	    const cecPDC = dateFormatter(row[13]);
+	    if (!validateField(cecPDC, errorMessages.cecPDC, 10)) return false;
+	    if (!validateDate(cecPDC, errorMessages.cecPDC)) return false;
+
+	    const cecRev = dateFormatter(row[14]);
+	    if (!validateField(cecRev, errorMessages.cecRev, 10)) return false;
+	    if (!validateDate(cecRev, errorMessages.cecRev)) return false;
+	    
+	    const cecADC = dateFormatter(row[15]);
+	    if (!validateField(cecADC, errorMessages.cecADC, 10)) return false;
+	    if (!validateDate(cecADC, errorMessages.cecADC)) return false;
+	    /* ---------------------- CEC End --------------------------------- */
+	    
+	    /* ---------------------- CCM ------------------------------------- */
+	    const ccmPDC = dateFormatter(row[16]);
+	    if (!validateField(ccmPDC, errorMessages.ccmPDC, 10)) return false;
+	    if (!validateDate(ccmPDC, errorMessages.ccmPDC)) return false;
+
+	    const ccmRev = dateFormatter(row[17]);
+	    if (!validateField(ccmRev, errorMessages.ccmRev, 10)) return false;
+	    if (!validateDate(ccmRev, errorMessages.ccmRev)) return false;
+	    
+	    const ccmADC = dateFormatter(row[18]);
+	    if (!validateField(ccmADC, errorMessages.ccmADC, 10)) return false;
+	    if (!validateDate(ccmADC, errorMessages.ccmADC)) return false;
+	    /* ---------------------- CCM End --------------------------------- */
+	    
+	    /* ---------------------- DMC ------------------------------------- */
+	    const dmcPDC = dateFormatter(row[19]);
+	    if (!validateField(dmcPDC, errorMessages.dmcPDC, 10)) return false;
+	    if (!validateDate(dmcPDC, errorMessages.dmcPDC)) return false;
+
+	    const dmcRev = dateFormatter(row[20]);
+	    if (!validateField(dmcRev, errorMessages.dmcRev, 10)) return false;
+	    if (!validateDate(dmcRev, errorMessages.dmcRev)) return false;
+	    
+	    const dmcADC = dateFormatter(row[21]);
+	    if (!validateField(dmcADC, errorMessages.dmcADC, 10)) return false;
+	    if (!validateDate(dmcADC, errorMessages.dmcADC)) return false;
+	    /* ---------------------- DMC End --------------------------------- */
+	    
+	    /* ---------------------- Sanction ------------------------------------- */
+	    const sanctionPDC = dateFormatter(row[22]);
+	    if (!validateField(sanctionPDC, errorMessages.sanctionPDC, 10)) return false;
+	    if (!validateDate(sanctionPDC, errorMessages.sanctionPDC)) return false;
+
+	    const sanctionRev = dateFormatter(row[23]);
+	    if (!validateField(sanctionRev, errorMessages.sanctionRev, 10)) return false;
+	    if (!validateDate(sanctionRev, errorMessages.sanctionRev)) return false;
+	    
+	    const sanctionADC = dateFormatter(row[24]);
+	    if (!validateField(sanctionADC, errorMessages.sanctionADC, 10)) return false;
+	    if (!validateDate(sanctionADC, errorMessages.sanctionADC)) return false;
+	    /* ---------------------- Sanction End --------------------------------- */
+	    
+	    return true;
+	}
+
+	function validateField(value, fieldName, maxLength) {
+	    if (!value || value.length === 0) {
+	        showAlert(fieldName+' cannot be blank.');
+	        return false;
+	    }
+	    if (value.length > maxLength) {
+	        showAlert(fieldName+' length should be less than '+maxLength+' characters.');
+	        return false;
+	    }
+	    return true;
+	}
+
+	function showAlert(message) {
+	    alert(message);
+	    aspExcelFile.value = '';
+	}
+
+	function dateFormatter(excelDate) {
+	    if (isNaN(excelDate)) return '';
+
+	    const baseDate = new Date(1900, 0, 1);
+	    const daysToAdd = excelDate - 1; // Adjust for Excel's leap year bug
+	    const targetDate = new Date(baseDate.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
+
+	    return targetDate.toISOString().split('T')[0].split('-').reverse().join('-');
+	}
+
+	function validateDate(date, column) {
+	    const datePattern = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
+	    if (!datePattern.test(date)) {
+	        showAlert('Date format not matching for '+column);
+	        return false;
+	    }
+	    return true;
+	}
+
+	<%}%>
+	/* --------------------- ASP Excel File Upload End--------------------------------------------------------------------------------------------------- */
+
+	
+	/* --------------------- COG Excel File Upload --------------------------------------------------------------------------------------------------- */
+	<%if(tabName!=null && tabName.equalsIgnoreCase("Cash Out go Status")) {  %>
+	
+	var ccmExcelFile = document.getElementById('ccmExcelFile');
+
+	ccmExcelFile.addEventListener('change', (event) => {
 	
 		var reader = new FileReader();
 	    reader.readAsArrayBuffer(event.target.files[0]);
@@ -2549,7 +3026,7 @@ input,select,table,div,label,span {
 	    			}
 	    			var html="";
 	    			
-	   				for(var cell =0;cell<=4;cell++){
+	   				for(var cell =0;cell<=10;cell++){
 	   					if(row==0){
 	   			 	 	if(cell==0 && "SN"!= sheet_data[row][cell]){checkExcel++;}
 	   					if(cell==1 && "Project Code"!= sheet_data[row][cell]){checkExcel++;}
@@ -2572,13 +3049,13 @@ input,select,table,div,label,span {
     	    					
     	    					if(projectCode===undefined ||  projectCode.length==0 ){
 	    							alert("Project Code can not be blank");
-	    							excel_file.value = '';
+	    							ccmExcelFile.value = '';
 	    			    			return;
 	    						}
     	    					
     	    					if((projectCode+"").length>50){
-	    							alert("Project Code length should be of 50 Chareacters. Project Code length is too much for "+projectCode);
-	    							excel_file.value = '';
+	    							alert("Project Code length should be of 50 Characters. Project Code length is too much for "+projectCode);
+	    							ccmExcelFile.value = '';
 	    			    			return;
 	    						}
     	    					
@@ -2588,13 +3065,13 @@ input,select,table,div,label,span {
     	    					
     	    					if(budgetHead===undefined ||  budgetHead.length==0 ){
 	    							alert("Budget Head can not be blank");
-	    							excel_file.value = '';
+	    							ccmExcelFile.value = '';
 	    			    			return;
 	    						}
     	    					
     	    					if((budgetHead+"").length>25){
-	    							alert("Budget Head length should be of 25 Chareacters. Budget Head length is too much for "+budgetHead);
-	    							excel_file.value = '';
+	    							alert("Budget Head length should be of 25 Characters. Budget Head length is too much for "+budgetHead);
+	    							ccmExcelFile.value = '';
 	    			    			return;
 	    						}
     	    					
@@ -2605,7 +3082,7 @@ input,select,table,div,label,span {
 	   					
 	   					if(checkExcel>0){
 	   		    			alert("Please Download the CCM Cash Out Go Status Excel format and upload it.");
-	   		     			excel_file.value = '';
+	   		     			ccmExcelFile.value = '';
 	   		  				return;
 	   		    		}
 	   		    	  	
@@ -2615,16 +3092,17 @@ input,select,table,div,label,span {
 	    		
 	    		if(table_output.length<1){
    		    	  	alert("No Data available in this Excel Sheet!")
-		    		excel_file.value = '';
+		    		ccmExcelFile.value = '';
 		    	} 
 	    	}
     	
     	}
 	});
 	
-	/* --------------------- Excel File Upload End --------------------------------------------------------------------------------------------------- */
-	
 	<%}%>
+	/* --------------------- COG Excel File Upload End --------------------------------------------------------------------------------------------------- */
+	
+
 	</script>	
 	
 	

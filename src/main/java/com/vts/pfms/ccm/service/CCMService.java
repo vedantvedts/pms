@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.ccm.model.CCMASPData;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -56,5 +57,7 @@ public interface CCMService {
 	public HashMap<String, List<Object[]>> getClosureStatusList(String scheduleId) throws Exception;
 	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception;
 	public long addCCMClosureStatus(CCMClosureStatus closure) throws Exception;
+	public HashMap<String, List<Object[]>> getCCMASPList() throws Exception;
+	public long addCCMASPData(CCMASPData aspData) throws Exception;
 
 }

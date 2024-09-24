@@ -44,6 +44,7 @@ String seslabid=(String)session.getAttribute("labid");
 	List<Object[]>ActionDetails=(List<Object[]>)request.getAttribute("ActionDetails");
 	Map<Integer,Integer>committeeCountMap=(Map<Integer,Integer>)request.getAttribute("committeeCountMap");
 	
+	String ccmFlag = (String)request.getAttribute("ccmFlag");
 	%>
 <style type="text/css">
 
@@ -584,6 +585,7 @@ th,td
 			else if (committeemin[0].toString().equals("3") ) 
 			{						
 				%>
+				<%if(ccmFlag==null) {%>
 						<div align="center">
 							<table style="margin-top: 0px;; width: 650px; font-size: 16px; border-collapse: collapse;">
 								<tr>
@@ -684,14 +686,15 @@ th,td
 						<%}%>
 						</table>
 					</div>
+					<%} %>
 				<!-- <div class="break"></div>  -->
 	<!-- ----------------------------------------------agenda end------------------------------------------- -->
 				
-			<%}else if (committeemin[0].toString().equals("4") || committeemin[0].toString().equals("5") || committeemin[0].toString().equals("6")) { %>
-			
+			<%}else if ((ccmFlag!=null && committeemin[0].toString().equals("4")) || (ccmFlag==null && (committeemin[0].toString().equals("4") || committeemin[0].toString().equals("5") || committeemin[0].toString().equals("6")))) { %>
 			<div align="center">
 				<table style="margin-top: 0px;; width: 650px; font-size: 16px; border-collapse: collapse;">
 					<tbody>
+						
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
 						</tr>
@@ -734,7 +737,7 @@ th,td
 								<%}
 							}							
 							
-						}if (count == 0)
+						}if (count == 0 && ccmFlag==null)
 						{%>
 						<tr style="page-break-after: ;">
 						<td style="text-align: left;"><div style="padding-left: 50px"><p>NIL</p></div>
@@ -744,7 +747,6 @@ th,td
 				
 				</table>
 			</div>
-				
 	<%}
 	}%>
 	<div align="center" >
@@ -829,6 +831,7 @@ th,td
 	<br>	
 	
 	<%}%>
+							<%if(ccmFlag==null) {%>
 							<table style="margin-left:10px;margin-top: 0px;  width: 700px; font-size: 16px; border-collapse: collapse;">
 								<tr>
 									<th colspan="8" style="text-align: left; font-weight: 700;"><br>7.&nbsp;&nbsp;Action Points of Previous Review:&nbsp; &nbsp;</th>
@@ -919,7 +922,7 @@ th,td
 									<%} %>	
 								</tbody>		
 							</table>
-						
+						<%} %>
 </div>
 </body>
 </html>

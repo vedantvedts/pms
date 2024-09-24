@@ -94,6 +94,7 @@ input,select,table,div,label,span {
 	
 		 ArrayList<String> cogLabList = new ArrayList<>();
 		 ArrayList<String> csLabList = new ArrayList<>();
+		 ArrayList<String> aspLabList = new ArrayList<>();
 	%>
 
 	<% String ses=(String)request.getParameter("result");
@@ -149,7 +150,7 @@ input,select,table,div,label,span {
 										 </tr>
 									</table>
 									
-									<table style="width: 100%; "  >
+									<table style="width: 100%;margin-top: 3rem;"  >
 										<tr>
 											 <th  style="text-align: center; width: 50%;font-size: 18px;border:0px !important; ">  Meeting Date </th>
 											 <th  style="text-align: center;  width: 50%;font-size: 18px;border:0px !important;  "> Meeting Time </th>
@@ -167,7 +168,7 @@ input,select,table,div,label,span {
 										 </tr>
 									</table>
 									
-									<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
+									<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;font-size: 16px;margin-top: 3rem;"  >
 										<% if(labInfo!=null){ %>
 											<tr>
 												<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
@@ -978,7 +979,13 @@ input,select,table,div,label,span {
 			<%} %>
 			<!-- ---------------------------------------- PMRC Calendar Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- ASP Status Slide ---------------------------------------------------  -->
-			<%if(slideNames.contains("ASP Status")) { %>
+			<%if(slideNames.contains("ASP Status")) { 
+				HashMap<String, List<Object[]> > aspList = (HashMap<String, List<Object[]> >) request.getAttribute("aspList");
+				
+				for (Map.Entry<String, List<Object[]>> entry : aspList.entrySet()) {
+				    List<Object[]> aspStatusList = entry.getValue(); 
+				    aspLabList.add(entry.getKey());
+			%>
 				<div class="carousel-item">
 	
 					<div class="content-header row ">
@@ -990,7 +997,7 @@ input,select,table,div,label,span {
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
 						</div>
 						<div class="col-md-7">
-							<h3 class="slideNames">ASP Status</h3>
+							<h3 class="slideNames">ASP Status - <%=entry.getKey() %></h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -1002,14 +1009,89 @@ input,select,table,div,label,span {
 					</div>
 					
 					<div class="content" >
+						<div class="container-fluid mt-3 tabpanes2">
+							<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
+										<th colspan="9" style="border-radius: 1rem;"> <h5>ASP Status</h5></th>
+									</tr> -->
+									<tr>
+										<th rowspan="2" style="vertical-align: middle;">SN</th>
+										<th rowspan="2" style="vertical-align: middle;">Project</th>
+										<th colspan="6">Milestone Dates for</th>
+										<th rowspan="2" style="vertical-align: middle;">Remarks</th>
+									</tr>
+									<tr>
+										
+										<th>PDR/PRC</th>
+										<th>TiEC</th>
+										<th>CEC</th>
+										<th>CCM</th>
+										<th>DMC</th>
+										<th>Sanction</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(aspStatusList!=null && aspStatusList.size()>0) { 
+										int slno = 0;
+										for(Object[] obj : aspStatusList) {
+									%>
+										<tr>
+											<td class="center"><%=++slno %></td>
+											<td>
+												<%=obj[3]!=null?obj[3]:"-" %> <br>
+												Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
+												Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(obj[6].toString())/10000000):"-" %> (In Cr) <br>
+												PDC&nbsp;&nbsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> (In Months) <br>
+												PD&emsp;&nbsp;: <%=obj[8]!=null?obj[8]:"-" %> <br>
+											</td>
+											<td>
+												Proposed &nbsp;: <span style="color: blue;"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></span> <br>
+												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[10]!=null?fc.sdfTordf(obj[10].toString()):"-" %></span> <br>
+												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[11]!=null?fc.sdfTordf(obj[11].toString()):"-" %></span>
+											</td>
+											<td>
+												Proposed &nbsp;: <span style="color: blue;"><%=obj[12]!=null?fc.sdfTordf(obj[12].toString()):"-" %></span> <br>
+												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[13]!=null?fc.sdfTordf(obj[13].toString()):"-" %></span> <br>
+												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[14]!=null?fc.sdfTordf(obj[14].toString()):"-" %></span>
+											</td>
+											<td>
+												Proposed &nbsp;: <span style="color: blue;"><%=obj[15]!=null?fc.sdfTordf(obj[15].toString()):"-" %></span> <br>
+												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[16]!=null?fc.sdfTordf(obj[16].toString()):"-" %></span> <br>
+												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[17]!=null?fc.sdfTordf(obj[17].toString()):"-" %></span>
+											</td>
+											<td>
+												Proposed &nbsp;: <span style="color: blue;"><%=obj[18]!=null?fc.sdfTordf(obj[18].toString()):"-" %></span> <br>
+												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[19]!=null?fc.sdfTordf(obj[19].toString()):"-" %></span> <br>
+												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[20]!=null?fc.sdfTordf(obj[20].toString()):"-" %></span>
+											</td>
+											<td>
+												Proposed &nbsp;: <span style="color: blue;"><%=obj[21]!=null?fc.sdfTordf(obj[21].toString()):"-" %></span> <br>
+												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[22]!=null?fc.sdfTordf(obj[22].toString()):"-" %></span> <br>
+												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[23]!=null?fc.sdfTordf(obj[23].toString()):"-" %></span>
+											</td>
+											<td>
+												Proposed &nbsp;: <span style="color: blue;"><%=obj[24]!=null?fc.sdfTordf(obj[24].toString()):"-" %></span> <br>
+												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[25]!=null?fc.sdfTordf(obj[25].toString()):"-" %></span> <br>
+												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[26]!=null?fc.sdfTordf(obj[26].toString()):"-" %></span>
+											</td>
+											<td><%=obj[27]!=null?obj[27]:"-" %></td>
+										</tr>
+									<%} } else{%>
+										<tr>
+											<td colspan="9" class="center">No Data Available</td>
+										</tr>
+									<%} %>	
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			<%} %>
+			<%} }%>
 			<!-- ---------------------------------------- ASP Status Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- Closure Status Slide ---------------------------------------------------  -->
 			<%if(slideNames.contains("Closure Status")) { 
 				HashMap<String, List<Object[]> > csList = (HashMap<String, List<Object[]> >) request.getAttribute("closureStatusList");
-				int quarter = (int)request.getAttribute("quarter");
 				
 				for (Map.Entry<String, List<Object[]>> entry : csList.entrySet()) {
 				    List<Object[]> closureStatusList = entry.getValue(); 
@@ -1045,7 +1127,7 @@ input,select,table,div,label,span {
 										<th colspan="7" style="border-radius: 1rem;"> <h5>Closure Status</h5></th>
 									</tr> -->
 									<tr>
-										<th>Lab</th>
+										<!-- <th>Lab</th> -->
 										<th>Project</th>
 										<th>DoS /<br> PDC</th>
 										<th>Recommendation</th>
@@ -1059,7 +1141,7 @@ input,select,table,div,label,span {
 										for(Object[] obj : closureStatusList) {
 									%>
 										<tr>
-											<td><%=obj[1]!=null?obj[1]:"-" %></td>
+											<%-- <td><%=obj[1]!=null?obj[1]:"-" %></td> --%>
 											<td>
 												<%=obj[3]!=null?obj[3]:"-" %> <br>
 												Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
@@ -1067,7 +1149,7 @@ input,select,table,div,label,span {
 												PD&emsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> 
 											</td>
 											<td class="center">
-												<%=obj[8]!=null?obj[8]:"-" %> / <br> <%=obj[9]!=null?obj[9]:"-" %> 
+												<%=obj[8]!=null?fc.sdfTordf(obj[8].toString()):"-" %> / <br> <%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %> 
 											</td>
 											<td><%=obj[10]!=null?obj[10]:"-" %></td>
 											<td><%=obj[10]!=null?obj[11]:"-" %></td>
@@ -1595,6 +1677,13 @@ input,select,table,div,label,span {
 				<%if(slideName.equalsIgnoreCase("ATR")) {%>
 					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=++count2 %></b></li>
 					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Pending Points"><b><%=++count2 %></b></li>
+				<%} else if(slideName.equalsIgnoreCase("ASP Status")) {%>
+					<%
+					++count2;
+					char a = 'a';
+					for(int i=0;i<aspLabList.size();i++) {%>
+						<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName+" - "+aspLabList.get(i) %>"><b><%=count2 %> (<%=a++ %>)</b></li>
+					<%} %>
 				<%} else if(slideName.equalsIgnoreCase("Closure Status")) {%>
 					<%
 					++count2;
@@ -1625,7 +1714,7 @@ input,select,table,div,label,span {
 		<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
 			<div class="modal-content">
 				<div class="modal-header bg-primary text-light">
-		        	<h5 class="modal-title">ATR Topics</h5>
+		        	<h5 class="modal-title">Topics</h5>
 			        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true" style="color:red;">&times;</span>
 			        </button>

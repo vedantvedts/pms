@@ -10,12 +10,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.ccm.dao.CCMDao;
+import com.vts.pfms.ccm.model.CCMASPData;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -639,7 +637,18 @@ public class CCMServiceImpl implements CCMService{
 	@Override
 	public HashMap<String, List<Object[]> > getCashOutGoList() throws Exception {
 		
-		return dao.getCashOutGoList();
+		HashMap<String, List<Object[]> > cogList = new HashMap<String, List<Object[]>>();
+		try {
+			List<Object[]> list = dao.getCashOutGoList();
+			if(list!=null && list.size()>0) {
+				 // Group by LabCode
+				cogList = list.stream().collect(Collectors.groupingBy(obj -> obj[2].toString(), HashMap::new, Collectors.toList()));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMServiceImpl getCashOutGoList "+ e);
+		}
+		return cogList;
 	}
 
 	@Override
@@ -737,7 +746,18 @@ public class CCMServiceImpl implements CCMService{
 	@Override
 	public HashMap<String, List<Object[]>> getClosureStatusList(String scheduleId) throws Exception {
 		
-		return dao.getClosureStatusList(scheduleId);
+		HashMap<String, List<Object[]> > closureStatusList = new HashMap<String, List<Object[]>>();
+		try {
+			List<Object[]> list = dao.getClosureStatusList(scheduleId);
+			if(list!=null && list.size()>0) {
+				 // Group by LabCode
+				closureStatusList = list.stream().collect(Collectors.groupingBy(obj -> obj[1].toString(), HashMap::new, Collectors.toList()));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMServiceImpl getClosureStatusList "+ e);
+		}
+		return closureStatusList;
 	}
 
 	@Override
@@ -750,6 +770,29 @@ public class CCMServiceImpl implements CCMService{
 	public long addCCMClosureStatus(CCMClosureStatus closure) throws Exception {
 		
 		return dao.addCCMClosureStatus(closure);
+	}
+
+	@Override
+	public HashMap<String, List<Object[]>> getCCMASPList() throws Exception {
+		
+		HashMap<String, List<Object[]> > aspList = new HashMap<String, List<Object[]>>();
+		try {
+			List<Object[]> list = dao.getCCMASPList();
+			if(list!=null && list.size()>0) {
+				 // Group by LabCode
+				aspList = list.stream().collect(Collectors.groupingBy(obj -> obj[1].toString(), HashMap::new, Collectors.toList()));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMServiceImpl getCCMASPList "+ e);
+		}
+		return aspList;
+	}
+
+	@Override
+	public long addCCMASPData(CCMASPData aspData) throws Exception {
+		
+		return dao.addCCMASPData(aspData);
 	}
 	
 }
