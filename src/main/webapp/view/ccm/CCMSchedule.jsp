@@ -529,7 +529,13 @@ if(ccmSchedule!=null) {
 		        								
 		        							
 		        								<div class="card-header left" style="background-color: #216583;margin-top: 2rem;">
-				               						<h5 class="text-white" style="font-weight: bold;">Agenda Details</h5>
+				               						<h5 class="text-white" style="font-weight: bold;">Agenda Details &emsp;
+				               							<%if(!ccmScheduleId.equalsIgnoreCase("0")) {%>
+				               								<a target="_blank" href="CCMScheduleAgendaPdfDownload.htm?ccmScheduleId=<%=ccmScheduleId %>" data-toggle="tooltip" title="Download" data-original-title="Download Agenda">
+				               									<i class="fa fa-download" style="color: #ffff;" aria-hidden="true"></i>
+				               								</a>
+				               							<%} %>
+				               						</h5>
 				               					</div>
 				               					
 		        								<div class="card-body">

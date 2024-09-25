@@ -606,7 +606,7 @@ input,select,table,div,label,span {
 																				 key=entry.getKey().toString();
 																			 } }}%>
 																		
-																		<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+seqDate+")/"+obj[1].toString().split("/")[3] %>
+																		<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+(obj[20].toString().substring(2, 7))+")/"+obj[1].toString().split("/")[3] %>
 																	</button>
 																<%}%> 
 															<!--  -->
@@ -746,7 +746,7 @@ input,select,table,div,label,span {
 																				 key=entry.getKey().toString();
 																			 } }}%>
 																		
-																		<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+seqDate+")/"+obj[1].toString().split("/")[3] %>
+																		<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+(obj[20].toString().substring(2, 7))+")/"+obj[1].toString().split("/")[3] %>
 																	</button>
 																<%}%> 
 															<!--  -->

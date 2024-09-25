@@ -40,8 +40,9 @@ body {
    background-color: #e7f9ff;
 }
 
-input,select,table,div,label,span {
+input,select,table,div,label,span,button {
 	font-family : "Lato", Arial, sans-serif !important;
+	font-size: 1.2rem !important;
 }
 
 .content-header {
@@ -49,16 +50,32 @@ input,select,table,div,label,span {
 }
 
 .logo {
-	width: 65px !important;
+	width: 80px !important;
+	margin-left: 5px;
 }
 
 .slideNames {
 	margin-top: 1rem;
 	margin-right: 3rem;
+	font-size: 3rem;
 }
 
 .refNoHeading {
-	margin-top: 1rem;
+	margin-top: 1.5rem;
+	font-size: 1.5rem !important;
+}
+.firstpagefontfamily  {
+	font-family: 'Muli' !important;
+}
+
+.data-table td{
+	padding: 10px !important;
+}
+.data-table tbody{
+	font-size: 1.2rem !important;
+}
+.data-table th{
+	font-size: 1.5rem !important;
 }
 </style>
 </head>
@@ -118,80 +135,51 @@ input,select,table,div,label,span {
 		<div class="carousel-inner" align="center">
 			<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
 			<div class="carousel-item active">
-				<div class="content" align="center" style="height:93vh !important;padding-top: 15px;">
-					<!-- <div class="firstpage"  >  -->
-						<table style="border-collapse: collapse;border: none;width: 100%;margin-top: 2rem;">
-							<tr>
-								<td style="width: 50%;border: none;vertical-align: middle;text-align: center;">
-									<img class="" style="" <%if(clusterLabs!=null ){ %> src="data:image/*;base64,<%=clusterLabs%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
-								</td>
-								<td style="width: 50%;border: none;">
-									<div align="center" ><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h2></div>
-									<div align="center" ><h3 style="color: #145374 !important">for</h3></div>
-										
-									<div align="center" >
-										<h3 style="color: #4C9100 !important" >Cluster Council Meeting </h3>
-							   		</div>
-									
-									<table class="executive home-table" style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
-										<tr>			
-											<th colspan="8" style="text-align: center; font-weight: 700;">
-											<img class="frontpagelogo" style="width:120px;height: 120px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
-											<br>
-											</th>
-											
-										</tr>
-									</table>	
-									
-									<table style="align: center;width: 100%;  "  >
-										<tr style="margin-top: 10px">
-											 <th  style="text-align: center;font-size: 18px;border:0px !important; "> Meeting Id </th></tr><tr>
-											 <th  style="text-align: center;font-size: 18px;border:0px !important;  "> <%if(ccmSchedule!=null && ccmSchedule.getMeetingId()!=null) {%> <%=ccmSchedule.getMeetingId() %> <%} else{%>-<%} %> </th>				
-										 </tr>
-									</table>
-									
-									<table style="width: 100%;margin-top: 3rem;"  >
-										<tr>
-											 <th  style="text-align: center; width: 50%;font-size: 18px;border:0px !important; ">  Meeting Date </th>
-											 <th  style="text-align: center;  width: 50%;font-size: 18px;border:0px !important;  "> Meeting Time </th>
-										</tr>
-										<tr>
-											 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important;"> <b> <%if(ccmSchedule!=null && ccmSchedule.getScheduleDate()!=null) {%> <%=fc.sdfTordf(ccmSchedule.getScheduleDate().toString()) %> <%} else{%>-<%} %> </b></td>
-											 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important; "> <b><%if(ccmSchedule!=null && ccmSchedule.getScheduleStartTime()!=null) {%> <%=ccmSchedule.getScheduleStartTime() %> <%} else{%>-<%} %></b></td>
-										</tr>
-									</table>
-									
-									<table style="align: center; width: 100%;margin-top: 1rem;"  >
-										<tr style="margin-top: 10px">
-											 <th  style="text-align: center;font-size: 18px;border:0px !important; "> Meeting Venue</th></tr><tr>
-											 <th  style="text-align: center;;font-size: 18px ;border:0px !important; "> <%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null) {%> <%=ccmSchedule.getMeetingVenue() %> <%} else{%>-<%} %> </th>				
-										 </tr>
-									</table>
-									
-									<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;font-size: 16px;margin-top: 3rem;"  >
-										<% if(labInfo!=null){ %>
-											<tr>
-												<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
-											</tr>
-										<%}%>
-										<tr>
-											<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
-										</tr>
-										<tr>
-											<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
-										</tr>
-										<tr>
-											<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> </th>
-										</tr>
-									</table>
-								</td>
-							</tr>
-						</table>
-						
-					<!-- </div> -->
-					
+				<div class="content" style="height:93vh !important;">
+					<table class="table table-condensed " style="width:100%;height:90vh !important;">
+						<tr>
+							<td style="width: 50%;border: none;vertical-align: middle;text-align: center;">
+								<img class="" style="width: 45rem;" <%if(clusterLabs!=null ){ %> src="data:image/*;base64,<%=clusterLabs%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
+							</td>
+							<td style="width: 50%;border: none;">
+								<div class="mt-2 center">
+									<h2 class="firstpagefontfamily" style="color: #145374 !important;">Presentation</h2>
+									<h3 class="firstpagefontfamily" style="color: #145374 !important;">for</h3>
+									<h2 class="firstpagefontfamily" style="color: #145374 !important;" >Cluster Council Meeting </h2>
+								</div>
+								<div class="mt-4 center">
+									<img class="frontpagelogo" style="width:120px;height: 120px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
+								</div>
+								<div class="mt-4 center">
+									<h4 class="firstpagefontfamily">Meeting ID</h4>
+									<h4 class="firstpagefontfamily"><%if(ccmSchedule!=null && ccmSchedule.getMeetingId()!=null) {%> <%=ccmSchedule.getMeetingId() %> <%} else{%>-<%} %></h4>
+								</div>
+								<div class="mt-4 center" style="width: 100%;display: flex;">
+									<div style="width: 50%;">
+										<h4 class="firstpagefontfamily">Meeting Date</h4>
+										<h4 class="firstpagefontfamily"><%if(ccmSchedule!=null && ccmSchedule.getScheduleDate()!=null) {%> <%=fc.sdfTordf(ccmSchedule.getScheduleDate().toString()) %> <%} else{%>-<%} %></h4>
+									</div>
+									<div style="width: 50%;">
+										<h4 class="firstpagefontfamily">Meeting Time</h4>
+										<h4 class="firstpagefontfamily"><%if(ccmSchedule!=null && ccmSchedule.getScheduleStartTime()!=null) {%> <%=ccmSchedule.getScheduleStartTime() %> <%} else{%>-<%} %></h4>
+									</div>
+								</div>
+								<div class="mt-4 center">
+									<h4 class="firstpagefontfamily">Meeting Venue</h4>
+									<h4 class="firstpagefontfamily"><%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null) {%> <%=ccmSchedule.getMeetingVenue() %> <%} else{%>-<%} %></h4>
+								</div>
+								<div class="mt-4 center">
+									<% if(labInfo!=null){ %>
+										<h4 class="firstpagefontfamily"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></h4>
+									<%} %>
+									<h4 class="firstpagefontfamily mt-5">Government of India, Ministry of Defence</h4>
+									<h4 class="firstpagefontfamily">Defence Research & Development Organization</h4>
+									<h4 class="firstpagefontfamily"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %></h4>
+								</div>
+							</td>
+						</tr>	
+					</table>
 				</div>
-				
 			</div>
 			<!-- ----------------------------------------  P-1  Div ----------------------------------------------------- -->
 			
@@ -203,7 +191,7 @@ input,select,table,div,label,span {
 				<div class="content-header row ">
 					
 					<div class="col-md-1" >
-						<img class="logo" style="margin-left: 5px;margin-top: -2px;"  <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+						<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-2" align="left" style="display: inherit;" >
 						<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -215,7 +203,7 @@ input,select,table,div,label,span {
 						<b style="margin-right: -35px;"><%="" %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+						<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					
 				</div>
@@ -229,7 +217,7 @@ input,select,table,div,label,span {
 					</div>
 							
 								
-		         	<table class="table table-bordered table-hover table-condensed " style="margin-top:10px;width:100% ">
+		         	<table class="table table-bordered table-hover table-condensed data-table" style="margin-top:10px;width:100% ">
 		     	      	<thead style="background-color: #4B70F5; color: #ffff !important;">
 		            		<tr>
 		            			<th>Expand</th>
@@ -381,7 +369,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -393,7 +381,7 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
@@ -496,7 +484,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -508,7 +496,7 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
@@ -556,7 +544,7 @@ input,select,table,div,label,span {
 																 key=entry.getKey().toString();
 															 } }}%>
 														
-														<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+seqDate+")/"+obj[1].toString().split("/")[3] %>
+														<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+(obj[20].toString().substring(2, 7))+")/"+obj[1].toString().split("/")[3] %>
 													</button>
 												<%}%> 
 											<!--  -->
@@ -634,7 +622,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -646,7 +634,7 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
@@ -690,7 +678,7 @@ input,select,table,div,label,span {
 																 key=entry.getKey().toString();
 															 } }}%>
 														
-														<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+seqDate+")/"+obj[1].toString().split("/")[3] %>
+														<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+(obj[20].toString().substring(2, 7))+")/"+obj[1].toString().split("/")[3] %>
 													</button>
 												<%}%> 
 											<!--  -->
@@ -746,7 +734,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -758,14 +746,14 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
 					
 					<div class="content" >
 						<div class="container-fluid mt-3 tabpanes1">
-							<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
 										<th colspan="6" style="border-radius: 1rem;"> <h5>EB Calendar</h5></th>
@@ -868,7 +856,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -880,14 +868,14 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
 					
 					<div class="content" >
 						<div class="container-fluid mt-3 tabpanes1">
-							<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
 										<th colspan="6" style="border-radius: 1rem;"> <h5>PMRC Calendar</h5></th>
@@ -991,7 +979,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -1003,14 +991,14 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
 					
 					<div class="content" >
 						<div class="container-fluid mt-3 tabpanes2">
-							<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
 										<th colspan="9" style="border-radius: 1rem;"> <h5>ASP Status</h5></th>
@@ -1102,7 +1090,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -1114,7 +1102,7 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
@@ -1182,7 +1170,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -1194,7 +1182,7 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
@@ -1384,7 +1372,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -1396,14 +1384,14 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
 					
 					<div class="content" >
 						<div class="container-fluid mt-3 tabpanes1">
-							<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
+							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
 										<th colspan="6" style="border-radius: 1rem;"> <h5>Test & Trials</h5></th>
@@ -1467,7 +1455,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -1479,7 +1467,7 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
@@ -1550,7 +1538,7 @@ input,select,table,div,label,span {
 					<div class="content-header row ">
 						
 						<div class="col-md-1" >
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						<div class="col-md-2" align="left" style="display: inherit;">
 							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -1562,7 +1550,7 @@ input,select,table,div,label,span {
 							<b style="margin-right: -35px;"><%="" %></b>
 						</div>
 						<div class="col-md-1">
-							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 						</div>
 						
 					</div>
@@ -1631,7 +1619,7 @@ input,select,table,div,label,span {
 				<div class="content-header row ">
 					
 					<div class="col-md-1" >
-						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+						<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-2" align="left" style="display: inherit;">
 						<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
@@ -1643,7 +1631,7 @@ input,select,table,div,label,span {
 						<b style="margin-right: -35px;"><%="" %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+						<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					
 				</div>
