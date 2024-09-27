@@ -72,7 +72,11 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 			  
 			  var contentArray = [
 			        {
-			            text: 'QR FOR PROJECT <%=projectDetails != null && projectDetails[2] != null ? projectDetails[2] : "-" %>',
+			            text: `QR 
+			            
+			            		FOR 
+			            		
+			            	PROJECT ${projectDetails != null && projectDetails[2] != null ? projectDetails[2] : "-"}`,
 			            style: 'DocumentName',
 			            alignment: 'center',
 			            fontSize: 18,
@@ -244,6 +248,8 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
             	        fontSize: 80,          // Size of the watermark text
             	        angle: -45              // Angle of the watermark text
             	    },
+            	    
+            	    
             	    info: {
             	        title: 'QR_PARA_<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:"" %>',  // Set document name here
             	      
@@ -289,7 +295,7 @@ footer: function(currentPage, pageCount) {
                 },
                 // Sentence on the next line
                 {
-                    text: 'Restricted',
+                    text: '<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12]:"Restricted"%>',
                     alignment: 'center',
                     fontSize: 8,
                     margin: [0, 5, 0, 0]  // Add some margin above to create space

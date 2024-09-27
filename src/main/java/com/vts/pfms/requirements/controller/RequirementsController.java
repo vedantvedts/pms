@@ -64,9 +64,13 @@ import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
+import com.vts.pfms.requirements.model.IgiDocumentMembers;
+import com.vts.pfms.requirements.model.IgiDocumentSummary;
+import com.vts.pfms.requirements.model.PfmsIgiDocument;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -1132,6 +1136,8 @@ public class RequirementsController {
 			rs.setPreparedBy(req.getParameter("preparedBy"));
 			rs.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
 			rs.setSpecsInitiationId(0L);
+			rs.setReleaseDate(req.getParameter("pdc"));
+			rs.setDocumentNo(req.getParameter("Document"));
 			if(action.equalsIgnoreCase("Add")) {
 				rs.setCreatedBy(UserId);
 				rs.setCreatedDate(sdf1.format(new Date()));
@@ -1962,7 +1968,7 @@ public class RequirementsController {
 			pir.setRequirementBrief(reqTypes[2]);
 			}
 			
-			
+			pir.setRequirementBrief(reqTypes[2]);
 			pir.setRequirementDesc(description);
 			pir.setNeedType(needtype);
 			pir.setPriority(priority);
@@ -2366,9 +2372,11 @@ public class RequirementsController {
 			req.setAttribute("StagesApplicable", service.StagesApplicable());
 			req.setAttribute("VerificationMethodList", service.getVerificationMethodList());
 			List<Object[]> TestDetailsList=service.TestDetailsList(testPlanInitiationId);
-			if(TestDetailsList!=null && TestDetailsList.size()>0)
+			if(req.getParameter("TestReqId")==null&&  TestDetailsList!=null && TestDetailsList.size()>0)
 			{
 				req.setAttribute("TestReqId", TestDetailsList.get(0)[0].toString());
+			}else {
+				req.setAttribute("TestReqId", req.getParameter("TestReqId"));
 			}
 			
 			String specsInitiationId = service.getFirstVersionSpecsInitiationId(initiationId, projectId, productTreeMainId)+"";
@@ -2379,7 +2387,8 @@ public class RequirementsController {
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("testPlanInitiationId", testPlanInitiationId);
-			
+			req.setAttribute("click", req.getParameter("click"));
+			req.setAttribute("testPlanMainList", service.getTestPlanMainList(testPlanInitiationId));
 			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, !projectId.equals("0")?projectId:initiationId, !projectId.equals("0")?"E":"P"));
 			
 			return "requirements/TestDetails";
@@ -2494,20 +2503,34 @@ public class RequirementsController {
 			}else {
 
 				String  Testtype="TEST";
-				Long a=	(Long)service.numberOfTestTypeId(testPlanInitiationId);
+				String mainid = req.getParameter("MainId");
+				
+				String parentid = req.getParameter("parentid");
+				
+				Long a=	(Long)service.numberOfTestTypeId(parentid);
 				String TestDetailsId="";
+				if(mainid.equalsIgnoreCase("0")) {
+					TestDetailsId = req.getParameter("testName")+"_"+(a+1);
+				}else {
+					Object[]testType=service.getTestTypeName(mainid);
+					if(testType!=null) {
+						Testtype=testType[3].toString();
+					}
 				if(a<90L) {
 					System.out.println("10"+ (a+10));
-					TestDetailsId=Testtype+("000"+(a+10));
+					TestDetailsId=Testtype+("000"+((a*10)+10));
 				}else if(a<990L) {
-					TestDetailsId=Testtype+("00"+(a+10));
+					TestDetailsId=Testtype+("00"+((a*10)+10));
 				}else {
-					TestDetailsId=Testtype+("0"+(a+10));
+					TestDetailsId=Testtype+("0"+((a*10)+10));
+				}
 				}
 				Td.setTestDetailsId(TestDetailsId);
 				Td.setTestCount((a.intValue()+10));
-
+				Td.setParentId(Long.parseLong(parentid));
+				Td.setMainId(0l);
 				Td.setCreatedBy(UserId);
+				Td.setIsActive(1);
 				Td.setCreatedDate(sdf1.format(new Date()));
 			}
 			long count=service.TestDetailsAdd(Td);
@@ -2521,6 +2544,7 @@ public class RequirementsController {
 			redir.addAttribute("projectId",projectId);
 			redir.addAttribute("productTreeMainId",productTreeMainId);
 			redir.addAttribute("testPlanInitiationId",testPlanInitiationId);
+			redir.addAttribute("TestReqId",count+"");
 			return "redirect:/TestDetails.htm";
 		}
 
@@ -2704,7 +2728,10 @@ public class RequirementsController {
 			}
 			Object[] projectDetails = projectservice.getProjectDetails(LabCode, ini.getInitiationId()!=0?ini.getInitiationId()+"":ini.getProjectId()+"", ini.getInitiationId()!=0?"P":"E");
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
-
+			req.setAttribute("projectDetails", projectDetails);
+			String specsInitiationId = service.getFirstVersionSpecsInitiationId(ini.getInitiationId()+"", ini.getProjectId()+"", ini.getProductTreeMainId()+"")+"";
+			
+			req.setAttribute("specificationList", service.getSpecsList(specsInitiationId));
 			String filename="TestPlan";
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
@@ -3109,6 +3136,21 @@ public class RequirementsController {
 		Gson json = new Gson();
 		return json.toJson(count);
 	}
+	@RequestMapping(value="deletetestPlan.htm", method= {RequestMethod.GET})
+	public @ResponseBody  String deletetestPlan(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside deleteInitiationReq.htm"+UserId);
+		long count=0;
+		try {
+			String TestId = req.getParameter("TestId");
+			count  = service.deleteTestPlan(TestId);
+		}catch (Exception e) {
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
 	@RequestMapping(value="UpdateSqrSerial.htm", method= {RequestMethod.GET})
 	public @ResponseBody  String UpdateSqrSerial(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
@@ -3136,5 +3178,401 @@ public class RequirementsController {
 		}
 		Gson json = new Gson();
 		return json.toJson(count);
+	}
+	
+	@RequestMapping(value="MainSpecificationAdd.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String MainSpecificationAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside MainSpecificationAdd.htm"+UserId);
+		try {
+			String initiationId  = req.getParameter("initiationId");
+			String projectId =req.getParameter("projectId");
+			String productTreeMainId =req.getParameter("productTreeMainId");
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			
+			String []specificationCode= req.getParameterValues("specificationCode");
+			String []SpecificationName= req.getParameterValues("SpecificationName");
+			long count = service.addSpecMaster(specificationCode,SpecificationName);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+			redir.addAttribute("click", "c");
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return "redirect:/SpecificaionDetails.htm";
+		}
+	@RequestMapping(value="MainTestPlanAdd.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String MainTestPlanAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside MainTestPlanAdd.htm"+UserId);
+		try {
+			String initiationId  = req.getParameter("initiationId");
+			String projectId =req.getParameter("projectId");
+			String productTreeMainId =req.getParameter("productTreeMainId");
+			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			
+			
+			String []testplanCode= req.getParameterValues("testplanCode");
+			String []testplanName= req.getParameterValues("testplanName");
+			long count = service.addTestMaster(testplanCode,testplanName);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("testPlanInitiationId", testPlanInitiationId);
+			redir.addAttribute("click", "c");
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return "redirect:/TestDetails.htm";
+	}
+	@RequestMapping(value="SpecificationSelectSubmit.htm", method= {RequestMethod.POST})
+	public String SpecificationSelectSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside MainSpecificationAdd.htm"+UserId);
+		String initiationId  = req.getParameter("initiationId");
+		String projectId =req.getParameter("projectId");
+		String productTreeMainId =req.getParameter("productTreeMainId");
+		String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+		try {
+			System.out.println(initiationId +" --"+ projectId+" --- "+productTreeMainId+"---"+SpecsInitiationId);
+			String []specValue= req.getParameterValues("specValue");
+			long count=0;
+			for(int i=0;i<specValue.length;i++) {
+				Specification specs = new Specification();
+				specs.setCreatedBy(UserId);
+				specs.setCreatedDate(sdf1.format(new Date()));	
+				String[] s= specValue[i].split("/");
+				specs.setMainId(Long.parseLong(s[0]));
+				specs.setParentId(0l);
+				specs.setSpecificationName(s[1]);
+				specs.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
+				specs.setIsActive(1);
+				count = projectservice.addSpecification(specs);
+			}
+			if(count>0){
+				redir.addAttribute("result","Specification  added successfully ");
+			}else{
+				redir.addAttribute("resultfail","Specification add unsuccessful ");
+			}
+			
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			redir.addAttribute("resultfail","Specification add unsuccessful ");
+		}
+		redir.addAttribute("projectId", projectId);
+		redir.addAttribute("initiationId", initiationId);
+		redir.addAttribute("productTreeMainId", productTreeMainId);
+		redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+		return "redirect:/SpecificaionDetails.htm";
+	}
+	
+	@RequestMapping(value = "TestPlanSelectSubmit.htm", method=RequestMethod.POST)
+	public String TestPlanSelectSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir  ) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside TestPlanSelectSubmit.htm "+UserId);
+		try {
+			
+			String initiationId  = req.getParameter("initiationId");
+			String projectId =req.getParameter("projectId");
+			String productTreeMainId =req.getParameter("productTreeMainId");
+			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			
+			if(testPlanInitiationId.equals("0") ) {					
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
+			}
+			
+			String []testValue = req.getParameterValues("testValue");
+			long count=0l;
+			for(int i=0;i<testValue.length;i++) {
+				TestDetails Td = new TestDetails();
+				
+				String[]sub = testValue[i].split("/");
+				
+				Td.setParentId(0l);
+				Td.setMainId(Long.parseLong(sub[0]));
+				Td.setTestDetailsId(sub[2]+"_"+sub[1]);
+				Td.setName(sub[1]);
+				Td.setIsActive(1);
+				Td.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
+				count=service.TestDetailsAdd(Td);
+
+				
+			}
+			
+			if (count > 0) {
+				redir.addAttribute("result", "Test  Details added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Test Details add Unsuccessful");
+			}
+			
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("testPlanInitiationId", testPlanInitiationId);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "redirect:/TestDetails.htm";
+		
+		
+	}
+	
+	@RequestMapping(value="IgiDocument.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public  String IgiDocument(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside IgiDocument.htm"+UserId);
+		
+		try {
+		List<Object[]> IgiDocumentList = service.IgiDocumentList();
+        req.setAttribute("IgiDocumentList", IgiDocumentList);
+        req.setAttribute("documentListSize", IgiDocumentList != null ? IgiDocumentList.size() : 0);
+		}catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside IgiDocument.htm "+UserId, e);
+			return "static/Error";
+			
+		}
+		
+		return "requirements/IgiDocumentList";
+		
+		
+		
+	}
+	
+	@RequestMapping(value="addIgiDocument.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public  String addIgiDocument(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside addIgiDocument.htm"+UserId);
+		
+		String version = req. getParameter("version");
+		
+		try {
+			
+			PfmsIgiDocument  pfmsIgiDocument = new PfmsIgiDocument();
+			pfmsIgiDocument.setIgiVersion(version);
+			pfmsIgiDocument.setLabCode(labcode);
+			pfmsIgiDocument.setInitiatedBy(EmpId);
+			pfmsIgiDocument.setInitiatedDate(sdf3.format(new Date()));
+			pfmsIgiDocument.setIgiStatusCode("IIN");
+			pfmsIgiDocument.setIgiStatusCodeNext("IIN");
+			pfmsIgiDocument.setCreatedBy(UserId);
+			pfmsIgiDocument.setCreatedDate(sdf1.format(new Date()));
+			pfmsIgiDocument.setIsActive(1);
+			long docIgiId = service.savePfmsIgiDocument(pfmsIgiDocument);
+			System.out.println(docIgiId);
+			
+			if (docIgiId > 0) {
+				redir.addAttribute("result", "IgiDocument Data Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "IgiDocument Data Submit Unsuccessful");
+			}
+			
+			
+			
+			
+			
+		
+		}catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside addIgiDocument.htm "+UserId, e);
+			return "static/Error";
+			
+		}
+		
+		
+		return "redirect:/IgiDocument.htm";
+			
+		
+	}
+	
+	@RequestMapping(value="IgiDocumentDetails.htm")
+	public String IgiDocumentDetails(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
+	{	
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType=(String)ses.getAttribute("LoginType");
+		logger.info(new Date() +"Inside IgiDocumentDetails.htm"+UserId);
+		try {
+			String DocIgiId = req.getParameter("DocIgiId");
+			List<Object[]> IgiDocumentSummaryList = service.IgiDocumentSummary();
+			
+			 req.setAttribute("DocIgiId", DocIgiId);
+			 req.setAttribute("IgiDocumentSummaryList", IgiDocumentSummaryList);
+			 req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(LabCode));
+			 
+			 List<Object[]> MemberList = service.igiDocumentMemberList(DocIgiId);
+			 List<Object[]> EmployeeList = service.EmployeeList(LabCode,DocIgiId);
+
+		     req.setAttribute("MemberList", MemberList);
+		     req.setAttribute("EmployeeList", EmployeeList);
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside IgiDocumentDetails.htm "+UserId, e);
+			return "static/Error";
+		}
+		
+		return "requirements/IgiDocumentDetails";
+	}
+	
+	@RequestMapping(value="IgiDocumentSummaryAdd.htm",method=RequestMethod.POST)
+	public String IgiDocumentSummaryAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside IgiDocumentSummaryAdd.htm "+UserId);
+		try {
+			String DocIgiId  = req.getParameter("DocIgiId");
+			String action = req.getParameter("action");
+			IgiDocumentSummary rs = action!=null && action.equalsIgnoreCase("Add") ? new IgiDocumentSummary() : service.getIgiDocumentSummaryById(req.getParameter("summaryId"));
+			rs.setAbstract(req.getParameter("abstract"));
+			rs.setAdditionalInformation(req.getParameter("information"));
+			rs.setKeywords(req.getParameter("keywords"));
+			rs.setDistribution(req.getParameter("distribution"));
+			rs.setApprover(Long.parseLong(req.getParameter("approver")));;
+			rs.setReviewer(req.getParameter("reviewer"));
+			rs.setPreparedBy(req.getParameter("preparedBy"));
+			rs.setDocIgiId(Long.parseLong(DocIgiId));
+			rs.setReleaseDate(req.getParameter("pdc"));
+			if(action.equalsIgnoreCase("Add")) {
+				rs.setCreatedBy(UserId);
+				rs.setCreatedDate(sdf1.format(new Date()));
+				rs.setIsActive(1);
+			}else if(action.equalsIgnoreCase("Edit")) {
+
+				rs.setSummaryId(Long.parseLong(req.getParameter("summaryId")));
+				rs.setModifiedBy(UserId);
+				rs.setModifiedDate(sdf1.format(new Date()));
+			}
+
+			long count = service.addIgiDocumentSummary(rs);
+			if(count>0){
+				redir.addAttribute("result","IGI Document Summary "+action+"ed successfully ");
+			}else{
+				redir.addAttribute("resultfail","IGI Document Summary "+action+" unsuccessful ");
+			}
+
+			redir.addAttribute("DocIgiId", DocIgiId);
+
+			return "redirect:/IgiDocumentDetails.htm";
+
+		} catch (Exception e) {
+			logger.info(new Date() +"Inside IgiDocumentSummaryAdd.htm "+UserId);
+			return "static/Error";
+		}
+
+	}
+	
+	@RequestMapping(value="IgiDocumentMemberSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String IgiDocumentMemberSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside IgiDocumentMemberSubmit.htm "+UserId);
+		try {
+	
+			String DocIgiId  = req.getParameter("DocIgiId");
+		
+
+
+			String [] Assignee = req.getParameterValues("Assignee");
+			IgiDocumentMembers rm = new IgiDocumentMembers();
+			
+			rm.setCreatedBy(UserId);
+			rm.setCreatedDate(sdf1.format(new Date()));
+			rm.setEmps(Assignee);
+			rm.setDocIgiId(Long.parseLong(DocIgiId));
+			
+			
+			
+			long count = service.AddIgiDocMembers(rm);
+			if(count>0) {
+				redir.addAttribute("result","Members Added Successfully for Document Distribution");
+			}else{
+				redir.addAttribute("resultfail","Members adding unsuccessful ");
+			}
+
+		
+			redir.addAttribute("DocIgiId", DocIgiId);
+			return "redirect:/IgiDocumentDetails.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+
+			logger.info(new Date() +"Inside IgiDocumentMemberSubmit.htm"+UserId);
+		}
+		return "static/Error";
+	}
+	
+	
+	
+	
+
+	
+	@RequestMapping(value="DeleteIgiDocument.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String DeleteIgiDocument( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside IgiDocumentMemberSubmit.htm "+UserId);
+		try {
+			
+			String IgiMemeberId  = req.getParameter("IgiMemeberId");
+			String DocIgiId  = req.getParameter("DocIgiId");
+			
+			IgiDocumentMembers idm = service.getIgiDocumentById(Long.parseLong(IgiMemeberId));
+			idm.setIsActive(0);
+			long IgiMemeberIdAfterDelete = service.editIgiDocument(idm);
+			System.out.println(IgiMemeberIdAfterDelete);
+	
+		
+			if(IgiMemeberIdAfterDelete>0) {
+				redir.addAttribute("result","Members Deleted Successfully for Document Distribution");
+			}else{
+				redir.addAttribute("resultfail","Member deleting unsuccessful ");
+			}
+
+		
+			redir.addAttribute("DocIgiId", DocIgiId);
+			
+			return "redirect:/IgiDocumentDetails.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+
+			logger.info(new Date() +"Inside DeleteIgiDocument.htm"+UserId);
+		}
+		return "static/Error";
 	}
 }

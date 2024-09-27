@@ -23,7 +23,11 @@ import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
+import com.vts.pfms.requirements.model.IgiDocumentMembers;
+import com.vts.pfms.requirements.model.PfmsIgiDocument;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
+import com.vts.pfms.requirements.model.PfmsSpecTypes;
+import com.vts.pfms.requirements.model.PfmsTestTypes;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -31,6 +35,7 @@ import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
+import com.vts.pfms.requirements.model.IgiDocumentSummary;
 
 @Transactional
 @Repository
@@ -42,7 +47,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	EntityManager manager;
 
 
-	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,'0',a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality FROM pfms_initiation_req a WHERE ReqInitiationId=:ReqInitiationId AND isActive='1' ORDER BY ReqMainId";
+	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,'0',a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality,SUBSTRING_INDEX(a.requirementid, '_', -1) AS 'requirement_number' FROM pfms_initiation_req a WHERE ReqInitiationId=:ReqInitiationId AND isActive='1' ORDER BY ParentId,requirement_number";
 	@Override
 	public List<Object[]> RequirementList(String reqInitiationId) throws Exception {
 		// TODO Auto-generated method stub
@@ -167,7 +172,7 @@ public class RequirementDaoImpl implements RequirementDao {
 
 		return query.executeUpdate();
 	}
-	private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.approver ) AS 'Approver1',(SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname)FROM employee e WHERE e.empid=a.reviewer) AS 'Reviewer1',a.summaryid,a.preparedby,(SELECT CONCAT(IFNULL(CONCAT(e.title,''),''),e.empname)FROM employee e WHERE e.empid=a.PreparedBy) AS 'PreparedBy1'FROM pfms_test_plan_summary a WHERE a.TestPlanInitiationId =:TestPlanInitiationId AND a.SpecsInitiationId=:SpecsInitiationId AND a.isactive='1'";
+	private static final String DOCSUM="SELECT a.AdditionalInformation,a.Abstract,a.Keywords,a.Distribution,a.reviewer,a.approver,(SELECT CONCAT(CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname),', ', d.designation)FROM employee e,employee_desig d WHERE  e.desigid=d.desigid AND e.empid=a.approver  ) AS 'Approver1',(SELECT CONCAT(CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname),',', d.designation)FROM employee e,employee_desig d WHERE  e.desigid=d.desigid AND e.empid=a.reviewer) AS 'Reviewer1',a.summaryid,a.preparedby,(SELECT CONCAT(CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname),',', d.designation)FROM employee e,employee_desig d WHERE  e.desigid=d.desigid AND e.empid=a.PreparedBy) AS 'PreparedBy1',a.ReleaseDate,a.DocumentNo FROM pfms_test_plan_summary a WHERE a.TestPlanInitiationId =:TestPlanInitiationId AND a.SpecsInitiationId=:SpecsInitiationId AND a.isactive='1'";
 	@Override
 	public List<Object[]> getTestandSpecsDocumentSummary(String testPlanInitiationId, String specsInitiationId) throws Exception {
 
@@ -659,7 +664,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		return requirementFiles;
 	}
 	
-	private static final String TESTTYPECOUNT="SELECT MAX(TestCount) FROM pfms_testdetails WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive='1'";
+	private static final String TESTTYPECOUNT="SELECT COUNT(testid) FROM pfms_testdetails WHERE parentId=:TestPlanInitiationId ";
 	@Override
 	public long numberOfTestTypeId(String testPlanInitiationId) throws Exception {
 
@@ -732,7 +737,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		return DocumentSummary;
 	}
 
-	private static final String TESTDETAILSLIST="SELECT a.TestId ,a.TestDetailsId ,a.Name ,a.Objective,a.Description,a.PreConditions ,a.PostConditions ,a.Constraints,a.SafetyRequirements,a.Methodology,a.ToolsSetup,a.PersonnelResources,a.EstimatedTimeIteration ,a.Iterations  ,a.Schedule ,a.Pass_Fail_Criteria , a.Remarks ,a. TestPlanInitiationId, '0' AS ProjectId,a.SpecificationId,a.RequirementId,a.IsActive,a.StageApplicable FROM pfms_testdetails a WHERE TestPlanInitiationId=:TestPlanInitiationId AND a.IsActive='1'";
+	private static final String TESTDETAILSLIST="SELECT a.TestId ,a.TestDetailsId ,a.Name ,a.Objective,a.Description,a.PreConditions ,a.PostConditions ,a.Constraints,a.SafetyRequirements,a.Methodology,a.ToolsSetup,a.PersonnelResources,a.EstimatedTimeIteration ,a.Iterations  ,a.Schedule ,a.Pass_Fail_Criteria , a.Remarks ,a. TestPlanInitiationId, '0' AS ProjectId,a.SpecificationId,a.RequirementId,a.IsActive,a.StageApplicable,a.parentid,a.mainid FROM pfms_testdetails a WHERE TestPlanInitiationId=:TestPlanInitiationId AND a.IsActive='1'";
 	@Override
 	public List<Object[]> TestDetailsList(String testPlanInitiationId) throws Exception {
 
@@ -1009,7 +1014,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		
 	}
 	
-	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
+	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
 	@Override
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
 		
@@ -1121,5 +1126,187 @@ public class RequirementDaoImpl implements RequirementDao {
 		query.setParameter("InitiationReqId", InitiationReqId);
 		return query.executeUpdate();
 	}
+	private static final String DELETEINITIATIONSPE = "UPDATE pfms_specification_details SET IsActive='0' WHERE SpecsId=:SpecsId ";
+	@Override
+	public long deleteInitiationSpe(String SpecsId) throws Exception {
+
+		Query query = manager.createNativeQuery(DELETEINITIATIONSPE);
+		query.setParameter("SpecsId", SpecsId);
+		return query.executeUpdate();
+	}
+	
+	@Override
+	public long addSpecMaster(PfmsSpecTypes pst) throws Exception {
+		manager.persist(pst);
+		return pst.getSpecificationMainId();
+	}
+	
+	private static final String SPECMASTERLIST="SELECT * FROM pfms_specification_types WHERE SpecificationMainId NOT IN (SELECT mainid FROM pfms_specification_details WHERE SpecsInitiationId=:SpecsInitiationId and isactive='1')";
+	@Override
+	public List<Object[]> getSpecMasterList(String SpecsInitiationId) throws Exception {
+	
+		Query query = manager.createNativeQuery(SPECMASTERLIST);
+		query.setParameter("SpecsInitiationId", SpecsInitiationId);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String SPECNAMES="SELECT * FROM pfms_specification_types WHERE SpecificationMainId=:mainId";
+	@Override
+	public Object[] getSpecName(String mainId) throws Exception {
+		Query query = manager.createNativeQuery(SPECNAMES);
+		query.setParameter("mainId", mainId);
+		List<Object[]>list = (List<Object[]>)query.getResultList();
+		return list.get(0);
+	}
+	@Override
+	public long addTestMaster(PfmsTestTypes pt) throws Exception {
+		manager.persist(pt);
+		manager.flush();
+		return pt.getTestMainId();
+	}
+	
+	private static final String TESTPLANMAINLIST="SELECT * FROM pfms_test_types WHERE testMainId NOT IN (SELECT MainId FROM pfms_testdetails WHERE TestPlanInitiationId = :testPlanInitiationId AND isactive='1')";
+	@Override
+	public List<Object[]> getTestPlanMainList(String testPlanInitiationId) throws Exception {
+	
+		Query query = manager.createNativeQuery(TESTPLANMAINLIST);
+		query.setParameter("testPlanInitiationId", testPlanInitiationId);
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String TESTNAMES="SELECT * FROM pfms_test_types WHERE testMainId=:mainId";
+	@Override
+	public Object[] getTestTypeName(String mainId) throws Exception {
+		Query query = manager.createNativeQuery(TESTNAMES);
+		query.setParameter("mainId", mainId);
+		List<Object[]>list = (List<Object[]>)query.getResultList();
+		return list.get(0);
+	}
+	private static final String TESTDLT=" UPDATE pfms_testdetails SET isactive='0' WHERE TestId=:testId";
+
+	@Override
+	public long deleteTestPlan(String testId) throws Exception {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery(TESTDLT);
+		query.setParameter("testId", testId);		
+		return query.executeUpdate();
+	}
+	
+	/* Soumyakanta Swain */
+	
+	private static final String IGIDOCUMENTLIST="SELECT a.DocIgiId, a.IgiVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate,a.IgiStatusCode,a.IgiStatusCodeNext,a.CreatedBy,a.CreatedDate,a.Remarks,b.EmpName FROM pfms_igi_document a,employee b WHERE a.IsActive='1' AND a.InitiatedBy=b.EmpId ORDER BY a.DocIgiId DESC";
+	@Override
+	public List<Object[]> IgiDocumentList() throws Exception {
+
+		Query query=manager.createNativeQuery(IGIDOCUMENTLIST);
+		List<Object[]> IgiDocumentList=(List<Object[]>)query.getResultList();
+		return IgiDocumentList;
+	}
+	
+	@Override
+	public long savePfmsIgiDocument(PfmsIgiDocument  pfmsIgiDocument) throws Exception
+	{
+		try {
+		    manager.persist(pfmsIgiDocument);
+		    manager.flush();
+			return pfmsIgiDocument.getDocIgiId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO savePfmsIgiDocument " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+	
+	private static final String IGIDOCUMENTSUMMARYlIST="SELECT a.SummaryId, a.AdditionalInformation, a.Abstract, a.Keywords, a.Distribution,a.Reviewer,a.Approver,a.CreatedBy,a.CreatedDate,a.PreparedBy,a.ReleaseDate FROM pfms_igi_document_summary a WHERE a.IsActive='1' ";
+	@Override
+	public List<Object[]> IgiDocumentSummary() throws Exception {
+
+		Query query=manager.createNativeQuery(IGIDOCUMENTSUMMARYlIST);
+		List<Object[]> IgiDocumentList=(List<Object[]>)query.getResultList();
+		return IgiDocumentList;
+	}
+	
+   @Override
+	public IgiDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception {
+		try {
+			
+			return manager.find(IgiDocumentSummary.class, Long.parseLong(SummaryId)) ;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getIgiDocumentSummaryById "+e);
+			return null;
+		}
+	}
+   
+	@Override
+	public long addIgiDocumentSummary(IgiDocumentSummary rs) throws Exception {
+		manager.persist(rs);
+		return rs.getSummaryId();
+	}
+	
+	
+	private static final String IGIDOCUMENTMEMBERLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid,c.IgiMemeberId FROM employee a,employee_desig b,pfms_igi_document_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.DocIgiId =:DocIgiId AND c.IsActive =1 ORDER BY b.desigid ASC";
+	@Override
+	public List<Object[]> igiDocumentMemberList(String DocIgiId) throws Exception {
+
+		Query query = manager.createNativeQuery(IGIDOCUMENTMEMBERLIST);
+
+		query.setParameter("DocIgiId", DocIgiId);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String EMPLISTS="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_igi_document_members WHERE DocIgiId =:DocIgiId AND  isactive = 1)ORDER BY a.srno=0,a.srno";
+	@Override
+	public List<Object[]> EmployeeList(String labCode, String DocIgiId) throws Exception {
+		Query query = manager.createNativeQuery(EMPLISTS);
+
+		query.setParameter("LabCode", labCode);
+		query.setParameter("DocIgiId", DocIgiId);
+		
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	@Override
+	public long AddIgiMembers(IgiDocumentMembers r) throws Exception {
+
+		manager.persist(r);
+		manager.flush();
+
+		return r.getIgiMemeberId();
+	}
+	
+	@Override
+	public IgiDocumentMembers  getIgiDocumentById(Long IgiMemeberId) throws Exception
+	{
+		IgiDocumentMembers dec = null;
+		try {
+			dec= manager.find(IgiDocumentMembers.class, IgiMemeberId);
+		} catch (Exception e) {
+			logger.error(new Date() + "Inside DAO  getIgiDocumentById "+e);
+			e.printStackTrace();
+		}
+		return dec;
+	}
+	
+	@Override
+	public long editIgiDocument(IgiDocumentMembers idm) throws Exception
+	{
+		try {
+		    manager.merge(idm);
+		    manager.flush();
+			return idm.getIgiMemeberId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO editIgiDocument " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+	
+
+	
+
+	
+	
 	
 }

@@ -47,10 +47,13 @@ public class TestDetails {
 	private String StageApplicable;
 	private Long RequirementId;
 	private int TestCount;
+	private int IsActive;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private Long TestPlanInitiationId;
+	private Long parentId;
+	private Long MainId;
 	
 }

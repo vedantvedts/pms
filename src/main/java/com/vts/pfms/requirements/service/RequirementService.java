@@ -12,9 +12,11 @@ import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
+import com.vts.pfms.requirements.model.IgiDocumentMembers;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
@@ -22,6 +24,8 @@ import com.vts.pfms.requirements.model.TestDetails;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestTools;
+import com.vts.pfms.requirements.model.IgiDocumentSummary;
+import com.vts.pfms.requirements.model.PfmsIgiDocument;
 
 public interface RequirementService {
 
@@ -148,4 +152,44 @@ public interface RequirementService {
 	long updateSerialParaNo(String para, String sn)throws Exception;
 
 	public long deleteInitiationReq(String InitiationReqId) throws Exception;
+
+	public long deleteInitiationSpe(String SpecsId) throws Exception;
+
+	public long addSpecMaster(String[] specificationCode, String[] specificationName)throws Exception;
+
+	public List<Object[]> getSpecMasterList(String SpecsInitiationId)throws Exception;
+
+	public Object[] getSpecName(String mainId)throws Exception;
+
+	public long addTestMaster(String[] testplanCode, String[] testplanName)throws Exception;
+
+	public List<Object[]> getTestPlanMainList(String testPlanInitiationId)throws Exception;
+
+	public Object[] getTestTypeName(String mainid)throws Exception;
+
+	long deleteTestPlan(String testId)throws Exception;
+
+
+	
+	/* Soumya kanta Swain */
+	public List<Object[]> IgiDocumentList() throws Exception;
+
+	public long savePfmsIgiDocument(PfmsIgiDocument pfmsIgiDocument) throws Exception;
+
+	public List<Object[]> IgiDocumentSummary() throws Exception;
+
+	public IgiDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception;
+
+	public long addIgiDocumentSummary(IgiDocumentSummary rs) throws Exception;
+
+	public List<Object[]> igiDocumentMemberList(String DocIgiId) throws Exception;
+
+	public List<Object[]> EmployeeList(String labCode, String DocIgiId) throws Exception;
+
+	public long AddIgiDocMembers(IgiDocumentMembers rm) throws Exception;
+
+	public IgiDocumentMembers getIgiDocumentById(Long IgiMemeberId) throws Exception;
+
+	public long editIgiDocument(IgiDocumentMembers idm) throws Exception;
+
 }

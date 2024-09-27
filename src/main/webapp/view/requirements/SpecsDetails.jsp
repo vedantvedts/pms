@@ -16,6 +16,14 @@
 <meta charset="ISO-8859-1">
 <title>Specification Details</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+
+
+
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
+
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -80,7 +88,7 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 	padding: 5px;
 	padding-bottom: 10px;
 	display: inline-grid;
-	width: 10%;
+	width: 15%;
 	background-color: antiquewhite;
 	float: left;
 	align-items: center;
@@ -140,7 +148,25 @@ hr {
 	!
 	important;
 }
+.note-editing-area{
 
+} 
+#scrollButton {
+	display: none; /* Hide the button by default */
+	position: fixed;
+	/* Fixed position to appear in the same place regardless of scrolling */
+	bottom: 20px;
+	right: 30px;
+	z-index: 99; /* Ensure it appears above other elements */
+	font-size: 18px;
+	border: none;
+	outline: none;
+	background-color: #007bff;
+	color: white;
+	cursor: pointer;
+	padding: 15px;
+	border-radius: 4px;
+}
 .addreq {
 	margin-left: -20%;
 	margin-top: 5%;
@@ -341,8 +367,10 @@ String projectId = (String)request.getAttribute("projectId");
 String productTreeMainId = (String)request.getAttribute("productTreeMainId");
 String SpecsInitiationId = (String)request.getAttribute("SpecsInitiationId"); 
 String SpecsId = (String)request.getAttribute("SpecsId"); 
+String click = (String)request.getAttribute("click"); 
 List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("RequirementList");
 List<Object[]>specsList = (List<Object[]>)request.getAttribute("specsList");
+List<Object[]>SpecMasterList = (List<Object[]>)request.getAttribute("SpecMasterList");
 List<Object[]>RequirementLists = new ArrayList<>();
 ObjectMapper objectMapper = new ObjectMapper();
 String jsonArray = null;;
@@ -351,6 +379,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 	 jsonArray = objectMapper.writeValueAsString(RequirementLists);
 }
 
+String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 
 %>
 	<%String ses=(String)request.getParameter("result"); 
@@ -380,12 +409,12 @@ if(RequirementList!=null && RequirementList.size()>0){
 						<div class="card shadow-nohover" style="margin-top: -0px;">
 							<div class="row card-header"
 								style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-								<div class="col-md-9" id="projecthead">
+								<div class="col-md-6" id="projecthead">
 									<h5 style="margin-left: 1%;">
 										Specification Details
 									</h5>
 								</div>
-								<div class="col-md-3" id="addReqButton">
+								<div class="col-md-6" id="addReqButton">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									<input type="hidden" name="projectId" value="<%=projectId%>">
 									<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
@@ -397,10 +426,12 @@ if(RequirementList!=null && RequirementList.size()>0){
 										<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
 										<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 										<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">	
-										<button class="btn btn-success btn-sm submit" style="margin-top: -3%;"
+										
+										<button class="btn btn-success btn-sm submit" style="margin-top: -3%;" type="button" onclick="showMoadal()">ADD HEADINGS</button>
+		<!-- 								<button class="btn btn-success btn-sm submit" style="margin-top: -3%;"
 											type="button" onclick='addData()' data-toggle="tooltip"
 											data-placement="top" data-original-data=""
-											title="ADD SPECIFICATION DETAILS">ADD SPECIFICATION DETAILS</button>
+											title="ADD SPECIFICATION DETAILS">ADD SPECIFICATION DETAILS</button> -->
 										<button class="btn btn-info btn-sm  back ml-2"
 											formaction="ProjectSpecificationDetails.htm" formmethod="get"
 											formnovalidate="formnovalidate" style="margin-top: -3%;">BACK</button>
@@ -411,15 +442,42 @@ if(RequirementList!=null && RequirementList.size()>0){
 					</div>
 				</div>
 				</div>
-					<div class="requirementid" style="display:block;">
+					<div class="requirementid" style="display:block; height:70vh;overflow: auto ;<%if(specsList==null || specsList.size()==0){%> display:none;<%}%>">
 					
 					<%if(specsList!=null && specsList.size()>0) {
-				int count=0;
-						for(Object[]obj:specsList){
+						int count=0;
+						List<Object[]>specsListMain=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+						for(Object[]obj:specsListMain){
 					
 					%>
 					
-					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj[0].toString()%>)" id="btn<%=obj[0].toString()%>"><%=obj[1].toString() %> </button>
+					<div  style="display: flex; align-items: center; margin-top: 8px; width: 100%">
+					<button style="text-decoration: underline" type="button" class="btn btn-secondary viewbtn mt-2" onclick="addData(<%=obj[0].toString() %>,<%=obj[8].toString() %>)" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %> &nbsp;&nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i> </button>
+					<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj[0].toString()%>)">
+							<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
+					</button>
+					</div>
+									<%
+					List<Object[]>specsListSub = new ArrayList<>();
+					specsListSub=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+					%>
+					<%if(specsListSub!=null && specsListSub.size()>0) {
+					int subcount=0;
+					%>
+					<div class="subdivs" id="div<%=obj[0]%>" style="">
+					<%for(Object[]obj1:specsListSub) {%>
+					<div style="display: flex; align-items: center; margin-top: 8px; width: 90%">
+					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj1[0].toString() %>)" id="btn<%=obj1[0].toString()%>"><%=count+"."+(++subcount)+". "+obj1[1].toString() %> </button>
+					
+					<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj1[0].toString()%>)">
+					<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
+					</button>
+					</div>
+					<%} %>
+					</div>
+					
+					
+					<%} %>
 					<%}}else{ %>
 					<button  type="button" class="btn btn-secondary viewbtn mt-2" style="width:100%" >
 							No Data Available
@@ -428,14 +486,22 @@ if(RequirementList!=null && RequirementList.size()>0){
 					</div>
 						
 						
-			<div class="container" id="container" >
+			<div class="container" id="container" style="<%if(specsList==null || specsList.size()==0){%> display:none;<%}%>">
 			<form action="specificationAdd.htm" method="POST">
 			<div class="row" id="row1">
 			
 				<div class="col-md-12" id="reqdiv" style="background: white;">
 					<div class="card-body" id="cardbody">
 						
-							
+							<div class="row" id ="specsDiv" style="display: none;">
+								<div class="col-md-3">
+									<label id="specsId" style="font-size: 17px; margin-top: 5%; color: #07689f">
+											
+										</label>
+										
+								</div>
+								
+							</div>
 								<div class="row">
 							
 								
@@ -447,7 +513,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 									<div class="col-md-6" style="margin-top: 1%;">
 										<div class="form-group">
 											<%if ((RequirementLists != null) && (!RequirementLists.isEmpty())) {%>
-												<select  class="form-control selectdee" name="linkedRequirements" id="linkedRequirements" data-width="80%" data-live-search="true" multiple onchange="">
+												<select  class="form-control selectdee" name="linkedRequirements" id="linkedRequirements" data-width="80%" data-live-search="true" multiple onchange="getReqDetails()">
 													<option value="" disabled="disabled">---Choose----</option>
 													<%for (Object[] obj : RequirementLists) {%>
 														<option value="<%=obj[0]%>"><%=obj[1]%></option>
@@ -465,8 +531,13 @@ if(RequirementList!=null && RequirementList.size()>0){
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-9">
-								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
-								</div>
+								<div id="summernote" style="height: 500;">
+					        
+					           </div>
+			   			
+   								<textarea name="description" style="display: none;"  id="ConclusionDetails"></textarea>	
+<!-- 								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+ -->								</div>
 								</div>
 								<div class="row mt-2"> 
 								<div class="col-md-3">
@@ -487,10 +558,12 @@ if(RequirementList!=null && RequirementList.size()>0){
 							
 							
 								<div align="center" class="mt-2">
-								<button id="submitbtn" type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')" name="action" value="add">SUBMIT </button>
-								<button id="editbtn" type="submit" class="btn btn-sm edit" style="display:none;" onclick="return confirm('Are you sure to submit?')" name="action" value="update">UPDATE </button>
+								<button id="submitbtn" type="submit" class="btn btn-sm submit" onclick="submitData()" name="action" value="add">SUBMIT </button>
+								<button id="editbtn" type="submit" class="btn btn-sm edit" style="display:none;" onclick="submitData()" name="action" value="update">UPDATE </button>
 								<input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}" /> 
+								<input type="hidden" name="specParentId" id="specParentId">
+								<input type="hidden" name="MainId" id="MainId">
 								 <input type="hidden" name="projectId" value="<%=projectId%>"> <input
 								type="hidden" name="initiationId" value="<%=initiationId%>"> <input
 								type="hidden" name="productTreeMainId"
@@ -561,7 +634,109 @@ if(RequirementList!=null && RequirementList.size()>0){
 				</div>
 				
 				
+				<!-- Modal for Headings -->
+				<div class="modal fade" id="exampleModalHeading" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width:150%;margin-left: -35%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">SPECIFICATIONS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+     <div align="center">
+     <form action="SpecificationSelectSubmit.htm" method="post">
+     <%List<Object[]>SpecMasterListsub= new ArrayList<>();
+     if(SpecMasterList!=null && !SpecMasterList.isEmpty()){
+    	 SpecMasterListsub=SpecMasterList.stream().filter(i->i[2]!=null && i[2].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+     }
+     %>
+     <div class="row">
+     <%for(Object[]obj:SpecMasterListsub) {%>
+     <div class="col-md-4">
+     		       		<input name="specValue" type="checkbox" value="<%=obj[0].toString()+"/"+obj[1].toString()+"/"+obj[3].toString()%>">
+						       		<input name="SpecNames" type="hidden" value="<%=obj[1].toString()%>">
+						       		<span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1].toString() %></span><br>
+     </div>
+     <%} %>
+     
+     </div>
+   
+     <div align="center" class="mt-2 mb-2">
+     <button type="submit" class="btn btn-sm submit" onclick="setValue()">SUBMIT</button>
+     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	<input type="hidden" name="projectId" value="<%=projectId%>">
+	<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+		<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+			<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">	
+     </div>
+       </form>
+     </div>
+   
+     <div align="center">
+       <form action="MainSpecificationAdd.htm" method="post">
+     <table class="table">
+      <thead>
+        <tr>
+            <th>Specification Code</th>
+            <th>Specification Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="specificationTable">
+		<tr>
+		<td style="width:30%;"><input type="text" name="specificationCode" class="form-control" maxlength="5" required placeholder="Max 5 Characters"> </td>
+		<td><input type="text" name="SpecificationName" class="form-control" maxlength="250" required placeholder="Max 250 Characters"></td>
+		<td><button type="button" class="btn btn-sm" id="plusbutton"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+		</tr>
+		</tbody>     
+     </table>
+     
+     <div align="center">
+     <button type="submit" class="btn btn-sm submit">ADD NEW</button>
+     </div>
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	<input type="hidden" name="projectId" value="<%=projectId%>">
+	<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+		<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+			<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">	
+      </form>
+     </div>
+    
+      </div>
+  
+    </div>
+  </div>
+</div>
+				
+				<button onclick="scrollToTop()" id="scrollButton"
+			data-toggle="tooltip" data-placement="top" data-original-data=""
+			title="Go to Top">
+			<i class="fa fa-arrow-up" aria-hidden="true"></i>
+		</button>	
 <script>
+var jsObjectLists=[];
+<%if(reqInitiationId!=null){%>
+$.ajax({
+	type:'GET',
+	url:'RequirementListsForSpecification.htm',
+	datatype:'json',
+	data:{
+		reqInitiationId:<%=reqInitiationId%>,
+	},
+	 success : function(result){
+		 jsObjectLists = JSON.parse(result);
+	
+		
+	 }
+})
+
+
+var editvalue="add";
+
+
+<%}%>
  function showDetails(value){
 	 $('#row1').hide();
 	 $('#row2').show();
@@ -581,8 +756,8 @@ if(RequirementList!=null && RequirementList.size()>0){
 		$('#DescriptionDetails').html(Data.Description);
 		var LinkedRequirements = Data.LinkedRequirement.split(",");
 		var tempArray=[];
-		var jsObjectList = JSON.parse('<%= jsonArray %>');
-		console.log("jsObjectList"+jsObjectList)
+		var jsObjectList = jsObjectLists;
+
 		if(jsObjectList!=null){
 		for(var i =0;i<jsObjectList.length;i++){
 			
@@ -618,7 +793,9 @@ if(RequirementList!=null && RequirementList.size()>0){
 	 })
  }
 
- function addData(){
+ function addData(a,b){
+		$('.viewbtn').css("background","#055C9D");
+		$('#btn'+a).css("background","green");
 	 $('#row1').show();
 	 $('#row2').hide();
 	 $('#linkedRequirements').val(" ").trigger('change');
@@ -628,10 +805,15 @@ if(RequirementList!=null && RequirementList.size()>0){
 	 $('#submitbtn').show();
 	 $('#editbtn').hide();
 	 $('#SpecsIdedit').val("");
+	 $('#MainId').val(b);
+	 $('#specParentId').val(a);
+	 $('#specsDiv').hide();
+	 editvalue="add";
  }
  
  
  function edit(ele){
+	 editvalue="edit";
 	 $('#row1').show();
 	 $('#row2').hide();
 	 var value=ele.value;
@@ -647,7 +829,8 @@ if(RequirementList!=null && RequirementList.size()>0){
 			 
 			 var LinkedRequirements = Data.LinkedRequirement.split(",");
 		     $('#linkedRequirements').val(LinkedRequirements).trigger('change');
-			 $('#descriptionadd').val(Data.Description);
+			 /* $('#descriptionadd').val(Data.Description); */
+			 $('#summernote').summernote('code', Data.Description);
 			 if(Data.SpecsParameter!==undefined){
 				 $('#specParameter').val(Data.SpecsParameter);
 			 }else{
@@ -661,18 +844,170 @@ if(RequirementList!=null && RequirementList.size()>0){
 			 }
 			 $('#submitbtn').hide();
 			 $('#editbtn').show();
+			 $('#specsDiv').show();
+			 $('#specsId').html("Specification Id :"+Data.SpecificationName);
 			 $('#SpecsIdedit').val(value);
 		 }
 	 })
 	 
  }
- 
+
 	$(document).ready(function() {
 		var value=<%=SpecsId.toString()%>;
+		var value1='<%=specsList!=null && specsList.size()>0?specsList.get(0)[0]:"0" %>';
 		if(value!==0){
-		showDetails(value)
+			showDetails(value)
+		}else{
+			$('#btn'+value1).click();
+		console.log("value1--"+value1)
 		}
 	});
+	
+	$(document).ready(function() {
+		 $('#summernote').summernote({
+			  width: 800,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#summernote').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+	    
+	});
+	
+	
+	
+	function getReqDetails(){
+		if(editvalue==="add"){
+		  var selectedOptions=$('#linkedRequirements').val()
+		
+		   var html="";
+	   for (var j = 0; j < selectedOptions.length; j++) {
+			 for(var i=0;i<jsObjectLists.length;i++){
+				 if(jsObjectLists[i][0]==selectedOptions[j]){
+					 var datas=jsObjectLists[i][4];
+					   console.log(datas+" "+typeof datas)
+					 html=html+(j+1)+"."+jsObjectLists[i][4]+'<br>'
+				 }
+			 }
+			     
+		} 
+	   $('#summernote').summernote('code', html);
+	   $('textarea[name=description]').val(html);
+		}
+	}
+
+	
+	window.onscroll = function() { scrollFunction() };
+		function scrollFunction() {
+    var scrollButton = document.getElementById("scrollButton");
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      scrollButton.style.display = "block";
+    } else {
+      scrollButton.style.display = "none";
+    }
+  	}
+	// Scroll to the top when the button is clicked
+	function scrollToTop(){
+document.body.scrollTop = 0; // For Safari
+document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+	}
+	
+	
+	function submitData(){
+		   $('textarea[name=description]').val($('#summernote').summernote('code'));
+		   if(confirm('Are you sure to submit?')){
+			   
+		   }else{
+			   event.preventDefault();
+			   return false;
+		   }
+	}
+	
+	function deleteSpc(a){
+		console.log("a"+a)
+		if(confirm('Are you sure to delete?')){
+			$.ajax({
+				type:'GET',
+				url:'deleteInitiationSpe.htm',
+				datatype:'json',
+				data:{
+					SpecsId:a,
+				},
+				success:function(result){
+					
+					var ajaxresult = JSON.parse(result);
+					console.log(ajaxresult)
+					if(Number(ajaxresult)>0){
+						alert("Specification Deleted Successfully!")
+					}
+					window.location.reload();
+				}
+				
+			})
+			
+		}else{
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+	
+	function showMoadal(){
+		$('#exampleModalHeading').modal('show');
+	}
+	
+	
+	  $("#plusbutton").click(function() {
+          var newRow = `
+              <tr>
+                  <td><input type="text" name="specificationCode" class="form-control" maxlength="5" required placeholder="Max 5 Characters"></td>
+                  <td><input type="text" name="SpecificationName" class="form-control" maxlength="250" required placeholder="Max 250 Characters"></td>
+                  <td><button type="button" class="btn btn-sm"><i class="fa fa-minus" aria-hidden="true"></i></button></td>
+              </tr>
+          `;
+          $("#specificationTable").append(newRow);
+
+          // Attach event handler for the newly added minus button
+          $("#specificationTable tr:last-child td:last-child button").click(function() {
+              $(this).closest("tr").remove();
+          });
+      });
+	  
+	  <%
+		 if(click!=null || (specsList==null || specsList.size()==0)){
+		 %>
+		showMoadal();
+		
+		<%}%> 
+		
+		
+		function setValue(){
+			  var checkedValues = [];
+		        $('input[name="specValue"]:checked').each(function() {
+		            checkedValues.push($(this).val());
+		        });
+		        if(checkedValues.length>0){
+		        	if(confirm('Are you sure to submit?')){
+		        		
+		        	}else{
+		        		event.preventDefault();
+		        		return false;
+		        	}
+		        }else{
+		        	alert("Please select any of the specification!");
+		        	event.preventDefault();
+	        		return false;
+		        }
+		 
+		}
+		
 </script>				
 </body>
 </html>

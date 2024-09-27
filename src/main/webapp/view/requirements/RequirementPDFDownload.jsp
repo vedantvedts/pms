@@ -19,6 +19,7 @@
 <%
 List<Object[]>OtherRequirements=(List<Object[]>)request.getAttribute("OtherRequirements");
 String lablogo=(String)request.getAttribute("lablogo");
+
 /* Object[]PfmsInitiationList=(Object[])request.getAttribute("PfmsInitiationList"); */
 Object[]LabList=(Object[])request.getAttribute("LabList");
 Object[]reqStatus=(Object[])request.getAttribute("reqStatus");
@@ -63,6 +64,7 @@ List<Object[]>VerificationDataList=(List<Object[]>)request.getAttribute("Verific
 List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
 
 String projectShortName =(String)request.getAttribute("projectShortName");
+String Classification=(String)request.getAttribute("Classification");
 String docnumber =(String)request.getAttribute("docnumber");
 
 %>
@@ -83,7 +85,10 @@ String docnumber =(String)request.getAttribute("docnumber");
     .logo-container {
         width: 33.33%;
     }
-
+div table th, div table td {
+    padding: 5px; /* Adjust as needed */
+    border-collapse: collapse;
+}
     .logo {
         width: 80px;
         height: 80px;
@@ -112,7 +117,7 @@ td {
 	border: 2px solid black;
 	
 	@bottom-left{
-		content :"<%=docnumber!=null?"1901-"+docnumber:(DocumentSummary!=null && DocumentSummary.get(0)[11]!=null?"1901-SRD-"+DocumentSummary.get(0)[11].toString().replaceAll("-", "")+"-"+session.getAttribute("labcode") +projectShortName+"-V.1.0":"" )%>";
+		content :"<%=DocumentSummary!=null && DocumentSummary.get(0)[11]!=null?"1901-SRD-"+"DDMMYYYY"+"-"+session.getAttribute("labcode") +projectShortName+"-V.1.0":"" %>";
 		margin-bottom: 50px;
 	width:200px;;
 	font-size:10px;
@@ -140,13 +145,13 @@ top-right {
 top-center {
 	font-size: 10px;
 	margin-top: 30px;
-	content:"RESTRICTED"
+	content:"<%if(Classification!=null){%> <%=Classification.toUpperCase()%> <%}else{%>RESTRICTED <%}%>"
 }
 @
 bottom-center {
 	font-size: 10px;
 	margin-right:20px;
-	content:"RESTRICTED";
+	content:"<%if(Classification!=null){%> <%=Classification.toUpperCase()%> <%}else{%>RESTRICTED <%}%>";
 	width:300px;;
 }
 }
@@ -366,23 +371,32 @@ margin-left:15x;
 			<td>1.Title: System Requirement Document Template</td>
 			</tr>
 			</table> -->
-				<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;padding:5px;">
+	<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;padding:5px;">
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks" style="padding:2px;">System Requirements Document for <%=projectShortName %></span></td>
 					</tr>
 					<tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks" style="padding:2px;">System Requirement Document</span></td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks" style="padding:2px;"></span></td>
-					</tr>
-				    <tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:
-						<%if(docnumber!=null) {%>(<%=docnumber %>)<%} %>
-					</td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks" style="padding:2px;">System Requirement Document</span></td>
 					</tr>
 					<tr>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages:  ${totalPages}</td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks" style="padding:2px;"><%=Classification %></span></td>
+					
+					</tr>
+				    <tr >
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:
+						<%if(docnumber!=null) {%>(<%=docnumber %>)<%} %>
+					</td>
+					</tr>
+					<tr>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
+					
+					</tr>
+					<tr>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages:  ${totalPages}</td>
+					</tr>
+					<tr>
+						<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
+					
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
@@ -537,13 +551,17 @@ margin-left:15x;
 <br><%=++maincount %>.&nbsp;&nbsp;Requirements
 </h1>
 <%if(!RequirementList.isEmpty()) {
-List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0"))
+.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
+.collect(Collectors.toList());
 int mainReqCount=0;
 for(Object[]obj:mainReqList){
 %>
 <div style="padding:none;"><h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt" class="heading-colors"><%=maincount+"."+(++mainReqCount) %>  &nbsp;<%=obj[3].toString() %></h2></div>
 <%if(obj[4]!=null) {%><div style="padding:0px;" class="heading-colors"><%=obj[4].toString()%></div><%}else{ %><span></span><%} %>
-<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15]!=null&&e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());%>
+<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15]!=null&&e[15].toString().equalsIgnoreCase(obj[0].toString()))
+.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
+.collect(Collectors.toList());%>
 <%
 String ReqName="";
 int subReqCount=0;
@@ -633,14 +651,14 @@ int snCount=0;
 							</td>
 						</tr>
 						<tr>
-							<td class="border-black"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Description</td>
-							<td class="border-black"
-								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-								<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
-							</td>
+
+							<td class="border-black" colspan="3"
+								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;"><div align="center" style=""><%=++snCount %>. Description<hr></div><br>
+								<div style="font-weight: 400;">
+														<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
+						
+								</div>
+						</td>
 						</tr>
 						<tr>
 							<td class="border-black"
@@ -771,7 +789,8 @@ ReqName=obj1[3].toString();
 <%}%>
 
 <%
-List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0"))
+.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString()))).collect(Collectors.toList());
 %>
 <%if(nonMainReqList!=null && !nonMainReqList.isEmpty()) { %>
 <div style="padding:none;"><h2 class="heading-colors" style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++mainReqCount) %>  &nbsp; Precedence and Criticality of Requirements</h2></div>
@@ -883,11 +902,63 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 
 					
 			<% if(RequirementList!=null && ProjectParaDetails!=null && !ProjectParaDetails.isEmpty()&&!RequirementList.isEmpty()) {   
-				List<Object[]>subList= RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
-			%>		
+				List<Object[]>subList= RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0"))
+						.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
+						.collect(Collectors.toList());
+			%>
+			<div align="left">		
+		<h2 class="heading-colors" style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black !important;margin-left: 20px" class="heading-color">
+<br><%= maincount %>.1 Forward Traceability Matrix <%=ParaDetails.size() %>
+</h2>	
+					<table class="border-black"
+					style="width: 635px; margin-left: 10px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+					<thead>
+						<tr>
+							<th class="border-black"
+								style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black"
+								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">QR </th>
+							<th class="border-black" style="width: 180px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">RequirementId</th>
+						</tr>
+					</thead>
+					<tbody>
+					<%if(ParaDetails!=null && ParaDetails.size()>0) {
+						int slCount=0;
+					for(Object[]obj1:ParaDetails){
+						List<Object[]>ReqId = new ArrayList<>();
+						
+						if(subList.size()>0){
+							ReqId=subList.stream().filter(e->e[12]!=null && Arrays.asList(e[12].toString().split(", ")).contains(obj1[0].toString())).collect(Collectors.toList());
+						}
+					%>
+					<tr>
+					<td  class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;" ><%=++slCount %></td>
+					<td  class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;"><%=obj1[3].toString() %></td>
+					<td class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;">
+						<%if(ReqId.size()>0) {
+						for(Object[]obj2:ReqId){
+						%>
+						<div ><%=obj2[1] %></div>
+						
+						<%}}else{ %>
+						---
+					<%} %>
+					</td>
+					
+					</tr>
+					<%}}else{ %>
+					<tr>
+					<td  class="border-black" colspan="3" style=" border: 1px solid black;text-align:center; border-collapse: collapse;" ></td>
+					</tr>
+					<%} %>
+					</tbody>
+					</table>
+			
+			</div>
+			
 <div align="left">
 <h2 class="heading-colors" style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black !important;margin-left: 20px" class="heading-color">
-<br><%= maincount %>.1 Forward Traceability Matrix
+<br><%= maincount %>.2 backward Traceability Matrix
 </h2>
 </div>
 				<table class="border-black"
@@ -1026,10 +1097,14 @@ This appendix contains acronyms and provides standard definitions for terminolog
 			<tbody>
         <%
            if(!RequirementList.isEmpty()){
-        	   List<Object[]>mainReqList=RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+        	   List<Object[]>mainReqList=RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase("0")).
+        			   sorted(Comparator.comparing(k -> Integer.parseInt(k[14].toString())))
+        			   .collect(Collectors.toList());
         	   for(Object []obj:mainReqList){
         		   
-        		   List<Object[]>submainReqList=RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+        		   List<Object[]>submainReqList=RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase(obj[0].toString()))
+        				   . sorted(Comparator.comparing(k -> Integer.parseInt(k[14].toString())))
+        				   .collect(Collectors.toList());
         %>
         <%if(submainReqList.size()>0){%>
            <tr class="text-dark">

@@ -26,6 +26,7 @@ SimpleDateFormat sdf3=fc.getRegularDateFormat();
 SimpleDateFormat sdf=fc.getRegularDateFormatshort();
 SimpleDateFormat sdf1=fc.getSqlDateFormat();
 String labImg=(String)request.getAttribute("LabImage");
+String projectShortName=(String)request.getAttribute("projectShortName");
 List<Object[]>AcronymsList=(List<Object[]>)request.getAttribute("AcronymsList");
 List<Object[]>PerformanceList=(List<Object[]>)request.getAttribute("PerformanceList");
 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
@@ -84,6 +85,12 @@ if (TestContentList != null) {
         }
     }
 }
+
+List<Object[]> specificationList = (List<Object[]>)request.getAttribute("specificationList");
+
+if(specificationList!=null && specificationList.size()>0){
+	specificationList=specificationList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+}
 %>
 <style>
     /* Define header and footer styles */
@@ -133,6 +140,7 @@ td {
 	 @ bottom-right { content : "Page " counter(page) " of " counter( pages);
 	margin-bottom: 50px;
 	width:100px;;
+	font-size:10px;
 }
 @
 top-right {
@@ -161,16 +169,16 @@ top-left {
 }
 @
 top-center {
-	font-size: 13px;
+	font-size: 10px;
 	margin-top: 30px;
 	content:"RESTRICTED"
 }
 @
 bottom-center {
-	font-size: 13px;
+	font-size: 10px;
 	/* margin-bottom: 30px; */
 	margin-right:20px;
-	content:"This information given in this document is not to be published or communicated either directly or indirectly , to the press  or to any personnel not authorized to recieve it."
+	content:"RESTRICTED"
 }
 .border-black {
 	border: 1px solid black !important;
@@ -207,14 +215,20 @@ text-align: left;
 margin-left:8px;
 }
 
-#table1{
-margin-left:15x;
-}
+
 #headerdiv {
   position: running(pageHeader); /* This will be used for paged media */
   justify-content: space-between; /* Distribute space between items */
   align-items: center; /* Align items vertically in the center */
   padding: 10px; /* Add some padding */
+}
+.editordiv table{
+
+}
+
+.editordiv table th, div table td {
+    padding: 5px; /* Adjust as needed */
+    border-collapse: collapse;
 }
 </style>
 </head>
@@ -291,8 +305,8 @@ margin-left:15x;
     				    				<%
 				if(LabList[0] != null) {
 				%>
-				<%=LabList[0].toString()%>:SSTP:....................</h4>
-  						<h6 style="margin: 0; padding: 0;font-family: <%= FontFamily %>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6>
+			<%-- 	<%=LabList[0].toString()%>:SSTP:....................</h4>
+  						<h6 style="margin: 0; padding: 0;font-family: <%= FontFamily %>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6> --%>
 						<%
 				}else {
 				%>-<%
@@ -307,10 +321,10 @@ margin-left:15x;
 </table>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
-				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM SUB SYSTEM TEST PLAN</h4>
+				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM TEST PLAN  </h4>
 				<h4 style="font-size: 15pt;font-family: <%= FontFamily %>;">For</h4>
 				<h4 style="font-size: 18pt;font-family: <%= FontFamily %>;">
-					Project:
+					Project: <%=projectShortName %>
 					<br> <br>
 				</h4>
 			<%-- 	<h4 style="font-size: 18pt;font-family: <%= FontFamily %>;">
@@ -319,8 +333,8 @@ margin-left:15x;
 					<%="(" + PfmsInitiationList[6].toString() + ")"%>
 				</h4> --%>
 				
-				<h4 style="font-size: 18px; text-decoration: underline;font-family: <%= FontFamily %>;">Test Plan 
-					No.</h4>
+			<%-- 	<h4 style="font-size: 18px; text-decoration: underline;font-family: <%= FontFamily %>;">Test Plan 
+					No.</h4> --%>
 				<h4 style="font-family: <%= FontFamily %>;">
 					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
 					<%} else {%>-<%}%>
@@ -407,8 +421,8 @@ margin-left:15x;
 					<td class="text-dark"    style="font-family: <%= FontFamily %>;border:1px solid black; width: 150px;text-align: justify"><span class="text-dark">NAME</span></td>
 					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 100px;text-align: justify"><span class="text-dark">Designation</span></td>
 					<td class="text-dark"    style="font-family: <%= FontFamily %>;border:1px solid black;width: 100px; text-align: justify"><span class="text-dark">Division/Lab</span></td>
-					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 80px;text-align: justify"><span class="text-dark">Remarks</span></td>
-					</tr>
+<%-- 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 80px;text-align: justify"><span class="text-dark">Remarks</span></td>
+ --%>					</tr>
 				<tbody id="blankRowsBody1"></tbody>
             <% 
     if (MemberList != null) {
@@ -420,8 +434,8 @@ margin-left:15x;
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;text-align: justify"><%= mlist[1] %></td>
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;text-align: justify"><%= mlist[2] %></td>
                  <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;text-align: justify"><%= mlist[3] %></td>
-                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;text-align: justify">copy for Record</td>
-                             </tr>
+<%--                  <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;text-align: justify">copy for Record</td>
+ --%>                             </tr>
  <% 
    }} 
 %>
@@ -441,11 +455,11 @@ margin-left:15x;
 			</table> -->
 				<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Requirements Document Template</span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Test Plan For <%=projectShortName %></span></td>
 					</tr>
 					<tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Requirements Document</span></td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"></span></td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Test Plan Document</span></td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks">Restricted</span></td>
 					</tr>
 				    <tr >
 					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:</td>
@@ -458,7 +472,12 @@ margin-left:15x;
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
 				</td>
+			
 					</tr>
+				<tr>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project Name:<span class="text-darks"><%=projectShortName!=null?projectShortName:"" %></span>
+				</td>
+				</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
 					</tr>
@@ -733,7 +752,7 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
                 <td class="text-dark" style="width: 120px;border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;text-align: justify"> 
                <%
              List<String>list=new ArrayList<>();
-               list=TestDetailsList.stream().filter(ix->Arrays.asList(ix[10].toString().split(",")).contains(tlist[0].toString())).map(ix->ix[1].toString()).collect(Collectors.toList());
+               list=TestDetailsList.stream().filter(ix->ix[10]!=null && Arrays.asList(ix[10].toString().split(",")).contains(tlist[0].toString())).map(ix->ix[1].toString()).collect(Collectors.toList());
                %>
                <%if(list.size()!=0) {%>
                <%=list.toString().replace("[", "").replace("]", "") %>
@@ -784,131 +803,265 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 			</h1>
 			<!--Test Set Up  Starts -->
 				
-			<div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
+			<div style="margin-left:5px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
 			<%  if (TestDetailsList != null && !TestDetailsList.isEmpty()) { 
 				int testcount=0;
-				 for (Object[] tDlist : TestDetailsList) {
+				List<Object[]>mainTestList= TestDetailsList.stream().filter(e->e[23]!=null && e[23].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+				
+				
+				 for (Object[] objs : mainTestList) {
+					 
+						List<Object[]>sublist= TestDetailsList.stream().filter(e->e[23]!=null && e[23].toString().equalsIgnoreCase(objs[0].toString())).collect(Collectors.toList());
+
 			%>	
 			<div style="margin-left: 20px; margin-top: 15px; font-weight: 600;font-family: <%= FontFamily %>;">
-			<h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++testcount)%>&nbsp;&nbsp;Test ID : &nbsp;&nbsp;<%= tDlist[1] %></h2>
-</div>
+			<h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++testcount)%>&nbsp;&nbsp;Test Type : &nbsp;&nbsp;<%= objs[1] %></h2>
+			</div>
+			<%for(Object[]tDlist:sublist){%> 
 
-<table class="border-black"
-					style="margin-left: 20px;;width: 600px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
-    <thead>
-    <tr>
-							<th class="border-black" style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
-							<th class="border-black"
-								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">Item</th>
-							<th class="border-black"
-								style="padding: 5px; border: 1px solid black; border-collapse: collapse;">Description</th>
-						</tr>
-    </thead>
-    <tbody>
-     <tr>
-        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">1.</td>
-            <th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Spec ID</span></th>
-			 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><% if(tDlist[1]!=null){%>  <%= tDlist[19] %> <% } %></td>
-        </tr>
-        <tr>
-        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">2.</td>
-            <th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">ID</span></th>
-			 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><% if(tDlist[1]!=null){%>  <%= tDlist[1] %> <% } %></td>
-        </tr>
-        <tr>
-        	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">3.</td>
-            <th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Name</span></th>
-          	 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[2]!=null){%> <%= tDlist[2] %> <% } %></td>
-        </tr>
-        <tr>
-          	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">4.</td>
-          	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Objective</span></th>
-                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[3]!=null){%> <%= tDlist[3] %> <% } %></td>
-        </tr>
-        <tr>
-          	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">5.</td>
-           	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Description</span></th>
-                    	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[4]!=null){%> <%= tDlist[4] %> <% } %></td>
-        </tr>
-        <tr>
-          	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">6.</td>
-         	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Pre-Conditions</span></th>
-                    	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[5]!=null){%> <%= tDlist[5] %> <% } %></td>
-        </tr>
-        <tr>
-                 	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">.7</td>
-    	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Post-Conditions</span></th>
-         	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[6]!=null){%> <%= tDlist[6] %> <% } %></td>
-        </tr>
-        <tr>
-                 	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">8.</td>
-           	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Constraints</span></th>
-           <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[7]!=null){%> <%= tDlist[7] %> <% } %></td>
-        </tr>
-        <tr>
-               	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">9.</td>
-          	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Safety Requirements</span></th>
-            <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[8]!=null){%> <%= tDlist[8] %> <% } %></td>
-        </tr>
-        <tr>
-                 	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">10.</td>
-        	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Methodology</span></th>
- 		<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[9]!=null){%> <%= tDlist[9] %> <% } %></td>
-        </tr>
-        <tr>
-                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">11.</td>
-         	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Test Set Up</span></th>
-                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
-                     <%
-		String[]TempArray= tDlist[10].toString().split(","); 
+			
+			
+		
+
+
+		<table class="border-black" style="width: 655px; margin-top: 10px; margin-bottom: 5px;font-family: <%=FontFamily%>;font-size: <%=ParaFontSize%>pt">
+			<thead>
+				<tr>
+					<th class="border-black"
+						style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
+					<th class="border-black"
+						style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">Item</th>
+					<th class="border-black"
+						style="padding: 5px; border: 1px solid black; border-collapse: collapse;">Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">1.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Spec ID</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<% if(tDlist[19]!=null){
+						List<String>list = new ArrayList<>();
+						
+						if(specificationList.size()>0){
+							list = specificationList.stream().filter(e->Arrays.asList(tDlist[19].toString().split(",")).contains(e[0].toString()))
+									.map(e->e[1].toString())
+									.collect(Collectors.toList());
+						}
+						%>
+						
+						
+						 <%= list.size()>0?list.toString().replace("[", "").replace("]",""):"-" %>
+						 
+						  <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">2.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">ID</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<% if(tDlist[1]!=null){%> <%= tDlist[1] %> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">3.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Name</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[2]!=null){%> <%= tDlist[2] %> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">4.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Objective</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[3]!=null){%> <%= tDlist[3] %> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">5.</td>
+					<th class="border-black" colspan="2"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Description</span></th>
+					
+				</tr>
+				<tr>
+				<td class="border-black" colspan="3"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+				<%if(tDlist[4]!=null){%><div class="editordiv"> <%= tDlist[4] %> </div><% } %>
+				</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">6.</td>
+					<th class="border-black" colspan="2"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Pre-Conditions</span></th>
+				
+				</tr>
+				<tr>
+					<td class="border-black" colspan="3"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[5]!=null){%><div class="editordiv"> <%= tDlist[5] %>  </div><% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">7.</td>
+					<th class="border-black" colspan="2"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Post-Conditions</span></th>
+				
+				</tr>
+				
+				<tr> 
+					<td class="border-black" colspan="3"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[6]!=null){%><div class="editordiv"> <%= tDlist[6] %></div> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">8.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Constraints</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[7]!=null){%> <%= tDlist[7] %> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">9.</td>
+					<th class="border-black" colspan="2"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Safety Requirements</span></th>
+					
+				</tr>
+				<tr>
+				<td class="border-black"colspan="3"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[8]!=null){%><div class="editordiv">  <%= tDlist[8] %></div> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">10.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Methodology</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[9]!=null){%> <%= tDlist[9] %> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">11.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Test Set Up</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%
+                 
+             		String[]TempArray=tDlist[10]!=null? tDlist[10].toString().split(","):new String[]{"", "", "", "", ""}; 
          List<String>tempList=Arrays.asList(TempArray);
          List<String>temp= new ArrayList<>();
-		for(Object[] obj:TestSuiteList){
+ 		for(Object[] obj:TestSuiteList){
 			if(tempList.contains(obj[0].toString())){
 				temp.add(obj[3].toString());
 			}}
-%>
- <%if(temp.size()>0) {%>
-   <%= String.join(", ", temp) + "" %>
-<%-- <%=temp.toString()+"," %> --%>
-<%}else{ %>
--
-<%} %>  
- </td>
-        </tr>
-        <tr>
-                	<td class="border-black"style="text-align: justify;padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">11.</td>
-          	<th class="border-black"style="text-align: justify;padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Personnel Resources</span></th>
- 	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[11]!=null){%> <%= tDlist[11] %> <% } %></td>
-        </tr>
-        <tr>
-                	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">12.</td>
-          	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Estimated Time/Iteration</span></th>
-        <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[12]!=null){%> <%= tDlist[12] %> <% } %></td>
-        </tr>
-        <tr>
-               	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">13.</td>
-          	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Iterations</span></th>
-             <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[13]!=null){%> <%= tDlist[13] %> <% } %></td>
-        </tr>
-        <tr>
-                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">14.</td>
-          	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Schedule</span></th>
-			        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[14]!=null){%> <%= tDlist[14] %> <% } %></td>
-        </tr>
-        <tr>
-                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">15.&nbsp;</td>
-     	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Pass/Fail Criteria</span></th>
-                   	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[15]!=null){%> <%= tDlist[15] %> <% } %></td>
-        </tr>
-        
-        
-        <tr>
-                 	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">16.&nbsp;</td>
-         	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark"> StageApplicable</span></th>
-                	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
-            <%
-            String[]TempArray1=tDlist[22].toString().split(",");
+%> <%if(temp.size()>0) {%> <%= String.join(", ", temp) + "" %> <%-- <%=temp.toString()+"," %> --%>
+						<%}else{ %> - <%} %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="text-align: justify;padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">12.</td>
+					<th class="border-black" colspan="2"
+						style="text-align: justify;padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Personnel Resources</span></th>
+					
+				</tr>
+				<tr>
+				<td class="border-black" colspan="3"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[11]!=null){%> <div class="editordiv"><%= tDlist[11] %></div> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">13.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Estimated Time/Iteration</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[12]!=null){%> <%= tDlist[12] %> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">14.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Iterations</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[13]!=null){%> <%= tDlist[13] %> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">15.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Schedule</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[14]!=null){%> <%= tDlist[14] %> <% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">16.</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Pass/Fail Criteria</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[15]!=null){%> <%= tDlist[15] %> <% } %>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">17.&nbsp;</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark"> StageApplicable</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%
+            String[]TempArray1=tDlist[22]!=null ?tDlist[22].toString().split(","): new String[5];
             List<String>tempList1=Arrays.asList(TempArray1);
             List<String>tempsa=new ArrayList<>();
             for(Object[] obj1:StagesApplicable){
@@ -916,25 +1069,27 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
             		tempsa.add(obj1[3].toString());
             	}
             }
-            %>
-            <% if(tempsa.size() > 0) { %>
-    <%= String.join(", ", temp) + "" %>
-			<% } else { %>
-   				 -
-			<% } %>
+            %> <% if(tempsa.size() > 0) { %> <%= String.join(", ", temp) + "" %>
+						<% } else { %> - <% } %>
 
-           </td>
-        </tr>
-        <tr>
-          	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">17.&nbsp;&nbsp;&nbsp;</td>
-	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Remarks</span></th>
-               	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[15]!=null){%> <%= tDlist[15] %> <% } %></td>
-        </tr>
-       
-    </tbody>
-</table>
- <% 
-  }} else {
+					</td>
+				</tr>
+				<tr>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">18.&nbsp;&nbsp;&nbsp;</td>
+					<th class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						class="text-dark">Remarks</span></th>
+					<td class="border-black"
+						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						<%if(tDlist[15]!=null){%> <%= tDlist[15] %> <% } %>
+					</td>
+				</tr>
+
+			</tbody>
+		</table> 
+		<% 
+  }}} else {
    %>
 <div align="center" style="margin-top: 350px">
 					<h4 style="font-family: <%= FontFamily %>;">No Data Available !</h4>

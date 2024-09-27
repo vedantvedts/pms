@@ -46,7 +46,11 @@ import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
+import com.vts.pfms.requirements.model.IgiDocumentMembers;
+import com.vts.pfms.requirements.model.PfmsIgiDocument;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
+import com.vts.pfms.requirements.model.PfmsSpecTypes;
+import com.vts.pfms.requirements.model.PfmsTestTypes;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -55,6 +59,7 @@ import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.utils.PMSLogoUtil;
+import com.vts.pfms.requirements.model.IgiDocumentSummary;
 
 @Service
 public class RequirementServiceImpl implements RequirementService {
@@ -1281,5 +1286,151 @@ public class RequirementServiceImpl implements RequirementService {
 	public long deleteInitiationReq(String InitiationReqId) throws Exception
 	{
 		return dao.deleteInitiationReq(InitiationReqId);
+	}
+	@Override
+	public long deleteInitiationSpe(String SpecsId) throws Exception
+	{
+		return dao.deleteInitiationSpe(SpecsId);
+	}
+	
+	@Override
+	public long addSpecMaster(String[] specificationCode, String[] specificationName) throws Exception {
+		
+		long count=0;
+		for(int i=0;i<specificationCode.length;i++) {
+			PfmsSpecTypes pst = new PfmsSpecTypes();
+			pst.setSpecCode(specificationCode[i]);
+			pst.setSpecificationName(specificationName[i]);
+			pst.setSpecificationParentId(0l);
+			count=dao.addSpecMaster(pst);
+		}
+		
+		return count;
+	}
+	
+	@Override
+	public long addTestMaster(String[] testplanCode, String[] testplanName) throws Exception {
+		// TODO Auto-generated method stub
+		long count=0;
+				
+		for (int i=0;i<testplanCode.length;i++) {
+			PfmsTestTypes pt = new PfmsTestTypes();
+			pt.setTestCode(testplanCode[i]);
+			pt.setTestName(testplanName[i]);
+			pt.setTestParentId(0l);
+			count=count+dao.addTestMaster(pt);
+		}
+		
+		return count;
+	}
+	
+	
+	@Override
+	public List<Object[]> getSpecMasterList(String SpecsInitiationId) throws Exception {
+		return dao.getSpecMasterList(SpecsInitiationId);
+	}
+	
+	@Override
+	public Object[] getSpecName(String mainId) throws Exception {
+
+		return dao.getSpecName(mainId);
+	}
+	
+	@Override
+	public List<Object[]> getTestPlanMainList(String testPlanInitiationId) throws Exception {
+
+		return dao.getTestPlanMainList(testPlanInitiationId);
+	}
+	
+	@Override
+	public Object[] getTestTypeName(String mainid) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.getTestTypeName(mainid);
+	}
+	
+	@Override
+	public long deleteTestPlan(String testId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.deleteTestPlan(testId);
+	}
+	
+	/* Soumyakanta Swain */
+	@Override
+	public List<Object[]> IgiDocumentList() throws Exception
+	{
+		return dao.IgiDocumentList();
+	}
+	
+	@Override
+	public long savePfmsIgiDocument(PfmsIgiDocument pfmsIgiDocument) throws Exception
+	{
+		return dao.savePfmsIgiDocument(pfmsIgiDocument);
+	}
+	
+	@Override
+	public List<Object[]> IgiDocumentSummary() throws Exception
+	{
+		return dao.IgiDocumentSummary();
+		
+	}
+	
+	@Override
+	public IgiDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception
+	{
+		return dao.getIgiDocumentSummaryById(SummaryId);
+	}
+	
+	
+	@Override
+	public long addIgiDocumentSummary(IgiDocumentSummary rs) throws Exception
+	{
+		return dao.addIgiDocumentSummary(rs);
+	}
+	
+	@Override
+	public List<Object[]> igiDocumentMemberList(String DocIgiId) throws Exception
+	{
+		return dao.igiDocumentMemberList(DocIgiId);
+	}
+	
+	@Override
+	public List<Object[]> EmployeeList(String labCode, String DocIgiId) throws Exception
+	{
+		return dao.EmployeeList(labCode, DocIgiId);
+	}
+	
+
+	@Override
+	public long AddIgiDocMembers(IgiDocumentMembers rm) throws Exception {
+		
+		int numberOfPersons= rm.getEmps().length; 
+		
+		String []assignee= rm.getEmps();
+		long count=0;
+		for(int i=0;i<numberOfPersons;i++) {
+			IgiDocumentMembers r = new IgiDocumentMembers();
+
+			r.setCreatedBy(rm.getCreatedBy());
+			r.setCreatedDate(rm.getCreatedDate());
+			r.setEmpId(Long.parseLong(assignee[i]));
+			r.setIsActive(1);
+			r.setDocIgiId(rm.getDocIgiId());
+
+			count=dao.AddIgiMembers(r);
+			
+		}
+		return count;
+	}
+	
+	@Override
+	public IgiDocumentMembers getIgiDocumentById(Long IgiMemeberId) throws Exception
+	{
+		return dao.getIgiDocumentById(IgiMemeberId);
+	}
+	
+	@Override
+	public long editIgiDocument(IgiDocumentMembers idm) throws Exception
+	{
+		return dao.editIgiDocument(idm);
 	}
 }

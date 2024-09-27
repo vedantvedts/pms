@@ -102,7 +102,8 @@ String FontFamily="Times New Roman";
 					ConclusionContenId=obj[0].toString();
 				}
 			}
-
+			String projectShortName =(String)request.getAttribute("projectShortName");
+			String Classification=(String)request.getAttribute("Classification");
 %>
 <style>
     /* Define header and footer styles */
@@ -145,14 +146,15 @@ td {
 @page {
 	size: 770px 1050px;
 	margin-top: 49px;
-	margin-left: 49px;
+	margin-left: 70px;
 	margin-right: 49px;
 	margin-bottom: 69px;
 	border: 2px solid black;
 	
 	 @ bottom-right { content : "Page " counter(page) " of " counter( pages);
 	margin-bottom: 50px;
-	width:100px;;
+	width:100px;
+	font-size: 10px;
 }
 @
 top-right {
@@ -181,16 +183,16 @@ top-left {
 }
 @
 top-center {
-	font-size: 13px;
+	font-size: 10px;
 	margin-top: 30px;
-	content:"RESTRICTED"
+	content:"<%if(Classification!=null){%> <%=Classification.toUpperCase()%> <%}else{%>RESTRICTED <%}%>"
 }
 @
 bottom-center {
-	font-size: 13px;
+	font-size: 10px;
 	/* margin-bottom: 30px; */
 	margin-right:20px;
-	content:"This information given in this document is not to be published or communicated either directly or indirectly , to the press  or to any personnel not authorized to recieve it."
+	content:"<%if(Classification!=null){%> <%=Classification.toUpperCase()%> <%}else{%>RESTRICTED <%}%>"
 }
 .border-black {
 	border: 1px solid black !important;
@@ -217,7 +219,7 @@ p,td,th
     width:500px !important;
     }
 p {
-	text-justify: inter-word;
+
 	text-align: justify !important;
 	padding: 5px;
 }
@@ -253,13 +255,40 @@ margin-left:15x;
   align-items: center; /* Align items vertically in the center */
   padding: 10px; /* Add some padding */
 }
+div table{
+width:560px;
+}
 
+/* .specdiv table td p{
+width:60px!important;
+font-size:8px;
+border:1px solid red;
+margin-right:2px;
+} */
+.specdiv table{
+margin-top:5px;
+}
+.specdiv table td p{
 
+width:50px!important;
+margin-top:0px!important;
+font-family: <%=FontFamily%>;
+}
+.specdiv table td p span{
+
+padding:1px !important;
+}
+.specdiv p{
+width:600px !important;
+}
+.scopediv p{
+width:620px !important;
+}
 </style>
 </head>
 <body>
 <div id="headerdiv">
-	<div style="position: absolute; top: 450px; left:-422px; border:1px solid black; transform: rotate(-90deg); font-size: 10px; color: #000; width:900px;opacity:0.5; ">
+	<div style="position: absolute; top: 450px; left:-400px; transform: rotate(-90deg); font-size: 10px; color: #000; width:900px;opacity:0.5; ">
 				  <!--   <b style="font-size: 12px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</b><br>
 				    <span style="text-decoration: none; font-size: 11px;">This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.</span> -->
 				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} %>
@@ -285,8 +314,12 @@ margin-left:15x;
 	<div style="text-align: center; margin-top: 75px;">
 		<h4
 			style="font-size: 18pt;;font-family:<%=FontFamily%>; !important;"
-			class="heading-color ">SYSTEM  SPECIFICATIONS</h4>
-
+			class="heading-color ">SYSTEM  SPECIFICATIONS
+			<br><br>
+			FOR
+			<br><br>PROJECT <%=projectShortName!=null?projectShortName:"" %>
+			</h4>
+			
 
 		<div align="center">
 			<img class="logo"
@@ -342,7 +375,7 @@ margin-left:15x;
 				</h5>
 				
 			</div>
-			<table style="width: 650px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+			<table style="width: 630px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 				
 					<tr >
 					<td class="text-dark"  rowspan="2" style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;"><span class="text-dark">Amendment No.</span></td>
@@ -376,10 +409,10 @@ margin-left:15x;
 				<h5  class="heading-color; "style="font-family: <%= FontFamily %>;">DISTRIBUTION LIST
 				</h5>
 						</div>
-						<table style="width: 650px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+						<table style="width: 630px;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 					<tr >
-					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; width: 20px;text-align: center;width:20px;"><span class="text-dark">S.No</span></td>
-					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 250px;text-align: center;"><span class="text-dark">NAME</span></td>
+					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; width: 20px;text-align: center;width:20px;"><span class="text-dark">SN</span></td>
+					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 250px;text-align: left"><span class="text-dark">NAME</span></td>
 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; text-align: center;width: 100px;"><span class="text-dark">Designation</span></td>
 					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black;width: 200px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
 					</tr>
@@ -391,7 +424,7 @@ margin-left:15x;
 %>
  				<tr>
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%=  i+++"."%></td>
-                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
+                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;text-align:left;"><%= mlist[1] %></td>
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
                 <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
                 </tr>
@@ -407,28 +440,35 @@ margin-left:15x;
 				style="font-size: 20px !important;font-family: <%=FontFamily%>;"
 				class="heading-color">DOCUMENT SUMMARY</h4>
 		</div>
-						<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
+						<table style="width: 630px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Segment Specification Document Template</span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Segment Specification Document For Project <%=projectShortName!=null?projectShortName:"" %></span></td>
 					</tr>
 					<tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Segment Specification Document</span></td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"></span></td>
-					</tr>
-				    <tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:</td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Segment Specification Document</span></td>
 					</tr>
 					<tr>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages: </td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
+						<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"><%if(Classification!=null){%> <%=Classification.toUpperCase()%> <%}else{%>RESTRICTED <%}%></span></td>
+					
+					</tr>
+				    <tr >
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:</td>
+					</tr>
+					<tr>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
+					</tr>
+					<tr>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages:  ${totalPages}</td>
+					</tr>
+					<tr>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
 				</td>
 					</tr>
 				     <tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp;  Project Name:<span class="text-darks"> </span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp;  Project Name:<span class="text-darks"> <%=projectShortName!=null?projectShortName:"" %></span></td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
@@ -474,8 +514,7 @@ margin-left:15x;
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
 					</tr>
-										</table>
-		
+										</table>		
 		   						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
 			<h4 style="margin-left: 20px;font-family: <%= FontFamily %>;"> Abbreviations used in the Manual to be listed and arranged in alphabetical order</h4>
 		<%  if (AbbreviationDetails != null && !AbbreviationDetails.isEmpty()) { %>	
@@ -513,11 +552,12 @@ for(Object[]obj:SpecsIntro) {%>
 				<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>; font-size: <%= SubHeaderFontsize%>pt;"class="heading-colors"><%= maincount+"." %><%=++introCount %>
 					&nbsp;<%=obj[1].toString() %>
 				</h2>
-	<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
-	<%if(obj[2]!=null) {%><%=obj[2]%>
+	<%if(obj[2]!=null) {%>	<div class="scopediv" style="text-align: justify;" >
+	<%=obj[2]%>
+	</div>	
 					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
 					<%} %>
-	</div>			
+			
 <%} %>
 <%}else{ %>
 <h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>; font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %>1  System Identification</h2>
@@ -550,13 +590,21 @@ The product Tree shall comprises the complete physical products / subsystems of 
     
     <%if(specsList!=null && specsList.size()>0){ 
 		int specCount=0;
-		for(Object[]obj:specsList){
-		int snCount=0;
+		List<Object[]>specsListMain=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+		for(Object[]obj:specsListMain){
+	
 		%>
-		<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>; font-size: <%= SubHeaderFontsize%>pt;"class="heading-colors"><%=maincount+"." %><%=++specCount %> <%=obj[1].toString() %></h2>
-
+		<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:600; font-size: <%= SubHeaderFontsize%>pt;"class="heading-colors"><%=maincount+"." %><%=++specCount %> <%=obj[1].toString() %></h2>
+		<% List<Object[]>specsListSub = new ArrayList<>();
+					specsListSub=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+					%>
+					<%if(specsListSub!=null && specsListSub.size()>0) {
+					for(Object[]obj1:specsListSub){
+						
+						int snCount=0;
+					%>
 					
-					<table class="" style="margin-left: 20px;;width: 630px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt;border-collapse: collapse;margin-right:10px;margin-top:10px;">
+					<table class="" style="margin-left: 5px;width: 635px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt;border-collapse: collapse;margin-top:10px;margin-right:5px;">
 					<thead>
 						<tr>
 							<th class="border-black"
@@ -575,7 +623,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Specification Id</td>
 							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %></td>
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj1[1].toString() %></td>
 						</tr>
 						
 							<tr>
@@ -587,13 +635,13 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<%
 							List<String>linkedReq= new ArrayList<>();
 							List<String>tempReq = new ArrayList<>();
-							if(obj[4]!=null){
-								tempReq= Arrays.asList(obj[4].toString().split(","));
+							if(obj1[4]!=null){
+								tempReq= Arrays.asList(obj1[4].toString().split(","));
 							}
 							if(RequirementLists!=null && RequirementLists.size()>0){
-							for(Object[]obj1:RequirementLists){
-								if(tempReq.contains(obj1[0].toString())){
-									linkedReq.add(obj1[1].toString());
+							for(Object[]obj2:RequirementLists){
+								if(tempReq.contains(obj2[0].toString())){
+									linkedReq.add(obj2[1].toString());
 								}
 							%>
 							<%}} %>	
@@ -606,12 +654,14 @@ The product Tree shall comprises the complete physical products / subsystems of 
 						</tr>
 						
 							<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> Description</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj[2].toString() %></td>
+							
+							<td class="border-black" colspan="3"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> <%=++snCount %>.Description
+								<br>
+								<div style="font-weight: 400;text-align: justify;" class="specdiv">
+								<%=obj1[2]!=null?obj1[2].toString():"No Details Found" %>
+								</div>
+								</td>
 							</tr>
 							
 							<tr>
@@ -620,7 +670,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> Specification Parameter</td>
 							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null){ %><%=obj[5].toString() %> <%}else{ %> <%} %></td>
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj1[5]!=null){ %><%=obj1[5].toString() %> <%}else{ %> <%} %></td>
 							</tr>
 							
 							<tr>
@@ -629,18 +679,18 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> Specification Unit</td>
 							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj[6]!=null){ %><%=obj[6].toString() %> <%}else{ %> <%} %></td>
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj1[6]!=null){ %><%=obj1[6].toString() %> <%}else{ %> <%} %></td>
 							</tr>
 						</tbody>
 						</table>
 					
 			<br>
-		<%}} %>	
+		<%}}}} %>	
 		
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
     <%= ++maincount %>.&nbsp;Specifications Traceability
     </h1>
-			<table class=""style="margin-left: 20px;;width: 630px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt;border-collapse:collapse">
+			<table class=""style="margin-left: 20px;;width: 610px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt;border-collapse:collapse">
 				<thead>
 						<tr>
 							<th class="border-black"style="width:50px; border: 1px solid black; border-collapse: collapse;padding:5px;">SN</th>
@@ -696,4 +746,6 @@ The product Tree shall comprises the complete physical products / subsystems of 
 	</div>
 	</div>	
 		</body>
+		
+		
 </html>

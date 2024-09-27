@@ -32,4 +32,6 @@ public class TestPlanSummary {
 	private String PreparedBy;
 	private Long TestPlanInitiationId;
 	private Long SpecsInitiationId;
+	private String ReleaseDate;
+	private String DocumentNo;
 }

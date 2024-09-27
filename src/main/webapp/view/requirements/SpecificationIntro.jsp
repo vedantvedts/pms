@@ -266,7 +266,7 @@ float: right;
 		<nav class="navbar navbar-light bg-light justify-content-between" style="margin-top: -1%">
 			<a class="navbar-brand"> 
 			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
-			<span style="color: #31708f">Requirement Introduction for Project </span>
+			<span style="color: #31708f">Specification Introduction for Project </span>
 			<%-- <span style="color: #31708f; font-size: 19px">  <%=project.split("/")[1].toString() %></span> --%>
 			</b>
 			</a>
@@ -368,7 +368,9 @@ float: right;
 											<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
 											<input type="hidden" id="attributes" name="attributes" >
 											<input type="hidden" name="IntroductionId" id="IntroductionId">
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <span id="Editorspan">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											
+											<span id="Editorspan">
 											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')" name="action" value="add">SUBMIT</button></span>
 											<span id="btn2" style="display: none;"><button type="submit"class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure you want to submit?')" name="action" value="edit">UPDATE</button></span>
 										</span>
@@ -383,11 +385,12 @@ float: right;
 			<!-- editor ends  -->
 		</div>
 		<hr class="mt-2">
-<!-- 		<div class="row mt-2">
+<!--<div class="row mt-2">
 		<div class="col-md-12">
 		<button class="btn btn-sm btn-info" style="float:right; width:5%; font-weight: 600">Next</button>
 		</div>
-		</div> -->
+		</div>-->
+	
 	</div>
 	
 	<script type="text/javascript">

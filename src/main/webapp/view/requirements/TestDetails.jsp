@@ -6,6 +6,7 @@
 <%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+
 <script src="${ckeditor}"></script>
 <!DOCTYPE html>
 <html>
@@ -13,6 +14,13 @@
 <meta charset="ISO-8859-1">
 <title>PMS</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+
+
+
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -70,6 +78,11 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 	width: 0;
 	height: 0;
 }
+
+.note-editable
+{
+height: 300px;
+}
 .requirementid {
 	border-radius: 5px;
 	box-shadow: 10px 10px 5px lightgrey;
@@ -106,7 +119,7 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 	cursor: pointer !important;
 	background-color: #22c8e5 !important;
 	border: none !important;
-	box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0
+	box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 13px; 50px 0
 		rgba(0, 0, 0, 0.19) !important;
 } */
 
@@ -245,7 +258,7 @@ keyframes blinker { 20% {
 }
 
 #reqdiv:hover {
-	box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0
+	box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 13px; 50px 0
 		rgba(0, 0, 0, 0.19) !important;
 }
 
@@ -338,9 +351,11 @@ margin-left: -21px;
 	String initiationId = (String)request.getAttribute("initiationId");
 	String projectId = (String)request.getAttribute("projectId");
 	String productTreeMainId = (String)request.getAttribute("productTreeMainId");
+	String click = (String)request.getAttribute("click");
 	String testPlanInitiationId = (String)request.getAttribute("testPlanInitiationId");
 
  	List<Object[]>TestDetailsList=(List<Object[]>)request.getAttribute("TestDetailsList"); 
+ 	List<Object[]>testPlanMainList=(List<Object[]>)request.getAttribute("testPlanMainList"); 
  	List<Object[]>TestTypeList=(List<Object[]>)request.getAttribute("TestTypeList");
  	String TestReqId=(String)request.getAttribute("TestReqId");
  	List<Object[]>StagesApplicable=(List<Object[]>)request.getAttribute("StagesApplicable");
@@ -352,6 +367,10 @@ margin-left: -21px;
 	String jsonArrayTestTool =objectMapper.writeValueAsString(TestTypeList);
 	
 	List<Object[]> specificationList = (List<Object[]>)request.getAttribute("specificationList");
+	
+	if(specificationList!=null && specificationList.size()>0){
+		specificationList=specificationList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+	}
 	
 	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
@@ -390,7 +409,7 @@ margin-left: -21px;
 						<div class="card shadow-nohover" style="margin-top: -0px;">
 							<div class="row card-header"
 								style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-								<div class="col-md-9" id="projecthead">
+								<div class="col-md-6" id="projecthead">
 									<h5 style="margin-left: 1%;">
 										Test Details - 
 										<small>
@@ -401,7 +420,7 @@ margin-left: -21px;
 										</small>
 									</h5>
 								</div>
-								<div class="col-md-3" id="addReqButton">
+								<div class="col-md-6" id="addReqButton">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									<input type="hidden" name="projectId" value="<%=projectId%>">
 									<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
@@ -413,10 +432,11 @@ margin-left: -21px;
 										<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
 										<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 										<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">	
-										<button class="btn btn-success btn-sm submit" style="margin-top: -3%;"
+										<button class="btn btn-success btn-sm submit" style="margin-top: -3%;" type="button" onclick="showMoadal()">ADD HEADINGS</button>
+										<!-- <button class="btn btn-success btn-sm submit" style="margin-top: -3%;"
 											type="button" onclick='showdata("Add")' data-toggle="tooltip"
 											data-placement="top" data-original-data=""
-											title="ADD TEST DETAILS">ADD TEST DETAILS</button>
+											title="ADD TEST DETAILS">ADD TEST DETAILS</button> -->
 										<button class="btn btn-info btn-sm  back ml-2"
 											formaction="ProjectTestPlanDetails.htm" formmethod="get"
 											formnovalidate="formnovalidate" style="margin-top: -3%;">BACK</button>
@@ -427,29 +447,80 @@ margin-left: -21px;
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-1" >
-						<%if((TestDetailsList!=null) &&(!TestDetailsList.isEmpty())){ %>
-							<div class="cardbody" id="" style="display:block;<%if(TestDetailsList.size()>9){%>height:1000px;<%}%>">
-								<%int count=1;
-									for(Object []obj:TestDetailsList) {%>
-										<button type="button" class="btn btn-primary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick="TestDetailsShow('<%=obj[0]%>')">
-											<span style="font-weight: bold;"><%=obj[1] %></span>
+					<div class="col-md-3" >
+						<%if((TestDetailsList!=null) &&(!TestDetailsList.isEmpty())){ 
+						List<Object[]>subList = new ArrayList<>();
+						subList = TestDetailsList.stream().filter(i->i[23].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+						%>
+						
+							<div class="cardbody" id="" style="display:block;<%if(TestDetailsList.size()>9){%>height:85vh;overflow-y:auto;<%}%>padding: 5px;background: antiquewhite;">
+								<%int count=0;
+									for(Object []obj:subList) {
+										List<Object[]>subList1 = new ArrayList<>();
+										subList1 = TestDetailsList.stream().filter(i->i[23].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+									%>
+										<button type="button" class="btn btn-primary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick='showdata("<%=obj[24].toString()%>","<%=obj[0].toString()%>","<%=obj[1].toString()%>")'>
+											<span style="font-weight: bold;"><%=++count %>.  &nbsp;<%=obj[1] %></span>
 										</button>
-									<%count++;} %>
+									<%if(subList1.size()>0) {
+										int count1=0;
+									for(Object[]obj1:subList1){
+										List<Object[]>subList2 = new ArrayList<>();
+										subList2 = TestDetailsList.stream().filter(i->i[23].toString().equalsIgnoreCase(obj1[0].toString())).collect(Collectors.toList());
+									%>
+						<div style="display: flex; justify-content:space-between;">
+							<button type="button" class="btn  btn-primary viewbtn mt-2"
+								id="Test<%=obj1[0] %>" value="<%=obj1[0]%>" onclick='showEditData(<%=obj1[0] %>)'
+								style="width: 80%;display: flex;">
+								<span style="font-weight: bold;"><%=count+"."+(++count1)%>
+									&nbsp;<%=obj1[1] %></span>
+							</button>
+							<button class="btn btn-sm mt-2 " onclick="deleteTestPlan(<%=obj1[0].toString()%>)">
+							<i class="fa fa-trash" aria-hidden="true" style="color:red;"></i>
+							</button>
+							<button class="btn btn-sm mt-2"  onclick='showdata("<%=obj1[24].toString()%>","<%=obj1[0].toString()%>","<%=obj1[1].toString()%>")'>
+							<i class="fa fa-plus" aria-hidden="true" style="color:green;"></i>
+							</button>
+						</div>
+						
+						<%if(subList2.size()>0) {
+							int count2=0;
+						for(Object[]obj2:subList2){
+							
+						%>
+
+				<div style="display: flex; justify-content:space-between;">
+							<button type="button" class="btn btn-primary viewbtn mt-2"
+								id="Test<%=obj2[0] %>" value="<%=obj2[0]%>" onclick='showEditData(<%=obj2[0] %>)'
+								style="width: 80%; display: flex;">
+								<span style="font-weight: bold;"><%=count+"."+(count1)+"."+(++count2)%>
+									&nbsp;<%=obj2[1] %></span>
+							</button>
+							<button class="btn btn-sm mt-2 " onclick="deleteTestPlan(<%=obj2[0].toString()%>)">
+							<i class="fa fa-trash" aria-hidden="true" style="color:red;"></i>
+							</button>
+							<%-- <button class="btn btn-sm mt-2"  onclick='showdata("<%=obj1[24].toString()%>","<%=obj1[0].toString()%>","<%=obj1[1].toString()%>")'>
+							<i class="fa fa-plus" aria-hidden="true" style="color:green;"></i>
+							</button> --%>
+						</div>
+					   <%}} %>
+						<%}} %>	
+									<%} %>
 							</div>
 						<%} else{%>
 							<script type="text/javascript">
 				                $(document).ready(function() {
-				                    $("#noDataModal").modal('show');
+				                	showMoadal();
+				                	$("#AddTestDetails").hide();
+				        			$('#viewcard').hide();
+				        			$("#EditTestDetails").hide();
 				                });
 	            			</script>
-	            			<button type="button" class="btn btn-secondary viewbtn mt-2">
-								<span style="font-weight: bold;;">No Data</span>
-							</button>
+	            			
 	           				
 						<%} %>
 					</div>
-					<div class="col-md-11">
+					<div class="col-md-9">
 						<div class="card">
 							<div class="card-body mt-2" id="cardbody">
 								<div id="viewcard">
@@ -470,7 +541,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Spec ID:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="specidview" style="font-size: 17px;"></p>
+													<p id="specidview" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -479,13 +550,13 @@ margin-left: -21px;
 											<h5 style="font-size: 20px; color: #005086; width: fit-content">Test Name</h5>
 										</div>
 										<div class="col-md-2" style="margin-top: 1%">
-											<p id="name" style="font-size: 17px;"></p>
+											<p id="name" style="font-size: 13px;;"></p>
 										</div>
 										<div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
 											<h5 style="font-size: 20px; color: #005086;margin-top: 6%;margin-left:49%;" id="priority">Objective:</h5>
 										</div>
 										<div class="col-md-4" style="margin-top: 1%">
-											<p id="Objective" style="font-size: 17px;"></p>
+											<p id="Objective" style="font-size: 13px;;"></p>
 										</div>
 										
 										<hr>
@@ -508,7 +579,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Pre-Conditions:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-												<div id="PreConditionsView" style="font-size: 17px;">
+												<div id="PreConditionsView" style="font-size: 13px;;">
 													</div>
 												</div>
 											</div>
@@ -520,7 +591,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Post-Conditions:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<div id="PostConditionsView" style="font-size: 17px;">
+													<div id="PostConditionsView" style="font-size: 13px;;">
 													
 													</div>
 												</div>
@@ -533,7 +604,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Constraints:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="Constraints" style="font-size: 17px;"></p>
+													<p id="Constraints" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -545,7 +616,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Safety Requirements:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="SafetyRequirements" style="font-size: 17px;"></p>
+													<p id="SafetyRequirements" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -557,7 +628,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Methodology:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="Methodology" style="font-size: 17px;"></p>
+													<p id="Methodology" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -568,7 +639,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Test Setup:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="ToolsSetupView" style="font-size: 17px;"></p>
+													<p id="ToolsSetupView" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -579,7 +650,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Personnel Resources:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="PersonnelResourcesView" style="font-size: 17px;"></p>
+													<p id="PersonnelResourcesView" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -590,7 +661,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Estimated Time / Iteration:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="EstimatedTimeIteration" style="font-size: 17px;"></p>
+													<p id="EstimatedTimeIteration" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -601,7 +672,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Iterations</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="Iterations" style="font-size: 17px;"></p>
+													<p id="Iterations" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -612,7 +683,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Schedule</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="Schedule" style="font-size: 17px;"></p>
+													<p id="Schedule" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -624,7 +695,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Pass Fail Criteria</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="PassFailCriteria" style="font-size: 17px;"></p>
+													<p id="PassFailCriteria" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -635,7 +706,7 @@ margin-left: -21px;
 													<h5 style="font-size: 20px; color: #005086; width: fit-content">Stage Applicable</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="StageApplicableView" style="font-size: 17px;"></p>
+													<p id="StageApplicableView" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -648,7 +719,7 @@ margin-left: -21px;
 														style="font-size: 20px; color: #005086; width: fit-content">Remarks:</h5>
 												</div>
 												<div class="col-md-9" style="margin-top: 1%;">
-													<p id="Remarks" style="font-size: 17px;"></p>
+													<p id="Remarks" style="font-size: 13px;;"></p>
 												</div>
 											</div>
 											<hr>
@@ -666,10 +737,12 @@ margin-left: -21px;
 								<div id="AddTestDetails">
 									<form class="form-horizontal" role="form" action="TestDetailsAddSubmit.htm" method="POST" id="myform1">
 										<div class="row">
+										<p class="ml-3" id="TestName" style="font-size: 1.5rem;font-weight: 600;">  Test Type</p>
+										
 											<div class="col-md-12">
 												<div class="form-group row">
 													<div class="col-md-1">
-														<label style="font-size: 17px;color: #07689f">
+														<label style="font-size: 13px;;color: #07689f">
 															Spec ID <span class="mandatory" style="color: red;"></span>
 														</label>
 													</div>
@@ -690,7 +763,7 @@ margin-left: -21px;
 												
 														
 													<div class="col-md-2">
-														<label style="font-size: 17px;  margin-left: 0.1rem; color: #07689f">Test Name<span	class="mandatory" style="color: red;">*</span></label>
+														<label style="font-size: 13px;;  margin-left: 0.1rem; color: #07689f">Test Name<span	class="mandatory" style="color: red;">*</span></label>
 													</div>
 													<div class="col-md-5">
 														<input type="text" name="name" class="form-control"id="NameAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters" >
@@ -702,7 +775,7 @@ margin-left: -21px;
 													<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
-																<label style="font-size: 17px; color: #07689f">
+																<label style="font-size: 13px;; color: #07689f">
 																	Objective <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -714,15 +787,17 @@ margin-left: -21px;
 									
 													<div class="col-md-6">
 														<div class="row">
-															<div class="col-md-2">
-																<label style="font-size: 17px; color: #07689f;">
+															<label style="font-size: 13px;; color: #07689f;">
 																	Description <span class="mandatory" style="color: red;">*</span>
 																</label>
-															</div>
-															<div class="col-md-10" style="">
-																<div class="form-group">
-																	<input type="text" name="Description" class="form-control" id="DescriptionAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters" style="line-height: 3rem !important">
-																</div>
+															<div class="col-md-12" style="">
+														
+																	<!-- <input type="text" name="Description" class="form-control" id="DescriptionAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters" style="line-height: 3rem !important"> -->
+																
+														<div id="descriptioneditor" class="center">
+														</div>
+													<textarea name="Description"  id="DescriptionAdd" style="display: none;"></textarea>
+																
 															</div>
 														</div>
 													</div>	
@@ -732,7 +807,7 @@ margin-left: -21px;
 													<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
-																<label style="font-size: 17px;color: #07689f;width: 120%;">
+																<label style="font-size: 13px;;color: #07689f;width: 120%;">
 																		Methodology <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -755,7 +830,7 @@ margin-left: -21px;
 													<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
-																<label style="font-size: 17px; color: #07689f;">
+																<label style="font-size: 13px;; color: #07689f;">
 																	Test-Setup <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -780,7 +855,7 @@ margin-left: -21px;
 														<div class="row">
 															<div class="col-md-2">
 																<label
-																	style="font-size: 17px; color: #07689f;">
+																	style="font-size: 13px;; color: #07689f;">
 																	Constraints <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -793,7 +868,7 @@ margin-left: -21px;
 													<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
-																<label style="font-size: 17px;color: #07689f;">
+																<label style="font-size: 13px;;color: #07689f;">
 																	Est Time <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -808,7 +883,7 @@ margin-left: -21px;
 													<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
-																<label style="font-size: 17px;color: #07689f;">
+																<label style="font-size: 13px;;color: #07689f;">
 																	Iterations <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -821,7 +896,7 @@ margin-left: -21px;
 													<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
-																<label style="font-size: 17px;color: #07689f;">
+																<label style="font-size: 13px;;color: #07689f;">
 																	Schedule <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -836,7 +911,7 @@ margin-left: -21px;
 													<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
-																<label style="font-size: 17px; color: #07689f;">
+																<label style="font-size: 13px;; color: #07689f;">
 																	Criteria <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -849,7 +924,7 @@ margin-left: -21px;
 													<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
-																<label style="font-size: 17px;color: #07689f;">
+																<label style="font-size: 13px;;color: #07689f;">
 																	Stage <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -872,45 +947,47 @@ margin-left: -21px;
 												
 												<div class="form-group row">
 													<div class="col-md-6">
-														<label style="font-size: 17px; color: #07689f">
+														<label style="font-size: 13px;; color: #07689f">
 															Pre Conditions <span class="mandatory" style="color: red;">*</span>
 														</label>
 														
 														<div id="EditorPreConditions" class="center">
-															<textarea name="PreConditions"  id="PreConditionsAdd" ></textarea>
 														</div>
-														
+													<textarea name="PreConditions"  id="PreConditionsAdd" style="display: none;"></textarea>
 													</div>
 													
 													<div class="col-md-6" id="textarea" style="">
-														<label style="font-size: 17px; color: #07689f">
+														<label style="font-size: 13px;; color: #07689f">
 															Post Conditions <span class="mandatory" style="color: red;">*</span>
 														</label>
 														<div id="EditorPostConditions" class="center">
-															<textarea name="PostConditions"  id="PostConditionsAdd" ></textarea>
 														</div>
+													<textarea name="PostConditions"  id="PostConditionsAdd" style="display: none;"></textarea>
+														
 													</div>
 												</div>
 												
 												<div class="form-group row">
 													<div class="col-md-6">
-														<label style="font-size: 17px;color: #07689f;">
+														<label style="font-size: 13px;;color: #07689f;">
 															Safety Requirements <span class="mandatory" style="color: red;">*</span>
 														</label>
 
 														<div id="EditorSafetyReq" class="center">
-															<textarea name="SafetyReq"  id="SafetyReqAdd" ></textarea>
+															
 														</div>
+														<textarea name="SafetyReq"  id="SafetyReqAdd" style="display: none;"></textarea>
 													</div>	
 													
 													<div class="col-md-6">
-														<label style="font-size: 17px;color: #07689f;">
+														<label style="font-size: 13px;;color: #07689f;">
 															Personnel Resources <span class="mandatory" style="color: red;">*</span>
 														</label>
 															
 														<div id="EditorPersonnelResources" class="center">
-															<textarea name="PersonnelResources"  id="PersonnelResourcesAdd" ></textarea>
+															
 														</div>
+														<textarea name="PersonnelResources"  id="PersonnelResourcesAdd" style="display: none;"></textarea>
 													</div>											
 												</div>	
 												
@@ -919,7 +996,7 @@ margin-left: -21px;
 														<div class="row">
 															<div class="col-md-2">
 																<label
-																	style="font-size: 17px;color: #07689f;">
+																	style="font-size: 13px;;color: #07689f;">
 																	Remarks <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
@@ -935,6 +1012,9 @@ margin-left: -21px;
 												<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
 												<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 												<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">	 
+												<input type="hidden" name="MainId" id="mainId" value="">	 
+												<input type="hidden" name="parentid" id="parentid" value="">	 
+												<input type="hidden" name="testName" id="testName" value="">	 
 												<div class="form-group" align="center" style="margin-top: 3%;">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 													<button type="submit" class="btn btn-primary btn-sm submit" id="add" name="action" value="Add" onclick="return confirm('Are You Sure to Submit?');">SUBMIT</button>
@@ -956,7 +1036,7 @@ margin-left: -21px;
 														<div class="col-md-12">
 															<div class="row">
 											    				<div class="col-md-1">
-											       					 <label style="font-size: 17px;  color: #07689f">Spec Id <span class="mandatory" style="color: red;">*</span></label>
+											       					 <label style="font-size: 13px;;  color: #07689f">Spec Id <span class="mandatory" style="color: red;">*</span></label>
 											   					</div>
 											    			
 											    					<div class="col-md-4">
@@ -974,7 +1054,7 @@ margin-left: -21px;
 											    			
 											    				
 											    				<div class="col-md-2">
-											        				<label style="font-size: 17px; margin-top: 7%;  color: #07689f">Test Name <span class="mandatory" style="color: red;">*</span></label>
+											        				<label style="font-size: 13px;; margin-top: 7%;  color: #07689f">Test Name <span class="mandatory" style="color: red;">*</span></label>
 											    				</div>
 													   			 <div class="col-md-4">
 													        		<input type="text" name="name" class="form-control" id="EName" maxlength="255" required="required" placeholder="Maximum 250 Characters" >
@@ -987,7 +1067,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px;color: #07689f">
+																	<label style="font-size: 13px;;color: #07689f">
 																		Objective <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1000,7 +1080,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px;color: #07689f;">
+																	<label style="font-size: 13px;;color: #07689f;">
 																		Description <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1017,7 +1097,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px;color: #07689f;width: 120%;">
+																	<label style="font-size: 13px;;color: #07689f;width: 120%;">
 																		Methodology <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1042,7 +1122,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px;color: #07689f;">
+																	<label style="font-size: 13px;;color: #07689f;">
 																		Test-Setup <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1067,7 +1147,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px;color: #07689f;">
+																	<label style="font-size: 13px;;color: #07689f;">
 																		Constraints <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1080,7 +1160,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px;color: #07689f;">
+																	<label style="font-size: 13px;;color: #07689f;">
 																		Est Time <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1095,7 +1175,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label	style="font-size: 17px;color: #07689f;">
+																	<label	style="font-size: 13px;;color: #07689f;">
 																		Iterations <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1109,7 +1189,7 @@ margin-left: -21px;
 															<div class="row">
 																<div class="col-md-2">
 																	<label
-																		style="font-size: 17px; color: #07689f;">
+																		style="font-size: 13px;; color: #07689f;">
 																			Schedule <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1124,7 +1204,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px;color: #07689f;">
+																	<label style="font-size: 13px;;color: #07689f;">
 																		 Criteria <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1137,7 +1217,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px; color: #07689f;">
+																	<label style="font-size: 13px;; color: #07689f;">
 																		Stage <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1154,7 +1234,7 @@ margin-left: -21px;
 														
 													<div class="form-group row">
 														<div class="col-md-6">
-															<label style="margin: 0px; font-size: 17px; color: #07689f">
+															<label style="margin: 0px; font-size: 13px;; color: #07689f">
 																Pre Conditions <span class="mandatory" style="color: red;">*</span>
 															</label>
 															<div id="EditorPreConditionsForEdit" class="center">
@@ -1163,7 +1243,7 @@ margin-left: -21px;
 														</div>
 														
 														<div class="col-md-6">
-															<label style="margin: 0px; font-size: 17px; color: #07689f">
+															<label style="margin: 0px; font-size: 13px;; color: #07689f">
 																Post Conditions <span class="mandatory" style="color: red;">*</span>
 															</label>
 															<div id="EditorPostConditionsForEdit" class="center">
@@ -1174,7 +1254,7 @@ margin-left: -21px;
 														
 													<div class="form-group row">
 														<div class="col-md-6">
-															<label style="font-size: 17px;color: #07689f;">
+															<label style="font-size: 13px;;color: #07689f;">
 																Safety Requirements <span class="mandatory" style="color: red;">*</span>
 															</label>
 															<div id="EditorSafetyReqforEdit" class="center">
@@ -1183,7 +1263,7 @@ margin-left: -21px;
 														</div>
 														
 														<div class="col-md-6">
-															<label 	style="font-size: 17px;color: #07689f;">
+															<label 	style="font-size: 13px;;color: #07689f;">
 																Personnel Resources <span class="mandatory" style="color: red;">*</span>
 															</label>
 															<div id="EditorPersonnelResourcesForEdit" class="center">
@@ -1196,7 +1276,7 @@ margin-left: -21px;
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
-																	<label style="font-size: 17px;color: #07689f;">
+																	<label style="font-size: 13px;;color: #07689f;">
 																		Remarks <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
@@ -1291,8 +1371,83 @@ margin-left: -21px;
 	</div>
 	<!-- No data available Model -->
 
+
+			<div class="modal fade" id="exampleModalHeading" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width:150%;margin-left: -35%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">TEST PLANS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+     <div align="center">
+     <form action="TestPlanSelectSubmit.htm" method="post">
+     <%List<Object[]>testListsub= new ArrayList<>();
+     if(testPlanMainList!=null && !testPlanMainList.isEmpty()){
+    	 testListsub=testPlanMainList.stream().filter(i->i[2]!=null && i[2].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+     }
+     %>
+     <div class="row">
+     <%for(Object[]obj:testListsub) {%>
+     <div class="col-md-4">
+     		       		<input name="testValue" type="checkbox" value="<%=obj[0].toString()+"/"+obj[1].toString()+"/"+obj[3].toString()%>">
+						       		<input name="SpecNames" type="hidden" value="<%=obj[1].toString()%>">
+						       		<span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1].toString() %></span><br>
+     </div>
+     <%} %>
+     
+     </div>
+   
+     <div align="center" class="mt-2 mb-2">
+     <button type="submit" class="btn btn-sm submit" onclick="setValue()">SUBMIT</button>
+     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	<input type="hidden" name="projectId" value="<%=projectId%>">
+	<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+		<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+			<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">	
+     </div>
+       </form>
+     </div>
+   
+     <div align="center">
+       <form action="MainTestPlanAdd.htm" method="post">
+     <table class="table">
+      <thead>
+        <tr>
+            <th>TestPlan Code</th>
+            <th>TestPlan Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="testPlanTable">
+		<tr>
+		<td style="width:30%;"><input type="text" name="testplanCode" class="form-control" maxlength="5" required placeholder="Max 5 Characters"> </td>
+		<td><input type="text" name="testplanName" class="form-control" maxlength="250" required placeholder="Max 250 Characters"></td>
+		<td><button type="button" class="btn btn-sm" id="plusbutton"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+		</tr>
+		</tbody>     
+     </table>
+     
+     <div align="center">
+     <button type="submit" class="btn btn-sm submit">ADD NEW</button>
+     </div>
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	<input type="hidden" name="projectId" value="<%=projectId%>">
+	<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+		<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
+			<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>">	
+      </form>
+     </div>
+    
+      </div>
+  
+    </div>
+  </div>
+</div>
 <script>
-	function showdata(TestId)
+	/* function showdata(TestId)
 		{
 			if(TestId!=null && TestId=='Add')
 				{
@@ -1313,16 +1468,22 @@ margin-left: -21px;
 					$('#viewcard').show();
 					$("#EditTestDetails").hide();
 				}
+		} */
+		
+		function showdata(a,b,c){
+			$("#AddTestDetails").show();
+			$('#viewcard').hide();
+			$("#EditTestDetails").hide();
+			$('#mainId').val(a);
+			$('#parentid').val(b);
+			$('#testName').val(c);
+			$('#TestName').html("Test Type: "+c);
+			 $('.viewbtn').css("background","#055C9D");
+				 $('#Test'+b).css("background","green"); 
 		}
 	</script>
-		<script>
-$(document).ready(function() {
-	   $('#project').on('change', function() {
-		   var temp=$(this).children("option:selected").val();
-		   $('#submit').click(); 
-	   });
-	});
-	 <%if(TestDetailsList!=null){%>
+<script>
+<%if(TestDetailsList!=null){%>
 $(document).ajaxComplete(function(){
 	$('#main').css("display", "inline-block");
 	$('#main').css("margin-top", "0.5%");
@@ -1410,104 +1571,114 @@ function editCheck(event, frmid) {
     }
 }
 
-<%if((TestDetailsList!=null) &&(!TestDetailsList.isEmpty())){ %>
+<%if((TestDetailsList!=null) &&!TestDetailsList.isEmpty() && TestReqId!=null ){ %>
  $(document).ready(function(){
-	 TestDetailsShow('<%=TestReqId%>');
+	 <%-- TestDetailsShow('<%=TestReqId%>'); --%>
+	 var TestReqId='<%=TestReqId%>';
+	 console.log("hii"+TestReqId);
+	 $('#Test'+TestReqId).click();
 });
-	 function TestDetailsShow(TestReqId)
-	 {
-		 $('.viewbtn').css("background","#055C9D");
-			/* $('#Test'+TestReqId).css("background","green"); */
-			var value=TestReqId;
-			$.ajax({
-				url:'TestDetailsJson.htm',
-				datatype:'json',
-				data:{
-					testId:value
-				},
-			success:function(result){
-				 var ajaxresult=JSON.parse(result); 
-				 console.log(ajaxresult);
-				 var jsObjectList = JSON.parse('<%= jsonArray %>');
-				 
-				 var jsObjectTestToolList =JSON.parse('<%= jsonArrayTestTool %>');
-				 
-				 var s="";
-				 console.log("AJax call");
-				$('#specidview').html(ajaxresult[19]);
-				$('#name').html(ajaxresult[2]); 
-				$('#Objective').html(ajaxresult[3]);
-				$('#Description').html(ajaxresult[4]);
-		 		$('#PreConditionsView').html(ajaxresult[5]);
-				$('#PostConditionsView').html(ajaxresult[6]);
-				$('#Constraints').html(ajaxresult[7]);
-				$('#SafetyRequirements').html(ajaxresult[8]);
-				$('#Methodology').html(ajaxresult[9]);
-				$('#ToolsSetup').html(ajaxresult[10]);
-				$('#PersonnelResourcesView').html(ajaxresult[11]);
-				$('#EstimatedTimeIteration').html(ajaxresult[12]);
-				$('#reqName').html(ajaxresult[1]);	 	 
-				$('#Iterations').html(ajaxresult[13]);
-				$('#Schedule').html(ajaxresult[14]);
-				$('#PassFailCriteria').html(ajaxresult[15]);
-				$('#Remarks').html(ajaxresult[16]);
-				//$('#ToolsSetupname').html(ajaxresult[23]);
-				var tempArray=ajaxresult[21].split(",");
-				var tempsubArray="";
-					for(var i=0;i<jsObjectList.length;i++){
-						if(tempArray.includes(jsObjectList[i][0]+"")){
-							tempsubArray=tempsubArray+jsObjectList[i][3]+",&nbsp;&nbsp;";
-						}
-					}
-					tempsubArray=tempsubArray.substring(0,tempsubArray.length-1);
-					console.log(tempsubArray);
-				$('#StageApplicableView').html(tempsubArray.toString());
-				var tempArrayToolsSetup=ajaxresult[10].split(",");
-				
-				var tempsubArrayToolsSetup="";
-					for(var i=0;i<jsObjectTestToolList.length;i++){
-						if(tempArrayToolsSetup.includes(jsObjectTestToolList[i][0]+"")){
-							tempsubArrayToolsSetup=tempsubArrayToolsSetup+jsObjectTestToolList[i][1]+",&nbsp;&nbsp;";
-						}
-					}
-					tempsubArrayToolsSetup=tempsubArrayToolsSetup.substring(0,tempsubArray.length-1);
-					console.log(tempsubArrayToolsSetup);
-				$('#ToolsSetupView').html(tempsubArrayToolsSetup.toString());
-				
-				
-				
-				/*  fsfsd    remove try*/
-				/* var tempPreArray = ajaxresult[5].split("#");
-var tempPreSubArray = [];
+<% }%>
+var jsList = [];
 
-for (var j = 0; j < jsObjectList.length; j++) {
-    var currentItem = jsObjectList[j];
-    var currentItemData = currentItem.by.split("#"); // Assuming "by" holds the data
-
-    for (var k = 0; k < currentItemData.length; k++) {
-        // Example condition: Check if the current data contains #
-        if (currentItemData[k].includes("#")) {
-            var splitData = currentItemData[k].split("#");
-            tempPreSubArray.push(splitData);
-            console.log(tempPreSubArray);
+<%
+    if (specificationList != null) {
+        for (Object[] spec : specificationList) {
+            // Assuming spec[0] and spec[1] are the values you want
+            if (spec.length > 1) { // Ensure there are at least 2 elements
+%>
+            jsList.push([ "<%= spec[0] %>", "<%= spec[1] %>" ]);
+<%
+            }
         }
     }
-} */
+%>
+function showEditData(TestReqId)
+{
+	 $('.viewbtn').css("background","#055C9D");
+	 $('#Test'+TestReqId).css("background","green");
+		var value=TestReqId;
+		$.ajax({
+			url:'TestDetailsJson.htm',
+			datatype:'json',
+			data:{
+				testId:value
+			},
+		success:function(result){
+			 var ajaxresult=JSON.parse(result); 
+			 console.log(ajaxresult);
+			 var jsObjectList = JSON.parse('<%= jsonArray %>');
+			 
+			 var jsObjectTestToolList =JSON.parse('<%= jsonArrayTestTool %>');
+			 
+			 var s="";
+			 var specid = [];
+			 if(ajaxresult[19]!=null){
+				 specid=ajaxresult[19].split(",");
+			 }
+			 console.log(specid);
+			 var specName="";
+			 for (var i=0;i<specid.length;i++){
+				 for(var j=0;j<jsList.length;j++){
+					 if((jsList[j][0]+"")===(specid[i]+"")){
+						 specName = specName+ jsList[i][1]+"<br>"
+					 }
+				 }
+			 }
+			 
+			$('#specidview').html(specName);
+			$('#name').html(ajaxresult[2]); 
+			$('#Objective').html(ajaxresult[3]);
+			$('#Description').html(ajaxresult[4]);
+	 		$('#PreConditionsView').html(ajaxresult[5]);
+			$('#PostConditionsView').html(ajaxresult[6]);
+			$('#Constraints').html(ajaxresult[7]);
+			$('#SafetyRequirements').html(ajaxresult[8]);
+			$('#Methodology').html(ajaxresult[9]);
+			$('#ToolsSetup').html(ajaxresult[10]);
+			$('#PersonnelResourcesView').html(ajaxresult[11]);
+			$('#EstimatedTimeIteration').html(ajaxresult[12]);
+			$('#reqName').html(ajaxresult[1]);	 	 
+			$('#Iterations').html(ajaxresult[13]);
+			$('#Schedule').html(ajaxresult[14]);
+			$('#PassFailCriteria').html(ajaxresult[15]);
+			$('#Remarks').html(ajaxresult[16]);
+			//$('#ToolsSetupname').html(ajaxresult[23]);
+			var tempArray=ajaxresult[21].split(",");
+			var tempsubArray="";
+				for(var i=0;i<jsObjectList.length;i++){
+					if(tempArray.includes(jsObjectList[i][0]+"")){
+						tempsubArray=tempsubArray+jsObjectList[i][3]+",&nbsp;&nbsp;";
+					}
+				}
+				tempsubArray=tempsubArray.substring(0,tempsubArray.length-1);
+				console.log(tempsubArray);
+			$('#StageApplicableView').html(tempsubArray.toString());
+			var tempArrayToolsSetup=ajaxresult[10].split(",");
+			
+			var tempsubArrayToolsSetup="";
+				for(var i=0;i<jsObjectTestToolList.length;i++){
+					if(tempArrayToolsSetup.includes(jsObjectTestToolList[i][0]+"")){
+						tempsubArrayToolsSetup=tempsubArrayToolsSetup+jsObjectTestToolList[i][1]+", ";
+					}
+				}
+				tempsubArrayToolsSetup=tempsubArrayToolsSetup.substring(0,tempsubArray.length-1);
+			$('#ToolsSetupView').html(tempsubArrayToolsSetup.toString());
+			
+			
+			
 
-// Now tempPreSubArray contains the values split by #
-
-				
-				
-				
-				/*  truy*/
-				$('#editreq').html('<button type="button"  class="btn btn-sm  btn-warning edit " onclick="showdata('+ajaxresult[0]+')"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="" id="reqbtns" >EDIT</button>');
-				$("#AddTestDetails").hide();
-				$('#viewcard').show();
-				$("#EditTestDetails").hide();
-			}
-	 });
-	 }
-<% }%>
+			
+			
+			
+			/*  truy*/
+/* 			$('#editreq').html('<button type="button"  class="btn btn-sm  btn-warning edit " onclick="showdata('+ajaxresult[0]+')"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="" id="reqbtns" >EDIT</button>');
+ */			$("#AddTestDetails").hide();
+			$('#viewcard').show();
+			$("#EditTestDetails").hide();
+		}
+});
+}
 function edit(value){
 	/* $('#exampleModalLongedit').modal('show'); */
 	$.ajax({
@@ -1664,20 +1835,6 @@ $(function () {
 		  }
   }
   </script>
-  
-  <script>
-  $(document).ready(function(){
-	  <%if(TestDetailsList!=null && TestDetailsList.size()>0) {%>
-		$('#AddTestDetails').hide();
-		$('#viewcard').show();
-		$("#EditTestDetails").hide();
-	<%} else{%>
-		$('#AddTestDetails').show();
-		$('#viewcard').hide();
-		$("#EditTestDetails").hide();
-	<%} %>
-  });
-  </script>
 <script>
 var editor_config = {
 		toolbar : [
@@ -1759,30 +1916,109 @@ var editor_config = {
 			filebrowserUploadUrl : '/path/to/upload-handler'
 		}, ]
 	};
-CKEDITOR.replace('EditorPreConditions', editor_config);
+/* CKEDITOR.replace('EditorPreConditions', editor_config); */
+	$(document).ready(function() {
+		 $('#EditorPreConditions').summernote({
+			  width: 600,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#EditorPreConditions').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+	    
+		 $('#EditorPostConditions').summernote({
+			  width: 600,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#EditorPostConditions').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+		 $('#EditorSafetyReq').summernote({
+			  width: 600,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#EditorSafetyReq').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+		 $('#EditorPersonnelResources').summernote({
+			  width: 600,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#EditorPersonnelResources').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+		 $('#descriptioneditor').summernote({
+			  width: 600,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#descriptioneditor').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+	    
+	});
 $('#myform1').submit(function() {
-	 var data =CKEDITOR.instances['EditorPreConditions'].getData();
+	 var data =$('#EditorPreConditions').summernote('code');
 	 console.log(data);
 	 $('#PreConditionsAdd').val(data);
 	 });
 
-	CKEDITOR.replace('EditorPostConditions', editor_config);
+/* 	CKEDITOR.replace('EditorPostConditions', editor_config); */
 	 $('#myform1').submit(function() {
-		 var data =CKEDITOR.instances['EditorPostConditions'].getData();
+		  var data =$('#EditorPostConditions').summernote('code');;
 		 console.log(data);
 		 $('#PostConditionsAdd').val(data);
 		 });
-	 CKEDITOR.replace('EditorSafetyReq', editor_config);
+	/*  CKEDITOR.replace('EditorSafetyReq', editor_config); */
 	 $('#myform1').submit(function() {
-		 var data =CKEDITOR.instances['EditorSafetyReq'].getData();
+		 var data =$('#EditorSafetyReq').summernote('code');;
 		 console.log(data);
 		 $('#SafetyReqAdd').val(data);
 		 });
-	 CKEDITOR.replace('EditorPersonnelResources', editor_config);
+	/*  CKEDITOR.replace('EditorPersonnelResources', editor_config); */
 	 $('#myform1').submit(function() {
-		 var data =CKEDITOR.instances['EditorPersonnelResources'].getData();
+		 var data =$('#EditorPersonnelResources').summernote('code');
 		 console.log(data);
 		 $('#PersonnelResourcesAdd').val(data);
+		 });
+	 $('#myform1').submit(function() {
+		 var data =$('#descriptioneditor').summernote('code');
+		 console.log(data);
+		 $('#DescriptionAdd').val(data);
 		 });
 	 CKEDITOR.replace('EditorPreConditionsForEdit', editor_config);
 	 $('#myform2').submit(function() {
@@ -1814,6 +2050,80 @@ $('#myform1').submit(function() {
 		    document.body.scrollTop = 0; // For Safari
 		    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
 		 	}
+	 
+		function showMoadal(){
+			$('#exampleModalHeading').modal('show');
+		}
+		
+		  $("#plusbutton").click(function() {
+	          var newRow = `
+	              <tr>
+	                  <td><input type="text" name="testplanCode" class="form-control" maxlength="5" required placeholder="Max 5 Characters"></td>
+	                  <td><input type="text" name="testplanName" class="form-control" maxlength="250" required placeholder="Max 250 Characters"></td>
+	                  <td><button type="button" class="btn btn-sm"><i class="fa fa-minus" aria-hidden="true"></i></button></td>
+	              </tr>
+	          `;
+	          $("#testPlanTable").append(newRow);
+
+	          // Attach event handler for the newly added minus button
+	          $("#testPlanTable tr:last-child td:last-child button").click(function() {
+	              $(this).closest("tr").remove();
+	          });
+	      });
+		  <%
+			 if(click!=null ){
+			 %>
+			showMoadal();
+			
+			<%}%> 
+			
+			
+			
+			function setValue(){
+				  var checkedValues = [];
+			        $('input[name="testValue"]:checked').each(function() {
+			            checkedValues.push($(this).val());
+			        });
+			        if(checkedValues.length>0){
+			        	if(confirm('Are you sure to submit?')){
+			        		
+			        	}else{
+			        		event.preventDefault();
+			        		return false;
+			        	}
+			        }else{
+			        	alert("Please select any of the Test Type!");
+			        	event.preventDefault();
+		        		return false;
+			        }
+			 
+			}
+	
+		function deleteTestPlan(a){
+		
+			if(confirm('Are you sure to delete?')){
+			
+			$.ajax({
+			type:'get',
+			url:'deletetestPlan.htm',
+			data:{
+				TestId:a,
+			},
+			datatype:'json',
+			success:function(result){
+				
+				alert("Test PlanId deleted successfully!")
+				
+				window.location.reload();
+			}
+			})
+			}else{
+				event.preventDefault();
+				return false;
+			}
+		
+		}
+	
  </script>
 	
 </body>

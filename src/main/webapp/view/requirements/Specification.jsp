@@ -447,10 +447,10 @@ for(Object[]obj:SpecContentsDetails){
    		
    						<div class="mt-2" align="center">
    						<%if(ConclusionContenId!=null && Conclusion!=null) {%>
-   						<button class="btn btn-sm btn-warning edit mt-2" name="Action" value="update" onclick="confirm ('Are you sure to submit?')">UPDATE </button>
+   						<button class="btn btn-sm btn-warning edit mt-2" name="Action" value="update" onclick="return confirm ('Are you sure to submit?')">UPDATE </button>
    						<input type="hidden" name="ContentId" value="<%=ConclusionContenId%>">
    						<%}else{ %>
-   						  <button class="btn btn-sm btn-success submit mt-2" name="Action" value="Add" onclick="confirm ('Are you sure to submit?')">SUBMIT </button>
+   						  <button class="btn btn-sm btn-success submit mt-2" name="Action" value="Add" onclick="return confirm ('Are you sure to submit?')">SUBMIT </button>
    						
    					<%} %>
    							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
