@@ -94,8 +94,14 @@ public class RODController {
 			String Logintype= (String)ses.getAttribute("LoginType");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String projectId=req.getParameter("projectId");
+			String initiationId=req.getParameter("initiationId");
+			
+			System.out.println("initiationId-----------"+initiationId);
 			String rodNameId=req.getParameter("rodNameId");
-
+			List<Object[]> InitiatedProjectDetailsList=committeeservice.InitiatedProjectDetailsList();
+			
+			String projectType=req.getParameter("projectType")!=null?req.getParameter("projectType"):"P";
+			
 			List<Object[]> projectdetailslist=committeeservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 
 			if(projectdetailslist.size()==0) 
@@ -109,11 +115,26 @@ public class RODController {
 				rodNameId="all";
 			}			
 
-
+			if(projectType.equalsIgnoreCase("P")){
 			if(projectId==null || projectId.equals("null"))
 			{
 				projectId=projectdetailslist.get(0)[0].toString();
 			}
+			initiationId="0";
+			req.setAttribute("ProjectsList",projectdetailslist);
+		}else if(projectType.equalsIgnoreCase("I")) {
+			projectId="0";
+			if(initiationId==null || initiationId.equals("null"))
+			{
+				initiationId=InitiatedProjectDetailsList.get(0)[0].toString();
+			}
+			req.setAttribute("ProjectsList",InitiatedProjectDetailsList);
+		}else {
+			projectId="0";
+			initiationId="0";
+		}
+			
+			
 			if(rodNameId==null || rodNameId.equals("all"))
 			{				
 				req.setAttribute("RODProjectschedulelist", service.rodProjectScheduleListAll(projectId));
@@ -128,9 +149,11 @@ public class RODController {
 
 
 			req.setAttribute("projectId",projectId);
+			req.setAttribute("initiationId",initiationId);
 			req.setAttribute("rodNameId",rodNameId);
+			req.setAttribute("projectType",projectType!=null?projectType:"P");
 			req.setAttribute("Projectdetails",projectdetailslist.get(0));
-			req.setAttribute("ProjectsList",projectdetailslist);
+			
 			req.setAttribute("RODNameslist",rodNameslist);
 
 			return "rod/RODProjectSchedule";
@@ -327,12 +350,14 @@ public class RODController {
 			int committeecons=1;
 			Object[] rodscheduleeditdata=service.RODScheduleEditData(CommitteeScheduleId);
 			String projectid= rodscheduleeditdata[9].toString();
-
+			String initiationid= rodscheduleeditdata[17].toString();
 			if(Integer.parseInt(projectid)>0)
 			{
 				req.setAttribute("projectdetails", committeeservice.projectdetails(projectid));
 			}
-			
+			if(Integer.parseInt(initiationid)>0) {
+				req.setAttribute("initiationdetails", committeeservice.Initiationdetails(initiationid));
+			}
 
 //			if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I")) 
 //			{
@@ -805,6 +830,7 @@ public class RODController {
 			
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
+			req.setAttribute("flagforView","A");
 			
 			
 			

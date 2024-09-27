@@ -45,7 +45,11 @@
 .nav-link {
 	font-weight: 200;
 }
-
+.note-editable li
+{
+list-style-type: inherit;
+text-align: left;
+}
 /* Multi level dropdown */
 @media ( min-width : 992px) {
 	.dropdown-menu .dropdown-toggle:after {

@@ -26,7 +26,7 @@ public class RODDaoImpl implements RODDao{
 	@PersistenceContext
 	EntityManager manager;
 	
-	private static final String RODPROJECTSCHEDULELISTALL = "SELECT a.ScheduleId, a.RODNameId,a.MeetingId,a.ScheduleDate,a.ScheduleStartTime,a.ProjectId,b.RODName,a.ScheduleFlag,b.RODShortName FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.IsActive=1 AND a.ProjectId=:ProjectId ORDER BY a.ScheduleDate";
+	private static final String RODPROJECTSCHEDULELISTALL = "SELECT a.ScheduleId, a.RODNameId,a.MeetingId,a.ScheduleDate,a.ScheduleStartTime,a.ProjectId,b.RODName,a.ScheduleFlag,b.RODShortName,a.initiationid FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.IsActive=1 AND a.ProjectId=:ProjectId ORDER BY a.ScheduleDate";
 	@Override
 	public List<Object[]> rodProjectScheduleListAll(String projectId) throws Exception
 	{
@@ -62,7 +62,7 @@ public class RODDaoImpl implements RODDao{
 		}
 	}
 	
-	private static final String RODPROJECTSCHEDULELISTALL2 = "SELECT a.ScheduleId, a.RODNameId,a.MeetingId,a.ScheduleDate,a.ScheduleStartTime,a.ProjectId,b.RODName,a.ScheduleFlag,b.RODShortName FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.ProjectId=:ProjectId AND a.RODNameId=:RODNameId AND a.IsActive=1 ORDER BY a.ScheduleDate";
+	private static final String RODPROJECTSCHEDULELISTALL2 = "SELECT a.ScheduleId, a.RODNameId,a.MeetingId,a.ScheduleDate,a.ScheduleStartTime,a.ProjectId,b.RODName,a.ScheduleFlag,b.RODShortName,a.initiationid FROM committee_schedule a,pfms_rod_master b WHERE a.RODNameId=b.RODNameId AND a.ProjectId=:ProjectId AND a.RODNameId=:RODNameId AND a.IsActive=1 ORDER BY a.ScheduleDate";
 	@Override
 	public List<Object[]> rodProjectScheduleListAll(String projectId, String rodNameId) throws Exception
 	{

@@ -36,6 +36,8 @@ import com.vts.pfms.project.model.PfmsInitiationAuthorityFile;
 import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
+import com.vts.pfms.project.model.PfmsInitiationMilestone;
+import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsOtherReq;
@@ -367,4 +369,11 @@ public interface ProjectService {
 	
 	public long projectScheduleAllPeriodEditSubmit(String initiationId) throws Exception;
 	public Object[] getParaDetails(String paraid)throws Exception;
+	
+	
+	public long addInitiationMilestone(PfmsInitiationMilestone ms)throws Exception;
+	public List<Object[]> getInitiatedMilestoneDetails(String initiationid)throws Exception;
+	public PfmsInitiationMilestone getInitiationMilestone(long initiationMilestoneId)throws Exception;
+	public long editInitiationMilestone(PfmsInitiationMilestone ms)throws Exception;
+	public long addInitiationMilestoneRev(PfmsInitiationMilestoneRev entityRev)throws Exception;
 }

@@ -65,6 +65,8 @@ import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
+import com.vts.pfms.project.model.PfmsInitiationMilestone;
+import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.model.PfmsInitiationReqIntro;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
@@ -909,8 +911,10 @@ public class ProjectServiceImpl implements ProjectService {
 		String LabCode = pfmsinitiationattachmentfiledto.getLabCode();
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
-
-		String Path = LabCode + "\\ProjectInitiation\\";
+//		String Path = LabCode + "\\ProjectInitiation\\";
+		
+		Path path = Paths.get(LabCode, "ProjectInitiation");
+		
 		
 		Path initiationPath = Paths.get(uploadpath,LabCode,"ProjectInitiation");
 
@@ -923,7 +927,7 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiationattachment.setIsActive(1);
 
 		PfmsInitiationAttachmentFile pfmsinitiationattachmentfile = new PfmsInitiationAttachmentFile();
-		pfmsinitiationattachmentfile.setFilePath(Path);
+		pfmsinitiationattachmentfile.setFilePath(path.toString());
 		pfmsinitiationattachmentfile.setFileName("Initiation" + timestampstr + "."
 				+ FilenameUtils.getExtension(pfmsinitiationattachmentfiledto.getFileAttach().getOriginalFilename()));
 		saveFile1(initiationPath, pfmsinitiationattachmentfile.getFileName(),
@@ -2034,7 +2038,8 @@ public class ProjectServiceImpl implements ProjectService {
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-		String Path = LabCode + "\\ProjectReference\\";
+//		String Path = LabCode + "\\ProjectReference\\";
+		Path path = Paths.get(LabCode, "ProjectReference");
 		Path authPath = Paths.get(uploadpath,LabCode,"ProjectReference");
 		
 		PfmsInitiationAuthority pfmsauthority = new PfmsInitiationAuthority();
@@ -2047,7 +2052,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 		PfmsInitiationAuthorityFile pfmsinitiationauthorityfile = new PfmsInitiationAuthorityFile();
 
-		pfmsinitiationauthorityfile.setFile(Path);
+		pfmsinitiationauthorityfile.setFile(path.toString());
 		pfmsinitiationauthorityfile.setAttachmentName("Reference" + timestampstr + "."
 				+ pfmsinitiationauthorityfiledto.getAttachFile().getOriginalFilename().split("\\.")[1]);
 		saveFile1(authPath, pfmsinitiationauthorityfile.getAttachmentName(),
@@ -2231,8 +2236,8 @@ public class ProjectServiceImpl implements ProjectService {
 		logger.info(new Date() + "Inside SERVICE ProjectMastetAttachAdd ");
 
 		String projectcode = dao.ProjectData(dto.getProjectId())[1].toString();
-		String path = dto.getLabCode() + "\\ProjectMasterFiles\\" + projectcode;
-		
+//		String path = dto.getLabCode() + "\\ProjectMasterFiles\\" + projectcode;
+		Path path = Paths.get(dto.getLabCode(), "ProjectMasterFiles", projectcode);
 		Path projectAttachPath = Paths.get(uploadpath,dto.getLabCode(),"ProjectMasterFiles",projectcode);
 
 		//String FullPath = uploadpath + path;
@@ -2286,7 +2291,7 @@ public class ProjectServiceImpl implements ProjectService {
 					}
 				}
 
-				modal.setPath(path);
+				modal.setPath(path.toString());
 
 				saveFile1(projectAttachPath, modal.getOriginalFileName(), dto.getFiles()[i]);
 				ret = dao.ProjectMasterAttachAdd(modal);
@@ -3502,11 +3507,12 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		
 		@Override
 		public long uploadProductTree(SpecifcationProductTree s, String LabCode) throws Exception {
-			String Path = LabCode + "\\SpecificationProducTree\\";
+			//String Path = LabCode + "\\SpecificationProducTree\\";
+			Path path = Paths.get(LabCode, "SpecificationProducTree");
 			Path treePath = Paths.get(uploadpath,LabCode,"SpecificationProducTree");
 			long count=0l;
 			if(!s.getFile().isEmpty()) {
-				s.setFilesPath(Path);
+				s.setFilesPath(path.toString());
 				saveFile1(treePath, s.getFile().getOriginalFilename(), s.getFile());
 				s.setIsactive(1);
 				s.setImageName(s.getFile().getOriginalFilename());
@@ -3545,5 +3551,28 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 			return dao.getParaDetails(paraid);
 		}
 		
+		@Override
+		public long addInitiationMilestone(PfmsInitiationMilestone ms) throws Exception {
+			return dao.addInitiationMilestone(ms);
+		}
 		
+		@Override
+		public List<Object[]> getInitiatedMilestoneDetails(String initiationid) throws Exception {
+			return dao.getInitiatedMilestoneDetails(initiationid);
+		}
+		
+		@Override
+		public PfmsInitiationMilestone getInitiationMilestone(long initiationMilestoneId) throws Exception {
+			return dao.getInitiationMilestone(initiationMilestoneId);
+		}
+		
+		@Override
+		public long editInitiationMilestone(PfmsInitiationMilestone ms) throws Exception {
+			return dao.editInitiationMilestone(ms);
+		}
+		
+		@Override
+		public long addInitiationMilestoneRev(PfmsInitiationMilestoneRev entityRev) throws Exception {
+			return dao.addInitiationMilestoneRev(entityRev);
+		}
 }

@@ -113,7 +113,9 @@ Object[] rodMasterDetails =(Object[])request.getAttribute("RODMasterDetails");
 Object[] Projectdetails=(Object[])request.getAttribute("Projectdetails");
 
 String projectId=(String)request.getAttribute("projectId");
+String initiationId=(String)request.getAttribute("initiationId");
 String rodNameId=(String)request.getAttribute("rodNameId");
+String projectType=(String)request.getAttribute("projectType");
 
 List<String>status= Arrays.asList("MKV","MMR","MMF","MMA","MMS");
 
@@ -129,6 +131,14 @@ if(!Projectschedulelist.isEmpty()){
 	
 	}
 }
+
+ if(projectType.equalsIgnoreCase("N")){
+
+	Projectschedulelist=Projectschedulelist.stream().filter(i->i[9].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+}
+if(projectType.equalsIgnoreCase("I")){
+	Projectschedulelist=Projectschedulelist.stream().filter(i->i[9].toString().equalsIgnoreCase(initiationId)).collect(Collectors.toList());
+} 
 
 SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -155,6 +165,21 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 	</div>
 <%} %>
 
+<form method="post" action="RecordofDiscussion.htm" id="myformtype" style="">
+<div class="row">
+<div class="col-md-1" style="display: flex;justify-content: flex-end;">
+Project Type:
+</div>
+<div class="col-md-2">
+<select class="form-control" id="projectType" name="projectType" onchange="checKProjectType()">
+<option value="P" <%if(projectType!=null && projectType.equalsIgnoreCase("P")) {%> selected<%} %>>Project</option>
+<option value="I" <%if(projectType!=null && projectType.equalsIgnoreCase("I")) {%> selected<%} %>>Pre-Project</option>
+<option value="N" <%if(projectType!=null && projectType.equalsIgnoreCase("N")) {%> selected<%} %>>Non-Project</option>
+</select>
+</div>
+</div>
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">	
@@ -163,6 +188,7 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 					<div class="row" >
 						<div class="col" style="margin-top: -8px;">	
 							<form method="post" action="RecordofDiscussion.htm" id="myform" style="">
+								<input type="hidden" name="projectType" value="<%=projectType%>">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							</form>
 							<form action="AddNewRODName.htm" method="post" id="addNewForm">
@@ -171,7 +197,7 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 							</form>
 							<form action="RODScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" >
 								<input type="hidden" name="divisionId" value="0" /> 
-		                    	<input type="hidden" name="initiationId" value="0" /> 
+		                    	<input type="hidden" name="initiationId" value="<%=initiationId %>" /> 
 		                    	<input type="hidden" name="committeeId" value="0" /> 
 		                    	<input type="hidden" name="projectId" value="<%=projectId %>" /> 
 		                    	<input type="hidden" name="rodNameId" value="<%=rodNameId%>" /> 
@@ -185,16 +211,30 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 										<table>
 								  			<tr>
 								  				<td>
-								  					<label class="control-label">Project : </label>
+								  				<%if(projectType.equalsIgnoreCase("p") || projectType.equalsIgnoreCase("i")) {%>	<label class="control-label">Project : </label><%} %>
 								  				</td>
 								  				<td>
+								  				<%if(projectType.equalsIgnoreCase("p")) {%>
 								  					<select form="myform" class="form-control selectdee" id="projectId" required="required" name="projectId" onchange='submitForm1();' >
 														<% for (Object[] obj : ProjectsList) {
 															String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
 														%>
 															<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
 														<%} %>
+														
 													</select>
+													<%}else if(projectType.equalsIgnoreCase("I")){ %>
+														<select form="myform" class="form-control selectdee" id="initiationId" required="required" name="initiationId" onchange='submitForm1();' >
+														<% for (Object[] obj : ProjectsList) {
+																	 
+														%>
+															<option value="<%=obj[0]%>" <%if(initiationId!=null && initiationId.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %>><%=obj[4]%></option>
+														<%} %>
+														
+													</select>
+													
+													
+													<%} %>
 								  				</td>
 								  				<td>
 								  					<label class="control-label">ROD Name : </label>
@@ -219,13 +259,13 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 													<label class="control-label">ROD Name : </label>	
 												</td>
 												<td>
-								  					<input form="addNewForm" type="text" class="form-control" id="rodName" name="rodName" placeholder="Enter ROD Name" maxlength="2000" required>
+								  					<input form="addNewForm" type="text" class="form-control" id="rodName" name="rodName" placeholder="Enter ROD Name" maxlength="2000" required oninput="preventLeadingSpace(this)">
 								  				</td>
 								  				<td>
 													<label class="control-label">ROD Short Name : </label>	
 												</td>
 								  				<td>
-								  					<input form="addNewForm" type="text" class="form-control" id="rodShortName" name="rodShortName" placeholder="Enter ROD Short Name" maxlength="200" required>
+								  					<input form="addNewForm" type="text" class="form-control" id="rodShortName" name="rodShortName" placeholder="Enter ROD Short Name" maxlength="200" required oninput="preventLeadingSpace(this)">
 								  				</td>
 								  				<td>&nbsp;</td>
 								  				<td>
@@ -411,7 +451,7 @@ $(document).ready(function() {
 
 <script type="text/javascript">
 
-<%if(rodNameId!=null &&  projectId!=null )
+<%if(rodNameId!=null &&  projectId!=null  )
 {%>
 myEvents = [
 	<%	
@@ -439,6 +479,18 @@ $("#calendar").evoCalendar(
 			calendarEvents: myEvents,
 			
 		});
+		
+		function checKProjectType(){
+			$('#myformtype').submit();
+		}
+		
+		
+		function preventLeadingSpace(input) {
+		    // If the value starts with a space, trim it
+		    if (input.value.startsWith(' ')) {
+		        input.value = input.value.trimStart();
+		    }
+		}
 </script>
 </body>
 </html>

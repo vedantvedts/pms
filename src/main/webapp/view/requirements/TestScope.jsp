@@ -13,6 +13,15 @@
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
+
+
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+
+<script src="${SummernoteJs}"></script>
+
+<link href="${SummernoteCss}" rel="stylesheet" />
 <title>PMS</title>
 <style>
 .bs-example {
@@ -230,6 +239,12 @@ font-family: 'Montserrat', sans-serif;
 float: right;
 }
 
+.note-editable
+{
+height: 300px;
+}
+
+
 </style>
 </head>
 <body>
@@ -339,7 +354,7 @@ float: right;
 							<div class="row">
 								<div class="col-md-12 " align="left"
 									style="margin-left: 0px; width: 100%;">
-									<div id="Editor" class="center"></div>
+									<div id="summernote" class="center"></div>
 									<textarea name="Details" style="display: none;"></textarea>
 									<div class="mt-2" align="center" id="detailsSubmit">
 										<span id="EditorDetails"></span> 
@@ -359,9 +374,32 @@ float: right;
 					</div>
 				</form>
 			</div>
+			
+			<script type="text/javascript">
+
+$(document).ready(function() {
+	 $('#summernote').summernote({
+		  width: 900,   //don't use px
+		
+		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 
+
+'Tahoma', 'Times New Roman', 'Verdana'],
+		 
+	      lineHeights: ['0.5']
+	
+	 });
+
+$('#summernote').summernote({
+    
+     tabsize: 5,
+     height: 1000
+   });
+   
+});
+</script>
 
 <script>
-		var editor_config = {
+		/* var editor_config = {
 			toolbar : [
 					{
 						name : 'clipboard',
@@ -478,22 +516,24 @@ float: right;
 				filebrowserUploadUrl : '/path/to/upload-handler'
 			}, ]
 		};
-		CKEDITOR.replace('Editor', editor_config);
+		CKEDITOR.replace('Editor', editor_config); */
 	
 		function showEditor(a){
 			var x=a.toLowerCase();
 			$('#col1').show();
 			$('#col2').hide();
-			$('#editorHeading').html=a;
-			document.getElementById('editorHeading').innerHTML=a;
-			$('#attributes').val(a);
-			var html="";
-			$.ajax({
-				Type:'GET',
-				url:'TestScopeIntroAjax.htm',
-				datatype:'json',
-				data:{
-					testPlanInitiationId:<%=testPlanInitiationId%>
+			$('#editorHeadinging').html = a;
+		document.getElementById('editorHeading').innerHTML = a;
+		$('#attributes').val(a);
+		var html = "";
+		$
+				.ajax({
+					Type : 'GET',
+					url : 'TestScopeIntroAjax.htm',
+					datatype : 'json',
+					data : {
+						testPlanInitiationId :
+<%=testPlanInitiationId%>
 				},
 				success:function(result){
 					var ajaxresult=JSON.parse(result);
@@ -522,7 +562,9 @@ float: right;
 						$('#btn1').show();
 						$('#btn2').hide();
 					}
-					CKEDITOR.instances['Editor'].setData(html);
+					/* CKEDITOR.instances['Editor'].setData(html); */
+					
+				$('#summernote').summernote('code', html);
 				}
 			});
 			
@@ -535,13 +577,15 @@ float: right;
 				      "emptyTable": "Files not Found"
 				    }
 			});
-		
-		  $('#myfrm').submit(function() {
-				 var data =CKEDITOR.instances['Editor'].getData();
-				 console.log(data);
-				 $('textarea[name=Details]').val(data);
-				 });
-		  		$(document).ready(function() {
+
+				 
+				 $('#myfrm').submit(function() {
+					    
+					  var codeee=$('#summernote').summernote('code');
+					  $('textarea[name=Details]').val($('#summernote').summernote('code'));
+				});
+		  
+		  		 $(document).ready(function() {
 		 		var a=<%='"'+attributes+'"'%> 
 				if(a==="Introduction"){
 					showEditor(a);
@@ -553,7 +597,7 @@ float: right;
 					showEditor(a);
 				$('#btnEditor3').click();
 				}
-				});
+				}); 
 	</script>
 </body>
 </html>

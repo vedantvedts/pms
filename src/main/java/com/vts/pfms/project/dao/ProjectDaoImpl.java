@@ -30,6 +30,8 @@ import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.model.InitiationAbbreviations;
+import com.vts.pfms.project.model.PfmsInitiationMilestone;
+import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.model.PfmsApproval;
 import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAppendix;
@@ -4059,6 +4061,60 @@ public class ProjectDaoImpl implements ProjectDao {
 		
 		return (Object[])query.getSingleResult();
 	}
+	@Override
+	public long addInitiationMilestone(PfmsInitiationMilestone ms) throws Exception {
+		try {
+			manager.persist(ms);
+			manager.flush();
+		} catch (Exception e) {
+		   e.printStackTrace();
+		}
+		return ms.getInitiationMilestoneId();
+	}
+	
+	private static final String GETMILESTONEDATA="SELECT InitiationMilestoneId,InitiationId,PDRProbableDate,PDRActualDate,TIECProbableDate,TIECActualDate,CECProbableDate,CECActualDate,CCMProbableDate,CCMActualDate,DMCProbableDate,DMCActualDate,SanctionProbableDate,SanctionActualDate,SetBaseline,Revision FROM pfms_initiation_ms WHERE InitiationId=:initiationid AND IsActive='1'";
+	@Override
+	public List<Object[]> getInitiatedMilestoneDetails(String initiationid) throws Exception {
+		try {
+			
+			Query query =  manager.createNativeQuery(GETMILESTONEDATA);
+			query.setParameter("initiationid", initiationid);
+			return (List<Object[]>)query.getResultList();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+	
+	
+	@Override
+	public PfmsInitiationMilestone getInitiationMilestone(long initiationMilestoneId) throws Exception {
+	     return manager.find(PfmsInitiationMilestone.class, initiationMilestoneId);
+	}
+	
+	@Override
+	public long editInitiationMilestone(PfmsInitiationMilestone ms) throws Exception {
+	    try {
+			manager.merge(ms);
+			manager.flush();
+		} catch (Exception e) {
+		   e.printStackTrace();
+		}
+		return ms.getInitiationMilestoneId();  
+	}
+	
+	@Override
+	public long addInitiationMilestoneRev(PfmsInitiationMilestoneRev entityRev) throws Exception {
+		try {
+				manager.persist(entityRev);
+				manager.flush();
+			} catch (Exception e) {
+			   e.printStackTrace();
+			}
+			return entityRev.getInitiationMileRevId();  
+		}
+
 	
 }
 

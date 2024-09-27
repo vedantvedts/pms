@@ -94,7 +94,7 @@
 	String otp=(String)request.getAttribute("otp");
 	int committeecons=(Integer)request.getAttribute("committeecons");
 	List<Object[]> AgendaDocList=(List<Object[]>) request.getAttribute("AgendaDocList");
-	
+	String projectType="P";
 	String projectid= rodscheduleeditdata[9].toString();
 	String divisionid= rodscheduleeditdata[16].toString();
 	String initiationid= rodscheduleeditdata[17].toString();
@@ -133,13 +133,18 @@
 							<div class="col-md-8 ">
 							  <h4>
 							  		<%=rodscheduleeditdata[8] %> Meeting 
-									<%if(Long.parseLong(projectid)>0){ %>							  
+									<%if(Long.parseLong(projectid)>0){ 
+										projectType="P";
+									%>							  
 										(Project : <%=projectdetails[4] %>)
 									<%} %>
-									<%if(Long.parseLong(divisionid)>0){ %>							  
+									<%if(Long.parseLong(divisionid)>0){ 
+									%>							  
 									  (Division : <%=divisiondetails[1] %>)
 									<%} %>
-									<%if(Long.parseLong(initiationid)>0){ %>							  
+									<%if(Long.parseLong(initiationid)>0){ 
+										projectType="I";
+									%>							  
 									  (Initiated Project : <%=initiationdetails[1] %>)
 									<%} %>
 							  </h4>
@@ -148,9 +153,11 @@
 							 		
 									 <form action="RecordofDiscussion.htm" name="myfrm" method="post">
 									 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
-									 	<input type="hidden" name="committeeid" value="<%=rodscheduleeditdata[0]%>">
+									 	<input type="hidden" name="rodNameId" value="<%=rodscheduleeditdata[0]%>">
 									 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									 	<input type="hidden" name="projectid" value="<%=projectid %>">
+									 	<input type="hidden" name="initiationId" value="<%=initiationid %>">
+									 	<input type="hidden" name="projectType" value="<%=projectType %>">
 									 </form>
 									
  							 </div>

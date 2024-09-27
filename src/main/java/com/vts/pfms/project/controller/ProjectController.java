@@ -81,6 +81,8 @@ import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentFileDto;
 import com.vts.pfms.project.dto.PfmsInitiationAuthorityDto;
 import com.vts.pfms.project.dto.PfmsInitiationAuthorityFileDto;
+import com.vts.pfms.project.model.PfmsInitiationMilestone;
+import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.dto.PfmsInitiationCostDto;
 import com.vts.pfms.project.dto.PfmsInitiationDetailDto;
 import com.vts.pfms.project.dto.PfmsInitiationDto;
@@ -2724,6 +2726,7 @@ public class ProjectController
 	public void ProjectAttachDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
 			throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 
 		logger.info(new Date() +"Inside ProjectAttachDownload.htm "+UserId);
 
@@ -2735,8 +2738,9 @@ public class ProjectController
 			PfmsInitiationAttachmentFile attachment=service.ProjectIntiationAttachmentFile(req.getParameter("InitiationAttachmentId" ));
 			Object[]  pfmsinitiation = service.ProjectIntiationFileName(attachment.getInitiationAttachmentId());
 			File my_file=null;
-
-			my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getFileName()); 
+		    Path attchPath = Paths.get(uploadpath, LabCode, "ProjectInitiation", attachment.getFileName());
+//			my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getFileName()); 
+			my_file = attchPath.toFile(); 
 			res.setHeader("Content-disposition","attachment; filename="+pfmsinitiation[3].toString()); 
 			OutputStream out = res.getOutputStream();
 			FileInputStream in = new FileInputStream(my_file);
@@ -2842,15 +2846,18 @@ public class ProjectController
 			throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+
 		logger.info(new Date() +"Inside ProjectAuthorityDownload.htm "+UserId);
 		try
 		{
 			PfmsInitiationAuthorityFile attachment=service.ProjectAuthorityDownload(req.getParameter("AuthorityFileId"));
 
 			res.setContentType("application/octet-stream");
-
+			Path attchPath = Paths.get(uploadpath, labcode, "ProjectReference", attachment.getAttachmentName());
 			File my_file=null;	
-			my_file = new File(uploadpath+attachment.getFile()+File.separator+attachment.getAttachmentName()); 
+//			my_file = new File(uploadpath+attachment.getFile()+File.separator+attachment.getAttachmentName()); 
+			my_file = attchPath.toFile(); 
 			res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachmentName()); 
 			OutputStream out = res.getOutputStream();
 			FileInputStream in = new FileInputStream(my_file);
@@ -6342,9 +6349,11 @@ public class ProjectController
 				redir.addAttribute("resultfail","PDF can not be generated.Please fill the Data!");
 			return;			
 			}
+			
 			Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
-
+			req.setAttribute("Classification", projectDetails!=null?projectDetails[12]:"");
+			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId)); //changed the code here pass the projectId
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
@@ -7879,6 +7888,8 @@ public class ProjectController
 	public void RequirementAttachmentDownload(HttpServletRequest req,HttpSession ses,HttpServletResponse res )throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		 String LabCode =(String) ses.getAttribute("labcode");
+
 		logger.info(new Date() +"Inside ProjectRequirementAttachmentDownload.htm "+UserId);
 
 		try {
@@ -7905,8 +7916,10 @@ public class ProjectController
 			System.out.println(stepid+initiationid+VersionDoc+DocumentId);
 			Object[]reqAttachDownload=service.reqAttachDownload(DocumentId,VersionDoc,initiationid,stepid);
 
-			File my_file=null;
-			my_file=new File(uploadpath+reqAttachDownload[2]+File.separator+reqAttachDownload[3]);
+		    Path attachPath = Paths.get(uploadpath, LabCode, "ProjectRequirement", reqAttachDownload[3].toString());
+					File my_file=null;
+//					my_file=new File(uploadpath+reqAttachDownload[2]+File.separator+reqAttachDownload[3]);
+					my_file=attachPath.toFile();
 			res.setContentType("Application/pdf");	
 			res.setHeader("Content-disposition","inline; filename="+reqAttachDownload[3].toString()); 
 			OutputStream out = res.getOutputStream();
@@ -9786,6 +9799,8 @@ public class ProjectController
 			req.setAttribute("initiationId", initiationId);
 			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("SpecsInitiationId", SpecsInitiationId);
+			req.setAttribute("click", req.getParameter("click"));
+			req.setAttribute("SpecMasterList", reqService.getSpecMasterList(SpecsInitiationId));
 			List<Object[]>RequirementList=new ArrayList<>();
 			
 			List<Object[]>initiationReqList = reqService.initiationReqList(projectId, productTreeMainId,initiationId );
@@ -9837,18 +9852,13 @@ public class ProjectController
 			}
 			List<Object[]>specList = reqService.getSpecsList(SpecsInitiationId);
 			
-			int id= 0;
-			if(specList!=null) {
-				id=(specList.size()+1)*10;
-				}
-			String spid="SPEC_";
-			if (specList.size() < 9) {
-				spid = spid+ ("_000" + (id));
-			} else if (specList.size() < 99) {
-				spid = spid+ ("_00" + (id));
-			} else {
-				spid = spid+ ("_0" + (id));
+			List<Object[]>subSpecList = new ArrayList<>();
+			if(specList!=null && specList.size()>0) {
+				subSpecList = specList.stream().filter(e->e[7].toString().equalsIgnoreCase(req.getParameter("specParentId"))).collect(Collectors.toList());
 			}
+			
+			String action = req.getParameter("action");
+			
 			
 			String linkedRequirements="";
 			if(req.getParameterValues("linkedRequirements")!=null) {
@@ -9861,7 +9871,7 @@ public class ProjectController
 					}
 				}
 			}
-			String action = req.getParameter("action");
+		
 			
 			Specification specs= action!=null && action.equalsIgnoreCase("Add") ? new Specification() :service.getSpecificationData(SpecsId) ;
 			
@@ -9873,6 +9883,23 @@ public class ProjectController
 			specs.setSpecsParameter(req.getParameter("specParameter"));
 			specs.setSpecsUnit(req.getParameter("specUnit"));
 			if(action.equalsIgnoreCase("Add")) {
+				int id= 0;
+				if(subSpecList!=null) {
+					id=(subSpecList.size()+1)*10;
+					}
+				//String spid="SPEC_";
+				Object[]specName=reqService.getSpecName(req.getParameter("MainId"));
+				String spid=specName!=null?specName[3].toString():"SPEC_" ;
+				if (subSpecList.size() < 9) {
+					spid = spid+ ("_000" + (id));
+				} else if (specList.size() < 99) {
+					spid = spid+ ("_00" + (id));
+				} else {
+					spid = spid+ ("_0" + (id));
+				}
+				
+				specs.setParentId(Long.parseLong(req.getParameter("specParentId")));
+				specs.setMainId(0l);;
 				specs.setSpecificationName(spid);
 				specs.setCreatedBy(UserId);
 				specs.setCreatedDate(sdf1.format(new Date()));
@@ -9901,6 +9928,7 @@ public class ProjectController
 		}
 			catch (Exception e) {
 				// TODO: handle exception
+				e.printStackTrace();
 			}
 		
 		return null;
@@ -10076,9 +10104,10 @@ public class ProjectController
 			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
 			
 			SpecsInitiation specsInitiation = reqService.getSpecsInitiationById(SpecsInitiationId);
+			Object[] projectDetails = service.getProjectDetails(LabCode, specsInitiation.getInitiationId()!=0?specsInitiation.getInitiationId()+"":specsInitiation.getProjectId()+"", specsInitiation.getInitiationId()!=0?"P":"E");
 
-		
-			
+			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
+			req.setAttribute("Classification", projectDetails!=null?projectDetails[12]:"");
 			req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
@@ -10102,6 +10131,44 @@ public class ProjectController
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));
 			
 			
+//			String filename="ProjectSpecification";
+//			String path=req.getServletContext().getRealPath("/view/temp");
+//			req.setAttribute("path",path);
+//			
+//			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+//			req.getRequestDispatcher("/view/requirements/SpecificationPDF.jsp").forward(req, customResponse);
+//			String html = customResponse.getOutput();
+//
+//			ConverterProperties converterProperties = new ConverterProperties();
+//			FontProvider dfp = new DefaultFontProvider(true, true, true);
+//			converterProperties.setFontProvider(dfp);
+//
+//			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+//			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+//			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+//			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+//			pdfDocument.close();
+//			pdf1.close();	       
+//			pdfw.close();
+//			res.setContentType("application/pdf");
+//			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+//			File f=new File(path+"/"+filename+".pdf");
+//
+//			OutputStream out = res.getOutputStream();
+//			FileInputStream in = new FileInputStream(f);
+//			byte[] buffer = new byte[4096];
+//			int length;
+//			while ((length = in.read(buffer)) > 0) {
+//				out.write(buffer, 0, length);
+//			}
+//			in.close();
+//			out.flush();
+//			out.close();
+//			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+//			Files.delete(pathOfFile2);
+//			
+//			
+			
 			String filename="ProjectSpecification";
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
@@ -10118,9 +10185,31 @@ public class ProjectController
 			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
 			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
 			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			int totalPages = pdfDocument.getNumberOfPages();
+			System.out.println("Total Number of Pages: " + totalPages); //
+			req.setAttribute("totalPages", totalPages);
+			
+			
+			
 			pdfDocument.close();
 			pdf1.close();	       
 			pdfw.close();
+			
+			CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/requirements/SpecificationPDF.jsp").forward(req, customResponse1);
+			String html1 = customResponse1.getOutput();
+
+			ConverterProperties converterProperties1= new ConverterProperties();
+			FontProvider dfp1 = new DefaultFontProvider(true, true, true);
+			converterProperties1.setFontProvider(dfp1);
+			HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties1);
+			PdfWriter pdfw1=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf2=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument1 = new PdfDocument(pdf2, pdfw1);
+			pdfDocument1.close();
+			pdf2.close();	       
+			pdfw1.close();
+			
 			res.setContentType("application/pdf");
 			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 			File f=new File(path+"/"+filename+".pdf");
@@ -10136,15 +10225,30 @@ public class ProjectController
 			out.flush();
 			out.close();
 			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
-			Files.delete(pathOfFile2);
-			
+			Files.delete(pathOfFile2);	
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 			
 			
 		}
-	
+	@RequestMapping(value="deleteInitiationSpe.htm", method= {RequestMethod.GET})
+	public @ResponseBody  String deleteInitiationReq(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside deleteInitiationSpe.htm"+UserId);
+		long count=0;
+		try {
+		String SpecsId = req.getParameter("SpecsId");
+		count  = reqService.deleteInitiationSpe(SpecsId);
+
+		}catch (Exception e) {
+		
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
 	@RequestMapping(value = "SpecProductTreeUpload.htm" , method= {RequestMethod.POST,RequestMethod.GET})
 	public String SpecProductTreeUpload(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir ,@RequestParam("image") MultipartFile FileAttach)throws Exception
 	{
@@ -10353,6 +10457,7 @@ public class ProjectController
 			throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectDataSystemSpecsRevFileDownload.htm "+UserId);
 		try
 		{
@@ -10375,8 +10480,9 @@ public class ProjectController
 				index=3;
 			}
 
-			res.setContentType("Application/octet-stream"); 
-			File my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+			Path projectPath = Paths.get(uploadpath, LabCode, "ProjectData", projectdatafiledata[index].toString());
+//			File my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+			File my_file = projectPath.toFile(); 
 			res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
 
 
@@ -10418,6 +10524,328 @@ public class ProjectController
 			return "static/Error";
 		}
 
+	}
+
+	@RequestMapping(value = "ProjectMilestoneSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String ProjectMilestoneSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectMilestoneSubmit.htm "+UserId);
+		try {
+			String action = req.getParameter("action");
+			String initiationId = req.getParameter("initiationid");
+			String project = req.getParameter("project");
+			String initiationMilestoneId = req.getParameter("initiationMilestoneId");
+			String remarks = req.getParameter("remarks");
+			String [] statusId = req.getParameterValues("statusId");
+			String [] statusName = req.getParameterValues("statusName");
+			String [] probableDate = req.getParameterValues("probableDate");
+			String [] actualDate = req.getParameterValues("actualDate");
+			
+			
+			System.out.println("initiationId##########"+initiationId);
+			System.out.println("action##########"+action);
+			System.out.println("initiationMilestoneId##########"+initiationMilestoneId);
+			System.out.println("statusId##########"+Arrays.toString(statusId));
+			System.out.println("statusName##########"+Arrays.toString(statusName));
+			System.out.println("probabaleDate##########"+Arrays.toString(probableDate));
+			System.out.println("actualDate##########"+Arrays.toString(actualDate));
+			
+			try {
+				long result=0;
+				if(initiationId!=null) {
+					if(action.equalsIgnoreCase("add")) {
+					    PfmsInitiationMilestone entity = new PfmsInitiationMilestone();
+					    entity.setInitiationId(Long.parseLong(initiationId));
+					    entity.setRevision(0);
+					    entity.setSetBaseline("N");
+					    entity.setIsActive(1);
+					    entity.setCreatedBy(UserId);
+					    entity.setCreatedDate(sdf1.format(new Date()));
+
+					    for(int i = 0; i < statusId.length; i++) {
+					        int status = Integer.parseInt(statusId[i]);
+					        String parsedDate =probableDate[i]!=null && !probableDate[i].isEmpty() ? sdf3.format(sdf2.parse(probableDate[i])) : null;
+
+					        switch (status) {
+					            case 1:
+					                entity.setPDRProbableDate(parsedDate);
+					                break;
+					            case 2:
+					                entity.setTIECProbableDate(parsedDate);
+					                break;
+					            case 3:
+					                entity.setCECProbableDate(parsedDate);
+					                break;
+					            case 4:
+					                entity.setCCMProbableDate(parsedDate);
+					                break;
+					            case 5:
+					                entity.setDMCProbableDate(parsedDate);
+					                break;
+					            case 6:
+					                entity.setSanctionProbableDate(parsedDate);
+					                break;
+					            default:
+					                throw new IllegalArgumentException("Invalid statusId: " + status);
+					         }
+					      }
+					       result = service.addInitiationMilestone(entity);
+
+							if(result>0) {
+								redir.addAttribute("result","Milstone Added Successfully For Project: "+project);
+							}else {
+								redir.addAttribute("resultfail","Something went worng");
+						   }
+				    }else if (action.equalsIgnoreCase("edit")) {
+						 PfmsInitiationMilestone entity = service.getInitiationMilestone(Long.parseLong(initiationMilestoneId));
+						 entity.setModifiedBy(UserId);
+						 entity.setModifiedDate(sdf1.format(new Date()));
+						for(int i=0; i<statusId.length; i++) {  
+							 int status = Integer.parseInt(statusId[i]);
+							 String parsedDate =probableDate[i]!=null && !probableDate[i].isEmpty() ? sdf3.format(sdf2.parse(probableDate[i])) : null;
+							  switch (status) {
+					            case 1:
+					                entity.setPDRProbableDate(parsedDate);
+					                break;
+					            case 2:
+					                entity.setTIECProbableDate(parsedDate);
+					                break;
+					            case 3:
+					                entity.setCECProbableDate(parsedDate);
+					                break;
+					            case 4:
+					                entity.setCCMProbableDate(parsedDate);
+					                break;
+					            case 5:
+					                entity.setDMCProbableDate(parsedDate);
+					                break;
+					            case 6:
+					                entity.setSanctionProbableDate(parsedDate);
+					                break;
+					            default:
+					                throw new IllegalArgumentException("Invalid statusId: " + status);
+					         }
+						}
+						
+						result=service.editInitiationMilestone(entity);
+						
+						if(result>0) {
+							redir.addAttribute("result","Milstone Edited Successfully For Project: "+project);
+						}else {
+							redir.addAttribute("resultfail","Something went worng");
+						}
+					}else if(action.equalsIgnoreCase("baseline")) {
+						 PfmsInitiationMilestone entity = service.getInitiationMilestone(Long.parseLong(initiationMilestoneId));
+						 entity.setSetBaseline("Y");
+						 entity.setModifiedBy(UserId);
+						 entity.setModifiedDate(sdf1.format(new Date()));
+						for(int i=0; i<statusId.length; i++) {  
+							 int status = Integer.parseInt(statusId[i]);
+							 String parsedDate =probableDate[i]!=null && !probableDate[i].isEmpty() ? sdf3.format(sdf2.parse(probableDate[i])) : null;
+							  switch (status) {
+					            case 1:
+					                entity.setPDRProbableDate(parsedDate);
+					                break;
+					            case 2:
+					                entity.setTIECProbableDate(parsedDate);
+					                break;
+					            case 3:
+					                entity.setCECProbableDate(parsedDate);
+					                break;
+					            case 4:
+					                entity.setCCMProbableDate(parsedDate);
+					                break;
+					            case 5:
+					                entity.setDMCProbableDate(parsedDate);
+					                break;
+					            case 6:
+					                entity.setSanctionProbableDate(parsedDate);
+					                break;
+					            default:
+					                throw new IllegalArgumentException("Invalid statusId: " + status);
+					         }
+						}
+						
+						result=service.editInitiationMilestone(entity);
+						
+							if(result>0) {
+								redir.addAttribute("result","Milstone Baseline Set Successfully For Project: "+project);
+							}else {
+								redir.addAttribute("resultfail","Something went worng");
+							}
+					}else if (action.equalsIgnoreCase("revise")) {
+						PfmsInitiationMilestone entity = service.getInitiationMilestone(Long.parseLong(initiationMilestoneId));
+						entity.setModifiedBy(UserId);
+						entity.setModifiedDate(sdf1.format(new Date()));
+						
+						PfmsInitiationMilestoneRev entityRev = new PfmsInitiationMilestoneRev();
+						entityRev.setInitiationMilestoneId(entity.getInitiationMilestoneId());
+						entityRev.setInitiationId(entity.getInitiationId());
+						entityRev.setPDRProbableDate(entity.getPDRProbableDate());
+						entityRev.setPDRActualDate(entity.getPDRActualDate());
+						entityRev.setTIECProbableDate(entity.getTIECProbableDate());
+						entityRev.setTIECActualDate(entity.getTIECActualDate());
+						entityRev.setCECProbableDate(entity.getCECProbableDate());
+						entityRev.setCECActualDate(entity.getCECActualDate());
+						entityRev.setCCMProbableDate(entity.getCCMProbableDate());
+						entityRev.setCCMActualDate(entity.getCCMActualDate());
+						entityRev.setDMCProbableDate(entity.getDMCProbableDate());
+						entityRev.setDMCActualDate(entity.getDMCActualDate());
+						entityRev.setSanctionProbableDate(entity.getSanctionProbableDate());
+						entityRev.setSanctionActualDate(entity.getSanctionActualDate());
+						entityRev.setRevision(entity.getRevision());
+						entityRev.setRemarks(remarks);
+						entityRev.setModifiedBy(UserId);
+						entityRev.setModifiedDate(sdf1.format(new Date()));
+						entityRev.setIsActive(1);
+						service.addInitiationMilestoneRev(entityRev);
+		
+						for(int i=0; i<statusId.length; i++) {
+							 int status = Integer.parseInt(statusId[i]);
+							 String parsedDate =probableDate[i]!=null && !probableDate[i].isEmpty() ? sdf3.format(sdf2.parse(probableDate[i])) : null;
+							  switch (status) {
+					            case 1:
+					                entity.setPDRProbableDate(parsedDate);
+					                break;
+					            case 2:
+					                entity.setTIECProbableDate(parsedDate);
+					                break;
+					            case 3:
+					                entity.setCECProbableDate(parsedDate);
+					                break;
+					            case 4:
+					                entity.setCCMProbableDate(parsedDate);
+					                break;
+					            case 5:
+					                entity.setDMCProbableDate(parsedDate);
+					                break;
+					            case 6:
+					                entity.setSanctionProbableDate(parsedDate);
+					                break;
+					            default:
+					                throw new IllegalArgumentException("Invalid statusId: " + status);
+					         }
+							  
+							  if(actualDate!=null && actualDate[i]!=null) {
+								  String actualparsedDate =actualDate[i]!=null && !actualDate[i].isEmpty() ? sdf3.format(sdf2.parse(actualDate[i])) : null;
+								    switch (status) {
+						            case 1:
+						                entity.setPDRActualDate(actualparsedDate);
+						                break;
+						            case 2:
+						                entity.setTIECActualDate(actualparsedDate);
+						                break;
+						            case 3:
+						                entity.setCECActualDate(actualparsedDate);
+						                break;
+						            case 4:
+						                entity.setCCMActualDate(actualparsedDate);
+						                break;
+						            case 5:
+						                entity.setDMCActualDate(actualparsedDate);
+						                break;
+						            case 6:
+						                entity.setSanctionActualDate(actualparsedDate);
+						                break;
+						            default:
+						                throw new IllegalArgumentException("Invalid statusId: " + status);
+						            }
+							  }
+						}
+						entity.setRevision(entity.getRevision()+1);
+						result=service.editInitiationMilestone(entity);
+						if(result>0) {
+							redir.addAttribute("result","Milstone Revised Successfully For Project : "+project);
+						}else {
+							redir.addAttribute("resultfail","Something went worng");
+						}
+					}
+				
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			} 
+			return "redirect:/ProjectIntiationList.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectMilestoneSubmit.htm "+UserId, e);
+			return "static/Error";
+		}
+
+	}
+	
+	@RequestMapping(value = "InitiatedMilestoneDetails.htm", method = RequestMethod.GET)
+	public @ResponseBody String InitiatedMilestoneDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+
+		List<Object[]> InitiatedMilestoneDetails=null;
+		String UserId =(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside InitiatedMilestoneDetails.htm "+UserId);		
+		try {
+			InitiatedMilestoneDetails = service.getInitiatedMilestoneDetails(req.getParameter("initiationid"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside InitiatedMilestoneDetails.htm "+UserId, e);
+		}
+		
+		Gson convertedgson = new Gson();
+		if(InitiatedMilestoneDetails!=null && InitiatedMilestoneDetails.size()>0) {
+			return convertedgson.toJson(InitiatedMilestoneDetails);
+		}
+		    return convertedgson.toJson("-1");
+	}
+	
+	
+	@RequestMapping(value = "addActualDate.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public @ResponseBody String addActualDate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+
+		String UserId =(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside addActualDate.htm "+UserId);		
+		try {
+			
+			String milestone = req.getParameter("mileDropdown");
+			String actualdate = req.getParameter("actualdate");
+			String milestonepkId = req.getParameter("milestonepkId");
+			
+			    PfmsInitiationMilestone entity = service.getInitiationMilestone(Long.parseLong(milestonepkId));
+			    entity.setModifiedBy(UserId);
+			    entity.setModifiedDate(sdf1.format(new Date()));
+			    int status = Integer.parseInt(milestone);
+			    String parsedDate =actualdate!=null ? sdf3.format(sdf2.parse(actualdate)) : null;
+			    
+			    switch (status) {
+	            case 1:
+	                entity.setPDRActualDate(parsedDate);
+	                break;
+	            case 2:
+	                entity.setTIECActualDate(parsedDate);
+	                break;
+	            case 3:
+	                entity.setCECActualDate(parsedDate);
+	                break;
+	            case 4:
+	                entity.setCCMActualDate(parsedDate);
+	                break;
+	            case 5:
+	                entity.setDMCActualDate(parsedDate);
+	                break;
+	            case 6:
+	                entity.setSanctionActualDate(parsedDate);
+	                break;
+	            default:
+	                throw new IllegalArgumentException("Invalid statusId: " + status);
+	            }
+
+			long result = service.editInitiationMilestone(entity);
+			Gson convertedgson = new Gson();
+		    return convertedgson.toJson(result);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside addActualDate.htm "+UserId, e);
+			return "static/Error";
+		}
 	}
 
 

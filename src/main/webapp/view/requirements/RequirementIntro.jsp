@@ -13,6 +13,13 @@
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+
+
+
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
 <title>PMS</title>
 <style>
 .bs-example {
@@ -416,7 +423,7 @@ float: right;
 		</div> -->
 	</div>
 <script>
-		var editor_config = {
+/* 		var editor_config = {
 			toolbar : [
 					{
 						name : 'clipboard',
@@ -533,8 +540,26 @@ float: right;
 				filebrowserUploadUrl : '/path/to/upload-handler'
 			}, ]
 		};
-		CKEDITOR.replace('Editor', editor_config);
-	
+		CKEDITOR.replace('Editor', editor_config); */
+		$(document).ready(function() {
+			 $('#Editor').summernote({
+				  width: 800,   //don't use px
+				
+				  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+				 
+			      lineHeights: ['0.5']
+			
+			 });
+
+		$('#Editor').summernote({
+		     
+		      tabsize: 5,
+		      height: 1000
+		    });
+		    
+		});
+		
+		
 		function showEditor(a){
 			var x=a.toLowerCase();
 			$('#col1').show();
@@ -608,7 +633,8 @@ float: right;
 						$('#btn1').show();
 						$('#btn2').hide();
 					}
-					CKEDITOR.instances['Editor'].setData(html);
+					/* CKEDITOR.instances['Editor'].setData(html); */
+					   $('#Editor').summernote('code', html);
 				}
 			});
 			
@@ -661,9 +687,9 @@ float: right;
 	}
 
 		  $('#myfrm').submit(function() {
-				 var data =CKEDITOR.instances['Editor'].getData();
-				 console.log(data);
-				 $('textarea[name=Details]').val(data);
+				/*  var data =CKEDITOR.instances['Editor'].getData();
+				 console.log(data); */
+				 $('textarea[name=Details]').val($('#Editor').summernote('code'));
 				 });
 		  		$(document).ready(function() {
 		 		var a=<%='"'+attributes+'"'%> 

@@ -21,6 +21,14 @@
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
+
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+
+<script src="${SummernoteJs}"></script>
+
+<link href="${SummernoteCss}" rel="stylesheet" />
 	<%
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -85,6 +93,15 @@
 	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 	%>
 <style type="text/css">
+.note-editable
+{
+height: 300px;
+}
+.note-editable img {
+
+width:300px!important;
+height:300px!important;
+}
 </style>
 </head>
 <body>
@@ -163,7 +180,7 @@
 							<td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td>
 						</tr>
 						<tr>
-							<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Sub System Test Plan Document Template</span></td>
+							<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Test Plan Document </span></td>
 						</tr>
 						<tr >
 							<td class="text-primary">2.&nbsp; Type of Document:<span class="text-dark">System Sub System Test Plan Document</span></td>
@@ -437,7 +454,24 @@
 								 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=DocumentSummary[3]%><%}else{%><%}%>">
 				   			</div>
    						</div>
-   						
+   							<div class="row mt-2">
+			   				<div class="col-md-2">
+			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Release Date:</label>
+			   				</div>	
+   				
+   				 			<div class="col-md-4">
+	   							<input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" <%if(DocumentSummary!=null && DocumentSummary[11]!=null){%> value="<%=DocumentSummary[11].toString() %> " <%}%> class="form-control form-control">
+   				
+   							</div>
+   				
+			   				<div class="col-md-2">
+						   		<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Document No.:</label>
+						   	</div>	
+   							<div class="col-md-4">
+		   						<input required="required" name="Document" class="form-control" id="" maxlength="255"
+								 placeholder="Maximum 20 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[12]!=null){%><%=DocumentSummary[12]%><%}else{%><%}%>" >
+   							</div>
+   						</div>
    						<div class="row mt-2">
    							<div class="col-md-2">
 			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By:</label>
@@ -523,7 +557,7 @@
    							<div class="col-md-2">
    								<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Test Approach:</label>
    							</div>
-   							<div id="EditorApproch" class="center">
+   							<div id="summernote2" class="center" style="height: 500;">
    								<%if(Approach!=null){ %><%= Approach%><% }%>
    							</div>
    							
@@ -566,14 +600,29 @@
       			
    				<div class="modal-body">
    					<form action="TestDocContentSubmit.htm" method="post" id="Sform">
-			   			<div class="row mt-2">
+			   			<%-- <div class="row mt-2">
 				   			<div class="col-md-2">
 				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Test Schedule:</label>
 				   			</div>
 				   			<div id="EditorSchedule" class="center">
 				   				<% if(Schedule!=null){%> <%=Schedule%>  <% }%>
 				   			</div>
-				   			<textarea name="Details" style="display: none;" id="ScheduleDetails"></textarea>		
+				   			<textarea name="Details" style="display: none;" id="ScheduleDetails"></textarea>
+				   			
+				   			
+						 </div>	 --%>
+						 
+						 <div class="row mt-2">
+				   			<div class="col-md-2">
+				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Test Schedule:</label>
+				   			</div>
+				   			 <div id="summernote1" style="height: 500;  ">
+				   				<% if(Schedule!=null){%> <%=Schedule%>  <% }%>
+				   			</div>
+				   			<textarea name="Details" style="display: none; height: 150px;" id="ScheduleDetails"></textarea>
+				   			
+				   			
+						 </div>		
 			   			</div>
 			   			
    						<div class="mt-2" align="center">
@@ -618,7 +667,7 @@
 			   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Test Conclusion:</label>
 			   			</div>
 			   			
-			   			<div id="EditorConclusion" class="center">
+			   			<div id="summernote3" class="center">
 			   				<%if(Conclusion!=null) {%><%=Conclusion%><%} %>
 			   			</div>
    						<textarea name="Details" style="display: none;"  id="ConclusionDetails"></textarea>	
@@ -708,6 +757,68 @@
     		</div>
   		</div>
 	</div>
+	
+	<script type="text/javascript">
+	
+	$(document).ready(function() {
+		 $('#summernote1').summernote({
+			  width: 900,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 
+
+'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#summernote1').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+	    
+	});
+	
+	
+	$(document).ready(function() {
+		 $('#summernote2').summernote({
+			  width: 900,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#summernote2').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+	    
+	});
+	
+	$(document).ready(function() {
+		 $('#summernote3').summernote({
+			  width: 900,   //don't use px
+			
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 
+
+'Tahoma', 'Times New Roman', 'Verdana'],
+			 
+		      lineHeights: ['0.5']
+		
+		 });
+
+	$('#summernote3').summernote({
+	     
+	      tabsize: 5,
+	      height: 1000
+	    });
+	    
+	});
+	</script>
 	
 	<script type="text/javascript">
 	/* project type selection */
@@ -902,7 +1013,7 @@
     	$("#DownLoadPdf").click();
     }
     
-    var editor_config = {
+/*     var editor_config = {
 			toolbar : [
 					{
 						name : 'clipboard',
@@ -1019,27 +1130,47 @@
 				filebrowserUploadUrl : '/path/to/upload-handler'
 			}, ]
 		};
-		CKEDITOR.replace('EditorSchedule', editor_config);
-		CKEDITOR.replace('EditorConclusion', editor_config);
-		CKEDITOR.replace('EditorApproch', editor_config);
+		CKEDITOR.replace('EditorSchedule', editor_config); */
+
 		 $('#Cform').submit(function() {
-			 var data =CKEDITOR.instances['EditorConclusion'].getData();
+			 var data=$('#summernote3').summernote('code');
 			 console.log(data);
 			 $('#ConclusionDetails').val(data);
 			 });
 
+		 
+		 //chnaged
 		 $('#Sform').submit(function() {
-			 var data =CKEDITOR.instances['EditorSchedule'].getData();
+			 var data=$('#summernote1').summernote('code');
 			 console.log(data);
 			 $('#ScheduleDetails').val(data);
 			 });
+		 
+		 
 		 $('#Aform').submit(function() {
-			 var data =CKEDITOR.instances['EditorApproch'].getData();
+			 var data=$('#summernote2').summernote('code');
 			 console.log(data);
 			 $('#Approchdetails').val(data);
 			 });
 		 
 		 
+		
+	
+			$('#pdc-date').daterangepicker({
+				
+				"singleDatePicker": true,
+				"showDropdowns": true,
+				"cancelClass": "btn-default",
+				
+				<%if(DocumentSummary==null || DocumentSummary[11]==null) {%>
+				"startDate":new Date() ,
+			<%}%>
+			
+				locale: {
+			    	format: 'DD-MM-YYYY'
+					}
+			});
+		
 </script>
 </body>
 </html>

@@ -19,6 +19,11 @@
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
+
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -350,7 +355,9 @@ if(InitiationReqId==null && RequirementList!=null){
 	InitiationReqId = RequirementList.get(0)[0].toString();
 }
 if(RequirementList!=null && RequirementList.size()>0){
-	subReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+	subReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0"))
+			.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
+			.collect(Collectors.toList());
 }
 
 List<Object[]>VerificationMethodList = (List<Object[]>)request.getAttribute("VerificationMethodList");
@@ -561,9 +568,89 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
 									<div class="col-md-10" style="margin-top: 1%;">
 										<p id="remarksshow" style="font-size: 18px;"></p>
+										
 									</div>
 
 								</div>
+								<hr>
+												<div class="row">
+									<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Demonstration:
+										</h5>
+									</div>
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="DemonstrationShow" style="font-size: 18px;"></p>
+									</div>
+
+								</div>
+								<hr>
+								<div class="row">
+								<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Test Type:
+										</h5>
+									</div>
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="testTypeshow" style="font-size: 18px;"></p>
+									</div>
+
+								</div>
+														<hr>
+								<div class="row">
+								<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Test Stage:
+										</h5>
+									</div>
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="TestStageShow" style="font-size: 18px;"></p>
+									</div>
+
+								</div>
+																			<hr>
+								<div class="row">
+								<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Analysis:
+										</h5>
+									</div>
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="AnalysisShow" style="font-size: 18px;"></p>
+									</div>
+
+								</div>
+																			<hr>
+								<div class="row">
+								<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Inspection:
+										</h5>
+									</div>
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="InspectionShow" style="font-size: 18px;"></p>
+									</div>
+
+								</div>
+																			<hr>
+								<div class="row">
+								<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Special Methods:
+										</h5>
+									</div>
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="specialshow" style="font-size: 18px;"></p>
+									</div>
+
+								</div>
+								
 							</div> 
 
 						
@@ -1553,6 +1640,37 @@ function showDetailss(subId,Id){
 			}else {
 				$('#description').html(ajaxresult[3]);
 			}
+			if(ajaxresult[14]===null){
+				$('#DemonstrationShow').html("-");	
+			}else {
+				$('#DemonstrationShow').html(ajaxresult[14]);
+			}
+			if(ajaxresult[15]===null){
+				$('#testTypeshow').html("-");	
+			}else {
+				$('#testTypeshow').html(ajaxresult[15]);
+			}
+			if(ajaxresult[20]===null){
+				$('#TestStageShow').html("-");	
+			}else {
+				$('#TestStageShow').html(ajaxresult[20]);
+			}
+			if(ajaxresult[16]===null){
+				$('#AnalysisShow').html("-");	
+			}else {
+				$('#AnalysisShow').html(ajaxresult[16]);
+			}
+			if(ajaxresult[18]===null){
+				$('#specialshow').html("-");	
+			}else {
+				$('#specialshow').html(ajaxresult[18]);
+			}
+			if(ajaxresult[17]===null){
+				$('#InspectionShow').html("-");	
+			}else {
+				$('#InspectionShow').html(ajaxresult[17]);
+			}
+
 	$('#editreq').html('<button type="button"  class="btn btn-sm" onclick="edit1('+ajaxresult[7]+')"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" ><i class="fa fa-pencil-square-o fa-lg" style="color:orange" aria-hidden="true"></i></button>');
 		
 		var value = $('#'+Id).val();
@@ -1625,7 +1743,9 @@ function edit1(InitiationReqId){
 				 var ajaxresult=JSON.parse(result);
 				console.log(ajaxresult);
 				 $('#descriptionedit').val(ajaxresult[3])
-				 CKEDITOR.instances['Editor1'].setData(ajaxresult[3]);
+				/*  CKEDITOR.instances['Editor1'].setData(ajaxresult[3]);
+				 CKEDITOR.instances['Editor1'].setData(ajaxresult[3]); */
+				   $('#Editor1').summernote('code', ajaxresult[3]);
 				 $('#needtypeedit').val(ajaxresult[8])
 				 $('#priorityedit').val(ajaxresult[5])
 				 $('#remarksedit').val(ajaxresult[9])
@@ -1771,8 +1891,38 @@ $( document ).ready(function() {
 });
 <%}%>
 
+$(document).ready(function() {
+	 $('#Editor').summernote({
+		  width: 900,   //don't use px
+		
+		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+		 
+	      lineHeights: ['0.5']
+	
+	 });
 
-var editor_config = {
+$('#Editor').summernote({
+    
+     tabsize: 5,
+     height: 1000
+   });
+	 $('#Editor1').summernote({
+		  width: 900,   //don't use px
+		
+		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+		 
+	      lineHeights: ['0.5']
+	
+	 });
+
+$('#Editor1').summernote({
+    
+     tabsize: 5,
+     height: 1000
+   });
+   
+});
+/* var editor_config = {
 		toolbar : [
 			
 				{
@@ -1891,7 +2041,7 @@ var editor_config = {
 	};
 
 CKEDITOR.replace('Editor', editor_config);
-CKEDITOR.replace('Editor1', editor_config);
+CKEDITOR.replace('Editor1', editor_config); */
 var list=[];
 $( document ).ready(function() {
 
@@ -1927,10 +2077,10 @@ function getParaDetails(){
 		     
 	} 
 
-   CKEDITOR.instances['Editor'].setData(html);
-	var data =  CKEDITOR.instances['Editor'].getData();
-	
-	$('#descriptionadds').val(data)
+  /*  CKEDITOR.instances['Editor'].setData(html);
+	var data =  CKEDITOR.instances['Editor'].getData(); */
+	   $('#Editor').summernote('code', html);
+	$('#descriptionadds').val($('#Editor').summernote('code'))
 }
 
 function getParaDetailsEdit(){
@@ -1974,9 +2124,9 @@ function getParaDetailsEdit(){
 
 
 function submitReq(){
-	var data =CKEDITOR.instances['Editor'].getData();
+/* 	var data =CKEDITOR.instances['Editor'].getData(); */
 	
-	$('#descriptionadds').val(data);
+	$('#descriptionadds').val($('#Editor').summernote('code'));
 	
 	if(confirm('Are you sure to submit?')){
 		
@@ -1988,8 +2138,8 @@ function submitReq(){
 
 
 function updateReq(){
-	var data =CKEDITOR.instances['Editor1'].getData();
-	$('#descriptionedit').val(data);
+/* 	var data =CKEDITOR.instances['Editor1'].getData(); */
+	$('#descriptionedit').val($('#Editor1').summernote('code'));
 	if(confirm('Are you sure to submit?')){
 		
 	}else{

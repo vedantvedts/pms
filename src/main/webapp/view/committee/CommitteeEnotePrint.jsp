@@ -230,7 +230,12 @@ if(EnotePrintDetails!=null && EnotePrintDetails.size()>0){
          <span style="font-weight: 500; font-size: 14px; color: green;"><span class="text-blue" style="font-size :14px; color: green;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %></b></span></span><br><br>
   <span style="font-weight: 400; font-size: 12px; color: green;">[Approved On :&nbsp;<span class="text-blue" style="font-size:12px; color: green;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</span> 
          </div>
-     <%   } } }%>
+     <%   } else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RAP")){%>
+		   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
+	   		 <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
+  			<div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %>  </span>]</div> 
+	      <br><br><br><br>
+     <%} }}%>
      
      <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[15].toString().equalsIgnoreCase("APR")&& !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
      <br><br>

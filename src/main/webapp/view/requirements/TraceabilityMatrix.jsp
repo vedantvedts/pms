@@ -61,11 +61,11 @@ if(RequirementList!=null && ProjectParaDetails!=null && !ProjectParaDetails.isEm
 					int paraCount=0;
 					%>
 						<%for(Object []obj:ProjectParaDetails) {
-						List<Object[]>ReqId = new ArrayList<>();
-						
-						if(subList.size()>0){
-							ReqId=subList.stream().filter(e->e[12]!=null && Arrays.asList(e[12].toString().split(", ")).contains(obj[0].toString())).collect(Collectors.toList());
-						}
+							List<Object[]>ReqId = new ArrayList<>();
+							
+							if(subList.size()>0){
+								ReqId=subList.stream().filter(e->e[12]!=null && Arrays.asList(e[12].toString().split(", ")).contains(obj[0].toString())).collect(Collectors.toList());
+							}
 						
 						%>
 						<tr>

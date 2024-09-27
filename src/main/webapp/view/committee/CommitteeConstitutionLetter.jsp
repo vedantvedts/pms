@@ -45,7 +45,7 @@ SimpleDateFormat sdf1 = fc.getSqlDateFormat();
 SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 Object[]CommitteMainEnoteList = (Object[])request.getAttribute("CommitteMainEnoteList");
-List<String>memtypes=Arrays.asList("CH","PS","CS");
+List<String>memtypes=Arrays.asList("PS","CS");
 List<Object[]>committeeallmemberslistwithCC=committeeallmemberslist.stream().filter(i->i[8].toString().equalsIgnoreCase("CC")).collect(Collectors.toList());
 List<Object[]>committeeallmemberslistwithoutMs=committeeallmemberslist.stream().filter(i->!memtypes.contains(i[8].toString()) && !i[8].toString().equalsIgnoreCase("CC")).collect(Collectors.toList());
 List<Object[]>committeeallmemberslistwithMs=committeeallmemberslist.stream().filter(i->memtypes.contains(i[8].toString())).collect(Collectors.toList());
@@ -177,7 +177,7 @@ p{
 			for(Object[] member : tempList){
 				i++; %>
 			<tr>				
-				<td  style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=i %> .&nbsp;</td>
+				<td style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=i %> .&nbsp;</td>
 				<td style="max-width:300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;<%=member[2] %>, <%=member[4] %> <%-- <%if(member[8].toString().equals("CW")){ %><%=member[9]%><%}  %> --%>&nbsp;</td>
 				<td  style="max-width:150px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=member[12].toString()%> </td>
 				<td style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp; 
@@ -186,6 +186,7 @@ p{
 		 		else if(member[8].toString().equals("CS")){ %>Member Secretary<%} 
 		 		else if(member[8].toString().equals("PS")){ %>Member Secretary (Proxy)<%} 
 		 		else if(member[8].toString().equals("CI")){ %>Internal Member<%} 
+		 		else if(member[8].toString().equals("CW") && committeeedata[1].toString().equalsIgnoreCase("SPRT")&& !member[12].toString().equalsIgnoreCase("DG-ECS")){ %>Nodal Lab<%} 
 		 		else if(member[8].toString().equals("CW")){ %>External Member<%} 
 		 		else if(member[8].toString().equals("CO")){ %>Expert Member<%}	
 		 		else if(member[8].toString().equals("CIP")){ %>Industry Partner<%}%>	
@@ -236,7 +237,10 @@ p{
 	</div>
 	 <%} %>
 	<%}else{ %>
-	 Not Approved
+	Approved /  Not Approved
+	<br>
+	<br>
+	<%=CommitteMainEnoteList!=null && CommitteMainEnoteList[14]!=null?CommitteMainEnoteList[14].toString():"" %>
 	<%} %>
 	
 	</div>
