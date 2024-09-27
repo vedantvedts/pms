@@ -44,4 +44,5 @@ public interface PFTSDao {
 	public List<Object[]> getpftsMileDemandList(String PftsFileId)throws Exception;
 	public Object[] getpftsActuallDate(String pftsFileId)throws Exception;
 	public Object[] getpftsProjectDate(String projectId)throws Exception;
+	public List<Object[]> getpftsFileOrder(String fileId)throws Exception;
 }

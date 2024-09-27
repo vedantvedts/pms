@@ -605,7 +605,9 @@ public class ProjectClosureController {
 			 ProjectClosureSoC soc = service.getProjectClosureSoCByProjectId(closureId);
 			File my_file=null;
 			String file = ftype.equalsIgnoreCase("monitoringcommitteefile") ?soc.getMonitoringCommitteeAttach(): soc.getLessonsLearnt();
-			my_file = new File(LabLogoPath+"Project-Closure\\SoC\\"+File.separator+file); 
+			Path closurePath = Paths.get(LabLogoPath, "Project-Closure", "SoC");
+//			my_file = new File(LabLogoPath+"Project-Closure\\SoC\\"+File.separator+file); 
+			my_file = closurePath.resolve(file).toFile(); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
@@ -952,7 +954,9 @@ public class ProjectClosureController {
 			
 			File my_file=null;
 			String file = result.getAttachment();
-			my_file = new File(LabLogoPath+"Project-Closure\\ACP\\Trial-Results\\"+File.separator+file); 
+			Path closurePath = Paths.get(LabLogoPath, "Project-Closure", "ACP", "Trial-Results");
+//			my_file = new File(LabLogoPath+"Project-Closure\\ACP\\Trial-Results\\"+File.separator+file); 
+			my_file =closurePath.resolve(file).toFile(); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
@@ -1025,7 +1029,9 @@ public class ProjectClosureController {
 			ProjectClosureACP acp = service.getProjectClosureACPByProjectId(closureId);
 			File my_file=null;
 			String file = ftype.equalsIgnoreCase("monitoringcommitteefile") ?acp.getMonitoringCommitteeAttach(): acp.getCertificateFromLab();
-			my_file = new File(LabLogoPath+"Project-Closure\\ACP\\"+File.separator+file); 
+			Path closurePath = Paths.get(LabLogoPath, "Project-Closure", "ACP");
+//			my_file = new File(LabLogoPath+"Project-Closure\\ACP\\"+File.separator+file); 
+			my_file = closurePath.resolve(file).toFile(); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
@@ -1428,7 +1434,9 @@ public class ProjectClosureController {
 			ProjectClosure projectClosure = service.getProjectClosureById(closureId);
 			clist.setProjectClosure(projectClosure);
 			//clist.setCl
+			System.out.println("QARHQrsSentDate---"+req.getParameter("QARHQrsSentDate"));
 			String QARHQrsSentDate=req.getParameter("QARHQrsSentDate");
+			
 			clist.setQARHQrsSentDate(QARHQrsSentDate!=null?sdf.format(rdf.parse(QARHQrsSentDate)):"NA");
 			String QARSentDate=req.getParameter("QARSentDate");
 			clist.setQARSentDate(QARSentDate!=null?sdf.format(rdf.parse(QARSentDate)):"NA");
@@ -1585,7 +1593,9 @@ public class ProjectClosureController {
 			ProjectClosureCheckList clist= service.getProjectClosureCheckListByProjectId(closureId);
 			File my_file=null;
 			String file = ftype.equalsIgnoreCase("QARMilestonefile") ? clist.getQARMilestone():ftype.equalsIgnoreCase("QARCostBreakupfile")? clist.getQARCostBreakup(): ftype.equalsIgnoreCase("QARNCItemsfile")? clist.getQARNCItems():ftype.equalsIgnoreCase("EquipProcuredfile")? clist.getEquipProcured(): ftype.equalsIgnoreCase("EquipProcuredBeforePDCfile")? clist.getEquipProcuredBeforePDCAttach():"";
-			my_file = new File(LabLogoPath+"Project-Closure\\Check-List\\"+File.separator+file); 
+			Path closurePath = Paths.get(LabLogoPath, "Project-Closure", "Check-List", file);
+			my_file = closurePath.toFile(); 
+//			my_file = new File(LabLogoPath+"Project-Closure\\Check-List\\"+File.separator+file); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
@@ -2657,7 +2667,9 @@ public class ProjectClosureController {
 			
 			File my_file=null;
 			String file = result.getDocumentAttachment();
-			my_file = new File(LabLogoPath+"Project-Closure\\TPCR\\"+File.separator+file); 
+			Path closurePath = Paths.get(LabLogoPath, "Project-Closure", "TPCR");
+//			my_file = new File(LabLogoPath+"Project-Closure\\TPCR\\"+File.separator+file); 
+			my_file = closurePath.resolve(file).toFile(); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);

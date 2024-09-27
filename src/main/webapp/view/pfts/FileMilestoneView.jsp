@@ -41,7 +41,7 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 	      </div >
        </div>
        <div class="table-responsive">
-	      <table class="table table-bordered table-hover table-striped table-condensed">  
+	      <table class="table table-bordered table-hover table-condensed">  
             <thead>
 			<% 
 			Object[] pftsProjectDate = (Object[]) request.getAttribute("pftsProjectDate");

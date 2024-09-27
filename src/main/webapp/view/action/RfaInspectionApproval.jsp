@@ -195,7 +195,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid"
-													value="<%=obj[0]%>,<%=obj[3]%>"
+													value="<%=obj[0]%>,<%=obj[3]%>,<%=obj[2] %>"
 													formtarget="_blank">
 													<div class="cc-rockmenu">
 														<div class="rolling">
@@ -313,7 +313,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid"
-													value="<%=obj[0]%>,<%=obj[3] %>"
+													value="<%=obj[0]%>,<%=obj[3] %>,<%=obj[2] %>"
 													formtarget="_blank">
 													<div class="cc-rockmenu">
 														<div class="rolling">

@@ -103,22 +103,24 @@ public class CARSController {
 
 	public String getLabLogoAsBase64() throws IOException {
 
-		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo.png";
+//		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo.png";
+		Path logoPath = Paths.get(LabLogoPath,"images","lablogos","lrdelogo.png");
 		try {
-			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(logoPath.toFile()));
 		} catch (FileNotFoundException e) {
-			System.err.println("File Not Found at Path " + path);
+			System.err.println("File Not Found at Path " + logoPath);
 		}
 		return "/print/.jsp";
 	}
 	
 	public String getSecondLabLogoAsBase64() throws IOException {
 		
-		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo2.png";
+//		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo2.png";
+		Path logoPath = Paths.get(LabLogoPath,"images","lablogos","lrdelogo2.png");
 		try {
-			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(logoPath.toFile()));
 		} catch (FileNotFoundException e) {
-			System.err.println("File Not Found at Path " + path);
+			System.err.println("File Not Found at Path " + logoPath);
 		}
 		return "/print/.jsp";
 	}
@@ -1008,11 +1010,12 @@ public class CARSController {
 			String carsSocId=req.getParameter("carsSocId");
 			res.setContentType("Application/octet-stream");	
 			CARSSoC soc = service.getCARSSoCById(Long.parseLong(carsSocId));
+			Path carsPath = Paths.get(LabLogoPath, "CARS", "SoC");
 			File my_file=null;
 			String file = ftype.equalsIgnoreCase("soofile")?soc.getSoOUpload():
 				         (ftype.equalsIgnoreCase("frfile")?soc.getFRUpload(): 
 				         (ftype.equalsIgnoreCase("momfile")?soc.getMoMUpload():soc.getExecutionPlan() ) );
-			my_file = new File(LabLogoPath+"CARS\\SoC\\"+File.separator+file); 
+			my_file = carsPath.resolve(file).toFile();
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
@@ -1038,6 +1041,10 @@ public class CARSController {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			
 			Object[] carsRSQRDetails = service.carsRSQRDetails(carsInitiationId);
+			String sqr = carsRSQRDetails[10].toString();
+			String replacedSqr = sqr.replaceAll("[/\\\\]", ",");
+			String[] result = replacedSqr.split(",");
+			Path carsPath = Paths.get(LabLogoPath, result[0].toString(), result[1].toString(), result[2].toString());
 			
 			if(carsRSQRDetails[10]==null || carsRSQRDetails[10].toString().isEmpty()) {
 				service.carsRSQRFormFreeze(req, res, Long.parseLong(carsInitiationId));
@@ -1045,7 +1052,7 @@ public class CARSController {
 			
 			res.setContentType("application/pdf");
 			res.setHeader("Content-disposition", "inline;filename= RSQR.pdf");
-			File f = new File(LabLogoPath + File.separator + carsRSQRDetails[10]+"");
+			File f = carsPath.toFile();
 			FileInputStream fis = new FileInputStream(f);
 			DataOutputStream os = new DataOutputStream(res.getOutputStream());
 			res.setHeader("Content-Length", String.valueOf(f.length()));
@@ -2276,7 +2283,9 @@ public class CARSController {
 			String file = ftype.equalsIgnoreCase("flagAFile")?doc.getAttachFlagA():
 			         	  (ftype.equalsIgnoreCase("flagBFile")?doc.getAttachFlagB():
 			         	  (ftype.equalsIgnoreCase("flagCFile")?doc.getAttachFlagC(): doc.getUploadOtherDoc() ) );
-			my_file = new File(LabLogoPath+"CARS\\Other Docs\\"+File.separator+file); 
+			Path carsPath = Paths.get(LabLogoPath, "CARS", "Other Docs");
+//			my_file = new File(LabLogoPath+"CARS\\Other Docs\\"+File.separator+file); 
+			my_file = carsPath.resolve(file).toFile();
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);

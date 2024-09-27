@@ -3392,6 +3392,8 @@ public class ActionController {
 	 		logger.info(new Date() +"Inside RfaAEditSubmit.htm "+UserId);
 			try {
 				
+				String projectCode=req.getParameter("projectCode");
+				String rfano=req.getParameter("rfano");
 				String rfadate=req.getParameter("rfadate");
 				String priority=req.getParameter("priority");
 				String statement=req.getParameter("statement");
@@ -3400,9 +3402,11 @@ public class ActionController {
 				String rfaid=req.getParameter("rfaid");
 				String [] assignee=req.getParameterValues("assignee");
 				String [] CCEmpName=req.getParameterValues("CCEmpName");
-
+	
 				RfaActionDto rfa = new RfaActionDto();
 				
+				rfa.setRfaNo(rfano);
+				rfa.setProjectCode(projectCode);
 				rfa.setLabCode(LabCode);
 				rfa.setRfaId(Long.parseLong(rfaid));
 				rfa.setRfaDate(sdf.parse(rfadate));
@@ -3499,9 +3503,10 @@ public class ActionController {
 		        String rfaid=rfadetails[0];
 //		        String printname=rfadetails[1]+"/"+rfadetails[2]+"/"+rfadetails[3]+"/"+rfadetails[4];
 		        String printname=rfadetails[1];
+		        String projectCode=rfadetails[2];
 		        String result=printname.replace('/', '-');
 			    Object[] RfaPrintData = service.RfaPrintData(rfaid);
-			  
+			    			  
 				req.setAttribute("RfaPrint", RfaPrintData);
 				req.setAttribute("ProjectList", service.ProjectList());		
 				req.setAttribute("ProjectTypeList",service.ProjectTypeList());
@@ -3562,7 +3567,7 @@ public class ActionController {
 	        		if(attachmentData[3]!=null) {
 		        		
 	        			if(FilenameUtils.getExtension(attachmentData[3].toString()).equalsIgnoreCase("pdf")) {
-	        				Path pdfPath = Paths.get(uploadpath, LabCode,"RFAFiles",attachmentData[3].toString());
+	        				Path pdfPath = Paths.get(uploadpath, LabCode,"RFAFiles",projectCode,printname.replace('/', '_'),attachmentData[3].toString());
 	        			    PdfReader pdfReader = new PdfReader(pdfPath.toString());
 	        		        PdfDocument pdfDocument1 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 	        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
@@ -3602,7 +3607,7 @@ public class ActionController {
 	        	if(attachmentData[4]!=null) {
 	        		
 	        			if(FilenameUtils.getExtension(attachmentData[4].toString()).equalsIgnoreCase("pdf")) {
-	        				Path pdfPath1 = Paths.get(uploadpath, LabCode,"RFAFiles",attachmentData[4].toString());
+	        				Path pdfPath1 = Paths.get(uploadpath, LabCode,"RFAFiles",projectCode,printname.replace('/', '_'),attachmentData[4].toString());
 	        			    PdfReader pdfReader1 = new PdfReader(pdfPath1.toString());
 	        		        PdfDocument pdfDocument2 = new PdfDocument(pdfReader1,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 	        		        Document document5 = new Document(pdfDocument2,PageSize.A4);
@@ -4795,8 +4800,6 @@ public class ActionController {
         			rfadto.setClosureFile(closurefile);
         			rfadto.setCreatedBy(UserId);
         			
-        			System.out.println("projecCode############"+projecCode);
-
         			long count = service.oldRfaUploadSubmit(rfadto);
         			if(count>0) {
         				redir.addAttribute("result","RFA Added successfully");
@@ -4909,17 +4912,9 @@ public class ActionController {
         			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
         			req.setAttribute("ProjectsList",projectdetailslist);
 
-        			 //projectid
-        			 //fromDate
-        			 //toDate
         			String projectid=req.getParameter("projectid");
-        			System.out.println("projectid-----"+projectid);
         			String fromDate=req.getParameter("fromDate");
-        			String toDate=req.getParameter("toDate");
-        			System.out.println("fromDate-----"+fromDate);
-        			System.out.println("toDate-----"+toDate);
-        			
-        			
+        			String toDate=req.getParameter("toDate");        			
         			
         			Calendar cal = new GregorianCalendar(); 
        			cal.add(Calendar.DAY_OF_MONTH, -30); 
@@ -4934,9 +4929,6 @@ public class ActionController {
         				fromDate=sdf3.format(sdf.parse(fromDate));
         				toDate=sdf3.format(sdf.parse(toDate));
         			}
-        			
-        			System.out.println("fromDate-****----"+fromDate);
-        			System.out.println("toDate***----"+toDate);
         			
         			if(projectid==null || projectid.equals("null"))
           			{
@@ -4976,8 +4968,6 @@ public class ActionController {
         			//MeetingId
         			String MeetingId = (String) req.getParameter("MeetingId");
         			String MeetingNumbr = (String) req.getParameter("Meeting");
-        			System.out.println("MeetingId-----"+MeetingId);
-        			System.out.println("EmpId----"+EmpId);
         			//list of action items 
         			List<Object[]>actionList=service.getMeetingAction(Long.parseLong(MeetingId),LoginType,EmpId);
         			req.setAttribute("actionList", actionList);

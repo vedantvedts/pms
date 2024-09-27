@@ -204,7 +204,7 @@ input[type=number] {
 <%
 
 FormatConverter fc=new FormatConverter(); 
-SimpleDateFormat sdf=fc.getRegularDateFormat();
+SimpleDateFormat rdf=fc.getRegularDateFormat();
 SimpleDateFormat sdf1=fc.getSqlDateFormat(); int addcount=0; 
 NFormatConvertion nfc=new NFormatConvertion();
 
@@ -418,10 +418,12 @@ for(Integer i:status){
                                               </table>
                                             </td>
                                             <td  style="text-align: center;">
+                                            <%if(fileStatus[10]!=null){ %>
                                             <button class="btn btn" type="button" style="background: #5d22ed;" onclick="openMilestoneModal('<%=fileStatus[0]%>','<%=fileStatus[1]%>','<%=fileStatus[4]%>')"
                                              data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Add Procurement Milestone">
                                             <i class="fa fa-list" aria-hidden="true" style="color: white;font-size: 17px;"></i>
                                             </button>
+                                            <%}else{ %> -- <%} %>
                                                <%
 												 if (pftsMilestoneList != null) {
 													   milestoneList = pftsMilestoneList.stream()
@@ -556,10 +558,18 @@ for(Integer i:status){
 											                            <input type="text" class="form-control custom-style" id="name_<%= data[0] %>" name="statusName" value="<%= data[2] %>" style="font-size: 16px; line-height:17px;font-weight: 500;">
 											                        </div>
 													                <div class="form-group col-md-3">
+													                 <%if(data[0].toString().equalsIgnoreCase("1")){ %>
+													                    <input type="text" class="form-control" id="date_<%= data[0] %>" name="probabaleDate" <%if(fileStatus[2]!=null){ %> value="<%=rdf.format(sdf1.parse(fileStatus[2].toString()))%>" <%}else{ %>value="-" <%} %> readonly style="line-height: 17px;">
+													                 <%}else{ %>
 													                    <input type="text" class="form-control date-picker" id="date_<%= data[0] %>" name="probabaleDate" style="line-height: 17px;">
+													                 <%} %>
 													                </div>
 													                <div class="form-group col-md-3">
-													                    <input type="text" class="form-control" id="date_<%= data[0] %>" value="NA" name="actualDate" disabled style="line-height: 17px;">
+													                  <%if(data[0].toString().equalsIgnoreCase("1")){ %>
+													                     <input type="text" class="form-control" id="date_<%= data[0] %>" name="actualDate" <%if(fileStatus[2]!=null){ %> value="<%=rdf.format(sdf1.parse(fileStatus[2].toString()))%>" <%}else{ %>value="-" <%} %> disabled style="line-height: 17px;">
+													                   <%}else{ %>
+													                     <input type="text" class="form-control" id="date_<%= data[0] %>" value="NA" name="actualDate" disabled style="line-height: 17px;">
+													                   <%} %>
 													                </div>
 													            </div>
 													        <% } 

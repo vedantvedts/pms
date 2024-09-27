@@ -186,7 +186,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid"
-													value="<%=obj[0]%>,<%=obj[3] %>"
+													value="<%=obj[0]%>,<%=obj[3] %>,<%=obj[2] %>"
 													formtarget="_blank">
 													<div class="cc-rockmenu">
 														<div class="rolling">
@@ -320,12 +320,12 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 							
 								<div class="col-md-12">
 									<div class="row">
-										<div class="col-md-5">
+										<div class="col-md-6">
 											<label style="font-size: 17px; color: #07689f; font-weight: bold;" >RFA No. </label>
-				                            <label><input type="text" class="form-control" name="RfaNo" id="RfaNo" readonly="readonly"></label>
+				                            <label><input type="text" class="form-control" name="RfaNo" id="RfaNo" readonly="readonly" style="width: 170%;"></label>
 										</div>
 										
-										<div class="col-md-7" style="margin-left: -15%">
+										<div class="col-md-6" style="margin-left: -10%">
 											<label style="font-size: 17px; color: #07689f; font-weight: bold;" >Date of Completion : </label><span class="mandatory" style="color: red;">*</span>
 				                            <label><input type="text"  id="fdate" name="fdate" value=""class="form-control"></label>
 										</div>

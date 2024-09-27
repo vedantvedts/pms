@@ -316,8 +316,8 @@ SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 SimpleDateFormat sdf = fc.getSqlDateFormat();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
 
-DecimalFormat df = new DecimalFormat("#.####");
-df.setMinimumFractionDigits(4); 
+DecimalFormat df = new DecimalFormat("#.##");
+df.setMinimumFractionDigits(2); 
 String statuscode = closure!=null?closure.getClosureStatusCode():null;
 
 
@@ -615,7 +615,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	</td>
 																	
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
-																		<input type="number" class="form-control item" name="SCRevisionCost"  value="<%=df.format(obj[4])%>" >
+																		<input type="number" class="form-control item" name="SCRevisionCost"  value="<%=df.format(Double.parseDouble(obj[4].toString()))%>" >
 																	</td>
 																	
 																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >

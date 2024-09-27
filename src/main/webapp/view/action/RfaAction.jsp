@@ -239,7 +239,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											<td class="left width">
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
-													formnovalidate="formnovalidate" name="rfaid" value="<%=obj[0]%>,<%=obj[3] %>" 
+													formnovalidate="formnovalidate" name="rfaid" value="<%=obj[0]%>,<%=obj[3] %>,<%=obj[2] %>" 
 													style="margin-left:10%;" formtarget="_blank"   data-toggle="tooltip" data-placement="top"  data-original-title="VIEW DOCUMENT">
 													<div class="cc-rockmenu">
 														<div class="rolling">

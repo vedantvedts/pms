@@ -59,8 +59,11 @@ List<Object[]> RfaActionList = (List<Object[]>)request.getAttribute("rfaActionLi
 String fdate=(String)request.getAttribute("fdate");
 String tdate=(String)request.getAttribute("tdate");  
 String rfatypeid=(String)request.getAttribute("rfatypeid");  
-
 String projectid = (String)request.getAttribute("projectid");
+String projectCode=ProjectList.stream().filter(project -> project[0] != null && project[0].toString().equals(projectid)) 
+									   .map(project -> project[4] != null ? project[4].toString() : null)
+									   .findFirst()
+									   .orElse(null);
 
 %>
 <div class="container-fluid">
@@ -196,18 +199,18 @@ String projectid = (String)request.getAttribute("projectid");
 								    			    </button>
 												    </td>
 													<td style="text-align: center;">
-													   <button class="editable-click bg-transparent"
-													formaction="RfaActionPrint.htm" formmethod="get"
-													formnovalidate="formnovalidate" name="rfaid" value="<%=obj[0]%>,<%=obj[1] %>" 
-													style="margin-left:10%;" formtarget="_blank"   data-toggle="tooltip" data-placement="top"  data-original-title="VIEW DOCUMENT">
-													<div class="cc-rockmenu">
-														<div class="rolling">
-															<figure class="rolling_icon">
-																<img src="view/images/preview3.png">
-															</figure>
+													<button class="editable-click bg-transparent"
+														formaction="RfaActionPrint.htm" formmethod="get"
+														formnovalidate="formnovalidate" name="rfaid" value="<%=obj[0]%>,<%=obj[1] %>,<%=projectCode %>" 
+														style="margin-left:10%;" formtarget="_blank"   data-toggle="tooltip" data-placement="top"  data-original-title="VIEW DOCUMENT">
+														<div class="cc-rockmenu">
+															<div class="rolling">
+																<figure class="rolling_icon">
+																	<img src="view/images/preview3.png">
+																</figure>
+															</div>
 														</div>
-													</div>
-												</button> 
+												   </button> 
 													</td>
 													</tr>
 													<%}} %>

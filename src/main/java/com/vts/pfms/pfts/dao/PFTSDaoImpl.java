@@ -1,5 +1,6 @@
 package com.vts.pfms.pfts.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -307,8 +308,8 @@ public  class PFTSDaoImpl implements PFTSDao{
 			return (List<Object[]>)query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new ArrayList<Object[]>();
 		}
-		return null;
 	}
 	
 	@Override
@@ -358,8 +359,8 @@ public  class PFTSDaoImpl implements PFTSDao{
 			return (List<Object[]>)query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new ArrayList<Object[]>();
 		}
-		return null;
 	}
 	
 	private static final String GETPFTSSCTUALDATE="SELECT PftsFileId,DemandNo,DemandDate,EPCDate,TocDate,OrderDate,PDRDate,DDRDate,CDRDate,FATDate,IntegrationDate,CriticalDate,AcceptanceDate,SATDate,DeliveryDate FROM pfts_file WHERE PftsFileId=:pftsFileId AND IsActive='1'";
@@ -387,5 +388,18 @@ public  class PFTSDaoImpl implements PFTSDao{
 		}
 		return null;
 	}
-
+	
+	private static final String GETFILEORDERLIST="SELECT * FROM pfts_file_order WHERE PftsFileId=:PftsFileId AND IsActive='1'";
+	@Override
+	public List<Object[]> getpftsFileOrder(String fileId) throws Exception {
+	    try {
+	    	Query query = manager.createNativeQuery(GETFILEORDERLIST);
+			query.setParameter("PftsFileId", fileId);
+			return (List<Object[]>)query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+	
 }

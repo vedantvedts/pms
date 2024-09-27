@@ -420,7 +420,7 @@ p,td,th
 		     <td style="width: 2%;text-align: center !important;"><%=++sl %></td>
 		     <td style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[2].toString())%></td>
 			 <td  style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[3].toString())%></td>
-			 <td style="width: 10%;text-align: right !important;font-weight: 400;"><%=df.format(obj[4])%></td>
+			 <td style="width: 10%;text-align: right !important;font-weight: 400;"><%=df.format(Double.parseDouble(obj[4].toString()))%></td>
 			 <td style="width: 10%;text-align: left !important;font-weight: 400;"><%= obj[6] != null ? obj[6] : "" %></td> 
 		
 		

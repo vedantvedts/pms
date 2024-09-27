@@ -2280,9 +2280,7 @@ public class MilestoneController {
 				if(AmendmentData.size()==0) {
 					AmendmentData=null;
 				}
-				
 			}catch (Exception e) {
-				
 				e.printStackTrace();  
 				logger.error(new Date() +" Inside AmendmentData.htm "+UserId, e);
 			}

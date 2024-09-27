@@ -78,6 +78,56 @@ public class CARSServiceImpl implements CARSService{
 	@Autowired
 	ActionDao actiondao;
 	
+	public static int saveFile1(Path uploadPath, String fileName, MultipartFile multipartFile) throws IOException {
+		logger.info(new Date() + "Inside SERVICE saveFile ");
+		int result = 1;
+
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
+		}
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			result = 0;
+			throw new IOException("Could not save image file: " + fileName, ioe);
+		} catch (Exception e) {
+			result = 0;
+			logger.error(new Date() + "Inside SERVICE saveFile " + e);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static int saveFileFromFileObject(Path uploadPath, String fileName, File file) throws IOException {
+	    logger.info(new Date() + " Inside SERVICE saveFileFromFileObject ");
+	    int result = 1;
+
+	    // Check if the directory exists; if not, create it
+	    if (!Files.exists(uploadPath)) {
+	        Files.createDirectories(uploadPath);
+	    }
+
+	    try {
+	        // Resolve the destination file path
+	        Path filePath = uploadPath.resolve(fileName);
+	        
+	        // Copy the file from the source to the destination
+	        Files.copy(file.toPath(), filePath, StandardCopyOption.REPLACE_EXISTING);
+	        
+	    } catch (IOException ioe) {
+	        result = 0;
+	        throw new IOException("Could not save file: " + fileName, ioe);
+	    } catch (Exception e) {
+	        result = 0;
+	        logger.error(new Date() + " Inside SERVICE saveFileFromFileObject " + e);
+	        e.printStackTrace();
+	    }
+	    
+	    return result;
+	}
+
+	
 	@Override
 	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception {
 		
@@ -490,13 +540,14 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\SoC\\";
+//		String path = "CARS\\SoC\\";
+		Path carsPath = Paths.get(uploadpath,"CARS", "SoC");
 		
 		// To upload file path for SoO
 		if (!sooFile.isEmpty()) {
 			soc.setSoOUpload("SoO-" + timestampstr + "."
 					+ FilenameUtils.getExtension(sooFile.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getSoOUpload(), sooFile);
+			saveFile1(carsPath, soc.getSoOUpload(), sooFile);
 		} else {
 			soc.setSoOUpload(null);
 		}
@@ -505,7 +556,7 @@ public class CARSServiceImpl implements CARSService{
 		if (!frFile.isEmpty()) {
 			soc.setFRUpload("FR-" + timestampstr + "."
 					+ FilenameUtils.getExtension(frFile.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getFRUpload(), frFile);
+			saveFile1(carsPath, soc.getFRUpload(), frFile);
 		} else {
 			soc.setFRUpload(null);
 		}
@@ -514,7 +565,7 @@ public class CARSServiceImpl implements CARSService{
 		if (!executionPlan.isEmpty()) {
 			soc.setExecutionPlan("ExePlan-" + timestampstr + "."
 					+ FilenameUtils.getExtension(executionPlan.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getExecutionPlan(), executionPlan);
+			saveFile1(carsPath, soc.getExecutionPlan(), executionPlan);
 		} else {
 			soc.setExecutionPlan(null);
 		}
@@ -534,27 +585,28 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\SoC\\";
+//		String path = "CARS\\SoC\\";
+		Path carsPath = Paths.get(uploadpath,"CARS", "SoC");
 		
 		// To upload file path for SoO
 		if (!sooFile.isEmpty()) {
 			soc.setSoOUpload("SoO-" + timestampstr + "."
 					+ FilenameUtils.getExtension(sooFile.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getSoOUpload(), sooFile);
+			saveFile1(carsPath, soc.getSoOUpload(), sooFile);
 		}
 		
 		// To upload file path for Feasibility report
 		if (!frFile.isEmpty()) {
 			soc.setFRUpload("FR-" + timestampstr + "."
 					+ FilenameUtils.getExtension(frFile.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getFRUpload(), frFile);
+			saveFile1(carsPath, soc.getFRUpload(), frFile);
 		}
 		
 		// To upload file path for Execution plan
 		if (!executionPlan.isEmpty()) {
 			soc.setExecutionPlan("ExePlan-" + timestampstr + "."
 					+ FilenameUtils.getExtension(executionPlan.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getExecutionPlan(), executionPlan);
+			saveFile1(carsPath, soc.getExecutionPlan(), executionPlan);
 		}
 	
 		// Converting amount from lakhs to rupees
@@ -600,17 +652,19 @@ public class CARSServiceImpl implements CARSService{
 	        File file=new File(path +File.separator+ filename+".pdf");
 	        
 	        String fname="RSQR-"+carsInitiationId;
-			String filepath = "CARS\\RSQR";
+//			String filepath = "CARS\\RSQR";
+			Path carsPath = Paths.get(uploadpath, "CARS", "RSQR");
+			Path carsPath1 = Paths.get(uploadpath, "CARS", "RSQR",fname+".pdf");
 			int count=0;
-			while(new File(uploadpath+filepath+"\\"+fname+".pdf").exists())
+			while(carsPath1.toFile().exists())
 			{
 				fname = "RSQR-"+carsInitiationId;
 				fname = fname+" ("+ ++count+")";
 			}
 	        
-	        saveFile(uploadpath+filepath, fname+".pdf", file);
-	        
-	        dao.carsRSQRFreeze(carsInitiationId, filepath+"\\"+fname+".pdf");
+			saveFileFromFileObject(carsPath, fname+".pdf", file);
+			Path carsPath2 = Paths.get("CARS", "RSQR", fname+".pdf");
+	        dao.carsRSQRFreeze(carsInitiationId, carsPath2.toString());
 	        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
 	        Files.delete(pathOfFile);		
 			
@@ -1204,13 +1258,14 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\SoC\\";
+//		String path = "CARS\\SoC\\";
+		Path carsPath = Paths.get(uploadpath,"CARS" ,"SoC");
 		
 		String momupload = null;
 		// To upload file path for SoO
 		if (!momFile.isEmpty()) {
 			momupload = "MoM-" + timestampstr + "."+ FilenameUtils.getExtension(momFile.getOriginalFilename());
-			saveFile(uploadpath + path, momupload, momFile);
+			saveFile1(carsPath, momupload, momFile);
 		}
 		
 		long result = dao.carsSoCUploadMoM(momupload, carsInitiationId);
@@ -1382,14 +1437,15 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\Other Docs\\";
+//		String path = "CARS\\Other Docs\\";
+		Path carsPath = Paths.get(uploadpath, "CARS", "Other Docs");
 		
 		long carsInitiationId = doc.getCARSInitiationId();
 		// To upload file path for Flag-A
 		if (!attatchFlagA.isEmpty()) {
 			doc.setAttachFlagA("CSFlagA-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagA.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagA(), attatchFlagA);
+			saveFile1(carsPath, doc.getAttachFlagA(), attatchFlagA);
 		} else {
 			doc.setAttachFlagA(null);
 		}
@@ -1398,7 +1454,7 @@ public class CARSServiceImpl implements CARSService{
 		if (!attatchFlagB.isEmpty()) {
 			doc.setAttachFlagB("CSFlagB-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagB.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagB(), attatchFlagB);
+			saveFile1(carsPath, doc.getAttachFlagB(), attatchFlagB);
 		} else {
 			doc.setAttachFlagB(null);
 		}
@@ -1407,7 +1463,7 @@ public class CARSServiceImpl implements CARSService{
 		if (!attatchFlagC.isEmpty()) {
 			doc.setAttachFlagC("CSFlagC-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagC.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagC(), attatchFlagC);
+			saveFile1(carsPath, doc.getAttachFlagC(), attatchFlagC);
 		} else {
 			doc.setAttachFlagC(null);
 		}
@@ -1441,27 +1497,28 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\Other Docs\\";
+//		String path = "CARS\\Other Docs\\";
+		Path carsPath = Paths.get(uploadpath, "CARS", "Other Docs");
 		
 		// To upload file path for Flag-A
 		if (!attatchFlagA.isEmpty()) {
 			doc.setAttachFlagA("CSFlagA-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagA.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagA(), attatchFlagA);
+			saveFile1(carsPath, doc.getAttachFlagA(), attatchFlagA);
 		} 
 		
 		// To upload file path for Flag-B
 		if (!attatchFlagB.isEmpty()) {
 			doc.setAttachFlagB("CSFlagB-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagB.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagB(), attatchFlagB);
+			saveFile1(carsPath, doc.getAttachFlagB(), attatchFlagB);
 		}
 		
 		// To upload file path for Flag-C
 		if (!attatchFlagC.isEmpty()) {
 			doc.setAttachFlagC("CSFlagC-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagC.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagC(), attatchFlagC);
+			saveFile1(carsPath, doc.getAttachFlagC(), attatchFlagC);
 		}
 		
 		return dao.editCARSOtherDocDetails(doc);
@@ -1652,13 +1709,14 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\Other Docs\\";
+//		String path = "CARS\\Other Docs\\";
+		Path carsPath = Paths.get(uploadpath, "CARS", "Other Docs");
 		
 		String otherdocupload = null;
 		// To upload file path for Contract Signature form
 		if (!otherdocfile.isEmpty()) {
 			otherdocupload = "Contract Signature-" + timestampstr + "."+ FilenameUtils.getExtension(otherdocfile.getOriginalFilename());
-			saveFile(uploadpath + path, otherdocupload, otherdocfile);
+			saveFile1(carsPath, otherdocupload, otherdocfile);
 		}
 		
 		long result = dao.carsOtherDocUpload(otherdocupload, otherDocDetailsId);
@@ -1684,14 +1742,15 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\Other Docs\\";
+//		String path = "CARS\\Other Docs\\";
+		Path carsPath = Paths.get(uploadpath, "CARS", "Other Docs");
 		
 		long carsInitiationId = doc.getCARSInitiationId();
 		// To upload file path for Flag-A
 		if (attatchFlagA!=null && !attatchFlagA.isEmpty()) {
 			doc.setAttachFlagA("PaymentFlagA-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagA.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagA(), attatchFlagA);
+			saveFile1(carsPath, doc.getAttachFlagA(), attatchFlagA);
 		} else {
 			doc.setAttachFlagA(null);
 		}
@@ -1700,7 +1759,7 @@ public class CARSServiceImpl implements CARSService{
 		if (attatchFlagB!=null && !attatchFlagB.isEmpty()) {
 			doc.setAttachFlagB("PaymentFlagB-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagB.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagB(), attatchFlagB);
+			saveFile1(carsPath, doc.getAttachFlagB(), attatchFlagB);
 		} else {
 			doc.setAttachFlagB(null);
 		}
@@ -1709,7 +1768,7 @@ public class CARSServiceImpl implements CARSService{
 		if (attatchFlagC!=null && !attatchFlagC.isEmpty()) {
 			doc.setAttachFlagC("PaymentFlagC-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagC.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagC(), attatchFlagC);
+			saveFile1(carsPath, doc.getAttachFlagC(), attatchFlagC);
 		} else {
 			doc.setAttachFlagC(null);
 		}
@@ -1743,27 +1802,28 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\Other Docs\\";
+//		String path = "CARS\\Other Docs\\";
+		Path carsPath = Paths.get(uploadpath, "CARS", "Other Docs");
 		
 		// To upload file path for Flag-A
 		if (attatchFlagA!=null && !attatchFlagA.isEmpty()) {
 			doc.setAttachFlagA("PaymentFlagA-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagA.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagA(), attatchFlagA);
+			saveFile1(carsPath, doc.getAttachFlagA(), attatchFlagA);
 		} 
 		
 		// To upload file path for Flag-B
 		if (attatchFlagB!=null && !attatchFlagB.isEmpty()) {
 			doc.setAttachFlagB("PaymentFlagB-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagB.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagB(), attatchFlagB);
+			saveFile1(carsPath, doc.getAttachFlagB(), attatchFlagB);
 		}
 		
 		// To upload file path for Flag-C
 		if (attatchFlagC!=null && !attatchFlagC.isEmpty()) {
 			doc.setAttachFlagC("PaymentFlagC-" + timestampstr + "."
 					+ FilenameUtils.getExtension(attatchFlagC.getOriginalFilename()));
-			saveFile(uploadpath + path, doc.getAttachFlagC(), attatchFlagC);
+			saveFile1(carsPath, doc.getAttachFlagC(), attatchFlagC);
 		}
 		
 		return dao.editCARSOtherDocDetails(doc);
@@ -1966,13 +2026,14 @@ public class CARSServiceImpl implements CARSService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "CARS\\Other Docs\\";
+//		String path = "CARS\\Other Docs\\";
+		Path carsPath = Paths.get(uploadpath, "CARS", "Other Docs");
 		
 		String otherdocupload = null;
 		// To upload file path for Contract Signature form
 		if (!otherdocfile.isEmpty()) {
 			otherdocupload = "Payment Approval-" + timestampstr + "."+ FilenameUtils.getExtension(otherdocfile.getOriginalFilename());
-			saveFile(uploadpath + path, otherdocupload, otherdocfile);
+			saveFile1(carsPath, otherdocupload, otherdocfile);
 		}
 		
 		long result = dao.carsOtherDocUpload(otherdocupload, otherDocDetailsId);

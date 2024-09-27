@@ -87,7 +87,7 @@ String Project="";
 											if(obj[0].toString().equalsIgnoreCase(RfaAction[2].toString())){
 												Project=obj[0].toString();
 											%>
-											<input class="form-control" value="<%=obj[4].toString()%>" readonly="readonly">
+											<input class="form-control" name="projectCode" value="<%=obj[4].toString()%>" readonly="readonly">
 											<%}} %>
 			  						
 		                        </div>
@@ -97,7 +97,7 @@ String Project="";
 		                       <div class="form-group">
 		                            <label class="control-label"> RFA No.</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                            <input  class="form-control"  name="rfano" id="rfano" disabled="disabled"  value="<%=RfaAction[3]%>">	
+		                            <input  class="form-control"  name="rfano" id="rfano" readonly="readonly"  value="<%=RfaAction[3]%>">	
 		                      </div>
 		                   </div> 
 		                    

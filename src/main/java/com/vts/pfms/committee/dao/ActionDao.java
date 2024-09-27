@@ -111,7 +111,7 @@ public interface ActionDao {
 	public List<Object[]> PriorityList() throws Exception;
 	public Long RfaActionSubmit(RfaAction rfa) throws Exception;
 	public Object[] GetDivisionCode(String Division) throws Exception;
-	public Long GetRfaCount(String rfatypeid) throws Exception;
+	public Long GetRfaCount(String rfatypeid, Long projectId) throws Exception;
 	
 	public Object[] RfaActionEdit(String rfaid) throws Exception;
 	//public int RfaInspectionEdit(String rfaid) throws Exception;

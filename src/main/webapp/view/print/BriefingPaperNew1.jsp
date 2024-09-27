@@ -2443,7 +2443,9 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<th style="width: 20px; ">L</th>
 									<th style="width: 325px;">Action Plan </th>	
 									<th style="width: 100px;" >PDC</th>	
+								<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
 									<th style="width: 210px;">Responsibility </th>
+									<%} %>
 									<th style="width: 50px;">Progress </th>
 <!-- 					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
  -->					                <th style="width: 230px;">Remarks</th>
@@ -2543,7 +2545,11 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												<%=sdf.format(sdf1.parse(obj[29].toString())) %>
 											
 											</td>
+																			<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
+											
 											<td ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
+											
+											<%} %>
 											<td style="text-align: center"><%=obj[16] %>%</td>		
 											<% 
 												LocalDate StartDate = LocalDate.parse(obj[7].toString());

@@ -1013,12 +1013,13 @@ public class ActionDaoImpl implements ActionDao{
 		
 	}
     
-	private static final String GETRFACOUNT="SELECT COUNT(RfaId) FROM pfms_rfa_action WHERE IsActive='1' AND rfatypeid=:rfatypeid";
+	private static final String GETRFACOUNT="SELECT COUNT(RfaId) FROM pfms_rfa_action WHERE IsActive='1' AND rfatypeid=:rfatypeid AND projectId=:projectId";
 	@Override
-	public Long GetRfaCount(String rfatypeid) throws Exception {
+	public Long GetRfaCount(String rfatypeid, Long projectId) throws Exception {
 		
 		Query query = manager.createNativeQuery(GETRFACOUNT);
 		query.setParameter("rfatypeid", rfatypeid);
+		query.setParameter("projectId", projectId);
 		Object Count = (Object)query.getSingleResult();
 		Long RfaCount=0l ;
 		if(Count==null) {

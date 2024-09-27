@@ -2583,7 +2583,10 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 									<th style="width: 50px; ">L</th>
 									<th style="width: 275px;">Action Plan </th>	
 									<th style="width: 110px;" >PDC</th>	
+									
+									<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
 									<th style="width: 210px;">Responsibility </th>
+									<%} %>
 									<th style="width: 50px;">Progress </th>
 					                <th style="width: 50px;padding-right: 5px !important; ">Status(DD)</th>
 					             	<!-- <th style="width: 100px;" >FO ( &#x20B9; Cr)</th> -->
@@ -2683,7 +2686,10 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 												
 											
 											</td>
+																				<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
+											
 											<td ><%=obj[24] %>, <%=obj[25] %></td>
+											<%} %>
 											<td style="text-align: center"><%=obj[16] %>%</td>	
 											<% 
 												LocalDate StartDate = LocalDate.parse(obj[7].toString());

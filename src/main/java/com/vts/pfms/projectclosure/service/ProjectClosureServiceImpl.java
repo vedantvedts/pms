@@ -83,12 +83,30 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	
 	@Autowired
 	ProjectDao projectdao;
-	
-	
-	
-	
+
 	@Autowired
 	PMSLogoUtil LogoUtil;
+	
+	public static int saveFile1(Path uploadPath, String fileName, MultipartFile multipartFile) throws IOException {
+		logger.info(new Date() + "Inside SERVICE saveFile ");
+		int result = 1;
+
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
+		}
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			result = 0;
+			throw new IOException("Could not save image file: " + fileName, ioe);
+		} catch (Exception e) {
+			result = 0;
+			logger.error(new Date() + "Inside SERVICE saveFile " + e);
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException {
 		logger.info(new Date() + "Inside SERVICE saveFile ");
@@ -158,13 +176,14 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "Project-Closure\\SoC\\";
+//		String path = "Project-Closure\\SoC\\";
+		Path closurePath = Paths.get(uploadpath, "Project-Closure", "SoC");
 		
 		// To upload file path for monitoringCommitteeAttach
 		if (!monitoringCommitteeAttach.isEmpty()) {
 			soc.setMonitoringCommitteeAttach("MinutesOfMeeting-" + timestampstr + "."
 					+ FilenameUtils.getExtension(monitoringCommitteeAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getMonitoringCommitteeAttach(), monitoringCommitteeAttach);
+			saveFile1(closurePath, soc.getMonitoringCommitteeAttach(), monitoringCommitteeAttach);
 		} else {
 			soc.setMonitoringCommitteeAttach(null);
 		}
@@ -173,7 +192,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		if (!lessonsLearnt.isEmpty()) {
 			soc.setLessonsLearnt("LessonsLearnt-" + timestampstr + "."
 					+ FilenameUtils.getExtension(lessonsLearnt.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getLessonsLearnt(), lessonsLearnt);
+			saveFile1(closurePath, soc.getLessonsLearnt(), lessonsLearnt);
 		} else {
 			soc.setLessonsLearnt(null);
 		}
@@ -197,20 +216,21 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "Project-Closure\\SoC\\";
+//		String path = "Project-Closure\\SoC\\";
+		Path closurePath = Paths.get(uploadpath, "Project-Closure", "SoC");
 		
 		// To upload file path for monitoringCommitteeAttach
 		if (!monitoringCommitteeAttach.isEmpty()) {
 			soc.setMonitoringCommitteeAttach("MinutesOfMeeting-" + timestampstr + "."
 					+ FilenameUtils.getExtension(monitoringCommitteeAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getMonitoringCommitteeAttach(), monitoringCommitteeAttach);
+			saveFile1(closurePath, soc.getMonitoringCommitteeAttach(), monitoringCommitteeAttach);
 		} 
 		
 		// To upload file path for monitoringCommitteeAttach
 		if (!lessonsLearnt.isEmpty()) {
 			soc.setLessonsLearnt("LessonsLearnt-" + timestampstr + "."
 					+ FilenameUtils.getExtension(lessonsLearnt.getOriginalFilename()));
-			saveFile(uploadpath + path, soc.getLessonsLearnt(), lessonsLearnt);
+			saveFile1(closurePath, soc.getLessonsLearnt(), lessonsLearnt);
 		} 
 		
 		return dao.editProjectClosureSoC(soc);
@@ -468,7 +488,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			long closureId = dto.getClosureId();
 			String details = dto.getDetails();
 
-
+			Path closurePath = Paths.get(uploadpath, "Project-Closure", "ACP");
 			ProjectClosureACP acp = dao.getProjectClosureACPByProjectId(closureId+"");
 			String firstime = "N";
 			if(acp==null) {
@@ -486,13 +506,13 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				Timestamp instant = Timestamp.from(Instant.now());
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-				String path = "Project-Closure\\ACP\\";
+//				String path = "Project-Closure\\ACP\\";
 
 				// To upload file path for monitoringCommitteeAttach
 				if (!monitoringCommitteeAttach.isEmpty()) {
 					acp.setMonitoringCommitteeAttach("MinutesOfMeeting-" + timestampstr + "."
 							+ FilenameUtils.getExtension(monitoringCommitteeAttach.getOriginalFilename()));
-					saveFile(uploadpath + path, acp.getMonitoringCommitteeAttach(), monitoringCommitteeAttach);
+					saveFile1(closurePath, acp.getMonitoringCommitteeAttach(), monitoringCommitteeAttach);
 				} 
 			}
 			else if(details.equalsIgnoreCase("trialresults")) {
@@ -506,13 +526,13 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				Timestamp instant = Timestamp.from(Instant.now());
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-				String path = "Project-Closure\\ACP\\";
+//				String path = "Project-Closure\\ACP\\";
 
 				// To upload file path for Certificate from lab
 				if (!labCertificateAttach.isEmpty()) {
 					acp.setCertificateFromLab("Lab-Certificate-" + timestampstr + "."
 							+ FilenameUtils.getExtension(labCertificateAttach.getOriginalFilename()));
-					saveFile(uploadpath + path, acp.getCertificateFromLab(), labCertificateAttach);
+					saveFile1(closurePath, acp.getCertificateFromLab(), labCertificateAttach);
 				}
 			}
 
@@ -646,13 +666,14 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				Timestamp instant = Timestamp.from(Instant.now());
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-				String path = "Project-Closure\\TPCR\\Appendices\\";
+//				String path = "Project-Closure\\TPCR\\Appendices\\";
+				Path closurePath = Paths.get(uploadpath, "Project-Closure", "TPCR", "Appendices");
 
 				// To upload file path for monitoringCommitteeAttach
 				if (!dto.getAttachment()[i].isEmpty()) {
 					results.setAttachment("TrialResult-" + timestampstr + "."
 							+ FilenameUtils.getExtension(dto.getAttachment()[i].getOriginalFilename()));
-					saveFile(uploadpath + path, results.getAttachment(), dto.getAttachment()[i]);
+					saveFile1(closurePath, results.getAttachment(), dto.getAttachment()[i]);
 				}else {
 					results.setAttachment(dto.getAttatchmentName()!=null?dto.getAttatchmentName()[i]:null);
 				}
@@ -976,13 +997,14 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-		String path = "Project-Closure\\Check-List\\";
+//		String path = "Project-Closure\\Check-List\\";
+		Path closurePath = Paths.get(uploadpath, "Project-Closure", "Check-List");
 		
 		// To upload file path for qARMilestoneAttach
 		if (!qARMilestoneAttach.isEmpty()) {
 			clist.setQARMilestone("QARMilestone" + timestampstr + "."
 					+ FilenameUtils.getExtension(qARMilestoneAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getQARMilestone(), qARMilestoneAttach);
+			saveFile1(closurePath, clist.getQARMilestone(), qARMilestoneAttach);
 		} else {
 			clist.setQARMilestone(null);
 		}
@@ -991,7 +1013,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		if (!qARCostBreakupAttach.isEmpty()) {
 			clist.setQARCostBreakup("QARCostBreakup" + timestampstr + "."
 					+ FilenameUtils.getExtension(qARCostBreakupAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getQARCostBreakup(), qARCostBreakupAttach);
+			saveFile1(closurePath, clist.getQARCostBreakup(), qARCostBreakupAttach);
 		} else {
 			clist.setQARCostBreakup(null);
 		}
@@ -1001,7 +1023,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		if (!qARNCItemsAttach.isEmpty()) {
 			clist.setQARNCItems("QARNCItems" + timestampstr + "."
 					+ FilenameUtils.getExtension(qARNCItemsAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getQARNCItems(), qARNCItemsAttach);
+			saveFile1(closurePath, clist.getQARNCItems(), qARNCItemsAttach);
 		} else {
 			clist.setQARNCItems(null);
 		}
@@ -1010,7 +1032,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		if (!equipProcuredAttach.isEmpty()) {
 			clist.setEquipProcured("EquipProcuredAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipProcuredAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getEquipProcured(), equipProcuredAttach);
+			saveFile1(closurePath, clist.getEquipProcured(), equipProcuredAttach);
 		} else {
 			clist.setEquipProcured(null);
 		}
@@ -1019,7 +1041,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		if (!equipProcuredBeforePDCAttach.isEmpty()) {
 			clist.setEquipProcuredBeforePDCAttach("EquipProcuredBeforePDCAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipProcuredBeforePDCAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
+			saveFile1(closurePath, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
 		} else {
 			clist.setEquipProcuredBeforePDCAttach(null);
 		}
@@ -1117,20 +1139,21 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-        String path = "Project-Closure\\Check-List\\";
+//        String path = "Project-Closure\\Check-List\\";
+        Path closurePath = Paths.get(uploadpath, "Project-Closure", "Check-List");
 		
 		// To upload file path for qARMilestoneAttach
 		if (!qARMilestoneAttach.isEmpty()) {
 			clist.setQARMilestone("QARMilestone" + timestampstr + "."
 					+ FilenameUtils.getExtension(qARMilestoneAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getQARMilestone(), qARMilestoneAttach);
+			saveFile1(closurePath, clist.getQARMilestone(), qARMilestoneAttach);
 		} 
 		
 		// To upload file path for qARCostBreakupAttach
 		if (!qARCostBreakupAttach.isEmpty()) {
 			clist.setQARCostBreakup("QARCostBreakup" + timestampstr + "."
 					+ FilenameUtils.getExtension(qARCostBreakupAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getQARCostBreakup(), qARCostBreakupAttach);
+			saveFile1(closurePath, clist.getQARCostBreakup(), qARCostBreakupAttach);
 		} 
 		
 		
@@ -1138,20 +1161,20 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		if (!qARNCItemsAttach.isEmpty()) {
 			clist.setQARNCItems("QARNCItems" + timestampstr + "."
 					+ FilenameUtils.getExtension(qARNCItemsAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getQARNCItems(), qARNCItemsAttach);
+			saveFile1(closurePath, clist.getQARNCItems(), qARNCItemsAttach);
 		} 
 		
 		
 		if (!equipProcuredAttach.isEmpty()) {
 			clist.setEquipProcured("EquipProcuredAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipProcuredAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getEquipProcured(), equipProcuredAttach);
+			saveFile1(closurePath, clist.getEquipProcured(), equipProcuredAttach);
 		} 
 		
 		if (!equipProcuredBeforePDCAttach.isEmpty()) {
 			clist.setEquipProcuredBeforePDCAttach("EquipProcuredBeforePDCAttach" + timestampstr + "."
 					+ FilenameUtils.getExtension(equipProcuredBeforePDCAttach.getOriginalFilename()));
-			saveFile(uploadpath + path, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
+			saveFile1(closurePath, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
 		} 
 		
 		
@@ -1319,13 +1342,14 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				Timestamp instant = Timestamp.from(Instant.now());
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
-				String path = "Project-Closure\\TPCR\\";
+//				String path = "Project-Closure\\TPCR\\";
+				Path closurePath = Paths.get(uploadpath, "Project-Closure", "TPCR");
 
 				
 				if (!dto.getAttachment()[i].isEmpty()) {
 					appnd.setDocumentAttachment("TPCR-" + timestampstr + "."
 							+ FilenameUtils.getExtension(dto.getAttachment()[i].getOriginalFilename()));
-					saveFile(uploadpath + path, appnd.getDocumentAttachment(), dto.getAttachment()[i]);
+					saveFile1(closurePath, appnd.getDocumentAttachment(), dto.getAttachment()[i]);
 				}else {
 					appnd.setDocumentAttachment(dto.getAttatchmentName()[i]);
 				}
@@ -1644,22 +1668,25 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			req.getRequestDispatcher("/view/print/ProjectTechClosureDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();                  
 	        
-	        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")) ; 
+	        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")); 
 	         
 	        File file=new File(path +File.separator+ filename+".pdf");
 	        
 	        String fname="TCRFreeze-"+TechclosureId;
-			String filepath = "Project-Closure\\TPCR";
+//			String filepath = "Project-Closure\\TPCR";
+	        Path closurePath = Paths.get(uploadpath, "Project-Closure", "TPCR");
 			int count=0;
-			while(new File(uploadpath+filepath+"\\"+fname+".pdf").exists())
+			while(closurePath.resolve(fname+".pdf").toFile().exists())
 			{
 				fname = "TCRFreeze-"+TechclosureId;
 				fname = fname+" ("+ ++count+")";
 			}
 	        
-	        saveFile(uploadpath+filepath, fname+".pdf", file);
+			saveFileFromFileObject(closurePath, fname+".pdf", file);
 	        
-	        dao.TCRFreeze(TechclosureId, filepath+"\\"+fname+".pdf");
+			Path closurePath1 = Paths.get("Project-Closure", "TPCR", fname+".pdf");
+//	        dao.TCRFreeze(TechclosureId, filepath+"\\"+fname+".pdf");
+	        dao.TCRFreeze(TechclosureId, closurePath1.toString());
 	        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
 	        Files.delete(pathOfFile);		
 			
@@ -1667,6 +1694,35 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			e.printStackTrace();
 		}
 	}
+	
+	public static int saveFileFromFileObject(Path uploadPath, String fileName, File file) throws IOException {
+	    logger.info(new Date() + " Inside SERVICE saveFileFromFileObject ");
+	    int result = 1;
+
+	    // Check if the directory exists; if not, create it
+	    if (!Files.exists(uploadPath)) {
+	        Files.createDirectories(uploadPath);
+	    }
+
+	    try {
+	        // Resolve the destination file path
+	        Path filePath = uploadPath.resolve(fileName);
+	        
+	        // Copy the file from the source to the destination
+	        Files.copy(file.toPath(), filePath, StandardCopyOption.REPLACE_EXISTING);
+	        
+	    } catch (IOException ioe) {
+	        result = 0;
+	        throw new IOException("Could not save file: " + fileName, ioe);
+	    } catch (Exception e) {
+	        result = 0;
+	        logger.error(new Date() + " Inside SERVICE saveFileFromFileObject " + e);
+	        e.printStackTrace();
+	    }
+	    
+	    return result;
+	}
+
 	
 	public void saveFile(String uploadpath, String fileName, File fileToSave) throws IOException 
 	{

@@ -431,6 +431,9 @@ public class ActionServiceImpl implements ActionService {
 			try
 			{
 				lab=dao.LabDetails();
+				System.out.println(main.toString());
+				System.out.println(assign.toString());
+				
 				
 				if(main.getActionType().toString().equalsIgnoreCase("S")) {
 				comishortname = dao.CommitteeShortName(main.getScheduleMinutesId());
@@ -463,9 +466,9 @@ public class ActionServiceImpl implements ActionService {
 					}else {
 						count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 					}
-				}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+				}else if(main.getProjectId().equalsIgnoreCase("0")&& comishortname!=null  && comishortname[1].toString().equalsIgnoreCase("CCM")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-				}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+				}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 				}else {
 					count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
@@ -478,6 +481,7 @@ public class ActionServiceImpl implements ActionService {
 			}
 			catch (Exception e) 
 			{	
+				e.printStackTrace();
 				logger.info(new Date() +"Inside SERVICE ActionMainInsert ",e);	
 				return unsuccess;
 			}
@@ -501,9 +505,9 @@ public class ActionServiceImpl implements ActionService {
 				}else {
 					Project="/"+ProjectCode+"/MIL/";
 				}
-			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("CCM")) {
 				Project="/"+comishortname[1]+"/";
-			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 				Project="/"+comishortname[1]+"/";
 			}else{
 				Project="/GEN/";
@@ -1706,7 +1710,7 @@ public class ActionServiceImpl implements ActionService {
 				RfaTypeName=obj[1].toString();
 			}
 		}
-		Long RfaCount = dao.GetRfaCount(rfa.getRfaTypeId());
+		Long RfaCount = dao.GetRfaCount(rfa.getRfaTypeId(),rfa.getProjectId());
 		String RfaNo=null;
 		if(RfaCount<9) {
 		    RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + ("0"+(RfaCount+1));
@@ -1716,8 +1720,8 @@ public class ActionServiceImpl implements ActionService {
 
 //		String Path = LabCode+"\\RFAFiles\\";
 		
-		Path rfaPath = Paths.get(uploadpath,LabCode, "RFAFiles");
-		Path rfaPath1 = Paths.get(LabCode, "RFAFiles");
+		Path rfaPath = Paths.get(uploadpath,LabCode, "RFAFiles",project,RfaNo.replace("/", "_"));
+		Path rfaPath1 = Paths.get(LabCode, "RFAFiles",project,RfaNo.replace("/", "_"));
 		
 		RfaAction rfa1= new RfaAction();
 		rfa1.setRfaDate(rfa.getRfaDate());
@@ -1809,8 +1813,8 @@ public class ActionServiceImpl implements ActionService {
 		
 		String LabCode = rfa.getLabCode();
 //		String Path = LabCode + "\\RFAFiles\\";
-		Path rfaPath = Paths.get(uploadpath,LabCode, "RFAFiles");
-		Path rfaPath1 = Paths.get(LabCode, "RFAFiles");
+		Path rfaPath = Paths.get(uploadpath,LabCode, "RFAFiles",rfa.getProjectCode(),rfa.getRfaNo().replace("/", "_"));
+		Path rfaPath1 = Paths.get(LabCode, "RFAFiles",rfa.getProjectCode(),rfa.getRfaNo().replace("/", "_"));
 
 		RfaAction action = new RfaAction();
 			action.setRfaDate(rfa.getRfaDate());
@@ -1869,7 +1873,7 @@ public class ActionServiceImpl implements ActionService {
 			assign.setCreatedBy(rfa.getModifiedBy());
 			assign.setCreatedDate(sdf.format(new Date()));
 			assign.setIsActive(1);
-			dao.RfaAssignInsert(assign);                      //again it insert to table 
+			dao.RfaAssignInsert(assign);  //again it insert to table 
 		}
 		//for assignee emplist edit end
 		
@@ -1885,7 +1889,7 @@ public class ActionServiceImpl implements ActionService {
 			rfaCC.setModifiedBy(rfa.getModifiedBy());
 			rfaCC.setModifiedDate(sdf.format(new Date()));
 			rfaCC.setIsActive(1);
-			dao.rfaCCInsert(rfaCC);                      //again it insert to table 
+			dao.rfaCCInsert(rfaCC); //again it insert to table 
 		}
 		//for CC emplist edit end
 		
