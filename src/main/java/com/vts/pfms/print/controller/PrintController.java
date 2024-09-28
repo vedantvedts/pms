@@ -822,7 +822,8 @@ public class PrintController {
 	    	req.setAttribute("AppFilesPath",ApplicationFilesDrive);
 	    	req.setAttribute("projectLabCode",projectLabCode);
 	    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));    
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));  
+	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
@@ -921,6 +922,7 @@ public class PrintController {
 	    	converterProperties.setFontProvider(dfp);
 	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
 	        Path leftLogoPath = Paths.get(env.getProperty("ApplicationFilesDrive"),"images","lablogos","drdo.png");
+	        req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
 	        Path rightLogoPath = Paths.get(env.getProperty("ApplicationFilesDrive"),"images","lablogos",projectLabCode.toLowerCase()+".png");
           //  ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
            // ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+projectLabCode.toLowerCase()+".png");
@@ -2618,6 +2620,7 @@ public class PrintController {
     		req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
 	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
 	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
 	    	Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
 	    	req.setAttribute("nextMeetVenue", nextmeetVenue);

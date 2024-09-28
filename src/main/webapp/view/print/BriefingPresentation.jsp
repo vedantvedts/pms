@@ -115,6 +115,7 @@
 	}else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 		before6months = LocalDate.now().minusMonths(6);
 	} 
+	String thankYouImg = (String)request.getAttribute("thankYouImg");
 	List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 	Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
 	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
@@ -3410,9 +3411,12 @@
 
 			<div class="carousel-item ">
 				<div class="content" style="border: 0px solid black;padding-top: 50px;border-radius: 20px;position: relative;height: 93vh !important;">
-					<div style=" position: absolute ;top: 40%;left: 34%;">
+					<!-- <div style=" position: absolute ;top: 40%;left: 34%;">
 						<h1 style="font-size: 5rem;">Thank You !</h1>
-					</div>
+					</div> -->
+					<div class="content" >
+					<img class="" style="width: 100%; height: 100%;" <%if(thankYouImg!=null ){ %> src="data:image/*;base64,<%=thankYouImg%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
+				</div>
 				</div>
 			</div>
 		<!-- ---------------------------------------- P-14  Thank you Div ----------------------------------------------------- -->

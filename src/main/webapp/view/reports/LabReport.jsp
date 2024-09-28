@@ -1,0 +1,850 @@
+<%@page import="java.io.File"%>
+<%@page import="org.apache.commons.io.FileUtils"%>
+<%@page import="java.nio.file.Paths"%>
+<%@page import="java.nio.file.Path"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.ibm.icu.text.DecimalFormat"%>
+<%@page import="com.vts.pfms.FormatConverter"%>
+
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+
+<title>Insert title here</title>
+<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+<script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
+<style type="text/css">
+ p{
+  text-align: justify;
+  text-justify: inter-word;
+}
+.form-check-input:checked ~ .form-check-label::before {
+    color: #fff;
+    border-color: #7B1FA2;
+    background-color: red;
+}
+.form-check-input:checked ~ .form-check-label::before {
+    color: #fff;
+    border-color: #7B1FA2;
+    background-color: red;
+}
+ th
+ {
+ 	border: 1px solid black;
+ 	text-align: center;
+ 	padding: 5px;
+	overflow-wrap: break-word;
+ }
+ 
+ td
+ {
+ 	border: 1px solid black;
+ 	text-align: left;
+ 	padding: 5px;
+ 	overflow-wrap: break-word;
+ }
+ 
+  }
+ .textcenter{
+ 	
+ 	text-align: center;
+ }
+ .border
+ {
+ 	border: 1px solid black;
+ }
+ .textleft{
+ 	text-align: left;
+ }
+ 
+ .containers {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.anychart-credits {
+   display: none;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+summary[role=button] {
+  background-color: white;
+  color: black;
+  border: 1px solid black ;
+  border-radius:5px;
+  padding: 0.5rem;
+  cursor: pointer;
+  
+}
+summary[role=button]:hover
+ {
+color: white;
+border-radius:15px;
+background-color: #4a47a3;
+
+}
+ summary[role=button]:focus
+{
+color: white;
+border-radius:5px;
+background-color: #4a47a3;
+border: 0px ;
+
+}
+summary::marker{
+	
+}
+details { 
+  margin-bottom: 5px;  
+}
+details  .content {
+background-color:white;
+padding: 0 1rem ;
+align: center;
+border: 1px solid black;
+}
+
+}
+
+.anchorlink{
+	cursor: pointer;
+	color: #C84B31;
+}
+.anchorlink:hover {
+    text-decoration: underline;
+}
+
+</style>
+
+
+<!-- --------------  tree   ------------------- -->
+<style>
+ul, #myUL {
+  list-style-type: none;
+}
+
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+.caret::before {
+  content: "  \25B7";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  content: "\25B6  ";
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */'
+  transform: rotate(90deg);  
+}
+
+.caret-last {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+
+.caret-last::before {
+  content: "\25B7";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+</style>
+
+<!------------------- tree -------------------->
+<!----------------- model  tree   ---------------------->
+<style>
+
+.caret-1 {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+.caret-last-1 {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+
+.caret-last-1::before {
+  content: "\25B7" ;
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-1::before {
+  content: "\25B7" ;
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down-1::before {
+  content: "\25B6";
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */'
+  transform: rotate(90deg);  
+}
+
+.nested-1 {
+  display: none;
+}
+
+.active-1 {
+  display: block;
+}
+
+ .completed{
+	color: green;
+	font-weight: 700;
+}
+
+.briefactive{
+	color: blue;
+	font-weight: 700;
+}
+
+.inprogress{
+	color: #F66B0E;
+	font-weight: 700;
+}
+
+.assigned{
+	color: brown;
+	font-weight: 700;
+}
+
+.notyet{
+	color: purple;
+	font-weight: 700;
+}
+.notassign{
+	color:#AB0072;
+	font-weight: 700;
+}
+.ongoing{
+	color: #F66B0E;
+	font-weight: 700;
+}
+
+.completed{
+	color: green;
+	font-weight: 700;
+}
+
+.delay{
+	color: maroon;
+	font-weight: 700;
+}
+
+.completeddelay{
+	color:#BABD42;
+	font-weight: 700;
+}
+
+.inactive{
+	color: red;
+	font-weight: 700;
+}
+
+.delaydays
+{
+	color:#000000;
+	font-weight: 700;
+}
+
+.select2-container{
+	float:right !important;
+	margin-top: 5px;
+	
+}
+
+.modal-xl{
+	max-width: 1400px;
+}
+
+.sub-title{
+	font-size : 20px !important;
+	color: #145374 !important
+}
+
+.subtables{
+	width: 1100px !important;
+}
+
+.date-column{
+	max-width:60px !important;
+}
+ 
+.status-column{
+	max-width:10px !important;
+} 
+
+.resp-column{
+	max-width:80px !important;
+} 
+ 
+.currency{
+	color:#367E18 !important;
+	font-style: italic;
+} 
+
+
+.subtables th{
+	/* background-color: #001253 !important; 
+	color: white !important;
+	border-color: white; */
+	color: #001253 !important;
+	
+}
+ 
+
+ 
+ 
+.projectattributetable th{
+	text-align: left !important;
+} 
+ 
+.section {
+    margin-bottom: 30px;
+}
+
+.section-heading {
+    border-bottom: 2px solid #007bff; /* Blue border for the heading */
+    margin-bottom: 15px;
+}
+
+.section-heading h3 {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.section-content {
+    background-color: #f8f9fa; /* Light gray background for content */
+    padding: 20px;
+    border-radius: 5px; /* Rounded corners for content area */
+    border: 1px solid #dee2e6; /* Light gray border for the content */
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered td {
+    padding: 10px;
+}
+
+textarea.form-control {
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+</style>
+
+</head>
+<body>
+
+<%
+DecimalFormat df=new DecimalFormat("####################.##");
+FormatConverter fc=new FormatConverter(); 
+SimpleDateFormat sdf=fc.getRegularDateFormat();
+SimpleDateFormat sdf1=fc.getSqlDateFormat(); 
+List<Object[]> proList=(List<Object[]>)request.getAttribute("proList");
+List<Object[]> milestoneData=(List<Object[]>)request.getAttribute("milestoneData");
+String filePath=(String)request.getAttribute("filePath");
+System.out.println("filePath%%%%"+filePath);
+String projectLabCode=(String)request.getAttribute("projectLabCode");
+Object[] ProjectEditData=(Object[])request.getAttribute("ProjectEditData");
+Object[] editorData=(Object[])request.getAttribute("editorData");
+String Project=(String)request.getAttribute("ProjectId");
+int currentYear=(int)request.getAttribute("currentYear");
+int PastYr=currentYear-1;
+int nextYear=(int)request.getAttribute("nextYear");
+
+
+%>
+<%String ses=(String)request.getParameter("result"); 
+ String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){
+	%>
+	<center>
+	<div class="alert alert-danger" role="alert" >
+                     <%=ses1 %>
+                    </div></center>
+	<%}if(ses!=null){ %>
+	<center>
+	<div class="alert alert-success" role="alert"  >
+                     <%=ses %>
+                   </div></center>
+                    <%} %>
+
+    <br />
+<div class="container-fluid">
+		<div class="row" id="main">
+			<div class="col-md-12">
+				<div class="card shadow-nohover">
+					<div class="row card-header" style="">
+			   			<div class="col-md-6"  style="margin-top: -8px;">
+							<h3>Lab Report</h3>
+						</div>	  
+						<div class="col-md-5" style="float: right;">
+							
+					   
+						<form method="get" action="LabReports.htm" id="projectchange"  class="form-inline">
+							
+								 <div class="col-md-3">
+                            		<label class="control-label"style="font-size: 17px"><b>Project Name :</b></label>
+                            		</div>
+										<div class="col-md-4" style="margin-top: -10px;">
+										
+										<select class="form-control  selectdee items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
+											<option disabled="true"  selected value="">Choose...</option>
+											<%for(Object[] obj : proList){ 
+												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+											%>
+												<option  value="<%=obj[0] %>" <%if (Project.equalsIgnoreCase(obj[0].toString())) {%>
+														selected="selected" <%}%>><%=obj[4] +projectshortName%></option>
+											<%} %>
+										</select>
+										</div>
+									
+									
+									
+										
+										 <button  type="submit" class="btn btn-sm " id="btn-export" style="border: 0 ; margin-left: 170px;margin-top: -15px;size: 25px" formmethod="GET" formaction="LabReportDownload.htm" formtarget="_blank">
+											<!-- <i class="fa fa-file-word-o" aria-hidden="true"></i> -->
+											<i class="fa fa-file-word-o" style="font-size:17px;color: blue;" title="Lab Report New Word Download"></i>
+                                        </button> 
+                                        <input type="hidden" name="currentyr" value="<%=currentYear%>">
+                                        <input type="hidden" name="nextyr" value="<%=nextYear%>">
+                                          <input type="hidden" name="prjLabCode" value="<%=projectLabCode%>">
+                                        
+                                        
+										
+							
+									
+									
+									
+	                         
+								
+							
+							
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</form>				
+			</div>
+				</div>
+				</div>
+				
+				<div class="container mt-4">
+    <!-- Section 1: Project Attributes -->
+    <div class="section">
+        <!-- Heading -->
+        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
+            <h3 style="color: #007bff; font-weight: bold;">1. Project Attributes</h3>
+        </div>
+        
+        <!-- Content Below Heading -->
+      <!-- Content Below Heading -->
+        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+            
+            <!-- Project Name -->
+            <div class="attribute">
+                <h5 style="font-weight: bold;">Project Name</h5>
+                <p style="color: black;"><%=ProjectEditData[2] %></p>
+            </div>
+            
+            <div class="attribute">
+                <h5 style="font-weight: bold;">Image</h5>
+                <p style="color: black;"><%if(ProjectEditData[18]!=null){ %>
+               
+											<%
+											Path techPath = Paths.get(filePath,projectLabCode,"ProjectSlide",ProjectEditData[18].toString());
+											
+											File tecfile = techPath.toFile();
+											if(tecfile.exists()){ %>
+											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))%>" > 											
+											<%} %>
+										
+                <%}else{ %>
+                  <p style="color: black;"> - </p>
+                  <%} %>
+            </div>
+            
+            <!-- Brief -->
+             <div class="attribute">
+                <h5 style="font-weight: bold;">Brief</h5>
+                <p style="color: black;"><%if(ProjectEditData[17]!=null){ %>
+                <p style="color: black;">  <%=ProjectEditData[17] %></p>
+                <%}else{ %>
+                  <p style="color: black;"> - </p>
+                  <%} %>
+            </div>
+
+            <!-- Total Cost -->
+            <div class="attribute mt-3">
+                <h5 style="font-weight: bold;">Total Cost</h5>
+                <p style="color: black;"><%if(ProjectEditData[6]!=null){ %>
+                <p style="color: black;">  <%=ProjectEditData[6] %><span style="font-weight: 800;color:red;">(in Lakhs)</span> </p>
+                <%}else{ %>
+                  <p style="color: black;"> - </p>
+                  <%} %></p>
+            </div>
+
+            <!-- Category -->
+            <div class="attribute mt-3">
+                <h5 style="font-weight: bold;">Category</h5>
+                <%if(ProjectEditData[19]!=null){ %>
+                <p style="color: black;">  <%=ProjectEditData[19] %> </p>
+                <%}else{ %>
+                  <p style="color: black;"> - </p>
+                  <%} %>
+            </div>
+
+            <!-- Participating Lab -->
+            <div class="attribute mt-3">
+                <h5 style="font-weight: bold;">Participating Lab</h5>
+                <%if(ProjectEditData[10]!=null){ %>
+                <p style="color: black;">  <%=ProjectEditData[10] %> </p>
+                <%}else{ %>
+                  <p style="color: black;"> - </p>
+                  <%} %>
+            </div>
+
+            <!-- Scope -->
+            <div class="attribute mt-3">
+                <h5 style="font-weight: bold;">Scope</h5>
+                  <%if(ProjectEditData[11]!=null){ %>
+                <p style="color: black;">  <%=ProjectEditData[11] %> </p>
+                <%}else{ %>
+                  <p style="color: black;"> - </p>
+                  <%} %>
+            </div>
+
+            <!-- Objective -->
+            <div class="attribute mt-3">
+                <h5 style="font-weight: bold;">Objective</h5>
+                <p style="color: black;">  <%if(ProjectEditData[9]!=null){ %>
+                <p style="color: black;">  <%=ProjectEditData[9] %> </p>
+                <%}else{ %>
+                  <p style="color: black;"> - </p>
+                  <%} %></p>
+            </div>
+
+            <!-- Details of Review held till YR -->
+            <div class="attribute mt-3">
+                <h5 style="font-weight: bold;">Details of Review held till <%=PastYr%></h5>
+                <p style="color: black;"><b>EB:</b> <%=ProjectEditData[16] %></p>
+                <p style="color: black;"><b>PMRC:</b> <%=ProjectEditData[15] %></p>
+              <%--   <table>
+                <tr><td><b>EB:</b> <%=ProjectEditData[16] %></td>
+                <td><b>PMRC:</b> <%=ProjectEditData[15] %></td>
+                </table> --%>
+            </div>
+
+            <!-- Current Stage of Project -->
+            <div class="attribute mt-3">
+                <h5 style="font-weight: bold;">Current Stage of Project</h5>
+                <%if(ProjectEditData[14]!=null){ %>
+                <p style="color: black;">  <%=ProjectEditData[14] %> </p>
+                <%}else{ %>
+                  <p style="color: black;"> - </p>
+                  <%} %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Achievements -->
+    <div class="section mt-5">
+        <!-- Heading -->
+        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
+            <h3 style="color: #007bff; font-weight: bold;">2. Achievements</h3>
+        </div>
+        
+        <!-- Content Below Heading -->
+        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+            <h5><b>Planned Activities in the Project for Next Year</b></h5>
+           
+             <%
+             int count1=0;
+             if(milestoneData!=null && milestoneData.size()>0){
+            	 for (Object[] activity : milestoneData) {
+            		 if(activity[7].toString().equalsIgnoreCase((currentYear+1)+"")||activity[8].toString().equalsIgnoreCase((currentYear+1)+"")) {%>
+             <ul>
+             <li><%=(++count1) %>.<%= activity[1] %></li></ul> <%}}} %>
+           <%--    <tr>
+              <td><%= obj[1] %></td>
+              <td style="text-align: center"><%=sdf.format(obj[2])%></td>
+              <td style="text-align: center"><%=sdf.format(obj[3])%></td>
+              </tr> --%>
+           <%--  <% }}}else{%>
+        		 <td colspan="3" style="text-align: center;font-weight:800;color: red;"> No records found</td>
+        	<% }%>   
+            </table> --%>
+            <!--------------------------------------------------------------------------------------------------------------------------------------------------- -->
+            <h5><b>Major Achievement/Activities completed during this Year</b></h5>
+            
+            <%
+             int count=0;
+             if(milestoneData!=null && milestoneData.size()>0){
+            	 for (Object[] activity : milestoneData) {
+            		 if(activity[6]!=null && activity[6].toString().equalsIgnoreCase(currentYear+"")) { %>
+             <ul>
+             <li><%=(++count) %>.<%= activity[1] %></li></ul> <%}}} %>
+        
+        </div>
+    </div>
+
+    <!-- Section 3: Likely Spin-Off -->
+    <div class="section mt-5">
+        <!-- Heading -->
+        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
+            <h3 style="color: #007bff; font-weight: bold;">3. Likely Spin-Off including application for Civil use (if any)</h3>
+        </div>
+        
+        <!-- Content Below Heading -->
+        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+            <form action="LabReportDataAdd.htm" method="get">
+                <div class="form-group">
+                    <textarea class="form-control" name="SpinOffData" id="ckeditor"  rows="5" cols="50" maxlength="5" placeholder="Enter Spin-Off details here..."><%if(editorData!=null && editorData[2]!=null){ %> <%=editorData[2] %>  <%}%></textarea> 
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Are You Sure To Submit ?');"> Submit</button>
+                <input type="hidden" name="projectId" value="<%=Project%>">
+                <input type="hidden" name="Action" value="Spinoff">
+            </form>
+        </div>
+    </div>
+
+    <div class="section mt-5">
+        <!-- Heading -->
+        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
+            <h3 style="color: #007bff; font-weight: bold;">4.Details of LSI/DCPP/PA (If Nominated)</h3>
+        </div>
+        
+        <!-- Content Below Heading -->
+        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+            <form action="LabReportDataAdd.htm" method="get">
+                <div class="form-group">
+
+                 <textarea id="Editor1" style="display:none;" class="form-control" name="NominatedDetails"   rows="5" cols="50" maxlength="5" placeholder="Enter Details of LSI/DCPP/PA (If Nominated)..."><%if(editorData!=null && editorData[3]!=null){ %> <%=editorData[3] %> <%}else{%>  <%} %></textarea>
+ 
+                </div>
+                
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Are You Sure To Submit ?');">Submit</button>
+                <input type="hidden" name="projectId" value="<%=Project%>">
+                <input type="hidden" name="Action" value="Nominated">
+            </form>
+        </div>
+    </div>
+    
+  <%--   <div class="section mt-5">
+        <!-- Heading -->
+        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
+            <h3 style="color: #007bff; font-weight: bold;">5.Achievement for the Current Year</h3>
+        </div>
+        
+        <!-- Content Below Heading -->
+        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+            <form action="LabReportDataAdd.htm" method="get">
+                <div class="form-group">
+                    <textarea class="form-control" name="CurrentYrAchievement" id="ckeditor2"  rows="5" cols="50" maxlength="5" placeholder="Enter Achievement for the Current Year..."><%if(editorData!=null && editorData[4]!=null){ %> <%=editorData[4] %> <%}else{%>  <%} %></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Are You Sure To Submit ?');">Submit</button>
+                <input type="hidden" name="projectId" value="<%=Project%>">
+                <input type="hidden" name="Action" value="AchievementofCurrentYr">
+            </form>
+        </div>
+    </div> --%>
+
+</div>
+				
+	
+	<script>
+	  jQuery(document).ready(function($) {
+    	  $("#btn-export").click(function(event) {
+    	    $("#source-html").wordExport("");
+    	  });
+    	});
+	</script>			
+			
+					  
+						
+						  
+<script>
+
+var editor_config = {
+		maxlength: '4000',
+		toolbar: [{
+		          name: 'clipboard',
+		          items: ['PasteFromWord', '-', 'Undo', 'Redo']
+		        },
+		        {
+		          name: 'basicstyles',
+		          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
+		        },
+		        {
+		          name: 'links',
+		          items: ['Link', 'Unlink']
+		        },
+		        {
+		          name: 'paragraph',
+		          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+		        },
+		        {
+		          name: 'insert',
+		          items: ['Image', 'Table']
+		        },
+		        {
+		          name: 'editing',
+		          items: ['Scayt']
+		        },
+		        '/',
+		        {
+		          name: 'styles',
+		          items: ['Format', 'Font', 'FontSize']
+		        },
+		        {
+		          name: 'colors',
+		          items: ['TextColor', 'BGColor', 'CopyFormatting']
+		        },
+		        {
+		          name: 'align',
+		          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+		        },
+		        {
+		          name: 'document',
+		          items: ['Print', 'PageBreak', 'Source']
+		        }
+		      ],
+		    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+			customConfig: '',
+			disallowedContent: 'img{width,height,float}',
+			extraAllowedContent: 'img[width,height,align]',
+			height: 300,
+		 	contentsCss: [CKEDITOR.basePath +'mystyles.css' ], 
+			bodyClass: 'document-editor',
+			format_tags: 'p;h1;h2;h3;pre',
+			removeDialogTabs: 'image:advanced;link:advanced',
+			stylesSet: [
+				{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
+				{ name: 'Cited Work', element: 'cite' },
+				{ name: 'Inline Quotation', element: 'q' },
+				{
+					name: 'Special Container',
+					element: 'div',
+					styles: {
+						padding: '5px 10px',
+						background: '#eee',
+						border: '1px solid #ccc'
+					}
+				},
+				{
+					name: 'Compact table',
+					element: 'table',
+					attributes: {
+						cellpadding: '5',
+						cellspacing: '0',
+						border: '1',
+						bordercolor: '#ccc'
+					},
+					styles: {
+						'border-collapse': 'collapse'
+					}
+				},
+				{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
+				{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
+
+	]
+			
+		} ;
+		
+	CKEDITOR.replace('ckeditor', editor_config );
+	CKEDITOR.replace('Editor1', editor_config);
+	CKEDITOR.replace('ckeditor2', editor_config );
+	//CKEDITOR.replace('ckeditor3', editor_config );
+
+	$(document).ready(function() {
+		var locked=0;
+		   var editAbstract=CKEDITOR.instances.ckeditor;
+		   editAbstract.on("key",function(e) {      
+		      var maxLength=e.editor.config.maxlength;
+		      e.editor.document.on("keyup",function() {KeyUp(e.editor,maxLength,"letterCount",e);});
+		      e.editor.document.on("paste",function() {KeyUp(e.editor,maxLength,"letterCount",e);});
+		      e.editor.document.on("blur",function() {KeyUp(e.editor,maxLength,"letterCount",e);});
+		   },editAbstract.element.$);
+		   //function to handle the count check
+		   function KeyUp(editorID,maxLimit,infoID,editor) 
+		   {
+			   var text=editor.editor.getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '');
+			   $("#"+infoID).text(text.length);
+			   if( text.length  >= maxLimit )
+			   {
+			      if ( !locked )
+			      {
+			    	 // Record the last legal content.
+			         editAbstract.fire('saveSnapshot'), 
+			         locked = 1;			                      
+			         editor.cancel();			         
+			      }
+			      else if( text.length > maxLimit ){ // Rollback the illegal one.
+			    	 alert('Cannot Insert content longer than '+maxLimit+' Characters');
+			         editAbstract.execCommand( 'undo' );			         
+			      }
+			      else{
+			    	  locked = 0;
+			      }
+			   }
+		   }   
+		});
+</script>
+	
+			
+</body>
+</html>

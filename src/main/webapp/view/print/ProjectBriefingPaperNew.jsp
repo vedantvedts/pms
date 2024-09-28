@@ -436,6 +436,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 
 
 List<List<Object[]>> overallfinance = (List<List<Object[]>>)request.getAttribute("overallfinance");//b
+String thankYouImg = (String)request.getAttribute("thankYouImg");
 String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 %>
 <%String ses=(String)request.getParameter("result"); 

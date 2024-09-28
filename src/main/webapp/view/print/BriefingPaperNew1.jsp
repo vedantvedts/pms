@@ -66,6 +66,7 @@ LocalDate before6months = LocalDate.now().minusMonths(6);
 
 List<List<Object[]>> overallfinance = (List<List<Object[]>>)request.getAttribute("overallfinance");//b
 String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
+String thankYouImg = (String)request.getAttribute("thankYouImg");
 %>
 
 <style type="text/css">
@@ -2811,8 +2812,10 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 <h1 class="break"></h1> 
 
 		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-		<div align="center" style="text-align: center; vertical-align: middle ;font-size:60px;font-weight: 600;margin: auto; position: relative;color: #145374 !important" >THANK YOU</div>
-
+		<!-- <div align="center" style="text-align: center; vertical-align: middle ;font-size:60px;font-weight: 600;margin: auto; position: relative;color: #145374 !important" >THANK YOU</div> -->
+       <div class="content" >
+					<img class="" style="width: 100%; height: 100%;" <%if(thankYouImg!=null ){ %> src="data:image/*;base64,<%=thankYouImg%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
+				</div>
 
 </body>
 </html>
