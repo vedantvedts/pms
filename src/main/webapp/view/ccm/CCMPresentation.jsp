@@ -114,9 +114,6 @@ body {
 input,select,table,div,label,span {
 	font-family : "Lato", Arial, sans-serif !important;
 }
-.text-center{
-	text-align: left !imporatant;
-}
 
 .previous{
 	color: white !important;
@@ -474,14 +471,13 @@ input,select,table,div,label,span {
 														<th colspan="6" style="border-radius: 1rem;"> <h5>Action Taken Report of CCM(<%=seqDate %>)</h5></th>
 													</tr>
 													<tr>
-														<th style="width: 15px !important; text-align: center;">SN</th>
-														<th style="width:30px;">ID</th>
-														<th style="width: 280px;">Action Point</th>
-														<th style="width: 205px;">Action by</th>
-														<th style="width: 95px;"><!-- ADC <br> -->PDC</th>
-														<th style="width: 200px;">Status</th>
-														<!-- <th style="width: 80px;">Action</th> -->
-														<!-- <th style="width: 20px;">Info</th> -->
+														<th style="width: 5%;">SN</th>
+														<th style="width: 10%;">ID</th>
+														<th style="width: 30%;">Action Point</th>
+														<th style="width: 20%;">Action by</th>
+														<th style="width: 10%;">PDC</th>
+														<th style="width: 25%;">Status</th>
+													
 													</tr>
 												</thead>
 	
@@ -510,12 +506,11 @@ input,select,table,div,label,span {
 																		
 																		<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+seqDate+")/"+obj[1].toString().split("/")[3] %>
 																	</button>
-																	<input type="hidden" id="thisYearNo" value="<%=key%>">
 																<%}%> 
 															<!--  -->
 															</td>
 															<%if(i==0) {%>
-													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: top;"><%=obj[2] %></td>
+													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
 			           										<%} %>
 															<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
 															<td style="text-align: center;">
@@ -571,15 +566,13 @@ input,select,table,div,label,span {
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>Pending Points from Prev CCM</h5></th>
 													</tr>
-													<tr >
-														<th style="width: 15px !important; text-align: center;">SN</th>
-														<th style="width:30px;">ID</th>
-														<th style="width: 280px;">Action Point</th>
-														<th style="width: 205px;">Action by</th>
-														<th style="width: 95px;"><!-- ADC <br> -->PDC</th>
-														<th style="width: 200px;">Status</th>
-														<!-- <th style="width: 80px;">Action</th> -->
-														<!-- <th style="width: 20px;">Info</th> -->
+													<tr>
+														<th style="width: 5%;">SN</th>
+														<th style="width: 10%;">ID</th>
+														<th style="width: 30%;">Action Point</th>
+														<th style="width: 20%;">Action by</th>
+														<th style="width: 10%;">PDC</th>
+														<th style="width: 25%;">Status</th>
 													</tr>
 												</thead>
 	
@@ -612,7 +605,7 @@ input,select,table,div,label,span {
 															<!--  -->
 															</td>
 															<%if(i==0) {%>
-													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: top;"><%=obj[2] %></td>
+													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
 			           										<%} %>
 															<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
 															<td style="text-align: center;">
@@ -712,15 +705,13 @@ input,select,table,div,label,span {
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="6" style="border-radius: 1rem;"> <h5>DMC Approval</h5></th>
 													</tr>
-													<tr >
-														<th style="width: 15px !important; text-align: center;">SN</th>
-														<th style="width:30px;">ID</th>
-														<th style="width: 280px;">Action Point</th>
-														<th style="width: 205px;">Action by</th>
-														<th style="width: 95px;"><!-- ADC <br> -->PDC</th>
-														<th style="width: 200px;">Status</th>
-														<!-- <th style="width: 80px;">Action</th> -->
-														<!-- <th style="width: 20px;">Info</th> -->
+													<tr>
+														<th style="width: 5%;">SN</th>
+														<th style="width: 10%;">ID</th>
+														<th style="width: 30%;">Action Point</th>
+														<th style="width: 20%;">Action by</th>
+														<th style="width: 10%;">PDC</th>
+														<th style="width: 25%;">Status</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -752,7 +743,7 @@ input,select,table,div,label,span {
 															<!--  -->
 															</td>
 															<%if(i==0) {%>
-													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: top;"><%=obj[2] %></td>
+													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
 			           										<%} %>
 															<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
 															<td style="text-align: center;">
@@ -892,7 +883,7 @@ input,select,table,div,label,span {
 																        if (parts.length == 2) {
 																            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
 																            if (i < split.length - 1) {
-																                result.append(", ");
+																                result.append(",&emsp;");
 																            }
 																        }
 																    }
@@ -910,7 +901,7 @@ input,select,table,div,label,span {
 																        if (parts.length == 2) {
 																            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
 																            if (i < split.length - 1) {
-																                result.append(", ");
+																                result.append(",&emsp;");
 																            }
 																        }
 																    }
@@ -930,11 +921,11 @@ input,select,table,div,label,span {
 																        if (parts.length == 2 && parts[1].equalsIgnoreCase("red")) {
 																            result.append("<span style=\"color: blue;").append("\">").append(parts[0]).append("</span>");
 																            if (i < split.length - 1) {
-																                result.append(", ");
+																                result.append(",&emsp;");
 																            }
 																        }
 																    }
-																	 out.print((obj[3]!=null?", ":"")+result.toString());
+																	 out.print((obj[3]!=null?",&emsp;":"")+result.toString());
 																} %>
 																<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
 															</td>
@@ -970,9 +961,9 @@ input,select,table,div,label,span {
 													</tr>
 													<tr>
 														<th>Lab</th>
-														<th>PMRC Proposed - <%=previousMonth+" & "+year %></th>
-														<th>PMRC Held - <%=previousMonth+" & "+year %></th>
-														<th>PMRC Proposed - <%=currentMonth+" & "+year %></th>
+														<th>PMRC Proposed - <%=previousMonth+" "+year %></th>
+														<th>PMRC Held - <%=previousMonth+" "+year %></th>
+														<th>PMRC Proposed - <%=currentMonth+" "+year %></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -990,7 +981,7 @@ input,select,table,div,label,span {
 																        if (parts.length == 2) {
 																            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
 																            if (i < split.length - 1) {
-																                result.append(", ");
+																                result.append(",&emsp;");
 																            }
 																        }
 																    }
@@ -1008,7 +999,7 @@ input,select,table,div,label,span {
 																        if (parts.length == 2) {
 																            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
 																            if (i < split.length - 1) {
-																                result.append(", ");
+																                result.append(",&emsp;");
 																            }
 																        }
 																    }
@@ -1028,11 +1019,11 @@ input,select,table,div,label,span {
 																        if (parts.length == 2 && parts[1].equalsIgnoreCase("red")) {
 																            result.append("<span style=\"color: blue;").append("\">").append(parts[0]).append("</span>");
 																            if (i < split.length - 1) {
-																                result.append(", ");
+																                result.append(",&emsp;");
 																            }
 																        }
 																    }
-																	 out.print((obj[3]!=null?", ":"")+result.toString());
+																	 out.print((obj[3]!=null?",&emsp;":"")+result.toString());
 																} %>
 																<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
 															</td>
@@ -1057,73 +1048,42 @@ input,select,table,div,label,span {
 										String labCode = (String)request.getAttribute("labCode");
 										List<Object[]> aspStatusList = (List<Object[]>)request.getAttribute("aspList");
 									%>
-										<div class="container-fluid mt-3 tabpanes2">
+										<div class="container-fluid mt-3 tabpanes1">
 											<table class="table table-bordered table-hover table-striped table-condensed " style="width: 100%;" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
 														<th colspan="9" style="border-radius: 1rem;"> <h5>ASP Status</h5></th>
 													</tr>
-													<%-- <%if(clusterLab.equalsIgnoreCase("Y") || (aspList!=null && aspList.size()==0) || aspList==null) {%> --%>
+													<%if(clusterLab.equalsIgnoreCase("Y")) {%>
 														<tr style="background-color: #ffff;">
 															<td colspan="9" >
-																<%-- <%if((aspList!=null && aspList.size()==0) || aspList==null) {%> --%>
-																	<div style="display: inline-flex; align-items: flex-start;float: left;">
-																		<form action="CCMASPStatusExcelUpload.htm" method="post" id="excelForm" enctype="multipart/form-data">
-																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
-													     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
-													     					<input type="hidden" name="tabName" value="<%=tabName%>">
-													     					<input type="hidden" name="labCode" value="<%=labCode%>">
-													     					<div style="display: inline-flex; align-items: flex-start;">
-																				<label style="width: 5rem;margin-top: 0.5rem;">Upload : </label>
-																				&nbsp;
-																				 <input class="form-control" type="file" id="aspExcelFile" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-																			</div>
-																			&nbsp;&nbsp;
-																			<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to upload?')" data-toggle="tooltip" title="Upload">
-																				<i class="fa fa-upload"></i>
-																			</button>
-																		</form>
-																	</div>
-																	<div style="display: inline-flex; align-items: flex-start;float: left;margin-left: 3rem;">
-																		<form action="CCMASPStatusExcel.htm" method="post">
-																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-																			<div style="">
-																				<button class="btn btn-sm" data-toggle="tooltip" type="submit" data-toggle="tooltip" data-placement="top"  title="Download Format" style="margin-top: 0.5rem;" >
-																					<i class="fa fa-download fa-lg" aria-hidden="true"></i>&nbsp; Sample Format
-																				</button>
-																			</div>	
-																		</form>
-																	</div>
-																<%-- <%} %> --%>
-																<%if(clusterLab.equalsIgnoreCase("Y")) {%>
-																	<div style="display: inline-flex; align-items: flex-end;float: right;">
-																		<form action="CCMPresentation.htm" method="get">
-																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
-													     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
-													     					<input type="hidden" name="tabName" value="<%=tabName%>">
-													     					<div style="display: inline-flex; align-items: flex-end;">
-																				<label>Lab : </label>
-																				&nbsp;
-																				<select class="form-control selectdee" id="labCodeASP" name="labCode" onchange="this.form.submit()" required style="width: 200px;">
-																					<option value="0" disabled="disabled">---Select---</option>
-																					<%if(clusterLabList!=null && clusterLabList.size()>0) {
-																						for(Object[] obj : clusterLabList) {
-																					%>
-																						<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
-																					<%} }%>
-																				</select>
-																			</div>
-																		</form>
-																	</div>
-																<%} %>	
+																<div style="display: inline-flex; align-items: flex-end;float: right;">
+																	<form action="CCMPresentation.htm" method="get">
+																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+												     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+												     					<input type="hidden" name="tabName" value="<%=tabName%>">
+												     					<div style="display: inline-flex; align-items: flex-end;">
+																			<label>Lab : </label>
+																			&nbsp;
+																			<select class="form-control selectdee" id="labCodeASP" name="labCode" onchange="this.form.submit()" required style="width: 200px;">
+																				<option value="0" disabled="disabled">---Select---</option>
+																				<%if(clusterLabList!=null && clusterLabList.size()>0) {
+																					for(Object[] obj : clusterLabList) {
+																				%>
+																					<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
+																				<%} }%>
+																			</select>
+																		</div>
+																	</form>
+																</div>
 															</td>
 														</tr>
-													<%-- <%} %>	 --%>
+													<%} %>
 													<tr>
 														<th rowspan="2" style="vertical-align: middle;">SN</th>
 														<th rowspan="2" style="vertical-align: middle;">Project</th>
 														<th colspan="6">Milestone Dates for</th>
-														<th rowspan="2" style="vertical-align: middle;">Remarks</th>
+														<th rowspan="2" style="vertical-align: middle;">Status</th>
 													</tr>
 													<tr>
 														
@@ -1142,44 +1102,56 @@ input,select,table,div,label,span {
 													%>
 														<tr>
 															<td class="center"><%=++slno %></td>
-															<td>
+															<td class="left">
 																<%=obj[3]!=null?obj[3]:"-" %> <br>
 																Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
 																Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(obj[6].toString())/10000000):"-" %> (In Cr) <br>
 																PDC&nbsp;&nbsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> (In Months) <br>
-																PD&emsp;&nbsp;: <%=obj[8]!=null?obj[8]:"-" %> <br>
+																PDD&emsp;&nbsp;: <%=obj[8]!=null?obj[8]:"-" %> <br>
+															</td>
+															<td class="center">
+																<span style="color: blue;"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></span> <br>
+																<span style="color: red;"><%=obj[10]!=null?fc.sdfTordf(obj[10].toString()):"-" %></span> <br>
+																<span style="color: green;"><%=obj[11]!=null?fc.sdfTordf(obj[11].toString()):"-" %></span>
+															</td>
+															<td class="center">
+																<span style="color: blue;"><%=obj[12]!=null?fc.sdfTordf(obj[12].toString()):"-" %></span> <br>
+																<span style="color: red;"><%=obj[13]!=null?fc.sdfTordf(obj[13].toString()):"-" %></span> <br>
+																<span style="color: green;"><%=obj[14]!=null?fc.sdfTordf(obj[14].toString()):"-" %></span>
+															</td>
+															<td class="center">
+																<span style="color: blue;"><%=obj[15]!=null?fc.sdfTordf(obj[15].toString()):"-" %></span> <br>
+																<span style="color: red;"><%=obj[16]!=null?fc.sdfTordf(obj[16].toString()):"-" %></span> <br>
+																<span style="color: green;"><%=obj[17]!=null?fc.sdfTordf(obj[17].toString()):"-" %></span>
+															</td>
+															<td class="center">
+																<span style="color: blue;"><%=obj[18]!=null?fc.sdfTordf(obj[18].toString()):"-" %></span> <br>
+																<span style="color: red;"><%=obj[19]!=null?fc.sdfTordf(obj[19].toString()):"-" %></span> <br>
+																<span style="color: green;"><%=obj[20]!=null?fc.sdfTordf(obj[20].toString()):"-" %></span>
+															</td>
+															<td class="center">
+																<span style="color: blue;"><%=obj[21]!=null?fc.sdfTordf(obj[21].toString()):"-" %></span> <br>
+																<span style="color: red;"><%=obj[22]!=null?fc.sdfTordf(obj[22].toString()):"-" %></span> <br>
+																<span style="color: green;"><%=obj[23]!=null?fc.sdfTordf(obj[23].toString()):"-" %></span>
+															</td>
+															<td class="center">
+																<span style="color: blue;"><%=obj[24]!=null?fc.sdfTordf(obj[24].toString()):"-" %></span> <br>
+																<span style="color: red;"><%=obj[25]!=null?fc.sdfTordf(obj[25].toString()):"-" %></span> <br>
+																<span style="color: green;"><%=obj[26]!=null?fc.sdfTordf(obj[26].toString()):"-" %></span>
 															</td>
 															<td>
-																Proposed &nbsp;: <span style="color: blue;"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></span> <br>
-																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[10]!=null?fc.sdfTordf(obj[10].toString()):"-" %></span> <br>
-																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[11]!=null?fc.sdfTordf(obj[11].toString()):"-" %></span>
+																<form action="CCMASPStatusSubmit.htm" method="post" id="aspform_<%=slno%>">
+																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+											     					<input type="hidden" name="committeeId" value="<%=committeeId%>">
+											     					<input type="hidden" name="tabName" value="<%=tabName%>">
+											     					<input type="hidden" name="ccmScheduleId" value="<%=ccmScheduleId%>">
+											     					<input type="hidden" name="initiationId" value="<%=obj[1]%>">
+																	<input type="text" name="milestoneStatus" maxlength="1000" placeholder="Enter Maximum 1000 characters" <%if(obj[27]!=null) {%>value="<%=obj[27] %>"<%} %> style="border-left: 0;border-top: 0;border-right: 0;width: 85%;">
+																	<button type="submit" class="btn btn-sm ml-2" name="ccmASPStatusId" value="<%=obj[28] %>" onclick="return confirm('Are you sure to Update?')" style="background: linear-gradient(135deg, #FDC830, #F37335);line-height: 1">
+																		<i class="fa fa-edit" style="padding: 0px;color: #ffff;font-size: 1.2rem;" aria-hidden="true"></i>
+																	</button>
+																</form>
 															</td>
-															<td>
-																Proposed &nbsp;: <span style="color: blue;"><%=obj[12]!=null?fc.sdfTordf(obj[12].toString()):"-" %></span> <br>
-																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[13]!=null?fc.sdfTordf(obj[13].toString()):"-" %></span> <br>
-																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[14]!=null?fc.sdfTordf(obj[14].toString()):"-" %></span>
-															</td>
-															<td>
-																Proposed &nbsp;: <span style="color: blue;"><%=obj[15]!=null?fc.sdfTordf(obj[15].toString()):"-" %></span> <br>
-																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[16]!=null?fc.sdfTordf(obj[16].toString()):"-" %></span> <br>
-																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[17]!=null?fc.sdfTordf(obj[17].toString()):"-" %></span>
-															</td>
-															<td>
-																Proposed &nbsp;: <span style="color: blue;"><%=obj[18]!=null?fc.sdfTordf(obj[18].toString()):"-" %></span> <br>
-																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[19]!=null?fc.sdfTordf(obj[19].toString()):"-" %></span> <br>
-																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[20]!=null?fc.sdfTordf(obj[20].toString()):"-" %></span>
-															</td>
-															<td>
-																Proposed &nbsp;: <span style="color: blue;"><%=obj[21]!=null?fc.sdfTordf(obj[21].toString()):"-" %></span> <br>
-																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[22]!=null?fc.sdfTordf(obj[22].toString()):"-" %></span> <br>
-																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[23]!=null?fc.sdfTordf(obj[23].toString()):"-" %></span>
-															</td>
-															<td>
-																Proposed &nbsp;: <span style="color: blue;"><%=obj[24]!=null?fc.sdfTordf(obj[24].toString()):"-" %></span> <br>
-																Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[25]!=null?fc.sdfTordf(obj[25].toString()):"-" %></span> <br>
-																Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[26]!=null?fc.sdfTordf(obj[26].toString()):"-" %></span>
-															</td>
-															<td><%=obj[27]!=null?obj[27]:"-" %></td>
 														</tr>
 													<%} } else{%>
 														<tr>
@@ -1189,7 +1161,12 @@ input,select,table,div,label,span {
 												</tbody>
 											</table>
 										</div>
-													
+										
+										<div class="center mt-3 mb-2">
+											<span style="color: blue;">Probable Date</span> |
+											<span style="color: red;">Revised Date</span> |
+											<span style="color: green;">Actual Date</span>
+										</div>			
 									<!-- ----------------------------------------------- ASP Status End --------------------------------------------------- -->	
 									
 									<!-- ----------------------------------------------- Closure Status --------------------------------------------------- -->	
@@ -1233,7 +1210,7 @@ input,select,table,div,label,span {
 													<tr>
 														<!-- <th>Lab</th> -->
 														<th>Project</th>
-														<th>DoS /<br> PDC</th>
+														<th>DoS / PDC</th>
 														<th>Recommendation</th>
 														<th>TCR Status</th>
 														<th>ACR Status</th>
@@ -1498,9 +1475,10 @@ input,select,table,div,label,span {
 																	<div style="display: inline-flex; align-items: flex-start;float: left;margin-left: 3rem;">
 																		<form action="CCMCashOutGoStatusExcel.htm" method="post">
 																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+																			<input type="hidden" name="labCode" value="<%=labCode%>">
 																			<div style="">
 																				<button class="btn btn-sm" data-toggle="tooltip" type="submit" data-toggle="tooltip" data-placement="top"  title="Download Format" style="margin-top: 0.5rem;" >
-																					<i class="fa fa-download fa-lg" aria-hidden="true"></i>&nbsp; Sample Format
+																					<i class="fa fa-download fa-lg" aria-hidden="true"></i>&nbsp; Format
 																				</button>
 																			</div>	
 																		</form>
@@ -1559,29 +1537,31 @@ input,select,table,div,label,span {
 														Double allotment = 0.00, expenditure = 0.00, balance = 0.00, cogQ1 = 0.00, cogQ2 = 0.00, cogQ3 = 0.00, cogQ4 = 0.00, cogTotal = 0.00, addl = 0.00,
 																totoalAllotment = 0.00, totoalExpenditure = 0.00, totoalBalance = 0.00, totoalCOGQ1 = 0.00, totalCOGQ2 = 0.00, totalCOGQ3 = 0.00, totalCOGQ4 = 0.00, totalcogTotal = 0.00, totalAddl = 0.00;
 														String budgetHead ="";
+														Double lakh = 100000.00;
+														String decimalPoint = "%.2f";
 														for(Object[] obj : cashOutGoList) {
 													%>
 														<%if(!budgetHead.equalsIgnoreCase(obj[6].toString()) || slno==0 ) { %>
 														 	<%if(slno!=0) {%>
 															 	<tr>
 																	<td class="right" colspan="2"><b>Total Amount (<%=budgetHead %>) : </b> </td>
-																	<td class="right"><%=String.format("%.0f", allotment) %></td>
-																	<td class="right"><%=String.format("%.0f", expenditure) %></td>
-																	<td class="right"><%=String.format("%.0f", balance) %></td>
+																	<td class="right"><%=String.format(decimalPoint, allotment/lakh) %></td>
+																	<td class="right"><%=String.format(decimalPoint, expenditure/lakh) %></td>
+																	<td class="right"><%=String.format(decimalPoint, balance/lakh) %></td>
 																	<%if(quarter<=1) {%>
-																		<td class="right"><%=String.format("%.0f", cogQ1) %></td>
+																		<td class="right"><%=String.format(decimalPoint, cogQ1/lakh) %></td>
 																	<%} %>
 																	<%if(quarter<=2) {%>
-																		<td class="right"><%=String.format("%.0f", cogQ2) %></td>
+																		<td class="right"><%=String.format(decimalPoint, cogQ2/lakh) %></td>
 																	<%} %>
 																	<%if(quarter<=3) {%>
-																		<td class="right"><%=String.format("%.0f", cogQ3) %></td>
+																		<td class="right"><%=String.format(decimalPoint, cogQ3/lakh) %></td>
 																	<%} %>
 																	<%if(quarter<=4) {%>
-																		<td class="right"><%=String.format("%.0f", cogQ4) %></td>
+																		<td class="right"><%=String.format(decimalPoint, cogQ4/lakh) %></td>
 																	<%} %>
-																	<td class="right"><b><%=String.format("%.0f", cogTotal) %></b></td>
-																	<td class="right"><b><%=String.format("%.0f", addl) %></b></td>
+																	<td class="right"><b><%=String.format(decimalPoint, cogTotal/lakh) %></b></td>
+																	<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
 																</tr>	
 														 	<%} %>
 														 	<%budgetHead = obj[6].toString(); %>
@@ -1615,44 +1595,44 @@ input,select,table,div,label,span {
 															<td class="center"><%=++slno %></td>
 															<td ><%=obj[4] %></td>
 															<%-- <td><%=obj[6] %></td> --%>
-															<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")) %></td>
-															<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")) %></td>
-															<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00")) %></td>
+															<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")/lakh) %></td>
+															<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")/lakh) %></td>
+															<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00")/lakh) %></td>
 															<%if(quarter<=1) {%>
-																<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00")) %></td>
+																<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00")/lakh) %></td>
 															<%} %>
 															<%if(quarter<=2) {%>
-																<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00")) %></td>
+																<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00")/lakh) %></td>
 															<%} %>
 															<%if(quarter<=3) {%>
-																<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00")) %></td>
+																<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00")/lakh) %></td>
 															<%} %>
 															<%if(quarter<=4) {%>
-																<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00")) %></td>
+																<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00")/lakh) %></td>
 															<%} %>
-															<td class="right"><b><%=String.format("%.0f", Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00")) %></b></td>
-															<td class="right"><b><%=String.format("%.0f", Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00")) %></b></td>
+															<td class="right"><b><%=String.format(decimalPoint, Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00")/lakh) %></b></td>
+															<td class="right"><b><%=String.format(decimalPoint, Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00")/lakh) %></b></td>
 														</tr>
 														<%if(slno==cashOutGoList.size()) { %>
 														 	<tr>
 																<td class="right" colspan="2"> <b>Total Amount (<%=budgetHead %>) :</b> </td>
-																<td class="right"><%=String.format("%.0f", allotment) %></td>
-																<td class="right"><%=String.format("%.0f", expenditure) %></td>
-																<td class="right"><%=String.format("%.0f", balance) %></td>
+																<td class="right"><%=String.format(decimalPoint, allotment/lakh) %></td>
+																<td class="right"><%=String.format(decimalPoint, expenditure/lakh) %></td>
+																<td class="right"><%=String.format(decimalPoint, balance/lakh) %></td>
 																<%if(quarter<=1) {%>
-																	<td class="right"><%=String.format("%.0f", cogQ1) %></td>
+																	<td class="right"><%=String.format(decimalPoint, cogQ1/lakh) %></td>
 																<%} %>
 																<%if(quarter<=2) {%>
-																	<td class="right"><%=String.format("%.0f", cogQ2) %></td>
+																	<td class="right"><%=String.format(decimalPoint, cogQ2/lakh) %></td>
 																<%} %>
 																<%if(quarter<=3) {%>
-																	<td class="right"><%=String.format("%.0f", cogQ3) %></td>
+																	<td class="right"><%=String.format(decimalPoint, cogQ3/lakh) %></td>
 																<%} %>
 																<%if(quarter<=4) {%>
-																	<td class="right"><%=String.format("%.0f", cogQ4) %></td>
+																	<td class="right"><%=String.format(decimalPoint, cogQ4/lakh) %></td>
 																<%} %>
-																<td class="right"><b><%=String.format("%.0f", cogTotal) %></b></td>
-																<td class="right"><b><%=String.format("%.0f", addl) %></b></td>
+																<td class="right"><b><%=String.format(decimalPoint, cogTotal/lakh) %></b></td>
+																<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
 															</tr>	
 															<%
 																totoalAllotment+=allotment;
@@ -1667,23 +1647,23 @@ input,select,table,div,label,span {
 															%>
 															<tr>
 																<td class="right" colspan="2"> <b>Grand Total Amount :</b> </td>
-																<td class="right"><%=String.format("%.0f", totoalAllotment) %></td>
-																<td class="right"><%=String.format("%.0f", totoalExpenditure) %></td>
-																<td class="right"><%=String.format("%.0f", totoalBalance) %></td>
+																<td class="right"><%=String.format(decimalPoint, totoalAllotment/lakh) %></td>
+																<td class="right"><%=String.format(decimalPoint, totoalExpenditure/lakh) %></td>
+																<td class="right"><%=String.format(decimalPoint, totoalBalance/lakh) %></td>
 																<%if(quarter<=1) {%>
-																	<td class="right"><%=String.format("%.0f", totoalCOGQ1) %></td>
+																	<td class="right"><%=String.format(decimalPoint, totoalCOGQ1/lakh) %></td>
 																<%} %>
 																<%if(quarter<=2) {%>
-																	<td class="right"><%=String.format("%.0f", totalCOGQ2) %></td>
+																	<td class="right"><%=String.format(decimalPoint, totalCOGQ2/lakh) %></td>
 																<%} %>
 																<%if(quarter<=3) {%>
-																	<td class="right"><%=String.format("%.0f", totalCOGQ3) %></td>
+																	<td class="right"><%=String.format(decimalPoint, totalCOGQ3/lakh) %></td>
 																<%} %>
 																<%if(quarter<=4) {%>
-																	<td class="right"><%=String.format("%.0f", totalCOGQ4) %></td>
+																	<td class="right"><%=String.format(decimalPoint, totalCOGQ4/lakh) %></td>
 																<%} %>
-																<td class="right"><b><%=String.format("%.0f", totalcogTotal) %></b></td>
-																<td class="right"><b><%=String.format("%.0f", totalAddl) %></b></td>
+																<td class="right"><b><%=String.format(decimalPoint, totalcogTotal/lakh) %></b></td>
+																<td class="right"><b><%=String.format(decimalPoint, totalAddl/lakh) %></b></td>
 															</tr>	
 														<% } %>
 													<%} } else{%>
@@ -2745,250 +2725,7 @@ input,select,table,div,label,span {
 	
 	/* --------------------- Closure Status Modal End --------------------------------------------------------------------------------------------------- */
 	
-	
-	/* --------------------- ASP Excel File Upload --------------------------------------------------------------------------------------------------- */
-	<%if(tabName!=null && tabName.equalsIgnoreCase("ASP Status")) {  %>
-	
-	const aspExcelFile = document.getElementById('aspExcelFile');
 
-	 const errorMessages = {
-	            projectShortName: "Project Short Name",
-	            projectTitle: "Project Title",
-	            projectCost: "Project Cost",
-	            pdc: "PDC",
-	            pddName: "PDD Name",
-	            pdrPDC: "PDR/PRC PDC",
-	            pdrRev: "PDR/PRC Rev",
-	            pdrADC: "PDR/PRC ADC",
-	            tiecPDC: "TiEC PDC",
-	            tiecRev: "TiEC Rev",
-	            tiecADC: "TiEC ADC",
-	            cecPDC: "CEC PDC",
-	            cecRev: "CEC Rev",
-	            cecADC: "CEC ADC",
-	            ccmPDC: "CCM PDC",
-	            ccmRev: "CCM Rev",
-	            ccmADC: "CCM ADC",
-	            dmcPDC: "DMC PDC",
-	            dmcRev: "DMC Rev",
-	            dmcADC: "DMC ADC",
-	            sanctionPDC: "Sanction PDC",
-	            sanctionRev: "Sanction Rev",
-	            sanctionADC: "Sanction ADC",
-	           
-	        };
-	 
-	aspExcelFile.addEventListener('change', (event) => {
-	    const file = event.target.files[0];
-	    if (!file) return;
-
-	    const reader = new FileReader();
-	    reader.readAsArrayBuffer(file);
-
-	    reader.onload = function () {
-	        const data = new Uint8Array(reader.result);
-	        const workbook = XLSX.read(data, { type: 'array' });
-	        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
-
-	        let checkExcel = 0;
-	        let tableOutput = '';
-	        const duplicate = [];
-
-	       
-
-	        if (sheetData.length > 0) {
-	            for (let row = 0; row < sheetData.length; row++) {
-	                if (row === 0) {
-	                    checkExcel += validateHeaders(sheetData[row]);
-	                    if (checkExcel > 0) {
-	                        showAlert("Please Download the CCM ASP Status Excel format and upload it.");
-	                        return;
-	                    }
-	                } else {
-	                    tableOutput += generateRow(sheetData[row]);
-	                    duplicate.push(sheetData[row][1]);
-
-	                    if (!validateRow(sheetData[row])) {
-	                        return;
-	                    }
-	                }
-	            }
-
-	            if (tableOutput.length < 1) {
-	                showAlert("No Data available in this Excel Sheet!");
-	                return;
-	            }
-	        }
-	    };
-	});
-
-	function validateHeaders(headerRow) {
-	    const expectedHeaders = [
-	        "SN", "Project Short Name", "Project Title", "Category", "Project Cost",
-	        "PDC", "PDD Name", "PDR/PRC PDC", "PDR/PRC Rev", "PDR/PRC ADC",
-	        "TiEC PDC", "TiEC Rev", "TiEC ADC", "CEC PDC", "CEC Rev", "CEC ADC",
-	        "CCM PDC", "CCM Rev", "CCM ADC", "DMC PDC", "DMC Rev", "DMC ADC",
-	        "Sanction PDC", "Sanction Rev", "Sanction ADC"
-	    ];
-
-	    let errors = 0;
-	    expectedHeaders.forEach((header, index) => {
-	        if (!headerRow[index] || !headerRow[index].startsWith(header)) {
-	            errors++;
-	        }
-	    });
-
-	    return errors;
-	}
-
-	function generateRow(rowData) {
-	    return rowData.map((cell, index) => '<td colspan="${index == 1 ? 2 : 1}" style="text-align:center">${cell}</td>').join('');
-	}
-
-	function validateRow(row) {
-	    const projectShortName = row[1];
-	    if (!validateField(projectShortName, errorMessages.projectShortName, 20)) return false;
-
-	    const projectTitle = row[2];
-	    if (!validateField(projectTitle, errorMessages.projectTitle, 255)) return false;
-
-	    const projectCost = row[4];
-	    if (!validateField(projectCost, errorMessages.projectCost, 15)) return false;
-
-	    const pdc = row[5];
-	    if (!validateField(pdc, errorMessages.pdc, 10)) return false;
-
-	    const pddName = row[6];
-	    if (!validateField(pddName, errorMessages.pddName, 255)) return false;
-
-	    /* ---------------------- PDR / PRC ------------------------------- */
-	    const pdrPDC = dateFormatter(row[7]);
-	    if (!validateField(pdrPDC, errorMessages.pdrPDC, 10)) return false;
-	    if (!validateDate(pdrPDC, errorMessages.pdrPDC)) return false;
-
-	    const pdrRev = dateFormatter(row[8]);
-	    if (!validateField(pdrRev, errorMessages.pdrRev, 10)) return false;
-	    if (!validateDate(pdrRev, errorMessages.pdrRev)) return false;
-	    
-	    const pdrADC = dateFormatter(row[9]);
-	    if (!validateField(pdrADC, errorMessages.pdrADC, 10)) return false;
-	    if (!validateDate(pdrADC, errorMessages.pdrADC)) return false;
-		
-	    /* ---------------------- PDR / PRC End ---------------------------- */
-	    
-	    /* ---------------------- TiEC ------------------------------------- */
-	    const tiecPDC = dateFormatter(row[10]);
-	    if (!validateField(tiecPDC, errorMessages.tiecPDC, 10)) return false;
-	    if (!validateDate(tiecPDC, errorMessages.tiecPDC)) return false;
-
-	    const tiecRev = dateFormatter(row[11]);
-	    if (!validateField(tiecRev, errorMessages.tiecRev, 10)) return false;
-	    if (!validateDate(tiecRev, errorMessages.tiecRev)) return false;
-	    
-	    const tiecADC = dateFormatter(row[12]);
-	    if (!validateField(tiecADC, errorMessages.tiecADC, 10)) return false;
-	    if (!validateDate(tiecADC, errorMessages.tiecADC)) return false;
-	    /* ---------------------- TiEC End --------------------------------- */
-	    
-	    /* ---------------------- CEC ------------------------------------- */
-	    const cecPDC = dateFormatter(row[13]);
-	    if (!validateField(cecPDC, errorMessages.cecPDC, 10)) return false;
-	    if (!validateDate(cecPDC, errorMessages.cecPDC)) return false;
-
-	    const cecRev = dateFormatter(row[14]);
-	    if (!validateField(cecRev, errorMessages.cecRev, 10)) return false;
-	    if (!validateDate(cecRev, errorMessages.cecRev)) return false;
-	    
-	    const cecADC = dateFormatter(row[15]);
-	    if (!validateField(cecADC, errorMessages.cecADC, 10)) return false;
-	    if (!validateDate(cecADC, errorMessages.cecADC)) return false;
-	    /* ---------------------- CEC End --------------------------------- */
-	    
-	    /* ---------------------- CCM ------------------------------------- */
-	    const ccmPDC = dateFormatter(row[16]);
-	    if (!validateField(ccmPDC, errorMessages.ccmPDC, 10)) return false;
-	    if (!validateDate(ccmPDC, errorMessages.ccmPDC)) return false;
-
-	    const ccmRev = dateFormatter(row[17]);
-	    if (!validateField(ccmRev, errorMessages.ccmRev, 10)) return false;
-	    if (!validateDate(ccmRev, errorMessages.ccmRev)) return false;
-	    
-	    const ccmADC = dateFormatter(row[18]);
-	    if (!validateField(ccmADC, errorMessages.ccmADC, 10)) return false;
-	    if (!validateDate(ccmADC, errorMessages.ccmADC)) return false;
-	    /* ---------------------- CCM End --------------------------------- */
-	    
-	    /* ---------------------- DMC ------------------------------------- */
-	    const dmcPDC = dateFormatter(row[19]);
-	    if (!validateField(dmcPDC, errorMessages.dmcPDC, 10)) return false;
-	    if (!validateDate(dmcPDC, errorMessages.dmcPDC)) return false;
-
-	    const dmcRev = dateFormatter(row[20]);
-	    if (!validateField(dmcRev, errorMessages.dmcRev, 10)) return false;
-	    if (!validateDate(dmcRev, errorMessages.dmcRev)) return false;
-	    
-	    const dmcADC = dateFormatter(row[21]);
-	    if (!validateField(dmcADC, errorMessages.dmcADC, 10)) return false;
-	    if (!validateDate(dmcADC, errorMessages.dmcADC)) return false;
-	    /* ---------------------- DMC End --------------------------------- */
-	    
-	    /* ---------------------- Sanction ------------------------------------- */
-	    const sanctionPDC = dateFormatter(row[22]);
-	    if (!validateField(sanctionPDC, errorMessages.sanctionPDC, 10)) return false;
-	    if (!validateDate(sanctionPDC, errorMessages.sanctionPDC)) return false;
-
-	    const sanctionRev = dateFormatter(row[23]);
-	    if (!validateField(sanctionRev, errorMessages.sanctionRev, 10)) return false;
-	    if (!validateDate(sanctionRev, errorMessages.sanctionRev)) return false;
-	    
-	    const sanctionADC = dateFormatter(row[24]);
-	    if (!validateField(sanctionADC, errorMessages.sanctionADC, 10)) return false;
-	    if (!validateDate(sanctionADC, errorMessages.sanctionADC)) return false;
-	    /* ---------------------- Sanction End --------------------------------- */
-	    
-	    return true;
-	}
-
-	function validateField(value, fieldName, maxLength) {
-	    if (!value || value.length === 0) {
-	        showAlert(fieldName+' cannot be blank.');
-	        return false;
-	    }
-	    if (value.length > maxLength) {
-	        showAlert(fieldName+' length should be less than '+maxLength+' characters.');
-	        return false;
-	    }
-	    return true;
-	}
-
-	function showAlert(message) {
-	    alert(message);
-	    aspExcelFile.value = '';
-	}
-
-	function dateFormatter(excelDate) {
-	    if (isNaN(excelDate)) return '';
-
-	    const baseDate = new Date(1900, 0, 1);
-	    const daysToAdd = excelDate - 1; // Adjust for Excel's leap year bug
-	    const targetDate = new Date(baseDate.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
-
-	    return targetDate.toISOString().split('T')[0].split('-').reverse().join('-');
-	}
-
-	function validateDate(date, column) {
-	    const datePattern = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
-	    if (!datePattern.test(date)) {
-	        showAlert('Date format not matching for '+column);
-	        return false;
-	    }
-	    return true;
-	}
-
-	<%}%>
-	/* --------------------- ASP Excel File Upload End--------------------------------------------------------------------------------------------------- */
-
-	
 	/* --------------------- COG Excel File Upload --------------------------------------------------------------------------------------------------- */
 	<%if(tabName!=null && tabName.equalsIgnoreCase("Cash Out go Status")) {  %>
 	

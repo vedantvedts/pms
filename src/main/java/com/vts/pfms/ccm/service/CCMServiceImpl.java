@@ -2,6 +2,7 @@ package com.vts.pfms.ccm.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +11,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -30,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.ccm.dao.CCMDao;
-import com.vts.pfms.ccm.model.CCMASPData;
+import com.vts.pfms.ccm.model.CCMASPStatus;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -204,9 +206,9 @@ public class CCMServiceImpl implements CCMService{
 			LocalDate localDate = LocalDate.parse(schedule.getScheduleDate().toString());
 			String month = localDate.getMonth().toString().substring(0, 3);
 			String scheduleType = schedule.getScheduleType();
-			String seq = schedule.getLabCode()+(scheduleType.equalsIgnoreCase("C")?"/CCM/":"/DMC/")+(localDate.getYear())+"/"+month+"/";
-			long maxCCMScheduleIdForMonth = dao.getMaxCCMScheduleIdForMonth(seq);
-			schedule.setMeetingId(seq+(maxCCMScheduleIdForMonth+1));
+			String sequence = schedule.getLabCode()+(scheduleType.equalsIgnoreCase("C")?"/CCM/":"/DMC/")+(localDate.getYear())+"/"+month+"/";
+			long maxCCMScheduleIdForMonth = dao.getMaxCCMScheduleIdForMonth(sequence);
+			schedule.setMeetingId(sequence+(maxCCMScheduleIdForMonth+1));
 		}
 		
 		return dao.addCCMSchedule(schedule);
@@ -773,14 +775,14 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public HashMap<String, List<Object[]>> getCCMASPList() throws Exception {
+	public HashMap<String, List<Object[]>> getCCMASPList(String scheduleId) throws Exception {
 		
 		HashMap<String, List<Object[]> > aspList = new HashMap<String, List<Object[]>>();
 		try {
-			List<Object[]> list = dao.getCCMASPList();
+			List<Object[]> list = dao.getCCMASPList(scheduleId);
 			if(list!=null && list.size()>0) {
 				 // Group by LabCode
-				aspList = list.stream().collect(Collectors.groupingBy(obj -> obj[1].toString(), HashMap::new, Collectors.toList()));
+				aspList = list.stream().collect(Collectors.groupingBy(obj -> obj[2].toString(), HashMap::new, Collectors.toList()));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -790,9 +792,61 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public long addCCMASPData(CCMASPData aspData) throws Exception {
+	public long addCCMASPStatus(CCMASPStatus aspStatus) throws Exception {
 		
-		return dao.addCCMASPData(aspData);
+		return dao.addCCMASPStatus(aspStatus);
+	}
+
+	@Override
+	public int ccmCashoutGoDelete(String labCode) throws Exception {
+	
+		return dao.ccmCashoutGoDelete(labCode);
 	}
 	
+	@Override
+	public CCMASPStatus getCCMASPStatusById(String ccmASPStatusId) throws Exception {
+		
+		return dao.getCCMASPStatusById(ccmASPStatusId);
+	}
+
+	@Override
+	public long getMaxCCMScheduleIdForMonth(String sequence) throws Exception {
+		
+		return dao.getMaxCCMScheduleIdForMonth(sequence);
+	}
+	
+	@Override
+	public Map<String, Map<String, List<Map<String, Object>>>> getCashOutGoListForStackGraph() throws Exception {
+		Map<String, Map<String, List<Map<String, Object>>>> chartData = new HashMap<>();
+	    try {
+	        List<Object[]> list = dao.getCashOutGoList();
+	        
+	        if (list != null && !list.isEmpty()) {
+	        	for (Object[] row : list) {
+	        	    String labCode = (String) row[2];  // Lab name
+	        	    String projectCode = (String) row[4];  // Project name
+	        	    String category = (String) row[6];  // Category (Revenue, Capital, Miscellaneous)
+	        	    Double amount = new BigDecimal(row[16].toString()).doubleValue();  // Total cost
+	        	    
+	        	    // Create the structure
+	        	    chartData.computeIfAbsent(labCode, k -> new HashMap<>())
+	        	             .computeIfAbsent(category, k -> new ArrayList<>());
+
+	        	    // Create a project data map for each project
+	        	    Map<String, Object> projectData = new HashMap<>();
+	        	    projectData.put("project", projectCode);
+	        	    projectData.put("amount", amount);
+
+	        	    // Add the project data to the respective category and lab
+	        	    chartData.get(labCode).get(category).add(projectData);
+	        	}
+	        }
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        logger.error(new Date() + " Inside CCMServiceImpl getCashOutGoList " + e);
+	    }
+	    return chartData;
+	}
+
 }

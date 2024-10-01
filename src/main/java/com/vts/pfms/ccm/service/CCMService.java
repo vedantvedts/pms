@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.vts.pfms.ccm.model.CCMASPData;
+import com.vts.pfms.ccm.model.CCMASPStatus;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -57,7 +57,10 @@ public interface CCMService {
 	public HashMap<String, List<Object[]>> getClosureStatusList(String scheduleId) throws Exception;
 	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception;
 	public long addCCMClosureStatus(CCMClosureStatus closure) throws Exception;
-	public HashMap<String, List<Object[]>> getCCMASPList() throws Exception;
-	public long addCCMASPData(CCMASPData aspData) throws Exception;
-
+	public HashMap<String, List<Object[]>> getCCMASPList(String scheduleId) throws Exception;
+	public long addCCMASPStatus(CCMASPStatus aspData) throws Exception;
+	public int ccmCashoutGoDelete(String labCode) throws Exception;
+	public CCMASPStatus getCCMASPStatusById(String ccmASPStatusId) throws Exception;
+	public long getMaxCCMScheduleIdForMonth(String sequence) throws Exception;
+	public Map<String, Map<String, List<Map<String, Object>>>> getCashOutGoListForStackGraph() throws Exception;
 }

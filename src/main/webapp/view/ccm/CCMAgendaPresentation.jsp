@@ -1,3 +1,5 @@
+<%@page import="com.google.gson.Gson"%>
+<%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@page import="com.vts.pfms.ccm.model.CCMAchievements"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.committee.model.Committee"%>
@@ -37,7 +39,6 @@ label {
 body { 
    font-family : "Lato", Arial, sans-serif !important;
    overflow-x: hidden;
-   background-color: #e7f9ff;
 }
 
 input,select,table,div,label,span,button {
@@ -78,8 +79,52 @@ input,select,table,div,label,span,button {
 	font-size: 1.5rem !important;
 }
 </style>
+
+<style type="text/css">
+.highcharts-figure,	.highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+</style>
+
 </head>
-<body>
+<body style="background-color: #e7f9ff !important;" class="slides-container" id="slides-container">
 	<%
 		FormatConverter fc = new FormatConverter();
 		SimpleDateFormat sdf = fc.getRegularDateFormat();
@@ -94,7 +139,7 @@ input,select,table,div,label,span,button {
 		CommitteeSchedule ccmSchedule = (CommitteeSchedule) request.getAttribute("ccmScheduleData");
 		CCMPresentationSlides presentationSlide = (CCMPresentationSlides) request.getAttribute("ccmPresentationSlides");
 		Long ccmPresSlideId = presentationSlide!=null?presentationSlide.getCCMPresSlideId():0L;
-		List<String> slideNames = presentationSlide!=null? Arrays.asList(presentationSlide.getSlideName().split(",")): new ArrayList<String>();
+		List<String> slideNames = (List<String>)request.getAttribute("slideNames");
 		String slideShow = presentationSlide!=null?presentationSlide.getFreezeStatus(): "N";
 		
 		List<Object[]> agendaList =  (List<Object[]>) request.getAttribute("agendaList");
@@ -105,6 +150,7 @@ input,select,table,div,label,span,button {
 		String clusterLabs = (String)request.getAttribute("clusterLabs");
 		String thankYouImg = (String)request.getAttribute("thankYouImg");
 		String ccmCommitteeId = (String)request.getAttribute("ccmCommitteeId");
+		Long ccmMeetingCount = (Long)request.getAttribute("ccmMeetingCount");
 		
 		//String previewFlag = (String)request.getParameter("previewFlag");
 		//slideShow = previewFlag!=null?previewFlag:slideShow;
@@ -112,6 +158,10 @@ input,select,table,div,label,span,button {
 		 ArrayList<String> cogLabList = new ArrayList<>();
 		 ArrayList<String> csLabList = new ArrayList<>();
 		 ArrayList<String> aspLabList = new ArrayList<>();
+		 
+		 Map<String, Map<String, List<Map<String, Object>>>> cogListForStackGraph = (Map<String, Map<String, List<Map<String, Object>>>>)request.getAttribute("cogListForStackGraph");
+		// Convert cogList to JSON format and pass it to the JSP
+		 String jsonCogListForStackGraph = new Gson().toJson(cogListForStackGraph);
 	%>
 
 	<% String ses=(String)request.getParameter("result");
@@ -145,7 +195,7 @@ input,select,table,div,label,span,button {
 								<div class="mt-2 center">
 									<h2 class="firstpagefontfamily" style="color: #145374 !important;">Presentation</h2>
 									<h3 class="firstpagefontfamily" style="color: #145374 !important;">for</h3>
-									<h2 class="firstpagefontfamily" style="color: #145374 !important;" >Cluster Council Meeting </h2>
+									<h2 class="firstpagefontfamily" style="color: #145374 !important;" >Cluster Council Meeting - <%=ccmMeetingCount %> </h2>
 								</div>
 								<div class="mt-4 center">
 									<img class="frontpagelogo" style="width:120px;height: 120px;" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
@@ -168,7 +218,7 @@ input,select,table,div,label,span,button {
 									<h4 class="firstpagefontfamily">Meeting Venue</h4>
 									<h4 class="firstpagefontfamily"><%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null) {%> <%=ccmSchedule.getMeetingVenue() %> <%} else{%>-<%} %></h4>
 								</div>
-								<div class="mt-4 center">
+								<div class="mt-5 center">
 									<% if(labInfo!=null){ %>
 										<h4 class="firstpagefontfamily"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></h4>
 									<%} %>
@@ -395,12 +445,12 @@ input,select,table,div,label,span,button {
 										<th colspan="6" style="border-radius: 1rem;"> <h5>Action Taken Report of CCM(<%=seqDate %>)</h5></th>
 									</tr> --%>
 									<tr>
-										<th style="width: 15px !important; text-align: center;">SN</th>
-										<th style="width:30px;">ID</th>
-										<th style="width: 280px;">Action Point</th>
-										<th style="width: 205px;">Action by</th>
-										<th style="width: 95px;">PDC</th>
-										<th style="width: 200px;">Status</th>
+										<th style="width: 5%;">SN</th>
+										<th style="width: 10%;">ID</th>
+										<th style="width: 30%;">Action Point</th>
+										<th style="width: 20%;">Action by</th>
+										<th style="width: 10%;">PDC</th>
+										<th style="width: 25%;">Status</th>
 									
 									</tr>
 								</thead>
@@ -435,7 +485,7 @@ input,select,table,div,label,span,button {
 											<!--  -->
 											</td>
 											<%if(i==0) {%>
-									    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: top;"><%=obj[2] %></td>
+									    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
 	         										<%} %>
 											<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
 											<td style="text-align: center;">
@@ -510,14 +560,14 @@ input,select,table,div,label,span,button {
 									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
 										<th colspan="6" style="border-radius: 1rem;"> <h5>Pending Points from Prev CCM</h5></th>
 									</tr> -->
-									<tr >
-										<th style="width: 15px !important; text-align: center;">SN</th>
-										<th style="width:30px;">ID</th>
-										<th style="width: 280px;">Action Point</th>
-										<th style="width: 205px;">Action by</th>
-										<th style="width: 95px;">PDC</th>
-										<th style="width: 200px;">Status</th>
-										
+									<tr>
+										<th style="width: 5%;">SN</th>
+										<th style="width: 10%;">ID</th>
+										<th style="width: 30%;">Action Point</th>
+										<th style="width: 20%;">Action by</th>
+										<th style="width: 10%;">PDC</th>
+										<th style="width: 25%;">Status</th>
+									
 									</tr>
 								</thead>
 	
@@ -550,7 +600,7 @@ input,select,table,div,label,span,button {
 											<!--  -->
 											</td>
 											<%if(i==0) {%>
-									    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: top;"><%=obj[2] %></td>
+									    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
 		        										<%} %>
 											<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
 											<td style="text-align: center;">
@@ -646,13 +696,13 @@ input,select,table,div,label,span,button {
 									<!-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
 										<th colspan="6" style="border-radius: 1rem;"> <h5>DMC Approval</h5></th>
 									</tr> -->
-									<tr >
-										<th style="width: 15px !important; text-align: center;">SN</th>
-										<th style="width:30px;">ID</th>
-										<th style="width: 280px;">Action Point</th>
-										<th style="width: 205px;">Action by</th>
-										<th style="width: 95px;"><!-- ADC <br> -->PDC</th>
-										<th style="width: 200px;">Status</th>
+									<tr>
+										<th style="width: 5%;">SN</th>
+										<th style="width: 10%;">ID</th>
+										<th style="width: 30%;">Action Point</th>
+										<th style="width: 20%;">Action by</th>
+										<th style="width: 10%;">PDC</th>
+										<th style="width: 25%;">Status</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -684,7 +734,7 @@ input,select,table,div,label,span,button {
 											<!--  -->
 											</td>
 											<%if(i==0) {%>
-									    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: top;"><%=obj[2] %></td>
+									    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
           										<%} %>
 											<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
 											<td style="text-align: center;">
@@ -760,9 +810,9 @@ input,select,table,div,label,span,button {
 									</tr> -->
 									<tr>
 										<th>Lab</th>
-										<th>EB Proposed - <%=previousMonth+" & "+year %></th>
-										<th>EB Held - <%=previousMonth+" & "+year %></th>
-										<th>EB Proposed - <%=currentMonth+" & "+year %></th>
+										<th>EB Proposed - <%=previousMonth+" "+year %></th>
+										<th>EB Held - <%=previousMonth+" "+year %></th>
+										<th>EB Proposed - <%=currentMonth+" "+year %></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -780,7 +830,7 @@ input,select,table,div,label,span,button {
 												        if (parts.length == 2) {
 												            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
 												            if (i < split.length - 1) {
-												                result.append(", ");
+												                result.append(",&emsp;");
 												            }
 												        }
 												    }
@@ -798,7 +848,7 @@ input,select,table,div,label,span,button {
 												        if (parts.length == 2) {
 												            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
 												            if (i < split.length - 1) {
-												                result.append(", ");
+												                result.append(",&emsp;");
 												            }
 												        }
 												    }
@@ -818,11 +868,11 @@ input,select,table,div,label,span,button {
 												        if (parts.length == 2 && parts[1].equalsIgnoreCase("red")) {
 												            result.append("<span style=\"color: blue;").append("\">").append(parts[0]).append("</span>");
 												            if (i < split.length - 1) {
-												                result.append(", ");
+												                result.append(",&emsp;");
 												            }
 												        }
 												    }
-													 out.print((obj[3]!=null?", ":"")+result.toString());
+													 out.print((obj[3]!=null?",&emsp;":"")+result.toString());
 												} %>
 												<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
 											</td>
@@ -882,9 +932,9 @@ input,select,table,div,label,span,button {
 									</tr> -->
 									<tr>
 										<th>Lab</th>
-										<th>PMRC Proposed - <%=previousMonth+" & "+year %></th>
-										<th>PMRC Held - <%=previousMonth+" & "+year %></th>
-										<th>PMRC Proposed - <%=currentMonth+" & "+year %></th>
+										<th>PMRC Proposed - <%=previousMonth+" "+year %></th>
+										<th>PMRC Held - <%=previousMonth+" "+year %></th>
+										<th>PMRC Proposed - <%=currentMonth+" "+year %></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -902,7 +952,7 @@ input,select,table,div,label,span,button {
 												        if (parts.length == 2) {
 												            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
 												            if (i < split.length - 1) {
-												                result.append(", ");
+												                result.append(",&emsp;");
 												            }
 												        }
 												    }
@@ -920,7 +970,7 @@ input,select,table,div,label,span,button {
 												        if (parts.length == 2) {
 												            result.append("<span style=\"color: ").append(parts[1]).append("\">").append(parts[0]).append("</span>");
 												            if (i < split.length - 1) {
-												                result.append(", ");
+												                result.append(",&emsp;");
 												            }
 												        }
 												    }
@@ -940,11 +990,11 @@ input,select,table,div,label,span,button {
 												        if (parts.length == 2 && parts[1].equalsIgnoreCase("red")) {
 												            result.append("<span style=\"color: blue;").append("\">").append(parts[0]).append("</span>");
 												            if (i < split.length - 1) {
-												                result.append(", ");
+												                result.append(",&emsp;");
 												            }
 												        }
 												    }
-													 out.print((obj[3]!=null?", ":"")+result.toString());
+													 out.print((obj[3]!=null?",&emsp;":"")+result.toString());
 												} %>
 												<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
 											</td>
@@ -1007,7 +1057,7 @@ input,select,table,div,label,span,button {
 										<th rowspan="2" style="vertical-align: middle;">SN</th>
 										<th rowspan="2" style="vertical-align: middle;">Project</th>
 										<th colspan="6">Milestone Dates for</th>
-										<th rowspan="2" style="vertical-align: middle;">Remarks</th>
+										<th rowspan="2" style="vertical-align: middle;">Status</th>
 									</tr>
 									<tr>
 										
@@ -1026,42 +1076,42 @@ input,select,table,div,label,span,button {
 									%>
 										<tr>
 											<td class="center"><%=++slno %></td>
-											<td>
+											<td class="left">
 												<%=obj[3]!=null?obj[3]:"-" %> <br>
 												Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
 												Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(obj[6].toString())/10000000):"-" %> (In Cr) <br>
 												PDC&nbsp;&nbsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> (In Months) <br>
-												PD&emsp;&nbsp;: <%=obj[8]!=null?obj[8]:"-" %> <br>
+												PDD&emsp;&nbsp;: <%=obj[8]!=null?obj[8]:"-" %> <br>
 											</td>
-											<td>
-												Proposed &nbsp;: <span style="color: blue;"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></span> <br>
-												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[10]!=null?fc.sdfTordf(obj[10].toString()):"-" %></span> <br>
-												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[11]!=null?fc.sdfTordf(obj[11].toString()):"-" %></span>
+											<td class="center">
+												<span style="color: blue;"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></span> <br>
+												<span style="color: red;"><%=obj[10]!=null?fc.sdfTordf(obj[10].toString()):"-" %></span> <br>
+												<span style="color: green;"><%=obj[11]!=null?fc.sdfTordf(obj[11].toString()):"-" %></span>
 											</td>
-											<td>
-												Proposed &nbsp;: <span style="color: blue;"><%=obj[12]!=null?fc.sdfTordf(obj[12].toString()):"-" %></span> <br>
-												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[13]!=null?fc.sdfTordf(obj[13].toString()):"-" %></span> <br>
-												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[14]!=null?fc.sdfTordf(obj[14].toString()):"-" %></span>
+											<td class="center">
+												<span style="color: blue;"><%=obj[12]!=null?fc.sdfTordf(obj[12].toString()):"-" %></span> <br>
+												<span style="color: red;"><%=obj[13]!=null?fc.sdfTordf(obj[13].toString()):"-" %></span> <br>
+												<span style="color: green;"><%=obj[14]!=null?fc.sdfTordf(obj[14].toString()):"-" %></span>
 											</td>
-											<td>
-												Proposed &nbsp;: <span style="color: blue;"><%=obj[15]!=null?fc.sdfTordf(obj[15].toString()):"-" %></span> <br>
-												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[16]!=null?fc.sdfTordf(obj[16].toString()):"-" %></span> <br>
-												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[17]!=null?fc.sdfTordf(obj[17].toString()):"-" %></span>
+											<td class="center">
+												<span style="color: blue;"><%=obj[15]!=null?fc.sdfTordf(obj[15].toString()):"-" %></span> <br>
+												<span style="color: red;"><%=obj[16]!=null?fc.sdfTordf(obj[16].toString()):"-" %></span> <br>
+												<span style="color: green;"><%=obj[17]!=null?fc.sdfTordf(obj[17].toString()):"-" %></span>
 											</td>
-											<td>
-												Proposed &nbsp;: <span style="color: blue;"><%=obj[18]!=null?fc.sdfTordf(obj[18].toString()):"-" %></span> <br>
-												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[19]!=null?fc.sdfTordf(obj[19].toString()):"-" %></span> <br>
-												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[20]!=null?fc.sdfTordf(obj[20].toString()):"-" %></span>
+											<td class="center">
+												<span style="color: blue;"><%=obj[18]!=null?fc.sdfTordf(obj[18].toString()):"-" %></span> <br>
+												<span style="color: red;"><%=obj[19]!=null?fc.sdfTordf(obj[19].toString()):"-" %></span> <br>
+												<span style="color: green;"><%=obj[20]!=null?fc.sdfTordf(obj[20].toString()):"-" %></span>
 											</td>
-											<td>
-												Proposed &nbsp;: <span style="color: blue;"><%=obj[21]!=null?fc.sdfTordf(obj[21].toString()):"-" %></span> <br>
-												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[22]!=null?fc.sdfTordf(obj[22].toString()):"-" %></span> <br>
-												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[23]!=null?fc.sdfTordf(obj[23].toString()):"-" %></span>
+											<td class="center">
+												<span style="color: blue;"><%=obj[21]!=null?fc.sdfTordf(obj[21].toString()):"-" %></span> <br>
+												<span style="color: red;"><%=obj[22]!=null?fc.sdfTordf(obj[22].toString()):"-" %></span> <br>
+												<span style="color: green;"><%=obj[23]!=null?fc.sdfTordf(obj[23].toString()):"-" %></span>
 											</td>
-											<td>
-												Proposed &nbsp;: <span style="color: blue;"><%=obj[24]!=null?fc.sdfTordf(obj[24].toString()):"-" %></span> <br>
-												Revised&emsp;&nbsp;: <span style="color: red;"><%=obj[25]!=null?fc.sdfTordf(obj[25].toString()):"-" %></span> <br>
-												Actual&nbsp;&nbsp;&nbsp;&nbsp;&emsp;: <span style="color: green;"><%=obj[26]!=null?fc.sdfTordf(obj[26].toString()):"-" %></span>
+											<td class="center">
+												<span style="color: blue;"><%=obj[24]!=null?fc.sdfTordf(obj[24].toString()):"-" %></span> <br>
+												<span style="color: red;"><%=obj[25]!=null?fc.sdfTordf(obj[25].toString()):"-" %></span> <br>
+												<span style="color: green;"><%=obj[26]!=null?fc.sdfTordf(obj[26].toString()):"-" %></span>
 											</td>
 											<td><%=obj[27]!=null?obj[27]:"-" %></td>
 										</tr>
@@ -1073,6 +1123,11 @@ input,select,table,div,label,span,button {
 								</tbody>
 							</table>
 						</div>
+						<div class="center mt-3 mb-2">
+							<span style="color: blue;">Probable Date</span> |
+							<span style="color: red;">Revised Date</span> |
+							<span style="color: green;">Actual Date</span>
+						</div>		
 					</div>
 				</div>
 			<%} }%>
@@ -1117,11 +1172,11 @@ input,select,table,div,label,span,button {
 									<tr>
 										<!-- <th>Lab</th> -->
 										<th>Project</th>
-										<th>DoS /<br> PDC</th>
+										<th>DoS / PDC</th>
 										<th>Recommendation</th>
 										<th>TCR Status</th>
 										<th>ACR Status</th>
-										<th>Activity Status</th>
+										<th>Status</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -1161,10 +1216,231 @@ input,select,table,div,label,span,button {
 				HashMap<String, List<Object[]> > cogList = (HashMap<String, List<Object[]> >) request.getAttribute("cashOutGoList");
 				int quarter = (int)request.getAttribute("quarter");
 				
+			%>
+				<div class="carousel-item">
+	
+					<div class="content-header row ">
+						
+						<div class="col-md-1" >
+							<img class="logo" <%if(drdologo!=null ){ %> src="data:image/*;base64,<%=drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+						</div>
+						<div class="col-md-2" align="left" style="display: inherit;">
+							<b class="refNoHeading"><%=ccmSchedule.getMeetingId() %></b>
+						</div>
+						<div class="col-md-7">
+							<h3 class="slideNames">Cash Out Go Status </h3>
+						</div>
+						<div class="col-md-1" align="right"  style="padding-top:19px;" >
+							<b style="margin-right: -35px;"><%="" %></b>
+						</div>
+						<div class="col-md-1">
+							<img class="logo" <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+						</div>
+						
+					</div>
+					
+					<div class="content" >
+						<div class="container-fluid mt-3 tabpanes2">
+						
+							<!-- ------------------------- Stacked, Clustered bar graph Analytics ------------------------------  -->
+							<div class="row mt-2 mb-5">
+								<div class="col-md-12">
+									<div id="stackedgraphcontainer" style="display:block;" ></div>
+								</div>
+							</div>
+							<!-- ------------------------- Stacked, Clustered bar graph Analytics End ------------------------------  -->
+					
+							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
+								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+									<%-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
+										<th colspan="<%=12-quarter %>" style="border-radius: 1rem;"> <h5>Cash Out Go Status</h5></th>
+									</tr> --%>
+									
+									<tr>
+										<th>SN</th>
+										<!-- <th>Project</th> -->
+										<th>Budget Head</th>
+										<th>Allotment</th>
+										<th>Expenditure</th>
+										<th>Balance</th>
+										<%if(quarter<=1) {%>
+											<th>COG Q1</th>
+										<%} %>
+										<%if(quarter<=2) {%>
+											<th>COG Q2</th>
+										<%} %>
+										<%if(quarter<=3) {%>
+											<th>COG Q3</th>
+										<%} %>
+										<%if(quarter<=4) {%>
+											<th>COG Q4</th>
+										<%} %>
+										<th>Total COG</th>
+										<th>Addl(-)/Surr(+)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%
+									//Double totalAllotmentGrand = 0.00, totalExpenditureGrand = 0.00, totalBalanceGrand = 0.00, totalCOGQ1Grand = 0.00, totalCOGQ2Grand = 0.00, totalCOGQ3Grand = 0.00, totalCOGQ4Grand = 0.00, totalcogTotalGrand = 0.00, totalAddlGrand = 0.00;
+									for (Map.Entry<String, List<Object[]>> entry : cogList.entrySet()) {
+									    List<Object[]> cashOutGoList = entry.getValue(); 
+									%>
+									<tr>
+										<td colspan="<%=12-quarter %>" class="center" style="background-color: aliceblue;"><b><%=entry.getKey() %></b></td>
+									</tr>
+									<%
+									
+									if(cashOutGoList!=null && cashOutGoList.size()>0) {
+										int slno=0; 
+										Double allotment = 0.00, expenditure = 0.00, balance = 0.00, cogQ1 = 0.00, cogQ2 = 0.00, cogQ3 = 0.00, cogQ4 = 0.00, cogTotal = 0.00, addl = 0.00,
+												totalAllotment = 0.00, totalExpenditure = 0.00, totalBalance = 0.00, totalCOGQ1 = 0.00, totalCOGQ2 = 0.00, totalCOGQ3 = 0.00, totalCOGQ4 = 0.00, totalcogTotal = 0.00, totalAddl = 0.00;
+										String budgetHead ="";
+										Double lakh = 100000.00;
+										String decimalPoint = "%.2f";
+										for(Object[] obj : cashOutGoList) {
+									%>
+										<%if(!budgetHead.equalsIgnoreCase(obj[6].toString()) || slno==0 ) { %>
+										 	<%if(slno!=0) {%>
+											 	<tr>
+													<td class="right" colspan="2"><b><%=budgetHead %> : </b> </td>
+													<td class="right"><%=String.format(decimalPoint, allotment/lakh) %></td>
+													<td class="right"><%=String.format(decimalPoint, expenditure/lakh) %></td>
+													<td class="right"><%=String.format(decimalPoint, balance/lakh) %></td>
+													<%if(quarter<=1) {%>
+														<td class="right"><%=String.format(decimalPoint, cogQ1/lakh) %></td>
+													<%} %>
+													<%if(quarter<=2) {%>
+														<td class="right"><%=String.format(decimalPoint, cogQ2/lakh) %></td>
+													<%} %>
+													<%if(quarter<=3) {%>
+														<td class="right"><%=String.format(decimalPoint, cogQ3/lakh) %></td>
+													<%} %>
+													<%if(quarter<=4) {%>
+														<td class="right"><%=String.format(decimalPoint, cogQ4/lakh) %></td>
+													<%} %>
+													<td class="right"><b><%=String.format(decimalPoint, cogTotal/lakh) %></b></td>
+													<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
+												</tr>	
+										 	<%} %>
+										 	<%budgetHead = obj[6].toString(); %>
+											<%-- <tr>
+												<td colspan="<%=12-quarter %>" class="center" style="background-color: aliceblue;"><b>Budget Head : <%=budgetHead %></b></td>
+											</tr> --%>
+										<%
+											totalAllotment+=allotment;
+											totalExpenditure+=expenditure;
+											totalBalance+=balance;
+											totalCOGQ1+=cogQ1;
+											totalCOGQ2+=cogQ2;
+											totalCOGQ3+=cogQ3;
+											totalCOGQ4+=cogQ4;
+											totalcogTotal+=cogTotal;
+											totalAddl+=addl;
+										
+											allotment = expenditure = balance = cogQ1 = cogQ2 = cogQ3 = cogQ4 = cogTotal = addl = 0.00;
+										} 
+											allotment+=Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00");
+											expenditure+=Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00");
+											balance+=Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00");
+											cogQ1+=Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00");
+											cogQ2+=Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00");
+											cogQ3+=Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00");
+											cogQ4+=Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00");
+											cogTotal+=Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00");
+											addl+=Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00");
+											++slno;
+										%>
+										<%-- <tr>
+											<td class="center"><%=slno %></td>
+											<td ><%=obj[4] %></td>
+											<td><%=obj[6] %></td>
+											<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")) %></td>
+											<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")) %></td>
+											<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00")) %></td>
+											<%if(quarter<=1) {%>
+												<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00")) %></td>
+											<%} %>
+											<%if(quarter<=2) {%>
+												<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00")) %></td>
+											<%} %>
+											<%if(quarter<=3) {%>
+												<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00")) %></td>
+											<%} %>
+											<%if(quarter<=4) {%>
+												<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00")) %></td>
+											<%} %>
+											<td class="right"><b><%=String.format(decimalPoint, Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00")) %></b></td>
+											<td class="right"><b><%=String.format(decimalPoint, Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00")) %></b></td>
+										</tr> --%>
+										<%if(slno==cashOutGoList.size()) { %>
+										 	<tr>
+												<td class="right" colspan="2"> <b><%=budgetHead %> :</b> </td>
+												<td class="right"><%=String.format(decimalPoint, allotment/lakh) %></td>
+												<td class="right"><%=String.format(decimalPoint, expenditure/lakh) %></td>
+												<td class="right"><%=String.format(decimalPoint, balance/lakh) %></td>
+												<%if(quarter<=1) {%>
+													<td class="right"><%=String.format(decimalPoint, cogQ1/lakh) %></td>
+												<%} %>
+												<%if(quarter<=2) {%>
+													<td class="right"><%=String.format(decimalPoint, cogQ2/lakh) %></td>
+												<%} %>
+												<%if(quarter<=3) {%>
+													<td class="right"><%=String.format(decimalPoint, cogQ3/lakh) %></td>
+												<%} %>
+												<%if(quarter<=4) {%>
+													<td class="right"><%=String.format(decimalPoint, cogQ4/lakh) %></td>
+												<%} %>
+												<td class="right"><b><%=String.format(decimalPoint, cogTotal/lakh) %></b></td>
+												<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
+											</tr>	
+											<%
+												totalAllotment+=allotment;
+												totalExpenditure+=expenditure;
+												totalBalance+=balance;
+												totalCOGQ1+=cogQ1;
+												totalCOGQ2+=cogQ2;
+												totalCOGQ3+=cogQ3;
+												totalCOGQ4+=cogQ4;
+												totalcogTotal+=cogTotal;
+												totalAddl+=addl;
+											%>
+											<tr>
+												<td class="right" colspan="2"> <b> Total Amount :</b> </td>
+												<td class="right"><%=String.format(decimalPoint, totalAllotment/lakh) %></td>
+												<td class="right"><%=String.format(decimalPoint, totalExpenditure/lakh) %></td>
+												<td class="right"><%=String.format(decimalPoint, totalBalance/lakh) %></td>
+												<%if(quarter<=1) {%>
+													<td class="right"><%=String.format(decimalPoint, totalCOGQ1/lakh) %></td>
+												<%} %>
+												<%if(quarter<=2) {%>
+													<td class="right"><%=String.format(decimalPoint, totalCOGQ2/lakh) %></td>
+												<%} %>
+												<%if(quarter<=3) {%>
+													<td class="right"><%=String.format(decimalPoint, totalCOGQ3/lakh) %></td>
+												<%} %>
+												<%if(quarter<=4) {%>
+													<td class="right"><%=String.format(decimalPoint, totalCOGQ4/lakh) %></td>
+												<%} %>
+												<td class="right"><b><%=String.format(decimalPoint, totalcogTotal/lakh) %></b></td>
+												<td class="right"><b><%=String.format(decimalPoint, totalAddl/lakh) %></b></td>
+											</tr>	
+										<% } %>
+									<%} } else{%>
+										<tr>
+											<td colspan="<%=12-quarter %>" class="center">No Data Available</td>
+										</tr>
+									<%} %>
+									<%} %>
+								</tbody>	
+							</table>
+						</div>		
+					</div>
+				</div>	
+				<%
 				for (Map.Entry<String, List<Object[]>> entry : cogList.entrySet()) {
 				    List<Object[]> cashOutGoList = entry.getValue(); 
 				    cogLabList.add(entry.getKey());
-			%>
+				%>
 				<div class="carousel-item">
 	
 					<div class="content-header row ">
@@ -1222,31 +1498,33 @@ input,select,table,div,label,span,button {
 									<%if(cashOutGoList!=null && cashOutGoList.size()>0) {
 										int slno=0; 
 										Double allotment = 0.00, expenditure = 0.00, balance = 0.00, cogQ1 = 0.00, cogQ2 = 0.00, cogQ3 = 0.00, cogQ4 = 0.00, cogTotal = 0.00, addl = 0.00,
-												totoalAllotment = 0.00, totoalExpenditure = 0.00, totoalBalance = 0.00, totoalCOGQ1 = 0.00, totalCOGQ2 = 0.00, totalCOGQ3 = 0.00, totalCOGQ4 = 0.00, totalcogTotal = 0.00, totalAddl = 0.00;
+												totalAllotment = 0.00, totalExpenditure = 0.00, totalBalance = 0.00, totalCOGQ1 = 0.00, totalCOGQ2 = 0.00, totalCOGQ3 = 0.00, totalCOGQ4 = 0.00, totalcogTotal = 0.00, totalAddl = 0.00;
 										String budgetHead ="";
+										Double lakh = 100000.00;
+										String decimalPoint = "%.2f";
 										for(Object[] obj : cashOutGoList) {
 									%>
 										<%if(!budgetHead.equalsIgnoreCase(obj[6].toString()) || slno==0 ) { %>
 										 	<%if(slno!=0) {%>
 											 	<tr>
 													<td class="right" colspan="2"><b>Total Amount (<%=budgetHead %>) : </b> </td>
-													<td class="right"><%=String.format("%.0f", allotment) %></td>
-													<td class="right"><%=String.format("%.0f", expenditure) %></td>
-													<td class="right"><%=String.format("%.0f", balance) %></td>
+													<td class="right"><%=String.format(decimalPoint, allotment/lakh) %></td>
+													<td class="right"><%=String.format(decimalPoint, expenditure/lakh) %></td>
+													<td class="right"><%=String.format(decimalPoint, balance/lakh) %></td>
 													<%if(quarter<=1) {%>
-														<td class="right"><%=String.format("%.0f", cogQ1) %></td>
+														<td class="right"><%=String.format(decimalPoint, cogQ1/lakh) %></td>
 													<%} %>
 													<%if(quarter<=2) {%>
-														<td class="right"><%=String.format("%.0f", cogQ2) %></td>
+														<td class="right"><%=String.format(decimalPoint, cogQ2/lakh) %></td>
 													<%} %>
 													<%if(quarter<=3) {%>
-														<td class="right"><%=String.format("%.0f", cogQ3) %></td>
+														<td class="right"><%=String.format(decimalPoint, cogQ3/lakh) %></td>
 													<%} %>
 													<%if(quarter<=4) {%>
-														<td class="right"><%=String.format("%.0f", cogQ4) %></td>
+														<td class="right"><%=String.format(decimalPoint, cogQ4/lakh) %></td>
 													<%} %>
-													<td class="right"><b><%=String.format("%.0f", cogTotal) %></b></td>
-													<td class="right"><b><%=String.format("%.0f", addl) %></b></td>
+													<td class="right"><b><%=String.format(decimalPoint, cogTotal/lakh) %></b></td>
+													<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
 												</tr>	
 										 	<%} %>
 										 	<%budgetHead = obj[6].toString(); %>
@@ -1254,10 +1532,10 @@ input,select,table,div,label,span,button {
 												<td colspan="<%=12-quarter %>" class="center" style="background-color: aliceblue;"><b>Budget Head : <%=budgetHead %></b></td>
 											</tr>
 										<%
-											totoalAllotment+=allotment;
-											totoalExpenditure+=expenditure;
-											totoalBalance+=balance;
-											totoalCOGQ1+=cogQ1;
+											totalAllotment+=allotment;
+											totalExpenditure+=expenditure;
+											totalBalance+=balance;
+											totalCOGQ1+=cogQ1;
 											totalCOGQ2+=cogQ2;
 											totalCOGQ3+=cogQ3;
 											totalCOGQ4+=cogQ4;
@@ -1280,50 +1558,50 @@ input,select,table,div,label,span,button {
 											<td class="center"><%=++slno %></td>
 											<td ><%=obj[4] %></td>
 											<%-- <td><%=obj[6] %></td> --%>
-											<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")) %></td>
-											<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")) %></td>
-											<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00")) %></td>
+											<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")/lakh) %></td>
+											<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")/lakh) %></td>
+											<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[9]!=null?obj[9].toString():"0.00")/lakh) %></td>
 											<%if(quarter<=1) {%>
-												<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00")) %></td>
+												<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[10]!=null?obj[10].toString():"0.00")/lakh) %></td>
 											<%} %>
 											<%if(quarter<=2) {%>
-												<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00")) %></td>
+												<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[11]!=null?obj[11].toString():"0.00")/lakh) %></td>
 											<%} %>
 											<%if(quarter<=3) {%>
-												<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00")) %></td>
+												<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[12]!=null?obj[12].toString():"0.00")/lakh) %></td>
 											<%} %>
 											<%if(quarter<=4) {%>
-												<td class="right"><%=String.format("%.0f", Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00")) %></td>
+												<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[13]!=null?obj[13].toString():"0.00")/lakh) %></td>
 											<%} %>
-											<td class="right"><b><%=String.format("%.0f", Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00")) %></b></td>
-											<td class="right"><b><%=String.format("%.0f", Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00")) %></b></td>
+											<td class="right"><b><%=String.format(decimalPoint, Double.parseDouble(obj[16]!=null?obj[16].toString():"0.00")/lakh) %></b></td>
+											<td class="right"><b><%=String.format(decimalPoint, Double.parseDouble(obj[14]!=null?obj[14].toString():"0.00")/lakh) %></b></td>
 										</tr>
 										<%if(slno==cashOutGoList.size()) { %>
 										 	<tr>
 												<td class="right" colspan="2"> <b>Total Amount (<%=budgetHead %>) :</b> </td>
-												<td class="right"><%=String.format("%.0f", allotment) %></td>
-												<td class="right"><%=String.format("%.0f", expenditure) %></td>
-												<td class="right"><%=String.format("%.0f", balance) %></td>
+												<td class="right"><%=String.format(decimalPoint, allotment/lakh) %></td>
+												<td class="right"><%=String.format(decimalPoint, expenditure/lakh) %></td>
+												<td class="right"><%=String.format(decimalPoint, balance/lakh) %></td>
 												<%if(quarter<=1) {%>
-													<td class="right"><%=String.format("%.0f", cogQ1) %></td>
+													<td class="right"><%=String.format(decimalPoint, cogQ1/lakh) %></td>
 												<%} %>
 												<%if(quarter<=2) {%>
-													<td class="right"><%=String.format("%.0f", cogQ2) %></td>
+													<td class="right"><%=String.format(decimalPoint, cogQ2/lakh) %></td>
 												<%} %>
 												<%if(quarter<=3) {%>
-													<td class="right"><%=String.format("%.0f", cogQ3) %></td>
+													<td class="right"><%=String.format(decimalPoint, cogQ3/lakh) %></td>
 												<%} %>
 												<%if(quarter<=4) {%>
-													<td class="right"><%=String.format("%.0f", cogQ4) %></td>
+													<td class="right"><%=String.format(decimalPoint, cogQ4/lakh) %></td>
 												<%} %>
-												<td class="right"><b><%=String.format("%.0f", cogTotal) %></b></td>
-												<td class="right"><b><%=String.format("%.0f", addl) %></b></td>
+												<td class="right"><b><%=String.format(decimalPoint, cogTotal/lakh) %></b></td>
+												<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
 											</tr>	
 											<%
-												totoalAllotment+=allotment;
-												totoalExpenditure+=expenditure;
-												totoalBalance+=balance;
-												totoalCOGQ1+=cogQ1;
+												totalAllotment+=allotment;
+												totalExpenditure+=expenditure;
+												totalBalance+=balance;
+												totalCOGQ1+=cogQ1;
 												totalCOGQ2+=cogQ2;
 												totalCOGQ3+=cogQ3;
 												totalCOGQ4+=cogQ4;
@@ -1332,23 +1610,23 @@ input,select,table,div,label,span,button {
 											%>
 											<tr>
 												<td class="right" colspan="2"> <b>Grand Total Amount :</b> </td>
-												<td class="right"><%=String.format("%.0f", totoalAllotment) %></td>
-												<td class="right"><%=String.format("%.0f", totoalExpenditure) %></td>
-												<td class="right"><%=String.format("%.0f", totoalBalance) %></td>
+												<td class="right"><%=String.format(decimalPoint, totalAllotment/lakh) %></td>
+												<td class="right"><%=String.format(decimalPoint, totalExpenditure/lakh) %></td>
+												<td class="right"><%=String.format(decimalPoint, totalBalance/lakh) %></td>
 												<%if(quarter<=1) {%>
-													<td class="right"><%=String.format("%.0f", totoalCOGQ1) %></td>
+													<td class="right"><%=String.format(decimalPoint, totalCOGQ1/lakh) %></td>
 												<%} %>
 												<%if(quarter<=2) {%>
-													<td class="right"><%=String.format("%.0f", totalCOGQ2) %></td>
+													<td class="right"><%=String.format(decimalPoint, totalCOGQ2/lakh) %></td>
 												<%} %>
 												<%if(quarter<=3) {%>
-													<td class="right"><%=String.format("%.0f", totalCOGQ3) %></td>
+													<td class="right"><%=String.format(decimalPoint, totalCOGQ3/lakh) %></td>
 												<%} %>
 												<%if(quarter<=4) {%>
-													<td class="right"><%=String.format("%.0f", totalCOGQ4) %></td>
+													<td class="right"><%=String.format(decimalPoint, totalCOGQ4/lakh) %></td>
 												<%} %>
-												<td class="right"><b><%=String.format("%.0f", totalcogTotal) %></b></td>
-												<td class="right"><b><%=String.format("%.0f", totalAddl) %></b></td>
+												<td class="right"><b><%=String.format(decimalPoint, totalcogTotal/lakh) %></b></td>
+												<td class="right"><b><%=String.format(decimalPoint, totalAddl/lakh) %></b></td>
 											</tr>	
 										<% } %>
 									<%} } else{%>
@@ -1679,9 +1957,11 @@ input,select,table,div,label,span,button {
 					for(int i=0;i<csLabList.size();i++) {%>
 						<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName+" - "+csLabList.get(i) %>"><b><%=count2 %> (<%=a++ %>)</b></li>
 					<%} %>
-				<%} else if(slideName.equalsIgnoreCase("Cash Out Go Status")) {%>
-					<%
+				<%} else if(slideName.equalsIgnoreCase("Cash Out Go Status")) {
 					++count2;
+				%>
+					<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName %>"><b><%=count2 %></b></li>
+					<%
 					char a = 'a';
 					for(int i=0;i<cogLabList.size();i++) {%>
 						<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=slideName+" - "+cogLabList.get(i) %>"><b><%=count2 %> (<%=a++ %>)</b></li>
@@ -1691,8 +1971,12 @@ input,select,table,div,label,span,button {
 				<%} %>
 			<%} }%>
 			<li data-target="#presentation-slides" data-slide-to="<%=++count %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="End"><b>End</b></li>
+			<li data-slide-to="<%=count-1 %>" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
+			<li data-slide-to="<%=count-1 %>" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>
 			<li style="background-color:  white;width: 55px;margin-left: 20px;">
-				<a target="_blank" href="CCMScheduleAgendaPdfDownload.htm?ccmScheduleId=<%=ccmSchedule.getScheduleId() %>" data-toggle="tooltip" title="Download Agenda" ><i class="fa fa-download fa-2x" style="color: green;" aria-hidden="true"></i></a>	
+				<a target="_blank" href="CCMPresentationDownload.htm?ccmScheduleId=<%=ccmSchedule.getScheduleId() %>&committeeId=<%=ccmCommitteeId %>" data-toggle="tooltip" title="Download CCM Presentation" >
+					<i class="fa fa-download" style="color: green;font-size: 1.2rem;padding: 0.1rem;" aria-hidden="true"></i>
+				</a>	
 			</li>
 		</ol>
 	</div>
@@ -1895,6 +2179,34 @@ $('.carousel').carousel({
 $(function () {
 	$('[data-toggle="tooltip"]').tooltip()
 })
+
+$('.content_reg_screen').hide();
+$('.content_full_screen, .content_reg_screen').on('click', function(e){
+	  
+	  if (document.fullscreenElement) {
+	    	document.exitFullscreen();
+	  } else {
+		  $('.slides-container').get(0).requestFullscreen();
+	  }
+	});
+
+$('.content_full_screen').on('click', function(e){ contentFullScreen() });
+
+$('.content_reg_screen').on('click', function(e){ contentRegScreen() });
+
+function contentFullScreen()
+{
+	$('.content_full_screen').hide();
+	$('.content_reg_screen').show();
+	openFullscreen();
+}
+
+function contentRegScreen()
+{
+	$('.content_reg_screen').hide();
+	$('.content_full_screen').show();
+	closeFullscreen();
+}
 
 /* --------------------- Expand Button Handle for Agenda List--------------------------- */
 	function ChangeButton(id) {
@@ -2103,5 +2415,128 @@ function setModalDataTable()
 }
 </script>
 <!-- -------------------------------------------------------------- Handling of Selected Project Slides End------------------------------------------- -->
+
+
+
+<script type="text/javascript">
+ 
+
+/* ----------------------------- Stacked, Clustered bar graph Analytics End (In Bar Graph) (Project) ------------------------------- */
+
+// Fetch the dynamic chart data from the backend
+const chartData = JSON.parse('<%=jsonCogListForStackGraph%>');
+
+console.log(chartData); // Log the fetched data for debugging
+
+// Create the series data dynamically
+const seriesData = [];
+const categories = []; // Lab categories
+
+// Define the desired order of categories
+const categoryOrder = ['Revenue', 'Capital', 'Miscellaneous'];
+
+// Iterate over the chartData to build Highcharts series structure
+for (const lab in chartData) {
+    // Add lab name to categories array for the X-axis
+    categories.push(lab);
+
+    // Iterate through the predefined category order
+    categoryOrder.forEach(category => {
+        // Check if the category exists in the current lab's data
+        if (chartData[lab][category]) {
+            chartData[lab][category].forEach((projectData) => {
+                // Create a series for this project under the corresponding category
+                let series = seriesData.find(s => s.name === projectData.project && s.stack === category);
+                
+                // If series doesn't exist, create it
+                if (!series) {
+                    series = {
+                        name: projectData.project,
+                        data: [],
+                        stack: category // Set the stack to the current category
+                    };
+                    seriesData.push(series);
+                }
+
+                // Fill the data array with amounts for each lab
+                const labIndex = categories.indexOf(lab);
+                series.data[labIndex] = (series.data[labIndex] || 0) + (projectData.amount || 0); // Assign amount or 0 if null
+            });
+        }
+    });
+}
+
+// Fill missing data points with 0 to ensure correct stacking
+seriesData.forEach(series => {
+    for (let i = 0; i < categories.length; i++) {
+        if (typeof series.data[i] === 'undefined') {
+            series.data[i] = 0;
+        }
+    }
+});
+
+//Initialize the Highcharts chart
+Highcharts.chart('stackedgraphcontainer', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Stacked, Clustered Cash Out Go Status',
+       	style: {
+            fontSize: '20px',
+            fontWeight: 'bold',
+        },
+    },
+    xAxis: {
+        categories: categories,
+        labels: {
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: 'black',
+            }
+        },
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Actual Cost (Rs)',
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: 'black',
+            },
+        },
+        labels: {
+            enabled: false // Disable the y-axis labels
+        },
+        
+    },
+    legend: {
+        enabled: false // This will hide the project names at the bottom
+    },
+    plotOptions: {
+        series: {
+            stacking: 'normal'
+        },style: {
+            fontSize: '14px',
+            fontWeight: 'bold'
+        },
+    },
+    series: seriesData,
+    tooltip: {
+        formatter: function () {
+            return '<b>' + this.x + '</b><br/>' +  // Lab name (category)
+                   'Project: ' + this.series.name + '<br/>' +  // Project name
+                   'Amount: ' + this.y + '<br/>' +  // Amount (y-value)
+                   'Budget Head: ' + this.series.stackKey.split(',')[1] + '<br/>' + // Stack category
+                   'Total: ' + this.point.stackTotal;  // Total stacked value
+        }
+    },
+});
+
+
+/* ----------------------------- Stacked, Clustered bar graph Analytics End ------------------------------- */
+</script>
 </body>
 </html>

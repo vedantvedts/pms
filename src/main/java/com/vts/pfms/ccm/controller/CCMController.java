@@ -13,6 +13,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +36,10 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -44,6 +49,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,13 +62,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.layout.Document;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.PfmsFileUtils;
-import com.vts.pfms.ccm.model.CCMASPData;
+import com.vts.pfms.ccm.model.CCMASPStatus;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -97,6 +110,9 @@ public class CCMController {
 
 	@Autowired
 	RoadMapService roadmapservice;
+	
+	@Autowired
+	Environment env;
 	
 	@Autowired
 	PfmsFileUtils pfmsFileUtils;
@@ -624,24 +640,34 @@ public class CCMController {
 	public String ccmAgendaPresentation(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)	throws Exception 
 	{
     	String UserId = (String) ses.getAttribute("Username");
-    	String labcode = (String)ses.getAttribute("labcode");
+    	//String labcode = (String)ses.getAttribute("labcode");
     	String clusterid = (String)ses.getAttribute("clusterid");
 		logger.info(new Date() +"Inside CCMAgendaPresentation.htm "+UserId);		
     	try {
     		String ccmScheduleId = req.getParameter("ccmScheduleId");
     		String ccmCommitteeId = req.getParameter("committeeId");
     		
+    		List<Object[]> clusterLabList = service.getClusterLabListByClusterId(clusterid);
+			String clusterLabCode = clusterLabList!=null && clusterLabList.size()>0 ?clusterLabList.stream().filter(e -> e[3].toString().equalsIgnoreCase("Y")).collect(Collectors.toList()).get(0)[2].toString():"";
+
     		CommitteeSchedule ccmSchedule = service.getCCMScheduleById(ccmScheduleId);
     		req.setAttribute("ccmScheduleData", ccmSchedule);
-	    	req.setAttribute("labInfo", printservice.LabDetailes(labcode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+	    	req.setAttribute("labInfo", printservice.LabDetailes(clusterLabCode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(clusterLabCode));
 	    	req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
 	    	req.setAttribute("clusterLabs", LogoUtil.getClusterLabsAsBase64String());
 	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
 	    	req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
-	    	req.setAttribute("ccmPresentationSlides", service.getCCMPresentationSlidesByScheduleId(ccmScheduleId));
 	    	req.setAttribute("ccmScheduleId", ccmScheduleId);
 	    	req.setAttribute("ccmCommitteeId", ccmCommitteeId);
+	    	req.setAttribute("ccmMeetingCount", service.getMaxCCMScheduleIdForMonth(clusterLabCode+"/CCM"));
+	    	CCMPresentationSlides presentationSlide = service.getCCMPresentationSlidesByScheduleId(ccmScheduleId);
+			List<String> slideNames = presentationSlide!=null? Arrays.asList(presentationSlide.getSlideName().split(",")): new ArrayList<String>();
+	    	req.setAttribute("slideNames", slideNames);
+	    	req.setAttribute("ccmPresentationSlides", presentationSlide);
+	    	req.setAttribute("clusterLabList", clusterLabList);
+	    	
+	    	req.setAttribute("cogListForStackGraph", service.getCashOutGoListForStackGraph());
 	    	
 	    	LocalDate now = LocalDate.now();
 	    	LocalDate scheduleDate = LocalDate.parse(ccmSchedule.getScheduleDate().toString());
@@ -649,109 +675,114 @@ public class CCMController {
 	    	req.setAttribute("previousMonth", scheduleDate.minusMonths(1).getMonth().toString());
 			req.setAttribute("currentMonth", scheduleDate.getMonth().toString());
 			req.setAttribute("year", scheduleDate.getYear());
+			
 	    	/* ----------------------- ATR Start -------------------------- */
-    			
-			List<Object[]> ccmMeetingList = printservice.ReviewMeetingList("0", "CCM");
-			Map<Integer,String> mapCCM = new HashMap<>();
-     		int ccmCount=0;
-
-     		for (Object []obj:ccmMeetingList) {
-     			mapCCM.put(++ccmCount, obj[3].toString());
-     		}
-     		
-			req.setAttribute("ccmCommitteeData", printservice.getCommitteeData(ccmCommitteeId));
-			req.setAttribute("ccmActions", printservice.LastPMRCActions("0", ccmCommitteeId));
-			Long lastScheduleId = service.getLastScheduleIdFromCurrentScheduleId(ccmScheduleId);
-    		req.setAttribute("ccmLatestScheduleMinutesIds", service.getLatestScheduleMinutesIds(lastScheduleId+""));
-    		req.setAttribute("ccmPreviousScheduleMinutesIds", service.getPreviousScheduleMinutesIds(lastScheduleId+""));
-    		req.setAttribute("atrScheduleData", service.getCCMScheduleById(lastScheduleId+""));
-     		req.setAttribute("mapCCM", mapCCM);
-
+			if(slideNames.contains("ATR")) {
+			
+				List<Object[]> ccmMeetingList = printservice.ReviewMeetingList("0", "CCM");
+				Map<Integer,String> mapCCM = new HashMap<>();
+	     		int ccmCount=0;
+	
+	     		for (Object []obj:ccmMeetingList) {
+	     			mapCCM.put(++ccmCount, obj[3].toString());
+	     		}
+	     		
+				req.setAttribute("ccmCommitteeData", printservice.getCommitteeData(ccmCommitteeId));
+				req.setAttribute("ccmActions", printservice.LastPMRCActions("0", ccmCommitteeId));
+				Long lastScheduleId = service.getLastScheduleIdFromCurrentScheduleId(ccmScheduleId);
+	    		req.setAttribute("ccmLatestScheduleMinutesIds", service.getLatestScheduleMinutesIds(lastScheduleId+""));
+	    		req.setAttribute("ccmPreviousScheduleMinutesIds", service.getPreviousScheduleMinutesIds(lastScheduleId+""));
+	    		req.setAttribute("atrScheduleData", service.getCCMScheduleById(lastScheduleId+""));
+	     		req.setAttribute("mapCCM", mapCCM);
+			}
     		/* -----------------------  ATR End -------------------------- */
      		
      		/* ----------------------- DMC Start -------------------------- */
-    			
-			String committeeIdDMC = service.getCommitteeIdByCommitteeCode("DMC")+"";
-			if(committeeIdDMC==null || (committeeIdDMC!=null && committeeIdDMC.isEmpty())) {
-				committeeIdDMC = "0";
-			}
-			Long scheduleId = service.getLatestScheduleId("D");
-			scheduleId = scheduleId!=null?scheduleId:0L;
-			List<Object[]> dmcMeetingList = printservice.ReviewMeetingList("0", "DMC");
-			Map<Integer,String> mapDMC = new HashMap<>();
-     		int dmcCount=0;
-
-     		for (Object []obj:dmcMeetingList) {
-     			mapDMC.put(++dmcCount, obj[3].toString());
-     		}
-     		
-			req.setAttribute("dmcCommitteeData", printservice.getCommitteeData(committeeIdDMC));
-			req.setAttribute("dmcActions", printservice.LastPMRCActions("0", committeeIdDMC));
-    		//req.setAttribute("dmcLatestScheduleMinutesIds", service.getLatestScheduleMinutesIds(scheduleId+""));
-    		req.setAttribute("dmcSchedule", service.getCCMScheduleById(scheduleId+""));
-     		req.setAttribute("mapDMC", mapDMC);
-			req.setAttribute("committeeIdDMC", committeeIdDMC);
-			req.setAttribute("committeeMainId", service.getCommitteeMainIdByCommitteeCode("DMC")+"");
-    			
+			if(slideNames.contains("DMC")) {	
+				String committeeIdDMC = service.getCommitteeIdByCommitteeCode("DMC")+"";
+				if(committeeIdDMC==null || (committeeIdDMC!=null && committeeIdDMC.isEmpty())) {
+					committeeIdDMC = "0";
+				}
+				Long scheduleId = service.getLatestScheduleId("D");
+				scheduleId = scheduleId!=null?scheduleId:0L;
+				List<Object[]> dmcMeetingList = printservice.ReviewMeetingList("0", "DMC");
+				Map<Integer,String> mapDMC = new HashMap<>();
+	     		int dmcCount=0;
+	
+	     		for (Object []obj:dmcMeetingList) {
+	     			mapDMC.put(++dmcCount, obj[3].toString());
+	     		}
+	     		
+				req.setAttribute("dmcCommitteeData", printservice.getCommitteeData(committeeIdDMC));
+				req.setAttribute("dmcActions", printservice.LastPMRCActions("0", committeeIdDMC));
+	    		//req.setAttribute("dmcLatestScheduleMinutesIds", service.getLatestScheduleMinutesIds(scheduleId+""));
+	    		req.setAttribute("dmcSchedule", service.getCCMScheduleById(scheduleId+""));
+	     		req.setAttribute("mapDMC", mapDMC);
+				req.setAttribute("committeeIdDMC", committeeIdDMC);
+				req.setAttribute("committeeMainId", service.getCommitteeMainIdByCommitteeCode("DMC")+"");
+			}	
     		/* ----------------------- DMC End -------------------------- */
 			
 			/* ----------------------- EB Calendar Start -------------------------- */
-			
-			req.setAttribute("ebCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "EB", clusterid));
-    		
+			if(slideNames.contains("EB Calendar")) { 
+				req.setAttribute("ebCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "EB", clusterid));
+			}
     		/* ----------------------- EB Calendar End -------------------------- */
     		
     		/* ----------------------- PMRC Calendar Start -------------------------- */
-
-			req.setAttribute("pmrcCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "PMRC", clusterid));
-    		
+			if(slideNames.contains("PMRC Calendar")) { 
+				req.setAttribute("pmrcCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "PMRC", clusterid));
+			}
     		/* ----------------------- PMRC Calendar End -------------------------- */
 
     		/* ----------------------- ASP Status Start -------------------------- */
-    		
-    		req.setAttribute("aspList", service.getCCMASPList());
-    		
+			if(slideNames.contains("ASP Status")) { 
+				req.setAttribute("aspList", service.getCCMASPList(ccmScheduleId));
+			}
     		/* ----------------------- ASP Status End ---------------------------- */
 			
 			/* ----------------------- Closure Status Start -------------------------- */
-			
-    		req.setAttribute("closureStatusList", service.getClosureStatusList(ccmScheduleId));
-    		
-			/* ----------------------- Cash Out Go Status Start -------------------------- */
-    	
-			req.setAttribute("cashOutGoList", service.getCashOutGoList());
-			
-			
-			int monthValue = now.getMonthValue();
-			int quarter = 1;
-			
-			if(monthValue>=7 && monthValue<=9) {
-				quarter = 2;
-			}else if(monthValue>=10 && monthValue<=12) {
-				quarter = 3;
-			}else if(monthValue>=1 && monthValue<=3) {
-				quarter = 4;
+			if(slideNames.contains("Closure Status")) { 
+				req.setAttribute("closureStatusList", service.getClosureStatusList(ccmScheduleId));
 			}
-			
-			req.setAttribute("quarter", quarter);
-    		
+			/* ----------------------- Cash Out Go Status Start -------------------------- */
+			if(slideNames.contains("Cash Out Go Status")) { 
+				req.setAttribute("cashOutGoList", service.getCashOutGoList());
+				
+				
+				int monthValue = now.getMonthValue();
+				int quarter = 1;
+				
+				if(monthValue>=7 && monthValue<=9) {
+					quarter = 2;
+				}else if(monthValue>=10 && monthValue<=12) {
+					quarter = 3;
+				}else if(monthValue>=1 && monthValue<=3) {
+					quarter = 4;
+				}
+				
+				req.setAttribute("quarter", quarter);
+				
+			}
     		/* ----------------------- Cash Out Go Status End -------------------------- */
 			
 			/* ----------------------- Test & Trials Start -------------- */
-    		
-    		req.setAttribute("ccmTestAndTrialsList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "T"));
-    		
+			if(slideNames.contains("Test & Trials")) { 
+				req.setAttribute("ccmTestAndTrialsList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "T"));
+			}
     		/* ----------------------- Test & Trials End -------------------------- */
     		
     		/* ----------------------- Achievements Start -------------------------- */
-    		
-    		req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "A"));
-    		
+			if(slideNames.contains("Achievements")) { 
+				req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "A"));
+			}
     		/* ----------------------- Achievements End -------------------------- */
 
     		/* ----------------------- Others Start -------------------------- */
-    		req.setAttribute("ccmOtherssList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "O"));
-    		/* ----------------------- Others End -------------------------- */
+			if(slideNames.contains("Others")) { 
+				req.setAttribute("ccmOtherssList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "O"));
+			}
+			/* ----------------------- Others End -------------------------- */
     		
 	    	return "ccm/CCMAgendaPresentation";
     	}catch (Exception e) {
@@ -849,7 +880,7 @@ public class CCMController {
     		else if(tabName.equalsIgnoreCase("ASP Status")) {
     			String labCode = req.getParameter("labCode");
     			labCode = labCode!=null?labCode:labcode;
-    			req.setAttribute("aspList", service.getCCMASPList().get(labCode));
+    			req.setAttribute("aspList", service.getCCMASPList(ccmScheduleId+"").get(labCode));
     			req.setAttribute("labCode", labCode);
     		}
     		/* ----------------------- ASP Status End ---------------------------- */
@@ -1050,89 +1081,173 @@ public class CCMController {
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CCMCashOutGoStatusExcel.htm "+UserId);
 		try {
-			XSSFWorkbook workbook = new XSSFWorkbook();
-			XSSFSheet sheet = workbook.createSheet("CCM Cash Out Go Status");
-			XSSFRow row = sheet.createRow(0);
+			int rowNo=0;
+			// Creating a worksheet
+			Workbook workbook = new XSSFWorkbook();
 
-			// Create a bold font style for headers
-			Font headerFont = workbook.createFont();
-			headerFont.setBold(true);
-
-			// Create a cell style for headers
-			CellStyle headerCellStyle = workbook.createCellStyle();
-			headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
-			headerCellStyle.setFont(headerFont);
-
-			// Create a cell style for center alignment and text wrapping
-			CellStyle centerWrapCellStyle = workbook.createCellStyle();
-			centerWrapCellStyle.setAlignment(HorizontalAlignment.CENTER);
-			centerWrapCellStyle.setWrapText(true);
-			centerWrapCellStyle.setFont(headerFont);
-
-			// Create and style cells
-			Cell cell0 = row.createCell(0);
-			cell0.setCellValue("SN");
-			cell0.setCellStyle(headerCellStyle);
+			Sheet sheet = workbook.createSheet("CCM Cash Out Go Status");
 			sheet.setColumnWidth(0, 2000);
-
-			Cell cell1 = row.createCell(1);
-			cell1.setCellValue("Project Code");
-			cell1.setCellStyle(headerCellStyle);
 			sheet.setColumnWidth(1, 7000);
-
-			Cell cell2 = row.createCell(2, CellType.STRING);
-			cell2.setCellValue("Budget Head");
-			cell2.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(2, 8000);
-
-			Cell cell3 = row.createCell(3);
-			cell3.setCellValue("Allotment \n(In Rs)");
-			cell3.setCellStyle(headerCellStyle);
-			cell3.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(3, 5000);
-			
-			Cell cell4 = row.createCell(4);
-			cell4.setCellValue("Expenditure \n(In Rs)");
-			cell4.setCellStyle(headerCellStyle);
-			cell4.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(4, 5000);
-			
-			Cell cell5 = row.createCell(5);
-			cell5.setCellValue("Balance \n(In Rs)");
-			cell5.setCellStyle(headerCellStyle);
-			cell5.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(5, 5000);
-			
-			Cell cell6 = row.createCell(6);
-			cell6.setCellValue("COG Q1 \n(In Rs)");
-			cell6.setCellStyle(headerCellStyle);
-			cell6.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(6, 5000);
-			
-			Cell cell7 = row.createCell(7);
-			cell7.setCellValue("COG Q2 \n(In Rs)");
-			cell7.setCellStyle(headerCellStyle);
-			cell7.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(7, 5000);
-			
-			Cell cell8 = row.createCell(8);
-			cell8.setCellValue("COG Q3 \n(In Rs)");
-			cell8.setCellStyle(headerCellStyle);
-			cell8.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(8, 5000);
-			
-			Cell cell9 = row.createCell(9);
-			cell9.setCellValue("COG Q4 \n(In Rs)");
-			cell9.setCellStyle(headerCellStyle);
-			cell9.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(9, 5000);
-			
-			Cell cell10 = row.createCell(10);
-			cell10.setCellValue("Addl(-)/Surr(+) \n(In Rs)");
-			cell10.setCellStyle(headerCellStyle);
-			cell10.setCellStyle(centerWrapCellStyle);
 			sheet.setColumnWidth(10, 5000);
 
+			XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+			font.setFontName("Times New Roman");
+			font.setFontHeightInPoints((short) 14);
+			font.setBold(true);
+			
+			XSSFFont font2 = ((XSSFWorkbook) workbook).createFont();
+			font2.setFontName("Times New Roman");
+			font2.setFontHeightInPoints((short) 11);
+			font2.setBold(true);
+			
+			// style for file header
+			CellStyle file_header_Style = workbook.createCellStyle();
+			file_header_Style.setLocked(true);
+			file_header_Style.setFont(font);
+			file_header_Style.setWrapText(true);
+			file_header_Style.setAlignment(HorizontalAlignment.CENTER);
+			file_header_Style.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// style for table header
+			CellStyle t_header_style = workbook.createCellStyle();
+			t_header_style.setLocked(true);
+			t_header_style.setFont(font2);
+			t_header_style.setWrapText(true);
+			t_header_style.setAlignment(HorizontalAlignment.CENTER);
+			t_header_style.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// style for table cells
+			CellStyle t_body_style = workbook.createCellStyle();
+			t_body_style.setWrapText(true);
+			t_body_style.setAlignment(HorizontalAlignment.LEFT);
+			t_body_style.setVerticalAlignment(VerticalAlignment.TOP);
+
+			// style for table cells with center align
+			CellStyle t_body_style2 = workbook.createCellStyle();
+			t_body_style2.setWrapText(true);
+			t_body_style2.setAlignment(HorizontalAlignment.CENTER);
+			t_body_style2.setVerticalAlignment(VerticalAlignment.TOP);
+			
+			// style for table cells with right align
+			CellStyle t_body_style3 = workbook.createCellStyle();
+			t_body_style3.setWrapText(true);
+			t_body_style3.setAlignment(HorizontalAlignment.RIGHT);
+			t_body_style3.setVerticalAlignment(VerticalAlignment.TOP);
+			
+			CellStyle file_header_Style2 = workbook.createCellStyle();
+			file_header_Style2.setLocked(true);
+			file_header_Style2.setFont(font2);
+			file_header_Style2.setWrapText(true);
+			file_header_Style2.setAlignment(HorizontalAlignment.RIGHT);
+			file_header_Style2.setVerticalAlignment(VerticalAlignment.CENTER);	
+
+			// Table in file header Row
+			Row t_header_row = sheet.createRow(rowNo++);
+			Cell cell= t_header_row.createCell(0); 
+			cell.setCellValue("SN"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(1, CellType.STRING); 
+			cell.setCellValue("Project Code"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(2, CellType.STRING); 
+			cell.setCellValue("Budget Head"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(3); 
+			cell.setCellValue("Allotment \n(In Rs)"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(4); 
+			cell.setCellValue("Expenditure \n(In Rs)"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(5); 
+			cell.setCellValue("Balance \n(In Rs)"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(6); 
+			cell.setCellValue("COG Q1 \n(In Rs)"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(7); 
+			cell.setCellValue("COG Q2 \n(In Rs)"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(8); 
+			cell.setCellValue("COG Q3 \n(In Rs)"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(9); 
+			cell.setCellValue("COG Q4 \n(In Rs)"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(10); 
+			cell.setCellValue("Addl(-)/Surr(+) \n(In Rs)"); 
+			cell.setCellStyle(t_header_style);
+			
+			String labCode = req.getParameter("labCode");
+			List<Object[]> cashOutGoList = service.getCashOutGoList().get(labCode);
+			
+			if(cashOutGoList!=null && cashOutGoList.size()>0) {
+				int slno=0;
+				for(Object[] obj : cashOutGoList) {
+					Row t_body_row = sheet.createRow(++slno);
+					cell= t_body_row.createCell(0); 
+					cell.setCellValue(slno); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(1); 
+					cell.setCellValue(obj[4]!=null?obj[4].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(2); 
+					cell.setCellValue(obj[6]!=null?obj[6].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(3); 
+					cell.setCellValue(obj[7]!=null?obj[7].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(4); 
+					cell.setCellValue(obj[8]!=null?obj[8].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(5); 
+					cell.setCellValue(obj[9]!=null?obj[9].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(6); 
+					cell.setCellValue(obj[10]!=null?obj[10].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(7); 
+					cell.setCellValue(obj[11]!=null?obj[11].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(8); 
+					cell.setCellValue(obj[12]!=null?obj[12].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(9); 
+					cell.setCellValue(obj[13]!=null?obj[13].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(10); 
+					cell.setCellValue(obj[14]!=null?obj[14].toString():"-"); 
+					cell.setCellStyle(t_body_style2);
+				}
+			}
+			
 			res.setContentType("application/vnd.ms-excel");
 			res.setHeader("Content-Disposition", "attachment; filename=CCMCashOutGoStatusExcel.xls");
 
@@ -1154,6 +1269,10 @@ public class CCMController {
 	    
 	    try {
 	        String labCode = req.getParameter("labCode");
+	        
+	        // Remove Existing Cash out Go Data
+	        service.ccmCashoutGoDelete(labCode);
+	        
 	        double emptyCost = 0.00;
 
 	        if (ServletFileUpload.isMultipartContent(req)) {
@@ -1288,7 +1407,6 @@ public class CCMController {
 	public void ccmAchievementsAttachmentDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		String labcode = (String) ses.getAttribute("labcode");
 		String clusterid = (String) ses.getAttribute("clusterid");
 		logger.info(new Date() +"Inside CCMAchievementsAttachmentDownload.htm "+UserId);
 		try
@@ -1424,7 +1542,7 @@ public class CCMController {
 	@RequestMapping(value="CCMClosureStatusEditSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String ccmClosureStatusEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside CCMClosureStatusDelete.htm "+UserId);
+		logger.info(new Date() +"Inside CCMClosureStatusEditSubmit.htm "+UserId);
 		try {
 			
 			CCMClosureStatus  closure = service.getCCMClosureStatusById(req.getParameter("ccmClosureId"));
@@ -1481,360 +1599,238 @@ public class CCMController {
 		}
 	}
 
-	@RequestMapping(value="CCMASPStatusExcel.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
-	public void ccmASPStatusExcel( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
-	{
-		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside CCMASPStatusExcel.htm "+UserId);
+	@RequestMapping(value="CCMASPStatusSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String ccmASPStatusSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CCMASPStatusSubmit.htm "+UserId);
 		try {
-			XSSFWorkbook workbook = new XSSFWorkbook();
-			XSSFSheet sheet = workbook.createSheet("CCM ASP Status");
-			XSSFRow row = sheet.createRow(0);
-
-			// Create a bold font style for headers
-			Font headerFont = workbook.createFont();
-			headerFont.setBold(true);
-
-			// Create a cell style for headers
-			CellStyle headerCellStyle = workbook.createCellStyle();
-			headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
-			headerCellStyle.setFont(headerFont);
-
-			// Create a cell style for center alignment and text wrapping
-			CellStyle centerWrapCellStyle = workbook.createCellStyle();
-			centerWrapCellStyle.setAlignment(HorizontalAlignment.CENTER);
-			centerWrapCellStyle.setWrapText(true);
-			centerWrapCellStyle.setFont(headerFont);
-
-			// Create and style cells
-			Cell cell0 = row.createCell(0);
-			cell0.setCellValue("SN");
-			cell0.setCellStyle(headerCellStyle);
-			sheet.setColumnWidth(0, 2000);
-
-			Cell cell1 = row.createCell(1);
-			cell1.setCellValue("Project Short Name");
-			cell1.setCellStyle(headerCellStyle);
-			sheet.setColumnWidth(1, 7000);
-
-			Cell cell2 = row.createCell(2, CellType.STRING);
-			cell2.setCellValue("Project Title");
-			cell2.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(2, 10000);
-
-			Cell cell3 = row.createCell(3);
-			cell3.setCellValue("Category");
-			cell3.setCellStyle(headerCellStyle);
-			cell3.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(3, 8000);
+			String ccmASPStatusId = req.getParameter("ccmASPStatusId");
+			CCMASPStatus aspStatus = ccmASPStatusId.equalsIgnoreCase("0")? new CCMASPStatus() : service.getCCMASPStatusById(ccmASPStatusId);
+			aspStatus.setInitiationId(Long.parseLong(req.getParameter("initiationId")));
+			aspStatus.setScheduleId(Long.parseLong(req.getParameter("ccmScheduleId")));
+			aspStatus.setMilestoneStatus(req.getParameter("milestoneStatus"));
+			if(ccmASPStatusId.equalsIgnoreCase("0")) {
+				aspStatus.setCreatedBy(UserId);
+				aspStatus.setCreatedDate(sdtf.format(new Date()));
+				aspStatus.setIsActive(1);
+			}else {
+				aspStatus.setModifiedBy(UserId);
+				aspStatus.setModifiedDate(sdtf.format(new Date()));
+			}
+            
+			long result = service.addCCMASPStatus(aspStatus);
 			
-			Cell cell4 = row.createCell(4);
-			cell4.setCellValue("Project Cost");
-			cell4.setCellStyle(headerCellStyle);
-			cell4.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(4, 5000);
+			if (result != 0) {
+				redir.addAttribute("result", "ASP Status Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "ASP Status Update Unsuccessful");
+			}
 			
-			Cell cell5 = row.createCell(5);
-			cell5.setCellValue("PDC \n (In Months)");
-			cell5.setCellStyle(headerCellStyle);
-			cell5.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(5, 5000);
+			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			redir.addAttribute("tabName", req.getParameter("tabName"));
 			
-			Cell cell6 = row.createCell(6);
-			cell6.setCellValue("PDD Name");
-			cell6.setCellStyle(headerCellStyle);
-			cell6.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(6, 5000);
-			
-			Cell cell7 = row.createCell(7);
-			cell7.setCellValue("PDR/PRC PDC \n (DD-MM-YYYY)");
-			cell7.setCellStyle(headerCellStyle);
-			cell7.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(7, 5000);
-			
-			Cell cell8 = row.createCell(8);
-			cell8.setCellValue("PDR/PRC Rev \n (DD-MM-YYYY)");
-			cell8.setCellStyle(headerCellStyle);
-			cell8.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(8, 5000);
-			
-			Cell cell9 = row.createCell(9);
-			cell9.setCellValue("PDR/PRC ADC \n (DD-MM-YYYY)");
-			cell9.setCellStyle(headerCellStyle);
-			cell9.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(9, 5000);
-			
-			Cell cell10 = row.createCell(10);
-			cell10.setCellValue("TiEC PDC \n (DD-MM-YYYY)");
-			cell10.setCellStyle(headerCellStyle);
-			cell10.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(10, 5000);
-			
-			Cell cell11 = row.createCell(11);
-			cell11.setCellValue("TiEC Rev \n (DD-MM-YYYY)");
-			cell11.setCellStyle(headerCellStyle);
-			cell11.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(11, 5000);
-			
-			Cell cell12 = row.createCell(12);
-			cell12.setCellValue("TiEC ADC \n (DD-MM-YYYY)");
-			cell12.setCellStyle(headerCellStyle);
-			cell12.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(12, 5000);
-			
-			Cell cell13 = row.createCell(13);
-			cell13.setCellValue("CEC PDC \n (DD-MM-YYYY)");
-			cell13.setCellStyle(headerCellStyle);
-			cell13.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(13, 5000);
-			
-			Cell cell14 = row.createCell(14);
-			cell14.setCellValue("CEC Rev \n (DD-MM-YYYY)");
-			cell14.setCellStyle(headerCellStyle);
-			cell14.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(14, 5000);
-			
-			Cell cell15 = row.createCell(15);
-			cell15.setCellValue("CEC ADC \n (DD-MM-YYYY)");
-			cell15.setCellStyle(headerCellStyle);
-			cell15.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(15, 5000);
-			
-			Cell cell16 = row.createCell(16);
-			cell16.setCellValue("CCM PDC \n (DD-MM-YYYY)");
-			cell16.setCellStyle(headerCellStyle);
-			cell16.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(16, 5000);
-			
-			Cell cell17 = row.createCell(17);
-			cell17.setCellValue("CCM Rev \n (DD-MM-YYYY)");
-			cell17.setCellStyle(headerCellStyle);
-			cell17.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(17, 5000);
-			
-			Cell cell18 = row.createCell(18);
-			cell18.setCellValue("CCM ADC \n (DD-MM-YYYY)");
-			cell18.setCellStyle(headerCellStyle);
-			cell18.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(18, 5000);
-			
-			Cell cell19 = row.createCell(19);
-			cell19.setCellValue("DMC PDC \n (DD-MM-YYYY)");
-			cell19.setCellStyle(headerCellStyle);
-			cell19.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(19, 5000);
-			
-			Cell cell20 = row.createCell(20);
-			cell20.setCellValue("DMC Rev \n (DD-MM-YYYY)");
-			cell20.setCellStyle(headerCellStyle);
-			cell20.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(20, 5000);
-			
-			Cell cell21 = row.createCell(21);
-			cell21.setCellValue("DMC ADC \n (DD-MM-YYYY)");
-			cell21.setCellStyle(headerCellStyle);
-			cell21.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(21, 5000);
-			
-			Cell cell22 = row.createCell(22);
-			cell22.setCellValue("Sanction PDC \n (DD-MM-YYYY)");
-			cell22.setCellStyle(headerCellStyle);
-			cell22.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(22, 5000);
-			
-			Cell cell23 = row.createCell(23);
-			cell23.setCellValue("Sanction Rev \n (DD-MM-YYYY)");
-			cell23.setCellStyle(headerCellStyle);
-			cell23.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(23, 5000);
-			
-			Cell cell24 = row.createCell(24);
-			cell24.setCellValue("Sanction ADC \n (DD-MM-YYYY)");
-			cell24.setCellStyle(headerCellStyle);
-			cell24.setCellStyle(centerWrapCellStyle);
-			sheet.setColumnWidth(24, 5000);
-
-
-			res.setContentType("application/vnd.ms-excel");
-			res.setHeader("Content-Disposition", "attachment; filename=ASPStatusExcel.xls");
-
-			// Write the workbook to the response output stream
-			workbook.write(res.getOutputStream());
-			workbook.close();
+			return "redirect:/CCMPresentation.htm";
 		}catch (Exception e) {
+			logger.error(new Date() + " Inside CCMASPStatusSubmit.htm " + UserId, e);
 			e.printStackTrace();
-			logger.error(new Date() + " Inside CCMASPStatusExcel.htm " + UserId, e);
+			return "static/Error";
 		}
 	}
 
-	@RequestMapping(value="CCMASPStatusExcelUpload.htm", method = {RequestMethod.POST, RequestMethod.GET})
-	public String ccmASPStatusExcelUpload(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
-	    String UserId = (String) ses.getAttribute("Username");
-	    logger.info(new Date() + " Inside CCMASPStatusExcelUpload.htm " + UserId);
-	    
-	    try {
-	        String labCode = req.getParameter("labCode");
+	@RequestMapping(value="CCMPresentationDownload.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public void CCMPresentationDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String clusterid = (String) ses.getAttribute("clusterid");
+		logger.info(new Date() +"Inside CCMPresentationDownload.htm "+UserId);
+		try {
+			String ccmScheduleId = req.getParameter("ccmScheduleId");
+    		String ccmCommitteeId = req.getParameter("committeeId");
+    		
+    		List<Object[]> clusterLabList = service.getClusterLabListByClusterId(clusterid);
+			String clusterLabCode = clusterLabList!=null && clusterLabList.size()>0 ?clusterLabList.stream().filter(e -> e[3].toString().equalsIgnoreCase("Y")).collect(Collectors.toList()).get(0)[2].toString():"";
 
-	        if (ServletFileUpload.isMultipartContent(req)) {
-	            Part filePart = req.getPart("filename");
-
-	            try (InputStream fileData = filePart.getInputStream();
-	                 Workbook workbook = new XSSFWorkbook(fileData)) {
-
-	                Sheet sheet = workbook.getSheetAt(0);
-	                int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
-	                DecimalFormat df = new DecimalFormat("#");
-	                long count = 0L;
-
-	                for (int i = 1; i <= rowCount; i++) {
-	                    Row row = sheet.getRow(i);
-	                    CCMASPData aspData = new CCMASPData();
-	                    aspData.setLabCode(labCode);
-	                    aspData.setInitiationId(-1L);
-
-	                    for (int j = 1; j <= 24; j++) {
-	                        Cell cell = row.getCell(j);
-	                        if (cell != null) {
-	                            processASPCell(j, cell, aspData, df);
-	                        }
-	                    }
-	                    
-	                    aspData.setCreatedBy(UserId);
-	                    aspData.setCreatedDate(sdtf.format(new Date()));
-	                    aspData.setIsActive(1);
-
-	                    if (aspData.getProjectShortName()!= null) {
-	                        count += service.addCCMASPData(aspData);
-	                    }
-	                }
-
-	                if (count > 0) {
-	                    redir.addAttribute("result", "CCM ASP Details Added Successfully");
-	                } else {
-	                    redir.addAttribute("resultfail", "Something went wrong");
-	                }
-	            }
-	        }
-
-	        redir.addAttribute("committeeId", req.getParameter("committeeId"));
-	        redir.addAttribute("tabName", req.getParameter("tabName"));
-	        redir.addAttribute("labCode", labCode);
-
-	        return "redirect:/CCMPresentation.htm";
-	    } catch (Exception e) {
-	        logger.error(new Date() + " Inside CCMASPStatusExcelUpload.htm " + UserId, e);
-	        e.printStackTrace();
-	        return "static/Error";
-	    }
-	}
-
-	private void processASPCell(int index, Cell cell, CCMASPData aspData, DecimalFormat df) {
-	    switch (index) {
-	        case 1:
-	        	if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-	            	aspData.setProjectShortName(cell.getStringCellValue());
-	            }
-	            break;
-	        case 2:
-	            if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-	            	aspData.setProjectTitle(cell.getStringCellValue());
-	            }
-	            break;
-	        case 3:
-	        	if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-	            	aspData.setCategory(cell.getStringCellValue());
-	            }
-	            break;
-	        case 4:
-	            aspData.setProjectCost(parseBigDecimal(cell));
-	            break;
-	        case 5:
-	            aspData.setPDC(parseToIntegerValue(cell));
-	            break;
-	        case 6:
-	        	if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-	            	aspData.setPDD(cell.getStringCellValue());
-	            }
-	            break;
-	        case 7:
-	            aspData.setPDRPDC(parseToSqlDateFormat(cell));
-	            break;
-	        case 8:
-	        	aspData.setPDRRev(parseToSqlDateFormat(cell));
-	            break;
-	        case 9:
-	        	aspData.setPDRADC(parseToSqlDateFormat(cell));
-	            break;
-	        case 10:
-	            aspData.setTiECPDC(parseToSqlDateFormat(cell));
-	            break;
-	        case 11:
-	        	aspData.setTiECRev(parseToSqlDateFormat(cell));
-	            break;
-	        case 12:
-	        	aspData.setTiECADC(parseToSqlDateFormat(cell));
-	            break;
-	        case 13:
-	        	aspData.setCECPDC(parseToSqlDateFormat(cell));
-	        	break;
-	        case 14:
-	        	aspData.setCECRev(parseToSqlDateFormat(cell));
-	        	break;
-	        case 15:
-	        	aspData.setCECADC(parseToSqlDateFormat(cell));
-	        	break;
-	        case 16:
-	        	aspData.setCCMPDC(parseToSqlDateFormat(cell));
-	        	break;
-	        case 17:
-	        	aspData.setCCMRev(parseToSqlDateFormat(cell));
-	        	break;
-	        case 18:
-	        	aspData.setCCMADC(parseToSqlDateFormat(cell));
-	        	break;
-	        case 19:
-	        	aspData.setDMCPDC(parseToSqlDateFormat(cell));
-	        	break;
-	        case 20:
-	        	aspData.setDMCRev(parseToSqlDateFormat(cell));
-	        	break;
-	        case 21:
-	        	aspData.setDMCADC(parseToSqlDateFormat(cell));
-	        	break;
-	        case 22:
-	        	aspData.setSanctionPDC(parseToSqlDateFormat(cell));
-	        	break;
-	        case 23:
-	        	aspData.setSanctionRev(parseToSqlDateFormat(cell));
-	        	break;
-	        case 24:
-	        	aspData.setSanctionADC(parseToSqlDateFormat(cell));
-	        	break;
-	    }
-	}
-
-	private Integer parseToIntegerValue(Cell cell) {
-	    switch (cell.getCellType()) {
-	        case Cell.CELL_TYPE_NUMERIC:
-	            return (int) cell.getNumericCellValue();
-	        case Cell.CELL_TYPE_STRING:
-	            return Integer.parseInt(cell.getStringCellValue());
-	        default:
-	            return 0;
-	    }
-	}
+			CommitteeSchedule ccmSchedule = service.getCCMScheduleById(ccmScheduleId);
+    		req.setAttribute("ccmScheduleData", ccmSchedule);
+	    	req.setAttribute("labInfo", printservice.LabDetailes(clusterLabCode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(clusterLabCode));
+	    	req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
+	    	req.setAttribute("clusterLabs", LogoUtil.getClusterLabsAsBase64String());
+	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
+	    	req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
+	    	req.setAttribute("ccmScheduleId", ccmScheduleId);
+	    	req.setAttribute("ccmCommitteeId", ccmCommitteeId);
+	    	req.setAttribute("ccmMeetingCount", service.getMaxCCMScheduleIdForMonth(clusterLabCode+"/CCM"));
+	    	CCMPresentationSlides presentationSlide = service.getCCMPresentationSlidesByScheduleId(ccmScheduleId);
+			List<String> slideNames = presentationSlide!=null? Arrays.asList(presentationSlide.getSlideName().split(",")): new ArrayList<String>();
+	    	req.setAttribute("slideNames", slideNames);
+	    	req.setAttribute("ccmPresentationSlides", presentationSlide);
+	    	
+	    	LocalDate now = LocalDate.now();
+	    	LocalDate scheduleDate = LocalDate.parse(ccmSchedule.getScheduleDate().toString());
+			
+	    	req.setAttribute("previousMonth", scheduleDate.minusMonths(1).getMonth().toString());
+			req.setAttribute("currentMonth", scheduleDate.getMonth().toString());
+			req.setAttribute("year", scheduleDate.getYear());
+			
+	    	/* ----------------------- ATR Start -------------------------- */
+			if(slideNames.contains("ATR")) {
+			
+				List<Object[]> ccmMeetingList = printservice.ReviewMeetingList("0", "CCM");
+				Map<Integer,String> mapCCM = new HashMap<>();
+	     		int ccmCount=0;
 	
-	private String parseToSqlDateFormat(Cell cell) {
-		switch (cell.getCellType()) {
-		case Cell.CELL_TYPE_NUMERIC:
-			if (DateUtil.isCellDateFormatted(cell)) {
-				java.util.Date date = cell.getDateCellValue();
-				return new java.sql.Date(date.getTime()).toString();
+	     		for (Object []obj:ccmMeetingList) {
+	     			mapCCM.put(++ccmCount, obj[3].toString());
+	     		}
+	     		
+				req.setAttribute("ccmCommitteeData", printservice.getCommitteeData(ccmCommitteeId));
+				req.setAttribute("ccmActions", printservice.LastPMRCActions("0", ccmCommitteeId));
+				Long lastScheduleId = service.getLastScheduleIdFromCurrentScheduleId(ccmScheduleId);
+	    		req.setAttribute("ccmLatestScheduleMinutesIds", service.getLatestScheduleMinutesIds(lastScheduleId+""));
+	    		req.setAttribute("ccmPreviousScheduleMinutesIds", service.getPreviousScheduleMinutesIds(lastScheduleId+""));
+	    		req.setAttribute("atrScheduleData", service.getCCMScheduleById(lastScheduleId+""));
+	     		req.setAttribute("mapCCM", mapCCM);
+			}
+    		/* -----------------------  ATR End -------------------------- */
+     		
+     		/* ----------------------- DMC Start -------------------------- */
+			if(slideNames.contains("DMC")) {	
+				String committeeIdDMC = service.getCommitteeIdByCommitteeCode("DMC")+"";
+				if(committeeIdDMC==null || (committeeIdDMC!=null && committeeIdDMC.isEmpty())) {
+					committeeIdDMC = "0";
+				}
+				Long scheduleId = service.getLatestScheduleId("D");
+				scheduleId = scheduleId!=null?scheduleId:0L;
+				List<Object[]> dmcMeetingList = printservice.ReviewMeetingList("0", "DMC");
+				Map<Integer,String> mapDMC = new HashMap<>();
+	     		int dmcCount=0;
+	
+	     		for (Object []obj:dmcMeetingList) {
+	     			mapDMC.put(++dmcCount, obj[3].toString());
+	     		}
+	     		
+				req.setAttribute("dmcCommitteeData", printservice.getCommitteeData(committeeIdDMC));
+				req.setAttribute("dmcActions", printservice.LastPMRCActions("0", committeeIdDMC));
+	    		//req.setAttribute("dmcLatestScheduleMinutesIds", service.getLatestScheduleMinutesIds(scheduleId+""));
+	    		req.setAttribute("dmcSchedule", service.getCCMScheduleById(scheduleId+""));
+	     		req.setAttribute("mapDMC", mapDMC);
+				req.setAttribute("committeeIdDMC", committeeIdDMC);
+				req.setAttribute("committeeMainId", service.getCommitteeMainIdByCommitteeCode("DMC")+"");
+			}	
+    		/* ----------------------- DMC End -------------------------- */
+			
+			/* ----------------------- EB Calendar Start -------------------------- */
+			if(slideNames.contains("EB Calendar")) { 
+				req.setAttribute("ebCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "EB", clusterid));
+			}
+    		/* ----------------------- EB Calendar End -------------------------- */
+    		
+    		/* ----------------------- PMRC Calendar Start -------------------------- */
+			if(slideNames.contains("PMRC Calendar")) { 
+				req.setAttribute("pmrcCalendarData", service.getEBPMRCCalendarData(scheduleDate.withDayOfMonth(1).toString(), "PMRC", clusterid));
+			}
+    		/* ----------------------- PMRC Calendar End -------------------------- */
+
+    		/* ----------------------- ASP Status Start -------------------------- */
+			if(slideNames.contains("ASP Status")) { 
+				req.setAttribute("aspList", service.getCCMASPList(ccmScheduleId));
+			}
+    		/* ----------------------- ASP Status End ---------------------------- */
+			
+			/* ----------------------- Closure Status Start -------------------------- */
+			if(slideNames.contains("Closure Status")) { 
+				req.setAttribute("closureStatusList", service.getClosureStatusList(ccmScheduleId));
+			}
+			/* ----------------------- Cash Out Go Status Start -------------------------- */
+			if(slideNames.contains("Cash Out Go Status")) { 
+				req.setAttribute("cashOutGoList", service.getCashOutGoList());
+				
+				
+				int monthValue = now.getMonthValue();
+				int quarter = 1;
+				
+				if(monthValue>=7 && monthValue<=9) {
+					quarter = 2;
+				}else if(monthValue>=10 && monthValue<=12) {
+					quarter = 3;
+				}else if(monthValue>=1 && monthValue<=3) {
+					quarter = 4;
+				}
+				
+				req.setAttribute("quarter", quarter);
+			}
+    		/* ----------------------- Cash Out Go Status End -------------------------- */
+			
+			/* ----------------------- Test & Trials Start -------------- */
+			if(slideNames.contains("Test & Trials")) { 
+				req.setAttribute("ccmTestAndTrialsList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "T"));
+			}
+    		/* ----------------------- Test & Trials End -------------------------- */
+    		
+    		/* ----------------------- Achievements Start -------------------------- */
+			if(slideNames.contains("Achievements")) { 
+				req.setAttribute("ccmAchievementsList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "A"));
+			}
+    		/* ----------------------- Achievements End -------------------------- */
+
+    		/* ----------------------- Others Start -------------------------- */
+			if(slideNames.contains("Others")) { 
+				req.setAttribute("ccmOtherssList", service.getCCMAchievementsByScheduleId(Long.parseLong(ccmScheduleId), "O"));
+			}
+			/* ----------------------- Others End -------------------------- */
+    		
+    		String filename="CCM_Presentation";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CCMPresentationDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			
+			Path leftLogoPath = Paths.get(env.getProperty("ApplicationFilesDrive"),"images","lablogos","drdo.png");
+	        Path rightLogoPath = Paths.get(env.getProperty("ApplicationFilesDrive"),"images","lablogos",clusterLabCode.toLowerCase()+".png");
+	        byte[] imageBytes = Files.readAllBytes(leftLogoPath);
+	        byte[] imageBytes1 = Files.readAllBytes(rightLogoPath);
+	        ImageData leftLogo = ImageDataFactory.create(imageBytes);
+            ImageData rightLogo = ImageDataFactory.create(imageBytes1);
+            
+	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+	        Rectangle pageSizeMain;
+	        PdfCanvas canvasMAin;
+	        int main = pdfDocMain.getNumberOfPages();
+	        for (int i = 1; i <= main; i++) 
+	        {
+	            PdfPage pageMain = pdfDocMain.getPage(i);
+	            pageSizeMain = pageMain.getPageSize();
+	            canvasMAin = new PdfCanvas(pageMain);
+	            Rectangle rectaMain=new Rectangle(54,pageSizeMain.getHeight()-34,34,33);
+	            canvasMAin.addImage(leftLogo, rectaMain, false);
+	            Rectangle rectaMain2=new Rectangle(pageSizeMain.getWidth()-64,pageSizeMain.getHeight()-34,34,33);
+	            canvasMAin.addImage(rightLogo, rectaMain2, false);
 	        }
-		case Cell.CELL_TYPE_STRING:
-			return fc.rdfTosdf(cell.getStringCellValue());
-		default:
-			return null;
+	        pdfDocMain.close();
+	        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
+	        Files.delete(pathOfFileMain);	
+	        
+	        res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	        File f=new File(path+File.separator+filename+"Maintemp.pdf");
+	        
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+    		
+		}catch (Exception e) {
+			logger.error(new Date() + " Inside CCMPresentationDownload.htm " + UserId, e);
+			e.printStackTrace();
 		}
 	}
 	

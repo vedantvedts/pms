@@ -563,11 +563,12 @@ if(ccmSchedule!=null) {
 																
 																		for(Object[] level1: agendaList){
 																	 	if(level1[2].toString().equalsIgnoreCase("0")) {
+																	 		List<Object[]> agendaList2 = agendaList.stream().filter(e -> level1[0].toString().equalsIgnoreCase(e[2].toString())).collect(Collectors.toList());
 																	 		++count;
 																	 		%>
 																	 		<tr>
 																				<td class="center" style="width: 3%;">
-																					<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button type="button" class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"  data-toggle="tooltip" data-placement="top" title="Expand"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span>
+																					<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button type="button" class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"  data-toggle="tooltip" data-placement="top" title="Expand" <%if(agendaList2.size()<1) {%>disabled<%} %>><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span>
 																				</td>
 																				<td  style="width: 5%;">
 																					<input type="number" form="agendaEditForm-<%=count %>" class="form-control" name="agendaPriority" min="1" id="agendaPriorityMain" value="<%=level1[3] %>" onkeypress="return isNumber(event)">
@@ -656,8 +657,7 @@ if(ccmSchedule!=null) {
 																						<tbody class="subagendatable-tbody-edit" id="subagendatable-tbody-edit-<%=count %>">
 																							<% 
 																								int countA=0;
-																								for(Object[] level2: agendaList){
-																					 			if(level1[0].toString().equalsIgnoreCase(level2[2].toString())){ 
+																								for(Object[] level2: agendaList2){
 																					 				++countA;
 																					 			%>
 																					 			
@@ -728,7 +728,7 @@ if(ccmSchedule!=null) {
 																										</form>	
 																									</td>
 																						 		</tr>	
-																							<%} } %>
+																							<% } %>
 																							<%if(countA==0) {%>
 																								<tr>
 																									<td colspan="8">No Data Available</td>

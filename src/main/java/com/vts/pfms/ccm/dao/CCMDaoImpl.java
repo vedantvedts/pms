@@ -15,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.vts.pfms.ccm.model.CCMASPData;
+import com.vts.pfms.ccm.model.CCMASPStatus;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -86,11 +86,11 @@ public class CCMDaoImpl implements CCMDao{
 	
 	private static final String GETMAXCCMSCHEDULEIDFORMONTH="SELECT IFNULL(COUNT(ScheduleId),0) AS 'MAX' FROM committee_schedule WHERE IsActive=1 AND MeetingId LIKE :Month";
 	@Override
-	public long getMaxCCMScheduleIdForMonth(String seq) throws Exception {
+	public long getMaxCCMScheduleIdForMonth(String sequence) throws Exception {
 
 		try {
 			Query query =  manager.createNativeQuery(GETMAXCCMSCHEDULEIDFORMONTH);
-			query.setParameter("Month", seq+"%");
+			query.setParameter("Month", sequence+"%");
 			BigInteger ccmScheduleId=(BigInteger)query.getSingleResult();
 			return ccmScheduleId.longValue();
 		}catch ( NoResultException e ) {
@@ -413,7 +413,7 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 	
-	private static final String GETCASHOUTGOLIST = "SELECT CCMDataId, ClusterId, LabCode, ProjectId, ProjectCode, BudgetHeadId, BudgetHeadDescription, AllotmentCost, Expenditure, Balance, Q1CashOutGo, Q2CashOutGo, Q3CashOutGo, Q4CashOutGo, Required, CreatedDate, (Q1CashOutGo+Q2CashOutGo+Q3CashOutGo+Q4CashOutGo) AS 'Total COG' FROM pfms_ccm_data ORDER BY LabCode, FIELD(BudgetHeadDescription, 'Revenue','Capital','Miscellaneous'), ProjectId";
+	private static final String GETCASHOUTGOLIST = "SELECT CCMDataId, ClusterId, LabCode, ProjectId, ProjectCode, BudgetHeadId, BudgetHeadDescription, AllotmentCost, Expenditure, Balance, Q1CashOutGo, Q2CashOutGo, Q3CashOutGo, Q4CashOutGo, Required, CreatedDate, (Q1CashOutGo+Q2CashOutGo+Q3CashOutGo+Q4CashOutGo) AS 'TotalCOG' FROM pfms_ccm_data ORDER BY LabCode, FIELD(BudgetHeadDescription, 'Revenue','Capital','Miscellaneous'), TotalCOG DESC";
 	@Override
 	public List<Object[]> getCashOutGoList() throws Exception {
 		
@@ -608,32 +608,61 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 	
-	private static final String GETCCMASPLIST = "SELECT a.CCMASPId, a.LabCode, a.InitiationId, a.ProjectShortName, a.ProjectTitle, a.Category, a.ProjectCost, a.PDC, a.PDD, a.PDRPDC, a.PDRRev, a.PDRADC, a.TiECPDC, a.TiECRev, a.TiECADC, a.CECPDC, a.CECRev, a.CECADC, a.CCMPDC, a.CCMRev, a.CCMADC, a.DMCPDC, a.DMCRev, a.DMCADC, a.SanctionPDC, a.SanctionRev, a.SanctionADC,'' AS Remarks FROM pfms_ccm_asp a WHERE a.IsActive=1 ORDER BY a.LabCode, a.InitiationId";
+	private static final String GETCCMASPLIST = "CALL pfms_ccm_asp_status_list(:ScheduleId)";
 	@Override
-	public List<Object[]> getCCMASPList() throws Exception {
+	public List<Object[]> getCCMASPList(String scheduleId) throws Exception {
 		
 		try {
 			Query query = manager.createNativeQuery(GETCCMASPLIST);
+			query.setParameter("ScheduleId", scheduleId);
 			return (List<Object[]>)query.getResultList();
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl getCCMASPList "+e);
-			return new ArrayList<>();
+			
 		}
+		return new ArrayList<>();
 	}
 
 	@Override
-	public long addCCMASPData(CCMASPData aspData) throws Exception {
+	public long addCCMASPStatus(CCMASPStatus aspStatus) throws Exception {
 		try {
-			manager.persist(aspData);
+			manager.persist(aspStatus);
 			manager.flush();
-			return aspData.getCCMASPId();
+			return aspStatus.getCCMASPStatusId();
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date()+" Inside CCMDaoImpl addCCMASPData "+e);
+			logger.error(new Date()+" Inside CCMDaoImpl addCCMASPStatus "+e);
 			return 0;
 		}
+	}
+
+	private static final String CCMCASHOUTGODELETE = "DELETE FROM pfms_ccm_data WHERE LabCode=:LabCode";
+	@Override
+	public int ccmCashoutGoDelete(String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(CCMCASHOUTGODELETE);
+			query.setParameter("LabCode", labCode);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl ccmCashoutGoDelete "+e);
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public CCMASPStatus getCCMASPStatusById(String ccmASPStatusId) throws Exception {
+		try {
+			return manager.find(CCMASPStatus.class, Long.parseLong(ccmASPStatusId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getCCMASPStatusById "+e);
+			return null;
+		}
+		
 	}
 
 }

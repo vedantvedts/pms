@@ -85,20 +85,22 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 
 .agendatable{
 	margin-left : 10px;
+	margin-right : 10px;
 	margin-top : 10px;
 	border-collapse : collapse;
 	border : 1px solid black;
-	width : 98%;
+	width : 100%;
 }  
 
 .agendatable th{
- text-align : center;
- font-size: 14px;
+	text-align : center;
+	font-size: 14px;
+	font-size: 1.2rem !important;
 }
 
 .agendatable td,th{
- border : 1px solid black;
- padding : 7px;
+	border : 1px solid black;
+	padding : 7px;
 }
 
 .subagendatable{
@@ -109,19 +111,26 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 }  
 
 .subagendatable th{
- text-align : center;
- font-size: 14px;
+	text-align : center;
+	font-size: 14px;
 }
 
 .subagendatable td,th{
- border : 1px solid black;
- padding : 7px;
+	border : 1px solid black;
+	padding : 7px;
 }
-     
+
+.agendatable td{
+	padding: 7px !important;
+}
+.agendatable tbody{
+	font-size: 1rem !important;
+}
+   
 </style>       
 </head>
 <body>
-	<table class="agendatable" style="width: 100%;">
+	<table class="agendatable" style="">
 		<thead style="">  
 			<tr>
 				<th>SN</th>

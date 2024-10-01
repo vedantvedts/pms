@@ -2,7 +2,7 @@ package com.vts.pfms.ccm.dao;
 
 import java.util.List;
 
-import com.vts.pfms.ccm.model.CCMASPData;
+import com.vts.pfms.ccm.model.CCMASPStatus;
 import com.vts.pfms.ccm.model.CCMAchievements;
 import com.vts.pfms.ccm.model.CCMClosureStatus;
 import com.vts.pfms.ccm.model.CCMPresentationSlides;
@@ -17,7 +17,7 @@ public interface CCMDao {
 	public List<CommitteeSchedule> getScheduleListByYear(String year) throws Exception;
 	public CommitteeSchedule getCCMScheduleById(String ccmScheduleId) throws Exception;
 	public long addCCMSchedule(CommitteeSchedule ccmSchedule) throws Exception;
-	public long getMaxCCMScheduleIdForMonth(String month) throws Exception;
+	public long getMaxCCMScheduleIdForMonth(String sequence) throws Exception;
 	public Long addCCMScheduleAgenda(CommitteeScheduleAgenda agenda) throws Exception;
 	public List<Object[]> getCCMScheduleAgendaListByCCMScheduleId(String ccmScheduleId) throws Exception;
 	public CommitteeScheduleAgenda getCCMScheduleAgendaById(String ccmScheduleAgendaId) throws Exception;
@@ -51,7 +51,9 @@ public interface CCMDao {
 	public long addCCMClosureStatus(CCMClosureStatus closure) throws Exception;
 	public List<Object[]> getClosureStatusList(String scheduleId) throws Exception;
 	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception;
-	public List<Object[]> getCCMASPList() throws Exception;
-	public long addCCMASPData(CCMASPData aspData) throws Exception;
+	public List<Object[]> getCCMASPList(String scheduleId) throws Exception;
+	public long addCCMASPStatus(CCMASPStatus aspStatus) throws Exception;
+	public int ccmCashoutGoDelete(String labCode) throws Exception;
+	public CCMASPStatus getCCMASPStatusById(String ccmASPStatusId) throws Exception;
 	
 }
