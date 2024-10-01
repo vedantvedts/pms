@@ -249,73 +249,223 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 
         XWPFDocument document = new XWPFDocument();
 
-        // Create "1. Project Attributes" heading
-        XWPFParagraph projectAttributesHeading = document.createParagraph();
-        XWPFRun attributesRun = projectAttributesHeading.createRun();
-        attributesRun.setText("1. Project Attributes");
-        attributesRun.setBold(true);
-        attributesRun.setColor("0000FF");
-        attributesRun.setFontSize(14);
-        attributesRun.addBreak();
+     
+        XWPFParagraph projectName = document.createParagraph();
+
         
-        Path imgfile = Paths.get(env.getProperty("ApplicationFilesDrive"),LabCode, "ProjectSlide", projectattribute[18].toString());
-        XWPFParagraph projectNameParagraph = document.createParagraph();
-        XWPFRun projectNameRun = projectNameParagraph.createRun();
-        projectNameRun.setBold(true);
-        projectNameRun.setFontSize(12);
-        projectNameRun.addBreak();
+        XWPFRun projectNameHeadingRun = projectName.createRun();
+        projectNameHeadingRun.setText("Project Name:");
+        projectNameHeadingRun.setBold(true);
+        projectNameHeadingRun.setColor("0000FF");  
+        projectNameHeadingRun.setFontSize(12);
+
+        
+        XWPFRun projectNameValueRun = projectName.createRun();
+        String projectNames = projectattribute[2] != null && !projectattribute[2].toString().trim().isEmpty() 
+            ? projectattribute[2].toString() 
+            : "-";
+        projectNameValueRun.setText(" " + projectNames); 
+        projectNameValueRun.setBold(false);
+        projectNameValueRun.setFontSize(12);
+        projectNameValueRun.addBreak();
+
+     Path imgfile = Paths.get(env.getProperty("ApplicationFilesDrive"),LabCode, "ProjectSlide", projectattribute[18].toString());
+//        XWPFParagraph projectNameParagraph = document.createParagraph();
+//        XWPFRun projectNameRun = projectNameParagraph.createRun();
+//        projectNameRun.setBold(true);
+//        projectNameRun.setFontSize(12);
+//        projectNameRun.addBreak();
 
         // Insert the image
         try (InputStream imageStream = Files.newInputStream(imgfile)) {
-            projectNameRun.addBreak(); // Add a line break before the image
-            projectNameRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
+        	projectNameValueRun.addBreak(); // Add a line break before the image
+        	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
         } catch (InvalidFormatException | IOException e) {
             e.printStackTrace(); // Handle the exception accordingly
         }
-        projectNameRun.addBreak();
+        projectNameValueRun.addBreak();
         
-  
+        XWPFRun BriefValueRun = projectName.createRun();
+        String Brief = projectattribute[17] != null && !projectattribute[17].toString().trim().isEmpty() ? projectattribute[17].toString().replaceAll("<[^>]*>", "").trim() : "-";
+        BriefValueRun.setText(Brief);  
+        BriefValueRun.setBold(false);
+        BriefValueRun.setFontSize(12);
      
-   
-        String[] headings = {
-            "Project Name", 
-            "Brief",
-            "Category", 
-            "Participating Lab", 
-            "Scope", 
-            "Objective", 
-            "Details of Review held till YR",
-            "Total Cost"
-        };
-
-        String Brief =(projectattribute[17] != null && !projectattribute[17].toString().trim().isEmpty()) ? projectattribute[17].toString().replaceAll("<[^>]*>", "").trim() : "-";
         
-        String[] data = {
-            (projectattribute[2] != null && !projectattribute[2].toString().trim().isEmpty()) ? projectattribute[2].toString() : "-", // Project Name
-            (Brief),
-            (projectattribute[19] != null && !projectattribute[19].toString().trim().isEmpty()) ? projectattribute[19].toString() : "-", // Category
-            (projectattribute[10] != null && !projectattribute[10].toString().trim().isEmpty()) ? projectattribute[10].toString() : "-", // Participating Lab
-            (projectattribute[11] != null && !projectattribute[11].toString().trim().isEmpty()) ? projectattribute[11].toString() : "-", // Scope
-            (projectattribute[9] != null && !projectattribute[9].toString().trim().isEmpty()) ? projectattribute[9].toString() : "-", // Objective
-            (projectattribute[16] != null && projectattribute[15] != null && !projectattribute[16].toString().trim().isEmpty() && !projectattribute[15].toString().trim().isEmpty()) 
-                ? "EB: " + projectattribute[16].toString() + "\nPMRC: " + projectattribute[15].toString() : "-", // Details of Review
-            (projectattribute[6] != null && !projectattribute[6].toString().trim().isEmpty()) ? projectattribute[6].toString() + " (in Lakhs)" : "-" // Total Cost
-        };
+        
+     XWPFParagraph categorys = document.createParagraph();
 
-        // Add the project headings and data
-        for (int i = 0; i < headings.length; i++) {
-            XWPFParagraph headingParagraph = document.createParagraph();
-            XWPFRun headingRunInner = headingParagraph.createRun();
-            headingRunInner.setText(headings[i]);
-            headingRunInner.setBold(true);
-            headingRunInner.setFontSize(12);
-            headingRunInner.addBreak();
+        
+        XWPFRun categoryHeadingRun = categorys.createRun();
+        categoryHeadingRun.setText("Category:");
+        categoryHeadingRun.setBold(true);
+        categoryHeadingRun.setColor("0000FF");  
+        categoryHeadingRun.setFontSize(12);
 
-            XWPFParagraph dataParagraph = document.createParagraph();
-            XWPFRun dataRun = dataParagraph.createRun();
-            dataRun.setText(data[i]);
-            dataRun.addBreak();
-        }
+        
+        XWPFRun categoryValueRun = categorys.createRun();
+        String category = projectattribute[19] != null && !projectattribute[19].toString().trim().isEmpty() 
+            ? projectattribute[19].toString() 
+            : "-";
+        categoryValueRun.setText(" " + category); 
+        categoryValueRun.setBold(false);
+        categoryValueRun.setFontSize(12);
+        
+        //project cost
+  XWPFParagraph cost = document.createParagraph();
+
+        
+        XWPFRun costHeadingRun = cost.createRun();
+        costHeadingRun.setText("Project Cost:");
+        costHeadingRun.setBold(true);
+        costHeadingRun.setColor("0000FF");  
+        costHeadingRun.setFontSize(12);
+
+        
+        XWPFRun costValueRun = cost.createRun();
+        String PrjCost = projectattribute[6] != null && !projectattribute[6].toString().trim().isEmpty() 
+            ? projectattribute[6].toString() 
+            : "-";
+        costValueRun.setText(" " + PrjCost+"(in Lakhs)"); 
+        costValueRun.setBold(false);
+        costValueRun.setFontSize(12);
+        
+       //participating lab 
+  XWPFParagraph participatinglab = document.createParagraph();
+
+        
+        XWPFRun participatinglabHeadingRun = participatinglab.createRun();
+        participatinglabHeadingRun.setText("Participating Lab:");
+        participatinglabHeadingRun.setBold(true);
+        participatinglabHeadingRun.setColor("0000FF");  
+        participatinglabHeadingRun.setFontSize(12);
+
+        
+        XWPFRun labValueRun = participatinglab.createRun();
+        String labparticipation = projectattribute[10] != null && !projectattribute[10].toString().trim().isEmpty() 
+            ? projectattribute[10].toString() 
+            : "-";
+        labValueRun.setText(" " + labparticipation); 
+        labValueRun.setBold(false);
+        labValueRun.setFontSize(12);
+        
+        
+        
+        
+        
+        //scope
+    XWPFParagraph scope = document.createParagraph();
+
+        
+        XWPFRun Prjscopes = scope.createRun();
+        Prjscopes.setText("Scope:");
+        Prjscopes.setBold(true);
+        Prjscopes.setColor("0000FF");  
+        Prjscopes.setFontSize(12);
+
+        
+        XWPFRun ScopeValueRun = scope.createRun();
+        String Scope = projectattribute[11] != null && !projectattribute[11].toString().trim().isEmpty() 
+            ? projectattribute[11].toString() 
+            : "-";
+        ScopeValueRun.setText(" " + Scope); 
+        ScopeValueRun.setBold(false);
+        ScopeValueRun.setFontSize(12);
+        
+        //objective
+ XWPFParagraph objective = document.createParagraph();
+
+        
+        XWPFRun objectives = objective.createRun();
+        objectives.setText("Objective:");
+        objectives.setBold(true);
+        objectives.setColor("0000FF");  
+        objectives.setFontSize(12);
+
+        
+        XWPFRun objectivesValueRun = objective.createRun();
+        String prjobjective = projectattribute[9] != null && !projectattribute[9].toString().trim().isEmpty() 
+            ? projectattribute[9].toString() 
+            : "-";
+        objectivesValueRun.setText(" " + prjobjective); 
+        objectivesValueRun.setBold(false);
+        objectivesValueRun.setFontSize(12);
+        
+        
+        //details of review held
+XWPFParagraph reviewHeld = document.createParagraph();
+
+        
+        XWPFRun reviewHelds = reviewHeld.createRun();
+        reviewHelds.setText("Details of Review till "+(currentYear - 1)+":");
+        reviewHelds.setBold(true);
+        reviewHelds.setColor("0000FF");  
+        reviewHelds.setFontSize(12);
+
+        
+        XWPFRun reviewHeldsValueRun = reviewHeld.createRun();
+        String reviewHeldValuePMRC = projectattribute[15] != null && !projectattribute[15].toString().trim().isEmpty() 
+            ? projectattribute[15].toString() 
+            : "-";
+        
+       String reviewHeldValueEB=projectattribute[16] != null && !projectattribute[16].toString().trim().isEmpty() 
+               ? projectattribute[16].toString() 
+                       : "-";
+       reviewHeldsValueRun.setText(" " + "EB:"+reviewHeldValueEB+" "+"PMRC:"+reviewHeldValuePMRC); 
+       reviewHeldsValueRun.setBold(false);
+       reviewHeldsValueRun.setFontSize(12);
+        
+   
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        String[] headings = {
+//            "Project Name", 
+//            "Brief",
+//            "Category", 
+//            "Participating Lab", 
+//            "Scope", 
+//            "Objective", 
+//            "Details of Review held till YR",
+//            "Total Cost"
+//        };
+//
+//       // String Brief =(projectattribute[17] != null && !projectattribute[17].toString().trim().isEmpty()) ? projectattribute[17].toString().replaceAll("<[^>]*>", "").trim() : "-";
+//        
+//        String[] data = {
+//            (projectattribute[2] != null && !projectattribute[2].toString().trim().isEmpty()) ? projectattribute[2].toString() : "-", // Project Name
+//            (Brief),
+//            (projectattribute[19] != null && !projectattribute[19].toString().trim().isEmpty()) ? projectattribute[19].toString() : "-", // Category
+//            (projectattribute[10] != null && !projectattribute[10].toString().trim().isEmpty()) ? projectattribute[10].toString() : "-", // Participating Lab
+//            (projectattribute[11] != null && !projectattribute[11].toString().trim().isEmpty()) ? projectattribute[11].toString() : "-", // Scope
+//            (projectattribute[9] != null && !projectattribute[9].toString().trim().isEmpty()) ? projectattribute[9].toString() : "-", // Objective
+//            (projectattribute[16] != null && projectattribute[15] != null && !projectattribute[16].toString().trim().isEmpty() && !projectattribute[15].toString().trim().isEmpty()) 
+//                ? "EB: " + projectattribute[16].toString() + "\nPMRC: " + projectattribute[15].toString() : "-", // Details of Review
+//            (projectattribute[6] != null && !projectattribute[6].toString().trim().isEmpty()) ? projectattribute[6].toString() + " (in Lakhs)" : "-" // Total Cost
+//        };
+//
+//        // Add the project headings and data
+//        for (int i = 0; i < headings.length; i++) {
+//            XWPFParagraph headingParagraph = document.createParagraph();
+//            XWPFRun headingRunInner = headingParagraph.createRun();
+//            headingRunInner.setText(headings[i]);
+//            headingRunInner.setBold(true);
+//            headingRunInner.setFontSize(12);
+//            headingRunInner.addBreak();
+//
+//            XWPFParagraph dataParagraph = document.createParagraph();
+//            XWPFRun dataRun = dataParagraph.createRun();
+//            dataRun.setText(data[i]);
+//            dataRun.addBreak();
+//        }
 
  
 
@@ -325,7 +475,8 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         mileParagraphs.setText("Major Achievements / activities completed during this year");
         mileParagraphs.setBold(true);
         mileParagraphs.setFontSize(12);
-        mileParagraphs.addBreak();
+        mileParagraphs.setColor("0000FF");  
+       
      
         int count=0;
         for (Object[] activity : milestoneData) {
@@ -346,7 +497,8 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         mileParagraphs2.setText("Planned Activities in the Project for Next year");
         mileParagraphs2.setBold(true);
         mileParagraphs2.setFontSize(12);
-        mileParagraphs2.addBreak();
+        mileParagraphs2.setColor("0000FF");
+       
      
         
         int count1=0;
@@ -368,7 +520,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         //spinoff data------------------------------------------------------------------------------------
         XWPFParagraph spinoff = document.createParagraph();
         XWPFRun attributesRun2 = spinoff.createRun();
-        attributesRun2.setText("3. Likely Spin-Off including application for Civil use (if any)");
+        attributesRun2.setText("Likely Spin-Off including application for Civil use (if any)");
         attributesRun2.setBold(true); // Set the subheading text to bold
         attributesRun2.setColor("0000FF");// Set the text color to blue (hexadecimal color code)
         attributesRun2.setFontSize(14);
@@ -385,7 +537,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 
         XWPFParagraph details = document.createParagraph();
         XWPFRun attributesRun3 = details.createRun();
-        attributesRun3.setText("4. Details of LSI/DCPP/PA (If Nominated)");
+        attributesRun3.setText("Details of LSI/DCPP/PA (If Nominated)");
         attributesRun3.setBold(true); // Set the subheading text to bold
         attributesRun3.setColor("0000FF");// Set the text color to blue (hexadecimal color code)
         attributesRun3.setFontSize(14);
@@ -451,24 +603,48 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
            }
            
            
-           XWPFParagraph curstage = document.createParagraph();
-           XWPFRun attributesRun4 = curstage.createRun();
-           attributesRun4.setText("5. Current Stage");
-           attributesRun4.setBold(true); // Set the subheading text to bold
-           attributesRun4.setColor("0000FF");// Set the text color to blue (hexadecimal color code)
-           attributesRun4.setFontSize(14);
-           //attributesRun.setUnderline(UnderlinePatterns.SINGLE); // Set the underline style
-           attributesRun4.addBreak(); 
-           XWPFParagraph mileParagraph1 = document.createParagraph();
-           XWPFRun mileParagraphs1 = mileParagraph1.createRun();
-           mileParagraphs1.setText(projectattribute[14]!=null ?projectattribute[14].toString():"");
-    
+//           XWPFParagraph curstage = document.createParagraph();
+//           XWPFRun attributesRun4 = curstage.createRun();
+//           attributesRun4.setText("Current Stage");
+//           attributesRun4.setBold(true); // Set the subheading text to bold
+//           attributesRun4.setColor("0000FF");// Set the text color to blue (hexadecimal color code)
+//           attributesRun4.setFontSize(14);
+//           
+//           attributesRun4.addBreak(); 
+//           XWPFParagraph mileParagraph1 = document.createParagraph();
+//           XWPFRun mileParagraphs1 = mileParagraph1.createRun();
+//           mileParagraphs1.setText(projectattribute[14]!=null ?projectattribute[14].toString():"");
+//    
+//           
+//        // Output the document to a byte array
+//        ByteArrayOutputStream out = new ByteArrayOutputStream();
+//        document.write(out);
+//        document.close();
            
-        // Output the document to a byte array
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        document.write(out);
-        document.close();
+           XWPFParagraph current = document.createParagraph();
 
+           
+      
+           
+           XWPFRun currentStage = current.createRun();
+           currentStage.setText("Project Current Stage:");
+           currentStage.setBold(true);
+           currentStage.setColor("0000FF");  
+           currentStage.setFontSize(12);
+
+           
+           XWPFRun currentStageValueRun = current.createRun();
+           String currentStages = projectattribute[14] != null && !projectattribute[14].toString().trim().isEmpty() 
+               ? projectattribute[14].toString() 
+               : "-";
+           currentStageValueRun.setText(" " + currentStages); 
+           currentStageValueRun.setBold(false);
+           currentStageValueRun.setFontSize(12);
+           
+           ByteArrayOutputStream out = new ByteArrayOutputStream();
+         document.write(out);
+        document.close();
+        
         // Prepare headers for the response
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
