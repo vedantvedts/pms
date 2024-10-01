@@ -22,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -225,30 +226,44 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
       
         List<Object[]> proList = prjservice.LoginProjectDetailsList(EmpId, Logintype, LabCode);
         req.setAttribute("proList", proList);
-        String projectid = req.getParameter("projectid");
+       // String projectid = req.getParameter("projectid");
+        String projectIdsParam = req.getParameter("projectid");
+        String[] projectIds = null;
 
-        if (projectid == null || projectid.equals("null")) {
-            projectid = proList.get(0)[0].toString();
+        if (projectIdsParam != null && !projectIdsParam.isEmpty()) {
+            projectIds = projectIdsParam.split(",");
+        } else {
+            // Handle the case where no projects were selected
+            throw new Exception("No projects selected.");
+        }
+        
+        
+
+        if (projectIdsParam == null || projectIdsParam.equals("null")) {
+        	projectIdsParam = proList.get(0)[0].toString();
         }
         
        
 
-        req.setAttribute("ProjectId", projectid);
-        req.setAttribute("ProjectAssignList", prjservice.ProjectAssignList(projectid));
-        Object[] projectattribute = service.prjDetails(projectid); // for project details
-        req.setAttribute("ProjectEditData", projectattribute);
-        Object[] editorData = service.editorData(projectid); // editor data
-        req.setAttribute("editorData", editorData);
-        String base64Image=null;
-        int currentYear = LocalDate.now().getYear();
-        List<Object[]> milestoneData = service.mileStoneData(currentYear, projectid);
-        req.setAttribute("milestoneData", milestoneData);
-        req.setAttribute("currentYear", currentYear);
-        req.setAttribute("nextYear", (currentYear + 1));
+        req.setAttribute("ProjectId", projectIdsParam);
+        req.setAttribute("ProjectAssignList", prjservice.ProjectAssignList(projectIdsParam));
+   
+//        req.setAttribute("milestoneData", milestoneData);
+//        req.setAttribute("currentYear", currentYear);
+//        req.setAttribute("nextYear", (currentYear + 1));
      
 
         XWPFDocument document = new XWPFDocument();
-
+//        for (String projectId : projectIds) {
+        for (int i = 0; i < projectIds.length; i++) {
+            String projectId = projectIds[i];
+        	
+            Object[] projectattribute = service.prjDetails(projectId); 
+            
+            Object[] editorData = service.editorData(projectId); 
+          
+            int currentYear = LocalDate.now().getYear();
+            List<Object[]> milestoneData = service.mileStoneData(currentYear, projectId);
      
         XWPFParagraph projectName = document.createParagraph();
 
@@ -268,8 +283,25 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         projectNameValueRun.setBold(false);
         projectNameValueRun.setFontSize(12);
         projectNameValueRun.addBreak();
-
+   if(projectattribute[18]!=null) {
      Path imgfile = Paths.get(env.getProperty("ApplicationFilesDrive"),LabCode, "ProjectSlide", projectattribute[18].toString());
+  // Insert the image
+     try (InputStream imageStream = Files.newInputStream(imgfile)) {
+     	projectNameValueRun.addBreak(); // Add a line break before the image
+     	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
+     } catch (InvalidFormatException | IOException e) {
+         e.printStackTrace(); // Handle the exception accordingly
+     }
+     }else {
+    	   Path imgfile = Paths.get(env.getProperty("ApplicationFilesDrive"),LabCode, "ProjectSlide", "-");
+    	// Insert the image
+           try (InputStream imageStream = Files.newInputStream(imgfile)) {
+           	projectNameValueRun.addBreak(); // Add a line break before the image
+           	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
+           } catch (InvalidFormatException | IOException e) {
+               e.printStackTrace(); // Handle the exception accordingly
+           }
+     }
 //        XWPFParagraph projectNameParagraph = document.createParagraph();
 //        XWPFRun projectNameRun = projectNameParagraph.createRun();
 //        projectNameRun.setBold(true);
@@ -277,12 +309,12 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 //        projectNameRun.addBreak();
 
         // Insert the image
-        try (InputStream imageStream = Files.newInputStream(imgfile)) {
-        	projectNameValueRun.addBreak(); // Add a line break before the image
-        	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
-        } catch (InvalidFormatException | IOException e) {
-            e.printStackTrace(); // Handle the exception accordingly
-        }
+//        try (InputStream imageStream = Files.newInputStream(imgfile)) {
+//        	projectNameValueRun.addBreak(); // Add a line break before the image
+//        	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
+//        } catch (InvalidFormatException | IOException e) {
+//            e.printStackTrace(); // Handle the exception accordingly
+//        }
         projectNameValueRun.addBreak();
         
         XWPFRun BriefValueRun = projectName.createRun();
@@ -479,6 +511,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
        
      
         int count=0;
+        if(milestoneData!=null && milestoneData.size()>0) {
         for (Object[] activity : milestoneData) {
         	
         	 
@@ -491,6 +524,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
             mileParagraphs1.addBreak();
         	}
         }
+        }
         
         XWPFParagraph mileParagraph2 = document.createParagraph();
         XWPFRun mileParagraphs2 = mileParagraph2.createRun();
@@ -502,12 +536,10 @@ XWPFParagraph reviewHeld = document.createParagraph();
      
         
         int count1=0;
-        System.out.println(milestoneData.size());
+        if(milestoneData!=null && milestoneData.size()>0) {
         for (Object[] activity : milestoneData) {
         	
-     	   System.out.println(activity[7]);
-     	  System.out.println(activity[8]);
-     	   System.out.println(currentYear+1);
+     	  
      	if(activity[7].toString().equalsIgnoreCase((currentYear+1)+"")||activity[8].toString().equalsIgnoreCase((currentYear+1)+"")) {
            XWPFParagraph mileParagraph1 = document.createParagraph();
          XWPFRun mileParagraphs1 = mileParagraph1.createRun();
@@ -516,6 +548,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
         
          mileParagraphs1.addBreak();
      	}
+        }
      }
         //spinoff data------------------------------------------------------------------------------------
         XWPFParagraph spinoff = document.createParagraph();
@@ -641,9 +674,18 @@ XWPFParagraph reviewHeld = document.createParagraph();
            currentStageValueRun.setBold(false);
            currentStageValueRun.setFontSize(12);
            
+           
+           
+           if (i < projectIds.length - 1) {
+               XWPFParagraph pageBreakParagraph = document.createParagraph();
+               XWPFRun pageBreakRun = pageBreakParagraph.createRun();
+               pageBreakRun.addBreak(BreakType.PAGE);
+           }
+        } 
            ByteArrayOutputStream out = new ByteArrayOutputStream();
          document.write(out);
         document.close();
+        
         
         // Prepare headers for the response
         HttpHeaders headers = new HttpHeaders();

@@ -463,6 +463,12 @@ int nextYear=(int)request.getAttribute("nextYear");
 											<!-- <i class="fa fa-file-word-o" aria-hidden="true"></i> -->
 											<i class="fa fa-file-word-o" style="font-size:17px;color: blue;" title="Lab Report New Word Download"></i>
                                         </button> 
+                                        &nbsp;  &nbsp;  &nbsp;
+                                        <button data-toggle="tooltip" onclick="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" 
+                                        style="cursor: pointer;" type="button" data-placement="right" title="" data-original-title="Select DashBoard Projects">
+                                        <img src="view/images/dashboard.png" style="width: 25px;"></button>
+                                        
+                                        
                                         <input type="hidden" name="currentyr" value="<%=currentYear%>">
                                         <input type="hidden" name="nextyr" value="<%=nextYear%>">
                                           <input type="hidden" name="prjLabCode" value="<%=projectLabCode%>">
@@ -704,7 +710,105 @@ int nextYear=(int)request.getAttribute("nextYear");
     </div> --%>
 
 </div>
-				
+
+
+<!-- modal  -->
+
+<div class="modal fade bd-example-modal-lg" id="DashboardProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document" style="max-width: 1440px;">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title" id="exampleModalLabel">Lab Reports Projects</h5>
+        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color:red;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <hr>
+      <div class="row ml-2 mt-2 mb-2"> 
+      
+ 
+      
+      <hr>
+      <% if(proList!=null && proList.size()>0){%>
+      <div class="row ml-2 mb-3 mt-2" >
+      Main projects : <input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
+      </div>
+      <%} %>
+      <div class="row" style="">
+      <% 
+      if(proList!=null && proList.size()>0){
+      for(Object[]obj:proList) {%>
+      <div class="col-md-2 ml-4 mt-3">
+      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> <span ><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span>
+      </div>
+       <%}} %>
+       </div> 
+       
+      
+     
+          <div class="mt-3 mb-3" align="center" id="addDiv" style="">
+        	<form action="LabReportDownload.htm" method="post">
+        	<input type="hidden" name="addFav" id="addFavvalue">
+        	<input type="hidden" name="projectid" id="projects">
+        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+        	<button type="submit" class="btn btn-sm submit" onclick="return DashFavAdd()">SUBMIT</button>
+        	<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">CLOSE</button>
+        	</form>
+        
+      </div>
+      
+      	
+       
+      </div>
+ 
+     
+    </div>
+  </div>
+</div>
+	
+	<script type="text/javascript">			
+	function showDashboardProjectModal(){
+	$('#DashboardProjectModal').modal('show');
+}
+	
+	function DashFavAdd(){
+		var projectArray=[];
+		 $("input:checkbox[name=projectId]:checked").each(function() { 
+			 projectArray.push($(this).val()); 
+	     }); 
+		 
+		 
+		 if(projectArray.length==0){
+			 alert("Please, select some projects!")
+			 return false;
+		 }
+		 $('#projects').val(projectArray)
+		 
+		 
+	 if(confirm('Are you sure to submit?')){
+			 
+		 }else{
+			 console.log(projectArray);
+			 event.preventDefault();
+			 return false;
+		 }
+	}
+	
+	
+	
+	
+	// Function to select/deselect all projects when "Main projects" is clicked
+	$('#mainProject').change(function() {
+	    var isChecked = $(this).is(':checked');
+	    $('input[name="projectId"]').prop('checked', isChecked);
+	});
+	
+	</script>
+	
+	
+	
+	
 	
 	<script>
 	  jQuery(document).ready(function($) {
@@ -807,7 +911,7 @@ var editor_config = {
 		
 	CKEDITOR.replace('ckeditor', editor_config );
 	CKEDITOR.replace('Editor1', editor_config);
-	CKEDITOR.replace('ckeditor2', editor_config );
+	//CKEDITOR.replace('ckeditor2', editor_config );
 	//CKEDITOR.replace('ckeditor3', editor_config );
 
 	$(document).ready(function() {
