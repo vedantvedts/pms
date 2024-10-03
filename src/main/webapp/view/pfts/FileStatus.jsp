@@ -594,13 +594,12 @@ for(Integer i:status){
 															    } 
 															%>
 															<% 
-															} else { 
+															}} else { 
 															%>
 															    <button type="submit" name="action" value="add" class="btn btn-success" onclick="return confirm('Are You Sure To Submit?')">SUBMIT</button>
 															<% 
 															} 
 															%>
-															<%} %>
 													        <input type="hidden" name="pftsFileId" id="pftsFileId" value="<%=fileStatus[0]%>">
 													        <input type="hidden" name="demandnumber" value="<%=fileStatus[1]%>">
 													        <input type="hidden" name="ProjectId" value="<%=projectId%>">
