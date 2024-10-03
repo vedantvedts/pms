@@ -136,7 +136,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
  <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" id="ExtNo"  name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width: 80%;" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="<%=OfficerEditData[4] %>">
+					<input  class="form-control form-control"  type="text" id="ExtNo"  name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width: 80%;" oninput="this.value = this.value.replace(/ /g, '').replace(/(\..*?)\..*/g, '$1').replace(/[^0-9./\\|,:;\[\]{}]/g, '');" value="<%=OfficerEditData[4] %>">
 				</div>
            
 </div>
@@ -179,13 +179,14 @@ String seslabid=(String)session.getAttribute("labid");
               <div class="form-group">
 					<label >Division:<span class="mandatory" style="color: red;">*</span></label>
 					<select class="form-control selectdee" name="Division" id="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
-									<option value="" disabled="disabled" selected="selected" hidden="true">--Select--</option>
+									<option value="0">--Select--</option>
 										<%  for ( Object[]  obj :DivisionList) {%>
 								     <option value="<%=obj[0] %>" <%if(OfficerEditData[6].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>> <%=obj[1] %></option>
 								     <%} %>
 					</select> 
 			  </div>
 </div>
+
 </div>
 
 <div class="row">

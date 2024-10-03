@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
@@ -23,6 +24,8 @@ import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
+import com.vts.pfms.requirements.model.IGIInterface;
+import com.vts.pfms.requirements.model.IgiBasicParameters;
 import com.vts.pfms.requirements.model.IgiDocumentMembers;
 import com.vts.pfms.requirements.model.PfmsIgiDocument;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
@@ -664,7 +667,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		return requirementFiles;
 	}
 	
-	private static final String TESTTYPECOUNT="SELECT COUNT(testid) FROM pfms_testdetails WHERE parentId=:TestPlanInitiationId ";
+	private static final String TESTTYPECOUNT="SELECT MAX(TestCount) FROM pfms_testdetails WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive='1'";
 	@Override
 	public long numberOfTestTypeId(String testPlanInitiationId) throws Exception {
 
@@ -1304,9 +1307,38 @@ public class RequirementDaoImpl implements RequirementDao {
 	}
 	
 
-	
+	@Override
+	public long addBasicInterfaceType(IGIInterface iif) throws Exception {
+		manager.persist(iif);
+		manager.flush();
+		return iif.getInterfaceId();
+	}
 
 	
+	@Override
+	public List<IGIInterface> getAllIGIInterface(String labCode) throws Exception {
+
+			String queryStr = "SELECT i FROM IGIInterface i WHERE i.LabCode = :labCode";
+	        TypedQuery<IGIInterface> query = manager.createQuery(queryStr, IGIInterface.class);
+	        query.setParameter("labCode", labCode);
+	        return query.getResultList();
+		
+		
+		
+	}
+	private static final String BASICPARAMETERS="select * from pfms_igi_parameters";
+	@Override
+	public List<Object[]> getAllBasicParameters() throws Exception {
+		Query query = manager.createNativeQuery(BASICPARAMETERS);
+		return (List<Object[]>)query.getResultList();
+	}
 	
+	
+	@Override
+	public long AddParameters(IgiBasicParameters ib) throws Exception {
+		manager.persist(ib);
+		manager.flush();
+		return ib.getParameterId();
+	}
 	
 }

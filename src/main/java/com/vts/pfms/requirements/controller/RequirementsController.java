@@ -64,6 +64,8 @@ import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
+import com.vts.pfms.requirements.model.IGIInterface;
+import com.vts.pfms.requirements.model.IgiBasicParameters;
 import com.vts.pfms.requirements.model.IgiDocumentMembers;
 import com.vts.pfms.requirements.model.IgiDocumentSummary;
 import com.vts.pfms.requirements.model.PfmsIgiDocument;
@@ -2400,6 +2402,160 @@ public class RequirementsController {
 
 	@RequestMapping(value = "TestDetailsAddSubmit.htm", method=RequestMethod.POST)
 	public String TestDetailsAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir  ) throws Exception {
+//		String UserId = (String) ses.getAttribute("Username");
+//		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//		logger.info(new Date() +"Inside TestDetailsAddSubmit.htm "+UserId);
+//		try {
+//			String initiationId  = req.getParameter("initiationId");
+//			String projectId =req.getParameter("projectId");
+//			String productTreeMainId =req.getParameter("productTreeMainId");
+//			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+//
+//			if(initiationId==null) initiationId="0";
+//			if(projectId==null) projectId="0";	
+//			if(productTreeMainId==null) productTreeMainId="0";
+//
+//			if(testPlanInitiationId.equals("0") ) {					
+//				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
+//			}
+//
+//			String action = req.getParameter("action");
+//			String testId = req.getParameter("testId");
+//
+//			TestDetails Td = action!=null && action.equalsIgnoreCase("Edit")? service.getTestPlanDetailsById(testId):new TestDetails();
+//
+//			//			Td.setInitiationId(Long.parseLong(initiationId));
+//			//			Td.setProjectId(Long.parseLong(projectId));
+//			//Td.setProjectId((long)0);
+//
+//			Td.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
+//			Td.setName(req.getParameter("name"));
+//
+//			String StageApplicable="";
+//			if(req.getParameterValues("StageApplicable")!=null) 
+//			{
+//				String[] linkedreq= req.getParameterValues("StageApplicable");
+//				for(int i=0;i<linkedreq.length;i++) {
+//					StageApplicable=StageApplicable+linkedreq[i];
+//					if(i!=linkedreq.length-1) {
+//						StageApplicable=StageApplicable+",";
+//					}
+//				}
+//			}
+//
+//			String Methodology="";
+//			if(req.getParameterValues("Methodology")!=null) 
+//			{
+//				String[] linkedreq= req.getParameterValues("Methodology");
+//				for(int i=0;i<linkedreq.length;i++) {
+//					Methodology=Methodology+linkedreq[i];
+//					if(i!=linkedreq.length-1) {
+//						Methodology=Methodology+",";
+//					}
+//				}
+//			}
+//
+//			String ToolsSetup="";
+//			if(req.getParameterValues("ToolsSetup")!=null) 
+//			{
+//				String[] linkedreq= req.getParameterValues("ToolsSetup");
+//				for(int i=0;i<linkedreq.length;i++) {
+//					ToolsSetup=ToolsSetup+linkedreq[i];
+//					if(i!=linkedreq.length-1) {
+//						ToolsSetup=ToolsSetup+",";
+//					}
+//				}
+//			}
+//				String specid = "";
+//				
+//				if(req.getParameterValues("SpecId")!=null) {
+//					System.out.println("req.getParameterValues(\"SpecId\")"+Arrays.asList(req.getParameterValues("SpecId")));
+//					String[] SpecId= req.getParameterValues("SpecId");
+//					for(int i=0;i<SpecId.length;i++) {
+//						specid=specid+SpecId[i];
+//						if(i!=SpecId.length-1) {
+//							specid=specid+",";
+//						}
+//					}
+//				}
+//				
+//				Td.setSpecificationId(specid);
+//			
+//			
+//			Td.setObjective(req.getParameter("Objective"));
+//			Td.setDescription(req.getParameter("Description"));
+//			Td.setPreConditions(req.getParameter("PreConditions"));
+//			Td.setPostConditions(req.getParameter("PostConditions"));
+//			Td.setConstraints(req.getParameter("Constraints"));
+//			Td.setSafetyRequirements(req.getParameter("SafetyReq"));
+//			Td.setMethodology(Methodology);
+//			Td.setToolsSetup(ToolsSetup);
+//			Td.setPersonnelResources(req.getParameter("PersonnelResources"));
+//			Td.setEstimatedTimeIteration(req.getParameter("EstimatedTimeIteration"));
+//			Td.setIterations(req.getParameter("Iterations"));
+//			Td.setSchedule(req.getParameter("Schedule"));
+//			Td.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
+//			Td.setRemarks(req.getParameter("remarks"));
+//			
+//			Td.setStageApplicable(StageApplicable);
+//
+//			if(action!=null && action.equalsIgnoreCase("Edit")) {
+//				Td.setModifiedBy(UserId);
+//				Td.setModifiedDate(sdf1.format(new Date()));
+//			}else {
+//
+//				String  Testtype="TEST";
+//				String mainid = req.getParameter("MainId");
+//				
+//				String parentid = req.getParameter("parentid");
+//				
+//				Long a=	(Long)service.numberOfTestTypeId(parentid);
+//				String TestDetailsId="";
+//				if(mainid.equalsIgnoreCase("0")) {
+//					TestDetailsId = req.getParameter("testName")+"_"+(a+1);
+//				}else {
+//					Object[]testType=service.getTestTypeName(mainid);
+//					if(testType!=null) {
+//						Testtype=testType[3].toString();
+//					}
+//				if(a<90L) {
+//					System.out.println("10"+ (a+10));
+//					TestDetailsId=Testtype+("000"+((a*10)+10));
+//				}else if(a<990L) {
+//					TestDetailsId=Testtype+("00"+((a*10)+10));
+//				}else {
+//					TestDetailsId=Testtype+("0"+((a*10)+10));
+//				}
+//				}
+//				Td.setTestDetailsId(TestDetailsId);
+//				Td.setTestCount((a.intValue()+10));
+//				Td.setParentId(Long.parseLong(parentid));
+//				Td.setMainId(0l);
+//				Td.setCreatedBy(UserId);
+//				Td.setIsActive(1);
+//				Td.setCreatedDate(sdf1.format(new Date()));
+//			}
+//			long count=service.TestDetailsAdd(Td);
+//
+//			if (count > 0) {
+//				redir.addAttribute("result", "Test  Details "+action+"ed Successfully");
+//			} else {
+//				redir.addAttribute("resultfail", "Test Details "+action+" Unsuccessful");
+//			}
+//			redir.addAttribute("initiationId",initiationId);
+//			redir.addAttribute("projectId",projectId);
+//			redir.addAttribute("productTreeMainId",productTreeMainId);
+//			redir.addAttribute("testPlanInitiationId",testPlanInitiationId);
+//			redir.addAttribute("TestReqId",count+"");
+//			return "redirect:/TestDetails.htm";
+//		}
+//
+//		catch(Exception e){
+//			e.printStackTrace();
+//			logger.error(new Date() +"Inside TestDetailsAddSubmit.htm  "+UserId, e);
+//			return "static/Error";
+//		}
+
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside TestDetailsAddSubmit.htm "+UserId);
@@ -2496,41 +2652,27 @@ public class RequirementsController {
 			Td.setRemarks(req.getParameter("remarks"));
 			
 			Td.setStageApplicable(StageApplicable);
-
+			Td.setIsActive(1);
 			if(action!=null && action.equalsIgnoreCase("Edit")) {
 				Td.setModifiedBy(UserId);
 				Td.setModifiedDate(sdf1.format(new Date()));
 			}else {
 
 				String  Testtype="TEST";
-				String mainid = req.getParameter("MainId");
-				
-				String parentid = req.getParameter("parentid");
-				
-				Long a=	(Long)service.numberOfTestTypeId(parentid);
+				Long a=	(Long)service.numberOfTestTypeId(testPlanInitiationId);
 				String TestDetailsId="";
-				if(mainid.equalsIgnoreCase("0")) {
-					TestDetailsId = req.getParameter("testName")+"_"+(a+1);
-				}else {
-					Object[]testType=service.getTestTypeName(mainid);
-					if(testType!=null) {
-						Testtype=testType[3].toString();
-					}
 				if(a<90L) {
 					System.out.println("10"+ (a+10));
-					TestDetailsId=Testtype+("000"+((a*10)+10));
+					TestDetailsId=Testtype+("000"+(a+10));
 				}else if(a<990L) {
-					TestDetailsId=Testtype+("00"+((a*10)+10));
+					TestDetailsId=Testtype+("00"+(a+10));
 				}else {
-					TestDetailsId=Testtype+("0"+((a*10)+10));
-				}
+					TestDetailsId=Testtype+("0"+(a+10));
 				}
 				Td.setTestDetailsId(TestDetailsId);
 				Td.setTestCount((a.intValue()+10));
-				Td.setParentId(Long.parseLong(parentid));
-				Td.setMainId(0l);
+
 				Td.setCreatedBy(UserId);
-				Td.setIsActive(1);
 				Td.setCreatedDate(sdf1.format(new Date()));
 			}
 			long count=service.TestDetailsAdd(Td);
@@ -2553,7 +2695,6 @@ public class RequirementsController {
 			logger.error(new Date() +"Inside TestDetailsAddSubmit.htm  "+UserId, e);
 			return "static/Error";
 		}
-
 	}
 
 	@RequestMapping(value="TestDetailsJson.htm",method=RequestMethod.GET)
@@ -3246,6 +3387,9 @@ public class RequirementsController {
 		String productTreeMainId =req.getParameter("productTreeMainId");
 		String SpecsInitiationId = req.getParameter("SpecsInitiationId");
 		try {
+			if(SpecsInitiationId.equals("0") ) {					
+				SpecsInitiationId = Long.toString(service.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
+			}
 			System.out.println(initiationId +" --"+ projectId+" --- "+productTreeMainId+"---"+SpecsInitiationId);
 			String []specValue= req.getParameterValues("specValue");
 			long count=0;
@@ -3574,5 +3718,120 @@ public class RequirementsController {
 			logger.info(new Date() +"Inside DeleteIgiDocument.htm"+UserId);
 		}
 		return "static/Error";
+	}
+	
+	@RequestMapping(value="IgiInterfaces.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String IgiInterfaces( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType=(String)ses.getAttribute("LoginType");
+		logger.info(new Date() +"Inside IgiInterfaces.htm"+UserId);
+		String DocIgiId = req.getParameter("DocIgiId");
+		System.out.println("DocIgiId"+DocIgiId);
+		try {
+			
+			List<IGIInterface>Intefaces = service.getAllIGIInterface(LabCode);
+			List<Object[]>parameters = service.getAllBasicParameters();
+			
+			req.setAttribute("DocIgiId", DocIgiId);
+			req.setAttribute("Intefaces", Intefaces);
+			req.setAttribute("parameters", parameters);
+		} catch (Exception e) {
+				e.printStackTrace();
+				}
+		
+		
+		return "requirements/IGIInterfaces";
+	}
+	@RequestMapping(value="BasicInterFaceSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String BasicInterFaceSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType=(String)ses.getAttribute("LoginType");
+		logger.info(new Date() +"Inside IgiInterfaces.htm"+UserId);
+		String DocIgiId = req.getParameter("DocIgiId");
+		try {
+			
+			String []InterfaceCode = req.getParameterValues("InterfaceCode");
+			String []InterfaceName = req.getParameterValues("InterfaceName");
+			String []InterfaceDescription = req.getParameterValues("InterfaceDescription");
+			
+			long count =0;
+			for (int i=0;i<InterfaceCode.length;i++) {
+				IGIInterface iif = new IGIInterface();
+				iif.setInterfaceCode(InterfaceCode[i]);
+				iif.setInterfaceName(InterfaceName[i]);
+				iif.setInterfaceDescription(InterfaceDescription[i]);
+				iif.setParentId(0l);
+				iif.setDocIgiId(Long.parseLong(DocIgiId));
+				iif.setCreatedBy(UserId);
+				iif.setCreatedDate(LocalDate.now().toString());
+				iif.setLabCode(LabCode);
+				iif.setIsActive(1);
+				
+				count = service.addBasicInterfaceType(iif);
+			}
+			if(count>0) {
+				redir.addAttribute("result","Intefaces Added Successfully");
+			}else{
+				redir.addAttribute("resultfail","Intefaces add unsuccessful ");
+			}
+
+			
+			
+		
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		redir.addAttribute("DocIgiId", DocIgiId);
+		return "redirect:/IgiInterfaces.htm";
+		
+	}
+	
+	
+	@RequestMapping(value="AddParameters.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public @ResponseBody String AddParameters( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+	
+		String LoginType=(String)ses.getAttribute("LoginType");
+		try {
+			String parameters = req.getParameter("parameters");
+			
+			String[]param = parameters.split(",");
+			List<String[]>list = new ArrayList<>();
+			long count=0;
+			for(int i=0;i<param.length;i++) {
+				IgiBasicParameters ib = new IgiBasicParameters();
+				ib.setParameterName(param[i]);
+				ib.setCreatedBy(UserId);
+				ib.setCreatedDate(LocalDate.now().toString());
+				ib.setIsActive(1);
+			
+				
+				count = service.AddParameters(ib);
+				String [] s = new String[2];
+				s[0]=count+"";
+				s[1]=param[i];
+				list.add(s);
+			}
+			
+			if(count>0) {
+				Gson json = new Gson();
+				return json.toJson(list);
+			}
+			
+			
+			System.out.println(parameters);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

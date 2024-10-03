@@ -9947,10 +9947,12 @@ public class ProjectController
 		Specification specificationData = null;
 		
 		try {
+			
 			String SpecsId = req.getParameter("SpecsId");
+			System.out.println("SpecsId --"+SpecsId);
 			specificationData = service.getSpecificationData(SpecsId);
 		} catch (Exception e) {
-		}
+			e.printStackTrace();		}
 		
 		return json.toJson(specificationData);
 	}

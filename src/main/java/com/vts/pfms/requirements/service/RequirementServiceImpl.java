@@ -46,6 +46,8 @@ import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
+import com.vts.pfms.requirements.model.IGIInterface;
+import com.vts.pfms.requirements.model.IgiBasicParameters;
 import com.vts.pfms.requirements.model.IgiDocumentMembers;
 import com.vts.pfms.requirements.model.PfmsIgiDocument;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
@@ -1432,5 +1434,25 @@ public class RequirementServiceImpl implements RequirementService {
 	public long editIgiDocument(IgiDocumentMembers idm) throws Exception
 	{
 		return dao.editIgiDocument(idm);
+	}
+	
+	@Override
+	public long addBasicInterfaceType(IGIInterface iif) throws Exception {
+		return dao.addBasicInterfaceType(iif);
+	}
+	
+	@Override
+	public List<IGIInterface> getAllIGIInterface(String labCode) throws Exception {
+		return dao.getAllIGIInterface(labCode);
+	}
+	
+	@Override
+	public List<Object[]> getAllBasicParameters() throws Exception {
+		return dao.getAllBasicParameters();
+	}
+	
+	@Override
+	public long AddParameters(IgiBasicParameters ib) throws Exception {
+		return dao.AddParameters(ib);
 	}
 }

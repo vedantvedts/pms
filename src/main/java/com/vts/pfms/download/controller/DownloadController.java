@@ -243,7 +243,7 @@ public class DownloadController {
   			ta.setCreatedBy(Username);
   			ta.setCreatedDate(LocalDate.now().toString());
   			ta.setIsActive(1);
-  			ta.setRestictionOnUse(req.getParameter("RestictionOnUse"));
+  			ta.setRestrictionOnUse(req.getParameter("RestictionOnUse"));
   			
   			System.out.println(ta.toString());
   			Long result= service.TemplateAttributesAdd(ta);
@@ -302,7 +302,7 @@ public class DownloadController {
   			AttributId.setModifiedBy(Username);
   			AttributId.setModifiedDate(LocalDate.now().toString());
   			AttributId.setIsActive(1);
-  			AttributId.setRestictionOnUse(req.getParameter("RestictionOnUse"));
+  			AttributId.setRestrictionOnUse(req.getParameter("RestictionOnUse"));
   			
   			
   			

@@ -11,6 +11,8 @@ import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
+import com.vts.pfms.requirements.model.IGIInterface;
+import com.vts.pfms.requirements.model.IgiBasicParameters;
 import com.vts.pfms.requirements.model.IgiDocumentMembers;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.PfmsSpecTypes;
@@ -204,4 +206,16 @@ public interface RequirementDao {
 
 
 	public long editIgiDocument(IgiDocumentMembers idm) throws Exception;
+
+
+	public long addBasicInterfaceType(IGIInterface iif)throws Exception;
+
+
+	public List<IGIInterface> getAllIGIInterface(String labCode)throws Exception;
+
+
+	public List<Object[]> getAllBasicParameters()throws Exception;
+
+
+	public long AddParameters(IgiBasicParameters ib)throws Exception;
 }

@@ -68,7 +68,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 <div class="col-md-3">
               <div class="form-group">
 					<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" id="EmpNo"  name="EmpNo" required="required" maxlength="6" style="font-size: 15px;width:100%;text-transform: uppercase;"
+					<input  class="form-control form-control"  type="text" id="EmpNo"  name="EmpNo" required="required" maxlength="20" style="font-size: 15px;width:100%;text-transform: uppercase;"
 					 placeholder="Employee No"/>
 				</div>
 </div>
@@ -84,7 +84,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 							</select>
 					</div>
 </div>
-<div class="col-md-3">
+		<div class="col-md-3">
 					 <div class="form-group">
 			                <label>Title</label><br>
 			                 <select class="form-control selectdee"  id="salutation" name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
@@ -119,8 +119,8 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 <div class="col-md-3">
               <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width:100%" 
-					 placeholder="Extension Number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
+	<input  class="form-control form-control" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width:100%" 
+					 placeholder="Extension Number(Max 10 char)" oninput="this.value = this.value.replace(/ /g, '').replace(/(\..*?)\..*/g, '$1').replace(/[^0-9./\\|,:;\[\]{}]/g, '');"/>
 			 </div>
 </div>
 

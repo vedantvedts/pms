@@ -233,7 +233,7 @@ List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerL
 	             <td style="text-align: left"> <%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></td>
 	             <td style="text-align: left"><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
 	             <td><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></td>
-	   	         <td><%if(obj[5]!=null){%><%=obj[6] %><%}else{ %>-<%} %></td>
+	   	         <td><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></td>
 	   			 <td><%if(Boolean.parseBoolean(obj[10].toString())){%>Active<%}else{ %><span style="color: red;">InActive</span><%} %></td>
 	      </tr>
 	    <%} %>
@@ -377,7 +377,7 @@ function Delete(myfrm){
                  	}
                  	if(row>0 && cell==3){
                  		var Exno = ''+sheet_data[row][cell]+'';
-                 		if(!/^\d+$/.test(Exno) || Exno.length!=4){ ExtNo.push(row);}	
+                 		if(!/^\d+$/.test(Exno) || Exno.length!=10){ ExtNo.push(row);}	
                  	}
                  	if(row>0 && cell==4){
                  		var pno = ''+sheet_data[row][cell]+'';

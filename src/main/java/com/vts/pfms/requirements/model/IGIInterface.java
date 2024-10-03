@@ -8,32 +8,24 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-
 @Data
 @Entity
-@Table(name="pfms_Igi_document_summary")
-public class IgiDocumentSummary {
-	
+@Table(name="pfms_igi_intefactes")
+public class IGIInterface {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long SummaryId;
-
-	private String AdditionalInformation;
-	private String Abstract;
-	private String Keywords;
-	private String Distribution;
-	private String Reviewer;
-	private Long Approver;
+	private Long InterfaceId;
+	private String InterfaceCode;
+	private String InterfaceName;
+	private String LabCode;
+	private String InterfaceDescription;
+	private Long ParentId;
+	private Long DocIgiId;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;
     private String ModifiedDate;
-    private String ReleaseDate;
-
 	private int IsActive;
-	private String PreparedBy;
 	
-	//primary key of pfms_igi_document Table or PfmsIgiDocument Model class
-	private Long DocIgiId;
-
 }

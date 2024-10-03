@@ -798,33 +798,22 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 		<!-- Test  Schedule  end-->
 					<div style="page-break-before: always;"></div>
 						<!-- Test Details   Starts-->
+					<!-- Test Details   Starts-->
 	<h1 style="font-family: <%= FontFamily %>;font-size: <%= fontSize%>pt; font-weight:<%=HeaderFontWeight%>;color: black !important;" class="heading-color">
     <br><%=++maincount %>. Test Details
 			</h1>
 			<!--Test Set Up  Starts -->
 				
-			<div style="margin-left:5px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
+			<div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
 			<%  if (TestDetailsList != null && !TestDetailsList.isEmpty()) { 
 				int testcount=0;
-				List<Object[]>mainTestList= TestDetailsList.stream().filter(e->e[23]!=null && e[23].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
-				
-				
-				 for (Object[] objs : mainTestList) {
-					 
-						List<Object[]>sublist= TestDetailsList.stream().filter(e->e[23]!=null && e[23].toString().equalsIgnoreCase(objs[0].toString())).collect(Collectors.toList());
-
+				 for (Object[] tDlist : TestDetailsList) {
 			%>	
 			<div style="margin-left: 20px; margin-top: 15px; font-weight: 600;font-family: <%= FontFamily %>;">
-			<h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++testcount)%>&nbsp;&nbsp;Test Type : &nbsp;&nbsp;<%= objs[1] %></h2>
-			</div>
-			<%for(Object[]tDlist:sublist){%> 
+			<h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++testcount)%>&nbsp;&nbsp;Test ID : &nbsp;&nbsp;<%= tDlist[1] %></h2>
+</div>
 
-			
-			
-		
-
-
-		<table class="border-black" style="width: 655px; margin-top: 10px; margin-bottom: 5px;font-family: <%=FontFamily%>;font-size: <%=ParaFontSize%>pt">
+<table class="border-black" style="width: 645px; margin-top: 10px; margin-bottom: 5px;font-family: <%=FontFamily%>;font-size: <%=ParaFontSize%>pt">
 			<thead>
 				<tr>
 					<th class="border-black"
@@ -1088,14 +1077,15 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 
 			</tbody>
 		</table> 
-		<% 
-  }}} else {
+ <% 
+  }} else {
    %>
 <div align="center" style="margin-top: 350px">
 					<h4 style="font-family: <%= FontFamily %>;">No Data Available !</h4>
 				</div>
 				<%} %> 
 				</div>
+		<!--Test Details Ends -->		
 		<!--Test Details Ends -->		
 			<!-- Test  Conclusion Starts  -->
 		<h1 style="font-family: <%= FontFamily %>; margin-left: 10px; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;">

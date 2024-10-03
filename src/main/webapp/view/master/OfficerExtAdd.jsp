@@ -137,8 +137,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
      <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width:100%" 
-					 placeholder="Extension Number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
+					<input  class="form-control form-control" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width:100%" 
+					 placeholder="Extension Number(Max 10 char)" oninput="this.value = this.value.replace(/ /g, '').replace(/(\..*?)\..*/g, '$1').replace(/[^0-9./\\|,:;\[\]{}]/g, '');"/>
 			 </div>
              
 </div>
@@ -179,14 +179,17 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 </div>
 
 <div class="col-md-3">
-              <div class="form-group">
-						<label >Division:<span class="mandatory" style="color: red;">*</span></label>
-						 <select class="form-control selectdee" id="Division" name="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-											<%  for ( Object[]  obj :DivisionList) {%>
-									          <option value="<%=obj[0] %>"> <%=obj[1] %></option><%} %>
-						</select> 
-			 </div>
+  <div class="form-group">
+    <label>Division:<span class="mandatory" style="color: red;">*</span></label>
+    <select class="form-control selectdee" id="Division" name="Division" data-container="body" data-live-search="true" required="required" style="font-size: 5px;">
+      <option value="0">--Select--</option>
+      <% for (Object[] obj : DivisionList) { %>
+        <option value="<%= obj[0] %>"><%= obj[1] %></option>
+      <% } %>
+    </select>
+  </div>
 </div>
+
 
 </div>
 

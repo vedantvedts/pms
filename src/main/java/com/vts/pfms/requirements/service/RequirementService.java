@@ -12,6 +12,8 @@ import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
+import com.vts.pfms.requirements.model.IGIInterface;
+import com.vts.pfms.requirements.model.IgiBasicParameters;
 import com.vts.pfms.requirements.model.IgiDocumentMembers;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
@@ -191,5 +193,13 @@ public interface RequirementService {
 	public IgiDocumentMembers getIgiDocumentById(Long IgiMemeberId) throws Exception;
 
 	public long editIgiDocument(IgiDocumentMembers idm) throws Exception;
+
+	public long addBasicInterfaceType(IGIInterface iif)throws Exception;
+
+	public List<IGIInterface> getAllIGIInterface(String labCode)throws Exception;
+
+	public List<Object[]> getAllBasicParameters()throws Exception;
+
+	public long AddParameters(IgiBasicParameters ib)throws Exception;
 
 }

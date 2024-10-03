@@ -304,7 +304,19 @@ List<Object[]>EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 			<input type="hidden" name="DocIgiId" value="<%=DocIgiId%>">
 		</form>
 		
+		
+		
 		<!--Downlaod PDF End -->
+
+
+	<form action="#">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="DocIgiId" value="<%=DocIgiId%>"> 
+		
+			<button class="btn bg-transparent" id="interfacebtn" formaction="IgiInterfaces.htm" formmethod="post" formnovalidate="formnovalidate"  style="display:none;">
+				<i class="fa fa-download text-success" aria-hidden="true"></i>
+			</button>
+		</form>
 
 
     <script type="text/javascript">
@@ -347,6 +359,11 @@ List<Object[]>EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 	    	format: 'DD-MM-YYYY'
 			}
 	});
+	
+	function showChapter2(){
+		$('#interfacebtn').click();
+	}
+	
 	</script>
     
  
