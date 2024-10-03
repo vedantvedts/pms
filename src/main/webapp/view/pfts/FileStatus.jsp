@@ -577,6 +577,7 @@ for(Integer i:status){
 													        %>
 													        <br>
 													        <div align="center">
+													        <% if (milestoneList != null && milestoneList.size()>0 && !milestoneList.isEmpty()) { %>
 															 <%
 															if (milestoneList.stream().filter(e -> e[1].equals(fileStatus[0]) && e[9].toString().equalsIgnoreCase("Y")).findAny().isPresent()) { 
 															%>
@@ -599,6 +600,7 @@ for(Integer i:status){
 															<% 
 															} 
 															%>
+															<%} %>
 													        <input type="hidden" name="pftsFileId" id="pftsFileId" value="<%=fileStatus[0]%>">
 													        <input type="hidden" name="demandnumber" value="<%=fileStatus[1]%>">
 													        <input type="hidden" name="ProjectId" value="<%=projectId%>">

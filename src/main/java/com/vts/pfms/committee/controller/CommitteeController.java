@@ -4107,10 +4107,11 @@ public class CommitteeController {
 				try { 
 						res.setContentType("Application/octet-stream");	
 						CommitteeMinutesAttachment attachment = service.MinutesAttachDownload(req.getParameter("attachmentid"));
-
-						File my_file=null;
-					
-						my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getAttachmentName()); 
+						String filedata =attachment.getFilePath().replaceAll("[/\\\\]", ",");
+						String[] fileParts = filedata.split(",");
+						Path filepath = Paths.get(uploadpath, fileParts[0], fileParts[1], attachment.getAttachmentName());
+						File my_file=filepath.toFile();
+				//		my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getAttachmentName()); 
 				        res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachmentName().toString()); 
 				        OutputStream out = res.getOutputStream();
 				        FileInputStream in = new FileInputStream(my_file);
@@ -4143,20 +4144,20 @@ public class CommitteeController {
 
 			            CommitteeMinutesAttachment attachment = service.MinutesAttachDownload(attachmentId);
 
-			            String inputFilePath = uploadpath + attachment.getFilePath() + File.separator + attachment.getAttachmentName();
-
-			            System.out.println(inputFilePath+"----path");
+			           // String inputFilePath = uploadpath + attachment.getFilePath() + File.separator + attachment.getAttachmentName();
+			            String filedata =attachment.getFilePath().replaceAll("[/\\\\]", ",");
+						String[] fileParts = filedata.split(",");
+						Path filepath = Paths.get(uploadpath, fileParts[0], fileParts[1], attachment.getAttachmentName());
 			            
-			            String encryptedOutputPath = uploadpath + attachment.getFilePath() + File.separator +
-			                    "Encrypted_" + attachment.getAttachmentName();
-			            
+//			            String encryptedOutputPath = uploadpath + attachment.getFilePath() + File.separator +"Encrypted_" + attachment.getAttachmentName();
+						Path filepath2 = Paths.get(uploadpath, fileParts[0], fileParts[1], ("Encrypted_" +attachment.getAttachmentName()));
+						
 			            String password = "lrde123";
-
-			            PdfReader pdfReader = new PdfReader(inputFilePath);
+			            PdfReader pdfReader = new PdfReader(filepath.toString());
 			            
 			            pdfReader.setUnethicalReading(true);
 			            		
-	                    PdfWriter pdfWriter = new PdfWriter(encryptedOutputPath,
+	                    PdfWriter pdfWriter = new PdfWriter(filepath2.toString(),
 	                            new WriterProperties().setStandardEncryption(password.getBytes(),
 	                            		password.getBytes(),
 	                                    EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
@@ -4170,7 +4171,8 @@ public class CommitteeController {
 	                    pdfWriter.close();
 	                    pdfReader.close();
 
-			           File pdfFile = new File(encryptedOutputPath);
+//			           File pdfFile = new File(encryptedOutputPath);
+			           File pdfFile = filepath2.toFile();
 			            res.setContentType("application/pdf");
 			            res.setHeader("Content-disposition", "inline; filename=" + attachment.getAttachmentName());
 
@@ -6848,9 +6850,10 @@ public class CommitteeController {
 					
 					
 						 res.setContentType("application/pdf"); res.setHeader("Content-Disposition",
-						  "inline; name="+ dpfm.getDPFMFileName()+".pdf; filename"+
-						 dpfm.getDPFMFileName()); File f=new File(uploadpath+dpfm.getFrozenDPFMPath()
-						  +dpfm.getDPFMFileName());
+						  "inline; name="+ dpfm.getDPFMFileName()+".pdf; filename"+dpfm.getDPFMFileName()); 
+						 Path filepath = Paths.get(uploadpath, LabCode, "DPFM");
+//						 File f=new File(uploadpath+dpfm.getFrozenDPFMPath()+dpfm.getDPFMFileName());
+     					 File f=filepath.toFile();
 						 
 						  OutputStream out = res.getOutputStream(); 
 						  FileInputStream in = new FileInputStream(f); 
@@ -8491,12 +8494,16 @@ public class CommitteeController {
 			logger.info(new Date() +"Inside FrozenProjectBriefingPaper.htm "+UserId);		
 			try {
 
+				Path filepath = Paths.get(ApplicationFilesDrive, LabCode, "Frozen", 
+					            "BriefingPaper_P" + req.getParameter("projectid") + 
+					            "_C" + req.getParameter("committeeid") + 
+					            "_S" + req.getParameter("scheduleid") + ".pdf");
 				String path = ApplicationFilesDrive+LabCode+"\\Frozen\\BriefingPaper_P"+req.getParameter("projectid")+"_C"+req.getParameter("committeeid")+"_S"+req.getParameter("scheduleid")+".pdf";
 		
 				res.setContentType("application/pdf");
 				res.setHeader("Content-Disposition", String.format("inline; filename=BriefingPaper.pdf"));
-		
-				File my_file = new File(path);
+		  
+				File my_file = filepath.toFile();
 		
 				OutputStream out = res.getOutputStream();
 				FileInputStream in = new FileInputStream(my_file);
@@ -8524,7 +8531,7 @@ public class CommitteeController {
 			logger.info(new Date() +"Inside CommitteeMinutesNewDfm.htm"+UserId);
 			try
 			{		
-				String committeescheduleid = req.getParameter("committeescheduleid");			
+				String committeescheduleid = req.getParameter("committeescheduleid");			    
 				Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
 				String projectid= committeescheduleeditdata[9].toString();
 				String committeeid=committeescheduleeditdata[0].toString();
@@ -8534,8 +8541,9 @@ public class CommitteeController {
 					CommitteeMeetingDPFMFrozen dpfm = service.getFrozenDPFMMinutes(committeescheduleid);
 					res.setContentType("application/pdf");
 					res.setHeader("Content-Disposition", "inline; name="+ dpfm.getDPFMFileName()+".pdf; filename"+ dpfm.getDPFMFileName());
-			        File f=new File(uploadpath+dpfm.getFrozenDPFMPath() +dpfm.getDPFMFileName());
-				         
+					Path filepath = Paths.get(uploadpath, LabCode, "DPFM", dpfm.getDPFMFileName());
+			      //  File f=new File(uploadpath+dpfm.getFrozenDPFMPath() +dpfm.getDPFMFileName());
+					   File f=filepath.toFile();
 
 				        OutputStream out = res.getOutputStream();
 						FileInputStream in = new FileInputStream(f);
@@ -8546,8 +8554,6 @@ public class CommitteeController {
 						}
 						in.close();
 						out.close();
-					
-					
 					
 				}
 				else 
@@ -10051,11 +10057,12 @@ public class CommitteeController {
 				logger.info(new Date() + "Inside UploadedCommitteLetterDownload.htm " + UserId);
 				try {
 					String letterId= req.getParameter("letterid");
-					System.out.println("letterId -- "+letterId);
 					Object[]committeeLetter=service.getcommitteeLetter(letterId);
-					
-					File my_file=null;
-					my_file=new File(uploadpath+committeeLetter[1]+File.separator+committeeLetter[2]);
+					String freezedata =committeeLetter[1].toString().replaceAll("[/\\\\]", ",");
+					String[] fileParts = freezedata.split(",");
+					Path filepath = Paths.get(uploadpath, fileParts[0], fileParts[1],committeeLetter[2].toString());
+					File my_file=filepath.toFile();
+					//my_file=new File(uploadpath+committeeLetter[1]+File.separator+committeeLetter[2]);
 					res.setContentType("Application/pdf");	
 					res.setHeader("Content-disposition","inline; filename="+committeeLetter[2].toString()); 
 					OutputStream out = res.getOutputStream();

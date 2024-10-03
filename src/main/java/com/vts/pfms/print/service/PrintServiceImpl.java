@@ -107,6 +107,35 @@ public class PrintServiceImpl implements PrintService {
 		}
 		return result;
 	}
+	
+	public static int saveFileFromFileObject(Path uploadPath, String fileName, File file) throws IOException {
+	    logger.info(new Date() + " Inside SERVICE saveFileFromFileObject ");
+	    int result = 1;
+
+	    // Check if the directory exists; if not, create it
+	    if (!Files.exists(uploadPath)) {
+	        Files.createDirectories(uploadPath);
+	    }
+
+	    try {
+	        // Resolve the destination file path
+	        Path filePath = uploadPath.resolve(fileName);
+	        
+	        // Copy the file from the source to the destination
+	        Files.copy(file.toPath(), filePath, StandardCopyOption.REPLACE_EXISTING);
+	        
+	    } catch (IOException ioe) {
+	        result = 0;
+	        throw new IOException("Could not save file: " + fileName, ioe);
+	    } catch (Exception e) {
+	        result = 0;
+	        logger.error(new Date() + " Inside SERVICE saveFileFromFileObject " + e);
+	        e.printStackTrace();
+	    }
+	    
+	    return result;
+	}
+
 
 	@Override
 	public Object[] LabList(String LabCode) throws Exception {
@@ -546,19 +575,21 @@ public class PrintServiceImpl implements PrintService {
 		Object[] scheduledata = dao.CommitteeScheduleEditData(String.valueOf(briefing.getScheduleId()));
 		String meedtingId = scheduledata[11].toString().replaceAll("[&.:?|<>/]", "").replace("\\", "");
 		String LabCode = briefing.getLabCode();
-		String filepath = "\\" + LabCode.toUpperCase().trim() + "\\Briefing\\";
-		Path freezingPath = Paths.get(uploadpath);
+//		String filepath = "\\" + LabCode.toUpperCase().trim() + "\\Briefing\\";
+		Path filepath = Paths.get(uploadpath,LabCode.toUpperCase().trim(), "Briefing");
+		Path filepath1 = Paths.get(LabCode.toUpperCase().trim(), "Briefing");
 		int count = 0;
 		String filename = "Briefing-" + meedtingId;
-		while (new File(uploadpath + filepath + "\\" + filename + ".pdf").exists()) {
+		Path oldPath = filepath.resolve(filename + ".pdf");
+		while (oldPath.toFile().exists()) {
 			filename = "Briefing-" + meedtingId;
 			filename = filename + " (" + ++count + ")";
 		}
 		File file = briefing.getBriefingFile();
-		saveFile(uploadpath + filepath, filename + ".pdf", file);
+		saveFileFromFileObject(filepath, filename + ".pdf", file);
 
 		briefing.setBriefingFileName(filename + ".pdf");
-		briefing.setFrozenBriefingPath(filepath);
+		briefing.setFrozenBriefingPath(filepath1.toString());
 		briefing.setFreezeTime(fc.getSqlDateAndTimeFormat().format(new Date()));
 		return dao.FreezeBriefingAdd(briefing);
 	}
@@ -568,19 +599,23 @@ public class PrintServiceImpl implements PrintService {
 		Object[] scheduledata = dao.CommitteeScheduleEditData(String.valueOf(briefing.getScheduleId()));
 		String meedtingId = scheduledata[11].toString().replaceAll("[&.:?|<>/]", "").replace("\\", "");
 		String LabCode = briefing.getLabCode();
-		String filepath = "\\" + LabCode.toUpperCase().trim() + "\\Briefing\\";
+//		String filepath = "\\" + LabCode.toUpperCase().trim() + "\\Briefing\\";
+		Path filepath = Paths.get(uploadpath,LabCode.toUpperCase().trim(), "Briefing");
+		Path filepath1 = Paths.get(LabCode.toUpperCase().trim(), "Briefing");
 		int count = 0;
 		String filename = "Briefing-" + meedtingId;
-		while (new File(uploadpath + filepath + "\\" + filename + ".pdf").exists()) {
+		Path oldPath = filepath.resolve(filename + ".pdf");
+//		while (new File(uploadpath + filepath + "\\" + filename + ".pdf").exists()) {
+		while (oldPath.toFile().exists()) {
 			filename = "Briefing-" + meedtingId;
 			filename = filename + " (" + ++count + ")";
 		}
 		MultipartFile file = briefing.getBriefingFileMultipart();
-		saveFile(uploadpath + filepath, filename + ".pdf", file);
+		saveFile1(filepath, filename + ".pdf", file);
 		MultipartFile presentationfile = briefing.getPresentationNameMultipart();
-		saveFile(uploadpath + filepath, filename + "-presentation" + ".pdf", presentationfile);
+		saveFile1(filepath, filename + "-presentation" + ".pdf", presentationfile);
 		MultipartFile mom = briefing.getMomMultipart();
-		saveFile(uploadpath + filepath, filename + "-Mom" + ".pdf", mom);
+		saveFile1(filepath, filename + "-Mom" + ".pdf", mom);
 		if (!briefing.getBriefingFileMultipart().isEmpty()) {
 			briefing.setBriefingFileName(filename + ".pdf");
 		}
@@ -590,7 +625,7 @@ public class PrintServiceImpl implements PrintService {
 		if (!briefing.getMomMultipart().isEmpty()) {
 			briefing.setMoM(filename + "-Mom" + ".pdf");
 		}
-		briefing.setFrozenBriefingPath(filepath);
+		briefing.setFrozenBriefingPath(filepath1.toString());
 		briefing.setFreezeTime(fc.getSqlDateAndTimeFormat().format(new Date()));
 		return dao.FreezeBriefingAdd(briefing);
 	}
@@ -601,22 +636,24 @@ public class PrintServiceImpl implements PrintService {
 		CommitteeProjectBriefingFrozen Existingbriefing = getFrozenProjectBriefing(scheduleid);
 		String filename = Existingbriefing.getBriefingFileName();
 		String pfilename = Existingbriefing.getPresentationName();
-		String filepath = Existingbriefing.getFrozenBriefingPath();
+	//	String filepath = Existingbriefing.getFrozenBriefingPath();
 		String subFileName = filename.substring(0, filename.length() - 4);
 		String momfile = Existingbriefing.getMoM();
-
+		String freezedata = Existingbriefing.getFrozenBriefingPath().replaceAll("[/\\\\]", ",");
+		String[] fileParts = freezedata.split(",");
+		Path freezepath = Paths.get(uploadpath, fileParts[0], fileParts[1]);
 		long count = 0;
 		try {
 			if (!file.isEmpty()) {
-				saveFile(uploadpath + filepath, filename, file);
+				saveFile1(freezepath, filename, file);
 			}
 			if (!pfile.isEmpty()) {
 				if (pfilename != null) {
 
-					saveFile(uploadpath + filepath, pfilename, pfile);
+					saveFile1(freezepath, pfilename, pfile);
 				} else {
 
-					saveFile(uploadpath + filepath, subFileName + "-presentation" + ".pdf", pfile);
+					saveFile1(freezepath, subFileName + "-presentation" + ".pdf", pfile);
 					String PresentationName = subFileName + "-presentation" + ".pdf";
 					int update = dao.PresentationNameUpdate(PresentationName, scheduleid);
 				}
@@ -624,10 +661,10 @@ public class PrintServiceImpl implements PrintService {
 			if (!mom.isEmpty()) {
 				if (momfile != null) {
 
-					saveFile(uploadpath + filepath, momfile, mom);
+					saveFile1(freezepath, momfile, mom);
 				} else {
 
-					saveFile(uploadpath + filepath, subFileName + "-Mom" + ".pdf", mom);
+					saveFile1(freezepath, subFileName + "-Mom" + ".pdf", mom);
 					String PresentationName = subFileName + "-Mom" + ".pdf";
 					int update = dao.MomUpdate(PresentationName, scheduleid);
 				}

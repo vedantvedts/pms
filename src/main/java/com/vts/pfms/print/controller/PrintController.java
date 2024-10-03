@@ -1947,13 +1947,16 @@ public class PrintController {
 	public void MeetingBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefing.htm "+UserId);		
 	    try { 
 			String ScheduleId = req.getParameter("scheduleid");
 			CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
 				res.setContentType("application/pdf");
 			    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
-			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getBriefingFileName());
+			    Path filepath = Paths.get(env.getProperty("ApplicationFilesDrive"), LabCode, "Briefing", briefing.getBriefingFileName());
+//			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getBriefingFileName());
+			    File file=filepath.toFile();
 			    FileInputStream fis = new FileInputStream(file);
 			    DataOutputStream os = new DataOutputStream(res.getOutputStream());
 			    res.setHeader("Content-Length",String.valueOf(file.length()));
@@ -1976,13 +1979,16 @@ public class PrintController {
 	public void MeetingBriefingPresenttaion(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MeetingBriefingPresenttaion.htm "+UserId);		
 	    try { 
 			String ScheduleId = req.getParameter("scheduleid");
 			CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
 				res.setContentType("application/pdf");
 			    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
-			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getPresentationName());
+			    Path filepath = Paths.get(env.getProperty("ApplicationFilesDrive"), LabCode, "Briefing", briefing.getPresentationName());
+//			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getPresentationName());
+			    File file=filepath.toFile();
 			    FileInputStream fis = new FileInputStream(file);
 			    DataOutputStream os = new DataOutputStream(res.getOutputStream());
 			    res.setHeader("Content-Length",String.valueOf(file.length()));
@@ -2005,14 +2011,16 @@ public class PrintController {
 	public void MeetingMom(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MeetingMom.htm "+UserId);		
 	    try { 
 			String ScheduleId = req.getParameter("scheduleid");
 			CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
-			System.out.println(briefing.getFrozenBriefingPath()+"99999");
 				res.setContentType("application/pdf");
 			    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
-			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getMoM());
+			    Path filepath = Paths.get(env.getProperty("ApplicationFilesDrive"), LabCode, "Briefing", briefing.getMoM());
+//			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getMoM());
+			    File file=filepath.toFile();
 			    FileInputStream fis = new FileInputStream(file);
 			    DataOutputStream os = new DataOutputStream(res.getOutputStream());
 			    res.setHeader("Content-Length",String.valueOf(file.length()));

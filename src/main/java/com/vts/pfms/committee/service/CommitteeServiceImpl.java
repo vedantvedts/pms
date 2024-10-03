@@ -1395,20 +1395,22 @@ public class CommitteeServiceImpl implements CommitteeService{
 		Timestamp instant= Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 		
-		String Path = LabCode+"\\CommitteeMinutesAttachmentFile\\";
-		
+//		String Path = LabCode+"\\CommitteeMinutesAttachmentFile\\";
+		Path filepath = Paths.get(uploadpath, LabCode, "CommitteeMinutesAttachmentFile");
+		Path filepath1 = Paths.get(LabCode, "CommitteeMinutesAttachmentFile");
 		CommitteeMinutesAttachment attachment= new CommitteeMinutesAttachment();
 		attachment.setScheduleId(Long.parseLong(dto.getScheduleId()));
-		attachment.setFilePath(Path);
+		attachment.setFilePath(filepath1.toString());
 		attachment.setAttachmentName("minutesAttach"+timestampstr+"."+FilenameUtils.getExtension(dto.getMinutesAttachment().getOriginalFilename()));
-		saveFile(uploadpath+Path, attachment.getAttachmentName(), dto.getMinutesAttachment());
+		saveFile1(filepath, attachment.getAttachmentName(), dto.getMinutesAttachment());
 		attachment.setCreatedBy(dto.getCreatedBy());
 		attachment.setCreatedDate(sdf1.format(new Date()));		
 		if(dto.getMinutesAttachmentId()!=null)
 		{
 			CommitteeMinutesAttachment attach = dao.MinutesAttachDownload(dto.getMinutesAttachmentId());
-			String filepath = uploadpath+attach.getFilePath()+attach.getAttachmentName();
-			File file = new File(filepath);
+			Path filepath2 = Paths.get(uploadpath, LabCode, "CommitteeMinutesAttachmentFile", attach.getAttachmentName());
+//			String filepath2 = uploadpath+attach.getFilePath()+attach.getAttachmentName();
+			File file = filepath2.toFile();
 			if(file.exists()) {	file.delete(); }
 			dao.MinutesAttachmentDelete(dto.getMinutesAttachmentId());
 		}		
@@ -1435,9 +1437,11 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public int MinutesAttachmentDelete(String  attachmentid) throws Exception
 	{
 		CommitteeMinutesAttachment attachment = dao.MinutesAttachDownload(attachmentid);
-		
-		String filepath = uploadpath+attachment.getFilePath()+attachment.getAttachmentName();
-		File file = new File(filepath);
+		String filedata =attachment.getFilePath().replaceAll("[/\\\\]", ",");
+		String[] fileParts = filedata.split(",");
+		Path filepath = Paths.get(uploadpath, fileParts[0], fileParts[1], attachment.getAttachmentName());
+	//	String filepath = uploadpath+attachment.getFilePath()+attachment.getAttachmentName();
+		File file = filepath.toFile();
 		if(file.exists()) { file.delete(); }
 		return dao.MinutesAttachmentDelete(attachmentid);
 	}	
@@ -3176,21 +3180,74 @@ public class CommitteeServiceImpl implements CommitteeService{
 	{
 		String meedtingId = dpfm.getMeetingId().replaceAll("[&.:?|<>/]", "").replace("\\", "") ;
 		String LabCode = dpfm.getLabCode();
-		String filepath = "\\"+LabCode.toUpperCase().trim()+"\\DPFM\\";
+//		String filepath = "\\"+LabCode.toUpperCase().trim()+"\\DPFM\\";
+		Path freezepath = Paths.get(uploadpath, LabCode.toUpperCase().trim(), "DPFM");
+		Path freezepath1 = Paths.get(LabCode.toUpperCase().trim(), "DPFM");
 		int count=0;
 		String filename = "DPFM-"+meedtingId;
-		while(new File(uploadpath+filepath+"\\"+filename+".pdf").exists())
+		Path oldpath = freezepath.resolve(filename+".pdf");
+		while(oldpath.toFile().exists())
 		{
 			filename = filename+" ("+ ++count+")";
 		}
 		File file = dpfm.getDpfmfile();
-		saveFile(uploadpath+filepath ,filename+".pdf" ,file );
+		saveFileFromFileObject(freezepath ,filename+".pdf" ,file );
 		
 		dpfm.setDPFMFileName(filename+".pdf");
-		dpfm.setFrozenDPFMPath(filepath);
+		dpfm.setFrozenDPFMPath(freezepath1.toString());
 		dpfm.setFreezeTime(sdf1.format(new Date()));
 		return dao.FreezeDPFMMinutesAdd(dpfm);
 	}
+	
+	public static int saveFile1(Path uploadPath, String fileName, MultipartFile multipartFile) throws IOException {
+		logger.info(new Date() + "Inside SERVICE saveFile ");
+		int result = 1;
+
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
+		}
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			result = 0;
+			throw new IOException("Could not save image file: " + fileName, ioe);
+		} catch (Exception e) {
+			result = 0;
+			logger.error(new Date() + "Inside SERVICE saveFile " + e);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static int saveFileFromFileObject(Path uploadPath, String fileName, File file) throws IOException {
+	    logger.info(new Date() + " Inside SERVICE saveFileFromFileObject ");
+	    int result = 1;
+
+	    // Check if the directory exists; if not, create it
+	    if (!Files.exists(uploadPath)) {
+	        Files.createDirectories(uploadPath);
+	    }
+
+	    try {
+	        // Resolve the destination file path
+	        Path filePath = uploadPath.resolve(fileName);
+	        
+	        // Copy the file from the source to the destination
+	        Files.copy(file.toPath(), filePath, StandardCopyOption.REPLACE_EXISTING);
+	        
+	    } catch (IOException ioe) {
+	        result = 0;
+	        throw new IOException("Could not save file: " + fileName, ioe);
+	    } catch (Exception e) {
+	        result = 0;
+	        logger.error(new Date() + " Inside SERVICE saveFileFromFileObject " + e);
+	        e.printStackTrace();
+	    }
+	    
+	    return result;
+	}
+
 	
 	public void saveFile(String uploadpath, String fileName, File fileToSave) throws IOException 
 	{
@@ -3300,14 +3357,16 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	public Long MomAttach(CommitteeMomAttachment cm,String LabCode) throws Exception {
 		// TODO Auto-generated method stub
 		
-	String Path = LabCode +"\\MinutesAttachment\\";
+//	String Path = LabCode +"\\MinutesAttachment\\";
+		Path filepath = Paths.get(uploadpath,LabCode, "MinutesAttachment");
+		Path filepath1 = Paths.get(LabCode, "MinutesAttachment");
 		
 		if(!cm.getFile().isEmpty()) {
 			cm.setAttachmentName(cm.getFile().getOriginalFilename());
-			saveFile(uploadpath+Path,cm.getAttachmentName(),cm.getFile());
+			saveFile1(filepath,cm.getAttachmentName(),cm.getFile());
 		}
 		cm.setIsActive(1);
-		cm.setFilePath(Path);
+		cm.setFilePath(filepath1.toString());
 		return dao.MomAttach(cm);
 	}
 	@Override
@@ -3350,9 +3409,11 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		Timestamp instant= Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 		
-		String Path = LabCode+"\\CommitteeInvitationLetter\\";
+	//	String Path = LabCode+"\\CommitteeInvitationLetter\\";
+		Path filepath = Paths.get(uploadpath, LabCode, "CommitteeInvitationLetter");
+		Path filepath1 = Paths.get(LabCode, "CommitteeInvitationLetter");
 		
-		committeeLetter.setFilePath(Path);
+		committeeLetter.setFilePath(filepath1.toString());
 		committeeLetter.setAttachmentName(committeeLetter.getLetter().getOriginalFilename());
 		committeeLetter.setCreatedBy(committeeLetter.getCreatedBy());
 		committeeLetter.setCreatedDate(sdf1.format(new Date()));		
@@ -3360,7 +3421,7 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		long count=0;
 		if(!committeeLetter.getLetter().isEmpty()) {
 			committeeLetter.setAttachmentName(committeeLetter.getLetter().getOriginalFilename());
-			saveFile(uploadpath+Path,committeeLetter.getAttachmentName(),committeeLetter.getLetter());
+			saveFile1(filepath,committeeLetter.getAttachmentName(),committeeLetter.getLetter());
 			count=dao.saveCommitteeLetter(committeeLetter);
 		}
 		

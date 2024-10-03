@@ -794,9 +794,9 @@ milelist.add(new Object[]{6, "Sanction"});
 		  <!-- Modal for Revision Remarks -->
 		<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModalLabel" aria-hidden="true">
 		    <div class="modal-dialog" role="document">
-		        <div class="modal-content" style="background: bisque;">
-		            <div class="modal-header" style="background: coral; color: white;">
-		                <h5 class="modal-title" id="remarksModalLabel">Enter Remarks</h5>
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="remarksModalLabel">Remark for Revise</h5>
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		                    <span aria-hidden="true">&times;</span>
 		                </button>
@@ -943,10 +943,7 @@ function milestoneBody(initiationid,statusid,statusname){
                          var milestoneId = item[0];
                          var PDRActualDate = item[3];
                          var showActualDate = item[14] === 'Y';
-                         
-                       
-          				console.log(showActualDate+"showActualDate")
-          				console.log(PDRActualDate+"PDRActualDate")
+
                          $('#milestonepkId').val(milestoneId);
           				
           				if(PDRActualDate!=null){
@@ -1242,26 +1239,68 @@ function formatDate(dateString) {
 }
 
 function initializeDatePickers() {
-	$('.date-picker').daterangepicker({
-	    singleDatePicker: true,
-	    showDropdowns: true,
-	    autoUpdateInput: false, 
-	    locale: { format: 'DD-MM-YYYY' }
-	}).on('apply.daterangepicker', function(ev, picker) {
-	    $(this).val(picker.startDate.format('DD-MM-YYYY'));
-	}).on('show.daterangepicker', function(ev, picker) {
-	    var pickerTop = $(this).offset().top;
-	    var modalTop = $('#milestoneModal').offset().top;
-	    var modalHeight = $('#milestoneModal').outerHeight();
+ 	  var selectedDates = []; 
+ 	  $('.date-picker').each(function(index) {
+          var $input = $(this);
+          var preFilledDate = $input.val(); // Get the pre-filled value, if any
 
-	    if ((pickerTop - modalTop) > (modalHeight / 2)) {
-	        picker.drops = 'up';
-	    } else {
-	        picker.drops = 'down';
-	    }
-	    picker.move();
-	});
+          if (preFilledDate) {
+              var parsedDate = moment(preFilledDate, 'DD-MM-YYYY');
+              selectedDates[index] = parsedDate; // Store the date in moment format
+          }
+
+          // Initialize only the active date pickers (non-readonly)
+          if (!$input.prop('readonly')) {
+              $input.daterangepicker({
+                  singleDatePicker: true,
+                  showDropdowns: true,
+                  autoUpdateInput: false,
+                  locale: { format: 'DD-MM-YYYY' },
+                  minDate: getMinDateForIndex(index) // Get the minDate based on previous dates
+              }).on('apply.daterangepicker', function(ev, picker) {
+                  var selectedDate = picker.startDate.format('DD-MM-YYYY');
+                  $(this).val(selectedDate); // Set the selected date in the input field
+
+                  // Update the selectedDates array for the current index
+                  selectedDates[index] = picker.startDate;
+
+                  // Update the minDate for the next date picker, if any
+                  updateMinDateForNext(index);
+              }).on('show.daterangepicker', function(ev, picker) {
+                  var pickerTop = $(this).offset().top;
+                  var modalTop = $('#milestoneModal').offset().top;
+                  var modalHeight = $('#milestoneModal').outerHeight();
+
+                  if ((pickerTop - modalTop) > (modalHeight / 2)) {
+                      picker.drops = 'up';
+                  } else {
+                      picker.drops = 'down';
+                  }
+                  picker.move();
+              });
+          }
+      });
+ 	  
+ 	 function getMinDateForIndex(index) {
+ 	    for (var i = index - 1; i >= 0; i--) {
+ 	        if (selectedDates[i]) return selectedDates[i]; // Return the first valid previous date
+ 	    }
+ 	    return false; // No restrictions if no previous dates found
+ 	}
+
+ 	function updateMinDateForNext(currentIndex) {
+ 	    for (var i = currentIndex + 1; i < $('.date-picker').length; i++) {
+ 	        var nextInput = $('.date-picker').eq(i);
+
+ 	        if (!nextInput.prop('readonly')) {
+ 	            // If the next input is not read-only, update its minDate
+ 	            nextInput.data('daterangepicker').minDate = selectedDates[currentIndex];
+ 	            break; // Only update the immediate next active date picker
+ 	        }
+ 	    }
+ 	}
 }
+
 
 $('.input-group-text').on('click', function() {
     $(this).prev('input').focus(); 
@@ -1377,7 +1416,7 @@ function actualSubmit(){
 	             success: function(response) {
 	           	  $('#data1').show();
 	           	  openMilestone(initiation, project);
-	           	 alert('Form submitted successfully!');
+	           	 alert('Actual date updated successfully!');
 	             },
 	             error: function(xhr, status, error) {
 	                 console.log("Form submission failed: " + error);
