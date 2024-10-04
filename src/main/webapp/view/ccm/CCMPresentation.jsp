@@ -863,9 +863,9 @@ input,select,table,div,label,span {
 													</tr>
 													<tr>
 														<th>Lab</th>
-														<th>EB Proposed - <%=previousMonth+" & "+year %></th>
-														<th>EB Held - <%=previousMonth+" & "+year %></th>
-														<th>EB Proposed - <%=currentMonth+" & "+year %></th>
+														<th>EB Proposed - <%=previousMonth+" "+year %></th>
+														<th>EB Held - <%=previousMonth+" "+year %></th>
+														<th>EB Proposed - <%=currentMonth+" "+year %></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -1508,6 +1508,9 @@ input,select,table,div,label,span {
 															</td>
 														</tr>
 													<%-- <%} %>	 --%>
+													<tr>
+														<td colspan="<%=12-quarter %>" class="right" style="background-color: #ffff;color: black;"> <h5>In Lakhs</h5></td>
+													</tr>
 													<tr>
 														<th>SN</th>
 														<th>Project</th>

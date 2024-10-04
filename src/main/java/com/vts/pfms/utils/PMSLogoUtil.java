@@ -3,6 +3,7 @@ package com.vts.pfms.utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Base64;
 
@@ -22,12 +23,14 @@ public class PMSLogoUtil
 	
 	public String getLabLogoAsBase64String(String LabCode) throws IOException
 	{
-		String path = LabLogoPath+"/images/lablogos/"+LabCode.trim().toLowerCase()+".png";
+		//String path = LabLogoPath+"/images/lablogos/"+LabCode.trim().toLowerCase()+".png";
+		String path = Paths.get(LabLogoPath, "images", "lablogos", LabCode.trim().toLowerCase()+".png").toString();
+		String path2 = Paths.get(LabLogoPath, "images", "lablogos", "lablogo.png").toString();
 		try {
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
 		}catch (FileNotFoundException e) {
 			System.err.println("File Not Found at Path "+path);
-			File lablogo = new File(LabLogoPath+"/images/lablogos/"+"lablogo"+".png");
+			File lablogo = new File(path2);
 			if(lablogo.exists()) {
 				return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(lablogo));
 			}
@@ -40,12 +43,14 @@ public class PMSLogoUtil
 	
 	public String getLabImageAsBase64String(String LabCode) throws IOException
 	{
-		String path = LabLogoPath+"/images/lablogos/"+LabCode.trim().toLowerCase()+".jpg";
+		//String path = LabLogoPath+"/images/lablogos/"+LabCode.trim().toLowerCase()+".jpg";
+		String path = Paths.get(LabLogoPath, "images", "lablogos", LabCode.trim().toLowerCase()+".jpg").toString();
+		String path2 = Paths.get(LabLogoPath, "images", "lablogos", "lablogo.jpg").toString();
 		try {
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
 		}catch (FileNotFoundException e) {
 			System.err.println("File Not Found at Path "+path);
-			File lablogo = new File(LabLogoPath+"/images/lablogos/"+"lrdeImg.jpg");
+			File lablogo = new File(path2);
 			if(lablogo.exists()) {
 				return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(lablogo));
 			}
@@ -58,10 +63,12 @@ public class PMSLogoUtil
 	
 	public String getDRDOLogoAsBase64String() throws IOException
 	{
+		String path = Paths.get(LabLogoPath, "images", "lablogos", "drdo.png").toString();
 		try {
-			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(LabLogoPath+"/images/lablogos/drdo.png")));
+			
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
 		}catch (FileNotFoundException e) {
-			System.err.println("File Not Found at Path "+LabLogoPath+"/images/lablogos/"+"lablogo"+".png");
+			System.err.println("File Not Found at Path "+path);
 			return null;
 		}
 	}
@@ -75,20 +82,22 @@ public class PMSLogoUtil
 
 	public String getClusterLabsAsBase64String() throws IOException
 	{
+		String path = Paths.get(LabLogoPath, "images", "lablogos", "clusterLabs.png").toString();
 		try {
-			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(LabLogoPath+"/images/lablogos/clusterLabs.png")));
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
 		}catch (FileNotFoundException e) {
-			System.err.println("File Not Found at Path "+LabLogoPath+"/images/lablogos/"+"lablogo"+".png");
+			System.err.println("File Not Found at Path "+path);
 			return null;
 		}
 	}
 	
 	public String getThankYouImageAsBase64String() throws IOException
 	{
+		String path = Paths.get(LabLogoPath, "images", "lablogos", "thankyou.png").toString();
 		try {
-			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(LabLogoPath+"/images/lablogos/thankyou.png")));
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
 		}catch (FileNotFoundException e) {
-			System.err.println("File Not Found at Path "+LabLogoPath+"/images/lablogos/"+"lablogo"+".png");
+			System.err.println("File Not Found at Path "+path);
 			return null;
 		}
 	}

@@ -1009,11 +1009,14 @@ input,select,table,div,label,span,button {
 			%>
 				<h1 class="break"></h1>
 				
-				<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
-					<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+				<table class="data-table" >
+					<thead>
 						
 						<tr>
 							<th colspan="<%=12-quarter %>" class="heading">Cash Out Go Status</th>
+						</tr>
+						<tr>
+							<th colspan="<%=12-quarter %>" class="right" style="font-size: 1.1rem !important;">In Lakhs</th>
 						</tr>
 						<tr>
 							<th>SN</th>
@@ -1204,7 +1207,9 @@ input,select,table,div,label,span,button {
 						<tr>
 							<th colspan="<%=12-quarter %>" class="heading">Cash Out Go Status - <%=entry.getKey() %></th>
 						</tr>
-						
+						<tr>
+							<th colspan="<%=12-quarter %>" class="right" style="font-size: 1.1rem !important;">In Lakhs</th>
+						</tr>
 						<tr>
 							<th>SN</th>
 							<th>Project</th>

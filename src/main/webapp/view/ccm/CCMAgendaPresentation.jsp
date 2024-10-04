@@ -1251,7 +1251,10 @@ input,select,table,div,label,span,button {
 							<!-- ------------------------- Stacked, Clustered bar graph Analytics End ------------------------------  -->
 					
 							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
-								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+								<thead style="background-color: #4B70F5; color: #ffff !important;">
+									<tr>
+										<td colspan="<%=12-quarter %>" class="right" style="background-color: #ffff;color: black;"> <h5>In Lakhs</h5></td>
+									</tr>
 									<%-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
 										<th colspan="<%=12-quarter %>" style="border-radius: 1rem;"> <h5>Cash Out Go Status</h5></th>
 									</tr> --%>
@@ -1467,6 +1470,9 @@ input,select,table,div,label,span,button {
 						<div class="container-fluid mt-3 tabpanes2">
 							<table class="table table-bordered table-hover table-striped table-condensed data-table" style="width: 100%;" >
 								<thead style="background-color: #4B70F5; color: #ffff !important;border-radius: 1rem;">
+									<tr>
+										<td colspan="<%=12-quarter %>" class="right" style="background-color: #ffff;color: black;"> <h5>In Lakhs</h5></td>
+									</tr>
 									<%-- <tr style="background-color: #4C3BCF;border-radius: 1rem;">
 										<th colspan="<%=12-quarter %>" style="border-radius: 1rem;"> <h5>Cash Out Go Status</h5></th>
 									</tr> --%>
@@ -2000,7 +2006,7 @@ input,select,table,div,label,span,button {
 		         		<div class="form-group">
 			         		<div class="row ml-3 mr-3">
 			         			<div class="col-md-4">
-			         				<input type="checkbox" class=" custom-checkbox selectall" <%if(presentationSlide==null) {%>checked<%} %> >
+			         				<input type="checkbox" class=" custom-checkbox selectall" <%if(presentationSlide==null || (slideNames!=null && slideNames.size()==10)) {%>checked<%} %> >
 			         				&nbsp;&nbsp;&nbsp;<label>Select All</label>
 			         			</div>
 			         			<div class="col-md-4">
