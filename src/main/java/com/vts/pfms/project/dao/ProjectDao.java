@@ -60,6 +60,7 @@ import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
+import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
@@ -397,5 +398,8 @@ public interface ProjectDao {
 	public PfmsInitiationMilestone getInitiationMilestone(long initiationMilestoneId)throws Exception;
 	public long editInitiationMilestone(PfmsInitiationMilestone ms)throws Exception;
 	public long addInitiationMilestoneRev(PfmsInitiationMilestoneRev entityRev)throws Exception;
+	
+	public DocMembers getDocMemberById(Long MemeberId) throws Exception;
+	public long editDocMember(DocMembers idm) throws Exception;
 	
 }

@@ -27,6 +27,7 @@ public class Specification  {
 	private Long ParentId;
 	private Long MainId;
 	private String LinkedRequirement;
+	private String SpecValue;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

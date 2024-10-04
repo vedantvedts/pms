@@ -27,6 +27,7 @@
 <%
 Object[]LabList=(Object[])request.getAttribute("LabList");
 String lablogo=(String)request.getAttribute("lablogo");
+String version=(String)request.getAttribute("version");
 FormatConverter fc=new FormatConverter(); 
 SimpleDateFormat sdf3=fc.getRegularDateFormat();
 SimpleDateFormat sdf=fc.getRegularDateFormatshort();
@@ -89,7 +90,10 @@ String FontFamily="Times New Roman";
 			List<Object[]>specsList = (List<Object[]>)request.getAttribute("specsList");
 			List<Object[]>RequirementLists = new ArrayList<>();
 			if(RequirementList!=null && RequirementList.size()>0){
-				RequirementLists=RequirementList.stream().filter(e->e[15]!=null && !e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+				RequirementLists=RequirementList.stream().filter(e->e[15]!=null && !e[15].toString().equalsIgnoreCase("0"))
+						.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
+						.collect(Collectors.toList());
+						
 			}
 			
 			String Conclusion = null;
@@ -280,9 +284,12 @@ padding:1px !important;
 }
 .specdiv p{
 width:600px !important;
+padding:5px!important;
 }
 .scopediv p{
 width:620px !important;
+padding:5px!important;
+margin-rigth:5px;
 }
 </style>
 </head>
@@ -503,7 +510,7 @@ width:620px !important;
 					</td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision:</td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision: <%=version!=null?version:"1.0" %></td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
@@ -657,6 +664,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							
 							<td class="border-black" colspan="3"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> <%=++snCount %>.Description
+								<hr>
 								<br>
 								<div style="font-weight: 400;text-align: justify;" class="specdiv">
 								<%=obj1[2]!=null?obj1[2].toString():"No Details Found" %>
@@ -688,7 +696,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 		<%}}}} %>	
 		
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
-    <%= ++maincount %>.&nbsp;Specifications Traceability
+    <%= ++maincount %>.&nbsp;Specifications Forward Traceability 
     </h1>
 			<table class=""style="margin-left: 20px;;width: 610px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt;border-collapse:collapse">
 				<thead>
@@ -700,6 +708,10 @@ The product Tree shall comprises the complete physical products / subsystems of 
 						</thead>
 						<tbody>
 						<%
+						
+						if(specsList!=null && specsList.size()>0){
+							specsList=specsList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+						}
 						if(specsList!=null && specsList.size()>0){
 							int rowCOunt=0;
 						for(Object[]obj:specsList) {%>
@@ -723,7 +735,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<%if(linkedReq.size()>0) {
 							for(int i=0;i<linkedReq.size();i++){
 							%>
-							<%=(i+1)%>.<%=linkedReq.get(0) %><br>
+							<%=(i+1)%>.<%=linkedReq.get(i) %><br>
 							<%}}else{ %>
 								-
 							<%} %>
@@ -732,8 +744,57 @@ The product Tree shall comprises the complete physical products / subsystems of 
 						</tr>
 						<%}} %>
 						</tbody>
-						</table>	
+						</table>
+						<br>	
+		<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
+    <%= ++maincount %>.&nbsp;Specifications Backward Traceability 
+    </h1>
+				<table class=""style="margin-left: 20px;;width: 610px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt;border-collapse:collapse">
+				<thead>
+						<tr>
+							<th class="border-black"style="width:50px; border: 1px solid black; border-collapse: collapse;padding:5px;">SN</th>
+							<th class="border-black" style=" border:1px solid black; border-collapse: collapse;padding:5px;">System RequirementId</th>
+							<th class="border-black" style="width:text-align: left; border: 1px solid black; border-collapse: collapse;padding:5px;">System SpecificationId</th>
+						</tr>
+						</thead>
+							<%
 						
+					
+						if(RequirementLists!=null && RequirementLists.size()>0){
+							int rowCOunt=0;
+						for(Object[]obj:RequirementLists) {
+							List<String>specid = new ArrayList<>();
+						
+							for(Object[]obj1:specsList) {
+							String spec=obj1[4]!=null?obj1[4].toString():""; 
+							if(Arrays.asList(spec.split(",")).contains(obj[0].toString())){
+								specid.add(obj1[1].toString());
+							}
+							
+							
+							%>
+							
+							
+							<%} %>
+						
+						
+						<tr>
+						<td class="border-black" style=" border: 1px solid black; border-collapse: collapse;text-align: center;"> <%=++rowCOunt %>. </td>
+						<td class="border-black" style=" border: 1px solid black; border-collapse: collapse;text-align: center;"> <%=obj[1].toString() %> </td>
+						<td class="border-black" style=" border: 1px solid black; border-collapse: collapse;text-align: center;"> 
+					<%if(specid.size()>0) {
+					for(String s:specid){
+					%>
+					<div><%=s %></div>
+					<%}}else{ %>
+							-
+					<%} %>
+						 </td>
+						</tr>
+						<%}} %>
+						</tbody>
+						</table>
+							
 						
 	<p style="text-align: center; page-break-before: always;font-family: <%= FontFamily %>;"></p>
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
@@ -742,7 +803,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
     
     <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 	<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
-	<%if(Conclusion!=null){ %> <%=Conclusion%> <%} else{%> No Data Available<%} %>
+	<%if(Conclusion!=null){ %><div class="scopediv" style="text-align: justify;" > <%=Conclusion%></div> <%} else{%> No Data Available<%} %>
 	</div>
 	</div>	
 		</body>

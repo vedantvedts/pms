@@ -715,6 +715,7 @@ height:300px!important;
 											<th  style="text-align: center;">SN</th>
 											<th  style="text-align: center;">Name</th>
 											<th  style="text-align: center;">Designation</th>
+												<th  style="text-align: center;">Action</th> 
 										</tr>
 									</thead>
 									<tbody>
@@ -724,6 +725,20 @@ height:300px!important;
 												<td style="text-align: center;width:10%;"><%=++rowCount %></td>
 												<td style="width:50%;margin-left: 10px;"><%=obj[1].toString() %></td>
 												<td style="width:40%;margin-left: 10px;"><%=obj[2].toString() %></td>
+												 <td style="width:40%; margin-left: 10px;">
+												    <form id="deleteForm_<%= obj[5] %>" action="#" method="POST" name="myfrm" style="display: inline">
+												        <button type="submit" class="editable-clicko" formaction="DeleteTestPlanMembers.htm" onclick="return confirmDeletion('<%= obj[5] %>');">
+												            <img src="view/images/delete.png" alt="Delete">
+												        </button>
+												        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+												        <input type="hidden" name="MemeberId" value="<%= obj[5] %>">
+												        <input type="hidden" name="projectId" value="<%=projectId%>">
+														<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
+														<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
+														<input type="hidden" name="testPlanInitiationId" value="<%=testPlanInitiationId%>"> 
+														<input type="hidden" name="projectType" value="<%=projectType%>">
+												    </form>
+												</td>  
 											</tr>
 										<%} %>
 									</tbody>
@@ -759,7 +774,15 @@ height:300px!important;
 	</div>
 	
 	<script type="text/javascript">
-	
+    function confirmDeletion(memberId) {
+        if (confirm('Are you sure you want to delete this member?')) {
+            var form = $('#deleteForm_' + memberId);
+            form.submit();
+            return true;
+        } else {
+            return false;
+        }
+    }
 	$(document).ready(function() {
 		 $('#summernote1').summernote({
 			  width: 900,   //don't use px

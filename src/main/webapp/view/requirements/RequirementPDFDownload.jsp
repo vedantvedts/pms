@@ -66,6 +66,7 @@ List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectPa
 String projectShortName =(String)request.getAttribute("projectShortName");
 String Classification=(String)request.getAttribute("Classification");
 String docnumber =(String)request.getAttribute("docnumber");
+String version =(String)request.getAttribute("version");
 
 %>
 <style>
@@ -119,8 +120,8 @@ td {
 	@bottom-left{
 		content :"<%=DocumentSummary!=null && DocumentSummary.get(0)[11]!=null?"1901-SRD-"+"DDMMYYYY"+"-"+session.getAttribute("labcode") +projectShortName+"-V.1.0":"" %>";
 		margin-bottom: 50px;
-	width:200px;;
-	font-size:10px;
+	width:300px;;
+	font-size:9px;
 	}
 	
 	 @ bottom-right { content : "Page " counter(page) " of " counter( pages);
@@ -403,7 +404,7 @@ margin-left:15x;
 				</td>
 					</tr>
 				     <tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Pro Project Name: <%=projectShortName %><span class="text-darks" style="padding:2px;"> </span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project Name: <%=projectShortName %><span class="text-darks" style="padding:2px;"> </span></td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
@@ -438,7 +439,7 @@ margin-left:15x;
 					</td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision:</td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision: <%=version!=null ?version:"1.0" %></td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
@@ -572,6 +573,7 @@ int snCount=0;
 <h3 class="heading-colors" style="font-weight:500;padding:0px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt ;" ><%=maincount+"."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3].toString() %></h3>
 <%} %> 
 
+<div align="left" style="margin-left:10px;font-weight: bold">REQ ID - <%=obj1[1].toString() %></div>
 <table class="border-black"
 					style="margin-left: 10px;margin-top:7px;width: 635px;margin-right:20px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
 					<thead>
@@ -653,7 +655,7 @@ int snCount=0;
 						<tr>
 
 							<td class="border-black" colspan="3"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;"><div align="center" style=""><%=++snCount %>. Description<hr></div><br>
+								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;"><div align="left" style=""><%=++snCount %>. Description<hr></div><br>
 								<div style="font-weight: 400;">
 														<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
 						
@@ -782,7 +784,7 @@ int snCount=0;
 					</tbody>
 					
 </table>
-
+<br><br><br>
 <%
 ReqName=obj1[3].toString();
 } %>
@@ -997,7 +999,10 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 									}
 									}
 								%>
-								<%=paras.toString().replace("[","").replace("]", "")%>
+								<% for(String s:paras){
+								%>
+								<div style="padding:2px;"><%=s %></div>
+								<%} %>
 								<%--  <%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining(",")) %> <br> --%>
 								<%}else{ %>
 								-
@@ -1045,7 +1050,7 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
   <h4 style="font-family: <%= FontFamily %>;margin-left: 20px;font-weight:normal;font-size: <%= ParaFontSize%>pt">Guidance:
 This appendix contains acronyms and provides standard definitions for terminology used herein
 </h4>
-	<h2 style="font-family:<%= FontFamily %>;margin-left: 20px;font-size: <%= SubHeaderFontsize %>pt;font-weight:<%=SubHeaderFontweight%>"> <%=maincount %>.2 Appendix B -Key Performance Parameters / Key System Attributes</h2>
+	<h2 style="font-family:<%= FontFamily %>;margin-left: 20px;font-size: <%= SubHeaderFontsize %>pt;font-weight:<%=SubHeaderFontweight%>;text-align:left"> <%=maincount %>.2 Appendix B -Key Performance Parameters / Key System Attributes</h2>
 		<h4 style="font-family:<%=FontFamily %>;margin-left: 20px; font-weight:normal; text-align: justify;font-size: <%= ParaFontSize%>pt"> The key Measures of Effectiveness (MOE) are given below :</h4>
     <table class="border-black" style="font-family: <%= FontFamily %>;width: 550px; margin-top: 10px; margin-bottom: 5px; border: 1px solid black; border-collapse: collapse; margin-left: 20px ;font-size: <%= ParaFontSize%>pt">
         <thead>

@@ -357,6 +357,11 @@ keyframes blinker { 20% {
     box-shadow: 8px 8px 5px lightgrey;
     max-width: 80%;
 }
+
+.note-editing-area{
+
+   height:350px;
+}
 </style>
 </head>
 <body>
@@ -530,28 +535,35 @@ String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
-								<div class="col-md-9">
-								<div id="summernote" style="height: 500;">
-					        
-					           </div>
+								<div class="col-md-9" id="Editor">
 			   			
    								<textarea name="description" style="display: none;"  id="ConclusionDetails"></textarea>	
 <!-- 								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
  -->								</div>
 								</div>
-								<div class="row mt-2"> 
-								<div class="col-md-3">
+								<div class="row mt-2">
+								 
+								<div class="col-md-2">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Parameter: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-2">
 								<input type="text" class="form-control" name="specParameter" id="specParameter" required="required">
 								</div>
-								<div class="col-md-3">
+								
+								<div class="col-md-2">
 								<label style="font-size: 17px; margin-top: 5%;float:right; color: #07689f">Specification Unit: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-2">
 								<input type="text" class="form-control" name="specUnit" id="specUnit" required="required">
 								</div>
+								
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%;float:right; color: #07689f">Specification Value: <span class="mandatory" style="color: red;">*</span></label>
+								</div>
+								<div class="col-md-2">
+								<input type="text" class="form-control" name="specValue" id="specValue" required="required">
+								</div>
+								
 								</div>
 								
 								
@@ -610,7 +622,15 @@ String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specparam"></p>
 								</div>
 								</div>
-								
+									
+								<div class="row">
+									<div class="col-md-3">
+								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Value :</label>
+								</div>
+								<div class="col-md-8">
+								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specValues"></p>
+								</div>															
+								</div>
 								<div class="row">
 									<div class="col-md-3">
 								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Unit :</label>
@@ -787,7 +807,12 @@ var editvalue="add";
 		 }else{
 			 $('#specUnits').html("-");
 		 }
-		
+		 if(Data.SpecValue!==undefined){
+				
+			 $('#specValues').html(Data.SpecValue);
+		 }else{
+			 $('#specValues').html("-");
+		 }
 		
 		 }
 	 })
@@ -806,8 +831,10 @@ var editvalue="add";
 	 $('#editbtn').hide();
 	 $('#SpecsIdedit').val("");
 	 $('#MainId').val(b);
+	 $('#specValue').val("");
 	 $('#specParentId').val(a);
 	 $('#specsDiv').hide();
+	 $('#Editor').summernote('code', "");
 	 editvalue="add";
  }
  
@@ -830,7 +857,7 @@ var editvalue="add";
 			 var LinkedRequirements = Data.LinkedRequirement.split(",");
 		     $('#linkedRequirements').val(LinkedRequirements).trigger('change');
 			 /* $('#descriptionadd').val(Data.Description); */
-			 $('#summernote').summernote('code', Data.Description);
+			 $('#Editor').summernote('code', Data.Description);
 			 if(Data.SpecsParameter!==undefined){
 				 $('#specParameter').val(Data.SpecsParameter);
 			 }else{
@@ -841,6 +868,11 @@ var editvalue="add";
 				 $('#specUnit').val(Data.SpecsUnit);
 			 }else{
 				 $('#specUnit').val("");
+			 }
+			 if(Data.SpecValue!==undefined){
+				 $('#specValue').val(Data.SpecValue);
+			 }else{
+				 $('#specValue').val("");
 			 }
 			 $('#submitbtn').hide();
 			 $('#editbtn').show();
@@ -864,19 +896,19 @@ var editvalue="add";
 	});
 	
 	$(document).ready(function() {
-		 $('#summernote').summernote({
+		  $('#Editor').summernote({
 			  width: 800,   //don't use px
 			
 			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
 			 
 		      lineHeights: ['0.5']
 		
-		 });
+		 }); 
 
-	$('#summernote').summernote({
+	$('#Editor').summernote({
 	     
 	      tabsize: 5,
-	      height: 1000
+	      height: 400
 	    });
 	    
 	});
@@ -898,7 +930,7 @@ var editvalue="add";
 			 }
 			     
 		} 
-	   $('#summernote').summernote('code', html);
+	   $('#Editor').summernote('code', html);
 	   $('textarea[name=description]').val(html);
 		}
 	}
@@ -921,7 +953,8 @@ document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
 	
 	
 	function submitData(){
-		   $('textarea[name=description]').val($('#summernote').summernote('code'));
+		console.log($('#Editor').summernote('code'))
+		   $('textarea[name=description]').val($('#Editor').summernote('code'));
 		   if(confirm('Are you sure to submit?')){
 			   
 		   }else{

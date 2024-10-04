@@ -6349,6 +6349,7 @@ public class ProjectController
 				redir.addAttribute("resultfail","PDF can not be generated.Please fill the Data!");
 			return;			
 			}
+			String version = reqini!=null && reqini.getReqVersion()!=null?reqini.getReqVersion():"1.0";
 			
 			Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
@@ -6359,6 +6360,7 @@ public class ProjectController
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
 			req.setAttribute("RequirementList", reqService.RequirementList(reqInitiationId));
 			req.setAttribute("uploadpath", uploadpath);
+			req.setAttribute("version", version);
 			req.setAttribute("ReqIntro", service.RequirementIntro(reqInitiationId));
 			req.setAttribute("MemberList", service.reqMemberList(reqInitiationId));
 			req.setAttribute("DocumentSummary", service.getDocumentSummary(reqInitiationId));
@@ -9876,7 +9878,7 @@ public class ProjectController
 			Specification specs= action!=null && action.equalsIgnoreCase("Add") ? new Specification() :service.getSpecificationData(SpecsId) ;
 			
 			specs.setLinkedRequirement(linkedRequirements);
-			
+			specs.setSpecValue(req.getParameter("specValue"));
 			specs.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
 			specs.setDescription(req.getParameter("description"));
 			specs.setIsActive(1);
@@ -10106,12 +10108,15 @@ public class ProjectController
 			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
 			
 			SpecsInitiation specsInitiation = reqService.getSpecsInitiationById(SpecsInitiationId);
+			
+			String version = specsInitiation!=null ?specsInitiation.getSpecsVersion():"1.0";
 			Object[] projectDetails = service.getProjectDetails(LabCode, specsInitiation.getInitiationId()!=0?specsInitiation.getInitiationId()+"":specsInitiation.getProjectId()+"", specsInitiation.getInitiationId()!=0?"P":"E");
 
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
 			req.setAttribute("Classification", projectDetails!=null?projectDetails[12]:"");
 			req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
+			req.setAttribute("version", version);
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 			req.setAttribute("LabList", service.LabListDetails(LabCode));

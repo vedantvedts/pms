@@ -85,7 +85,7 @@ public class RequirementDaoImpl implements RequirementDao {
 
 		return r.getMemeberId();
 	}
-	private static final String DOCMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_doc_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.TestPlanInitiationId =:TestPlanInitiationId AND c.SpecsInitiationId=:SpecsInitiationId AND c.isactive =1 ORDER BY b.desigid ASC";
+	private static final String DOCMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid,c.MemeberId FROM employee a,employee_desig b,pfms_doc_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.TestPlanInitiationId =:TestPlanInitiationId AND c.SpecsInitiationId=:SpecsInitiationId AND c.isactive =1 ORDER BY b.desigid ASC";
 
 	@Override
 	public List<Object[]> DocMemberList(String testPlanInitiationId, String specsInitiationId) throws Exception {
@@ -719,7 +719,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		return (List<Object[]>)query.getResultList();
 	}
 
-	private final String TestType="SELECT a.TestId ,a.TestDetailsId ,a.Name ,a.Objective,a.Description,a.PreConditions ,a.PostConditions ,a.Constraints,a.SafetyRequirements,a.Methodology,a.ToolsSetup,a.PersonnelResources,a.EstimatedTimeIteration ,a.Iterations  ,a.Schedule ,a.Pass_Fail_Criteria , a.Remarks ,a. TestPlanInitiationId, '0' AS ProjectId,a.SpecificationId,a.RequirementId,a.StageApplicable,a.IsActive,b.TestSetupName  FROM pfms_testdetails a,pfms_test_plan_testingtools b WHERE b.TestToolsId=a.ToolsSetup AND TestId=:r AND a.IsActive='1'";
+	private final String TestType="SELECT a.TestId ,a.TestDetailsId ,a.Name ,a.Objective,a.Description,a.PreConditions ,a.PostConditions ,a.Constraints,a.SafetyRequirements,a.Methodology,a.ToolsSetup,a.PersonnelResources,a.EstimatedTimeIteration ,a.Iterations  ,a.Schedule ,a.Pass_Fail_Criteria , a.Remarks ,a. TestPlanInitiationId, '0' AS ProjectId,a.SpecificationId,a.RequirementId,a.StageApplicable,a.IsActive,b.TestSetupName  FROM pfms_testdetails a LEFT JOIN pfms_test_plan_testingtools b ON  b.TestToolsId = a.ToolsSetup WHERE TestId=:r AND a.IsActive='1'";
 	@Override
 	public 	List<Object[]> TestType(String r) throws Exception {
 

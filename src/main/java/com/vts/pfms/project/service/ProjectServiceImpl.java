@@ -104,6 +104,7 @@ import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.requirements.dao.RequirementDao;
+import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
@@ -1768,9 +1769,8 @@ public class ProjectServiceImpl implements ProjectService {
 	public long preProjectFileupload(PreprojectFileDto pfd, MultipartFile fileAttach, String labCode,String UserId,Double version )
 			throws Exception {
 		logger.info(new Date() + "Inside SERVICE preProjectFileupload ");
-		//String Path = labCode + "\\ProjectRequirement\\";
+		String Path = labCode + "\\ProjectRequirement\\";
 		Path prePath = Paths.get(uploadpath,labCode,"ProjectRequirement");
-		Path prePath1 = Paths.get(labCode,"ProjectRequirement");
 		long count=0;
 		PreprojectFile pf=new PreprojectFile();
 		pf.setInitiationId(pfd.getInitiationId());
@@ -1780,7 +1780,7 @@ public class ProjectServiceImpl implements ProjectService {
 			pf.setFileName(fileAttach.getOriginalFilename());
 			saveFile1(prePath,pf.getFileName(),fileAttach);
 		}
-		pf.setFilePath(prePath1.toString());
+		pf.setFilePath(Path);
 		pf.setVersionDoc(version);
 		pf.setDescription(pfd.getDescription());
 		pf.setDocumentId(pfd.getDocumentId());
@@ -1810,7 +1810,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public long ProjectSqrSubmit(ProjectSqrFile psf, MultipartFile fileAttach, String userId,String LabCode) throws Exception {
 		// TODO Auto-generated method stub
 		logger.info(new Date() + "Inside SERVICE ProjectSqrSubmit ");
-	//	String Path = LabCode + "\\ProjectRequirement\\";
+		String Path = LabCode + "\\ProjectRequirement\\";
 		Path sqrPath = Paths.get(uploadpath,LabCode,"ProjectRequirement");
 		Path sqrPath1 = Paths.get(LabCode,"ProjectRequirement");
 		if(!fileAttach.isEmpty()) {
@@ -2098,12 +2098,11 @@ public class ProjectServiceImpl implements ProjectService {
 			if (f.exists()) {
 				f.delete();
 			}
-		//	String Path = pfmsinitiationauthorityfiledto.getFilePath() + "\\ProjectReference\\";
+			String Path = pfmsinitiationauthorityfiledto.getFilePath() + "\\ProjectReference\\";
 			Path authorityPath = Paths.get(uploadpath,pfmsinitiationauthorityfiledto.getFilePath(),"ProjectReference");
-			Path authorityPath1 = Paths.get(pfmsinitiationauthorityfiledto.getFilePath(),"ProjectReference");
 			pfmsinitiationauthorityfile.setAttachmentName("Reference" + timestampstr + "."
 					+ FilenameUtils.getExtension(pfmsinitiationauthorityfiledto.getAttachFile().getOriginalFilename()));
-			pfmsinitiationauthorityfile.setFile(authorityPath1.toString());
+			pfmsinitiationauthorityfile.setFile(Path);
 			pfmsinitiationauthorityfile.setInitiationAuthorityFileId(
 					Long.parseLong(pfmsinitiationauthorityfiledto.getInitiationAuthorityFileId()));
 			saveFile1(authorityPath, pfmsinitiationauthorityfile.getAttachmentName(),
@@ -3576,5 +3575,17 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		@Override
 		public long addInitiationMilestoneRev(PfmsInitiationMilestoneRev entityRev) throws Exception {
 			return dao.addInitiationMilestoneRev(entityRev);
+		}
+		
+		@Override
+		public DocMembers getDocMemberById(Long MemeberId) throws Exception
+		{
+			return dao.getDocMemberById(MemeberId);
+		}
+		
+		@Override
+		public long editDocMember(DocMembers idm) throws Exception
+		{
+			return dao.editDocMember(idm);
 		}
 }

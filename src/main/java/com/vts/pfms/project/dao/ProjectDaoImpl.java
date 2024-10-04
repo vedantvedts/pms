@@ -81,6 +81,7 @@ import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
+import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
@@ -4114,7 +4115,34 @@ public class ProjectDaoImpl implements ProjectDao {
 			}
 			return entityRev.getInitiationMileRevId();  
 		}
-
+	
+	@Override
+	public DocMembers  getDocMemberById(Long MemeberId) throws Exception
+	{
+		DocMembers dec = null;
+		try {
+			dec= manager.find(DocMembers.class, MemeberId);
+		} catch (Exception e) {
+			logger.error(new Date() + "Inside DAO  getDocMemberById "+e);
+			e.printStackTrace();
+		}
+		return dec;
+	}
+	
+	@Override
+	public long editDocMember(DocMembers idm) throws Exception
+	{
+		try {
+		    manager.merge(idm);
+		    manager.flush();
+			return idm.getMemeberId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO editDocMember " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
 	
 }
 

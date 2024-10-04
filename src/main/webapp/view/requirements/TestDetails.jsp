@@ -441,14 +441,15 @@ margin-left: -21px;
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-1" >
+					<div class="col-md-2" >
 						<%if((TestDetailsList!=null) &&(!TestDetailsList.isEmpty())){ %>
-							<div class="cardbody" id="" style="display:block;<%if(TestDetailsList.size()>9){%>height:1000px;<%}%>">
+							<div class="cardbody" id="" style="display:block;<%if(TestDetailsList.size()>9){%>height:1000px;overflow-y:auto;<%}%>background:antiquewhite;padding:5px">
 								<%int count=1;
 									for(Object []obj:TestDetailsList) {%>
-										<button type="button" class="btn btn-primary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick="TestDetailsShow('<%=obj[0]%>')">
-											<span style="font-weight: bold;"><%=obj[1] %></span>
+										<button type="button" style="width:80%" class="btn btn-primary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick="TestDetailsShow('<%=obj[0]%>')">
+											<span style="font-weight: bold;;"><%=obj[1] %></span>
 										</button>
+										<!-- <button></button> -->
 									<%count++;} %>
 							</div>
 						<%} else{%>
@@ -461,7 +462,7 @@ margin-left: -21px;
 	           				
 						<%} %>
 					</div>
-					<div class="col-md-11">
+					<div class="col-md-10">
 						<div class="card">
 							<div class="card-body mt-2" id="cardbody">
 								<div id="viewcard">
@@ -1542,7 +1543,7 @@ function editCheck(event, frmid) {
 				var tempsubArrayToolsSetup="";
 					for(var i=0;i<jsObjectTestToolList.length;i++){
 						if(tempArrayToolsSetup.includes(jsObjectTestToolList[i][0]+"")){
-							tempsubArrayToolsSetup=tempsubArrayToolsSetup+jsObjectTestToolList[i][1]+",&nbsp;&nbsp;";
+							tempsubArrayToolsSetup=tempsubArrayToolsSetup+jsObjectTestToolList[i][1]+",";
 						}
 					}
 					tempsubArrayToolsSetup=tempsubArrayToolsSetup.substring(0,tempsubArray.length-1);

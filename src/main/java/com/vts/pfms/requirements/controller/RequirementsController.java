@@ -2862,6 +2862,7 @@ public class RequirementsController {
 
 			TestPlanInitiation ini = service.getTestPlanInitiationById(testPlanInitiationId);
 			
+			String version = ini.getTestPlanVersion();
 			if(ini!=null) {
 			testPlanInitiationId = service.getFirstVersionTestPlanInitiationId(ini.getInitiationId()+"", ini.getProjectId()+"", ini.getProductTreeMainId()+"")+"";
 			}else {
@@ -2876,6 +2877,7 @@ public class RequirementsController {
 			String filename="TestPlan";
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
+			req.setAttribute("version",version);
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 			req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
@@ -3475,6 +3477,105 @@ public class RequirementsController {
 		return "redirect:/TestDetails.htm";
 		
 		
+	}
+	@RequestMapping(value="DeleteSpecificationMembers.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String DeleteSpecificationMembers( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside DeleteSpecificationMembers.htm "+UserId);
+		try {
+			
+
+
+			
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			String projectId = req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
+			String MemeberId  = req.getParameter("MemeberId");
+			
+			
+			
+			DocMembers idm = projectservice.getDocMemberById(Long.parseLong(MemeberId));
+			idm.setIsActive(0);
+			long IgiMemeberIdAfterDelete = projectservice.editDocMember(idm);
+			System.out.println(IgiMemeberIdAfterDelete);
+	
+		
+			if(IgiMemeberIdAfterDelete>0) {
+				redir.addAttribute("result","Members Deleted Successfully for Document Distribution");
+			}else{
+				redir.addAttribute("resultfail","Member deleting unsuccessful ");
+			}
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
+			redir.addAttribute("projectType", req.getParameter("projectType"));
+			
+			 return "redirect:/ProjectSpecificationDetails.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+
+			logger.info(new Date() +"Inside DeleteSpecificationMembers.htm"+UserId);
+		}
+		return "static/Error";
+	}
+	
+
+	
+	@RequestMapping(value="DeleteTestPlanMembers.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String DeleteTestPlanMembers( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside DeleteTestPlanMembers.htm "+UserId);
+		try {
+			
+
+
+			
+			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			String projectId = req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
+			String MemeberId  = req.getParameter("MemeberId");
+			
+			
+			
+			DocMembers idm = projectservice.getDocMemberById(Long.parseLong(MemeberId));
+			idm.setIsActive(0);
+			long IgiMemeberIdAfterDelete = projectservice.editDocMember(idm);
+			System.out.println(IgiMemeberIdAfterDelete);
+	
+		
+			if(IgiMemeberIdAfterDelete>0) {
+				redir.addAttribute("result","Members Deleted Successfully for Document Distribution");
+			}else{
+				redir.addAttribute("resultfail","Member deleting unsuccessful ");
+			}
+			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
+			redir.addAttribute("testPlanInitiationId", testPlanInitiationId);
+			redir.addAttribute("projectType", req.getParameter("projectType"));
+			
+			return "redirect:/ProjectTestPlanDetails.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+
+			logger.info(new Date() +"Inside DeleteTestPlanMembers.htm"+UserId);
+		}
+		return "static/Error";
 	}
 	
 	@RequestMapping(value="IgiDocument.htm", method= {RequestMethod.POST, RequestMethod.GET})
