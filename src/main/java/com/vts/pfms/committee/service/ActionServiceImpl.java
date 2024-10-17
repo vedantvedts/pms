@@ -2560,4 +2560,11 @@ public List<Object[]> getMeetingAction(long MeetingId, String loginType, String 
 	
 	return dao.getMeetingAction(MeetingId,loginType,empId);
 }
+
+@Override
+public int CommitteActionDelete(ActionAssignDto actionAssign) throws Exception {
+	
+	 return dao.CommitteActionDelete(actionAssign);
+}
+
 }

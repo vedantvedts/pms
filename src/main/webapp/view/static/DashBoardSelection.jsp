@@ -140,7 +140,7 @@ $("#favs").change(function(){
 	 $('input:checkbox#subProject').prop('checked', false);
 	$('#dashboardId').val(value);
 	 if(value==0){
-		 console.log(value)
+		
 		 $('#addFavDiv').show();
 		 $('#addDiv').show();
 		 $('#updateDiv').hide();
@@ -197,7 +197,7 @@ var dasboardNames=[];
 for(var i=0;i<DashBoardsListArray.length;i++){
 	dasboardNames.push(DashBoardsListArray[i][1].toLowerCase());
 }
-console.log(dasboardNames);
+
 function DashFavAdd(){
 	var projectArray=[];
 	 $("input:checkbox[name=projectId]:checked").each(function() { 
@@ -229,7 +229,7 @@ function DashFavAdd(){
  if(confirm('Are you sure to submit?')){
 		 
 	 }else{
-		 console.log(projectArray);
+		 
 		 event.preventDefault();
 		 return false;
 	 }
@@ -249,7 +249,7 @@ function updateDashBoard(){
 	
 	 if(projectArrays.length==0){
 		 alert("Please, select some projects!")
-		 console.log(projectArrays);
+
 		 return false;
 	 }
 	 $('#favProjects').val(projectArrays);
@@ -303,7 +303,7 @@ function sendMail(a){
 	    }
 	});
 	
-	console.log(a)
+	
 	$.ajax({
 		type:'get',
 		url:'sendMails.htm',
@@ -313,7 +313,7 @@ function sendMail(a){
 		},
 		 success:function(result){
 			 var ajaxresult = JSON.parse(result);
-			 console.log(typeof ajaxresult)
+			
 			if(ajaxresult<0){
 				   Swal.close();
 					Swal.fire({

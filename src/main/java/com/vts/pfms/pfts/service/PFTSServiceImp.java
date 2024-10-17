@@ -342,7 +342,7 @@ public class PFTSServiceImp implements PFTSService{
 	}
 	
 	@Override
-	public List<Object[]> getpftsMileDemandList(String pftsStatusId) throws Exception {
+	public Object[] getpftsMileDemandList(String pftsStatusId) throws Exception {
 
 		return dao.getpftsMileDemandList(pftsStatusId);
 	}
@@ -357,5 +357,11 @@ public class PFTSServiceImp implements PFTSService{
 	public Object[] getpftsProjectDate(String projectId) throws Exception {
 		
 		return dao.getpftsProjectDate(projectId);
+	}
+	
+	@Override
+	public List<Object[]> getprocurementMilestoneDetails(String pftsid) throws Exception {
+		
+		return dao.getprocurementMilestoneDetails(pftsid);
 	}
 }

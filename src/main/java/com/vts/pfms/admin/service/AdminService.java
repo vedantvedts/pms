@@ -6,6 +6,7 @@ import com.vts.pfms.admin.dto.EmployeeDesigDto;
 import com.vts.pfms.admin.dto.PfmsLoginRoleSecurityDto;
 import com.vts.pfms.admin.dto.PfmsRtmddoDto;
 import com.vts.pfms.admin.dto.UserManageAdd;
+import com.vts.pfms.admin.model.AuditPatches;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.model.PfmsRtmddo;
@@ -94,5 +95,8 @@ public interface AdminService {
 	public List<Object[]> hasroleAccess(String string, String logintype)throws Exception;
 	public List<Object[]> getFormUrlList(String loginType);
 	public List<Object[]> getAllUrlList(String loginType);
+	public List<Object[]> AuditPatchesList() throws Exception;
+	public int AuditPatchAddSubmit(AuditPatches dto) throws Exception;
+	public AuditPatches getAuditPatchById(Long attachId);
 
 }

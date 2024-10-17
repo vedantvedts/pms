@@ -26,7 +26,7 @@
 				  },
 					 success:function(result){
 						 var ajaxresult = JSON.parse(result);
-						 console.log(ajaxresult);
+					
 						 var pmrcprogress = "border-danger"
 						 var ebprogress = "border-danger"
 						 var msprogress = "border-danger"
@@ -181,7 +181,7 @@
 				  },
 				  success:function(result){
 					  var ajaxresult = JSON.parse(result);
-					  console.log(ajaxresult)
+					 
 						 var revenueBal = Number(ajaxresult[0][3])-Number(ajaxresult[0][4])
 						 var capitalBal = Number(ajaxresult[1][3])-Number(ajaxresult[1][4])
 						 var otherBal   = Number(ajaxresult[2][3])-Number(ajaxresult[2][4])

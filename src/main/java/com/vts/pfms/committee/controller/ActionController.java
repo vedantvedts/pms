@@ -4990,4 +4990,59 @@ public class ActionController {
 				}
         		}
             
+            
+            @RequestMapping(value = "CommitteActionDelete.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String CommitteActionDelete(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+        	{
+            	String UserId = (String) ses.getAttribute("Username");
+        		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+        		String LabCode = (String) ses.getAttribute("labcode");
+        		logger.info(new Date() +"Inside CommitteActionDelete.htm "+UserId);
+        		try {
+					
+					String ActionAssignId=req.getParameter("actionAssignPkId");
+					String CommitteeScheduleId=req.getParameter("committeeSchId");
+        			
+        			ActionAssignDto actionAssign = new ActionAssignDto();
+        			actionAssign.setActionAssignId(Long.parseLong(ActionAssignId));
+    
+				
+        			int count = service.CommitteActionDelete(actionAssign);
+        			if(count>0) {
+        				redir.addAttribute("result","Action Deleted Successfully");
+        			}else {
+        				redir.addAttribute("result","Action Deleted Unsuccessful");
+        			}
+
+        			redir.addFlashAttribute("ScheduleId", CommitteeScheduleId);
+        			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
+        			redir.addFlashAttribute("specname", req.getParameter("specValueId"));
+        			
+        			// CCM Handling
+//        			String ccmFlag = req.getParameter("ccmFlag");
+//        			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+//        				redir.addAttribute("ccmScheduleId", CommitteeScheduleId);
+//        				redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+//        				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//        				redir.addAttribute("ccmFlag", ccmFlag);
+//        			}
+        			
+        			// DMC Handling
+//        			String dmcFlag = req.getParameter("dmcFlag");
+//        			if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+//        				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//        				redir.addAttribute("dmcFlag", dmcFlag);
+//        			}
+        			
+        			return "redirect:/CommitteeAction.htm";
+        			
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+        		return null;
+        	}
+            
+            
+            
+            
 }

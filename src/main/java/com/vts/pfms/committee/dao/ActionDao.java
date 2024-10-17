@@ -196,4 +196,5 @@ public interface ActionDao {
 	
 	public List<Object[]> getMeetingList(long projectId, String fromDate, String toDate) throws Exception;
 	public List<Object[]> getMeetingAction(long meetingId, String loginType, String empId) throws Exception;
+	public int CommitteActionDelete(ActionAssignDto actionAssign) throws Exception;
 }

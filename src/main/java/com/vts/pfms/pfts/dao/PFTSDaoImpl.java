@@ -300,12 +300,13 @@ public  class PFTSDaoImpl implements PFTSDao{
 		return mile.getPftsMilestoneId();
 	}
 	
-	private static final String GETPFTSMILEDATA="SELECT a.PftsMileStoneId,a.PftsFileId,b.DemandType,b.ProjectId,b.DemandNo,b.DemandDate,a.ProbableDate,a.PftsStatusId,b.PftsStatusId AS 'mainFileStatusId',a.SetBaseline,a.Revision,c.PftsStageName FROM pfts_file_ms a, pfts_file b, pfts_status c WHERE a.PftsFileId=b.PftsFileId AND a.PftsStatusId=c.PftsStatusId AND a.IsActive='1'";
+//	private static final String GETPFTSMILEDATA="SELECT a.PftsMileStoneId,a.PftsFileId,b.DemandType,b.ProjectId,b.DemandNo,b.DemandDate,a.ProbableDate,a.PftsStatusId,b.PftsStatusId AS 'mainFileStatusId',a.SetBaseline,a.Revision,c.PftsStageName FROM pfts_file_ms a, pfts_file b, pfts_status c WHERE a.PftsFileId=b.PftsFileId AND a.PftsStatusId=c.PftsStatusId AND a.IsActive='1'";
+	private static final String GETPFTSMILEDATA="SELECT * FROM pfts_file_ms WHERE IsActive='1'";
 	@Override
 	public List<Object[]> getpftsMilestoneList() throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETPFTSMILEDATA);
-			return (List<Object[]>)query.getResultList();
+			return query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
@@ -350,16 +351,16 @@ public  class PFTSDaoImpl implements PFTSDao{
 		return null;
 	}
 	
-	private static final String GETMILEDEMANDLIST="SELECT a.PftsMileStoneId,a.PftsFileId,b.DemandType,b.ProjectId,b.DemandNo,b.DemandDate,a.ProbableDate,a.PftsStatusId,b.PftsStatusId AS 'mainFileStatusId',a.SetBaseline,a.Revision,c.PftsStageName FROM pfts_file_ms a, pfts_file b, pfts_status c WHERE a.PftsFileId=:PftsFileId AND a.PftsFileId=b.PftsFileId AND a.PftsStatusId=c.PftsStatusId AND a.IsActive='1'";
+	private static final String GETMILEDEMANDLIST="SELECT a.PftsMileStoneId,a.PftsFileId,b.DemandDate,a.EPCDate,a.TocDate,a.OrderDate,a.PDRDate,a.CriticalDate,a.DDRDate,a.CDRDate,a.AcceptanceDate,a.FATDate,a.DeliveryDate,a.SATDate,a.IntegrationDate FROM pfts_file_ms a, pfts_file b WHERE a.IsActive='1' AND a.PftsFileId=b.PftsFileId AND a.PftsFileId=:PftsFileId";
 	@Override
-	public List<Object[]> getpftsMileDemandList(String PftsFileId) throws Exception {
+	public Object[] getpftsMileDemandList(String PftsFileId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETMILEDEMANDLIST);
 			query.setParameter("PftsFileId", PftsFileId);
-			return (List<Object[]>)query.getResultList();
+			return (Object[])query.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ArrayList<Object[]>();
+			return null;
 		}
 	}
 	
@@ -400,6 +401,23 @@ public  class PFTSDaoImpl implements PFTSDao{
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
 		}
+	}
+	
+	private static final String GETPROCUREMENTDETAILS="SELECT a.PftsFileId,b.PftsMileStoneId,a.DemandDate,a.EPCDate AS 'EPCactdate',a.TocDate AS 'Tocactdate',a.OrderDate AS 'Orderactdate',a.PDRDate AS 'PDRactdate',a.DDRDate AS 'DDRactdate',a.CDRDate AS 'CDRactdate',\r\n"
+			+ "a.FATDate AS 'FATactdate',a.IntegrationDate AS 'Integrationactdate',a.CriticalDate AS 'Criticalactdate',a.AcceptanceDate AS 'Acceptanceactdate',a.SATDate AS 'SATactdate',a.DeliveryDate AS 'Deliveryactdate',\r\n"
+			+ "b.EPCDate AS 'EPCprobdate',b.TocDate AS 'Tocprobdate',b.OrderDate AS 'Orderprobdate',b.PDRDate AS 'PDRprobdate',b.CriticalDate AS 'Criticalprobdate',b.DDRDate AS 'DDRprobdate',b.CDRDate AS 'CDRprobdate',b.AcceptanceDate AS 'Acceptanceprobdate',\r\n"
+			+ "b.FATDate AS 'FATprobdate',b.DeliveryDate AS 'Deliveryprobdate',b.SATDate AS 'SATprobate',b.IntegrationDate AS 'Integrationprobdate',b.SetBaseline,b.Revision\r\n"
+			+ "FROM pfts_file a LEFT JOIN pfts_file_ms b ON a.PftsFileId = b.PftsFileId WHERE a.PftsFileId=:PftsFileId AND a.IsActive = '1'AND (b.IsActive = '1' OR b.IsActive IS NULL)";
+	@Override
+	public List<Object[]> getprocurementMilestoneDetails(String pftsid) throws Exception {
+		 try {
+		    	Query query = manager.createNativeQuery(GETPROCUREMENTDETAILS);
+				query.setParameter("PftsFileId", pftsid);
+				return (List<Object[]>)query.getResultList();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return new ArrayList<Object[]>();
+			}
 	}
 	
 }

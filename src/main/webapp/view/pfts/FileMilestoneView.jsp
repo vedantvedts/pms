@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -24,8 +25,22 @@
 String PftsFileId = (String)request.getAttribute("PftsFileId");
 String ProjectId = (String)request.getAttribute("ProjectId");
 String demandNumber = (String)request.getAttribute("demandNumber");
-List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMileDemandList");
+Object[] pftsMileDemandList = (Object[])request.getAttribute("pftsMileDemandList");
 /* Object[] pftsActualDate = (Object[])request.getAttribute("pftsActualDate"); */
+List<Object[]> milestoneStatus = new ArrayList<Object[]>();
+milestoneStatus.add(new Object[]{1, "Demand Initiated"});
+milestoneStatus.add(new Object[]{2, "Demand Approved"});
+milestoneStatus.add(new Object[]{3, "Tender Opening"});
+milestoneStatus.add(new Object[]{4, "Order Placement"});
+milestoneStatus.add(new Object[]{5, "PDR"});
+milestoneStatus.add(new Object[]{6, "SO for Critical BoM by Dev Partner"});
+milestoneStatus.add(new Object[]{7, "DDR"});
+milestoneStatus.add(new Object[]{8, "CDR"});
+milestoneStatus.add(new Object[]{9, "Acceptance of Critical BoM by Dev Partner"});
+milestoneStatus.add(new Object[]{10, "FAT Completed"});
+milestoneStatus.add(new Object[]{11, "Delivery at Stores"});
+milestoneStatus.add(new Object[]{12, "SAT / SoFT"});
+milestoneStatus.add(new Object[]{13, "Available for Integration"});
 %>
     <div class="container-fluid">
        <div class="card">
@@ -80,9 +95,18 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 			<tbody>
 			<% 
 			int count = 1;
-			if (pftsMileDemandList != null && pftsMileDemandList.size() > 0) {
-			    for (Object[] obj : pftsMileDemandList) { 
-			        java.sql.Date sqlDate = (java.sql.Date) obj[6];
+			if (milestoneStatus != null && milestoneStatus.size() > 0) {
+			    for (Object[] obj : milestoneStatus) { 
+			    	java.sql.Date sqlDate = null;
+
+			    	if (obj[0] != null) {
+			    	    int index = Integer.parseInt(obj[0].toString());
+
+			    	    if (index >= 1 && index <= 13) {
+			    	        sqlDate = (java.sql.Date) pftsMileDemandList[index + 1];
+			    	    }
+			    	}
+			    	
 			        java.util.Date probableDate = new java.util.Date(sqlDate.getTime());
 			        Calendar cal = Calendar.getInstance();
 			        cal.setTime(probableDate);
@@ -102,7 +126,7 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 			%>
 			<tr>
 			<td style="text-align: center;font-size: 17px;font-weight: 600;"><%= count + " . " %></td>
-			<td style="font-size: 17px;font-weight: 600;"><%= obj[11].toString() %></td>
+			<td style="font-size: 17px;font-weight: 600;"><%= obj[1].toString() %></td>
 			<%
 			startCal.setTime(startDate);
 			while (startCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)) {
@@ -110,11 +134,11 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 			    for (int q = 1; q <= 4; q++) { 
 			        if (year == objYear && q == quarter) { 
 			%>
-			<td id="tdid_<%= obj[7] %>_<%= year %>_Q<%= q %>" style="background-color: green;">
-			<input type="hidden"id="tdcell_<%= obj[7] %>_<%= year %>_Q<%= q %>"  value="<%= obj[7] %>">
+			<td id="tdid_<%= obj[0] %>_<%= year %>_Q<%= q %>" style="background-color: green;">
+			<input type="hidden"id="tdcell_<%= obj[0] %>_<%= year %>_Q<%= q %>"  value="<%= obj[0] %>">
 			</td>
 			<% } else {%>
-			<td id="tdid_<%= obj[7] %>_<%= year %>_Q<%= q %>"></td>
+			<td id="tdid_<%= obj[0] %>_<%= year %>_Q<%= q %>"></td>
 			<%}}startCal.add(Calendar.YEAR, 1); } %>
 			</tr>
 			<% count++;}}%>
@@ -153,85 +177,85 @@ $(document).ready(function() {
             	var year = new Date(ajaxresult[3]).getFullYear();
             	var month = new Date(ajaxresult[3]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_3_'+year+'_'+quarter).val());
-            	sameQuarter(value1,3,year,quarter); 
+            	var value1=Number($('#tdcell_2_'+year+'_'+quarter).val());
+            	sameQuarter(value1,2,year,quarter); 
             }
             if(ajaxresult[4]!=null){
             	var year = new Date(ajaxresult[4]).getFullYear();
             	var month = new Date(ajaxresult[4]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_6_'+year+'_'+quarter).val());
-            	sameQuarter(value1,6,year,quarter);
+            	var value1=Number($('#tdcell_3_'+year+'_'+quarter).val());
+            	sameQuarter(value1,3,year,quarter);
             }
             if(ajaxresult[5]!=null){
             	var year = new Date(ajaxresult[5]).getFullYear();
             	var month = new Date(ajaxresult[5]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_10_'+year+'_'+quarter).val());
-            	sameQuarter(value1,10,year,quarter);
+            	var value1=Number($('#tdcell_4_'+year+'_'+quarter).val());
+            	sameQuarter(value1,4,year,quarter);
             }
             if(ajaxresult[6]!=null){
             	var year = new Date(ajaxresult[6]).getFullYear();
             	var month = new Date(ajaxresult[6]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_11_'+year+'_'+quarter).val());
-            	sameQuarter(value1,11,year,quarter);
+            	var value1=Number($('#tdcell_5_'+year+'_'+quarter).val());
+            	sameQuarter(value1,5,year,quarter);
             }
             if(ajaxresult[11]!=null){
             	var year = new Date(ajaxresult[11]).getFullYear();
             	var month = new Date(ajaxresult[11]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_12_'+year+'_'+quarter).val());
-            	sameQuarter(value1,12,year,quarter);
+            	var value1=Number($('#tdcell_6_'+year+'_'+quarter).val());
+            	sameQuarter(value1,6,year,quarter);
             }
             if(ajaxresult[7]!=null){
             	var year = new Date(ajaxresult[7]).getFullYear();
             	var month = new Date(ajaxresult[7]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_13_'+year+'_'+quarter).val());
-            	sameQuarter(value1,13,year,quarter); 
+            	var value1=Number($('#tdcell_7_'+year+'_'+quarter).val());
+            	sameQuarter(value1,7,year,quarter); 
             } 
             if(ajaxresult[8]!=null){
             	var year = new Date(ajaxresult[8]).getFullYear();
             	var month = new Date(ajaxresult[8]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_14_'+year+'_'+quarter).val());
-            	sameQuarter(value1,14,year,quarter);
+            	var value1=Number($('#tdcell_8_'+year+'_'+quarter).val());
+            	sameQuarter(value1,8,year,quarter);
             }
             if(ajaxresult[12]!=null){
             	var year = new Date(ajaxresult[12]).getFullYear();
             	var month = new Date(ajaxresult[12]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_15_'+year+'_'+quarter).val());
-            	sameQuarter(value1,15,year,quarter);
+            	var value1=Number($('#tdcell_9_'+year+'_'+quarter).val());
+            	sameQuarter(value1,9,year,quarter);
             }
             if(ajaxresult[9]!=null){
             	var year = new Date(ajaxresult[9]).getFullYear();
             	var month = new Date(ajaxresult[9]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_17_'+year+'_'+quarter).val());
-            	sameQuarter(value1,17,year,quarter);
+            	var value1=Number($('#tdcell_10_'+year+'_'+quarter).val());
+            	sameQuarter(value1,10,year,quarter);
             }
             if(ajaxresult[14]!=null){
             	var year = new Date(ajaxresult[14]).getFullYear();
             	var month = new Date(ajaxresult[14]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_19_'+year+'_'+quarter).val());
-            	sameQuarter(value1,19,year,quarter); 
+            	var value1=Number($('#tdcell_11_'+year+'_'+quarter).val());
+            	sameQuarter(value1,11,year,quarter); 
             }
             if(ajaxresult[13]!=null){
             	var year = new Date(ajaxresult[13]).getFullYear();
             	var month = new Date(ajaxresult[13]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_20_'+year+'_'+quarter).val());
-            	sameQuarter(value1,20,year,quarter);
+            	var value1=Number($('#tdcell_12_'+year+'_'+quarter).val());
+            	sameQuarter(value1,12,year,quarter);
             }
             if(ajaxresult[10]!=null){
             	var year = new Date(ajaxresult[10]).getFullYear();
             	var month = new Date(ajaxresult[10]).getMonth()+1;
             	var quarter = getQuarter(month);
-            	var value1=Number($('#tdcell_25_'+year+'_'+quarter).val());
-            	sameQuarter(value1,25,year,quarter); 
+            	var value1=Number($('#tdcell_13_'+year+'_'+quarter).val());
+            	sameQuarter(value1,13,year,quarter); 
             }
         },
         error: function(xhr, status, error) {
@@ -265,7 +289,7 @@ function sameQuarter(value1,id,year,quarter){
 	if(value1>0){
 		$('#tdid_'+id+'_'+year+'_'+quarter).css('background-color','#462fb7'); 
 	}else{
-	$('#tdid_'+id+'_'+year+'_'+quarter).css('background-color','#ffae00'); 
+	    $('#tdid_'+id+'_'+year+'_'+quarter).css('background-color','#ffae00'); 
 	}
 }
 

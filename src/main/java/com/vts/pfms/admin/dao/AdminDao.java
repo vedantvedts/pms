@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.vts.pfms.admin.dto.EmployeeDesigDto;
+import com.vts.pfms.admin.model.AuditPatches;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.admin.model.Expert;
@@ -114,4 +115,7 @@ public interface AdminDao {
 	public List<Object[]> hasroleAccess(String url, String logintype)throws Exception;
 	public List<Object[]> getFormUrlList(String loginType);
 	public List<Object[]> getAllUrlList(String loginType);
+	public List<Object[]> getAuditPatchesList() throws Exception;
+	public int auditpatchAddSubmit(AuditPatches model) throws Exception;
+	public AuditPatches getAuditPatchById(Long attachId);
   }

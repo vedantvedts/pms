@@ -18,13 +18,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
@@ -32,6 +38,7 @@ import com.vts.pfms.admin.dto.EmployeeDesigDto;
 import com.vts.pfms.admin.dto.PfmsLoginRoleSecurityDto;
 import com.vts.pfms.admin.dto.PfmsRtmddoDto;
 import com.vts.pfms.admin.dto.UserManageAdd;
+import com.vts.pfms.admin.model.AuditPatches;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.service.AdminService;
@@ -1215,6 +1222,91 @@ public class AdminController {
 		}
 		return "redirect:/StatisticsList.htm";
 
+	}
+	
+	@RequestMapping(value = "AuditPatchesView.htm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String patchList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+			throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside AuditPatchesView.htm " + UserId);
+		try {
+
+			req.setAttribute("AuditPatchesList", service.AuditPatchesList());
+			return "admin/AuditPatches";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside AuditPatchesView.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	@RequestMapping(value = "AuditPatchEditSubmit.htm", method = RequestMethod.POST)
+	public String patchAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
+	                             @RequestParam(value = "file") MultipartFile file) {
+	    String UserId = (String) ses.getAttribute("Username");
+	    logger.info(new Date() + " Inside AuditPatchesubmit.htm " + UserId);
+	    
+	    try {
+	        String versionNo = req.getParameter("versionNo");
+	        String Description = req.getParameter("Description");
+	        byte[] fileData = null; // To store the file data
+	        System.out.println(req.getParameter("ProjectId")+"%%%%%%%%%");
+	        Long Auditpatchid=Long.parseLong(req.getParameter("auditId"));
+	        System.out.println(file.getOriginalFilename() + "$$$$$$$$");
+	        
+	        // Check if the file is not empty
+	        if (file != null && !file.isEmpty()) {
+	            // Read the file data directly without compression
+	            fileData = file.getBytes();
+	        }
+
+	        // Create the AuditPatches object and set its fields
+	        AuditPatches dto = new AuditPatches();
+	        dto.setVersionNo(versionNo);
+	        dto.setDescription(Description);
+	        dto.setModifiedBy(UserId);
+	        dto.setAttachment(fileData); // Store the raw file data
+	        dto.setAuditPatchesId(Auditpatchid);
+
+	        // Save the data using the service
+	        int count = service.AuditPatchAddSubmit(dto);
+	        if (count > 0) {
+	            redir.addAttribute("result", "Patch Details Updated Successfully");
+	        } else {
+	            redir.addAttribute("resultfail", "Patch Details Updated Unsuccessfully");
+	        }
+
+	        return "redirect:/AuditPatchesView.htm";
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        logger.error(new Date() + " Inside AuditPatchesubmit.htm " + UserId, e);
+	        return "static/Error"; // Adjust this according to your error handling view
+	    }
+	}
+
+	
+	@RequestMapping(value = "PatchesAttachDownload.htm", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> downloadPatchAttachment(@RequestParam("attachid") Long attachId) {
+	    try {
+	        // Fetch the AuditPatches record based on the attach ID
+	        AuditPatches auditPatch = service.getAuditPatchById(attachId);
+
+	        // Check if the file exists
+	        if (auditPatch == null || auditPatch.getAttachment() == null) {
+	            return ResponseEntity.notFound().build();
+	        }
+
+	        // Set the headers for file download
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.TEXT_PLAIN); // Set content type for .txt file
+	        headers.setContentDispositionFormData("attachment", "patch_" + attachId + ".txt"); // Set filename with .txt extension
+
+	        // Return the file as byte array
+	        return new ResponseEntity<>(auditPatch.getAttachment(), headers, HttpStatus.OK);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
 	}
 
 }

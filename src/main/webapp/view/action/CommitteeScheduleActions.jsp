@@ -584,7 +584,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 									</tbody>
 								</table>
 							</div>
-
+                           <input type="hidden" id="scheduleMinId" value="">
 						</form>
 					</div>
 
@@ -598,6 +598,16 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 		<!-- main row end -->
 
 	</div>
+	
+	<form action="CommitteActionDelete.htm" method="post" id="deleteFormId">
+		<input type="hidden" name="actionAssignPkId" id="actionAssignPkId" value=""> 
+		<input type="hidden" name="actionMainPkId" id="actionMainPkId" value="" /> 
+		<input type="hidden" name="assigneeEmpId" id="assigneeEmpId" value="" /> 
+		<input type="hidden" name="committeeSchId" id="committeeSchId" value="" /> 	
+		<input type="hidden" name="minutesback" value="<%=MinutesBack%>" /> 
+		<input type="hidden" name="specValueId" id="specValueId" value="">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	</form>
 	
 	<!--Modal for employees  -->
 <div class="modal fade bd-example-modal-lg" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -896,6 +906,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
     	$('#'+data).css('text-decoration', 'underline');
     
     	console.log("data "+data)
+    	$('#scheduleMinId').val(data);
     	
     	  $("#"+formId).submit(function(event){
     		    event.preventDefault();
@@ -988,7 +999,8 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 	    		    			markup += "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]+"<br>"+"<b>(" + values[i][9] + ")</b>"  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td>";
 	    		    		    markup += "<td style='width:13%;text-align:center;'>";
 	    		    			if (values[i][6]==="A") {
-	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionEditform('" + values[i][9] + "','" + pdcday + "','" + values[i][0] + "','" + values[i][11] + "','" + values[i][12] + "','" + values[i][13] + "','" + values[i][8] + "','" + values[i][14] + "')\"><i class='fa fa-pencil-square-o' aria-hidden='true' style='color:red;font-size: 18px;'></i></button>";
+	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionEditform('" + values[i][9] + "','" + pdcday + "','" + values[i][0] + "','" + values[i][11] + "','" + values[i][12] + "','" + values[i][13] + "','" + values[i][8] + "','" + values[i][14] + "')\"><i class='fa fa-pencil-square-o' aria-hidden='true' style='color:#0839ff;font-size: 18px;'></i></button>";
+	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionDelete('" + values[i][0] + "','" + values[i][12] + "','" + values[i][13] + "')\"><i class='fa fa-trash' aria-hidden='true' style='color:red;font-size: 18px;'></i></button>";
 	    		    			} else {
 	    		    				 markup += "--";
                                 }
@@ -1007,7 +1019,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
     		    
     		  }); 
     	 
-
+    	  AssigneeEmpList();
     }  
     
 	$('#DateCompletion').daterangepicker({
@@ -1040,6 +1052,9 @@ $(document).ready(function(){
 
 function AssigneeEmpList(){
 	
+	var empIdsToRemove = [];
+	var scheduleMinId = $('#scheduleMinId').val();
+	
 	$('#Assignee').val("");
 	
 	var $AssigneeLabCode = $('#AssigneeLabCode').val();
@@ -1048,7 +1063,6 @@ function AssigneeEmpList(){
 	let projectid = <%=committeescheduleeditdata[9]%> ;
 	
 	var div = document.getElementById("main");
-	
 	if(mainlabcode===$AssigneeLabCode){
 		if(div!=null){
 		div.style.display = "block";
@@ -1058,7 +1072,34 @@ function AssigneeEmpList(){
 		div.style.display = "none";
 		}
 	}
+	
+    $.ajax({
+    	type : "GET",
+    	url : "ScheduleActionList.htm",
+    	data : {
+    		ScheduleMinutesId : scheduleMinId
+    	},
+    	datatype : 'json',
+    	success : function(result) {
 
+   		var result = JSON.parse(result);
+   		var values = Object.keys(result).map(function(e) {
+   			  return result[e]
+   			});
+
+		  if (values.length != 0) {
+	            for (var i = 0; i < values.length; i++) {
+	                if (values[i][11]) {
+	                    empIdsToRemove.push(values[i][11]);
+	                }
+	            }
+	        }
+		  fetchAssigneeOptions(empIdsToRemove,$AssigneeLabCode);
+    	}
+    });
+}
+
+function fetchAssigneeOptions(empIdsToRemove,$AssigneeLabCode,projectid) {
 	if($AssigneeLabCode!=""){
 		
 		$.ajax({
@@ -1081,21 +1122,23 @@ function AssigneeEmpList(){
 				if($AssigneeLabCode == '@EXP'){
 					
 				}
-				for (i = 0; i < values.length; i++) 
-				{
-					
-					s += '<option value="'+values[i][0]+'">'+values[i][1] + ',' +' '+values[i][3] + '</option>';
-				} 
+				 for (var i = 0; i < values.length; i++) {
+		                var empid = values[i][0]; 
+		                var empName = values[i][1]; 
+		                var desig = values[i][3];
+
+		                if (!empIdsToRemove.includes(empid)) {
+		                    s += '<option value="' + empid + '">' + empName + ', ' + desig + '</option>';
+		                }
+		            }
 				
 				$('#Assignee').html(s);
 
 			}
 		});
-	}
-	
-	
-	
-}  
+	 }
+   }
+
 function showEmployee(){
 	   var value=$('#multipleAssignee').val();
 	  $.ajax({
@@ -1269,7 +1312,23 @@ function showEmployee(){
          }
      });
  }
-	</script>
+ 
+ 
+ function actionDelete(mainid,actionassignid,scheduleId){
+	 
+	  var specNameAdd= $('#specnameadd').val();
+	    $('#specValueId').val(specNameAdd);
+	    $('#actionMainPkId').val(mainid);
+	    $('#actionAssignPkId').val(actionassignid);
+	    $('#committeeSchId').val(scheduleId);
+        var formId = $('#deleteFormId');
+        var message = 'Are you sure you want to delete..?';
+        if (confirm(message)) {
+            formId.submit();
+        }
+ };
+ 
+</script>
 </body>
 </html>
 

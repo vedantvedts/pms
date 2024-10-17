@@ -4,6 +4,7 @@ package com.vts.pfms.admin.service;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,7 @@ import com.vts.pfms.admin.dto.EmployeeDesigDto;
 import com.vts.pfms.admin.dto.PfmsLoginRoleSecurityDto;
 import com.vts.pfms.admin.dto.PfmsRtmddoDto;
 import com.vts.pfms.admin.dto.UserManageAdd;
+import com.vts.pfms.admin.model.AuditPatches;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.admin.model.Expert;
@@ -835,4 +837,27 @@ public class AdminServiceImpl implements AdminService{
 		public List<Object[]> getAllUrlList(String loginType)  {
 			return dao.getAllUrlList(loginType);
 		}
+		
+		@Override
+		public List<Object[]> AuditPatchesList() throws Exception
+		{
+			return dao.getAuditPatchesList();
+		}
+		@Override
+		public int AuditPatchAddSubmit(AuditPatches dto) throws Exception 
+		{
+			logger.info(new Date() +"Inside SERVICE DesignationAddSubmit ");
+			  LocalDateTime currentDateTime = LocalDateTime.now();
+		      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		      String formattedDateTime = currentDateTime.format(formatter);
+			  dto.setModifiedDate(formattedDateTime);
+
+			
+			return dao.auditpatchAddSubmit(dto);
+		}
+		@Override
+	    public AuditPatches getAuditPatchById(Long attachId) {
+	        return dao.getAuditPatchById(attachId);
+	    }
+
 }

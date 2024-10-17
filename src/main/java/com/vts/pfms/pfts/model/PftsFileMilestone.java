@@ -16,8 +16,18 @@ public class PftsFileMilestone {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long PftsMilestoneId;
 	private long PftsFileId;
-	private long PftsStatusId;
-	private String ProbableDate;
+	private String EPCDate;
+	private String TocDate;
+	private String OrderDate;
+	private String PDRDate;
+	private String CriticalDate;
+	private String DDRDate;
+	private String CDRDate;
+	private String AcceptanceDate;
+	private String FATDate;
+	private String DeliveryDate;
+	private String SATDate;
+	private String IntegrationDate;
 	private long Revision;
 	private String SetBaseline;
 	private String CreatedBy;

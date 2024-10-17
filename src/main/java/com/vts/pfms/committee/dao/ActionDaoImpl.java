@@ -2020,4 +2020,17 @@ public class ActionDaoImpl implements ActionDao{
 			return null;
 		}
 	}
+	
+	private static final String ACTIONDELETE="DELETE FROM action_assign WHERE ActionAssignId=:ActionAssignId";
+	@Override
+	public int CommitteActionDelete(ActionAssignDto actionAssign) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(ACTIONDELETE);
+			query.setParameter("ActionAssignId", actionAssign.getActionAssignId());
+			return query.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

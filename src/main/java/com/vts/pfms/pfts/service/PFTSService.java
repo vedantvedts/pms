@@ -39,8 +39,9 @@ public interface PFTSService {
 	public PftsFileMilestone getEditMilestoneData(long pftsMilestoneId)throws Exception;
 	public long addProcurementMilestoneRev(PftsFileMilestoneRev rev)throws Exception;
 	public Object[] getActualStatus(String projectId, String demandId)throws Exception;
-	public List<Object[]> getpftsMileDemandList(String PftsFileId)throws Exception;
+	public Object[] getpftsMileDemandList(String PftsFileId)throws Exception;
 	public Object[] getpftsActualDate(String pftsFileId)throws Exception;
 	public Object[] getpftsProjectDate(String projectId)throws Exception;
+	public List<Object[]> getprocurementMilestoneDetails(String parameter)throws Exception;
 
 }

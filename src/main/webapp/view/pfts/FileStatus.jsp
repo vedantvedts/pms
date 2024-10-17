@@ -1,3 +1,4 @@
+<%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.text.Format"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
@@ -141,12 +142,12 @@ input[type=number] {
 }
 
 .blinking-element {
-            animation: blinker 1.5s linear infinite;
-            color: #D81B60;
-            font-size: 1.5em;
-            font-weight:600;
-            margin-bottom: 20px;
-            text-shadow: 5px 5px 10px  #D81B60;
+     animation: blinker 1.5s linear infinite;
+     color: #D81B60;
+     font-size: 1.5em;
+     font-weight:600;
+     margin-bottom: 20px;
+     text-shadow: 5px 5px 10px  #D81B60;
 }
 
 @keyframes blinker { 
@@ -218,12 +219,20 @@ List<Object[]> pftsStageList1=pftsStageList.stream().filter(i->Integer.parseInt(
 List<Object[]> pftsStageList2=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())>=10).collect(Collectors.toList());
 List<Object[]> pftsStageList3=pftsStageList.stream().filter(i->Integer.parseInt(i[0].toString())>10).collect(Collectors.toList());
 Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
-List<Integer> status = Arrays.asList(1,3,6,10,11,12,13,14,15,17,19,20,25);
 List<Object[]> milestoneStatus = new ArrayList<Object[]>();
-List<Object[]> milestoneList = new ArrayList<Object[]>();
-for(Integer i:status){
-	milestoneStatus.add(pftsStageList.get(i-1));
-}
+milestoneStatus.add(new Object[]{1, "Demand Initiated"});
+milestoneStatus.add(new Object[]{2, "Demand Approved"});
+milestoneStatus.add(new Object[]{3, "Tender Opening"});
+milestoneStatus.add(new Object[]{4, "Order Placement"});
+milestoneStatus.add(new Object[]{5, "PDR"});
+milestoneStatus.add(new Object[]{6, "SO for Critical BoM by Dev Partner"});
+milestoneStatus.add(new Object[]{7, "DDR"});
+milestoneStatus.add(new Object[]{8, "CDR"});
+milestoneStatus.add(new Object[]{9, "Acceptance of Critical BoM by Dev Partner"});
+milestoneStatus.add(new Object[]{10, "FAT Completed"});
+milestoneStatus.add(new Object[]{11, "Delivery at Stores"});
+milestoneStatus.add(new Object[]{12, "SAT / SoFT"});
+milestoneStatus.add(new Object[]{13, "Available for Integration"});
 %>
 <%
 	String ses=(String)request.getParameter("result"); 
@@ -419,198 +428,22 @@ for(Integer i:status){
                                             </td>
                                             <td  style="text-align: center;">
                                             <%if(fileStatus[10]!=null){ %>
-                                            <button class="btn btn" type="button" style="background: #5d22ed;" onclick="openMilestoneModal('<%=fileStatus[0]%>','<%=fileStatus[1]%>','<%=fileStatus[4]%>')"
+                                            <button class="btn btn" type="button" style="background: #5d22ed;" onclick="openMilestoneModal('<%=fileStatus[0]%>','<%=fileStatus[1]%>','<%=fileStatus[4]%>','<%=fileStatus[2]%>')"
                                              data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Add Procurement Milestone">
                                             <i class="fa fa-list" aria-hidden="true" style="color: white;font-size: 17px;"></i>
                                             </button>
                                             <%}else{ %> -- <%} %>
-                                               <%
-												 if (pftsMilestoneList != null) {
-													   milestoneList = pftsMilestoneList.stream()
-													               .filter(e -> e[1].equals(fileStatus[0]))
-													               .collect(Collectors.toList());
-												  }
-											    %>
-                                            <%if(milestoneList!=null && milestoneList.size()>0 ){ %>
+                                           <%
+											if (pftsMilestoneList != null && pftsMilestoneList.size()>0 && !pftsMilestoneList.isEmpty()) {								
+											    boolean matchFound = pftsMilestoneList.stream().anyMatch(milestone -> milestone[1] != null && milestone[1].equals(fileStatus[0]));
+											    if (matchFound) {
+											%>
                                            <form action="pftsMilestoneView.htm" method="get" style="display: inline;">
                                               <button class="btn btn" type="submit" id="viewBtn" style="background: #5d22ed; color: white;" name="PftsFileId" value="<%=fileStatus[0]%>">View</button>
                                               <input type="hidden" name="ProjectId" value="<%=fileStatus[19]%>">
                                               <input type="hidden" name="demandNumber" value="<%=fileStatus[1]%>">
                                            </form>
-                                           <%} %>
-                                            <div class="modal fade bd-example-modal-lg" id="milestoneModal_<%=fileStatus[0] %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-											  <div class="modal-dialog modal-lg" role="document">
-											    <div class="modal-content" style="width: 115%;margin-left: -9%">
-											      <div class="modal-header">
-											        <h5 class="modal-title" id="milestoneModalLabel">
-											        <span style="color: #FF3D00;font-weight: 600">Demand No : <%=fileStatus[1]%></span>
-											        </h5>
-											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											          <span aria-hidden="true">&times;</span>
-											        </button>
-											      </div>
-											      <div class="modal-body">
-													 <div class="container">
-													       <form action="addProcurementMilestone.htm" method="post">
-													        <!-- Labels for all fields -->
-													        <div class="form-row">
-													         <div class="form-group col-md-1" align="center">
-													                <label for="sn">SN</label>
-													            </div>
-													            <div class="form-group col-md-5" align="center">
-													                <label for="name">Status Name</label>
-													            </div>
-													             <div class="form-group col-md-3" align="center">
-													                <label for="date">Probable Date</label>
-													            </div>
-													            <div class="form-group col-md-3" align="center">
-													                <label for="date">Actual Date</label>
-													            </div>
-													        </div>
-													     
-													        <% 
-													        int count=0;
-													        if(milestoneList!=null && milestoneList.size()>0 && milestoneList.stream().filter(e -> e[1].equals(fileStatus[0])).findAny().isPresent()){
-													        	for(Object[] obj : milestoneList) { 
-													        	%>
-													            <div class="form-row">
-													                <div class="form-group col-md-1">
-													                   <input class="form-control custom-sn-style" type="text" value="<%=++count %>" style="font-size: 16px; line-height:17px;font-weight: 500; text-align: center;">
-													                   <input type="hidden" name="statusId" value="<%= obj[0] %>">
-													                </div>
-													                <div class="form-group col-md-5">
-											                            <input type="text" class="form-control custom-style" id="statusname_<%= obj[0] %>" name="statusName" value="<%= obj[11] %>" style="font-size: 16px; line-height:17px;font-weight: 500;">
-											                        </div>
-													                <div class="form-group col-md-3">
-													                   <% if(obj[7].toString().equalsIgnoreCase("1")){%>
-											                                 <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(fileStatus[2].toString()) %>" readonly style="line-height: 17px;">
-											                           <%}else if(obj[7].toString().equalsIgnoreCase("3") && fileStatus[11]!=null){%>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("6") && fileStatus[12]!=null){ %>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("10") && fileStatus[13]!=null){%>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("11") && fileStatus[14]!=null){ %>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("12") && fileStatus[21]!=null){%>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("13") && fileStatus[15]!=null){ %>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("15") && fileStatus[22]!=null){%>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("25") && fileStatus[18]!=null){ %>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("14") && fileStatus[16]!=null){%>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("17") && fileStatus[17]!=null){ %>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("19") && fileStatus[20]!=null){%>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else if(obj[7].toString().equalsIgnoreCase("20") && fileStatus[23]!=null){ %>
-													                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%}else{ %>
-													                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
-													                   <%} %>
-													                </div>
-													               <div class="form-group col-md-3">
-																	 <%
-																	     Object inputValue = "";
-																	     if (obj[7].toString().equalsIgnoreCase("3")) {
-																	    	 inputValue = (fileStatus[11] != null) ? fc.sdfTordf(fileStatus[11].toString()) : "";
-																	     } else if (obj[7].toString().equalsIgnoreCase("6")) {
-																	    	 inputValue = (fileStatus[12] != null) ? fc.sdfTordf(fileStatus[12].toString()) : "";
-																	     } else if (obj[7].toString().equalsIgnoreCase("10")) {
-																	    	 inputValue = (fileStatus[13] != null) ? fc.sdfTordf(fileStatus[13].toString()) : "";
-																	     } else if (obj[7].toString().equalsIgnoreCase("11")) {
-																	    	 inputValue = (fileStatus[14] != null) ? fc.sdfTordf(fileStatus[14].toString()) : "";
-																	     } else if (obj[7].toString().equalsIgnoreCase("12")) {
-																	         inputValue = (fileStatus[21] != null) ? fc.sdfTordf(fileStatus[21].toString()) : "";
-																	     } else if (obj[7].toString().equalsIgnoreCase("13")) {
-																	         inputValue = (fileStatus[15] != null) ? fc.sdfTordf(fileStatus[15].toString()) : "";
-																	     } else if (obj[7].toString().equalsIgnoreCase("15")) {
-																	         inputValue = (fileStatus[22] != null) ? fc.sdfTordf(fileStatus[22].toString()) : "";
-																	     } else if (obj[7].toString().equalsIgnoreCase("25")) {
-																	         inputValue = (fileStatus[18] != null) ? fc.sdfTordf(fileStatus[18].toString()) : "";
-																	     } else if (obj[7].toString().equalsIgnoreCase("1")) {
-																	         inputValue = (fileStatus[2] != null) ? fc.sdfTordf(fileStatus[2].toString()) : "";
-																	     }else if (obj[7].toString().equalsIgnoreCase("14")) {
-																	         inputValue = (fileStatus[16] != null) ? fc.sdfTordf(fileStatus[16].toString()) : "";
-																	     }else if (obj[7].toString().equalsIgnoreCase("17")) {
-																	         inputValue = (fileStatus[17] != null) ? fc.sdfTordf(fileStatus[17].toString()) : "";
-																	     }else if (obj[7].toString().equalsIgnoreCase("19")) {
-																	         inputValue = (fileStatus[20] != null) ? fc.sdfTordf(fileStatus[20].toString()) : "";
-																	     }else if (obj[7].toString().equalsIgnoreCase("20")) {
-																	         inputValue = (fileStatus[23] != null) ? fc.sdfTordf(fileStatus[23].toString()) : "";
-																	     }
-																	 %>
-																	 <input type="text" class="form-control date-picker1" id="actualdate_<%= obj[0] %>" name="actualDate" value="<%=inputValue%>" disabled style="line-height: 17px;">
-																	</div>
-													            </div>
-													        <% }
-													        }else{
-													        for(Object[] data : milestoneStatus) { %>
-													            <div class="form-row">
-													                <div class="form-group col-md-1">
-													                   <input class="form-control custom-sn-style" type="text" value="<%=++count %>" style="font-size: 16px; line-height:17px;font-weight: 500; text-align: center;">
-													                   <input type="hidden" name="statusId" value="<%= data[0] %>">
-													                </div>
-													                <div class="form-group col-md-5">
-											                            <input type="text" class="form-control custom-style" id="name_<%= data[0] %>" name="statusName" value="<%= data[2] %>" style="font-size: 16px; line-height:17px;font-weight: 500;">
-											                        </div>
-													                <div class="form-group col-md-3">
-													                 <%if(data[0].toString().equalsIgnoreCase("1")){ %>
-													                    <input type="text" class="form-control" id="date_<%= data[0] %>" name="probabaleDate" <%if(fileStatus[2]!=null){ %> value="<%=rdf.format(sdf1.parse(fileStatus[2].toString()))%>" <%}else{ %>value="-" <%} %> readonly style="line-height: 17px;">
-													                 <%}else{ %>
-													                    <input type="text" class="form-control date-picker" id="date_<%= data[0] %>" name="probabaleDate" style="line-height: 17px;">
-													                 <%} %>
-													                </div>
-													                <div class="form-group col-md-3">
-													                  <%if(data[0].toString().equalsIgnoreCase("1")){ %>
-													                     <input type="text" class="form-control" id="date_<%= data[0] %>" name="actualDate" <%if(fileStatus[2]!=null){ %> value="<%=rdf.format(sdf1.parse(fileStatus[2].toString()))%>" <%}else{ %>value="-" <%} %> disabled style="line-height: 17px;">
-													                   <%}else{ %>
-													                     <input type="text" class="form-control" id="date_<%= data[0] %>" value="NA" name="actualDate" disabled style="line-height: 17px;">
-													                   <%} %>
-													                </div>
-													            </div>
-													        <% } 
-													        }
-													        %>
-													        <br>
-													        <div align="center">
-													        <% if (milestoneList != null && milestoneList.size()>0 && !milestoneList.isEmpty()) { %>
-															 <%
-															if (milestoneList.stream().filter(e -> e[1].equals(fileStatus[0]) && e[9].toString().equalsIgnoreCase("Y")).findAny().isPresent()) { 
-															%>
-															    <button type="submit" class="btn btn-primary" name="action" value="revision" onclick="return confirm('Are You Sure To Make a Revision?')">MAKE REVISION</button>
-															<% 
-															} else if (milestoneList.stream().filter(e -> e[1].equals(fileStatus[0])).findAny().isPresent()) { 
-															%>
-															    <button type="submit" name="action" value="edit" class="btn btn-warning" onclick="return confirm('Are You Sure To Edit?')">EDIT</button>
-															    <% 
-															    if (milestoneList.stream().filter(e -> e[9].toString().equalsIgnoreCase("N")).findAny().isPresent()) { 
-															    %>
-															     <button type="submit" class="btn btn-success" name="action" value="baseline" onclick="return confirm('Once You Set Baseline, You Cannot Edit. Are You Sure To Proceed??')">SET BASELINE</button>
-															    <% 
-															    } 
-															%>
-															<% 
-															}} else { 
-															%>
-															    <button type="submit" name="action" value="add" class="btn btn-success" onclick="return confirm('Are You Sure To Submit?')">SUBMIT</button>
-															<% 
-															} 
-															%>
-													        <input type="hidden" name="pftsFileId" id="pftsFileId" value="<%=fileStatus[0]%>">
-													        <input type="hidden" name="demandnumber" value="<%=fileStatus[1]%>">
-													        <input type="hidden" name="ProjectId" value="<%=projectId%>">
-													        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-													        </div>
-													    </form>
-													</div>
-											      </div>
-											    </div>
-											  </div>
-											</div>
+                                           <%} }%>
                                             </td>
                                             <td style="text-align: center;">
                                             <%if(fileStatus[1]!=null && Long.parseLong(fileStatus[7].toString())>=10){ %>
@@ -950,6 +783,231 @@ for(Integer i:status){
 				</div>
 		</div>
 	 </div>
+</div>
+
+
+<%-- <div class="modal fade bd-example-modal-lg" id="milestoneModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="width: 115%;margin-left: -9%">
+      <div class="modal-header">
+        <h5 class="modal-title" id="milestoneModalLabel">
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		 <div class="container">
+		       <form action="addProcurementMilestone.htm" method="post">
+		        <!-- Labels for all fields -->
+		        <div class="form-row">
+		         <div class="form-group col-md-1" align="center">
+		                <label for="sn">SN</label>
+		            </div>
+		            <div class="form-group col-md-5" align="center">
+		                <label for="name">Status Name</label>
+		            </div>
+		             <div class="form-group col-md-3" align="center">
+		                <label for="date">Probable Date</label>
+		            </div>
+		            <div class="form-group col-md-3" align="center">
+		                <label for="date">Actual Date</label>
+		            </div>
+		        </div>
+		     
+		        <% 
+		        int count=0;
+		        if(milestoneList!=null && milestoneList.size()>0 && milestoneList.stream().filter(e -> e[1].equals(fileStatus[0])).findAny().isPresent()){
+		        	for(Object[] obj : milestoneList) { 
+		        	%>
+		            <div class="form-row">
+		                <div class="form-group col-md-1">
+		                   <input class="form-control custom-sn-style" type="text" value="<%=++count %>" style="font-size: 16px; line-height:17px;font-weight: 500; text-align: center;">
+		                   <input type="hidden" name="statusId" value="<%= obj[0] %>">
+		                </div>
+		                <div class="form-group col-md-5">
+                            <input type="text" class="form-control custom-style" id="statusname_<%= obj[0] %>" name="statusName" value="<%= obj[11] %>" style="font-size: 16px; line-height:17px;font-weight: 500;">
+                        </div>
+		                <div class="form-group col-md-3">
+		                   <% if(obj[7].toString().equalsIgnoreCase("1")){%>
+                                 <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(fileStatus[2].toString()) %>" readonly style="line-height: 17px;">
+                           <%}else if(obj[7].toString().equalsIgnoreCase("3") && fileStatus[11]!=null){%>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("6") && fileStatus[12]!=null){ %>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("10") && fileStatus[13]!=null){%>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("11") && fileStatus[14]!=null){ %>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("12") && fileStatus[21]!=null){%>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("13") && fileStatus[15]!=null){ %>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("15") && fileStatus[22]!=null){%>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("25") && fileStatus[18]!=null){ %>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("14") && fileStatus[16]!=null){%>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("17") && fileStatus[17]!=null){ %>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("19") && fileStatus[20]!=null){%>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else if(obj[7].toString().equalsIgnoreCase("20") && fileStatus[23]!=null){ %>
+		                       <input type="text" class="form-control" id="probdate_<%= obj[0] %>" name="probabaleDate" readonly value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%}else{ %>
+		                       <input type="text" class="form-control date-picker" id="probdate_<%= obj[0] %>" name="probabaleDate" value="<%=fc.sdfTordf(obj[6].toString()) %>" style="line-height: 17px;">
+		                   <%} %>
+		                </div>
+		               <div class="form-group col-md-3">
+						 <%
+						     Object inputValue = "";
+						     if (obj[7].toString().equalsIgnoreCase("3")) {
+						    	 inputValue = (fileStatus[11] != null) ? fc.sdfTordf(fileStatus[11].toString()) : "";
+						     } else if (obj[7].toString().equalsIgnoreCase("6")) {
+						    	 inputValue = (fileStatus[12] != null) ? fc.sdfTordf(fileStatus[12].toString()) : "";
+						     } else if (obj[7].toString().equalsIgnoreCase("10")) {
+						    	 inputValue = (fileStatus[13] != null) ? fc.sdfTordf(fileStatus[13].toString()) : "";
+						     } else if (obj[7].toString().equalsIgnoreCase("11")) {
+						    	 inputValue = (fileStatus[14] != null) ? fc.sdfTordf(fileStatus[14].toString()) : "";
+						     } else if (obj[7].toString().equalsIgnoreCase("12")) {
+						         inputValue = (fileStatus[21] != null) ? fc.sdfTordf(fileStatus[21].toString()) : "";
+						     } else if (obj[7].toString().equalsIgnoreCase("13")) {
+						         inputValue = (fileStatus[15] != null) ? fc.sdfTordf(fileStatus[15].toString()) : "";
+						     } else if (obj[7].toString().equalsIgnoreCase("15")) {
+						         inputValue = (fileStatus[22] != null) ? fc.sdfTordf(fileStatus[22].toString()) : "";
+						     } else if (obj[7].toString().equalsIgnoreCase("25")) {
+						         inputValue = (fileStatus[18] != null) ? fc.sdfTordf(fileStatus[18].toString()) : "";
+						     } else if (obj[7].toString().equalsIgnoreCase("1")) {
+						         inputValue = (fileStatus[2] != null) ? fc.sdfTordf(fileStatus[2].toString()) : "";
+						     }else if (obj[7].toString().equalsIgnoreCase("14")) {
+						         inputValue = (fileStatus[16] != null) ? fc.sdfTordf(fileStatus[16].toString()) : "";
+						     }else if (obj[7].toString().equalsIgnoreCase("17")) {
+						         inputValue = (fileStatus[17] != null) ? fc.sdfTordf(fileStatus[17].toString()) : "";
+						     }else if (obj[7].toString().equalsIgnoreCase("19")) {
+						         inputValue = (fileStatus[20] != null) ? fc.sdfTordf(fileStatus[20].toString()) : "";
+						     }else if (obj[7].toString().equalsIgnoreCase("20")) {
+						         inputValue = (fileStatus[23] != null) ? fc.sdfTordf(fileStatus[23].toString()) : "";
+						     }
+						 %>
+						 <input type="text" class="form-control date-picker1" id="actualdate_<%= obj[0] %>" name="actualDate" value="<%=inputValue%>" disabled style="line-height: 17px;">
+						</div>
+		            </div>
+		        <% }
+		        }else{
+		        for(Object[] data : milestoneStatus) { %>
+		            <div class="form-row">
+		                <div class="form-group col-md-1">
+		                   <input class="form-control custom-sn-style" type="text" value="<%=++count %>" style="font-size: 16px; line-height:17px;font-weight: 500; text-align: center;">
+		                   <input type="hidden" name="statusId" value="<%= data[0] %>">
+		                </div>
+		                <div class="form-group col-md-5">
+                            <input type="text" class="form-control custom-style" id="name_<%= data[0] %>" name="statusName" value="<%= data[2] %>" style="font-size: 16px; line-height:17px;font-weight: 500;">
+                        </div>
+		                <div class="form-group col-md-3">
+		                 <%if(data[0].toString().equalsIgnoreCase("1")){ %>
+		                    <input type="text" class="form-control" id="date_<%= data[0] %>" name="probabaleDate" <%if(fileStatus[2]!=null){ %> value="<%=rdf.format(sdf1.parse(fileStatus[2].toString()))%>" <%}else{ %>value="-" <%} %> readonly style="line-height: 17px;">
+		                 <%}else{ %>
+		                    <input type="text" class="form-control date-picker" id="date_<%= data[0] %>" name="probabaleDate" style="line-height: 17px;">
+		                 <%} %>
+		                </div>
+		                <div class="form-group col-md-3">
+		                  <%if(data[0].toString().equalsIgnoreCase("1")){ %>
+		                     <input type="text" class="form-control" id="date_<%= data[0] %>" name="actualDate" <%if(fileStatus[2]!=null){ %> value="<%=rdf.format(sdf1.parse(fileStatus[2].toString()))%>" <%}else{ %>value="-" <%} %> disabled style="line-height: 17px;">
+		                   <%}else{ %>
+		                     <input type="text" class="form-control" id="date_<%= data[0] %>" value="NA" name="actualDate" disabled style="line-height: 17px;">
+		                   <%} %>
+		                </div>
+		            </div>
+		        <% } 
+		        }
+		        %>
+		        <br>
+		        <div align="center">
+		        <% if (milestoneList != null && milestoneList.size()>0 && !milestoneList.isEmpty()) { %>
+				 <%
+				if (milestoneList.stream().filter(e -> e[1].equals(fileStatus[0]) && e[9].toString().equalsIgnoreCase("Y")).findAny().isPresent()) { 
+				%>
+				    <button type="submit" class="btn btn-primary" name="action" value="revision" onclick="return confirm('Are You Sure To Make a Revision?')">MAKE REVISION</button>
+				<% 
+				} else if (milestoneList.stream().filter(e -> e[1].equals(fileStatus[0])).findAny().isPresent()) { 
+				%>
+				    <button type="submit" name="action" value="edit" class="btn btn-warning" onclick="return confirm('Are You Sure To Edit?')">EDIT</button>
+				    <% 
+				    if (milestoneList.stream().filter(e -> e[9].toString().equalsIgnoreCase("N")).findAny().isPresent()) { 
+				    %>
+				     <button type="submit" class="btn btn-success" name="action" value="baseline" onclick="return confirm('Once You Set Baseline, You Cannot Edit. Are You Sure To Proceed??')">SET BASELINE</button>
+				    <% 
+				    } 
+				%>
+				<% 
+				}} else { 
+				%>
+				    <button type="submit" name="action" value="add" class="btn btn-success" onclick="return confirm('Are You Sure To Submit?')">SUBMIT</button>
+				<% 
+				} 
+				%>
+		        <input type="hidden" name="pftsFileId" id="pftsFileId" value="<%=fileStatus[0]%>">
+		        <input type="hidden" name="demandnumber" value="<%=fileStatus[1]%>">
+		        <input type="hidden" name="ProjectId" value="<%=projectId%>">
+		        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		        </div>
+		    </form>
+		</div>
+      </div>
+    </div>
+  </div>
+</div> --%>
+
+
+<div class="modal fade bd-example-modal-lg" id="milestoneModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="milestoneModalLabel">
+        <span style="color: #FF3D00;font-weight: 600"></span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		 <div class="container">
+		     <form id="milestoneForm" action="addProcurementMilestone.htm" method="post" autocomplete="off">
+			    <div class="form-row">
+			        <div class="form-group col-md-1" align="center" style="margin-left: -15px;">
+			            <label for="sn" style="font-size: medium;">SN</label>
+			        </div>
+			        <div class="form-group col-md-5" align="center">
+			            <label for="name" style="font-size: medium;">Status Name</label>
+			        </div>
+			        <div class="form-group col-md-3 probable-date-header" align="center">
+			            <label for="date" style="font-size: medium;">Probable Date</label>
+			        </div>
+			        <div class="form-group col-md-3 actual-date-header" align="center">
+			            <label for="date" style="font-size: medium;">Actual Date</label>
+			        </div>
+			    </div>
+			
+			    <div id="milestoneContainer">
+			    
+			    </div>
+			    <div align="center">
+				   <button type="button" id="submitButton"  name="action" value="add" class="btn btn-success" onclick="addSubmit('add')" style="font-weight: 500">ADD</button>
+				   <input type="hidden" name="action" value="" id="actiontype">
+				   <button type="button" name="action" value="edit" class="btn btn-warning" onclick="addSubmit('edit')" style="font-weight: 500; display:none;">EDIT</button>
+				   <button type="button" name="action" value="baseline" class="btn btn-primary" onclick="addSubmit('baseline')" style="font-weight: 500; display:none;">SET BASELINE</button>
+				   <button type="button" name="action" value="revise" class="btn btn-primary" onclick="addSubmit('revise')" style="font-weight: 500; display:none;">REVISE</button>
+			       <input type="hidden" name="pftsfile" id="pftsfile" value="" />
+			       <input type="hidden" name="demandNumber" id="demandNumber" value="" />
+			       <input type="hidden" name="project"  value="<%=projectId %>" />
+			       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+			    </div>
+			</form>
+		  </div>
+		</div>  
+      </div>
+    </div>
 </div>
 
 
@@ -1715,8 +1773,27 @@ excel_file.addEventListener('change', (event) => {
     }
 });
 
-function openMilestoneModal(pftsid,demandNo,item){
-	$('#milestoneModal_'+pftsid).modal('show');
+function openMilestoneModal(pftsid,demandNo,item,demanddate){
+	var milelist = <%= new Gson().toJson(milestoneStatus) %>;
+	console.log("milelist", milelist);
+	$('#milestoneModal').modal('show');
+	
+	$('button[name="action"][value="add"]').hide();
+    $('button[name="action"][value="edit"]').hide();
+    $('button[name="action"][value="revise"]').hide();
+    $('button[name="action"][value="baseline"]').hide();
+    $('.actual-date-header').hide();
+    $('.probable-date-header').removeClass('col-md-3').addClass('col-md-6');
+	
+	 milelist.forEach(function(mile) {
+	        var statusid = mile[0];   
+	        var statusname = mile[1];
+	        milestoneBody(pftsid,statusid,statusname,demanddate);
+	 });
+	 
+	 $('#milestoneModal .modal-title').html('<span style="color: #FF3D00;">Demand No. : ' + demandNo + '</span><br><span style="color: #FF3D00;">Item : '+ item +'</span>');
+	 $('#pftsfile').val(pftsid);
+	 $('#demandNumber').val(demandNo);
 
 	$('.date-picker').each(function() {
 	    $(this).daterangepicker({
@@ -1745,8 +1822,599 @@ function openMilestoneModal(pftsid,demandNo,item){
 	        picker.move(); 
 	    });
 	});
-	
 }
+
+function milestoneBody(pftsid,statusid,statusname,demanddate){
+	
+    var milestoneContainer = $('#milestoneContainer');
+    $('.mileContainer').remove();
+    milestoneContainer.append('<div class="mileContainer row"></div>');
+	
+	 $.ajax({
+         type: "GET",
+         url: "procurementMilestoneDetails.htm",
+         data: { pftsid: pftsid },
+         datatype: 'json',
+         success: function(result) {
+             var cleanedResult = result.replace(/^"|"$/g, '').replace(/\\/g, '');
+             var values = JSON.parse(cleanedResult);
+             var ids = values[0][1];
+             if (ids== null) {
+                 // No data, show Add button and create empty fields
+                 $('button[name="action"][value="add"]').show();
+
+                 var rowHtml = 
+                     '<div class="form-group col-md-1" style="padding-left: 3px !important;">' +
+                         '<input class="form-control custom-sn-style" type="text" value="' + statusid + '" style="font-size: 16px;font-weight: 500; text-align: center;">' +
+                         '<input type="hidden" name="statusId" value="' + statusid + '">'+
+                     '</div>' +
+                     '<div class="form-group col-md-6">' +
+                         '<input type="text" class="form-control custom-style" id="statusname_' + pftsid + '" name="statusName" value="' + statusname + '" style="font-size: 16px;font-weight: 500;">' +
+                     '</div>' ;
+		             if(statusid==1){
+	               	   rowHtml +=
+	                        '<div class="form-group col-md-5">' +
+	                         '<div class="input-group">' +  
+	                             '<input type="text" class="form-control probableDateField date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(demanddate) + '" readonly>' +
+	                             '<div class="input-group-append">' + 
+	                             '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+	                           '</div>' +
+	                         '</div>' + 
+	                        '</div>' ;
+		           	}else{
+		           		rowHtml +=
+		           		'<div class="form-group col-md-5">' +
+		                    '<div class="input-group">' +
+		                        '<input type="text" class="form-control probableDateField date-picker" id="probdate_' + pftsid + '" name="probableDate" ' +
+		                        'placeholder="Select Date">' +
+		                        '<div class="input-group-append">' +
+		                            '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+		                        '</div>' +
+		                     '</div>' +
+		                    '</div>';
+		           	}
+                     $('.mileContainer').append(rowHtml);
+                 initializeDatePickers(); 
+             } else {
+            	 if(result!=null ){
+                 var values = JSON.parse(result);
+
+                 if (values.length > 0) {
+                     $('button[name="action"][value="edit"]').show();
+                     $('button[name="action"][value="baseline"]').show();
+
+                     values.forEach(function(item) {
+                         const probDateFormat = formatDate(item[3]);
+                         var pftsid = item[0];
+                         var milestoneId = item[1];
+                         var PDRActualDate = item[3];
+                         var showActualDate = item[27] === 'Y';
+
+                         $('#milestonepkId').val(milestoneId);
+          		
+                             var rowHtml = 
+                                 '<div class="form-group col-md-1" style="padding-left: 3px !important;">' +
+                                     '<input class="form-control custom-sn-style" type="text" value="' + statusid + '" style="font-size: 16px;font-weight: 500; text-align: center;">' +
+                                     '<input type="hidden" name="pftsMilestoneId" value="' + milestoneId + '">'+
+                                     '<input type="hidden" name="statusId" value="' + statusid + '">'+
+                                 '</div>' +
+                                 '<div class="form-group col-md-5">' +
+                                     '<input type="text" class="form-control custom-style" id="statusname_' + pftsid + '" name="statusName" value="' + statusname + '" style="font-size: 16px;font-weight: 500;">' +
+                                 '</div>';
+
+                          if (showActualDate) {
+                        	  if(statusid==1){
+                             	  rowHtml +=
+                             		 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                     '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[2]) + '" readonly>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control " id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[2]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==2){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[3] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[15]) + '" ' + (item[3] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[3]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==3){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[4] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[16]) + '" ' + (item[4] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[4]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==4){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[5] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[17]) + '" ' + (item[5] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[5]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==5){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[6] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[18]) + '" ' + (item[6] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[6]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==6){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[11] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[19]) + '" ' + (item[11] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[11]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==7){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[7] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[20]) + '" ' + (item[7] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[7]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==8){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[8] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[21]) + '" ' + (item[8] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[8]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==9){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[12] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[22]) + '" ' + (item[12] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[12]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==10){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[9] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[23]) + '" ' + (item[9] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[9]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==11){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[14] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[24]) + '" ' + (item[14] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[14]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==12){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[13] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[25]) + '" ' + (item[13] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[13]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}else if(statusid==13){
+                         		 rowHtml +=
+                         			 '<div class="form-group col-md-3">' +
+                                     '<div class="input-group">' +  
+                                         '<input type="text" class="form-control ' + (item[10] != null ? '' : 'date-picker') + '" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[26]) + '" ' + (item[10] != null ? 'readonly' : '') + '>' +
+                                         '<div class="input-group-append">' + 
+                                         '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                       '</div>' +
+                                     '</div>' + 
+                                    '</div>'+
+                                      '<div class="form-group col-md-3">' +
+                                       '<div class="input-group">' +  
+                                       '<input type="text" class="form-control" id="actualdate_' + pftsid + '" name="actualDate" value="' + formatDate(item[10]) + '" readonly>' +
+                                           '<div class="input-group-append">' + 
+                                           '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                         '</div>' +
+                                       '</div>' + 
+                                      '</div>' ;
+                         	}
+                        	  $('.actual-date-header').show();
+                              $('.probable-date-header').removeClass('col-md-6').addClass('col-md-3');
+                              $('button[name="action"][value="edit"]').hide();
+                              $('button[name="action"][value="baseline"]').hide();
+                              $('button[name="action"][value="revise"]').show();
+                             }else {
+                             	if(statusid==1){
+                             		 rowHtml +=
+                                          '<div class="form-group col-md-6">' +
+                                           '<div class="input-group">' +  
+                                               '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[2]) + '" placeholder="Select Date" readonly>' +
+                                               '<div class="input-group-append">' + 
+                                               '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                             '</div>' +
+                                           '</div>' + 
+                                          '</div>' ;
+                             	}else if(statusid==2){
+                             		 rowHtml +=
+                                          '<div class="form-group col-md-6">' +
+                                           '<div class="input-group">' +  
+                                               '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[15]) + '" placeholder="Select Date">' +
+                                               '<div class="input-group-append">' + 
+                                               '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                             '</div>' +
+                                           '</div>' + 
+                                          '</div>' ;
+                             	}else if(statusid==3){
+                             		 rowHtml +=
+                                          '<div class="form-group col-md-6">' +
+                                           '<div class="input-group">' +  
+                                               '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[16]) + '" placeholder="Select Date">' +
+                                               '<div class="input-group-append">' + 
+                                               '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                             '</div>' +
+                                           '</div>' + 
+                                          '</div>' ;
+                             	}else if(statusid==4){
+                             		 rowHtml +=
+                                          '<div class="form-group col-md-6">' +
+                                           '<div class="input-group">' +  
+                                               '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[17]) + '" placeholder="Select Date">' +
+                                               '<div class="input-group-append">' + 
+                                               '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                             '</div>' +
+                                           '</div>' + 
+                                          '</div>' ;
+                             	}else if(statusid==5){
+                             		 rowHtml +=
+                                          '<div class="form-group col-md-6">' +
+                                           '<div class="input-group">' +  
+                                               '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[18]) + '" placeholder="Select Date">' +
+                                               '<div class="input-group-append">' + 
+                                               '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                             '</div>' +
+                                           '</div>' + 
+                                          '</div>' ;
+                             	}else if(statusid==6){
+                             		 rowHtml +=
+                                          '<div class="form-group col-md-6">' +
+                                           '<div class="input-group">' +  
+                                               '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[19]) + '" placeholder="Select Date">' +
+                                               '<div class="input-group-append">' + 
+                                               '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                             '</div>' +
+                                           '</div>' + 
+                                          '</div>' ;
+                             	}else if(statusid==7){
+                            		 rowHtml +=
+                                         '<div class="form-group col-md-6">' +
+                                          '<div class="input-group">' +  
+                                              '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[20]) + '" placeholder="Select Date">' +
+                                              '<div class="input-group-append">' + 
+                                              '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                            '</div>' +
+                                          '</div>' + 
+                                         '</div>' ;
+                            	}else if(statusid==8){
+                            		 rowHtml +=
+                                         '<div class="form-group col-md-6">' +
+                                          '<div class="input-group">' +  
+                                              '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[21]) + '" placeholder="Select Date">' +
+                                              '<div class="input-group-append">' + 
+                                              '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                            '</div>' +
+                                          '</div>' + 
+                                         '</div>' ;
+                            	}else if(statusid==9){
+                            		 rowHtml +=
+                                         '<div class="form-group col-md-6">' +
+                                          '<div class="input-group">' +  
+                                              '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[22]) + '" placeholder="Select Date">' +
+                                              '<div class="input-group-append">' + 
+                                              '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                            '</div>' +
+                                          '</div>' + 
+                                         '</div>' ;
+                            	}else if(statusid==10){
+                            		 rowHtml +=
+                                         '<div class="form-group col-md-6">' +
+                                          '<div class="input-group">' +  
+                                              '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[23]) + '" placeholder="Select Date">' +
+                                              '<div class="input-group-append">' + 
+                                              '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                            '</div>' +
+                                          '</div>' + 
+                                         '</div>' ;
+                            	}else if(statusid==11){
+                            		 rowHtml +=
+                                         '<div class="form-group col-md-6">' +
+                                          '<div class="input-group">' +  
+                                              '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[24]) + '" placeholder="Select Date">' +
+                                              '<div class="input-group-append">' + 
+                                              '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                            '</div>' +
+                                          '</div>' + 
+                                         '</div>' ;
+                            	}else if(statusid==12){
+                            		 rowHtml +=
+                                         '<div class="form-group col-md-6">' +
+                                          '<div class="input-group">' +  
+                                              '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[25]) + '" placeholder="Select Date">' +
+                                              '<div class="input-group-append">' + 
+                                              '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                            '</div>' +
+                                          '</div>' + 
+                                         '</div>' ;
+                            	}else if(statusid==13){
+                            		 rowHtml +=
+                                         '<div class="form-group col-md-6">' +
+                                          '<div class="input-group">' +  
+                                              '<input type="text" class="form-control date-picker" id="probdate_' + pftsid + '" name="probableDate" value="' + formatDate(item[26]) + '" placeholder="Select Date">' +
+                                              '<div class="input-group-append">' + 
+                                              '<span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>' +
+                                            '</div>' +
+                                          '</div>' + 
+                                         '</div>' ;
+                            	}
+                             	
+                                 $('.actual-date-header').hide();
+                                 $('.probable-date-header').removeClass('col-md-3').addClass('col-md-6');
+                             }
+
+                             $('.mileContainer').append(rowHtml);
+                     });
+
+                     initializeDatePickers();  
+                 } else {
+                     $('button[name="action"][value="add"]').show();
+                 }
+             }
+         }
+         },
+         error: function(xhr, status, error) {
+             console.error('AJAX Error:', error);
+             $('button[name="action"][value="add"]').show();
+         }
+     });
+}
+
+function initializeDatePickers() {
+	  var selectedDates = []; 
+	  $('.date-picker').each(function(index) {
+        var $input = $(this);
+        var preFilledDate = $input.val(); // Get the pre-filled value, if any
+
+        if (preFilledDate) {
+            var parsedDate = moment(preFilledDate, 'DD-MM-YYYY');
+            selectedDates[index] = parsedDate; // Store the date in moment format
+        }
+
+        // Initialize only the active date pickers (non-readonly)
+        if (!$input.prop('readonly')) {
+            $input.daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: false,
+                locale: { format: 'DD-MM-YYYY' },
+                minDate: getMinDateForIndex(index) // Get the minDate based on previous dates
+            }).on('apply.daterangepicker', function(ev, picker) {
+                var selectedDate = picker.startDate.format('DD-MM-YYYY');
+                $(this).val(selectedDate); // Set the selected date in the input field
+
+                // Update the selectedDates array for the current index
+                selectedDates[index] = picker.startDate;
+
+                // Update the minDate for the next date picker, if any
+                updateMinDateForNext(index);
+            }).on('show.daterangepicker', function(ev, picker) {
+                var pickerTop = $(this).offset().top;
+                var modalTop = $('#milestoneModal').offset().top;
+                var modalHeight = $('#milestoneModal').outerHeight();
+
+                if ((pickerTop - modalTop) > (modalHeight / 2)) {
+                    picker.drops = 'up';
+                } else {
+                    picker.drops = 'down';
+                }
+                picker.move();
+            });
+        }
+    });
+	  
+	 function getMinDateForIndex(index) {
+	    for (var i = index - 1; i >= 0; i--) {
+	        if (selectedDates[i]) return selectedDates[i]; // Return the first valid previous date
+	    }
+	    return false; // No restrictions if no previous dates found
+	}
+
+	function updateMinDateForNext(currentIndex) {
+	    for (var i = currentIndex + 1; i < $('.date-picker').length; i++) {
+	        var nextInput = $('.date-picker').eq(i);
+
+	        if (!nextInput.prop('readonly')) {
+	            // If the next input is not read-only, update its minDate
+	            nextInput.data('daterangepicker').minDate = selectedDates[currentIndex];
+	            break; // Only update the immediate next active date picker
+	        }
+	    }
+	}
+}
+
+function addSubmit(value){
+	$('#actiontype').val(value);
+    var isValid = false;
+    
+    if(value === 'add'){
+    $('.probableDateField').each(function() {
+        if ($(this).val() !== '') {
+            isValid = true;  
+            return false;  
+        }
+    });
+    if (!isValid) {
+        alert('Please fill at least one date field.');
+        return false; 
+      }
+    }
+    
+  /*   if (value === 'revise') {
+        $('#remarksModal').modal('show');
+        $('#saveRemarksButton').off('click').on('click', function() {
+            var remarks = $('#remarksInput').val().trim();
+
+            if (remarks === '') {
+                alert('Remarks are required for revision.');
+                return false;
+            }
+
+            $('#remarksField').val(remarks);
+            $('#remarksModal').modal('hide'); 
+
+            if (confirm('Are you sure to submit?')) {
+            	$('#milestoneModal').modal('hide');
+                $('#milestoneForm').submit();
+            }
+        });
+        
+        return false; 
+    } */
+    
+    if (confirm('Are you sure to submit?')) {
+    	 $('#milestoneForm').submit();
+    }
+
+};
+
+function formatDate(dateString) {
+    if (!dateString) return ''; 
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    }).replace(/\//g, '-');
+}
+
 
 $('.date-picker1').each(function() {
     $(this).daterangepicker({

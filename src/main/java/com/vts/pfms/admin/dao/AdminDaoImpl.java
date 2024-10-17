@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.admin.dto.EmployeeDesigDto;
+import com.vts.pfms.admin.model.AuditPatches;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.admin.model.Expert;
@@ -1140,4 +1141,32 @@ public class AdminDaoImpl implements AdminDao{
 		}
 		return null;
 	}
+	
+	public static final String AUDITPATCHESLIST="SELECT VersionNo,Description,CreatedDate,Attachment,AuditPatchesId,PatchDate FROM  pfms_audit_patches order by CreatedDate desc";
+	@Override
+	public List<Object[]> getAuditPatchesList() throws Exception{
+		try {
+			Query query = manager.createNativeQuery(AUDITPATCHESLIST);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	private static final String  UPDATEPATCHDETAILS="update pfms_audit_patches set Description=:description,Attachment=:attachment,ModifiedBy=:modifiedBy,ModifiedDate=:modifiedDate where AuditPatchesId=:auditPatchesId";
+	@Override
+	public int auditpatchAddSubmit(AuditPatches model) throws Exception
+	{
+		Query query = manager.createNativeQuery(UPDATEPATCHDETAILS);
+		query.setParameter("description", model.getDescription());
+		query.setParameter("attachment", model.getAttachment());
+		query.setParameter("modifiedBy", model.getModifiedBy());
+		query.setParameter("modifiedDate", model.getModifiedDate());
+		query.setParameter("auditPatchesId", model.getAuditPatchesId());
+		return query.executeUpdate();
+	}
+	 @Override
+	    public AuditPatches getAuditPatchById(Long attachId) {
+	        return manager.find(AuditPatches.class, attachId); // Fetches the entity by its ID
+	    }
 }

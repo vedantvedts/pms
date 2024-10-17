@@ -81,6 +81,8 @@ public class PFTSController {
 	SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 	private SimpleDateFormat sdf1= fc.getSqlDateAndTimeFormat();
+	private SimpleDateFormat sdf2=fc.getRegularDateFormat();/*new SimpleDateFormat("dd-MM-yyyy");*/
+	private SimpleDateFormat sdf3=fc.getSqlDateFormat();
 
 	
 	@RequestMapping(value = "ProcurementStatus.htm" ,method= {RequestMethod.GET,RequestMethod.POST})
@@ -1136,92 +1138,272 @@ public class PFTSController {
 		
 			String UserId = (String) ses.getAttribute("Username");
 			String [] statusId = req.getParameterValues("statusId");
-			String pftsFileId = req.getParameter("pftsFileId");
-			String projectid = req.getParameter("ProjectId");
+			String pftsFileId = req.getParameter("pftsfile");
+			String projectid = req.getParameter("project");
 			String action = req.getParameter("action");
-			String demandnumber = req.getParameter("demandnumber");
-			String [] probabaleDate = req.getParameterValues("probabaleDate");
+			String demandnumber = req.getParameter("demandNumber");
+			String pftsMilestoneId = req.getParameter("pftsMilestoneId");
+			String [] probableDate = req.getParameterValues("probableDate");
 			
 			try {
 				long result=0;
 				if(pftsFileId!=null) {
 					if(action.equalsIgnoreCase("add")) {
-						for(int i=0; i<statusId.length; i++) {
-							PftsFileMilestone mile = new PftsFileMilestone();
-							mile.setPftsFileId(Long.parseLong(pftsFileId));
-							mile.setPftsStatusId(Long.parseLong(statusId[i]));
-							mile.setProbableDate(sdf.format(inputFormat.parse(probabaleDate[i])));
-							mile.setRevision(0);
-							mile.setSetBaseline("N");
-							mile.setCreatedBy(UserId);
-							mile.setCreatedDate(sdf1.format(new Date()));
-							mile.setIsActive(1);
-							result=service.addProcurementMilestone(mile);
-							
-							if(result>0) {
-								redir.addAttribute("result","Milstone Added Successfully For Demand No. "+demandnumber);
-							}else {
-								redir.addAttribute("resultfail","Something went worng");
-							}
+						PftsFileMilestone entity = new PftsFileMilestone();
+						entity.setPftsFileId(Long.parseLong(pftsFileId));
+						entity.setRevision(0);
+						entity.setSetBaseline("N");
+						entity.setCreatedBy(UserId);
+						entity.setCreatedDate(sdf1.format(new Date()));
+						entity.setIsActive(1);
+						for (int i = 0; i < statusId.length; i++) { 
+							 int status = Integer.parseInt(statusId[i]);
+						        String parsedDate =probableDate[i]!=null && !probableDate[i].isEmpty() ? sdf3.format(sdf2.parse(probableDate[i])) : null;
+						        switch (status) {
+						            case 1:
+						                break;
+						            case 2:
+						                entity.setEPCDate(parsedDate);
+						                break;
+						            case 3:
+						                entity.setTocDate(parsedDate);
+						                break;
+						            case 4:
+						                entity.setOrderDate(parsedDate);
+						                break;
+						            case 5:
+						                entity.setPDRDate(parsedDate);
+						                break;
+						            case 6:
+						                entity.setCriticalDate(parsedDate);
+						                break;
+						            case 7:
+						                entity.setDDRDate(parsedDate);
+						                break;
+						            case 8:
+						            	entity.setCDRDate(parsedDate);
+						            	break;
+						            case 9:
+						            	entity.setAcceptanceDate(parsedDate);
+						            	break;
+						            case 10:
+						            	entity.setFATDate(parsedDate);
+						            	break;
+						            case 11:
+						            	entity.setDeliveryDate(parsedDate);
+						            	break;
+						            case 12:
+						            	entity.setSATDate(parsedDate);
+						            	break;
+						            case 13:
+						            	entity.setIntegrationDate(parsedDate);
+						            	break;
+						            default:
+						                throw new IllegalArgumentException("Invalid statusId: " + status);
+						         }
 						}
-					}else if (action.equalsIgnoreCase("edit")) {
-						for(int i=0; i<statusId.length; i++) {
-							PftsFileMilestone mile =service.getEditMilestoneData(Long.parseLong(statusId[i]));
-							mile.setProbableDate(sdf.format(inputFormat.parse(probabaleDate[i])));
-							mile.setModifiedBy(UserId);
-							mile.setModifiedDate(sdf1.format(new Date()));
-							result=service.editProcurementMilestone(mile);
+						result=service.addProcurementMilestone(entity);
+						if(result>0) {
+							redir.addAttribute("result","Milstone Added Successfully For Demand No. "+demandnumber);
+						}else {
+							redir.addAttribute("resultfail","Something went worng");
+   					    }
+					}
+					else if (action.equalsIgnoreCase("edit")) {
+							PftsFileMilestone entity =service.getEditMilestoneData(Long.parseLong(pftsMilestoneId));
+							entity.setModifiedBy(UserId);
+							entity.setModifiedDate(sdf1.format(new Date()));
+							for (int i = 0; i < statusId.length; i++) { 
+								 int status = Integer.parseInt(statusId[i]);
+							        String parsedDate =probableDate[i]!=null && !probableDate[i].isEmpty() ? sdf3.format(sdf2.parse(probableDate[i])) : null;
+							        switch (status) {
+							            case 1:
+							                break;
+							            case 2:
+							                entity.setEPCDate(parsedDate);
+							                break;
+							            case 3:
+							                entity.setTocDate(parsedDate);
+							                break;
+							            case 4:
+							                entity.setOrderDate(parsedDate);
+							                break;
+							            case 5:
+							                entity.setPDRDate(parsedDate);
+							                break;
+							            case 6:
+							                entity.setCriticalDate(parsedDate);
+							                break;
+							            case 7:
+							                entity.setDDRDate(parsedDate);
+							                break;
+							            case 8:
+							            	entity.setCDRDate(parsedDate);
+							            	break;
+							            case 9:
+							            	entity.setAcceptanceDate(parsedDate);
+							            	break;
+							            case 10:
+							            	entity.setFATDate(parsedDate);
+							            	break;
+							            case 11:
+							            	entity.setDeliveryDate(parsedDate);
+							            	break;
+							            case 12:
+							            	entity.setSATDate(parsedDate);
+							            	break;
+							            case 13:
+							            	entity.setIntegrationDate(parsedDate);
+							            	break;
+							            default:
+							                throw new IllegalArgumentException("Invalid statusId: " + status);
+							         }
+							}
+							result=service.editProcurementMilestone(entity);
 							
 							if(result>0) {
 								redir.addAttribute("result","Milstone Edited Successfully For Demand No. "+demandnumber);
 							}else {
 								redir.addAttribute("resultfail","Something went worng");
 							}
-						}
 					}else if(action.equalsIgnoreCase("baseline")) {
-						for(int i=0; i<statusId.length; i++) {
-							PftsFileMilestone mile =service.getEditMilestoneData(Long.parseLong(statusId[i]));
-							mile.setProbableDate(sdf.format(inputFormat.parse(probabaleDate[i])));
-							mile.setSetBaseline("Y");
-							mile.setModifiedBy(UserId);
-							mile.setModifiedDate(sdf1.format(new Date()));
-							result=service.editProcurementMilestone(mile);
-							
+						PftsFileMilestone entity =service.getEditMilestoneData(Long.parseLong(pftsMilestoneId));
+						entity.setSetBaseline("Y");
+						entity.setModifiedBy(UserId);
+						entity.setModifiedDate(sdf1.format(new Date()));
+						for (int i = 0; i < statusId.length; i++) { 
+							 int status = Integer.parseInt(statusId[i]);
+						        String parsedDate =probableDate[i]!=null && !probableDate[i].isEmpty() ? sdf3.format(sdf2.parse(probableDate[i])) : null;
+						        switch (status) {
+						            case 1:
+						                break;
+						            case 2:
+						                entity.setEPCDate(parsedDate);
+						                break;
+						            case 3:
+						                entity.setTocDate(parsedDate);
+						                break;
+						            case 4:
+						                entity.setOrderDate(parsedDate);
+						                break;
+						            case 5:
+						                entity.setPDRDate(parsedDate);
+						                break;
+						            case 6:
+						                entity.setCriticalDate(parsedDate);
+						                break;
+						            case 7:
+						                entity.setDDRDate(parsedDate);
+						                break;
+						            case 8:
+						            	entity.setCDRDate(parsedDate);
+						            	break;
+						            case 9:
+						            	entity.setAcceptanceDate(parsedDate);
+						            	break;
+						            case 10:
+						            	entity.setFATDate(parsedDate);
+						            	break;
+						            case 11:
+						            	entity.setDeliveryDate(parsedDate);
+						            	break;
+						            case 12:
+						            	entity.setSATDate(parsedDate);
+						            	break;
+						            case 13:
+						            	entity.setIntegrationDate(parsedDate);
+						            	break;
+						            default:
+						                throw new IllegalArgumentException("Invalid statusId: " + status);
+						         }
+						 }
+							result=service.editProcurementMilestone(entity);
 							if(result>0) {
 								redir.addAttribute("result","Milstone Baseline Set Successfully For Demand No. "+demandnumber);
 							}else {
 								redir.addAttribute("resultfail","Something went worng");
 							}
-						}
-					}else if (action.equalsIgnoreCase("revision")) {
-						for(int i=0; i<statusId.length; i++) {
-							PftsFileMilestone mile =service.getEditMilestoneData(Long.parseLong(statusId[i]));
-							
-							PftsFileMilestoneRev rev = new PftsFileMilestoneRev();
-							rev.setPftsMilestoneId(mile.getPftsMilestoneId());
-							rev.setProbableDate(mile.getProbableDate());
-							rev.setRevision(mile.getRevision());
-							rev.setCreatedBy(UserId);
-							rev.setCreatedDate(sdf1.format(new Date()));
-							rev.setIsActive(mile.getIsActive());
-							service.addProcurementMilestoneRev(rev);
-							
-							mile.setProbableDate(sdf.format(inputFormat.parse(probabaleDate[i])));
-							mile.setRevision(mile.getRevision()+1);
-							mile.setModifiedBy(UserId);
-							mile.setModifiedDate(sdf1.format(new Date()));
-							result=service.editProcurementMilestone(mile);
+					}
+					else if (action.equalsIgnoreCase("revise")) {
+						PftsFileMilestone entity =service.getEditMilestoneData(Long.parseLong(pftsMilestoneId));
 						
+						PftsFileMilestoneRev rev = new PftsFileMilestoneRev();
+						rev.setPftsMilestoneId(entity.getPftsMilestoneId());
+						rev.setEPCDate(entity.getEPCDate());
+						rev.setTocDate(entity.getTocDate());
+						rev.setOrderDate(entity.getOrderDate());
+						rev.setPDRDate(entity.getPDRDate());
+						rev.setCriticalDate(entity.getCriticalDate());
+						rev.setDDRDate(entity.getDDRDate());
+						rev.setCDRDate(entity.getCDRDate());
+						rev.setAcceptanceDate(entity.getAcceptanceDate());
+						rev.setFATDate(entity.getFATDate());
+						rev.setDeliveryDate(entity.getDeliveryDate());
+						rev.setSATDate(entity.getSATDate());
+						rev.setIntegrationDate(entity.getIntegrationDate());
+						rev.setRevision(entity.getRevision());
+						rev.setModifiedBy(UserId);
+						rev.setModifiedDate(sdf1.format(new Date()));
+						rev.setIsActive(entity.getIsActive());
+						service.addProcurementMilestoneRev(rev);
+						
+						entity.setRevision(entity.getRevision()+1);
+						entity.setModifiedBy(UserId);
+						entity.setModifiedDate(sdf1.format(new Date()));
+						for (int i = 0; i < statusId.length; i++) { 
+							 int status = Integer.parseInt(statusId[i]);
+						        String parsedDate =probableDate[i]!=null && !probableDate[i].isEmpty() ? sdf3.format(sdf2.parse(probableDate[i])) : null;
+						        switch (status) {
+						            case 1:
+						                break;
+						            case 2:
+						                entity.setEPCDate(parsedDate);
+						                break;
+						            case 3:
+						                entity.setTocDate(parsedDate);
+						                break;
+						            case 4:
+						                entity.setOrderDate(parsedDate);
+						                break;
+						            case 5:
+						                entity.setPDRDate(parsedDate);
+						                break;
+						            case 6:
+						                entity.setCriticalDate(parsedDate);
+						                break;
+						            case 7:
+						                entity.setDDRDate(parsedDate);
+						                break;
+						            case 8:
+						            	entity.setCDRDate(parsedDate);
+						            	break;
+						            case 9:
+						            	entity.setAcceptanceDate(parsedDate);
+						            	break;
+						            case 10:
+						            	entity.setFATDate(parsedDate);
+						            	break;
+						            case 11:
+						            	entity.setDeliveryDate(parsedDate);
+						            	break;
+						            case 12:
+						            	entity.setSATDate(parsedDate);
+						            	break;
+						            case 13:
+						            	entity.setIntegrationDate(parsedDate);
+						            	break;
+						            default:
+						                throw new IllegalArgumentException("Invalid statusId: " + status);
+						         }
+						   }
+						    result=service.editProcurementMilestone(entity);
 							if(result>0) {
 								redir.addAttribute("result","Milstone Revised Successfully For Demand No. "+demandnumber);
 							}else {
 								redir.addAttribute("resultfail","Something went worng");
 							}
-						}
-					}
-				
+					  }
 				}
-		
 			}catch (Exception e) {
 				e.printStackTrace();
 			} 
@@ -1237,7 +1419,7 @@ public class PFTSController {
 			String ProjectId = req.getParameter("ProjectId");
 			logger.info(new Date() +"Inside checkManualDemandNo.htm "+UserId);		
 			try {
-				req.setAttribute("pftsMilestoneList", service.getpftsMilestoneList());
+//				req.setAttribute("pftsMilestoneList", service.getpftsMilestoneList());
 				req.setAttribute("pftsMileDemandList", service.getpftsMileDemandList(PftsFileId));
 				req.setAttribute("pftsProjectDate", service.getpftsProjectDate(ProjectId));
 				req.setAttribute("PftsFileId", PftsFileId);
@@ -1317,7 +1499,27 @@ public class PFTSController {
 				logger.error(new Date() +" Inside fileopen.htm "+UserId, e); 
 				return null;
 			}
+		}
+		
+		@RequestMapping(value = "procurementMilestoneDetails.htm", method = RequestMethod.GET)
+		public @ResponseBody String procurementMilestoneDetails(HttpServletRequest req, HttpSession ses) throws Exception {
 
+			List<Object[]> procurementMilestoneDetails=null;
+			String UserId =(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside procurementMilestoneDetails.htm "+UserId);		
+			try {
+				procurementMilestoneDetails = service.getprocurementMilestoneDetails(req.getParameter("pftsid"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside procurementMilestoneDetails.htm "+UserId, e);
+			}
+			
+			Gson convertedgson = new Gson();
+			if(procurementMilestoneDetails!=null && procurementMilestoneDetails.size()>0) {
+				return convertedgson.toJson(procurementMilestoneDetails);
+			}
+			    return convertedgson.toJson("-1");
 		}
 }
 

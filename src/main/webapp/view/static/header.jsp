@@ -419,7 +419,10 @@ String labcode= (String)session.getAttribute("labcode");
 											</a> <a class="dropdown-item" href="AuditStampingView.htm"> <img
 												src="view/images/stamping.png" /> &nbsp;&nbsp;
 												Audit Stamping
-											</a> <a class="dropdown-item" href="RunBatchFile.htm"> <img
+											</a> <a class="dropdown-item" href="AuditPatchesView.htm"> <img
+												src="view/images/updatepatch.jpg" style="width: 35px;height:30px"/> &nbsp;&nbsp;
+												Audit Patches
+											</a><a class="dropdown-item" href="RunBatchFile.htm"> <img
 												src="view/images/backup.png"
 												style="height: 13%; width: 16%;" /> &nbsp;&nbsp;DB Back-up
 											</a> <a class="dropdown-item" href="DelegationFlow.htm"> <img
@@ -797,7 +800,7 @@ function myconfirm(msg,frmid){
 		    },
 		    callback: function(result){	    
 
-		    	console.log("#"+frmid);
+		    
 		    	if(result){
 		 
 		         $("#"+frmid).submit(); 
@@ -843,14 +846,14 @@ function changed() {
 						datatype : 'json',
 						success : function(result) {
 							var result = JSON.parse(result);
-							console.log(result);
+							
 
 							var printOutDiv = document
 									.getElementById("targets");
 							while (printOutDiv.firstChild) {
 								printOutDiv.removeChild(printOutDiv.lastChild);
 							}
-							console.log(result.length);
+							
 							for (let i = 0; i < result.length; i++) {
 								var amountPrintOutDiv = document
 										.createElement("div");
@@ -867,7 +870,7 @@ function changed() {
 				}
 
 				function searchForRole(formname) {
-					console.log("clicked!!!!!!!!");
+				
 					var currentloc = "";
 					currentloc += String(window.location.href);
 					currentloc = currentloc.split("").reverse().join("")
@@ -913,8 +916,8 @@ function changed() {
 				
 					var DashBoardId = "<%=(String)session.getAttribute("DashBoardId")%>";
 					var path = window.location.pathname.split("/").includes("MainDashBoard.htm");
-					console.log("DashBoardId  "+DashBoardId)
-					console.log("path  "+path)
+					
+				
 					if(path){
 						$.ajax({
 							type:'GET',

@@ -377,7 +377,7 @@ function Delete(myfrm){
                  	}
                  	if(row>0 && cell==3){
                  		var Exno = ''+sheet_data[row][cell]+'';
-                 		if(!/^\d+$/.test(Exno) || Exno.length!=10){ ExtNo.push(row);}	
+                 		if(!/^\d+$/.test(Exno) || Exno.length < 4 || Exno.length > 10){ ExtNo.push(row);}	
                  	}
                  	if(row>0 && cell==4){
                  		var pno = ''+sheet_data[row][cell]+'';
@@ -458,7 +458,7 @@ function Delete(myfrm){
              		msg+="Employee Number already Existed at serial No :"+ dbDuplicate+"\n";
              	}
              	if(ExtNo.length>0){
-             		msg+="Extension Number should be Numeric and 4 digit at serial No :"+ ExtNo+"\n";
+             		msg+="Extension Number should be Numeric and 4 or 10 digit at serial No :"+ ExtNo+"\n";
              	}
              	if(EmpEmail.length>0){
              		msg+="Email is not valid at serial No :"+ EmpEmail +"\n";
