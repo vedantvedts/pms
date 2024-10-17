@@ -929,6 +929,7 @@
 	String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 	DecimalFormat df = new DecimalFormat("0.00");
 	String project = (String)request.getAttribute("project");
+	System.out.println("project:"+project);
 	NFormatConvertion nfc = new NFormatConvertion();
 	List<Object[]> RequirementList = (List<Object[]>) request.getAttribute("RequirementList");
 	Object[] ProjectDetailes = (Object[]) request.getAttribute("ProjectDetailes");
@@ -1578,6 +1579,7 @@
 											<th  style="text-align: center;">SN</th>
 											<th  style="text-align: center;">Name</th>
 											<th  style="text-align: center;">Designation</th>
+											<th  style="text-align: center;">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -1585,8 +1587,14 @@
 										for(Object[]obj:MemberList) {%>
 											<tr>
 												<td style="text-align: center;width:10%;"><%=++rowCount %></td>
-												<td style="width:50%;margin-left: 10px;"><%=obj[1].toString() %></td>
-												<td style="width:40%;margin-left: 10px;"><%=obj[2].toString() %></td>
+												<td style="width:40%;margin-left: 10px;"><%=obj[1].toString() %></td>
+												<td style="width:30%;margin-left: 10px;"><%=obj[2].toString() %></td>
+												<td style="width:10%; margin-left: 10px;">
+												    <button type="submit" class="editable-clicko" onclick="return confirmDeletion('<%=obj[5]%>');">
+												        <img src="view/images/delete.png" alt="Delete">
+												    </button>
+												</td>
+ 
 											</tr>
 										<%} %>
 									</tbody>
@@ -1715,6 +1723,34 @@
 	
 	<!--  -->
 	<script type="text/javascript">
+	
+	function confirmDeletion(ReqMemeberId) {
+	    // Ask for confirmation
+	    var confirmation = confirm("Are you sure you want to delete this member?");
+	    
+	    if (confirmation) {
+	        // If user clicks "OK", proceed with the AJAX request
+	        $.ajax({
+	            url: 'UpdateInitiationReqMembers.htm',
+	            datatype: 'json',
+	            data: {
+	                ReqMemeberId: ReqMemeberId
+	            },
+	            success: function(result) {
+	                var ajaxresult = JSON.parse(result);
+	                console.log("ajaxresult---" + ajaxresult);
+	                if (ajaxresult > 0) {
+	                    alert("Member Deleted successfully!");
+	                }
+	                location.reload();
+	            }
+	        });
+	    } else {
+	        // If user clicks "Cancel", do nothing
+	        return false;
+	    }
+	}
+
 		$(document).ready(function() {
 			$('#project').on('change', function() {
 				var temp = $(this).children("option:selected").val();

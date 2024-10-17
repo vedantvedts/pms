@@ -40,7 +40,7 @@ Object[] sqrFile = (Object[])request.getAttribute("SQRFile");
 Object[] LabList = (Object[])request.getAttribute("LabList");
 List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails");
 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
-int port=new URL( request.getRequestURL().toString()).getPort();
+int port=new URL(request.getRequestURL().toString()).getPort();
 String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
 %>
 

@@ -10856,4 +10856,21 @@ public class ProjectController
 	}
 
 
+	@RequestMapping(value = "UpdateInitiationReqMembers.htm", method = RequestMethod.GET)
+	public @ResponseBody String UpdateInitiationReqMembers(HttpServletRequest req, HttpSession ses) throws Exception {
+
+		String UserId =(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside UpdateInitiationReqMembers.htm "+UserId);	
+		long result=0;
+		try {
+			String ReqMemberId=req.getParameter("ReqMemeberId");
+			result = service.UpdateInitiationReqMembers(Long.parseLong(ReqMemberId));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside UpdateInitiationReqMembers.htm"+UserId, e);
+		}
+		Gson convertedgson = new Gson();
+	    return convertedgson.toJson(result);
+	}
 }

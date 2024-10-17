@@ -696,7 +696,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 		<%}}}} %>	
 		
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
-    <%= ++maincount %>.&nbsp;Specifications Forward Traceability 
+    <%= ++maincount %>.&nbsp; Forward Traceability 
     </h1>
 			<table class=""style="margin-left: 20px;;width: 610px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt;border-collapse:collapse">
 				<thead>
@@ -747,7 +747,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 						</table>
 						<br>	
 		<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
-    <%= ++maincount %>.&nbsp;Specifications Backward Traceability 
+    <%= ++maincount %>.&nbsp; Backward Traceability 
     </h1>
 				<table class=""style="margin-left: 20px;;width: 610px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt;border-collapse:collapse">
 				<thead>

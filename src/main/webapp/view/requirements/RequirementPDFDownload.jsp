@@ -253,7 +253,7 @@ margin-left:15x;
 <br><br><br><br><br><br><br><br><br><br><br><br>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
-				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM REQUREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>
+				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>
 					<div align="center" >
 						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
 							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
@@ -439,7 +439,7 @@ margin-left:15x;
 					</td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision: <%=version!=null ?version:"1.0" %></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision: <%=version!=null ?version:"-" %></td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
@@ -960,7 +960,7 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 			
 <div align="left">
 <h2 class="heading-colors" style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black !important;margin-left: 20px" class="heading-color">
-<br><%= maincount %>.2 backward Traceability Matrix
+<br><%= maincount %>.2 Backward Traceability Matrix
 </h2>
 </div>
 				<table class="border-black"

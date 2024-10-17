@@ -17,18 +17,22 @@
 <link href="${StyleCSS}" rel="stylesheet" />
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
-<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<%-- <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
-<link href="${contentCss}" rel="stylesheet" />
+<link href="${contentCss}" rel="stylesheet" /> --%>
 
 <spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
-
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+<spring:url value="/resources/font/summernote.woff" var="Summernotewoff" />
+<spring:url value="/resources/font/summernote.ttf" var="Summernotettf" />
+<spring:url value="/resources/font/summernote.eot" var="Summernoteeot" />
 
 <script src="${SummernoteJs}"></script>
-
 <link href="${SummernoteCss}" rel="stylesheet" />
+<script src="${Summernotettf}"></script>
+<script src="${Summernotettf}"></script>
+<script src="${Summernoteeot}"></script>
 	<%
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -98,10 +102,9 @@
 height: 300px;
 }
 .note-editable img {
-
 width:300px!important;
 height:300px!important;
-}
+} 
 </style>
 </head>
 <body>
@@ -785,11 +788,11 @@ height:300px!important;
     }
 	$(document).ready(function() {
 		 $('#summernote1').summernote({
-			  width: 900,   //don't use px
+			  width: 800,   //don't use px
 			
 			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 
 
-'Tahoma', 'Times New Roman', 'Verdana'],
+'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
 			 
 		      lineHeights: ['0.5']
 		
@@ -806,9 +809,9 @@ height:300px!important;
 	
 	$(document).ready(function() {
 		 $('#summernote2').summernote({
-			  width: 900,   //don't use px
+			  width: 800,   //don't use px
 			
-			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
 			 
 		      lineHeights: ['0.5']
 		
@@ -824,11 +827,11 @@ height:300px!important;
 	
 	$(document).ready(function() {
 		 $('#summernote3').summernote({
-			  width: 900,   //don't use px
+			  width: 800,   //don't use px
 			
 			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 
 
-'Tahoma', 'Times New Roman', 'Verdana'],
+'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
 			 
 		      lineHeights: ['0.5']
 		

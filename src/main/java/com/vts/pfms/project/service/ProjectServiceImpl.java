@@ -3588,4 +3588,9 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		{
 			return dao.editDocMember(idm);
 		}
+		
+		@Override
+		public long UpdateInitiationReqMembers(long ReqMemberId) throws Exception {
+			return dao.UpdateInitiationReqMembers(ReqMemberId);
+		}
 }

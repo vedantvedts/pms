@@ -1597,6 +1597,7 @@ function showDetailss(subId,Id){
 	$('#row2').hide();
 	$('#row3').hide();
 	$('#RemarksId').show();
+	console.log("subId:"+subId);
 	$.ajax({
 		url:'RequirementJsonValue.htm',
 		datatype:'json',

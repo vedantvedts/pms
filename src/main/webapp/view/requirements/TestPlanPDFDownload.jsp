@@ -138,7 +138,8 @@ td {
 	margin-bottom: 69px;
 	border: 2px solid black;
 	
-	 @ bottom-right { content : "Page " counter(page) " of " counter( pages);
+	 @ bottom-right {
+	content : "Page " counter(page) " of " counter( pages);
 	margin-bottom: 50px;
 	width:100px;;
 	font-size:10px;
@@ -201,7 +202,6 @@ span {
 .border-black {
 	border: 1px solid black;
 	border-collapse: collapse;
-	padding:5px;
 }
 
 .text-dark{
@@ -243,6 +243,7 @@ margin-left:8px;
 				</div>
    </div>
 <%
+
      /*  Doc Temp Starts */
    // Default font size
         if (DocTempAtrr != null && DocTempAtrr[0] != null) {
@@ -323,9 +324,9 @@ margin-left:8px;
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
 				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM TEST PLAN  </h4>
-				<h4 style="font-size: 15pt;font-family: <%= FontFamily %>;">For</h4>
+				<h4 style="font-size: 18pt;font-family: <%= FontFamily %>;">FOR</h4>
 				<h4 style="font-size: 18pt;font-family: <%= FontFamily %>;">
-					Project: <%=projectShortName %>
+					PROJECT <%=projectShortName %>
 					<br> <br>
 				</h4>
 			<%-- 	<h4 style="font-size: 18pt;font-family: <%= FontFamily %>;">
@@ -338,7 +339,7 @@ margin-left:8px;
 					No.</h4> --%>
 				<h4 style="font-family: <%= FontFamily %>;">
 					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
-					<%} else {%>-<%}%>
+					<%} else {%><%}%>
 				</h4>
 					<div align="center" >
 						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
@@ -370,7 +371,7 @@ margin-left:8px;
 					-
 					<%} %>
 				</h4>
-<div style="text-align: right;">
+<div style="text-align: right;  margin-right: 20px;">
     <span style="font-weight: bold;font-family: <%= FontFamily %>;"><%= month.toString().substring(0,3) %> <%= year %></span>
    </div>
 			</div>
@@ -459,16 +460,22 @@ margin-left:8px;
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">System Test Plan For <%=projectShortName %></span></td>
 					</tr>
 					<tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Test Plan Document</span></td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks">Restricted</span></td>
-					</tr>
-				    <tr >
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:</td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
+					<td class="text-darks" colspan="2"  style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">System Test Plan Document</span></td>
 					</tr>
 					<tr>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages: </td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
+					<td class="text-darks"  colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks">Restricted</span></td>
+					</tr>
+				    <tr >
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">4.&nbsp; Document Number:</td>
+					</tr>
+					<tr>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"><%=month.toString().substring(0,3) %></span> <%= year %></td>
+					</tr>
+					<tr>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">6.&nbsp; Number of Pages: ${totalPages}</td>
+					</tr>
+					<tr>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
@@ -515,7 +522,7 @@ margin-left:8px;
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision: <%=version!=null ? version:"-" %></td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
@@ -818,22 +825,22 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 			<thead>
 				<tr>
 					<th class="border-black"
-						style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
+						style="width: 10px !important; border: 1px solid black; border-collapse: collapse;">SN</th>
 					<th class="border-black"
-						style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">Item</th>
+						style="width: 200px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">Item</th>
 					<th class="border-black"
-						style="padding: 5px; border: 1px solid black; border-collapse: collapse;">Description</th>
+						style="width: 400px !important; padding: 5px; border: 1px solid black; border-collapse: collapse;">Description</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">1.</td>
+						style=" width: 10px !important; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">1.</td>
 					<th class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						style=" width: 100px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
 						class="text-dark">Spec ID</span></th>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						style=" width: 100px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
 						<% if(tDlist[19]!=null){
 						List<String>list = new ArrayList<>();
 						
@@ -852,42 +859,42 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 				</tr>
 				<tr>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">2.</td>
+						style="width: 10px !important; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">2.</td>
 					<th class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						style="width: 100px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
 						class="text-dark">ID</span></th>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						style="width: 100px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
 						<% if(tDlist[1]!=null){%> <%= tDlist[1] %> <% } %>
 					</td>
 				</tr>
 				<tr>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">3.</td>
+						style="width: 10px !important; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">3.</td>
 					<th class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						style="width: 100px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
 						class="text-dark">Name</span></th>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						style="width: 100px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
 						<%if(tDlist[2]!=null){%> <%= tDlist[2] %> <% } %>
 					</td>
 				</tr>
 				<tr>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">4.</td>
+						style="width: 10px !important; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">4.</td>
 					<th class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						style="width: 100px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
 						class="text-dark">Objective</span></th>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
+						style="width: 100px !important; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">
 						<%if(tDlist[3]!=null){%> <%= tDlist[3] %> <% } %>
 					</td>
 				</tr>
 				<tr>
 					<td class="border-black"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">5.</td>
+						style="width: 10px !important; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">5.</td>
 					<th class="border-black" colspan="2"
-						style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
+						style="padding: 5px ; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span
 						class="text-dark">Description</span></th>
 					
 				</tr>

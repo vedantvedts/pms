@@ -967,6 +967,8 @@ public class RequirementsController {
 			req.setAttribute("DocTempAttributes", DocTempAttributes);
 
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			
+			System.out.println("testPlanInitiationId#########"+testPlanInitiationId);
 
 			TestPlanInitiation testPlanInitiation = service.getTestPlanInitiationById(testPlanInitiationId);
 			if(testPlanInitiation!=null) {
@@ -2907,12 +2909,34 @@ public class RequirementsController {
 			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
 			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
 			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			int totalPages = pdfDocument.getNumberOfPages();
+			System.out.println("Total Number of Pages: " + totalPages); //
+			req.setAttribute("totalPages", totalPages);
+			
+			
 			pdfDocument.close();
 			pdf1.close();	       
 			pdfw.close();
+			
+			CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/requirements/TestPlanPDFDownload.jsp").forward(req, customResponse1);
+			String html1 = customResponse1.getOutput();
+			
+			ConverterProperties converterProperties1= new ConverterProperties();
+			FontProvider dfp1 = new DefaultFontProvider(true, true, true);
+			converterProperties1.setFontProvider(dfp1);
+			HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties1);
+			PdfWriter pdfw1=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf2=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument1 = new PdfDocument(pdf2, pdfw1);
+			pdfDocument1.close();
+			pdf2.close();	       
+			pdfw1.close();
+			
 			res.setContentType("application/pdf");
 			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 			File f=new File(path+"/"+filename+".pdf");
+
 			OutputStream out = res.getOutputStream();
 			FileInputStream in = new FileInputStream(f);
 			byte[] buffer = new byte[4096];

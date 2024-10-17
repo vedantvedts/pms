@@ -3770,7 +3770,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	//private static final String REQMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.initiationid =:initiationid AND c.isactive =1 ORDER BY b.desigid ASC";
-	private static final String REQMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.ReqInitiationId =:ReqInitiationId AND c.isactive =1 ORDER BY a.srno ASC";
+	private static final String REQMEMLIST = "SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid,c.ReqMemeberId FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.ReqInitiationId =:ReqInitiationId AND c.isactive =1 ORDER BY a.srno ASC";
 
 	@Override
 	public List<Object[]> reqMemberList(String reqInitiationId) throws Exception {
@@ -4142,6 +4142,16 @@ public class ProjectDaoImpl implements ProjectDao {
 			e.printStackTrace();
 			return 0 ;
 		}
+	}
+	
+	
+	@Override
+	public long UpdateInitiationReqMembers(long reqMemberId) throws Exception {
+		String sql = "UPDATE pfms_initiation_req_members SET Isactive='0' WHERE ReqMemeberId=:reqMemberId";
+		Query query = manager.createNativeQuery(sql);
+		query.setParameter("reqMemberId", reqMemberId);
+		long result=query.executeUpdate();
+		return result;
 	}
 	
 }

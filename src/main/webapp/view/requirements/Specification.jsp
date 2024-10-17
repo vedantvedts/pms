@@ -654,6 +654,23 @@ The product Tree shall comprises the complete physical products / subsystems of 
         }
     }
 
+    $(document).ready(function() {
+   	 $('#summernote').summernote({
+   		  width: 800,   //don't use px
+   		
+   		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
+   		 
+   	      lineHeights: ['0.5']
+   	
+   	 });
+
+   $('#summernote').summernote({
+       
+        tabsize: 5,
+        height: 1000
+      });
+      
+   });
     </script> 
 <Script>
 $(document).ready(function() {
@@ -679,24 +696,6 @@ function showSummaryModal(){
 function showTestConclusionModal() {
     $('#Conclusion').modal('show');
 }
-
-$(document).ready(function() {
-	 $('#summernote').summernote({
-		  width: 900,   //don't use px
-		
-		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-		 
-	      lineHeights: ['0.5']
-	
-	 });
-
-$('#summernote').summernote({
-     
-      tabsize: 5,
-      height: 1000
-    });
-    
-});
 
 $('#Cform').submit(function() {
     
