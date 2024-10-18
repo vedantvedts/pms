@@ -203,7 +203,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 				result=service.addData(lr);
 }
 		if(result!=0) {
-			redir.addAttribute("result", req.getParameter("Action")+"added Successfully");
+			redir.addAttribute("result", req.getParameter("Action")+" added Successfully");
 		}else {
 			redir.addAttribute("resultfail", req.getParameter("Action")+" UnSuccessful");
 		}
@@ -281,14 +281,16 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
             : "-";
         projectNameValueRun.setText(" " + projectNames); 
         projectNameValueRun.setBold(false);
-        projectNameValueRun.setFontSize(12);
+        projectNameValueRun.setFontSize(14);
+        projectNameValueRun.setBold(true);
+        projectNameValueRun.setColor("964B00");  
         projectNameValueRun.addBreak();
    if(projectattribute[18]!=null) {
      Path imgfile = Paths.get(env.getProperty("ApplicationFilesDrive"),LabCode, "ProjectSlide", projectattribute[18].toString());
   // Insert the image
      try (InputStream imageStream = Files.newInputStream(imgfile)) {
      	projectNameValueRun.addBreak(); // Add a line break before the image
-     	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
+     	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(450), Units.toEMU(300)); // width and height in EMU
      } catch (InvalidFormatException | IOException e) {
          e.printStackTrace(); // Handle the exception accordingly
      }
@@ -297,7 +299,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
     	// Insert the image
            try (InputStream imageStream = Files.newInputStream(imgfile)) {
            	projectNameValueRun.addBreak(); // Add a line break before the image
-           	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
+           	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(450), Units.toEMU(300)); // width and height in EMU
            } catch (InvalidFormatException | IOException e) {
                e.printStackTrace(); // Handle the exception accordingly
            }
@@ -317,7 +319,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 //        }
         projectNameValueRun.addBreak();
         
-        XWPFRun BriefValueRun = projectName.createRun();
+       XWPFRun BriefValueRun = projectName.createRun();
         String Brief = projectattribute[17] != null && !projectattribute[17].toString().trim().isEmpty() ? projectattribute[17].toString().replaceAll("<[^>]*>", "").trim() : "-";
         BriefValueRun.setText(Brief);  
         BriefValueRun.setBold(false);
@@ -521,7 +523,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
             mileParagraphs1.setText((++count)+". "+activity[1].toString());
             
            
-            mileParagraphs1.addBreak();
+            //mileParagraphs1.addBreak();
         	}
         }
         }
@@ -546,7 +548,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
          mileParagraphs1.setText((++count1)+". "+activity[1].toString());
    
         
-         mileParagraphs1.addBreak();
+        // mileParagraphs1.addBreak();
      	}
         }
      }
@@ -676,11 +678,11 @@ XWPFParagraph reviewHeld = document.createParagraph();
            
            
            
-           if (i < projectIds.length - 1) {
-               XWPFParagraph pageBreakParagraph = document.createParagraph();
-               XWPFRun pageBreakRun = pageBreakParagraph.createRun();
-               pageBreakRun.addBreak(BreakType.PAGE);
-           }
+//           if (i < projectIds.length - 1) {
+//               XWPFParagraph pageBreakParagraph = document.createParagraph();
+//               XWPFRun pageBreakRun = pageBreakParagraph.createRun();
+//               pageBreakRun.addBreak(BreakType.PAGE);
+//           }
         } 
            ByteArrayOutputStream out = new ByteArrayOutputStream();
          document.write(out);

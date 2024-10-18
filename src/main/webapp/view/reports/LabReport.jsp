@@ -6,7 +6,7 @@
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 
-<%@page import="java.util.List"%>
+<%@page import="java.util.List"%> 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -23,7 +23,7 @@
 <link href="${contentCss}" rel="stylesheet" />
 <style type="text/css">
  p{
-  text-align: justify;
+  text-align: justify; 
   text-justify: inter-word;
 }
 .form-check-input:checked ~ .form-check-label::before {
@@ -520,7 +520,7 @@ int nextYear=(int)request.getAttribute("nextYear");
 											<%} %>
 										
                 <%}else{ %>
-                  <p style="color: black;"> - </p>
+                  <p style="color: black;"><div style="color: red;font-weight: 600">To Upload it Please Enter in the Project Slide..</div> </p>
                   <%} %>
             </div>
             
@@ -530,7 +530,7 @@ int nextYear=(int)request.getAttribute("nextYear");
                 <p style="color: black;"><%if(ProjectEditData[17]!=null){ %>
                 <p style="color: black;">  <%=ProjectEditData[17] %></p>
                 <%}else{ %>
-                  <p style="color: black;"> - </p>
+                  <p style="color: black;"> <div style="color: red;font-weight: 600">Enter the Brief in Project Slide</div> </p>
                   <%} %>
             </div>
 
@@ -538,7 +538,7 @@ int nextYear=(int)request.getAttribute("nextYear");
             <div class="attribute mt-3">
                 <h5 style="font-weight: bold;">Total Cost</h5>
                 <p style="color: black;"><%if(ProjectEditData[6]!=null){ %>
-                <p style="color: black;">  <%=ProjectEditData[6] %><span style="font-weight: 800;color:red;">(in Lakhs)</span> </p>
+                <p style="color: black;">  <%=ProjectEditData[6] %><span style="font-weight: 800;color:black;">(in Lakhs)</span> </p>
                 <%}else{ %>
                   <p style="color: black;"> - </p>
                   <%} %></p>
@@ -661,9 +661,10 @@ int nextYear=(int)request.getAttribute("nextYear");
                 <div class="form-group">
                     <textarea class="form-control" name="SpinOffData" id="ckeditor"  rows="5" cols="50" maxlength="5" placeholder="Enter Spin-Off details here..."><%if(editorData!=null && editorData[2]!=null){ %> <%=editorData[2] %>  <%}%></textarea> 
                 </div>
-                <button type="submit" class="btn btn-primary" onclick="return confirm('Are You Sure To Submit ?');"> Submit</button>
+                <div align="center">
+                <button type="submit" style="align-items: center;"class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit ?');"> Submit</button>
                 <input type="hidden" name="projectId" value="<%=Project%>">
-                <input type="hidden" name="Action" value="Spinoff">
+                <input type="hidden" name="Action" value="Spinoff"></div>
             </form>
         </div>
     </div>
@@ -682,10 +683,10 @@ int nextYear=(int)request.getAttribute("nextYear");
                  <textarea id="Editor1" style="display:none;" class="form-control" name="NominatedDetails"   rows="5" cols="50" maxlength="5" placeholder="Enter Details of LSI/DCPP/PA (If Nominated)..."><%if(editorData!=null && editorData[3]!=null){ %> <%=editorData[3] %> <%}else{%>  <%} %></textarea>
  
                 </div>
-                
-                <button type="submit" class="btn btn-primary" onclick="return confirm('Are You Sure To Submit ?');">Submit</button>
+                <div align="center">
+                <button type="submit" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit ?');">Submit</button>
                 <input type="hidden" name="projectId" value="<%=Project%>">
-                <input type="hidden" name="Action" value="Nominated">
+                <input type="hidden" name="Action" value="Details of LSI/DCPP/PA"></div>
             </form>
         </div>
     </div>
@@ -751,9 +752,11 @@ int nextYear=(int)request.getAttribute("nextYear");
         	<form action="LabReportDownload.htm" method="post">
         	<input type="hidden" name="addFav" id="addFavvalue">
         	<input type="hidden" name="projectid" id="projects">
-        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />   
+        	<div align="center">  
         	<button type="submit" class="btn btn-sm submit" onclick="return DashFavAdd()">SUBMIT</button>
-        	<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">CLOSE</button>
+        	<button type="button" class="btn btn-danger btn-sm delete" data-dismiss="modal">CLOSE</button>
+        	</div>
         	</form>
         
       </div>
@@ -770,6 +773,9 @@ int nextYear=(int)request.getAttribute("nextYear");
 	<script type="text/javascript">			
 	function showDashboardProjectModal(){
 	$('#DashboardProjectModal').modal('show');
+	
+	// Select the "Main Project" checkbox and trigger the change event to select all projects
+    $('#mainProject').prop('checked', true).trigger('change');
 }
 	
 	function DashFavAdd(){
