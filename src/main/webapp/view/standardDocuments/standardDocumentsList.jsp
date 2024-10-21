@@ -113,7 +113,8 @@ if(ses1!=null){
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="control-label">Description<span class="mandatory" style="color: red; font-weight: normal;">*</span></label>
-								<input type="text" class="form-control form-control" type="text" id="Description" name="Description" style="font-size: 15px;" required="required" />
+								<textarea class="form-control form-control" rows="3" cols="50" id="Description" name="Description" required="required" maxlength="2000"></textarea>
+								<!-- <input type="text" class="form-control form-control" type="text" id="Description" name="Description" style="font-size: 15px;" required="required" /> -->
 							</div>
 						</div>
 				  </div><br><br>
