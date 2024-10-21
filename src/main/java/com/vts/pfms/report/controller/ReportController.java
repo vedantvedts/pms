@@ -1,7 +1,5 @@
 package com.vts.pfms.report.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -10,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -22,20 +19,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.BreakType;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBorder;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,18 +43,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Element;
 import com.itextpdf.io.source.ByteArrayOutputStream;
 import com.itextpdf.styledxmlparser.jsoup.Jsoup;
 import com.itextpdf.styledxmlparser.jsoup.nodes.Document;
 import com.itextpdf.styledxmlparser.jsoup.select.Elements;
 import com.vts.pfms.FormatConverter;
-import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.report.model.LabReport;
 import com.vts.pfms.report.service.ReportService;
-import com.vts.pfms.report.service.ReportServiceImpl;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -683,7 +674,43 @@ XWPFParagraph reviewHeld = document.createParagraph();
 //               XWPFRun pageBreakRun = pageBreakParagraph.createRun();
 //               pageBreakRun.addBreak(BreakType.PAGE);
 //           }
-        } 
+           
+           if (i < projectIds.length - 1) {
+       	    // Create a new paragraph for the horizontal line
+       	    XWPFParagraph horizontalLineParagraph = document.createParagraph();
+
+       	    // Get the CTP object (the low-level XML object representing the paragraph)
+       	    CTP ctp = horizontalLineParagraph.getCTP();
+
+       	    // Ensure paragraph properties (PPr) are initialized
+       	    if (ctp.getPPr() == null) {
+       	        ctp.addNewPPr();  // Initialize PPr if it's null
+       	    }
+
+       	    // Ensure the border properties (PBdr) are initialized
+       	    if (ctp.getPPr().getPBdr() == null) {
+       	        ctp.getPPr().addNewPBdr();  // Initialize PBdr if it's null
+       	    }
+
+       	    // Get the CTBorder object for the bottom border of the paragraph
+       	    CTBorder border = ctp.getPPr().getPBdr().addNewBottom();
+
+       	    // Set the thickness (24 = 12pt, the unit is 1/8 of a point)
+       	    border.setSz(BigInteger.valueOf(24));  // 24 half-points = 12pt
+
+       	    // Set the color of the line (hex color code)
+       	    border.setColor("2f7251");  // Red color (you can change this to any hex color code)
+
+       	    // Set the border style (single solid line)
+       	    border.setVal(STBorder.SINGLE);
+
+       	    // Optionally, adjust paragraph spacing
+       	    horizontalLineParagraph.setSpacingAfter(200);  // Adjust spacing after the line
+       	}
+
+
+       }
+         
            ByteArrayOutputStream out = new ByteArrayOutputStream();
          document.write(out);
         document.close();

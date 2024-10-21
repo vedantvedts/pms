@@ -426,27 +426,24 @@ int nextYear=(int)request.getAttribute("nextYear");
                    </div></center>
                     <%} %>
 
-    <br />
-<div class="container-fluid">
+    <br/>
+    
+     <div class="container-fluid">
 		<div class="row" id="main">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="row card-header" style="">
-			   			<div class="col-md-6"  style="margin-top: -8px;">
-							<h3>Lab Report</h3>
+					<div class="row card-header" style="height:auto;padding:4px;">
+			   			<div class="col-sm-12 col-md-5">
+							<h3 style="margin-bottom:0px;">Lab Report</h3>
 						</div>	  
-						<div class="col-md-5" style="float: right;">
+						<div class="col-sm-12 col-md-5" style="float: right;">
+						   <form method="get" action="LabReports.htm" id="projectchange">
 							
-					   
-						<form method="get" action="LabReports.htm" id="projectchange"  class="form-inline">
-							
-								 <div class="col-md-3">
-                            		<label class="control-label"style="font-size: 17px"><b>Project Name :</b></label>
-                            		</div>
-										<div class="col-md-4" style="margin-top: -10px;">
-										
+							<div class="row" style="justify-content: flex-end;">
+								<div class="form-inline" style="margin-bottom: 4px;">
+	                            		<label class="control-label"style="font-size: 17px"><b>Project Name :&nbsp;</b></label>
 										<select class="form-control  selectdee items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
-											<option disabled="true"  selected value="">Choose...</option>
+											<option disabled="disabled"  selected value="">Choose...</option>
 											<%for(Object[] obj : proList){ 
 												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 											%>
@@ -454,42 +451,31 @@ int nextYear=(int)request.getAttribute("nextYear");
 														selected="selected" <%}%>><%=obj[4] +projectshortName%></option>
 											<%} %>
 										</select>
-										</div>
-									
-									
-									
-										
-										 <button  type="submit" class="btn btn-sm " id="btn-export" style="border: 0 ; margin-left: 170px;margin-top: -15px;size: 25px" formmethod="GET" formaction="LabReportDownload.htm" formtarget="_blank">
-											<!-- <i class="fa fa-file-word-o" aria-hidden="true"></i> -->
-											<i class="fa fa-file-word-o" style="font-size:17px;color: blue;" title="Lab Report New Word Download"></i>
-                                        </button> 
-                                        &nbsp;  &nbsp;  &nbsp;
-                                        <button data-toggle="tooltip" onclick="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" 
-                                        style="cursor: pointer;" type="button" data-placement="right" title="" data-original-title="Select DashBoard Projects">
-                                        <img src="view/images/dashboard.png" style="width: 25px;"></button>
+							   </div>
+							   
+							   <button  type="submit" class="btn btn-sm " id="btn-export" style="border: 0 ; margin-left: 30px;size: 25px;background-color: transparent;" formmethod="GET" formaction="LabReportDownload.htm" formtarget="_blank">
+							      <!-- <i class="fa fa-file-word-o" aria-hidden="true"></i> -->
+							      <i class="fa fa-file-word-o" style="font-size:17px;color: blue;" title="Lab Report New Word Download"></i>
+                              </button> 
+                                    &nbsp;  &nbsp;  &nbsp;
+                              <button data-toggle="tooltip" onclick="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" 
+                               style="cursor: pointer;" type="button" data-placement="right" title="" data-original-title="Select DashBoard Projects">
+                               <img src="view/images/dashboard.png" style="width: 25px;">
+                              </button>
+							   
+							</div>		
                                         
+                         <input type="hidden" name="currentyr" value="<%=currentYear%>">
+                         <input type="hidden" name="nextyr" value="<%=nextYear%>">
+                         <input type="hidden" name="prjLabCode" value="<%=projectLabCode%>">
                                         
-                                        <input type="hidden" name="currentyr" value="<%=currentYear%>">
-                                        <input type="hidden" name="nextyr" value="<%=nextYear%>">
-                                          <input type="hidden" name="prjLabCode" value="<%=projectLabCode%>">
-                                        
-                                        
-										
-							
-									
-									
-									
-	                         
-								
-							
-							
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					</form>				
-			</div>
-				</div>
-				</div>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					 </form>				
+			       </div>
+			     </div>
+		       </div>
 				
-				<div class="container mt-4">
+   <div class="container mt-4">
     <!-- Section 1: Project Attributes -->
     <div class="section">
         <!-- Heading -->
@@ -662,9 +648,10 @@ int nextYear=(int)request.getAttribute("nextYear");
                     <textarea class="form-control" name="SpinOffData" id="ckeditor"  rows="5" cols="50" maxlength="5" placeholder="Enter Spin-Off details here..."><%if(editorData!=null && editorData[2]!=null){ %> <%=editorData[2] %>  <%}%></textarea> 
                 </div>
                 <div align="center">
-                <button type="submit" style="align-items: center;"class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit ?');"> Submit</button>
+                <button type="submit" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit ?');"> Submit</button>
                 <input type="hidden" name="projectId" value="<%=Project%>">
-                <input type="hidden" name="Action" value="Spinoff"></div>
+                <input type="hidden" name="Action" value="Spinoff">
+                </div>
             </form>
         </div>
     </div>
@@ -686,7 +673,8 @@ int nextYear=(int)request.getAttribute("nextYear");
                 <div align="center">
                 <button type="submit" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit ?');">Submit</button>
                 <input type="hidden" name="projectId" value="<%=Project%>">
-                <input type="hidden" name="Action" value="Details of LSI/DCPP/PA"></div>
+                <input type="hidden" name="Action" value="LSI/DCPP/PA">
+                </div>
             </form>
         </div>
     </div>
@@ -710,7 +698,10 @@ int nextYear=(int)request.getAttribute("nextYear");
         </div>
     </div> --%>
 
-</div>
+   </div>
+  </div>
+ </div>
+ </div>
 
 
 <!-- modal  -->
@@ -752,11 +743,9 @@ int nextYear=(int)request.getAttribute("nextYear");
         	<form action="LabReportDownload.htm" method="post">
         	<input type="hidden" name="addFav" id="addFavvalue">
         	<input type="hidden" name="projectid" id="projects">
-        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />   
-        	<div align="center">  
+        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
         	<button type="submit" class="btn btn-sm submit" onclick="return DashFavAdd()">SUBMIT</button>
         	<button type="button" class="btn btn-danger btn-sm delete" data-dismiss="modal">CLOSE</button>
-        	</div>
         	</form>
         
       </div>
@@ -769,6 +758,9 @@ int nextYear=(int)request.getAttribute("nextYear");
     </div>
   </div>
 </div>
+	
+	
+	
 	
 	<script type="text/javascript">			
 	function showDashboardProjectModal(){
