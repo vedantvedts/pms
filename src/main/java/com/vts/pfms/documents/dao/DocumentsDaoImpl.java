@@ -40,7 +40,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	}
 	
 	
-	private static final String STANDARDDOCUMENTSLIST="SELECT a.StandardDocumentId,a.DocumentName,a.Description,a.FilePath FROM pfms_standard_documents a WHERE a.IsActive='1'";
+	private static final String STANDARDDOCUMENTSLIST="SELECT a.StandardDocumentId,a.DocumentName,a.Description,a.FilePath,a.IsActive FROM pfms_standard_documents a ORDER BY a.IsActive DESC";
 	@Override
 	public List<Object[]> standardDocumentsList() throws Exception {
 		try {

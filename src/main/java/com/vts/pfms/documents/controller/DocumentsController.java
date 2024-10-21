@@ -210,9 +210,9 @@ public class DocumentsController {
 			StandardDocumentDelete=service.StandardDocumentDelete(Long.parseLong(SelStandardDocumentId));
 			}
 			if(StandardDocumentDelete>0) {
-				    redir.addAttribute("result", "Attachment Deleted Successfully..&#128077;");
+				    redir.addAttribute("result", "Document InActivated Successfully..&#128077;");
 			}else {
-					redir.addAttribute("resultFail", "Attachment Deleted UnSuccessful..&#128078;");
+					redir.addAttribute("resultFail", "Document InActivated UnSuccessful..&#128078;");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

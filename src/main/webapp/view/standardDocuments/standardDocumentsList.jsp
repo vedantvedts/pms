@@ -54,7 +54,7 @@ if(ses1!=null){
 				         <% if(stnadardDocumentsList!=null && stnadardDocumentsList.size()>0){
 				         for(Object[] obj:stnadardDocumentsList){ %>
 	        				 <tr>
-					             <td align="center"><input type="radio" name="DocumentId" value=<%=obj[0]%>  ></td> 
+					             <td align="center"><input type="radio" name="DocumentId" value=<%=obj[0]%>  <%if(obj[4]!=null && Long.parseLong(obj[4].toString())==0){ %>disabled="disabled"<%} %>></td> 
 					             <td><%=obj[1]%></td> 
 					             <td><%=obj[2] %></td>
 					             <td align="center">
@@ -76,7 +76,7 @@ if(ses1!=null){
 		 	<div align="center">
 		 		<button type="button" class="btn btn-primary btn-sm add" onclick="OpenDocumentsAdd()" value="add">ADD</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 				<button type="button" class="btn btn-warning btn-sm edit" name="sub" value="edit" onclick="Edit()"  >EDIT</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		 		<button type="button" class="btn btn-danger btn-sm delete" name="sub" value="delete"  onclick="Delete()">DELETE</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		 		<button type="button" class="btn btn-danger btn-sm delete" name="sub" value="delete"  onclick="Delete()">InActive</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 		 	</div>
 		 </form>
 		 
@@ -292,7 +292,7 @@ function Delete() {
     } else {
     	 var selectedDocumentId = fields[0].value;
     	  $('#SelStandardDocumentId').val(selectedDocumentId);
-    	  var confirmation = confirm("Are you sure you want to delete this document?");
+    	  var confirmation = confirm("Are you sure you want to InActive this document?");
           if (confirmation) {
               document.getElementById('DeleteForm').submit();
           } else {
