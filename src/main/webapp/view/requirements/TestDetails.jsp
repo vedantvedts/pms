@@ -1910,8 +1910,37 @@ $('#EditorPersonnelResources').summernote({
 
 $('#descriptioneditor').summernote({
    
-    tabsize: 5,
-    height: 200
+	 toolbar: [
+         // Adding default toolbar buttons plus custom superscript and subscript
+         ['style', ['bold', 'italic', 'underline', 'clear']],
+         ['font', ['strikethrough', 'superscript', 'subscript']],
+         ['insert', ['picture', 'table']],
+         ['para', ['ul', 'ol', 'paragraph']],
+         ['height', ['height']]
+     ],
+     buttons: {
+         // Custom superscript and subscript buttons
+         superscript: function() {
+             return $.summernote.ui.button({
+                 contents: '<sup>S</sup>',
+                 tooltip: 'Superscript',
+                 click: function() {
+                     document.execCommand('superscript');
+                 }
+             }).render();
+         },
+         subscript: function() {
+             return $.summernote.ui.button({
+                 contents: '<sub>S</sub>',
+                 tooltip: 'Subscript',
+                 click: function() {
+                     document.execCommand('subscript');
+                 }
+             }).render();
+         }
+     },
+     height: 200
+
   });
 /* 	 $('#descriptioneditoredit').summernote({
 		  width: 600,   //don't use px

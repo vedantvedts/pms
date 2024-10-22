@@ -360,7 +360,7 @@ keyframes blinker { 20% {
 
 .note-editing-area{
 
-   height:350px;
+
 }
 </style>
 </head>
@@ -469,7 +469,7 @@ String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 					<%if(specsListSub!=null && specsListSub.size()>0) {
 					int subcount=0;
 					%>
-					<div class="subdivs" id="div<%=obj[0]%>" style="">
+					<div class="subdivs" id="div<%=obj[0]%>" style="display:none;">
 					<%for(Object[]obj1:specsListSub) {%>
 					<div style="display: flex; align-items: center; margin-top: 8px; width: 90%">
 					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj1[0].toString() %>)" id="btn<%=obj1[0].toString()%>"><%=count+"."+(++subcount)+". "+obj1[1].toString() %> </button>
@@ -537,9 +537,10 @@ String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 								</div>
 								<div class="col-md-9" id="Editor">
 			   			
-   								<textarea name="description" style="display: none;"  id="ConclusionDetails"></textarea>	
+
 <!-- 								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
  -->								</div>
+    								<textarea name="description" style="display: none;"  id="ConclusionDetails"></textarea>	
 								</div>
 								<div class="row mt-2">
 								 
@@ -836,6 +837,8 @@ var editvalue="add";
 	 $('#specsDiv').hide();
 	 $('#Editor').summernote('code', "");
 	 editvalue="add";
+	 $('.subdivs').hide();
+	 $('#div'+a).show();
  }
  
  
@@ -895,23 +898,54 @@ var editvalue="add";
 		}
 	});
 	
-	$(document).ready(function() {
-		  $('#Editor').summernote({
+	
+	/* 	  $('#Editor').summernote({
 			  width: 800,   //don't use px
 			
 			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
 			 
 		      lineHeights: ['0.5']
 		
-		 }); 
+		 });  */
 
 	$('#Editor').summernote({
-	     
-	      tabsize: 5,
-	      height: 400
+		width: 800,
+	     toolbar: [
+             // Adding font-size, font-family, and font-color options along with other features
+             ['style', ['bold', 'italic', 'underline', 'clear']],
+             ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
+             ['insert', ['picture', 'table']],  // 'picture' for image upload, 'table' for table insertion
+             ['para', ['ul', 'ol', 'paragraph']],
+             ['height', ['height']]
+         ],
+         fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],  // Font size options
+         fontNames: ['Arial', 'Courier New', 'Helvetica', 'Times New Roman', 'Verdana'],  // Font family options
+         buttons: {
+             // Custom superscript and subscript buttons
+             superscript: function() {
+                 return $.summernote.ui.button({
+                     contents: '<sup>S</sup>',
+                     tooltip: 'Superscript',
+                     click: function() {
+                         document.execCommand('superscript');
+                     }
+                 }).render();
+             },
+             subscript: function() {
+                 return $.summernote.ui.button({
+                     contents: '<sub>S</sub>',
+                     tooltip: 'Subscript',
+                     click: function() {
+                         document.execCommand('subscript');
+                     }
+                 }).render();
+             }
+         },
+ 
+	   	height:300
 	    });
 	    
-	});
+
 	
 	
 	

@@ -419,10 +419,10 @@ String labcode= (String)session.getAttribute("labcode");
 											</a> <a class="dropdown-item" href="AuditStampingView.htm"> <img
 												src="view/images/stamping.png" /> &nbsp;&nbsp;
 												Audit Stamping
-											</a> <a class="dropdown-item" href="AuditPatchesView.htm"> <img
+											</a> <!-- <a class="dropdown-item" href="AuditPatchesView.htm"> <img
 												src="view/images/updatepatch.jpg" style="width: 35px;height:30px"/> &nbsp;&nbsp;
 												Audit Patches
-											</a><a class="dropdown-item" href="RunBatchFile.htm"> <img
+											</a> --><a class="dropdown-item" href="RunBatchFile.htm"> <img
 												src="view/images/backup.png"
 												style="height: 13%; width: 16%;" /> &nbsp;&nbsp;DB Back-up
 											</a> <a class="dropdown-item" href="DelegationFlow.htm"> <img

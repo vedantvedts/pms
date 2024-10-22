@@ -270,7 +270,17 @@ border:1px solid red;
 margin-right:2px;
 } */
 .specdiv table{
-margin-top:5px;
+margin-top:10px;
+padding:10px;
+width:600px!important;
+
+}
+
+.specdiv table td{
+
+padding:10px;
+
+
 }
 .specdiv table td p{
 

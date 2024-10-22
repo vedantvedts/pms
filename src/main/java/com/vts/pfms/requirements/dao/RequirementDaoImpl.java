@@ -38,6 +38,7 @@ import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
+import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.model.IgiDocumentSummary;
 
 @Transactional
@@ -1339,6 +1340,45 @@ public class RequirementDaoImpl implements RequirementDao {
 		manager.persist(ib);
 		manager.flush();
 		return ib.getParameterId();
+	}
+	
+	
+	private static final String VERIFYMASTERLIST="SELECT VerificationMasterId,VerificationName FROM pfms_initiation_verification_master WHERE IsActive='1'";
+	@Override
+	public List<Object[]> getVerificationListMaster() throws Exception {
+		Query query = manager.createNativeQuery(VERIFYMASTERLIST);
+		return (List<Object[]>)query.getResultList();
+	}
+
+	@Override
+	public long addVerificationData(List<VerificationData> verifyList) throws Exception {
+		
+		for(VerificationData obj : verifyList) {
+			manager.persist(obj);
+			manager.flush();
+		}
+		return 1l;
+	}
+		
+	private static final String VERIFYDATALIST="SELECT a.VerificationDataId,b.VerificationName,a.TypeofTest,a.Purpose,a.VerificationMasterId FROM pfms_initiation_verification_data a,pfms_initiation_verification_master b WHERE a.VerificationMasterId=b.VerificationMasterId AND a.IsActive='1' AND a.VerificationMasterId=:verificationId ORDER BY a.VerificationDataId ";
+	@Override
+	public List<Object[]> getverificationDataList(String verificationId) throws Exception {
+		Query query = manager.createNativeQuery(VERIFYDATALIST);
+		query.setParameter("verificationId", verificationId);
+	
+		return (List<Object[]>)query.getResultList();
+	}
+
+	private static final String VERIFYDATAEDIT="UPDATE pfms_initiation_verification_data SET TypeofTest=:testType,Purpose=:purpose,ModifiedBy=:modifiedBy,ModifiedDate=:modifiedDate WHERE VerificationDataId=:verificationDataId";
+	@Override
+	public long verificationDataEdit(VerificationData verifiData) throws Exception {
+		Query query = manager.createNativeQuery(VERIFYDATAEDIT);
+		query.setParameter("verificationDataId", verifiData.getVerificationDataId());
+		query.setParameter("testType", verifiData.getTypeofTest());
+		query.setParameter("purpose", verifiData.getPurpose());
+		query.setParameter("modifiedBy", verifiData.getModifiedBy());
+		query.setParameter("modifiedDate", verifiData.getModifiedDate());
+		return query.executeUpdate();
 	}
 	
 }

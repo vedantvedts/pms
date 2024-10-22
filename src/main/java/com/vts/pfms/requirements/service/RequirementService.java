@@ -26,6 +26,7 @@ import com.vts.pfms.requirements.model.TestDetails;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestTools;
+import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.model.IgiDocumentSummary;
 import com.vts.pfms.requirements.model.PfmsIgiDocument;
 
@@ -201,5 +202,10 @@ public interface RequirementService {
 	public List<Object[]> getAllBasicParameters()throws Exception;
 
 	public long AddParameters(IgiBasicParameters ib)throws Exception;
+	
+	public List<Object[]> getVerificationListMaster()throws Exception;
+	public long addVerificationData(List<VerificationData> verifyList)throws Exception;
+	public List<Object[]>getverificationDataList(String verificationId)throws Exception;
+	public long verificationDataEdit(VerificationData verifiData)throws Exception;
 
 }

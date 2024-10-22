@@ -60,6 +60,7 @@ import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
+import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.utils.PMSLogoUtil;
 import com.vts.pfms.requirements.model.IgiDocumentSummary;
 
@@ -1454,5 +1455,25 @@ public class RequirementServiceImpl implements RequirementService {
 	@Override
 	public long AddParameters(IgiBasicParameters ib) throws Exception {
 		return dao.AddParameters(ib);
+	}
+	
+	@Override
+	public List<Object[]> getVerificationListMaster() throws Exception {
+		return dao.getVerificationListMaster();
+	}
+
+	@Override
+	public long addVerificationData(List<VerificationData> verifyList) throws Exception {
+		return dao.addVerificationData(verifyList);
+	}
+	
+	@Override
+	public List<Object[]> getverificationDataList(String verificationId) throws Exception {
+		return dao.getverificationDataList(verificationId);
+	}
+	
+	@Override
+	public long verificationDataEdit(VerificationData verifiData) throws Exception {
+		return dao.verificationDataEdit(verifiData);
 	}
 }

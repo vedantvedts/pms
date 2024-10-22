@@ -79,6 +79,7 @@ import com.vts.pfms.requirements.model.TestDetails;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestTools;
+import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.PMSLogoUtil;
 @Controller
@@ -3959,4 +3960,149 @@ public class RequirementsController {
 		
 		return null;
 	}
+	
+	
+	@RequestMapping(value = "RequirementVerifyMaster.htm" , method= {RequestMethod.POST,RequestMethod.GET})
+	public String RequirementVerifyMaster(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside RequirementVerifyMaster.htm"+UserId);
+		try {
+			String initiationid= req.getParameter("initiationId");
+			String ProjectId=req.getParameter("projectId");
+			String projectType=req.getParameter("projectType");
+			String verificationId=req.getParameter("verificationId");
+			
+			System.out.println("verificationId*************"+verificationId);
+			System.out.println("ProjectId&&&&&&&&&&&&&"+ProjectId);
+			
+			if(initiationid==null) {
+				initiationid="0";
+			}
+			if(ProjectId==null) {
+				ProjectId="0";
+			}
+			if(verificationId==null) {
+				verificationId="1";
+			}
+			
+			req.setAttribute("verificationId", verificationId);
+			req.setAttribute("initiationid", initiationid);
+			req.setAttribute("projectId", ProjectId);
+			req.setAttribute("project", req.getParameter("project"));
+			req.setAttribute("reqInitiationId", req.getParameter("reqInitiationId"));
+			req.setAttribute("projectType", projectType);
+			req.setAttribute("VerifiyMasterList", service.getVerificationListMaster());
+			req.setAttribute("verificationDataList", service.getverificationDataList(verificationId));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "requirements/VerificationDocMaster";
+	}
+	
+	
+	@RequestMapping(value = "RequirementVerifyDataAdd.htm" , method= {RequestMethod.POST,RequestMethod.GET})
+	public String RequirementVerifyDataAdd(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside RequirementVerifyDataAdd.htm"+UserId);
+		try {
+			String initiationid= req.getParameter("initiationId");
+			String ProjectId=req.getParameter("projectId");
+			String projectType=req.getParameter("projectType");
+			String[] TestType = req.getParameterValues("TestType");
+			String[] Purpose = req.getParameterValues("Purpose");
+			String verificationId = req.getParameter("verificationId");
+			
+			if(initiationid==null) {
+				initiationid="0";
+			}
+			if(ProjectId==null) {
+				ProjectId="0";
+			}
+			
+			List<VerificationData> verifyList = new ArrayList<VerificationData>();
+			
+			if(TestType!=null && TestType.length>0) {
+				for(int i=0;i<TestType.length;i++) {
+					
+				VerificationData verifiData = new VerificationData();
+				verifiData.setVerificationMasterId(Long.parseLong(verificationId));
+		
+				verifiData.setTypeofTest(TestType[i]);
+				verifiData.setPurpose(Purpose[i]);
+				verifiData.setCreatedBy(UserId);
+				verifiData.setCreatedDate(sdf1.format(new Date()));
+				verifiData.setIsActive(1);
+				verifyList.add(verifiData);
+				}
+			}
+			
+			long count=service.addVerificationData(verifyList);
+			
+			if(count>0) {
+				redir.addAttribute("result","Verification Data Added Successfully");
+			}else {
+				redir.addAttribute("resultfail","Verification Data Add Unsuccessful");
+			}
+			
+			redir.addAttribute("verificationId", verificationId);
+			redir.addAttribute("initiationId", initiationid);
+			redir.addAttribute("projectId", ProjectId);
+			redir.addAttribute("project", req.getParameter("project"));
+			redir.addAttribute("reqInitiationId", req.getParameter("reqInitiationId"));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/RequirementVerifyMaster.htm";
+	}	
+	
+	
+	@RequestMapping(value = "RequirementVerifyDataEdit.htm" , method= {RequestMethod.POST,RequestMethod.GET})
+	public String RequirementVerifyDataEdit(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside RequirementVerifyDataEdit.htm"+UserId);
+		try {
+			String initiationid= req.getParameter("initiationId");
+			String ProjectId=req.getParameter("projectId");
+			String projectType=req.getParameter("projectType");
+			String verificationDataId = req.getParameter("verificationDataId");
+			String TestType = req.getParameter("TestType"+verificationDataId);
+			String Purpose = req.getParameter("Purpose"+verificationDataId);
+			String verificationId = req.getParameter("verificationMasterId");
+		
+			if(initiationid==null) {
+				initiationid="0";
+			}
+			if(ProjectId==null) {
+				ProjectId="0";
+			}
+			
+				VerificationData verifiData = new VerificationData();
+				verifiData.setVerificationDataId(Long.parseLong(verificationDataId));
+				verifiData.setVerificationMasterId(Long.parseLong(verificationId));
+				verifiData.setTypeofTest(TestType);
+				verifiData.setPurpose(Purpose);
+				verifiData.setModifiedBy(UserId);
+				verifiData.setModifiedDate(sdf1.format(new Date()));
+		
+			long count=service.verificationDataEdit(verifiData);
+			
+			if(count>0) {
+				redir.addAttribute("result","Verification Data Edited Successfully");
+			}else {
+				redir.addAttribute("resultfail","Verification Data Edit Unsuccessful");
+			}
+			
+			redir.addAttribute("verificationId", verificationId);
+			redir.addAttribute("initiationId", initiationid);
+			redir.addAttribute("projectId", ProjectId);
+			redir.addAttribute("project", req.getParameter("project"));
+			redir.addAttribute("reqInitiationId", req.getParameter("reqInitiationId"));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/RequirementVerifyMaster.htm";
+	}	
 }

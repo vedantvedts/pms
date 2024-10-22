@@ -15,10 +15,10 @@
 <meta charset="ISO-8859-1">
 <title>PMS</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<%-- <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
-<link href="${contentCss}" rel="stylesheet" />
+<link href="${contentCss}" rel="stylesheet" /> --%>
 
 <spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
@@ -399,6 +399,18 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 			</div>
 		</div>
 	<%} %>
+	
+		<!-- Verification Master -->
+					<form action="RequirementVerifyMaster.htm" method="GET" id="myStatus1">
+					<input type="hidden" name="project" value="<%=project%>">
+					<input type="hidden" name="projectId" value=<%=projectId %>>
+					<input type="hidden" name="initiationId" value=<%=initiationId %>>
+					<input type="hidden" name="reqInitiationId" value=<%=reqInitiationId %>>
+					<input type="hidden" name="productTreeMainId" value=<%=productTreeMainId %>>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button type="submit" id="verificationMaster" style="display:none"></button>
+					</form>
+					<!--  -->
 	<div id="reqmain" class="card-slider">
 
 		<div class="container-fluid" style="" id="main">
@@ -423,6 +435,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										type="button" onclick='showdata()' data-toggle="tooltip"
 										data-placement="top" data-original-data=""
 										title="Link REQUIREMENTS">ADD HEADINGS</button>
+								&nbsp;&nbsp;<span class="badge badge-light  sidebar pt-2 pb-2" style="cursor:pointer;" onclick="showVerificationMaster()">&nbsp;&nbsp;Verification Master</span>
 								<%if(!initiationId.equalsIgnoreCase("0")){ %>
 								<form action="#">
 										<input type="hidden" name="project" value="<%=project%>">
@@ -1891,8 +1904,9 @@ $( document ).ready(function() {
 	showdata()
 });
 <%}%>
-
-$(document).ready(function() {
+// uncomment this one if needed
+//start
+/* $(document).ready(function() {
 	 $('#Editor').summernote({
 		  width: 900,   //don't use px
 		
@@ -1922,7 +1936,81 @@ $('#Editor1').summernote({
      height: 1000
    });
    
-});
+}); */
+//end
+
+	$('#Editor').summernote({
+		width: 900,
+	     toolbar: [
+             // Adding font-size, font-family, and font-color options along with other features
+             ['style', ['bold', 'italic', 'underline', 'clear']],
+             ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
+             ['insert', ['picture', 'table']],  // 'picture' for image upload, 'table' for table insertion
+             ['para', ['ul', 'ol', 'paragraph']],
+             ['height', ['height']]
+         ],
+         fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],  // Font size options
+         fontNames: ['Arial', 'Courier New', 'Helvetica', 'Times New Roman', 'Verdana'],  // Font family options
+         buttons: {
+             // Custom superscript and subscript buttons
+             superscript: function() {
+                 return $.summernote.ui.button({
+                     contents: '<sup>S</sup>',
+                     tooltip: 'Superscript',
+                     click: function() {
+                         document.execCommand('superscript');
+                     }
+                 }).render();
+             },
+             subscript: function() {
+                 return $.summernote.ui.button({
+                     contents: '<sub>S</sub>',
+                     tooltip: 'Subscript',
+                     click: function() {
+                         document.execCommand('subscript');
+                     }
+                 }).render();
+             }
+         },
+ 
+	   	height:300
+	    });
+$('#Editor1').summernote({
+	width: 900,
+     toolbar: [
+         // Adding font-size, font-family, and font-color options along with other features
+         ['style', ['bold', 'italic', 'underline', 'clear']],
+         ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
+         ['insert', ['picture', 'table']],  // 'picture' for image upload, 'table' for table insertion
+         ['para', ['ul', 'ol', 'paragraph']],
+         ['height', ['height']]
+     ],
+     fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],  // Font size options
+     fontNames: ['Arial', 'Courier New', 'Helvetica', 'Times New Roman', 'Verdana'],  // Font family options
+     buttons: {
+         // Custom superscript and subscript buttons
+         superscript: function() {
+             return $.summernote.ui.button({
+                 contents: '<sup>S</sup>',
+                 tooltip: 'Superscript',
+                 click: function() {
+                     document.execCommand('superscript');
+                 }
+             }).render();
+         },
+         subscript: function() {
+             return $.summernote.ui.button({
+                 contents: '<sub>S</sub>',
+                 tooltip: 'Subscript',
+                 click: function() {
+                     document.execCommand('subscript');
+                 }
+             }).render();
+         }
+     },
+
+   	height:300
+    });
 /* var editor_config = {
 		toolbar : [
 			
@@ -2212,6 +2300,10 @@ function deleteReq(a){
 		event.preventDefault();
 		return false;
 	}
+}
+
+function showVerificationMaster(){
+	$('#verificationMaster').click();
 }
 </script>
 

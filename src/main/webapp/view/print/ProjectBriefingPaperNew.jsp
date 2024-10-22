@@ -508,7 +508,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 									
 									<td style="border: 0 "> 
 										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank"
-										 data-toggle="tooltip" data-placement="top" title="Briefing Papaer pdf" >
+										 data-toggle="tooltip" data-placement="top" title="Briefing Paper pdf" >
 											<i class="fa fa-download fa-lg" aria-hidden="true"></i>
 										</button>
 									</td>
