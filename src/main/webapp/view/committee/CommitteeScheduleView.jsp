@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@page import="org.apache.logging.log4j.core.pattern.IntegerPatternConverter"%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.time.LocalDate"%>
@@ -100,9 +101,11 @@
 	String projectid= committeescheduleeditdata[9].toString();
 	String divisionid= committeescheduleeditdata[16].toString();
 	String initiationid= committeescheduleeditdata[17].toString();
+	String carsInitiationId = committeescheduleeditdata[25].toString();
 	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
+	CARSInitiation carsInitiationDetails=(CARSInitiation)request.getAttribute("carsInitiationDetails");
 	
 	List<String> SplCommitteeCodes=(List<String>) request.getAttribute("SplCommitteeCodes");
 	
@@ -145,6 +148,9 @@
 									<%if(Long.parseLong(initiationid)>0){ %>							  
 									  (Initiated Project : <%=initiationdetails[1] %>)
 									<%} %>
+									<%if(Long.parseLong(carsInitiationId)>0){ %>							  
+									  (CARS : <%=carsInitiationDetails.getCARSNo() %>)
+									<%} %>
 							  </h4>
 							 </div>
 							 <div class="col-md-4">							 		
@@ -161,7 +167,7 @@
 									 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									 	<input type="hidden" name="projectid" value="<%=projectid %>">
 									 </form>
-									<%}else if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0  && userview==null){%>
+									<%}else if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0  && userview==null){%>
 									<form action="CommitteeScheduleList.htm" name="myfrm" method="post">
 									 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
 									 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
@@ -181,6 +187,13 @@
 										 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
 										 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 										 	<input type="hidden" name="initiationid" value="<%=initiationid %>">							 
+										</form>							
+									<%}else if( Long.parseLong(carsInitiationId)>0){%>
+										<form action="CARSSchedule.htm" name="myfrm" method="post">
+										 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
+										 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
+										 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+										 	<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>">							 
 										</form>							
 									<%} %>
  							 </div>

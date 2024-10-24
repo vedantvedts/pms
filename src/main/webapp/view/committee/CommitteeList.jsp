@@ -302,7 +302,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 																</form> 		
 															
 												
-																<%if(projectappliacble.equalsIgnoreCase("N") && !obj[1].toString().equalsIgnoreCase("CCM")){ %>												
+																<%if(projectappliacble.equalsIgnoreCase("N") && !Arrays.asList("CCM","CARS").contains(obj[1].toString()) ){ %>												
 																	<form action="CommitteeMainMembers.htm" method="post" name="myfrm"	style="display: inline">
 																		<button class="editable-click" name="sub" value="Details" 	>
 																			<div class="cc-rockmenu">

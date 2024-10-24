@@ -58,6 +58,7 @@ Object[] initiationdata=(Object[]) request.getAttribute("initiationdata");
 String divisionid = (String)request.getAttribute("divisionid");
 String projectid = (String)request.getAttribute("projectid");
 String initiationid = (String)request.getAttribute("initiationid");
+String carsInitiationId = (String)request.getAttribute("carsInitiationId");
 String LabCode = (String)request.getAttribute("LabCode");
 
 %>
@@ -152,6 +153,13 @@ String LabCode = (String)request.getAttribute("LabCode");
 		            	<input type="hidden" name="divisionid" value="<%=divisionid%>"/>
 		            	<input type="hidden" name="initiationid" value="<%=initiationid%>"/>
 	
+		            <%} %>
+		            
+		            <%if(carsInitiationId!=null) {%>
+		            	<input type="hidden" name="projectid" value="<%=projectid %>"/>
+		            	<input type="hidden" name="divisionid" value="<%=divisionid%>"/>
+		            	<input type="hidden" name="initiationid" value="<%=initiationid%>"/>
+		            	<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>"/>
 		            <%} %>
 <!-- 	 --------------------------------------------------------------------------------------------- -->
 						   <div class="col-md-4 " style="display:none;">
@@ -334,7 +342,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 				       </div>
 			      </form> 
 	    				
-	    				<%if(Long.parseLong(divisionid)==0 && Long.parseLong(projectid)==0 && Long.parseLong(initiationid)==0){ %>
+	    				<%if(Long.parseLong(divisionid)==0 && Long.parseLong(projectid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0){ %>
 							<form method="post" action="CommitteeList.htm" name="backfrm" id="backfrm">
 									<input type="hidden" name="projectid" value="<%=projectid %>">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />									
@@ -354,6 +362,10 @@ String LabCode = (String)request.getAttribute("LabCode");
 						<%} else if( Long.parseLong(initiationid)>0){ %>
 							<form method="post" action="InitiationCommitteeMaster.htm" name="backfrm" id="backfrm">
 								<input type="hidden" name="initiationid" value="<%=initiationid %>">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />									
+							</form>		
+						<%} else if(Long.parseLong(carsInitiationId)>0){ %>
+							<form method="post" action="CARSInitiationList.htm" name="backfrm" id="backfrm">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />									
 							</form>		
 						<%} %>

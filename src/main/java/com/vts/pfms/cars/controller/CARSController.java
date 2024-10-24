@@ -64,13 +64,17 @@ import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
+import com.vts.pfms.cars.model.CARSSoCMilestonesProgress;
 import com.vts.pfms.cars.service.CARSService;
+import com.vts.pfms.ccm.service.CCMService;
 import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.service.ActionService;
+import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
 public class CARSController {
@@ -100,7 +104,15 @@ public class CARSController {
 	@Autowired
 	Environment env;
 	
+	@Autowired
+	CCMService ccmservice;
 
+	@Autowired
+	PrintService printservice;
+	
+	@Autowired
+	PMSLogoUtil LogoUtil;
+	
 	public String getLabLogoAsBase64() throws IOException {
 
 //		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo.png";
@@ -198,6 +210,7 @@ public class CARSController {
 
 			req.setAttribute("InitiationList", arrayList);
 			req.setAttribute("maxpagin", p+(extra>0?1:0) );
+			req.setAttribute("committeeId", String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("CARS")));
 			/* pagination process ends */
 
 			return "cars/InitiationList";
@@ -3037,11 +3050,12 @@ public class CARSController {
 			if(carsInitiationId!=null && carsInitiationId!="0") {
 				long carsiniid = Long.parseLong(carsInitiationId);
 				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
-				req.setAttribute("CARSInitiationData", carsInitiation);
-				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
-				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
-				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("carsInitiationData", carsInitiation);
+				req.setAttribute("carsSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("carsContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("carsSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
 				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+				req.setAttribute("milestoneProgressList", service.getCARSSoCMilestonesProgressListByCARSInitiationId(carsInitiationId));
 			}
 			
 			return "cars/CARSMilestonesMonitor";
@@ -3188,6 +3202,92 @@ public class CARSController {
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CARSMilestonesMonitorDetailsEditSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSReport.htm", method = {RequestMethod.POST, RequestMethod.GET})
+	public String carsReport(HttpServletRequest req, HttpSession ses) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType = (String) ses.getAttribute("LoginType");
+		logger.info(new Date() +" Inside CARSReport.htm "+Username);
+		try {
+			req.setAttribute("initiationList", service.carsInitiationList(LoginType, EmpId));
+			return "cars/CARSReport";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSReport.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSMilestonesProgressDetails.htm", method = {RequestMethod.POST, RequestMethod.GET})
+	public String carsMilestonesProgressDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside CARSMilestonesProgressDetails.htm "+Username);
+		try {
+			req.setAttribute("carsInitiationId", req.getParameter("carsInitiationId"));
+			req.setAttribute("carsSoCMilestoneId", req.getParameter("carsSoCMilestoneId"));
+			req.setAttribute("carsSoCMilestones", service.getCARSSoCMilestonesById(req.getParameter("carsSoCMilestoneId")));
+			req.setAttribute("carsSoCMilestonesProgressList", service.getCARSSoCMilestonesProgressListByCARSSoCMilestoneId(req.getParameter("carsSoCMilestoneId")));
+			return "cars/CARSMilestonesProgressDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMilestonesProgressDetails.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSMilestonesProgressDetailsSubmit.htm", method = {RequestMethod.POST, RequestMethod.GET})
+	public String CARSMilestonesProgressDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside CARSMilestonesProgressDetailsSubmit.htm "+Username);
+		try {
+			String carsSoCMilestoneId = req.getParameter("carsSoCMilestoneId");
+			CARSSoCMilestonesProgress milestoneProgress = CARSSoCMilestonesProgress.builder()
+														  .CARSSoCMilestoneId(Long.parseLong(carsSoCMilestoneId))
+														  .Progress(Integer.parseInt(req.getParameter("progress")))
+														  .ProgressDate(fc.rdfTosdf(req.getParameter("progressDate")))
+														  .Remarks(req.getParameter("remarks"))
+														  .CreatedBy(Username)
+														  .CreatedDate(sdtf.format(new Date()))
+														  .IsActive(1)
+														  .build();
+			
+			long result = service.addCARSSoCMilestonesProgress(milestoneProgress);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "Milestone Progress Details Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Milestone Progress Details Update Unsuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", req.getParameter("carsInitiationId"));
+			redir.addAttribute("carsSoCMilestoneId", carsSoCMilestoneId);
+			return "redirect:/CARSMilestonesProgressDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMilestonesProgressDetailsSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSReportPresentation.htm", method = {RequestMethod.POST, RequestMethod.GET})
+	public String carsReportPresentation(HttpServletRequest req, HttpSession ses) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +" Inside CARSReportPresentation.htm "+Username);
+		try {
+			req.setAttribute("labInfo", printservice.LabDetailes(labcode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+	    	req.setAttribute("initiationList", service.carsInitiationList(LoginType, EmpId));
+			return "cars/CARSReportPresentation";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSReportPresentation.htm "+Username, e);
 			return "static/Error";
 		}
 	}

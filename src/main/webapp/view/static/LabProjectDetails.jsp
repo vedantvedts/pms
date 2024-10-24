@@ -527,18 +527,21 @@ SimpleDateFormat sdf=fc.getRegularDateFormat();
 SimpleDateFormat sdf3=new SimpleDateFormat("dd-MM-yy");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
+
 %>
 	
 <div class="container-fluid">		
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row" style="margin-bottom:5px; ">
-				<div class= "col-md-2"></div>
-				<div class="col-md-8">
-					<h3>Lab  Details </h3>
-				</div>
 				<div class= "col-md-2">
-					<a class="btn btn-info btn-sm back"   href="MainDashBoard.htm" style="float: right">Back</a>
+					<a class="btn btn-info btn-sm back"   href="MainDashBoard.htm" style="float: left">Back</a>
+				</div>
+				<div class="col-md-8">
+					<h3>Lab Details </h3>
+				</div>
+				<div class="col-md-2">
+					
 				</div>
 			</div>
 							
@@ -574,7 +577,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
-			        		<th style="font-size: 14px">PMRC </th>
+			        		<th style="font-size: 14px">PMRC</th>
 			        	</tr>
 				        <tr>
 			        		<td style="font-size: 14px;cursor: pointer;" id="meetingsvaluepmrc"  data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
@@ -904,11 +907,21 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 												</td>
 												<td class="tableprojectnametd" style="width:12%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
-												<td style="width:2%"><div data-toggle="tooltip" title="View All"><a style="cursor: pointer;" href="GetAllProjectSlide.htm" target="_blank"  ><img src="view/images/silde.png" style="width: 25px;"/></a></div></td>
+												<td style="width:2%">
+													<div data-toggle="tooltip" title="Master Slide">
+														
+															<button type="button" data-toggle="modal" data-target="" id="slideDIv" class="bg-transparent">
+																<img src="view/images/silde.png" style="width: 25px;"/>
+															</button>
+													
+													</div>
+												</td>
+												<jsp:include page="../print/ProjectsSlideShowSelection.jsp"></jsp:include>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">AB </span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB / PMB </span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC / PJB </span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Risk</span></td>
@@ -920,10 +933,10 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 										
 											<%for(Object[] obj : ProjectHealthData){
 												
-												if(ProjectList!=null){  for(Object[] obj2 : ProjectList) 
+												/* if(ProjectList!=null){  for(Object[] obj2 : ProjectList) 
 												{
 													if(obj[2].equals(obj2[0]))
-													{
+													{ */
 											%>
 										
 											<tr>
@@ -956,15 +969,71 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 													</div>
 												
 												</td>
-												<td><a style="cursor: pointer;" href="PfmsProjectSlides.htm?projectid=<%=obj[2]%>" target="_blank" > <img src="view/images/silde.png" style="width: 25px;"/></a></td>
+												<td>
+													<form action="#">
+														<button class="bg-transparent"  style="cursor: pointer;"  type="submit" name="projectid" value="<%=obj[2]%>" formaction="PfmsProjectSlides.htm" formmethod="get" formtarget="blank" data-toggle="tooltip"  data-original-title="Project Slide"> <img src="view/images/silde.png" style="width: 25px;"/></button>
+													</form>
+													<%-- <a style="cursor: pointer;" href="PfmsProjectSlides.htm?projectid=<%=obj[2]%>" target="_blank" > <img src="view/images/silde.png" style="width: 25px;"/></a> --%>
+												</td>
 												<td style="font-size: 13px;font-weight: 600; "><%if(obj[50]!=null){%><%= sdf3.format(sdf2.parse(obj[50].toString()))%><%}else{ %> - <%} %></td>
 												<td style="font-size: 13px;font-weight: 600; <%if(obj[47]!=null){ if(LocalDate.parse(obj[47].toString()).isBefore(LocalDate.now())){ %>color:maroon<%}}%>  "><%if(obj[47]!=null){%><%= sdf3.format(sdf2.parse(obj[47].toString()))%><%}else{ %> - <%} %></td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[69].toString())>0){ %>
+														<div class="row">
+															<div class="col-md-11">
+																<div class="progress" data-toggle="tooltip" data-html="true" title="AB Held : <%=obj[65]%> <br> AB To Be Held : <%=obj[69] %><br> Total AB To Be Held : <%=obj[70] %>">
+																  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[66]%>%;"></div>
+																  <div class="progress-bar progress-bar-striped bg-primary"  style="width:<%=obj[68]%>%;"></div>
+																</div>
+															</div>
+															<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[66].toString())<=25){%> background-color:red <%}%>
+																								   <%if( (Integer.parseInt(obj[66].toString())>25) && (Integer.parseInt(obj[66].toString())<=50)){%> background-color:#EE5007; <%}%>
+																								   <%if( (Integer.parseInt(obj[66].toString())>50) && (Integer.parseInt(obj[66].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
+																								   <%if( (Integer.parseInt(obj[66].toString())>75) && (Integer.parseInt(obj[66].toString())<=100)){%> background-color:green<%}%>
+																"><%=obj[66] %></span>
+															</div>
+														</div>
+													<%}else{ %>
+													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+													
+												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[13].toString())>0){ %>
+														<div class="row">
+															<div class="col-md-11">
+																<div class="progress" data-toggle="tooltip" data-html="true" title="EB Held : <%=obj[9]%> <br> EB To Be Held : <%=obj[13] %><br> Total EB To Be Held : <%=obj[49] %>">
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;"></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;"></div>
+																</div>
+															</div>
+															<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[10].toString())<=25){%> background-color:red <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> background-color:#EE5007; <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>75) && (Integer.parseInt(obj[10].toString())<=100)){%> background-color:green<%}%>
+																"><%=obj[10] %></span>
+															</div>
+														</div>
+													<%}else{ %>
+													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
 												<td class="custom-td">
 													<%if(Integer.parseInt(obj[8].toString())>0){ %>
 														
 														<div class="row">
 															<div class="col-md-11">
-															    <div class="progress" data-toggle="tooltip" title="PMRC Held : <%=obj[4]%> <br> PMRC To Be Held : <%=obj[8] %><br> Total PMRC To Be Held : <%=obj[48] %>"  >
+															    <div class="progress" data-toggle="tooltip" data-html="true" title="PMRC Held : <%=obj[4]%> <br> PMRC To Be Held : <%=obj[8] %><br> Total PMRC To Be Held : <%=obj[48] %>"  >
 																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" ></div>
 																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" ></div>
 																</div>
@@ -978,31 +1047,6 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 															</div>
 														</div>
 						
-													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-															Nil
-														</div>
-													</div>
-													<%} %>
-												</td>
-												<td class="custom-td">
-													<%if(Integer.parseInt(obj[13].toString())>0){ %>
-														<div class="row">
-															<div class="col-md-11">
-																<div class="progress" data-toggle="tooltip" title="EB Held : <%=obj[9]%> <br> EB To Be Held : <%=obj[13] %><br> Total EB To Be Held : <%=obj[49] %>">
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;"></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;"></div>
-																</div>
-															</div>
-															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[10].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> background-color:#EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>75) && (Integer.parseInt(obj[10].toString())<=100)){%> background-color:green<%}%>
-																"><%=obj[10] %></span>
-															</div>
-														</div>
 													<%}else{ %>
 													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
 														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
@@ -1100,7 +1144,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))); %>
 															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))); %>
 															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))); %>
-															<div class="progress" onclick="overallfinance()" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))%>
+															<div class="progress" onclick="overallfinance()" data-toggle="tooltip" data-html="true" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))%>
 																																		<br>OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))%> 
 																																		<br>DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))%> 
 																																		<br>Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))%> 
@@ -1135,7 +1179,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 												</td>
 											</tr> 
 											
-											<%  ProjectCount++; } }  } } %>
+											<%  ProjectCount++; /*}  }  } */ } %>
 											
 										</tbody>
 											
@@ -1266,15 +1310,17 @@ $(document).ready(function(){
 	else
 		$('#projectdetailsview').css('display','block');
 	
-	
-	
 })
-
-
 
 $('.progress-bar[data-toggle="tooltip"]').tooltip({
     animated: 'fade',
-    placement: 'bottom'
+    placement: 'bottom',
+    html : true,
+    boundary: 'window'
+});
+
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
 });
 
 function ProjectDetails(value){
@@ -1940,7 +1986,19 @@ $(function() {
 
 </script>
 
-
+<script type="text/javascript">
+function checkslideinput()	
+{
+	var checkboxes = document.getElementsByName("projectlist");
+	var checked = false;
+	for(let i=0;i<checkboxes.length;i++)
+		{
+			if(checkboxes[i].checked)checked = true;
+		}
+	if(!checked)alert("Please select a project for Slideshow");
+	return checked;
+}
+</script>
 
 
 

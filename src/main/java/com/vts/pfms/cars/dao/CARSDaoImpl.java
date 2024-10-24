@@ -28,6 +28,7 @@ import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
+import com.vts.pfms.cars.model.CARSSoCMilestonesProgress;
 import com.vts.pfms.committee.model.PfmsNotification;
 
 @Repository
@@ -39,7 +40,14 @@ public class CARSDaoImpl implements CARSDao{
 	@PersistenceContext
 	EntityManager manager;
 
-	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount,a.DPCSoCStatus FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.EmpId=:EmpId END) ORDER BY a.CARSInitiationId DESC";
+	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount,a.DPCSoCStatus,\r\n"
+			+ "(SELECT GROUP_CONCAT(d.CARSStatusCode SEPARATOR ',') FROM pfms_cars_initiation_trans d WHERE a.CARSInitiationId=d.CARSInitiationId) AS 'Transaction', e.MoMUpload,\r\n"
+			+ "(SELECT COUNT(f.CARSInitiationId) FROM pfms_cars_soc_milestones f WHERE a.CARSInitiationId=f.CARSInitiationId AND f.IsActive LIMIT 1) AS 'MilestoneCount',\r\n"
+			+ "(CASE WHEN a.FundsFrom='0' THEN 'Build up' ELSE (SELECT g.ProjectCode FROM project_master g WHERE a.FundsFrom=g.ProjectId AND g.IsActive=1 LIMIT 1 ) END) AS 'FundsSanction',\r\n"
+			+ "IFNULL((SELECT h.CommitteeMainId FROM committee_main h WHERE a.CARSInitiationId=h.CARSInitiationId AND h.IsActive=1 LIMIT 1), 0) AS 'CommitteeMainId', e.SoCAmount\r\n"
+			+ "FROM pfms_cars_initiation a JOIN employee b ON a.EmpId=b.EmpId  JOIN pfms_cars_approval_status c ON a.CARSStatusCode=c.CARSStatusCode LEFT JOIN pfms_cars_soc e ON a.CARSInitiationId=e.CARSInitiationId AND e.IsActive\r\n"
+			+ "WHERE a.IsActive=1 AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.EmpId=:EmpId END)\r\n"
+			+ "ORDER BY a.CARSInitiationId DESC";
 	@Override
 	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception {
 		try {
@@ -1300,6 +1308,50 @@ public class CARSDaoImpl implements CARSDao{
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() + "Inside DaoImpl assignedListByCARSSoCMilestoneId", e);
+			return new ArrayList<Object[]>();
+		}
+	}
+	
+	@Override
+	public long addCARSSoCMilestonesProgress(CARSSoCMilestonesProgress milestoneProgress) throws Exception{
+		try {
+			manager.persist(milestoneProgress);
+			manager.flush();
+			return milestoneProgress.getCARSMSProgressId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addCARSSoCMilestonesProgress "+e);
+			return 0;
+		}
+	}
+	
+	@Override
+	public List<CARSSoCMilestonesProgress> getCARSSoCMilestonesProgressListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception {
+		logger.info(new Date() + "Inside the DaoImpl assignedListByCARSSoCMilestoneId");
+		try {
+			Query query=manager.createQuery("FROM CARSSoCMilestonesProgress WHERE CARSSoCMilestoneId=:CARSSoCMilestoneId AND IsActive=1");
+			query.setParameter("CARSSoCMilestoneId", Long.parseLong(carsSoCMilestoneId));
+			return (List<CARSSoCMilestonesProgress>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl getCARSSoCMilestonesProgressListByCARSSoCMilestoneId ", e);
+			return new ArrayList<CARSSoCMilestonesProgress>();
+		}
+	}
+	
+	private static final String CARSMILESTONESLISTBYCARSINITIATIONID = "SELECT a.CARSMSProgressId, a.CARSSoCMilestoneId, a.Progress, a.ProgressDate,a.Remarks, b.MilestoneNo FROM pfms_cars_soc_ms_progress a, pfms_cars_soc_milestones b WHERE a.CARSSoCMilestoneId=b.CARSSoCMilestoneId AND a.ProgressDate = (SELECT MAX(b.ProgressDate) FROM pfms_cars_soc_ms_progress b WHERE b.CARSSoCMilestoneId = a.CARSSoCMilestoneId)  AND b.CARSInitiationId=:CARSInitiationId";
+	@Override
+	public List<Object[]> getCARSSoCMilestonesProgressListByCARSInitiationId(String carsInitiationId) throws Exception {
+		logger.info(new Date() + " Inside the DaoImpl assignedListByCARSSoCMilestoneId");
+		try {
+			Query query=manager.createNativeQuery(CARSMILESTONESLISTBYCARSINITIATIONID);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
+			return (List<Object[]>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside DaoImpl getCARSSoCMilestonesProgressListByCARSInitiationId ", e);
 			return new ArrayList<Object[]>();
 		}
 	}

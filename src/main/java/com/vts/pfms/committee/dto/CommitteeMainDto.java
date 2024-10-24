@@ -23,6 +23,7 @@ public class CommitteeMainDto {
 	private String ProjectId;
 	private String DivisionId;
 	private String InitiationId;
+	private String CARSInitiationId;
 	private String[] reps;
 	private String CreatedByEmpid;
 	private String CreatedByEmpidLabid;

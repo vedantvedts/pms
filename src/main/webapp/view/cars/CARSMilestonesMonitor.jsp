@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
@@ -56,55 +57,11 @@
     padding: 0;
 }
 
-.anychart-credits {
-   display: none;
-}
-
 .flex-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
-summary[role=button] {
-  background-color: white;
-  color: black;
-  border: 1px solid black ;
-  border-radius:5px;
-  padding: 0.5rem;
-  cursor: pointer;
-  
-}
-summary[role=button]:hover
- {
-color: white;
-border-radius:15px;
-background-color: #4a47a3;
-
-}
- summary[role=button]:focus
-{
-color: white;
-border-radius:5px;
-background-color: #4a47a3;
-border: 0px ;
-
-}
-summary::marker{
-	
-}
-details { 
-  margin-bottom: 5px;  
-}
-details  .content {
-background-color:white;
-padding: 0 1rem ;
-align: center;
-border: 1px solid black;
-}
-
-
-
 
 .input-group-text {
 	font-weight: bold;
@@ -222,7 +179,6 @@ input[type=number] {
 }
 
 
-
 label{
   font-weight: bold;
   font-size: 20px;
@@ -338,67 +294,15 @@ div {
 	color: black;
 }
 
-
-/* icon styles2 */
-.cc-rockmenu2 {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu2 .rolling2 {
-	display: inline-block;
-	cursor: pointer;
-	width: 20px;
-	height: 20px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu2 .rolling2:hover {
-	width: 108px;
-}
-
-.cc-rockmenu2 .rolling2 .rolling_icon2 {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 20px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu2 .rolling2 .rolling_icon2:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu2 .rolling2 i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu2 .rolling2 span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 12px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu2 .rolling2 p {
-	margin: 0;
-}
 </style>
 </head>
 <body>
 <%
-CARSInitiation carsIni = (CARSInitiation)request.getAttribute("CARSInitiationData"); 
-CARSSoC carsSoC = (CARSSoC)request.getAttribute("CARSSoCData"); 
-CARSContract carsContract = (CARSContract)request.getAttribute("CARSContractData"); 
-List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribute("CARSSoCMilestones");
+CARSInitiation carsIni = (CARSInitiation)request.getAttribute("carsInitiationData"); 
+CARSSoC carsSoC = (CARSSoC)request.getAttribute("carsSoCData"); 
+CARSContract carsContract = (CARSContract)request.getAttribute("carsContractData"); 
+List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribute("carsSoCMilestones");
+List<Object[]> milestoneProgressList = (List<Object[]>)request.getAttribute("milestoneProgressList");
 
 
 Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
@@ -516,7 +420,7 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 					            </thead>
 					            <tbody>
 					            	
-					               	<%if(milestones!=null && milestones.size()>0) { char a='a';%>
+					               	<%if(milestones!=null && milestones.size()>0) { char a='a'; Object[] progressData = null;%>
 							    		<tr>
 							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
 							    			<td style="text-align : center;vertical-align: top;">T0*</td>
@@ -532,18 +436,37 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    				&nbsp;&nbsp;
 							    			</td>
 							    			
-							    			
-							    			<td style="text-align: center;">
-							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
-													<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
-														<div class="cc-rockmenu">
-													 		<div class="rolling">	
-								                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
-								                        		<span>Actions</span>
-								                      		</div>
-								                     	</div>
-											        </button>   
-															
+							    			<td>
+							    				<form action="#" method="POST" name="myfrm" >
+							    					<div class="d-flex justify-content-center">
+							    						<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
+															<div class="cc-rockmenu">
+														 		<div class="rolling">	
+									                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
+									                        		<span>Actions</span>
+									                      		</div>
+									                     	</div>
+											        	</button> 
+											        	<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+													        <%
+													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(0).getMilestoneNo())).findFirst().orElse(null): null;
+													        %>
+													        <%if(progressData!=null) {%>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<%=progressData[2] %>
+																	</div> 
+																</div>	
+															<%}else{ %>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		0
+																	</div>
+																</div>
+															<%} %>
+														</button>
+							    					</div>
+												        
 													<input type="hidden" name="carsSoCMilestoneId" value="<%=milestones.get(0).getCARSSoCMilestoneId()%>"/>
 													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>"/>
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -551,7 +474,9 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 												</form>
 							    			</td>
 							    		</tr>
-							    		<% for(int i=1;i<milestones.size()-1;i++) { %>
+							    		<% for(int i=1;i<milestones.size()-1;i++) { 
+							    			String milestoneNo = milestones.get(i).getMilestoneNo();
+							    		%>
 							    		<tr>
 							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
 							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
@@ -570,17 +495,37 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    				<%} %>
 							    				&nbsp;&nbsp;
 							    			</td>
-							    			<td style="text-align: center;">
+							    			<td>
 							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
-													<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
-														<div class="cc-rockmenu">
-													 		<div class="rolling">	
-								                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
-								                        		<span>Actions</span>
-								                      		</div>
-								                     	</div>
-											        </button>   
-															
+													<div class="d-flex justify-content-center">	
+														<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
+															<div class="cc-rockmenu">
+														 		<div class="rolling">	
+									                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
+									                        		<span>Actions</span>
+									                      		</div>
+									                     	</div>
+												        </button>   
+													
+														<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+													        <%
+													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestoneNo)).findFirst().orElse(null): null;
+													        %>
+													        <%if(progressData!=null) {%>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<%=progressData[2] %>
+																	</div> 
+																</div>	
+															<%}else{ %>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		0
+																	</div>
+																</div>
+															<%} %>
+														</button>   
+											        </div>		
 													<input type="hidden" name="carsSoCMilestoneId" value="<%=milestones.get(i).getCARSSoCMilestoneId()%>"/>
 													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>"/>
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -610,15 +555,35 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    			</td>
 							    			<td style="text-align: center;">
 							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
-													<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
-														<div class="cc-rockmenu">
-													 		<div class="rolling">	
-								                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
-								                        		<span>Actions</span>
-								                      		</div>
-								                     	</div>
-											        </button>   
-															
+													<div class="d-flex justify-content-center">		
+														<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
+															<div class="cc-rockmenu">
+														 		<div class="rolling">	
+									                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
+									                        		<span>Actions</span>
+									                      		</div>
+									                     	</div>
+												        </button>   
+													
+														<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+													        <%
+													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(milestones.size()-1).getMilestoneNo())).findFirst().orElse(null): null;
+													        %>
+													        <%if(progressData!=null) {%>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<%=progressData[2] %>
+																	</div> 
+																</div>	
+															<%}else{ %>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		0
+																	</div>
+																</div>
+															<%} %>
+														</button>     
+											        </div>		
 													<input type="hidden" name="carsSoCMilestoneId" value="<%=milestones.get(milestones.size()-1).getCARSSoCMilestoneId()%>"/>
 													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>"/>
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 

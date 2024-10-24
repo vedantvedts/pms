@@ -40,7 +40,7 @@ public interface CommitteeDao {
 	public List<Object[]> EmployeeList(String LabCode) throws Exception;
 	public Object[] CommitteeName(String CommitteeMainId)throws Exception;
 	public long CommitteeDetailsSubmit(CommitteeMain committeemain) throws Exception;
-	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid) throws Exception;
+	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception;
 	public Long UpdateCommitteemainValidto(CommitteeMain committeemain) throws Exception;
 	public long CommitteeNewAdd(Committee committeeModel) throws Exception;
 	public List<Object[]> CommitteeNamesCheck(String name, String sname,String projectid,String LabCode) throws Exception;
@@ -323,6 +323,8 @@ public interface CommitteeDao {
 	public long addAgendaLinkFile(CommitteeScheduleAgendaDocs docs)throws Exception;
 	//public Object createView(String projectId)throws Exception;
 	public List<Object[]> MomeNoteApprovalList(long empId, String fromDate, String toDate)throws Exception;
+	public List<Object[]> carsScheduleList(String carsInitiationId) throws Exception;
+	public BigInteger carsMeetingCount(String carsInitiationId) throws Exception;
 	
 
 }

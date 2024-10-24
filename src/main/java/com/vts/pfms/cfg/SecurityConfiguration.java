@@ -63,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		  .antMatchers("/view/**").permitAll()
 		  .antMatchers("/LoginPage/*").permitAll()
 		  .antMatchers("/pfms-dg/*").permitAll()
+		  .antMatchers("/api/sync/**").permitAll()
 		  .antMatchers("/login").permitAll()
 		  .antMatchers("/ProjectRequirementAttachmentDownload.htm").permitAll()
 		  .antMatchers("/ProjectClosureChecklistFileDownload.htm").permitAll()

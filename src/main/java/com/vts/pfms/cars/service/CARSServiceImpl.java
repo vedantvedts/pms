@@ -49,6 +49,7 @@ import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
+import com.vts.pfms.cars.model.CARSSoCMilestonesProgress;
 import com.vts.pfms.committee.dao.ActionDao;
 import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
@@ -2192,4 +2193,29 @@ public class CARSServiceImpl implements CARSService{
 		
 		return dao.assignedListByCARSSoCMilestoneId(carsSoCMilestoneId);
 	}
+
+	@Override
+	public CARSSoCMilestones getCARSSoCMilestonesById(String carsSoCMilestoneId) throws Exception {
+		
+		return dao.getCARSSoCMilestonesById(carsSoCMilestoneId);
+	}
+	
+	@Override
+	public long addCARSSoCMilestonesProgress(CARSSoCMilestonesProgress milestoneProgress) throws Exception {
+		
+		return dao.addCARSSoCMilestonesProgress(milestoneProgress);
+	}
+	
+	@Override
+	public List<CARSSoCMilestonesProgress> getCARSSoCMilestonesProgressListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception {
+
+		return dao.getCARSSoCMilestonesProgressListByCARSSoCMilestoneId(carsSoCMilestoneId);
+	}
+	
+	@Override
+	public List<Object[]> getCARSSoCMilestonesProgressListByCARSInitiationId(String carsInitiationId) throws Exception {
+	
+		return dao.getCARSSoCMilestonesProgressListByCARSInitiationId(carsInitiationId);
+	}
+	
 }

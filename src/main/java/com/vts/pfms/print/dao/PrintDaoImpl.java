@@ -938,12 +938,24 @@ public class PrintDaoImpl implements PrintDao {
 			 }
 			return result;
 		}
-		private static final String PROJECTDATA="SELECT a.projectid, a.projectname, b.projecttype, a.totalsanctioncost, a.pdc, a.sanctiondate, a.enduser, a.objective, a.deliverable, a.scope, a.application, a.ProjectDescription, a.projectcode, a.projectshortname, (SELECT d.ProjectStage FROM pfms_project_data c, pfms_project_stage d WHERE c.ProjectId=:projectid AND c.CurrentStageId=d.ProjectStageId LIMIT 1) AS ProjectStage, (SELECT a.Brief FROM pfms_project_slides a JOIN project_master b ON a.projectid=b.projectid WHERE a.projectid=:projectid) AS Brief, (SELECT a.Expenditure FROM project_health a WHERE a.projectid=:projectid) AS Expenditure, (SELECT OutCommitment FROM project_health a WHERE a.projectid=:projectid) AS OutCommitment, (SELECT a.Dipl FROM project_health a WHERE a.projectid=:projectid) AS Dipl, (SELECT Balance FROM project_health a WHERE a.projectid=:projectid) AS Balance, (SELECT a.Status FROM pfms_project_slides a JOIN project_master b ON a.projectid=b.projectid WHERE a.projectid=:projectid) AS CurrentStatus, a.IsMainWC AS 'isMain', (SELECT a.status FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.slide FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.ImageName FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.path FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.SlideId FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.attachmentname FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.brief FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.projectid FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.VideoName FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.WayForward FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid), (SELECT a.ProjectType FROM project_health a WHERE a.isactive=1 AND a.projectid=:projectid), CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,(SELECT PDC FROM project_master_rev a WHERE a.projectid=:projectid AND RevisionNo='0')AS 'RevPDC' FROM project_master a, project_type b,employee e,employee_desig d WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid AND a.projectdirector=e.EmpId AND e.DesigId=d.DesigId";		
+		private static final String PROJECTDATA="SELECT a.ProjectId, a.ProjectName, b.ProjectType, a.TotalSanctionCost, a.PDC, a.SanctionDate, a.EndUser, a.Objective, a.Deliverable, a.Scope, a.Application, a.ProjectDescription, a.ProjectCode, \r\n"
+				+ "a.ProjectShortName, h.ProjectStage, e.Brief, f.Expenditure, f.OutCommitment, f.Dipl, f.Balance, e.Status AS 'CurrentStatus', a.IsMainWC AS 'isMain',  e.Status, e.Slide, e.ImageName, e.Path, e.SlideId,\r\n"
+				+ "e.AttachmentName, e.Brief AS 'Brief2', e.ProjectId AS 'ProjectId2', e.VideoName, e.WayForward, f.ProjectType AS 'ProjectType2', CONCAT(IFNULL(CONCAT(c.Title,' '),''), c.EmpName) AS 'empname',d.Designation, i.PDC AS 'RevPDC' \r\n"
+				+ "FROM project_master a\r\n"
+				+ "JOIN project_type b ON a.ProjectType=b.projectTypeId\r\n"
+				+ "LEFT JOIN employee c ON a.ProjectDirector=c.EmpId\r\n"
+				+ "LEFT JOIN employee_desig d ON c.DesigId=d.DesigId\r\n"
+				+ "LEFT JOIN pfms_project_slides e ON e.IsActive=1 AND e.ProjectId=a.ProjectId\r\n"
+				+ "LEFT JOIN project_health f ON f.ProjectId=a.ProjectId\r\n"
+				+ "LEFT JOIN pfms_project_data g ON g.ProjectId=a.ProjectId\r\n"
+				+ "LEFT JOIN pfms_project_stage h ON g.CurrentStageId=h.ProjectStageId  \r\n"
+				+ "LEFT JOIN project_master_rev i ON i.ProjectId=a.ProjectId AND i.RevisionNo='0'\r\n"
+				+ "WHERE a.ProjectId=:ProjectId GROUP BY a.ProjectId,a.ProjectName";		
 		@Override
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(PROJECTDATA);
-			 query.setParameter("projectid", projectid);
+			 query.setParameter("ProjectId", projectid);
 			 Object[] result=null;
 			 List<Object[]> list=(List<Object[]> )query.getResultList();
 			 if(list!=null && list.size()>0) {

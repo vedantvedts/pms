@@ -33,9 +33,9 @@ table {
 
 thead {
     position: sticky;
-    top: 0; /* Stick the thead to the top */
-    background-color: #fff; /* Set background color for the thead */
-    z-index: 1; /* Ensure thead is above tbody */
+	top: 0; /* Keeps the header at the top */
+	z-index: 1000; /* Ensure the header stays on top of the body */
+	background-color: white; /* For visibility */
 }
 
 th, td {

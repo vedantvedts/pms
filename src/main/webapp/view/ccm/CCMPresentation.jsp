@@ -289,8 +289,9 @@ input,select,table,div,label,span {
 
 .data-table thead {
     position: sticky;
-    top: 0; /* Stick the thead to the top */
-    z-index: 1; /* Ensure thead is above tbody */
+	top: 0; /* Keeps the header at the top */
+	z-index: 10; /* Ensure the header stays on top of the body */
+	background-color: white; /* For visibility */
 }
 </style>
 

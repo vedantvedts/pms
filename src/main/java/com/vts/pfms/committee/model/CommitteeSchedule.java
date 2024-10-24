@@ -35,14 +35,17 @@ public class CommitteeSchedule
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	private long ProjectId;
+	private Long ProjectId;
 	private int IsActive;
 	private String KickOffOtp;
 	private String MeetingId;
 	private String MeetingVenue;
 	private int Confidential;
-	private long DivisionId; 
-	private long InitiationId; 
+	private Long DivisionId; 
+	private Long InitiationId; 
+	// Added by Prudhvi on 21-10-2024
+	private Long CARSInitiationId;
+	
 	private long RODNameId;
 	private String PresentationFrozen;
 	private String ScheduleType;

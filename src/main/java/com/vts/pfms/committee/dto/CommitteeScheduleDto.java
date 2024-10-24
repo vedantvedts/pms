@@ -26,8 +26,10 @@ public class CommitteeScheduleDto
 	private String MeetingId;
 	private String Referrence;
 	private String DivisionId;
-	private String InitiationId ;
-	private String rodNameId ;
+	private String InitiationId;
+	// Added by Prudhvi on 21-10-2024
+	private String CARSInitiationId;
+	private String rodNameId;
 	private String PMRCDecisions;
 	
 }

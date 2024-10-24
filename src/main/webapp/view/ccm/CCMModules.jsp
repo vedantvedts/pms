@@ -48,6 +48,8 @@
 <%
 String committeeMainId = (String)request.getAttribute("committeeMainId");
 String committeeId = (String)request.getAttribute("committeeId");
+String clusterLabCode = (String)request.getAttribute("clusterLabCode");
+String labCode = (String)session.getAttribute("labcode");
 %>
 	<% String ses=(String)request.getParameter("result");
 	 	String ses1=(String)request.getParameter("resultfail");
@@ -112,6 +114,8 @@ String committeeId = (String)request.getAttribute("committeeId");
 	$(document).ready(function() {
 		const committeeMainId = '<%=committeeMainId%>';
 		const committeeId = '<%=committeeId%>';
+		const clusterLabCode = '<%=clusterLabCode%>';
+		const labCode = '<%=labCode%>';
 		
 		var parameters = "committeeMainId="+committeeMainId+"&committeeId="+committeeId;
 		
@@ -134,22 +138,27 @@ String committeeId = (String)request.getAttribute("committeeId");
  				
  			} else if (url === 'CCMSchedule.htm') {
  				
- 				if(committeeMainId=="0" && committeeId!="0"){
- 					if(confirm('CCM Committee not constituted yet \n Do you want to constitute Committee?')){
- 						window.open('CCMCommitteeConstitution.htm?'+ parameters, '_blank');
- 					}else{
- 						event.preventDefault();
- 					}
- 				}else if(committeeMainId=="0" && committeeId=="0"){
- 					if(confirm('CCM Committee not created yet \n Do you want to create New Committee?')){
- 						window.open('CommitteeList.htm', '_blank');
- 					}else{
- 						event.preventDefault();
- 					}
- 				}else{
- 					url += '?' + parameters;
- 					window.location.href = url;
+ 				if(labCode===clusterLabCode) {
+ 					if(committeeMainId=="0" && committeeId!="0"){
+ 	 					if(confirm('CCM Committee not constituted yet \n Do you want to constitute Committee?')){
+ 	 						window.open('CCMCommitteeConstitution.htm?'+ parameters, '_blank');
+ 	 					}else{
+ 	 						event.preventDefault();
+ 	 					}
+ 	 				}else if(committeeMainId=="0" && committeeId=="0"){
+ 	 					if(confirm('CCM Committee not created yet \n Do you want to create New Committee?')){
+ 	 						window.open('CommitteeList.htm', '_blank');
+ 	 					}else{
+ 	 						event.preventDefault();
+ 	 					}
+ 	 				}else{
+ 	 					url += '?' + parameters;
+ 	 					window.location.href = url;
+ 	 				}
+ 				}else {
+ 					alert('Access Denied');
  				}
+ 				
  			} else if(url === 'CCMPresentation.htm') {
  				url += '?' + parameters;
 				//window.open(url, '_blank');

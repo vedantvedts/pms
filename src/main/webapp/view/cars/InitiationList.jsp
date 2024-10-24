@@ -1,3 +1,4 @@
+<%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -303,6 +304,7 @@ background: none;border-style: none;
 <%
 FormatConverter fc = new FormatConverter();
 List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationList");
+String committeeId = (String)request.getAttribute("committeeId");
 %>
 
 <% String ses=(String)request.getParameter("result");
@@ -433,6 +435,7 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 							<%
 							for(Object[] obj: intiationList){ 
 								String carstitle = obj[4].toString();
+								List<String> transactionCodes = Arrays.asList(obj[15].toString().split(","));
 							%>
 								
 								<div class="card" style="margin:10px; margin-left: 20px;margin-right: 20px;min-width:450px;">
@@ -559,46 +562,64 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 												
 										<div style="bottom: 0px;margin-bottom: 15px;padding-top: 10px;">
 											<div class="container">
-						  						<div class="row" style="margin-left: 40%;">
+						  						<div class="row" style="text-align: center">
 													<div class="col-xl">
 													
 														<form action="#" method="post">
 		                                        			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		                                        	
-		                                       	 				<button class="editable-clicko" name="carsInitiationId" value="<%=obj[0] %>" formaction="CARSInitiationDetails.htm">
+	                                       	 				<button class="editable-clicko" name="carsInitiationId" value="<%=obj[0] %>" formaction="CARSInitiationDetails.htm">
+																<div class="cc-rockmenu">
+																	<div class="rolling">
+																		<figure class="rolling_icon">
+																			<img src="view/images/clipboard.png">
+																		</figure>
+																		<span>Details</span>
+																	</div>
+																</div>
+											    			</button>
+											    			<%if(obj[12]!=null && (obj[12].toString().equalsIgnoreCase("FWD") || obj[12].toString().equalsIgnoreCase("SFU"))) {%>
+					                                       	 	<button class="editable-clicko" name="carsUserRevoke" value="<%=obj[0] %>/<%=obj[12] %>" formaction="CARSUserRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
 																	<div class="cc-rockmenu">
 																		<div class="rolling">
 																			<figure class="rolling_icon">
-																				<img src="view/images/clipboard.png">
+																				<img src="view/images/userrevoke.png" style="width: 22px !important;">
 																			</figure>
-																			<span>Details</span>
+																			<span>Revoke</span>
+																		</div>
+																	</div>
+															    </button>
+											    			<%} %>
+											    			<%if(obj[14]!=null && obj[14].toString().equalsIgnoreCase("A")) {%>
+		                                       	 				<button class="editable-clicko" name="carsInitiationId" value="<%=obj[0] %>" formaction="CARSMilestonesMonitor.htm">
+																	<div class="cc-rockmenu">
+																		<div class="rolling">
+																			<figure class="rolling_icon">
+																				<img src="view/images/milestone.png">
+																			</figure>
+																			<span>Milestones</span>
 																		</div>
 																	</div>
 												    			</button>
-												    			<%if(obj[14]!=null && obj[14].toString().equalsIgnoreCase("A")) {%>
-			                                       	 				<button class="editable-clicko" name="carsInitiationId" value="<%=obj[0] %>" formaction="CARSMilestonesMonitor.htm">
-																		<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<img src="view/images/milestone.png">
-																				</figure>
-																				<span>Milestones</span>
-																			</div>
+											    			<%} %>
+												    		<%if((transactionCodes.contains("SFG") || transactionCodes.contains("SFP")) ) {%>
+		                                       	 				<button class="editable-clicko" name="carsInitiationId" value="<%=obj[0] %>" formaction="CommitteeMainMembers.htm">
+																	<div class="cc-rockmenu">
+																		<div class="rolling">
+																			<figure class="rolling_icon">
+																				<img src="view/images/committee.jpeg" style="width: 35px;">
+																			</figure>
+																			<span>Constitute</span>
 																		</div>
-													    			</button>
-												    			<%} %>
-												    			<%if(obj[12]!=null && (obj[12].toString().equalsIgnoreCase("FWD") || obj[12].toString().equalsIgnoreCase("SFU"))) {%>
-						                                       	 	<button class="editable-clicko" name="carsUserRevoke" value="<%=obj[0] %>/<%=obj[12] %>" formaction="CARSUserRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
-																		<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<img src="view/images/userrevoke.png" style="width: 22px !important;">
-																				</figure>
-																				<span>Revoke</span>
-																			</div>
-																		</div>
-																    </button>
-												    			<%} %>
+																	</div>
+												    			</button>
+												    			
+												    			<input type="hidden" name="committeeid" value="<%=committeeId%>">
+												    			<input type="hidden" name="committeemainid" value="<%=obj[19] %>">
+												    			<input type="hidden" name="projectid" value="0">
+												    			<input type="hidden" name="divisionid" value="0">
+												    			<input type="hidden" name="initiationid" value="0">
+												    		<%} %>	
 		                                        		</form>
 													</div>
 												</div>

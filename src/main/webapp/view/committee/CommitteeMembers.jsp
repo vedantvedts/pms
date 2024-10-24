@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -62,6 +63,7 @@
 Object[] projectdata=(Object[])request.getAttribute("projectdata"); 
 Object[] committeedata=(Object[])request.getAttribute("committeedata");
 Object[] divisiondata=(Object[])request.getAttribute("divisiondata"); 
+CARSInitiation carsInitiationData=(CARSInitiation)request.getAttribute("carsInitiationData"); 
 Object[] proposedcommitteemainid=(Object[])request.getAttribute("proposedcommitteemainid"); 
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("employeelist");
 List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("employeelist1");
@@ -84,6 +86,7 @@ String divisionid=committeedata[3].toString();
 String projectid=committeedata[2].toString();
 String committeeid=committeedata[1].toString();
 String committeemainid=committeedata[0].toString();
+String carsInitiationId=committeedata[13].toString();
 String status=committeedata[9].toString();
 String proposedmainid=null;
 if(proposedcommitteemainid!=null)
@@ -174,7 +177,17 @@ String ses=(String)request.getParameter("result");
 							
 								<p style="float: right;">
 									
-									<%if(Long.parseLong(projectid)>0){ %> Project: <%=projectdata[4] %><%}else if (Long.parseLong(divisionid)>0){ %>  Division: <%=divisiondata[1] %> <%}else if(Long.parseLong(initiationid)>0){ %>Pre-Project: <%=initiationdata[1]%> <%}else{ %>Non-Project<%} %>
+									<%if(Long.parseLong(projectid)>0){ %> 
+										Project: <%=projectdata[4] %>
+									<%}else if (Long.parseLong(divisionid)>0){ %>  
+										Division: <%=divisiondata[1] %> 
+									<%}else if(Long.parseLong(initiationid)>0){ %>
+										Pre-Project: <%=initiationdata[1]%> 
+									<%}else if(Long.parseLong(initiationid)>0){ %>
+										Pre-Project: <%=initiationdata[1]%> 
+									<%}else if(Long.parseLong(carsInitiationId)>0){ %>
+										CARS No: <%=carsInitiationData.getCARSNo() %> 
+									<%}else{ %>Non-Project<%} %>
 									
 								</p>
 							</h3>
@@ -621,7 +634,8 @@ String ses=(String)request.getParameter("result");
 											<input type="hidden" name="committeeid" value="<%=committeeid%>">
 											<input type="hidden" name="projectid" value="<%=projectid %>" >	
 											<input type="hidden" name="divisionid" value="<%=divisionid%>"> 		
-											<input type="hidden" name="initiationid" value="<%=initiationid%>"> 											
+											<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+											<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>"> 											
 										</form>
 											
 											
@@ -655,6 +669,7 @@ String ses=(String)request.getParameter("result");
 												<input type="hidden" name="projectid" value="<%=projectid %>" >	
 												<input type="hidden" name="divisionid" value="<%=divisionid%>"> 		
 												<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+												<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>"> 
 								</form>	
 								</td>
 								<%} %>
@@ -711,6 +726,7 @@ String ses=(String)request.getParameter("result");
 												<input type="hidden" name="projectid" value="<%=projectid %>" >	
 												<input type="hidden" name="divisionid" value="<%=divisionid%>"> 		
 												<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
+												<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>"> 
 										</form>		
 											<td>
 										<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
@@ -1143,7 +1159,7 @@ String ses=(String)request.getParameter("result");
 							<input type="hidden" name="projectid" value="<%=projectid%>"/>							
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						</form>
-					<%}else if(Long.parseLong(divisionid)==0 && Long.parseLong(projectid)==0 && Long.parseLong(initiationid)==0){ %>
+					<%}else if(Long.parseLong(divisionid)==0 && Long.parseLong(projectid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 ){ %>
 						<form method="post" action="CommitteeList.htm" name="backfrm" id="backfrm">
 							<input type="hidden" name="projectid" value="<%=projectid%>"/> 							
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />								
@@ -1157,6 +1173,10 @@ String ses=(String)request.getParameter("result");
 		      		<%}else if(Long.parseLong(initiationid)>0 ){ %>
 		      			<form method="post" action="InitiationCommitteeMaster.htm" name="backfrm" id="backfrm">
 							<input type="hidden" name="initiationid" value="<%=initiationid %>">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />									
+						</form>	      		
+		      		<%}else if(Long.parseLong(carsInitiationId)>0 ){ %>
+		      			<form method="post" action="CARSInitiationList.htm" name="backfrm" id="backfrm">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />									
 						</form>	      		
 		      		<% } %>

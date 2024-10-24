@@ -252,6 +252,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeemain.setProjectId(Long.parseLong(committeemaindto.getProjectId()));
 		committeemain.setInitiationId(Long.parseLong(committeemaindto.getInitiationId()));
 		committeemain.setDivisionId(Long.parseLong(committeemaindto.getDivisionId()));
+		committeemain.setCARSInitiationId(Long.parseLong(committeemaindto.getCARSInitiationId()));
 		committeemain.setPreApproved(committeemaindto.getPreApproved());
 		committeemain.setReferenceNo(committeemaindto.getReferenceNo());
 		committeemain.setFormationDate(java.sql.Date.valueOf(formationDate));;
@@ -264,7 +265,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeemain.setIsActive(1);
 		}
 		if( committeemaindto.getPreApproved().equalsIgnoreCase("Y")) {
-			long lastcommitteeid=dao.LastCommitteeId(committeemaindto.getCommitteeId(),committeemaindto.getProjectId(),committeemaindto.getDivisionId(),committeemaindto.getInitiationId());		
+			long lastcommitteeid=dao.LastCommitteeId(committeemaindto.getCommitteeId(),committeemaindto.getProjectId(),committeemaindto.getDivisionId(),committeemaindto.getInitiationId(), committeemaindto.getCARSInitiationId());		
 			if(lastcommitteeid!=0 )
 			{
 				CommitteeMain committeemain1= new CommitteeMain();
@@ -380,8 +381,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid) throws Exception {
-		return dao.LastCommitteeId(CommitteeId, projectid, divisionid,initiationid );
+	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception {
+		return dao.LastCommitteeId(CommitteeId, projectid, divisionid,initiationid, carsInitiationId );
 	}
 	
 	@Override
@@ -446,46 +447,63 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long CommitteeScheduleAddSubmit(CommitteeScheduleDto committeescheduledto)throws Exception
 	{
-		logger.info(new Date() +"Inside SERVICE CommitteeScheduleAddSubmit ");
-		CommitteeSchedule committeeschedule = new  CommitteeSchedule(); 
+		try {
+
+			logger.info(new Date() +"Inside SERVICE CommitteeScheduleAddSubmit ");
+			CommitteeSchedule committeeschedule = new  CommitteeSchedule(); 
+			
+			committeeschedule.setLabCode(committeescheduledto.getLabCode());	
+			committeeschedule.setCommitteeId(committeescheduledto.getCommitteeId());
+			committeeschedule.setProjectId(Long.parseLong(committeescheduledto.getProjectId()));
+			committeeschedule.setCreatedBy(committeescheduledto.getCreatedBy());
+			committeeschedule.setScheduleStartTime(committeescheduledto.getScheduleStartTime());
+			committeeschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
+			committeeschedule.setCreatedDate(sdf1.format(new Date()));
+			committeeschedule.setScheduleSub("N");		
+			committeeschedule.setIsActive(1);
+			committeeschedule.setScheduleFlag(committeescheduledto.getScheduleFlag());
+			committeeschedule.setConfidential(Integer.parseInt(committeescheduledto.getConfidential()));
+			committeeschedule.setDivisionId(Long.parseLong(committeescheduledto.getDivisionId()));
+			committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
+			committeeschedule.setPresentationFrozen("N");
+			// Added by Prudhvi on 21-10-2024
+			committeeschedule.setCARSInitiationId(Long.parseLong(committeescheduledto.getCARSInitiationId()));
+			committeeschedule.setCommitteeMainId(committeescheduledto.getCommitteeMainId());
+			
+			String CommitteeName=dao.CommitteeName(committeescheduledto.getCommitteeId().toString())[2].toString();
+			String LabName=dao.LabDetails(committeeschedule.getLabCode())[1].toString();
+			BigInteger SerialNo=dao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());
+			String ProjectName=null;
+			if(Long.parseLong(committeescheduledto.getProjectId())>0) 
+			{
+				ProjectName=dao.projectdetails(committeescheduledto.getProjectId())[4].toString();
+			}
+			else if(Long.parseLong(committeescheduledto.getDivisionId())>0) 
+			{
+				ProjectName="DIV";
+			}
+			else if(Long.parseLong(committeescheduledto.getInitiationId())>0) 
+			{
+				ProjectName="INI";
+			}
+			else if(Long.parseLong(committeescheduledto.getCARSInitiationId())>0)
+			{
+				ProjectName="CARS-"+committeescheduledto.getCARSInitiationId();
+				SerialNo=dao.carsMeetingCount(committeescheduledto.getCARSInitiationId());
+			}
+			else
+			{
+				ProjectName="GEN";
+			}
+			Date ScheduledDate= (new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
+			committeeschedule.setMeetingId(LabName.trim()+"/"+ProjectName.trim()+"/"+CommitteeName.trim()+"/"+sdf2.format(ScheduledDate).toString().toUpperCase().replace("-", "")+"/"+SerialNo.add(new BigInteger("1")));
+			
+			return dao.CommitteeScheduleAddSubmit(committeeschedule);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 		
-		committeeschedule.setLabCode(committeescheduledto.getLabCode());	
-		committeeschedule.setCommitteeId(committeescheduledto.getCommitteeId());
-		committeeschedule.setProjectId(Long.parseLong(committeescheduledto.getProjectId()));
-		committeeschedule.setCreatedBy(committeescheduledto.getCreatedBy());
-		committeeschedule.setScheduleStartTime(committeescheduledto.getScheduleStartTime());
-		committeeschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
-		committeeschedule.setCreatedDate(sdf1.format(new Date()));
-		committeeschedule.setScheduleSub("N");		
-		committeeschedule.setIsActive(1);
-		committeeschedule.setScheduleFlag(committeescheduledto.getScheduleFlag());
-		committeeschedule.setConfidential(Integer.parseInt(committeescheduledto.getConfidential()));
-		committeeschedule.setDivisionId(Long.parseLong(committeescheduledto.getDivisionId()));
-		committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
-		committeeschedule.setPresentationFrozen("N");
-		String CommitteeName=dao.CommitteeName(committeescheduledto.getCommitteeId().toString())[2].toString();
-		String LabName=dao.LabDetails(committeeschedule.getLabCode())[1].toString();
-		BigInteger SerialNo=dao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());
-		String ProjectName=null;
-		if(Long.parseLong(committeescheduledto.getProjectId())>0) 
-		{
-			ProjectName=dao.projectdetails(committeescheduledto.getProjectId())[4].toString();
-		}
-		else if(Long.parseLong(committeescheduledto.getDivisionId())>0) 
-		{
-			ProjectName="DIV";
-		}
-		else if(Long.parseLong(committeescheduledto.getInitiationId())>0) 
-		{
-			ProjectName="INI";
-		}
-		else
-		{
-			ProjectName="GEN";
-		}
-		Date ScheduledDate= (new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
-		committeeschedule.setMeetingId(LabName.trim()+"/"+ProjectName.trim()+"/"+CommitteeName.trim()+"/"+sdf2.format(ScheduledDate).toString().toUpperCase().replace("-", "")+"/"+SerialNo.add(new BigInteger("1")));
-		return dao.CommitteeScheduleAddSubmit(committeeschedule);
 	}
 	
 	@Override
@@ -2704,7 +2722,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			LocalDate fromDate = LocalDate.parse(committeemaindata[6].toString());
 			
-			long lastcommitteeid=dao.LastCommitteeId(committeemaindata[1].toString(),committeemaindata[2].toString(),committeemaindata[3].toString(),committeemaindata[4].toString());	
+			long lastcommitteeid=dao.LastCommitteeId(committeemaindata[1].toString(),committeemaindata[2].toString(),committeemaindata[3].toString(),committeemaindata[4].toString(),committeemaindata[13].toString());	
 			if(lastcommitteeid!=0)
 			{
 				CommitteeMain committeemain1= new CommitteeMain();
@@ -3740,4 +3758,10 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
     public List<Object[]> MomeNoteApprovalList(long empId, String fromDate, String toDate) throws Exception {
     	return dao.MomeNoteApprovalList(empId,fromDate,toDate);
     }
+
+	@Override
+	public List<Object[]> carsScheduleList(String carsInitiationId) throws Exception {
+
+		return dao.carsScheduleList(carsInitiationId);
+	}
 }

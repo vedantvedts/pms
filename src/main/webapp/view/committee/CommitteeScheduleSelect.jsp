@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -103,6 +104,7 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 	SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 List<Object[]> CommitteList=(List<Object[]>) request.getAttribute("CommitteeList");
+CommitteList = CommitteList.stream().filter(e -> !Arrays.asList("CCM","DMC","CARS").contains(e[5].toString())).collect(Collectors.toList());
 String committeeid=(String)request.getAttribute("committeeid");
 
 List<Object[]>  committeeschedulelist=(List<Object[]>)request.getAttribute("committeeschedulelist");

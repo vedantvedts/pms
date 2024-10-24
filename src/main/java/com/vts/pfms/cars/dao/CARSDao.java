@@ -13,6 +13,7 @@ import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
+import com.vts.pfms.cars.model.CARSSoCMilestonesProgress;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.model.LabMaster;
@@ -96,5 +97,8 @@ public interface CARSDao {
 	public int finalSoODateSubmit(String carsInitiationId, String date) throws Exception;
 	public CARSSoCMilestones getCARSSoCMilestonesById(String carsSoCMilestoneId) throws Exception;
 	public List<Object[]> assignedListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception;
+	public long addCARSSoCMilestonesProgress(CARSSoCMilestonesProgress milestoneProgress) throws Exception;
+	public List<CARSSoCMilestonesProgress> getCARSSoCMilestonesProgressListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception;
+	public List<Object[]> getCARSSoCMilestonesProgressListByCARSInitiationId(String carsInitiationId) throws Exception;
 	
 }

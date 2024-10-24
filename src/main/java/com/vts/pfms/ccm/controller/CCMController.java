@@ -151,11 +151,14 @@ public class CCMController {
 	@RequestMapping(value="CCMModules.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String ccmModules(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
+		String clusterid = (String)ses.getAttribute("clusterid");
 		logger.info(new Date() +" Inside CCMModules.htm "+UserId);
 		try {
-			
 			req.setAttribute("committeeId", String.valueOf(service.getCommitteeIdByCommitteeCode("CCM")));
 			req.setAttribute("committeeMainId", String.valueOf(service.getCommitteeMainIdByCommitteeCode("CCM")));
+			List<Object[]> clusterLabList = service.getClusterLabListByClusterId(clusterid);
+			String clusterLabCode = clusterLabList!=null && clusterLabList.size()>0 ?clusterLabList.stream().filter(e -> e[3].toString().equalsIgnoreCase("Y")).collect(Collectors.toList()).get(0)[2].toString():"";
+			req.setAttribute("clusterLabCode", clusterLabCode);
 			return "ccm/CCMModules";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside CCMModules.htm "+UserId, e);

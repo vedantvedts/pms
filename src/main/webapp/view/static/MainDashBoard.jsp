@@ -2729,9 +2729,10 @@ if(ses!=null){ %>
 													<!-- <a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a> -->
 												</td>
 												<td style="width:5%"><span style="font-size :15px;font-weight: bold; ">Lab</span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">AB</span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB / PMB</span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC / PJB</span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone</span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Risk</span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Finance</span></td>
@@ -2742,24 +2743,24 @@ if(ses!=null){ %>
 											<%for(Object[] obj : projecthealthtotaldg) { %>
 											<tr>
 												<td>
-												<%=obj[2] %>
+												<%-- <%=obj[2] %> --%>
 												<a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
 												<td style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
 												<td class="custom-td">
-													<%if(Integer.parseInt(obj[2].toString())>0){ %>
+													<%if(Integer.parseInt(obj[62].toString())>0){ %>
 														<div class="row">
 															<div class="col-md-11">
-															    <div class="progress" data-toggle="tooltip" title="PMRC Held : <%=obj[0]%> <br> PMRC To Be Held : <%=obj[2]%><br> Total PMRC To Be Held : <%=obj[46] %>" >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[29]%>%;"  ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[30]%>%;" ></div>
+															    <div class="progress" data-toggle="tooltip" title="AB Held : <%=obj[60]%> <br> AB To Be Held : <%=obj[62]%><br> Total AB To Be Held : <%=obj[63] %>" >
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[62]%>','1', 'B')" style="width:<%=obj[64]%>%;"  ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[62]%>','1', 'C' )" style="width:<%=obj[65]%>%;" ></div>
 																</div>
 														  	</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[29].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[29].toString())>25) && (Integer.parseInt(obj[29].toString())<=50)){%> background-color: #EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[29].toString())>50) && (Integer.parseInt(obj[29].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																								   <%if( (Integer.parseInt(obj[29].toString())>75) && (Integer.parseInt(obj[29].toString())<=100)){%> background-color:green <%}%>
-																"><%=obj[29] %></span>
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[64].toString())<=25){%> background-color:red <%}%>
+																								   <%if( (Integer.parseInt(obj[64].toString())>25) && (Integer.parseInt(obj[64].toString())<=50)){%> background-color: #EE5007; <%}%>
+																								   <%if( (Integer.parseInt(obj[64].toString())>50) && (Integer.parseInt(obj[64].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
+																								   <%if( (Integer.parseInt(obj[64].toString())>75) && (Integer.parseInt(obj[64].toString())<=100)){%> background-color:green <%}%>
+																"><%=obj[64] %></span>
 															</div>
 											
 														</div>
@@ -2771,7 +2772,7 @@ if(ses!=null){ %>
 														</div>
 													</div>
 													<%} %>
-												</td>	
+												</td>
 												<td class="custom-td">
 													<%if(Integer.parseInt(obj[5].toString())>0){ %>
 														
@@ -2799,6 +2800,33 @@ if(ses!=null){ %>
 													</div>
 													<%} %>
 												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[2].toString())>0){ %>
+														<div class="row">
+															<div class="col-md-11">
+															    <div class="progress" data-toggle="tooltip" title="PMRC Held : <%=obj[0]%> <br> PMRC To Be Held : <%=obj[2]%><br> Total PMRC To Be Held : <%=obj[46] %>" >
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[29]%>%;"  ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[30]%>%;" ></div>
+																</div>
+														  	</div>
+															<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[29].toString())<=25){%> background-color:red <%}%>
+																								   <%if( (Integer.parseInt(obj[29].toString())>25) && (Integer.parseInt(obj[29].toString())<=50)){%> background-color: #EE5007; <%}%>
+																								   <%if( (Integer.parseInt(obj[29].toString())>50) && (Integer.parseInt(obj[29].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
+																								   <%if( (Integer.parseInt(obj[29].toString())>75) && (Integer.parseInt(obj[29].toString())<=100)){%> background-color:green <%}%>
+																"><%=obj[29] %></span>
+															</div>
+											
+														</div>
+						
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>	
 												<td class="custom-td">
 													<%if(Integer.parseInt(obj[9].toString())>0){ %>
 													<div class="row">
