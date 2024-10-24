@@ -394,7 +394,7 @@ public class RequirementDaoImpl implements RequirementDao {
 
 	}
 
-	private static final String PARADETAILSMAIN="SELECT paraid,sqrid,'0',parano,paradetails FROM pfms_initiation_sqr_para WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
+	private static final String PARADETAILSMAIN="SELECT paraid,sqrid,'0',parano,paradetails FROM pfms_initiation_sqr_para WHERE ReqInitiationId=:ReqInitiationId AND isactive=1 order by SINo";
 	@Override
 	public List<Object[]> getProjectParaDetails(String reqInitiationId) throws Exception {
 
@@ -1018,7 +1018,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		
 	}
 	
-	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
+	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId,SpecValue FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
 	@Override
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
 		

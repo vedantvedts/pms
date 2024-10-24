@@ -192,7 +192,7 @@ hr {
 #addReqButton {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: end;
 }
 
 #modaal-A {

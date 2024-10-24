@@ -33,6 +33,8 @@
 
    height:320px;
 } 
+
+
 .note-frame{
 margin-left:5%;
 }
@@ -654,23 +656,48 @@ The product Tree shall comprises the complete physical products / subsystems of 
         }
     }
 
-    $(document).ready(function() {
-   	 $('#summernote').summernote({
-   		  width: 800,   //don't use px
-   		
-   		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
-   		 
-   	      lineHeights: ['0.5']
-   	
-   	 });
+   // $(document).ready(function() {
+   
 
    $('#summernote').summernote({
        
-        tabsize: 5,
-        height: 1000
+	   width: 900,
+	     toolbar: [
+	         // Adding font-size, font-family, and font-color options along with other features
+	         ['style', ['bold', 'italic', 'underline', 'clear']],
+	         ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
+	         ['insert', ['picture', 'table']],  // 'picture' for image upload, 'table' for table insertion
+	         ['para', ['ul', 'ol', 'paragraph']],
+	         ['height', ['height']]
+	     ],
+	     fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],  // Font size options
+	     fontNames: ['Arial', 'Courier New', 'Helvetica', 'Times New Roman', 'Verdana'],  // Font family options
+	     buttons: {
+	         // Custom superscript and subscript buttons
+	         superscript: function() {
+	             return $.summernote.ui.button({
+	                 contents: '<sup>S</sup>',
+	                 tooltip: 'Superscript',
+	                 click: function() {
+	                     document.execCommand('superscript');
+	                 }
+	             }).render();
+	         },
+	         subscript: function() {
+	             return $.summernote.ui.button({
+	                 contents: '<sub>S</sub>',
+	                 tooltip: 'Subscript',
+	                 click: function() {
+	                     document.execCommand('subscript');
+	                 }
+	             }).render();
+	         }
+	     },
+
+	   	height:300
       });
       
-   });
+   //});
     </script> 
 <Script>
 $(document).ready(function() {

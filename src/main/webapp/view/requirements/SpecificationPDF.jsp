@@ -550,8 +550,8 @@ margin-rigth:5px;
 %>
               <tr>
                 <td class="text-dark" style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;"><%=  i+++"."%></td>
-                <td class="text-dark" style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1] %></td>
-                <td  class="text-dark" style="border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2] %></td>
+                <td class="text-dark" style="text-align: left;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1] %></td>
+                <td  class="text-dark" style="border: 1px solid black;text-align: left; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2] %></td>
             </tr>
             <% 
    }} 
@@ -698,6 +698,14 @@ The product Tree shall comprises the complete physical products / subsystems of 
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> Specification Unit</td>
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj1[6]!=null){ %><%=obj1[6].toString() %> <%}else{ %> <%} %></td>
+							</tr>
+								<tr>
+							<td class="border-black"
+								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> Specification Value</td>
+							<td class="border-black"
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj1[9]!=null){ %><%=obj1[9].toString() %> <%}else{ %>- <%} %></td>
 							</tr>
 						</tbody>
 						</table>

@@ -106,7 +106,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String VERSIONCHECKLIST="SELECT b.filerepuploadid,b.filenameui,b.ReleaseDoc,b.filerepid, b.versionDoc FROM file_rep_new a,file_rep_upload b WHERE a.projectid=:projectid AND  a.subl1=:subsysteml1 AND a.documentid=:documenttitle  AND a.filerepid=b.filerepid AND a.IsActive=1 AND b.IsActive=1 ORDER BY b.filerepuploadid DESC LIMIT 1 ";  // prakash Change
 	private static final String DOCUMENTSTAGELIST="SELECT a.fileuploadmasterid,a.parentlevelid,a.levelid,a.levelname FROM file_doc_master a WHERE a.isactive=1 AND a.levelid=:levelid AND a.parentlevelid=:documenttype";
 	private static final String FILEHISTORYLIST="SELECT fru.filerepuploadid,frn.filerepid,fdm.docid,fdm.levelname,fru.versiondoc,fru.releasedoc,CAST(DATE_FORMAT(fru.createddate,'%d-%m-%Y') AS CHAR) AS 'createddate' FROM  file_rep_new frn,file_rep_upload fru,file_doc_master fdm WHERE frn.filerepid=fru.filerepid AND frn.documentid=fdm.fileuploadmasterid AND frn.filerepid=:filerepid ORDER BY fru.versiondoc DESC,fru.releasedoc DESC ";
-	private static final String FILEREPMASTERLISTALL ="SELECT a.filerepmasterid,a.parentlevelid,a.levelid,a.levelname,b.ProjectCode FROM file_rep_master a,project_master b WHERE a.filerepmasterid>0 AND a.projectid=b.projectid AND a.projectid=:projectid AND a.LabCode=:LabCode UNION ALL SELECT a.filerepmasterid, a.parentlevelid, a.levelid, a.levelname, 'General' AS ProjectCode FROM file_rep_master a WHERE a.filerepmasterid > 0 AND a.projectid = :projectid ORDER BY parentlevelid";
+	private static final String FILEREPMASTERLISTALL ="SELECT a.filerepmasterid,a.parentlevelid,a.levelid,a.levelname,COALESCE(b.ProjectCode, 'General') AS ProjectCode FROM file_rep_master a LEFT JOIN project_master b ON a.projectid = b.projectid WHERE a.filerepmasterid > 0 AND a.projectid =:projectid AND a.LabCode =:LabCode";
 	private static final String FILEDOCMASTERLISTALL ="SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1  AND labcode=:LabCode AND fileuploadmasterid IN (SELECT parentlevelid FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid AND labcode=:LabCode ) )  UNION  SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND labcode=:LabCode AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid AND labcode=:LabCode) ";
 	private static final String PROJECTDOCUMETSADD ="SELECT DocAmendmentId,FileRepUploadId,FileName,Description,AmendVersion,FilePath,FilePass,Amendmentname FROM file_doc_amendment WHERE FileRepUploadId=:FileRepUploadId ORDER BY AmendVersion DESC";
 	private static final String DOCUMENTAMENDMENTDATA ="SELECT DocAmendmentId,FileRepUploadId,FileName,Description,AmendVersion,FilePath,FilePass,Amendmentname FROM file_doc_amendment WHERE DocAmendmentId=:docammendmentid ORDER BY AmendVersion DESC";
@@ -1156,16 +1156,53 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			return count;
 		}
 		
-		private static final String MSPROJECTLIST= "SELECT a.MilestoneId,a.SampleTableId,a.ProjectUID,a.ProjectId,e.EmpName,d.designation,a.TaskUID,a.TaskParentUID,a.TaskOutlineLevel,a.TaskOutlineNumber,\r\n"
-				+ "a.TaskName,a.StartDate,a.FinishDate,a.ActualStartDate,a.ActualFinishDate,a.TaskProgress,a.IsCritical FROM pfms_milestone_msprojectdata a,\r\n"
-				+ "employee e , employee_desig d WHERE a.projectid=:projectid AND e.empno = a.empno AND e.desigid = d.desigid ORDER BY \r\n"
+//		private static final String MSPROJECTLIST= "SELECT a.MilestoneId,a.SampleTableId,a.ProjectUID,a.ProjectId,e.EmpName,d.designation,a.TaskUID,a.TaskParentUID,a.TaskOutlineLevel,a.TaskOutlineNumber,\r\n"
+//				+ "a.TaskName,a.StartDate,a.FinishDate,a.ActualStartDate,a.ActualFinishDate,a.TaskProgress,a.IsCritical FROM pfms_milestone_msprojectdata a,\r\n"
+//				+ "employee e , employee_desig d WHERE a.projectid=:projectid AND e.empno = a.empno AND e.desigid = d.desigid ORDER BY \r\n"
+//				+ "    CAST(SUBSTRING_INDEX(TaskOutlineNumber, '.', 1) AS UNSIGNED),\r\n"
+//				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 2), '.', -1) AS UNSIGNED),\r\n"
+//				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 3), '.', -1) AS UNSIGNED),\r\n"
+//				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 4), '.', -1) AS UNSIGNED),\r\n"
+//				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 5), '.', -1) AS UNSIGNED),\r\n"
+//				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 6), '.', -1) AS UNSIGNED),\r\n"
+//				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 7), '.', -1) AS UNSIGNED)";
+		
+		
+		private static final String MSPROJECTLIST= "SELECT \r\n"
+				+ "    a.MilestoneId,\r\n"
+				+ "    a.SampleTableId,\r\n"
+				+ "    a.ProjectUID,\r\n"
+				+ "    a.ProjectId,\r\n"
+				+ "    e.EmpName,\r\n"
+				+ "    d.designation,\r\n"
+				+ "    a.TaskUID,\r\n"
+				+ "    a.TaskParentUID,\r\n"
+				+ "    a.TaskOutlineLevel,\r\n"
+				+ "    a.TaskOutlineNumber,\r\n"
+				+ "    a.TaskName,\r\n"
+				+ "    a.StartDate,\r\n"
+				+ "    a.FinishDate,\r\n"
+				+ "    a.ActualStartDate,\r\n"
+				+ "    a.ActualFinishDate,\r\n"
+				+ "    a.TaskProgress,\r\n"
+				+ "    a.IsCritical\r\n"
+				+ "FROM \r\n"
+				+ "    pfms_milestone_msprojectdata a\r\n"
+				+ "JOIN \r\n"
+				+ "    employee e ON e.empno = a.empno\r\n"
+				+ "JOIN \r\n"
+				+ "    employee_desig d ON e.desigid = d.desigid\r\n"
+				+ "WHERE \r\n"
+				+ "    a.projectid = :projectid\r\n"
+				+ "ORDER BY \r\n"
 				+ "    CAST(SUBSTRING_INDEX(TaskOutlineNumber, '.', 1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 2), '.', -1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 3), '.', -1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 4), '.', -1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 5), '.', -1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 6), '.', -1) AS UNSIGNED),\r\n"
-				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 7), '.', -1) AS UNSIGNED)";
+				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 7), '.', -1) AS UNSIGNED);\r\n"
+				+ "";
 		
 		@Override
 		public List<Object[]> getMsprojectTaskList(String ProjectId) throws Exception {
