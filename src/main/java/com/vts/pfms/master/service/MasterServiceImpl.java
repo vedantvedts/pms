@@ -2,6 +2,7 @@ package com.vts.pfms.master.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,6 +35,7 @@ import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
 import com.vts.pfms.master.model.HolidayMaster;
+import com.vts.pfms.master.model.LabPmsEmployee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -641,4 +643,86 @@ public class MasterServiceImpl implements MasterService {
 			return dao.getHolidayData(holidayid);  
 		}
 		
+		
+		@Override
+		public List<Object[]> labPmsEmployeeList(String LabCode) throws Exception {
+			return dao.labPmsEmployeeList(LabCode);
+		}
+		
+		
+		@Override
+		public long LabPmsEmployeeUpdate(String[] labPmsEmpId, String userName,String LabCode) throws Exception {
+			long status=0;
+			try
+			{
+				for(int i=0;i<labPmsEmpId.length;i++)
+				{
+					if(labPmsEmpId[i]!=null && labPmsEmpId[i].split("#")!=null)
+					{
+						System.out.println("labPmsEmpId["+i+"]*****"+labPmsEmpId[i]);
+						if(labPmsEmpId[i].split("#")[0]!=null && labPmsEmpId[i].split("#")[1].equalsIgnoreCase(" ") && labPmsEmpId[i].split("#")[2].equalsIgnoreCase(" ")) {
+							LabPmsEmployee labemployee=dao.labemployeefindbyEmpId(Long.parseLong(labPmsEmpId[i].split("#")[0].toString()));
+							Object[] getDesigId=dao.getDesigId(labemployee.getDesignation());
+							Employee employee= new Employee();
+							employee.setEmpNo(labemployee.getPcNo().toString());
+							employee.setEmpName(labemployee.getName());
+							employee.setDesigId(Long.parseLong(getDesigId[0].toString()));
+							if(labemployee.getInternalPhoneNo()!=null) {
+							employee.setExtNo(labemployee.getInternalPhoneNo());
+							}
+							if(labemployee.getLrdeMail()!=null) {
+							employee.setEmail(labemployee.getLrdeMail());
+							}
+							if(labemployee.getDronaMail()!=null) {
+							employee.setDronaEmail(labemployee.getDronaMail());
+							}
+							if(labemployee.getInternetMail()!=null) {
+							employee.setInternetEmail(labemployee.getInternetMail());
+							}
+							if(labemployee.getMobileNo()!=null) {
+							employee.setMobileNo(Long.parseLong(labemployee.getMobileNo()));
+							}
+							employee.setCreatedBy(userName);
+							employee.setCreatedDate(sdf1.format(new Date()));
+							employee.setIsActive(1);
+							employee.setSrNo(0l);
+							employee.setLabCode(LabCode);
+							status= dao.EmployeeMasterInsert(employee);
+						}else if(labPmsEmpId[i].split("#")[0]!=null && labPmsEmpId[i].split("#")[1]!=null && labPmsEmpId[i].split("#")[2]!=null) {
+							LabPmsEmployee labemployee=dao.labemployeefindbyEmpId(Long.parseLong(labPmsEmpId[i].split("#")[0].toString()));
+							if(labemployee.getPcNo()!=null && labemployee.getPcNo().toString().equalsIgnoreCase(labPmsEmpId[i].split("#")[2].toString())) {
+								Employee employee=dao.getEmployeeById(labPmsEmpId[i].split("#")[1].toString());
+								Object[] getDesigId=dao.getDesigId(labemployee.getDesignation());
+								employee.setDesigId(Long.parseLong(getDesigId[0].toString()));
+								if(labemployee.getInternalPhoneNo()!=null) {
+								employee.setExtNo(labemployee.getInternalPhoneNo());
+								}
+								if(labemployee.getMobileNo()!=null) {
+								employee.setMobileNo(Long.parseLong(labemployee.getMobileNo()));
+								}
+								if(labemployee.getLrdeMail()!=null) {
+								employee.setEmail(labemployee.getLrdeMail());
+								}
+								if(labemployee.getInternetMail()!=null) {
+								employee.setInternetEmail(labemployee.getInternetMail());
+								}
+								if(labemployee.getDronaMail()!=null) {
+								employee.setDronaEmail(labemployee.getDronaMail());
+								}
+								employee.setModifiedBy(userName);
+								employee.setModifiedDate(sdf1.format(new Date()));
+								
+								status=dao.updateEmployee(employee) ;
+							}
+						}
+					}
+				}
+			}catch(Exception e)
+			{
+				logger.error(new Date() +"Inside DAO LabPmsEmployeeUpdate() "+ e);
+				e.printStackTrace();
+				
+			}
+			return status;
+		}
 }

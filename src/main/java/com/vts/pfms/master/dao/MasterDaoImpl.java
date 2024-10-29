@@ -22,6 +22,7 @@ import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
 import com.vts.pfms.master.model.HolidayMaster;
+import com.vts.pfms.master.model.LabPmsEmployee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -873,6 +874,73 @@ public class MasterDaoImpl implements MasterDao {
 				e.printStackTrace();
 			}
 			return holiday.getHolidayId();
+		}
+		
+		
+		private static final String LABPMSEMPLOYEELIST="SELECT im.PcNo,im.Name,im.Designation AS 'immsDesignation',im.DivName,e.EmpNo,e.EmpName,d.Designation AS 'pmsDesignation',dv.DivisionName,im.EmpId AS 'immsEmpId',e.EmpId AS 'PmsEmpId' FROM lab_employee im LEFT JOIN employee e ON e.EmpNo=im.PcNo AND e.LabCode=:LabCode LEFT JOIN employee_desig d ON d.DesigId=e.DesigId LEFT JOIN division_master dv ON dv.DivisionId=e.DivisionId ORDER BY im.EmpId DESC";
+		@Override
+		public List<Object[]> labPmsEmployeeList(String LabCode) throws Exception {
+			try {
+				Query query =manager.createNativeQuery(LABPMSEMPLOYEELIST);
+				query.setParameter("LabCode", LabCode);
+				return (List<Object[]>)query.getResultList();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null; 
+		}
+		
+		
+		@Override
+		public LabPmsEmployee labemployeefindbyEmpId(long EmpId) throws Exception {
+			try {
+				return manager.find(LabPmsEmployee.class, EmpId);
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		
+		
+		private static final String GETDESIGID="SELECT DesigId,DesigCode FROM employee_desig WHERE Designation=:designation";
+		@Override
+		public Object[] getDesigId(String designation) throws Exception {
+			try {
+				Query query =manager.createNativeQuery(GETDESIGID);
+				query.setParameter("designation", designation);
+				return (Object[])query.getSingleResult();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		
+		@Override
+		public long updateEmployee(Employee employee) throws Exception {
+			try {
+				manager.persist(employee);
+				manager.flush();
+
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+			return employee.getEmpId();
+		}
+		
+		
+		@Override
+		public long EmployeeMasterInsert(Employee employee) throws Exception {
+			try {
+				manager.persist(employee);
+				manager.flush();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return employee.getEmpId();
 		}
 
 }

@@ -88,5 +88,7 @@ public interface MasterService {
 	public long HolidayAddSubmit(HolidayMaster holiday) throws Exception;
 	public long HolidayEditSubmit(HolidayMaster holiday, String userId) throws Exception;
 	public HolidayMaster getHolidayData(Long holidayid) throws Exception;
+	public List<Object[]> labPmsEmployeeList(String LabCode) throws Exception;
+	public long LabPmsEmployeeUpdate(String[] labPmsEmpId, String userName,String LabCode) throws Exception;
 	
 }

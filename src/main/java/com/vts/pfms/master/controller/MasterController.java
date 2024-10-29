@@ -1673,4 +1673,56 @@ public class MasterController {
 
 		       }
 		}
+		
+		
+		@RequestMapping(value = "LabPmsEmployee.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String ImmsPmsEmployee(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside LabPmsEmployee.htm"+UserId);		
+			try {
+				List<Object[]> labPmsEmployeeList=service.labPmsEmployeeList(LabCode);
+				req.setAttribute("labPmsEmployeeList", labPmsEmployeeList);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside LabPmsEmployee.htm"+UserId, e);
+			}
+			return  "master/labpmsemployee";
+			
+		}
+		
+		@RequestMapping(value = "LabPmsEmployeeUpdate.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String ImmsPmsEmployeeUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+			String UserName = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() + "Inside LabPmsEmployeeUpdate.htm" + UserName);
+			long status=0;
+			try 
+			{
+				String[] LabPmsEmpId = req.getParameterValues("LabPmsEmpId");
+				System.out.println("LabPmsEmpId*****"+LabPmsEmpId);
+				if(LabPmsEmpId!=null)
+				{
+					status=service.LabPmsEmployeeUpdate(LabPmsEmpId,UserName,LabCode);
+				}
+				
+				if(status>0) 
+				{
+					redir.addAttribute("status", "Employee Details Updates Succesfully.. &#128077;");
+				}
+				else
+				{
+					redir.addAttribute("failure", "Something Went Wrong..!");
+				}
+				
+				return "redirect:/LabPmsEmployee.htm";
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() + " Inside LabPmsEmployeeUpdate" + e);
+				return "error";
+			}
+			
+		}
 }
