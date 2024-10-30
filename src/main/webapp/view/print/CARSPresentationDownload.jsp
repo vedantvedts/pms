@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.cars.model.CARSOtherDocDetails"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
@@ -152,7 +153,7 @@ input,select,table,div,label,span,button {
 		List<CARSContract> allCARSContractList = (List<CARSContract>)request.getAttribute("allCARSContractList");
 		List<CARSSoCMilestones> allCARSSoCMilestonesList = (List<CARSSoCMilestones>)request.getAttribute("allCARSSoCMilestonesList");
 		List<Object[]> allMilestoneProgressList = (List<Object[]>)request.getAttribute("allMilestoneProgressList");
-		
+		List<CARSOtherDocDetails> allCARSOtherDocDetailsList = (List<CARSOtherDocDetails>)request.getAttribute("allCARSOtherDocDetailsList");
 		FormatConverter fc = new FormatConverter();
 	%>
 	
@@ -250,6 +251,13 @@ input,select,table,div,label,span,button {
 			// Milestones Progress Data
 			List<Object[]> milestoneProgressList = allMilestoneProgressList!=null && allMilestoneProgressList.size()>0? allMilestoneProgressList.stream()
 					.filter(e -> Long.parseLong(e[6].toString())==Long.parseLong(carsInitiationId)).collect(Collectors.toList()) : new ArrayList<Object[]>();
+			
+					// Other Doc Details Data
+			List<CARSOtherDocDetails> otherDocDetails = allCARSOtherDocDetailsList!=null && allCARSOtherDocDetailsList.size()>0? allCARSOtherDocDetailsList.stream()
+					.filter(e -> e.getCARSInitiationId()==Long.parseLong(carsInitiationId)).collect(Collectors.toList()) : new ArrayList<CARSOtherDocDetails>();
+			
+			List<CARSOtherDocDetails> ptcdetailslist = null;
+			CARSOtherDocDetails ptcdetails = null;
 	%>
 		<h1 class="break"></h1>
 		
@@ -298,11 +306,11 @@ input,select,table,div,label,span,button {
        	<table class="data-table mt-4" >
 			<thead>
 	        	<tr>
-	            	<th style="width: 30%;color: #055C9D;">Description</th>
+	            	<th style="width: 20%;color: #055C9D;">Description</th>
 	            	<th style="width: 10%;color: #055C9D;">Months</th>
 	            	<th style="width: 10%;color: #055C9D;">EDP</th>
-	            	<th style="width: 10%;color: #055C9D;">Amount (&#8377; )</th>
-	            	<!-- <th style="color: #055C9D;">Progress</th> -->
+	            	<th style="width: 10%;color: #055C9D;">Amount (&#8377;)</th>
+	            	<th style="width: 10%;color: #055C9D;">Status</th>
 	            	<th style="width: 20%;color: #055C9D;">Progress</th>
 	            </tr>
             </thead>
@@ -310,9 +318,9 @@ input,select,table,div,label,span,button {
 		            	
                	<%if(milestones!=null && milestones.size()>0) { char a='a'; Object[] progressData = null;%>
 		    		<tr>
-		    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
-		    			<td style="text-align : center;vertical-align: top;">T0*</td>
-		    			<td style="text-align : center;vertical-align: top;">
+		    			<td class="left" style="word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
+		    			<td class="center" style="vertical-align: top;">T0*</td>
+		    			<td class="center" style="vertical-align: top;">
 		    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(carsContract.getT0Date()) %><%} %> 
 		    			</td>
 		    			<td style="text-align : right;vertical-align: top;">
@@ -323,7 +331,18 @@ input,select,table,div,label,span,button {
 		    				<%} %>
 		    				&nbsp;&nbsp;
 		    			</td>
-		    			
+		    			<td class="center">
+		    				<%
+							  	ptcdetailslist = otherDocDetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestones.get(0).getMilestoneNo().equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+								ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+							    	
+							%>
+							<%if(ptcdetails!=null) {%>
+								<span style="font-weight: bold;color: green">Paid</span>
+							<%} else{%>
+								<span style="font-weight: bold;color: red">Pending</span>
+							<%} %>
+						</td>
 		    			<td class="center">
 		    				<%
 					        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(0).getMilestoneNo())).findFirst().orElse(null): null;
@@ -347,9 +366,9 @@ input,select,table,div,label,span,button {
 		    			String milestoneNo = milestones.get(i).getMilestoneNo();
 		    		%>
 		    		<tr>
-		    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
-		    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
-		    			<td style="text-align : center;vertical-align: top;">
+		    			<td class="left" style="vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
+		    			<td class="center" style="vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
+		    			<td class="center" style="vertical-align: top;">
 		    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {
 		    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((i)).getMonths()));
 		    				%>
@@ -364,6 +383,17 @@ input,select,table,div,label,span,button {
 		    				<%} %>
 		    				&nbsp;&nbsp;
 		    			</td>
+		    			<td class="center">
+		    				<%
+		    					ptcdetailslist = otherDocDetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestoneNo.equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+					    		ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+		    				%>
+		    				<%if(ptcdetails!=null) {%>
+								<span style="font-weight: bold;color: green">Paid</span>
+							<%} else{%>
+								<span style="font-weight: bold;color: red">Pending</span>
+							<%} %>
+						</td>
 		    			<td class="center">
 		    				<%
 					        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestoneNo)).findFirst().orElse(null): null;
@@ -386,9 +416,9 @@ input,select,table,div,label,span,button {
 		    		<%}%>
 		    		<%if(milestones.size()>1) {%>
 		    		<tr>
-		    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
-		    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
-		    			<td style="text-align : center;vertical-align: top;">
+		    			<td class="left" style="word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
+		    			<td class="center" style="vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
+		    			<td class="center" style="vertical-align: top;">
 		    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {
 		    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((milestones.size()-1)).getMonths()));
 		    				%>
@@ -402,6 +432,17 @@ input,select,table,div,label,span,button {
 		    					-
 		    				<%} %>
 		    				&nbsp;&nbsp;
+		    			</td>
+		    			<td class="center">
+		    				<%
+		    				ptcdetailslist = otherDocDetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestones.get(milestones.size()-1).getMilestoneNo().equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+					    	ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+		    				%>
+		    				<%if(ptcdetails!=null) {%>
+								<span style="font-weight: bold;color: green">Paid</span>
+							<%} else{%>
+								<span style="font-weight: bold;color: red">Pending</span>
+							<%} %>
 		    			</td>
 		    			<td class="center">
 		    				<%

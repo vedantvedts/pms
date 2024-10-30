@@ -849,4 +849,10 @@ public class CCMServiceImpl implements CCMService{
 	    return chartData;
 	}
 
+	@Override
+	public List<Object[]> getScheduleListByScheduleTypeTwo(String scheduleType) throws Exception {
+		
+		return dao.getScheduleListByScheduleTypeTwo(scheduleType);
+	}
+
 }

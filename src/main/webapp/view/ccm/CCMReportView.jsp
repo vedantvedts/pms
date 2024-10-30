@@ -123,7 +123,7 @@ input,select,table,div,label,span {
 </head>
 <body>
 	<%
-	List<CommitteeSchedule> ccmScheduleList = (List<CommitteeSchedule>)request.getAttribute("ccmScheduleList");
+	List<Object[]> ccmScheduleList = (List<Object[]>)request.getAttribute("ccmScheduleList");
 	
 	FormatConverter fc = new FormatConverter();
 	%>
@@ -154,17 +154,23 @@ input,select,table,div,label,span {
 		       						<th>SN</th>
 		       						<th>CCM No</th>
 		       						<th>Meeting Date & Time</th>
+		       						<th>Total Actions</th>
+		       						<th>Pending Actions</th>
+		       						<th>Closed Actions</th>
 		       						<th>Docs</th>
 		       					</tr>
 		       				</thead>
 		       				<tbody>
 		       					<%if(ccmScheduleList!=null && ccmScheduleList.size()>0) {
 		       						int slno = 0;
-		       						for(CommitteeSchedule ccm : ccmScheduleList) {%>
+		       						for(Object[] obj : ccmScheduleList) {%>
 		       							<tr class="center">
 		       								<td style="padding: 0.8rem !important;"><%=++slno %></td>
-		       								<td style="padding: 0.8rem !important;"><b><%=ccm.getMeetingId() %></b></td>
-		       								<td style="padding: 0.8rem !important;"><%=fc.sdfTordf(ccm.getScheduleDate().toString()) %> & <%=ccm.getScheduleStartTime() %></td>
+		       								<td style="padding: 0.8rem !important;"><b><%=obj[4] %></b></td>
+		       								<td style="padding: 0.8rem !important;"><%=fc.sdfTordf(obj[5].toString()) %> & <%=obj[6] %></td>
+		       								<td style="padding: 0.8rem !important;"><%=obj[9] %></td>
+		       								<td style="padding: 0.8rem !important;"><%=obj[10] %></td>
+		       								<td style="padding: 0.8rem !important;"><%=obj[11] %></td>
 		       								<td class="center" style="padding: 0.8rem !important;">
 		       									<form action="#"> 
 													<button type="submit" class="btn btn-sm " formaction="CCMAgendaPresentation.htm" formmethod="GET" formtarget="_blank" title="" style="border: 0 ;border-radius: 3px;" data-toggle="tooltip" data-placement="top" data-original-title="Presentation">
@@ -185,11 +191,10 @@ input,select,table,div,label,span {
 														TABULAR MINUTES <i class="fa fa-download text-white" style="font-size: 12px;"></i>
 													</button>
 													<%-- <%} %> --%>
-													<input type="hidden" name="isFrozen" value="<%=ccm.getPresentationFrozen()%>">
-													<input type="hidden" name="committeescheduleid" value="<%=ccm.getScheduleId()%>">
-													<input type="hidden" name="scheduleid" value="<%=ccm.getScheduleId()%>">
-													<input type="hidden" name="ccmScheduleId" value="<%=ccm.getScheduleId()%>">
-													<input type="hidden" name="committeeId" value="<%=ccm.getCommitteeId()%>">
+													<input type="hidden" name="committeescheduleid" value="<%=obj[0]%>">
+													<input type="hidden" name="scheduleid" value="<%=obj[0]%>">
+													<input type="hidden" name="ccmScheduleId" value="<%=obj[0]%>">
+													<input type="hidden" name="committeeId" value="<%=obj[2]%>">
 												</form>
 		       								</td>
 		       							</tr>

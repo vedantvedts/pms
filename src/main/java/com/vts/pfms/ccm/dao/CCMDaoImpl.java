@@ -665,4 +665,21 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 
+	private static final String GETSCHEDULELISTBYTYPE = "SELECT a.ScheduleId, a.LabCode, a.CommitteeId, a.CommitteeMainId, a.MeetingId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.MeetingVenue,\r\n"
+			+ "COUNT(c.ActionMainId) AS 'TotalActions', SUM(CASE WHEN d.ActionStatus = 'C' THEN 1 ELSE 0 END) AS 'ClosedActions', SUM(CASE WHEN d.ActionStatus <> 'C' THEN 1 ELSE 0 END) AS 'PendingActions'\r\n"
+			+ "FROM committee_schedule a LEFT JOIN committee_schedules_minutes_details b ON b.ScheduleId=a.ScheduleId AND b.IDARCK='A' LEFT JOIN action_main c ON c.ScheduleMinutesId=b.ScheduleMinutesId LEFT JOIN action_assign d ON d.ActionMainId=c.ActionMainId\r\n"
+			+ "WHERE a.IsActive=1 AND a.ScheduleType=:ScheduleType GROUP BY a.ScheduleId, a.MeetingId";
+	@Override
+	public List<Object[]> getScheduleListByScheduleTypeTwo(String scheduleType) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETSCHEDULELISTBYTYPE);
+			query.setParameter("ScheduleType", scheduleType);
+			return (List<Object[]>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside CCMDaoImpl getScheduleListByScheduleType "+e);
+			return new ArrayList<Object[]>();
+		}
+	}
 }

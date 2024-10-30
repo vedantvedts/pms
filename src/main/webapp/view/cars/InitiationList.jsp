@@ -436,6 +436,7 @@ String committeeId = (String)request.getAttribute("committeeId");
 							for(Object[] obj: intiationList){ 
 								String carstitle = obj[4].toString();
 								List<String> transactionCodes = Arrays.asList(obj[15].toString().split(","));
+								String amount = String.format("%.2f", Double.parseDouble(obj[20]!=null?obj[20].toString():obj[13].toString())/100000);
 							%>
 								
 								<div class="card" style="margin:10px; margin-left: 20px;margin-right: 20px;min-width:450px;">
@@ -512,10 +513,10 @@ String committeeId = (String)request.getAttribute("committeeId");
 										<div class="container" style="">
 					  						<div class="row">
 												<div class="col-xl">
-													Amount : <%if(obj[13]!=null){%><%=String.format("%.2f", Double.parseDouble(obj[13].toString())/100000) %> Lakhs <%}else{ %>-<%} %>
+													Cost : <%=amount %> Lakhs
 												</div>
 												<div class="col-">
-													Duration : <%if(obj[8]!=null){%><%=obj[8] %> months <%}else{ %>-<%} %>
+													Duration : <%=obj[33]!=null?obj[33].toString():(obj[8]!=null?obj[8].toString():"0") %> Months
 												</div>
 											</div>
 										</div>

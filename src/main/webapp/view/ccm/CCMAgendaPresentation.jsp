@@ -24,7 +24,7 @@
 <spring:url value="/resources/css/slides-style.css" var="SlidesStyleCSS" />
 <link href="${SlidesStyleCSS}" rel="stylesheet" />
 
-<title>Presentation</title>
+<title>CCM Presentation</title>
 
 <meta charset="ISO-8859-1">
 

@@ -321,7 +321,7 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("initiationL
 										<form action="#">
                                         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                        	  	<button type="submit" class="btn btn-outline-primary link-button" formaction=CARSTransStatus.htm value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" formtarget="_blank"
-                                       	  	 onmouseover="ShowProjectDetails('<%=obj[2] %>','<%=projectName %>','<%=obj[18] %>','<%=obj[8] %>','<%=amount %>')">
+                                       	  	 onmouseover="ShowProjectDetails('<%=obj[2] %>','<%=projectName %>','<%=obj[18] %>','<%=obj[33]!=null?obj[33]:(obj[8]!=null?obj[8]:"-") %>','<%=amount %>')">
 							    				<%=obj[2] %>
 							    			</button>
                                      	</form>

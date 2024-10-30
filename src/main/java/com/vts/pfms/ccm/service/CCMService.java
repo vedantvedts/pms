@@ -63,4 +63,6 @@ public interface CCMService {
 	public CCMASPStatus getCCMASPStatusById(String ccmASPStatusId) throws Exception;
 	public long getMaxCCMScheduleIdForMonth(String sequence) throws Exception;
 	public Map<String, Map<String, List<Map<String, Object>>>> getCashOutGoListForStackGraph() throws Exception;
+	public List<Object[]> getScheduleListByScheduleTypeTwo(String scheduleType) throws Exception;
+
 }

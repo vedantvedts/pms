@@ -3290,6 +3290,7 @@ public class CARSController {
 	    	req.setAttribute("allCARSContractList", service.getAllCARSContractList());
 	    	req.setAttribute("allCARSSoCMilestonesList", service.getAllCARSSoCMilestonesList());
 	    	req.setAttribute("allMilestoneProgressList", service.getAllCARSSoCMilestonesProgressList());
+	    	req.setAttribute("allCARSOtherDocDetailsList", service.getCARSOtherDocDetailsList());
 			return "cars/CARSReportPresentation";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -3312,6 +3313,7 @@ public class CARSController {
 	    	req.setAttribute("allCARSContractList", service.getAllCARSContractList());
 	    	req.setAttribute("allCARSSoCMilestonesList", service.getAllCARSSoCMilestonesList());
 	    	req.setAttribute("allMilestoneProgressList", service.getAllCARSSoCMilestonesProgressList());
+	    	req.setAttribute("allCARSOtherDocDetailsList", service.getCARSOtherDocDetailsList());
 	    	
 			String filename="CARS_Presentation";	
 			String path=req.getServletContext().getRealPath("/view/temp");

@@ -115,5 +115,6 @@ public interface CARSService {
 	public List<Object[]> getAllCARSSoCMilestonesProgressList() throws Exception;
 	public List<CARSSoCMilestones> getAllCARSSoCMilestonesList() throws Exception;
 	public List<CARSContract> getAllCARSContractList() throws Exception;
+	public List<CARSOtherDocDetails> getCARSOtherDocDetailsList() throws Exception;
 	
 }

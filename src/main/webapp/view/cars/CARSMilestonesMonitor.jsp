@@ -413,7 +413,7 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 						            	<th style="width: 30%;color: #055C9D;">Description</th>
 						            	<th style="width: 10%;color: #055C9D;">Months</th>
 						            	<th style="width: 10%;color: #055C9D;">EDP</th>
-						            	<th style="width: 10%;color: #055C9D;">Amount (&#8377; )</th>
+						            	<th style="width: 10%;color: #055C9D;">Amount (&#8377;)</th>
 						            	<!-- <th style="color: #055C9D;">Progress</th> -->
 						            	<th style="width: 20%;color: #055C9D;">Action</th>
 						            </tr>

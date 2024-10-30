@@ -55,5 +55,6 @@ public interface CCMDao {
 	public long addCCMASPStatus(CCMASPStatus aspStatus) throws Exception;
 	public int ccmCashoutGoDelete(String labCode) throws Exception;
 	public CCMASPStatus getCCMASPStatusById(String ccmASPStatusId) throws Exception;
+	public List<Object[]> getScheduleListByScheduleTypeTwo(String scheduleType) throws Exception;
 	
 }

@@ -2229,4 +2229,10 @@ public class CARSServiceImpl implements CARSService{
 
 		return dao.getAllCARSContractList();
 	}
+
+	@Override
+	public List<CARSOtherDocDetails> getCARSOtherDocDetailsList() throws Exception {
+
+		return dao.getCARSOtherDocDetailsList();
+	}
 }

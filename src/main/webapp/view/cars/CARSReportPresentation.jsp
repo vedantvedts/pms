@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.cars.model.CARSOtherDocDetails"%>
 <%@page import="com.vts.pfms.cars.model.CARSContract"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -149,6 +150,65 @@ tr.clickable:hover{
 	font-weight: 800;
     color: #ed4f10;
 }
+
+</style>
+<style type="text/css">
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    flex-grow: 1;
+    color: #333;
+}
+
+/* Specific width settings for cards */
+.card-project-info {
+    /* width: 100%; */
+    max-width: 50%;
+}
+
+.card-duration {
+    /* width: 100%; */
+    max-width: 20%;
+}
+.card-rsp-info {
+	max-width: 30%;
+}
+.card-title {
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    color: #1a73e8; /* Blue title for a modern look */
+}
+
+.card-section {
+    display: flex;
+    /* justify-content: space-between; */
+    margin: 5px 0;
+    gap: 10px;
+}
+
+.label {
+    font-weight: bold;
+    color: #ff6f61; /* Bright color for label text */
+}
+
+.value {
+    color: #2e7d32; /* Green for values to contrast labels */
+    text-align: left;
+}
+
+.card-project-info .card-title {
+    font-size: 1.6em; /* Larger title for Project Information */
+}
+
 </style>
 </head>
 <body style="background-color: #e7f9ff !important;" class="slides-container" id="slides-container">
@@ -159,7 +219,7 @@ tr.clickable:hover{
 		List<CARSContract> allCARSContractList = (List<CARSContract>)request.getAttribute("allCARSContractList");
 		List<CARSSoCMilestones> allCARSSoCMilestonesList = (List<CARSSoCMilestones>)request.getAttribute("allCARSSoCMilestonesList");
 		List<Object[]> allMilestoneProgressList = (List<Object[]>)request.getAttribute("allMilestoneProgressList");
-		
+		List<CARSOtherDocDetails> allCARSOtherDocDetailsList = (List<CARSOtherDocDetails>)request.getAttribute("allCARSOtherDocDetailsList");
 		FormatConverter fc = new FormatConverter();
 	%>
 	<% String ses=(String)request.getParameter("result");
@@ -278,7 +338,7 @@ tr.clickable:hover{
 	                                    <td class="center"><%=obj[2]!=null?obj[2]:"-" %></td>
 	                                    <td class="left"><%=obj[4]!=null?obj[4]:"-" %></td>
 	                                    <td class="left"><%=obj[18]!=null?obj[18]:"-" %></td>
-	                                    <td class="center"><%=obj[8]!=null?obj[8]:"-"  %></td>
+	                                    <td class="center"><%=obj[33]!=null?obj[33]:(obj[8]!=null?obj[8]:"-") %></td>
 	                                    <td class="right"><%=amount %></td>
 				            		</tr>
 				            	<%++slno;} }%>
@@ -296,6 +356,7 @@ tr.clickable:hover{
 				for(Object[] obj : initiationList) {
 					String carsInitiationId = obj[0].toString();
 					String amount = String.format("%.2f", Double.parseDouble(obj[20]!=null?obj[20].toString():obj[13].toString())/100000);
+					String duration = obj[33]!=null?obj[33].toString():(obj[8]!=null?obj[8].toString():"0");
 					
 					// Contract Data
 					CARSContract carsContract = allCARSContractList!=null && allCARSContractList.size()>0?allCARSContractList.stream().filter(e -> e.getCARSInitiationId()==Long.parseLong(carsInitiationId)).findFirst().orElse(null):null;
@@ -304,6 +365,13 @@ tr.clickable:hover{
 					// Milestones Progress Data
 					List<Object[]> milestoneProgressList = allMilestoneProgressList!=null && allMilestoneProgressList.size()>0? allMilestoneProgressList.stream()
 							.filter(e -> Long.parseLong(e[6].toString())==Long.parseLong(carsInitiationId)).collect(Collectors.toList()) : new ArrayList<Object[]>();
+					
+					// Other Doc Details Data
+					List<CARSOtherDocDetails> otherDocDetails = allCARSOtherDocDetailsList!=null && allCARSOtherDocDetailsList.size()>0? allCARSOtherDocDetailsList.stream()
+							.filter(e -> e.getCARSInitiationId()==Long.parseLong(carsInitiationId)).collect(Collectors.toList()) : new ArrayList<CARSOtherDocDetails>();
+					
+					List<CARSOtherDocDetails> ptcdetailslist = null;
+					CARSOtherDocDetails ptcdetails = null;		
 			%>
 				<div class="carousel-item">
 	
@@ -328,53 +396,80 @@ tr.clickable:hover{
 					
 					<div class="content" >
 						<div class="container-fluid mt-3">
-							<table class="data-table">
-								<tr>
-									<td colspan="3">
-										<span class="cssideheading">Title:</span>
-		                				&emsp;<span class="cssideheadingdata"><%=obj[4]!=null?obj[4]:"-"  %></span>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<span class="cssideheading">Funds from:</span>
-		                				&emsp;<span class="cssideheadingdata"><%=obj[18]!=null?obj[18]:"-" %></span>
-									</td>
-									<td>
-										<span class="cssideheading">Duration (In Months):</span>
-		                				&emsp;<span class="cssideheadingdata"><%=obj[8]!=null?obj[8]:"-"  %></span>
-									</td>
-									<td>
-										<span class="cssideheading">Amount (In Lakhs):</span>
-		                				&emsp;<span class="cssideheadingdata"><%=amount %></span>
-									</td>
-								</tr>
-								<tr>
-									<td style="vertical-align: top;">
-										<span class="cssideheading">Name of Research Service Provider (RSP):</span>
-		                				&emsp;<span class="cssideheadingdata"><%=obj[26]+". "+obj[27]+", "+obj[28] %></span>
-									</td>
-									<td colspan="2">
-										<span class="cssideheading">RSP's Address:</span>
-		                				&emsp;<span class="cssideheadingdata">
-		                					<%=obj[21]+", "+obj[22]+", "+obj[23]+", "+obj[24]+" - "+obj[25] %> <br>
-		                					Phone : <%=obj[30] %> <br>
-		                					Email : <%=obj[31] %> <br>
-		                					Fax : <%=obj[32] %>
-		                				</span>
-									</td>
-								</tr>
-							</table>
-							
+						
+							<div class="card-container">
+    							<!-- Project Information Card -->
+							    <div class="card card-project-info">
+							        <h1 class="card-title">Project Information</h1>
+							        <div class="card-section">
+							            <span class="label">Title:</span> 
+							            <span class="value"><%=obj[4]!=null?obj[4]:"-" %></span>
+							        </div>
+							        <div class="card-section">
+							            <span class="label">Funds from:</span> 
+							            <span class="value"><%=obj[18]!=null?obj[18]:"-" %></span>
+							        </div>
+							        <div class="card-section">
+							            <span class="label">Cost:</span> 
+							            <span class="value"><%=amount %> Lakhs</span>
+							        </div>
+							    </div>
+    
+    							<!-- Duration and Dates Card -->
+							    <div class="card card-duration">
+							        <h2 class="card-title">Dates and Duration</h2>
+							        <div class="card-section">
+							            <span class="label">Start Date:</span>
+							            <span class="value">
+							                <% if (carsContract != null && carsContract.getContractDate() != null) { %>
+							                    <%= fc.SqlToRegularDate(carsContract.getContractDate()) %>
+							                <% } else { %> - <% } %>
+							            </span>
+							        </div>
+							        <div class="card-section">
+							            <span class="label">PDC:</span>
+							            <span class="value">
+							                <% if (carsContract != null && carsContract.getT0Date() != null) { 
+							                    LocalDate sqldate = LocalDate.parse(carsContract.getT0Date())
+							                                    .plusMonths(Long.parseLong(milestones.get(milestones.size() - 1).getMonths())); %>
+							                    <%= fc.SqlToRegularDate(sqldate.toString()) %>
+							                <% } else { %> - <% } %>
+							            </span>
+							        </div>
+							        <div class="card-section">
+							            <span class="label">Duration:</span> 
+							            <span class="value"><%=duration %> <%if(Integer.parseInt(duration)>1) {%>Months<%} else{%>Month<%} %> </span>
+							        </div>
+							    </div>
+
+							    <!-- RSP Information Card -->
+							    <div class="card card-rsp-info">
+							        <h2 class="card-title">Research Service Provider (RSP)</h2>
+							        <div class="card-section">
+							            <span class="label">Name:</span>
+							            <span class="value"><%= obj[26] + ". " + obj[27] + ", " + obj[28] %></span>
+							        </div>
+							        <div class="card-section">
+							            <span class="label">Address:</span>
+							            <span class="value">
+							                <%= obj[21] + ", " + obj[22] + ", " + obj[23] + ", " + obj[24] + " - " + obj[25] %> <br>
+							                Phone: <%= obj[30] %><br>
+							                Email: <%= obj[31] %><br>
+							                Fax: <%= obj[32] %>
+							            </span>
+							        </div>
+							    </div>
+							</div>
+	
 							<!-- --------------------------------------- Milestone Data ---------------------------------------------------- -->
 		                	<table class="data-table mt-4" >
 								<thead>
 						        	<tr>
-						            	<th style="width: 30%;color: #055C9D;">Description</th>
+						            	<th style="width: 20%;color: #055C9D;">Description</th>
 						            	<th style="width: 10%;color: #055C9D;">Months</th>
 						            	<th style="width: 10%;color: #055C9D;">EDP</th>
-						            	<th style="width: 10%;color: #055C9D;">Amount (&#8377; )</th>
-						            	<!-- <th style="color: #055C9D;">Progress</th> -->
+						            	<th style="width: 10%;color: #055C9D;">Amount (&#8377;)</th>
+						            	<th style="width: 10%;color: #055C9D;">Status</th>
 						            	<th style="width: 20%;color: #055C9D;">Action</th>
 						            </tr>
 					            </thead>
@@ -395,7 +490,18 @@ tr.clickable:hover{
 							    				<%} %>
 							    				&nbsp;&nbsp;
 							    			</td>
-							    			
+							    			<td style="text-align: center;">
+							    				<%
+												  	ptcdetailslist = otherDocDetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestones.get(0).getMilestoneNo().equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+													ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+												    	
+												%>
+												<%if(ptcdetails!=null) {%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-success" style="text-align: center !important;font-weight: bold;">Paid</button>
+												<%} else{%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-danger" style="text-align: center !important;font-weight: bold;">Pending</button>
+												<%} %>
+							    			</td>
 							    			<td class="center">
 							    				<form action="#" method="POST" name="myfrm" >
 							    					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
@@ -454,6 +560,17 @@ tr.clickable:hover{
 							    					-
 							    				<%} %>
 							    				&nbsp;&nbsp;
+							    			</td>
+							    			<td style="text-align: center;">
+							    				<%
+							    					ptcdetailslist = otherDocDetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestoneNo.equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+										    		ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+							    				%>
+							    				<%if(ptcdetails!=null) {%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-success" style="text-align: center !important;font-weight: bold;">Paid</button>
+												<%} else{%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-danger" style="text-align: center !important;font-weight: bold;">Pending</button>
+												<%} %>
 							    			</td>
 							    			<td class="center">
 							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
@@ -515,6 +632,17 @@ tr.clickable:hover{
 							    				<%} %>
 							    				&nbsp;&nbsp;
 							    			</td>
+							    			<td style="text-align: center;">
+							    				<%
+							    				ptcdetailslist = otherDocDetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestones.get(milestones.size()-1).getMilestoneNo().equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+										    	ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+							    				%>
+							    				<%if(ptcdetails!=null) {%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-success" style="text-align: center !important;font-weight: bold;">Paid</button>
+												<%} else{%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-danger" style="text-align: center !important;font-weight: bold;">Pending</button>
+												<%} %>
+							    			</td>
 							    			<td  class="center">
 							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
 							    					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
@@ -558,7 +686,7 @@ tr.clickable:hover{
 							    		<%} %>
 			    					<%} else{%>
 			    						<tr>
-			    							<td colspan="5" class="center">No Data Available</td>
+			    							<td colspan="6" class="center">No Data Available</td>
 			    						</tr>
 			    					<%} %>
 					            </tbody>

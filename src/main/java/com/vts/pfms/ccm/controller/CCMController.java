@@ -1842,7 +1842,7 @@ public class CCMController {
 		String UserId = (String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CCMReportView.htm "+UserId);
 		try {
-			req.setAttribute("ccmScheduleList", service.getScheduleListByScheduleType("C"));
+			req.setAttribute("ccmScheduleList", service.getScheduleListByScheduleTypeTwo("C"));
 			return "ccm/CCMReportView";
 		}catch (Exception e) {
 			e.printStackTrace();
