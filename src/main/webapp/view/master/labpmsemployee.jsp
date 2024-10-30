@@ -327,38 +327,38 @@
 </body>
 <script type="text/javascript">
 $(document).ready(function(){
-    $('#selectall').on('click',function(){
-        if(this.checked){
-            $('.checkbox').each(function(){
-                this.checked = true;
-            });
-        }else{
-             $('.checkbox').each(function(){
-                this.checked = false;
-            });
-        }
-    });
-    
-    $('.checkbox').on('click',function(){
-        if($('.checkbox:checked').length == $('.checkbox').length){
-            $('#selectall').prop('checked',true);
-        }else{
-            $('#selectall').prop('checked',false);
-        }
-    });
-});	
-function openlabPmsUpdateModal() {
-    $(".LabPmsEmployee").modal('show');
-    $('#selectall').prop('checked', true);
-    if ($('#selectall').is(':checked')) {
-        $('.checkbox').each(function() {
+$('#selectall').on('click',function(){
+    if(this.checked){
+        $('.checkbox').each(function(){
             this.checked = true;
         });
-    } else {
-        $('.checkbox').each(function() {
+    }else{
+         $('.checkbox').each(function(){
             this.checked = false;
         });
     }
+});
+
+$('.checkbox').on('click',function(){
+    if($('.checkbox:checked').length == $('.checkbox').length){
+        $('#selectall').prop('checked',true);
+    }else{
+        $('#selectall').prop('checked',false);
+    }
+});
+});	
+function openlabPmsUpdateModal() {
+$(".LabPmsEmployee").modal('show');
+$('#selectall').prop('checked', true);
+if ($('#selectall').is(':checked')) {
+    $('.checkbox').each(function() {
+        this.checked = true;
+    });
+} else {
+    $('.checkbox').each(function() {
+        this.checked = false;
+    });
+}
 }
 
 $("#myTable1").DataTable({
@@ -367,47 +367,31 @@ $("#myTable1").DataTable({
       "ordering": false
 });
 
-function SubmitLabPmsEmployeeDetails()
-{
+function SubmitLabPmsEmployeeDetails(){
     var checkboxs=document.getElementsByName("LabPmsEmpId");
     var okay=false;
-    for(var i=0,l=checkboxs.length;i<l;i++)
-    {
-        if(checkboxs[i].checked)
-        {
+    for(var i=0,l=checkboxs.length;i<l;i++){
+        if(checkboxs[i].checked){
             okay=true;
             break;
         }
     }
-    
-    
-    if(!okay)
-    {	
+    if(!okay) {	
     	alert("Please select at least one checkbox");
     	return false;	
-    }
-    else
-    	{
-    	
+    }else{
     	var form=$("#LabPmsEmployeeForm");
-	 	if(form)
-	 		{
-	 		  if(confirm("Are You Sure To Update the Employee ?"))
-	 			  {
-	 			 	form.submit();
-	 			 	return true;
-	 			  }
-	 		  else
-	 			  {
-	 			 	return false;
-	 			  }
+	 	if(form){
+ 			if(confirm("Are You Sure To Update the Employee ?")){
+ 			 	form.submit();
+ 			 	return true;
+	 		}else{
+	 			return false;
 	 		}
-	 	     else
-	 			  {
-	 			 	return false;
-	 			  }
-    	}
-   	
+	 	}else{
+	 		return false;
+	 	}
+    }
 }
 </script>
 </html>
