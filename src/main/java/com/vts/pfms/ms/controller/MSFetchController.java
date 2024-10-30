@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vts.pfms.ms.dto.CommitteeScheduleDto;
 import com.vts.pfms.ms.dto.EmployeeDto;
 import com.vts.pfms.ms.dto.PFMSCCMDataDto;
 import com.vts.pfms.ms.dto.PfmsInitiationDto;
@@ -74,6 +75,12 @@ public class MSFetchController {
     @GetMapping("/projectHoaData")
     public ResponseEntity<List<ProjectHoaDto>> fetchProjectHoaData() throws Exception {
     	List<ProjectHoaDto> data = service.getProjectHoaData();
+    	return ResponseEntity.ok(data);  
+    }
+    
+    @GetMapping("/committeeScheduleData")
+    public ResponseEntity<List<CommitteeScheduleDto>> fetchCommitteeScheduleData() throws Exception {
+    	List<CommitteeScheduleDto> data = service.getCommitteeScheduleData();
     	return ResponseEntity.ok(data);  
     }
     

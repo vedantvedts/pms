@@ -98,7 +98,7 @@ String labCode = (String)session.getAttribute("labcode");
 					</div>
 				</div>
 				
-				<div class="card module" data-url="CCMReport.htm">
+				<div class="card module" data-url="CCMReportView.htm">
 					<div class="card-body">
 						<h5>CCM Report</h5>
 						<img alt="report" src="view/images/doc-report.png" >
@@ -119,22 +119,25 @@ String labCode = (String)session.getAttribute("labcode");
 		
 		var parameters = "committeeMainId="+committeeMainId+"&committeeId="+committeeId;
 		
-		 $('.module').click(function() {
-             var url = $(this).data('url');
+		$('.module').click(function() {
+        	var url = $(this).data('url');
              
-             if (url === 'CCMCommitteeConstitution.htm') {
-            	 
-            	url += '?' + parameters;
-            	 
- 				if(committeeId=="0"){
- 					if(confirm('CCM Committee not created yet \n Do you want to create New Committee?')){
- 						window.open('CommitteeList.htm', '_blank');
- 					}else{
- 						event.preventDefault();
- 					}
- 				}else{
- 					window.location.href = url;
- 				}
+			if (url === 'CCMCommitteeConstitution.htm') {
+            	if(labCode===clusterLabCode) {
+	        		url += '?' + parameters;
+	            	 
+	 				if(committeeId=="0"){
+	 					if(confirm('CCM Committee not created yet \n Do you want to create New Committee?')){
+	 						window.open('CommitteeList.htm', '_blank');
+	 					}else{
+	 						event.preventDefault();
+	 					}
+	 				}else{
+	 					window.location.href = url;
+	 				}
+            	}else {
+  					alert('Access Denied');
+  				}	
  				
  			} else if (url === 'CCMSchedule.htm') {
  				
@@ -164,7 +167,8 @@ String labCode = (String)session.getAttribute("labcode");
 				//window.open(url, '_blank');
  				window.location.href = url;
  			} else {
- 				window.open(url, '_blank');
+ 				//window.open(url, '_blank');
+ 				window.location.href = url;
  			}
              
              

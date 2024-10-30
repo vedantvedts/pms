@@ -1,6 +1,4 @@
-package com.vts.pfms.committee.model;
-
-
+package com.vts.pfms.ms.model;
 
 import java.sql.Date;
 
@@ -9,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +19,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="committee_schedule")
-public class CommitteeSchedule
-{
+@Table(name="cluster_committee_schedule")
+public class ClusterCommitteeSchedule {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long ClusterScheduleId;
 	private Long ScheduleId;
 	private String LabCode;
 	private Long CommitteeId;
@@ -33,7 +33,6 @@ public class CommitteeSchedule
 	private Long ProjectId;
 	private Long DivisionId; 
 	private Long InitiationId; 
-	// Added by Prudhvi on 21-10-2024
 	private Long CARSInitiationId;
 	private Long RODNameId;
 	private Date ScheduleDate;
@@ -55,5 +54,4 @@ public class CommitteeSchedule
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
-
 }

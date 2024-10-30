@@ -94,7 +94,7 @@ public class RODServiceImpl implements RODService{
 		committeeschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
 		committeeschedule.setScheduleSub("N");		
 		committeeschedule.setScheduleFlag(committeescheduledto.getScheduleFlag());
-		committeeschedule.setConfidential(Integer.parseInt(committeescheduledto.getConfidential()));
+		committeeschedule.setConfidential(committeescheduledto.getConfidential());
 		committeeschedule.setDivisionId(Long.parseLong(committeescheduledto.getDivisionId()));
 		committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
 		committeeschedule.setPresentationFrozen("N");

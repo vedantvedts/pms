@@ -97,6 +97,7 @@ a:hover {
 	List<Object[]> assignedList = (List<Object[]>)request.getAttribute("assignedList");
 	String carsInitiationId = (String)request.getAttribute("carsInitiationId");
 	String carsSoCMilestoneId = (String)request.getAttribute("carsSoCMilestoneId");
+	String presFlag = (String)request.getAttribute("presFlag");
 	
 	Long EmpId=(Long)session.getAttribute("EmpId");
 			
@@ -153,7 +154,7 @@ a:hover {
 									<input type="hidden" name="carsSoCMilestoneId" value="<%=carsSoCMilestoneId %>" />
 									<input type="hidden" name="Assignee" value="<%=EmpId %>" />
 									<button type="submit" class="btn btn-sm btn-success submit " name="Action" value="Add" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
-									<button class="btn btn-primary btn-sm back" formaction="CARSMilestonesMonitor.htm" formnovalidate="formnovalidate" >BACK</button>
+									<button class="btn btn-primary btn-sm back" formaction="<%if(presFlag!=null && presFlag.equalsIgnoreCase("A")) {%>CARSReportPresentation.htm<%}else {%>CARSMilestonesMonitor.htm<%} %>" formnovalidate="formnovalidate" >BACK</button>
 								</div>
 							</div>
 						</div>

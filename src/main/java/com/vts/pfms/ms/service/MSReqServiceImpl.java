@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.ms.dao.ClusterCommitteeScheduleRepo;
 import com.vts.pfms.ms.dao.ClusterLabEmployeeRepo;
 import com.vts.pfms.ms.dao.MSReqDao;
 import com.vts.pfms.ms.dao.PfmsCCMDataRepo;
@@ -26,6 +27,7 @@ import com.vts.pfms.ms.dao.PfmsInitiationMilestoneRevRepo;
 import com.vts.pfms.ms.dao.PfmsInitiationRepo;
 import com.vts.pfms.ms.dao.ProjectHealthRepo;
 import com.vts.pfms.ms.dao.ProjectHoaRepo;
+import com.vts.pfms.ms.dto.CommitteeScheduleDto;
 import com.vts.pfms.ms.dto.EmployeeDto;
 import com.vts.pfms.ms.dto.PFMSCCMDataDto;
 import com.vts.pfms.ms.dto.PfmsInitiationDto;
@@ -34,6 +36,7 @@ import com.vts.pfms.ms.dto.PfmsInitiationMilestoneRevDto;
 import com.vts.pfms.ms.dto.ProjectHealthDto;
 import com.vts.pfms.ms.dto.ProjectHoaDto;
 import com.vts.pfms.ms.dto.ProjectMasterDto;
+import com.vts.pfms.ms.model.ClusterCommitteeSchedule;
 import com.vts.pfms.ms.model.ClusterLabEmployee;
 import com.vts.pfms.project.dao.ProjectMasterRepo;
 import com.vts.pfms.project.model.PfmsInitiation;
@@ -74,6 +77,9 @@ public class MSReqServiceImpl implements MSReqService{
 	@Autowired
 	private ProjectHoaRepo projectHoaRepo; 
 	
+	@Autowired
+	private ClusterCommitteeScheduleRepo clusterCommitteeScheduleRepo; 
+	
     private final RestTemplate restTemplate;
 
     public MSReqServiceImpl(RestTemplateBuilder restTemplateBuilder) {
@@ -88,7 +94,7 @@ public class MSReqServiceImpl implements MSReqService{
         return response.getBody();  // Get data from the response
     }
     
-    public long saveAllEmployeesData(List<EmployeeDto> empDtoList) throws Exception {
+    public long saveAllClusterLabEmployeesData(List<EmployeeDto> empDtoList) throws Exception {
     	try {
     		if(empDtoList!=null && empDtoList.size()>0) {
     			// Remove Existing Employees
@@ -130,7 +136,7 @@ public class MSReqServiceImpl implements MSReqService{
     		return 1;
     	}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date()+" Inside MSServiceImpl saveAllEmployeesData "+e);
+			logger.error(new Date()+" Inside MSServiceImpl saveAllClusterLabEmployeesData "+e);
 			return 0;
 		}
     }
@@ -569,7 +575,71 @@ public class MSReqServiceImpl implements MSReqService{
             return 0;
         }
     } 
-    
+
+    // Committee Schedule Data Fetch
+    public List<CommitteeScheduleDto> fetchCommitteeScheduleDataFromLocation(String locationUri) throws Exception{
+    	
+    	ResponseEntity<List<CommitteeScheduleDto>> response = restTemplate.exchange(locationUri, HttpMethod.GET, null, new ParameterizedTypeReference<List<CommitteeScheduleDto>>() {});
+    	
+    	return response.getBody();  // Get data from the response
+    }
+
+    public long saveAllClusterCommitteeScheduleData(List<CommitteeScheduleDto> committeeScheduleDtoList) throws Exception {
+        try {
+        	if(committeeScheduleDtoList!=null && committeeScheduleDtoList.size()>0) {
+        		// Remove Existing ClusterCommitteeSchedule Data
+        		clusterCommitteeScheduleRepo.deleteAll();
+                
+                // Reset auto-increment to start from 1
+        		clusterCommitteeScheduleRepo.resetAutoIncrement();
+            	
+            	// Map CommitteeScheduleDto to ClusterCommitteeSchedule using builder
+            	List<ClusterCommitteeSchedule> committeeScheduleDataList = committeeScheduleDtoList.stream()
+            											.map(dto -> ClusterCommitteeSchedule.builder()
+	            													.ScheduleId(dto.getScheduleId())
+	            													.LabCode(dto.getLabCode())
+	            													.CommitteeId(dto.getCommitteeId())
+	            													.CommitteeMainId(dto.getCommitteeMainId())
+	            													.MeetingId(dto.getMeetingId())
+	            													.ProjectId(dto.getProjectId())
+	            													.DivisionId(dto.getDivisionId())
+	            													.InitiationId(dto.getInitiationId())
+	            													.CARSInitiationId(dto.getCARSInitiationId())
+	            													.RODNameId(dto.getRODNameId())
+	            													.ScheduleDate(dto.getScheduleDate())
+	            													.ScheduleStartTime(dto.getScheduleStartTime())
+	            													.ScheduleFlag(dto.getScheduleFlag())
+	            													.ScheduleSub(dto.getScheduleSub())
+	            													.KickOffOtp(dto.getKickOffOtp())
+	            													.MeetingVenue(dto.getMeetingVenue())
+	            													.Confidential(dto.getConfidential())
+	            													.Reference(dto.getReference())
+	            													.PMRCDecisions(dto.getPMRCDecisions())
+	            													.BriefingPaperFrozen(dto.getBriefingPaperFrozen())
+	            													.MinutesFrozen(dto.getMinutesFrozen())
+	            													.PresentationFrozen(dto.getPresentationFrozen())
+	            													.BriefingStatus(dto.getBriefingStatus())
+	            													.ScheduleType(dto.getScheduleType())
+	            													.CreatedBy(dto.getCreatedBy())
+	            													.CreatedDate(dto.getCreatedDate())
+	            													.ModifiedBy(dto.getModifiedBy())
+	            													.ModifiedDate(dto.getModifiedDate())
+	            													.IsActive(dto.getIsActive())
+            														.build())
+            											.collect(Collectors.toList());
+            	
+            	// Save all ClusterCommitteeSchedule data to the database
+            	clusterCommitteeScheduleRepo.saveAll(committeeScheduleDataList);
+        	}
+            
+            return 1;
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error(new Date() + " Inside MSServiceImpl saveAllClusterCommitteeScheduleData " + e);
+            return 0;
+        }
+    } 
+
 	@Override
 	public long syncDataFromClusterLabs() throws Exception {
 		try {
@@ -581,6 +651,7 @@ public class MSReqServiceImpl implements MSReqService{
 			List<PFMSCCMDataDto> ccmCOGDtoList = new ArrayList<>();
 			List<ProjectHealthDto> projectHealthDtoList = new ArrayList<>();
 			List<ProjectHoaDto> projectHoaDtoList = new ArrayList<>();
+			List<CommitteeScheduleDto> committeeScheduleDtoList = new ArrayList<>();
 			
 			
 			//List<LabMaster> labList = dao.getAllLabList().stream().filter(lab -> lab.getClusterId()==Long.parseLong(clusterid)).collect(Collectors.toList());
@@ -645,10 +716,17 @@ public class MSReqServiceImpl implements MSReqService{
     					e.printStackTrace();
     				}
     				
+    				// Committee Schedule Data fetch
+    				try {
+    					committeeScheduleDtoList.addAll(fetchCommitteeScheduleDataFromLocation(labMaster.getLabURI() + "/api/sync/committeeScheduleData"));
+    				} catch (Exception e) {
+    					e.printStackTrace();
+    				}
+    				
     			}
     		});
     		
-			saveAllEmployeesData(empDtoList); // Save Employee Data
+    		saveAllClusterLabEmployeesData(empDtoList); // Save Employee Data
 			saveAllProjectsData(projectDtoList); // Save Project Data
 			saveAllInitiationProjectsData(initiationDtoList); // Save Initiation Project Data
 			saveAllInitiationProjectsMSData(initiationMSDtoList); // Save Initiation Project Milestone Data
@@ -656,7 +734,7 @@ public class MSReqServiceImpl implements MSReqService{
 			saveAllCCMCOGData(ccmCOGDtoList); // Save CCM COG Data
 			saveAllProjectHealthData(projectHealthDtoList); // Save Project Health Data
 			saveAllProjectHoaData(projectHoaDtoList); // Save Project Hoa Data
-			
+			saveAllClusterCommitteeScheduleData(committeeScheduleDtoList); // Save Cluster Committee Schedule Data
 			return 1;
 		}catch (Exception e) {
 			e.printStackTrace();

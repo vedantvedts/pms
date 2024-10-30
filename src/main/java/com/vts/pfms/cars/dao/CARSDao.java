@@ -99,6 +99,8 @@ public interface CARSDao {
 	public List<Object[]> assignedListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception;
 	public long addCARSSoCMilestonesProgress(CARSSoCMilestonesProgress milestoneProgress) throws Exception;
 	public List<CARSSoCMilestonesProgress> getCARSSoCMilestonesProgressListByCARSSoCMilestoneId(String carsSoCMilestoneId) throws Exception;
-	public List<Object[]> getCARSSoCMilestonesProgressListByCARSInitiationId(String carsInitiationId) throws Exception;
+	public List<Object[]> getAllCARSSoCMilestonesProgressList() throws Exception;
+	public List<CARSSoCMilestones> getAllCARSSoCMilestonesList() throws Exception;
+	public List<CARSContract> getAllCARSContractList() throws Exception;
 	
 }

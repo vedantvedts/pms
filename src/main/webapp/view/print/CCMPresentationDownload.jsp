@@ -579,7 +579,7 @@ input,select,table,div,label,span,button {
 				<table class="data-table" >
 					<thead>
 						<tr>
-							<th colspan="6" class="heading">DMC Approval</th>
+							<th colspan="6" class="heading">DMC Actions</th>
 						</tr>
 						<tr >
 							<th style="width: 5%;">SN</th>

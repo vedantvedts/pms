@@ -32,6 +32,7 @@ label{
 	String carsSoCMilestoneId = (String)request.getAttribute("carsSoCMilestoneId");
 	CARSSoCMilestones carsSoCMilestones = (CARSSoCMilestones)request.getAttribute("carsSoCMilestones");
 	List<CARSSoCMilestonesProgress> carsSoCMilestonesProgressList = (List<CARSSoCMilestonesProgress>)request.getAttribute("carsSoCMilestonesProgressList");
+	String presFlag = (String)request.getAttribute("presFlag");
 	
 	FormatConverter fc = new FormatConverter();
 %>
@@ -93,7 +94,7 @@ label{
 									<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>" />
 									<input type="hidden" name="carsSoCMilestoneId" value="<%=carsSoCMilestoneId %>" />
 									<button type="submit" class="btn btn-sm btn-success submit " name="Action" value="Add" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
-									<button class="btn btn-primary btn-sm back" formaction="CARSMilestonesMonitor.htm" formnovalidate="formnovalidate" >BACK</button>
+									<button class="btn btn-primary btn-sm back" formaction="<%if(presFlag!=null && presFlag.equalsIgnoreCase("A")) {%>CARSReportPresentation.htm<%}else {%>CARSMilestonesMonitor.htm<%} %>" formnovalidate="formnovalidate" >BACK</button>
 								</div>
 							</div>
 						</div>

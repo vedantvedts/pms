@@ -204,7 +204,7 @@ public class RoadMapDaoImpl implements RoadMapDao{
 			+ "	(SELECT designation FROM pfms_road_map_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.RoadMapStatusCode =  b.RoadMapStatusCode AND t.RoadMapId=d.RoadMapId ORDER BY t.RoadMapTransId DESC LIMIT 1) AS 'Designation',\r\n"
 			+ "	MAX(a.ActionDate) AS ActionDate,a.Remarks,b.RoadMapStatus,b.RoadMapStatusColor,b.RoadMapStatusCode \r\n"
 			+ "	FROM pfms_road_map_trans a,pfms_road_map_status b,employee c,pfms_road_map d\r\n"
-			+ "	WHERE d.RoadMapId=a.RoadMapId AND a.RoadMapStatusCode =b.RoadMapStatusCode AND a.Actionby=c.EmpId AND d.RoadMapId=:RoadMapId GROUP BY b.RoadMapStatusCode ORDER BY a.RoadMapTransId ASC";
+			+ "	WHERE d.RoadMapId=a.RoadMapId AND a.RoadMapStatusCode =b.RoadMapStatusCode AND a.Actionby=c.EmpId AND d.RoadMapId=:RoadMapId GROUP BY b.RoadMapStatusCode,b.RoadMapStatus,b.RoadMapStatusColor,a.RoadMapTransId,a.Remarks ORDER BY a.RoadMapTransId ASC";
 	@Override
 	public List<Object[]> roadMapTransApprovalData(String roadMapId) {
 

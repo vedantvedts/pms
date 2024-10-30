@@ -462,7 +462,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeschedule.setScheduleSub("N");		
 			committeeschedule.setIsActive(1);
 			committeeschedule.setScheduleFlag(committeescheduledto.getScheduleFlag());
-			committeeschedule.setConfidential(Integer.parseInt(committeescheduledto.getConfidential()));
+			committeeschedule.setConfidential(committeescheduledto.getConfidential());
 			committeeschedule.setDivisionId(Long.parseLong(committeescheduledto.getDivisionId()));
 			committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
 			committeeschedule.setPresentationFrozen("N");

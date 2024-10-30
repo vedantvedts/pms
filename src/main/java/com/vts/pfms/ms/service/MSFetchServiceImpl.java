@@ -1,5 +1,6 @@
 package com.vts.pfms.ms.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,9 +9,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.ms.dao.CommitteeScheduleRepo;
 import com.vts.pfms.ms.dao.EmployeeRepo;
 import com.vts.pfms.ms.dao.PfmsCCMDataRepo;
 import com.vts.pfms.ms.dao.PfmsInitiationMilestoneRepo;
@@ -18,6 +21,7 @@ import com.vts.pfms.ms.dao.PfmsInitiationMilestoneRevRepo;
 import com.vts.pfms.ms.dao.PfmsInitiationRepo;
 import com.vts.pfms.ms.dao.ProjectHealthRepo;
 import com.vts.pfms.ms.dao.ProjectHoaRepo;
+import com.vts.pfms.ms.dto.CommitteeScheduleDto;
 import com.vts.pfms.ms.dto.EmployeeDto;
 import com.vts.pfms.ms.dto.PFMSCCMDataDto;
 import com.vts.pfms.ms.dto.PfmsInitiationDto;
@@ -60,7 +64,10 @@ public class MSFetchServiceImpl implements MSFetchService {
 	private ProjectHealthRepo projectHealthRepo;
 
 	@Autowired
-	private ProjectHoaRepo projectHoaRepo; 
+	private ProjectHoaRepo projectHoaRepo;
+	
+	@Autowired
+	private CommitteeScheduleRepo committeeScheduleRepo; 
 	
 	@Override
 	public List<EmployeeDto> getEmployeeData() throws Exception {
@@ -358,6 +365,47 @@ public class MSFetchServiceImpl implements MSFetchService {
 								.ModifiedBy(entity.getModifiedBy())
 								.ModifiedDate(entity.getModifiedDate())
 								.LabCode(entity.getLabCode())
+								.build())
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<CommitteeScheduleDto> getCommitteeScheduleData() throws Exception {
+		// Fetch all CommitteeSchedule entities from the repository
+		List<CommitteeSchedule> dataEntities = committeeScheduleRepo.findAll();
+		
+		// Map each entity to a DTO and return the list of DTOs
+		return dataEntities.stream()
+				.map(entity -> CommitteeScheduleDto.builder()
+								.ScheduleId(entity.getScheduleId())
+								.LabCode(entity.getLabCode())
+								.CommitteeId(entity.getCommitteeId())
+								.CommitteeMainId(entity.getCommitteeMainId())
+								.MeetingId(entity.getMeetingId())
+								.ProjectId(entity.getProjectId())
+								.DivisionId(entity.getDivisionId())
+								.InitiationId(entity.getInitiationId())
+								.CARSInitiationId(entity.getCARSInitiationId())
+								.RODNameId(entity.getRODNameId())
+								.ScheduleDate(entity.getScheduleDate())
+								.ScheduleStartTime(entity.getScheduleStartTime())
+								.ScheduleFlag(entity.getScheduleFlag())
+								.ScheduleSub(entity.getScheduleSub())
+								.KickOffOtp(entity.getKickOffOtp())
+								.MeetingVenue(entity.getMeetingVenue())
+								.Confidential(entity.getConfidential())
+								.Reference(entity.getReference())
+								.PMRCDecisions(entity.getPMRCDecisions())
+								.BriefingPaperFrozen(entity.getBriefingPaperFrozen())
+								.MinutesFrozen(entity.getMinutesFrozen())
+								.PresentationFrozen(entity.getPresentationFrozen())
+								.BriefingStatus(entity.getBriefingStatus())
+								.ScheduleType(entity.getScheduleType())
+								.CreatedBy(entity.getCreatedBy())
+								.CreatedDate(entity.getCreatedDate())
+								.ModifiedBy(entity.getModifiedBy())
+								.ModifiedDate(entity.getModifiedDate())
+								.IsActive(entity.getIsActive())
 								.build())
 				.collect(Collectors.toList());
 	}

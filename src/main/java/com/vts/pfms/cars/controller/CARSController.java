@@ -3055,7 +3055,10 @@ public class CARSController {
 				req.setAttribute("carsContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
 				req.setAttribute("carsSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
 				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
-				req.setAttribute("milestoneProgressList", service.getCARSSoCMilestonesProgressListByCARSInitiationId(carsInitiationId));
+				List<Object[]> carsSoCMilestonesProgressList = service.getAllCARSSoCMilestonesProgressList();
+				carsSoCMilestonesProgressList = carsSoCMilestonesProgressList!=null && carsSoCMilestonesProgressList.size()>0? carsSoCMilestonesProgressList.stream()
+						.filter(e -> Long.parseLong(e[6].toString())==carsiniid).collect(Collectors.toList()) : new ArrayList<Object[]>();
+				req.setAttribute("milestoneProgressList", carsSoCMilestonesProgressList);
 			}
 			
 			return "cars/CARSMilestonesMonitor";
@@ -3071,12 +3074,11 @@ public class CARSController {
 		String Username = (String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CARSMilestonesMonitor.htm "+Username);
 		try {
-			String carsInitiationId = req.getParameter("carsInitiationId");
-			String carsSoCMilestoneId = req.getParameter("carsSoCMilestoneId");
 			
-			req.setAttribute("assignedList", service.assignedListByCARSSoCMilestoneId(carsSoCMilestoneId));
-			req.setAttribute("carsInitiationId", carsInitiationId);
-			req.setAttribute("carsSoCMilestoneId", carsSoCMilestoneId);
+			req.setAttribute("assignedList", service.assignedListByCARSSoCMilestoneId(req.getParameter("carsSoCMilestoneId")));
+			req.setAttribute("carsInitiationId", req.getParameter("carsInitiationId"));
+			req.setAttribute("carsSoCMilestoneId", req.getParameter("carsSoCMilestoneId"));
+			req.setAttribute("presFlag", req.getParameter("presFlag"));
 			return "cars/CARSMilestonesMonitorDetails";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -3231,6 +3233,7 @@ public class CARSController {
 			req.setAttribute("carsSoCMilestoneId", req.getParameter("carsSoCMilestoneId"));
 			req.setAttribute("carsSoCMilestones", service.getCARSSoCMilestonesById(req.getParameter("carsSoCMilestoneId")));
 			req.setAttribute("carsSoCMilestonesProgressList", service.getCARSSoCMilestonesProgressListByCARSSoCMilestoneId(req.getParameter("carsSoCMilestoneId")));
+			req.setAttribute("presFlag", req.getParameter("presFlag"));
 			return "cars/CARSMilestonesProgressDetails";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -3284,12 +3287,70 @@ public class CARSController {
 			req.setAttribute("labInfo", printservice.LabDetailes(labcode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
 	    	req.setAttribute("initiationList", service.carsInitiationList(LoginType, EmpId));
+	    	req.setAttribute("allCARSContractList", service.getAllCARSContractList());
+	    	req.setAttribute("allCARSSoCMilestonesList", service.getAllCARSSoCMilestonesList());
+	    	req.setAttribute("allMilestoneProgressList", service.getAllCARSSoCMilestonesProgressList());
 			return "cars/CARSReportPresentation";
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CARSReportPresentation.htm "+Username, e);
 			return "static/Error";
 		}
+	}
+
+	@RequestMapping(value="CARSPresentationDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void carsPresentationDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside CARSRSQRDownloadBeforeFreeze.htm "+Username);		
+		try {
+			req.setAttribute("labInfo", printservice.LabDetailes(labcode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+	    	req.setAttribute("initiationList", service.carsInitiationList(LoginType, EmpId));
+	    	req.setAttribute("allCARSContractList", service.getAllCARSContractList());
+	    	req.setAttribute("allCARSSoCMilestonesList", service.getAllCARSSoCMilestonesList());
+	    	req.setAttribute("allMilestoneProgressList", service.getAllCARSSoCMilestonesProgressList());
+	    	
+			String filename="CARS_Presentation";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CARSPresentationDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSRSQRDownloadBeforeFreeze.htm "+Username, e);
+    		e.printStackTrace();
+    	}		
 	}
 	
 }

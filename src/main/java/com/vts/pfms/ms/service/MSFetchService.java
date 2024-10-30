@@ -2,6 +2,7 @@ package com.vts.pfms.ms.service;
 
 import java.util.List;
 
+import com.vts.pfms.ms.dto.CommitteeScheduleDto;
 import com.vts.pfms.ms.dto.EmployeeDto;
 import com.vts.pfms.ms.dto.PFMSCCMDataDto;
 import com.vts.pfms.ms.dto.PfmsInitiationDto;
@@ -21,5 +22,6 @@ public interface MSFetchService {
 	public List<PFMSCCMDataDto> getCCMCOGData() throws Exception;
 	public List<ProjectHealthDto> getProjectHealthData() throws Exception;
 	public List<ProjectHoaDto> getProjectHoaData() throws Exception;
+	public List<CommitteeScheduleDto> getCommitteeScheduleData() throws Exception;
 
 }

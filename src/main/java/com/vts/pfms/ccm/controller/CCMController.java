@@ -348,7 +348,7 @@ public class CCMController {
 				schedule.setLabCode(labcode);
 				schedule.setCommitteeId(Long.parseLong(req.getParameter("committeeId")));
 				schedule.setCommitteeMainId(Long.parseLong(req.getParameter("committeeMainId")));
-				schedule.setConfidential(4);
+				schedule.setConfidential("4");
 				schedule.setScheduleType("C");
 				schedule.setScheduleFlag("MSC");
 				schedule.setCreatedBy(UserId);
@@ -973,7 +973,7 @@ public class CCMController {
 				schedule.setLabCode(labcode);
 				schedule.setCommitteeId(Long.parseLong(req.getParameter("committeeIdDMC")));
 				schedule.setCommitteeMainId(Long.parseLong(req.getParameter("committeeMainId")));
-				schedule.setConfidential(4);
+				schedule.setConfidential("4");
 				schedule.setScheduleType("D");
 				schedule.setScheduleFlag("MKV");
 				schedule.setCreatedBy(UserId);
@@ -1837,4 +1837,17 @@ public class CCMController {
 		}
 	}
 	
+	@RequestMapping(value="CCMReportView.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String ccmReportView(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CCMReportView.htm "+UserId);
+		try {
+			req.setAttribute("ccmScheduleList", service.getScheduleListByScheduleType("C"));
+			return "ccm/CCMReportView";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMReportView.htm "+UserId,e);
+			return "static/Error";
+		}
+	}
 }

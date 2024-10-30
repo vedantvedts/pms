@@ -19,12 +19,17 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
-<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+
+<%-- <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
-<link href="${contentCss}" rel="stylesheet" />
+<link href="${contentCss}" rel="stylesheet" /> --%>
+<spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
 <link href="${projetdetailscss}" rel="stylesheet" />
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
 
 <style type="text/css">
 
@@ -54,12 +59,12 @@
 	padding: 11px 15px !important;
 }
 body { 
-   font-family : "Lato", Arial, sans-serif !important;
+   font-family : "Lato", Arial, sans-serif ;
    overflow-x: hidden;
 }
 
 input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif !important;
+font-family : "Lato", Arial, sans-serif ;
 }
 .text-center{
 	text-align: left !imporatant;
@@ -228,6 +233,12 @@ div {
 
 #select2-rspState-container, #select2-fundsFrom-container {
 	text-align: left;
+}
+
+/* Summer Note styles */
+.note-editor {
+	width: 95% !important;
+	margin: 1rem 2.5rem;
 }
 </style>
 
@@ -770,7 +781,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 										<hr>
 										<div class="card-body" style="margin-top:-8px">
 											<div class="row">
-												<div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
+												<div class="col-md-12 " align="left">
 													<div id="Editor" class="center"></div>
 													<textarea name="Details" style="display: none;"></textarea>
 													<div class="mt-2" align="center" id="detailsSubmit">
@@ -2753,7 +2764,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 
 <!-- Script tag for RSQR -->
 <script>
-		var editor_config = {
+		/* var editor_config = {
 			toolbar : [
 					{
 						name : 'clipboard',
@@ -2869,10 +2880,47 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 			}, {
 				filebrowserUploadUrl : '/path/to/upload-handler'
 			}, ]
+		}; */
+		
+		
+		// Define a common Summernote configuration
+		var summernoteConfig = {
+		    width: 900,
+		    toolbar: [
+		        ['style', ['bold', 'italic', 'underline', 'clear']],
+		        ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
+		        ['insert', ['picture', 'table']],
+		        ['para', ['ul', 'ol', 'paragraph']],
+		        ['height', ['height']]
+		    ],
+		    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],
+		    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
+		    buttons: {
+		        superscript: function() {
+		            return $.summernote.ui.button({
+		                contents: '<sup>S</sup>',
+		                tooltip: 'Superscript',
+		                click: function() {
+		                    document.execCommand('superscript');
+		                }
+		            }).render();
+		        },
+		        subscript: function() {
+		            return $.summernote.ui.button({
+		                contents: '<sub>S</sub>',
+		                tooltip: 'Subscript',
+		                click: function() {
+		                    document.execCommand('subscript');
+		                }
+		            }).render();
+		        }
+		    },
+		    height: 300
 		};
 		
 		// This is for RSQR
-		CKEDITOR.replace('Editor', editor_config);
+		/* CKEDITOR.replace('Editor', editor_config); */
+		$('#Editor').summernote(summernoteConfig);
 		
 		function showEditor(a){
 			var x=a.toLowerCase();
@@ -2941,14 +2989,16 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						$('#btn1').show();
 						$('#btn2').hide();
 					}
-					CKEDITOR.instances['Editor'].setData(html);
+					/* CKEDITOR.instances['Editor'].setData(html); */
+					$('#Editor').summernote('code', html);
 				}
 			}); 
 			
 		}
 		  
 		  $('#myfrm').submit(function() {
-				 var data =CKEDITOR.instances['Editor'].getData();
+				 /* var data =CKEDITOR.instances['Editor'].getData(); */
+				 var data = $('#Editor').summernote('code');
 				 $('textarea[name=Details]').val(data);
 				 });
 		  
@@ -3251,7 +3301,8 @@ $(function () {
 
 <script type="text/javascript">
 //This is for final RSQR
-CKEDITOR.replace('Editor2', editor_config);
+/* CKEDITOR.replace('Editor2', editor_config); */
+$('#Editor2').summernote(summernoteConfig);
 
 function showEditor2(a){
 	var x=a.toLowerCase();
@@ -3320,14 +3371,16 @@ function showEditor2(a){
 				$('#btn4').show();
 				$('#btn3').hide();
 			}
-			CKEDITOR.instances['Editor2'].setData(html);
+			/* CKEDITOR.instances['Editor2'].setData(html); */
+			$('#Editor2').summernote('code', html);
 		}
 	}); 
 	
 }
   
   $('#myfrm2').submit(function() {
-		 var data =CKEDITOR.instances['Editor2'].getData();
+		 /* var data =CKEDITOR.instances['Editor2'].getData(); */
+		 var data = $('#Editor2').summernote('code');
 		 $('textarea[name=Details2]').val(data);
 		 });
   

@@ -1,3 +1,10 @@
+<%@page import="com.vts.pfms.cars.model.CARSContract"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.vts.pfms.FormatConverter"%>
+<%@page import="com.vts.pfms.IndianRupeeFormat"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="com.vts.pfms.cars.model.CARSSoCMilestones"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -20,58 +27,16 @@ color: #00416A ;
 
 span {
 	font-size: 1.2rem !important;
-	font-weight: bold !important;
+	font-weight: bold;
 }
 tr.clickable:hover{
-cursor:pointer;
-background-color: rgba(247,236,208);
+	cursor:pointer;
+	background-color: rgba(247,236,208);
 }
 
 
 .card-title.col-md-10{
-color: black;
-}
-.zoom {
-  transition: transform .4s; 
-}
-.zoom:hover {
-  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  z-index: 99999928374 !important;
-}
-.modal-list{
-	font-size: 14px;
-	text-align: left;
-	padding: 0px !important;
-	margin-bottom: 5px;
-}
-
-.modal-list li{
-	display: inline-block;
-}
-
-.modal-list li .modal-span{
-	font-size: 1.5rem;
-	padding: 0px 7px;
-}
-
-.modal-list li .modal-text{
-	font-size: 1rem;
-	vertical-align: text-bottom;
-	font-family: Lato;
-}
-.zoom {
-  transition: transform .4s; 
-}
-.zoom:hover {
-  transform: scale(1.2); /* (130% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  z-index: 99999928374 !important;
-}
-.zoom2 {
-  transition: transform .4s; 
-}
-.zoom2:hover {
-  transform: scale(1.7); /* (180% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  z-index: 99999928374 !important;
+	color: black;
 }
 
 /* --------------------------------- Slide Styles ----------------------------------------- */
@@ -105,14 +70,97 @@ color: black;
 .data-table th{
 	font-size: 1.5rem !important;
 }
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
 </style>
 
+<style type="text/css">
+
+/* icon styles */
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+.editable-click {
+	border: none;
+	cursor: pointer;
+	color: #585858;  
+}
+
+.cssideheading {
+	font-weight: 800;
+    color: #ed4f10;
+}
+</style>
 </head>
 <body style="background-color: #e7f9ff !important;" class="slides-container" id="slides-container">
 	<%
 		LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 		String lablogo = (String)request.getAttribute("lablogo");
 		List<Object[]> initiationList = (List<Object[]>)request.getAttribute("initiationList");
+		List<CARSContract> allCARSContractList = (List<CARSContract>)request.getAttribute("allCARSContractList");
+		List<CARSSoCMilestones> allCARSSoCMilestonesList = (List<CARSSoCMilestones>)request.getAttribute("allCARSSoCMilestonesList");
+		List<Object[]> allMilestoneProgressList = (List<Object[]>)request.getAttribute("allMilestoneProgressList");
+		
+		FormatConverter fc = new FormatConverter();
 	%>
 	<% String ses=(String)request.getParameter("result");
 	   String ses1=(String)request.getParameter("resultfail");
@@ -207,33 +255,321 @@ color: black;
 				</div>
 				
 				<div class="content" >
-					<table class="table table-bordered table-hover table-condensed data-table">
-		     	    	<thead style="background-color: #4B70F5; color: #ffff !important;">
-		            		<tr>
-		                    	<th style="width: 5%;">SN</th>
-		                       	<th style="width: 15%;">CARS No</th> 
-		                       	<th style="width: 20%;">Title</th>
-		                       	<th style="width: 20%;">Funds From</th>
-		                       	<th style="width: 20%;">Duration</th>
-		                       	<th style="width: 20%;">Cost</th>
-		                    </tr>
-		              	</thead> 
-			            <tbody>
-			            	<%if(initiationList!=null && initiationList.size()>0) {
-			            		int slno = 0;
-			            		for(Object[] obj : initiationList) {
-			            	%>
+					<div class="container-fluid mt-3">
+						<table class="table table-bordered table-hover table-condensed data-table">
+			     	    	<thead style="background-color: #4B70F5; color: #ffff !important;">
 			            		<tr>
-			            			
-			            		</tr>
-			            	<%} }%>
-			            </tbody>
-			    	</table> 
+			                    	<th style="width: 5%;">SN</th>
+			                       	<th style="width: 20%;">CARS No</th> 
+			                       	<th style="width: 40%;">Title</th>
+			                       	<th style="width: 10%;">Funds From</th>
+			                       	<th style="width: 15%;">Duration (Months)</th>
+			                       	<th style="width: 10%;">Cost (Lakhs)</th>
+			                    </tr>
+			              	</thead> 
+				            <tbody>
+				            	<%if(initiationList!=null && initiationList.size()>0) {
+				            		int slno = 1;
+				            		for(Object[] obj : initiationList) {
+				            			String amount = String.format("%.2f", Double.parseDouble(obj[20]!=null?obj[20].toString():obj[13].toString())/100000);
+				            	%>
+				            		<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(slno+1)%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
+				            			<td class="center"><%=slno %></td>
+	                                    <td class="center"><%=obj[2]!=null?obj[2]:"-" %></td>
+	                                    <td class="left"><%=obj[4]!=null?obj[4]:"-" %></td>
+	                                    <td class="left"><%=obj[18]!=null?obj[18]:"-" %></td>
+	                                    <td class="center"><%=obj[8]!=null?obj[8]:"-"  %></td>
+	                                    <td class="right"><%=amount %></td>
+				            		</tr>
+				            	<%++slno;} }%>
+				            </tbody>
+				    	</table>
+				    </div>	 
 				</div>
 			</div>
 			
 			<!-- ----------------------------------------  P-1  Div End----------------------------------------------------- -->
 			
+			<!-- ----------------------------------------  Presentation of CARS Projects Div ----------------------------------------------------- -->
+			<%if(initiationList!=null && initiationList.size()>0) {
+				int slno = 0;
+				for(Object[] obj : initiationList) {
+					String carsInitiationId = obj[0].toString();
+					String amount = String.format("%.2f", Double.parseDouble(obj[20]!=null?obj[20].toString():obj[13].toString())/100000);
+					
+					// Contract Data
+					CARSContract carsContract = allCARSContractList!=null && allCARSContractList.size()>0?allCARSContractList.stream().filter(e -> e.getCARSInitiationId()==Long.parseLong(carsInitiationId)).findFirst().orElse(null):null;
+					// Milestones Data
+					List<CARSSoCMilestones> milestones = allCARSSoCMilestonesList!=null && allCARSSoCMilestonesList.size()>0? allCARSSoCMilestonesList.stream().filter(e -> e.getCARSInitiationId()==Long.parseLong(carsInitiationId)).collect(Collectors.toList()) : new ArrayList<CARSSoCMilestones>(); 
+					// Milestones Progress Data
+					List<Object[]> milestoneProgressList = allMilestoneProgressList!=null && allMilestoneProgressList.size()>0? allMilestoneProgressList.stream()
+							.filter(e -> Long.parseLong(e[6].toString())==Long.parseLong(carsInitiationId)).collect(Collectors.toList()) : new ArrayList<Object[]>();
+			%>
+				<div class="carousel-item">
+	
+					<div class="content-header row ">
+						
+						<div class="col-md-1" >
+							
+						</div>
+						<div class="col-md-2" align="left" style="display: inherit;" >
+							<b class="refNoHeading"></b>
+						</div>
+						<div class="col-md-7">
+							<h3 class="slideNames"><%=obj[2] %></h3>
+						</div>
+						<div class="col-md-1" align="right"  style="padding-top:19px;" >
+							<b style="margin-right: -35px;"><%="" %></b>
+						</div>
+						<div class="col-md-1">
+						</div>
+						
+					</div>
+					
+					<div class="content" >
+						<div class="container-fluid mt-3">
+							<table class="data-table">
+								<tr>
+									<td colspan="3">
+										<span class="cssideheading">Title:</span>
+		                				&emsp;<span class="cssideheadingdata"><%=obj[4]!=null?obj[4]:"-"  %></span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="cssideheading">Funds from:</span>
+		                				&emsp;<span class="cssideheadingdata"><%=obj[18]!=null?obj[18]:"-" %></span>
+									</td>
+									<td>
+										<span class="cssideheading">Duration (In Months):</span>
+		                				&emsp;<span class="cssideheadingdata"><%=obj[8]!=null?obj[8]:"-"  %></span>
+									</td>
+									<td>
+										<span class="cssideheading">Amount (In Lakhs):</span>
+		                				&emsp;<span class="cssideheadingdata"><%=amount %></span>
+									</td>
+								</tr>
+								<tr>
+									<td style="vertical-align: top;">
+										<span class="cssideheading">Name of Research Service Provider (RSP):</span>
+		                				&emsp;<span class="cssideheadingdata"><%=obj[26]+". "+obj[27]+", "+obj[28] %></span>
+									</td>
+									<td colspan="2">
+										<span class="cssideheading">RSP's Address:</span>
+		                				&emsp;<span class="cssideheadingdata">
+		                					<%=obj[21]+", "+obj[22]+", "+obj[23]+", "+obj[24]+" - "+obj[25] %> <br>
+		                					Phone : <%=obj[30] %> <br>
+		                					Email : <%=obj[31] %> <br>
+		                					Fax : <%=obj[32] %>
+		                				</span>
+									</td>
+								</tr>
+							</table>
+							
+							<!-- --------------------------------------- Milestone Data ---------------------------------------------------- -->
+		                	<table class="data-table mt-4" >
+								<thead>
+						        	<tr>
+						            	<th style="width: 30%;color: #055C9D;">Description</th>
+						            	<th style="width: 10%;color: #055C9D;">Months</th>
+						            	<th style="width: 10%;color: #055C9D;">EDP</th>
+						            	<th style="width: 10%;color: #055C9D;">Amount (&#8377; )</th>
+						            	<!-- <th style="color: #055C9D;">Progress</th> -->
+						            	<th style="width: 20%;color: #055C9D;">Action</th>
+						            </tr>
+					            </thead>
+					            <tbody>
+					            	
+					               	<%if(milestones!=null && milestones.size()>0) { char a='a'; Object[] progressData = null;%>
+							    		<tr>
+							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : center;vertical-align: top;">T0*</td>
+							    			<td style="text-align : center;vertical-align: top;">
+							    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(carsContract.getT0Date()) %><%} %> 
+							    			</td>
+							    			<td style="text-align : right;vertical-align: top;">
+							    				<%if(milestones.get(0).getActualAmount()!=null) {%>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(0).getActualAmount())) %>
+							    				<%} else{%>
+							    					-
+							    				<%} %>
+							    				&nbsp;&nbsp;
+							    			</td>
+							    			
+							    			<td class="center">
+							    				<form action="#" method="POST" name="myfrm" >
+							    					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+							    					<input type="hidden" name="carsSoCMilestoneId" value="<%=milestones.get(0).getCARSSoCMilestoneId()%>"/>
+													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>"/>
+							    					<input type="hidden" name="presFlag" value="A">
+							    					
+							    					<div class="d-flex justify-content-center">
+							    						<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
+															<div class="cc-rockmenu">
+														 		<div class="rolling">	
+									                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
+									                        		<span>Actions</span>
+									                      		</div>
+									                     	</div>
+											        	</button> 
+											        	<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+													        <%
+													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(0).getMilestoneNo())).findFirst().orElse(null): null;
+													        %>
+													        <%if(progressData!=null) {%>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<%=progressData[2] %>
+																	</div> 
+																</div>	
+															<%}else{ %>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		0
+																	</div>
+																</div>
+															<%} %>
+														</button>
+							    					</div>
+												</form>
+							    			</td>
+							    		</tr>
+							    		<% for(int i=1;i<milestones.size()-1;i++) { 
+							    			String milestoneNo = milestones.get(i).getMilestoneNo();
+							    		%>
+							    		<tr>
+							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
+							    			<td style="text-align : center;vertical-align: top;">
+							    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {
+							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((i)).getMonths()));
+							    				%>
+							    					<%=fc.SqlToRegularDate(sqldate.toString()) %> 
+							    				<%} %>	
+							    			</td>
+							    			<td style="text-align : right;vertical-align: top;">
+							    				<%if(milestones.get(i).getActualAmount()!=null) {%>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(i).getActualAmount())) %>
+							    				<%} else{%>
+							    					-
+							    				<%} %>
+							    				&nbsp;&nbsp;
+							    			</td>
+							    			<td class="center">
+							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
+							    					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+							    					<input type="hidden" name="carsSoCMilestoneId" value="<%=milestones.get(i).getCARSSoCMilestoneId()%>"/>
+													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>"/>
+							    					<input type="hidden" name="presFlag" value="A">
+													
+													<div class="d-flex justify-content-center">	
+														<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
+															<div class="cc-rockmenu">
+														 		<div class="rolling">	
+									                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
+									                        		<span>Actions</span>
+									                      		</div>
+									                     	</div>
+												        </button>   
+													
+														<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+													        <%
+													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestoneNo)).findFirst().orElse(null): null;
+													        %>
+													        <%if(progressData!=null) {%>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<%=progressData[2] %>
+																	</div> 
+																</div>	
+															<%}else{ %>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		0
+																	</div>
+																</div>
+															<%} %>
+														</button>   
+											        </div>		
+														
+												</form>
+							    			</td>
+							    		</tr>
+							    		<%}%>
+							    		<%if(milestones.size()>1) {%>
+							    		<tr>
+							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
+							    			<td style="text-align : center;vertical-align: top;">
+							    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {
+							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((milestones.size()-1)).getMonths()));
+							    				%>
+							    					<%=fc.SqlToRegularDate(sqldate.toString()) %> 
+							    				<%} %>	
+							    			</td>
+							    			<td style="text-align : right;vertical-align: top;">
+							    				<%if(milestones.get(milestones.size()-1).getActualAmount()!=null) {%>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(milestones.size()-1).getActualAmount())) %>
+							    				<%} else{%>
+							    					-
+							    				<%} %>
+							    				&nbsp;&nbsp;
+							    			</td>
+							    			<td  class="center">
+							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
+							    					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+							    					<input type="hidden" name="carsSoCMilestoneId" value="<%=milestones.get(milestones.size()-1).getCARSSoCMilestoneId()%>"/>
+													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>"/>
+							    					<input type="hidden" name="presFlag" value="A">
+													<div class="d-flex justify-content-center">		
+														<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
+															<div class="cc-rockmenu">
+														 		<div class="rolling">	
+									                        		<figure class="rolling_icon"><img src="view/images/preview3.png" ></figure>
+									                        		<span>Actions</span>
+									                      		</div>
+									                     	</div>
+												        </button>   
+													
+														<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+													        <%
+													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(milestones.size()-1).getMilestoneNo())).findFirst().orElse(null): null;
+													        %>
+													        <%if(progressData!=null) {%>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<%=progressData[2] %>
+																	</div> 
+																</div>	
+															<%}else{ %>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		0
+																	</div>
+																</div>
+															<%} %>
+														</button>     
+											        </div>		
+													 
+														
+												</form>
+							    			</td>
+							    		</tr>
+							    		<%} %>
+			    					<%} else{%>
+			    						<tr>
+			    							<td colspan="5" class="center">No Data Available</td>
+			    						</tr>
+			    					<%} %>
+					            </tbody>
+					        </table>
+						</div>	
+					</div>
+				</div>
+			<%} }%>	
+			
+			<!-- ----------------------------------------  Presentation of CARS Projects Div End----------------------------------------------------- -->
+					
 		</div>
 		
 		<a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width: 0%; padding-left: 20px;"> <span aria-hidden="true">
@@ -244,13 +580,18 @@ color: black;
 
 		<ol class="carousel-indicators">
 			<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
-			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="CARS List"><b>1</b></li>
-			
-			<li data-target="#presentation-slides" data-slide-to="2" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="End"><b>End</b></li>
+			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="CARS List"><b><i class="fa fa-list" aria-hidden="true"></i></b></li>
+			<%if(initiationList!=null && initiationList.size()>0) {
+				int slno = 1;
+				for(Object[] obj : initiationList) {
+			%>
+				<li data-target="#presentation-slides" data-slide-to="<%=slno+1 %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=obj[2] %>"><b><%=slno++ %></b></li>
+			<%}} %>
+			<!-- <li data-target="#presentation-slides" data-slide-to="2" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="End"><b>End</b></li> -->
 			<li data-slide-to="1" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
 			<li data-slide-to="1" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>
 			<li style="background-color:  white;width: 55px;margin-left: 20px;">
-				<a target="_blank" href="CARSPresentationDownload.htm?" data-toggle="tooltip" title="Download CARS Presentation" >
+				<a target="_blank" href="CARSPresentationDownload.htm" data-toggle="tooltip" title="Download CARS Presentation" >
 					<i class="fa fa-download" style="color: green;font-size: 1.2rem;padding: 0.1rem;" aria-hidden="true"></i>
 				</a>	
 			</li>

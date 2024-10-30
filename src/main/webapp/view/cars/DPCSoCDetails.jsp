@@ -16,12 +16,15 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
-<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<link href="${projetdetailscss}" rel="stylesheet" />
+<%-- <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
-<link href="${contentCss}" rel="stylesheet" />
-<link href="${projetdetailscss}" rel="stylesheet" />
-
+<link href="${contentCss}" rel="stylesheet" /> --%>
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
 <style type="text/css">
 
 .tab-pane p{
@@ -50,12 +53,12 @@
 	padding: 11px 15px !important;
 }
 body { 
-   font-family : "Lato", Arial, sans-serif !important;
+   font-family : "Lato", Arial, sans-serif ;
    overflow-x: hidden;
 }
 
 input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif !important;
+font-family : "Lato", Arial, sans-serif ;
 }
 .text-center{
 	text-align: left !imporatant;
@@ -299,6 +302,12 @@ margin-left: -30%;
 
 #select2-LabCode-container,#select2-approverEmpId-container{
 	text-align: left;
+}
+
+/* Summer Note styles */
+.note-editor {
+	width: 95% !important;
+	margin: 1rem 2.5rem;
 }
 </style>
 </head>
@@ -1419,7 +1428,7 @@ $('#approvalDate').daterangepicker({
 <script type="text/javascript">
 
 /* ----------------- CKEDITOR Configuration ------------------------------------ */
-var editor_config = {
+/* var editor_config = {
 		toolbar : [
 				{
 					name : 'clipboard',
@@ -1535,20 +1544,59 @@ var editor_config = {
 		}, {
 			filebrowserUploadUrl : '/path/to/upload-handler'
 		}, ]
+	}; */
+	
+	/* -------------------------- Define a common Summernote configuration -------------------------------------------- */
+	var summernoteConfig = {
+	    width: 900,
+	    toolbar: [
+	        ['style', ['bold', 'italic', 'underline', 'clear']],
+	        ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
+	        ['insert', ['picture', 'table']],
+	        ['para', ['ul', 'ol', 'paragraph']],
+	        ['height', ['height']]
+	    ],
+	    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],
+	    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
+	    buttons: {
+	        superscript: function() {
+	            return $.summernote.ui.button({
+	                contents: '<sup>S</sup>',
+	                tooltip: 'Superscript',
+	                click: function() {
+	                    document.execCommand('superscript');
+	                }
+	            }).render();
+	        },
+	        subscript: function() {
+	            return $.summernote.ui.button({
+	                contents: '<sub>S</sub>',
+	                tooltip: 'Subscript',
+	                click: function() {
+	                    document.execCommand('subscript');
+	                }
+	            }).render();
+	        }
+	    },
+	    height: 300
 	};
 	
-
 /* -------------------------- Form Submission with CKEDITOR Data -------------------------------------------- */
 
 $('#inieditform').submit(function() {
 
-	  var data =CKEDITOR.instances['dpcIntroductionnote'].getData();
+	  /* var data =CKEDITOR.instances['dpcIntroductionnote'].getData(); */
+	  
+	  var data = $('#dpcIntroductionnote').summernote('code');
 	  $('textarea[name=dpcIntroduction]').val(data);
 
 });
 
 /* ------------------------ Using CKEDITOR Configuration ------------------------ */
-CKEDITOR.replace('dpcIntroductionnote', editor_config);
+/* CKEDITOR.replace('dpcIntroductionnote', editor_config); */
+
+/* ------------------------ Using Summernote Configuration ------------------------ */
+$('#dpcIntroductionnote').summernote(summernoteConfig);
 
 
 $( document ).ready(function() {
@@ -1558,7 +1606,8 @@ $( document ).ready(function() {
 
 		 var html=$('#dpcIntroductionhidden').val();
 		
-		CKEDITOR.instances['dpcIntroductionnote'].setData(html);
+		/* CKEDITOR.instances['dpcIntroductionnote'].setData(html); */
+		$('#dpcIntroductionnote').summernote('code', html);
 	<%} %>
 });	
 </script>

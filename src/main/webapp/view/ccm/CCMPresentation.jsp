@@ -704,7 +704,7 @@ input,select,table,div,label,span {
 											<table class="table table-bordered table-hover table-striped table-condensed data-table" >
 												<thead style="background-color: #4B70F5; color: #ffff !important;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
-														<th colspan="6" style="border-radius: 1rem;"> <h5>DMC Approval</h5></th>
+														<th colspan="6" style="border-radius: 1rem;"> <h5>DMC Actions</h5></th>
 													</tr>
 													<tr>
 														<th style="width: 5%;">SN</th>

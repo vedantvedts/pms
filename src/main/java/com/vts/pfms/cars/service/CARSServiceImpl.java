@@ -2213,9 +2213,20 @@ public class CARSServiceImpl implements CARSService{
 	}
 	
 	@Override
-	public List<Object[]> getCARSSoCMilestonesProgressListByCARSInitiationId(String carsInitiationId) throws Exception {
+	public List<Object[]> getAllCARSSoCMilestonesProgressList() throws Exception {
 	
-		return dao.getCARSSoCMilestonesProgressListByCARSInitiationId(carsInitiationId);
+		return dao.getAllCARSSoCMilestonesProgressList();
+	}
+
+	@Override
+	public List<CARSSoCMilestones> getAllCARSSoCMilestonesList() throws Exception {
+		
+		return dao.getAllCARSSoCMilestonesList();
 	}
 	
+	@Override
+	public List<CARSContract> getAllCARSContractList() throws Exception {
+
+		return dao.getAllCARSContractList();
+	}
 }
