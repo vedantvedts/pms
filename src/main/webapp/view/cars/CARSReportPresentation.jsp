@@ -191,7 +191,7 @@ tr.clickable:hover{
 .card-section {
     display: flex;
     /* justify-content: space-between; */
-    margin: 5px 0;
+    margin: 2px 0;
     gap: 10px;
 }
 
@@ -400,11 +400,20 @@ tr.clickable:hover{
 							<div class="card-container">
     							<!-- Project Information Card -->
 							    <div class="card card-project-info">
-							        <h1 class="card-title">Project Information</h1>
+							        <h1 class="card-title">CARS Information</h1>
 							        <div class="card-section">
 							            <span class="label">Title:</span> 
 							            <span class="value"><%=obj[4]!=null?obj[4]:"-" %></span>
 							        </div>
+							        <div class="card-section">
+							            <span class="label">Current Status:</span> 
+							            <span class="value"><%=obj[34]!=null?obj[34]:"-" %></span>
+							        </div>
+							    </div>
+    
+    							<!-- Duration and Dates Card -->
+							    <div class="card card-duration">
+							        <h2 class="card-title">Cost & Duration</h2>
 							        <div class="card-section">
 							            <span class="label">Funds from:</span> 
 							            <span class="value"><%=obj[18]!=null?obj[18]:"-" %></span>
@@ -413,11 +422,6 @@ tr.clickable:hover{
 							            <span class="label">Cost:</span> 
 							            <span class="value"><%=amount %> Lakhs</span>
 							        </div>
-							    </div>
-    
-    							<!-- Duration and Dates Card -->
-							    <div class="card card-duration">
-							        <h2 class="card-title">Dates and Duration</h2>
 							        <div class="card-section">
 							            <span class="label">Start Date:</span>
 							            <span class="value">

@@ -115,7 +115,7 @@ p{
 	padding: 5px;
 }
 
-.data-table td,th{
+.data-table td, th{
 	border : 1px solid black;
 	padding : 7px;
 }
@@ -141,6 +141,19 @@ input,select,table,div,label,span,button {
 .cssideheading {
 	font-weight: 800;
     color: #ed4f10;
+}
+
+.inner-table {
+	border-collapse: collapse;
+	border: 0 !important;
+	width: 100%;
+}
+
+.inner-table td{
+	border: 0 !important;
+}
+.vertical-align-top {
+	vertical-align: top;
 }
 </style>
 
@@ -243,6 +256,7 @@ input,select,table,div,label,span,button {
 		for(Object[] obj : initiationList) {
 			String carsInitiationId = obj[0].toString();
 			String amount = String.format("%.2f", Double.parseDouble(obj[20]!=null?obj[20].toString():obj[13].toString())/100000);
+			String duration = obj[33]!=null?obj[33].toString():(obj[8]!=null?obj[8].toString():"0");
 			
 			// Contract Data
 			CARSContract carsContract = allCARSContractList!=null && allCARSContractList.size()>0?allCARSContractList.stream().filter(e -> e.getCARSInitiationId()==Long.parseLong(carsInitiationId)).findFirst().orElse(null):null;
@@ -263,41 +277,94 @@ input,select,table,div,label,span,button {
 		
 		<table class="data-table">
 			<tr>
-   				<th colspan="6" class="center"><%=obj[2] %></th>
+   				<th colspan="3" class="center"><%=obj[2] %></th>
    			</tr>
-			<tr>
-				<td colspan="3">
-					<span class="cssideheading">Title:</span>&emsp;
-             		<span class="cssideheadingdata"><%=obj[4]!=null?obj[4]:"-"  %></span>
-				</td>
+   			<tr>
+				<th class="center" style="width: 50%;">CARS Info</th>
+				<th class="center" style="width: 20%;">Cost & Duration</th>
+				<th class="center" style="width: 30%;">Research Service Provider (RSP)</th>
 			</tr>
 			<tr>
-				<td>
-					<span class="cssideheading">Funds from:</span>&emsp;
-             		<span class="cssideheadingdata"><%=obj[18]!=null?obj[18]:"-" %></span>
+				<td class="vertical-align-top">
+					<table class="inner-table">
+						<tr>
+							<td>
+								<span class="cssideheading">Title:</span>&emsp;
+             					<span class="cssideheadingdata"><%=obj[4]!=null?obj[4]:"-"  %></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="cssideheading">Current Status:</span>&emsp;
+             					<span class="cssideheadingdata"><%=obj[34]!=null?obj[34]:"-"  %></span>
+							</td>
+						</tr>
+					</table>
 				</td>
-				<td>
-					<span class="cssideheading">Duration (In Months):</span>&emsp;
-             		<span class="cssideheadingdata"><%=obj[8]!=null?obj[8]:"-"  %></span>
+				<td class="vertical-align-top">
+					<table class="inner-table">
+						<tr>
+							<td>
+								<span class="cssideheading">Funds from:</span>&emsp;
+			             		<span class="cssideheadingdata"><%=obj[18]!=null?obj[18]:"-" %></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="cssideheading">Cost:</span>&emsp;
+			             		<span class="cssideheadingdata"><%=amount %> Lakhs</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="cssideheading">Start Date:</span>&emsp;
+			             		<span class="cssideheadingdata">
+			             			<% if (carsContract != null && carsContract.getContractDate() != null) { %>
+							        	<%= fc.SqlToRegularDate(carsContract.getContractDate()) %>
+							    	<% } else { %> - <% } %>
+							    </span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="cssideheading">PDC:</span>&emsp;
+			             		<span class="cssideheadingdata">
+			             			<% if (carsContract != null && carsContract.getT0Date() != null) { 
+					                    LocalDate sqldate = LocalDate.parse(carsContract.getT0Date())
+					                                    .plusMonths(Long.parseLong(milestones.get(milestones.size() - 1).getMonths())); %>
+					                    <%= fc.SqlToRegularDate(sqldate.toString()) %>
+					                <% } else { %> - <% } %>
+							    </span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="cssideheading">Duration:</span>&emsp;
+			             		<span class="cssideheadingdata"><%=duration %> <%if(Integer.parseInt(duration)>1) {%>Months<%} else{%>Month<%} %></span>
+							</td>
+						</tr>
+					</table>		
 				</td>
-				<td>
-					<span class="cssideheading">Amount (In Lakhs):</span>&emsp;
-             		<span class="cssideheadingdata"><%=amount %></span>
-				</td>
-			</tr>
-			<tr>
-				<td style="vertical-align: top;">
-					<span class="cssideheading">Name of Research Service Provider (RSP):</span>&emsp;
-             		<span class="cssideheadingdata"><%=obj[26]+". "+obj[27]+", "+obj[28] %></span>
-				</td>
-				<td colspan="2">
-					<span class="cssideheading">RSP's Address:</span>&emsp;
-             		<span class="cssideheadingdata">
-             			<%=obj[21]+", "+obj[22]+", "+obj[23]+", "+obj[24]+" - "+obj[25] %> <br>
-             			Phone : <%=obj[30] %> <br>
-             			Email : <%=obj[31] %> <br>
-             			Fax : <%=obj[32] %>
-             		</span>
+				<td class="vertical-align-top">
+					<table class="inner-table">
+						<tr>
+							<td style="vertical-align: top;">
+								<span class="cssideheading">Name of Research Service Provider (RSP):</span>&emsp;
+			             		<span class="cssideheadingdata"><%=obj[26]+". "+obj[27]+", "+obj[28] %></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="cssideheading">RSP's Address:</span>&emsp;
+			             		<span class="cssideheadingdata">
+			             			<%=obj[21]+", "+obj[22]+", "+obj[23]+", "+obj[24]+" - "+obj[25] %> <br>
+			             			Phone : <%=obj[30] %> <br>
+			             			Email : <%=obj[31] %> <br>
+			             			Fax : <%=obj[32] %>
+			             		</span>
+							</td>
+						</tr>
+					</table>		
 				</td>
 			</tr>
 		</table>
@@ -306,12 +373,12 @@ input,select,table,div,label,span,button {
        	<table class="data-table mt-4" >
 			<thead>
 	        	<tr>
-	            	<th style="width: 20%;color: #055C9D;">Description</th>
+	            	<th style="width: 25%;color: #055C9D;">Description</th>
 	            	<th style="width: 10%;color: #055C9D;">Months</th>
 	            	<th style="width: 10%;color: #055C9D;">EDP</th>
 	            	<th style="width: 10%;color: #055C9D;">Amount (&#8377;)</th>
 	            	<th style="width: 10%;color: #055C9D;">Status</th>
-	            	<th style="width: 20%;color: #055C9D;">Progress</th>
+	            	<th style="width: 15%;color: #055C9D;">Progress</th>
 	            </tr>
             </thead>
 		    <tbody>
@@ -348,8 +415,8 @@ input,select,table,div,label,span,button {
 					        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(0).getMilestoneNo())).findFirst().orElse(null): null;
 					        %>
 					        <%if(progressData!=null) {%>
-								<div class="progress" class="progress-bar">
-									<div>
+								<div class="progress">
+									<div class="progress-bar">
 										<%=progressData[2] %>%
 									</div> 
 								</div>	
@@ -399,8 +466,8 @@ input,select,table,div,label,span,button {
 					        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestoneNo)).findFirst().orElse(null): null;
 					        %>
 					        <%if(progressData!=null) {%>
-								<div class="progress" class="progress-bar">
-									<div>
+								<div class="progress">
+									<div class="progress-bar">
 										<%=progressData[2] %>%
 									</div> 
 								</div>	
@@ -449,8 +516,8 @@ input,select,table,div,label,span,button {
 					        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(milestones.size()-1).getMilestoneNo())).findFirst().orElse(null): null;
 					        %>
 					        <%if(progressData!=null) {%>
-								<div class="progress" class="progress-bar">
-									<div>
+								<div class="progress">
+									<div class="progress-bar">
 										<%=progressData[2] %>%
 									</div> 
 								</div>	
@@ -466,7 +533,7 @@ input,select,table,div,label,span,button {
 		    		<%} %>
     				<%} else{%>
   						<tr>
-  							<td colspan="5" class="center">No Data Available</td>
+  							<td colspan="6" class="center">No Data Available</td>
   						</tr>
     				<%} %>
 			</tbody>

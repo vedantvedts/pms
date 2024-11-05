@@ -2235,4 +2235,10 @@ public class CARSServiceImpl implements CARSService{
 
 		return dao.getCARSOtherDocDetailsList();
 	}
+	
+	@Override
+	public int carsCurrentStatusUpdate(String currentStatus, String carsInitiationId) throws Exception {
+		
+		return dao.carsCurrentStatusUpdate(currentStatus, carsInitiationId);
+	}
 }

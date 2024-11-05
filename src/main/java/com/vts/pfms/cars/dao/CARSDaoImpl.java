@@ -45,7 +45,7 @@ public class CARSDaoImpl implements CARSDao{
 			+ "(SELECT COUNT(f.CARSInitiationId) FROM pfms_cars_soc_milestones f WHERE a.CARSInitiationId=f.CARSInitiationId AND f.IsActive LIMIT 1) AS 'MilestoneCount',\r\n"
 			+ "(CASE WHEN a.FundsFrom='0' THEN 'Build up' ELSE (SELECT g.ProjectCode FROM project_master g WHERE a.FundsFrom=g.ProjectId AND g.IsActive=1 LIMIT 1 ) END) AS 'FundsSanction',\r\n"
 			+ "IFNULL((SELECT h.CommitteeMainId FROM committee_main h WHERE a.CARSInitiationId=h.CARSInitiationId AND h.IsActive=1 LIMIT 1), 0) AS 'CommitteeMainId', e.SoCAmount, \r\n"
-			+ "a.RSPInstitute, a.RSPAddress, a.RSPCity, a.RSPState, a.RSPPinCode, a.PITitle, a.PIName, a.PIDesig, a.PIDept, a.PIMobileNo, a.PIEmail, a.PIFaxNo, e.SoCDuration\r\n"
+			+ "a.RSPInstitute, a.RSPAddress, a.RSPCity, a.RSPState, a.RSPPinCode, a.PITitle, a.PIName, a.PIDesig, a.PIDept, a.PIMobileNo, a.PIEmail, a.PIFaxNo, e.SoCDuration, a.CurrentStatus\r\n"
 			+ "FROM pfms_cars_initiation a JOIN employee b ON a.EmpId=b.EmpId  JOIN pfms_cars_approval_status c ON a.CARSStatusCode=c.CARSStatusCode LEFT JOIN pfms_cars_soc e ON a.CARSInitiationId=e.CARSInitiationId AND e.IsActive\r\n"
 			+ "WHERE a.IsActive=1 AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.EmpId=:EmpId END)\r\n"
 			+ "ORDER BY a.CARSInitiationId DESC";
@@ -1396,5 +1396,21 @@ public class CARSDaoImpl implements CARSDao{
 			logger.error(new Date()+" Inside DAO getCARSOtherDocDetailsList "+e);
 			return list;
 		}
+	}
+
+	private static final String CARSCURRENTSTATUSUPDATE = "UPDATE pfms_cars_initiation SET CurrentStatus=:CurrentStatus WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
+	@Override
+	public int carsCurrentStatusUpdate(String currentStatus, String carsInitiationId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(CARSCURRENTSTATUSUPDATE);
+			query.setParameter("CurrentStatus", currentStatus);
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO carsCurrentStatusUpdate "+e);
+			return 0;
+		}
+
 	}
 }

@@ -7,6 +7,11 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 <style type="text/css">
+.modulecontainer {
+	display: flex;
+	gap: 70px;
+	margin : 2rem 0rem 1rem 9rem;
+}
  .module{
  	max-width: 350px;
  	min-width: 350px;
@@ -74,8 +79,7 @@ String labCode = (String)session.getAttribute("labcode");
             	<h3 class="text-dark">CCM</h3>
        		</div>
 	     
-			<div class="d-flex justify-content-sm-between mt-3 mb-3">
-				<div class="emptymodule"></div>
+			<div class="modulecontainer">
 				
 				<div class="card module" data-url="CCMCommitteeConstitution.htm">
 					<div class="card-body">
@@ -104,9 +108,17 @@ String labCode = (String)session.getAttribute("labcode");
 						<img alt="report" src="view/images/doc-report.png" >
 					</div>
 				</div>
-				
-				<div class="emptymodule"></div>
 			</div>
+			
+			<div class="modulecontainer">
+				
+				<div class="card module" data-url="CCMActionReport.htm">
+					<div class="card-body">
+						<h5>Action Report</h5>
+						<img alt="committee" src="view/images/checklist2.png" style="width: 70px;margin-top: 0.8rem;" >
+					</div>
+				</div>
+			</div>	
 			
 		</div> 
 	</div>

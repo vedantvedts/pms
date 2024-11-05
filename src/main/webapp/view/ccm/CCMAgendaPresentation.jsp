@@ -1229,7 +1229,7 @@ input,select,table,div,label,span,button {
 			<!-- ---------------------------------------- Closure Status Slide End ---------------------------------------------------  -->
 			<!-- ---------------------------------------- Cash Out Go Status Slide ---------------------------------------------------  -->
 			<%if(slideNames.contains("Cash Out Go Status")) { 
-				HashMap<String, List<Object[]> > cogList = (HashMap<String, List<Object[]> >) request.getAttribute("cashOutGoList");
+				LinkedHashMap<String, List<Object[]> > cogList = (LinkedHashMap<String, List<Object[]> >) request.getAttribute("cashOutGoList");
 				int quarter = (int)request.getAttribute("quarter");
 				
 			%>
@@ -1309,7 +1309,7 @@ input,select,table,div,label,span,button {
 										String decimalPoint = "%.2f";
 										for(Object[] obj : cashOutGoList) {
 									%>
-										<%if(!budgetHead.equalsIgnoreCase(obj[6].toString()) || slno==0 ) { %>
+										<%if(!budgetHead.equalsIgnoreCase(obj[6]!=null?obj[6].toString():"") || slno==0 ) { %>
 										 	<%if(slno!=0) {%>
 											 	<tr data-toggle="modal" data-target="#cog<%=entry.getKey() %>Modal" style="cursor: pointer;">
 													<td class="right" colspan="2"><b><%=budgetHead %> : </b> </td>
@@ -1332,7 +1332,7 @@ input,select,table,div,label,span,button {
 													<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
 												</tr>	
 										 	<%} %>
-										 	<%budgetHead = obj[6].toString(); %>
+										 	<%budgetHead = obj[6]!=null?obj[6].toString():""; %>
 											<%-- <tr>
 												<td colspan="<%=12-quarter %>" class="center" style="background-color: aliceblue;"><b>Budget Head : <%=budgetHead %></b></td>
 											</tr> --%>
@@ -1504,7 +1504,7 @@ input,select,table,div,label,span,button {
 												String decimalPoint = "%.2f";
 												for(Object[] obj : cashOutGoList) {
 											%>
-												<%if(!budgetHead.equalsIgnoreCase(obj[6].toString()) || slno==0 ) { %>
+												<%if(!budgetHead.equalsIgnoreCase(obj[6]!=null?obj[6].toString():"") || slno==0 ) { %>
 												 	<%if(slno!=0) {%>
 													 	<tr>
 															<td class="right" colspan="2"><b>Total Amount (<%=budgetHead %>) : </b> </td>
@@ -1527,7 +1527,7 @@ input,select,table,div,label,span,button {
 															<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
 														</tr>	
 												 	<%} %>
-												 	<%budgetHead = obj[6].toString(); %>
+												 	<%budgetHead = obj[6]!=null?obj[6].toString():""; %>
 													<tr>
 														<td colspan="<%=12-quarter %>" class="center" style="background-color: aliceblue;"><b>Budget Head : <%=budgetHead %></b></td>
 													</tr>
@@ -1556,7 +1556,7 @@ input,select,table,div,label,span,button {
 												%>
 												<tr>
 													<td class="center"><%=++slno %></td>
-													<td ><%=obj[4] %></td>
+													<td ><%=obj[4]!=null?obj[4]:"-" %></td>
 													<%-- <td><%=obj[6] %></td> --%>
 													<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")/lakh) %></td>
 													<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")/lakh) %></td>

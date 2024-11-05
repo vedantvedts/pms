@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -637,22 +638,24 @@ public class CCMServiceImpl implements CCMService{
 	}
 
 	@Override
-	public HashMap<String, List<Object[]> > getCashOutGoList() throws Exception {
-		
-		HashMap<String, List<Object[]> > cogList = new HashMap<String, List<Object[]>>();
-		try {
-			List<Object[]> list = dao.getCashOutGoList();
-			if(list!=null && list.size()>0) {
-				 // Group by LabCode
-				cogList = list.stream().collect(Collectors.groupingBy(obj -> obj[2].toString(), HashMap::new, Collectors.toList()));
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date()+" Inside CCMServiceImpl getCashOutGoList "+ e);
-		}
-		return cogList;
+	public LinkedHashMap<String, List<Object[]>> getCashOutGoList() throws Exception {
+	    
+	    LinkedHashMap<String, List<Object[]>> cogList = new LinkedHashMap<>();
+	    try {
+	        List<Object[]> list = dao.getCashOutGoList();
+	        if (list != null && list.size() > 0) {
+	            // Group by LabCode while preserving insertion order
+	            cogList = list.stream().collect(Collectors.groupingBy(obj -> obj[2].toString(), LinkedHashMap::new, Collectors.toList()));
+	        }
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        logger.error(new Date() + " Inside CCMServiceImpl getCashOutGoList " + e);
+	    }
+	    return cogList;
 	}
 
+	
 	@Override
 	public long addPFMSCCMData(PFMSCCMData ccmData) throws Exception {
 		
@@ -817,29 +820,30 @@ public class CCMServiceImpl implements CCMService{
 	
 	@Override
 	public Map<String, Map<String, List<Map<String, Object>>>> getCashOutGoListForStackGraph() throws Exception {
-		Map<String, Map<String, List<Map<String, Object>>>> chartData = new HashMap<>();
+	    // Using LinkedHashMap to maintain insertion order for each level
+	    Map<String, Map<String, List<Map<String, Object>>>> chartData = new LinkedHashMap<>();
 	    try {
 	        List<Object[]> list = dao.getCashOutGoList();
 	        
 	        if (list != null && !list.isEmpty()) {
-	        	for (Object[] row : list) {
-	        	    String labCode = (String) row[2];  // Lab name
-	        	    String projectCode = (String) row[4];  // Project name
-	        	    String category = (String) row[6];  // Category (Revenue, Capital, Miscellaneous)
-	        	    Double amount = new BigDecimal(row[16].toString()).doubleValue();  // Total cost
-	        	    
-	        	    // Create the structure
-	        	    chartData.computeIfAbsent(labCode, k -> new HashMap<>())
-	        	             .computeIfAbsent(category, k -> new ArrayList<>());
+	            for (Object[] row : list) {
+	                String labCode = (String) row[2];  // Lab name
+	                String projectCode = (String) (row[4] != null ? row[4] : "");  // Project name
+	                String category = (String) (row[6] != null ? row[6] : "");  // Category (Revenue, Capital, Miscellaneous)
+	                Double amount = new BigDecimal(row[16] != null ? row[16].toString() : "0").doubleValue();  // Total cost
+	                
+	                // Create the structure using LinkedHashMap for order preservation
+	                chartData.computeIfAbsent(labCode, k -> new LinkedHashMap<>())
+	                         .computeIfAbsent(category, k -> new ArrayList<>());
 
-	        	    // Create a project data map for each project
-	        	    Map<String, Object> projectData = new HashMap<>();
-	        	    projectData.put("project", projectCode);
-	        	    projectData.put("amount", amount);
+	                // Create a project data map for each project
+	                Map<String, Object> projectData = new LinkedHashMap<>();
+	                projectData.put("project", projectCode);
+	                projectData.put("amount", amount);
 
-	        	    // Add the project data to the respective category and lab
-	        	    chartData.get(labCode).get(category).add(projectData);
-	        	}
+	                // Add the project data to the respective category and lab
+	                chartData.get(labCode).get(category).add(projectData);
+	            }
 	        }
 	        
 	    } catch (Exception e) {
@@ -848,6 +852,7 @@ public class CCMServiceImpl implements CCMService{
 	    }
 	    return chartData;
 	}
+
 
 	@Override
 	public List<Object[]> getScheduleListByScheduleTypeTwo(String scheduleType) throws Exception {

@@ -103,5 +103,6 @@ public interface CARSDao {
 	public List<CARSSoCMilestones> getAllCARSSoCMilestonesList() throws Exception;
 	public List<CARSContract> getAllCARSContractList() throws Exception;
 	public List<CARSOtherDocDetails> getCARSOtherDocDetailsList() throws Exception;
+	public int carsCurrentStatusUpdate(String currentStatus, String carsInitiationId) throws Exception;
 	
 }

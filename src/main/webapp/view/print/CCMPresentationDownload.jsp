@@ -1003,7 +1003,7 @@ input,select,table,div,label,span,button {
 			
 			<!-- ---------------------------------------- Cash Out Go Status Page ---------------------------------------------------  -->
 			<%if(slideNames.contains("Cash Out Go Status")) { 
-				HashMap<String, List<Object[]> > cogList = (HashMap<String, List<Object[]> >) request.getAttribute("cashOutGoList");
+				LinkedHashMap<String, List<Object[]> > cogList = (LinkedHashMap<String, List<Object[]> >) request.getAttribute("cashOutGoList");
 				int quarter = (int)request.getAttribute("quarter");
 				
 			%>

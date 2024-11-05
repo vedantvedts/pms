@@ -31,22 +31,14 @@ import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -64,14 +56,12 @@ import com.google.gson.Gson;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
-import com.itextpdf.layout.Document;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.PfmsFileUtils;
@@ -83,6 +73,7 @@ import com.vts.pfms.ccm.service.CCMService;
 import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
+import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.print.service.PrintService;
@@ -110,6 +101,9 @@ public class CCMController {
 
 	@Autowired
 	RoadMapService roadmapservice;
+	
+	@Autowired
+	ActionService actionservice;
 	
 	@Autowired
 	Environment env;
@@ -1850,4 +1844,33 @@ public class CCMController {
 			return "static/Error";
 		}
 	}
+	
+	@RequestMapping(value="CCMActionReport.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsCurrentStatusSubmit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date()+" Inside CCMActionReport.htm "+Username);	
+		try {
+			String committeeId = req.getParameter("committeeId");
+			String scheduleId = req.getParameter("scheduleId");
+			
+			List<CommitteeSchedule> ccmScheduleList = service.getScheduleListByScheduleType("C");
+			
+			if(scheduleId == null) {
+				committeeId = String.valueOf(service.getCommitteeIdByCommitteeCode("CCM"));
+				scheduleId = ccmScheduleList!=null && ccmScheduleList.size()>0?ccmScheduleList.get(0).getScheduleId()+"":"0";
+			}
+			
+			req.setAttribute("committeeId", committeeId);
+			req.setAttribute("scheduleId", scheduleId);
+			req.setAttribute("ccmScheduleList", ccmScheduleList);
+			req.setAttribute("meetingActionList", actionservice.MeettingList(committeeId, "0", scheduleId));
+			
+			return "ccm/CCMActionReport";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CCMActionReport.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
 }

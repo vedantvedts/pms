@@ -413,7 +413,7 @@ public class CCMDaoImpl implements CCMDao{
 		
 	}
 	
-	private static final String GETCASHOUTGOLIST = "SELECT CCMDataId, ClusterId, LabCode, ProjectId, ProjectCode, BudgetHeadId, BudgetHeadDescription, AllotmentCost, Expenditure, Balance, Q1CashOutGo, Q2CashOutGo, Q3CashOutGo, Q4CashOutGo, Required, CreatedDate, (Q1CashOutGo+Q2CashOutGo+Q3CashOutGo+Q4CashOutGo) AS 'TotalCOG' FROM pfms_ccm_data ORDER BY LabCode, FIELD(BudgetHeadDescription, 'Revenue','Capital','Miscellaneous'), TotalCOG DESC";
+	private static final String GETCASHOUTGOLIST = "SELECT a.CCMDataId, b.ClusterId, b.LabCode, a.ProjectId, a.ProjectCode, a.BudgetHeadId, a.BudgetHeadDescription, a.AllotmentCost, a.Expenditure, a.Balance, a.Q1CashOutGo, a.Q2CashOutGo, a.Q3CashOutGo, a.Q4CashOutGo, a.Required, a.CreatedDate, (a.Q1CashOutGo+a.Q2CashOutGo+a.Q3CashOutGo+a.Q4CashOutGo) AS 'TotalCOG' FROM lab_master b LEFT JOIN pfms_ccm_data a ON a.LabCode=b.LabCode WHERE b.IsCluster<>'Y' ORDER BY b.LabCode, FIELD(a.BudgetHeadDescription, 'Revenue','Capital','Miscellaneous'), TotalCOG DESC";
 	@Override
 	public List<Object[]> getCashOutGoList() throws Exception {
 		

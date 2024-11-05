@@ -3305,7 +3305,7 @@ public class CARSController {
 		String labcode = (String)ses.getAttribute("labcode");
 		String LoginType = (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
-		logger.info(new Date() +"Inside CARSRSQRDownloadBeforeFreeze.htm "+Username);		
+		logger.info(new Date() +"Inside CARSPresentationDownload.htm "+Username);		
 		try {
 			req.setAttribute("labInfo", printservice.LabDetailes(labcode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
@@ -3355,4 +3355,27 @@ public class CARSController {
     	}		
 	}
 	
+	@RequestMapping(value="CARSCurrentStatusSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsCurrentStatusSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSCurrentStatusSubmit.htm "+Username);	
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String currentStatus = req.getParameter("currentStatus");
+			
+			int result = service.carsCurrentStatusUpdate(currentStatus, carsInitiationId);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "CARS Current Status Details Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "CARS Current Status Details Update Unsuccessful");
+			}
+			return "redirect:/CARSInitiationList.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSCurrentStatusSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+
 }

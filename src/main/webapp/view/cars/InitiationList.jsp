@@ -3,12 +3,16 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
 <!-- <style type="text/css">
 /* icon styles */
 .cc-rockmenu {
@@ -297,6 +301,11 @@ background: none;border-style: none;
     transform: scale(1);
     opacity: 1;
   }
+}
+
+/* Summer Note styles */
+.note-editor {
+	width: 835px !important;
 }
 </style>
 </head>
@@ -621,6 +630,17 @@ String committeeId = (String)request.getAttribute("committeeId");
 												    			<input type="hidden" name="divisionid" value="0">
 												    			<input type="hidden" name="initiationid" value="0">
 												    		<%} %>	
+												    		<textarea id="currentStatus<%=obj[0] %>" style="display: none;"><%=obj[34] %></textarea>
+											    			<button type="button" class="editable-clicko" id="carsDetails" data-id="<%=obj[0] %>" data-carsno="<%=obj[2] %>" data-toggle="modal" data-target="#currentStatusModal" formnovalidate="formnovalidate">
+																<div class="cc-rockmenu">
+																	<div class="rolling">
+																		<figure class="rolling_icon">
+																			<img src="view/images/current-status.png" style="width: 30px;">
+																		</figure>
+																		<span>Status</span>
+																	</div>
+																</div>
+											    			</button>
 		                                        		</form>
 													</div>
 												</div>
@@ -665,6 +685,8 @@ String committeeId = (String)request.getAttribute("committeeId");
 						</nav>
 					</div>
 				<%} %>	
+				
+				<!-- ------------------------------------- CARS Full Title Modal ----------------------------- -->
 				<div class="modal fade" id="titlemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-jump modal-dialog-centered" role="document" style="max-width: 70% !important;height: 40%;">
 						<div class="modal-content" style="min-height: 80%;" >
@@ -685,6 +707,42 @@ String committeeId = (String)request.getAttribute("committeeId");
 						</div>
 					</div>
 				</div>
+				
+				<!-- ------------------------------------- CARS Full Title Modal End ----------------------------- -->
+				<!-- ------------------------------------- CARS Current Status Modal ----------------------------- -->
+				<div class="modal fade bd-example-modal-lg" id="currentStatusModal" tabindex="-1" role="dialog" aria-labelledby="currentStatusModal" aria-hidden="true" style="margin-top: 5%;">
+					<div class="modal-dialog modal-lg" role="document" style="max-width: 900px;">
+						<div class="modal-content">
+							<div class="modal-header bg-primary text-light" >
+					        	<h5 class="modal-title ">Current Status - <span id="carsnoheader"></span></h5>
+						        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true" style="color: #f02828;">&times;</span>
+						        </button>
+					      	</div>
+			     			<div class="modal-body">
+			     				<div class="container-fluid mt-3">
+			     					<div class="row">
+										<div class="col-md-12 " align="left">
+											<form action="CARSCurrentStatusSubmit.htm" method="POST" id="myfrm">
+												<div id="Editor" class="center"></div>
+												<textarea id="currentStatus" name="currentStatus" style="display: none;"></textarea>
+												<div class="mt-2" align="center" id="detailsSubmit">
+													<span id="EditorDetails"></span>
+													<input type="hidden" name="carsInitiationId" id="carsInitiationId">
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+													<span id="Editorspan">
+														<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure to Update?')">UPDATE</button></span>
+													</span>
+												</div>
+											</form>
+										</div>
+									</div>
+			     				</div>
+			     			</div>
+			     		</div>
+			     	</div>
+			     </div>				
+			     <!-- ------------------------------------- CARS Current Status Modal End----------------------------- -->				
 			</div>
 		</div>
 	</div>
@@ -695,7 +753,6 @@ function titlemodal(carsinitiationid,carstitle) {
 	
 	$('#titledata').html(carstitle);
 	$('#titlemodal').modal('toggle');
-	console.log(carsinitiationid,carstitle);
 	event.preventDefault();
 }
 	
@@ -724,6 +781,66 @@ function verify(){
 	return true;
 }
 
+//Define a common Summernote configuration
+var summernoteConfig = {
+    width: 900,
+    toolbar: [
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
+        ['insert', ['picture', 'table']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']]
+    ],
+    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],
+    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
+    buttons: {
+        superscript: function() {
+            return $.summernote.ui.button({
+                contents: '<sup>S</sup>',
+                tooltip: 'Superscript',
+                click: function() {
+                    document.execCommand('superscript');
+                }
+            }).render();
+        },
+        subscript: function() {
+            return $.summernote.ui.button({
+                contents: '<sub>S</sub>',
+                tooltip: 'Subscript',
+                click: function() {
+                    document.execCommand('subscript');
+                }
+            }).render();
+        }
+    },
+    height: 300
+};
+
+// This is for RSQR
+/* CKEDITOR.replace('Editor', editor_config); */
+$('#Editor').summernote(summernoteConfig);
+
+$('#currentStatusModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var id = button.data('id');          // Extract info from data-* attributes
+    var carsno = button.data('carsno');
+    var status = $('#currentStatus'+id).val();
+    status = (status=='null' || status == null)?'':status;
+
+    // Update the modal's content
+    var modal = $(this);
+    modal.find('.modal-title #carsnoheader').text(carsno);
+    modal.find('.modal-body #carsInitiationId').val(id); // Example of updating a modal element
+    modal.find('.modal-body #currentStatus').html(status);
+    
+    //
+    modal.find('.modal-body #Editor').summernote('code', status);
+});
+
+$('#myfrm').submit(function() {
+	 var data = $('#Editor').summernote('code');
+	 $('textarea[name=currentStatus]').val(data);
+});
 </script>
 </body>
 </html>
