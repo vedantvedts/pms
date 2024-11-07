@@ -111,13 +111,26 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public int upadteDemandFile(String fileId, String statusId, Date eventDateSql,String update,String remarks)throws Exception{
 		
 		
+		
 		String UpdateDemand="UPDATE pfts_file SET PftsStatusId=:statusid, "+update+"=:eventDate, Remarks=:remarks  WHERE PftsFileId=:fileid";
+		String UpdateDemandStatus="UPDATE pfts_file SET Remarks=:remarks WHERE PftsFileId=:fileid ";
+		int result;
+		System.out.println(statusId+"%%%%%%%%%%%%%%%%%%%%%%");
+		if(statusId.equalsIgnoreCase("1"))
+		{
+			Query query=manager.createNativeQuery(UpdateDemandStatus);
+			query.setParameter("remarks", remarks);
+			query.setParameter("fileid", fileId);
+			result=query.executeUpdate();
+		}
+		else {
 		Query query=manager.createNativeQuery(UpdateDemand);
 		query.setParameter("fileid", fileId);
 		query.setParameter("statusid", statusId);
 		query.setParameter("eventDate", eventDateSql);
 		query.setParameter("remarks", remarks);
-		int result=query.executeUpdate();
+		result=query.executeUpdate();
+		}
 		return result;
 	}
 	
