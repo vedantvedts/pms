@@ -426,6 +426,7 @@ public class ProjectController
 			}
 			
 			Object[] projectDetails = service.getProjectDetails(LabCode, initiationId, "P");
+			
 			String project = "";
 			if(projectDetails!=null) {
 				project=initiationId+"//"+projectDetails[2]+"//"+projectDetails[3];
@@ -6461,8 +6462,9 @@ public class ProjectController
 			String reqInitiationId = req.getParameter("reqInitiationId");
 			RequirementInitiation reqini = reqService.getRequirementInitiationById(reqInitiationId);
 			if(reqini!=null) {
-			Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
-			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
+				Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
+				req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
+				req.setAttribute("Classification", projectDetails!=null?projectDetails[12]:"");
 			}
 			
 
@@ -6479,15 +6481,17 @@ public class ProjectController
 			req.setAttribute("MemberList", service.reqMemberList(reqInitiationId));
 			req.setAttribute("DocumentSummary", service.getDocumentSummary(reqInitiationId));
 			req.setAttribute("ProjectParaDetails", reqService.getProjectParaDetails(reqInitiationId));
-			List<Object[]>AcronymsList= service.AcronymsList(reqInitiationId);
-			req.setAttribute("AcronymsList", AcronymsList);
+			req.setAttribute("AcronymsList", service.AcronymsList(reqInitiationId));
 			req.setAttribute("PerformanceList", service.getPerformanceList(reqInitiationId));;
 			req.setAttribute("VerificationDataList", reqService.getVerificationMethodList());;
 			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(reqInitiationId));
 			req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(reqInitiationId));
 			req.setAttribute("Verifications", reqService.getVerifications(reqInitiationId));
-		
-
+			req.setAttribute("docnumber", req.getParameter("docnumber"));
+			String version = reqini!=null && reqini.getReqVersion()!=null?reqini.getReqVersion():"1.0";
+			req.setAttribute("version", version);
+			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId)); //changed the code here pass the projectId
+			
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();

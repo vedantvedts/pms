@@ -73,6 +73,7 @@ import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.Specification;
+import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
@@ -104,7 +105,7 @@ public class RequirementsController {
 	private SimpleDateFormat sdf3=fc.getSqlDateFormat();
 
 
-	@RequestMapping(value="Requirements.htm")
+	@RequestMapping(value="Requirements.htm",method = {RequestMethod.POST,RequestMethod.GET})
 	public String projectRequirementsList(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
 
 	{	
@@ -1606,6 +1607,8 @@ public class RequirementsController {
 			
 			req.setAttribute("reqInitiation", service.getRequirementInitiationById(reqInitiationId));
 			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
+			List<Object[]> productTreeList = service.productTreeListByProjectId(projectId);
+			req.setAttribute("productTreeList", productTreeList );
 		}
 
 
@@ -3258,12 +3261,24 @@ public class RequirementsController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date()+"Inside TraceabilityMatrix.htm"+UserId);
 		try {
+			String projectType = req.getParameter("projectType");
+			String projectId = req.getParameter("projectId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
+			
+			String initiationId = req.getParameter("initiationId");
 			
 			String reqInitiationId = req.getParameter("reqInitiationId");
+			RequirementInitiation reqini = service.getRequirementInitiationById(reqInitiationId);
+			//Object[] projectDetails = service.getProjectDetails("LRDE", reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
+
+			
 			System.out.println("reqInitiationId"+reqInitiationId);
 			req.setAttribute("ProjectParaDetails", service.getProjectParaDetails(reqInitiationId));
 			req.setAttribute("RequirementList", service.RequirementList(reqInitiationId));
-
+			req.setAttribute("projectType", projectType);
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
 		}
 		catch (Exception e) {
 			// TODO: handle exception
@@ -3271,6 +3286,48 @@ public class RequirementsController {
 		
 		return "requirements/TraceabilityMatrix";
 		}
+	
+	@RequestMapping(value="SpecsTraceabilityMatrix.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String SpecsTraceabilityMatrix(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+"Inside SpecsTraceabilityMatrix.htm"+UserId);
+		try {
+			String projectType = req.getParameter("projectType");
+			String projectId = req.getParameter("projectId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
+			
+			String initiationId = req.getParameter("initiationId");
+			
+			String SpecsInitiationId = req.getParameter("SpecsInitiationId");
+			SpecsInitiation specsInitiation = service.getSpecsInitiationById(SpecsInitiationId);
+			//Object[] projectDetails = service.getProjectDetails("LRDE", reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
+			
+			
+			req.setAttribute("specsList", service.getSpecsList(SpecsInitiationId));
+			List<Object[]>initiationReqList = service.initiationReqList(specsInitiation.getProjectId()+"", specsInitiation.getProductTreeMainId()+"",specsInitiation.getInitiationId()+"" );
+			String reqInitiationId=null;
+			List<Object[]>RequirementList= new ArrayList<>();
+			if(initiationReqList!=null && initiationReqList.size()>0) {
+				reqInitiationId=initiationReqList.get(0)[0].toString();
+				RequirementList=service.RequirementList(reqInitiationId);
+			}
+			req.setAttribute("RequirementList", RequirementList);
+			req.setAttribute("projectType", projectType);
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return "requirements/SepecTraceabilityMatrix";
+	}
+	
+	
 	
 	@RequestMapping(value="deleteSqr.htm", method= {RequestMethod.GET})
 	public @ResponseBody  String deleteSqr(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {

@@ -237,15 +237,15 @@ if(EnotePrintDetails!=null && EnotePrintDetails.size()>0){
 	      <br><br><br><br>
      <%} }}%>
      
-     <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[15].toString().equalsIgnoreCase("APR")&& !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
+ <%--     <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[15].toString().equalsIgnoreCase("APR")&& !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
      <br><br>
          <div align="center" style="text-align:center;"> 
          <span style="font-weight: 600; font-size: 16px; color: green;">APPROVED</span><br>
-        <%--  <span style="font-weight: 400; font-size: 12px; color: green;"><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></span><br><br> --%>
+         <span style="font-weight: 400; font-size: 12px; color: green;"><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></span><br><br>
          <span style="font-weight: 500; font-size: 14px; color: green;"><span class="text-blue" style="font-size :14px; color: green;">  <b><%=NewApprovalList[7] %>, &nbsp;<%=NewApprovalList[8].toString() %>, <%=NewApprovalList[9].toString() %></b></span></span><br><br>
   <span style="font-weight: 400; font-size: 12px; color: green;">[Approved On :&nbsp;<span class="text-blue" style="font-size:12px; color: green;"><%=fc.sdtfTordtf(EnotePrintDetails.get(EnotePrintDetails.size()-1)[4].toString()) %> </span>]</span> 
          </div>
-     <%} %>
+     <%} %> --%>
 </div>
 </body>
 </html>

@@ -632,7 +632,7 @@ margin-left:8px;
 				<h2 style="font-family: <%= FontFamily %>;font-size:<%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>;margin-left: 20px;"><%=maincount %>.2 Government Documents </h2>
 			
 			<h3 style="font-family: <%= FontFamily %>;margin-left: 20px; font-weight:<%=SuperHeaderFontWeight%>;margin-top: 20px; font-size: <%= SuperHeaderFontsize%>pt;">
-		   <span><%=maincount+"."+(Applicabledocuments)%>.<%=++j %> Specifications, Standards, and Handbooks
+		   <span><%=maincount+"."+(++Applicabledocuments)%>.<%=++j %> Specifications, Standards, and Handbooks
 			</span>
 				</h3>
 				<div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
@@ -1096,6 +1096,116 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 		<!--Test Details Ends -->		
 		<!--Test Details Ends -->		
 			<!-- Test  Conclusion Starts  -->
+			
+		<h1 style="font-family: <%= FontFamily %>; margin-left: 10px; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;">
+  <br><%= ++maincount %>.&nbsp;
+ Forward Traceability 
+</h1>		
+
+	<table class="border-black"
+					style="width: 635px; margin-left: 10px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+					<thead>
+						<tr>
+							<th class="border-black"
+								style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black"
+								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">TestPlan Id </th>
+							<th class="border-black" style="width: 180px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"> Specification Id</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+					<%if(TestDetailsList!=null && TestDetailsList.size()>0){ 
+						int snCount=0;
+					for(Object[]obj:TestDetailsList){
+					%>
+					<tr>
+					<td class="border-black"
+								style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
+					<td class="border-black"
+								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %> </td>
+						<td class="border-black" style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;">
+						<%
+						List<String> specid = Arrays.asList(obj[19].toString() .split(","));
+						
+						List<Object[]>newSpecList = new ArrayList<>();
+						
+						newSpecList = specificationList.stream().filter(i->specid.contains(i[0].toString())).collect(Collectors.toList());
+						
+						%>
+						<%if(newSpecList.size()!=0) {
+						for(Object[]obj1:newSpecList){
+						%>
+						<p style="padding:2px;"><%= obj1[1].toString()%></p>
+						
+						<%}}else{ %>
+						-
+						<%} %>
+						</td>
+					</tr>
+					<%}}else{ %>
+						<tr>
+							<td class="border-black" colspan="3"
+								style="; padding: 5px; border: 1px solid black; border-collapse: collapse;">No Data Available !</td>
+								</tr>
+					<%} %>
+					</tbody>
+					</table>	
+			
+			<h1 style="font-family: <%= FontFamily %>; margin-left: 10px; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;">
+  <br><%= ++maincount %>.&nbsp;
+ Backward Traceability 
+</h1>			
+		
+	<table class="border-black"
+					style="width: 635px; margin-left: 10px; margin-top: 10px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
+					<thead>
+						<tr>
+							<th class="border-black"style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;">SN</th>
+							<th class="border-black" style="width: 180px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"> Specification Id</th>
+							<th class="border-black" style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;">TestPlan Id </th>
+						</tr>
+					</thead>
+								<tbody>
+					<%if(specificationList!=null && specificationList.size()>0){ 
+						int snCount=0;
+					for(Object[]obj:specificationList){
+					%>
+					<tr>
+					<td class="border-black"
+								style="width: 20px; padding: 5px; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
+					<td class="border-black"
+								style="width: 130px; padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %> </td>
+				
+					<td class="border-black" style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;">
+					<%
+					
+					List<Object[]>newTestList = new ArrayList<>(); 
+					if(TestDetailsList!=null && TestDetailsList.size()>0){
+					newTestList = TestDetailsList.stream().filter(e->Arrays.asList(e[19].toString().split(",")).contains(obj[0].toString())).collect(Collectors.toList());
+					
+					}
+					%>
+					<%if(newTestList.size()>0){
+					for(Object[]obj1:newTestList){
+					%>
+					<p style=""><%=obj1[1].toString() %></p>
+					<%}}else{ %>
+						-
+					<%} %>
+					</td>
+				
+					</tr>
+					<%}}else{ %>
+						<tr>
+							<td class="border-black" colspan="3"
+								style="; padding: 5px; border: 1px solid black; border-collapse: collapse;">No Data Available !</td>
+								</tr>
+					<%} %>
+					</tbody>
+					</table>	
+			
+			
 		<h1 style="font-family: <%= FontFamily %>; margin-left: 10px; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;">
   <br><%= ++maincount %>.&nbsp;
 CONCLUSION

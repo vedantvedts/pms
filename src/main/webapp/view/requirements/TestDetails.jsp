@@ -449,6 +449,9 @@ margin-left: -21px;
 										<button type="button" style="width:80%" class="btn btn-primary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick="TestDetailsShow('<%=obj[0]%>')">
 											<span style="font-weight: bold;;"><%=obj[1] %></span>
 										</button>
+								<button class="btn btn-sm mt-2 " onclick="deleteTestPlan(<%=obj[0].toString()%>)">
+							<i class="fa fa-trash" aria-hidden="true" style="color:red;"></i>
+							</button>
 										<!-- <button></button> -->
 									<%count++;} %>
 							</div>
@@ -2130,7 +2133,30 @@ $('#myform1').submit(function() {
 		 
 		 
 	 }
-	 
+		function deleteTestPlan(a){
+			
+			if(confirm('Are you sure to delete?')){
+			
+			$.ajax({
+			type:'get',
+			url:'deletetestPlan.htm',
+			data:{
+				TestId:a,
+			},
+			datatype:'json',
+			success:function(result){
+				
+				alert("Test PlanId deleted successfully!")
+				
+				window.location.reload();
+			}
+			})
+			}else{
+				event.preventDefault();
+				return false;
+			}
+		
+		}
  </script>
 	
 </body>

@@ -457,7 +457,7 @@ String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 					%>
 					
 					<div  style="display: flex; align-items: center; margin-top: 8px; width: 100%">
-					<button style="text-decoration: underline" type="button" class="btn btn-secondary viewbtn mt-2" onclick="addData(<%=obj[0].toString() %>,<%=obj[8].toString() %>)" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %> &nbsp;&nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i> </button>
+					<button style="text-decoration: underline" type="button" class="btn btn-secondary  mt-2" onclick="addData(<%=obj[0].toString() %>,<%=obj[8].toString() %>)" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %> &nbsp;&nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i> </button>
 					<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj[0].toString()%>)">
 							<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 					</button>
@@ -820,8 +820,8 @@ var editvalue="add";
  }
 
  function addData(a,b){
-		$('.viewbtn').css("background","#055C9D");
-		$('#btn'+a).css("background","green");
+	 $('.viewbtn').css("background","#055C9D");
+		/*$('#btn'+a).css("background","green"); */
 	 $('#row1').show();
 	 $('#row2').hide();
 	 $('#linkedRequirements').val(" ").trigger('change');
@@ -837,8 +837,9 @@ var editvalue="add";
 	 $('#specsDiv').hide();
 	 $('#Editor').summernote('code', "");
 	 editvalue="add";
-	 $('.subdivs').hide();
-	 $('#div'+a).show();
+	/*  $('.subdivs').hide(); */
+	 $('#div' + a).toggle();
+	
  }
  
  

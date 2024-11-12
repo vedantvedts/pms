@@ -166,7 +166,7 @@ String FontFamily="Times New Roman";
 			</div>
 			<br>
 	<div style="page-break-before:always"></div> 
-	<div style="text-align: center;width: 650px !important;">
+	<div style="text-align: center;width: 645px !important;padding:10px;">
 		<h3 style="text-transform:uppercase;">DRAFT GENERAL STAFF QUALITATIVE REQUIREMENT FOR 
 			<%=projectDetails!=null && projectDetails[3]!=null?projectDetails[3]:"-" %> (<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:"-" %>)
 		</h3>
@@ -232,7 +232,7 @@ String FontFamily="Times New Roman";
 			int count=0;
 			for(Object[]obj:ParaDetails){
 		%>
-				<div align="left" style="padding:4px">
+				<div align="left" style="padding:4px;">
 					<span style="font-weight: 600; ">
 						 <%=obj[3].toString() %> 
 					</span>

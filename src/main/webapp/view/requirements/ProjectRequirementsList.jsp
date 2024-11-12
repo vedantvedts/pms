@@ -514,7 +514,10 @@ FormatConverter fc = new FormatConverter();
 	                   	<form action="TraceabilityMatrix.htm" id="myform21" method="post">
 	                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                        	<button class="btn btn-sm btn-primary" type="submit" name="Action" id="addAction"  style="">See Traceabilities</button>
-	                        	
+	                        	<input type="hidden" name="projectType" id="projectType11" value="<%=projectType %>">
+	                        	<input type="hidden" name="projectId"  value="<%=projectId!=null?projectId:"0" %>">
+	                        	<input type="hidden" name="initiationId"  value="<%=initiationId!=null?initiationId:"0" %>">
+	                        	<input type="hidden" name="productTreeMainId"  value="<%=productTreeMainId!=null ?productTreeMainId:"0" %>">
 	                        	<input type="hidden" name="reqInitiationId" value="<%=initiationReqList.get(0)[0].toString()%>">
 	                 		</form>
 	                 		      </div>

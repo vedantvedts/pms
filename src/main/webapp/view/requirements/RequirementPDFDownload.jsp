@@ -201,14 +201,14 @@ margin-left:8px;
 #table1{
 margin-left:15x;
 }
+
 </style>
 </head>
 <body>
 
 	<div id="headerdiv">
 	<div style="position: absolute; top: 450px; left:-400px;  transform: rotate(-90deg); font-size: 10px; color: #000; width:900px;opacity:0.5; ">
-				  <!--   <b style="font-size: 12px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</b><br>
-				    <span style="text-decoration: none; font-size: 11px;">This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.</span> -->
+
 				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} %>
 				
 				</div>
@@ -253,7 +253,7 @@ margin-left:15x;
 <br><br><br><br><br><br><br><br><br><br><br><br>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
-				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>; !important;" class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>
+				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>;" class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>
 					<div align="center" >
 						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
 							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
@@ -336,7 +336,7 @@ margin-left:15x;
 				<h5  class="heading-color; "style="font-family: <%= FontFamily %>;">DISTRIBUTION LIST
 				</h5>
 						</div>
-						<table style="width: 635px!important;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+						<table style="width: 635px !important;margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 					<tr >
 					<td class="text-dark"  style="font-family: <%= FontFamily %>;border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
 					<td class="text-dark"   style="font-family: <%= FontFamily %>;border:1px solid black; width: 250px;text-align: center;"><span class="text-dark">NAME</span></td>
@@ -959,7 +959,7 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 			</div>
 			
 <div align="left">
-<h2 class="heading-colors" style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black !important;margin-left: 20px" class="heading-color">
+<h2 class="heading-colors" style="font-family: <%= FontFamily %>;font-size: <%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>; color: black ;margin-left: 20px" class="heading-color">
 <br><%= maincount %>.2 Backward Traceability Matrix
 </h2>
 </div>
@@ -1099,15 +1099,13 @@ This appendix contains acronyms and provides standard definitions for terminolog
            </tr>
            
         </thead>
-			<tbody>
-        <%
-           if(!RequirementList.isEmpty()){
+		<tbody>
+        <% if(!RequirementList.isEmpty()){
         	   List<Object[]>mainReqList=RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase("0")).
         			   sorted(Comparator.comparing(k -> Integer.parseInt(k[14].toString())))
         			   .collect(Collectors.toList());
         	   for(Object []obj:mainReqList){
-        		   
-        		   List<Object[]>submainReqList=RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase(obj[0].toString()))
+        		List<Object[]>submainReqList=RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase(obj[0].toString()))
         				   . sorted(Comparator.comparing(k -> Integer.parseInt(k[14].toString())))
         				   .collect(Collectors.toList());
         %>

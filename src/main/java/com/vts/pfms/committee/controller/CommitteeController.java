@@ -665,7 +665,7 @@ public class CommitteeController {
 			Map md=model.asMap();
 
 			committeemainid = committeemainid==null?(String)md.get("committeemainid"):committeemainid;
-
+			carsInitiationId = carsInitiationId==null?"0":carsInitiationId;
 			if(committeemainid==null)
 			{
 				if(CommitteeId==null) {
@@ -684,13 +684,13 @@ public class CommitteeController {
 					initiationid=(String)md.get("initiationid");
 				}	
 
-				if(carsInitiationId==null) {
-					carsInitiationId=(String)md.get("carsInitiationId");
-				}					
+//				if(carsInitiationId==null) {
+//					carsInitiationId=(String)md.get("carsInitiationId");
+//				}					
 				committeemainid=String.valueOf(service.LastCommitteeId(CommitteeId, projectid, divisionid, initiationid, carsInitiationId));
 			}
 
-			carsInitiationId = carsInitiationId==null?"0":carsInitiationId;
+		
 
 			Object[] proposedcommitteeid = service.GetProposedCommitteeMainId(CommitteeId, projectid, divisionid, initiationid);
 
@@ -1553,6 +1553,7 @@ public class CommitteeController {
 			committeescheduledto.setDivisionId(divisionid);
 			committeescheduledto.setInitiationId(initiationid);
 			committeescheduledto.setLabCode(labcode);
+			
 			// Added by Prudhvi on 21-10-2024
 			committeescheduledto.setCARSInitiationId(carsInitiationId!=null?carsInitiationId:"0");
 			committeescheduledto.setCommitteeMainId(committeeMainId!=null?Long.parseLong(committeeMainId):0);
@@ -1915,7 +1916,7 @@ public class CommitteeController {
 			return"redirect:/RODScheduleView.htm";
 		}
 		/* ------------------ end ----------------------- */
-		return"redirect:/CommitteeScheduleAgenda.htm";
+		return"redirect:/CommitteeScheduleView.htm";
 	}
 
 	@RequestMapping(value="CommitteeScheduleAgendaEdit.htm",method=RequestMethod.POST)
@@ -5197,7 +5198,7 @@ public class CommitteeController {
 
 			}
 			String [] Email = emails.toArray(new String[emails.size()]);
-			String [] DronaEmail = emails.toArray(new String[dronaemails.size()]);
+			String [] DronaEmail = dronaemails.toArray(new String[dronaemails.size()]);
 			String subject=committeemaindata[8] + " " +" Committee Formation Letter";
 			int count=0;
 			//			if(Email!=null && Email.length>0){
@@ -5371,7 +5372,7 @@ public class CommitteeController {
 			}
 
 			String [] Email = emails.toArray(new String[emails.size()]);
-			String [] DronaEmail = emails.toArray(new String[dronaemails.size()]);
+			String [] DronaEmail = dronaemails.toArray(new String[dronaemails.size()]);
 			String Message="Sir/Madam<br><p>&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + rodmessagehandle + ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
 					+ "<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
 					+ "<tr><td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Date :  </td>"
@@ -5964,7 +5965,7 @@ public class CommitteeController {
 					committeescheduledto.setDivisionId("0");
 					committeescheduledto.setInitiationId("0");
 					committeescheduledto.setLabCode(labcode);
-
+					committeescheduledto.setCARSInitiationId("0");
 					String formatteddate = StartDate.format(formatter);
 					committeescheduledto.setScheduleDate(formatteddate);
 

@@ -412,7 +412,7 @@ String ses=(String)request.getParameter("result");
 				                		</td>
 				                		
 				                		<td class="trup" style="background: #F4A261;" >
-				                		&nbsp;<%if(Arrays.asList("APR").contains(CommitteMainEnoteList[15].toString())) {%>
+				                		&nbsp;<%if(Arrays.asList("APR").contains(CommitteMainEnoteList[15].toString()) && CommitteMainEnoteList[22]!=null && CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode")) ) {%>
 				                		<img src="view/images/check.png">
 				                		<%} %>
 				                		<br>
@@ -494,7 +494,7 @@ String ses=(String)request.getParameter("result");
 				console.log(Rec3_Role.length)
 				
 				
-				var array = Array.of(InitiatedBy, Recommend1, Recommend2, Recommend3, ApprovingOfficer);
+				var array = Array.of( Recommend1, Recommend2, Recommend3, ApprovingOfficer);
 				
 	
 			

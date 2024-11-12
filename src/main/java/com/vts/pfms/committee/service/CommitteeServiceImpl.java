@@ -466,6 +466,15 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeschedule.setDivisionId(Long.parseLong(committeescheduledto.getDivisionId()));
 			committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
 			committeeschedule.setPresentationFrozen("N");
+			committeeschedule.setBriefingPaperFrozen("N");
+			committeeschedule.setMinutesFrozen("N");
+			committeeschedule.setBriefingStatus("INI");
+			
+			
+			System.out.println(committeeschedule.getBriefingPaperFrozen());;
+			System.out.println(committeeschedule.getMinutesFrozen());
+			System.out.println(committeeschedule.getBriefingStatus());
+			System.out.println();
 			// Added by Prudhvi on 21-10-2024
 			committeeschedule.setCARSInitiationId(Long.parseLong(committeescheduledto.getCARSInitiationId()));
 			committeeschedule.setCommitteeMainId(committeescheduledto.getCommitteeMainId());

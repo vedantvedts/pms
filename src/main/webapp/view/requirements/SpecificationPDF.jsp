@@ -2,6 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@page import="java.time.LocalDate"%>
+ <%@page import="java.nio.file.Path"%>
+ <%@page import="java.io.File"%>
+<%@page import="java.nio.file.Paths"%>
 <%@page import="java.time.Month"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
@@ -108,6 +111,7 @@ String FontFamily="Times New Roman";
 			}
 			String projectShortName =(String)request.getAttribute("projectShortName");
 			String Classification=(String)request.getAttribute("Classification");
+			String labcode = (String) session.getAttribute("labcode");
 %>
 <style>
     /* Define header and footer styles */
@@ -220,7 +224,7 @@ p,td,th
             padding: 5px;
         }
     p,img{
-    width:500px !important;
+    width:100% !important;
     }
 p {
 
@@ -293,7 +297,7 @@ font-family: <%=FontFamily%>;
 padding:1px !important;
 }
 .specdiv p{
-width:600px !important;
+width:620px !important;
 padding:5px!important;
 }
 .scopediv p{
@@ -595,10 +599,13 @@ for(Object[]obj:SpecsIntro) {%>
 The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID 
 <%} %>
 	</div>
-		<%if(SpecProducTree!=null && SpecProducTree.size()>0) {%>
-	<%if(new File(filePath+SpecProducTree.get(0)[1].toString()+SpecProducTree.get(0)[3].toString()).exists()){ %>
+		<%if(SpecProducTree!=null && SpecProducTree.size()>0) {
+			Path imagepath = Paths.get(filePath,labcode,"SpecificationProducTree",SpecProducTree.get(0)[3].toString());
+			File imagepathFile = imagepath.toFile();
+		%>
+	<%if(imagepathFile.exists()){ %>
 			<br>
-						<img  style="margin-bottom: 5px;width:500px; height:300px;border:1px solid red;" src="data:image/png;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+SpecProducTree.get(0)[1].toString()+SpecProducTree.get(0)[3].toString())))%>" > 											
+						<img  style="margin-bottom: 5px;width:500px; height:500px;border:1px solid red;margin:2px;" src="data:image/png;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>" > 											
 											<%}} %>
 	<p style="text-align: center; page-break-before: always;font-family: <%= FontFamily %>;"></p>
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
@@ -809,7 +816,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 					<%} %>
 						 </td>
 						</tr>
-						<%}} %>
+						<%}} %> 
 						</tbody>
 						</table>
 							

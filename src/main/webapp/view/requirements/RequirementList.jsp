@@ -333,6 +333,10 @@ keyframes blinker { 20% {
 padding:5px;
 float: right;
 }
+
+#description li{
+list-style: inherit !important;
+}
 </style>
 </head>
 <body>
@@ -1510,7 +1514,7 @@ function reqSubmit(){
 var isOpen=false;
 var tempVal=0;
 function showDetails(InitiationReqId,type){
-	$('.viewbtn').css("background","#055C9D");
+	/* $('.viewbtn').css("background","#055C9D"); */
 	/* $('#'+InitiationReqId).css("background","green"); */
 	
 	$('#row1').show();
@@ -1594,7 +1598,7 @@ function showDetails(InitiationReqId,type){
 }
 var templengthEdit=0;
 var map = new Map();
-$('.viewbtn').hover(function() {
+$('.viewbtn').click(function() {
     var subId = $(this).val().split("/")[0];
     var Id = $(this).val().split("/")[1];
     
@@ -1604,7 +1608,7 @@ $('.viewbtn').hover(function() {
 function showDetailss(subId,Id){
 	$('.viewbtn').css("background","#055C9D");
 	$('#'+subId).css("background","green");
-	$('#'+Id).css("background","green");
+	/* $('#'+Id).css("background","green"); */
 	$('#subDivs').show();
 	$('#row1').show();
 	$('#row2').hide();
