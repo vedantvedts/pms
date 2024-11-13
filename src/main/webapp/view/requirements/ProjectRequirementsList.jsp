@@ -462,7 +462,7 @@ FormatConverter fc = new FormatConverter();
 														</div>
 													</button>
 												<%} %>
-												<button class="editable-clicko" <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="#"<%}else {%>formaction="RequirementDocumentDownlod.htm"<%} %> formtarget="blank" >
+												<button class="editable-clicko" name="isPdf" value="N" <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="#"<%}else {%>formaction="RequirementDocumentDownlod.htm"<%} %> formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -473,7 +473,7 @@ FormatConverter fc = new FormatConverter();
 													</div>
 												</button>
 												
-												<button class="editable-clicko" <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="RequirementDocumentDownlodPdfFreeze.htm"<%}else {%>formaction="RequirementDocumentDownlodPdf.htm"<%} %>  formtarget="blank" >
+												<button class="editable-clicko" name="isPdf" value="Y" formaction="RequirementDocumentDownlod.htm" <%-- <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="RequirementDocumentDownlodPdfFreeze.htm"<%}else {%>formaction="RequirementDocumentDownlodPdf.htm"<%} %> --%>  formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">

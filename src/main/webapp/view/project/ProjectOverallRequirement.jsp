@@ -1066,6 +1066,8 @@
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
 				<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 
+				<input type="hidden" name="docnumber" value="<%if(DocumentSummary!=null && DocumentSummary[11]!=null) {%> SRD-<%=DocumentSummary[11].toString().replaceAll("-", "")%>-<%=session.getAttribute("labcode") %>-<%=projectshortName %>-V<%=DocumentVersion %> <%} %>">
+				<input type="hidden" name="isPdf" id="isPdf">
 			</form>
 			<!-- End -->
 			
@@ -1785,7 +1787,8 @@
 			}
 			
 			function DownloadDoc(){
-			$('#Downloadbtn').click();
+				$('#isPdf').val('N');
+				$('#Downloadbtn').click();
 			}
 			
 			function showIntroudction(){
@@ -2001,7 +2004,8 @@ function DownloadDocPDF(){
 		alert("Please fill the data to see the PDF!");
 		return false;
 	}
-$('#Downloadbtnpdf').click();
+	$('#isPdf').val('Y');
+	$('#Downloadbtn').click();
 }
 			
 function showApplicableDoc(){

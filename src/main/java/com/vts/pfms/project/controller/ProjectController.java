@@ -6334,7 +6334,7 @@ public class ProjectController
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String ) ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId);
+		logger.info(new Date() +"Inside RequirementDocumentDownlodPdf.htm "+UserId);
 		try {
 
 			Object[] DocTempAttributes =null;
@@ -6436,7 +6436,7 @@ public class ProjectController
 
 		}catch(Exception e) {
 			e.printStackTrace(); 
-			logger.error(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId,e);
+			logger.error(new Date() +"Inside RequirementDocumentDownlodPdf.htm "+UserId,e);
 		}
 
 
@@ -6491,6 +6491,7 @@ public class ProjectController
 			String version = reqini!=null && reqini.getReqVersion()!=null?reqini.getReqVersion():"1.0";
 			req.setAttribute("version", version);
 			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId)); //changed the code here pass the projectId
+			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
@@ -9651,8 +9652,21 @@ public class ProjectController
 			req.setAttribute("MemberList", reqService.DocMemberList("0", SpecsInitiationId));
 			req.setAttribute("EmployeeList", service.EmployeeList1(LabCode,"0",SpecsInitiationId));
 			req.setAttribute("SpecContentsDetails", service.SpecContentsDetails(SpecsInitiationId));
+			req.setAttribute("SpecsIntro", service.getSpecsIntro(SpecsInitiationId));
 			req.setAttribute("SpecProducTree", service.SpecProducTreeDetails(SpecsInitiationId));
 			req.setAttribute("AbbreviationDetails",reqService.AbbreviationDetails("0", SpecsInitiationId));
+			
+			
+			Object[] projectDetails = service.getProjectDetails(LabCode, (!initiationId.equalsIgnoreCase("0")?initiationId:projectId), (!initiationId.equalsIgnoreCase("0")?"P":"E"));
+		
+			req.setAttribute("specsInitiation", specsInitiation);
+			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
+			req.setAttribute("Classification", projectDetails!=null?projectDetails[12]:"");
+			req.setAttribute("DocTempAttributes", service.DocTempAttributes());
+			req.setAttribute("version", specsInitiation!=null ?specsInitiation.getSpecsVersion():"1.0");
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode));
+			req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

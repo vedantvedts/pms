@@ -1,3 +1,4 @@
+<%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -1751,750 +1752,1754 @@ This appendix contains acronyms and provides standard definitions for terminolog
 			</div>
 		</div>
 			</div> --%>
-			<body>
-		  <button onclick="generatePDF()">Download PDF</button>
-
-
-
+	</head>		
+	<body>
+		<button onclick="generatePDF()" id="generatePDF">Download PDF</button>
 			<div id="verification">
-			<table>
-			<tbody>
-				 <%
-				 Object[]LabList=(Object[])request.getAttribute("LabList");
-				 List<Object[]>VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
-				 String lablogo=(String)request.getAttribute("lablogo");
-				 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
-				 String FontFamily="Times New Roman";
-				 if(DocTempAtrr!=null && DocTempAtrr[11]!=null){
-	                	FontFamily= DocTempAtrr[11].toString();
-	                }
-					 int countSN=0;
-					 int SN=0;
-					 String data="";
-					 int subcount=0;
-	                   	for(Object[]obj:VerificationDataList){
-	                   	++SN;
-	                   	%>
-						<tr>
-						<td class="border-black">
-							 <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=++countSN %><%} %>
-							</td>
-							<td class="border-black">
-							   <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=obj[2] %><%} %>
-							 </td>
-							<%if(!data.equalsIgnoreCase(obj[2].toString())){
-								subcount=0;
-							} %> 
-							<td class="border-black"style="padding: 5px; text-align: justify;  border-collapse: collapse;">  <%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %></td>
-							<td class="border-black"style="padding: 5px; text-align: justify;  border-collapse: collapse;"><%=obj[4]%></td>
-						</tr>
-					 <%
-					 data = obj[2].toString();
-	                 } %>
+				<table>
+					<tbody>
+						 <%
+						 Object[]LabList=(Object[])request.getAttribute("LabList");
+						 List<Object[]> VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
+						 Map<String, List<Object[]>> verificationDataListMap = VerificationDataList!=null && VerificationDataList.size()>0?VerificationDataList.stream()
+								  											.collect(Collectors.groupingBy(array -> array[1] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+						 String lablogo=(String)request.getAttribute("lablogo");
+						 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
+						 String FontFamily="Times New Roman";
+						 
+						 if(DocTempAtrr!=null && DocTempAtrr[11]!=null){
+			                	FontFamily= DocTempAtrr[11].toString();
+			                }
+						 if(VerificationDataList!=null) {
+							 int countSN=0;
+							 int SN=0;
+							 String data="";
+							 int subcount=0;
+			                   	for(Object[]obj:VerificationDataList){
+			                   	++SN;
+	                   		%>
+							<tr>
+								<td class="border-black">
+									<%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=++countSN %><%} %>
+								</td>
+								<td class="border-black">
+								   <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=obj[2] %><%} %>
+								</td>
+								<%if(!data.equalsIgnoreCase(obj[2].toString())){
+									subcount=0;
+								} %> 
+								<td class="border-black"style="padding: 5px; text-align: justify;  border-collapse: collapse;">  <%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %></td>
+								<td class="border-black"style="padding: 5px; text-align: justify;  border-collapse: collapse;"><%=obj[4]%></td>
+							</tr>
+					 		<%data = obj[2].toString();
+	                 		} }%>
 					</tbody>
 				</table>	
-</div>
+			</div>
 
-<%List<Object[]>MemberList=(List<Object[]>)request.getAttribute("MemberList"); %>
-<div id="MemberList">
-				
-					<table style="width:480px; border:1px solid black; border-collapse:collapse;margin-left:100px;"> 
+			<%List<Object[]>MemberList=(List<Object[]>)request.getAttribute("MemberList"); %>
+			<div id="MemberList" style="width: 100% !important;">
+				<table style="width: 100% !important; border:1px solid black; border-collapse:collapse;margin: 1rem;"> 
 					<thead>
-					<tr >
-					<th style="width:20px;font-weight:bold;">S.No</th>
-					<th style="width:250px;">NAME</th>
-					<th style="width:120px;">Designation</th>
-					<th style="width:90px;">Division/Lab</th>
-					</tr>
+						<tr >
+							<th style="width: 15% !important;">SN</th>
+							<th style="width: 35% !important;">Name</th>
+							<th style="width: 25% !important;">Designation</th>
+							<th style="width: 25% !important;">Division/Lab</th>
+						</tr>
 					</thead>
 					<tbody>
-            <% 
-    if (MemberList != null) {
-        int i = 1;
-        for (Object[] mlist : MemberList) {
-%>
-			<tr>
-				<td style="width:5%;"><%=i++ + "."%></td>
-				<td style="width:25%;"><%=mlist[1]%></td>
-				<td style="width:10%;"><%=mlist[2]%></td>
-				<td style="width:25%;"><%=mlist[3]%></td>
-			</tr>
-			<%
-			}
-			}
+           				<% 
+						    if (MemberList != null) {
+						        int i = 1;
+						        for (Object[] mlist : MemberList) {
+						%>
+							<tr>
+								<td style="width: 15% !important;"><%=i++ + "."%></td>
+								<td style="width: 35% !important;"><%=mlist[1]%></td>
+								<td style="width: 25% !important;"><%=mlist[2]%></td>
+								<td style="width: 25% !important;"><%=mlist[3]%></td>
+							</tr>
+						<% } } %>
+					</tbody>
+				</table>
+			</div>
+
+
+			<%List<Object[]> DocumentSummary=(List<Object[]>)request.getAttribute("DocumentSummary"); 
+			String projectShortName =(String)request.getAttribute("projectShortName");
+			String Classification=(String)request.getAttribute("Classification");
+			String docnumber =(String)request.getAttribute("docnumber");
+			String version =(String)request.getAttribute("version");
+			
+			LocalDate now = LocalDate.now();
+			Month month = now.getMonth();
+			int year = now.getYear();
 			%>
-</tbody>
- </table>
-
-</div>
-
-
-<%List<Object[]> DocumentSummary=(List<Object[]>)request.getAttribute("DocumentSummary"); %>
 			<div id="docSummary">
-			<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+				<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;text-align:left;">1.&nbsp; Title: <span class="text-darks">System Requirements Document for </span></td>
+						<td  class="text-darks" colspan="2" style="border:1px solid black;text-align:left;">1.&nbsp; Title: <span class="text-darks">System Requirements Document for </span></td>
 					</tr>
 					<tr >
-					<td class="text-darks" style="border:1px solid black;">2.&nbsp; Type of Document:<span class="text-darks">System Requirement Document</span></td>
-					<td class="text-darks" style="border:1px solid black;">3.&nbsp; Classification: <span class="text-darks"></span></td>
+						<td class="text-darks" style="border:1px solid black;">2.&nbsp; Type of Document:<span class="text-darks">System Requirement Document</span></td>
+						<td class="text-darks" style="border:1px solid black;">3.&nbsp; Classification: <span class="text-darks"></span></td>
 					</tr>
 				    <tr >
-					<td class="text-darks" style="border:1px solid black;">4.&nbsp; Document Number:
-						
-					</td>
-					<td class="text-darks" style="border:1px solid black;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"></span> </td>
+						<td class="text-darks" style="border:1px solid black;">4.&nbsp; Document Number:</td>
+						<td class="text-darks" style="border:1px solid black;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"></span> </td>
 					</tr>
 					<tr>
-					<td class="text-darks" style="border:1px solid black;">6.&nbsp; Number of Pages:  ${totalPages}</td>
-					<td class="text-darks" style="border:1px solid black;">7.&nbsp; Related Document:</td>
+						<td class="text-darks" style="border:1px solid black;">6.&nbsp; Number of Pages:  ${totalPages}</td>
+						<td class="text-darks" style="border:1px solid black;">7.&nbsp; Related Document:</td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
-				</td>
-					</tr>
-				     <tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;">9.&nbsp; Pro Project Name: <span class="text-darks"> </span></td>
+						<td  class="text-darks" colspan="2" style="border:1px solid black;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span></td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;">10.&nbsp; Abstract:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
+						<td  class="text-darks" colspan="2" style="border:1px solid black;">9.&nbsp; Project Name: <span class="text-darks"> </span></td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;">11.&nbsp; Keywords:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
+						<td  class="text-darks" colspan="2" style="border:1px solid black;">10.&nbsp; Abstract:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;">12.&nbsp; Organization and address:
-						<span class="text-darks" >		<%
-										if (LabList!=null && LabList[1] != null) {
-										%><%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
-										<%
-										} else {
-										%>-<%
-										}
-										%>
-																	Government of India, Ministry of Defence,Defence
-										Research & Development Organization
-										<%
-									if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) {
-									%>
-									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
-									<%}else{ %>
+						<td  class="text-darks" colspan="2" style="border:1px solid black;">11.&nbsp; Keywords:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
+					</tr>
+					<tr>
+						<td  class="text-darks" colspan="2" style="border:1px solid black;">12.&nbsp; Organization and address:
+							<span class="text-darks" >		
+								<%
+								if (LabList!=null && LabList[1] != null) {%>
+									<%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+								<%} else {%>
 									-
-									<%} %>
-								</span>
-							</td>
+								<%}%>
+								Government of India, Ministry of Defence,Defence
+									Research & Development Organization
+								<%
+									if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) {
+								%>
+									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+								<%}else{ %>
+									-
+								<%} %>
+							</span>
+						</td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black; ">13.&nbsp; Distribution:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span>
-					</td>
+						<td  class="text-darks" colspan="2" style="border:1px solid black; ">13.&nbsp; Distribution:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span></td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black; ">14.&nbsp; Revision:</td>
+						<td  class="text-darks" colspan="2" style="border:1px solid black; ">14.&nbsp; Revision:</td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
+						<td  class="text-darks" colspan="2" style="border:1px solid black;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black; ">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
+						<td  class="text-darks" colspan="2" style="border:1px solid black; ">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
+						<td  class="text-darks" colspan="2" style="border:1px solid black;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
 					</tr>
-					</table>
-					</div>
+				</table>
+			</div>
 
 
-<%List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");%>
-		<div id="abbreviationDiv">
+			<%List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");%>
+			<div id="abbreviationDiv">
 		
-			<h4 style="font-size:16px;text-align: center;"> Abbreviations used in the Manual to be listed and arranged in alphabetical order</h4>
-		<%  if (AbbreviationDetails != null && !AbbreviationDetails.isEmpty()) { %>	
-    <table style="margin-left:50px;">
-        <thead>
-         <tr>
-        <th><span >S.No</span></th>
-        <th><span >Abbreviations</span></th>
-        <th><span >Full Forms</span></th>
-           </tr>
-        </thead>
-        <tbody>
-                <% 
-          int i = 1;
-        for (Object[] alist : AbbreviationDetails) {
-%>
-              <tr>
-                <td ><%=  i+++"."%></td>
-                <td><%= alist[1] %></td>
-                <td ><%= alist[2] %></td>
-            </tr>
-  
-   
-              <% 
-   }} 
-%>
-     </tbody>
-    </table>
-		</div>
+				<h4 style="font-size:16px;text-align: center;"> Abbreviations used in the Manual to be listed and arranged in alphabetical order</h4>
+				<%  if (AbbreviationDetails != null && !AbbreviationDetails.isEmpty()) { %>	
+    				<table style="margin-left:50px;">
+        				<thead>
+         					<tr>
+						        <th><span >S.No</span></th>
+						        <th><span >Abbreviations</span></th>
+						        <th><span >Full Forms</span></th>
+           					</tr>
+        				</thead>
+        				<tbody>
+                			<% int i = 1;
+        					for (Object[] alist : AbbreviationDetails) {
+							%>
+              					<tr>
+					                <td ><%=  i+++"."%></td>
+					                <td><%= alist[1] %></td>
+					                <td ><%= alist[2] %></td>
+            					</tr>
+              				<% } %>
+     					</tbody>
+    				</table>
+    			<%} %>
+			</div>
 		
 		
-		<!-- Scopediv -->
+			<!-- Scopediv -->
 	
-		<%Object[]ReqIntro=(Object[])request.getAttribute("ReqIntro"); %>
-		<div id="scopeDiv">
+			<%Object[]ReqIntro=(Object[])request.getAttribute("ReqIntro"); %>
+			<div id="scopeDiv">
 			
 				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.1
 					&nbsp;System Identification
 				</h2>
-					<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=ReqIntro[1]%>
-					<%}else {%>
+				<%if(ReqIntro!=null && ReqIntro[1]!=null) {%>
+					<%=ReqIntro[1]%>
+				<%}else {%>
 					Guidance: 
 					This paragraph should contain a full identification of the system to which this document applies.  
-					<%} %>
+				<%} %>
 				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.2
 					&nbsp;System Overview
 				</h2>
-					<%if(ReqIntro!=null && ReqIntro[3]!=null) {%><%=ReqIntro[3]%>
-					<%}else {%>
+				<%if(ReqIntro!=null && ReqIntro[3]!=null) {%>
+					<%=ReqIntro[3]%>
+				<%}else {%>
 					Guidance:  
 					This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites.
-					<%} %>
-				
+				<%} %>
 		
 				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.3
 					&nbsp;Document Overview
 				</h2>
-					<%if(ReqIntro!=null && ReqIntro[4]!=null) {%><%=ReqIntro[4]%>
-					<%}else {%>
+				<%if(ReqIntro!=null && ReqIntro[4]!=null) {%>
+					<%=ReqIntro[4]%>
+				<%}else {%>
 					This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. 
-					<%} %>
-		</div>
+				<%} %>
+			</div>
 		
 		
-		<!--Req Div  -->
+			<!--Req Div  -->
 			<div id="reqDiv">
-		<%List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
-		List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
-		%>
-		<%if(!RequirementList.isEmpty()) {
-List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
-int mainReqCount=0;
-for(Object[]obj:mainReqList){
-%>
-<div style="padding:none;"><h2  class="heading-colors" style="font-size: 16px;"> <%="2."+(++mainReqCount) %> &nbsp;<%=obj[3].toString() %></h2></div>
-<%if(obj[4]!=null) {%><div style="padding:0px;" class="heading-colors"><%=obj[4].toString()%></div><%}else{ %><span></span><%} %>
-<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15]!=null&&e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());%>
-<%
-String ReqName="";
-int subReqCount=0;
-for(Object[]obj1:subMainReqList) {
-int snCount=0;
-%>
- <%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
-<h3 class="heading-colors" style="font-size: 15px;"><%="2."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3].toString() %></h3>
-<%} %> 
-
-<table class="border-black"
-					style="margin-left: 10px;margin-top:7px;width: 635px;margin-right:20px; margin-bottom: 5px;">
-					<thead>
-						<tr class="border-black">
-							<th class="border-black"
-								style="width: 20px;  border: 1px solid black;text-align:center; border-collapse: collapse;">SN</th>
-							<th class="border-black"
-								style="width: 130px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Attribute</th>
-							<th class="border-black"
-								style=" border: 1px solid black; border-collapse: collapse;">Content</th>
-						</tr>
-						</thead>
-						<tbody>
-							<tr class="border-black">
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">ID</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj1[1].toString() %></td>
-						</tr>
-						
-						
-							<tr class="border-black">
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> QR Para </td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								
-								<%if(obj1[12]!=null) {
-									String [] a=obj1[12].toString().split(", ");
-									for(String s:a){
-								%> 
-								
-								 <%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining("")) %> <br>
-								<%}}else{ %>
-								-
-								<%} %>
-								
-								</td>
-						</tr>
-						
-						<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Priority</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[5]!=null) {%> <%=obj1[5].toString() %>
-								<%}else{%>-<%} %>
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Criticality</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[21]!=null) {%> <%=obj1[21].toString() %>
-								<%}else{%>-<%} %>
-							</td>
-						</tr>
-							<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style=" text-align: left; font-weight: 600; border: 1px solid black; border-collapse: collapse;">Type</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[6]!=null) {%> <%if(obj1[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %>
-								<%if(obj1[6].toString().equalsIgnoreCase("E")) {%>Essential<%} %> <%}else {%>-<%} %>
-							</td>
-						</tr>
-						<tr>
-							<td class="border-black"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;" ><%=++snCount %>.</td>
-							<td class="border-black"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;"colspan="2">Description</td>
-							<%-- <td class="border-black"
-								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-								<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
-							</td> --%>
-						</tr>
-						<tr>
-						<td class="border-black" colspan="3"
-								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-								<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
-							</td>
-						</tr>
-						<tr>
-							<td class="border-black"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Remarks</td>
-							<td class="border-black"
-								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-								<%if(obj1[7]!=null){ %> <%=obj1[7].toString() %> <%}else{ %>-<%} %>
-							</td>
-						</tr>
-						<tr>
-							<td class="border-black"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Constraints</td>
-							<td class="border-black"
-								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-								<%if(obj1[9]!=null){ %> <%=obj1[9].toString() %> <%}else{ %>-<%} %>
-							</td>
-						</tr>
-						
-						
-						
-							<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Demonstration</td>
-								<td class="border-black" style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								
-								<%if(obj1[16]!=null) {
-								List<Object[]>DemonList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
-								String [] a=obj1[16].toString().split(", ");
-								for(int i=0;i<a.length;i++){
-								%>
-								
-								<%=	a[i] +" . "+ DemonList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-								<%} %>
-								<%}else{%>-<%} %>
-							   
-							</td>
-						</tr>
-						
-							<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style="text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Test</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[17]!=null) {
-									List<Object[]>TestList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
-									String [] a=obj1[17].toString().split(", ");
-									for(int i=0;i<a.length;i++){
-										%>
-										
-										<%=	a[i] +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-										<%} %>
-										<%}else{%>-<%} %>
-							</td>
-						</tr>
-						
-							<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Design/Analysis</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[18]!=null) {
-									List<Object[]>AnalysisList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("3")).collect(Collectors.toList());
-									String [] a=obj1[18].toString().split(", ");
-									for(int i=0;i<a.length;i++){
-										%>
-										
-										<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-										<%} %>
-										<%}else{%>-<%} %>
-							</td>
-						</tr>
-						
-							<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Inspection</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[19]!=null) {
-									List<Object[]>InspectionList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("4")).collect(Collectors.toList());
-									String [] a=obj1[19].toString().split(", ");
-								for(int i=0;i<a.length;i++){
-										%>
-										
-										<%=	a[i] +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-										<%} %>
-										<%}else{%>-<%} %>
-							</td>
-						</tr>
-						
-						
-							<tr>
-							<td class="border-black"
-								style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Special Methods</td>
-							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[20]!=null) {
-									List<Object[]>specialList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("5")).collect(Collectors.toList());
-									String [] a=obj1[20].toString().split(", ");
-									for(int i=0;i<a.length;i++){
-										%>
-										
-										<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-										<%} %>
-										<%}else{%>-<%} %>
-							</td>
-						</tr>
-					</tbody>
-					
-</table>
-
-<%
-ReqName=obj1[3].toString();
-} %>
-<%}%>
-
-<%
-List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
-%>
-<%if(nonMainReqList!=null && !nonMainReqList.isEmpty()) { %>
-<div style="padding:none;"><h2 class="heading-colors" style="font-size: 16px;"><%="2."+(++mainReqCount) %>  &nbsp; Precedence and Criticality of Requirements</h2></div>
-<table class="border-black"style="margin-left: 20px;;width: 400px; margin-bottom: 5px;">
-					<thead>
-						<tr>
-							<th class="border-black"style="width: 10px;  border: 1px solid black; border-collapse: collapse;">SN</th>
-							<th class="border-black"style="width: 150px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Requirement ID</th>
-							<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Priority</th>
-							<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Criticality</th>
-						
-						</tr>
-						</thead>
-						<tbody>
-						<%int rcount=0;
-						for(Object[]obj:nonMainReqList) {
-						if(obj[21]!=null){
-						%>
-						<tr>
-						<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%=++rcount %></td>
-							<td class="border-black" style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %></td>
-							<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
-							<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[21]!=null) {%> <%=obj[21].toString() %>
-								<%}else{%>-<%} %></td>
-						</tr>
-						<%}} %>
-						</tbody>
-						</table>
-<% } %>
-
-<%} %>
-		</div>
-		
-		
-		<%List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");%>
-		<div id="verificationDiv">
-				<%if(Verifications!= null &&   !Verifications.isEmpty()) {
-				int verificationCount=1;
-				int j=0;
-				for(Object[]obj:Verifications){
+				<%	List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
+					List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
 				%>
-			<h3 class="heading-colors" style="font-size: 16px; ">
-		   <%="3"+"."+(verificationCount)%>.<%=++j %>
-			<%=obj[1].toString() %>
-				</h3>
-				<%if(obj[3]!=null){ %><%=obj[3].toString()%>
-				<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No
-					details filled&nbsp;&nbsp;-</p>
-						<%}%>
-				<%}} %>
-		</div>
+				<%if(!RequirementList.isEmpty()) {
+					List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+					int mainReqCount=0;
+					for(Object[]obj:mainReqList){
+				%>
+						<div style="padding:none;"><h2  class="heading-colors" style="font-size: 16px;"> <%="2."+(++mainReqCount) %> &nbsp;<%=obj[3].toString() %></h2></div>
+						<%if(obj[4]!=null) {%>
+							<div style="padding:0px;" class="heading-colors"><%=obj[4].toString()%></div>
+						<%}else{ %>
+							<span></span>
+						<%} %>
+				<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15]!=null&&e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());%>
+				<%
+				String ReqName="";
+				int subReqCount=0;
+				for(Object[]obj1:subMainReqList) {
+					int snCount=0;
+				%>
+					<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
+						<h3 class="heading-colors" style="font-size: 15px;"><%="2."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3].toString() %></h3>
+					<%} %> 
+	
+					<table class="border-black" style="margin-left: 10px;margin-top:7px;width: 635px;margin-right:20px; margin-bottom: 5px;">
+						<thead>
+							<tr class="border-black">
+								<th class="border-black"
+									style="width: 20px;  border: 1px solid black;text-align:center; border-collapse: collapse;">SN</th>
+								<th class="border-black"
+									style="width: 130px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Attribute</th>
+								<th class="border-black"
+									style=" border: 1px solid black; border-collapse: collapse;">Content</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr class="border-black">
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">ID</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj1[1].toString() %></td>
+								</tr>
+								<tr class="border-black">
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> QR Para </td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+									
+										<%if(obj1[12]!=null) {
+											String [] a=obj1[12].toString().split(", ");
+											for(String s:a){
+										%> 
+									
+											<%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining("")) %> <br>
+										<%}}else{ %>
+											-
+										<%} %>
+									
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Priority</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+										<%if(obj1[5]!=null) {%> <%=obj1[5].toString() %>
+										<%}else{%>-<%} %>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Criticality</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+										<%if(obj1[21]!=null) {%> <%=obj1[21].toString() %>
+										<%}else{%>-<%} %>
+									</td>
+								</tr>
+								<tr>
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style=" text-align: left; font-weight: 600; border: 1px solid black; border-collapse: collapse;">Type</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+										<%if(obj1[6]!=null) {%> <%if(obj1[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %>
+										<%if(obj1[6].toString().equalsIgnoreCase("E")) {%>Essential<%} %> <%}else {%>-<%} %>
+									</td>
+								</tr>
+								<%-- <tr>
+									<td class="border-black"
+										style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;" ><%=++snCount %>.</td>
+									<td class="border-black"
+										style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;"colspan="2">Description</td>
+									<td class="border-black"
+										style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+										<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
+									</td>
+								</tr> --%>
+								<tr>
+									<td class="border-black" colspan="3" style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+										<div id="description<%=mainReqCount+"."+subReqCount %>">
+											<%=++snCount %> .Description: <%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="border-black"
+										style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Remarks</td>
+									<td class="border-black"
+										style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+										<%if(obj1[7]!=null){ %> <%=obj1[7].toString() %> <%}else{ %>-<%} %>
+									</td>
+								</tr>
+								<tr>
+									<td class="border-black"
+										style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Constraints</td>
+									<td class="border-black"
+										style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
+										<%if(obj1[9]!=null){ %> <%=obj1[9].toString() %> <%}else{ %>-<%} %>
+									</td>
+								</tr>
+								<tr>
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Demonstration</td>
+										<td class="border-black" style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+										
+										<%if(obj1[16]!=null) {
+										List<Object[]>DemonList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+										String [] a=obj1[16].toString().split(", ");
+										for(int i=0;i<a.length;i++){
+										%>
+										
+										<%=	a[i] +" . "+ DemonList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%} %>
+										<%}else{%>-<%} %>
+									   
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style="text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Test</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+										<%if(obj1[17]!=null) {
+											List<Object[]>TestList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
+											String [] a=obj1[17].toString().split(", ");
+											for(int i=0;i<a.length;i++){
+												%>
+												
+												<%=	a[i] +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+												<%} %>
+												<%}else{%>-<%} %>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Design/Analysis</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+										<%if(obj1[18]!=null) {
+											List<Object[]>AnalysisList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("3")).collect(Collectors.toList());
+											String [] a=obj1[18].toString().split(", ");
+											for(int i=0;i<a.length;i++){
+												%>
+												
+												<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+												<%} %>
+												<%}else{%>-<%} %>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Inspection</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+										<%if(obj1[19]!=null) {
+											List<Object[]>InspectionList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("4")).collect(Collectors.toList());
+											String [] a=obj1[19].toString().split(", ");
+										for(int i=0;i<a.length;i++){
+												%>
+												
+												<%=	a[i] +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+												<%} %>
+												<%}else{%>-<%} %>
+									</td>
+								</tr>
+							
+							
+								<tr>
+									<td class="border-black"
+										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Special Methods</td>
+									<td class="border-black"
+										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
+										<%if(obj1[20]!=null) {
+											List<Object[]>specialList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("5")).collect(Collectors.toList());
+											String [] a=obj1[20].toString().split(", ");
+											for(int i=0;i<a.length;i++){
+												%>
+												
+												<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+												<%} %>
+												<%}else{%>-<%} %>
+									</td>
+								</tr>
+							</tbody>
+						
+						</table>
+	
+				<%
+				ReqName=obj1[3].toString();
+				} %>
+				<%}%>
+	
+				<%
+				List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+				%>
+				<%if(nonMainReqList!=null && !nonMainReqList.isEmpty()) { %>
+					<div style="padding:none;"><h2 class="heading-colors" style="font-size: 16px;"><%="2."+(++mainReqCount) %>  &nbsp; Precedence and Criticality of Requirements</h2></div>
+						<table class="border-black"style="margin-left: 20px;;width: 400px; margin-bottom: 5px;">
+							<thead>
+								<tr>
+									<th class="border-black"style="width: 10px;  border: 1px solid black; border-collapse: collapse;">SN</th>
+									<th class="border-black"style="width: 150px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Requirement ID</th>
+									<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Priority</th>
+									<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Criticality</th>
+								
+								</tr>
+							</thead>
+							<tbody>
+								<%int rcount=0;
+								for(Object[]obj:nonMainReqList) {
+								if(obj[21]!=null){
+								%>
+									<tr>
+										<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%=++rcount %></td>
+										<td class="border-black" style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %></td>
+										<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
+										<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[21]!=null) {%> <%=obj[21].toString() %>
+											<%}else{%>-<%} %>
+										</td>
+									</tr>
+								<%}} %>
+							</tbody>
+						</table>
+					<% } %>
+	
+				<%} %>
+			</div>
 		
-    <script>
+		
+			<%List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");%>
+			<div id="verificationDiv">
+				<%if(Verifications!= null &&   !Verifications.isEmpty()) {
+					int verificationCount=1;
+					int j=0;
+					for(Object[]obj:Verifications){
+				%>
+					<h3 class="heading-colors" style="font-size: 16px; ">
+				   		<%="3"+"."+(verificationCount)%>.<%=++j %>
+						<%=obj[1].toString() %>
+					</h3>
+					<%if(obj[3]!=null){ %>
+						<%=obj[3].toString()%>
+					<%}else{ %>
+						<p style="text-align: center;">-&nbsp;&nbsp;No details filled&nbsp;&nbsp;-</p>
+					<%}%>
+				<%}} %>
+			</div>
+			
+	<%
+		List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails");
+		List<Object[]> AcronymsList = (List<Object[]>)request.getAttribute("AcronymsList");
+		List<Object[]> PerformanceList = (List<Object[]>)request.getAttribute("PerformanceList");
+		String isPdf = (String)request.getAttribute("isPdf");
+	%>		
+<script>
     function generatePDF() {
-    	
-    	var verification = document.getElementById('verification').innerHTML;
-    	var MemberList = document.getElementById('MemberList').innerHTML;
-    	var docSummary = document.getElementById('docSummary').innerHTML;
-    	var abbreviationDiv = document.getElementById('abbreviationDiv').innerHTML;
-    	var scopeDiv = document.getElementById('scopeDiv').innerHTML;
-    	var reqDiv = document.getElementById('reqDiv').innerHTML;
-    	var verificationDiv = document.getElementById('verificationDiv').innerHTML;
-
+        // Capture HTML content from specified sections
+        //var verification = document.getElementById('verification').innerHTML;
+        //var MemberList = document.getElementById('MemberList').innerHTML;
+        //var docSummary = document.getElementById('docSummary').innerHTML;
+        //var abbreviationDiv = document.getElementById('abbreviationDiv').innerHTML;
+        //var scopeDiv = document.getElementById('scopeDiv').innerHTML;
+        //var reqDiv = document.getElementById('reqDiv').innerHTML;
+        //var verificationDiv = document.getElementById('verificationDiv').innerHTML;
+        
+        var chapterCount = 0;
+        var mainContentCount = 0;
+        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} else{%>-<%}%>';
+		
         var docDefinition = {
             content: [
-                // Table of Contents
-                  {
-                        text: 'SYSTEM REQUREMENTS FOR PROJECT ', style: 'DocumentName', alignment: 'center',fontSize: 18,margin: [0, 200, 0, 20]
-                      },
-                      {
-                        text: '', style: 'DocumentSubName', alignment: 'center',
-                      },
-                      {
-                
-                      },
-                      <%if(lablogo!=null){%>
-                      {
-                          image: 'data:image/png;base64,<%=lablogo%>',
-                          width: 95, height: 95,
-                          alignment: 'center',
-                          margin: [0, 20, 0, 20]
-                        },
-                        
-                      <%}%>
-                      {
-                     	 text:<%if(LabList!=null && LabList[1] != null) {%>'<%=LabList[1].toString()+"("+LabList[0].toString()+")"%>'<%}else {%>'-'<%}%>,
-                     	 alignment: 'center',
-                     	 fontSize: 16,
-                     	 bold: true,
-                     	 margin: [0, 20, 0, 20]
-                       },
-                      {
-                        text: 'Government of India, Ministry of Defence \n\n' + 'Defence Research & Development Organization',
-                        alignment: 'center',
-                        bold: true,
-                        fontSize: 16,
-                      },
-                      {
-                    	 text:	<%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
-     					'<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>'
-    					<%}else{ %>
-    					'-'
-    					<%} %>,
-    					alignment: 'center',
-                        bold: true,
-                        fontSize: 16,
-                      },
-                     
-                  
-                
-                
+                // Cover Page with Project Name and Logo
+                {
+                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>'),
+                    style: 'DocumentName',
+                    alignment: 'center',
+                    fontSize: 18,
+                    margin: [0, 200, 0, 20]
+                },
+                <% if (lablogo != null) { %>
+                {
+                    image: 'data:image/png;base64,<%= lablogo %>',
+                    width: 95,
+                    height: 95,
+                    alignment: 'center',
+                    margin: [0, 20, 0, 30]
+                },
+                <% } %>
                 
                 {
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString() + "(" + LabList[0].toString() + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    alignment: 'center',
+                    fontSize: 16,
+                    bold: true,
+                    margin: [0, 20, 0, 20]
+                },
+                {
+                    text: htmlToPdfmake('<h6>Government of India, Ministry of Defence<br>Defence Research & Development Organization </h6>'),
+                    alignment: 'center',
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 10, 0, 10]
+                },
+                {
+                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+                    alignment: 'center',
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 10, 0, 10]
+                },
+                // Table of Contents
+                {
                     toc: {
-                        title: { text: 'INDEX', style: 'header',pageBreak: 'before' }
-                      
+                        title: { text: 'INDEX', style: 'header', pageBreak: 'before' }
                     }
                 },
-
-                // Chapter 1
+                
+                /* ************************************** Distribution List *********************************** */ 
                 {
                     text: 'Distribution List',
                     style: 'chapterHeader',
                     tocItem: true,
-                    id: 'chapter1',
+                    id: 'chapter'+(++chapterCount),
                     pageBreak: 'before',
-            		alignment:'center',
+                    alignment: 'center'
                 },
-                htmlToPdfmake(MemberList),
-            
-
-       	       // Chapter 2
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['15%', '35%', '25%', '25%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Name', style: 'tableHeader' },
+                                { text: 'Designation', style: 'tableHeader' },
+                                { text: 'Division/Lab', style: 'tableHeader' }
+                            ],
+                            // Populate table rows
+                            <% if (MemberList != null && MemberList.size()>0) { %>
+	                            <% int slno = 0; for (Object[] obj : MemberList) { %>
+	                            [
+	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%= obj[1] %>', style: 'tableData' },
+	                                { text: '<%= obj[2] %>', style: 'tableData' },
+	                                { text: '<%= obj[3] %>', style: 'tableData',alignment: 'center' }
+	                            ],
+	                            <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Distribution List End*********************************** */
+                
+                /* ************************************** Document Summary *********************************** */
                 {
                     text: 'Document Summary',
                     style: 'chapterHeader',
                     tocItem: true,
-                    id: 'chapter2',
+                    id: 'chapter'+(++chapterCount),
                     pageBreak: 'before'
                 },
-               
-                htmlToPdfmake(docSummary),
-                // Chapter 3
-                 {
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '30%', '60%'],
+                        body: [
+                            <% int docsn = 0; %>
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Title', style: 'tableData' },
+                                { text: 'System Requirements Document for <%=projectShortName %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Type of Document', style: 'tableData' },
+                                { text: 'System Requirement Document', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Classification', style: 'tableData' },
+                                { text: '<%=Classification %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Document Number', style: 'tableData' },
+                                { text: '<%if(docnumber!=null) {%><%=docnumber %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Month Year', style: 'tableData' },
+                                { text: '<%=month.toString().substring(0,3) %> <%= year %>', style: 'tableData' },
+                            ],
+                            
+                            /* [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Number of Pages', style: 'tableData' },
+                                { text: '', style: 'tableData' },
+                            ], */
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Related Document', style: 'tableData' },
+                                { text: '', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Additional Information', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Project Name', style: 'tableData' },
+                                { text: '<%=projectShortName %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Abstract', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Keywords', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Organization and address', style: 'tableData' },
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%> <%} else {%> - <%}%>'
+										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
+								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
+									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'
+								+'<%}else{ %> - <%} %>' , style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Distribution', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Revision', style: 'tableData' },
+                                { text: '<%=version!=null ?version:"-" %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Prepared by', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Reviewed by', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Approved by', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %>', style: 'tableData' },
+                            ],
+
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+			
+                /* htmlToPdfmake(docSummary), */
+                /* ************************************** Document Summary End *********************************** */
+                
+                /* ************************************** Abbreviation *********************************** */
+                {
                     text: 'Abbreviation',
                     style: 'chapterHeader',
                     tocItem: true,
-                    id: 'chapter3',
+                    id: 'chapter'+(++chapterCount),
                     pageBreak: 'before',
-                    alignment:'center',
+                    alignment: 'center'
                 },
-                htmlToPdfmake(abbreviationDiv),
-                // Chapter 4
                 {
-                   text: '1.Scope',
-                   style: 'chapterHeader',
-                   tocItem: true,
-                   id: 'chapter4',
-                   pageBreak: 'before',
-                
-               },
-               htmlToPdfmake(scopeDiv),
-               //chapter5
-               {
-                   text: '2.Requirements',
-                   style: 'chapterHeader',
-                   tocItem: true,
-                   id: 'chapter5',
-                   pageBreak: 'before',
-                
-               },
-               htmlToPdfmake(reqDiv),
+                	text: 'Abbreviations used in the Manual to be listed and arranged in alphabetical order',	
+                	style: 'chapterNote',
+                    alignment: 'center'
+                },
+		
                 {
-                    text: '3.Verification Provisions',
+                    table: {
+                        headerRows: 1,
+                        widths: ['20%', '30%', '50%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Abbreviations', style: 'tableHeader' },
+                                { text: 'Full Forms', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                            <% if (AbbreviationDetails != null && AbbreviationDetails.size()>0) { %>
+		                        <% int slno = 0; for (Object[] obj : AbbreviationDetails) { %>
+		                            [
+		                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%= obj[1] %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%= obj[2] %>', style: 'tableData' },
+		                            ],
+		                        <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 3 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* htmlToPdfmake(abbreviationDiv), */
+                /* ************************************** Abbreviation End *********************************** */
+                
+                /* ************************************** Scope *********************************** */
+                {
+                    text: (++mainContentCount)+'. Scope',
                     style: 'chapterHeader',
                     tocItem: true,
-                    id: 'chapter6',
+                    id: 'chapter'+(++chapterCount),
                     pageBreak: 'before'
                 },
-                // Verification Table
-                htmlToPdfmake(verificationDiv),
-                htmlToPdfmake(verification)
-                // chapter 4 
-               
+                
+                {
+                	text: (mainContentCount)+'.1. System Identification',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.1',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=ReqIntro[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
+                		  +'<%}else {%> Guidance: This paragraph should contain a full identification of the system to which this document applies. <%} %>', 500))],
+                    margin: [10, 0, 0, 0],
+                },
+                {
+                	text: (mainContentCount)+'.2. System Overview',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.2',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[3]!=null) {%> <%=ReqIntro[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
+                		  +'<%}else {%> Guidance: This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites. <%} %>', 500))],
+                    margin: [10, 0, 0, 0],
+                },
+                {
+                	text: (mainContentCount)+'.3. Document Overview',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.3',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[4]!=null) {%> <%=ReqIntro[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
+                		  +'<%}else {%> This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. <%} %>', 500))],
+                    margin: [10, 0, 0, 0],
+                },
+			
+                /* htmlToPdfmake(scopeDiv), */
+                /* ************************************** Scope End *********************************** */
+                
+                /* ************************************** Requirements *********************************** */
+                {
+                    text: (++mainContentCount)+'. Requirements',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                
+
+   				<%if(!RequirementList.isEmpty()) {
+   					List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+   					int mainReqCount=0;
+   					for(Object[]obj:mainReqList){
+   				%>
+	   				{
+	                	text: (mainContentCount)+'.<%=++mainReqCount %>. <%=obj[3] %>',	
+	                	style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=mainReqCount %>',
+	                    tocMargin: [10, 0, 0, 0],
+	                },
+					<%if(obj[4]!=null) {%>
+						{
+		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[4]!=null){ %> <%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))],	
+		                    margin: [10, 5, 5, 5],
+		                },
+
+					<%} %>
+    				<%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15]!=null&&e[15].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());%>
+    				<%
+    				String ReqName="";
+    				int subReqCount=0;
+    				for(Object[]obj1:subMainReqList) {
+    					int snCount=0;
+    				%>
+    					<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
+	    					{
+			                	text: (mainContentCount)+'.<%=mainReqCount+"."+(++subReqCount)%>. <%=obj1[3].toString() %>',	
+			                    tocItem: true,
+			                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=mainReqCount+"."+(subReqCount) %>',
+			                    style: 'chapterSubSubHeader',
+			                    tocMargin: [20, 0, 0, 0],
+			                },
+    					<%} %> 
+
+    					{
+    	                    table: {
+    	                        headerRows: 1,
+    	                        widths: ['20%', '30%', '50%'],
+    	                        body: [
+    	                            // Table header
+    	                            [
+    	                                { text: 'SN', style: 'tableHeader' },
+    	                                { text: 'Attribute', style: 'tableHeader' },
+    	                                { text: 'Content', style: 'tableHeader' },
+    	                            ],
+    	                            // Populate table rows
+
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'ID', style: 'tableData' },
+    	                                { text: '<%=obj1[1] %>', style: 'tableData' },
+    	                            ],
+
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'QR Para', style: 'tableData' },
+    	                                { text: '<%if(obj1[12]!=null) { String [] a=obj1[12].toString().split(", "); for(String s:a){ %> <%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
+    	                            ],
+    	                            
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Priority', style: 'tableData' },
+    	                                { text: '<%if(obj1[5]!=null) {%> <%=obj1[5] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                            ],
+    	                            
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Criticality', style: 'tableData' },
+    	                                { text: '<%if(obj1[21]!=null) {%> <%=obj1[21] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                            ],
+    	                            
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Type', style: 'tableData' },
+    	                                { text: '<%if(obj1[6]!=null) {%> <%if(obj1[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %> <%if(obj1[6].toString().equalsIgnoreCase("E")) {%>Essential<%} %> <%}else {%>-<%} %>', style: 'tableData' },
+    	                            ],
+
+    	                            <%-- [
+    	                                { text: htmlToPdfmake(setImagesWidth(document.getElementById('description<%=mainReqCount+"."+subReqCount %>').innerHTML, 500)), colSpan: 3 },
+    	                            ], --%>
+    	                            
+    	                           	[
+    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=obj1[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
+    	                            ],
+    	                            
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Remarks', style: 'tableData' },
+    	                                { text: '<%if(obj1[7]!=null) {%> <%=obj1[7] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                            ],
+
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Constraints', style: 'tableData' },
+    	                                { text: '<%if(obj1[9]!=null) {%> <%=obj1[9] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                            ],
+
+    	                           [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Demonstration', style: 'tableData' },
+    	                                { text: htmlToPdfmake('<% if(obj1[16] != null) { %>'
+    	                                	    + '<% List<Object[]> DemonList = VerificationDataList.stream().filter(e -> e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList()); %>'
+    	                                	    + '<% String[] a = obj1[16].toString().split(", "); %>'
+    	                                	    + '<% for (int i = 0; i < a.length; i++) { %>'
+    	                                	    + '<%= a[i] %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
+    	                                	    + '<% } %>'
+    	                                	    + '<% } else { %>-<% } %>'), style: 'tableData' },
+    	                            ],
+
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Test', style: 'tableData' },
+    	                                { text: htmlToPdfmake('<%if(obj1[17]!=null) { %>'
+    	                                		+ '<% List<Object[]>TestList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("2")).collect(Collectors.toList()); %>'
+    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
+    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
+    												
+    	                                		 + '<%=	a[i] +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		+ '<%} %>'
+    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
+    	                            ],
+
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Design/Analysis', style: 'tableData' },
+    	                                { text: htmlToPdfmake('<%if(obj1[18]!=null) { %>'
+    	                                		+ '<% List<Object[]>AnalysisList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("3")).collect(Collectors.toList()); %>'
+    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
+    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
+    												
+    	                                			+ '<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		+ '<%} %>'
+    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
+    	                            ],
+
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Inspection', style: 'tableData' },
+    	                                { text: htmlToPdfmake('<%if(obj1[19]!=null) { %>'
+    	                                		+ '<% List<Object[]>InspectionList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("4")).collect(Collectors.toList()); %>'
+    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
+    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
+    												
+    	                                		+ '<%=	a[i] +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		+ '<%} %>'
+    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
+    	                            ],
+
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Special Methods', style: 'tableData' },
+    	                                { text: htmlToPdfmake('<%if(obj1[20]!=null) { %>'
+    	                                		+ '<% List<Object[]>specialList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("5")).collect(Collectors.toList()); %>'
+    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
+    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
+    												
+    	                                		+ '<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		+ '<%} %>'
+    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
+    	                            ],
+
+    	                        ]
+    	                    },
+    	                    layout: {
+
+    	                        hLineWidth: function(i, node) {
+    	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+    	                        },
+    	                        vLineWidth: function(i) {
+    	                            return 0.5;
+    	                        },
+    	                        hLineColor: function(i) {
+    	                            return '#aaaaaa';
+    	                        },
+    	                        vLineColor: function(i) {
+    	                            return '#aaaaaa';
+    	                        }
+    	                    }
+    	                },
+    	               
+    				<%
+    				ReqName=obj1[3].toString();
+    				} %>
+    				<%}%>
+    	
+    				<%
+    				List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+    				%>
+    				<%if(nonMainReqList!=null && !nonMainReqList.isEmpty()) { %>
+    				
+    				{
+	                	text: mainContentCount+'.<%=++mainReqCount %>. Precedence and Criticality of Requirements',	
+	                	style: 'chapterSubSubHeader',
+	                },
+	    				{
+	                        table: {
+	                            headerRows: 1,
+	                            widths: ['10%', '30%', '30%', '30%'],
+	                            body: [
+	                                // Table header
+	                                [
+	                                    { text: 'SN', style: 'tableHeader' },
+	                                    { text: 'Requirement ID', style: 'tableHeader' },
+	                                    { text: 'Priority', style: 'tableHeader' },
+	                                    { text: 'Criticality', style: 'tableHeader' },
+	                                ],
+	                                // Populate table rows
+	                                <% if (nonMainReqList != null) { %>
+	                                <% int rcount = 0; for (Object[] obj : nonMainReqList) { if(obj[21]!=null){ %>
+	                                [
+	                                    { text: '<%= ++rcount %>', style: 'tableData',alignment: 'center' },
+	                                    { text: '<%= obj[1] %>', style: 'tableData' },
+	                                    { text: '<%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %> ', style: 'tableData',alignment: 'center' },
+	                                    { text: '<%if(obj[21]!=null) {%><%=obj[21].toString()%><%}else{ %>-<%} %> ', style: 'tableData' },
+	                                ],
+	                                <% } }%>
+	                                <% } %>
+	                            ]
+	                        },
+	                        layout: {
+	                            /* fillColor: function(rowIndex) {
+	                                return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                            }, */
+	                            hLineWidth: function(i, node) {
+	                                return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                            },
+	                            vLineWidth: function(i) {
+	                                return 0.5;
+	                            },
+	                            hLineColor: function(i) {
+	                                return '#aaaaaa';
+	                            },
+	                            vLineColor: function(i) {
+	                                return '#aaaaaa';
+	                            }
+	                        }
+	                    },
+    					
+    					<% } %>
+    	
+    				<%} %>
+
+                /* htmlToPdfmake(reqDiv), */
+                /* ************************************** Requirements End*********************************** */
+                
+                /* ************************************** Verification Provisions *********************************** */
+                {
+                    text: (++mainContentCount)+'. Verification Provisions',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                {
+					text : (mainContentCount)+'.1. Verification Methods',
+					style: 'chapterSubHeader',
+					tocItem: true,
+	                id: 'chapter'+chapterCount+'.'+mainContentCount+'.1',
+	                tocMargin: [10, 0, 0, 0],
+				},
+                <%if(Verifications!= null &&   !Verifications.isEmpty()) {
+					int verificationCount=1;
+					int j=0;
+					for(Object[]obj:Verifications){
+				%>
+					<%-- {
+						text : htmlToPdfmake('<h3 class="heading-colors" style="font-size: 16px; "><%="3"+"."+(verificationCount)%>.<%=++j %> <%=obj[1].toString() %> </h3><br>'
+								+'<%if(obj[3]!=null){ %><%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%><br>'
+								+'<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No details filled&nbsp;&nbsp;-</p><%}%>'),margin: [5, 5, 5, 5],
+					}, --%>
+						{
+							text : (mainContentCount)+'.<%=verificationCount%>.<%=++j %>. <%=obj[1].toString() %>',
+							style: 'chapterSubSubHeader',
+							tocItem: true,
+			                id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=verificationCount%>.<%=j %>',
+			                tocMargin: [20, 0, 0, 0],
+						},
+						<%if(obj[3]!=null) {%>
+						{
+							stack: [htmlToPdfmake(setImagesWidth('<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', 500))],	
+		                    margin: [15, 0, 0, 15],
+		                },
+
+					<%} %>
+				<%}} %>
+                /* htmlToPdfmake(verificationDiv), */
+                /* ************************************** Verification Provisions End*********************************** */
+                
+                /* ************************************** Verification Provisions List*********************************** */
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '30%', '30%', '30%'],
+                        body: [
+                        	[
+                        		{text: 'SN', style:'tableHeader'},
+                        		{text: 'Verification Name', style:'tableHeader'},
+                        		{text: 'Type of Test', style:'tableHeader'},
+                        		{text: 'Purpose', style:'tableHeader'},
+                        	],
+                            // Populate table rows
+                            <% if (verificationDataListMap!=null && verificationDataListMap.size() > 0) {
+									int slno = 0, subcount=0; String key="", data="";;
+									for (Map.Entry<String, List<Object[]>> map : verificationDataListMap.entrySet()) {
+                  							
+               							List<Object[]> values = map.getValue();
+               							int index =0;
+               							for (Object[] obj : values) { %>
+				                            [
+				                                <%if(index ==0) {%>
+				                                	{ text: '<%=++slno %>', style: 'tableData', rowSpan: <%=values.size() %>, alignment: 'center' },
+									    			{ text: '<%=obj[2] %>', style: 'tableData', rowSpan: <%=values.size() %> },
+       											<% } else { %>
+       												{},
+					                                {},
+					                            <% } %>
+				                                <%if(!data.equalsIgnoreCase(obj[2].toString())){ subcount=0; } %> 
+				                                { text: '<%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %>', style: 'tableData' },
+				                                { text: '<%=obj[4]%>', style: 'tableData' },
+				                            ],
+                            <% data = obj[2].toString();  ++index;} %>
+                            <% } }%>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Verification Provisions List End*********************************** */
+                
+                /* ************************************** Requirements Traceability*********************************** */
+                {
+                    text: (++mainContentCount)+'. Requirements Traceability',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                
+                <% if(RequirementList!=null && ProjectParaDetails!=null && !ProjectParaDetails.isEmpty()&&!RequirementList.isEmpty()) {   
+    				List<Object[]>subList= RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0"))
+    						.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
+    						.collect(Collectors.toList());
+    			%>
+    			{
+                	text: (mainContentCount)+'.1. Forward Traceability Matrix',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '60%', '30%'],
+                        body: [
+                        	[
+                        		{text: 'SN', style:'tableHeader'},
+                        		{text: 'QR', style:'tableHeader'},
+                        		{text: 'Requirement Id', style:'tableHeader'},
+                        	],
+                            // Populate table rows
+                        	<%if(ParaDetails!=null && ParaDetails.size()>0) {
+        						int slCount=0;
+        						for(Object[] obj1:ParaDetails){
+        							List<Object[]> ReqId = new ArrayList<>();
+        						
+        							if(subList.size()>0){
+        								ReqId=subList.stream().filter(e->e[12]!=null && Arrays.asList(e[12].toString().split(", ")).contains(obj1[0].toString())).collect(Collectors.toList());
+        							}
+        					%>
+	        					[
+	        						{text: '<%=++slCount %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%=obj1[3] %>', style:'tableData',},
+	        						{text: '<%if(ReqId.size()>0) { for(Object[]obj2:ReqId){ %> <%=obj2[1] %> <%}}else{ %> --- <%} %>', style:'tableData', alignment: 'center'},
+	        					],
+        					
+        					<%}} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                {
+                	text: (mainContentCount)+'.2. Backward Traceability Matrix',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.2',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '30%', '60%'],
+                        body: [
+                        	[
+                        		{text: 'SN', style:'tableHeader'},
+                        		{text: 'Requirement Id', style:'tableHeader'},
+                        		{text: 'QR', style:'tableHeader'},
+                        	],
+                            // Populate table rows
+                        	<%int snCount=0; for(Object[] objs: subList) { if(objs[12]!=null) {%>
+	        					[
+	        						{text: '<%=++snCount %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%=objs[1].toString() %>', style:'tableData', alignment: 'center'},
+	        						{text: htmlToPdfmake('<%if(objs[12]!=null) { String [] a=objs[12].toString().split(", "); List<String>paras= new ArrayList<>(); %>'
+	        								+'<%for(String s:a){ for(Object[]obj:ProjectParaDetails){ if(obj[0].toString().equalsIgnoreCase(s)){ paras.add(obj[3].toString()); } } }%>'
+		    								+'<% for(String s:paras){%><%=s %> <br><%} %>'
+		    								+'<%}else{ %> - <%} %>'), style:'tableData'},
+	        					],
+        					
+        					<%}} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+  
+    			<%} %>
+    			
+                /* ************************************** Requirements Traceability End*********************************** */
+                
+                /* ************************************** Appendix Section*********************************** */
+                {
+                    text: (++mainContentCount)+'. Appendix Section',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                {
+                	text: mainContentCount+'.1. Appendix A - Acronyms and Definitions',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '45%', '45%'],
+                        body: [
+                        	[
+                        		{text: 'SN', style:'tableHeader'},
+                        		{text: 'Acronyms', style:'tableHeader'},
+                        		{text: 'Definitions', style:'tableHeader'},
+                        	],
+                            // Populate table rows
+                        	<% if (AcronymsList != null) { int slno = 0; for (Object[] obj : AcronymsList) { %>
+	        					[
+	        						{text: '<%=++slno %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%=obj[1] %>', style:'tableData', },
+	        						{text: '<%=obj[2] %>', style:'tableData', },
+	        					],
+        					
+        					<%}} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                {
+                	text: htmlToPdfmake('<p>Guidance: This appendix contains acronyms and provides standard definitions for terminology used herein </p>'),	
+                	style: 'subChapterNote',
+                },
+                {
+                	text: mainContentCount+'.2. Appendix B -Key Performance Parameters / Key System Attributes',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.2',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                	text: 'The key Measures of Effectiveness (MOE) are given below :',	
+                    margin: [15, 5, 0, 10],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '45%', '45%'],
+                        body: [
+                        	[
+                        		{text: 'SN', style:'tableHeader'},
+                        		{text: 'Key MOEs', style:'tableHeader'},
+                        		{text: 'Values', style:'tableHeader'},
+                        	],
+                            // Populate table rows
+                        	<% if (PerformanceList != null) { int slno = 0; for (Object[] obj : PerformanceList) { %>
+	        					[
+	        						{text: '<%=++slno %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%=obj[1] %>', style:'tableData', },
+	        						{text: '<%=obj[2]  %>', style:'tableData', },
+	        					],
+        					
+        					<%}} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                {
+                	text: htmlToPdfmake('<p>Guidance: This appendix contains tabularized KPPs, and KSAs, if applicable, listed in prioritized order.<br>Sample Key performance Parameters / Key System Attributes are shown above. Modify the Key performance Parameters / Key System Atributes based on your specific project constraints. </p>'),	
+                	style: 'subChapterNote',
+                },
+                {
+                	text: (mainContentCount)+'.3. Appendix D - Test Verification Matrices',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.3',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['18%', '21%', '12%', '15%', '17%', '18%'],
+                        body: [
+                        	[
+                        		{text: 'Verification method', style:'tableHeader'},
+                        		{text: 'Demonstration', style:'tableHeader'},
+                        		{text: 'Test', style:'tableHeader'},
+                        		{text: 'Analysis', style:'tableHeader'},
+                        		{text: 'Inspection', style:'tableHeader'},
+                        		{text: 'Special Verification Method', style:'tableHeader'},
+                        	],
+                            // Populate table rows
+        					<%
+        			           if(!RequirementList.isEmpty()){
+        			        	   List<Object[]> mainReqList = RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase("0"))
+						        			        			   .sorted(Comparator.comparing(k -> Integer.parseInt(k[14].toString())))
+						        			        			   .collect(Collectors.toList());
+        			        	   for(Object []obj:mainReqList){
+        			        		   
+        			        		   List<Object[]>submainReqList = RequirementList.stream().filter(k->k[15]!=null&&k[15].toString().equalsIgnoreCase(obj[0].toString()))
+						        			        				   . sorted(Comparator.comparing(k -> Integer.parseInt(k[14].toString())))
+						        			        				   .collect(Collectors.toList());
+        			        %>
+		        			        <%if(submainReqList.size()>0){%>
+			        			        [
+			        						{text: '<%=obj[3].toString() %>:-', style:'tableData', colSpan: 6},
+			        					],
+		        			          
+		        			           <%String ReqName="";
+		        			            	for(Object[]obj1:submainReqList){ %>
+		        			           	<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
+			        			           	[
+				        						{text: '<%=obj1[3].toString() %>', style:'tableData', colSpan: 6},
+				        					],
+		        						<%} %>
+		        			           
+		        						[
+			        						{text: '<%=obj1[1] %>', style:'tableData',},
+			        						{text: '<%if(obj1[16]!=null) {%><%=obj1[16] %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[17]!=null) {%><%=obj1[17] %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[18]!=null) {%><%=obj1[18] %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[19]!=null) {%><%=obj1[19] %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[20]!=null) {%><%=obj1[20] %> <%}else{ %>-<%} %>', style:'tableData',},
+			        					],
+		        			           <% ReqName=obj1[3].toString();
+		        			           } %>
+		        					<%} %>
+        			    	<%}} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Appendix Section End*********************************** */
                 
             ],
-
-            // Styles for headers and text
             styles: {
-                header: { fontSize: 19, bold: true, margin: [0, 0, 0, 10] },
-                chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] }
+                DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+                chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
+                chapterNote: { fontSize: 13, bold: true, margin: [0, 10, 0, 10]},
+                chapterSubHeader: { fontSize: 13, bold: true, margin: [10, 10, 0, 10]},
+                tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+                tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+                chapterSubSubHeader: { fontSize: 12, bold: true, margin: [15, 10, 10, 10] },
+                subChapterNote: { margin: [15, 15, 0, 10] },
+                header: { alignment: 'center', bold: true},
             },
-
-            // Footer for page numbers
-footer: function(currentPage, pageCount) {
-    if (currentPage > 2) {
-        return {
-            stack: [
-                // First line at the top of the footer
-                {
-                    canvas: [
-                        {
-                            type: 'line',
-                            x1: 30, y1: 0,   // Start of the line (left side)
-                            x2: 565, y2: 0,  // End of the line (right side)
-                            lineWidth: 1
-                        }
-                    ]
-                },
-                // Footer content with document number and page number
-                {
-                    columns: [
-                        {
-                            text: 'Document Number',
-                            alignment: 'left',
-                            margin: [30, 0, 0, 0],
-                            fontSize: 8
-                        },
-                        {
-                            text: (currentPage).toString() + ' of ' + pageCount,
-                            alignment: 'right',
-                            margin: [0, 0, 30, 0],
-                            fontSize: 8
-                        }
-                    ]
-                },
-                // Sentence on the next line
-                {
-                    text: 'This document contains proprietary information of <%=session.getAttribute("labcode")%>, DRDO',
-                    alignment: 'center',
-                    fontSize: 8,
-                    margin: [0, 5, 0, 0]  // Add some margin above to create space
+            footer: function(currentPage, pageCount) {
+                if (currentPage > 2) {
+                    return {
+                        stack: [
+                        	{
+                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 565, y2: 0, lineWidth: 1 }]
+                            },
+                            {
+                                columns: [
+                                    { text: '<%if(docnumber!=null) {%><%=docnumber %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+                                ]
+                            },
+                            { text: 'Restricted', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0] }
+                        ]
+                    };
                 }
-            ]
-        };
-    } else {
-        return ''; // No footer for the first two pages
-    }
-}
-,
-header: function(currentPage, pageCount) {
-    return {
-        stack: [
-            {
-                columns: [
+                return '';
+            },
+            header: function(currentPage) {
+                return [
+                    { text: 'Restricted', alignment: 'center', margin: [0, 10, 0, 0], fontSize: 8, bold: true },
+                ];
+            },
+            pageMargins: [40, 40, 20, 40],
+            
+            background: function(currentPage) {
+                return [
                     {
-                        text: 'Restricted',
-                        alignment: 'center',
-                        margin: [0, 10, 0, 0], // Adjust margins as needed
-                        fontSize: 8,
-                        bold: true
-                    },
-                  
-                ]
-            }
-            // Line under the header
-        /*     {
-                canvas: [
-                    {
-                        type: 'line',
-                        x1: 30, y1: 0,   // Start of the line (left side)
-                        x2: 565, y2: 0,  // End of the line (right side)
-                        lineWidth: 1
+                        image: generateRotatedTextImage(leftSideNote),
+                        width: 100, // Adjust as necessary for your content
+                        absolutePosition: { x: -20, y: 50 }, // Position as needed
                     }
-                ],
-                margin: [0, 1, 0, 10]  // Adjust margin to add space between the line and header content
-            } */
-        ]
-    };
-},
-            // Default style for the text
-            defaultStyle: {
-                fontSize: 12
-            }
+                ];
+            },
+            /* background: function(currentPage) {
+                return [
+                    {
+                        text: htmlToPdfmake('<p style="transform: rotate(270deg) !important;">Left-Side Rotated Text</p>'), // Your text here
+                        fontSize: 12,
+                        color: 'gray',
+                        bold: true,
+                        absolutePosition: { x: 10, y: 400 }, 
+                    }
+                ];
+            }, */
+            defaultStyle: { fontSize: 12 }
         };
-
-        pdfMake.createPdf(docDefinition).download('toc_with_table.pdf');
+		
+        pdfMake.createPdf(docDefinition).open();
+        
     }
-        </script>
+    
+    const setImagesWidth = (htmlString, width) => {
+        const container = document.createElement('div');
+        container.innerHTML = htmlString;
+      
+        const images = container.querySelectorAll('img');
+        
+        images.forEach(img => {
+        	
+          img.style.width = width+'px';
+          img.style.textAlign = 'center';
+        });
+      
+        const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, v, figure, hr, ul, li');
+        textElements.forEach(element => {
+          if (element.style) {
+            element.style.fontFamily = '';
+            element.style.margin = '';
+            element.style.marginTop = '';
+            element.style.marginRight = '';
+            element.style.marginBottom = '';
+            element.style.marginLeft = '';
+            element.style.lineHeight = '';
+            element.style.height = '';
+            element.style.width = '';
+            element.style.padding = '';
+            element.style.paddingTop = '';
+            element.style.paddingRight = '';
+            element.style.paddingBottom = '';
+            element.style.paddingLeft = '';
+            element.style.fontSize = '';
+            element.id = '';
+          }
+        });
+      
+        const tables = container.querySelectorAll('table');
+        tables.forEach(table => {
+          if (table.style) {
+            table.style.borderCollapse = 'collapse';
+            table.style.width = '100%';
+          }
+      
+          const cells = table.querySelectorAll('th, td');
+          cells.forEach(cell => {
+            if (cell.style) {
+              cell.style.border = '1px solid black';
+      
+              if (cell.tagName.toLowerCase() === 'th') {
+                cell.style.textAlign = 'center';
+              }
+            }
+          });
+        });
+      
+        return container.innerHTML.replace(/<v:[^>]*>[\s\S]*?<\/v:[^>]*>/gi, '');
+      }; 	
+      
+      
+      
+      function splitTextIntoLines(text, maxLength) {
+    	  const lines = [];
+    	  let currentLine = '';
+
+    	  for (const word of text.split(' ')) {
+    	    if ((currentLine + word).length > maxLength) {
+    	      lines.push(currentLine.trim());
+    	      currentLine = word + ' ';
+    	    } else {
+    	      currentLine += word + ' ';
+    	    }
+    	  }
+    	  lines.push(currentLine.trim());
+    	  return lines;
+    	}
+
+    	// Generate rotated text image with line-wrapped text
+    	function generateRotatedTextImage(text) {
+    	  const maxLength = 260;
+    	  const lines = splitTextIntoLines(text, maxLength);
+
+    	  const canvas = document.createElement('canvas');
+    	  const ctx = canvas.getContext('2d');
+
+    	  // Set canvas dimensions based on anticipated text size and rotation
+    	  canvas.width = 200;
+    	  canvas.height = 1560;
+
+    	  // Set text styling
+    	  ctx.font = '14px Roboto';
+    	  ctx.fillStyle = 'rgba(128, 128, 128, 1)'; // Gray color for watermark
+
+    	  // Position and rotate canvas
+    	  ctx.translate(80, 1480); // Adjust position as needed
+    	  ctx.rotate(-Math.PI / 2); // Rotate 270 degrees
+
+    	  // Draw each line with a fixed vertical gap
+    	  const lineHeight = 20; // Adjust line height if needed
+    	  lines.forEach((line, index) => {
+    	    ctx.fillText(line, 0, index * lineHeight); // Position each line below the previous
+    	  });
+
+    	  return canvas.toDataURL();
+    	}
+
+    	<%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
+	    	$( document ).ready(function(){
+	    		generatePDF();
+	    		/* window.close(); */
+	    		
+	    		// Hide the current JSP page immediately after opening the PDF
+    			document.body.style.display = "none";
+	    		
+	    		setTimeout(function () {
+			        window.close();
+			    }, 5000); // Adjust the delay time as needed
+	    	});
+    	<%} %>
+</script>
+
 </body>
  
 </html>

@@ -418,6 +418,8 @@ FormatConverter fc = new FormatConverter();
 			<input type="hidden" name="projectId" value="<%=projectId%>"> 
 			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
 			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 
+			<input type="hidden" name="docnumber" value="<%if(DocumentSummary!=null && DocumentSummary[11]!=null) {%> SRD-<%=DocumentSummary[11].toString().replaceAll("-", "")%>-<%=session.getAttribute("labcode") %>-<%=projectDetails[1] %>-V<%=DocumentVersion %> <%} %>">			
+			<input type="hidden" name="isPdf" id="isPdf">
 		</form>
 		<!-- End -->
   
@@ -432,7 +434,7 @@ FormatConverter fc = new FormatConverter();
 			<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>"> 
 			<input type="hidden" name="reqInitiationId" value="<%=reqInitiationId%>"> 
 			
-				<input type="hidden" name="docnumber" value="<%if(DocumentSummary!=null && DocumentSummary[11]!=null) {%> SRD-<%=DocumentSummary[11].toString().replaceAll("-", "")%>-<%=session.getAttribute("labcode") %>-<%=projectDetails[1] %>-V<%=DocumentVersion %> <%} %>">
+			<input type="hidden" name="docnumber" value="<%if(DocumentSummary!=null && DocumentSummary[11]!=null) {%> SRD-<%=DocumentSummary[11].toString().replaceAll("-", "")%>-<%=session.getAttribute("labcode") %>-<%=projectDetails[1] %>-V<%=DocumentVersion %> <%} %>">
 		</form>
 		<!-- End -->
   
@@ -887,8 +889,9 @@ function showReq(){
 }
 
 function DownloadDoc(){
+	$('#isPdf').val('N');
 	$('#Downloadbtn').click();
-	}
+}
 function DownloadDocPDF(){
 	var reqInitiationId= "<%=reqInitiationId%>";
 	if(reqInitiationId==="0"){
@@ -896,9 +899,9 @@ function DownloadDocPDF(){
 		return false;
 	}
 	
-	
-	$('#Downloadbtnpdf').click();
-	}
+	$('#isPdf').val('Y');
+	$('#Downloadbtn').click();
+}
 	
 	function showApplicableDoc(){
 		$('#docs').modal('show');
