@@ -1849,10 +1849,23 @@ public class RequirementsController {
 
 			String ReqMainId=reqTypes[0];
 			List<Object[]>reqTypeList=service.getreqTypeList(ReqMainId,InitiationReqId);
-			int length=0;
+			int length=10;
 
 			if(reqTypeList!=null && reqTypeList.size()>0) {
-				length=reqTypeList.size();
+				Object[]tempList = reqTypeList.get(reqTypeList.size()-1);
+				
+				if(tempList!=null && tempList[1]!=null) {
+					
+					String temp=tempList[1].toString();
+					
+					String[] tempArray = temp.split("_");
+					
+					String lengthValue = tempArray[tempArray.length-1];
+					
+					length=Integer.parseInt(lengthValue)+10;
+				}
+				
+				
 			}
 
 			String Demonstration = null;
@@ -1901,12 +1914,12 @@ public class RequirementsController {
 
 
 			String requirementId="";
-			if (length < 9) {
-				requirementId = reqTypes[1]+ ("_000" + ( (length+1) * 10));
-			} else if (length < 99) {
-				requirementId = reqTypes[1]+ ("_00" + ( (length+1) * 10));
+			if (length < 100) {
+				requirementId = reqTypes[1]+ ("_000" + length);
+			} else if (length < 1000) {
+				requirementId = reqTypes[1]+ ("_00" + length);
 			} else {
-				requirementId = reqTypes[1]+ ("_0" + ( (length+1) * 10));
+				requirementId = reqTypes[1]+ ("_0" + length);
 			}
 
 			if(productTreeMainId==null) {
@@ -2028,18 +2041,32 @@ public class RequirementsController {
 			if(!ReqMainId.equalsIgnoreCase(pir.getReqMainId()+"")) {
 			System.out.println(InitiationReqId+"length--"+ReqMainId);
 			List<Object[]>reqTypeList=service.getreqTypeList(ReqMainId,MainInitiationReqId);
-			int length=0;
+			int length=10;
 
 			if(reqTypeList!=null && reqTypeList.size()>0) {
-				length=reqTypeList.size();
+				Object[]tempList = reqTypeList.get(reqTypeList.size()-1);
+				if(tempList!=null && tempList[1]!=null) {
+					String temp=tempList[1].toString();
+					String[] tempArray = temp.split("_");
+					String lengthValue = tempArray[tempArray.length-1];
+					length=Integer.parseInt(lengthValue)+10;
+				}
 			}
-		
-			if (length < 9) {
-				requirementId = reqTypes[1]+ ("_000" + ( (length+1) * 10));
-			} else if (length < 99) {
-				requirementId = reqTypes[1]+ ("_00" + ( (length+1) * 10));
+//			if (length < 9) {
+//				requirementId = reqTypes[1]+ ("_000" + ( (length+1) * 10));
+//			} else if (length < 99) {
+//				requirementId = reqTypes[1]+ ("_00" + ( (length+1) * 10));
+//			} else {
+//				requirementId = reqTypes[1]+ ("_0" + ( (length+1) * 10));
+//			}
+//			
+//			String requirementId="";
+			if (length < 100) {
+				requirementId = reqTypes[1]+ ("_000" + length);
+			} else if (length < 1000) {
+				requirementId = reqTypes[1]+ ("_00" + length);
 			} else {
-				requirementId = reqTypes[1]+ ("_0" + ( (length+1) * 10));
+				requirementId = reqTypes[1]+ ("_0" + length);
 			}
 			pir.setRequirementId(requirementId);
 			pir.setReqMainId(Long.parseLong(ReqMainId));
@@ -2066,7 +2093,7 @@ public class RequirementsController {
 			count=service.addOrUpdatePfmsInititationRequirement(pir);
 
 			if(count>0) {
-				redir.addAttribute("result","Requirements for "+requirementId+" Updated successfully");
+				redir.addAttribute("result","Requirements "+requirementId+" Updated successfully");
 			}else {
 				redir.addAttribute("resultfail","Requirements Updated  unsuccessful");
 			}
