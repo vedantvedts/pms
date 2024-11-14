@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.time.LocalDate"%>
@@ -33,6 +34,27 @@
 <script src="${Summernotettf}"></script>
 <script src="${Summernotettf}"></script>
 <script src="${Summernoteeot}"></script>
+
+<!-- Pdfmake  -->
+<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+<script src="${pdfmake}"></script>
+<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+<script src="${pdfmakefont}"></script>
+<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+<script src="${htmltopdf}"></script>
+	
+<style type="text/css">
+.note-editable
+{
+height: 300px;
+}
+.note-editable img {
+width:300px!important;
+height:300px!important;
+} 
+</style>
+</head>
+<body>
 	<%
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -95,22 +117,31 @@
 	}
 
 	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
-	%>
-<style type="text/css">
-.note-editable
-{
-height: 300px;
-}
-.note-editable img {
-width:300px!important;
-height:300px!important;
-} 
-</style>
-</head>
-<body>
+	Object[] DocTempAtrr = (Object[]) request.getAttribute("DocTempAtrr");
+	String projectShortName = (String)request.getAttribute("projectShortName");
+	String lablogo = (String)request.getAttribute("lablogo");
+	String version = (String)request.getAttribute("version");
+	
+	Object[] TestScopeIntro = (Object[])request.getAttribute("TestScopeIntro");
+	String RoleResponsibility = (String)request.getAttribute("RoleResponsibility");
+	String htmlContentRoleResponsibility = (String)request.getAttribute("htmlContentRoleResponsibility");
+	String TestSetUpDiagram = (String)request.getAttribute("TestSetUpDiagram");
+	String htmlContentTestSetUpDiagram = (String)request.getAttribute("htmlContentTestSetUpDiagram");
+	String TestVerification = (String)request.getAttribute("TestVerification");
+	String htmlContentTestVerification = (String)request.getAttribute("htmlContentTestVerification");
+	List<Object[]> TestSuiteList = (List<Object[]>)request.getAttribute("TestSuite");
+	List<Object[]> TestDetailsList = (List<Object[]>)request.getAttribute("TestDetailsList");
+	List<Object[]> AcceptanceTesting = (List<Object[]>)request.getAttribute("AcceptanceTesting");
+	List<Object[]> specificationList = (List<Object[]>)request.getAttribute("specificationList");
+	List<Object[]> StagesApplicable = (List<Object[]>)request.getAttribute("StagesApplicable");
 
+	if(specificationList!=null && specificationList.size()>0){
+		specificationList=specificationList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+	}
+	%>
+	
 	<%String ses=(String)request.getParameter("result"); 
- 	  String ses1=(String)request.getParameter("resultfail");
+	String ses1=(String)request.getParameter("resultfail");
 	  if(ses1!=null){
 	%>
 	<div align="center">
@@ -1035,9 +1066,9 @@ height:300px!important;
     function TestDetails(){
 		$('#TestDetailsbtn').click();
 		}
-    function DownloadDocPDF(){
+    /* function DownloadDocPDF(){
     	$("#DownLoadPdf").click();
-    }
+    } */
     
 /*     var editor_config = {
 			toolbar : [
@@ -1197,6 +1228,1110 @@ height:300px!important;
 					}
 			});
 		
+</script>
+
+<script type="text/javascript">
+function DownloadDocPDF(){
+	var chapterCount = 0;
+	var mainContentCount = 0;
+	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} else{%>-<%}%>';
+		
+	var docDefinition = {
+            content: [
+                // Cover Page with Project Name and Logo
+                {
+                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM TEST PLAN <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>'),
+                    style: 'DocumentName',
+                    alignment: 'center',
+                    fontSize: 18,
+                    margin: [0, 200, 0, 20]
+                },
+                <% if (lablogo != null) { %>
+                {
+                    image: 'data:image/png;base64,<%= lablogo %>',
+                    width: 95,
+                    height: 95,
+                    alignment: 'center',
+                    margin: [0, 20, 0, 30]
+                },
+                <% } %>
+                
+                {
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString() + "(" + LabList[0].toString() + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    alignment: 'center',
+                    fontSize: 16,
+                    bold: true,
+                    margin: [0, 20, 0, 20]
+                },
+                {
+                    text: htmlToPdfmake('<h6>Government of India, Ministry of Defence<br>Defence Research & Development Organization </h6>'),
+                    alignment: 'center',
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 10, 0, 10]
+                },
+                {
+                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+                    alignment: 'center',
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 10, 0, 10]
+                },
+                // Table of Contents
+                {
+                    toc: {
+                        title: { text: 'INDEX', style: 'header', pageBreak: 'before' }
+                    }
+                },
+
+                /* ************************************** Distribution List *********************************** */ 
+                {
+                    text: 'Distribution List',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before',
+                    alignment: 'center'
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['15%', '35%', '25%', '25%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Name', style: 'tableHeader' },
+                                { text: 'Designation', style: 'tableHeader' },
+                                { text: 'Division/Lab', style: 'tableHeader' }
+                            ],
+                            // Populate table rows
+                            <% if (MemberList != null && MemberList.size()>0) { %>
+	                            <% int slno = 0; for (Object[] obj : MemberList) { %>
+	                            [
+	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%= obj[1] %>', style: 'tableData' },
+	                                { text: '<%= obj[2] %>', style: 'tableData' },
+	                                { text: '<%= obj[3] %>', style: 'tableData',alignment: 'center' }
+	                            ],
+	                            <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Distribution List End*********************************** */
+
+                /* ************************************** Document Summary *********************************** */
+                {
+                    text: 'Document Summary',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '30%', '60%'],
+                        body: [
+                            <% int docsn = 0; %>
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Title', style: 'tableData' },
+                                { text: 'System Segment Specification Document For Project <%=projectShortName %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Type of Document', style: 'tableData' },
+                                { text: 'System Segment Specification Document', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Classification', style: 'tableData' },
+                                { text: 'Restricted', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Document Number', style: 'tableData' },
+                                { text: '', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Month Year', style: 'tableData' },
+                                { text: '<%=months.toString().substring(0,3) %> <%= years %>', style: 'tableData' },
+                            ],
+                            
+                            /* [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Number of Pages', style: 'tableData' },
+                                { text: '', style: 'tableData' },
+                            ], */
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Related Document', style: 'tableData' },
+                                { text: '', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Additional Information', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[0] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Project Name', style: 'tableData' },
+                                { text: '<%=projectShortName %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Abstract', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[1] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Keywords', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[2] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Organization and address', style: 'tableData' },
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%> <%} else {%> - <%}%>'
+										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
+								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
+									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'
+								+'<%}else{ %> - <%} %>' , style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Distribution', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[3] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Revision', style: 'tableData' },
+                                { text: '<%=version!=null ?version:"-" %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Prepared by', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[10] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Reviewed by', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[7] %><%} %>', style: 'tableData' },
+                            ],
+                            
+                            [
+                                { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
+                                { text: 'Approved by', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[6] %><%} %>', style: 'tableData' },
+                            ],
+
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+			
+                /* ************************************** Document Summary End *********************************** */
+
+                /* ************************************** Abbreviation *********************************** */
+                {
+                    text: 'Abbreviation',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before',
+                    alignment: 'center'
+                },
+                {
+                	text: 'Abbreviations used in the Manual to be listed and arranged in alphabetical order',	
+                	style: 'chapterNote',
+                    alignment: 'center'
+                },
+		
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['20%', '30%', '50%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Abbreviations', style: 'tableHeader' },
+                                { text: 'Full Forms', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                            <% if (AbbreviationDetails != null && AbbreviationDetails.size()>0) { %>
+		                        <% int slno = 0; for (Object[] obj : AbbreviationDetails) { %>
+		                            [
+		                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%= obj[1] %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%= obj[2] %>', style: 'tableData' },
+		                            ],
+		                        <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 3 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Abbreviation End *********************************** */
+
+                /* ************************************** Scope *********************************** */
+                {
+                    text: (++mainContentCount)+'. Scope',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                
+                <%if(TestScopeIntro!=null){ %>
+	                {
+	                	text: (mainContentCount)+'.1. Introduction',	
+	                	style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.1',
+	                    tocMargin: [10, 0, 0, 0],
+	                },
+	                {
+	                	<%if(TestScopeIntro[1]!=null) {%>
+		            		stack: [htmlToPdfmake(setImagesWidth('<%=TestScopeIntro[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+						<%}else {%>
+							text: 'No Details Added!',
+						<%} %>
+	                	
+	                    margin: [10, 0, 0, 0],
+	                },
+	                {
+	                	text: (mainContentCount)+'.2. System Identification',	
+	                	style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.2',
+	                    tocMargin: [10, 0, 0, 0],
+	                },
+	                {
+	                	<%if(TestScopeIntro[2]!=null) {%>
+	            			stack: [htmlToPdfmake(setImagesWidth('<%=TestScopeIntro[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+						<%}else {%>
+							text: 'No Details Added!',
+						<%} %>
+	                    margin: [10, 0, 0, 0],
+	                },
+	                {
+	                	text: (mainContentCount)+'.3. System Overview',	
+	                	style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.3',
+	                    tocMargin: [10, 0, 0, 0],
+	                },
+	                {
+	                	<%if(TestScopeIntro[3]!=null) {%>
+		        			stack: [htmlToPdfmake(setImagesWidth('<%=TestScopeIntro[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+						<%}else {%>
+							text: 'No Details Added!',
+						<%} %>
+	                    margin: [10, 0, 0, 0],
+	                },
+                <%} %>
+                /* ************************************** Scope End *********************************** */
+
+	            /* ************************************** Applicable Document *********************************** */
+                /* {
+                    text: (++mainContentCount)+'. Applicable Document',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                {
+                	text: 'No Documents Applicable!',
+                	style: 'chapterContent',
+                }, */
+                /* ************************************** Applicable Document End *********************************** */
+
+	            /* ************************************** Test Approach *********************************** */
+                {
+                    text: (++mainContentCount)+'. Test Approach',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    margin: [0, 10, 0 ,0],
+                    /* pageBreak: 'before' */
+                },
+                
+                {
+                	<%if(Approach!=null) {%>
+	        			stack: [htmlToPdfmake(setImagesWidth('<%=Approach.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+					<%}else {%>
+						text: 'No Details Added!',
+					<%} %>
+                	style: 'chapterContent',
+                },
+                /* ************************************** Test Approach End *********************************** */
+
+	            /* ************************************** Role & Responsibility *********************************** */
+                {
+                    text: (++mainContentCount)+'. Role & Responsibility for Carrying Out each Level of System / Sub-System Testing',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    margin: [0, 10, 0 ,0],
+                    /* pageBreak: 'before' */
+                },
+                
+                {
+                	<%if(RoleResponsibility!=null) {%>
+	        			stack: [htmlToPdfmake(setImagesWidth('<%=RoleResponsibility.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+					<%}else {%>
+						text: 'No Details Added!',
+					<%} %>
+                	style: 'chapterContent',
+                },
+                <%-- <% if(htmlContentRoleResponsibility!=null) { %>
+	                {
+	                	stack: [htmlToPdfmake('<%=htmlContentRoleResponsibility.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>')],
+	                },
+            	<%}%> --%>
+            	 <% if(htmlContentRoleResponsibility!=null) { %>
+	                {
+	                	stack: [htmlToPdfmake("<%=htmlContentRoleResponsibility %>")],
+	                },
+         		<%}%>
+                /* ************************************** Role & Responsibility End *********************************** */
+
+	            /* ************************************** Acceptance Testing *********************************** */
+                {
+                    text: (++mainContentCount)+'. Acceptance Testing',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    margin: [0, 10, 0 ,0],
+                    /* pageBreak: 'before' */
+                },
+                {
+                	text: mainContentCount+'.1 Test Set Up',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                
+                <%  if (TestSuiteList != null && TestSuiteList.size()>0) {%>	
+                	{
+                		table : {
+                			headerRows : 1,
+        					widths: ['10%', '40%', '50%'],
+                			body: [
+                				// Table header
+	                            [
+	                                { text: 'SN', style: 'tableHeader' },
+	                                { text: 'Test Type', style: 'tableHeader' },
+	                                { text: 'Test Setup Name', style: 'tableHeader' },
+	                            ],
+	                         	// Populate table rows
+	                            <%int slno = 0;;
+	                          	for (Object[] obj : TestSuiteList) { %>
+		                          	[
+		                                { text: '<%=++slno %>', style: 'tableData', alignment: 'center' },
+		                                { text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData' },
+		                                { text: '<%=obj[3]!=null?obj[3]:"-" %>', style: 'tableData' },
+		                            ],
+		                          <% } %>
+                			],
+                		},
+                		layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+                    	},
+                	},
+                	{ text: '\n',},
+				<% } %>
+				
+				{
+                	text: mainContentCount+'.2 Test Set Up Diagram',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.2',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                	<%if(TestSetUpDiagram!=null) {%>
+	        			stack: [htmlToPdfmake(setImagesWidth('<%=TestSetUpDiagram.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+					<%}else {%>
+						text: 'No Details Added!',
+					<%} %>
+					margin : [10, 0, 0, 0],
+                	
+                },
+                <% if(htmlContentTestSetUpDiagram!=null) { %>
+	                {
+	                	text: [htmlToPdfmake("<%=htmlContentTestSetUpDiagram %>")],
+	                },
+     			<%}%>
+            	
+                {
+                	text: mainContentCount+'.3 Test Suite',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.3',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                <%  if (TestSuiteList != null && !TestSuiteList.isEmpty()) { %>	
+                	{
+                		table : {
+                			headerRows: 1,
+                			widths: ['10%', '30%', '30%', '30%'],
+                			body: [
+                				// Table header
+                				[
+                					{text: 'SN', style: 'tableHeader'},
+                					{text: 'Test Type', style: 'tableHeader'},
+                					{text: 'Test Ids', style: 'tableHeader'},
+                					{text: 'Test Tools', style: 'tableHeader'},
+                				],
+                				
+                				<%int slno = 0;
+                              	for (Object[] obj : TestSuiteList) { %>
+	                              	[
+		                                { text: '<%=++slno %>', style: 'tableData', alignment: 'center' },
+		                                { text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData' },
+		                                { text: '<% List<String>list = new ArrayList<>(); list = TestDetailsList.stream().filter(ix->ix[10]!=null && Arrays.asList(ix[10].toString().split(",")).contains(obj[0].toString())).map(ix->ix[1].toString()).collect(Collectors.toList()); %>'
+                           						+'<%if(list.size()!=0) {%> <%=list.toString().replace("[", "").replace("]", "") %><%}else{ %>-<%} %>', style: 'tableData' },
+		                                { text: '<%=obj[3]!=null?obj[3]:"-" %>', style: 'tableData' },
+		                            ],
+                              	<% } %>
+                			],
+                		},
+                		layout: {
+                			
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    },
+                	},
+                	{ text: '\n',},
+                	
+                 <% } %>
+                 
+                {
+                	text: mainContentCount+'.4 Test Verification Table',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.4',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                {
+                	<%if(TestVerification!=null) {%>
+	        			stack: [htmlToPdfmake(setImagesWidth('<%=TestVerification.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+					<%}else {%>
+						text: 'No Details Added!',
+					<%} %>
+					margin : [10, 0, 0, 0],
+                	
+                },
+             	<% if(htmlContentTestVerification!=null) { %>
+	                {
+	                	text: [htmlToPdfmake("<%=htmlContentTestVerification %>")],
+	                },
+ 				<%}%>
+                /* ************************************** Acceptance Testing End *********************************** */
+                
+                /* ************************************** Test Schedule *********************************** */
+                {
+                    text: (++mainContentCount)+'. Test Schedule',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    margin: [0, 10, 0 ,0],
+                    /* pageBreak: 'before' */
+                },
+                {
+                	<%if(Schedule!=null) {%>
+ 	        			stack: [htmlToPdfmake(setImagesWidth('<%=Schedule.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+ 					<%}else {%>
+ 						text: 'No Details Added!',
+ 					<%} %>
+                 	style: 'chapterContent',
+                },
+                /* ************************************** Test Schedule End *********************************** */
+                
+                /* ************************************** Test Details *********************************** */
+                {
+                    text: (++mainContentCount)+'. Test Details',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    margin: [0, 10, 0 ,0],
+                    pageBreak: 'before',
+                },
+                
+                <%if (TestDetailsList != null && TestDetailsList.size()>0) { 
+    				int subslno=0;
+    				for (Object[] obj : TestDetailsList) { int slno=0;%>	
+	    				{
+	                    	text: mainContentCount+'.<%=++subslno %>.'+' Test ID: <%=obj[1] %>',	
+	                     	style: 'chapterSubHeader',
+	                        tocItem: true,
+	                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=subslno %>',
+	                        tocMargin: [10, 0, 0, 0],
+		            	}, 
+	                    {
+		            		table: {
+		            			headerRows: 1,
+		            			widths: ['10%', '30%', '60%'],
+		            			body: [
+		            				// Table header
+		            				[
+		            					{text: 'SN', style: 'tableHeader'},
+		            					{text: 'Item', style: 'tableHeader'},
+		            					{text: 'Description', style: 'tableHeader'},
+		            				],
+		            				// Populate table rows
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Spec ID', style: 'tableData',},
+		            					{text: '<%if(obj[19]!=null){ List<String>list = new ArrayList<>();%>'
+		            						  +'<%if(specificationList.size()>0){ list = specificationList.stream().filter(e->Arrays.asList(obj[19].toString().split(",")).contains(e[0].toString())).map(e->e[1].toString()).collect(Collectors.toList());}%>'
+		            						  +'<%= list.size()>0?list.toString().replace("[", "").replace("]",""):"-" %>'
+		            						  +'<% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+		            				
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'ID', style: 'tableData',},
+		            					{text: '<% if(obj[1]!=null){%><%=obj[1] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+		            				
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Name', style: 'tableData',},
+		            					{text: '<% if(obj[2]!=null){%><%=obj[2] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+		            				
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Objective', style: 'tableData',},
+		            					{text: '<% if(obj[3]!=null){%><%=obj[3] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+		            				
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Description', style: 'tableData', colSpan: '2'},
+		            				],
+		            				[
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[4]!=null){%><%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            				],
+		            				
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Pre-Conditions', style: 'tableData', colSpan: '2'},
+		            				],
+		            				[
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[5]!=null){%><%=obj[5].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            				],
+		            				
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Post-Conditions', style: 'tableData', colSpan: '2'},
+		            				],
+		            				[
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[6]!=null){%><%=obj[6].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Constraints', style: 'tableData',},
+		            					{text: '<% if(obj[7]!=null){%><%=obj[7] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Safety Requirements', style: 'tableData', colSpan: '2'},
+		            				],
+		            				[
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[8]!=null){%><%=obj[8].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Methodology', style: 'tableData',},
+		            					{text: '<% if(obj[9]!=null){%><%=obj[9] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Test Set Up', style: 'tableData',},
+		            					
+		            					<%String[] TempArray = obj[10]!=null? obj[10].toString().split(","):new String[]{"", "", "", "", ""}; 
+ 										List<String>tempList = Arrays.asList(TempArray);
+ 										List<String>temp = new ArrayList<>();
+											for(Object[] obj1: TestSuiteList){
+										if(tempList.contains(obj1[0].toString())){
+											temp.add(obj1[3].toString());
+										}} %> 
+										
+		            					{text: '<%if(temp.size()>0) {%> <%= String.join(", ", temp) + "" %><%}else{ %> - <%} %>', style: 'tableData',},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Personnel Resources', style: 'tableData', colSpan: '2'},
+		            				],
+		            				[
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[11]!=null){%><%=obj[11].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Estimated Time/Iteration', style: 'tableData',},
+		            					{text: '<% if(obj[12]!=null){%><%=obj[12] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Iterations', style: 'tableData',},
+		            					{text: '<% if(obj[13]!=null){%><%=obj[13] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Schedule', style: 'tableData',},
+		            					{text: '<% if(obj[14]!=null){%><%=obj[14] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Pass/Fail Criteria', style: 'tableData',},
+		            					{text: '<% if(obj[15]!=null){%><%=obj[15] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Stage Applicable', style: 'tableData',},
+		            					
+		            					<%String[]TempArray1=obj[22]!=null ?obj[22].toString().split(","): new String[5];
+		            		            List<String>tempList1=Arrays.asList(TempArray1);
+		            		            List<String>tempsa=new ArrayList<>();
+		            		            for(Object[] obj1 : StagesApplicable){
+		            		            	if(tempList1.contains(obj1[0].toString())){
+		            		            		tempsa.add(obj1[3].toString());
+		            		            	}
+		            		            }%>
+		            		            
+		            					{text: '<% if(tempsa.size() > 0) { %> <%= String.join(", ", temp) + "" %><% } else { %> - <% } %>', style: 'tableData',},
+		            				],
+
+		            				[
+		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
+		            					{text: 'Remarks', style: 'tableData',},
+		            					{text: '<% if(obj[15]!=null){%><%=obj[15] %><% } else {%>-<%}%>', style: 'tableData',},
+		            				],
+
+		            			],
+		            		},
+		            		layout: {
+		            			
+    	                        hLineWidth: function(i, node) {
+    	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+    	                        },
+    	                        vLineWidth: function(i) {
+    	                            return 0.5;
+    	                        },
+    	                        hLineColor: function(i) {
+    	                            return '#aaaaaa';
+    	                        },
+    	                        vLineColor: function(i) {
+    	                            return '#aaaaaa';
+    	                        }
+    	                    }
+	                    },
+	                    { text: '\n',},
+    			<%}} else {%>
+   					{text: 'No Details Added!', margin: [0, 10, 0 ,0],},
+    			<%}%>
+                /* ************************************** Test Details End *********************************** */
+                
+    			/* ************************************** Forward Traceability  *********************************** */
+                {
+                    text: (++mainContentCount)+'. Forward Traceability ',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    margin: [0, 10, 0 ,0],
+                    /* pageBreak: 'before' */
+                },
+                
+                {
+                	table: {
+                		headerRows: 1,
+                		widths: ['10%', '40%', '50%'],
+                		body: [
+                			// Table header
+                			[
+                				{text: 'SN', style: 'tableHeader',},
+                				{text: 'TestPlan Id', style: 'tableHeader',},
+                				{text: 'Specification Id', style: 'tableHeader',},
+                			],
+                			// Populate table rows
+                			<%if(TestDetailsList!=null && TestDetailsList.size()>0){ 
+								int slno=0;
+								for(Object[] obj:TestDetailsList){ %>
+                			[
+                				{text: '<%=++slno %>', style: 'tableData', alignment: 'center'},
+                				{text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData', },
+                				
+                				<% List<String> specid = Arrays.asList(obj[19].toString() .split(","));
+        						List<Object[]>newSpecList = new ArrayList<>();
+        						newSpecList = specificationList.stream().filter(spec->specid.contains(spec[0].toString())).collect(Collectors.toList()); 
+        						%>
+        						
+        						{text: '<%if(newSpecList.size()!=0) { for(Object[]obj1:newSpecList){ %><%=obj1[1]%>\n<%}}else{ %> - <%} %>', style: 'tableData', },
+                			],
+                			<%}}else{ %>
+                				[{text: 'No Data Available !', style: 'tableData', colSpan: 3, alignment: 'center'}],
+    						<%} %>
+                		],
+                	},
+                	layout: {
+            			
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    },
+                },
+
+                /* ************************************** Forward Traceability  End *********************************** */
+                
+    			/* ************************************** Backward Traceability  *********************************** */
+                {
+                    text: (++mainContentCount)+'. Backward Traceability ',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    margin: [0, 10, 0 ,0],
+                    /* pageBreak: 'before' */
+                },
+                
+                {
+                	table: {
+                		headerRows: 1,
+                		widths: ['10%', '40%', '50%'],
+                		body: [
+                			// Table header
+                			[
+                				{text: 'SN', style: 'tableHeader',},
+                				{text: 'Specification Id', style: 'tableHeader',},
+                				{text: 'TestPlan Id', style: 'tableHeader',},
+                			],
+                			// Populate table rows
+                			<%if(specificationList!=null && specificationList.size()>0){ 
+								int slno=0;
+								for(Object[] obj:specificationList){ %>
+                			[
+                				{text: '<%=++slno %>', style: 'tableData', alignment: 'center'},
+                				{text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData', },
+                				
+                				<%
+								List<Object[]>newTestList = new ArrayList<>(); 
+								if(TestDetailsList!=null && TestDetailsList.size()>0){
+									newTestList = TestDetailsList.stream().filter(e->Arrays.asList(e[19].toString().split(",")).contains(obj[0].toString())).collect(Collectors.toList());
+								}%>
+        						
+        						{text: '<%if(newTestList.size()>0){ for(Object[] obj1: newTestList){ %><%=obj1[1] %>\n<%}}else{ %> - <%} %>', style: 'tableData', },
+                			],
+                			<%}}else{ %>
+                				[{text: 'No Data Available !', style: 'tableData', colSpan: 3, alignment: 'center'}],
+    						<%} %>
+                		],
+                	},
+                	layout: {
+            			
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    },
+                },
+                /* ************************************** Backward Traceability  End *********************************** */
+
+	            /* ************************************** Conclusion *********************************** */
+                {
+                    text: (++mainContentCount)+'. Conclusion',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    margin: [0, 10, 0 ,0],
+                    /* pageBreak: 'before' */
+                },
+                {
+                	<%if(Conclusion!=null){ %>
+                		stack: [htmlToPdfmake(setImagesWidth('<%=Conclusion.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 500))],
+                	<%} else{%>
+	                	text: 'No Details Added!',
+                	<%} %>
+                	style: 'chapterContent',
+                },
+                /* ************************************** Conclusion End *********************************** */
+                
+			],
+            styles: {
+                DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+                chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
+                chapterNote: { fontSize: 13, bold: true, margin: [0, 10, 0, 10]},
+                chapterSubHeader: { fontSize: 13, bold: true, margin: [10, 10, 0, 10]},
+                tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+                tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+                chapterSubSubHeader: { fontSize: 12, bold: true, margin: [15, 10, 10, 10] },
+                subChapterNote: { margin: [15, 15, 0, 10] },
+                header: { alignment: 'center', bold: true},
+                chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
+            },
+            footer: function(currentPage, pageCount) {
+                if (currentPage > 2) {
+                    return {
+                        stack: [
+                        	{
+                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 565, y2: 0, lineWidth: 1 }]
+                            },
+                            {
+                                columns: [
+                                    { text: '', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+                                ]
+                            },
+                            { text: 'Restricted', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }
+                        ]
+                    };
+                }
+                return '';
+            },
+            header: function(currentPage) {
+                return [
+                    { text: 'Restricted', alignment: 'center', margin: [0, 10, 0, 0], fontSize: 8, bold: true },
+                ];
+            },
+            pageMargins: [40, 40, 20, 40],
+            
+            background: function(currentPage) {
+                return [
+                    {
+                        image: generateRotatedTextImage(leftSideNote),
+                        width: 100, // Adjust as necessary for your content
+                        absolutePosition: { x: -20, y: 50 }, // Position as needed
+                    }
+                ];
+            },
+           
+            defaultStyle: { fontSize: 12 }
+        };
+		
+        pdfMake.createPdf(docDefinition).open();
+}
+
+function splitTextIntoLines(text, maxLength) {
+	const lines = [];
+  	let currentLine = '';
+
+	for (const word of text.split(' ')) {
+		if ((currentLine + word).length > maxLength) {
+	    	lines.push(currentLine.trim());
+	    	currentLine = word + ' ';
+		} else {
+		  currentLine += word + ' ';
+		}
+	}
+  	lines.push(currentLine.trim());
+  	return lines;
+}
+
+// Generate rotated text image with line-wrapped text
+function generateRotatedTextImage(text) {
+	const maxLength = 260;
+	const lines = splitTextIntoLines(text, maxLength);
+	
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+	
+	// Set canvas dimensions based on anticipated text size and rotation
+	canvas.width = 200;
+	canvas.height = 1560;
+	
+	// Set text styling
+	ctx.font = '14px Roboto';
+	ctx.fillStyle = 'rgba(128, 128, 128, 1)'; // Gray color for watermark
+	
+	// Position and rotate canvas
+	ctx.translate(80, 1480); // Adjust position as needed
+	ctx.rotate(-Math.PI / 2); // Rotate 270 degrees
+	
+	// Draw each line with a fixed vertical gap
+	const lineHeight = 20; // Adjust line height if needed
+	lines.forEach((line, index) => {
+	  ctx.fillText(line, 0, index * lineHeight); // Position each line below the previous
+	});
+	
+	return canvas.toDataURL();
+}
+const setImagesWidth = (htmlString, width) => {
+    const container = document.createElement('div');
+    container.innerHTML = htmlString;
+  
+    const images = container.querySelectorAll('img');
+    images.forEach(img => {
+      img.style.width = width + 'px';
+      img.style.textAlign = 'center';
+    });
+  
+    const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, figure, hr, ul, li');
+    textElements.forEach(element => {
+      if (element.style) {
+        element.style.fontFamily = '';
+        element.style.margin = '';
+        element.style.marginTop = '';
+        element.style.marginRight = '';
+        element.style.marginBottom = '';
+        element.style.marginLeft = '';
+        element.style.lineHeight = '';
+        element.style.height = '';
+        element.style.width = '';
+        element.style.padding = '';
+        element.style.paddingTop = '';
+        element.style.paddingRight = '';
+        element.style.paddingBottom = '';
+        element.style.paddingLeft = '';
+        element.style.fontSize = '';
+        element.id = '';
+      }
+    });
+  
+    const tables = container.querySelectorAll('table');
+    tables.forEach(table => {
+      if (table.style) {
+        table.style.borderCollapse = 'collapse';
+        table.style.width = '100%';
+      }
+  
+      const cells = table.querySelectorAll('th, td');
+      cells.forEach(cell => {
+        if (cell.style) {
+          cell.style.border = '1px solid black';
+  
+          if (cell.tagName.toLowerCase() === 'th') {
+            cell.style.textAlign = 'center';
+          }
+        }
+      });
+    });
+  
+    return container.innerHTML;
+}; 
+
 </script>
 </body>
 </html>

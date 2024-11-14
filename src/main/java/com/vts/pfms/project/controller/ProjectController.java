@@ -9667,6 +9667,15 @@ public class ProjectController
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode));
 			req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
+			List<Object[]>initiationReqList = reqService.initiationReqList(specsInitiation.getProjectId()+"", specsInitiation.getProductTreeMainId()+"",specsInitiation.getInitiationId()+"" );
+			String reqInitiationId=null;
+			List<Object[]>RequirementList= new ArrayList<>();
+			if(initiationReqList!=null && initiationReqList.size()>0) {
+				reqInitiationId=initiationReqList.get(0)[0].toString();
+				RequirementList=reqService.RequirementList(reqInitiationId);
+			}
+			req.setAttribute("RequirementList", RequirementList);
+			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
