@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -659,7 +660,76 @@ public class RequirementsController {
 			req.setAttribute("DocumentSummary", service.getTestandSpecsDocumentSummary(testPlanInitiationId, "0"));
 			req.setAttribute("TestContent", service.GetTestContentList(testPlanInitiationId));
 			
-			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectType.equalsIgnoreCase("M")?projectId:initiationId, projectType.equalsIgnoreCase("M")?"E":"P"));
+			Object[] projectDetails = projectservice.getProjectDetails(LabCode, projectType.equalsIgnoreCase("M")?projectId:initiationId, projectType.equalsIgnoreCase("M")?"E":"P");
+			req.setAttribute("projectDetails", projectDetails);
+			req.setAttribute("DocTempAttributes", projectservice.DocTempAttributes());
+			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("version", testPlanInitiation!=null ?testPlanInitiation.getTestPlanVersion():"1.0");
+			req.setAttribute("TestScopeIntro",service.TestScopeIntro(testPlanInitiationId));
+			req.setAttribute("TestSuite", service.TestTypeList());
+			req.setAttribute("TestDetailsList", service.TestDetailsList(testPlanInitiationId));
+			String specsInitiationId = service.getFirstVersionSpecsInitiationId(initiationId, projectId, productTreeMainId)+"";
+			req.setAttribute("specificationList", service.getSpecsList(specsInitiationId));
+			req.setAttribute("StagesApplicable", service.StagesApplicable());
+			
+			File my_file = null;
+
+			List<Object[]> acceptanceTestingList = service.GetAcceptanceTestingList(testPlanInitiationId);
+			String TestSetUp = null;
+			String TestSetUpDiagram = null;
+			String Testingtools = null;
+			String TestVerification = null;
+			String RoleResponsibility = null;
+
+			if (acceptanceTestingList != null && !acceptanceTestingList.isEmpty()) {
+			    for (Object[] obj : acceptanceTestingList) {
+			        String fileName = obj[3] != null ? obj[3].toString() : null;
+			        String filePath = obj[4] != null ? obj[4].toString() : null;
+
+			        // Construct the file path only if file name and path are present
+			        if (fileName != null && filePath != null) {
+			            my_file = new File(uploadpath + filePath + File.separator + fileName);
+
+			            if (my_file.exists()) {
+			                try (FileInputStream fis = new FileInputStream(my_file)) {
+			                    String htmlContent = convertExcelToHtml(fis);
+
+			                    // Handle different cases based on obj[1]
+			                    if ("Test Set UP".equalsIgnoreCase(obj[1].toString())) {
+			                        TestSetUp = obj[2].toString();
+			                        req.setAttribute("htmlContent", htmlContent);
+			                        req.setAttribute("TestSetUp", TestSetUp);
+			                    } else if ("Test Set Up Diagram".equalsIgnoreCase(obj[1].toString())) {
+			                        TestSetUpDiagram = obj[2].toString();
+			                        req.setAttribute("htmlContentTestSetUpDiagram", htmlContent);
+			                        req.setAttribute("TestSetUpDiagram", TestSetUpDiagram);
+			                    } else if ("Testing tools".equalsIgnoreCase(obj[1].toString())) {
+			                        Testingtools = obj[2].toString();
+			                        req.setAttribute("htmlContentTestingtools", htmlContent);
+			                        req.setAttribute("Testingtools", Testingtools);
+			                    } else if ("Test Verification".equalsIgnoreCase(obj[1].toString())) {
+			                        TestVerification = obj[2].toString();
+			                        req.setAttribute("htmlContentTestVerification", htmlContent);
+			                        req.setAttribute("TestVerification", TestVerification);
+			                    } else if ("Role & Responsibility".equalsIgnoreCase(obj[1].toString())) {
+			                        RoleResponsibility = obj[2].toString();
+			                        req.setAttribute("htmlContentRoleResponsibility", htmlContent);
+			                        req.setAttribute("RoleResponsibility", RoleResponsibility);
+			                    }
+			                } catch (IOException e) {
+			                    // Log the error and continue with the next item
+			                    e.printStackTrace();
+			                }
+			            } else {
+			                // Optional: Log or handle missing files here if needed
+			                System.out.println("File does not exist: " + my_file.getAbsolutePath());
+			            }
+			        }
+			    }
+			}
+
+			req.setAttribute("AcceptanceTesting", acceptanceTestingList);
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside ProjectTestPlanDetails.htm "+UserId, e);
