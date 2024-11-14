@@ -167,4 +167,5 @@ public interface ActionService {
 	public List<Object[]> getMeetingList(long ProjectId, String fromDate, String toDate) throws Exception;
 	public List<Object[]> getMeetingAction(long MeetingId, String loginType, String empId)throws Exception;
 	public int CommitteActionDelete(ActionAssignDto actionAssign)throws Exception;
+	public List<Object[]> getvendorList()throws Exception;
 }

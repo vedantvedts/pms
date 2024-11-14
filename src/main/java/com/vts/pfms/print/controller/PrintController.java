@@ -1950,8 +1950,8 @@ public class PrintController {
 		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefing.htm "+UserId);		
 	    try { 
-			String ScheduleId = req.getParameter("scheduleid");
-			CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
+				String ScheduleId = req.getParameter("scheduleid");
+				CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
 				res.setContentType("application/pdf");
 			    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
 			    Path filepath = Paths.get(env.getProperty("ApplicationFilesDrive"), LabCode, "Briefing", briefing.getBriefingFileName());
@@ -1963,7 +1963,7 @@ public class PrintController {
 			    byte[] buffer = new byte[1024];
 			    int len = 0;
 			    while ((len = fis.read(buffer)) >= 0) {
-			        os.write(buffer, 0, len);
+			     os.write(buffer, 0, len);
 			    } 
 			    os.close();
 			    fis.close();

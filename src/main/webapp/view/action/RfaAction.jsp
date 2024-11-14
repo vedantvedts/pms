@@ -298,7 +298,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 													<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
 												    </button> 
 											 <%} %>
-											 <%if(obj[14].toString().equalsIgnoreCase("AA") && obj[15].toString().equalsIgnoreCase(EmpId)){%>
+											 <%if(obj[14].toString().equalsIgnoreCase("AA") && obj[15].toString().equalsIgnoreCase(EmpId)){ %>
 											 	<button type="button" class="editable-click"  style="background-color: transparent;" 
 												name="RFAID" value="<%=obj[0]%>" formaction="#" formmethod="POST"
 												onclick="returnCancelRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>');"
@@ -310,6 +310,16 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 												</div>
 											   </button>
 											   <input type="hidden" name="rfaoptionby" value="RFC" >
+											<%} %>
+											
+											 <%if(obj[14].toString().equalsIgnoreCase("AP") && obj[15].toString().equalsIgnoreCase(EmpId)){ %>
+											 	<button type="submit" class="editable-click btn btn-sm btn-info"  style="" 
+												name="RFAID" value="<%=obj[0]%>" formaction="RfaActionForward.htm" formmethod="POST"
+												onclick="return confirm('Are you sure to close RFA?')"
+													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CLOSE RFA">
+											CLOSE
+											   </button>
+											   <input type="hidden" name="rfaoptionby" value="ARC" >
 											<%} %>
 											</td>
 										</tr>

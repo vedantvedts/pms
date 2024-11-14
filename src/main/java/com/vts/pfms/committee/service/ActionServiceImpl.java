@@ -1710,12 +1710,20 @@ public class ActionServiceImpl implements ActionService {
 				RfaTypeName=obj[1].toString();
 			}
 		}
-		Long RfaCount = dao.GetRfaCount(rfa.getRfaTypeId(),rfa.getProjectId());
+		Long RfaCount = dao.GetRfaCount(rfa.getRfaTypeId(),rfa.getProjectId(),rfa.getTypeOfRfa(),rfa.getVendorCode());
 		String RfaNo=null;
 		if(RfaCount<9) {
+			if(rfa.getTypeOfRfa().equalsIgnoreCase("I")) {
 		    RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + ("0"+(RfaCount+1));
+			}else {
+				RfaNo = LabCode + "/" + project + "/" +rfa.getVendorCode()+"/"   + RfaTypeName + "/" + ("0"+(RfaCount+1))+" (EXT)";
+			}
 		}else {
+			if(rfa.getTypeOfRfa().equalsIgnoreCase("I")) {
 			RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + (RfaCount+1);
+			}else {
+				RfaNo = LabCode + "/" + project + "/"+rfa.getVendorCode()+  "/" + RfaTypeName + "/" + (RfaCount+1)+" (EXT)";
+			}
 		}
 
 //		String Path = LabCode+"\\RFAFiles\\";
@@ -1738,7 +1746,8 @@ public class ActionServiceImpl implements ActionService {
 		rfa1.setCreatedBy(UserId);
 		rfa1.setCreatedDate(sdf.format(new Date()));
 		rfa1.setIsActive(1);
-		
+		rfa1.setTypeOfRfa(rfa.getTypeOfRfa());
+		rfa1.setVendorCode(rfa.getVendorCode());
 		long rfaIdAttach= dao.RfaActionSubmit(rfa1);
 		
 		RfaTransaction rfaTrans = new RfaTransaction();
@@ -1750,7 +1759,6 @@ public class ActionServiceImpl implements ActionService {
 		dao.updateRfaTransaction(rfaTrans);
 		
 		for(int i=0;i<assignee.length;i++) {
-
 			RfaAssign assign = new RfaAssign();
 			assign.setAssigneeid(Long.parseLong(assignee[i]));
 			assign.setLabCode(LabCode);
@@ -1758,10 +1766,9 @@ public class ActionServiceImpl implements ActionService {
 			assign.setCreatedBy(UserId);
 			assign.setCreatedDate(sdf.format(new Date()));
 			assign.setIsActive(1);
-			
 			dao.RfaAssignInsert(assign);
 		}
-		
+		if(CCEmpName!=null ) {
 		for(int i=0;i<CCEmpName.length;i++) 
 		{
 			RfaCC rfaCC = new RfaCC();
@@ -1773,7 +1780,7 @@ public class ActionServiceImpl implements ActionService {
 			rfaCC.setIsActive(1);
 			dao.rfaCCInsert(rfaCC);
 		}
-		
+		}
  if(!rfa.getAssignorAttachment().isEmpty()) {
 		RfaAttachment rfaAttach=new RfaAttachment();
 		rfaAttach.setRfaId(rfaIdAttach);
@@ -2214,6 +2221,8 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
 		Url="RfaInspectionApproval.htm";
 	}if(Status3.contains(rfaStatus)) {
 		Url="RfaInspection.htm";
+	}if(rfaStatus.equalsIgnoreCase("AP")) {
+		Url="RfaAction.htm";
 	}
  
 	RfaAction rf = new RfaAction();
@@ -2276,7 +2285,11 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
 	pf.setEmpId(Long.parseLong(empId));	
 	pf.setStatus("MAR");
 	pf.setNotificationUrl(Url);
+	if(rfaStatus.equalsIgnoreCase("AP")||rfaStatus.equalsIgnoreCase("AV")) {
+		pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Approved By"+" "+obj[5]);
+	}else {
 	pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
+	}
 	pf.setIsActive(1);
 	pf.setNotificationby(Long.parseLong(EmpId));
 	pf.setNotificationDate(sdf1.format(new Date()));
@@ -2567,4 +2580,8 @@ public int CommitteActionDelete(ActionAssignDto actionAssign) throws Exception {
 	 return dao.CommitteActionDelete(actionAssign);
 }
 
+@Override
+public List<Object[]> getvendorList() throws Exception {
+	return dao.getVendorList();
+}
 }

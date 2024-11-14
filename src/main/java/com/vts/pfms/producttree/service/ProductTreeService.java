@@ -19,4 +19,10 @@ public interface ProductTreeService {
 
 	public List<Object[]> getProductRevTreeList(String projectId,String RevisionCount)throws Exception;
 
+	public List<Object[]> getAllSystemName()throws Exception;
+
+	public long AddSystemLevelName(ProductTreeDto dto)throws Exception;
+
+	public Object getSystemProductTreeList(String sid)throws Exception;
+
 }

@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.report.model.PfmsLabReportMilestone"%>
 <%@page import="java.io.File"%>
 <%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="java.nio.file.Paths"%>
@@ -8,7 +9,7 @@
 
 <%@page import="java.util.List"%> 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
+    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate,java.util.stream.Collectors"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
@@ -21,6 +22,10 @@
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
 <style type="text/css">
  p{
   text-align: justify; 
@@ -385,7 +390,9 @@ textarea.form-control {
     width: 100%;
     margin-top: 10px;
 }
-
+input[type=checkbox] {
+	accent-color: green;
+}
 
 </style>
 
@@ -408,6 +415,17 @@ String Project=(String)request.getAttribute("ProjectId");
 int currentYear=(int)request.getAttribute("currentYear");
 int PastYr=currentYear-1;
 int nextYear=(int)request.getAttribute("nextYear");
+List<PfmsLabReportMilestone>LabReportMilestoneData = (List<PfmsLabReportMilestone>)request.getAttribute("LabReportMilestoneData");
+
+List<String>activityids= new ArrayList<>();
+
+
+List<Object[]>MainProjectList = new ArrayList<>(); 
+List<Object[]>subProjectList = new ArrayList<>(); 
+if(proList!=null && proList.size()>0){
+	MainProjectList = proList.stream().filter(e -> e[22].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+	subProjectList = proList.stream().filter(e -> e[22].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+}
 
 
 %>
@@ -452,14 +470,13 @@ int nextYear=(int)request.getAttribute("nextYear");
 											<%} %>
 										</select>
 							   </div>
-							   
 							   <button  type="submit" class="btn btn-sm " id="btn-export" style="border: 0 ; margin-left: 30px;size: 25px;background-color: transparent;" formmethod="GET" formaction="LabReportDownload.htm" formtarget="_blank">
 							      <!-- <i class="fa fa-file-word-o" aria-hidden="true"></i> -->
 							      <i class="fa fa-file-word-o" style="font-size:17px;color: blue;" title="Lab Report New Word Download"></i>
                               </button> 
                                     &nbsp;  &nbsp;  &nbsp;
                               <button data-toggle="tooltip" onclick="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" 
-                               style="cursor: pointer;" type="button" data-placement="right" title="" data-original-title="Select DashBoard Projects">
+                               style="cursor: pointer;" type="button" data-placement="top" title="" data-original-title="Select DashBoard Projects">
                                <img src="view/images/dashboard.png" style="width: 25px;">
                               </button>
 							   
@@ -471,6 +488,16 @@ int nextYear=(int)request.getAttribute("nextYear");
                                         
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					 </form>				
+			       </div>
+			       <div class="col-md-2">
+			       <form action="#"> 
+			       <button type="submit" class="btn bg-transparennt" formaction="LabReportChapter1.htm" formmethod="get" data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="CHAPTER 1">
+			       <i class="fa fa-download" aria-hidden="true" style="color:green;"></i> 
+			       </button>
+			       <button type="submit" class="btn bg-transparennt" formaction="LabReportChapter2.htm" formmethod="get" data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="CHAPTER 2">
+			       <i class="fa fa-download" aria-hidden="true" style="color:green;"></i> 
+			       </button>
+			       </form>
 			       </div>
 			     </div>
 		       </div>
@@ -542,12 +569,14 @@ int nextYear=(int)request.getAttribute("nextYear");
 
             <!-- Participating Lab -->
             <div class="attribute mt-3">
-                <h5 style="font-weight: bold;">Participating Lab</h5>
-                <%if(ProjectEditData[10]!=null){ %>
-                <p style="color: black;">  <%=ProjectEditData[10] %> </p>
-                <%}else{ %>
-                  <p style="color: black;"> - </p>
-                  <%} %>
+            <h5 style="font-weight: bold;">Participating Lab</h5>
+            <%if(ProjectEditData[10]!=null){ %>
+            <p style="color: black;">  
+            <%=ProjectEditData[10] %> 
+            </p>
+            <%}else{ %>
+            <p style="color: black;"> - </p>
+            <%} %>
             </div>
 
             <!-- Scope -->
@@ -593,6 +622,7 @@ int nextYear=(int)request.getAttribute("nextYear");
         </div>
     </div>
 
+
     <!-- Section 2: Achievements -->
     <div class="section mt-5">
         <!-- Heading -->
@@ -608,7 +638,7 @@ int nextYear=(int)request.getAttribute("nextYear");
              int count1=0;
              if(milestoneData!=null && milestoneData.size()>0){
             	 for (Object[] activity : milestoneData) {
-            		 if(activity[7].toString().equalsIgnoreCase((currentYear+1)+"")||activity[8].toString().equalsIgnoreCase((currentYear+1)+"")) {%>
+            		 if(activity[7].toString().equalsIgnoreCase((currentYear+1)+"")||activity[8].toString().equalsIgnoreCase((currentYear+1)+"") || (Integer.parseInt(activity[11].toString())>=40 && Integer.parseInt(activity[11].toString())<100)) {%>
              <ul>
              <li><%=(++count1) %>.<%= activity[1] %></li></ul> <%}}} %>
            <%--    <tr>
@@ -621,18 +651,126 @@ int nextYear=(int)request.getAttribute("nextYear");
         	<% }%>   
             </table> --%>
             <!--------------------------------------------------------------------------------------------------------------------------------------------------- -->
-            <h5><b>Major Achievement/Activities completed during this Year</b></h5>
-            
+            <h5><b>Major Achievement/Activities completed during this Year</b>
+              <% 
+             if(milestoneData!=null && milestoneData.size()>0){%>
+             <button class="btn btn-info" onclick="showModal()" style="float:right;">VIEW ALL</button>
+             <%}else{ %>
+             	<span> - No Milestones specified for this Project !</span>
+             <%} %>
+             </h5> 
+   
+          <div class="modal-body">
             <%
-             int count=0;
-             if(milestoneData!=null && milestoneData.size()>0){
-            	 for (Object[] activity : milestoneData) {
-            		 if(activity[6]!=null && activity[6].toString().equalsIgnoreCase(currentYear+"")) { %>
-             <ul>
-             <li><%=(++count) %>.<%= activity[1] %></li></ul> <%}}} %>
+          	 int sn=0;
+             if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0){ %>
+  			 <table class="table table-bordered">
+  			 <thead style="border:2px solid #dee2e6">
+  			 <tr>
+  				<th style="width:10%">SN</th>
+  				<th style="width:60%">Activity Name</th>
+  				</tr>
+  				</thead>
+            	 <% for (PfmsLabReportMilestone pm : LabReportMilestoneData) {
+            		 activityids.add(pm.getMilestoneActivityId()+"");
+            		%>
+            <tbody>
+            <tr>
+           	<td style="text-align: center"><%=++sn %>.</td>
+           	<td style="text-align: left;"><%=pm.getActivityName()%></td>
+            </tr>
+            </tbody>
+             <%}} %>
+             	</table>
+             	
+             
+            </div>
+   
+     
+   
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="largeModal" data-backdrop="static">
+  <div class="modal-dialog modal-lg" style="max-width: 1440px;">
+    <div class="modal-content">
+    
+    <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title" id="exampleModalLabel">Project All Major Milestones</h5>
+        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color:red;">×</span>
+        </button>
+      </div>
+           <div class="modal-body">
+           <span class="text-danger mb-2 t">
+           To chnage in Anything Activity Name please unchecked the checkbox 
+           then update the data and make it checked again.Only the selected Activities will come in Lab Report
+           </span>
+            <% int count=0;
+             if(milestoneData!=null && milestoneData.size()>0){%>
+            	
+  				<table class="table table-bordered">
+  				<thead style="border:2px solid #dee2e6">
+  				<tr>
+  				<th></th>
+  				<th style="width:10%">SN</th>
+  				<th style="width:15%">Milestone No.</th>
+  				<th style="width:60%">Activity Name</th>
+  				<th>Progress</th>
+  				</tr>
+  				</thead>
+            	 <% for (Object[] activity : milestoneData) {
+            		 List<PfmsLabReportMilestone>SubLabReportMilestoneData  = LabReportMilestoneData.stream().filter(e->(e.getMilestoneActivityId()+"").equalsIgnoreCase(activity[9].toString())).collect(Collectors.toList());
+            		%>
+            <tbody>
+            <tr>
+            <td style="text-align: center;">
+            <input type="checkbox" class="" style="transform:scale(2)" name="ActivityId"  <%if(activityids.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9].toString()%>" >
+            </td>
+            <td style="text-align: center;"> <%=++count %></td>
+            <td style="text-align: center;">Milestone - <%=activity[10].toString()%></td>
+            <td> 
+        	  <%--   <textarea class="form-control" id="text<%=activity[9].toString()%>" > <%=activity[1].toString() %></textarea> --%>
         
+            <div class="Editor" ></div>
+			<textarea  name="description" style="display: none;" class="form-control" id="text<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
+			
+			<%if(SubLabReportMilestoneData!=null && SubLabReportMilestoneData.size()>0){ %>
+			<%=SubLabReportMilestoneData.get(0).getActivityName() %>
+			<%}else{ %>
+			<%=activity[1].toString() %>
+			
+			<%} %>
+			</textarea>
+			    <script>
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                var editorId = 'text<%=activity[9].toString()%>';
+                CKEDITOR.replace(editorId, editor_config1);
+
+                // Ensure changes in CKEditor are reflected in the textarea for form submission
+                CKEDITOR.instances[editorId].on('change', function () {
+                    CKEDITOR.instances[editorId].updateElement();
+                });
+            });
+            </script>
+             </td>
+            <td style="text-align: center;">
+        		<%=activity[11].toString()%>
+            </td>
+            </tr>
+            </tbody>
+             <%}} %>
+             	</table>
+             	
+             	<div align="center"><button class="btn btn-warning" onclick="updateAll()">UPDATE</button></div>
+            </div>
+   
+      
+    </div>
+  </div>
+</div>
+	
         </div>
     </div>
+    
 
     <!-- Section 3: Likely Spin-Off -->
     <div class="section mt-5">
@@ -717,29 +855,88 @@ int nextYear=(int)request.getAttribute("nextYear");
       </div>
       <div class="modal-body">
       <hr>
-      <div class="row ml-2 mt-2 mb-2"> 
+  <%--     <div class="row ml-2 mt-2 mb-2"> 
       
  
       
       <hr>
       <% if(proList!=null && proList.size()>0){%>
       <div class="row ml-2 mb-3 mt-2" >
-      Main projects : <input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
+       projects : <input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
       </div>
       <%} %>
+    
+     
       <div class="row" style="">
+      <div class="col-md-2 ml-4 mt-3" style="font-weight: 500;font-size: 1.4rem;"> Main Projects :</div>
       <% 
       if(proList!=null && proList.size()>0){
-      for(Object[]obj:proList) {%>
+   		List<Object[]>mainProList=proList.stream().filter(e->e[22].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+  
+      for(Object[]obj:mainProList) {%>
+      <div class="col-md-2 ml-4 mt-3">
+      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> <span ><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span>
+      </div>
+    
+       <%}} %>
+       
+      <div class="col-md-12 " style=" display: flex;">
+      <div class="col-md-2 ml-4 mt-3" style="font-weight: 500;font-size: 1.4rem;"> Sub Projects :</div>
+     
+      <% 
+      if(proList!=null && proList.size()>0){
+          List<Object[]>subProList =proList.stream().filter(e->e[22].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+
+      for(Object[]obj:subProList) {%>
       <div class="col-md-2 ml-4 mt-3">
       <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> <span ><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span>
       </div>
        <%}} %>
+       </div>  
+       
        </div> 
        
-      
+  
+       
+        	</div> --%>
      
-          <div class="mt-3 mb-3" align="center" id="addDiv" style="">
+           <% if(MainProjectList!=null && MainProjectList.size()>0){ %>
+      <div class="row ml-2 mb-3 mt-2" style="font-weight: 800;">
+      Main projects : &nbsp;<input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
+      </div>
+      <%} %>
+      <div class="row" style="">
+      <% 
+      if(MainProjectList!=null && MainProjectList.size()>0){
+      for(Object[]obj:MainProjectList) {%>
+      <div class="col-md-2 ml-4 mt-3" style="font-weight: 800;">
+      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> 
+         &nbsp;   <span style="font-weight: 700;"><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span> 
+      </div>
+       <%}} %>
+       </div> 
+        <hr class="mt-2">
+       <%if(subProjectList!=null && subProjectList.size()>0){ %>
+      <div class="row ml-2 mb-3 mt-2" style="font-weight: 800">
+     		 Sub projects :   &nbsp;    <input id="subProject" style="transform:scale(1.5)" type="checkbox"  > 
+     		 
+      </div>
+      <%} %>
+      <div class="row" style="">
+      <%if(subProjectList!=null && subProjectList.size()>0){
+      for(Object[]obj:subProjectList) {%>
+       <div class="col-md-2 ml-4 mt-3" >
+       <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0].toString()%>">
+       &nbsp;<span style="font-weight: 700;"><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span> 
+      </div>
+      <%}} %>
+      </div>
+     
+     
+     
+     
+     
+          <div class="col-md-12 mt-3 mb-3" align="center" id="addDiv" style="">
         	<form action="LabReportDownload.htm" method="post">
         	<input type="hidden" name="addFav" id="addFavvalue">
         	<input type="hidden" name="projectid" id="projects">
@@ -748,8 +945,9 @@ int nextYear=(int)request.getAttribute("nextYear");
         	<button type="button" class="btn btn-danger btn-sm delete" data-dismiss="modal">CLOSE</button>
         	</form>
         
-      </div>
+      	</div>
       
+    
       	
        
       </div>
@@ -758,9 +956,8 @@ int nextYear=(int)request.getAttribute("nextYear");
     </div>
   </div>
 </div>
-	
-	
-	
+
+
 	
 	<script type="text/javascript">			
 	function showDashboardProjectModal(){
@@ -768,6 +965,7 @@ int nextYear=(int)request.getAttribute("nextYear");
 	
 	// Select the "Main Project" checkbox and trigger the change event to select all projects
     $('#mainProject').prop('checked', true).trigger('change');
+    $('#subProject').prop('checked', true).trigger('change');
 }
 	
 	function DashFavAdd(){
@@ -796,10 +994,16 @@ int nextYear=(int)request.getAttribute("nextYear");
 	
 	
 	
-	// Function to select/deselect all projects when "Main projects" is clicked
+/* 	// Function to select/deselect all projects when "Main projects" is clicked */
 	$('#mainProject').change(function() {
 	    var isChecked = $(this).is(':checked');
-	    $('input[name="projectId"]').prop('checked', isChecked);
+	   /*  $('input[name="projectId"]').prop('checked', isChecked); */
+	    $('input:checkbox.mainProject').prop('checked', isChecked);
+	});
+	$('#subProject').change(function() {
+	    var isChecked = $(this).is(':checked');
+	   /*  $('input[name="projectId"]').prop('checked', isChecked); */
+	    $('input:checkbox.subProject').prop('checked', isChecked);
 	});
 	
 	</script>
@@ -909,8 +1113,7 @@ var editor_config = {
 		
 	CKEDITOR.replace('ckeditor', editor_config );
 	CKEDITOR.replace('Editor1', editor_config);
-	//CKEDITOR.replace('ckeditor2', editor_config );
-	//CKEDITOR.replace('ckeditor3', editor_config );
+
 
 	$(document).ready(function() {
 		var locked=0;
@@ -945,7 +1148,242 @@ var editor_config = {
 			   }
 		   }   
 		});
+	
+	function EditData(MilestoneActivityId){
+		
+		var ActivityName = $('#text'+MilestoneActivityId).val().trim();
+		
+		console.log(ActivityName.length)
+		
+		if(ActivityName.length>=1000){
+			alert("ActivityName length should be less than 1000")
+			event.preventDefault();
+			return false;
+		}
+		if(ActivityName.length==0){
+			alert("ActivityName can not be empty")
+			event.preventDefault();
+			return false;
+		}
+		
+		console.log(ActivityName)
+		console.log(MilestoneActivityId)
+		
+		if(confirm('Are you sure to update Activity?')){
+		$.ajax({
+			type:'GET',
+			url:'MilestoneActivityNameUpdate.htm',
+			dataype:'json',
+			data:{
+				MilestoneActivityId:MilestoneActivityId,
+				ActivityName:ActivityName,
+			},
+			success :  function(result) {
+				
+				var ajaxresult = JSON.parse(result);
+				console.log(ajaxresult);
+				if(ajaxresult>0){
+					alert("Activitiy Updated successfully")
+				}else{
+					alert("Activitiy Update unsuccessful")
+				}
+				
+			}
+		})
+		}else{
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+	
+	var editor_config1 = {
+			maxlength: '4000',
+			toolbar: [{
+			          name: 'clipboard',
+			          items: ['PasteFromWord', '-', 'Undo', 'Redo']
+			        },
+			        {
+			          name: 'basicstyles',
+			          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
+			        },
+			        {
+			          name: 'links',
+			          items: ['Link', 'Unlink']
+			        },
+			        {
+			          name: 'paragraph',
+			          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+			        },
+			        {
+			          name: 'insert',
+			          items: ['Image', 'Table']
+			        },
+			        {
+			          name: 'editing',
+			          items: ['Scayt']
+			        },
+			        '/',
+			        {
+			          name: 'styles',
+			          items: ['Format', 'Font', 'FontSize']
+			        },
+			        {
+			          name: 'colors',
+			          items: ['TextColor', 'BGColor', 'CopyFormatting']
+			        },
+			        {
+			          name: 'align',
+			          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+			        },
+			        {
+			          name: 'document',
+			          items: ['Print', 'PageBreak', 'Source']
+			        }
+			      ],
+			    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+				customConfig: '',
+				disallowedContent: 'img{width,height,float}',
+				extraAllowedContent: 'img[width,height,align]',
+				height: 180,
+			 	contentsCss: [CKEDITOR.basePath +'mystyles.css' ], 
+				bodyClass: 'document-editor',
+				format_tags: 'p;h1;h2;h3;pre',
+				removeDialogTabs: 'image:advanced;link:advanced',
+				stylesSet: [
+					{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
+					{ name: 'Cited Work', element: 'cite' },
+					{ name: 'Inline Quotation', element: 'q' },
+					{
+						name: 'Special Container',
+						element: 'div',
+						styles: {
+							padding: '5px 10px',
+							background: '#eee',
+							border: '1px solid #ccc'
+						}
+					},
+					{
+						name: 'Compact table',
+						element: 'table',
+						attributes: {
+							cellpadding: '5',
+							cellspacing: '0',
+							border: '1',
+							bordercolor: '#ccc'
+						},
+						styles: {
+							'border-collapse': 'collapse'
+						}
+					},
+					{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
+					{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
+
+		]
+				
+			} ;
+	 
+	 function update(ele){
+		 var MilestoneActivityId = ele.value;
+		 var ActivityName = $('#text'+MilestoneActivityId).val().trim();
+		 console.log("ActivityName--"+ActivityName)
+		 var isChecked=Number(ele.checked);
+			$.ajax({
+				type:'GET',
+				url:'MilestoneActivityNameUpdate.htm',
+				dataype:'json',
+				data:{
+					MilestoneActivityId:MilestoneActivityId,
+					ActivityName:ActivityName,
+					isChecked:isChecked,
+					ProjectId:<%=Project%>
+				},
+				success :  function(result) {
+					
+					var ajaxresult = JSON.parse(result);
+					console.log(ajaxresult);
+				/* 	if(ajaxresult>0){
+						alert("Activitiy Updated successfully")
+					}else{
+						alert("Activitiy Update unsuccessful")
+					} */
+					
+				}
+			})
+		 
+	 }
+	 $(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+			})
+
+
+	 
+	 function showModal(){
+		 $('#largeModal').modal('show');
+	 }
+	 
+	 
+	 
+	 function updateAll(){
+		 
+		  const checkboxes = document.getElementsByName('ActivityId');
+		    const checkedValues = [];
+			var count=0;
+		    // Loop through checkboxes to get their values if checked
+		    for (var checkbox of checkboxes) {
+		         var value = checkbox.checked?"1":"0"
+		            checkedValues.push(checkbox.value+","+value);
+		        
+		    }
+		    if(confirm('Are you sure to update ?')){
+		    for(var i=0;i<checkedValues.length;i++){
+		    	
+		    	var values = checkedValues[i].split(",");
+		    	var MilestoneActivityId = values[0];
+		    	var isChecked=values[1];
+		    	var ActivityName = $('#text'+MilestoneActivityId).val().trim();
+		    	$.ajax({
+				type:'GET',
+				url:'MilestoneActivityNameUpdate.htm',
+				dataype:'json',
+				data:{
+					MilestoneActivityId:MilestoneActivityId,
+					ActivityName:ActivityName,
+					isChecked:isChecked,
+					ProjectId:<%=Project%>
+				},
+				success :  function(result) {
+					
+					var ajaxresult = JSON.parse(result);
+					
+				
+				/* 	if(ajaxresult>0){
+						alert("Activitiy Updated successfully")
+					}else{
+						alert("Activitiy Update unsuccessful")
+					} */
+					
+				}
+			})
+		    	if(i==checkedValues.length-1){
+		    		count=1;
+		    	}
+		    }
+		    }else{
+		    	event.preventDefault();
+		    	return false;
+		    }
+		    
+		    if(count>0){
+		    	alert("Activities Updated successfully !")
+		    	location.reload();
+		    }
+		    
+		    
+		   
+	 }
 </script>
+	
 	
 			
 </body>

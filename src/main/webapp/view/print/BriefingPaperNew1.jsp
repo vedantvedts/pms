@@ -733,7 +733,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 				Path specificPath1 = Paths.get(filePath,projectLabCode,"ProjectData",projectdatadetails.get(z)[4].toString());
 				File specificfile1 = specificPath1.toFile();
 				if(specificfile1.exists()){ %>
-					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
+					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf") ){ %> <!-- changed -->
 							<h1 class="break"></h1>
 					<% }else{ %>
 					<% }}}%>

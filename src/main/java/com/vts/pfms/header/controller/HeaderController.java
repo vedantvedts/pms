@@ -3,6 +3,8 @@ package com.vts.pfms.header.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -316,6 +318,59 @@ public class HeaderController {
 		}
 	}
 	
+	@RequestMapping(value = "LabReportChapter1.htm", method = RequestMethod.GET)
+	public void LabReportChapter1(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode"); 
+		logger.info(new Date() +"Inside LabReportChapter1.htm "+UserId);		
+		try {
+		Path chapter1path = Paths.get(ApplicationFilesDrive, LabCode,"LabReport","Chapter1.docx");
+		System.out.println(chapter1path.toString());
+		res.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		res.setHeader("Content-Disposition", String.format("inline; filename=Chapter1.docx"));
+		File my_file = chapter1path.toFile();
+		OutputStream out = res.getOutputStream();
+		FileInputStream in = new FileInputStream(my_file);
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = in.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+		in.close();
+		out.flush();
+		out.close();
+		}
+		catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside LabReportChapter1.htm "+UserId, e);
+		}
+	}
+	@RequestMapping(value = "LabReportChapter2.htm", method = RequestMethod.GET)
+	public void LabReportChapter2(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode"); 
+		logger.info(new Date() +"Inside LabReportChapter2.htm "+UserId);		
+		try {
+		Path chapter1path = Paths.get(ApplicationFilesDrive, LabCode,"LabReport","Chapter2.docx");
+		res.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		res.setHeader("Content-Disposition", String.format("inline; filename=Chapter2.docx"));
+		File my_file = chapter1path.toFile();
+		OutputStream out = res.getOutputStream();
+		FileInputStream in = new FileInputStream(my_file);
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = in.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+		in.close();
+		out.flush();
+		out.close();
+		}
+		catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside LabReportChapter2.htm "+UserId, e);
+		}
+	}
 	@RequestMapping(value = "PDManual.htm", method = RequestMethod.GET)
 	public void PDManual(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");

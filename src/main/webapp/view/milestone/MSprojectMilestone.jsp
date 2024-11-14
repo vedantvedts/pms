@@ -202,7 +202,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 							 <td style=""><%if(level1[9]!=null) {%><%=level1[9].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level1[6]!=null) {%><%=level1[6].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level1[10]!=null) {%><%=level1[10].toString() %>  <%}else{ %>- <%} %></td>
-							 <td style=""><%if(level1[4]!=null) {%><%=level1[4].toString() %>  <%}else{ %>- <%} %>, <%if(level1[5]!=null ) {%> <%=level1[5].toString() %> <%}else{ %><%} %></td>
+							 <td style=""><%if(level1[4]!=null) {%><%=level1[4].toString() %>  <%}else{ %>- <%} %> <%if(level1[5]!=null ) {%>, <%=level1[5].toString() %> <%}else{ %><%} %></td>
 							 <td style="">
 							 <%if(level1[13]!=null) {%><%=level1[13].toString() %>  <%}else{ %><%=level1[11].toString() %><%} %>
 							 
@@ -259,7 +259,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 							<td style=""><%if(level2[9]!=null) {%> &nbsp;<%=level2[9].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level2[6]!=null) {%><%=level2[6].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level2[10]!=null) {%><%=level2[10].toString() %>  <%}else{ %>- <%} %></td>
-							 <td style=""><%if(level2[4]!=null) {%><%=level2[4].toString() %>  <%}else{ %>- <%} %>, <%if(level2[5]!=null ) {%> <%=level2[5].toString() %> <%}else{ %><%} %></td>
+							 <td style=""><%if(level2[4]!=null) {%><%=level2[4].toString() %>  <%}else{ %>- <%} %> <%if(level2[5]!=null ) {%> ,<%=level2[5].toString() %> <%}else{ %><%} %></td>
 							 <td style="">
 							 <%if(level2[13]!=null) {%><%=level2[13].toString() %>  <%}else{ %><%=level2[11].toString() %><%} %>
 							 
@@ -306,7 +306,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 							<td style=""><%if(level3[9]!=null) {%> &nbsp; &nbsp; <%=level3[9].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level3[6]!=null) {%><%=level3[6].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level3[10]!=null) {%><%=level3[10].toString() %>  <%}else{ %>- <%} %></td>
-							 <td style=""><%if(level3[4]!=null) {%><%=level3[4].toString() %>  <%}else{ %>- <%} %>, <%if(level3[5]!=null ) {%> <%=level3[5].toString() %> <%}else{ %><%} %></td>
+							 <td style=""><%if(level3[4]!=null) {%><%=level3[4].toString() %>  <%}else{ %>- <%} %><%if(level3[5]!=null ) {%> , <%=level3[5].toString() %> <%}else{ %><%} %></td>
 							 <td style="">
 							 <%if(level3[13]!=null) {%><%=level3[13].toString() %>  <%}else{ %><%=level3[11].toString() %><%} %>
 							 
@@ -355,7 +355,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 							<td style=""><%if(level4[9]!=null) {%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=level4[9].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level4[6]!=null) {%><%=level4[6].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level4[10]!=null) {%><%=level4[10].toString() %>  <%}else{ %>- <%} %></td>
-							 <td style=""><%if(level4[4]!=null) {%><%=level4[4].toString() %>  <%}else{ %>- <%} %>, <%if(level4[5]!=null ) {%> <%=level4[5].toString() %> <%}else{ %><%} %></td>
+							 <td style=""><%if(level4[4]!=null) {%><%=level4[4].toString() %>  <%}else{ %>- <%} %> <%if(level4[5]!=null ) {%>, <%=level4[5].toString() %> <%}else{ %><%} %></td>
 							 <td style="">
 							 <%if(level4[13]!=null) {%><%=level4[13].toString() %>  <%}else{ %><%=level4[11].toString() %><%} %>
 							 
@@ -405,7 +405,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 							<td style=""><%if(level5[9]!=null) {%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<%=level5[9].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level5[6]!=null) {%><%=level5[6].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level5[10]!=null) {%><%=level5[10].toString() %>  <%}else{ %>- <%} %></td>
-							 <td style=""><%if(level5[4]!=null) {%><%=level5[4].toString() %>  <%}else{ %>- <%} %>, <%if(level5[5]!=null ) {%> <%=level5[5].toString() %> <%}else{ %><%} %></td>
+							 <td style=""><%if(level5[4]!=null) {%><%=level5[4].toString() %>  <%}else{ %>- <%} %><%if(level5[5]!=null ) {%>,  <%=level5[5].toString() %> <%}else{ %><%} %></td>
 							 <td style="">
 							 <%if(level5[13]!=null) {%><%=level5[13].toString() %>  <%}else{ %><%=level5[11].toString() %><%} %>
 							 
@@ -454,7 +454,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 							<td style=""><%if(level6[9]!=null) {%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<%=level6[9].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level6[6]!=null) {%><%=level6[6].toString() %>  <%}else{ %>- <%} %></td>
 							 <td style=""><%if(level6[10]!=null) {%><%=level6[10].toString() %>  <%}else{ %>- <%} %></td>
-							 <td style=""><%if(level6[4]!=null) {%><%=level6[4].toString() %>  <%}else{ %>- <%} %>, <%if(level6[5]!=null ) {%> <%=level6[5].toString() %> <%}else{ %><%} %></td>
+							 <td style=""><%if(level6[4]!=null) {%><%=level6[4].toString() %>  <%}else{ %>- <%} %> <%if(level6[5]!=null ) {%> ,<%=level6[5].toString() %> <%}else{ %><%} %></td>
 							 <td style="">
 							 <%if(level6[13]!=null) {%><%=level6[13].toString() %>  <%}else{ %><%=level6[11].toString() %><%} %>
 							 

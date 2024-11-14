@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.vts.pfms.print.dao.PrintDao;
 import com.vts.pfms.report.dao.ReportDao;
 import com.vts.pfms.report.model.LabReport;
+import com.vts.pfms.report.model.PfmsLabReportMilestone;
 import com.vts.pfms.roadmap.dao.RoadMapDao;
 
 
@@ -23,6 +25,9 @@ public class ReportServiceImpl implements ReportService {
 	
 	@Autowired
 	ReportDao dao;
+	
+	@Autowired
+	PrintDao printdao;
 	
 	private static final Logger logger = LogManager.getLogger(ReportServiceImpl.class);
 
@@ -67,8 +72,28 @@ public class ReportServiceImpl implements ReportService {
 		return dao.mileStoneData(currentYear,projectid);
 	}
 
+	@Override
+	public List<Object[]> newMilesetoneData(String projectid) throws Exception {
+
+		List<Object[]> milestones = printdao.Milestones(projectid,"1" );
+		
+		return null;
+	}
 	
 	
+	@Override
+	public long MilestoneActivityNameUpdate(String milestoneActivityId,String UserId,String ActivityName) throws Exception {
+		return dao.MilestoneActivityNameUpdate(milestoneActivityId, UserId,ActivityName);
+	}
 
-
+	@Override
+	public long LabReportMilestone(PfmsLabReportMilestone pm) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.LabReportMilestone(pm);
+	}
+@Override
+public List<PfmsLabReportMilestone> getPfmsLabReportMilestoneData(String projectid) throws Exception {
+	// TODO Auto-generated method stub
+	return dao.getPfmsLabReportMilestoneData(projectid);
+}
 }

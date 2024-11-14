@@ -214,7 +214,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 												value="<%=obj[10].toString()%>">
 											<%%>
 												
-												<%if(obj[10].toString().equalsIgnoreCase("AR") || obj[10].toString().equalsIgnoreCase("AY")){%>
+												<%if(obj[10].toString().equalsIgnoreCase("AR") || obj[10].toString().equalsIgnoreCase("AY")){ %>
 												     <button class="editable-click mail" type="submit" formaction="RfaActionForward.htm" formmethod="POST"
 													 style="background-color: transparent;"
 													 data-toggle="tooltip" data-placement="top" title="RFA FORWARD" name="RFAID"
@@ -227,7 +227,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 													</div>
 												
 												</button>
-													<input type="hidden" value="ARC" name="rfaoptionby">
+													<input type="hidden" value="AP" name="rfaoptionby">
 													<input type="hidden" value="<%=obj[16]%>" name="rfaEmpModal">
 											  <%}else{ %>
 											  		<button class="editable-click" type="button"

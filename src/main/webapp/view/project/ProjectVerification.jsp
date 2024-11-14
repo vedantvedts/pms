@@ -443,7 +443,7 @@ String verificationId=(String)request.getAttribute("verificationId");
 
 									<h4 class="panel-title">
 										<span class="ml-2" style="font-size: 14px"> <%=++count%>.
-											<input type="text" readonly class="form-control inputx inputs" id="input<%=obj[0].toString() %>" value="<%=obj[1].toString() %>">
+											<input type="text" name="Provisions" readonly class="form-control inputx inputs" id="input<%=obj[0].toString() %>" value="<%=obj[1].toString() %>">
 											<button class="btn btn-sm ml-1 bg-transparent" type="button"
 												id="btns<%=obj[0].toString()%>"
 												style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;"

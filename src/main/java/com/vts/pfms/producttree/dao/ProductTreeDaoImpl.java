@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.producttree.model.ProductTree;
 import com.vts.pfms.producttree.model.ProductTreeRev;
+import com.vts.pfms.producttree.model.SystemProductTree;
 
 @Transactional
 @Repository
@@ -147,5 +148,34 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 
 			return getProductRevTreeList;
 	}
+	
+	private static final String ALLSYSTEM="SELECT sid,systemid,systemName FROM  pfms_system";
+	
+	@Override
+	public List<Object[]> getAllSystemName() throws Exception {
+		
+		Query query = manager.createNativeQuery(ALLSYSTEM);
+		
+		List<Object[]>systemList = (List<Object[]>)query.getResultList();
+		
+		return systemList;
+	}
 
+	@Override
+	public long AddSystemLevelName(SystemProductTree prod) throws Exception {
+		
+		manager.persist(prod);
+		manager.flush();
+		return prod.getMainId();
+	}
+	
+	private static final String SYSPRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.sid,b.systemName,a.Stage,a.Module,a.SubLevelId,b.systemid  FROM pfms_system_product_tree a,pfms_system b WHERE MainId>0 AND a.sid=b.sid AND b.sid=:sid AND a.isActive='1' ORDER BY parentlevelid";
+	@Override
+	public Object getSystemProductTreeList(String sid) throws Exception {
+		  Query query=manager.createNativeQuery(SYSPRODUCTTREELIST);
+			query.setParameter("sid", sid);
+			List<Object[]> ProductTreeList=(List<Object[]>)query.getResultList();		
+
+			return ProductTreeList;
+	}
 }

@@ -1013,13 +1013,15 @@ public class ActionDaoImpl implements ActionDao{
 		
 	}
     
-	private static final String GETRFACOUNT="SELECT COUNT(RfaId) FROM pfms_rfa_action WHERE IsActive='1' AND rfatypeid=:rfatypeid AND projectId=:projectId";
+	private static final String GETRFACOUNT="SELECT COUNT(RfaId) FROM pfms_rfa_action WHERE IsActive='1' AND rfatypeid=:rfatypeid AND projectId=:projectId AND TypeOfRfa=:TypeOfRfa AND VendorCode=:VendorCode";
 	@Override
-	public Long GetRfaCount(String rfatypeid, Long projectId) throws Exception {
+	public Long GetRfaCount(String rfatypeid, Long projectId,String type,String vendor) throws Exception {
 		
 		Query query = manager.createNativeQuery(GETRFACOUNT);
 		query.setParameter("rfatypeid", rfatypeid);
 		query.setParameter("projectId", projectId);
+		query.setParameter("TypeOfRfa", type);
+		query.setParameter("VendorCode", vendor);
 		Object Count = (Object)query.getSingleResult();
 		Long RfaCount=0l ;
 		if(Count==null) {
@@ -1588,7 +1590,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	}
 	
-	private static final String RFAACTIONLIST1="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.rfastatus=g.rfastatus AND CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus NOT IN ('AA','AF','AC','RC','AX','REV') ORDER BY rfaid DESC";
+	private static final String RFAACTIONLIST1="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.rfastatus=g.rfastatus AND CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus NOT IN ('AA','AF','AC','RC','AX','REV','AP') ORDER BY rfaid DESC";
 	@Override
 	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate) throws Exception {
 		
@@ -2033,4 +2035,12 @@ public class ActionDaoImpl implements ActionDao{
 		}
 		return 0;
 	}
+	
+	private static final String VENDORLIST="SELECT vendorcode,vendorname,address FROM vendor";
+	@Override
+	public List<Object[]> getVendorList() throws Exception {
+		Query query = manager.createNativeQuery(VENDORLIST);
+		return (List<Object[]>)query.getResultList();
+	}
+	
 }

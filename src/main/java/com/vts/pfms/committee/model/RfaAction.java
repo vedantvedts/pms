@@ -34,7 +34,8 @@ public class RfaAction {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
-	
+	private String TypeOfRfa;
+	private String VendorCode;
 	
 	
 }

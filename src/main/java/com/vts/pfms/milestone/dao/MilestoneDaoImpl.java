@@ -1188,9 +1188,9 @@ public class MilestoneDaoImpl implements MilestoneDao {
 				+ "    a.IsCritical\r\n"
 				+ "FROM \r\n"
 				+ "    pfms_milestone_msprojectdata a\r\n"
-				+ "JOIN \r\n"
+				+ "LEFT JOIN \r\n"
 				+ "    employee e ON e.empno = a.empno\r\n"
-				+ "JOIN \r\n"
+				+ "LEFT JOIN \r\n"
 				+ "    employee_desig d ON e.desigid = d.desigid\r\n"
 				+ "WHERE \r\n"
 				+ "    a.projectid = :projectid\r\n"
@@ -1201,7 +1201,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 4), '.', -1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 5), '.', -1) AS UNSIGNED),\r\n"
 				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 6), '.', -1) AS UNSIGNED),\r\n"
-				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 7), '.', -1) AS UNSIGNED);\r\n"
+				+ "    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(TaskOutlineNumber, '.', 7), '.', -1) AS UNSIGNED)\r\n"
 				+ "";
 		
 		@Override

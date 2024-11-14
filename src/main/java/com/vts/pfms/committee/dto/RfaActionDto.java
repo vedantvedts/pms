@@ -34,5 +34,7 @@ public class RfaActionDto
 	private Long CCEmpId;
 	private Long ActionBy;
 	private int IsActive;
+	private String TypeOfRfa;
+	private String VendorCode;
 	
 }

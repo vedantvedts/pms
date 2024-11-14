@@ -1031,12 +1031,15 @@ function ViewInModel(val) {
 </html>
  --%>
  
- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"  pageEncoding="ISO-8859-1"
+ <%@page import="java.nio.file.Path"%>
+ <%@page import="java.io.File"%>
+<%@page import="java.nio.file.Paths"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"  pageEncoding="ISO-8859-1"
  import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@page import="java.util.List , java.util.stream.Collectors,com.vts.pfms.*"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page import="org.apache.commons.io.FileUtils"%>
-<%@page import="java.io.File"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -1140,6 +1143,7 @@ Object[] projectslidedata = (Object[])request.getAttribute("projectslidedata");/
 String Drdologo = (String)request.getAttribute("Drdologo");
 String lablogo = (String)request.getAttribute("lablogo");
 Object[] projectdata = (Object[])request.getAttribute("projectdata");
+String labcode = (String) session.getAttribute("labcode");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 NFormatConvertion nfc=new NFormatConvertion();
 double cost = Double.parseDouble(projectdata[3].toString());
@@ -1260,11 +1264,22 @@ if(ses1!=null){
 										<br><p>
 											<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:maroon ;">
 												Current Status : 
-											</span>	<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
-								<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="PDF File"><i class="fa fa-lg fa-angle-double-right text-primary" aria-hidden="true" ></i></a>
+											</span>	
+								<%
+								Path attachmentPath1 = Paths.get(filePath,labcode,"ProjectSlide",projectslidedata[5]+"");
+								File specificfile1 = attachmentPath1.toFile();
+								
+								Path videopath = Paths.get(filePath,labcode,"ProjectSlide",projectdata[30]+"");
+								File videoPathFile = videopath.toFile();
+								
+								Path imagepath = Paths.get(filePath,labcode,"ProjectSlide",projectdata[24]+"");
+								File imagepathFile = imagepath.toFile();
+								%>			
+							<%if(specificfile1.exists()){%>
+							<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="PDF File"><i class="fa fa-lg fa-angle-double-right text-primary" aria-hidden="true" ></i></a>
 							<%} %>
 						
-							<%if(new File(filePath + projectslidedata[3] + projectdata[30]).exists()){%>
+							<%if(videoPathFile.exists()){%>
 								<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" title="Video File"><img alt="" src="view/images/presentation.png" style="width:19px !important"></a>
 							<%} %>
 											<%-- <%if(projectdata!=null && projectdata[20]!=null) {%>
@@ -1292,14 +1307,14 @@ if(ses1!=null){
 									</div>
 									
 									<div class="col-md-7 mt-3" style="float: right;">
-									<%if(new File(filePath + projectslidedata[3] + projectdata[24]).exists()){%>
+									<%if(imagepathFile.exists()){%>
 												<div style="height:50vh; width:100%;border:4px solid maroon;padding: 4px">
-												<%if(new File(filePath + projectslidedata[3] + projectdata[27]).exists()){%>
+												<%if(specificfile1.exists()){%>
 												<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" >
-													<img class="zoom2" data-enlargable style="height: 100%; width: 100%; margin-bottom: 5px;margin: auto;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectdata[24])))%>">
+													<img class="zoom2" data-enlargable style="height: 100%; width: 100%; margin-bottom: 5px;margin: auto;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 												</a>
 												<%}else{ %>
-													<img class="zoom2" data-enlargable style="height: 100%; width: 100%; margin-bottom: 5px;margin: auto;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectdata[24])))%>">
+													<img class="zoom2" data-enlargable style="height: 100%; width: 100%; margin-bottom: 5px;margin: auto;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 												
 												<%} %>
 												</div>
@@ -1414,11 +1429,11 @@ if(ses1!=null){
 														<div class="col">
 														<br><p>
 															<span style="text-align: left;font-size: 1.02rem;font-weight: bold;color:maroon ;">
-																Current Status : <%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
+																Current Status : <%if(specificfile1.exists()){%>
 								<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" title="PDF File"><i class="fa fa-lg fa-angle-double-right primary" aria-hidden="true" style=""></i></a>
 							<%} %>
 							
-							<%if(new File(filePath + projectslidedata[3] + projectdata[30]).exists()){%>
+							<%if(videoPathFile.exists()){%>
 								<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" style="text-align: right" title="Video File"><img alt="" src="view/images/presentation.png" style="width:19px !important"></a>
 							<%} %>
 															</span>
@@ -1460,14 +1475,14 @@ if(ses1!=null){
 							</div>
 								</div>
 								<div class="col-md-5 mt-3" style="border:4px solid maroon;margin-left: 2%;padding: 4px;">
-										<%if(new File(filePath + projectslidedata[3] + projectslidedata[2]).exists()){%>
+										<%if(imagepathFile.exists()){%>
 										
-										<%if(new File(filePath + projectslidedata[3] + projectslidedata[5]).exists()){%>
+										<%if(specificfile1.exists()){%>
 										<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projectdata[26]%>"  target="_blank" >
-											<img class="zoom" data-enlargable style=" width: 100%;height:100%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+											<img class="zoom" data-enlargable style=" width: 100%;height:100%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 										</a>
 										<%}else{ %>
-											<img class="zoom" data-enlargable style=" width: 100%;height:100%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectslidedata[3] + projectslidedata[2])))%>">
+											<img class="zoom" data-enlargable style=" width: 100%;height:100%; margin-bottom: 5px;position: relative;display: flex;" align="middle" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 										
 										<%} %>
 						
@@ -1606,7 +1621,7 @@ if(ses1!=null){
 					                        		<div class="form-group">
 						                        		<div class="col" >
 						                        		<label  ><b> Image : </b></label>
-														<%if(new File(filePath + projectslidedata[3] + projectdata[24]).exists()){%>
+														<%if(imagepathFile.exists()){%>
 				                            				<a href="SlideAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
 				                            			<%} %>
 														</div>
@@ -1619,7 +1634,7 @@ if(ses1!=null){
 					                        		<div class="form-group">
 						                        		<div class="col" >
 															<label  ><b> Attachment : </b></label>
-															<%if(new File(filePath + projectslidedata[3] + projectdata[27]).exists()){%>
+															<%if(specificfile1.exists()){%>
 																<a href="SlidePdfAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
 															<%} %>
 														</div>
@@ -1633,7 +1648,7 @@ if(ses1!=null){
 					                        		<div class="form-group">
 						                        		<div class="col" >
 															<label  ><b> video : </b></label>
-															<%if(new File(filePath + projectslidedata[3] + projectdata[30]).exists()){%>
+															<%if(videoPathFile.exists()){%>
 																<a href="SlideVideoAttachDownload.htm?slideId=<%=projectslidedata[4]%>"  target="_blank"><i class="fa fa-download fa-2x"></i></a>
 															<%} %>
 														</div>

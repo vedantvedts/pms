@@ -67,7 +67,7 @@ if(ProjectList!=null && ProjectList.size()>0){
       </div>
       
       <hr>
-      <% if(MainProjectList!=null && MainProjectList.size()>0){%>
+      <% if(MainProjectList!=null && MainProjectList.size()>0){ %>
       <div class="row ml-2 mb-3 mt-2" >
       Main projects : <input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
       </div>

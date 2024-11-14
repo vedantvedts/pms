@@ -3339,7 +3339,10 @@
 						<br>
 						<div class="row">
 							<div class="col-md-12" style="position: relative;width: 100%;padding-bottom: calc(8.5 / 11 * 100%);">
-								<% if (TechWorkDataList.get(z) != null && TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) {%>
+									
+								<% 
+								try{
+								if (TechWorkDataList.get(z) != null && TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) { %>
 								<% Object[] TechWork = TechWorkDataList.get(z);
 								String fileExt = FilenameUtils.getExtension(TechWork[8].toString());
 								String tecdata = TechWorkDataList.get(z)[6].toString().replaceAll("[/\\\\]", ",");
@@ -3350,16 +3353,25 @@
 								<% String path = request.getServletContext().getRealPath("/view/temp");
 								Zipper zip = new Zipper();
 								zip.unpack(techPath.toString(), path, TechWorkDataList.get(z)[9].toString());
-								File techattachfile = new File(path + "/" + TechWork[8]); %>
+								File techattachfile = new File(path+File.separator+ TechWork[8]); %>
 
-								<% if (fileExt.equalsIgnoreCase("pdf")) { %>
+								<% if (fileExt.equalsIgnoreCase("pdf")) {%>
+								<%=techattachfile.toPath() %>
+								<%=techPath.toString() %>
 								<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"></iframe>
 								<% } else { %>
 								<img data-enlargable style="width: 98%;height:70vh;" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
 								<% } %>
 								<% techattachfile.delete(); 
-								} %><% } %>
-							</div></div></div>
+								} %><% }}
+								catch(Exception e){
+									
+								}
+								
+								%>
+							</div>
+							</div>
+							</div>
 					<% } %>
 				</div></div>
 			<!-- ---------------------------------------- p-13b Technical Work Carried Div ----------------------------------------------------- -->

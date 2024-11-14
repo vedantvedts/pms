@@ -52,6 +52,7 @@ List<Object[]> ProjectTypeList=(List<Object[]>)request.getAttribute("ProjectType
 List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList");
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 List<Object[]> RfaNoTypeList=(List<Object[]>)request.getAttribute("RfaNoTypeList");
+List<Object[]> vendorList=(List<Object[]>)request.getAttribute("vendorList");
 String EmpId=(String)request.getAttribute("EmpId");
 
 %>
@@ -72,6 +73,37 @@ String EmpId=(String)request.getAttribute("EmpId");
 					 </div>
         
         		<div class="card-body">
+        		
+        		<div class="row">
+        		
+        		  <div class="col-md-2">
+		                        <div class="form-group">
+		                            <label class="control-label">Type</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+			                            <select class="form-control selectdee " id="type"  name="type" required="required" onchange="showVendor()">
+										   <option value="I">Internal</option>
+										   <option value="E">External</option>
+			  							</select>
+			  							
+		                        </div>
+		                    </div>
+		                    
+		                      <div class="col-md-5" id="vendorDiv" style="">
+		                     <div class="form-group">
+		                            <label class="control-label"> Vendor</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <select class="form-control selectdee" required="required" name="vendor" id="vendor" data-placeholder= "Select Type">                   
+		                            <option disabled="true"  selected value="">Select...</option>
+		                            <% if(vendorList!=null && vendorList.size()>0){
+		                            for(Object[] obj : vendorList) { %>
+		                            <option value="<%=obj[0]%>"><%=obj[1]%></option>
+		                            <%}} %>
+		                           </select>
+		                           <!--  <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" > -->	
+		                      </div>
+		                   </div> 
+        		
+        		</div>
                      <div class="row">
 		                    <div class="col-md-2">
 		                        <div class="form-group">
@@ -386,6 +418,27 @@ function validateFile(input) {
     document.getElementById('filealert').innerText = '';
   }
 }
+
+
+function showVendor(){
+	
+	var seltype = $('#type').val();
+	if(seltype==='E'){
+	$('#vendorDiv').css('display', 'block');
+	$("#vendor").attr("required", true);
+		}else{
+			$('#vendorDiv').css('display', 'none');
+			$("#vendor").attr("required", false);
+	}
+	
+	
+	console.log(seltype)
+}
+
+
+$( document ).ready(function() {
+	showVendor()
+});
 </script>
 
 </body>

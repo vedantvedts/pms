@@ -8,8 +8,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,9 +43,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.itextpdf.io.source.ByteArrayOutputStream;
 import com.itextpdf.styledxmlparser.jsoup.Jsoup;
 import com.itextpdf.styledxmlparser.jsoup.nodes.Document;
@@ -51,6 +56,7 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.report.model.LabReport;
+import com.vts.pfms.report.model.PfmsLabReportMilestone;
 import com.vts.pfms.report.service.ReportService;
 import com.vts.pfms.utils.PMSLogoUtil;
 
@@ -98,6 +104,13 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 		logger.info(new Date() + "Inside LabReports.htm " + UserId);
 		try {
 		List<Object[]> proList = prjservice.LoginProjectDetailsList(EmpId, Logintype, LabCode);
+		
+		if(proList!=null && proList.size()>0) {
+			proList = proList.stream().filter(x->Integer.parseInt(x[0].toString())>0).
+					sorted(Comparator.comparing(e -> Integer.parseInt(e[22].toString()))).collect(Collectors.toList());
+			Collections.reverse(proList);
+		}
+		
          req.setAttribute("proList", proList);
 	    String projectid=req.getParameter("projectid");
 	    
@@ -124,6 +137,33 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
     List<Object[]>milestoneData=service.mileStoneData(currentYear,projectid);
     req.setAttribute("milestoneData", milestoneData);
     
+    List<PfmsLabReportMilestone>LabReportMilestoneData= service.getPfmsLabReportMilestoneData(projectid);
+    if(milestoneData!=null && milestoneData.size()>0) {
+    	for(Object[]obj:milestoneData) {
+    	PfmsLabReportMilestone pm = new PfmsLabReportMilestone();
+		pm.setMilestoneActivityId(Long.parseLong(obj[9].toString()));
+		pm.setActivityName(obj[1].toString());
+		pm.setCreatedBy(UserId);
+		pm.setCreatedDate(LocalDate.now().toString());
+		pm.setProjectId(Long.parseLong(obj[0].toString()));
+		pm.setIsChecked("1");
+		
+		if(LabReportMilestoneData==null ||LabReportMilestoneData.size()==0) {
+		if(Integer.parseInt(obj[11].toString())>=60 &&
+				!LabReportMilestoneData.stream().anyMatch(e->(e.getMilestoneActivityId()+"").equalsIgnoreCase(obj[9].toString()))   ) {
+			service.LabReportMilestone(pm);
+		}
+		}
+    	}
+    }
+    
+    
+    LabReportMilestoneData= service.getPfmsLabReportMilestoneData(projectid);
+ 
+    
+    System.out.println(LabReportMilestoneData.size());
+    
+    req.setAttribute("LabReportMilestoneData", LabReportMilestoneData);
     req.setAttribute("currentYear", currentYear);
     req.setAttribute("nextYear", (currentYear+1));
     req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
@@ -217,8 +257,10 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
       
         List<Object[]> proList = prjservice.LoginProjectDetailsList(EmpId, Logintype, LabCode);
         req.setAttribute("proList", proList);
-       // String projectid = req.getParameter("projectid");
+
         String projectIdsParam = req.getParameter("projectid");
+        
+        System.out.println("projectIdsParam---"+projectIdsParam);
         String[] projectIds = null;
 
         if (projectIdsParam != null && !projectIdsParam.isEmpty()) {
@@ -239,9 +281,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         req.setAttribute("ProjectId", projectIdsParam);
         req.setAttribute("ProjectAssignList", prjservice.ProjectAssignList(projectIdsParam));
    
-//        req.setAttribute("milestoneData", milestoneData);
-//        req.setAttribute("currentYear", currentYear);
-//        req.setAttribute("nextYear", (currentYear + 1));
+
      
 
         XWPFDocument document = new XWPFDocument();
@@ -255,7 +295,8 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
           
             int currentYear = LocalDate.now().getYear();
             List<Object[]> milestoneData = service.mileStoneData(currentYear, projectId);
-     
+            List<PfmsLabReportMilestone>LabReportMilestoneData= service.getPfmsLabReportMilestoneData(projectId);
+
         XWPFParagraph projectName = document.createParagraph();
 
         
@@ -295,19 +336,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
                e.printStackTrace(); // Handle the exception accordingly
            }
      }
-//        XWPFParagraph projectNameParagraph = document.createParagraph();
-//        XWPFRun projectNameRun = projectNameParagraph.createRun();
-//        projectNameRun.setBold(true);
-//        projectNameRun.setFontSize(12);
-//        projectNameRun.addBreak();
 
-        // Insert the image
-//        try (InputStream imageStream = Files.newInputStream(imgfile)) {
-//        	projectNameValueRun.addBreak(); // Add a line break before the image
-//        	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(200), Units.toEMU(200)); // width and height in EMU
-//        } catch (InvalidFormatException | IOException e) {
-//            e.printStackTrace(); // Handle the exception accordingly
-//        }
         projectNameValueRun.addBreak();
         
        XWPFRun BriefValueRun = projectName.createRun();
@@ -440,64 +469,11 @@ XWPFParagraph reviewHeld = document.createParagraph();
        reviewHeldsValueRun.setBold(false);
        reviewHeldsValueRun.setFontSize(12);
         
-   
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-//        String[] headings = {
-//            "Project Name", 
-//            "Brief",
-//            "Category", 
-//            "Participating Lab", 
-//            "Scope", 
-//            "Objective", 
-//            "Details of Review held till YR",
-//            "Total Cost"
-//        };
-//
-//       // String Brief =(projectattribute[17] != null && !projectattribute[17].toString().trim().isEmpty()) ? projectattribute[17].toString().replaceAll("<[^>]*>", "").trim() : "-";
-//        
-//        String[] data = {
-//            (projectattribute[2] != null && !projectattribute[2].toString().trim().isEmpty()) ? projectattribute[2].toString() : "-", // Project Name
-//            (Brief),
-//            (projectattribute[19] != null && !projectattribute[19].toString().trim().isEmpty()) ? projectattribute[19].toString() : "-", // Category
-//            (projectattribute[10] != null && !projectattribute[10].toString().trim().isEmpty()) ? projectattribute[10].toString() : "-", // Participating Lab
-//            (projectattribute[11] != null && !projectattribute[11].toString().trim().isEmpty()) ? projectattribute[11].toString() : "-", // Scope
-//            (projectattribute[9] != null && !projectattribute[9].toString().trim().isEmpty()) ? projectattribute[9].toString() : "-", // Objective
-//            (projectattribute[16] != null && projectattribute[15] != null && !projectattribute[16].toString().trim().isEmpty() && !projectattribute[15].toString().trim().isEmpty()) 
-//                ? "EB: " + projectattribute[16].toString() + "\nPMRC: " + projectattribute[15].toString() : "-", // Details of Review
-//            (projectattribute[6] != null && !projectattribute[6].toString().trim().isEmpty()) ? projectattribute[6].toString() + " (in Lakhs)" : "-" // Total Cost
-//        };
-//
-//        // Add the project headings and data
-//        for (int i = 0; i < headings.length; i++) {
-//            XWPFParagraph headingParagraph = document.createParagraph();
-//            XWPFRun headingRunInner = headingParagraph.createRun();
-//            headingRunInner.setText(headings[i]);
-//            headingRunInner.setBold(true);
-//            headingRunInner.setFontSize(12);
-//            headingRunInner.addBreak();
-//
-//            XWPFParagraph dataParagraph = document.createParagraph();
-//            XWPFRun dataRun = dataParagraph.createRun();
-//            dataRun.setText(data[i]);
-//            dataRun.addBreak();
-//        }
-
- 
 
     
         XWPFParagraph mileParagraph = document.createParagraph();
         XWPFRun mileParagraphs = mileParagraph.createRun();
-        mileParagraphs.setText("Major Achievements / activities completed during this year");
+        mileParagraphs.setText("Planned Activities in the Project for Next year");
         mileParagraphs.setBold(true);
         mileParagraphs.setFontSize(12);
         mileParagraphs.setColor("0000FF");  
@@ -508,12 +484,10 @@ XWPFParagraph reviewHeld = document.createParagraph();
         for (Object[] activity : milestoneData) {
         	
         	 
-        	if(activity[6]!=null && activity[6].toString().equalsIgnoreCase(currentYear+"")) {
-                XWPFParagraph mileParagraph1 = document.createParagraph();
+        	if(activity[7].toString().equalsIgnoreCase((currentYear+1)+"")||activity[8].toString().equalsIgnoreCase((currentYear+1)+"") || (Integer.parseInt(activity[11].toString())>=40 && Integer.parseInt(activity[11].toString())<100)) {
+            XWPFParagraph mileParagraph1 = document.createParagraph();
             XWPFRun mileParagraphs1 = mileParagraph1.createRun();
             mileParagraphs1.setText((++count)+". "+activity[1].toString());
-            
-           
             //mileParagraphs1.addBreak();
         	}
         }
@@ -521,7 +495,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
         
         XWPFParagraph mileParagraph2 = document.createParagraph();
         XWPFRun mileParagraphs2 = mileParagraph2.createRun();
-        mileParagraphs2.setText("Planned Activities in the Project for Next year");
+        mileParagraphs2.setText("Major Achievements / activities completed during this year");
         mileParagraphs2.setBold(true);
         mileParagraphs2.setFontSize(12);
         mileParagraphs2.setColor("0000FF");
@@ -529,20 +503,19 @@ XWPFParagraph reviewHeld = document.createParagraph();
      
         
         int count1=0;
-        if(milestoneData!=null && milestoneData.size()>0) {
-        for (Object[] activity : milestoneData) {
-        	
-     	  
-     	if(activity[7].toString().equalsIgnoreCase((currentYear+1)+"")||activity[8].toString().equalsIgnoreCase((currentYear+1)+"")) {
-           XWPFParagraph mileParagraph1 = document.createParagraph();
+        if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0) {
+        for(PfmsLabReportMilestone pm: LabReportMilestoneData) {
+         XWPFParagraph mileParagraph1 = document.createParagraph();
          XWPFRun mileParagraphs1 = mileParagraph1.createRun();
-         mileParagraphs1.setText((++count1)+". "+activity[1].toString());
-   
-        
+         String activityName =(pm.getActivityName()!= null&&!pm.getActivityName().toString().trim().isEmpty())?pm.getActivityName().toString().replaceAll("<[^>]*>", "").trim() : "-";
+         mileParagraphs1.setText((++count1)+". "+activityName);
         // mileParagraphs1.addBreak();
-     	}
         }
-     }
+     }else {
+  	   XWPFParagraph mileParagraph1 = document.createParagraph();
+       XWPFRun mileParagraphs1 = mileParagraph1.createRun();
+       mileParagraphs1.setText("-");
+}
         //spinoff data------------------------------------------------------------------------------------
         XWPFParagraph spinoff = document.createParagraph();
         XWPFRun attributesRun2 = spinoff.createRun();
@@ -727,6 +700,40 @@ XWPFParagraph reviewHeld = document.createParagraph();
                 .body(out.toByteArray());
     }
 
-    
+    @RequestMapping(value="MilestoneActivityNameUpdate.htm")
+	public @ResponseBody String MilestoneActivityNameUpdate(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception{ 
+	
+		
+		String UserId = (String) ses.getAttribute("Username");
+		
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside MilestoneActivityNameUpdate.htm " + UserId);
+		long count =0;
+		try {
+			String MilestoneActivityId = req.getParameter("MilestoneActivityId");
+			String ActivityName = req.getParameter("ActivityName");
+			String isChecked =req.getParameter("isChecked");
+			String ProjectId =req.getParameter("ProjectId");
+			
+			PfmsLabReportMilestone pm = new PfmsLabReportMilestone();
+			pm.setMilestoneActivityId(Long.parseLong(MilestoneActivityId));
+			pm.setActivityName(ActivityName);
+			pm.setCreatedBy(UserId);
+			pm.setCreatedDate(LocalDate.now().toString());
+			pm.setProjectId(Long.parseLong(ProjectId));
+			pm.setIsChecked(isChecked);
+			
+		
+//			 count = service.MilestoneActivityNameUpdate(MilestoneActivityId,UserId,ActivityName);
+			
+			count = service.LabReportMilestone(pm);
+				Gson json = new Gson();
+				return json.toJson(count);
+		}catch (Exception e) {
+			e.printStackTrace();
+			Gson json = new Gson();
+			return json.toJson(count);
+		}
+	}
 
 }

@@ -9,6 +9,10 @@
 <%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="java.io.File"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
+ 
+ <%@page import="java.nio.file.Path"%>
+ <%@page import="java.io.File"%>
+<%@page import="java.nio.file.Paths"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,6 +112,7 @@ projects.addAll(mainProjectList);
 projects.addAll(subProjectList);
 
 int pageCOunt=1;
+String labcode = (String) session.getAttribute("labcode");
 %>
 
 <div id="presentation-slides" class="carousel slide " data-ride="carousel">
@@ -654,10 +659,21 @@ int pageCOunt=1;
 																	
 																	<p style="margin-bottom: 0px;"><span style="text-align: left;font-size: 1.25rem !important; font-weight: bold; color: maroon;">
 																				<u>Current Status</u> :</span> &nbsp; &nbsp; &nbsp; &nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="1"%>" target="_blank">PMRC </a></span>  &nbsp; &nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="2"%>" target="_blank">EB </a></span>
-														<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
+														<%
+														Path attachmentPath1 = Paths.get(filePath,labcode,"ProjectSlide",projects.get(i)[27]+"");
+														File specificfile1 = attachmentPath1.toFile();
+														
+														Path videopath = Paths.get(filePath,labcode,"ProjectSlide",projects.get(i)[30]+"");
+														File videoPathFile = videopath.toFile();
+														
+														Path imagepath = Paths.get(filePath,labcode,"ProjectSlide",projects.get(i)[24]+"");
+														File imagepathFile = imagepath.toFile();
+														%>
+														
+														<%if(specificfile1.exists()){%>
 														&nbsp; &nbsp;	<span><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b><i class="fa fa-sm fa-angle-double-right text-primary" aria-hidden="true" style=""></i><i class="fa fa-angle-right text-primary" aria-hidden="true" style="margin-left:-2px;"></i>	</b></a></span>
 														<%} %>
-														<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
+														<%if(videoPathFile.exists()){%>
 														&nbsp; &nbsp;	<span>		<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><img alt="" src="view/images/presentation.png" style="width:19px !important"></a></span>
 												
 														<%} %>
@@ -688,16 +704,16 @@ int pageCOunt=1;
 																</div>
 																	<div class="col-md-7" style="float:right">
 													
-																		<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[24]).exists()){%>
+																		<%if(imagepathFile.exists()){%>
 																		<div style="height:50vh; width:100%;border:4px solid maroon;padding: 4px">
-																		<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
+																		<%if(specificfile1.exists()){%>
 																			<a  href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" >
 																				<img class=" d-flex justify-content-center zoom2" data-enlargable style="height: 100%; width: 100%; margin-bottom: 5px;margin: auto;" 
-																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
+																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 																			</a>
 																		<%}else{ %>
 																				<img class=" d-flex justify-content-center zoom2" data-enlargable style="height: 100%; width: 100%; margin-bottom: 5px;margin: auto;" 
-																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
+																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 																			
 																			<%} %>
 																		</div>
@@ -863,13 +879,24 @@ int pageCOunt=1;
 																			<span style="text-align: left;font-size: 1.25rem !important; font-weight: bold; color: maroon;">
 																				<u>Current Status</u> :  
 																			</span>&nbsp; &nbsp; &nbsp;&nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="1"%>" target="_blank">PMRC </a></span>  &nbsp; &nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="2"%>" target="_blank">EB </a></span>
-														<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
+														
+																<%
+														Path attachmentPath1 = Paths.get(filePath,labcode,"ProjectSlide",projects.get(i)[27]+"");
+														File specificfile1 = attachmentPath1.toFile();
+														
+														Path videopath = Paths.get(filePath,labcode,"ProjectSlide",projects.get(i)[30]+"");
+														File videoPathFile = videopath.toFile();
+														
+														Path imagepath = Paths.get(filePath,labcode,"ProjectSlide",projects.get(i)[24]+"");
+														File imagepathFile = imagepath.toFile();
+														%>
+														<%if(specificfile1.exists()){%>
 												
 												&nbsp; &nbsp;	<span >	<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b><i class="fa fa-angle-double-right text-primary" aria-hidden="true" style=></i><i class="fa fa-angle-right text-primary" aria-hidden="true" style="margin-left:-2px;"></i> </b></a> </span>	
 														
 														<%} %>
 														
-															<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
+															<%if(videoPathFile.exists()){%>
 																						
 												&nbsp; &nbsp;	<span><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><img alt="" src="view/images/presentation.png" style="width:19px !important"></a>
 														</span>
@@ -911,19 +938,38 @@ int pageCOunt=1;
 														</div>
 														<br>
 														<div class="col-md-5 mt-3" style="border:4px solid maroon;margin-left: 2%;padding: 4px;">
-													<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[24]).exists()){%>
-																				<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
-																					<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" >
-																						<img class="zoom" data-enlargable  style=" width: 100%;height:100%; margin-bottom: 5px;position: relative;display: flex;" align="middle"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
-																					</a>
-																				<%}else{ %>
-																					<img class="zoom" data-enlargable  style=" width: 100%;height:100%; margin-bottom: 5px;position: relative;display: flex;" align="middle"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projects.get(i)[25] + projects.get(i)[24])))%>">
-																				<%} %>
-																			<%} else{%>image<%}%>
-																	
-															
-																
-															<br>
+										<%
+										if(imagepathFile.exists()) {
+										%>
+										<%
+										if (specificfile1.exists()) {
+										%>
+										<a
+											href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"
+											target="_blank"> <img class="zoom" data-enlargable
+											style="width: 100%; height: 100%; margin-bottom: 5px; position: relative; display: flex;"
+											align="middle"
+											src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
+										</a>
+										<%
+										} else {
+										%>
+										<img class="zoom" data-enlargable
+											style="width: 100%; height: 100%; margin-bottom: 5px; position: relative; display: flex;"
+											align="middle"
+											src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
+										<%
+										}
+										%>
+										<%
+										} else {
+										%>image<%
+										}
+										%>
+
+
+
+										<br>
 															
 							
 														</div>
@@ -1036,18 +1082,7 @@ int pageCOunt=1;
 																	<%}%>
 																	</td>
 																</tr>
-															<%-- 	<tr>
-																	<td colspan="1">
-																		<b style="font-size: 1.5rem; font-weight: bold; color: #021B79;">Scope : </b>
-																	</td>
-																	<td colspan="7" style="color: black;">
-																		<%if (projects.get(i)[9] != null && projects.get(i)[9].toString().length() > 600) {%>
-																			<%=projects.get(i)[9].toString().substring(0, 600)%>
-																		<%} else {%> 
-																			<%=projects.get(i)[9]!=null?projects.get(i)[9]:"--"%> 
-																		<%}%>
-																	</td>
-																</tr> --%>
+									
 																
 																<tr>
 																	<td colspan="1"><b style=" font-weight: bold; color: #021B79;">Deliverables : </b> </td>

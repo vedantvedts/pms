@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -198,6 +199,9 @@ public class ProductTreeController {
 		return "redirect:/ProductTree.htm";
 		
 	}
+	
+	
+	
 	
 	@RequestMapping(value = "ProductTreeEditDelete.htm")
 	public String ProductTreeEditDelete(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -503,21 +507,111 @@ public class ProductTreeController {
     	}
 		
 	}
+	@RequestMapping(value = "SystemProductTree.htm")
+	public String SystemProductTree(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside SystemProductTree.htm "+UserId);	
+	    String sid=req.getParameter("sid");
+        if(sid==null)  {
+			Map md=model.asMap();
+			sid=(String)md.get("sid");
+		}	
+        List<Object[] > systemList= service.getAllSystemName();
+        
+        if(systemList.size()==0) 
+        {				
+			redir.addAttribute("resultfail", "No Project is Assigned to you.");
+			return "redirect:/MainDashBoard.htm";
+		}
+        
+        if(sid==null) {
+        	try {
+        		Object[] pro=systemList.get(0);
+        		sid=pro[0].toString();
+        	}catch (Exception e) {
+				
+			}
+        }
+        
+        req.setAttribute("systemList",systemList);
+ 			req.setAttribute("sid", sid);
+ 			//req.setAttribute("RevisionCount", service.getRevisionCount(ProjectId));
+ 	        
+ 			try {
+ 				req.setAttribute("ProductTreeList",service.getSystemProductTreeList(sid) );
+ 				
+ 				
+ 				
+ 				 return "producttree/SystemProductTree";
+ 			}catch (Exception e) {
+ 				e.printStackTrace();
+ 				redir.addAttribute("resultfail", "Access No Allowed");
+				return "redirect:/MainDashBoard.htm";
+			}
+ 		
+        
+		
+	}
+	@RequestMapping(value = "SystemLevelNameAdd.htm" )
+	public String SystemLevelNameAdd(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		
+		String UserId = (String) ses.getAttribute("Username");
+		
+		logger.info(new Date() +"Inside SystemLevelNameAdd.htm "+UserId);		
+		try {
+			
+			String split=req.getParameter("Split");
+			if (split != null && !split.equals("null")) {
+				
+				String arr[] = split.split("#");
+				String sid=arr[0];
+				String LevelId=arr[1];
+				String ParentLevelId=arr[2];
+				String SubLevelId=arr[3];
+				
+				
+				String LevelName=req.getParameter("LevelName");
+				
+				
+				ProductTreeDto dto=new ProductTreeDto();
+				dto.setProjectId(Long.parseLong(sid));
+				dto.setParentLevelId(Long.parseLong(ParentLevelId));
+				dto.setLevelId(LevelId);
+				dto.setSubLevelId(SubLevelId);
+				dto.setLevelName(LevelName);
+				dto.setCreatedBy(UserId);
+				
+				
+				long result=service.AddSystemLevelName(dto);
+				
+				
+				if(result!=0) {
+					
+					redir.addAttribute("result", "Level Name Added Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Level Name Add Unsuccessful");
+				}
+				redir.addAttribute("sid", sid);
+				return "redirect:/SystemProductTree.htm";
+				
+			}    
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside SystemLevelNameAdd.htm "+UserId, e); 
+			return "static/Error";
+			
+		}
+		return "redirect:/SystemProductTree.htm";
+		
+	}
 	
 	
-	/*
-	 * @RequestMapping(value = "ProductTreeDownload.htm", method =
-	 * RequestMethod.GET) public @ResponseBody String
-	 * ProductTreeDownload(HttpServletRequest req,HttpSession ses) throws Exception
-	 * {
-	 * 
-	 * String UserId = (String)ses.getAttribute("Username"); logger.info(new Date()
-	 * +" Inside ProductTreeDownload.htm "+ UserId); String
-	 * ProjectId=req.getParameter("ProjectId");
-	 * System.out.println("ProjectId---"+ProjectId);
-	 * 
-	 * List<Object[]> ProductTreeList = service.getProductTreeList(ProjectId); Gson
-	 * json = new Gson(); return json.toJson(ProductTreeList); }
-	 */
+	
 	
 }

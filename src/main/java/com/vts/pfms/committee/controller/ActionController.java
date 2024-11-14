@@ -3270,10 +3270,12 @@ public class ActionController {
 				req.setAttribute("EmployeeList", EmployeeList);
 				req.setAttribute("RfaNoTypeList", RfaNoTypeList);
 				req.setAttribute("EmpId", EmpId);
-				
+				List<Object[]>vendorList = service.getvendorList();
+				req.setAttribute("vendorList", vendorList);
 				return"action/RfaActionAdd";
 			}
-
+				
+			req.setAttribute("", Option);
 			}
 			catch (Exception e) {
 					e.printStackTrace();
@@ -3469,6 +3471,8 @@ public class ActionController {
 				rfa.setMultipartfile(attachment);
 				rfa.setAssignorAttachment(attachment.getOriginalFilename());
 				rfa.setActionBy(Long.parseLong(EmpId));
+				rfa.setTypeOfRfa(req.getParameter("type"));
+				rfa.setVendorCode(req.getParameter("vendor")!=null?req.getParameter("vendor"):"-");
 				
 				Long count=service.RfaActionSubmit(rfa,LabCode,UserId,assignee,CCEmpName);
 				
@@ -3914,12 +3918,15 @@ public class ActionController {
 					  return "redirect:/RfaActionForwardList.htm";
 		          }else if(status.equalsIgnoreCase("ARC")){
 		        	  redir.addAttribute("result", "RFA Close Successfully");
-		        	  return "redirect:/RfaInspectionApproval.htm";
+		        	  return "redirect:/RfaAction.htm";
 		          }else if(status.equalsIgnoreCase("AY") || status.equalsIgnoreCase("RFA")){
 		        	  redir.addAttribute("result", "RFA Forwarded Successfully");
 		        	  return "redirect:/RfaInspection.htm";
-		          }else if(status.equalsIgnoreCase("AR") || status.equalsIgnoreCase("AP")){
+		          }else if(status.equalsIgnoreCase("AR")){
 		        	  redir.addAttribute("result", "RFA Forwarded Successfully");
+		        	  return "redirect:/RfaInspectionApproval.htm";
+		          }else if(status.equalsIgnoreCase("AP")) {
+		        	  redir.addAttribute("result", "RFA Approved Successfully");
 		        	  return "redirect:/RfaInspectionApproval.htm";
 		          }
 				  else {

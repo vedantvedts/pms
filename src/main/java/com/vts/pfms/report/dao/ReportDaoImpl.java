@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.report.model.LabReport;
+import com.vts.pfms.report.model.PfmsLabReportMilestone;
 import com.vts.pfms.roadmap.dao.RoadMapDaoImpl;
 
 @Repository
@@ -114,7 +115,7 @@ public class ReportDaoImpl implements ReportDao {
 		}
 	}
 
-	private static final String mileStoneData="SELECT a.ProjectId,b.ActivityName,b.StartDate,b.EndDate ,'2024' AS PlanActivityYear,b.DateOfCompletion,YEAR(b.DateOfCompletion) AS 'completedYear',YEAR(b.StartDate) AS 'StartYear',YEAR(b.EndDate) AS 'EndYear'  FROM project_master a,milestone_activity b WHERE a.ProjectId=b.ProjectId AND a.IsActive=1 AND b.IsActive=1 AND a.ProjectId=:prjid";
+	private static final String mileStoneData="SELECT a.ProjectId,b.ActivityName,b.StartDate,b.EndDate ,'2024' AS PlanActivityYear,b.DateOfCompletion,YEAR(b.DateOfCompletion) AS 'completedYear',YEAR(b.StartDate) AS 'StartYear',YEAR(b.EndDate) AS 'EndYear',b.MilestoneActivityId,b.MilestoneNo,b.ProgressStatus  FROM project_master a,milestone_activity b WHERE a.ProjectId=b.ProjectId AND a.IsActive=1 AND b.IsActive=1 AND a.ProjectId=:prjid ";
 	@Override
 	public List<Object[]> mileStoneData(int currentYear,String projectid) throws Exception {
 		try {
@@ -130,6 +131,75 @@ public class ReportDaoImpl implements ReportDao {
 			logger.error(new Date()+" Inside DAO mileStoneData "+e);
 			return null;
 		}
+		
+		
 	}
+	
+	
+	private static final String MILACTNAMEUPDATE="UPDATE milestone_activity SET ActivityName=:ActivityName , ModifiedBy =:ModifiedBy WHERE MilestoneActivityId=:MilestoneActivityId";
+		@Override
+	public long MilestoneActivityNameUpdate(String milestoneActivityId,String UserId,String ActivityName) throws Exception {
+				try {
+		Query query    = manager.createNativeQuery(MILACTNAMEUPDATE);
+		query.setParameter("MilestoneActivityId", milestoneActivityId);
+		query.setParameter("ModifiedBy", UserId);
+		query.setParameter("ActivityName", ActivityName);
+	
+		return query.executeUpdate();
+				}catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+				}
+	}	
+		
+@Override
+public long LabReportMilestone(PfmsLabReportMilestone pm) throws Exception {
+try {
+	if(pm.getIsChecked().equalsIgnoreCase("1")) {
+		
+		String sql ="DELETE FROM  pfms_labreport_milestone WHERE MilestoneActivityId=:MilestoneActivityId AND ProjectId=:ProjectId";
+		Query query = manager.createNativeQuery(sql);
+		query.setParameter("MilestoneActivityId", pm.getMilestoneActivityId());
+		query.setParameter("ProjectId", pm.getProjectId());
+			query.executeUpdate();
+		
+		manager.persist(pm);
+		manager.flush();
+		return pm.getMilestoneActivityId();
+	}else {
+		String sql ="DELETE FROM  pfms_labreport_milestone WHERE MilestoneActivityId=:MilestoneActivityId AND ProjectId=:ProjectId";
+		Query query = manager.createNativeQuery(sql);
+		query.setParameter("MilestoneActivityId", pm.getMilestoneActivityId());
+		query.setParameter("ProjectId", pm.getProjectId());
+		return query.executeUpdate();
+		
+	}
+	}
+	catch (Exception e) {
+	e.printStackTrace();
+	return 0;
+		}
+	
+}
+
+@Override
+public List<PfmsLabReportMilestone> getPfmsLabReportMilestoneData(String projectid) throws Exception {
+
+	 try {
+         // Creating a dynamic JPQL query to fetch records based on ProjectId
+         String jpql = "SELECT p FROM PfmsLabReportMilestone p WHERE p.ProjectId = :projectId ORDER BY p.MilestoneActivityId ASC";
+         Query query = manager.createQuery(jpql);
+         
+         // Setting the projectId parameter
+         query.setParameter("projectId", Long.parseLong(projectid));
+
+         // Execute the query and return the list of results
+         return query.getResultList();
+     } catch (Exception e) {
+         e.printStackTrace();
+         throw new Exception("Error fetching milestones for project ID: " + projectid, e);
+     }
+ }
+
 
 }

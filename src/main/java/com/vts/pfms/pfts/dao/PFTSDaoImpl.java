@@ -113,7 +113,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 		
 		
 		String UpdateDemand="UPDATE pfts_file SET PftsStatusId=:statusid, "+update+"=:eventDate, Remarks=:remarks  WHERE PftsFileId=:fileid";
-		String UpdateDemandStatus="UPDATE pfts_file SET Remarks=:remarks WHERE PftsFileId=:fileid ";
+		String UpdateDemandStatus="UPDATE pfts_file SET PftsStatusId=:statusid, Remarks=:remarks WHERE PftsFileId=:fileid ";
 		int result;
 		System.out.println(statusId+"%%%%%%%%%%%%%%%%%%%%%%");
 		if(statusId.equalsIgnoreCase("1"))
@@ -121,6 +121,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 			Query query=manager.createNativeQuery(UpdateDemandStatus);
 			query.setParameter("remarks", remarks);
 			query.setParameter("fileid", fileId);
+			query.setParameter("statusid", statusId);
 			result=query.executeUpdate();
 		}
 		else {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vts.pfms.producttree.model.ProductTree;
 import com.vts.pfms.producttree.model.ProductTreeRev;
+import com.vts.pfms.producttree.model.SystemProductTree;
 
 public interface ProductTreeDao {
 
@@ -22,6 +23,12 @@ public interface ProductTreeDao {
 	public long ProductTreeRevise(ProductTreeRev rev)throws Exception;
 
 	public List<Object[]> getProductRevTreeList(String projectId, String revisionCount) throws Exception;
+
+	public List<Object[]> getAllSystemName()throws Exception;
+
+	public long AddSystemLevelName(SystemProductTree prod)throws Exception;
+
+	public Object getSystemProductTreeList(String sid)throws Exception;
 
 	
 

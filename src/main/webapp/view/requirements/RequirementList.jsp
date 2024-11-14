@@ -416,7 +416,6 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 					</form>
 					<!--  -->
 	<div id="reqmain" class="card-slider">
-
 		<div class="container-fluid" style="" id="main">
 			<div class="row">
 				<div class="col-md-12">
@@ -1514,7 +1513,7 @@ function reqSubmit(){
 var isOpen=false;
 var tempVal=0;
 function showDetails(InitiationReqId,type){
-	/* $('.viewbtn').css("background","#055C9D"); */
+	 $('.viewbtn').css("background","#055C9D"); 
 	/* $('#'+InitiationReqId).css("background","green"); */
 	
 	$('#row1').show();
@@ -1896,9 +1895,9 @@ $( document ).ready(function() {
 });
 <%}%>
 <%if(InitiationReqId!=null && subId!=null){%>
-$( document ).ready(function() {
+$(document).ready(function() {
 <%-- 	showDetails(<%=InitiationReqId%>,'M') --%>
-	showDetailss(<%=InitiationReqId%>,<%=subId%>)
+	showDetailss(<%=subId%>,<%=InitiationReqId%>)
 });
 <%}%>
 
@@ -1908,41 +1907,6 @@ $( document ).ready(function() {
 	showdata()
 });
 <%}%>
-// uncomment this one if needed
-//start
-/* $(document).ready(function() {
-	 $('#Editor').summernote({
-		  width: 900,   //don't use px
-		
-		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-		 
-	      lineHeights: ['0.5']
-	
-	 });
-
-$('#Editor').summernote({
-    
-     tabsize: 5,
-     height: 1000
-   });
-	 $('#Editor1').summernote({
-		  width: 900,   //don't use px
-		
-		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-		 
-	      lineHeights: ['0.5']
-	
-	 });
-
-$('#Editor1').summernote({
-    
-     tabsize: 5,
-     height: 1000
-   });
-   
-}); */
-//end
-
 	$('#Editor').summernote({
 		width: 900,
 	     toolbar: [

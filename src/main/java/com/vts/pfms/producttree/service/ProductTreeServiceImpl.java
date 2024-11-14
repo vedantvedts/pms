@@ -15,6 +15,7 @@ import com.vts.pfms.producttree.dao.ProductTreeDao;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
 import com.vts.pfms.producttree.model.ProductTree;
 import com.vts.pfms.producttree.model.ProductTreeRev;
+import com.vts.pfms.producttree.model.SystemProductTree;
 
 @Service
 public class ProductTreeServiceImpl implements ProductTreeService {
@@ -99,40 +100,29 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		
 		return dao.getProductRevTreeList(projectId,RevisionCount);
 	}	
+	
+	@Override
+	public List<Object[]> getAllSystemName() throws Exception {
+		return dao.getAllSystemName();
+	}
+	
+	@Override
+	public long AddSystemLevelName(ProductTreeDto dto) throws Exception {
+		SystemProductTree prod=new SystemProductTree();
+		prod.setSid(dto.getProjectId());
+		prod.setParentLevelId(dto.getParentLevelId());
+		prod.setLevelId(dto.getLevelId());
+		prod.setSubLevelId(dto.getSubLevelId());
+		prod.setLevelName(dto.getLevelName());
+		prod.setCreatedBy(dto.getCreatedBy());
+		prod.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		prod.setIsActive(1);
+		return dao.AddSystemLevelName(prod);
+	}
+	
+	@Override
+	public Object getSystemProductTreeList(String sid) throws Exception {
+		return dao.getSystemProductTreeList(sid);
+	}
 }
 		
-/*    ProductTree pt=dao.getLevelNameById(dto.getMainId());
-		
-    
-    ProductTreeRev rev =new ProductTreeRev();
-   
-    rev.setMainId(dto.getMainId());
-    rev.setProjectId(pt.getProjectId());
-    rev.setParentLevelId(pt.getParentLevelId());
-    rev.setLevelId(pt.getLevelId());
-    rev.setLevelName(dto.getLevelName());
-    rev.setStage(dto.getStage());
-    rev.setModule(dto.getModule());
-    rev.setCreatedBy(dto.getCreatedBy());
-    rev.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
-    rev.setRevisionNo(String.valueOf(Integer.parseInt(pt.getRevisionNo())+1));
-    rev.setIsActive(1);
-		
-		
-    dao.LevelRevise(rev);
-    
-    
-			pt.setMainId(dto.getMainId());
-			pt.setLevelName(dto.getLevelName());
-			pt.setStage(dto.getStage());
-			pt.setModule(dto.getModule());
-			pt.setRevisionNo(rev.getRevisionNo());
-			pt.setModifiedBy(dto.getCreatedBy());
-			pt.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
-		
-			return dao.LevelNameEdit(pt);
-	
-	
-	}*/
-
-
