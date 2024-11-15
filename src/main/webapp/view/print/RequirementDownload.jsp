@@ -2295,7 +2295,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
         
         var chapterCount = 0;
         var mainContentCount = 0;
-        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} else{%>-<%}%>';
+        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 		
         var docDefinition = {
             content: [
@@ -2318,7 +2318,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString() + "(" + LabList[0].toString() + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -2484,7 +2484,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString() + ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
 									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'

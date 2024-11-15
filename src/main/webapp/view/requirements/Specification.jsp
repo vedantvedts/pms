@@ -933,7 +933,7 @@ function DownloadDoc(){
 function DownloadDocPDF(){
 	var chapterCount = 0;
     var mainContentCount = 0;
-	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} else{%>-<%}%>';
+	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 	
 	var docDefinition = {
             content: [
@@ -956,7 +956,7 @@ function DownloadDocPDF(){
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString() + "(" + LabList[0].toString() + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -1122,7 +1122,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
 									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'
@@ -1711,7 +1711,7 @@ function generateRotatedTextImage(text) {
 }
 
 <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
-
+$( document ).ready(function(){
 	DownloadDocPDF();
 	/* window.close(); */
 	
@@ -1721,7 +1721,7 @@ function generateRotatedTextImage(text) {
 	setTimeout(function () {
         window.close();
     }, 5000); // Adjust the delay time as needed
-
+});
 <%} %>
 </Script>
 </body>
