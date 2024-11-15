@@ -9676,6 +9676,7 @@ public class ProjectController
 			}
 			req.setAttribute("RequirementList", RequirementList);
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));
+			req.setAttribute("isPdf", req.getParameter("isPdf"));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

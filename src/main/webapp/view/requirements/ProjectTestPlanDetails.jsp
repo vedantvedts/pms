@@ -117,7 +117,7 @@ height:300px!important;
 	}
 
 	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
-	Object[] DocTempAtrr = (Object[]) request.getAttribute("DocTempAtrr");
+	Object[] DocTempAtrr = (Object[]) request.getAttribute("DocTempAttributes");
 	String projectShortName = (String)request.getAttribute("projectShortName");
 	String lablogo = (String)request.getAttribute("lablogo");
 	String version = (String)request.getAttribute("version");
@@ -138,6 +138,8 @@ height:300px!important;
 	if(specificationList!=null && specificationList.size()>0){
 		specificationList=specificationList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
 	}
+	
+	String isPdf = (String)request.getAttribute("isPdf");
 	%>
 	
 	<%String ses=(String)request.getParameter("result"); 
@@ -2332,6 +2334,19 @@ const setImagesWidth = (htmlString, width) => {
     return container.innerHTML;
 }; 
 
+<%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
+$( document ).ready(function(){
+	DownloadDocPDF();
+	/* window.close(); */
+	
+	// Hide the current JSP page immediately after opening the PDF
+	document.body.style.display = "none";
+	
+	setTimeout(function () {
+        window.close();
+    }, 5000); // Adjust the delay time as needed
+});
+<%} %>
 </script>
 </body>
 </html>

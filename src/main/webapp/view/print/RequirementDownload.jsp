@@ -3046,7 +3046,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                 {
                     table: {
                         headerRows: 1,
-                        widths: ['10%', '60%', '30%'],
+                        widths: ['10%', '45%', '45%'],
                         body: [
                         	[
                         		{text: 'SN', style:'tableHeader'},
@@ -3066,7 +3066,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
 	        					[
 	        						{text: '<%=++slCount %>', style:'tableData', alignment: 'center'},
 	        						{text: '<%=obj1[3] %>', style:'tableData',},
-	        						{text: '<%if(ReqId.size()>0) { for(Object[]obj2:ReqId){ %> <%=obj2[1] %> <%}}else{ %> --- <%} %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%if(ReqId.size()>0) { for(Object[]obj2:ReqId){ %> <%=obj2[1] %>\n <%}}else{ %> --- <%} %>', style:'tableData', alignment: 'center'},
 	        					],
         					
         					<%}} %>
@@ -3100,7 +3100,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                 {
                     table: {
                         headerRows: 1,
-                        widths: ['10%', '30%', '60%'],
+                        widths: ['10%', '45%', '45%'],
                         body: [
                         	[
                         		{text: 'SN', style:'tableHeader'},

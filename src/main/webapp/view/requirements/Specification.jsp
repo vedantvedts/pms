@@ -105,6 +105,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 }
 String filePath=(String)request.getAttribute("filePath");
 String labcode =(String ) session.getAttribute("labcode");
+String isPdf = (String)request.getAttribute("isPdf");
 %>
 
 	<%String ses=(String)request.getParameter("result"); 
@@ -1708,6 +1709,20 @@ function generateRotatedTextImage(text) {
 	
 	return canvas.toDataURL();
 }
+
+<%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
+
+	DownloadDocPDF();
+	/* window.close(); */
+	
+	// Hide the current JSP page immediately after opening the PDF
+	document.body.style.display = "none";
+	
+	setTimeout(function () {
+        window.close();
+    }, 5000); // Adjust the delay time as needed
+
+<%} %>
 </Script>
 </body>
 </html>

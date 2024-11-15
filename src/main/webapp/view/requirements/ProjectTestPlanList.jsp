@@ -491,7 +491,7 @@ FormatConverter fc = new FormatConverter();
 													</div>
 												</button>
 												
-												<button class="editable-clicko" <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="TestPlanDownlodPdfFreeze.htm"<%}else {%>formaction="TestPlanDownlodPdf.htm"<%} %> formtarget="blank" >
+												<button class="editable-clicko" name="isPdf" value="Y" formaction="ProjectTestPlanDetails.htm" <%-- <%if(obj[9]!=null && ("RFA".equalsIgnoreCase(obj[9].toString()) ||  "RAM".equalsIgnoreCase(obj[9].toString()))) {%>formaction="TestPlanDownlodPdfFreeze.htm"<%}else {%>formaction="TestPlanDownlodPdf.htm"<%} %>  --%> formtarget="blank" >
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">

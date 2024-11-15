@@ -672,6 +672,7 @@ public class RequirementsController {
 			String specsInitiationId = service.getFirstVersionSpecsInitiationId(initiationId, projectId, productTreeMainId)+"";
 			req.setAttribute("specificationList", service.getSpecsList(specsInitiationId));
 			req.setAttribute("StagesApplicable", service.StagesApplicable());
+			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			
 			File my_file = null;
 
