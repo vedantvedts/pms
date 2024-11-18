@@ -92,6 +92,7 @@ String Classification = (String)request.getAttribute("Classification");
 //String docnumber =(String)request.getAttribute("docnumber");
 String version =(String)request.getAttribute("version");
 String lablogo = (String)request.getAttribute("lablogo");
+String drdologo = (String)request.getAttribute("drdologo");
 
 List<Object[]> SpecsIntro = (List<Object[]>)request.getAttribute("SpecsIntro");
 List<Object[]> specsList = (List<Object[]>)request.getAttribute("specsList");
@@ -1585,22 +1586,54 @@ function DownloadDocPDF(){
                 }
                 return '';
             },
-            header: function(currentPage) {
-                return [
-                    { text: 'Restricted', alignment: 'center', margin: [0, 10, 0, 0], fontSize: 8, bold: true },
-                ];
+            header: function (currentPage) {
+                return {
+                    stack: [
+                        
+                        {
+                            columns: [
+                                {
+                                    // Left: Lab logo
+                                    image: '<%= lablogo != null ? "data:image/png;base64," + lablogo : "" %>',
+                                    width: 30,
+                                    height: 30,
+                                    alignment: 'left',
+                                    margin: [35, 10, 0, 10]
+                                },
+                                {
+                                    // Center: Text
+                                    text: 'Restricted',
+                                    alignment: 'center',
+                                    fontSize: 10,
+                                    bold: true,
+                                    margin: [0, 10, 0, 0]
+                                },
+                                {
+                                    // Right: DRDO logo
+                                    image: '<%= drdologo != null ? "data:image/png;base64," + drdologo : "" %>',
+                                    width: 30,
+                                    height: 30,
+                                    alignment: 'right',
+                                    margin: [0, 10, 20, 10]
+                                }
+                            ]
+                        },
+                        
+                    ]
+                };
             },
-            pageMargins: [40, 40, 20, 40],
+			pageMargins: [50, 50, 30, 40],
             
             background: function(currentPage) {
                 return [
                     {
                         image: generateRotatedTextImage(leftSideNote),
                         width: 100, // Adjust as necessary for your content
-                        absolutePosition: { x: -20, y: 50 }, // Position as needed
+                        absolutePosition: { x: -10, y: 50 }, // Position as needed
                     }
                 ];
             },
+            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 70,  },
            
             defaultStyle: { fontSize: 12, color: 'black', }
         };

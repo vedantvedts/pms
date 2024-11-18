@@ -120,6 +120,7 @@ height:300px!important;
 	Object[] DocTempAtrr = (Object[]) request.getAttribute("DocTempAttributes");
 	String projectShortName = (String)request.getAttribute("projectShortName");
 	String lablogo = (String)request.getAttribute("lablogo");
+	String drdologo = (String)request.getAttribute("drdologo");
 	String version = (String)request.getAttribute("version");
 	
 	Object[] TestScopeIntro = (Object[])request.getAttribute("TestScopeIntro");
@@ -1236,7 +1237,7 @@ height:300px!important;
 function DownloadDocPDF(){
 	var chapterCount = 0;
 	var mainContentCount = 0;
-	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 		
 	var docDefinition = {
             content: [
@@ -1661,11 +1662,11 @@ function DownloadDocPDF(){
 	                	stack: [htmlToPdfmake('<%=htmlContentRoleResponsibility.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>')],
 	                },
             	<%}%> --%>
-            	 <%-- <% if(htmlContentRoleResponsibility!=null) { %>
+            	<% if(htmlContentRoleResponsibility!=null) { %>
 	                {
 	                	stack: [htmlToPdfmake("<%=htmlContentRoleResponsibility %>")],
 	                },
-         		<%}%> --%>
+         		<%}%>
                 /* ************************************** Role & Responsibility End *********************************** */
 
 	            /* ************************************** Acceptance Testing *********************************** */
@@ -1745,9 +1746,12 @@ function DownloadDocPDF(){
 					margin : [10, 0, 0, 0],
                 	
                 },
-                <%-- <% if(htmlContentTestSetUpDiagram!=null) { %>
+                <%-- <% if(htmlContentTestSetUpDiagram!=null) { 
+                	htmlContentTestSetUpDiagram = htmlContentTestSetUpDiagram.replaceAll("</tr>", "<td style=\'border:1px solid black;\'>Diagram</td></tr>");
+                	System.out.println(htmlContentTestSetUpDiagram);
+                %>
 	                {
-	                	text: [htmlToPdfmake("<%=htmlContentTestSetUpDiagram %>")],
+	                	stack: [htmlToPdfmake("<%=htmlContentTestSetUpDiagram %>")],
 	                },
      			<%}%> --%>
             	
@@ -1881,10 +1885,15 @@ function DownloadDocPDF(){
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Spec ID', style: 'tableData',},
-		            					{text: '<%if(obj[19]!=null){ List<String>list = new ArrayList<>();%>'
+		            					<%-- {text: '<%if(obj[19]!=null){ List<String>list = new ArrayList<>();%>'
 		            						  +'<%if(specificationList.size()>0){ list = specificationList.stream().filter(e->Arrays.asList(obj[19].toString().split(",")).contains(e[0].toString())).map(e->e[1].toString()).collect(Collectors.toList());}%>'
 		            						  +'<%= list.size()>0?list.toString().replace("[", "").replace("]",""):"-" %>'
-		            						  +'<% } else {%>-<%}%>', style: 'tableData',},
+		            						  +'<% } else {%>-<%}%>', style: 'tableData',}, --%>
+		            					{text: '<%if(obj[19]!=null){ List<Object[]>list = new ArrayList<>();%>'
+		            						  +'<%if(specificationList.size()>0){ list = specificationList.stream().filter(e->Arrays.asList(obj[19].toString().split(",")).contains(e[0].toString())).collect(Collectors.toList());}%>'
+		            						  +'<%for(Object[] obj1 : list) {%>'
+		            						  +'<%=obj1[1]+" ("+(obj1[5]!=null?obj1[5]:"-")+" "+(obj1[9]!=null?obj1[9]:"-")+" "+(obj1[6]!=null?obj1[6]:"-")+")"%>\n'
+		            						  +'<%} } else {%>-<%}%>', style: 'tableData',},
 		            				],
 		            				
 		            				[
@@ -2076,7 +2085,8 @@ function DownloadDocPDF(){
         						newSpecList = specificationList.stream().filter(spec->specid.contains(spec[0].toString())).collect(Collectors.toList()); 
         						%>
         						
-        						{text: '<%if(newSpecList.size()!=0) { for(Object[]obj1:newSpecList){ %><%=obj1[1]%>\n<%}}else{ %> - <%} %>', style: 'tableData', },
+        						{text: '<%if(newSpecList.size()!=0) { for(Object[]obj1:newSpecList){ %><%=obj1[1]+" ("+(obj1[5]!=null?obj1[5]:"-")+" "+(obj1[9]!=null?obj1[9]:"-")+" "+(obj1[6]!=null?obj1[6]:"-")+")"%>\n<%}}else{ %> - <%} %>', style: 'tableData', },
+        						
                 			],
                 			<%}}else{ %>
                 				[{text: 'No Data Available !', style: 'tableData', colSpan: 3, alignment: 'center'}],
@@ -2129,7 +2139,7 @@ function DownloadDocPDF(){
 								for(Object[] obj:specificationList){ %>
                 			[
                 				{text: '<%=++slno %>', style: 'tableData', alignment: 'center'},
-                				{text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData', },
+                				{text: '<%=obj[1]+" ("+(obj[5]!=null?obj[5]:"-")+" "+(obj[9]!=null?obj[9]:"-")+" "+(obj[6]!=null?obj[6]:"-")+")" %>', style: 'tableData', },
                 				
                 				<%
 								List<Object[]>newTestList = new ArrayList<>(); 
@@ -2213,22 +2223,54 @@ function DownloadDocPDF(){
                 }
                 return '';
             },
-            header: function(currentPage) {
-                return [
-                    { text: 'Restricted', alignment: 'center', margin: [0, 10, 0, 0], fontSize: 8, bold: true },
-                ];
+            header: function (currentPage) {
+                return {
+                    stack: [
+                        
+                        {
+                            columns: [
+                                {
+                                    // Left: Lab logo
+                                    image: '<%= lablogo != null ? "data:image/png;base64," + lablogo : "" %>',
+                                    width: 30,
+                                    height: 30,
+                                    alignment: 'left',
+                                    margin: [35, 10, 0, 10]
+                                },
+                                {
+                                    // Center: Text
+                                    text: 'Restricted',
+                                    alignment: 'center',
+                                    fontSize: 10,
+                                    bold: true,
+                                    margin: [0, 10, 0, 0]
+                                },
+                                {
+                                    // Right: DRDO logo
+                                    image: '<%= drdologo != null ? "data:image/png;base64," + drdologo : "" %>',
+                                    width: 30,
+                                    height: 30,
+                                    alignment: 'right',
+                                    margin: [0, 10, 20, 10]
+                                }
+                            ]
+                        },
+                        
+                    ]
+                };
             },
-            pageMargins: [40, 40, 20, 40],
+			pageMargins: [50, 50, 30, 40],
             
             background: function(currentPage) {
                 return [
                     {
                         image: generateRotatedTextImage(leftSideNote),
                         width: 100, // Adjust as necessary for your content
-                        absolutePosition: { x: -20, y: 50 }, // Position as needed
+                        absolutePosition: { x: -10, y: 50 }, // Position as needed
                     }
                 ];
             },
+            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 50,  },
            
             defaultStyle: { fontSize: 12 }
         };

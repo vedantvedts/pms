@@ -1764,6 +1764,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
 						 Map<String, List<Object[]>> verificationDataListMap = VerificationDataList!=null && VerificationDataList.size()>0?VerificationDataList.stream()
 								  											.collect(Collectors.groupingBy(array -> array[1] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
 						 String lablogo=(String)request.getAttribute("lablogo");
+						 String drdologo=(String)request.getAttribute("drdologo");
 						 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
 						 String FontFamily="Times New Roman";
 						 
@@ -1826,12 +1827,16 @@ This appendix contains acronyms and provides standard definitions for terminolog
 			</div>
 
 
-			<%List<Object[]> DocumentSummary=(List<Object[]>)request.getAttribute("DocumentSummary"); 
-			String projectShortName =(String)request.getAttribute("projectShortName");
-			String Classification=(String)request.getAttribute("Classification");
-			String docnumber =(String)request.getAttribute("docnumber");
+			<%List<Object[]> DocumentSummary = (List<Object[]>)request.getAttribute("DocumentSummary"); 
+			Object[] projectDetails = (Object[])request.getAttribute("projectDetails"); 
+			String projectShortName = (String)request.getAttribute("projectShortName");
+			String Classification = (String)request.getAttribute("Classification");
+			String docnumber = "-";
 			String version =(String)request.getAttribute("version");
 			
+			if(DocumentSummary!=null && DocumentSummary.size()>0) {
+				docnumber = (DocumentSummary.get(0)[11]!=null?DocumentSummary.get(0)[11].toString().replaceAll("-", ""):"-")+"-"+session.getAttribute("labcode")+"-"+projectDetails[1]+"-V"+version;
+			}
 			LocalDate now = LocalDate.now();
 			Month month = now.getMonth();
 			int year = now.getYear();
@@ -2241,7 +2246,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
 								%>
 									<tr>
 										<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%=++rcount %></td>
-										<td class="border-black" style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %></td>
+										<td class="border-black" style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1] %></td>
 										<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
 										<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[21]!=null) {%> <%=obj[21].toString() %>
 											<%}else{%>-<%} %>
@@ -2265,7 +2270,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
 				%>
 					<h3 class="heading-colors" style="font-size: 16px; ">
 				   		<%="3"+"."+(verificationCount)%>.<%=++j %>
-						<%=obj[1].toString() %>
+						<%=obj[1] %>
 					</h3>
 					<%if(obj[3]!=null){ %>
 						<%=obj[3].toString()%>
@@ -2949,7 +2954,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
 								+'<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No details filled&nbsp;&nbsp;-</p><%}%>'),margin: [5, 5, 5, 5],
 					}, --%>
 						{
-							text : (mainContentCount)+'.<%=verificationCount%>.<%=++j %>. <%=obj[1].toString() %>',
+							text : (mainContentCount)+'.<%=verificationCount%>.<%=++j %>. <%=obj[1] %>',
 							style: 'chapterSubSubHeader',
 							tocItem: true,
 			                id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=verificationCount%>.<%=j %>',
@@ -3366,22 +3371,54 @@ This appendix contains acronyms and provides standard definitions for terminolog
                 }
                 return '';
             },
-            header: function(currentPage) {
-                return [
-                    { text: 'Restricted', alignment: 'center', margin: [0, 10, 0, 0], fontSize: 8, bold: true },
-                ];
+            header: function (currentPage) {
+                return {
+                    stack: [
+                        
+                        {
+                            columns: [
+                                {
+                                    // Left: Lab logo
+                                    image: '<%= lablogo != null ? "data:image/png;base64," + lablogo : "" %>',
+                                    width: 30,
+                                    height: 30,
+                                    alignment: 'left',
+                                    margin: [35, 10, 0, 10]
+                                },
+                                {
+                                    // Center: Text
+                                    text: 'Restricted',
+                                    alignment: 'center',
+                                    fontSize: 10,
+                                    bold: true,
+                                    margin: [0, 10, 0, 0]
+                                },
+                                {
+                                    // Right: DRDO logo
+                                    image: '<%= drdologo != null ? "data:image/png;base64," + drdologo : "" %>',
+                                    width: 30,
+                                    height: 30,
+                                    alignment: 'right',
+                                    margin: [0, 10, 20, 10]
+                                }
+                            ]
+                        },
+                        
+                    ]
+                };
             },
-            pageMargins: [40, 40, 20, 40],
+			pageMargins: [50, 50, 30, 40],
             
             background: function(currentPage) {
                 return [
                     {
                         image: generateRotatedTextImage(leftSideNote),
                         width: 100, // Adjust as necessary for your content
-                        absolutePosition: { x: -20, y: 50 }, // Position as needed
+                        absolutePosition: { x: -10, y: 50 }, // Position as needed
                     }
                 ];
             },
+            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 50,  },
             /* background: function(currentPage) {
                 return [
                     {
