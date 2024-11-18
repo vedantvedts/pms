@@ -51,7 +51,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	EntityManager manager;
 
 
-	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,'0',a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality,SUBSTRING_INDEX(a.requirementid, '_', -1) AS 'requirement_number' FROM pfms_initiation_req a WHERE ReqInitiationId=:ReqInitiationId AND isActive='1' ORDER BY ParentId,requirement_number";
+	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,'0',a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality,SUBSTRING_INDEX(a.requirementid, '_', -1) AS 'requirement_number',a.LinkedSubSystem FROM pfms_initiation_req a WHERE ReqInitiationId=:ReqInitiationId AND isActive='1' ORDER BY ParentId,requirement_number";
 	@Override
 	public List<Object[]> RequirementList(String reqInitiationId) throws Exception {
 		// TODO Auto-generated method stub

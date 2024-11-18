@@ -52,4 +52,6 @@ public class PfmsInititationRequirement implements Serializable {
 	private String Criticality;
 	private Long ReqInitiationId;
 	private String TestStage;
+	
+	private String LinkedSubSystem;
 }

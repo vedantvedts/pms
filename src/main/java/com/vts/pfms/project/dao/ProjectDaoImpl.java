@@ -2216,7 +2216,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public long ProjectRequirementDelete(long initiationReqId) throws Exception {
 		return 0;
 	}
-	private static final String REQUIREMENTS="SELECT '0' as InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.criticality,a.TestStage  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
+	private static final String REQUIREMENTS="SELECT '0' as InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.criticality,a.TestStage,a.LinkedSubSystem  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
 	@Override
 	public Object[] Requirement(long InitiationReqId) throws Exception {
 		Query query=manager.createNativeQuery(REQUIREMENTS);

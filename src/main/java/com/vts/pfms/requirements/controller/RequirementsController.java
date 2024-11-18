@@ -665,6 +665,7 @@ public class RequirementsController {
 			req.setAttribute("DocTempAttributes", projectservice.DocTempAttributes());
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
 			req.setAttribute("version", testPlanInitiation!=null ?testPlanInitiation.getTestPlanVersion():"1.0");
 			req.setAttribute("TestScopeIntro",service.TestScopeIntro(testPlanInitiationId));
 			req.setAttribute("TestSuite", service.TestTypeList());
@@ -674,57 +675,51 @@ public class RequirementsController {
 			req.setAttribute("StagesApplicable", service.StagesApplicable());
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			
-			File my_file = null;
-
 			List<Object[]> acceptanceTestingList = service.GetAcceptanceTestingList(testPlanInitiationId);
-			String TestSetUp = null;
-			String TestSetUpDiagram = null;
-			String Testingtools = null;
-			String TestVerification = null;
-			String RoleResponsibility = null;
 
 			if (acceptanceTestingList != null && !acceptanceTestingList.isEmpty()) {
 			    for (Object[] obj : acceptanceTestingList) {
-			        String fileName = obj[3] != null ? obj[3].toString() : null;
-			        String filePath = obj[4] != null ? obj[4].toString() : null;
+			        String fileName = (obj != null && obj[3] != null) ? obj[3].toString() : null;
+			        String filePath = (obj != null && obj[4] != null) ? obj[4].toString() : null;
 
-			        // Construct the file path only if file name and path are present
-			        if (fileName != null && filePath != null) {
-			            my_file = new File(uploadpath + filePath + File.separator + fileName);
+			        if (fileName != null && filePath != null && obj[1] != null && obj[2] != null) {
+			            Path fileFullPath = Paths.get(uploadpath, filePath, fileName);
+			            File my_file = fileFullPath.toFile();
 
 			            if (my_file.exists()) {
 			                try (FileInputStream fis = new FileInputStream(my_file)) {
 			                    String htmlContent = convertExcelToHtml(fis);
+			                    String category = obj[1].toString();
 
-			                    // Handle different cases based on obj[1]
-			                    if ("Test Set UP".equalsIgnoreCase(obj[1].toString())) {
-			                        TestSetUp = obj[2].toString();
-			                        req.setAttribute("htmlContent", htmlContent);
-			                        req.setAttribute("TestSetUp", TestSetUp);
-			                    } else if ("Test Set Up Diagram".equalsIgnoreCase(obj[1].toString())) {
-			                        TestSetUpDiagram = obj[2].toString();
-			                        req.setAttribute("htmlContentTestSetUpDiagram", htmlContent);
-			                        req.setAttribute("TestSetUpDiagram", TestSetUpDiagram);
-			                    } else if ("Testing tools".equalsIgnoreCase(obj[1].toString())) {
-			                        Testingtools = obj[2].toString();
-			                        req.setAttribute("htmlContentTestingtools", htmlContent);
-			                        req.setAttribute("Testingtools", Testingtools);
-			                    } else if ("Test Verification".equalsIgnoreCase(obj[1].toString())) {
-			                        TestVerification = obj[2].toString();
-			                        req.setAttribute("htmlContentTestVerification", htmlContent);
-			                        req.setAttribute("TestVerification", TestVerification);
-			                    } else if ("Role & Responsibility".equalsIgnoreCase(obj[1].toString())) {
-			                        RoleResponsibility = obj[2].toString();
-			                        req.setAttribute("htmlContentRoleResponsibility", htmlContent);
-			                        req.setAttribute("RoleResponsibility", RoleResponsibility);
+			                    switch (category) {
+			                        case "Test Set UP":
+			                            req.setAttribute("htmlContentTestSetUp", htmlContent);
+			                            req.setAttribute("TestSetUp", obj[2].toString());
+			                            break;
+			                        case "Test Set Up Diagram":
+			                            req.setAttribute("htmlContentTestSetUpDiagram", htmlContent);
+			                            req.setAttribute("TestSetUpDiagram", obj[2].toString());
+			                            break;
+			                        case "Testing tools":
+			                            req.setAttribute("htmlContentTestingtools", htmlContent);
+			                            req.setAttribute("Testingtools", obj[2].toString());
+			                            break;
+			                        case "Test Verification":
+			                            req.setAttribute("htmlContentTestVerification", htmlContent);
+			                            req.setAttribute("TestVerification", obj[2].toString());
+			                            break;
+			                        case "Role & Responsibility":
+			                            req.setAttribute("htmlContentRoleResponsibility", htmlContent);
+			                            req.setAttribute("RoleResponsibility", obj[2].toString());
+			                            break;
+			                        default:
+			                            logger.warn("Unrecognized category: {}", category);
 			                    }
 			                } catch (IOException e) {
-			                    // Log the error and continue with the next item
-			                    e.printStackTrace();
+			                    logger.error("Error processing file: {}", my_file.getAbsolutePath(), e);
 			                }
 			            } else {
-			                // Optional: Log or handle missing files here if needed
-			                System.out.println("File does not exist: " + my_file.getAbsolutePath());
+			                logger.warn("File does not exist: {}", my_file.getAbsolutePath());
 			            }
 			        }
 			    }
@@ -1907,7 +1902,12 @@ public class RequirementsController {
 				LinkedPara=Arrays.asList(req.getParameterValues("LinkedPara")).toString().replace("[","").replace("]", "");
 			}
 
-			System.out.println("LinkedPara  "+req.getParameterValues("LinkedPara"));
+			String LinkedSubSystem = null;
+			
+			if(req.getParameter("LinkedSub")!=null) {
+				LinkedSubSystem = Arrays.asList(req.getParameterValues("LinkedSub")).toString().replace("[","").replace("]", "");
+			}
+			
 
 
 
@@ -1952,6 +1952,7 @@ public class RequirementsController {
 			pir.setCriticality(req.getParameter("criticality"));
 			pir.setReqInitiationId(Long.parseLong(reqInitiationId));
 			pir.setTestStage(req.getParameter("TestStage"));
+			pir.setLinkedSubSystem(LinkedSubSystem);
 			long count =0;
 			count=service.addPfmsInititationRequirement(pir);
 
@@ -2032,7 +2033,12 @@ public class RequirementsController {
 				LinkedPara=Arrays.asList(req.getParameterValues("LinkedPara")).toString().replace("[","").replace("]", "");
 			}
 
-
+				String LinkedSubSystem = null;
+			
+			if(req.getParameter("LinkedSub")!=null) {
+				LinkedSubSystem = Arrays.asList(req.getParameterValues("LinkedSub")).toString().replace("[","").replace("]", "");
+			}
+			
 		
 			PfmsInititationRequirement pir = service.getPfmsInititationRequirementById(InitiationReqId);
 			
@@ -2089,6 +2095,7 @@ public class RequirementsController {
 			pir.setCriticality(req.getParameter("criticality"));
 			pir.setReqInitiationId(Long.parseLong(reqInitiationId));
 			pir.setTestStage(req.getParameter("TestStage"));
+			pir.setLinkedSubSystem(LinkedSubSystem);
 			long count =0;
 			count=service.addOrUpdatePfmsInititationRequirement(pir);
 

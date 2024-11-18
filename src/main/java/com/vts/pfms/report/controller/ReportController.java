@@ -331,7 +331,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
     	// Insert the image
            try (InputStream imageStream = Files.newInputStream(imgfile)) {
            	projectNameValueRun.addBreak(); // Add a line break before the image
-           	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(450), Units.toEMU(300)); // width and height in EMU
+           	projectNameValueRun.addPicture(imageStream, XWPFDocument.PICTURE_TYPE_PNG, imgfile.getFileName().toString(), Units.toEMU(150), Units.toEMU(100)); // width and height in EMU
            } catch (InvalidFormatException | IOException e) {
                e.printStackTrace(); // Handle the exception accordingly
            }
@@ -451,7 +451,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
 
         
         XWPFRun reviewHelds = reviewHeld.createRun();
-        reviewHelds.setText("Details of Review till "+(currentYear - 1)+":");
+        reviewHelds.setText("Details of Review till "+(currentYear)+":");
         reviewHelds.setBold(true);
         reviewHelds.setColor("0000FF");  
         reviewHelds.setFontSize(12);
@@ -465,7 +465,12 @@ XWPFParagraph reviewHeld = document.createParagraph();
        String reviewHeldValueEB=projectattribute[16] != null && !projectattribute[16].toString().trim().isEmpty() 
                ? projectattribute[16].toString() 
                        : "-";
-       reviewHeldsValueRun.setText(" " + "EB:"+reviewHeldValueEB+" "+"PMRC:"+reviewHeldValuePMRC); 
+       reviewHeldsValueRun.addBreak();
+       reviewHeldsValueRun.setText("EB: " + reviewHeldValueEB);
+
+       // Adding the PMRC value on another new line
+       reviewHeldsValueRun.addBreak();
+       reviewHeldsValueRun.setText("PMRC: " + reviewHeldValuePMRC);
        reviewHeldsValueRun.setBold(false);
        reviewHeldsValueRun.setFontSize(12);
         

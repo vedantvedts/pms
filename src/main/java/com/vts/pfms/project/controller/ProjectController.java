@@ -6465,6 +6465,7 @@ public class ProjectController
 				Object[] projectDetails = service.getProjectDetails(LabCode, reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"", reqini.getInitiationId()!=0?"P":"E");
 				req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
 				req.setAttribute("Classification", projectDetails!=null?projectDetails[12]:"");
+				req.setAttribute("projectDetails", projectDetails);
 			}
 			
 
@@ -6472,12 +6473,14 @@ public class ProjectController
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
 			req.setAttribute("RequirementList", reqService.RequirementList(reqInitiationId));
 			req.setAttribute("uploadpath", uploadpath);
 			req.setAttribute("ReqIntro", service.RequirementIntro(reqInitiationId));
-	
+			List<Object[]> productTreeList = reqService.productTreeListByProjectId(reqini.getProjectId()+"");
+			req.setAttribute("productTreeList", productTreeList );
 			req.setAttribute("MemberList", service.reqMemberList(reqInitiationId));
 			req.setAttribute("DocumentSummary", service.getDocumentSummary(reqInitiationId));
 			req.setAttribute("ProjectParaDetails", reqService.getProjectParaDetails(reqInitiationId));
@@ -6487,7 +6490,6 @@ public class ProjectController
 			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(reqInitiationId));
 			req.setAttribute("AbbreviationDetails", service.getAbbreviationDetails(reqInitiationId));
 			req.setAttribute("Verifications", reqService.getVerifications(reqInitiationId));
-			req.setAttribute("docnumber", req.getParameter("docnumber"));
 			String version = reqini!=null && reqini.getReqVersion()!=null?reqini.getReqVersion():"1.0";
 			req.setAttribute("version", version);
 			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId)); //changed the code here pass the projectId
@@ -9665,6 +9667,7 @@ public class ProjectController
 			req.setAttribute("DocTempAttributes", service.DocTempAttributes());
 			req.setAttribute("version", specsInitiation!=null ?specsInitiation.getSpecsVersion():"1.0");
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
 			req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode));
 			req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
 			List<Object[]>initiationReqList = reqService.initiationReqList(specsInitiation.getProjectId()+"", specsInitiation.getProductTreeMainId()+"",specsInitiation.getInitiationId()+"" );

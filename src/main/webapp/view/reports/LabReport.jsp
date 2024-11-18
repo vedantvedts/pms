@@ -453,7 +453,19 @@ if(proList!=null && proList.size()>0){
 					<div class="row card-header" style="height:auto;padding:4px;">
 			   			<div class="col-sm-12 col-md-5">
 							<h3 style="margin-bottom:0px;">Lab Report</h3>
-						</div>	  
+						</div>	 
+						
+							       <div class="col-md-2">
+			       <form action="#"> 
+			       <button type="submit" class="btn bg-transparennt" formaction="LabReportChapter1.htm" formmethod="get" data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="CHAPTER 1">
+			       <i class="fa fa-download" aria-hidden="true" style="color:green;"></i> 
+			       </button>
+			       <button type="submit" class="btn bg-transparennt" formaction="LabReportChapter2.htm" formmethod="get" data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="CHAPTER 2">
+			       <i class="fa fa-download" aria-hidden="true" style="color:green;"></i> 
+			       </button>
+			       </form>
+			       </div>
+						 
 						<div class="col-sm-12 col-md-5" style="float: right;">
 						   <form method="get" action="LabReports.htm" id="projectchange">
 							
@@ -489,16 +501,7 @@ if(proList!=null && proList.size()>0){
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					 </form>				
 			       </div>
-			       <div class="col-md-2">
-			       <form action="#"> 
-			       <button type="submit" class="btn bg-transparennt" formaction="LabReportChapter1.htm" formmethod="get" data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="CHAPTER 1">
-			       <i class="fa fa-download" aria-hidden="true" style="color:green;"></i> 
-			       </button>
-			       <button type="submit" class="btn bg-transparennt" formaction="LabReportChapter2.htm" formmethod="get" data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="CHAPTER 2">
-			       <i class="fa fa-download" aria-hidden="true" style="color:green;"></i> 
-			       </button>
-			       </form>
-			       </div>
+		
 			     </div>
 		       </div>
 				
@@ -698,7 +701,7 @@ if(proList!=null && proList.size()>0){
           <span aria-hidden="true" style="color:red;">×</span>
         </button>
       </div>
-           <div class="modal-body">
+           <div class="modal-body" style="overflow: auto;height:600px">
            <span class="text-danger mb-2 t">
            To chnage in Anything Activity Name please unchecked the checkbox 
            then update the data and make it checked again.Only the selected Activities will come in Lab Report
@@ -759,10 +762,8 @@ if(proList!=null && proList.size()>0){
             </tbody>
              <%}} %>
              	</table>
-             	
-             	<div align="center"><button class="btn btn-warning" onclick="updateAll()">UPDATE</button></div>
-            </div>
-   
+           </div>
+    		<div align="center" class="mt-2 mb-2"><button class="btn btn-warning" onclick="updateAll()">UPDATE</button></div>
       
     </div>
   </div>
@@ -1199,21 +1200,10 @@ var editor_config = {
 	
 	var editor_config1 = {
 			maxlength: '4000',
-			toolbar: [{
-			          name: 'clipboard',
-			          items: ['PasteFromWord', '-', 'Undo', 'Redo']
-			        },
+			toolbar: [
 			        {
 			          name: 'basicstyles',
 			          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
-			        },
-			        {
-			          name: 'links',
-			          items: ['Link', 'Unlink']
-			        },
-			        {
-			          name: 'paragraph',
-			          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
 			        },
 			        {
 			          name: 'insert',
@@ -1223,7 +1213,7 @@ var editor_config = {
 			          name: 'editing',
 			          items: ['Scayt']
 			        },
-			        '/',
+			        
 			        {
 			          name: 'styles',
 			          items: ['Format', 'Font', 'FontSize']
@@ -1236,16 +1226,13 @@ var editor_config = {
 			          name: 'align',
 			          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
 			        },
-			        {
-			          name: 'document',
-			          items: ['Print', 'PageBreak', 'Source']
-			        }
+			     
 			      ],
 			    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
 				customConfig: '',
 				disallowedContent: 'img{width,height,float}',
 				extraAllowedContent: 'img[width,height,align]',
-				height: 180,
+				height: 100,
 			 	contentsCss: [CKEDITOR.basePath +'mystyles.css' ], 
 				bodyClass: 'document-editor',
 				format_tags: 'p;h1;h2;h3;pre',

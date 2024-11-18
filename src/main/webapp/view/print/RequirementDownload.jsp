@@ -2261,7 +2261,9 @@ This appendix contains acronyms and provides standard definitions for terminolog
 			</div>
 		
 		
-			<%List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");%>
+			<%List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");
+			List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeList");
+			%>
 			<div id="verificationDiv">
 				<%if(Verifications!= null &&   !Verifications.isEmpty()) {
 					int verificationCount=1;
@@ -2837,6 +2839,12 @@ This appendix contains acronyms and provides standard definitions for terminolog
     	                                		+ '<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
+    	                            ],
+    	                            
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Link Sub-Systems', style: 'tableData' },
+    	                                { text: '<%if(obj1[23]!=null) { String [] a=obj1[23].toString().split(", "); for(String s:a){ %> <%=productTreeList.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[2].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
     	                            ],
     	                            
     	                            

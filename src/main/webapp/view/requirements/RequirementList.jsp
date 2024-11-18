@@ -365,6 +365,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 }
 
 List<Object[]>VerificationMethodList = (List<Object[]>)request.getAttribute("VerificationMethodList");
+List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
 
 List<Object[]>DemonstrationList = new ArrayList<>();
 List<Object[]>TestList = new ArrayList<>();
@@ -666,7 +667,20 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 
 								</div>
+								<hr>
 								
+													<div class="row">
+								<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Linked SubSystem:
+										</h5>
+									</div>
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="subsytemshow" style="font-size: 18px;"></p>
+									</div>
+
+								</div>
 							</div> 
 
 						
@@ -955,6 +969,32 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									
 								</div>
 							</div>
+								
+								<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-3">
+										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+											Linked subsystem
+										</label>
+									</div>
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<%if ((productTreeList != null) && (!productTreeList.isEmpty())) {%>
+												<select class="form-control selectdee" name="LinkedSub" id="LinkedSub" data-width="80%" data-live-search="true" multiple onchange="getParaDetails()">
+													<option value="" disabled="disabled">---Choose----</option>
+													<%for (Object[] obj : productTreeList) {%>
+														<option value="<%=obj[0]%>"><%=obj[1]+" "+obj[2] %></option>
+													<%}%>
+												</select>
+											<%} else {%>
+												<input class="form-control" name="" id="LinkedSub"  readonly placeholder="No para specified for Project">
+											<%} %>
+										</div>
+									</div>
+								</div>
+							</div>	
+								
+								
 								
 									
 							<div class="col-md-12" style="margin-top: 1%">
@@ -1257,6 +1297,32 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								</div>
 							</div>
 									
+									<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-3">
+										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+											Linked subsystem
+										</label>
+									</div>
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<%if ((productTreeList != null) && (!productTreeList.isEmpty())) {%>
+												<select class="form-control selectdee" name="LinkedSub" id="LinkedSubedit" data-width="80%" data-live-search="true" multiple onchange="getParaDetails()">
+													<option value="" disabled="disabled">---Choose----</option>
+													<%for (Object[] obj : productTreeList) {%>
+														<option value="<%=obj[0]%>"><%=obj[1]+" "+obj[2] %></option>
+													<%}%>
+												</select>
+											<%} else {%>
+												<input class="form-control" name="" id="LinkedSub"  readonly placeholder="No para specified for Project">
+											<%} %>
+										</div>
+									</div>
+								</div>
+							</div>		
+									
+									
+									
 							<div class=col-md-12>
 								<div class="row">
 									<div class="col-md-3">
@@ -1466,6 +1532,16 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 function showdata(){
 	$('#exampleModalLong').modal('show');
 }
+var productreelist = [];
+
+<%if(productTreeList!= null &&  productTreeList.size()>0){ 
+	for(Object[]obj:productTreeList){
+	%>
+	productreelist.push(['<%= obj[0].toString() %>', '<%= obj[2].toString() %>']);
+
+<%}}%>
+
+console.log(productreelist)
 
 function reqSubmit(){
 		var checkboxes = document.querySelectorAll('input[name="ReqValue"]');
@@ -1684,10 +1760,42 @@ function showDetailss(subId,Id){
 			}
 			if(ajaxresult[17]===null){
 				$('#InspectionShow').html("-");	
+		
 			}else {
 				$('#InspectionShow').html(ajaxresult[17]);
 			}
 
+			
+			var Linkesubsystem = "";
+			
+			var LinkedSubArray = [];
+			
+			if(ajaxresult[21]===null){
+				LinkedSubArray = [];
+			}else{
+				LinkedSubArray = ajaxresult[21].split(", ");
+			}
+			if(LinkedSubArray.length==0){
+				$('#subsytemshow').html("-");	
+			
+			}else{
+				
+				for(var i =0;i<LinkedSubArray.length;i++){
+					for(var j=0;j< productreelist.length;j++){
+						
+						if(LinkedSubArray[i]===productreelist[j][0]){
+							Linkesubsystem = Linkesubsystem+productreelist[j][1]+'<br>'
+						}
+						
+					}
+				}
+				
+				$('#subsytemshow').html(Linkesubsystem);	
+			}
+			
+			
+			console.log("LinkedSubArray  "+LinkedSubArray)
+			
 	$('#editreq').html('<button type="button"  class="btn btn-sm" onclick="edit1('+ajaxresult[7]+')"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" ><i class="fa fa-pencil-square-o fa-lg" style="color:orange" aria-hidden="true"></i></button>');
 		
 		var value = $('#'+Id).val();
@@ -1820,9 +1928,21 @@ function edit1(InitiationReqId){
 		    	
 		        if(ajaxresult[20]!=null){
 					 $('#TestStageedit').val(ajaxresult[20]).trigger('change');
+					
 				 }
 				$('#reqTypeedit').val(matchingKey)
 		    
+				var LinkedSubArray = [];
+				
+				if(ajaxresult[21]===null){
+					LinkedSubArray = [];
+				}else{
+					
+					LinkedSubArray = ajaxresult[21].split(", ");
+					 $('#LinkedSubedit').val(LinkedSubArray).trigger('change');
+				}
+				
+				
 			}
 		})
 
