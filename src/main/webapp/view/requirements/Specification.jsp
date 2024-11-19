@@ -86,11 +86,17 @@ if(SpecContentsDetails!=null && SpecContentsDetails.size()>0){
 	}
 }
 
+Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 Object[] DocTempAtrr = (Object[])request.getAttribute("DocTempAttributes");
 String projectShortName = (String)request.getAttribute("projectShortName");
 String Classification = (String)request.getAttribute("Classification");
 //String docnumber =(String)request.getAttribute("docnumber");
 String version =(String)request.getAttribute("version");
+String docnumber = "-";
+
+if(DocumentSummary!=null) {
+	docnumber = "SPEC-"+(DocumentSummary[11]!=null?DocumentSummary[11].toString().replaceAll("-", ""):"-")+"-"+session.getAttribute("labcode")+"-"+((projectDetails!=null && projectDetails[1]!=null)?projectDetails[1]:"")+"-V"+version;
+}
 String lablogo = (String)request.getAttribute("lablogo");
 String drdologo = (String)request.getAttribute("drdologo");
 
@@ -1576,7 +1582,7 @@ function DownloadDocPDF(){
                             },
                             {
                                 columns: [
-                                    { text: '', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: '<%if(docnumber!=null) {%><%=docnumber %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
                                     { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
                                 ]
                             },
@@ -1633,7 +1639,7 @@ function DownloadDocPDF(){
                     }
                 ];
             },
-            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 70,  },
+            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 80,  },
            
             defaultStyle: { fontSize: 12, color: 'black', }
         };
@@ -1651,7 +1657,7 @@ const setImagesWidth = (htmlString, width) => {
       img.style.textAlign = 'center';
     });
   
-    const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, figure, hr, ul, li');
+    const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, figure, hr, ul, li, a');
     textElements.forEach(element => {
       if (element.style) {
         element.style.fontFamily = '';
@@ -1670,6 +1676,19 @@ const setImagesWidth = (htmlString, width) => {
         element.style.paddingLeft = '';
         element.style.fontSize = '';
         element.id = '';
+        
+        const elementColor = element.style.color;
+        if (elementColor && elementColor.startsWith("var")) {
+            // Replace `var(...)` with a fallback or remove it
+            element.style.color = 'black'; // Default color
+        }
+        
+        const elementbackgroundColor = element.style.backgroundColor;
+        if (elementbackgroundColor && elementbackgroundColor.startsWith("var")) {
+            // Replace `var(...)` with a fallback or remove it
+            element.style.backgroundColor = 'transparent'; // Set a default or fallback background color
+        }
+        
       }
     });
   
@@ -1695,9 +1714,6 @@ const setImagesWidth = (htmlString, width) => {
     return container.innerHTML;
 }; 
 	
- 
- 
- 
 function splitTextIntoLines(text, maxLength) {
 	const lines = [];
   	let currentLine = '';

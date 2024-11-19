@@ -1835,7 +1835,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
 			String version =(String)request.getAttribute("version");
 			
 			if(DocumentSummary!=null && DocumentSummary.size()>0) {
-				docnumber = (DocumentSummary.get(0)[11]!=null?DocumentSummary.get(0)[11].toString().replaceAll("-", ""):"-")+"-"+session.getAttribute("labcode")+"-"+projectDetails[1]+"-V"+version;
+				docnumber = "SRD-"+(DocumentSummary.get(0)[11]!=null?DocumentSummary.get(0)[11].toString().replaceAll("-", ""):"-")+"-"+session.getAttribute("labcode")+"-"+((projectDetails!=null && projectDetails[1]!=null)?projectDetails[1]:"")+"-V"+version;
 			}
 			LocalDate now = LocalDate.now();
 			Month month = now.getMonth();
@@ -3426,7 +3426,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                     }
                 ];
             },
-            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 50,  },
+            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 80,  },
             /* background: function(currentPage) {
                 return [
                     {
@@ -3455,7 +3455,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
           img.style.textAlign = 'center';
         });
       
-        const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, figure, hr, ul, li');
+        const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, figure, hr, ul, li, a');
         textElements.forEach(element => {
           if (element.style) {
             element.style.fontFamily = '';
@@ -3474,6 +3474,19 @@ This appendix contains acronyms and provides standard definitions for terminolog
             element.style.paddingLeft = '';
             element.style.fontSize = '';
             element.id = '';
+            
+            const elementColor = element.style.color;
+            if (elementColor && elementColor.startsWith("var")) {
+                // Replace `var(...)` with a fallback or remove it
+                element.style.color = 'black'; // Default color
+            }
+            
+            const elementbackgroundColor = element.style.backgroundColor;
+            if (elementbackgroundColor && elementbackgroundColor.startsWith("var")) {
+                // Replace `var(...)` with a fallback or remove it
+                element.style.backgroundColor = 'transparent'; // Set a default or fallback background color
+            }
+            
           }
         });
       

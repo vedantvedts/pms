@@ -1515,7 +1515,6 @@ public class RequirementsController {
 				row=sheet.createRow(++r);
 				row.createCell(0).setCellValue(String.valueOf(r));
 				row.createCell(1).setCellValue("");
-				row.createCell(2).setCellValue("");
 
 				res.setContentType("application/vnd.ms-excel");
 				res.setHeader("Content-Disposition", "attachment; filename=TestSetUpDiagram.xls");	

@@ -9661,6 +9661,7 @@ public class ProjectController
 			
 			Object[] projectDetails = service.getProjectDetails(LabCode, (!initiationId.equalsIgnoreCase("0")?initiationId:projectId), (!initiationId.equalsIgnoreCase("0")?"P":"E"));
 		
+			req.setAttribute("projectDetails", projectDetails);
 			req.setAttribute("specsInitiation", specsInitiation);
 			req.setAttribute("projectShortName", projectDetails!=null?projectDetails[2]:"");
 			req.setAttribute("Classification", projectDetails!=null?projectDetails[12]:"");

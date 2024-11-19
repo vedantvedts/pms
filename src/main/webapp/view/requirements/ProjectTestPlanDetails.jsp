@@ -122,6 +122,11 @@ height:300px!important;
 	String lablogo = (String)request.getAttribute("lablogo");
 	String drdologo = (String)request.getAttribute("drdologo");
 	String version = (String)request.getAttribute("version");
+	String docnumber = "-";
+	
+	if(DocumentSummary!=null) {
+		docnumber = "TP-"+(DocumentSummary[11]!=null?DocumentSummary[11].toString().replaceAll("-", ""):"-")+"-"+session.getAttribute("labcode")+"-"+((projectDetails!=null && projectDetails[1]!=null)?projectDetails[1]:"")+"-V"+version;
+	}
 	
 	Object[] TestScopeIntro = (Object[])request.getAttribute("TestScopeIntro");
 	String RoleResponsibility = (String)request.getAttribute("RoleResponsibility");
@@ -1746,14 +1751,12 @@ function DownloadDocPDF(){
 					margin : [10, 0, 0, 0],
                 	
                 },
-                <%-- <% if(htmlContentTestSetUpDiagram!=null) { 
-                	htmlContentTestSetUpDiagram = htmlContentTestSetUpDiagram.replaceAll("</tr>", "<td style=\'border:1px solid black;\'>Diagram</td></tr>");
-                	System.out.println(htmlContentTestSetUpDiagram);
+                <% if(htmlContentTestSetUpDiagram!=null) { 
                 %>
 	                {
 	                	stack: [htmlToPdfmake("<%=htmlContentTestSetUpDiagram %>")],
 	                },
-     			<%}%> --%>
+     			<%}%>
             	
                 {
                 	text: mainContentCount+'.3 Test Suite',	
@@ -1824,11 +1827,11 @@ function DownloadDocPDF(){
 					margin : [10, 0, 0, 0],
                 	
                 },
-             	<%-- <% if(htmlContentTestVerification!=null) { %>
+             	<% if(htmlContentTestVerification!=null) { %>
 	                {
 	                	text: [htmlToPdfmake("<%=htmlContentTestVerification %>")],
 	                },
- 				<%}%> --%>
+ 				<%}%>
                 /* ************************************** Acceptance Testing End *********************************** */
                 
                 /* ************************************** Test Schedule *********************************** */
@@ -2213,7 +2216,7 @@ function DownloadDocPDF(){
                             },
                             {
                                 columns: [
-                                    { text: '', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: '<%if(docnumber!=null) {%><%=docnumber %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
                                     { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
                                 ]
                             },
@@ -2270,13 +2273,80 @@ function DownloadDocPDF(){
                     }
                 ];
             },
-            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 50,  },
+            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 80,  },
            
             defaultStyle: { fontSize: 12 }
         };
 		
         pdfMake.createPdf(docDefinition).open();
 }
+
+const setImagesWidth = (htmlString, width) => {
+    const container = document.createElement('div');
+    container.innerHTML = htmlString;
+  
+    const images = container.querySelectorAll('img');
+    images.forEach(img => {
+      img.style.width = width + 'px';
+      img.style.textAlign = 'center';
+    });
+  
+    const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, figure, hr, ul, li, a');
+    textElements.forEach(element => {
+      if (element.style) {
+        element.style.fontFamily = '';
+        element.style.margin = '';
+        element.style.marginTop = '';
+        element.style.marginRight = '';
+        element.style.marginBottom = '';
+        element.style.marginLeft = '';
+        element.style.lineHeight = '';
+        element.style.height = '';
+        element.style.width = '';
+        element.style.padding = '';
+        element.style.paddingTop = '';
+        element.style.paddingRight = '';
+        element.style.paddingBottom = '';
+        element.style.paddingLeft = '';
+        element.style.fontSize = '';
+        element.id = '';
+        
+        const elementColor = element.style.color;
+        if (elementColor && elementColor.startsWith("var")) {
+            // Replace `var(...)` with a fallback or remove it
+            element.style.color = 'black'; // Default color
+        }
+        
+        const elementbackgroundColor = element.style.backgroundColor;
+        if (elementbackgroundColor && elementbackgroundColor.startsWith("var")) {
+            // Replace `var(...)` with a fallback or remove it
+            element.style.backgroundColor = 'transparent'; // Set a default or fallback background color
+        }
+        
+      }
+    });
+  
+    const tables = container.querySelectorAll('table');
+    tables.forEach(table => {
+      if (table.style) {
+        table.style.borderCollapse = 'collapse';
+        table.style.width = '100%';
+      }
+  
+      const cells = table.querySelectorAll('th, td');
+      cells.forEach(cell => {
+        if (cell.style) {
+          cell.style.border = '1px solid black';
+  
+          if (cell.tagName.toLowerCase() === 'th') {
+            cell.style.textAlign = 'center';
+          }
+        }
+      });
+    });
+  
+    return container.innerHTML;
+}; 
 
 function splitTextIntoLines(text, maxLength) {
 	const lines = [];
@@ -2322,59 +2392,6 @@ function generateRotatedTextImage(text) {
 	
 	return canvas.toDataURL();
 }
-const setImagesWidth = (htmlString, width) => {
-    const container = document.createElement('div');
-    container.innerHTML = htmlString;
-  
-    const images = container.querySelectorAll('img');
-    images.forEach(img => {
-      img.style.width = width + 'px';
-      img.style.textAlign = 'center';
-    });
-  
-    const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, figure, hr, ul, li');
-    textElements.forEach(element => {
-      if (element.style) {
-        element.style.fontFamily = '';
-        element.style.margin = '';
-        element.style.marginTop = '';
-        element.style.marginRight = '';
-        element.style.marginBottom = '';
-        element.style.marginLeft = '';
-        element.style.lineHeight = '';
-        element.style.height = '';
-        element.style.width = '';
-        element.style.padding = '';
-        element.style.paddingTop = '';
-        element.style.paddingRight = '';
-        element.style.paddingBottom = '';
-        element.style.paddingLeft = '';
-        element.style.fontSize = '';
-        element.id = '';
-      }
-    });
-  
-    const tables = container.querySelectorAll('table');
-    tables.forEach(table => {
-      if (table.style) {
-        table.style.borderCollapse = 'collapse';
-        table.style.width = '100%';
-      }
-  
-      const cells = table.querySelectorAll('th, td');
-      cells.forEach(cell => {
-        if (cell.style) {
-          cell.style.border = '1px solid black';
-  
-          if (cell.tagName.toLowerCase() === 'th') {
-            cell.style.textAlign = 'center';
-          }
-        }
-      });
-    });
-  
-    return container.innerHTML;
-}; 
 
 <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
 $( document ).ready(function(){
