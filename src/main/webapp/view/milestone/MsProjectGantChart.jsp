@@ -54,6 +54,7 @@ h6{
 <%
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> mstaskList=(List<Object[]>)request.getAttribute("mstaskList");
+Object[] projectDetails = (Object[])request.getAttribute("ProjectDetails");
 ObjectMapper objectMapper = new ObjectMapper();
 String jsonArray = objectMapper.writeValueAsString(mstaskList);
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -126,12 +127,34 @@ String ProjectId=(String)request.getAttribute("ProjectId");
 		</div>
 	</div>
 </div> --%>
-<div id="container"></div>
-<form method="post" action ="MSProjectMilestone.htm">
-<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
-<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
-<input type="hidden" name="ProjectId" value="<%=ProjectId%>">
-</form>
+	<div class="container-fluid mb-3">
+		<div class="card shadow-nohover">
+		
+			<div class="card-header" style="background-color: transparent;height: 3rem;">
+ 				<div class="row">
+ 					<div class="col-md-7">
+ 						<h3 class="text-dark" style="font-weight: bold;">Gantt Chart - <%=projectDetails!=null?(projectDetails[3]+" ("+projectDetails[1]+")"):"" %> </h3>
+ 					</div>
+ 					<div class="col-md-3"></div>
+ 					<div class="col-md-2 right">
+	 					<a class="btn btn-sm btn-info" href="MSProjectMilestone.htm?ProjectId=<%=ProjectId%>">Back</a>
+ 					</div>
+ 					
+ 				</div>
+       		</div>
+       		
+       		<div class="card-body">
+       			<div id="container"></div>
+       			<form method="post" action ="MSProjectMilestone.htm">
+					<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+					<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+					<input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+				</form>
+       		</div>
+       	</div>
+	</div>
+
+
 <%-- <script>
 $('#interval').on('change',function(){
 	

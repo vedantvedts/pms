@@ -2,6 +2,7 @@
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String MILESTONETOTALWEIGHTAGE="SELECT SUM(weightage) FROM milestone_activity_a WHERE milestoneactivityid=:MilestoneActivityId";
     private static final String SUBLIST="SELECT a.activitysubid,a.progress,a.progressdate,a.remarks,a.attachname  FROM milestone_activity_sub a WHERE a.activityid=:id";
     private static final String SUBDATA="FROM MilestoneActivitySub WHERE ActivitySubId=:id"; 
-	private static final String PROJECTDETAILS="SELECT a.projectid,a.projectcode,a.projectname FROM project_master a WHERE a.projectid=:projectid";
+	private static final String PROJECTDETAILS="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectShortName FROM project_master a WHERE a.projectid=:projectid";
 	private static final String MAASSIGNEELIST="CALL Pfms_Milestone_Oic_List(:ProjectId,:empid)";
 	private static final String PROJECTEMPLIST="SELECT a.empid,  CONCAT(IFNULL(a.title,''), a.empname)AS 'empname',b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND pe.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid AND a.labcode=:labcode ORDER BY a.srno=0,a.srno";
 	private static final String PROJECTEMPLISTEDIT="SELECT a.empid,a.empname,b.designation,a.srno as srno FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid  union SELECT a.empid,a.empname,b.designation,a.srno as srno FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND a.empid=:id ORDER BY srno";
@@ -1185,7 +1186,12 @@ public class MilestoneDaoImpl implements MilestoneDao {
 				+ "    a.ActualStartDate,\r\n"
 				+ "    a.ActualFinishDate,\r\n"
 				+ "    a.TaskProgress,\r\n"
-				+ "    a.IsCritical\r\n"
+				+ "    a.TaskIsCritical,\r\n"
+				+ "    a.TaskIsMilestone,\r\n"
+				+ "    a.TaskIsSummary, \r\n"
+				+ "    a.DemandNo, \r\n"
+				+ "    a.TaskIsProcurement, \r\n"
+				+ "    a.PftsStatusId \r\n"
 				+ "FROM \r\n"
 				+ "    pfms_milestone_msprojectdata a\r\n"
 				+ "LEFT JOIN \r\n"
@@ -1260,5 +1266,18 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			query.setParameter("CreatedBy", rep.getCreatedBy());
 			query.setParameter("CreatedDate", rep.getCreatedDate());
 			return query.executeUpdate();
+		}
+		
+		private static final String MSPROJECTPROCUREMENTSTATUSLIST= "SELECT a.MilestoneId, a.DemandNo, MAX(CASE WHEN a.TaskProgress = 100 THEN a.PftsStatusId ELSE NULL END) AS MaxPftsStatusId FROM pfms_milestone_msprojectdata a WHERE a.ProjectId =:ProjectId AND a.TaskIsMilestone=1 AND a.TaskIsProcurement=1 GROUP BY a.DemandNo ORDER BY a.DemandNo";
+		@Override
+		public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(MSPROJECTPROCUREMENTSTATUSLIST);
+				query.setParameter("ProjectId", projectId);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return new ArrayList<>();
+			}
 		}
 }

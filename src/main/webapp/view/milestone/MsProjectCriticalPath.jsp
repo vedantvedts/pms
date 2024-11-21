@@ -64,17 +64,34 @@ SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 String ProjectId=(String)request.getAttribute("ProjectId");
 %>
 
-<div id="container"></div>
+	<div class="container-fluid mb-3">
+		<div class="card shadow-nohover">
+		
+			<div class="card-header" style="background-color: transparent;height: 3rem;">
+ 				<div class="row">
+ 					<div class="col-md-7">
+ 						<h3 class="text-dark" style="font-weight: bold;">Critical Paths - <%=ProjectDetails!=null?(ProjectDetails[3]+" ("+ProjectDetails[1]+")"):"" %> </h3>
+ 					</div>
+ 					<div class="col-md-3"></div>
+ 					<div class="col-md-2 right">
+	 					<a class="btn btn-sm btn-info" href="MSProjectMilestone.htm?ProjectId=<%=ProjectId%>">Back</a>
+ 					</div>
+ 					
+ 				</div>
+       		</div>
+       		
+       		<div class="card-body">
+       			<div id="container"></div>
+       			<form method="post" action ="MSProjectMilestone.htm">
+					<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+					<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+					<input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+				</form>
+       		</div>
+       	</div>
+	</div>
 
-<!--  -->
-<form method="post" action ="MSProjectMilestone.htm">
-<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
-<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
-<input type="hidden" name="ProjectId" value="<%=ProjectId%>">
-</form>
-
-<!--  -->
-		  <script>
+	<script>
 			 var mstaskListJs=  <%=mstaskList%>;
 			 var filteredList = mstaskListJs.filter(item => item[16] === true);
 		 var projectNameJs = "<%=projectName%>"; 

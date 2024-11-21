@@ -124,4 +124,6 @@ public interface MilestoneDao {
 	public long submitCheckboxFile(ProjectTechnicalWorkData modal)throws Exception;
 	public List<Object[]> getFileRepData(String projectId, String fileRepMasterId, String subL1, String docid)throws Exception;
 	public long FileRepUpdate(FileRepNew rep)throws Exception;
+	
+	public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception;
 }

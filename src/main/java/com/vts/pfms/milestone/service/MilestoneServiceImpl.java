@@ -1712,4 +1712,10 @@ public class MilestoneServiceImpl implements MilestoneService {
 		
 		return 1;
 	}
+
+	@Override
+	public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception {
+		
+		return dao.getMsprojectProcurementStatusList(projectId);
+	}
 }
