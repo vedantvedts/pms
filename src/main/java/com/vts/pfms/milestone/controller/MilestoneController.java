@@ -3060,10 +3060,10 @@ public class MilestoneController {
 		try {
 			String ProjectId=req.getParameter("ProjectId");
 			List<Object[]> msProjectList = service.getMsprojectTaskList(ProjectId);
-			List<Object[]> msDemandList = msProjectList!=null && msProjectList.size()>0?msProjectList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
+			List<Object[]> msProcurementList = msProjectList!=null && msProjectList.size()>0?msProjectList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
 			req.setAttribute("ProjectId", ProjectId);
 			req.setAttribute("projectDetails", service.ProjectDetails(ProjectId).get(0));
-			req.setAttribute("msDemandList", msDemandList);
+			req.setAttribute("msProcurementList", msProcurementList);
 
 		}catch (Exception e) {
 			e.printStackTrace(); 
@@ -3097,4 +3097,29 @@ public class MilestoneController {
 		return "milestone/MSprojectProcurementStatus";
 		
 	}
+
+	@RequestMapping(value = "MSprojectProcurementGanttChart.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String msprojectProcurementGanttChart(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside MSprojectProcurementGanttChart.htm "+UserId);
+		
+		try {
+			String ProjectId=req.getParameter("ProjectId");
+			List<Object[]> msProjectList = service.getMsprojectTaskList(ProjectId);
+			List<Object[]> msProcurementList = msProjectList!=null && msProjectList.size()>0?msProjectList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
+			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("projectDetails", service.ProjectDetails(ProjectId).get(0));
+			req.setAttribute("msProcurementList", msProcurementList);
+			
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside MSprojectProcurementGanttChart.htm "+UserId, e); 
+			return "static/Error";
+		}
+		
+		return "milestone/MSprojectProcurementGanttChart";
+		
+	}
+	
 }

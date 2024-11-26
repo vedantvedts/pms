@@ -140,8 +140,8 @@ FormatConverter fc = new FormatConverter();
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover" style="margin-top: -0px;">
-					<div class="row card-header">
-						<div class="col-md-8">
+					<div class="row card-header" style="background: transparent;">
+						<div class="col-md-6">
 							<h5>
 								<%if(ProjectId!=null){
 						Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
@@ -153,13 +153,14 @@ FormatConverter fc = new FormatConverter();
 								<%} %>
 							</h5>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<form action="#" style="margin-top: -0.3rem;">
 								<div class="d-flex justify-content-around">
-									<button type="submit" class="btn btn-sm btn-info " formaction="MSprojectGanttChart.htm" >Gantt Chart</button>
-									<button type="submit" class="btn btn-sm btn-info " formaction="MSprojectCriticalPath.htm" >Critical Paths</button>
-									<button type="submit" class="btn btn-sm btn-info " formaction="MSprojectProcurementList.htm" >Procurement List</button>
-									<button type="submit" class="btn btn-sm btn-info " formaction="MSprojectProcurementStatus.htm" >Procurement Status</button>
+									<button type="submit" class="btn btn-sm btn-outline-info" formaction="MSprojectGanttChart.htm" >Gantt Chart</button>
+									<button type="submit" class="btn btn-sm btn-outline-info" formaction="MSprojectCriticalPath.htm" >Critical Paths</button>
+									<button type="submit" class="btn btn-sm btn-outline-info" formaction="MSprojectProcurementList.htm" >Procurement List</button>
+									<button type="submit" class="btn btn-sm btn-outline-info" formaction="MSprojectProcurementStatus.htm" >Procurement Status</button>
+									<button type="submit" class="btn btn-sm btn-outline-info" formaction="MSprojectProcurementGanttChart.htm" >Procurement Gantt Chart</button>
 								</div>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<input type="hidden" name="ProjectId" value="<%=ProjectId%>">

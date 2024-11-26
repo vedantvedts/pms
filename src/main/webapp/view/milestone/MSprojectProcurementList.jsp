@@ -23,7 +23,7 @@
 </head>
 <body>
 	<%
-		List<Object[]> msDemandList = (List<Object[]>)request.getAttribute("msDemandList");
+		List<Object[]> msProcurementList = (List<Object[]>)request.getAttribute("msProcurementList");
 		Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 		String projectId = (String)request.getParameter("ProjectId");
 		FormatConverter fc = new FormatConverter();
@@ -98,9 +98,9 @@
                   					</tr>
 								</thead>
                  				<tbody>
-                       				<%if(msDemandList!=null && msDemandList.size()>0) {
+                       				<%if(msProcurementList!=null && msProcurementList.size()>0) {
                        					int count =0;
-                       					for(Object[] level1 : msDemandList) {
+                       					for(Object[] level1 : msProcurementList) {
                        						if(level1[8].toString().equalsIgnoreCase("1")){
                        				%>
                        					<tr>
@@ -153,7 +153,7 @@
                                     	<!-- ----------------------------------- Sub-Level-1 -----------------------------------------  -->
                                     	<%
 											int countA=0;
-											for(Object []level2 : msDemandList){
+											for(Object []level2 : msProcurementList){
 												if(level2[8].toString().equalsIgnoreCase("2") && level2[7].toString().equalsIgnoreCase(level1[6].toString())){
 										%>
 											<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
@@ -195,7 +195,7 @@
 											<!-- ----------------------------------- Sub-Level-2 -----------------------------------------  -->
 											<%
 												int countB=0;
-												for(Object[]level3 : msDemandList){
+												for(Object[]level3 : msProcurementList){
 													if(level3[8].toString().equalsIgnoreCase("3")  && level3[7].toString().equalsIgnoreCase(level2[6].toString())){
 											%>
 											
@@ -238,7 +238,7 @@
 												<!-- ----------------------------------- Sub-Level-3 -----------------------------------------  -->
 												<%
 													int countC=0;
-													for(Object[]level4 : msDemandList){
+													for(Object[]level4 : msProcurementList){
 														if(level4[8].toString().equalsIgnoreCase("4")  && level4[7].toString().equalsIgnoreCase(level3[6].toString())){
 												%>
 													<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
@@ -280,7 +280,7 @@
 													<!-- ----------------------------------- Sub-Level-4 -----------------------------------------  -->
 													<%
 														int countD=0;
-														for(Object[]level5 : msDemandList){
+														for(Object[]level5 : msProcurementList){
 													 		if(level5[8].toString().equalsIgnoreCase("5")  && level5[7].toString().equalsIgnoreCase(level4[6].toString())){
 													%>	
 													
@@ -322,7 +322,7 @@
 														<!-- ----------------------------------- Sub-Level-5 -----------------------------------------  -->
 														<%
 															int countE=0;
-															for(Object[]level6 : msDemandList){
+															for(Object[]level6 : msProcurementList){
 														 		if(level6[8].toString().equalsIgnoreCase("6")  && level6[7].toString().equalsIgnoreCase(level5[6].toString())){
 														%>
 													

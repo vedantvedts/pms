@@ -61,72 +61,6 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 String ProjectId=(String)request.getAttribute("ProjectId");
 %>
-
-<%-- <div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card shadow-nohover">
-					<div class="card-header ">  
-
-					<div class="row">
-						<h3 class="col-md-4">
-							Gantt Chart
-						</h3>  
-						<div class="col-md-3 justify-content-end">
-										
-						</div>
-						
-						<div class="col-md-3 justify-content-end" style="margin-top:-7px;">
-							<label>Interval : &nbsp;&nbsp;&nbsp; </label>
-							<select class="form-control selectdee " name="interval" id="interval" required="required"  data-live-search="true"  style="width:150px !important" >
-                                <option value="quarter"> Quarterly </option>
-                                <option value="half" >Half-Yearly</option>
-                                <option value="year" >Yearly</option>
-                            	<option value="month"> Monthly </option>
-							</select>
-						</div>
-						
-							
-							<div class="col-md-2">
-								<form action="MSProjectMilestone.htm" method="post" style="float: right;">
-									<button type="submit" class="btn btn-info btn-sm shadow-nohover back"   >Back</button>		
-									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									<input type="hidden" name="ProjectId"  id="ProjectId" value="<%=ProjectId %>" /> 
-								</form>			
-							</div>
-			   		</div>	   							
-
-					</div>
-						<div class="card-body " style="padding: 10px;"> 
-							
-								<div class="row" style="margin-bottom: 5px;font-weight: bold;"   >
-										<div class="col-md-4"></div>
-										<div class="col-md-4"></div>
-										<div class="col-md-4">
-											<div style="font-weight: bold; " >
-												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #046582;  padding: 0px 15px; border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #81b214;  padding: 0px 15px;border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
-											</div>
-										</div>
-									</div>
-							<div class="row" >
-								
-								<div class="col-md-12" style="float: right;" align="center">
-							
-					   				<div class="flex-container" id="containers" ></div>
-
-                        		</div>
-						   	</div>
-						
-						</div>
-					
-				</div>
-					
-		
-		</div>
-	</div>
-</div> --%>
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
 		
@@ -143,466 +77,473 @@ String ProjectId=(String)request.getAttribute("ProjectId");
  				</div>
        		</div>
        		
-       		<div class="card-body">
+       		<%-- <div class="card-body">
        			<div id="container"></div>
        			<form method="post" action ="MSProjectMilestone.htm">
 					<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 					<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
 					<input type="hidden" name="ProjectId" value="<%=ProjectId%>">
 				</form>
+       		</div> --%>
+       		<div class="card-body">
+       			<div class="row" style="margin-top: -18px;">
+					<div class="col-md-12" style="float: right;" >
+						<div class="row" style="margin-top: 5px;font-weight: bold;"   >
+							<div class="col-md-8"></div>
+							<div class="col-md-4">
+								<div style="font-weight: bold; " >
+									<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #29465B;  padding: 0px 15px; border-radius: 3px;"></span></span>
+									<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
+									<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
+								</div>
+							</div>
+						</div>
+
+					   	<div class="flex-container" id="containers" ></div>
+                        			
+                	</div>
+				</div>
        		</div>
        	</div>
 	</div>
-
-
-<%-- <script>
-$('#interval').on('change',function(){
 	
-	$('#containers').empty();
-	var interval = $("#interval").val()
-	chartprint('type',interval);
-	
-})
-
-
-	function chartprint(type,interval){
-	
-		var data = [
-			<% for (Object[] level1: mstaskList){ 
-				if(level1[8].toString().equalsIgnoreCase("1")){
-			%>
-			{
-			id : "<%=level1[0].toString()%>",
-			name : "<%=level1[10].toString()%>",
-			
-			baselineStart: "<%=level1[11]%>",
- 		    baselineEnd: "<%=level1[12]%>",
- 		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
- 		   	actualStart: "<%=level1[13]%>",
-		    actualEnd: "<%=level1[14]%>",
-		    actual: {fill: "red", stroke: "0.8 #150e56"},
-		    baselineProgressValue: "<%=level1[15]%>%",
-		    progressValue: "<%= level1[15]%>%",
-		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-		    rowHeight: "35",
-			
-		    /* ---------------------------    LEVEL 2    ------------------------------  */
-		    
-		     children : [
-		    	<%
-				for(Object []level2 : mstaskList){
-					if(level2[8].toString().equalsIgnoreCase("2") && level2[7].toString().equalsIgnoreCase(level1[6].toString())){
-		    	%>
-		    	 {
-		    			id : "<%=level2[0].toString()%>",
-		    			name : "<%=level2[10].toString()%>",
-		    			baselineStart: "<%=level2[11]%>",
-		     		    baselineEnd: "<%=level2[12]%>",
-		     		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-		     		   	actualStart: "<%=level2[13]%>",
-		    		    actualEnd: "<%=level2[14]%>",
-		    		    actual: {fill: "red", stroke: "0.8 #150e56"},
-		    		    baselineProgressValue: "<%=level2[15]%>%",
-		    		    progressValue: "<%= level2[15]%>%",
-		    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-		    		    rowHeight: "35",
-		    		    
-		    		    children : [
-		    		    	<%
-							 for(Object[]level3 : mstaskList){
-								if(level3[8].toString().equalsIgnoreCase("3")  && level3[7].toString().equalsIgnoreCase(level2[6].toString())){
-		    		    	%>
-		    		    	{
-		    		    		id : "<%=level3[0].toString()%>",
-				    			name : "<%=level3[10].toString()%>",
-				    			baselineStart: "<%=level3[11]%>",
-				     		    baselineEnd: "<%=level3[12]%>",
-				     		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-				     		   	actualStart: "<%=level3[13]%>",
-				    		    actualEnd: "<%=level3[14]%>",
-				    		    actual: {fill: "red", stroke: "0.8 #150e56"},
-				    		    baselineProgressValue: "<%=level3[15]%>%",
-				    		    progressValue: "<%= level3[15]%>%",
-				    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-				    		    rowHeight: "35",
-				    		    
-				    		    children : [
-				    		    	<%
-									for(Object[]level4 : mstaskList){
-										 if(level4[8].toString().equalsIgnoreCase("4")  && level4[7].toString().equalsIgnoreCase(level3[6].toString())){
-				    		    	%>
-				    		    	{
-				    		    		id : "<%=level4[0].toString()%>",
-						    			name : "<%=level4[10].toString()%>",
-						    			baselineStart: "<%=level4[11]%>",
-						     		    baselineEnd: "<%=level4[12]%>",
-						     		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-						     		   	actualStart: "<%=level4[13]%>",
-						    		    actualEnd: "<%=level4[14]%>",
-						    		    actual: {fill: "red", stroke: "0.8 #150e56"},
-						    		    baselineProgressValue: "<%=level4[15]%>%",
-						    		    progressValue: "<%= level4[15]%>%",
-						    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-						    		    rowHeight: "35",	
-				    		    		
-						    		    children : [
-						    		    	<%
-											for(Object[]level5 : mstaskList){
-												 if(level5[8].toString().equalsIgnoreCase("5")  && level5[7].toString().equalsIgnoreCase(level4[6].toString())){
-						    		    	%>
-						    		    	{
-						    		    		id : "<%=level5[0].toString()%>",
-								    			name : "<%=level5[10].toString()%>",
-								    			baselineStart: "<%=level5[11]%>",
-								     		    baselineEnd: "<%=level5[12]%>",
-								     		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-								     		   	actualStart: "<%=level5[13]%>",
-								    		    actualEnd: "<%=level5[14]%>",
-								    		    actual: {fill: "red", stroke: "0.8 #150e56"},
-								    		    baselineProgressValue: "<%=level5[15]%>%",
-								    		    progressValue: "<%= level5[15]%>%",
+	<script>
+		/* anychart.onDocumentReady(function () {  */  
+								    	  
+		function chartprint(type,interval){
+			var data = [
+					<%
+					if(mstaskList!=null && mstaskList.size()>0) {
+						int count=0; 
+						for(Object[] level1 : mstaskList){ 
+							if(level1[8].toString().equalsIgnoreCase("1")){
+					%>
+									    		  
+							{
+								id: "<%=++count%>",
+								name: "<%=level1[10]%>",
+								<%if(level1[13]!=null && level1[14]!=null){ %>
+									baselineStart: "<%=level1[13]%>",
+									baselineEnd: "<%=level1[14]%>", 
+									baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
+									actualStart: "<%=level1[11]%>",
+									actualEnd: "<%=level1[12]%>",
+					    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
+					    		    baselineProgressValue: "<%=level1[15].toString()%>%",
+					    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
+					    		    progressValue: "<%=level1[15].toString()%>% ", 
+								<%} else{%>
+									baselineStart: "<%=level1[11]%>",
+					    		    baselineEnd: "<%=level1[12]%>", 
+					    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+					    		    baselineProgressValue: "<%=level1[15].toString()%>%",
+					    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+					    		    progressValue: "<%=level1[15].toString()%>% ",
+								<%}%>
+								rowHeight: "55",
+								
+								// Handle hierarchy by creating child nodes 
+			                    children: [
+			                    	<%
+										int countA=0;
+										for(Object[] level2 : mstaskList){
+											if(level2[8].toString().equalsIgnoreCase("2") && level2[7].toString().equalsIgnoreCase(level1[6].toString())){
+									%>
+									
+										{
+											id: "<%=++countA%>",
+											name: "<%=level2[10]%>",
+											<%if(level2[13]!=null && level2[14]!=null){ %>
+												baselineStart: "<%=level2[13]%>",
+												baselineEnd: "<%=level2[14]%>", 
+												baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
+												actualStart: "<%=level2[11]%>",
+												actualEnd: "<%=level2[12]%>",
+								    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
+								    		    baselineProgressValue: "<%=level2[15].toString()%>%",
+								    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
+								    		    progressValue: "<%=level2[15].toString()%>% ", 
+											<%} else{%>
+												baselineStart: "<%=level2[11]%>",
+								    		    baselineEnd: "<%=level2[12]%>", 
+								    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+								    		    baselineProgressValue: "<%=level2[15].toString()%>%",
 								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-								    		    rowHeight: "35",
-						    		    		
-								    		   children : [
-								    			<%
-												for(Object[]level6 : mstaskList){
-												 if(level6[8].toString().equalsIgnoreCase("5")  && level6[7].toString().equalsIgnoreCase(level5[6].toString())){
-								    			%>   
-								    			{
-								    				id : "<%=level6[0].toString()%>",
-									    			name : "<%=level6[10].toString()%>",
-									    			baselineStart: "<%=level6[11]%>",
-									     		    baselineEnd: "<%=level6[12]%>",
-									     		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-									     		   	actualStart: "<%=level6[13]%>",
-									    		    actualEnd: "<%=level5[14]%>",
-									    		    actual: {fill: "red", stroke: "0.8 #150e56"},
-									    		    baselineProgressValue: "<%=level6[15]%>%",
-									    		    progressValue: "<%= level6[15]%>%",
-									    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-									    		    rowHeight: "35",
-								    				
-								    				
-								    			}
-								    			
-								    			<% }}%>
-								    		   ] 
-								    		    
-						    		    	},
-						    		    	
-						    		    	
-						    		    	<%
-												 }}
-						    		    	%>
-						    		    ]
-						    		    
-						    		    
-				    		    	},
-				    		    	
-				    		    	<%}}%>
-		    		    			]
-				    		    
-		    		    		
-		    		    	},
-		   
-		    		    	<%}}%>
-		    		    ]    
-		    		    
-		    	
-		    	 },
-		    <%}}%>
-		    ]
-		    
-		    
-			} ,
-			<%}}%>
-		];
-
-		console.log(data)
-		var treeData = anychart.data.tree(data, "as-tree");
-		
-		// create a chart
-		var chart = anychart.ganttProject();
-
-		// set the data
-		chart.data(treeData);   
-
-	    // set the indent for nested labels in the second column
-	    chart.dataGrid().column(1).depthPaddingMultiplier(30);
-
-	    // disable buttons in the second column
-	    chart.dataGrid().column(1).collapseExpandButtons(true);
-
-	    // enable buttons in the first column
-	    chart.dataGrid().column(0).collapseExpandButtons(false);
-	    
-	    chart.dataGrid().column(2).enabled(false);
-	    
-    	// set the container id
-    	chart.container("containers");  
-
-    	// initiate drawing the chart
-    	chart.draw();    
-
-    	// fit elements to the width of the timeline
-    	chart.fitAll();
-    
-    
-    /* ToolTip */
+								    		    progressValue: "<%=level2[15].toString()%>% ",
+											<%}%> 
+											rowHeight: "55",
+										
+											// Handle hierarchy by creating child nodes 
+						                    children: [
+						                    	<%
+													int countB=0;
+													for(Object[] level3 : mstaskList){
+														if(level3[8].toString().equalsIgnoreCase("3")  && level3[7].toString().equalsIgnoreCase(level2[6].toString())){
+												%>
+													{
+														id: "<%=++countB%>",
+														name: "<%=level3[10]%>",
+														<%if(level3[13]!=null && level3[14]!=null){ %>
+															baselineStart: "<%=level3[13]%>",
+															baselineEnd: "<%=level3[14]%>", 
+															baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
+															actualStart: "<%=level3[11]%>",
+															actualEnd: "<%=level3[12]%>",
+											    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
+											    		    baselineProgressValue: "<%=level3[15].toString()%>%",
+											    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
+											    		    progressValue: "<%=level3[15].toString()%>% ", 
+														<%} else{%>
+															baselineStart: "<%=level3[11]%>",
+											    		    baselineEnd: "<%=level3[12]%>", 
+											    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+											    		    baselineProgressValue: "<%=level3[15].toString()%>%",
+											    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+											    		    progressValue: "<%=level3[15].toString()%>% ",
+														<%}%>  
+														rowHeight: "55",
+													
+														// Handle hierarchy by creating child nodes 
+									                    children: [
+									                    	<%
+																int countC=0;
+																for(Object[] level4 : mstaskList){
+																	if(level4[8].toString().equalsIgnoreCase("4")  && level4[7].toString().equalsIgnoreCase(level3[6].toString())){
+															%>
+																{
+																	id: "<%=++countC%>",
+																	name: "<%=level4[10]%>",
+																	<%if(level4[13]!=null && level4[14]!=null){ %>
+																		baselineStart: "<%=level4[13]%>",
+																		baselineEnd: "<%=level4[14]%>", 
+																		baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
+																		actualStart: "<%=level4[11]%>",
+																		actualEnd: "<%=level4[12]%>",
+														    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
+														    		    baselineProgressValue: "<%=level4[15].toString()%>%",
+														    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
+														    		    progressValue: "<%=level4[15].toString()%>% ", 
+																	<%} else{%>
+																		baselineStart: "<%=level4[11]%>",
+														    		    baselineEnd: "<%=level4[12]%>", 
+														    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+														    		    baselineProgressValue: "<%=level4[15].toString()%>%",
+														    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+														    		    progressValue: "<%=level4[15].toString()%>% ",
+																	<%}%>  
+																	rowHeight: "55",
+																
+																	// Handle hierarchy by creating child nodes 
+												                    children: [
+												                    	<%
+																			int countD=0;
+																			for(Object[] level5 : mstaskList){
+																				if(level5[8].toString().equalsIgnoreCase("5")  && level5[7].toString().equalsIgnoreCase(level4[6].toString())){
+																		%>
+																			{
+																				id: "<%=++countD%>",
+																				name: "<%=level5[10]%>",
+																				<%-- <%if(!obj[8].toString().equalsIgnoreCase("0") && !obj[8].toString().equalsIgnoreCase("1")){ %> --%>
+																				<%if(level5[13]!=null && level5[14]!=null){ %>
+																					baselineStart: "<%=level5[13]%>",
+																					baselineEnd: "<%=level5[14]%>", 
+																					baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
+																					actualStart: "<%=level5[11]%>",
+																					actualEnd: "<%=level5[12]%>",
+																	    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
+																	    		    baselineProgressValue: "<%=level5[15].toString()%>%",
+																	    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
+																	    		    progressValue: "<%=level5[15].toString()%>% ", 
+																				<%} else{%>
+																					baselineStart: "<%=level5[11]%>",
+																	    		    baselineEnd: "<%=level5[12]%>", 
+																	    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+																	    		    baselineProgressValue: "<%=level5[15].toString()%>%",
+																	    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+																	    		    progressValue: "<%=level5[15].toString()%>% ",
+																				<%}%>   
+																				rowHeight: "55",
+																			
+																			},
+																		<% } }%>
+																	],
+																},
+															<% } }%>
+														],
+													},
+												<% } }%>
+											],
+										},
+									<% } }%>
+								],
+							},
+					<%} } }%>
+			];
+			
+			
+	   		// create a data tree
+	   		var treeData = anychart.data.tree(data, "as-tree");
+	   		// create a chart
+	   		var chart = anychart.ganttProject();
+	   		// set the data
+	   		chart.data(treeData);   
+	       	// set the container id
+	       	chart.container("containers");  
+						        	
+						        	
+						        	
+	       	// initiate drawing the chart
+	       	chart.draw();    
+	       	// fit elements to the width of the timeline
+	       	chart.fitAll();
+	        /* ToolTip */
+	        chart.getTimeline().tooltip().useHtml(true);  
+						        
+			var timeline = chart.getTimeline();
 	
-    
-        chart.getTimeline().tooltip().useHtml(true);    
-        chart.getTimeline().tooltip().format(
-          "<span style='font-weight:600;font-size:10pt'> Actual : " +
-          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
-          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-          "<span style='font-weight:600;font-size:10pt'> Revised : " +
-          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
-          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-          "Progress: {%baselineProgressValue}<br>" 
-          
-        ); 
-        
-        <%if(ProjectId!=null){
-			Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
-		%>
-
+			// configure labels of elements
+			timeline.elements().labels().fontWeight(600);
+			timeline.elements().labels().fontSize("14px");
+			timeline.elements().labels().fontColor("#FF6F00");
+	
+			chart.getTimeline().tooltip().format( function() {
+   		        var actualStart = this.getData("actualStart") ? this.getData("actualStart") : this.getData("baselineStart");
+   		        var actualEnd = this.getData("actualEnd") ? this.getData("actualEnd") : this.getData("baselineEnd");
+   		        var reDate=this.getData("actualStart") ;
+				        		   
+				var html="";
+    		    if(reDate===undefined){
+    		        html="";
+    		        html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+    		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+    		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+    		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+    		    }else{
+    		        html="";
+    		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+    		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
+    		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
+    		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+    		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
+    		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
+    		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
+    		    }
+					        		        
+				return html;
+			}); 
+						        
+	
+	
 	        /* Title */
 	        
 	        var title = chart.title();
 			title.enabled(true);
-			title.text("<%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) Gantt Chart");
+			title.text(" <%=projectDetails[2] %> ( <%=projectDetails[1] %> ) Gantt Chart");
 			title.fontColor("#64b5f6");
 			title.fontSize(18);
 			title.fontWeight(600);
 			title.padding(5);
-        
-		<%} %>
-        
-	    /* Hover */
-        
-        chart.rowHoverFill("#8fd6e1 0.3");
-        chart.rowSelectedFill("#8fd6e1 0.3");
-        chart.rowStroke("0.5 #64b5f6");
-        chart.columnStroke("0.5 #64b5f6");
-      
-        
-        chart.defaultRowHeight(35);
-     	chart.headerHeight(90);
-     	
-     	/* Hiding the middle column */
-     	chart.splitterPosition("15.6%");
-     	
-     	var dataGrid = chart.dataGrid();
-     	dataGrid.rowEvenFill("gray 0.3");
-     	dataGrid.rowOddFill("gray 0.1");
-     	dataGrid.rowHoverFill("#ffd54f 0.3");
-     	dataGrid.rowSelectedFill("#ffd54f 0.3");
-     	dataGrid.columnStroke("2 #64b5f6");
-     	dataGrid.headerFill("#64b5f6 0.2");
-     	
-     
-     	/* Title */
-
-     	var column_1 = chart.dataGrid().column(1);
-     	column_1.labels().fontWeight(600);
-     	column_1.labels().useHtml(true);
-     	column_1.labels().fontColor("#055C9D");
-     	
-     	
-     	var column_2 = chart.dataGrid().column(1);
-     	column_2.title().text("Activity");
-     	column_2.title().fontColor("#145374");
-     	column_2.title().fontWeight(600);
-     	
-     	chart.dataGrid().column(0).width(25);
-     	
-     	chart.dataGrid().tooltip().useHtml(true);    
-        
-     	
-     	
-     	 /* Set width of column */
-     	/* chart.dataGrid().column(0).setColumnFormat(
-     		   
-     		    {
-     		      formatter: function(value) {
-     		        return value.toUpperCase();
-     		      },
-     		      textStyle: {fontColor: "#055C9D",fontWeight:"600"},
-     		      width: 10
-     		    }
-     		);   */
-     	
-		/* chart.fitAll();
-     	chart.zoomTo("month", 3, "first-date"); */
-     	
-     	/* chart.getTimeline().scale().minimum("2019-01-01");
-     	chart.getTimeline().scale().maximum("2021-07-15"); */
-     	
-     	//chart.getTimeline().scale().zoomLevels([["month", "quarter","year"]]);
-     	
-     	if(interval==="year"){
-     		/* Yearly */
-	     	chart.getTimeline().scale().zoomLevels([["year"]]);
-	     	var header = chart.getTimeline().header();
-	     	header.level(2).format("{%value}-{%endValue}");
-	     	header.level(1).format("{%value}-{%endValue}"); 
-     	}
-     	
-     	if(interval==="half"){
-     		/* Half-yearly */
-	     	chart.getTimeline().scale().zoomLevels([["semester", "year"]]);
-	     	var header = chart.getTimeline().header();
-	     	header.level(2).format("{%value}-{%endValue}");
-	     	var header = chart.getTimeline().header();
-	     	header.level(0).format(function() {
-     			var duration = '';
-     			if(this.value=='Q1')
-     				duration='H1';
-     			if(this.value=='Q3')
-     				duration='H2'
-     		  return duration;
-     		});
-     	}
-     	
-     	if(interval==="quarter"){
-     		/* Quarterly */
-	     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
-	     	var header = chart.getTimeline().header();
-	     	header.level(1).format(function() {
-     			var duration = '';
-     			if(this.value=='Q1')
-     				duration='H1';
-     			if(this.value=='Q3')
-     				duration='H2'
-     		  return duration;
-     		});
-     	}
-     	
-     	if(interval==="month"){
-     		/* Monthly */
-	     	chart.getTimeline().scale().zoomLevels([["month", "quarter","year"]]);
-     	}
-     	
-     	else if(interval===""){
-     		/* Quarterly */
-	     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
-	     	var header = chart.getTimeline().header();
-	     	header.level(1).format(function() {
-     			var duration = '';
-     			if(this.value=='Q1')
-     				duration='H1';
-     			if(this.value=='Q3')
-     				duration='H2'
-     		  return duration;
-     		});
-     		
-     	}
-     	
-     	
-     	
-     	/* chart.getTimeline().scale().fiscalYearStartMonth(4); */
-     	
-     	/* Header */
-     	var header = chart.getTimeline().header();
-     	header.level(0).fill("#64b5f6 0.2");
-     	header.level(0).stroke("#64b5f6");
-     	header.level(0).fontColor("#145374");
-     	header.level(0).fontWeight(600);
-     	
-     	/* Marker */
-     	var marker_1 = chart.getTimeline().lineMarker(0);
-     	marker_1.value("current");
-     	marker_1.stroke("2 #dd2c00");
-     	
-     	/* Progress */
-     	var timeline = chart.getTimeline();
-     	
-     	timeline.tasks().labels().useHtml(true);
-     	timeline.tasks().labels().format(function() {
-     	  if (this.progress == 1) {
-     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'></span>";
-     	  } else {
-     	    return "<span style='color:black;font-weight:bold'></span>";
-     	  }
-     	});
-     	
-     	
-    // calculate height
-     	var traverser = treeData.getTraverser();
-        var itemSum = 0;
-        var rowHeight = chart.defaultRowHeight();
-        while (traverser.advance()){
-           if (traverser.get('rowHeight')) {
-          itemSum += traverser.get('rowHeight');
-        } else {
-        	itemSum += rowHeight;
-        }
-        if (chart.rowStroke().thickness != null) {
-        	itemSum += chart.rowStroke().thickness;
-        } else {
-          itemSum += 1;
-        }
-        }
-        itemSum += chart.headerHeight();
-        
-        //customize printing
-        var menu = chart.contextMenu();
-        
-        // To download and stuff 
-        
-       /*  menu.itemsFormatter(function(items) {
-          items['print-chart'].action = 
-        	  
-        	  function() {
-            document.getElementById('containers').style.height = String(itemSum) + 'px';
-            setTimeout(function() {
-              chart.print();
-              setTimeout(function() {
-                document.getElementById('containers').style.height = '100%';
-              },5000);
-            },1000);
-          }
-          return items;
-        });   */
-        
-        
-       // to print
-
-	   	if(type==="print"){
-
-	   		anychart.onDocumentReady(function () { 
-	   		
-	            document.getElementById('containers').style.height = String(itemSum) + 'px';
-	            setTimeout(function() {
-	              chart.print();
-	              setTimeout(function() {
-	                //document.getElementById('containers').style.height = '100%';
-	              },3000);
-	            },1000);
-	          }); 
-		    
-	   	}
-        
-	}
+						        
 	
+								
+						        
+	        /* Hover */
+	        
+	        chart.rowHoverFill("#8fd6e1 0.3");
+	        chart.rowSelectedFill("#8fd6e1 0.3");
+	        chart.rowStroke("0.5 #64b5f6");
+	        chart.columnStroke("0.5 #64b5f6");
+	      
+	        
+	        chart.defaultRowHeight(35);
+	     	chart.headerHeight(90);
+	     	
+	     	/* Hiding the middle column */
+	     	chart.splitterPosition("15.6%");
+	     	
+	     	var dataGrid = chart.dataGrid();
+	     	dataGrid.rowEvenFill("gray 0.3");
+	     	dataGrid.rowOddFill("gray 0.1");
+	     	dataGrid.rowHoverFill("#ffd54f 0.3");
+	     	dataGrid.rowSelectedFill("#ffd54f 0.3");
+	     	dataGrid.columnStroke("2 #64b5f6");
+	     	dataGrid.headerFill("#64b5f6 0.2");
+						     	
+						     
+	     	/* Title */
 	
-$( document ).ready(function(){
-	  
-	  chartprint('type','');
-})
+	     	var column_1 = chart.dataGrid().column(1);
+	     	column_1.labels().fontWeight(600);
+	     	column_1.labels().useHtml(true);
+	     	column_1.labels().fontColor("#055C9D");
+	     	
+	     	
+	     	var column_2 = chart.dataGrid().column(1);
+	     	column_2.title().text("Activity");
+	     	column_2.title().fontColor("#145374");
+	     	column_2.title().fontWeight(600);
+	     	
+	     	chart.dataGrid().column(0).width(25);
+	     	
+	     	chart.dataGrid().tooltip().useHtml(true);    
+						        
+						     	
+						     	
+	     	if(interval==="year"){
+	     		/* Yearly */
+		     	chart.getTimeline().scale().zoomLevels([["year"]]);
+		     	var header = chart.getTimeline().header();
+		     	header.level(2).format("{%value}-{%endValue}");
+		     	header.level(1).format("{%value}-{%endValue}"); 
+	     	}
+						     	
+	     	if(interval==="half"){
+	     		/* Half-yearly */
+		     	chart.getTimeline().scale().zoomLevels([["semester", "year"]]);
+		     	var header = chart.getTimeline().header();
+		     	/* header.level(2).format("{%value}-{%endValue}"); */
+		     	header.level(2).format("{%value}-{%endValue}");
+		     	header.level(0).format(function() {
+		     			var duration = '';
+		     			if(this.value=='Q1')
+		     				duration='H1';
+		     			if(this.value=='Q3')
+		     				duration='H2'
+		     		  return duration;
+		     		});
+	     	}
+						     	
+	     	if(interval==="quarter"){
+	     		/* Quarterly */
+		     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+		     	var header = chart.getTimeline().header();
+		     	header.level(1).format(function() {
+	     			var duration = '';
+	     			if(this.value=='Q1')
+	     				duration='H1';
+	     			if(this.value=='Q3')
+	     				duration='H2'
+	     		  return duration;
+	     		});
+	     		
+	     		
+	     	}
+						     	
+	     	if(interval==="month"){
+	     		/* Monthly */
+		     	chart.getTimeline().scale().zoomLevels([["month", "quarter","year"]]);
+	     	}
+						     	
+	     	else if(interval===""){
+	
+	     		/* Quarterly */
+		     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+		     	var header = chart.getTimeline().header();
+		     	header.level(1).format(function() {
+	     			
+	     			var duration = '';
+	     		
+	     			if(this.value=='Q1')
+	     				duration='H1';
+	     			if(this.value=='Q3')
+	     				duration='H2'
+	
+	     		  return duration;
+	     		});
+	     		
+	     	}
+						     	
+	     	/* Header */
+	     	var header = chart.getTimeline().header();
+	     	header.level(0).fill("#64b5f6 0.2");
+	     	header.level(0).stroke("#64b5f6");
+	     	header.level(0).fontColor("#145374");
+	     	header.level(0).fontWeight(600);
+	     	
+	     	/* Marker */
+	     	var marker_1 = chart.getTimeline().lineMarker(0);
+	     	marker_1.value("current");
+	     	marker_1.stroke("0 white");
+						     	
+	     	/* Progress */
+	     	var timeline = chart.getTimeline();
+						     	
+			timeline.tasks().labels().useHtml(true);
+			timeline.tasks().labels().format(function() {
+				if (this.progress == 1) {
+					return "<span style='color:orange;font-weight:bold;font-family:'Lato';'><Completed</span>";
+				} else {
+					return "<span style='color:black;font-weight:bold'></span>";
+				}
+			});
+						     	
+						     	
+			// calculate height
+	     	var traverser = treeData.getTraverser();
+	        var itemSum = 0;
+	        var rowHeight = chart.defaultRowHeight();
+	        while (traverser.advance()){
+	        	if (traverser.get('rowHeight')) {
+	        		itemSum += traverser.get('rowHeight');
+		        } else {
+		        	itemSum += rowHeight;
+		        }
+		        if (chart.rowStroke().thickness != null) {
+		        	itemSum += chart.rowStroke().thickness;
+		        } else {
+		          itemSum += 1;
+		        }
+	        }
+			itemSum += chart.headerHeight();
+						        
+	        //customize printing
+	        var menu = chart.contextMenu();
+						        
+		   	if(type==="print"){
+	
+		   		anychart.onDocumentReady(function () { 
+		   		
+		            document.getElementById('containers').style.height = String(itemSum) + 'px';
+		            setTimeout(function() {
+		              chart.print();
+		              setTimeout(function() {
+		              },3000);
+		            },1000);
+		          }); 
+			    
+		   	}
+								       
+		}     
+				
+		$( document ).ready(function(){
+		    	  
+			chartprint('type','');
+		});
+	      
+	      
+		function ChartPrint(){
+		   		
+	   		var interval = $("#interval").val();
+	    	$('#containers').empty();
+	    	chartprint('print',interval);
+		}
+
+	</script>
+										
+	<script>
+	
+		$('#interval').on('change',function(){
+			
+			$('#containers').empty();
+			var interval = $("#interval").val()
+			chartprint('type',interval);
+			
+		})
+	
+	</script>
 
 
-function ChartPrint(){
- 		
-	  var interval = $("#interval").val();
-	  $('#containers').empty();
-	  chartprint('print',interval);
-}
-</script> --%>
-
-<script type="text/javascript">
+<%-- <script type="text/javascript">
 var today = new Date(),
 day = 1000 * 60 * 60 * 24;
 
@@ -770,7 +711,8 @@ $('.swal2-confirm').click(function (){
 	console.log("GHagshgaj")
 	$('#submit').click(); 
 })
-</script>
+</script> --%>
+
 
 </body>
 </html>
