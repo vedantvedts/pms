@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.admin.service.AdminService;
+import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
@@ -1721,6 +1722,99 @@ public class MasterController {
 			catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() + " Inside LabPmsEmployeeUpdate" + e);
+				return "error";
+			}
+			
+		}
+		@RequestMapping(value = "EmployeeRoleList.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String EmployeeRoleList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+			String UserName = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() + "Inside EmployeeRoleList.htm" + UserName);
+			long status=0;
+			try 
+			{
+				req.setAttribute("LabList", service.LabList());
+				
+				
+				List<Object[]>empList = service.getEmployees();
+				System.out.println(empList.size());
+				String labcode = req.getParameter("labcode")!=null  ?req.getParameter("labcode"):LabCode;
+				
+				if(labcode.equalsIgnoreCase("@EXP")) {
+					empList = empList.stream().filter(e->e[6].toString().equalsIgnoreCase("E")).collect(Collectors.toList());
+						
+				}else {
+					
+					empList = empList.stream().filter(e->e[2].toString().equalsIgnoreCase(labcode)).collect(Collectors.toList());
+				
+				}
+				req.setAttribute("empList", empList);
+				req.setAttribute("labcode", labcode);
+				
+				
+				return  "master/EmployeeRoleList";
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() + " Inside LabPmsEmployeeUpdate" + e);
+				return "error";
+			}
+			
+		}
+		
+		@RequestMapping(value = "EmployeeRoleAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String EmployeeRoleAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+			String UserName = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() + "Inside EmployeeRoleAdd.htm" + UserName);
+			long status=0;
+			try 
+			{
+				String labcode = req.getParameter("labcode")!=null  ?req.getParameter("labcode"):LabCode;
+				redir.addAttribute("labcode", labcode);
+			
+				
+				String roleid = req.getParameter("roleid");
+				
+				PfmsEmpRoles pf =!roleid.equalsIgnoreCase("0")?service.getPfmsEmpRolesById(roleid):new PfmsEmpRoles();
+				
+				pf.setEmpNo(req.getParameter("empno"));
+				pf.setEmpRole(req.getParameter("role"));
+				pf.setOrganization(req.getParameter("Organization"));
+				if(roleid.equalsIgnoreCase("0")) {
+				pf.setCreatedBy(UserName);
+				pf.setCreatedDate(LocalDate.now().toString());
+				pf.setIsActive(1);
+				}else {
+					pf.setRoleId(Long.parseLong(roleid));
+					pf.setModifiedBy(UserName);
+					pf.setModifiedDate(LocalDate.now().toString());
+				}
+				
+				long count = service.addPfmsEmpRoles(pf);
+				
+				if(count>0) {
+					if(roleid.equalsIgnoreCase("0")) {
+						redir.addAttribute("result","Role added Successfully for Empno "+req.getParameter("empno"));
+					}else {
+						redir.addAttribute("result","Role updated Successfully for Empno "+req.getParameter("empno"));
+
+					}
+					
+					
+				}else {
+					redir.addAttribute("resultfail", "Something Went Wrong..!");
+				}
+				
+				
+				
+				
+				return "redirect:/EmployeeRoleList.htm";
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() + " Inside " + e);
 				return "error";
 			}
 			

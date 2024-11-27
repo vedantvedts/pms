@@ -8,12 +8,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.committee.model.ActionAttachment;
+import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
@@ -27,6 +29,8 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.project.model.PfmsInititationRequirement;
+import com.vts.pfms.requirements.model.IGIInterface;
 
 @Transactional
 @Repository
@@ -943,4 +947,47 @@ public class MasterDaoImpl implements MasterDao {
 			return employee.getEmpId();
 		}
 
+		private static final String EMPWITHROLES ="SELECT b.Empid AS'Empid',a.Roleid,b.labcode AS 'Organization', CONCAT(IFNULL(CONCAT(b.title,' '),IFNULL(CONCAT(b.salutation,' '),'')), b.empname) AS 'empname' ,a.EmpRole,b.empno AS 'empno'  ,'I' AS 'emptype'\r\n"
+				+ "FROM  employee b  LEFT JOIN pfms_emp_roles a ON b.empno = a.empno\r\n"
+				+ "UNION \r\n"
+				+ "SELECT b.ExpertId AS'Empid',a.Roleid,b.Organization AS 'Organization', CONCAT(IFNULL(CONCAT(b.title,' '),IFNULL(CONCAT(b.salutation,' '),'')), b.expertname) AS 'empname' ,a.EmpRole,b.ExpertNo AS 'empno'  ,'E' AS 'emptype'\r\n"
+				+ "FROM  expert b  LEFT JOIN pfms_emp_roles a ON b.ExpertNo = a.empno ORDER BY Empid;";
+		@Override
+		public List<Object[]> getEmployees() throws Exception {
+			Query query = manager.createNativeQuery(EMPWITHROLES);
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		@Override
+		public PfmsEmpRoles getPfmsEmpRolesById(String roleid) throws Exception {
+			try {
+				return manager.find(PfmsEmpRoles.class, Long.parseLong(roleid));
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		@Override
+		public long addPfmsEmpRoles(PfmsEmpRoles pf) throws Exception {
+			try {
+				manager.persist(pf);
+				manager.flush();
+				return pf.getRoleId();
+				
+				
+			}catch (Exception e) {
+			e.printStackTrace();
+				return 0;
+			}
+		}
+		
+		public List<PfmsEmpRoles>getAllEmpRoles() throws Exception {
+			
+			String queryStr = "SELECT i FROM PfmsEmpRoles i ";
+	        TypedQuery<PfmsEmpRoles> query = manager.createQuery(queryStr, PfmsEmpRoles.class);
+	        return query.getResultList();
+			
+			
+		}
 }

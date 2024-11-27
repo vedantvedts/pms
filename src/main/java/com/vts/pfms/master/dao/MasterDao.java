@@ -2,6 +2,7 @@ package com.vts.pfms.master.dao;
 
 import java.util.List;
 
+import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
@@ -94,4 +95,8 @@ public interface MasterDao  {
 	public Object[] getDesigId(String designation) throws Exception;
 	public long updateEmployee(Employee employee) throws Exception;
 	public long EmployeeMasterInsert(Employee employee) throws Exception;
+	public List<Object[]> getEmployees()throws Exception;
+	public PfmsEmpRoles getPfmsEmpRolesById(String roleid)throws Exception;
+	public long addPfmsEmpRoles(PfmsEmpRoles pf)throws Exception;
+	public List<PfmsEmpRoles>getAllEmpRoles() throws Exception ;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
@@ -90,5 +91,8 @@ public interface MasterService {
 	public HolidayMaster getHolidayData(Long holidayid) throws Exception;
 	public List<Object[]> labPmsEmployeeList(String LabCode) throws Exception;
 	public long LabPmsEmployeeUpdate(String[] labPmsEmpId, String userName,String LabCode) throws Exception;
+	public List<Object[]> getEmployees()throws Exception;
+	public PfmsEmpRoles getPfmsEmpRolesById(String roleid)throws Exception;
+	public long addPfmsEmpRoles(PfmsEmpRoles pf)throws Exception;
 	
 }

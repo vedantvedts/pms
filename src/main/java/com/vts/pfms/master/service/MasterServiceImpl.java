@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.committee.model.ActionAttachment;
+import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
@@ -724,5 +725,21 @@ public class MasterServiceImpl implements MasterService {
 				
 			}
 			return status;
+		}
+		
+		@Override
+		public List<Object[]> getEmployees() throws Exception {
+			return dao.getEmployees();
+		}
+		
+		@Override
+		public PfmsEmpRoles getPfmsEmpRolesById(String roleid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.getPfmsEmpRolesById(roleid);
+		}
+		
+		@Override
+		public long addPfmsEmpRoles(PfmsEmpRoles pf) throws Exception {
+			return dao.addPfmsEmpRoles(pf);
 		}
 }
