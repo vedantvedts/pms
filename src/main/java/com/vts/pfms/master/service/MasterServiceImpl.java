@@ -2,7 +2,6 @@ package com.vts.pfms.master.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
-import com.vts.pfms.committee.model.ActionAttachment;
+import com.vts.pfms.admin.dao.AdminDao;
+import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
@@ -33,9 +33,9 @@ import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
-import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.LabPmsEmployee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
@@ -53,6 +53,10 @@ public class MasterServiceImpl implements MasterService {
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	@Autowired
 	MasterDao dao;
+	
+	@Autowired
+	AdminDao admindao;
+	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
@@ -660,14 +664,28 @@ public class MasterServiceImpl implements MasterService {
 				{
 					if(labPmsEmpId[i]!=null && labPmsEmpId[i].split("#")!=null)
 					{
+						long DesignationId=0;
 						System.out.println("labPmsEmpId["+i+"]*****"+labPmsEmpId[i]);
+						LabPmsEmployee labemployee=dao.labemployeefindbyEmpId(Long.parseLong(labPmsEmpId[i].split("#")[0].toString()));
+						Object[] getDesigId=dao.getDesigId(labemployee.getDesignation());
+						System.out.println("getDesigId:"+getDesigId);
+						if(getDesigId==null) {
+							EmployeeDesig model=new EmployeeDesig();
+							model.setDesigCode(labemployee.getDesignation());
+							model.setDesignation(labemployee.getDesignation());
+							model.setDesigLimit(100000);
+							model.setDesigCadre("Others");
+							
+							DesignationId=admindao.DesignationAddSubmit(model);
+						}else {
+							DesignationId=Long.parseLong(getDesigId[0].toString());
+						}
+						
 						if(labPmsEmpId[i].split("#")[0]!=null && labPmsEmpId[i].split("#")[1].equalsIgnoreCase(" ") && labPmsEmpId[i].split("#")[2].equalsIgnoreCase(" ")) {
-							LabPmsEmployee labemployee=dao.labemployeefindbyEmpId(Long.parseLong(labPmsEmpId[i].split("#")[0].toString()));
-							Object[] getDesigId=dao.getDesigId(labemployee.getDesignation());
 							Employee employee= new Employee();
 							employee.setEmpNo(labemployee.getPcNo().toString());
 							employee.setEmpName(labemployee.getName());
-							employee.setDesigId(Long.parseLong(getDesigId[0].toString()));
+							employee.setDesigId(DesignationId);
 							if(labemployee.getInternalPhoneNo()!=null) {
 							employee.setExtNo(labemployee.getInternalPhoneNo());
 							}
@@ -690,11 +708,9 @@ public class MasterServiceImpl implements MasterService {
 							employee.setLabCode(LabCode);
 							status= dao.EmployeeMasterInsert(employee);
 						}else if(labPmsEmpId[i].split("#")[0]!=null && labPmsEmpId[i].split("#")[1]!=null && labPmsEmpId[i].split("#")[2]!=null) {
-							LabPmsEmployee labemployee=dao.labemployeefindbyEmpId(Long.parseLong(labPmsEmpId[i].split("#")[0].toString()));
 							if(labemployee.getPcNo()!=null && labemployee.getPcNo().toString().equalsIgnoreCase(labPmsEmpId[i].split("#")[2].toString())) {
 								Employee employee=dao.getEmployeeById(labPmsEmpId[i].split("#")[1].toString());
-								Object[] getDesigId=dao.getDesigId(labemployee.getDesignation());
-								employee.setDesigId(Long.parseLong(getDesigId[0].toString()));
+								employee.setDesigId(DesignationId);
 								if(labemployee.getInternalPhoneNo()!=null) {
 								employee.setExtNo(labemployee.getInternalPhoneNo());
 								}
