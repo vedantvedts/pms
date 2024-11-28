@@ -19,7 +19,16 @@
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" /> --%>
-
+<spring:url value="/resources/js/FileSaver.min.js" var="FileSaver" />
+<script src="${FileSaver}"></script>
+<spring:url value="/resources/js/jquery.wordexport.js" var="wordexport" />
+<script src="${wordexport}"></script>
+<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+<script src="${pdfmake}"></script>
+<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+<script src="${pdfmakefont}"></script>
+<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+<script src="${htmltopdf}"></script>
 <spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
 <script src="${SummernoteJs}"></script>
@@ -337,6 +346,20 @@ float: right;
 #description li{
 list-style: inherit !important;
 }
+
+/*    .open-modal-button {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: #007bff;
+      color: #fff;
+      padding: 5px;
+      border: none;
+      border-radius: 5px;
+      font-weight:bold;
+      cursor: pointer;
+      z-index: 1001; /* Make sure the button is above the modal */
+    } */
 </style>
 </head>
 <body>
@@ -381,10 +404,9 @@ if(VerificationMethodList!=null && !VerificationMethodList.isEmpty()){
 	specialMethods = VerificationMethodList.stream().filter(e->e[1].toString().equalsIgnoreCase("5")).collect(Collectors.toList());
 }
 List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
+List<Object[]>ReqSubSystemList=(List<Object[]>)request.getAttribute("ReqSubSystemList");
+List<Object[]>RequirementMainList=(List<Object[]>)request.getAttribute("RequirementMainList");
 
-//RequirementInitiation reqInitiation = (RequirementInitiation)request.getAttribute("reqInitiation");
-//String status = reqInitiation!=null?reqInitiation.getReqStatusCode():"RIN";
-//List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
 
 Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 %>
@@ -422,7 +444,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 				<div class="col-md-12">
 					<div class="card shadow-nohover" style="margin-top: -0px;">
 						<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-							<div class="col-md-9" id="projecthead">
+							<div class="col-md-5" id="projecthead">
 								<h5 style="margin-left: 1%;">
 									Requirements - 
 									<small>
@@ -433,7 +455,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</small>
 								</h5>
 							</div>
-							<div class="col-md-3" id="addReqButton">
+							<div class="col-md-7" id="addReqButton">
 								<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 								<button class="btn btn-success btn-sm submit" style=""
 										type="button" onclick='showdata()' data-toggle="tooltip"
@@ -465,7 +487,21 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										formnovalidate="formnovalidate" style="margin-top: -3%;">BACK</button>
 								</form>
 								<%} %>
+								&nbsp;&nbsp;&nbsp; <!-- <button class="btn btn-sm" onclick="getFunctionalRequirements()">Functional Requirements</button> -->
 								
+									<%if(RequirementList!=null && RequirementList.size()>0){ %>
+								 <button class="btn btn-sm open-modal-button" id="modalbtn" onclick="getFunctionalRequirements()">
+								<i class="fa fa-download" aria-hidden="true" style="color:green;"></i> FR
+								 </button>&nbsp;&nbsp;
+								 <button class="btn btn-sm open-modal-button" id="modalbtn" onclick="getPerformanceRequirements()">
+								<i class="fa fa-download" aria-hidden="true" style="color:green;"></i> PR
+								 </button>&nbsp;&nbsp;
+								 <button class="btn btn-sm open-modal-button " id="modalbtn" onclick="getOperationalRequirements()">
+								<i class="fa fa-download" aria-hidden="true" style="color:green;"></i> OR
+								 </button>
+						
+									<%} %>
+							
 							</div>	
 								
 						</div>
@@ -667,9 +703,10 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 
 								</div>
-								<hr>
 								
-													<div class="row">
+								<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
+								<hr>
+								<div class="row">
 								<div class="col-md-2" style="margin-top: 1%">
 										<h5
 											style="font-size: 20px; color: #005086; width: fit-content">Linked SubSystem:
@@ -679,8 +716,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									<div class="col-md-10" style="margin-top: 1%;">
 										<p id="subsytemshow" style="font-size: 18px;"></p>
 									</div>
-
 								</div>
+								<%} %>
 							</div> 
 
 						
@@ -697,7 +734,32 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 					<form  role="form" action="RequirementSubAdd.htm" method="POST" id="">
 			<div class="row" id="row2" style="display:none;">
 	
+						<%if(ReqSubSystemList!=null && ReqSubSystemList.size()>0) {%>
+								<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-4">
+										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+											Linked System Requirements
+										</label>
+									</div>
+									<div class="col-md-8" style="margin-top: 1%;">
+										<div class="form-group">
+											<%if ((ReqSubSystemList != null) && (!ReqSubSystemList.isEmpty())) {%>
+										 	<select class="form-control selectdee" name="LinkedPara" id="LinkedPara" data-width="80%" data-live-search="true" multiple onchange="getReqDetails()">
+													<option value="" disabled="disabled">---Choose----</option>
+													<%for (Object[] obj : ReqSubSystemList) {%>
+														<option value="<%=obj[0]%>"><%=obj[1]%></option>
+													<%}%>
+												</select>
+											<%} else {%>
+												<input class="form-control" name="" id="LinkedPara"  readonly placeholder="No Linked System Requirements">
+											<%} %>
+										</div>
+									</div>
+								</div>
+							</div>
 						
+						<%}else{ %>
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-3">
@@ -721,7 +783,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>
-								
+							<%} %>
+							
 							<div class="col-md-12">
 								<div class="row mt-2">
 									<div class=col-md-3>
@@ -805,8 +868,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									<div class="col-md-12" id="textarea" style="">
 										<div class="form-group">
 										<div id="Editor" class="center"></div>
-											<textarea  name="description" style="display: none;" class="form-control" id="descriptionadds" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 										</div>
+								<textarea  name="description" style="display: none;" class="form-control" id="descriptionadds" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 									</div>
 								</div>
 							</div>
@@ -876,11 +939,13 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 											<select class="form-control selectdee" name="TestStage" id="TestStageAdd" data-width="80%" data-live-search="true" >
 												<option value="" disabled="disabled" selected>---Choose----</option>
 												<!-- <option value="0">NA ( Not Applicable )</option> -->
+												<option value="ATP">ATP</option>
+												<option value="QTP">QTP</option>
 												<option value="Verification">Verification</option>
 												<option value="Validation">Validation</option>
 												<option value="FAT">FAT</option>
 												<option value="SITE">SITE</option>
-												<option value="ATP">ATP</option>
+												
 											</select>
 										</div>
 									</div>
@@ -969,7 +1034,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									
 								</div>
 							</div>
-								
+								<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
 								<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-3">
@@ -980,7 +1045,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									<div class="col-md-7" style="margin-top: 1%;">
 										<div class="form-group">
 											<%if ((productTreeList != null) && (!productTreeList.isEmpty())) {%>
-												<select class="form-control selectdee" name="LinkedSub" id="LinkedSub" data-width="80%" data-live-search="true" multiple onchange="getParaDetails()">
+												<select class="form-control selectdee" name="LinkedSub" id="LinkedSub" data-width="80%" data-live-search="true" multiple >
 													<option value="" disabled="disabled">---Choose----</option>
 													<%for (Object[] obj : productTreeList) {%>
 														<option value="<%=obj[0]%>"><%=obj[1]+" "+obj[2] %></option>
@@ -993,7 +1058,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>	
-								
+								<%} %>
 								
 								
 									
@@ -1027,6 +1092,33 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 			<form class="form-horizontal" role="form"action="RequirementUpdate.htm" method="POST" id="myform2">
 			<div class="row" id="row3" style="display:none;">
 							<div id="ReqTypeName" style="font-size: 1.5rem;margin-left: 10px;font-weight: 600;"></div>
+								
+										<%if(ReqSubSystemList!=null && ReqSubSystemList.size()>0) {%>
+								<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-4">
+										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+											Linked System Requirements
+										</label>
+									</div>
+									<div class="col-md-8" style="margin-top: 1%;">
+										<div class="form-group">
+											<%if ((ReqSubSystemList != null) && (!ReqSubSystemList.isEmpty())) {%>
+										 	<select class="form-control selectdee" name="LinkedPara" id="LinkedParaEdit" data-width="80%" data-live-search="true" multiple onchange="getReqDetails()">
+													<option value="" disabled="disabled">---Choose----</option>
+													<%for (Object[] obj : ReqSubSystemList) {%>
+														<option value="<%=obj[0]%>"><%=obj[1]%></option>
+													<%}%>
+												</select>
+											<%} else {%>
+												<input class="form-control" name="" id="LinkedParaEdit"  readonly placeholder="No Linked System Requirements">
+											<%} %>
+										</div>
+									</div>
+								</div>
+							</div>
+						
+						<%}else{ %>
 									
 							<div class="col-md-12">
 								<div class="row">
@@ -1051,6 +1143,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>
+							<%} %>
 									<div class="col-md-12">
 								<div class="row mt-2">
 									<div class=col-md-3>
@@ -1142,8 +1235,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									<div class="col-md-12" id="textarea" style="">
 										<div class="form-group">
 											<div id="Editor1" class="center"></div>
-											<textarea  name="description" style="display: none;" class="form-control" id="descriptionedit" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 										</div>
+										<textarea  name="description" style="display: none;" class="form-control" id="descriptionedit" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
 									</div>
 								</div>
 							</div>
@@ -1211,11 +1304,12 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 											<select class="form-control selectdee" name="TestStage" id="TestStageedit" data-width="80%" data-live-search="true" >
 												<option value="" disabled="disabled">---Choose----</option>
 												<!-- <option value="0">NA ( Not Applicable )</option> -->
+													<option value="ATP">ATP</option>
+												<option value="QTP">QTP</option>
 												<option value="Verification">Verification</option>
 												<option value="Validation">Validation</option>
 												<option value="FAT">FAT</option>
 												<option value="SITE">SITE</option>
-												<option value="ATP">ATP</option>
 											</select>
 										</div>
 									</div>
@@ -1296,34 +1390,50 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										</div>
 								</div>
 							</div>
-									
-									<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-3">
-										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
-											Linked subsystem
-										</label>
-									</div>
-									<div class="col-md-7" style="margin-top: 1%;">
-										<div class="form-group">
-											<%if ((productTreeList != null) && (!productTreeList.isEmpty())) {%>
-												<select class="form-control selectdee" name="LinkedSub" id="LinkedSubedit" data-width="80%" data-live-search="true" multiple onchange="getParaDetails()">
-													<option value="" disabled="disabled">---Choose----</option>
-													<%for (Object[] obj : productTreeList) {%>
-														<option value="<%=obj[0]%>"><%=obj[1]+" "+obj[2] %></option>
-													<%}%>
-												</select>
-											<%} else {%>
-												<input class="form-control" name="" id="LinkedSub"  readonly placeholder="No para specified for Project">
-											<%} %>
-										</div>
-									</div>
+					<%
+					if (productTreeMainId.equalsIgnoreCase("0")) {
+					%>
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-3">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+									Linked subsystem </label>
+							</div>
+							<div class="col-md-7" style="margin-top: 1%;">
+								<div class="form-group">
+									<%
+									if ((productTreeList != null) && (!productTreeList.isEmpty())) {
+									%>
+									<select class="form-control selectdee" name="LinkedSub"
+										id="LinkedSubedit" data-width="80%" data-live-search="true"
+										multiple>
+										<option value="" disabled="disabled">---Choose----</option>
+										<%
+										for (Object[] obj : productTreeList) {
+										%>
+										<option value="<%=obj[0]%>"><%=obj[1] + " " + obj[2]%></option>
+										<%
+										}
+										%>
+									</select>
+									<%
+									} else {
+									%>
+									<input class="form-control" name="" id="LinkedSub" readonly
+										placeholder="No para specified for Project">
+									<%
+									}
+									%>
 								</div>
-							</div>		
-									
-									
-									
-							<div class=col-md-12>
+							</div>
+						</div>
+					</div>
+					<%
+					}
+					%>
+
+
+					<div class=col-md-12>
 								<div class="row">
 									<div class="col-md-3">
 										<label style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">
@@ -1357,6 +1467,9 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 			<%} %>		
 								
 		</div>
+		
+		
+		<jsp:include page="../requirements/RequirementPdfs.jsp"></jsp:include></div>  
 	</div>
 
 
@@ -1453,24 +1566,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 								</div>
 							</div>
 						</div>
-<!-- 				
-								<!-- 	<div class=col-md-12>
-										<div class="row">
-											<div class="col-md-4">
-												<label
-													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
-													<span class="mandatory" style="color: red;">*</span>
-												</label>
-											</div>
-											<div class="col-md-8" style="margin-top: 10px">
-												<div class="form-group">
-													<input type="text" name="remarks" class="form-control"
-														id="remarks" maxlength="255" required="required"
-														placeholder="Maximum 250 Chararcters">
-												</div>
-											</div>
-										</div>
-									</div> -->
+
 		
 
 							
@@ -1541,11 +1637,11 @@ var productreelist = [];
 
 <%}}%>
 
-console.log(productreelist)
+
 
 function reqSubmit(){
 		var checkboxes = document.querySelectorAll('input[name="ReqValue"]');
-		console.log("Selected values: ", checkboxes);
+
 		var selectedValues=[];
 	    checkboxes.forEach(function(checkbox) {
 	        // If checkbox is checked, add its value to the array
@@ -1570,7 +1666,7 @@ function reqSubmit(){
 	    	},
 	    	success:function (result){
 	    		var ajaxresult = JSON.parse(result);
-	    		console.log(typeof ajaxresult)
+	    	
 	    		
 	    		if(ajaxresult>0){
 	    			alert("Requirements Added successfully");
@@ -1599,13 +1695,13 @@ function showDetails(InitiationReqId,type){
 	if(tempVal!=InitiationReqId){
 		isOpen=false;
 		tempVal=InitiationReqId;
-		console.log("isOpen1 "+isOpen);
-		console.log("tempVal2 "+tempVal);
+
+		
 	}else{
 		isOpen=true;
 		tempVal=0;
-		console.log("isOpen3 "+isOpen);
-		console.log("tempVal4 "+tempVal);
+	
+
 	}
 	
 	
@@ -1622,7 +1718,7 @@ function showDetails(InitiationReqId,type){
 	
 	 
 	var ReqMainId= $('#'+InitiationReqId).val();
-	console.log("ReqMainId" +ReqMainId)
+
 	
 	
 	$.ajax({
@@ -1677,7 +1773,7 @@ $('.viewbtn').click(function() {
     var subId = $(this).val().split("/")[0];
     var Id = $(this).val().split("/")[1];
     
-    console.log($(this).val())
+    
     showDetailss(subId, Id);
 });
 function showDetailss(subId,Id){
@@ -1689,7 +1785,7 @@ function showDetailss(subId,Id){
 	$('#row2').hide();
 	$('#row3').hide();
 	$('#RemarksId').show();
-	console.log("subId:"+subId);
+
 	$.ajax({
 		url:'RequirementJsonValue.htm',
 		datatype:'json',
@@ -1698,7 +1794,7 @@ function showDetailss(subId,Id){
 		},
 		success:function(result){
 			 var ajaxresult=JSON.parse(result);
-			 console.log(ajaxresult)
+			
 			$('#brief').html(ajaxresult[2]+" (" +ajaxresult[4]+" )");
 				$('#reqName').html("Requirement Id - "+ajaxresult[4])
 			if(ajaxresult[5]!=null){
@@ -1794,7 +1890,7 @@ function showDetailss(subId,Id){
 			}
 			
 			
-			console.log("LinkedSubArray  "+LinkedSubArray)
+			
 			
 	$('#editreq').html('<button type="button"  class="btn btn-sm" onclick="edit1('+ajaxresult[7]+')"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" ><i class="fa fa-pencil-square-o fa-lg" style="color:orange" aria-hidden="true"></i></button>');
 		
@@ -1831,7 +1927,7 @@ function showDetailss(subId,Id){
 function edit(InitiationReqId){
 	$('#AddReqModal').modal('show');
 	$('#InitiationReqId').val(InitiationReqId);
-	console.log("InitiationReqId"+InitiationReqId)
+
 	$.ajax({
 			url:'RequirementJsonValue.htm',
 			datatype:'json',
@@ -1840,7 +1936,7 @@ function edit(InitiationReqId){
 			},
 			success:function(result){
 				 var ajaxresult=JSON.parse(result);
-				console.log(ajaxresult);
+				
 				 $('#descriptionadd').val(ajaxresult[3])
 				 $('#needtypeadd').val(ajaxresult[8])
 				 $('#priorityAdd').val(ajaxresult[5])
@@ -1857,7 +1953,7 @@ function edit1(InitiationReqId){
 
 	$('#InitiationReqIdedit').val(InitiationReqId);
 	$('#InitiationtempId').val(tempVal);
-	console.log("InitiationReqId"+InitiationReqId)
+	
 	$.ajax({
 			url:'RequirementJsonValue.htm',
 			datatype:'json',
@@ -1866,7 +1962,7 @@ function edit1(InitiationReqId){
 			},
 			success:function(result){
 				 var ajaxresult=JSON.parse(result);
-				console.log(ajaxresult);
+				
 				 $('#descriptionedit').val(ajaxresult[3])
 				/*  CKEDITOR.instances['Editor1'].setData(ajaxresult[3]);
 				 CKEDITOR.instances['Editor1'].setData(ajaxresult[3]); */
@@ -1965,7 +2061,7 @@ function openSubReqModal(ReqMainId,InitiationReqId){
 		},
 		success:function(result){
 			 var ajaxresult=JSON.parse(result);
-			console.log(ajaxresult)
+			
 			var html='<option disabled="disabled" value="" selected="selected">Choose..</option>';
 			for(var i=0;i<ajaxresult.length;i++){
 				html=html+'<option value="'+ajaxresult[i][0]+"/"+ajaxresult[i][3]+"/"+ajaxresult[i][1]+'">'+ajaxresult[i][1]+'   ('+ajaxresult[i][3]+') </option>'
@@ -1982,7 +2078,7 @@ function openSubReqModal(ReqMainId,InitiationReqId){
 function checkValue(value){
 	
 	
-	console.log($('#'+value).val())
+	
 	
 	/* var values = $('#'+value).val();
 	
@@ -2247,8 +2343,8 @@ function getParaDetails(){
    for (var j = 0; j < selectedOptions.length; j++) {
 		 for(var i=0;i<list.length;i++){
 			 if(list[i][0]==selectedOptions[j]){
-				 console.log(list[i][4])
-				 html=html+(j+1)+"."+list[i][4]+'<br>'
+				 
+				 html=html+ '<span style="font-weight:600;font-size:1rem;"> ' +list[i][3]+'</span> - ' +list[i][4]+'<br>'
 			 }
 		 }
 		     
@@ -2261,11 +2357,11 @@ function getParaDetails(){
 }
 
 function getParaDetailsEdit(){
-	console.log(templengthEdit+"--")
+	
 	
 	var curLength = $('#LinkedParaEdit').val().length;
 	
-	console.log(curLength+"///")
+	
 	
 	if(curLength>templengthEdit){
 		 $.ajax({
@@ -2363,7 +2459,7 @@ function submitReqType(){
 }
 
 function deleteReq(a){
-	console.log("a"+a)
+
 	if(confirm('Are you sure to delete?')){
 		$.ajax({
 			type:'GET',
@@ -2375,7 +2471,7 @@ function deleteReq(a){
 			success:function(result){
 				
 				var ajaxresult = JSON.parse(result);
-				console.log(ajaxresult)
+				
 				if(Number(ajaxresult)>0){
 					alert("Requirement Deleted Successfully!")
 				}
@@ -2393,6 +2489,41 @@ function deleteReq(a){
 function showVerificationMaster(){
 	$('#verificationMaster').click();
 }
+
+var RequirementMainList = [];
+<%
+if(RequirementMainList!=null && RequirementMainList.size()>0){
+for(Object[]obj:RequirementMainList){
+%>
+RequirementMainList.push(['<%=obj[0].toString()%>','<%=obj[1].toString()%>','<%=obj[4]%>'])
+<%} }%>
+
+function getReqDetails(){
+	
+	  var selectedOptions=$('#LinkedPara').val()
+	   
+	   var html="";
+  for (var j = 0; j < selectedOptions.length; j++) {
+		 for(var i=0;i<RequirementMainList.length;i++){
+			 if(RequirementMainList[i][0]==selectedOptions[j]){
+				 var data=  RequirementMainList[i][2];
+				 console.log(typeof data+data)
+				 if(data!=='null'){
+					 html=html+ '<span style="font-weight:600;font-size:1rem;">' +RequirementMainList[i][1]+'</span> - '  +RequirementMainList[i][2]+'\n'
+				 }
+				 
+			 }
+		 }
+		     
+	} 
+
+ /*  CKEDITOR.instances['Editor'].setData(html);
+	var data =  CKEDITOR.instances['Editor'].getData(); */
+	   $('#Editor').summernote('code', html);
+	$('#descriptionadds').val($('#Editor').summernote('code'))
+}
+
+
 </script>
 
 </body>

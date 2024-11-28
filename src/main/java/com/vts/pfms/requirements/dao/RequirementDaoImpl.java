@@ -22,6 +22,7 @@ import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecificationMaster;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.IGIInterface;
@@ -51,7 +52,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	EntityManager manager;
 
 
-	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,'0',a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality,SUBSTRING_INDEX(a.requirementid, '_', -1) AS 'requirement_number',a.LinkedSubSystem FROM pfms_initiation_req a WHERE ReqInitiationId=:ReqInitiationId AND isActive='1' ORDER BY ParentId,requirement_number";
+	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,'0',a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality,SUBSTRING_INDEX(a.requirementid, '_', -1) AS 'requirement_number',a.LinkedSubSystem,TestStage FROM pfms_initiation_req a WHERE ReqInitiationId=:ReqInitiationId AND isActive='1' ORDER BY ParentId,requirement_number";
 	@Override
 	public List<Object[]> RequirementList(String reqInitiationId) throws Exception {
 		// TODO Auto-generated method stub
@@ -60,7 +61,24 @@ public class RequirementDaoImpl implements RequirementDao {
 		List<Object[]> RequirementList=(List<Object[]> )query.getResultList();	
 		return RequirementList;
 	}
-
+	
+	private static final String SPECIFICATIONMASTERLIST="SELECT a.SpecsMasterId, a.SpecificationName, \r\n"
+			+ "a.Description, a.SpecsParameter, a.SpecsUnit, a.SpecsInitiationId, a.SpecValue, CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',\r\n"
+			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1'";
+	@Override
+    public List<Object[]> SpecificationMasterList() throws Exception 
+    {
+    	List<Object[]> SpecificarionMasterList=null;
+    	try {
+			Query query=manager.createNativeQuery(SPECIFICATIONMASTERLIST);
+			SpecificarionMasterList =(List<Object[]>) query.getResultList();
+			return SpecificarionMasterList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+			
+		}
+    }
 	private static final String ABBREVIATIONS="SELECT AbbreviationsId,Abbreviations,Meaning FROM pfms_abbreviations WHERE TestPlanInitiationId=:TestPlanInitiationId AND SpecsInitiationId=:SpecsInitiationId";		
 	@Override
 	public List<Object[]> AbbreviationDetails(String testPlanInitiationId, String specsInitiationId) throws Exception {
@@ -1381,4 +1399,21 @@ public class RequirementDaoImpl implements RequirementDao {
 		return query.executeUpdate();
 	}
 	
+	@Override
+	public long specMasterAddSubmit(SpecificationMaster sp) throws Exception {
+			manager.persist(sp);
+			manager.flush();
+		return sp.getSpecsMasterId();
+	}
+	
+	@Override
+	public SpecificationMaster SpecificationMaster(long specsMasterId)throws Exception {
+		try {
+			return manager.find(SpecificationMaster.class, specsMasterId);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getRequirementInitiationById "+e);
+			return null;
+		}
+	}
 }

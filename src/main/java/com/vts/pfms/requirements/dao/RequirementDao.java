@@ -9,6 +9,7 @@ import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecificationMaster;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.IGIInterface;
@@ -226,4 +227,9 @@ public interface RequirementDao {
 	public long addVerificationData(List<VerificationData> verifyList)throws Exception;
 	public List<Object[]> getverificationDataList(String verificationId)throws Exception;
 	public long verificationDataEdit(VerificationData verifiData)throws Exception;
+
+
+	public List<Object[]> SpecificationMasterList() throws Exception;
+	public long specMasterAddSubmit(SpecificationMaster sp) throws Exception;
+	public SpecificationMaster SpecificationMaster(long specsMasterId)throws Exception;
 }

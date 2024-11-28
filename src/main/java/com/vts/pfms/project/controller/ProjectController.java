@@ -3202,12 +3202,13 @@ public class ProjectController
 		}
 		return "project/ProjectOtherRequirement";
 	}
+	
 	@RequestMapping(value = "RequirementPara.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String RequirementPara(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside RequirementPara.htm "+UserId);
-
+		String LabCode =(String) ses.getAttribute("labcode");
 		try {
 			//get the projectId here if it is coming null make it as 0,same goes for InitiationId
 			String initiationId = req.getParameter("initiationId");
@@ -3224,6 +3225,8 @@ public class ProjectController
 			req.setAttribute("paracounts", req.getParameter("paracounts")==null?value:req.getParameter("paracounts"));
 			req.setAttribute("reqInitiation", reqService.getRequirementInitiationById(reqInitiationId));
 			req.setAttribute("TotalSqr", reqService.getAllSqr(reqInitiationId));
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
+			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
 		}catch(Exception e) {
 			logger.error(new Date() +" Inside RequirementPara.htm "+UserId, e);
 		}
@@ -6624,6 +6627,7 @@ public class ProjectController
 //			Object[] PfmsInitiationList= service.ProjectDetailes(initiation.getInitiationId()).get(0);
 			req.setAttribute("ParaDetails", service.ReqParaDetails(reqInitiationId));
 			req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
 			req.setAttribute("projectDetails", projectDetails);
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
 			req.setAttribute("SQRFile", service.SqrFiles(reqInitiationId)); 

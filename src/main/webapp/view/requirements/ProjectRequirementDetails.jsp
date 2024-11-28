@@ -19,6 +19,21 @@
 <link href="${StyleCSS}" rel="stylesheet" />
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
+
+<spring:url value="/resources/js/FileSaver.min.js" var="FileSaver" />
+<script src="${FileSaver}"></script>
+<spring:url value="/resources/js/jquery.wordexport.js" var="wordexport" />
+<script src="${wordexport}"></script>
+<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+<script src="${pdfmake}"></script>
+<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+<script src="${pdfmakefont}"></script>
+<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+<script src="${htmltopdf}"></script>
+<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+<script src="${SummernoteJs}"></script>
+<link href="${SummernoteCss}" rel="stylesheet" />
 <% 
 String projectType = (String)request.getAttribute("projectType");
 String projectId =(String)request.getAttribute("projectId");
@@ -114,7 +129,7 @@ FormatConverter fc = new FormatConverter();
 			<div class="requirementid mt-2 ml-2" style="height: 90%;">
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Requirement Document</span> 
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDocPDF()"><img alt="" src="view/images/pdf.png" >&nbsp;Requirement Document</span> 
-		       	<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp; Qualitative Requirement</span>
+		       	<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;<%if(productTreeMainId.equalsIgnoreCase("0")){ %> Qualitative Requirement <%} else{%> System Requirements <%} %></span>
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
 		        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
 			    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
@@ -277,6 +292,7 @@ FormatConverter fc = new FormatConverter();
 				</div>
 			</div>
 		</div>
+			<jsp:include page="../requirements/RequirementPdfs.jsp"></jsp:include></div>  
 	</div>
 	
 	<!-- Modal for Document summary  -->
@@ -881,7 +897,11 @@ function showVerification(){
 }
 
 function showParaPage(){
+	<%if(productTreeMainId.equalsIgnoreCase("0")){%>
 	$('#parareq').click();
+	<%}else{%>
+	getSubSystemRequirements();
+	<%}%>
 }
 
 function showReq(){

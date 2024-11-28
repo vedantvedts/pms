@@ -19,6 +19,7 @@ import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.Specification;
+import com.vts.pfms.requirements.model.SpecificationMaster;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
@@ -207,5 +208,11 @@ public interface RequirementService {
 	public long addVerificationData(List<VerificationData> verifyList)throws Exception;
 	public List<Object[]>getverificationDataList(String verificationId)throws Exception;
 	public long verificationDataEdit(VerificationData verifiData)throws Exception;
+
+	public List<Object[]> SpecificationMasterList() throws Exception;
+
+	public long specMasterAddSubmit(SpecificationMaster sp)throws Exception;
+
+	public SpecificationMaster getSpecificationMasterById(long SpecsMasterId)throws Exception;
 
 }

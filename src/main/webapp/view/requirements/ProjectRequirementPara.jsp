@@ -348,11 +348,11 @@ keyframes blinker { 50% {
 	<%} %>
 	</div>
 		<form action="#">
-			<button class="btn bg-transparent"
+		<!-- 	<button class="btn bg-transparent"
 				formaction="RequirementParaDownload.htm" formmethod="get"
 				formnovalidate="formnovalidate" formtarget="_blank">
 				<i class="fa fa-download text-success" aria-hidden="true"></i>
-			</button>
+			</button> -->
 					<button class="btn bg-transparent"
 				formaction="RequirementParaDownloads.htm" formmethod="get"
 				formnovalidate="formnovalidate" formtarget="_blank">

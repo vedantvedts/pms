@@ -12,25 +12,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "pfms_specification_details")
-public class Specification  {
-
+@Table(name = "pfms_specification_master")
+public class SpecificationMaster {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long SpecsId;
+	private Long SpecsMasterId;
 	private String SpecificationName;
 	private String Description;
 	private String SpecsParameter;
 	private String SpecsUnit;
 	private Long SpecsInitiationId;
-	private Long ParentId;
-	private Long MainId;
-	private String LinkedRequirement;
 	private String SpecValue;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
+
 }

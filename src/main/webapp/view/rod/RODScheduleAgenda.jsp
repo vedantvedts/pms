@@ -1221,7 +1221,7 @@ var filexcount=0;
 						if($PresLabCode !=""){
 						$.ajax({		
 							type : "GET",
-							url : "RODAgendaPresenterList.htm",
+							url : "CommitteeAgendaPresenterList.htm",
 							data : {
 								PresLabCode : $PresLabCode,
 								

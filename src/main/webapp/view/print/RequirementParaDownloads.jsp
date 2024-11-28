@@ -33,7 +33,8 @@
 </head>
 <body>
 <%
-String lablogo = (String)request.getAttribute("lablogo");
+String lablogo=(String)request.getAttribute("lablogo");
+String drdologo=(String)request.getAttribute("drdologo");
 String reqInitiationId = (String)request.getAttribute("reqInitiationId");
 Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 Object[] sqrFile = (Object[])request.getAttribute("SQRFile");
@@ -41,11 +42,12 @@ Object[] LabList = (Object[])request.getAttribute("LabList");
 List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails");
 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
 int port=new URL(request.getRequestURL().toString()).getPort();
+
 String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
 %>
 
 
-<%=path %>
+
 
 
 	  <button onclick="generatePDF()">Download PDF</button>
@@ -67,7 +69,8 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 		 
 	      function generatePDF() {
 			  
-		
+		        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+
 			  var slno =0;
 			  
 			  var contentArray = [
@@ -214,8 +217,6 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 			        		    id: 'chapter' + (i+1),
 			        		    fontSize: 12
 			        		};
-			        
-
 			        		// Conditionally add the pageBreak property if it's the first item
 			        	if(i==0)
 			        		chapter.pageBreak= 'before'
@@ -224,9 +225,8 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 			        		contentArray.push(chapter);
 			        		
 			        		if(arr[i][4]!==null){
-			        			var chapter1= htmlToPdfmake(arr[i][4])
-			        		
-			        			 contentArray.push(chapter1);
+			        			
+			        			 contentArray.push( { stack: [htmlToPdfmake(setImagesWidth(arr[i][4]+'<br>', 500))], colSpan: 3 });
 			        		}else{
 			        			
 			        			contentArray.push(htmlToPdfmake("<p style='text-align:center;'>No Details Found</p>"));
@@ -255,11 +255,16 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
             	      
             	    },
             // Styles for headers and text
-            styles: {
-                header: { fontSize: 19, bold: true, margin: [0, 0, 0, 10] },
-                chapterHeader: { fontSize: 16, bold: true, margin: [0, 10, 0, 10] }
+        
+            background: function(currentPage) {
+                return [
+                    {
+                        image: generateRotatedTextImage(leftSideNote),
+                        width: 100, // Adjust as necessary for your content
+                        absolutePosition: { x: -20, y: 40 }, // Position as needed
+                    }
+                ];
             },
-
             // Footer for page numbers
 footer: function(currentPage, pageCount) {
     if (currentPage > 2) {
@@ -307,29 +312,54 @@ footer: function(currentPage, pageCount) {
     }
 }
 ,
-header: function(currentPage, pageCount) {
+header: function (currentPage) {
     return {
         stack: [
+            
             {
                 columns: [
                     {
-                        text: '<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12]:"Restricted"%>',
-                        alignment: 'center',
-                        margin: [0, 10, 0, 0], // Adjust margins as needed
-                        fontSize: 8,
-                        bold: true
+                        // Left: Lab logo
+                        image: '<%= lablogo != null ? "data:image/png;base64," + lablogo : "" %>',
+                        width: 30,
+                        height: 30,
+                        alignment: 'left',
+                        margin: [35, 10, 0, 20]
                     },
-                  
+                    {
+                        // Center: Text
+                        text: 'Restricted',
+                        alignment: 'center',
+                        fontSize: 10,
+                        bold: true,
+                        margin: [0, 10, 0, 0]
+                    },
+                 {
+                        // Right: DRDO logo
+                        image: '<%= drdologo != null ? "data:image/png;base64," + drdologo : "" %>',
+                        width: 30,
+                        height: 30,
+                        alignment: 'right',
+                        margin: [0, 10, 20, 20]
+                    }
                 ]
-            }
-      
+            },
+            
         ]
     };
 },
             // Default style for the text
-            defaultStyle: {
-                fontSize: 12
-            }
+              styles: {
+	                	  DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+	                      chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
+	                      chapterNote: { fontSize: 13, bold: true, margin: [0, 10, 0, 10]},
+	                      chapterSubHeader: { fontSize: 13, bold: true, margin: [10, 10, 0, 10]},
+	                      tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+	                      tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+	                      chapterSubSubHeader: { fontSize: 12, bold: true, margin: [15, 10, 10, 10] },
+	                      subChapterNote: { margin: [15, 15, 0, 10] },
+	                      header: { alignment: 'center', bold: true},
+	                }
             
 
         };
@@ -337,6 +367,119 @@ header: function(currentPage, pageCount) {
      <%--    pdfMake.createPdf(docDefinition).download('QR_PARA_<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:"" %>.pdf'); --%>
         pdfMake.createPdf(docDefinition).open();
     }
+		  
+		  
+		  const setImagesWidth = (htmlString, width) => {
+			    const container = document.createElement('div');
+			    container.innerHTML = htmlString;
+			  
+			    const images = container.querySelectorAll('img');
+			    images.forEach(img => {
+			      img.style.width = width + 'px';
+			      img.style.textAlign = 'center';
+			    });
+			  
+			    const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, td, th, table, figure, hr, ul, li');
+			    textElements.forEach(element => {
+			      if (element.style) {
+			        element.style.fontFamily = '';
+			        element.style.margin = '';
+			        element.style.marginTop = '';
+			        element.style.marginRight = '';
+			        element.style.marginBottom = '';
+			        element.style.marginLeft = '';
+			        element.style.lineHeight = '';
+			        element.style.height = '';
+			        element.style.width = '';
+			        element.style.padding = '';
+			        element.style.paddingTop = '';
+			        element.style.paddingRight = '';
+			        element.style.paddingBottom = '';
+			        element.style.paddingLeft = '';
+			        element.style.fontSize = '';
+			        element.id = '';
+			      }
+			    });
+			  
+			    const tables = container.querySelectorAll('table');
+			    tables.forEach(table => {
+			      if (table.style) {
+			        table.style.borderCollapse = 'collapse';
+			        table.style.width = '100%';
+			      }
+			  
+			      const cells = table.querySelectorAll('th, td');
+			      cells.forEach(cell => {
+			        if (cell.style) {
+			          cell.style.border = '1px solid black';
+			  
+			          if (cell.tagName.toLowerCase() === 'th') {
+			            cell.style.textAlign = 'center';
+			          }
+			        }
+			      });
+			    });
+			  
+			    return container.innerHTML;
+			}; 
+			  
+			  function splitTextIntoLines(text, maxLength) {
+				  const lines = [];
+				  let currentLine = '';
+
+				  for (const word of text.split(' ')) {
+				    if ((currentLine + word).length > maxLength) {
+				      lines.push(currentLine.trim());
+				      currentLine = word + ' ';
+				    } else {
+				      currentLine += word + ' ';
+				    }
+				  }
+				  lines.push(currentLine.trim());
+				  return lines;
+				}
+
+				// Generate rotated text image with line-wrapped text
+				function generateRotatedTextImage(text) {
+				  const maxLength = 260;
+				  const lines = splitTextIntoLines(text, maxLength);
+
+				  const canvas = document.createElement('canvas');
+				  const ctx = canvas.getContext('2d');
+
+				  // Set canvas dimensions based on anticipated text size and rotation
+				  canvas.width = 200;
+				  canvas.height = 1560;
+
+				  // Set text styling
+				  ctx.font = '14px Roboto';
+				  ctx.fillStyle = 'rgba(128, 128, 128, 1)'; // Gray color for watermark
+
+				  // Position and rotate canvas
+				  ctx.translate(80, 1480); // Adjust position as needed
+				  ctx.rotate(-Math.PI / 2); // Rotate 270 degrees
+
+				  // Draw each line with a fixed vertical gap
+				  const lineHeight = 20; // Adjust line height if needed
+				  lines.forEach((line, index) => {
+				    ctx.fillText(line, 0, index * lineHeight); // Position each line below the previous
+				  });
+
+				  return canvas.toDataURL();
+				}	 
+				
+				
+			   	$( document ).ready(function(){
+		    		generatePDF();
+		    		/* window.close(); */
+		    		
+		    		// Hide the current JSP page immediately after opening the PDF
+	    			document.body.style.display = "none";
+		    		
+		    		setTimeout(function () {
+				        window.close();
+				    }, 5000); // Adjust the delay time as needed
+		    	});
         </script>
 </body>
 </html>

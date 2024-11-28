@@ -101,6 +101,9 @@ public class RODServiceImpl implements RODService{
 		committeeschedule.setCreatedBy(committeescheduledto.getCreatedBy());
 		committeeschedule.setCreatedDate(sdf1.format(new Date()));
 		committeeschedule.setIsActive(1);
+		committeeschedule.setBriefingPaperFrozen("N");
+		committeeschedule.setMinutesFrozen("N");
+		committeeschedule.setBriefingStatus("INI");
 		String RODName= dao.getRODMasterDetails(committeescheduledto.getRodNameId().toString())[2].toString();
 		String LabName=committeedao.LabDetails(committeeschedule.getLabCode())[1].toString();
 		BigInteger SerialNo=committeedao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());

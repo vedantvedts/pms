@@ -569,7 +569,7 @@ int subReqCount=0;
 for(Object[]obj1:subMainReqList) {
 int snCount=0;
 %>
- <%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
+ <%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) { %>
 <h3 class="heading-colors" style="font-weight:500;padding:0px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt ;" ><%=maincount+"."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3].toString() %></h3>
 <%} %> 
 
@@ -648,7 +648,7 @@ int snCount=0;
 								style=" text-align: left; font-weight: 600; border: 1px solid black; border-collapse: collapse;">Type</td>
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[6]!=null) {%> <%if(obj1[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %>
+								<%if(obj1[6]!=null) { %> <%if(obj1[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %>
 								<%if(obj1[6].toString().equalsIgnoreCase("E")) {%>Essential<%} %> <%}else {%>-<%} %>
 							</td>
 						</tr>

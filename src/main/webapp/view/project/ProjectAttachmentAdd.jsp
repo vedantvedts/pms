@@ -166,9 +166,9 @@ String filesize=(String) request.getAttribute("filesize");
 function validate(){
 	var oFile = document.getElementById("FileAttach").files[0]; 
 
-	if (oFile.size > 2097152) 
+	if (oFile.size > 7097152) 
 	{
-	    alert("File size must less than 2MB!");
+	    alert("File size must less than 7MB!");
 	    event.preventDefault();
 	    
 	}

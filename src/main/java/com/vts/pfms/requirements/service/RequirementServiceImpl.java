@@ -44,6 +44,7 @@ import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecificationMaster;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.IGIInterface;
@@ -1475,5 +1476,17 @@ public class RequirementServiceImpl implements RequirementService {
 	@Override
 	public long verificationDataEdit(VerificationData verifiData) throws Exception {
 		return dao.verificationDataEdit(verifiData);
+	}
+	@Override
+	public List<Object[]> SpecificationMasterList() throws Exception{
+		return dao.SpecificationMasterList();
+	}
+	@Override
+	public long specMasterAddSubmit(SpecificationMaster sp) throws Exception {
+		return dao.specMasterAddSubmit(sp);
+	}
+	@Override
+	public SpecificationMaster getSpecificationMasterById(long SpecsMasterId) throws Exception {
+		return dao.SpecificationMaster(SpecsMasterId);
 	}
 }
