@@ -345,4 +345,20 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			return new ArrayList<>();
 		}
 	}
+	
+	private static final String ROLEWISEEMPLOYEELIST = "CALL pfms_rolewise_emplist(:LabCode, :LoginType, :EmpId)";
+	@Override
+	public List<Object[]> getRoleWiseEmployeeList(String labCode, String loginType, String empId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(ROLEWISEEMPLOYEELIST);
+			query.setParameter("LabCode", labCode);
+			query.setParameter("LoginType", loginType);
+			query.setParameter("EmpId", empId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getRoleWiseEmployeeList() "+e);
+			return new ArrayList<>();
+		}
+	}
 }

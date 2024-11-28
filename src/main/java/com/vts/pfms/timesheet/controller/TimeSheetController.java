@@ -91,6 +91,33 @@ public class TimeSheetController {
 		}
 	}
 	
+//	@RequestMapping(value="TimeSheetList.htm", method= {RequestMethod.GET,RequestMethod.POST})
+//	public String timeSheetList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+//		String UserId = (String)ses.getAttribute("Username");
+//		String labcode = (String)ses.getAttribute("labcode");
+//		String Logintype= (String)ses.getAttribute("LoginType");
+//		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+//		logger.info(new Date()+" Inside TimeSheetList.htm "+UserId);
+//		try {
+//			String activityDate = req.getParameter("activityDate");
+//			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
+//			String activityDateSql = fc.rdfTosdf(activityDate);
+//			req.setAttribute("activityDate", activityDate);
+//			req.setAttribute("activityDateSql", activityDateSql);
+//			req.setAttribute("todayScheduleList", headerservice.TodaySchedulesList(EmpId, activityDateSql));
+//			req.setAttribute("timeSheetData", service.getTimeSheetByDateAndEmpId(EmpId, activityDateSql));
+//			req.setAttribute("empActivityAssignList", service.getEmpActivityAssignList(EmpId));
+//			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(EmpId, activityDateSql));
+//			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
+//			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,labcode));
+//			return "timesheet/TimeSheetList";
+//		}catch (Exception e) {
+//			logger.error(new Date() +" Inside TimeSheetList.htm "+UserId, e);
+//			e.printStackTrace();
+//			return "static/Error";
+//		}
+//	}
+	
 	@RequestMapping(value="TimeSheetList.htm", method= {RequestMethod.GET,RequestMethod.POST})
 	public String timeSheetList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
@@ -110,7 +137,7 @@ public class TimeSheetController {
 			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(EmpId, activityDateSql));
 			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
 			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,labcode));
-			return "timesheet/TimeSheetList";
+			return "timesheet/TimeSheetListSample";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside TimeSheetList.htm "+UserId, e);
 			e.printStackTrace();
@@ -130,7 +157,8 @@ public class TimeSheetController {
 			TimeSheetDTO dto = TimeSheetDTO.builder()
 							   .TimeSheetId(req.getParameter("timeSheetId"))
 							   .EmpId(EmpId)
-							   .PunchInTime(req.getParameter("punchInTime"))
+							   //.PunchInTime(req.getParameter("punchInTime"))
+							   .PunchInTime(activityDate)
 							   .ActivityFromDate(activityDate)
 							   .TotalDuration(req.getParameter("totalduration"))
 							   .ActivityId(req.getParameterValues("activityId"))
@@ -139,6 +167,11 @@ public class TimeSheetController {
 							   .ActivityTypeId(req.getParameterValues("activityName"))
 							   .ActivityDuration(req.getParameterValues("duration"))
 							   .Remarks(req.getParameterValues("remarks"))
+							   // New Columns for Sample Demo
+							   .ActivityTypeDesc(req.getParameterValues("activityTypeDesc"))
+							   .AssignedByandPDC(req.getParameterValues("assignedByandPDC"))
+							   .WorkDone(req.getParameterValues("workDone"))
+							   // // New Columns for Sample Demo End
 							   .Action(req.getParameter("Action"))
 							   .UserId(UserId)
 							   .build();
@@ -1320,4 +1353,29 @@ public class TimeSheetController {
 		}
 	}
 	
+	@RequestMapping(value="TimeSheetView.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String timeSheetView(HttpServletRequest req, HttpSession ses) throws Exception{
+		String UserId = (String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date()+" Inside TimeSheetView.htm "+UserId);
+		try {
+
+			String activityWeekDate = req.getParameter("activityWeekDate");
+			activityWeekDate = activityWeekDate==null?rdf.format(new Date()):activityWeekDate;
+			String activityWeekDateSql = fc.rdfTosdf(activityWeekDate);
+			
+			req.setAttribute("roleWiseEmployeeList", service.getRoleWiseEmployeeList(labcode, LoginType, EmpId));
+			req.setAttribute("timesheetDataForOfficer", service.getTimesheetDataForOfficer(EmpId, labcode, activityWeekDateSql, LoginType));
+			req.setAttribute("activityWeekDate", activityWeekDate);
+			req.setAttribute("activityWeekDateSql", activityWeekDateSql);
+			
+			return "timesheet/TimeSheetView";
+		}catch (Exception e) {
+			logger.error(new Date()+ "Inside TimeSheetView.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
 }

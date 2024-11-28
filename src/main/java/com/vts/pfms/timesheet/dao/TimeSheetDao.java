@@ -27,5 +27,6 @@ public interface TimeSheetDao {
 	public List<Object[]> empExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception;
 	public List<Object[]> getHolidayList() throws Exception;
 	public List<Object[]> projectWiseEmpExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception;
+	public List<Object[]> getRoleWiseEmployeeList(String labCode, String loginType, String empId) throws Exception;
 
 }

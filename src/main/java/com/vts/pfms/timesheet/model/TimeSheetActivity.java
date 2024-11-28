@@ -41,6 +41,12 @@ public class TimeSheetActivity implements Serializable {
 	private String ActivityDuration;
 	@Column(name = "Remarks", length = 1000)
 	private String Remarks;
+	@Column(name = "ActivityTypeDesc", length = 255)
+	private String ActivityTypeDesc;
+	@Column(name = "AssignedByandPDC", length = 255)
+	private String AssignedByandPDC;
+	@Column(name = "WorkDone", length = 255)
+	private String WorkDone;
 	@Column(name = "CreatedBy", length = 50)
 	private String CreatedBy;
 	@Column(name = "CreatedDate")

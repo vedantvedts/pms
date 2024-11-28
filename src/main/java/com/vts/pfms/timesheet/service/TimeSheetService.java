@@ -31,5 +31,7 @@ public interface TimeSheetService {
 	public List<Object[]> empExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception;
 	public List<Object[]> getHolidayList() throws Exception;
 	public List<Object[]> projectWiseEmpExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception;
-
+	public List<Object[]> getRoleWiseEmployeeList(String labCode, String loginType, String empId) throws Exception;
+	public Map<String, Map<LocalDate, TimeSheet>> getTimesheetDataForOfficer(String superiorOfficer, String labCode, String dateofWeek, String loginType) throws Exception;
+	
 }

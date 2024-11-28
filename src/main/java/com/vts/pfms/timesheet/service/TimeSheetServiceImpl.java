@@ -66,6 +66,99 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 		return dao.getTimeSheetById(timeSheetId);
 	}
 
+//	@Override
+//	public Long timeSheetSubmit(TimeSheetDTO dto) throws Exception {
+//		try {
+//			TimeSheet timeSheet = dto.getAction()!=null && dto.getAction().equalsIgnoreCase("Add")?new TimeSheet(): dao.getTimeSheetById(dto.getTimeSheetId());
+//			timeSheet.setEmpId(Long.parseLong(dto.getEmpId()));
+//			timeSheet.setActivityFromDate(dto.getActivityFromDate()!=null?fc.RegularToSqlDate(dto.getActivityFromDate()):null);
+//			timeSheet.setActivityToDate(timeSheet.getActivityFromDate());
+//			timeSheet.setPunchInTime(dto.getPunchInTime()!=null?fc.rdtfTosdtf(dto.getPunchInTime()):null);
+//			
+//			// Remove Previously added Time Sheet Activities
+//			if(dto.getAction()!=null && dto.getAction().equalsIgnoreCase("Edit"))
+//			dao.removeTimeSheetActivities(dto.getTimeSheetId());
+//			
+//			// Storing list of Time Sheet Activities
+//			List<TimeSheetActivity> timeSheetActivityList = new ArrayList<TimeSheetActivity>();
+//			
+//			int totalMinutes = 0;
+//			int ac = 0;
+//			for(int i=0;i<dto.getActivityId().length;i++) {
+//				
+//				if(dto.getActivityId()[i].equalsIgnoreCase("0")) continue;
+//				
+//				TimeSheetActivity activity =  new TimeSheetActivity();
+//				activity.setActivityId(dto.getActivityId()[i]!=null && dto.getActivityId()[i].equalsIgnoreCase("N")?0:Long.parseLong(dto.getActivityId()[i]));
+//				activity.setActivityType(activity.getActivityId()==0?"N":"A");
+//				if(dto.getProjectIdhidden()[i]!=null && !dto.getProjectIdhidden()[i].isEmpty()) {
+//					activity.setProjectId(Long.parseLong(dto.getProjectIdhidden()[i]));
+//				}else {
+//					activity.setProjectId(Long.parseLong(dto.getProjectId()[i]));
+//				}
+//				
+//				if(activity.getActivityId()==0) {
+//					activity.setActivityTypeId(Long.parseLong(dto.getActivityTypeId()[ac]));
+//					++ac;
+//				}else {
+//					activity.setActivityTypeId(0L);
+//				}
+//				activity.setActivityDuration(dto.getActivityDuration()[i]);
+//				activity.setRemarks(dto.getRemarks()[i]);
+//				activity.setCreatedBy(dto.getUserId());
+//				activity.setTimeSheet(timeSheet);
+//				activity.setCreatedDate(sdtf.format(new Date()));
+//				activity.setIsActive(1);
+//				
+//				timeSheetActivityList.add(activity);
+//				
+//				String[] split = dto.getActivityDuration()[i].split(":");
+//				
+//			    // Convert hours to minutes and add to totalMinutes
+//			    totalMinutes += Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
+//			}
+//			
+//			timeSheet.setTimeSheetActivity(timeSheetActivityList);
+//			
+//			int totalHours = totalMinutes / 60;
+//			int remainingMinutes = totalMinutes % 60;
+//			String totalDuration = String.format("%02d:%02d", totalHours, remainingMinutes);
+//			
+//			timeSheet.setTotalDuration(totalDuration);
+//			
+//			if(dto.getAction()!=null && dto.getAction().equalsIgnoreCase("Add")) {
+//				timeSheet.setTimeSheetStatus("INI");
+//				timeSheet.setCreatedBy(dto.getUserId());
+//				timeSheet.setCreatedDate(sdtf.format(new Date()));
+//				timeSheet.setIsActive(1);
+//				
+//				// Transaction
+//				List<TimeSheetTrans> transactionList = new ArrayList<TimeSheetTrans>();
+//				
+//				TimeSheetTrans transaction = TimeSheetTrans.builder()
+//											 .timeSheet(timeSheet)
+//											 .TimeSheetStatusCode("INI")
+//											 .ActionBy(dto.getEmpId())
+//											 .ActionDate(sdtf.format(new Date()))
+//											 .build();
+//				transactionList.add(transaction);
+//				timeSheet.setTimeSheetTrans(transactionList);
+//			}else {
+//				timeSheet.setModifiedBy(dto.getUserId());
+//				timeSheet.setModifiedDate(sdtf.format(new Date()));
+//				
+//			}
+//			
+//			return dao.addTimeSheet(timeSheet);
+////			return 1L;
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date()+" Inside TimeSheetServiceImpl timeSheetSubmit() "+e);
+//			return 0L;
+//		}
+//		
+//	}
+	
 	@Override
 	public Long timeSheetSubmit(TimeSheetDTO dto) throws Exception {
 		try {
@@ -73,38 +166,34 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 			timeSheet.setEmpId(Long.parseLong(dto.getEmpId()));
 			timeSheet.setActivityFromDate(dto.getActivityFromDate()!=null?fc.RegularToSqlDate(dto.getActivityFromDate()):null);
 			timeSheet.setActivityToDate(timeSheet.getActivityFromDate());
-			timeSheet.setPunchInTime(dto.getPunchInTime()!=null?fc.rdtfTosdtf(dto.getPunchInTime()):null);
+			//timeSheet.setPunchInTime(dto.getPunchInTime()!=null?fc.rdtfTosdtf(dto.getPunchInTime()):null);
+			timeSheet.setPunchInTime(dto.getPunchInTime()!=null?fc.rdfTosdf(dto.getPunchInTime()):null);
 			
 			// Remove Previously added Time Sheet Activities
 			if(dto.getAction()!=null && dto.getAction().equalsIgnoreCase("Edit"))
-			dao.removeTimeSheetActivities(dto.getTimeSheetId());
+				dao.removeTimeSheetActivities(dto.getTimeSheetId());
 			
 			// Storing list of Time Sheet Activities
 			List<TimeSheetActivity> timeSheetActivityList = new ArrayList<TimeSheetActivity>();
 			
-			int totalMinutes = 0;
-			int ac = 0;
-			for(int i=0;i<dto.getActivityId().length;i++) {
+			for(int i=0;i<dto.getActivityTypeDesc().length;i++) {
 				
-				if(dto.getActivityId()[i].equalsIgnoreCase("0")) continue;
+				if(dto.getActivityTypeDesc()[i].isEmpty()) continue;
 				
 				TimeSheetActivity activity =  new TimeSheetActivity();
-				activity.setActivityId(dto.getActivityId()[i]!=null && dto.getActivityId()[i].equalsIgnoreCase("N")?0:Long.parseLong(dto.getActivityId()[i]));
-				activity.setActivityType(activity.getActivityId()==0?"N":"A");
-				if(dto.getProjectIdhidden()[i]!=null && !dto.getProjectIdhidden()[i].isEmpty()) {
-					activity.setProjectId(Long.parseLong(dto.getProjectIdhidden()[i]));
-				}else {
-					activity.setProjectId(Long.parseLong(dto.getProjectId()[i]));
-				}
 				
-				if(activity.getActivityId()==0) {
-					activity.setActivityTypeId(Long.parseLong(dto.getActivityTypeId()[ac]));
-					++ac;
-				}else {
-					activity.setActivityTypeId(0L);
-				}
-				activity.setActivityDuration(dto.getActivityDuration()[i]);
-				activity.setRemarks(dto.getRemarks()[i]);
+				activity.setActivityId(0L);
+				activity.setActivityType("N");
+				activity.setProjectId(0L);
+				activity.setActivityTypeId(0L);
+				
+				activity.setActivityDuration("00:00");
+				activity.setRemarks(null);
+				// New Columns for Sample Demo
+				activity.setActivityTypeDesc(dto.getActivityTypeDesc()[i]);
+				activity.setAssignedByandPDC(dto.getAssignedByandPDC()[i]);
+				activity.setWorkDone(dto.getWorkDone()[i]);
+				// New Columns for Sample Demo End
 				activity.setCreatedBy(dto.getUserId());
 				activity.setTimeSheet(timeSheet);
 				activity.setCreatedDate(sdtf.format(new Date()));
@@ -112,22 +201,14 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 				
 				timeSheetActivityList.add(activity);
 				
-				String[] split = dto.getActivityDuration()[i].split(":");
-				
-			    // Convert hours to minutes and add to totalMinutes
-			    totalMinutes += Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
 			}
 			
 			timeSheet.setTimeSheetActivity(timeSheetActivityList);
 			
-			int totalHours = totalMinutes / 60;
-			int remainingMinutes = totalMinutes % 60;
-			String totalDuration = String.format("%02d:%02d", totalHours, remainingMinutes);
-			
-			timeSheet.setTotalDuration(totalDuration);
+			timeSheet.setTotalDuration("00:00");
 			
 			if(dto.getAction()!=null && dto.getAction().equalsIgnoreCase("Add")) {
-				timeSheet.setTimeSheetStatus("INI");
+				timeSheet.setTimeSheetStatus("ABS");
 				timeSheet.setCreatedBy(dto.getUserId());
 				timeSheet.setCreatedDate(sdtf.format(new Date()));
 				timeSheet.setIsActive(1);
@@ -136,11 +217,11 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 				List<TimeSheetTrans> transactionList = new ArrayList<TimeSheetTrans>();
 				
 				TimeSheetTrans transaction = TimeSheetTrans.builder()
-											 .timeSheet(timeSheet)
-											 .TimeSheetStatusCode("INI")
-											 .ActionBy(dto.getEmpId())
-											 .ActionDate(sdtf.format(new Date()))
-											 .build();
+						.timeSheet(timeSheet)
+						.TimeSheetStatusCode("ABS")
+						.ActionBy(dto.getEmpId())
+						.ActionDate(sdtf.format(new Date()))
+						.build();
 				transactionList.add(transaction);
 				timeSheet.setTimeSheetTrans(transactionList);
 			}else {
@@ -402,4 +483,48 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 		
 		return dao.projectWiseEmpExtraWorkingDaysList(empId, fromDate, toDate);
 	}
+
+	@Override
+	public List<Object[]> getRoleWiseEmployeeList(String labCode, String loginType, String empId) throws Exception {
+		
+		return dao.getRoleWiseEmployeeList(labCode, loginType, empId);
+	}
+
+	@Override
+	public Map<String, Map<LocalDate, TimeSheet>> getTimesheetDataForOfficer(String superiorOfficer, String labCode, String dateofWeek, String loginType) throws Exception {
+		try {
+			List<Object[]> emplist = dao.getRoleWiseEmployeeList(labCode, loginType, superiorOfficer);
+			
+			Map<String, Map<LocalDate, TimeSheet>> timesheetData = new HashMap<>();
+			
+			LocalDate localdate = LocalDate.parse(dateofWeek);
+			// Get the start of the week (Sunday)
+	        LocalDate startOfWeek = localdate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+
+	        // Get the end of the week (Saturday)
+	        LocalDate endOfWeek = localdate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+	        
+	        for(Object[] obj : emplist) {
+	        	Map<LocalDate, TimeSheet> employeeTimesheet = new HashMap<>();
+	            List<TimeSheet> timesheets = dao.getTimeSheetListofEmployeeByPeriod(obj[0].toString(), startOfWeek.toString(), endOfWeek.toString());
+
+	            Map<LocalDate, TimeSheet> timeSheetMap = new HashMap<>();
+	            for (TimeSheet timesheet : timesheets) {
+	            	timeSheetMap.put(LocalDate.parse(timesheet.getActivityFromDate()), timesheet);
+	            }
+
+	            for (LocalDate date = startOfWeek; !date.isAfter(endOfWeek); date = date.plusDays(1)) {
+	                employeeTimesheet.put(date, timeSheetMap.getOrDefault(date, null));
+	            }
+
+	            timesheetData.put(obj[0].toString(), employeeTimesheet);
+	        }
+			return timesheetData;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetServiceImpl getTimesheetDataForSuperior() "+e);
+			return null;
+		}
+	}
+
 }
