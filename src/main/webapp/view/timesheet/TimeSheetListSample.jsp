@@ -730,7 +730,8 @@ function toggleDiv(divId) {
         const minDate = new Date(today);
         minDate.setDate(minDate.getDate() - 10);
         const formattedMinDate = minDate.toISOString().split('T')[0];
-        
+        const restrictionDate = new Date('2024-11-30');
+
         // Event listener for date click
         $('#calendar').on('selectDate', function(event, newDate) {
             var formattedDate = convertDateFormat(newDate);
@@ -751,6 +752,9 @@ function toggleDiv(divId) {
 
             if (isDateExisting) {
                 $('#calenderdateform').submit();
+            } else if (selectedDate < restrictionDate) {
+                alert('Please select a date within the allowed range.');
+                $('#calendar').evoCalendar('clearSelectedDate');
             } else if (selectedDate < minDate) {
                 alert('Please select a date within the allowed range.');
                 $('#calendar').evoCalendar('clearSelectedDate');
