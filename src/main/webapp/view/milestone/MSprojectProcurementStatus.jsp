@@ -65,7 +65,7 @@
  					</div>
  					<div class="col-md-3"></div>
  					<div class="col-md-2 right">
-	 					<a class="back btn btn-sm" href="MSProjectMilestone.htm?ProjectId=<%=projectId%>">Back</a>
+	 					<a class="back btn back" href="MSProjectMilestone.htm?ProjectId=<%=projectId%>">Back</a>
  					</div>
  				</div>
        		</div>

@@ -1,4 +1,7 @@
 
+<%@page import="com.google.gson.GsonBuilder"%>
+<%@page import="com.google.gson.Gson"%>
+<%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.master.model.MilestoneActivityType"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Optional"%>
@@ -251,10 +254,10 @@ input {
     width: 100% !important;
 }
 .half-width {
-    width: 48% !important;
+    width: 60% !important;
 }
 .more-than-half-width {
-    width: 51% !important;
+    width: 40% !important;
 }
 .toggle-icon {
     position: absolute;
@@ -303,6 +306,14 @@ input {
   background-color: #0056b3;
 }
 
+.evo-calendar .calendar-events, #eventListToggler { 
+  display: none; /* Hides the events panel */
+}
+
+.evo-calendar .calendar-inner { 
+  width: 100%; /* Makes the calendar take the full width */
+}
+
 </style>
     
 </head>
@@ -338,6 +349,8 @@ statusMap.put("FWD", "#0383F3");
 statusMap.put("ABS", "#2B7A0B");
 statusMap.put("RBS", "#fe4e4e");
 
+Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 %>
 <% String ses=(String)request.getParameter("result");
  	String ses1=(String)request.getParameter("resultfail");
@@ -453,15 +466,21 @@ statusMap.put("RBS", "#fe4e4e");
 											</button>
 						        		</form>
 										<%} %> --%>
-						        		<%if(timeSheet!=null && timeSheet.getTimeSheetStatus()!=null) {%>
+						        		<%if(timeSheet!=null) {%>
 						        		<form action="#">
 						        			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						        			<input type="hidden" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()%>">
 						        			<input type="hidden" name="activityDate" value="<%=activityDate%>">
-							        		
-							        		<button type="button" class="btn btn-sm edit" onclick="AllowEdit('Y')" formnovalidate="formnovalidate" >
-								  				EDIT &nbsp;<i class="fa fa-pencil " aria-hidden="true" style="font-size: 17px;"></i>
-											</button>
+							        		<%
+							        			LocalDate now = LocalDate.now();
+							        			LocalDate activityFromDate = LocalDate.parse(timeSheet.getActivityFromDate());
+							        			LocalDate afterFiveDays = activityFromDate.plusDays(5);
+							        		%>
+							        		<%if(now.isBefore(afterFiveDays) || now.isEqual(afterFiveDays)) {%>
+								        		<button type="button" class="btn btn-sm edit" onclick="AllowEdit('Y')" formnovalidate="formnovalidate" >
+									  				EDIT &nbsp;<i class="fa fa-pencil " aria-hidden="true" style="font-size: 17px;"></i>
+												</button>
+											<%} %>
 						        		</form>
 										<%} %>
 						        	</div> 
@@ -489,9 +508,9 @@ statusMap.put("RBS", "#fe4e4e");
 												<table id="activitytable" class="activitytable" >
 													<thead class="center">
 														<tr>
-															<th width="30%">Activity Type</th>
+															<th width="25">Activity Type</th>
 															<th width="30%">Assigned By & PDC</th>
-															<th width="40%">Work Done</th>
+															<th width="45%">Work Done</th>
 														</tr>
 													</thead>
 													<tbody id="activityTableBody">
@@ -512,7 +531,7 @@ statusMap.put("RBS", "#fe4e4e");
 																</td>
 															</tr>
 														<%} }else {%>
-															<%for(int i=1;i<=5;i++) {%>
+															<%-- <%for(int i=1;i<=5;i++) {%> --%>
 																<tr class="tr_clone_activity">
 																	<td class="center">
 																		<input type="text" class="form-control" name="activityTypeDesc" placeholder="Enter maximum 50 characters" maxlength="50" >
@@ -524,7 +543,7 @@ statusMap.put("RBS", "#fe4e4e");
 																		<input type="text" class="form-control" name="workDone" placeholder="Enter maximum 200 characters" maxlength="200" >
 																	</td>
 																</tr>
-															<%} %>	
+															<%-- <%} %>	 --%>
 														<%} %>	
 													</tbody>
 												</table>
@@ -555,6 +574,15 @@ statusMap.put("RBS", "#fe4e4e");
 											</div>
 										</div>
 									</div>
+									<div class="form-group">
+										<div class="row ml-2 mr-2 mt-2">
+											<div class="col-md-12">
+												<b>Note:</b> <br>
+												1. Unfilled rows will be ignored. <br>
+												2. Activity type - Technical, Managerial, Administrative.
+											</div>
+										</div>
+									</div>		
 									<input type="hidden" class="activityDate" name="activityDate" id="activityDate">
 								</form>
 								
@@ -602,6 +630,9 @@ function toggleDiv(divId) {
 </script>
     
 <script type="text/javascript">
+
+	var empAllTimeSheetList = JSON.parse('<%= jsonempAllTimeSheetList %>');
+	
 	var myEvents = [
 		<%if(empAllTimeSheetList!=null && empAllTimeSheetList.size()>0) {
 		for(Object[] obj :empAllTimeSheetList) {
@@ -619,7 +650,7 @@ function toggleDiv(divId) {
 	    },
 	    <%} }%>
 	    
-		<%	
+		<%-- <%	
 		if(todayScheduleList!=null && todayScheduleList.size()>0) {
 		for(Object[] obj :todayScheduleList) {
 			if(!obj[6].toString().equalsIgnoreCase("E")){
@@ -635,8 +666,8 @@ function toggleDiv(divId) {
 	        type: "event",
 	        color: "NA"
 	    },
-	    <%} } }%>
-		<%	
+	    <%} } }%> --%>
+		<%-- <%	
 		if(empActivityAssignList!=null && empActivityAssignList.size()>0) {
 		for(Object[] obj :empActivityAssignList) {
 			String[] seqNo = obj[9]!=null?obj[9].toString().split("/"):null;
@@ -644,21 +675,21 @@ function toggleDiv(divId) {
 	    {
 	        id: "required-id-1",
 	        name: "Today PDC",
-	        <%-- Assigner: "<%=obj[1]%>,<%=obj[2]%>",
+	        Assigner: "<%=obj[1]%>,<%=obj[2]%>",
 	        ActionLinkId : "<%=obj[8]%>",
 	        ActionMainId : "<%=obj[0]%>",
 	        ActionNo : "<%=obj[9]%>",
 	       	ActionAssignid : "<%=obj[10]%>",
-	        ProjectId : "<%=obj[14]%>", --%>
+	        ProjectId : "<%=obj[14]%>",
 	        time: "",
 	        ComCode: "<%=seqNo!=null && seqNo.length>0?seqNo[seqNo.length-3]+"/"+seqNo[seqNo.length-2]+"/"+seqNo[seqNo.length-1]:"-" %>",
-	        <%-- ComCode: "<%=obj[9]%>", --%>
+	        ComCode: "<%=obj[9]%>",
 	        date: "<%=obj[4] %>",
 	        url: "AssigneeList.htm",
 	        type: "event",
 	        color: "NA"
 	    },
-	    <%} }%>
+	    <%} }%> --%>
 	    
 	]
 	
@@ -707,20 +738,37 @@ function toggleDiv(divId) {
             setPunchInDateTime(formattedDate);
             
             const selectedDate = new Date(newDate);
-            if (selectedDate < minDate ) {
-              alert('Please select a date within the allowed range.');
-              $('#calendar').evoCalendar('clearSelectedDate');
-            }
-            else if(selectedDate > today) {
-            	alert('Please select a date within the allowed range.\n Future date selection is not allowed.');
+
+            const selectedDateParts = newDate.split('/'); // Format: mm/dd/yyyy
+            const formattedSelectedDate =
+                selectedDateParts[2] + '-' + // Year
+                selectedDateParts[0].padStart(2, '0') + '-' + // Month
+                selectedDateParts[1].padStart(2, '0'); // Day
+                
+            const isDateExisting = empAllTimeSheetList.some(row => {
+                return row[3] === formattedSelectedDate;
+            });
+
+            if (isDateExisting) {
+                $('#calenderdateform').submit();
+            } else if (selectedDate < minDate) {
+                alert('Please select a date within the allowed range.');
                 $('#calendar').evoCalendar('clearSelectedDate');
-            }
-            else {
-            	$('#calenderdateform').submit();
+            } else if (selectedDate > today) {
+                alert('Future date selection is not allowed.');
+                $('#calendar').evoCalendar('clearSelectedDate');
+            } else {
+                $('#calenderdateform').submit();
             }
             
         });
         
+     	// Simulate the click on the event list toggler to expand the calendar
+        const eventListToggler = document.getElementById('eventListToggler');
+        if (eventListToggler) {
+          eventListToggler.click(); // Simulate the click
+          eventListToggler.style.display = 'none'; // Hide the toggler
+        }
 	});
 </script>
     

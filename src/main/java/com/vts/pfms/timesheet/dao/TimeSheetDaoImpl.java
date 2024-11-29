@@ -95,13 +95,14 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
-	private static final String EMPALLTIMESHEETLIST = "SELECT a.TimeSheetId,a.EmpId,a.InitiationDate,a.ActivityFromDate,a.ActivityToDate,a.PunchInTime,a.PunchOutTime,a.TotalDuration,a.EmpStatus,a.TDRemarks,a.TimeSheetStatus  FROM pfms_timesheet a WHERE a.IsActive=1 AND a.ActivityFromDate BETWEEN DATE_SUB(:ActivityDate, INTERVAL 30 DAY) AND DATE_ADD(:ActivityDate , INTERVAL 30 DAY ) AND a.EmpId=:EmpId";
+	//private static final String EMPALLTIMESHEETLIST = "SELECT a.TimeSheetId,a.EmpId,a.InitiationDate,a.ActivityFromDate,a.ActivityToDate,a.PunchInTime,a.PunchOutTime,a.TotalDuration,a.EmpStatus,a.TDRemarks,a.TimeSheetStatus  FROM pfms_timesheet a WHERE a.IsActive=1 AND a.ActivityFromDate BETWEEN DATE_SUB(:ActivityDate, INTERVAL 30 DAY) AND DATE_ADD(:ActivityDate , INTERVAL 30 DAY ) AND a.EmpId=:EmpId";
+	private static final String EMPALLTIMESHEETLIST = "SELECT a.TimeSheetId,a.EmpId,a.InitiationDate,a.ActivityFromDate,a.ActivityToDate,a.PunchInTime,a.PunchOutTime,a.TotalDuration,a.EmpStatus,a.TDRemarks,a.TimeSheetStatus  FROM pfms_timesheet a WHERE a.IsActive=1 AND a.EmpId=:EmpId";
 	@Override
 	public List<Object[]> getEmpAllTimeSheetList(String empId, String activityDate) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(EMPALLTIMESHEETLIST);
 			query.setParameter("EmpId", Long.parseLong(empId));
-			query.setParameter("ActivityDate", activityDate);
+//			query.setParameter("ActivityDate", activityDate);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -358,6 +359,22 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside TimeSheetDaoImpl getRoleWiseEmployeeList() "+e);
+			return new ArrayList<>();
+		}
+	}
+	
+	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeDesc, b.AssignedByandPDC, b.WorkDone FROM pfms_timesheet a, pfms_timesheet_activity b WHERE a.IsActive=1 AND b.IsActive=1 AND a.TimeSheetId=b.TimeSheetId AND a.EmpId=:EmpId AND a.ActivityFromDate BETWEEN :FromDate AND :ToDate ORDER BY a.ActivityFromDate";
+	@Override
+	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETEMPLOYEENEWTIMESHEETLIST);
+			query.setParameter("EmpId", empId);
+			query.setParameter("FromDate", fromDate);
+			query.setParameter("ToDate", toDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getEmployeeNewTimeSheetList() "+e);
 			return new ArrayList<>();
 		}
 	}

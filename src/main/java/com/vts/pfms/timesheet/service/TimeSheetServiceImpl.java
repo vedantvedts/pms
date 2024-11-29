@@ -527,4 +527,9 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 		}
 	}
 
+	@Override
+	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception {
+		
+		return dao.getEmployeeNewTimeSheetList(empId, fromDate, toDate);
+	}
 }

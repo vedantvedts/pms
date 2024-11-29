@@ -1371,6 +1371,26 @@ public class TimeSheetController {
 			req.setAttribute("activityWeekDate", activityWeekDate);
 			req.setAttribute("activityWeekDateSql", activityWeekDateSql);
 			
+			String empId = req.getParameter("empId");
+			empId = empId==null?EmpId:empId;
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			
+			LocalDate now = LocalDate.now();
+			if(fromDate==null || toDate==null) {
+				fromDate = now.withDayOfMonth(1).toString();
+				toDate = now.toString();
+			}else {
+				fromDate = fc.rdfTosdf(fromDate);
+				toDate = fc.rdfTosdf(toDate);
+			}
+			
+			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList(empId, fromDate, toDate));
+			req.setAttribute("empId", empId);
+			req.setAttribute("fromDate", fromDate);
+			req.setAttribute("toDate", toDate);
+			req.setAttribute("viewFlag", req.getParameter("viewFlag"));
+			
 			return "timesheet/TimeSheetView";
 		}catch (Exception e) {
 			logger.error(new Date()+ "Inside TimeSheetView.htm "+UserId, e);

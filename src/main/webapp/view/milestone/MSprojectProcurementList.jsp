@@ -55,8 +55,8 @@
  					</div>
  					<div class="col-md-3"></div>
  					<div class="col-md-2 right">
-	 					<a class="btn btn-sm btn-info" href="MSprojectProcurementStatus.htm?ProjectId=<%=projectId%>">Procurement Status</a>
-	 					<a class="btn btn-sm btn-info" href="MSProjectMilestone.htm?ProjectId=<%=projectId%>">Back</a>
+	 					<a class="btn btn-sm back" href="MSprojectProcurementStatus.htm?ProjectId=<%=projectId%>">Procurement Status</a>
+	 					<a class="btn btn-sm back" href="MSProjectMilestone.htm?ProjectId=<%=projectId%>">Back</a>
  					</div>
  					
  				</div>

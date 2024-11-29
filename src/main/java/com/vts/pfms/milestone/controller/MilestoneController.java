@@ -2929,19 +2929,16 @@ public class MilestoneController {
 
 
 		String UserId = (String) ses.getAttribute("Username");
-		String Logintype= (String)ses.getAttribute("LoginType");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MSprojectCriticalPath.htm "+UserId);
 
 
 		try {
 			String ProjectId=req.getParameter("ProjectId");
-			List<Object[]>mstaskList = service.getMsprojectTaskList(ProjectId);
+			List<Object[]> mstaskList = service.getMsprojectTaskList(ProjectId);
+			List<Object[]> msCriticalPathList = mstaskList!=null && mstaskList.size()>0?mstaskList.stream().filter(e -> Integer.parseInt(e[16].toString())==1).collect(Collectors.toList()):new ArrayList<>();
 			req.setAttribute("ProjectId", ProjectId);
 			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
-			Gson json = new Gson();
-			req.setAttribute("mstaskList",json.toJson(mstaskList));
+			req.setAttribute("msCriticalPathList", msCriticalPathList);
 
 		}catch (Exception e) {
 			e.printStackTrace(); 
@@ -3106,8 +3103,8 @@ public class MilestoneController {
 		
 		try {
 			String ProjectId=req.getParameter("ProjectId");
-			List<Object[]> msProjectList = service.getMsprojectTaskList(ProjectId);
-			List<Object[]> msProcurementList = msProjectList!=null && msProjectList.size()>0?msProjectList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
+			List<Object[]> mstaskList = service.getMsprojectTaskList(ProjectId);
+			List<Object[]> msProcurementList = mstaskList!=null && mstaskList.size()>0?mstaskList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
 			req.setAttribute("ProjectId", ProjectId);
 			req.setAttribute("projectDetails", service.ProjectDetails(ProjectId).get(0));
 			req.setAttribute("msProcurementList", msProcurementList);

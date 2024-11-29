@@ -55,10 +55,6 @@ h6{
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> mstaskList=(List<Object[]>)request.getAttribute("mstaskList");
 Object[] projectDetails = (Object[])request.getAttribute("ProjectDetails");
-ObjectMapper objectMapper = new ObjectMapper();
-String jsonArray = objectMapper.writeValueAsString(mstaskList);
-SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 String ProjectId=(String)request.getAttribute("ProjectId");
 %>
 	<div class="container-fluid mb-3">
@@ -71,7 +67,7 @@ String ProjectId=(String)request.getAttribute("ProjectId");
  					</div>
  					<div class="col-md-3"></div>
  					<div class="col-md-2 right">
-	 					<a class="btn btn-sm btn-info" href="MSProjectMilestone.htm?ProjectId=<%=ProjectId%>">Back</a>
+	 					<a class="btn btn-sm back" href="MSProjectMilestone.htm?ProjectId=<%=ProjectId%>">Back</a>
  					</div>
  					
  				</div>
