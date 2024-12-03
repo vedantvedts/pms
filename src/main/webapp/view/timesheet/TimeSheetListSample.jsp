@@ -323,7 +323,7 @@ input {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #edae6f;
     transition: 0.4s;
     border-radius: 34px;
 }
@@ -347,7 +347,7 @@ input {
 }
 
 input:checked + .slider {
-    background-color: green;
+    background-color: #74d751;
 }
 
 input:checked + .slider:before {

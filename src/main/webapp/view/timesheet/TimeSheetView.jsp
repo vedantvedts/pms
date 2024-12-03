@@ -417,8 +417,8 @@ FormatConverter fc = new FormatConverter();
 												<th width="7%">Assigner Lab</th>
 												<th width="15%">Assigner</th>
 												<th width="7%">PDC</th>
-												<th width="5%">FN / AN</th>
-												<th width="39%">Work Done</th>
+												<th width="6%">FN / AN</th>
+												<th width="38%">Work Done</th>
 											</tr>
 										</thead>
 										<tbody>	
@@ -444,7 +444,7 @@ FormatConverter fc = new FormatConverter();
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>
-													<td colspan="6" style="text-align: center;">No Data Available</td>
+													<td colspan="8" style="text-align: center;">No Data Available</td>
 												</tr>
 											<%} %>
 										</tbody>
