@@ -371,6 +371,7 @@ public class HeaderController {
 				logger.error(new Date() +" Inside LabReportChapter2.htm "+UserId, e);
 		}
 	}
+	
 	@RequestMapping(value = "PDManual.htm", method = RequestMethod.GET)
 	public void PDManual(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -400,14 +401,6 @@ public class HeaderController {
 				logger.error(new Date() +" Inside PDManual.htm "+UserId, e);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@RequestMapping(value = "PasswordChange.htm", method = RequestMethod.GET)
 	public String PasswordChange(HttpServletRequest req, HttpSession ses) throws Exception {
@@ -824,6 +817,37 @@ public class HeaderController {
 	
 		return json.toJson(projects);
 	}
+	
+	@RequestMapping(value = "TimeSheetWorkFlowPdf.htm", method = RequestMethod.GET)
+	public void timeSheetWorkFlowPdf(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside TimeSheetWorkFlowPdf.htm "+UserId);		
+		try {
+			
+			String path = req.getServletContext().getRealPath("/UserManual/" + "Timesheet Workflow.pdf");
+			
+			res.setContentType("application/pdf");
+			res.setHeader("Content-Disposition", String.format("inline; filename=Timesheet Workflow.pdf"));
+			
+			File my_file = new File(path);
+			
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(my_file);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside TimeSheetWorkFlowPdf.htm "+UserId, e);
+		}
+	}
+
 }
 
 

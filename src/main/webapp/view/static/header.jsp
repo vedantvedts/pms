@@ -433,9 +433,13 @@ String labcode= (String)session.getAttribute("labcode");
 											</a> <a class="dropdown-item" href="AboutPFM.htm" target="_blank">
 												<img src="view/images/work.png" /> &nbsp;&nbsp; About PMS
 											</a>
-                                             <a class="dropdown-item" href="PDManual.htm"
+                                            <a class="dropdown-item" href="PDManual.htm"
 												target="_blank"> <img src="view/images/milestone.png" />
 												&nbsp;&nbsp; PD Manual
+											</a>
+                                            <a class="dropdown-item" href="TimeSheetWorkFlowPdf.htm"
+												target="_blank"> <img src="view/images/calendar.png" />
+												&nbsp;&nbsp; Time Sheet Work Flow
 											</a>
 
 											<div class="dropdown-divider"></div>
