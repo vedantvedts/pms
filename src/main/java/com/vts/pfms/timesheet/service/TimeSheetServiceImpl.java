@@ -191,8 +191,11 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 				activity.setRemarks(null);
 				// New Columns for Sample Demo
 				activity.setActivityTypeDesc(dto.getActivityTypeDesc()[i]);
-				activity.setAssignedByandPDC(dto.getAssignedByandPDC()[i]);
+				activity.setAssignerLabCode(dto.getAssignerLabCode()[i]);
+				activity.setAssignedBy(dto.getAssignedBy()[i]!=null?Long.parseLong(dto.getAssignedBy()[i]):0L);
+				activity.setActionPDC(dto.getActionPDC()[i]!=null?fc.rdfTosdf(dto.getActionPDC()[i]):null);
 				activity.setWorkDone(dto.getWorkDone()[i]);
+				activity.setFnorAn(dto.getFnorAn()[i]);
 				// New Columns for Sample Demo End
 				activity.setCreatedBy(dto.getUserId());
 				activity.setTimeSheet(timeSheet);

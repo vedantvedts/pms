@@ -363,7 +363,12 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
-	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeDesc, b.AssignedByandPDC, b.WorkDone FROM pfms_timesheet a, pfms_timesheet_activity b WHERE a.IsActive=1 AND b.IsActive=1 AND a.TimeSheetId=b.TimeSheetId AND a.EmpId=:EmpId AND a.ActivityFromDate BETWEEN :FromDate AND :ToDate ORDER BY a.ActivityFromDate";
+	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeDesc, b.AssignerLabCode, b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName',d.Designation, b.ActionPDC, b.WorkDone, b.FnorAn \r\n"
+			+ "FROM pfms_timesheet a \r\n"
+			+ "JOIN pfms_timesheet_activity b ON a.TimeSheetId=b.TimeSheetId AND b.IsActive=1\r\n"
+			+ "LEFT JOIN employee c ON b.AssignedBy=c.EmpId AND b.AssignerLabCode=c.LabCode\r\n"
+			+ "LEFT JOIN employee_desig d ON c.DesigId=d.DesigId\r\n"
+			+ "WHERE a.IsActive=1 AND a.EmpId=:EmpId AND a.ActivityFromDate BETWEEN :FromDate AND :ToDate ORDER BY a.ActivityFromDate";
 	@Override
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception {
 		try {

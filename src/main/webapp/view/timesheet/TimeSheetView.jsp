@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.master.model.Employee"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -73,11 +74,11 @@ font-weight: bold;
 	border: 1px solid #0000002b; 
 	padding: 7px;
 }
-/* #activityviewtable thead {
+#activityviewtable thead {
 	text-align: center;
 	background-color: #60707a;
 	color: white;
-} */
+}
 
 .highlight-week {
 	background-color: #2883c0 !important;
@@ -92,6 +93,7 @@ font-weight: bold;
 
 .select2-container {
     text-align: left !important;
+    width: 100% !important;
 }
 </style>
 </head>
@@ -100,6 +102,8 @@ font-weight: bold;
 <%
 List<Object[]> employeeList = (List<Object[]>)request.getAttribute("roleWiseEmployeeList");
 Map<String, Map<LocalDate, TimeSheet>> timeSheetData = (Map<String, Map<LocalDate, TimeSheet>>)request.getAttribute("timesheetDataForOfficer");
+List<Employee> allEmpList = (List<Employee>) request.getAttribute("allEmployeeList");
+List<Object[]> designationlist = (List<Object[]>) request.getAttribute("designationlist");
 
 String activityWeekDate = (String)request.getAttribute("activityWeekDate");
 String activityWeekDateSql = (String)request.getAttribute("activityWeekDateSql");
@@ -117,7 +121,7 @@ String fromDate = (String)request.getAttribute("fromDate");
 String toDate = (String)request.getAttribute("toDate");
 
 List<Object[]> employeeNewTimeSheetList = (List<Object[]>)request.getAttribute("employeeNewTimeSheetList");
-Map<String, List<Object[]>> ccmActionsToListMap = employeeNewTimeSheetList!=null && employeeNewTimeSheetList.size()>0?employeeNewTimeSheetList.stream()
+Map<String, List<Object[]>> timeSheetToListMap = employeeNewTimeSheetList!=null && employeeNewTimeSheetList.size()>0?employeeNewTimeSheetList.stream()
 		  										  .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
 String viewFlag = (String)request.getAttribute("viewFlag");
 viewFlag = viewFlag == null? "W":viewFlag;
@@ -280,12 +284,15 @@ FormatConverter fc = new FormatConverter();
 													<td></td>
 													<td colspan="10">
 														
-														<table id="data-table activityviewtable" style="width:100%;" >
+														<table id="activityviewtable" style="width:100%;" >
 															<thead class="center">
 																<tr>
-																	<th width="10%">SN</th>
-																	<th width="20%">Activity Type</th>
-																	<th width="30%">Assigned By & PDC</th>
+																	<th width="5%">SN</th>
+																	<th width="15%">Activity Type</th>
+																	<th width="7%">Assigner Lab</th>
+																	<th width="20%">Assigner</th>
+																	<th width="7%">PDC</th>
+																	<th width="6%">FN / AN</th>
 																	<th width="40%">Work Done</th>
 																</tr>
 															</thead>
@@ -298,39 +305,49 @@ FormatConverter fc = new FormatConverter();
 																%>
 																<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0 ) { ++activitycount;%>
 																	<tr>
-																		<td colspan="4">
+																		<td colspan="7">
 																			<span style="font-weight: bold;font-size: 16px;color: <%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) {%>green<%}else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>red<%}%> ">
 																			<%=fc.SqlToRegularDate(date.toString()) %>
 																			</span>
 																		</td>
 																	</tr>
 																<%} %>
-																<%
-																
-																if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
+																<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
 																	int slno = 0;
 																	for(TimeSheetActivity act : timeSheetActivityList) {
-																		
+																		Employee emp = allEmpList!=null && allEmpList.size()>0?allEmpList.stream()
+																						.filter(e -> e.getLabCode().equalsIgnoreCase(act.getAssignerLabCode()) && e.getEmpId()==act.getAssignedBy()).findFirst().orElse(null): null;
+																		Object[] desig = designationlist!=null && designationlist.size()>0 ?designationlist.stream()
+																								.filter(e -> emp.getDesigId() == Long.parseLong(e[0].toString()) ).findFirst().orElse(null):null;
 																%>
-																	<tr>
-																		<td class="center"><%=++slno %></td>
-																		<td>
-																			<%if(act.getActivityTypeDesc()!=null && !act.getActivityTypeDesc().isEmpty()) {%><%=act.getActivityTypeDesc()%><%} else{%>-<%} %>
-																		</td>
-																		<td>
-																			<%if(act.getAssignedByandPDC()!=null && !act.getAssignedByandPDC().isEmpty()) {%><%=act.getAssignedByandPDC()%><%} else{%>-<%} %>
-																		</td>
-																		<td>
-																			<%if(act.getWorkDone()!=null && !act.getWorkDone().isEmpty()) {%><%=act.getWorkDone()%><%} else{%>-<%} %>
-																		</td>
-																	</tr>
+																		<tr>
+																			<td class="center"><%=++slno %></td>
+																			<td>
+																				<%if(act.getActivityTypeDesc()!=null && !act.getActivityTypeDesc().isEmpty()) {%><%=act.getActivityTypeDesc()%><%} else{%>-<%} %>
+																			</td>
+																			<td class="center">
+																				<%if(act.getAssignerLabCode()!=null) {%><%=act.getAssignerLabCode() %><%} %>
+																			</td>
+																			<td>
+																				<%=emp!=null?((emp.getTitle()!=null?emp.getTitle():(emp.getSalutation()!=null?emp.getSalutation():"")) + " " + (emp.getEmpName()) + ", " + (desig!=null && desig[2]!=null?desig[2]:"")):"-"%>
+																			</td>
+																			<td class="center">
+																				<%=act.getActionPDC()!=null?fc.sdfTordf(act.getActionPDC()):"-" %>
+																			</td>
+																			<td class="center">
+																				<%=act.getFnorAn()!=null?(act.getFnorAn().equalsIgnoreCase("A")?"AN":"FN"):"-" %>
+																			</td>
+																			<td>
+																				<%if(act.getWorkDone()!=null && !act.getWorkDone().isEmpty()) {%><%=act.getWorkDone()%><%} else{%>-<%} %>
+																			</td>
+																		</tr>
 																	<%} %>
 																<%} %>	
 																
 																<%} %>
 																<%if(activitycount==0) {%>
 																	<tr>
-																		<td class="center" colspan="6">No Data Available</td> 
+																		<td class="center" colspan="7">No Data Available</td> 
 																	</tr>
 																<%} %>
 															</tbody>
@@ -350,6 +367,10 @@ FormatConverter fc = new FormatConverter();
 							<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="pills-tab-2">
 			  					<div class="row mb-3">
 									<div class="col-md-6">
+										<%Object[] emp = employeeList!=null && employeeList.size()>0?employeeList.stream()
+														.filter(e -> empId.equalsIgnoreCase(e[0]+"")).findFirst().orElse(null):null; %>
+										<b class="ml-2">Report</b> of <b><%=emp!=null?((emp[1]!=null?emp[1]:(emp[2]!=null?emp[2]:""))+""+emp[5]+", "+emp[6]):"-" %></b>
+										from <b><%=fc.sdfTordf(fromDate) %></b> to <b><%=fc.sdfTordf(toDate) %></b>
 									</div>
 									<div class="col-md-6">
 										<form action="TimeSheetView.htm" method="get">
@@ -360,7 +381,7 @@ FormatConverter fc = new FormatConverter();
 													<label class="form-label mt-2">Employee: </label>
 												</div>
 												<div class="col-md-3">
-													<select class="form-control selectdee" name="empId" onchange="this.form.submit()" style="width: 300px;">
+													<select class="form-control selectdee" name="empId" onchange="this.form.submit()" >
 														<option selected disabled>---Select---</option>
 														<%if(employeeList!=null && employeeList.size()>0) {
 															for(Object[] obj : employeeList) {%>
@@ -391,16 +412,19 @@ FormatConverter fc = new FormatConverter();
 			                        	<thead style="">
 			                        		<tr>
 												<th width="5%">SN</th>
-												<th width="10%">Date</th>
-												<th width="15%">Activity Type</th>
-												<th width="30%">Assigned By & PDC</th>
-												<th width="40%">Work Done</th>
+												<th width="7%">Date</th>
+												<th width="10%">Activity Type</th>
+												<th width="7%">Assigner Lab</th>
+												<th width="15%">Assigner</th>
+												<th width="7%">PDC</th>
+												<th width="5%">FN / AN</th>
+												<th width="39%">Work Done</th>
 											</tr>
 										</thead>
 										<tbody>	
-											<% if (ccmActionsToListMap!=null && ccmActionsToListMap.size() > 0) {
+											<% if (timeSheetToListMap!=null && timeSheetToListMap.size() > 0) {
 												int slno = 0;String key="";
-												for (Map.Entry<String, List<Object[]>> map : ccmActionsToListMap.entrySet()) {
+												for (Map.Entry<String, List<Object[]>> map : timeSheetToListMap.entrySet()) {
 		                   							
 		                   							List<Object[]> values = map.getValue();
 		                   							int i=0;
@@ -412,8 +436,11 @@ FormatConverter fc = new FormatConverter();
 											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
 	           										<%} %>
 	           										<td><%=obj[4]!=null?obj[4]:"-" %></td>
-	           										<td><%=obj[5]!=null?obj[5]:"-" %></td>
-	           										<td><%=obj[6]!=null?obj[6]:"-" %></td>
+	           										<td class="center"><%=obj[5]!=null?obj[5]:"-" %></td>
+	           										<td><%=obj[7]!=null?obj[7]+", "+(obj[8]!=null?obj[8]:"-"):"-" %></td>
+	           										<td class="center"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></td>
+	           										<td class="center"><%=obj[11]!=null?(obj[11].toString().equalsIgnoreCase("A")?"AN":"FN"):"-" %></td>
+	           										<td><%=obj[10]!=null?obj[10]:"-" %></td>
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>

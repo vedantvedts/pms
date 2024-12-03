@@ -47,7 +47,10 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.admin.service.AdminService;
+import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.header.service.HeaderService;
+import com.vts.pfms.ms.dao.EmployeeRepo;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
@@ -71,6 +74,15 @@ public class TimeSheetController {
 	
 	@Autowired
 	ProjectService projectservice;
+	
+	@Autowired
+	CommitteeService committeeservice;
+	
+	@Autowired
+	EmployeeRepo employeerepo;
+	
+	@Autowired
+	AdminService adminservice;
 	
 	@RequestMapping(value="TimeSheetDashboard.htm", method= {RequestMethod.GET,RequestMethod.POST})
 	public String timeSheetDashboard(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
@@ -133,10 +145,10 @@ public class TimeSheetController {
 			req.setAttribute("activityDateSql", activityDateSql);
 			req.setAttribute("todayScheduleList", headerservice.TodaySchedulesList(EmpId, activityDateSql));
 			req.setAttribute("timeSheetData", service.getTimeSheetByDateAndEmpId(EmpId, activityDateSql));
-			req.setAttribute("empActivityAssignList", service.getEmpActivityAssignList(EmpId));
 			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(EmpId, activityDateSql));
-			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
-			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,labcode));
+			req.setAttribute("allLabList", committeeservice.AllLabList());
+			req.setAttribute("allEmployeeList", employeerepo.findAll());
+			req.setAttribute("designationlist", adminservice.DesignationList());
 			return "timesheet/TimeSheetListSample";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside TimeSheetList.htm "+UserId, e);
@@ -169,9 +181,12 @@ public class TimeSheetController {
 							   .Remarks(req.getParameterValues("remarks"))
 							   // New Columns for Sample Demo
 							   .ActivityTypeDesc(req.getParameterValues("activityTypeDesc"))
-							   .AssignedByandPDC(req.getParameterValues("assignedByandPDC"))
+							   .AssignerLabCode(req.getParameterValues("assignerLabCode"))
+							   .AssignedBy(req.getParameterValues("assignedBy"))
+							   .ActionPDC(req.getParameterValues("actionPDC"))
 							   .WorkDone(req.getParameterValues("workDone"))
-							   // // New Columns for Sample Demo End
+							   .FnorAn(req.getParameterValues("fnoran"))
+							   // New Columns for Sample Demo End
 							   .Action(req.getParameter("Action"))
 							   .UserId(UserId)
 							   .build();
@@ -1362,6 +1377,7 @@ public class TimeSheetController {
 		logger.info(new Date()+" Inside TimeSheetView.htm "+UserId);
 		try {
 
+			// Weekly View
 			String activityWeekDate = req.getParameter("activityWeekDate");
 			activityWeekDate = activityWeekDate==null?rdf.format(new Date()):activityWeekDate;
 			String activityWeekDateSql = fc.rdfTosdf(activityWeekDate);
@@ -1370,7 +1386,10 @@ public class TimeSheetController {
 			req.setAttribute("timesheetDataForOfficer", service.getTimesheetDataForOfficer(EmpId, labcode, activityWeekDateSql, LoginType));
 			req.setAttribute("activityWeekDate", activityWeekDate);
 			req.setAttribute("activityWeekDateSql", activityWeekDateSql);
+			req.setAttribute("allEmployeeList", employeerepo.findAll());
+			req.setAttribute("designationlist", adminservice.DesignationList());
 			
+			// Monthly View
 			String empId = req.getParameter("empId");
 			empId = empId==null?EmpId:empId;
 			String fromDate = req.getParameter("fromDate");
