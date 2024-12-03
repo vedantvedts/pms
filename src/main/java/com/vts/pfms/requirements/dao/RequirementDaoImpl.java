@@ -41,7 +41,7 @@ import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.model.IgiDocumentSummary;
-
+import com.vts.pfms.requirements.model.TestPlanMaster ;
 @Transactional
 @Repository
 public class RequirementDaoImpl implements RequirementDao {
@@ -1412,8 +1412,41 @@ public class RequirementDaoImpl implements RequirementDao {
 			return manager.find(SpecificationMaster.class, specsMasterId);
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date()+" Inside DAO getRequirementInitiationById "+e);
+			logger.error(new Date()+" Inside DAO SpecificationMaster "+e);
 			return null;
 		}
+	}
+	
+	
+	private static final String TESTPLANMASTER="SELECT a.TestMasterId,a.Name,a.Objective,a.Description,CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname' FROM pfms_testplan_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1'";
+	@Override
+	public List<Object[]> TestPlanMaster() throws Exception {
+		List<Object[]> TestPlanMasterList=null;
+    	try {
+			Query query=manager.createNativeQuery(TESTPLANMASTER);
+			TestPlanMasterList =(List<Object[]>) query.getResultList();
+			return TestPlanMasterList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+			
+		}
+	}
+	
+	@Override
+	public TestPlanMaster getTestPlanById(long testMasterId) {
+		try {
+			return manager.find(TestPlanMaster.class, testMasterId);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getTestPlanById "+e);
+			return null;
+		}
+	}
+	@Override
+	public long testPlanMasterAdd(TestPlanMaster tp) throws Exception {
+		manager.persist(tp);
+		manager.flush();
+		return tp.getTestMasterId();
 	}
 }

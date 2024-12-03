@@ -30,6 +30,7 @@ import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.model.IgiDocumentSummary;
 import com.vts.pfms.requirements.model.PfmsIgiDocument;
+import com.vts.pfms.requirements.model.TestPlanMaster;
 
 public interface RequirementService {
 
@@ -214,5 +215,10 @@ public interface RequirementService {
 	public long specMasterAddSubmit(SpecificationMaster sp)throws Exception;
 
 	public SpecificationMaster getSpecificationMasterById(long SpecsMasterId)throws Exception;
+
+	public List<Object[]> TestPlanMaster()throws Exception;
+	public TestPlanMaster getTestPlanById(long TestMasterId)throws Exception;
+
+	public long testPlanMasterAdd(TestPlanMaster tp)throws Exception;
 
 }

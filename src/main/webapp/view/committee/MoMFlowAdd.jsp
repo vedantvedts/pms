@@ -321,7 +321,7 @@ String ses=(String)request.getParameter("result");
 
 								<td class="trup" style="background: #B5EAEA;">&nbsp;<%if(Arrays.asList("FWD","RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 									<img src="view/images/check.png"> <br><%} %>
-									Constituted By <br> <%=NewApprovalList[0].toString() %>
+									Initiated By <br> <%=NewApprovalList[0].toString() %>
 								</td>
 								<%if(NewApprovalList!=null && NewApprovalList[2]!=null){ %>
 								<td rowspan="2"><b>----------&gt;</b></td>
@@ -411,14 +411,7 @@ String ses=(String)request.getParameter("result");
 						 $('#Rec3_Role').focus();
 						return false;
 					}
-					console.log(Rec2_Role.length)
-					console.log(Rec3_Role.length)
-					
-					
-					var array = Array.of(InitiatedBy, Recommend1, Recommend2, Recommend3, ApprovingOfficer);
-					
-		
-				
+					var array = Array.of(Recommend1, Recommend2, Recommend3, ApprovingOfficer);
 					for(var i=0;i<array.length-1;i++){
 						if(array[i]!==0){
 							for(var j=i+1;j<array.length;j++ ){

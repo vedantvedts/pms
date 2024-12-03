@@ -64,6 +64,7 @@ import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.utils.PMSLogoUtil;
 import com.vts.pfms.requirements.model.IgiDocumentSummary;
+import com.vts.pfms.requirements.model.TestPlanMaster;
 
 @Service
 public class RequirementServiceImpl implements RequirementService {
@@ -1488,5 +1489,18 @@ public class RequirementServiceImpl implements RequirementService {
 	@Override
 	public SpecificationMaster getSpecificationMasterById(long SpecsMasterId) throws Exception {
 		return dao.SpecificationMaster(SpecsMasterId);
+	}
+	@Override
+	public List<Object[]> TestPlanMaster() throws Exception {
+		return dao.TestPlanMaster();
+	}
+	@Override
+	public TestPlanMaster getTestPlanById(long TestMasterId) throws Exception {
+		return dao.getTestPlanById(TestMasterId);
+	}
+	@Override
+	public long testPlanMasterAdd(TestPlanMaster tp) throws Exception {
+		
+		return dao.testPlanMasterAdd(tp);
 	}
 }

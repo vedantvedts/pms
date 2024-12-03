@@ -43,6 +43,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,6 +88,7 @@ import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.PMSLogoUtil;
+import com.vts.pfms.requirements.model.TestPlanMaster;
 
 @Controller
 public class RequirementsController {
@@ -4503,4 +4505,111 @@ public class RequirementsController {
 		
 	}
 	
+	
+	@RequestMapping(value = "TestPlanMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String TestPlanMaster(HttpServletRequest req, HttpServletResponse res, HttpSession ses,
+			RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType = (String) ses.getAttribute("LoginType");
+
+		logger.info(new Date() + "Inside TestPlanMaster.htm" + UserId);
+		List<Object[]> TestPlanMasterList = null;
+		try {
+			TestPlanMasterList = service.TestPlanMaster();
+		
+			req.setAttribute("TestPlanMasterList", TestPlanMasterList);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			logger.error(new Date() + " Inside TestPlanMaster.htm " + UserId, e);
+			return "static/Error";
+
+		}
+		return "requirements/TestPlanMasterList";
+
+	}
+	
+	@RequestMapping(value = "TestPlanMasterAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String TestPlanMasterAdd( HttpServletRequest req, HttpServletResponse res, HttpSession ses,
+			RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LoginType = (String) ses.getAttribute("LoginType");
+
+		logger.info(new Date() + "Inside SpecificationMasterAdd.htm" + UserId);
+
+		try {
+			String TestMasterId = req.getParameter("Did");
+			String action = req.getParameter("sub");
+			TestPlanMaster tp = action.equalsIgnoreCase("edit") ?service.getTestPlanById(Long.parseLong(TestMasterId)):new TestPlanMaster();
+			req.setAttribute("TestPlanMaster", tp);
+			req.setAttribute("StagesApplicable", service.StagesApplicable());
+			return "requirements/TestMasterAdd";
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			logger.error(new Date() + " Inside SpecificationMasterAdd.htm " + UserId, e);
+			return "static/Error";
+
+		}
+
+	}
+	
+	
+	@RequestMapping(value = "TestMasterAddSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String TestMasterAddSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res,
+			RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside TestMasterAddSubmit.htm" + UserId);
+		try {
+			String TestMasterId = req.getParameter("TestMasterId");
+			String action = req.getParameter("action");
+			TestPlanMaster tp = action.equalsIgnoreCase("update") ?service.getTestPlanById(Long.parseLong(TestMasterId)):new TestPlanMaster();
+			
+			System.out.println("action----"+action);
+			tp.setName(req.getParameter("name"));
+			tp.setObjective(req.getParameter("Objective"));
+			tp.setMethodology(req.getParameter("Methodology"));
+			tp.setToolsSetup(req.getParameter("ToolsSetup"));
+			tp.setConstraints(req.getParameter("Constraints"));
+			tp.setEstimatedTimeIteration(req.getParameter("EstimatedTimeIteration"));
+			tp.setIterations(req.getParameter("Iterations"));
+			tp.setSchedule(req.getParameter("Schedule"));
+			tp.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
+			tp.setStageApplicable(req.getParameter("StageApplicable"));
+			tp.setPreConditions(req.getParameter("PreConditions"));
+			tp.setPostConditions(req.getParameter("PostConditions"));
+			tp.setSafetyRequirements(req.getParameter("SafetyReq"));
+			tp.setDescription(req.getParameter("Description"));
+			tp.setPersonnelResources(req.getParameter("PersonnelResources"));
+			tp.setRemarks(req.getParameter("remarks"));;
+			if(TestMasterId!=null) {
+				tp.setModifiedBy(UserId);
+				tp.setModifiedDate(LocalDate.now().toString());
+				}else {
+				tp.setCreatedBy(UserId);
+				tp.setCreatedDate(LocalDate.now().toString());
+				tp.setIsActive(1);
+				}
+			long count = service.testPlanMasterAdd(tp);
+			if (count > 0) {
+				if(action.equalsIgnoreCase("update")) {
+				redir.addAttribute("result", "TestPlan Data Edited Successfully");
+				}else {
+					redir.addAttribute("result", "TestPlan Data Added Successfully");	
+				}
+			} else {
+				redir.addAttribute("resultfail", "TestPlan Data Add Unsuccessful");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/TestPlanMaster.htm";
+		
+	}
 }

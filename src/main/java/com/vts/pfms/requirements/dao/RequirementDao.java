@@ -28,7 +28,7 @@ import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import  com.vts.pfms.requirements.model.IgiDocumentSummary;
 import com.vts.pfms.requirements.model.PfmsIgiDocument;
-
+import com.vts.pfms.requirements.model.TestPlanMaster;
 public interface RequirementDao {
 
 	List<Object[]> RequirementList(String reqInitiationId) throws Exception;
@@ -232,4 +232,9 @@ public interface RequirementDao {
 	public List<Object[]> SpecificationMasterList() throws Exception;
 	public long specMasterAddSubmit(SpecificationMaster sp) throws Exception;
 	public SpecificationMaster SpecificationMaster(long specsMasterId)throws Exception;
+	public List<Object[]> TestPlanMaster()throws Exception;
+	public TestPlanMaster getTestPlanById(long testMasterId);
+
+
+	long testPlanMasterAdd(TestPlanMaster tp)throws Exception;
 }
