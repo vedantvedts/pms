@@ -1,4 +1,4 @@
-package com.vts.pfms.requirements.model;
+package com.vts.pfms.documents.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="pfms_igi_parameters")
-public class IgiBasicParameters {
+public class IGIBasicParameters {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

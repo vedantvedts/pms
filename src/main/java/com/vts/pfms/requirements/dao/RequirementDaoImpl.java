@@ -15,6 +15,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IGIBasicParameters;
+import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentSummary;
+import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.requirements.model.Abbreviations;
@@ -25,10 +30,6 @@ import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecificationMaster;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
-import com.vts.pfms.requirements.model.IGIInterface;
-import com.vts.pfms.requirements.model.IgiBasicParameters;
-import com.vts.pfms.requirements.model.IgiDocumentMembers;
-import com.vts.pfms.requirements.model.PfmsIgiDocument;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.PfmsSpecTypes;
 import com.vts.pfms.requirements.model.PfmsTestTypes;
@@ -40,7 +41,6 @@ import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
-import com.vts.pfms.requirements.model.IgiDocumentSummary;
 import com.vts.pfms.requirements.model.TestPlanMaster ;
 @Transactional
 @Repository
@@ -1214,152 +1214,6 @@ public class RequirementDaoImpl implements RequirementDao {
 	}
 	
 	/* Soumyakanta Swain */
-	
-	private static final String IGIDOCUMENTLIST="SELECT a.DocIgiId, a.IgiVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate,a.IgiStatusCode,a.IgiStatusCodeNext,a.CreatedBy,a.CreatedDate,a.Remarks,b.EmpName FROM pfms_igi_document a,employee b WHERE a.IsActive='1' AND a.InitiatedBy=b.EmpId ORDER BY a.DocIgiId DESC";
-	@Override
-	public List<Object[]> IgiDocumentList() throws Exception {
-
-		Query query=manager.createNativeQuery(IGIDOCUMENTLIST);
-		List<Object[]> IgiDocumentList=(List<Object[]>)query.getResultList();
-		return IgiDocumentList;
-	}
-	
-	@Override
-	public long savePfmsIgiDocument(PfmsIgiDocument  pfmsIgiDocument) throws Exception
-	{
-		try {
-		    manager.persist(pfmsIgiDocument);
-		    manager.flush();
-			return pfmsIgiDocument.getDocIgiId();
-		}
-		catch (Exception e) {
-			logger.error(new Date()  + "Inside DAO savePfmsIgiDocument " + e);
-			e.printStackTrace();
-			return 0 ;
-		}
-	}
-	
-	private static final String IGIDOCUMENTSUMMARYlIST="SELECT a.SummaryId, a.AdditionalInformation, a.Abstract, a.Keywords, a.Distribution,a.Reviewer,a.Approver,a.CreatedBy,a.CreatedDate,a.PreparedBy,a.ReleaseDate FROM pfms_igi_document_summary a WHERE a.IsActive='1' ";
-	@Override
-	public List<Object[]> IgiDocumentSummary() throws Exception {
-
-		Query query=manager.createNativeQuery(IGIDOCUMENTSUMMARYlIST);
-		List<Object[]> IgiDocumentList=(List<Object[]>)query.getResultList();
-		return IgiDocumentList;
-	}
-	
-   @Override
-	public IgiDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception {
-		try {
-			
-			return manager.find(IgiDocumentSummary.class, Long.parseLong(SummaryId)) ;
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date()+" Inside DAO getIgiDocumentSummaryById "+e);
-			return null;
-		}
-	}
-   
-	@Override
-	public long addIgiDocumentSummary(IgiDocumentSummary rs) throws Exception {
-		manager.persist(rs);
-		return rs.getSummaryId();
-	}
-	
-	
-	private static final String IGIDOCUMENTMEMBERLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid,c.IgiMemeberId FROM employee a,employee_desig b,pfms_igi_document_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.DocIgiId =:DocIgiId AND c.IsActive =1 ORDER BY b.desigid ASC";
-	@Override
-	public List<Object[]> igiDocumentMemberList(String DocIgiId) throws Exception {
-
-		Query query = manager.createNativeQuery(IGIDOCUMENTMEMBERLIST);
-
-		query.setParameter("DocIgiId", DocIgiId);
-		return (List<Object[]>)query.getResultList();
-	}
-	
-	private static final String EMPLISTS="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_igi_document_members WHERE DocIgiId =:DocIgiId AND  isactive = 1)ORDER BY a.srno=0,a.srno";
-	@Override
-	public List<Object[]> EmployeeList(String labCode, String DocIgiId) throws Exception {
-		Query query = manager.createNativeQuery(EMPLISTS);
-
-		query.setParameter("LabCode", labCode);
-		query.setParameter("DocIgiId", DocIgiId);
-		
-		return (List<Object[]>)query.getResultList();
-	}
-	
-	@Override
-	public long AddIgiMembers(IgiDocumentMembers r) throws Exception {
-
-		manager.persist(r);
-		manager.flush();
-
-		return r.getIgiMemeberId();
-	}
-	
-	@Override
-	public IgiDocumentMembers  getIgiDocumentById(Long IgiMemeberId) throws Exception
-	{
-		IgiDocumentMembers dec = null;
-		try {
-			dec= manager.find(IgiDocumentMembers.class, IgiMemeberId);
-		} catch (Exception e) {
-			logger.error(new Date() + "Inside DAO  getIgiDocumentById "+e);
-			e.printStackTrace();
-		}
-		return dec;
-	}
-	
-	@Override
-	public long editIgiDocument(IgiDocumentMembers idm) throws Exception
-	{
-		try {
-		    manager.merge(idm);
-		    manager.flush();
-			return idm.getIgiMemeberId();
-		}
-		catch (Exception e) {
-			logger.error(new Date()  + "Inside DAO editIgiDocument " + e);
-			e.printStackTrace();
-			return 0 ;
-		}
-	}
-	
-
-	@Override
-	public long addBasicInterfaceType(IGIInterface iif) throws Exception {
-		manager.persist(iif);
-		manager.flush();
-		return iif.getInterfaceId();
-	}
-
-	
-	@Override
-	public List<IGIInterface> getAllIGIInterface(String labCode) throws Exception {
-
-			String queryStr = "SELECT i FROM IGIInterface i WHERE i.LabCode = :labCode";
-	        TypedQuery<IGIInterface> query = manager.createQuery(queryStr, IGIInterface.class);
-	        query.setParameter("labCode", labCode);
-	        return query.getResultList();
-		
-		
-		
-	}
-	private static final String BASICPARAMETERS="select * from pfms_igi_parameters";
-	@Override
-	public List<Object[]> getAllBasicParameters() throws Exception {
-		Query query = manager.createNativeQuery(BASICPARAMETERS);
-		return (List<Object[]>)query.getResultList();
-	}
-	
-	
-	@Override
-	public long AddParameters(IgiBasicParameters ib) throws Exception {
-		manager.persist(ib);
-		manager.flush();
-		return ib.getParameterId();
-	}
-	
 	
 	private static final String VERIFYMASTERLIST="SELECT VerificationMasterId,VerificationName FROM pfms_initiation_verification_master WHERE IsActive='1'";
 	@Override

@@ -1,6 +1,6 @@
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.stream.Collector"%>
-<%@page import="com.vts.pfms.requirements.model.IGIInterface"%>
+<%@page import="com.vts.pfms.documents.model.IGIInterface"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -341,42 +341,36 @@ font-size: 1rem;
 </style>
 </head>
 <body>
-<% String DocIgiId = (String)request.getAttribute("DocIgiId");
-List<IGIInterface>Intefaces = (List<IGIInterface>)request.getAttribute("Intefaces");
-List<Object[]>parameters = (List<Object[]>)request.getAttribute("parameters");
-%>
+	<% 
+		String igiDocId = (String)request.getAttribute("igiDocId");
+		List<IGIInterface>Intefaces = (List<IGIInterface>)request.getAttribute("Intefaces");
+		List<Object[]>parameters = (List<Object[]>)request.getAttribute("parameters");
+	%>
 
 
-		<div class="container-fluid" style="" id="main">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="card shadow-nohover" style="margin-top: -0px;">
-						<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-							<div class="col-md-8" id="projecthead">
-							
-							</div>
-							<div class="col-md-3" >
+	<div class="container-fluid" style="" id="main">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card shadow-nohover" style="margin-top: -0px;">
+					<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
+						<div class="col-md-8" id="projecthead"> </div>
+						<div class="col-md-3" >
 							<button class="btn btn-sm submit" style="margin-top: -2%;" onclick="showModal()">ADD INTERFACE TYPES</button>
-							</div>
-							<div class="col-md-1" id="addReqButton">
-								<form action="#">
-										<input type="hidden" name="DocIgiId" value="<%=DocIgiId%>">
-									
-										<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
-										<button class="btn btn-info btn-sm  back ml-2"
-										formaction="IgiDocumentDetails.htm" formmethod="get"
-										formnovalidate="formnovalidate" style="margin-top: -3%;">BACK</button>
-								</form>
-								
-								
-							</div>	
-								
 						</div>
+						<div class="col-md-1" id="addReqButton">
+							<form action="#">
+								<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
+								<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+								<button class="btn btn-info btn-sm  back ml-2" formaction="IGIDocumentDetails.htm" formmethod="get" formnovalidate="formnovalidate" style="margin-top: -3%;">BACK</button>
+							</form>
+						</div>	
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="requirementid" style="display:block;<%if(Intefaces!=null &&Intefaces.size()>9){%>height:500px;<%}%>">
+	</div>
+	
+	<div class="requirementid" style="display:block;<%if(Intefaces!=null &&Intefaces.size()>9){%>height:500px;<%}%>">
 		<%if(Intefaces!=null && Intefaces.size()>0) {
 			List<IGIInterface>Intefaces1 = new ArrayList<>();
 			Intefaces1=Intefaces.stream().filter(e->e.getParentId().toString().equalsIgnoreCase("0")).collect(Collectors.toList());
@@ -398,7 +392,7 @@ List<Object[]>parameters = (List<Object[]>)request.getAttribute("parameters");
 		<%} %>
 	
 		<%} %>
-			</div>
+		</div>
 		<div class="container" id="container1">
 		 <div class="row" id="row1">
 					<div class="col-md-12">
@@ -415,7 +409,7 @@ List<Object[]>parameters = (List<Object[]>)request.getAttribute("parameters");
 									</div>
 									
 		
-					<div class="col-md-12">
+					<!-- <div class="col-md-12">
 								<div class="row mt-2">
 									<div class=col-md-3>
 										<label style="font-size: 1rem;   color: #07689f">
@@ -427,10 +421,10 @@ List<Object[]>parameters = (List<Object[]>)request.getAttribute("parameters");
 									<textarea style="display:none;"  id="description" name="Description" maxlength="1000" placeholder = "max 1000 characters"></textarea>
 									</div>
 									</div>
-									</div>
+									</div> -->
 		 
 		 <div class="col-md-8 ml-2 mt-2">
-		 <table class="table table-bordered" id="deliverablesTable2">
+		 <%-- <table class="table table-bordered" id="deliverablesTable2">
 		 <thead>
 		 <tr>
 		
@@ -468,7 +462,7 @@ List<Object[]>parameters = (List<Object[]>)request.getAttribute("parameters");
 		 <button class="btn" onclick="addTablerow('add')"><i class="fa fa-plus" aria-hidden="true"></i></button>
 		 </td>
 		 </tr>
-		 </table>
+		 </table> --%>
 		 </div>
 		</div>
 		</div>
@@ -511,7 +505,7 @@ List<Object[]>parameters = (List<Object[]>)request.getAttribute("parameters");
      <button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')">ADD NEW</button>
      </div>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-		<input type="hidden" name="DocIgiId" value="<%=DocIgiId%>">
+		<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
 	
       </form>
      </div>

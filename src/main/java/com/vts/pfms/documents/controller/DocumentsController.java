@@ -1,10 +1,11 @@
 package com.vts.pfms.documents.controller;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +26,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
-import com.vts.pfms.admin.controller.AdminController;
+import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IGIBasicParameters;
+import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentSummary;
+import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.service.DocumentsService;
+import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
 public class DocumentsController {
@@ -38,10 +46,21 @@ public class DocumentsController {
 	@Autowired
 	DocumentsService service;
 	
-	private static final Logger logger = LogManager.getLogger(AdminController.class);
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-	private SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	@Autowired
+	ProjectService projectservice;
+	
+	@Autowired
+	PMSLogoUtil logoUtil;
+	
+	private static final Logger logger = LogManager.getLogger(DocumentsController.class);
+//	private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+//	private SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	FormatConverter fc = new FormatConverter();
+	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
+	private SimpleDateFormat sdf = fc.getSqlDateFormat();
+	private SimpleDateFormat rdf = fc.getRegularDateFormat();
 	
 	
 	@RequestMapping(value = "StandardDocuments.htm",method = {RequestMethod.GET,RequestMethod.POST})
@@ -75,7 +94,7 @@ public class DocumentsController {
 			dto.setDescription(Description);
 			dto.setAttachment(Attachment);
 			dto.setCreatedBy(UserId);
-			dto.setCreatedDate(sdf1.format(new Date()));
+			dto.setCreatedDate(sdtf.format(new Date()));
 			dto.setIsActive(1);
 			dto.setSelectedStandardDocumentId(SelectedStandardDocumentId);
 			
@@ -221,4 +240,306 @@ public class DocumentsController {
 
 		return "redirect:/StandardDocuments.htm";
 	}
+	
+	
+	/* ************************************************ IGI Document ***************************************************** */
+	
+	@RequestMapping(value = "IGIDocumentList.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiDocumentList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside IGIDocumentList.htm" + UserId);
+
+		try {
+			req.setAttribute("IGIDocumentList", service.IgiDocumentList());
+			return "documents/IGIDocumentList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIDocumentList.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "IGIDocumentAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiDocumentAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + "Inside IGIDocumentAdd.htm" + UserId);
+
+		String version = req.getParameter("version");
+
+		try {
+
+			PfmsIGIDocument pfmsIgiDocument = new PfmsIGIDocument();
+			pfmsIgiDocument.setIGIVersion(version);
+			pfmsIgiDocument.setLabCode(labcode);
+			pfmsIgiDocument.setInitiatedBy(EmpId);
+			pfmsIgiDocument.setInitiatedDate(sdf.format(new Date()));
+			pfmsIgiDocument.setIGIStatusCode("INI");
+			pfmsIgiDocument.setIGIStatusCodeNext("INI");
+			pfmsIgiDocument.setCreatedBy(UserId);
+			pfmsIgiDocument.setCreatedDate(sdtf.format(new Date()));
+			pfmsIgiDocument.setIsActive(1);
+			long result = service.addPfmsIgiDocument(pfmsIgiDocument);
+
+			if (result > 0) {
+				redir.addAttribute("result", "IGI Document Data Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "IGI Document Data Submit Unsuccessful");
+			}
+
+			return "redirect:/IGIDocumentList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIDocumentAdd.htm " + UserId, e);
+			return "static/Error";
+
+		}
+
+	}
+
+	@RequestMapping(value = "IGIDocumentDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiDocumentDetails(HttpServletRequest req, HttpSession ses, HttpServletResponse res, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside IGIDocumentDetails.htm" + UserId);
+		try {
+			String igiDocId = req.getParameter("igiDocId");
+			
+			req.setAttribute("igiDocId", igiDocId);
+			req.setAttribute("IgiDocumentSummaryList", service.igiDocumentSummaryList(igiDocId));
+			req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(LabCode));
+
+			req.setAttribute("MemberList", service.igiDocumentMemberList(igiDocId));
+			req.setAttribute("EmployeeList", service.getDocmployeeListByIGIDocId(LabCode, igiDocId));
+			
+			PfmsIGIDocument igiDocument = service.getPfmsIGIDocumentById(igiDocId);
+			req.setAttribute("igiDocument", igiDocument);
+			req.setAttribute("labDetails", projectservice.LabListDetails(LabCode));
+			req.setAttribute("docTempAttributes", projectservice.DocTempAttributes());
+			req.setAttribute("version", igiDocument!=null ?igiDocument.getIGIVersion():"1.0");
+			req.setAttribute("lablogo",  logoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
+			return "documents/IGIDocumentDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIDocumentDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "IGIDocumentSummaryAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiDocumentSummaryAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside IGIDocumentSummaryAdd.htm " + UserId);
+		try {
+			String igiDocId = req.getParameter("igiDocId");
+			String action = req.getParameter("action");
+			IGIDocumentSummary rs = action != null && action.equalsIgnoreCase("Add") ? new IGIDocumentSummary()
+					: service.getIgiDocumentSummaryById(req.getParameter("summaryId"));
+			rs.setAbstract(req.getParameter("abstract"));
+			rs.setAdditionalInformation(req.getParameter("information"));
+			rs.setKeywords(req.getParameter("keywords"));
+			rs.setDistribution(req.getParameter("distribution"));
+			rs.setApprover(Long.parseLong(req.getParameter("approver")));
+			;
+			rs.setReviewer(req.getParameter("reviewer"));
+			rs.setPreparedBy(req.getParameter("preparedBy"));
+			rs.setIGIDocId(Long.parseLong(igiDocId));
+			rs.setReleaseDate(req.getParameter("pdc"));
+			if (action.equalsIgnoreCase("Add")) {
+				rs.setCreatedBy(UserId);
+				rs.setCreatedDate(sdtf.format(new Date()));
+				rs.setIsActive(1);
+			} else if (action.equalsIgnoreCase("Edit")) {
+
+				rs.setSummaryId(Long.parseLong(req.getParameter("summaryId")));
+				rs.setModifiedBy(UserId);
+				rs.setModifiedDate(sdtf.format(new Date()));
+			}
+
+			long result = service.addIgiDocumentSummary(rs);
+			if (result > 0) {
+				redir.addAttribute("result", "IGI Document Summary " + action + "ed successfully ");
+			} else {
+				redir.addAttribute("resultfail", "IGI Document Summary " + action + " unsuccessful ");
+			}
+
+			redir.addAttribute("igiDocId", igiDocId);
+
+			return "redirect:/IGIDocumentDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside IGIDocumentSummaryAdd.htm " + UserId);
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "IGIDocumentMemberSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String IGIDocumentMemberSubmit(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside IGIDocumentMemberSubmit.htm " + UserId);
+		try {
+
+			String igiDocId = req.getParameter("igiDocId");
+
+			String[] Assignee = req.getParameterValues("Assignee");
+			IGIDocumentMembers rm = new IGIDocumentMembers();
+
+			rm.setCreatedBy(UserId);
+			rm.setCreatedDate(sdtf.format(new Date()));
+			rm.setEmps(Assignee);
+			rm.setIGIDocId(Long.parseLong(igiDocId));
+
+			long result = service.addIGIDocumentMembers(rm);
+			if (result > 0) {
+				redir.addAttribute("result", "Members Added Successfully for Document Distribution");
+			} else {
+				redir.addAttribute("resultfail", "Members adding unsuccessful ");
+			}
+
+			redir.addAttribute("igiDocId", igiDocId);
+			return "redirect:/IGIDocumentDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside IGIDocumentMemberSubmit.htm" + UserId);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "IGIDocumentMembersDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String DeleteIgiDocument(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside IGIDocumentMembersDelete.htm " + UserId);
+		try {
+
+			String IgiMemeberId = req.getParameter("IgiMemeberId");
+			long result = service.deleteIGIDocumentMembers(IgiMemeberId);
+
+			if (result > 0) {
+				redir.addAttribute("result", "Members Deleted Successfully for Document Distribution");
+			} else {
+				redir.addAttribute("resultfail", "Member deleting unsuccessful ");
+			}
+
+			redir.addAttribute("igiDocId", req.getParameter("igiDocId"));
+
+			return "redirect:/IGIDocumentDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside IGIDocumentMembersDelete.htm" + UserId);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "IgiInterfaces.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String IgiInterfaces(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside IgiInterfaces.htm" + UserId);
+		try {
+
+			List<IGIInterface> Intefaces = service.getAllIGIInterface(LabCode);
+			List<Object[]> parameters = service.getAllBasicParameters();
+
+			req.setAttribute("igiDocId", req.getParameter("igiDocId"));
+			req.setAttribute("Intefaces", Intefaces);
+			req.setAttribute("parameters", parameters);
+			return "documents/IGIInterfaces";
+		} catch (Exception e) {
+			logger.error(new Date() + "Inside IgiInterfaces.htm" + UserId);
+			e.printStackTrace();
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "BasicInterFaceSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String BasicInterFaceSubmit(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside IgiInterfaces.htm" + UserId);
+		String igiDocId = req.getParameter("igiDocId");
+		try {
+
+			String[] InterfaceCode = req.getParameterValues("InterfaceCode");
+			String[] InterfaceName = req.getParameterValues("InterfaceName");
+			String[] InterfaceDescription = req.getParameterValues("InterfaceDescription");
+
+			long result = 0;
+			for (int i = 0; i < InterfaceCode.length; i++) {
+				IGIInterface iif = new IGIInterface();
+				iif.setInterfaceCode(InterfaceCode[i]);
+				iif.setInterfaceName(InterfaceName[i]);
+				iif.setInterfaceDescription(InterfaceDescription[i]);
+				iif.setParentId(0l);
+				iif.setIGIDocId(Long.parseLong(igiDocId));
+				iif.setCreatedBy(UserId);
+				iif.setCreatedDate(LocalDate.now().toString());
+				iif.setLabCode(LabCode);
+				iif.setIsActive(1);
+
+				result = service.addBasicInterfaceType(iif);
+			}
+			if (result > 0) {
+				redir.addAttribute("result", "Intefaces Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Intefaces add unsuccessful ");
+			}
+			redir.addAttribute("igiDocId", igiDocId);
+			return "redirect:/IgiInterfaces.htm";
+		} catch (Exception e) {
+			logger.error(new Date() + "Inside IgiInterfaces.htm" + UserId);
+			e.printStackTrace();
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "AddParameters.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public @ResponseBody String AddParameters(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+
+		try {
+			String parameters = req.getParameter("parameters");
+
+			String[] param = parameters.split(",");
+			List<String[]> list = new ArrayList<>();
+			long count = 0;
+			for (int i = 0; i < param.length; i++) {
+				IGIBasicParameters ib = new IGIBasicParameters();
+				ib.setParameterName(param[i]);
+				ib.setCreatedBy(UserId);
+				ib.setCreatedDate(LocalDate.now().toString());
+				ib.setIsActive(1);
+
+				count = service.addIGIBasicParameters(ib);
+				String[] s = new String[2];
+				s[0] = count + "";
+				s[1] = param[i];
+				list.add(s);
+			}
+
+			if (count > 0) {
+				Gson json = new Gson();
+				return json.toJson(list);
+			}
+
+			System.out.println(parameters);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	/* ************************************************ IGI Document End ***************************************************** */
 }

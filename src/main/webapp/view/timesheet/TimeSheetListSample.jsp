@@ -347,7 +347,7 @@ input {
 }
 
 input:checked + .slider {
-    background-color: #74d751;
+    background-color: #ff7e6b;
 }
 
 input:checked + .slider:before {
@@ -491,9 +491,9 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 													int count = 0;
 													for(TimeSheetActivity act : timeSheetActivityList) {
 														Employee emp = allEmpList!=null && allEmpList.size()>0?allEmpList.stream()
-																		.filter(e -> e.getLabCode().equalsIgnoreCase(act.getAssignerLabCode()) && e.getEmpId()==act.getAssignedBy()).findFirst().orElse(null): null;
+																		.filter(e -> e.getEmpId().equals(act.getAssignedBy())).findFirst().orElse(null): null;
 														Object[] desig = designationlist!=null && designationlist.size()>0 ?designationlist.stream()
-																				.filter(e -> emp.getDesigId() == Long.parseLong(e[0].toString()) ).findFirst().orElse(null):null;
+																		 .filter(e -> (emp!=null? emp.getDesigId():0L) == Long.parseLong(e[0].toString()) ).findFirst().orElse(null):null;
 												%>
 													<tr>
 														<td class="center"><%=++count %></td>
@@ -995,7 +995,7 @@ function toggleDiv(divId) {
 					var s = '';
 					s += '<option value="0" >Choose...</option>';
 					for (i = 0; i < values.length; i++) {									
-						s += '<option value="'+values[i][0]+'">'+values[i][1] + " (" +values[i][3]+")" + '</option>';
+						s += '<option value="'+values[i][0]+'">'+values[i][1] + ", " +values[i][3] + '</option>';
 					} 
 							 
 					$('#assignedBy_'+$AddrowId).html(s);
@@ -1026,7 +1026,7 @@ function toggleDiv(divId) {
 				var s = '';
 				s += '<option value="0">Choose...</option>';
 				for (i = 0; i < values.length; i++) {									
-					s += '<option value="'+values[i][0]+'">'+values[i][1] + " (" +values[i][3]+")"+ '</option>';
+					s += '<option value="'+values[i][0]+'">'+values[i][1] + ", " +values[i][3]+ '</option>';
 				} 
 							 
 				$('#assignedBy_edit_'+$AddrowId).html(s);
@@ -1069,13 +1069,22 @@ function toggleDiv(divId) {
 	}
 	
 	function setFNorAnEdit(rowId, fnoran) {
-		console.log('rowId: ', rowId);
-		console.log('fnoran: ', fnoran);
 	    if(fnoran=='A') {
 	    	$('#fnoran_edit_' + rowId).siblings('.slider').attr('data-content', 'AN');
 	    }else {
 	    	$('#fnoran_edit_' + rowId).siblings('.slider').attr('data-content', 'FN');
 	    } 
+	    
+	    // Listen to changes on the checkbox
+	    $('#fnoran_edit_' + rowId).change(function () {
+	        if ($(this).is(':checked')) {
+	            $('#fnoranval_edit_' + rowId).val('A');
+	            $(this).siblings('.slider').attr('data-content', 'AN'); // Set "AN" when checked
+	        } else {
+	            $('#fnoranval_edit_' + rowId).val('F');
+	            $(this).siblings('.slider').attr('data-content', 'FN'); // Set "FN" when unchecked
+	        }
+	    });
 	}
 
 

@@ -19,6 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.documents.dao.DocumentsDao;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.IGIBasicParameters;
+import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentSummary;
+import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 
 @Service
@@ -110,4 +115,114 @@ public class DocumentsServiceImpl implements DocumentsService{
 		return dao.StandardDocumentDelete(standardDocumentId);
 	}
 	
+	/* ************************************************ IGI Document ***************************************************** */
+	@Override
+	public List<Object[]> IgiDocumentList() throws Exception
+	{
+		return dao.IgiDocumentList();
+	}
+	
+	@Override
+	public long addPfmsIgiDocument(PfmsIGIDocument pfmsIgiDocument) throws Exception
+	{
+		return dao.addPfmsIgiDocument(pfmsIgiDocument);
+	}
+	
+	@Override
+	public List<Object[]> igiDocumentSummaryList(String igiDocId) throws Exception
+	{
+		return dao.igiDocumentSummaryList(igiDocId);
+		
+	}
+	
+	@Override
+	public IGIDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception
+	{
+		return dao.getIgiDocumentSummaryById(SummaryId);
+	}
+	
+	
+	@Override
+	public long addIgiDocumentSummary(IGIDocumentSummary rs) throws Exception
+	{
+		return dao.addIgiDocumentSummary(rs);
+	}
+	
+	@Override
+	public List<Object[]> igiDocumentMemberList(String igiDocId) throws Exception
+	{
+		return dao.igiDocumentMemberList(igiDocId);
+	}
+	
+	@Override
+	public List<Object[]> getDocmployeeListByIGIDocId(String labCode, String igiDocId) throws Exception
+	{
+		return dao.getDocmployeeListByIGIDocId(labCode, igiDocId);
+	}
+
+	@Override
+	public long addIGIDocumentMembers(IGIDocumentMembers rm) throws Exception {
+		
+		int numberOfPersons= rm.getEmps().length; 
+		
+		String []assignee= rm.getEmps();
+		long count=0;
+		for(int i=0;i<numberOfPersons;i++) {
+			IGIDocumentMembers r = new IGIDocumentMembers();
+
+			r.setCreatedBy(rm.getCreatedBy());
+			r.setCreatedDate(rm.getCreatedDate());
+			r.setEmpId(Long.parseLong(assignee[i]));
+			r.setIsActive(1);
+			r.setIGIDocId(rm.getIGIDocId());
+
+			count=dao.addIGIDocumentMembers(r);
+			
+		}
+		return count;
+	}
+	
+	@Override
+	public int deleteIGIDocumentMembers(String igiMemeberId) throws Exception {
+		
+		return dao.deleteIGIDocumentMembers(igiMemeberId);
+	}
+	
+	@Override
+	public IGIDocumentMembers getIGIDocumentMembersById(Long IgiMemeberId) throws Exception {
+		
+		return dao.getIGIDocumentMembersById(IgiMemeberId);
+	}
+	
+	@Override
+	public long addBasicInterfaceType(IGIInterface iif) throws Exception {
+		
+		return dao.addBasicInterfaceType(iif);
+	}
+	
+	@Override
+	public List<IGIInterface> getAllIGIInterface(String labCode) throws Exception {
+		
+		return dao.getAllIGIInterface(labCode);
+	}
+	
+	@Override
+	public List<Object[]> getAllBasicParameters() throws Exception {
+		
+		return dao.getAllBasicParameters();
+	}
+	
+	@Override
+	public long addIGIBasicParameters(IGIBasicParameters ib) throws Exception {
+		
+		return dao.addIGIBasicParameters(ib);
+	}
+	
+	@Override
+	public PfmsIGIDocument getPfmsIGIDocumentById(String igiDocId) throws Exception {
+		
+		return dao.getPfmsIGIDocumentById(igiDocId);
+	}
+	/* ************************************************ IGI Document End ***************************************************** */
+
 }

@@ -34,6 +34,11 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IGIBasicParameters;
+import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentSummary;
+import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.project.dao.ProjectDao;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
@@ -47,10 +52,6 @@ import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecificationMaster;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
-import com.vts.pfms.requirements.model.IGIInterface;
-import com.vts.pfms.requirements.model.IgiBasicParameters;
-import com.vts.pfms.requirements.model.IgiDocumentMembers;
-import com.vts.pfms.requirements.model.PfmsIgiDocument;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.PfmsSpecTypes;
 import com.vts.pfms.requirements.model.PfmsTestTypes;
@@ -63,7 +64,6 @@ import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.utils.PMSLogoUtil;
-import com.vts.pfms.requirements.model.IgiDocumentSummary;
 import com.vts.pfms.requirements.model.TestPlanMaster;
 
 @Service
@@ -1360,104 +1360,6 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	/* Soumyakanta Swain */
-	@Override
-	public List<Object[]> IgiDocumentList() throws Exception
-	{
-		return dao.IgiDocumentList();
-	}
-	
-	@Override
-	public long savePfmsIgiDocument(PfmsIgiDocument pfmsIgiDocument) throws Exception
-	{
-		return dao.savePfmsIgiDocument(pfmsIgiDocument);
-	}
-	
-	@Override
-	public List<Object[]> IgiDocumentSummary() throws Exception
-	{
-		return dao.IgiDocumentSummary();
-		
-	}
-	
-	@Override
-	public IgiDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception
-	{
-		return dao.getIgiDocumentSummaryById(SummaryId);
-	}
-	
-	
-	@Override
-	public long addIgiDocumentSummary(IgiDocumentSummary rs) throws Exception
-	{
-		return dao.addIgiDocumentSummary(rs);
-	}
-	
-	@Override
-	public List<Object[]> igiDocumentMemberList(String DocIgiId) throws Exception
-	{
-		return dao.igiDocumentMemberList(DocIgiId);
-	}
-	
-	@Override
-	public List<Object[]> EmployeeList(String labCode, String DocIgiId) throws Exception
-	{
-		return dao.EmployeeList(labCode, DocIgiId);
-	}
-	
-
-	@Override
-	public long AddIgiDocMembers(IgiDocumentMembers rm) throws Exception {
-		
-		int numberOfPersons= rm.getEmps().length; 
-		
-		String []assignee= rm.getEmps();
-		long count=0;
-		for(int i=0;i<numberOfPersons;i++) {
-			IgiDocumentMembers r = new IgiDocumentMembers();
-
-			r.setCreatedBy(rm.getCreatedBy());
-			r.setCreatedDate(rm.getCreatedDate());
-			r.setEmpId(Long.parseLong(assignee[i]));
-			r.setIsActive(1);
-			r.setDocIgiId(rm.getDocIgiId());
-
-			count=dao.AddIgiMembers(r);
-			
-		}
-		return count;
-	}
-	
-	@Override
-	public IgiDocumentMembers getIgiDocumentById(Long IgiMemeberId) throws Exception
-	{
-		return dao.getIgiDocumentById(IgiMemeberId);
-	}
-	
-	@Override
-	public long editIgiDocument(IgiDocumentMembers idm) throws Exception
-	{
-		return dao.editIgiDocument(idm);
-	}
-	
-	@Override
-	public long addBasicInterfaceType(IGIInterface iif) throws Exception {
-		return dao.addBasicInterfaceType(iif);
-	}
-	
-	@Override
-	public List<IGIInterface> getAllIGIInterface(String labCode) throws Exception {
-		return dao.getAllIGIInterface(labCode);
-	}
-	
-	@Override
-	public List<Object[]> getAllBasicParameters() throws Exception {
-		return dao.getAllBasicParameters();
-	}
-	
-	@Override
-	public long AddParameters(IgiBasicParameters ib) throws Exception {
-		return dao.AddParameters(ib);
-	}
 	
 	@Override
 	public List<Object[]> getVerificationListMaster() throws Exception {

@@ -316,9 +316,9 @@ FormatConverter fc = new FormatConverter();
 																	int slno = 0;
 																	for(TimeSheetActivity act : timeSheetActivityList) {
 																		Employee emp = allEmpList!=null && allEmpList.size()>0?allEmpList.stream()
-																						.filter(e -> e.getLabCode().equalsIgnoreCase(act.getAssignerLabCode()) && e.getEmpId()==act.getAssignedBy()).findFirst().orElse(null): null;
+																						.filter(e -> e.getEmpId().equals(act.getAssignedBy())).findFirst().orElse(null): null;
 																		Object[] desig = designationlist!=null && designationlist.size()>0 ?designationlist.stream()
-																								.filter(e -> emp.getDesigId() == Long.parseLong(e[0].toString()) ).findFirst().orElse(null):null;
+																				 		 .filter(e -> (emp!=null? emp.getDesigId():0L) == Long.parseLong(e[0].toString()) ).findFirst().orElse(null):null;
 																%>
 																		<tr>
 																			<td class="center"><%=++slno %></td>

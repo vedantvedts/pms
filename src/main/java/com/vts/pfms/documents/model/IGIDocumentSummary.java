@@ -1,4 +1,4 @@
-package com.vts.pfms.requirements.model;
+package com.vts.pfms.documents.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="pfms_Igi_document_summary")
-public class IgiDocumentSummary {
+public class IGIDocumentSummary {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +34,6 @@ public class IgiDocumentSummary {
 	private String PreparedBy;
 	
 	//primary key of pfms_igi_document Table or PfmsIgiDocument Model class
-	private Long DocIgiId;
+	private Long IGIDocId;
 
 }

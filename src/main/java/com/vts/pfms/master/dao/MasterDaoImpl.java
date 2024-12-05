@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.PfmsEmpRoles;
+import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
@@ -30,7 +31,6 @@ import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
-import com.vts.pfms.requirements.model.IGIInterface;
 
 @Transactional
 @Repository

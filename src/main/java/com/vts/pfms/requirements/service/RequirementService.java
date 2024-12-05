@@ -7,14 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IGIBasicParameters;
+import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentSummary;
+import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
-import com.vts.pfms.requirements.model.IGIInterface;
-import com.vts.pfms.requirements.model.IgiBasicParameters;
-import com.vts.pfms.requirements.model.IgiDocumentMembers;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
@@ -28,8 +30,6 @@ import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
-import com.vts.pfms.requirements.model.IgiDocumentSummary;
-import com.vts.pfms.requirements.model.PfmsIgiDocument;
 import com.vts.pfms.requirements.model.TestPlanMaster;
 
 public interface RequirementService {
@@ -177,33 +177,6 @@ public interface RequirementService {
 
 	
 	/* Soumya kanta Swain */
-	public List<Object[]> IgiDocumentList() throws Exception;
-
-	public long savePfmsIgiDocument(PfmsIgiDocument pfmsIgiDocument) throws Exception;
-
-	public List<Object[]> IgiDocumentSummary() throws Exception;
-
-	public IgiDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception;
-
-	public long addIgiDocumentSummary(IgiDocumentSummary rs) throws Exception;
-
-	public List<Object[]> igiDocumentMemberList(String DocIgiId) throws Exception;
-
-	public List<Object[]> EmployeeList(String labCode, String DocIgiId) throws Exception;
-
-	public long AddIgiDocMembers(IgiDocumentMembers rm) throws Exception;
-
-	public IgiDocumentMembers getIgiDocumentById(Long IgiMemeberId) throws Exception;
-
-	public long editIgiDocument(IgiDocumentMembers idm) throws Exception;
-
-	public long addBasicInterfaceType(IGIInterface iif)throws Exception;
-
-	public List<IGIInterface> getAllIGIInterface(String labCode)throws Exception;
-
-	public List<Object[]> getAllBasicParameters()throws Exception;
-
-	public long AddParameters(IgiBasicParameters ib)throws Exception;
 	
 	public List<Object[]> getVerificationListMaster()throws Exception;
 	public long addVerificationData(List<VerificationData> verifyList)throws Exception;

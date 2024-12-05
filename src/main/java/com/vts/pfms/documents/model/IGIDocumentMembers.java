@@ -1,4 +1,4 @@
-package com.vts.pfms.requirements.model;
+package com.vts.pfms.documents.model;
 
 
 import javax.persistence.Entity;
@@ -15,11 +15,11 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="pfms_igi_document_members")
-public class IgiDocumentMembers {
+public class IGIDocumentMembers {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long IgiMemeberId;
+	private Long IGIMemeberId;
 	
 	//primary key of employee Table 
 	private Long EmpId;
@@ -28,10 +28,8 @@ public class IgiDocumentMembers {
 	private String CreatedDate;
 	private int IsActive;
 	
-	
-	
 	//primary key of pfms_igi_document Table or PfmsIgiDocument Model class
-	private Long DocIgiId;
+	private Long IGIDocId;
 	
 	@Transient
 	private String[] emps;

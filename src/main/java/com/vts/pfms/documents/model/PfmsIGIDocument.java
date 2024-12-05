@@ -1,4 +1,4 @@
-package com.vts.pfms.requirements.model;
+package com.vts.pfms.documents.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,23 +18,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="pfms_Igi_Document")
-public class PfmsIgiDocument {
+public class PfmsIGIDocument {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long DocIgiId;
-	private String IgiVersion;
+	private Long IGIDocId;
+	private String IGIVersion;
 	private String LabCode;
 	private String InitiatedBy;
 	private String InitiatedDate;
-	private String IgiStatusCode;
-	private String IgiStatusCodeNext;
-	
+	private String IGIStatusCode;
+	private String IGIStatusCodeNext;
+	private String Remarks;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	private String Remarks;
 	private int IsActive;
 
 }

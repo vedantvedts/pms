@@ -1384,7 +1384,7 @@ if(ccmSchedule!=null) {
 					var s = '';
 					s += '<option value="0" >Choose...</option>';
 					for (i = 0; i < values.length; i++) {									
-						s += '<option value="'+values[i][0]+'">'+values[i][1] + " (" +values[i][3]+")" + '</option>';
+						s += '<option value="'+values[i][0]+'">'+values[i][1] + ", " +values[i][3] + '</option>';
 					} 
 							 
 					$('#presenterId_'+$AddrowId).html(s);
@@ -1417,7 +1417,7 @@ if(ccmSchedule!=null) {
 				var s = '';
 				s += '<option value="0">Choose...</option>';
 				for (i = 0; i < values.length; i++) {									
-					s += '<option value="'+values[i][0]+'">'+values[i][1] + " (" +values[i][3]+")"+ '</option>';
+					s += '<option value="'+values[i][0]+'">'+values[i][1] + ", " +values[i][3]+ '</option>';
 				} 
 							 
 				$('#presenterId_Edit_'+$AddrowId).html(s);
