@@ -591,7 +591,7 @@ List<Object[]> designationlist = (List<Object[]>) request.getAttribute("designat
 String labcode = (String)session.getAttribute("labcode");
 
 LocalDate now = LocalDate.now();
-
+LocalDate activityLD = LocalDate.parse(activityDateSql);
 //DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 //LocalDateTime actualPunchInTime = LocalDateTime.of(now, LocalTime.parse("08:30:00"));
 FormatConverter fc = new FormatConverter();
@@ -662,7 +662,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 
 						<div id="timesheet" class="div-container">
 							<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;background-color: #216583;height: 40px;">
-								Time Sheet Details - (<%=activityDate %>)
+								Time Sheet Details - (<%=activityLD.getDayOfMonth()+"th "+activityLD.getMonth()+" "+activityLD.getYear() %>)
 							</div>
 							
 							<!-- Time Sheet Details View -->
@@ -1473,8 +1473,6 @@ function toggleDiv(divId) {
 
 	    var lastActiveDay = null; // Variable to keep track of the last active day
 
-	    var lastActiveDay = null; // Variable to keep track of the last active day
-
 	    function handleDayClick() {
 	        // Get the clicked day details
 	        var dayNumber = this.querySelector(".day-number").textContent;
@@ -1501,6 +1499,19 @@ function toggleDiv(divId) {
 	            return row[3] === formattedDate.split("-").reverse().join("-");
 	        });
 
+	     	// If the date is valid, update the active day
+	        // Remove the 'active' class from all days
+	       	/* var activeDays = document.querySelectorAll(".day.active");
+	        activeDays.forEach(function (activeDay) {
+	            activeDay.classList.remove("active");
+	        });
+	        
+	        // Add 'active' class to the clicked day
+	        this.classList.add("highlighted-date"); */
+
+	        // Update the last active day reference
+	        /* lastActiveDay = this;  */
+	        
 	        // Validation checks
 	        if (isDateExisting) {
 	            $('#calenderdateform').submit();
@@ -1516,30 +1527,15 @@ function toggleDiv(divId) {
 	            alert("Future date selection is not allowed.");
 	            restoreLastActiveDay();
 	            return; // Stop further processing
+	        }else{
+	        	$('#calenderdateform').submit();
 	        }
 
-	        // If the date is valid, update the active day
-	        // Remove the 'active' class from all days
-	        var activeDays = document.querySelectorAll(".day.active");
-	        activeDays.forEach(function (activeDay) {
-	            activeDay.classList.remove("active");
-	        });
-
-	        // Add 'active' class to the clicked day
-	        this.classList.add("active");
-
-	        // Update the last active day reference
-	        lastActiveDay = this;
-
-	        // Set the hidden input value and submit the form
-	       
-	        $('#calenderdateform').submit();
-	        
 	    }
 
 	    function restoreLastActiveDay() {
 	        if (lastActiveDay) {
-	            lastActiveDay.classList.add("active");
+	            lastActiveDay.classList.add("highlighted-date");
 	        }
 	    }
 

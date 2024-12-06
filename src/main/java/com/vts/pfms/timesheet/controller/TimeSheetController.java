@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -148,7 +149,8 @@ public class TimeSheetController {
 			req.setAttribute("allLabList", committeeservice.AllLabList());
 			req.setAttribute("allEmployeeList", employeerepo.findAll());
 			req.setAttribute("designationlist", adminservice.DesignationList());
-			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList(EmpId, LocalDate.now().withDayOfMonth(1).toString(), LocalDate.now().toString()));
+			LocalDate activityLD = LocalDate.parse(activityDateSql);
+			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList(EmpId, activityLD.withDayOfMonth(1).toString(), activityLD.with(TemporalAdjusters.lastDayOfMonth()).toString()));
 			return "timesheet/TimeSheetListSample";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside TimeSheetList.htm "+UserId, e);
