@@ -1,4 +1,6 @@
 
+<%@page import="java.util.LinkedHashMap"%>
+<%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.master.model.Employee"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
@@ -272,6 +274,7 @@ input {
 /* Ensure select picker adjusts width */
 .select2-container {
     width: 100% !important; /* Force full width */
+    text-align: left;
 }
 
 .timesheetform{
@@ -373,7 +376,190 @@ input:checked + .slider:before {
 	font-size: 14px;
 } */
 </style>
-    
+
+<style type="text/css">
+
+/* General Calendar Styles */
+.calendar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-btn:hover {
+    color: #0056b3;
+    transform: scale(1.2);
+}
+
+.fa {
+    font-size: 20px;
+}
+
+/* Month Display */
+.month-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    padding: 3px 5px;
+    background-color: #7e7e7e;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 50px;
+    /* transform: rotate(270deg); */
+}
+
+/* Year Container */
+.year-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#current-year {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Days Container */
+.days-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 100%; /* Ensure it adjusts according to the width of the calendar */
+}
+
+.day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.day-name {
+    font-size: 10px;
+    color: #0f0f0f8a;
+    font-weight: 400;
+}
+
+.day-number {
+    font-size: 14px;
+    font-weight: bold; 
+}
+
+.day:hover {
+    background-color: #007bff;
+    transform: scale(1.1);
+}
+
+.day:hover .day-name,
+.day:hover .day-number {
+    color: #fff !important; /* Change to desired hover color */
+}
+
+.day.active {
+    background-color: #28a745;
+    font-weight: bold;
+}
+
+.day.active .day-name,
+.day.active .day-number {
+    color: #fff !important; /* Ensure active state color is applied */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .day {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .day {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 10px;
+    }
+}
+
+.highlighted-date {
+    background-color: #007bff; /* Yellow background for highlighting */
+    font-weight: bold;
+}
+
+.day.highlighted-date .day-name,
+.day.highlighted-date .day-number {
+    color: #fff !important; /* Ensure active state color is applied */
+}
+</style> 
+
+<style type="text/css">
+.activitytableview{
+	border-collapse: collapse;
+	width: 99%;
+	border: 1px solid #0000002b; 
+	margin: 1.5rem 0.5rem 0.5rem 0.5rem;
+	overflow-y: auto; 
+	overflow-x: auto;  
+}
+.activitytableview th, .activitytableview td{
+	border: 1px solid #0000002b; 
+	padding: 20px;
+}
+.activitytableview th{
+	vertical-align: middle;
+}
+.activitytableview thead {
+	text-align: center;
+	background-color: #2883c0;
+	color: white;
+	position: sticky;
+	top: 0; /* Keeps the header at the top */
+	z-index: 10; /* Ensure the header stays on top of the body */
+	/* background-color: white; */ /* For visibility */
+}
+
+.table-wrapper {
+    max-height: 300px; /* Set the max height for the table wrapper */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Enable vertical scrolling */
+}
+</style>   
 </head>
 <body>
 
@@ -389,13 +575,22 @@ String activityDateSql = (String)request.getAttribute("activityDateSql");
 List<Object[]> todayScheduleList = (List<Object[]>)request.getAttribute("todayScheduleList");
 
 List<Object[]> empAllTimeSheetList = (List<Object[]>)request.getAttribute("empAllTimeSheetList");
+List<Object[]> employeeNewTimeSheetList = (List<Object[]>)request.getAttribute("employeeNewTimeSheetList");
+Map<String, List<Object[]>> timeSheetToListMap = employeeNewTimeSheetList!=null && employeeNewTimeSheetList.size()>0?employeeNewTimeSheetList.stream()
+		  .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+
+List<MilestoneActivityType> milestoneActivityTypeList = (List<MilestoneActivityType>) request.getAttribute("milestoneActivityTypeList");
+if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+	milestoneActivityTypeList = milestoneActivityTypeList.stream().filter(e -> e.getIsTimeSheet()!=null && e.getIsTimeSheet().equalsIgnoreCase("Y")).collect(Collectors.toList());
+}
 
 List<Object[]> allLabList = (List<Object[]>) request.getAttribute("allLabList");
 List<Employee> allEmpList = (List<Employee>) request.getAttribute("allEmployeeList");
 List<Object[]> designationlist = (List<Object[]>) request.getAttribute("designationlist");
+
 String labcode = (String)session.getAttribute("labcode");
 
-//LocalDate now = LocalDate.now();
+LocalDate now = LocalDate.now();
 
 //DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 //LocalDateTime actualPunchInTime = LocalDateTime.of(now, LocalTime.parse("08:30:00"));
@@ -411,6 +606,8 @@ statusMap.put("RBS", "#fe4e4e");
 
 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
+
+
 %>
 <% String ses=(String)request.getParameter("result");
  	String ses1=(String)request.getParameter("resultfail");
@@ -437,9 +634,33 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 						<h4 class="">Time Sheet</h4>
 					</div>
 					
-					<div class="card-body d-flex justify-content-around">
-						<div id="calendar" class="div-container less-than-half-width"></div>
-						<div id="timesheet" class="div-container more-than-half-width">
+					<div class="card-body">
+						<!-- <div id="calendar" class="div-container less-than-half-width"></div> -->
+						<!-- <div id="timesheet" class="div-container more-than-half-width"> -->
+						
+						<div class="calendar-container">
+						    <div class="year-container">
+						        <button class="nav-btn" id="prev-year">
+						            <i class="fa fa-chevron-left"></i>
+						        </button>
+						        <span id="current-year"></span>
+						        <button class="nav-btn" id="next-year">
+						            <i class="fa fa-chevron-right"></i>
+						        </button>
+						    </div>
+						    <button class="nav-btn" id="prev-month">
+						        <i class="fa fa-chevron-left"></i>
+						    </button>
+						    <div id="current-month" class="month-display"></div>
+						    <div id="days-container" class="days-container"></div>
+						    <button class="nav-btn" id="next-month">
+						        <i class="fa fa-chevron-right"></i>
+						    </button>
+						</div>
+
+
+
+						<div id="timesheet" class="div-container">
 							<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;background-color: #216583;height: 40px;">
 								Time Sheet Details - (<%=activityDate %>)
 							</div>
@@ -498,7 +719,10 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 													<tr>
 														<td class="center"><%=++count %></td>
 														<td>
-															<%if(act.getActivityTypeDesc()!=null && !act.getActivityTypeDesc().isEmpty()) {%><%=act.getActivityTypeDesc()%><%} else{%>-<%} %>
+															<%
+																String activityName = milestoneActivityTypeList.stream().filter(e -> act.getActivityTypeId().equals(e.getActivityTypeId())).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
+																out.println(activityName);
+															%>
 														</td>
 														<td class="center">
 															<%if(act.getAssignerLabCode()!=null) {%><%=act.getAssignerLabCode() %><%} %>
@@ -547,7 +771,6 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 						        			<input type="hidden" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()%>">
 						        			<input type="hidden" name="activityDate" value="<%=activityDate%>">
 							        		<%
-							        			LocalDate now = LocalDate.now();
 							        			LocalDate activityFromDate = LocalDate.parse(timeSheet.getActivityFromDate());
 							        			LocalDate afterFiveDays = activityFromDate.plusDays(5);
 							        		%>
@@ -584,11 +807,11 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 													<thead class="center">
 														<tr>
 															<th width="15%">Activity Type</th>
-															<th width="15%">Assigner Lab</th>
+															<th width="10%">Assigner Lab</th>
 															<th width="20%">Assigner</th>
-															<th width="10%">PDC</th>
+															<th width="8%">PDC</th>
 															<th width="7%">FN / AN</th>
-															<th width="33%">Work Done</th>
+															<th width="40%">Work Done</th>
 														</tr>
 													</thead>
 													<tbody id="activityTableBody">
@@ -599,14 +822,21 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 														%>
 															<tr class="tr_clone_activity">
 																<td>
-																	<input type="text" class="form-control" name="activityTypeDesc" <%if(act.getActivityTypeDesc()!=null) {%>value="<%=act.getActivityTypeDesc()%>"<%} %> placeholder="Enter maximum 50 characters" maxlength="50">
+																	<select class="form-control selectitem activityName" name="activityName" id="activityName_edit_<%=count %>">
+																		<option value="" disabled="disabled" selected="selected">--Select--</option>
+																		<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+																			for(MilestoneActivityType mil : milestoneActivityTypeList) {
+																		%>
+																			<option value="<%=mil.getActivityTypeId()%>" <%if(act.getActivityTypeId().equals(mil.getActivityTypeId())) {%>selected<%} %> ><%=mil.getActivityType() %></option>
+																		<%} }%>
+																	</select>
 																</td>
 																<td>
 																	<select class="form-control selectitem assignerLabCode" name="assignerLabCode" id="assignerLabCode_edit_<%=count %>" data-live-search="true" data-container="body" onchange="labEmployeesList('edit_<%=count %>')">
 																		<option value="0">Lab Name</option>
-																			<% for (Object[] obj : allLabList) {%>
-																			    <option value="<%=obj[3]%>" <%if(act.getAssignerLabCode().equalsIgnoreCase(obj[3].toString())){ %>selected<%} %> ><%=obj[3]%></option>
-																		    <%} %>
+																		<% for (Object[] obj : allLabList) {%>
+																		    <option value="<%=obj[3]%>" <%if(act.getAssignerLabCode().equalsIgnoreCase(obj[3].toString())){ %>selected<%} %> ><%=obj[3]%></option>
+																	    <%} %>
 																		<option value="@EXP" <%if(act.getAssignerLabCode().equalsIgnoreCase("@EXP")){ %>selected<%} %>>Expert</option>
 																	</select>
 																</td>
@@ -626,21 +856,29 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 							                                        </label>
 																</td>
 																<td>
-																	<input type="text" class="form-control" name="workDone" <%if(act.getWorkDone()!=null) {%>value="<%=act.getWorkDone()%>"<%} %> placeholder="Enter maximum 200 characters" maxlength="200">
+																	<textarea class="form-control" name="workDone" rows="2"  placeholder="Enter Maximum of 500 Characters" maxlength="500"><%if(act.getWorkDone()!=null) {%><%=act.getWorkDone()%><%} %></textarea>
+																	<%-- <input type="text" class="form-control" name="workDone" <%if(act.getWorkDone()!=null) {%>value="<%=act.getWorkDone()%>"<%} %> placeholder="Enter maximum 200 characters" maxlength="200"> --%>
 																</td>
 															</tr>
 														<%} }else {%>
 															<%-- <%for(int i=1;i<=5;i++) {%> --%>
 																<tr class="tr_clone_activity">
 																	<td class="center">
-																		<input type="text" class="form-control" name="activityTypeDesc" maxlength="50" >
+																		<select class="form-control selectitem activityName" name="activityName" id="activityName_1">
+																			<option value="" disabled="disabled" selected="selected">--Select--</option>
+																			<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+																				for(MilestoneActivityType mil : milestoneActivityTypeList) {
+																			%>
+																				<option value="<%=mil.getActivityTypeId()%>"><%=mil.getActivityType() %></option>
+																			<%} }%>
+																		</select>
 																	</td>
 																	<td>
 																		<select class="form-control selectitem assignerLabCode" name="assignerLabCode" id="assignerLabCode_1" data-live-search="true" data-container="body" onchange="labEmployeesList('1')">
 																			<option value="0">Lab Name</option>
-																				<% for (Object[] obj : allLabList) {%>
-																				    <option value="<%=obj[3]%>" <%if(obj[3].toString().equalsIgnoreCase(labcode)) {%>selected<%} %> ><%=obj[3]%></option>
-																			    <%} %>
+																			<% for (Object[] obj : allLabList) {%>
+																			    <option value="<%=obj[3]%>" <%if(obj[3].toString().equalsIgnoreCase(labcode)) {%>selected<%} %> ><%=obj[3]%></option>
+																		    <%} %>
 																			<option value="@EXP">Expert</option>
 																		</select>
 																	</td>
@@ -664,7 +902,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 								                                        </label>
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" name="workDone" placeholder="Enter maximum 200 characters" maxlength="200" >
+																		<textarea class="form-control" name="workDone" rows="2" cols="" placeholder="Enter Maximum of 500 Characters" maxlength="500"></textarea>
 																	</td>
 																</tr>
 															<%-- <%} %>	 --%>
@@ -707,7 +945,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 											</div>
 										</div>
 									</div>		
-									<input type="hidden" class="activityDate" name="activityDate" id="activityDate">
+									<input type="hidden" class="activityDate" name="activityDate" id="activityDate" value="<%=activityDate%>">
 								</form>
 								
 								<form action="TimeSheetList.htm" method="post" id="calenderdateform">
@@ -719,16 +957,66 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 						</div>
 						
 					</div>
-					<div class="text-center mt-3">
+					
+					<!-- <div class="text-center mt-3">
 			            <button class="btn btn-primary" onclick="toggleDiv('calendar')">Toggle Calendar</button>
 			            <button class="btn btn-secondary" onclick="toggleDiv('timesheet')">Toggle Time Sheet</button>
-        			</div>	
+        			</div> -->	
+        			
+        			<div class="table-wrapper table-responsive">
+						<table class="table activitytableview"> 
+                        	<thead style="">
+                        		<tr>
+									<th width="5%">SN</th>
+									<th width="7%">Date</th>
+									<th width="10%">Activity Type</th>
+									<th width="7%">Assigner Lab</th>
+									<th width="15%">Assigner</th>
+									<th width="7%">PDC</th>
+									<th width="6%">FN / AN</th>
+									<th width="38%">Work Done</th>
+								</tr>
+							</thead>
+							<tbody>	
+								<% if (timeSheetToListMap!=null && timeSheetToListMap.size() > 0) {
+									int slno = 0;String key="";
+									for (Map.Entry<String, List<Object[]>> map : timeSheetToListMap.entrySet()) {
+                  							
+                  							List<Object[]> values = map.getValue();
+                  							int i=0;
+                  							for (Object[] obj : values) {
+								%>
+									<tr>
+										<td class="center"><%=++slno%></td>
+										<%if(i==0) {%>
+								    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
+         								<%} %>
+    									<td>
+    										<%
+												String activityName = milestoneActivityTypeList.stream().filter(e -> Long.parseLong(obj[12].toString())==e.getActivityTypeId() ).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
+												out.println(activityName);
+											%>
+										</td>
+    									<td class="center"><%=obj[5]!=null?obj[5]:"-" %></td>
+    									<td><%=obj[7]!=null?obj[7]+", "+(obj[8]!=null?obj[8]:"-"):"-" %></td>
+    									<td class="center"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></td>
+    									<td class="center"><%=obj[11]!=null?(obj[11].toString().equalsIgnoreCase("A")?"AN":"FN"):"-" %></td>
+    									<td><%=obj[10]!=null?obj[10]:"-" %></td>
+									</tr>
+								<% ++i; } } } else{%>
+									<tr>
+										<td colspan="8" style="text-align: center;">No Data Available</td>
+									</tr>
+								<%} %>
+							</tbody>
+						</table>
+					</div>		
 				</div>
 			</div>
 		</div>
 	</div>
 
-<script>
+<!-- <script>
 function toggleDiv(divId) {
 	const calendarDiv = $('#calendar');
 	const meetingsDiv = $('#timesheet');
@@ -751,9 +1039,9 @@ function toggleDiv(divId) {
 	
 
  }
-</script>
+</script> -->
     
-<script type="text/javascript">
+<%-- <script type="text/javascript">
 
 	var empAllTimeSheetList = JSON.parse('<%= jsonempAllTimeSheetList %>');
 	
@@ -769,12 +1057,12 @@ function toggleDiv(divId) {
 	        date: "<%=obj[3] %>",
 	        url: "#",
 	        type: "event",
-	        <%-- color: '<%=obj[10]!=null?(obj[10].toString().equalsIgnoreCase("INI")?"#4DACFF":(obj[10].toString().equalsIgnoreCase("FWD")?"#0383F3":"#2B7A0B")):"#4DACFF"%>' --%>
+	        color: '<%=obj[10]!=null?(obj[10].toString().equalsIgnoreCase("INI")?"#4DACFF":(obj[10].toString().equalsIgnoreCase("FWD")?"#0383F3":"#2B7A0B")):"#4DACFF"%>'
 	    	color: "<%=statusMap.get(obj[10]!=null?obj[10].toString():"#95c8f4")%>"
 	    },
 	    <%} }%>
 	    
-		<%-- <%	
+		<%	
 		if(todayScheduleList!=null && todayScheduleList.size()>0) {
 		for(Object[] obj :todayScheduleList) {
 			if(!obj[6].toString().equalsIgnoreCase("E")){
@@ -790,8 +1078,8 @@ function toggleDiv(divId) {
 	        type: "event",
 	        color: "NA"
 	    },
-	    <%} } }%> --%>
-		<%-- <%	
+	    <%} } }%>
+		<%	
 		if(empActivityAssignList!=null && empActivityAssignList.size()>0) {
 		for(Object[] obj :empActivityAssignList) {
 			String[] seqNo = obj[9]!=null?obj[9].toString().split("/"):null;
@@ -813,7 +1101,7 @@ function toggleDiv(divId) {
 	        type: "event",
 	        color: "NA"
 	    },
-	    <%} }%> --%>
+	    <%} }%>
 	    
 	]
 	
@@ -898,9 +1186,9 @@ function toggleDiv(divId) {
           eventListToggler.style.display = 'none'; // Hide the toggler
         }
 	});
-</script>
+</script> --%>
     
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
 	function setPunchInDateTime(date) {
 		
@@ -919,7 +1207,7 @@ function toggleDiv(divId) {
 		$('.activityDate').val(date);
 	}
 	
-</script>					
+</script>	 -->				
 
 <script type="text/javascript">
 
@@ -954,6 +1242,7 @@ function toggleDiv(divId) {
 		
 		++cloneCount;
 		
+		$clone.find(".selectitem.activityName").attr("id", 'activityName_' + cloneCount);
 		$clone.find(".selectitem.assignerLabCode").attr("id", 'assignerLabCode_' + cloneCount).attr("onchange", 'labEmployeesList(\'' + cloneCount + '\')');
 		$clone.find(".selectitem.assignedBy").attr("id", 'assignedBy_' + cloneCount);
 		$clone.find(".actionPDC").attr("id", 'actionPDC_' + cloneCount);
@@ -968,6 +1257,7 @@ function toggleDiv(divId) {
 		$('.selectitem').select2();
 	    $clone.find('.selectitem').select2('val', '');
 	    $clone.find("input").val("");
+	    $clone.find("textarea").val("");
 	    
 	    labEmployeesList(cloneCount);
 	    datePickerInitializer(cloneCount);
@@ -1087,11 +1377,6 @@ function toggleDiv(divId) {
 	    });
 	}
 
-
-</script>
-
-
-<script type="text/javascript">
 	$(document).ready(function() {
 		<%if(timeSheet!=null) {%>
 			$('#timesheetformdiv').hide();
@@ -1113,6 +1398,186 @@ function toggleDiv(divId) {
 		}
 		
 	}
+	
+</script>
+
+
+<script type="text/javascript">
+	
+	var empAllTimeSheetList = JSON.parse('<%= jsonempAllTimeSheetList %>');
+	
+	var activityDateSql = '<%=activityDateSql%>';
+	
+	document.addEventListener("DOMContentLoaded", function () {
+	    var yearEl = document.getElementById("current-year");
+	    var monthEl = document.getElementById("current-month");
+	    var daysContainer = document.getElementById("days-container");
+
+	    var currentYear = new Date().getFullYear();
+	    var currentMonth = new Date().getMonth();
+
+	    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+	                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	    var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+	    // Extract dates from empAllTimeSheetList
+	    var empDates = empAllTimeSheetList.map(function (entry) {
+	        return new Date(entry[3]); // Assuming the date is in SQL format at index 3
+	    });
+
+	    // Parse activityDateSql into a Date object
+	    var defaultSelectedDate = new Date(activityDateSql);
+
+	    function renderDays() {
+	        daysContainer.innerHTML = "";
+	        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+	        for (var i = 1; i <= daysInMonth; i++) {
+	            var date = new Date(currentYear, currentMonth, i);
+	            var dayEl = document.createElement("div");
+	            dayEl.className = "day";
+
+	            // Highlight the day if it's in empDates
+	            var isHighlighted = empDates.some(function (empDate) {
+	                return (
+	                    empDate.getFullYear() === date.getFullYear() &&
+	                    empDate.getMonth() === date.getMonth() &&
+	                    empDate.getDate() === date.getDate()
+	                );
+	            });
+	            if (isHighlighted) {
+	                dayEl.classList.add("active");
+	            }
+
+	            // Highlight the defaultSelectedDate
+	            if (
+	                date.getFullYear() === defaultSelectedDate.getFullYear() &&
+	                date.getMonth() === defaultSelectedDate.getMonth() &&
+	                date.getDate() === defaultSelectedDate.getDate()
+	            ) {
+	                dayEl.classList.add("highlighted-date");
+	                lastActiveDay = dayEl; // Set as the last active day
+	            }
+
+	            var dayName = document.createElement("span");
+	            dayName.className = "day-name";
+	            dayName.textContent = daysOfWeek[date.getDay()];
+	            var dayNumber = document.createElement("span");
+	            dayNumber.className = "day-number";
+	            dayNumber.textContent = i;
+	            dayEl.appendChild(dayName);
+	            dayEl.appendChild(dayNumber);
+	            dayEl.addEventListener("click", handleDayClick); // Assign the event listener
+	            daysContainer.appendChild(dayEl);
+	        }
+	    }
+
+	    var lastActiveDay = null; // Variable to keep track of the last active day
+
+	    var lastActiveDay = null; // Variable to keep track of the last active day
+
+	    function handleDayClick() {
+	        // Get the clicked day details
+	        var dayNumber = this.querySelector(".day-number").textContent;
+	        var currentMonth = document.getElementById("current-month").textContent;
+	        var currentYear = document.getElementById("current-year").textContent;
+
+	        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	        var monthIndex = months.indexOf(currentMonth) + 1;
+	        var formattedMonth = monthIndex < 10 ? "0" + monthIndex : monthIndex;
+	        var formattedDate = (dayNumber.length === 1 ? "0" + dayNumber : dayNumber) + "-" + formattedMonth + "-" + currentYear;
+	        $('.activityDate').val(formattedDate);
+	        
+	        // Create the selected date object
+	        var selectedDate = new Date(currentYear, monthIndex - 1, dayNumber);
+	        var today = new Date();
+	        var restrictionDate = new Date(2024, 11, 1); // Corrected: December 01, 2024 (monthIndex 11 for December)
+
+	        // Min date: 10 days before today
+	        var minDate = new Date(today);
+	        minDate.setDate(minDate.getDate() - 10);
+
+	        // Check if the date exists in empAllTimeSheetList
+	        var isDateExisting = empAllTimeSheetList.some(function (row) {
+	            return row[3] === formattedDate.split("-").reverse().join("-");
+	        });
+
+	        // Validation checks
+	        if (isDateExisting) {
+	            $('#calenderdateform').submit();
+	        } else if (selectedDate < restrictionDate) {
+	            alert("Please select a date on or after 01-12-2024.");
+	            restoreLastActiveDay();
+	            return; // Stop further processing
+	        } else if (selectedDate < minDate) {
+	            alert("Please select a date on or after 01-12-2024.");
+	            restoreLastActiveDay();
+	            return; // Stop further processing
+	        } else if (selectedDate > today) {
+	            alert("Future date selection is not allowed.");
+	            restoreLastActiveDay();
+	            return; // Stop further processing
+	        }
+
+	        // If the date is valid, update the active day
+	        // Remove the 'active' class from all days
+	        var activeDays = document.querySelectorAll(".day.active");
+	        activeDays.forEach(function (activeDay) {
+	            activeDay.classList.remove("active");
+	        });
+
+	        // Add 'active' class to the clicked day
+	        this.classList.add("active");
+
+	        // Update the last active day reference
+	        lastActiveDay = this;
+
+	        // Set the hidden input value and submit the form
+	       
+	        $('#calenderdateform').submit();
+	        
+	    }
+
+	    function restoreLastActiveDay() {
+	        if (lastActiveDay) {
+	            lastActiveDay.classList.add("active");
+	        }
+	    }
+
+	    function updateCalendar() {
+	        yearEl.textContent = currentYear;
+	        monthEl.textContent = months[currentMonth];
+	        renderDays();
+	    }
+
+	    // Navigation buttons
+	    document.getElementById("prev-year").addEventListener("click", function () {
+	        currentYear--;
+	        updateCalendar();
+	    });
+
+	    document.getElementById("next-year").addEventListener("click", function () {
+	        currentYear++;
+	        updateCalendar();
+	    });
+
+	    document.getElementById("prev-month").addEventListener("click", function () {
+	        currentMonth = (currentMonth - 1 + 12) % 12;
+	        if (currentMonth === 11) currentYear--;
+	        updateCalendar();
+	    });
+
+	    document.getElementById("next-month").addEventListener("click", function () {
+	        currentMonth = (currentMonth + 1) % 12;
+	        if (currentMonth === 0) currentYear++;
+	        updateCalendar();
+	    });
+
+	    // Initialize the calendar
+	    currentYear = defaultSelectedDate.getFullYear();
+	    currentMonth = defaultSelectedDate.getMonth();
+	    updateCalendar();
+	});
+
 </script>				
 </body>
 </html>

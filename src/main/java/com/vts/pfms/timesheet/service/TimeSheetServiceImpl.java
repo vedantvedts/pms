@@ -176,21 +176,21 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 			// Storing list of Time Sheet Activities
 			List<TimeSheetActivity> timeSheetActivityList = new ArrayList<TimeSheetActivity>();
 			
-			for(int i=0;i<dto.getActivityTypeDesc().length;i++) {
+			for(int i=0;i<dto.getActivityTypeId().length;i++) {
 				
-				if(dto.getActivityTypeDesc()[i].isEmpty()) continue;
+				if(dto.getActivityTypeId()[i].isEmpty()) continue;
 				
 				TimeSheetActivity activity =  new TimeSheetActivity();
 				
 				activity.setActivityId(0L);
 				activity.setActivityType("N");
 				activity.setProjectId(0L);
-				activity.setActivityTypeId(0L);
+				activity.setActivityTypeId(Long.parseLong(dto.getActivityTypeId()[i]));
 				
 				activity.setActivityDuration("00:00");
 				activity.setRemarks(null);
 				// New Columns for Sample Demo
-				activity.setActivityTypeDesc(dto.getActivityTypeDesc()[i]);
+				activity.setActivityTypeDesc(null);
 				activity.setAssignerLabCode(dto.getAssignerLabCode()[i]);
 				activity.setAssignedBy(dto.getAssignedBy()[i]!=null?Long.parseLong(dto.getAssignedBy()[i]):0L);
 				activity.setActionPDC(dto.getActionPDC()[i]!=null?fc.rdfTosdf(dto.getActionPDC()[i]):null);

@@ -649,6 +649,7 @@ public class MasterController {
 
 			MilestoneActivityType model =new MilestoneActivityType();
 			model.setActivityType(activitytype);
+			model.setIsTimeSheet("N");
 			model.setCreatedBy(UserId);
 			long count =service.ActivityAddSubmit(model);
 

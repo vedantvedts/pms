@@ -102,8 +102,11 @@ font-weight: bold;
 <%
 List<Object[]> employeeList = (List<Object[]>)request.getAttribute("roleWiseEmployeeList");
 Map<String, Map<LocalDate, TimeSheet>> timeSheetData = (Map<String, Map<LocalDate, TimeSheet>>)request.getAttribute("timesheetDataForOfficer");
+List<MilestoneActivityType> milestoneActivityTypeList = (List<MilestoneActivityType>) request.getAttribute("milestoneActivityTypeList");
+
 List<Employee> allEmpList = (List<Employee>) request.getAttribute("allEmployeeList");
 List<Object[]> designationlist = (List<Object[]>) request.getAttribute("designationlist");
+
 
 String activityWeekDate = (String)request.getAttribute("activityWeekDate");
 String activityWeekDateSql = (String)request.getAttribute("activityWeekDateSql");
@@ -323,7 +326,10 @@ FormatConverter fc = new FormatConverter();
 																		<tr>
 																			<td class="center"><%=++slno %></td>
 																			<td>
-																				<%if(act.getActivityTypeDesc()!=null && !act.getActivityTypeDesc().isEmpty()) {%><%=act.getActivityTypeDesc()%><%} else{%>-<%} %>
+																				<%
+																					String activityName = milestoneActivityTypeList.stream().filter(e -> act.getActivityTypeId().equals(e.getActivityTypeId())).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
+																					out.println(activityName);
+																				%>
 																			</td>
 																			<td class="center">
 																				<%if(act.getAssignerLabCode()!=null) {%><%=act.getAssignerLabCode() %><%} %>
@@ -435,7 +441,12 @@ FormatConverter fc = new FormatConverter();
 													<%if(i==0) {%>
 											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
 	           										<%} %>
-	           										<td><%=obj[4]!=null?obj[4]:"-" %></td>
+	           										<td>
+	           											<%
+															String activityName = milestoneActivityTypeList.stream().filter(e -> Long.parseLong(obj[12].toString())==e.getActivityTypeId() ).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
+															out.println(activityName);
+														%>
+													</td>
 	           										<td class="center"><%=obj[5]!=null?obj[5]:"-" %></td>
 	           										<td><%=obj[7]!=null?obj[7]+", "+(obj[8]!=null?obj[8]:"-"):"-" %></td>
 	           										<td class="center"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></td>

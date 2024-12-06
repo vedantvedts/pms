@@ -363,7 +363,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
-	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeDesc, b.AssignerLabCode, b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName',d.Designation, b.ActionPDC, b.WorkDone, b.FnorAn \r\n"
+	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeDesc, b.AssignerLabCode, b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName',d.Designation, b.ActionPDC, b.WorkDone, b.FnorAn, b.ActivityTypeId \r\n"
 			+ "FROM pfms_timesheet a \r\n"
 			+ "JOIN pfms_timesheet_activity b ON a.TimeSheetId=b.TimeSheetId AND b.IsActive=1\r\n"
 			+ "LEFT JOIN employee c ON b.AssignedBy=c.EmpId AND b.AssignerLabCode=c.LabCode\r\n"

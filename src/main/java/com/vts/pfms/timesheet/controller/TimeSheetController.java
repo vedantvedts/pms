@@ -133,8 +133,6 @@ public class TimeSheetController {
 	@RequestMapping(value="TimeSheetList.htm", method= {RequestMethod.GET,RequestMethod.POST})
 	public String timeSheetList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
-		String labcode = (String)ses.getAttribute("labcode");
-		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date()+" Inside TimeSheetList.htm "+UserId);
 		try {
@@ -146,9 +144,11 @@ public class TimeSheetController {
 			req.setAttribute("todayScheduleList", headerservice.TodaySchedulesList(EmpId, activityDateSql));
 			req.setAttribute("timeSheetData", service.getTimeSheetByDateAndEmpId(EmpId, activityDateSql));
 			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(EmpId, activityDateSql));
+			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
 			req.setAttribute("allLabList", committeeservice.AllLabList());
 			req.setAttribute("allEmployeeList", employeerepo.findAll());
 			req.setAttribute("designationlist", adminservice.DesignationList());
+			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList(EmpId, LocalDate.now().withDayOfMonth(1).toString(), LocalDate.now().toString()));
 			return "timesheet/TimeSheetListSample";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside TimeSheetList.htm "+UserId, e);
@@ -1384,6 +1384,7 @@ public class TimeSheetController {
 			
 			req.setAttribute("roleWiseEmployeeList", service.getRoleWiseEmployeeList(labcode, LoginType, EmpId));
 			req.setAttribute("timesheetDataForOfficer", service.getTimesheetDataForOfficer(EmpId, labcode, activityWeekDateSql, LoginType));
+			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
 			req.setAttribute("activityWeekDate", activityWeekDate);
 			req.setAttribute("activityWeekDateSql", activityWeekDateSql);
 			req.setAttribute("allEmployeeList", employeerepo.findAll());
