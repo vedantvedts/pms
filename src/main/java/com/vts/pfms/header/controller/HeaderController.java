@@ -847,7 +847,35 @@ public class HeaderController {
 			logger.error(new Date() +" Inside TimeSheetWorkFlowPdf.htm "+UserId, e);
 		}
 	}
-
+	
+	@RequestMapping(value = "ProductreeDownload.htm", method = RequestMethod.GET)
+	public void ProductreeDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProductreeDownload.htm "+UserId);		
+		try {
+			String path = req.getServletContext().getRealPath("/UserManual/" + "ProductTree.xlsx");
+	
+			res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			res.setHeader("Content-Disposition", String.format("inline; filename=ProductTree.xlsx"));
+	
+			File my_file = new File(path);
+	
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(my_file);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+		}
+		catch (Exception e) {
+		e.printStackTrace();
+		logger.error(new Date() +" Inside ProductreeDownload.htm "+UserId, e);
+		}
+	}
 }
 
 

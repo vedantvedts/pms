@@ -291,13 +291,14 @@ SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   									
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
  <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+ <button type="submit" class="btn btn-sm" formaction="ProductreeDownload.htm" formmethod="GET">
+ <i class="fa fa-download" aria-hidden="true"></i>
+  </button>
  </div>
- 
+
 </form>
 <div style="background-color:#FFFFFF;" class="body genealogy-body genealogy-scroll">
-	
-	
-	<%String ses=(String)request.getParameter("result"); 
+<%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
 if(ses1!=null){	%>
 	<div align="center">
