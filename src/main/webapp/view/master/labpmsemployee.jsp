@@ -286,8 +286,8 @@
 		                       <td align="left"><%if(obj[1]!=null){%><%=obj[1].toString()%><%}else{ %>--<%} %></td> 
 		                       <td align="left"><%if(obj[2]!=null){%><%=obj[2].toString()%><%}else{ %>--<%} %></td> 
 		                       <td style="background: #ffffff;border-top: none;border-bottom: none;">&nbsp;&nbsp;&nbsp;</td>
-		                       <td align="center"><%if(obj[4]!=null){ %><%=obj[4].toString()%><%}else{ %>--<%} %></td> 
-		                       <td align="left"><%if(obj[5]!=null){ %><%=obj[5].toString()%><%}else{ %>--<%} %></td> 
+		                       <td align="center" style="background-color:#ffc7c7;"><%if(obj[4]!=null){ %><%=obj[4].toString()%><%}else{ %>--<%} %></td> 
+		                       <td align="left" style="background-color:#ffc7c7;"><%if(obj[5]!=null){ %><%=obj[5].toString()%><%}else{ %>--<%} %></td> 
 		                       <td align="left" style="background-color:#ffc7c7;"><%if(obj[6]!=null){ %><%=obj[6].toString()%><%}else{ %>--<%} %></td> 
 		                       </tr> 
 		                       <%}} if(count==0){%>

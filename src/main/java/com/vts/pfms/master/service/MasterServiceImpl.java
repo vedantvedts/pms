@@ -671,7 +671,7 @@ public class MasterServiceImpl implements MasterService {
 						System.out.println("getDesigId:"+getDesigId);
 						if(getDesigId==null) {
 							EmployeeDesig model=new EmployeeDesig();
-							model.setDesigCode(labemployee.getDesignation());
+							model.setDesigCode("-");
 							model.setDesignation(labemployee.getDesignation());
 							model.setDesigLimit(100000);
 							model.setDesigCadre("Others");
