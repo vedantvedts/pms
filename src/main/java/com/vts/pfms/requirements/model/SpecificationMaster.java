@@ -29,5 +29,8 @@ public class SpecificationMaster {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
+	private Long MainId;
+	private Long sid;
+
 
 }
