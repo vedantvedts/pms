@@ -35,7 +35,7 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.documents.model.IGIInterface;
-import com.vts.pfms.documents.model.IGIBasicParameters;
+
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;

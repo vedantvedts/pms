@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.documents.model.IGIInterface;
-import com.vts.pfms.documents.model.IGIBasicParameters;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;

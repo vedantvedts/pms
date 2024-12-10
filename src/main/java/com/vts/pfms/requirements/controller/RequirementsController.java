@@ -62,10 +62,10 @@ import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.model.IGIInterface;
-import com.vts.pfms.documents.model.IGIBasicParameters;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
+import com.vts.pfms.producttree.service.ProductTreeService;
 import com.vts.pfms.project.controller.ProjectController;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
@@ -101,6 +101,9 @@ public class RequirementsController {
 	@Autowired
 	RequirementService service;
 
+	@Autowired
+	ProductTreeService productreeservice;
+	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 
@@ -209,7 +212,8 @@ public class RequirementsController {
 			String action = req.getParameter("sub");
 			SpecificationMaster sp = action.equalsIgnoreCase("edit") ?service.getSpecificationMasterById(Long.parseLong(SpecsMasterId)):new SpecificationMaster();
 			req.setAttribute("SpecificationMaster", sp);
-			
+			List<Object[] > systemList= productreeservice.getAllSystemName();
+			req.setAttribute("systemList",systemList);
 			return "requirements/SpecificationMasterAdd";
 		} catch (Exception e) {
 
@@ -2945,8 +2949,6 @@ public class RequirementsController {
 			String specid = "";
 
 			if (req.getParameterValues("SpecId") != null) {
-				System.out.println(
-						"req.getParameterValues(\"SpecId\")" + Arrays.asList(req.getParameterValues("SpecId")));
 				String[] SpecId = req.getParameterValues("SpecId");
 				for (int i = 0; i < SpecId.length; i++) {
 					specid = specid + SpecId[i];
@@ -4145,12 +4147,27 @@ public class RequirementsController {
 			sp.setSpecsUnit(req.getParameter("specUnit"));
 			sp.setSpecValue(req.getParameter("specValue"));
 			
+			
+			
 			if(SpecsMasterId!=null) {
 			sp.setModifiedBy(UserId);
 			sp.setModifiedDate(LocalDate.now().toString());
 			}else {
 			sp.setCreatedBy(UserId);
 			sp.setCreatedDate(LocalDate.now().toString());
+			sp.setSid(Long.parseLong(req.getParameter("sid")));
+			
+			String[] subids = req.getParameter("subid").split("#");
+			
+			sp.setMainId(Long.parseLong(subids[0]));
+			List<Object[]> SpecificarionMasterList = service.SpecificationMasterList();
+			int subsytemspcCount=0;
+			if(SpecificarionMasterList!=null) {
+				SpecificarionMasterList=SpecificarionMasterList.stream().filter(e->e[13].toString().equalsIgnoreCase(subids[0])).collect(Collectors.toList());
+				if(SpecificarionMasterList!=null && SpecificarionMasterList.size()>0) {
+					subsytemspcCount=SpecificarionMasterList.size();
+				}
+			}
 			sp.setIsActive(1);
 			}
 			long count = service.specMasterAddSubmit(sp);
@@ -4171,8 +4188,6 @@ public class RequirementsController {
 		return "redirect:/SpecificationMasters.htm";
 		
 	}
-	
-	
 	@RequestMapping(value = "TestPlanMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String TestPlanMaster(HttpServletRequest req, HttpServletResponse res, HttpSession ses,
 			RedirectAttributes redir) throws Exception {

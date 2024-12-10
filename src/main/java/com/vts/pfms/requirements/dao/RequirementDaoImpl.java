@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.documents.model.IGIInterface;
-import com.vts.pfms.documents.model.IGIBasicParameters;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
@@ -64,7 +63,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	
 	private static final String SPECIFICATIONMASTERLIST="SELECT a.SpecsMasterId, a.SpecificationName, \r\n"
 			+ "a.Description, a.SpecsParameter, a.SpecsUnit, a.SpecsInitiationId, a.SpecValue, CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',\r\n"
-			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1'";
+			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1'";
 	@Override
     public List<Object[]> SpecificationMasterList() throws Exception 
     {
@@ -1036,7 +1035,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		
 	}
 	
-	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId,SpecValue FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
+	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId,SpecValue,LinkedSubSystem FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
 	@Override
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
 		

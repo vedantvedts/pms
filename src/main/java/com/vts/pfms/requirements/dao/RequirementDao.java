@@ -3,7 +3,6 @@ package com.vts.pfms.requirements.dao;
 import java.util.List;
 
 import com.vts.pfms.documents.model.IGIInterface;
-import com.vts.pfms.documents.model.IGIBasicParameters;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
