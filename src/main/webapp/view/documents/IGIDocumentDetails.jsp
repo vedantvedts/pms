@@ -88,6 +88,7 @@
 		String drdologo = (String)request.getAttribute("drdologo");
 		String version =(String)request.getAttribute("version");
 		LocalDate now = LocalDate.now();
+		
 	%>
 
     <% String ses = (String) request.getParameter("result"); 
@@ -476,13 +477,13 @@
 	</div>
 
 	<form action="#">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			<input type="hidden" name="igiDocId" value="<%=igiDocId%>"> 
-		
-			<button class="btn bg-transparent" id="interfacebtn" formaction="IgiInterfaces.htm" formmethod="post" formnovalidate="formnovalidate"  style="display:none;">
-				<i class="fa fa-download text-success" aria-hidden="true"></i>
-			</button>
-		</form>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+		<input type="hidden" name="igiDocId" value="<%=igiDocId%>"> 
+	
+		<button type="submit" class="btn bg-transparent" id="interfacebtn" formaction="IGIInterfacesList.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;">
+			<i class="fa fa-download text-success" aria-hidden="true"></i>
+		</button>
+	</form>
 
 
 <script type="text/javascript">

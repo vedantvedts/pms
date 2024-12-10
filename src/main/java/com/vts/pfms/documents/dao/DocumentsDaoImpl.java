@@ -1,5 +1,6 @@
 package com.vts.pfms.documents.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.vts.pfms.documents.model.IGIBasicParameters;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
@@ -240,11 +240,11 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	@Override
-	public long addBasicInterfaceType(IGIInterface iif) throws Exception {
+	public long addIGIInterface(IGIInterface addIGIInterface) throws Exception {
 		try {
-			manager.persist(iif);
+			manager.persist(addIGIInterface);
 			manager.flush();
-			return iif.getInterfaceId();
+			return addIGIInterface.getInterfaceId();
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -252,7 +252,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	}
 	
 	@Override
-	public List<IGIInterface> getAllIGIInterface(String labCode) throws Exception {
+	public List<IGIInterface> getIGIInterfaceListByLabCode(String labCode) throws Exception {
 		try {
 			Query query = manager.createQuery("FROM IGIInterface WHERE LabCode = :LabCode");
 			query.setParameter("LabCode", labCode);
@@ -260,32 +260,6 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<IGIInterface>();
-		}
-	}
-	
-	private static final String BASICPARAMETERS="select * from pfms_igi_parameters";
-	@Override
-	public List<Object[]> getAllBasicParameters() throws Exception {
-		try {
-			Query query=manager.createNativeQuery(BASICPARAMETERS);
-			return (List<Object[]>)query.getResultList();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return new ArrayList<>();
-		}
-		
-	}
-	
-	
-	@Override
-	public long addIGIBasicParameters(IGIBasicParameters ib) throws Exception {
-		try {
-			manager.persist(ib);
-			manager.flush();
-			return ib.getParameterId();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
 		}
 	}
 
@@ -298,4 +272,32 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return null;
 		}
 	}
+	
+	@Override
+	public IGIInterface getIGIInterfaceById(String interfaceId) throws Exception {
+		try {
+			return manager.find(IGIInterface.class, Long.parseLong(interfaceId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static final String DUPLICATEINTERFACECODECOUNT = "SELECT COUNT(InterfaceId) AS 'Count' FROM pfms_igi_interfaces WHERE CASE WHEN InterfaceId<>0 THEN InterfaceId!=:InterfaceId END AND InterfaceCode=:InterfaceCode AND IsActive=1";
+	@Override
+	public BigInteger getDuplicateInterfaceCodeCount(String interfaceId,String interfaceCode) throws Exception {
+
+		try {
+			Query query =manager.createNativeQuery(DUPLICATEINTERFACECODECOUNT);
+			query.setParameter("InterfaceId", interfaceId);
+			query.setParameter("InterfaceCode", interfaceCode);
+			return (BigInteger)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DAO getDuplicateInterfaceCodeCount "+ e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
 }

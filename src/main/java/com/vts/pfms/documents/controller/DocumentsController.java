@@ -3,6 +3,7 @@ package com.vts.pfms.documents.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.IGIInterface;
-import com.vts.pfms.documents.model.IGIBasicParameters;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
@@ -441,105 +441,102 @@ public class DocumentsController {
 		}
 	}
 
-	@RequestMapping(value = "IgiInterfaces.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value = "IGIInterfacesList.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String IgiInterfaces(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String) ses.getAttribute("labcode");
-		logger.info(new Date() + "Inside IgiInterfaces.htm" + UserId);
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside IGIInterfacesList.htm" + UserId);
 		try {
-
-			List<IGIInterface> Intefaces = service.getAllIGIInterface(LabCode);
-			List<Object[]> parameters = service.getAllBasicParameters();
-
+			List<IGIInterface> igiInterfaceList = service.getIGIInterfaceListByLabCode(labcode);
+			req.setAttribute("igiInterfaceList", igiInterfaceList);
 			req.setAttribute("igiDocId", req.getParameter("igiDocId"));
-			req.setAttribute("Intefaces", Intefaces);
-			req.setAttribute("parameters", parameters);
-			return "documents/IGIInterfaces";
+			String interfaceId = req.getParameter("interfaceId");
+			interfaceId = interfaceId!=null?interfaceId:"0";
+			
+			if(!interfaceId.equalsIgnoreCase("0")) {
+				Long interfaceid = Long.parseLong(interfaceId);
+				req.setAttribute("igiInterfaceData", igiInterfaceList.stream().filter(e -> e.getInterfaceId().equals(interfaceid)).findFirst().orElse(null) );
+			}
+			req.setAttribute("interfaceId", interfaceId);
+			return "documents/IGIInterfacesList";
 		} catch (Exception e) {
-			logger.error(new Date() + "Inside IgiInterfaces.htm" + UserId);
+			logger.error(new Date() + "Inside IGIInterfacesList.htm" + UserId);
 			e.printStackTrace();
 			return "static/Error";
 		}
 
 	}
 
-	@RequestMapping(value = "BasicInterFaceSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String BasicInterFaceSubmit(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+	@RequestMapping(value = "IGIInterfaceDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiInterfaceDetailsSubmit(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String) ses.getAttribute("labcode");
-		logger.info(new Date() + "Inside IgiInterfaces.htm" + UserId);
-		String igiDocId = req.getParameter("igiDocId");
+		logger.info(new Date() + "Inside IGIInterfaceDetailsSubmit.htm" + UserId);
+		
 		try {
-
-			String[] InterfaceCode = req.getParameterValues("InterfaceCode");
-			String[] InterfaceName = req.getParameterValues("InterfaceName");
-			String[] InterfaceDescription = req.getParameterValues("InterfaceDescription");
-
-			long result = 0;
-			for (int i = 0; i < InterfaceCode.length; i++) {
-				IGIInterface iif = new IGIInterface();
-				iif.setInterfaceCode(InterfaceCode[i]);
-				iif.setInterfaceName(InterfaceName[i]);
-				iif.setInterfaceDescription(InterfaceDescription[i]);
-				iif.setParentId(0l);
-				iif.setIGIDocId(Long.parseLong(igiDocId));
-				iif.setCreatedBy(UserId);
-				iif.setCreatedDate(LocalDate.now().toString());
-				iif.setLabCode(LabCode);
-				iif.setIsActive(1);
-
-				result = service.addBasicInterfaceType(iif);
+			String igiDocId = req.getParameter("igiDocId");
+			String interfaceId = req.getParameter("interfaceId");
+			String action = req.getParameter("action");
+		
+			IGIInterface igiInterface = interfaceId.equalsIgnoreCase("0")? new IGIInterface(): service.getIGIInterfaceById(interfaceId);
+			igiInterface.setLabCode(LabCode);
+			igiInterface.setInterfaceCode(req.getParameter("interfaceCode"));
+			igiInterface.setInterfaceName(req.getParameter("interfaceName"));
+			igiInterface.setDataType(req.getParameter("dataType"));
+			igiInterface.setSignalType(req.getParameter("signalType"));
+			igiInterface.setInterfaceType(req.getParameter("interfaceType"));
+			igiInterface.setInterfaceSpeed(req.getParameter("interfaceSpeed"));
+			igiInterface.setConnector(req.getParameter("connector"));
+			igiInterface.setProtection(req.getParameter("protection"));
+			igiInterface.setInterfaceDiagram(req.getParameter("interfaceDiagram"));
+			igiInterface.setInterfaceDescription(req.getParameter("interfaceDescription"));
+			igiInterface.setParentId(0L);
+			igiInterface.setIGIDocId(Long.parseLong(igiDocId));
+			if(interfaceId.equalsIgnoreCase("0")) {
+				igiInterface.setCreatedBy(UserId);
+				igiInterface.setCreatedDate(sdtf.format(new Date()));
+				igiInterface.setIsActive(1);
+			}else {
+				igiInterface.setModifiedBy(UserId);
+				igiInterface.setModifiedDate(sdtf.format(new Date()));
 			}
+			
+
+			long result = service.addIGIInterface(igiInterface);
+			
 			if (result > 0) {
-				redir.addAttribute("result", "Intefaces Added Successfully");
+				redir.addAttribute("result", "Inteface Details "+action+"ed Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Intefaces add unsuccessful ");
+				redir.addAttribute("resultfail", "Intefaces "+action+" Unsuccessful");
 			}
 			redir.addAttribute("igiDocId", igiDocId);
-			return "redirect:/IgiInterfaces.htm";
+			redir.addAttribute("interfaceId", result);
+			return "redirect:/IGIInterfacesList.htm";
 		} catch (Exception e) {
-			logger.error(new Date() + "Inside IgiInterfaces.htm" + UserId);
+			logger.error(new Date() + "Inside IGIInterfaceDetailsSubmit.htm " + UserId);
 			e.printStackTrace();
 			return "static/Error";
 		}
 
 	}
 
-	@RequestMapping(value = "AddParameters.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public @ResponseBody String AddParameters(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
-		String UserId = (String) ses.getAttribute("Username");
-
-		try {
-			String parameters = req.getParameter("parameters");
-
-			String[] param = parameters.split(",");
-			List<String[]> list = new ArrayList<>();
-			long count = 0;
-			for (int i = 0; i < param.length; i++) {
-				IGIBasicParameters ib = new IGIBasicParameters();
-				ib.setParameterName(param[i]);
-				ib.setCreatedBy(UserId);
-				ib.setCreatedDate(LocalDate.now().toString());
-				ib.setIsActive(1);
-
-				count = service.addIGIBasicParameters(ib);
-				String[] s = new String[2];
-				s[0] = count + "";
-				s[1] = param[i];
-				list.add(s);
-			}
-
-			if (count > 0) {
-				Gson json = new Gson();
-				return json.toJson(list);
-			}
-
-			System.out.println(parameters);
-		} catch (Exception e) {
-			e.printStackTrace();
+	@RequestMapping(value="DuplicateInterfaceCodeCheck.htm", method=RequestMethod.GET)
+	public @ResponseBody String duplicateInterfaceCodeCheck(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside DuplicateInterfaceCodeCheck.htm "+UserId);
+		Gson json = new Gson();
+		BigInteger duplicate=null;
+		try
+		{	  
+	          duplicate = service.getDuplicateInterfaceCodeCount(req.getParameter("interfaceId"), req.getParameter("interfaceCode"));
+	          
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DuplicateInterfaceCodeCheck.htm "+UserId ,e);
+			e.printStackTrace(); 
 		}
-
-		return null;
+		  
+		 return json.toJson(duplicate);    
 	}
 	/* ************************************************ IGI Document End ***************************************************** */
 }

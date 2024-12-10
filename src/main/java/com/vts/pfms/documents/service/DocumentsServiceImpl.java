@@ -3,6 +3,7 @@ package com.vts.pfms.documents.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.documents.dao.DocumentsDao;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
-import com.vts.pfms.documents.model.IGIBasicParameters;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
@@ -195,33 +195,33 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public long addBasicInterfaceType(IGIInterface iif) throws Exception {
+	public long addIGIInterface(IGIInterface igiInterface) throws Exception {
 		
-		return dao.addBasicInterfaceType(iif);
+		return dao.addIGIInterface(igiInterface);
 	}
 	
 	@Override
-	public List<IGIInterface> getAllIGIInterface(String labCode) throws Exception {
+	public List<IGIInterface> getIGIInterfaceListByLabCode(String labCode) throws Exception {
 		
-		return dao.getAllIGIInterface(labCode);
-	}
-	
-	@Override
-	public List<Object[]> getAllBasicParameters() throws Exception {
-		
-		return dao.getAllBasicParameters();
-	}
-	
-	@Override
-	public long addIGIBasicParameters(IGIBasicParameters ib) throws Exception {
-		
-		return dao.addIGIBasicParameters(ib);
+		return dao.getIGIInterfaceListByLabCode(labCode);
 	}
 	
 	@Override
 	public PfmsIGIDocument getPfmsIGIDocumentById(String igiDocId) throws Exception {
 		
 		return dao.getPfmsIGIDocumentById(igiDocId);
+	}
+	
+	@Override
+	public IGIInterface getIGIInterfaceById(String interfaceId) throws Exception {
+
+		return dao.getIGIInterfaceById(interfaceId);
+	}
+	
+	@Override
+	public BigInteger getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception {
+		
+		return dao.getDuplicateInterfaceCodeCount(interfaceId, interfaceCode);
 	}
 	/* ************************************************ IGI Document End ***************************************************** */
 

@@ -63,8 +63,8 @@ public class MasterDaoImpl implements MasterDao {
 	private final static String LISTOFSENIORITYNUMBER="SELECT SrNo, EmpId FROM employee WHERE SrNo !=0 ORDER BY SrNo ASC ";
 	private final static String UPDATESRNO="UPDATE employee SET SrNo=:srno WHERE EmpId=:empid";
 
-	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype FROM milestone_activity_type WHERE isactive=1";
-	private static final String ACTIVITYNAMECHECK="SELECT COUNT(activitytypeid) AS 'count','activity' FROM milestone_activity_type WHERE isactive=1 AND activitytype LIKE :activityname";
+	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype, IsTimeSheet FROM milestone_activity_type WHERE isactive=1";
+	private static final String ACTIVITYNAMECHECK="SELECT COUNT(ActivityTypeId) AS 'count','ActivityType' FROM milestone_activity_type WHERE CASE WHEN ActivityTypeId<>0 THEN ActivityTypeId!=:ActivityTypeId END AND ActivityType=:ActivityType AND IsActive=1";
 	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,dg.labcode,dt.tdcode FROM division_group dg,employee e, employee_desig ed, division_td dt WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.tdid=dt.tdid  AND dg.isactive=1 AND dg.labcode=:labcode ORDER BY dg.groupid DESC";
 	private static final String GROUPHEADLIST ="SELECT e.empid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
 	private static final String GROUPADDCHECK ="SELECT SUM(IF(GroupCode =:gcode,1,0))   AS 'dCode','0' AS 'codecount'FROM division_group WHERE isactive=1 ";
@@ -384,10 +384,11 @@ public class MasterDaoImpl implements MasterDao {
 
 
 	@Override
-	public Object[] ActivityNameCheck(String activityname)throws Exception
+	public Object[] ActivityNameCheck(String activityTypeId, String activityType)throws Exception
 	{		
 		Query query=manager.createNativeQuery(ACTIVITYNAMECHECK);   
-		query.setParameter("activityname", activityname);
+		query.setParameter("ActivityTypeId", activityTypeId);
+		query.setParameter("ActivityType", activityType);
 		return  (Object[])query.getSingleResult();
 	}
 
@@ -701,26 +702,33 @@ public class MasterDaoImpl implements MasterDao {
 		return TDListAdd;
 	}
 
-	public static final String UpdateActivityTypeQuery="UPDATE milestone_activity_type SET activityType=:activityType WHERE activitytypeid=:activitytypeid";
+	public static final String UpdateActivityTypeQuery="UPDATE milestone_activity_type SET activityType=:activityType, IsTimeSheet=:IsTimeSheet WHERE activitytypeid=:activitytypeid";
 	@Override
-	public List<Object[]> UpdateActivityType(String ActivityType, String ActivityId) throws Exception {
-
-		Query query = manager.createNativeQuery(UpdateActivityTypeQuery);
-		query.setParameter("activityType", ActivityType);
-		query.setParameter("activitytypeid", ActivityId);
-		query.executeUpdate();
-		List<Object[]> TDListAdd = null;
-		return TDListAdd;
+	public int UpdateActivityType(String ActivityType, String ActivityId, String isTimeSheet) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(UpdateActivityTypeQuery);
+			query.setParameter("activityType", ActivityType);
+			query.setParameter("activitytypeid", ActivityId);
+			query.setParameter("IsTimeSheet", isTimeSheet);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
 	}
 	public static final String DeleteActivityTypeQuery="UPDATE milestone_activity_type SET isactive=0 WHERE ActivityTypeId=:activitytypeid";
 
 	@Override
-	public Boolean DeleteActivityType(String ActivityId) throws Exception {
-		// TODO Auto-generated method stub
-		Query query = manager.createNativeQuery(DeleteActivityTypeQuery);
-		query.setParameter("activitytypeid", ActivityId);
-		query.executeUpdate();
-		return null;
+	public int DeleteActivityType(String ActivityId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(DeleteActivityTypeQuery);
+			query.setParameter("activitytypeid", ActivityId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	public static final String INDUSTRYPARTNERLIST="SELECT a.IndustryPartnerId,a.IndustryName,a.IndustryAddress,b.IndustryPartnerRepId,b.RepName,b.RepDesignation,b.RepMobileNo,b.RepEmail,b.IsActive,a.IndustryCity,a.IndustryPinCode FROM pfms_industry_partner a, pfms_industry_partner_rep b WHERE a.IndustryPartnerId=b.IndustryPartnerId AND a.IsActive=1 ORDER BY a.IndustryPartnerId DESC, b.IndustryPartnerRepId ASC";

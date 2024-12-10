@@ -627,8 +627,7 @@ public class MasterController {
 		logger.info(new Date() +"Inside AddActivityCheck.htm "+UserId);
 		try
 		{	  
-			String activitytype=req.getParameter("activitytype");					
-			DisDesc= service.ActivityNameCheck(activitytype);
+			DisDesc= service.ActivityNameCheck(req.getParameter("activityTypeId"), req.getParameter("activitytype"));
 		}
 		catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +"Inside AddActivityCheck.htm "+UserId,e);
@@ -649,7 +648,7 @@ public class MasterController {
 
 			MilestoneActivityType model =new MilestoneActivityType();
 			model.setActivityType(activitytype);
-			model.setIsTimeSheet("N");
+			model.setIsTimeSheet(req.getParameter("isTimeSheet"));
 			model.setCreatedBy(UserId);
 			long count =service.ActivityAddSubmit(model);
 
@@ -1300,26 +1299,23 @@ public class MasterController {
 		System.out.println("in ActivityTypeEdit");
 		logger.info(new Date() +"Inside ActivityTypeEdit.htm ");
 		try {
-			boolean flag=true;
-			if(req.getParameter("Delete")==null)flag=false; // if Edit, flag false
-			List<Object[]> activityList = service.ActivityList();
-
+			boolean flag=req.getParameter("Delete")==null?false:true;
+			
 			String ActivityID = req.getParameter("ActivityID");
-			boolean Editflag = true;// cannot be false if deleting
-			if(flag && ActivityID!=null)service.DeleteActivityType(ActivityID); // only Deletes, flag is true
-			else	{		// else updates
-				String toActivity = req.getParameter("toActivity").toString();
-
-				for (Object[] objects : activityList) {
-					System.out.println("objects[1] "+objects[1]+" toActivity "+toActivity);
-					if(objects[1].toString().equals(toActivity))Editflag=false;
-				}
-				if(Editflag)
-					service.UpdateActivityType(toActivity, ActivityID);
+			int result = 0;
+			if(flag && ActivityID!=null) {
+				result = service.DeleteActivityType(ActivityID); // only Deletes, flag is true
+			}else{	// else updates
+				String toActivity = req.getParameter("toActivity");
+				result = service.UpdateActivityType(toActivity, ActivityID, req.getParameter("isTimeSheet"));
 			}
-
-			redir.addAttribute("result", flag?"Deleted Activity Type Succesfully":Editflag?"Edited Activity Type Succesfully":"");
-			if(!Editflag)redir.addAttribute("result","Activity Type Already Exists!");
+			
+			if (result > 0) {
+				redir.addAttribute("result", flag?"Deleted Activity Type Succesfully":"Edited Activity Type Succesfully");
+			} else {
+				redir.addAttribute("resultfail", flag?"Deleted Activity Type Unsuccessful":"Edited Activity Type Unsuccessful");
+			}
+			
 			return "redirect:/MilestoneActivityTypes.htm";		
 		}catch (Exception e) {
 			e.printStackTrace(); 

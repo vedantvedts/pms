@@ -19,6 +19,7 @@ public class IGIInterface {
 	private String LabCode;
 	private String InterfaceCode;
 	private String InterfaceName;
+	private String InterfaceType;
 	private String DataType;
 	private String SignalType;
 	private String InterfaceSpeed;

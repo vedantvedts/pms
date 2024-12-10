@@ -386,7 +386,7 @@ FormatConverter fc = new FormatConverter();
 												<div class="col-md-1">
 													<label class="form-label mt-2">Employee: </label>
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-5">
 													<select class="form-control selectdee" name="empId" onchange="this.form.submit()" >
 														<option selected disabled>---Select---</option>
 														<%if(employeeList!=null && employeeList.size()>0) {
@@ -397,14 +397,14 @@ FormatConverter fc = new FormatConverter();
 														<%} }%>
 													</select>
 												</div>
-												<div class="col-md-2">
-													<label class="form-label mt-2">From Date: </label>
+												<div class="col-md-1">
+													<label class="form-label mt-2">From: </label>
 												</div>
 												<div class="col-md-2">
 													<input type="text" class="form-control " name="fromDate" id="fromDate" value="<%=fc.sdfTordf(fromDate) %>" onchange="this.form.submit()" >
 												</div>
-												<div class="col-md-2">
-													<label class="form-label mt-2">To Date: </label>
+												<div class="col-md-1">
+													<label class="form-label mt-2">To: </label>
 												</div>
 												<div class="col-md-2">
 													<input type="text" class="form-control " name="toDate" id="toDate" value="<%=fc.sdfTordf(toDate)%>" onchange="this.form.submit()">

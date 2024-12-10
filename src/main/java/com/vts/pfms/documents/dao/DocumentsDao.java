@@ -1,8 +1,8 @@
 package com.vts.pfms.documents.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
-import com.vts.pfms.documents.model.IGIBasicParameters;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
@@ -28,10 +28,11 @@ public interface DocumentsDao {
 	public long addIGIDocumentMembers(IGIDocumentMembers igiDocumentMember) throws Exception;
 	public IGIDocumentMembers getIGIDocumentMembersById(Long igiMemeberId) throws Exception;
 	public int deleteIGIDocumentMembers(String igiMemeberId) throws Exception;
-	public long addBasicInterfaceType(IGIInterface iif)throws Exception;
-	public List<IGIInterface> getAllIGIInterface(String labCode)throws Exception;
-	public List<Object[]> getAllBasicParameters()throws Exception;
-	public long addIGIBasicParameters(IGIBasicParameters ib)throws Exception;
+	public long addIGIInterface(IGIInterface addIGIInterface)throws Exception;
+	public List<IGIInterface> getIGIInterfaceListByLabCode(String labCode)throws Exception;
 	public PfmsIGIDocument getPfmsIGIDocumentById(String igiDocId)throws Exception;
+	public IGIInterface getIGIInterfaceById(String interfaceId) throws Exception;
+	public BigInteger getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception;
 	/* ************************************************ IGI Document End ***************************************************** */
+	
 }

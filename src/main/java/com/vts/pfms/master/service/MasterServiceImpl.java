@@ -314,9 +314,9 @@ public class MasterServiceImpl implements MasterService {
 	}
 	
 	@Override
-	public Object[] ActivityNameCheck(String activityname)throws Exception
+	public Object[] ActivityNameCheck(String activityTypeId, String activityType)throws Exception
 	{	
-		return dao.ActivityNameCheck(activityname);
+		return dao.ActivityNameCheck(activityTypeId, activityType);
 	} 
 	@Override
 	public long ActivityAddSubmit(MilestoneActivityType model)throws Exception
@@ -547,13 +547,13 @@ public class MasterServiceImpl implements MasterService {
 		return dao.TDListAdd();
 	}
 	@Override
-	public List<Object[]> UpdateActivityType(String ActivityType, String ActivityId) throws Exception {
+	public int UpdateActivityType(String ActivityType, String ActivityId, String isTimeSheet) throws Exception {
 		
-		return dao.UpdateActivityType(ActivityType,ActivityId);
+		return dao.UpdateActivityType(ActivityType, ActivityId, isTimeSheet);
 	}
 
 	@Override
-	public Boolean DeleteActivityType(String ActivityId) throws Exception {
+	public int DeleteActivityType(String ActivityId) throws Exception {
 		
 		return dao.DeleteActivityType(ActivityId);
 	}

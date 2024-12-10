@@ -40,7 +40,7 @@ public interface MasterService {
 	public int DivsionEmployeeRevoke(DivisionEmployeeDto dto) throws Exception;
 	public long DivisionAssignSubmit(DivisionEmployeeDto dto) throws Exception;
 	public List<Object[]> ActivityList() throws Exception;
-	public Object[] ActivityNameCheck(String activityname) throws Exception;
+	public Object[] ActivityNameCheck(String activityTypeId, String activityType) throws Exception;
 	public long ActivityAddSubmit(MilestoneActivityType model) throws Exception;
 	public List<Object[]> GroupsList(String LabCode) throws Exception;
 	public List<Object[]> GroupHeadList(String LabCode) throws Exception;
@@ -74,8 +74,8 @@ public interface MasterService {
 	public Object[] TDAddCheck(String tCode)throws Exception;
 	public int TDMasterUpdate(DivisionTd model)throws Exception;
 	public List<Object[]> TDListAdd()throws Exception;
-	public List<Object[]> UpdateActivityType(String ActivityType, String ActivityId) throws Exception;
-	public Boolean DeleteActivityType(String ActivityId) throws Exception;
+	public int UpdateActivityType(String ActivityType, String ActivityId, String isTimeSheet) throws Exception;
+	public int DeleteActivityType(String ActivityId) throws Exception;
 	public List<Object[]> industryPartnerList() throws Exception;
 	public Object[] industryPartnerDetailsByIndustryPartnerRepId(String industryPartnerRepId) throws Exception;
 	public List<IndustryPartner> getIndustryPartnerList() throws Exception;

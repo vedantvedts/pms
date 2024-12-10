@@ -190,6 +190,7 @@ th, td {
 																		<tr>
 																			<th>Select</th>
 																			<th>ActivityType</th>
+																			<th>Is Time Sheet</th>
 																		</tr>
 																	</thead>
 																	<tbody>
@@ -197,25 +198,18 @@ th, td {
 																		for (Object[] obj : MilestoneActivityType) {
 																		%>
 																		<tr>
-																			<td><input type="radio" name="Did"
-																				value=<%=obj[0]%>></td>
+																			<td><input type="radio" name="Did" value=<%=obj[0]%>></td>
 																				
-																			<td id=<%=obj[0]%>>
-																				<%
-																				if (obj[1] != null) {
-																				%><%=obj[1]%>
-																				<%
-																				} else {
-																				%>-<%
-																				}
-																				%><input type="hidden" name="<%=obj[0]%>"
-																				value="<%=obj[1]%>" >
-																				</td>
-																			
+																			<td id="<%=obj[0]%>"> 
+																				<%=obj[1]!= null?obj[1]:"-"%>
+																				<input type="hidden" name="<%=obj[0]%>" value="<%=obj[1]%>" >
+																			</td>
+																			<td id="<%=obj[0]%>">
+																				<%=obj[2]!= null && obj[2].toString().equalsIgnoreCase("Y")? "Yes":"No"%>
+																				<input type="hidden" name="<%=obj[0]%>" value="<%=obj[2]%>" >
+																			</td>
 																		</tr>
-																		<%
-																		}
-																		%>
+																		<% }%>
 																	</tbody>
 																</table>
 															</form>
@@ -259,13 +253,21 @@ th, td {
 														class="table table-bordered table-hover table-striped table-condensed">
 														<thead style="background-color: #055C9D; color: white;">
 															<tr>
-																<th colspan="4">Add Activity Type</th>
+																<th>Activity Type</th>
+																<th>Is Time Sheet</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr>
-																<td colspan="4"><input class="form-control"
-																	type="text" id="activitytype" name="activitytype">
+																<td>
+																	<input class="form-control" type="text" id="activitytype" name="activitytype" required>
+																</td>
+																<td>
+																	<select class="form-control" name="isTimeSheet" id="isTimeSheet" required>
+																		<option value="0" selected>----select----</option>
+																		<option value="Y">Yes</option>
+																		<option value="N">No</option>
+																	</select>
 																</td>
 															</tr>
 														</tbody>
@@ -305,8 +307,12 @@ th, td {
    function AddActivityCheck(myfrm){
 	   var count=0;
 		var atype=$('#activitytype').val().trim();
+		var isTimeSheet=$('#isTimeSheet').val();
 	    if(atype.length==0){
 	    	alert("Please fill the type !");
+	    	return false;
+	    }else if(isTimeSheet=="0"){
+	    	alert("Please Select Is Time Sheet !");
 	    	return false;
 	    }
 	    else{
@@ -318,6 +324,7 @@ th, td {
          	   
          	  data:{
          		    activitytype:atype.trim(),
+         		    activityTypeId:0,
          	  },
          	datatype:'json',
          	success:function(result){
@@ -354,8 +361,7 @@ th, td {
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Edit Activity
-						Type</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Edit Activity Type</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -363,11 +369,33 @@ th, td {
 				</div>
 				<form action="ActivityTypeEdit.htm" method="POST" id="EditActivityTypeForm" >
 					<div class="modal-body">
-						<input required type="text"
-							id="ToEditActivitytype" name="toActivity" class="form-control">
+						<div class="table-responsive">
+							<table
+								class="table table-bordered table-hover table-striped table-condensed">
+								<thead style="background-color: #055C9D; color: white;">
+									<tr>
+										<th>Activity Type</th>
+										<th>Is Time Sheet</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<input class="form-control" type="text" id="ToEditActivitytype" name="toActivity" required>
+										</td>
+										<td>
+											<select class="form-control" name="isTimeSheet" id="ToEditIsTimeSheet" required>
+												<option value="0" selected disabled>----select----</option>
+												<option value="Y">Yes</option>
+												<option value="N">No</option>
+											</select>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 						<input type="hidden" name="ActivityID" id="ActivityID"> 
-						<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</div>
 					<div class="modal-footer">
 						<input type="button" onclick="return EditActivityCheck()" value="Edit" style="margin-left:50%" class="btn btn-warning btn-sm edit"
@@ -378,8 +406,7 @@ th, td {
 					<input type="hidden" id="ActivityId" name="ActivityID">
 					<input type="hidden" name="Delete">
 					<input type="hidden" name="ActivityID" id="ActivityID"> 
-					<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				</form>
 			</div>
 		</div>
@@ -399,17 +426,19 @@ $(document).ready(function(){
   
 function EditActivityCheck(){
 		var atype=$('#ToEditActivitytype').val().trim();
+		var activityid=$('#ActivityID').val();
      $.ajax({
       	   type:"GET",
       	   url:"AddActivityCheck.htm",
       	   
       	  data:{
       		    activitytype:atype.trim(),
+      		    activityTypeId:activityid,
       	  },
       	datatype:'json',
       	success:function(result){
       	var ajaxresult = JSON.parse(result);
-      		console.log(ajaxresult[0]);
+
 	         if(ajaxresult[0]==1)
 	         {
 				alert("Activity type already exists");
@@ -424,18 +453,20 @@ function EditActivityCheck(){
 } 
   
   
-  function openEditModal()
-  {
+  function openEditModal() {
 	  
-var selectedindex=$('input[name="Did"]:checked').val();
-	  try{		
+	var selectedindex=$('input[name="Did"]:checked').val();
+	try{		
 		var innertext=document.getElementsByName(selectedindex)[0].value;
-		}
-		catch { alert("Please select an Activity to Edit");return 0;
-}console.log(selectedindex);
-	  $('#ActivityTypeEditModal').modal('show');
-	  document.getElementById('ToEditActivitytype').value=innertext;
-	  document.getElementById('ActivityID').value=selectedindex;
+		var innertext2=document.getElementsByName(selectedindex)[1].value;
+	}catch { 
+		alert("Please select an Activity to Edit");return 0;
+	}
+	
+	$('#ActivityTypeEditModal').modal('show');
+	$('#ToEditActivitytype').val(innertext);
+	$('#ToEditIsTimeSheet').val(innertext2).trigger('change');
+	$('#ActivityID').val(selectedindex);
 	  
   }
   
