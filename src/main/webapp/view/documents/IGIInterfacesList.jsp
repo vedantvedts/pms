@@ -255,7 +255,8 @@ input,select,table,div,label,span {
     							
    								<%if(igiInterfaceList!=null && igiInterfaceList.size()>0) {
    									List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
-   									List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList()); %>
+   									List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
+   									List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());%>
    									
    									<!-- Physical Interfaces List -->
    									<div class="row">
@@ -316,6 +317,36 @@ input,select,table,div,label,span {
 		   									</div>
 		   								<%} %>
 		   							</div>		
+	   								
+	   								<!-- Logical Interfaces List -->
+	   								<div class="row">
+	   									<div class="col-md-12">
+	  										<button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn" id="logicalInterfaceBtn" value="1" style="padding: 0.2rem;" data-toggle="tooltip" data-placement="top" title="Logical Interfaces">
+												<span style="font-weight: bold;">Logical Interfaces</span>
+												<%if(logicalInterfaceList.size()>0) {%>
+												&nbsp; <i class="fa fa-caret-up"></i>
+												<%} %>
+											</button>
+	  									</div>
+	  								</div>	
+	  								
+	  								<div id="logicalInterfaceList">
+	   									<%for(IGIInterface logicalInterface : logicalInterfaceList) {%>
+		   									<div class="row">
+		   										<div class="col-md-12 ml-4">
+		   											<form action="IGIInterfacesList.htm" method="GET">
+														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+														<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
+			     										<button class="btn btn-sm btn-outline-primary fw-bold customeSidebarBtn" type="submit" name="interfaceId" value="<%=logicalInterface.getInterfaceId()%>" 
+			     										data-toggle="tooltip" data-placement="top" title="<%=logicalInterface.getInterfaceCode() %>" 
+			     										<%if(logicalInterface.getInterfaceId().equals(Long.parseLong(interfaceId))) {%> style="background-color: green;color: white;border-color: green;width: 86%;" <%} else{%>style="width: 86%;" <%} %> >
+			     											<%=logicalInterface.getInterfaceCode() %>
+			     										</button>
+			     									</form>
+		   										</div>
+		   									</div>
+		   								<%} %>
+		   							</div>		
 	   							<%} else{%>
    									<div class="row">
    										<div class="col-md-12">
@@ -363,6 +394,7 @@ input,select,table,div,label,span {
 		       										<option value="" selected disabled>----select----</option>
 		       										<option value="Physical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Physical Interface")) {%>selected<%} %>>Physical Interface</option>
 		       										<option value="Electrical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Electrical Interface")) {%>selected<%} %>>Electrical Interface</option>
+		       										<option value="Logical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Logical Interface")) {%>selected<%} %>>Logical Interface</option>
 		       									</select>
 		       								</div>
 		       							</div>
@@ -425,7 +457,8 @@ input,select,table,div,label,span {
 	</div>	
 	
 	<script type="text/javascript">
-	
+		
+		// Physical Interface Toggling
 		$('#physicalInterfaceBtn').on('click', function(){
 			var physicalInterfaceVal = $(this).val();
 			var htmlContent = $(this).html();
@@ -444,6 +477,7 @@ input,select,table,div,label,span {
 			
 		});
 	
+		// Electrical Interface Toggling
 		$('#electricalInterfaceBtn').on('click', function(){
 			var electricalInterfaceVal = $(this).val();
 			var htmlContent = $(this).html();
@@ -456,6 +490,25 @@ input,select,table,div,label,span {
 			}else{
 				$('#electricalInterfaceBtn').val('1');
 				$('#electricalInterfaceList').show();
+				 // Change the icon to fa-caret-up
+		        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
+			}
+			
+		});
+	
+		// Logical Interface Toggling
+		$('#logicalInterfaceBtn').on('click', function(){
+			var logicalInterfaceVal = $(this).val();
+			var htmlContent = $(this).html();
+
+			if(logicalInterfaceVal=='1') {
+				$('#logicalInterfaceBtn').val('0');
+				$('#logicalInterfaceList').hide();
+				// Change the icon to fa-caret-down
+		        $(this).find('i').removeClass('fa-caret-up').addClass('fa-caret-down');
+			}else{
+				$('#logicalInterfaceBtn').val('1');
+				$('#logicalInterfaceList').show();
 				 // Change the icon to fa-caret-up
 		        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
 			}

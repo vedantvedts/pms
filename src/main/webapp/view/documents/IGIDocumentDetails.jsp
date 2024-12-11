@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -9,14 +10,9 @@
     <jsp:include page="../static/header.jsp"></jsp:include>
     
     <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
-    <link href="${StyleCSS}" rel="stylesheet" />
-    <spring:url value="/resources/js/excel.js" var="excel" />
-    <script src="${excel}"></script>
-    
-    <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
-    <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
-    <script src="${ckeditor}"></script>
-    <link href="${contentCss}" rel="stylesheet" />
+    <link href="${StyleCSS}" rel="stylesheet" /> 
+    <%-- <spring:url value="/resources/js/excel.js" var="excel" />
+    <script src="${excel}"></script> --%>
     
  <!-- Pdfmake  -->
 <spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
@@ -65,6 +61,16 @@
  .topic-name {
  	font-weight: bold;
  }
+ 
+ #reqdiv {
+ 	width: 100%;
+ 	margin: 0 0.7rem 0.7rem 0.7rem; 
+ }
+ 
+ img{
+ 	width: 25px;
+ }
+ 
 </style>    
 
 </head>
@@ -88,7 +94,7 @@
 		String drdologo = (String)request.getAttribute("drdologo");
 		String version =(String)request.getAttribute("version");
 		LocalDate now = LocalDate.now();
-		
+		FormatConverter fc = new FormatConverter();
 	%>
 
     <% String ses = (String) request.getParameter("result"); 
@@ -167,48 +173,48 @@
        					</div>
        				</div>
        				<div class="col-custom-10-5">
-       					<%-- <div class="mt-2" id="reqdiv">
-							<div style="margin-left: 5%;overflow:auto">
+       					<div class="" id="reqdiv">
+							<div style="">
+								<% int docsumslno = 0; %>
 								<table class="table table-bordered">
 									<tr class="table-warning">
 										<td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Segment Specifications Document</span></td>
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Title: <span class="text-dark">System Segment Specifications Document</span></td>
 									</tr>
 									<tr >
-										<td class="text-primary">2.&nbsp; Type of Document:<span class="text-dark">System Segment Specifications Document</span></td>
-										<td class="text-primary">3.&nbsp; Classification: <span class="text-dark"><%=classification %></span></td>
-										<td class="text-primary">3.&nbsp; Classification: <span class="text-dark">Restricted</span></td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Type of Document:<span class="text-dark">System Segment Specifications Document</span></td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Classification: <span class="text-dark">Restricted</span></td>
 									</tr>
 								    <tr >
-										<td class="text-primary">4.&nbsp; Document Number:</td>
-										<td class="text-primary">5.&nbsp; Month Year: <span style="color:black;"><%=now.getMonth().toString().substring(0,3) %>&nbsp;&nbsp;<%=now.getYear() %></span></td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Document Number:</td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Month Year: <span style="color:black;"><%=now.getMonth().toString().substring(0,3) %>&nbsp;&nbsp;<%=now.getYear() %></span></td>
 									</tr>
 									<!-- <tr>
 										<td class="text-primary">6.&nbsp; Number of Pages:</td>
 										<td class="text-primary">7.&nbsp; Related Document:</td>
 									</tr> -->
 									<tr>
-										<td  class="text-primary" colspan="2">8.&nbsp; Additional Information:
-											<%if(DocumentSummary!=null && DocumentSummary[0]!=null) {%><span class="text-dark"><%=DocumentSummary[0]%></span> <%} %>
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Additional Information:
+											<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%><span class="text-dark"><%=DocumentSummary[1]%></span> <%} %>
 										</td>
 									</tr>
-								    <tr>
+								    <!-- <tr>
 										<td  class="text-primary" colspan="2">9.&nbsp; Project Number and Project Name: <span class="text-dark"> </span></td>
-									</tr>
+									</tr> -->
 									<tr>
-										<td  class="text-primary" colspan="2">10.&nbsp; Abstract:
-											<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%> <span class="text-dark"><%=DocumentSummary[1]%></span><%} %>
-										</td>
-									</tr>
-									<tr>
-										<td  class="text-primary" colspan="2">11.&nbsp; Keywords:
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Abstract:
 											<%if(DocumentSummary!=null && DocumentSummary[2]!=null) {%> <span class="text-dark"><%=DocumentSummary[2]%></span><%} %>
 										</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Keywords:
+											<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=DocumentSummary[3]%></span><%} %>
+										</td>
+									</tr>
+									<tr>
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Organization and address:
 											<span class="text-dark">		
 												<%if (labDetails[1] != null) {%>
 													<%=labDetails[1].toString() + "(" + labDetails[0].toString() + ")"%>
@@ -227,31 +233,31 @@
 										</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2">13.&nbsp; Distribution:
-											<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=DocumentSummary[3]%></span><%} %>
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Distribution:
+											<%if(DocumentSummary!=null && DocumentSummary[4]!=null) {%> <span class="text-dark"><%=DocumentSummary[4]%></span><%} %>
 										</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2">14.&nbsp; Revision:</td>
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Revision:</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2">15.&nbsp; Prepared by:
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Prepared by:
 											<%if(DocumentSummary!=null && DocumentSummary[10]!=null) {%> <span class="text-dark"><%=DocumentSummary[10]%></span><%}else {%><span class="text-dark">-</span>  <%} %> <span class="text-dark"></span> 
 										</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: 
-											<%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=DocumentSummary[7]%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Reviewed by: 
+											<%if(DocumentSummary!=null && DocumentSummary[9]!=null) {%> <span class="text-dark"><%=DocumentSummary[9]%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
 										</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2">17.&nbsp; Approved by: 
-											<%if(DocumentSummary!=null && DocumentSummary[6]!=null) {%> <span class="text-dark"><%=DocumentSummary[6]%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Approved by: 
+											<%if(DocumentSummary!=null && DocumentSummary[8]!=null) {%> <span class="text-dark"><%=DocumentSummary[8]%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
 										</td>
 									</tr>
 								</table>
 							</div>
-						</div> --%>
+						</div>
        				</div>
        			</div>
        		</div>		
@@ -335,11 +341,11 @@
 			   				</div>	
    				
    				 			<div class="col-md-4">
-	   							<input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" <%if(DocumentSummary!=null && DocumentSummary[10]!=null){%> value="<%=DocumentSummary[10].toString() %> " <%}%> class="form-control form-control">
+	   							<input id="pdc-date"  readonly name="pdc" <%if(DocumentSummary!=null && DocumentSummary[11]!=null){%> value="<%=fc.sdfTordf(DocumentSummary[11].toString()) %>" <%}%> class="form-control">
    				
    							</div>
    				
-   							<div class="col-md-2">
+   							<div class="col-md-2 right">
 			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By:</label>
 			   				</div>
 			   				<div class="col-md-4">

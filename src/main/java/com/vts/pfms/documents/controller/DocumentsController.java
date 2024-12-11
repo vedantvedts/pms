@@ -349,7 +349,7 @@ public class DocumentsController {
 			rs.setReviewer(req.getParameter("reviewer"));
 			rs.setPreparedBy(req.getParameter("preparedBy"));
 			rs.setIGIDocId(Long.parseLong(igiDocId));
-			rs.setReleaseDate(req.getParameter("pdc"));
+			rs.setReleaseDate(fc.rdfTosdf(req.getParameter("pdc")));
 			if (action.equalsIgnoreCase("Add")) {
 				rs.setCreatedBy(UserId);
 				rs.setCreatedDate(sdtf.format(new Date()));
