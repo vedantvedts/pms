@@ -46,6 +46,7 @@ public class TestPlanMaster {
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	private String TimeType;
 	
 
 

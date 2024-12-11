@@ -704,7 +704,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
 								</div>
 								
-								<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
+		<%-- 						<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
 								<hr>
 								<div class="row">
 								<div class="col-md-2" style="margin-top: 1%">
@@ -717,7 +717,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										<p id="subsytemshow" style="font-size: 18px;"></p>
 									</div>
 								</div>
-								<%} %>
+								<%} %> --%>
 							</div> 
 
 						
@@ -734,32 +734,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 					<form  role="form" action="RequirementSubAdd.htm" method="POST" id="">
 			<div class="row" id="row2" style="display:none;">
 	
-						<%if(ReqSubSystemList!=null && ReqSubSystemList.size()>0) {%>
-								<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-4">
-										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
-											Linked System Requirements
-										</label>
-									</div>
-									<div class="col-md-8" style="margin-top: 1%;">
-										<div class="form-group">
-											<%if ((ReqSubSystemList != null) && (!ReqSubSystemList.isEmpty())) {%>
-										 	<select class="form-control selectdee" name="LinkedPara" id="LinkedPara" data-width="80%" data-live-search="true" multiple onchange="getReqDetails()">
-													<option value="" disabled="disabled">---Choose----</option>
-													<%for (Object[] obj : ReqSubSystemList) {%>
-														<option value="<%=obj[0]%>"><%=obj[1]%></option>
-													<%}%>
-												</select>
-											<%} else {%>
-												<input class="form-control" name="" id="LinkedPara"  readonly placeholder="No Linked System Requirements">
-											<%} %>
-										</div>
-									</div>
-								</div>
-							</div>
-						
-						<%}else{ %>
+				
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-3">
@@ -783,7 +758,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>
-							<%} %>
+						
 							
 							<div class="col-md-12">
 								<div class="row mt-2">
@@ -1034,7 +1009,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									
 								</div>
 							</div>
-								<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
+					<%-- 			<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
 								<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-3">
@@ -1058,7 +1033,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>	
-								<%} %>
+								<%} %> --%>
 								
 								
 									
@@ -1093,32 +1068,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 			<div class="row" id="row3" style="display:none;">
 							<div id="ReqTypeName" style="font-size: 1.5rem;margin-left: 10px;font-weight: 600;"></div>
 								
-										<%if(ReqSubSystemList!=null && ReqSubSystemList.size()>0) {%>
-								<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-4">
-										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
-											Linked System Requirements
-										</label>
-									</div>
-									<div class="col-md-8" style="margin-top: 1%;">
-										<div class="form-group">
-											<%if ((ReqSubSystemList != null) && (!ReqSubSystemList.isEmpty())) {%>
-										 	<select class="form-control selectdee" name="LinkedPara" id="LinkedParaEdit" data-width="80%" data-live-search="true" multiple onchange="getReqDetails()">
-													<option value="" disabled="disabled">---Choose----</option>
-													<%for (Object[] obj : ReqSubSystemList) {%>
-														<option value="<%=obj[0]%>"><%=obj[1]%></option>
-													<%}%>
-												</select>
-											<%} else {%>
-												<input class="form-control" name="" id="LinkedParaEdit"  readonly placeholder="No Linked System Requirements">
-											<%} %>
-										</div>
-									</div>
-								</div>
-							</div>
 						
-						<%}else{ %>
 									
 							<div class="col-md-12">
 								<div class="row">
@@ -1143,7 +1093,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>
-							<%} %>
+						
 									<div class="col-md-12">
 								<div class="row mt-2">
 									<div class=col-md-3>
@@ -1390,7 +1340,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 										</div>
 								</div>
 							</div>
-					<%
+				<%-- 	<%
 					if (productTreeMainId.equalsIgnoreCase("0")) {
 					%>
 					<div class="col-md-12">
@@ -1428,9 +1378,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 							</div>
 						</div>
 					</div>
-					<%
-					}
-					%>
+					<%}%> --%>
 
 
 					<div class=col-md-12>

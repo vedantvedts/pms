@@ -474,11 +474,19 @@ opacity
 											Time <span class="mandatory" style="color: red;">*</span>
 										</label>
 									</div>
-									<div class="col-md-10" style="">
+									<div class="col-md-2" style="">
 										<input type="text" name="EstimatedTimeIteration"
 											class="form-control" id="EstimatedTimeIterationAdd"
-											maxlength="255" required="required"
-											placeholder="Maximum 250 Chararcters" value="<%if(tp.getEstimatedTimeIteration()!=null){%><%=tp.getEstimatedTimeIteration() %> <%}%>">
+											min="1" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+											 value="<%if(tp.getEstimatedTimeIteration()!=null){%><%=Integer.parseInt(tp.getEstimatedTimeIteration()) %><%}%>">
+									</div>
+									<div class="col-md-2">
+									<select class="form-control" required="required" name="TimeType">
+									<option value="" selected  disabled="disabled">SELECT</option>
+									<option value="D" <%if(tp.getTimeType()!=null && tp.getTimeType().equalsIgnoreCase("D")) {%> selected="selected" <%} %>>DAYS</option>
+									<option value="H" <%if(tp.getTimeType()!=null && tp.getTimeType().equalsIgnoreCase("H")) {%> selected="selected" <%} %>>HOURS</option>
+									<option value="M" <%if(tp.getTimeType()!=null && tp.getTimeType().equalsIgnoreCase("M")) {%> selected="selected" <%} %>>MINUTES</option>
+									</select>
 									</div>
 								</div>
 							</div>
@@ -509,9 +517,10 @@ opacity
 									</div>
 									<div class="col-md-10" style="">
 										<input type="text" name="Schedule" class="form-control"
-											id="ScheduleAdd" maxlength="255" required="required"
-											placeholder="Maximum 250 Chararcters" value="<%if(tp.getSchedule()!=null){%><%=tp.getSchedule()%> <%}%>">
+											id="ScheduleAdd" min="1" required="required"
+											value="<%if(tp.getSchedule()!=null){%><%=tp.getSchedule()%> <%}%>">
 									</div>
+								
 								</div>
 							</div>
 						</div>

@@ -362,6 +362,10 @@ keyframes blinker { 20% {
 
 <%
 SpecificationMaster sp = (SpecificationMaster)request.getAttribute("SpecificationMaster");
+List<Object[]>systemList = (List<Object[]>)request.getAttribute("systemList");
+List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
+String mainId = sp.getMainId()!=null ?sp.getMainId().toString():"0";
+String specid = sp.getSpecsInitiationId()!=null ?sp.getSpecsInitiationId().split("_")[0].toString():"0";
 %>
 
 
@@ -371,6 +375,32 @@ SpecificationMaster sp = (SpecificationMaster)request.getAttribute("Specificatio
 			
 				<div class="col-md-12" id="reqdiv" style="background: white;">
 					<div class="card-body" id="cardbody">
+							<div class="row">
+							      <div class="col-md-3">
+                            		<label style="font-size: 17px; margin-top: 2%; color: #07689f">System Name :<span class="mandatory" style="color: red;">*</span></label>
+                            		</div>
+                            		<div class="col-md-4" style="margin-top: -7px;">
+                              		<select class="form-control selectdee" id="sid" required="required" name="sid" onchange="getSubSystem()" <%if(sp.getSid()!=null) {%> disabled="disabled" <%} %>>
+    									<option disabled selected value="">Choose...</option>
+    										<% for (Object[] obj : systemList) {
+    										%>
+											<option value="<%=obj[0]%>" <%if(sp.getSid()!=null && sp.getSid().toString().equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]%>  </option>
+											<%} %>
+  									</select>
+  									</div>
+							</div>
+							<br>
+								<div class="row">
+							      <div class="col-md-3">
+                            		<label style="font-size: 17px; margin-top: 2%; color: #07689f">Sub-System Name :<span class="mandatory" style="color: red;">*</span></label>
+                            		</div>
+                            		<div class="col-md-4" style="margin-top: -7px;">
+                              		<select class="form-control selectdee" id="subid" required="required" name="subid" onchange="" <%if(sp.getMainId()!=null) {%> disabled="disabled" <%} %>>
+    								
+  									</select>
+  									</div>
+							</div>
+							
 							<div class="row">
 								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Name: <span class="mandatory" style="color: red;">*</span></label>
@@ -383,6 +413,8 @@ SpecificationMaster sp = (SpecificationMaster)request.getAttribute("Specificatio
 								</div>
 								
 							<br>
+							
+		
 							<div class="row" id ="specsDiv" style="display: none;">
 								<div class="col-md-3">
 									<label id="specsId" style="font-size: 17px; margin-top: 5%; color: #07689f">
@@ -401,8 +433,7 @@ SpecificationMaster sp = (SpecificationMaster)request.getAttribute("Specificatio
 								<div class="col-md-9" id="Editor">
 			   					<%=sp.getDescription()!=null?sp.getDescription():"" %>
 
-<!-- 								<textarea required="required" name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
- -->								</div>
+								</div>
     								<textarea name="description" style="display: none;"  id="ConclusionDetails"></textarea>	
 								</div>
 								<div class="row mt-2">
@@ -484,7 +515,6 @@ SpecificationMaster sp = (SpecificationMaster)request.getAttribute("Specificatio
 	   	height:300
 	    });					
 	function submitData(){
-		console.log($('#Editor').summernote('code'))
 		   $('textarea[name=description]').val($('#Editor').summernote('code'));
 		   if(confirm('Are you sure to submit?')){
 			   
@@ -492,7 +522,48 @@ SpecificationMaster sp = (SpecificationMaster)request.getAttribute("Specificatio
 			   event.preventDefault();
 			   return false;
 		   }
-	}						
+	}	
+	
+	$( document ).ready(function() {
+	
+		getSubSystem();
+	});
+	
+	
+	function getSubSystem(){
+		
+		var sid =$('#sid').val();
+		$.ajax({
+			
+			type:'get',
+			url:'getSubsystem.htm',
+			data:{
+				sid:sid,
+			},
+			datatype:'json',
+			success:function (result){
+				var ajaxresult = JSON.parse(result);
+				console.log(ajaxresult)
+				
+				var s = '';
+				s += '<option   value="">SELECT</option>';
+			/* 	if($AssigneeLabCode == '@EXP'){
+					
+				} */
+				for (i = 0; i < ajaxresult.length; i++) 
+				{
+
+					s += '<option value="'+ajaxresult[i][0]+"#"+ajaxresult[i][10]+'">' +ajaxresult[i][3] + '</option>';
+				} 
+				var mainId = '<%=mainId%>';
+				var specid = '<%=specid%>';
+				$('#subid').html(s);
+				 $('#subid').val(mainId+"#"+specid).trigger('change'); 
+
+			}
+			
+		})
+	}
 	</script>
 
 </body>

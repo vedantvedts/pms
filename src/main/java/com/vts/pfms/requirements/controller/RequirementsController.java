@@ -4168,6 +4168,7 @@ public class RequirementsController {
 					subsytemspcCount=SpecificarionMasterList.size();
 				}
 			}
+			sp.setSpecsInitiationId(subids[1]+"_"+(subsytemspcCount+1));
 			sp.setIsActive(1);
 			}
 			long count = service.specMasterAddSubmit(sp);
@@ -4268,6 +4269,7 @@ public class RequirementsController {
 			tp.setDescription(req.getParameter("Description"));
 			tp.setPersonnelResources(req.getParameter("PersonnelResources"));
 			tp.setRemarks(req.getParameter("remarks"));;
+			tp.setTimeType(req.getParameter("TimeType"));
 			if(TestMasterId!=null) {
 				tp.setModifiedBy(UserId);
 				tp.setModifiedDate(LocalDate.now().toString());

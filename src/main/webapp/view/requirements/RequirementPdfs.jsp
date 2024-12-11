@@ -373,11 +373,11 @@ function openModal() {
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
 	    	                            
-	    	                            [
+	    	                      <%--       [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Link Sub-Systems', style: 'tableData' },
 	    	                                { text: '<%if(obj1[23]!=null) { String [] a=obj1[23].toString().split(", "); for(String s:a){ %> <%=productTreeList.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[2].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
-	    	                            ],
+	    	                            ], --%>
 	    	                            
 	    	                            
 
@@ -680,11 +680,11 @@ function openModal() {
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
 	    	                            
-	    	                            [
+	    	                       <%--      [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Link Sub-Systems', style: 'tableData' },
 	    	                                { text: '<%if(obj1[23]!=null) { String [] a=obj1[23].toString().split(", "); for(String s:a){ %> <%=productTreeList.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[2].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
-	    	                            ],
+	    	                            ], --%>
 	    	                            
 	    	                            
 
@@ -984,11 +984,11 @@ function openModal() {
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
 	    	                            
-	    	                            [
+	    	                        <%--     [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Link Sub-Systems', style: 'tableData' },
 	    	                                { text: '<%if(obj1[23]!=null) { String [] a=obj1[23].toString().split(", "); for(String s:a){ %> <%=productTreeList.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[2].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
-	    	                            ],
+	    	                            ], --%>
 	    	                            
 	    	                            
 

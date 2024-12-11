@@ -491,21 +491,28 @@ margin-left: -21px;
 											</div>
 											<hr>
 										</div>
+										<div class="col-md-12">
+											<div class="row">
 										<div class="col-md-3" style="margin-top: 1%">
 											<h5 style="font-size: 20px; color: #005086; width: fit-content">Test Name</h5>
 										</div>
 										<div class="col-md-2" style="margin-top: 1%">
 											<p id="name" style="font-size: 17px;"></p>
 										</div>
-										<div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
-											<h5 style="font-size: 20px; color: #005086;margin-top: 6%;margin-left:49%;" id="priority">Objective:</h5>
+										</div>
+											<hr>
+										</div>
+											<div class="col-md-12">
+											<div class="row">
+										<div class="col-md-3" style="margin-top: 1%">
+											<h5 style="font-size: 20px; color: #005086; width: fit-content">Objective</h5>
 										</div>
 										<div class="col-md-4" style="margin-top: 1%">
 											<p id="Objective" style="font-size: 17px;"></p>
+										</div> 
 										</div>
-										
 										<hr>
-										
+										</div>
 										<!-- category -->
 										<div class="col-md-12">
 											<div class="row">
@@ -846,8 +853,16 @@ margin-left: -21px;
 																	Schedule <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
-															<div class="col-md-10" style="">
-																<input type="text" name="Schedule" class="form-control" id="ScheduleAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
+															<div class="col-md-2" style="">
+																<input type="number" name="Schedule" class="form-control" id="ScheduleAdd" maxlength="255" required="required" min="1">
+															</div>
+															<div class="col-md-4" style="">
+															<select class="form-control" required="required" name="timeType">
+															<option value="" selected  disabled="disabled">SELECT</option>
+															<option value="D">D</option>
+															<option value="H">H</option>
+															<option value="M">M</option>
+															</select>
 															</div>
 														</div>
 													</div>

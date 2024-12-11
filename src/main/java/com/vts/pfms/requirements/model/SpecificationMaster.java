@@ -22,7 +22,7 @@ public class SpecificationMaster {
 	private String Description;
 	private String SpecsParameter;
 	private String SpecsUnit;
-	private Long SpecsInitiationId;
+	private String SpecsInitiationId;
 	private String SpecValue;
 	private String CreatedBy;
     private String CreatedDate;

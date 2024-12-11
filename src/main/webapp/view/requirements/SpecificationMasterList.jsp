@@ -186,6 +186,7 @@ label {
 									<tr>
 										<th>Select</th>
 										<th>Specification Name</th>
+										<th>Specification Code</th>
 										<th>Specification Parameter</th>
 										<th>Specification Value</th>
 										<!-- <th>Created By</th> -->
@@ -199,6 +200,7 @@ label {
 										<td align="center"><input type="radio" name="Did"
 											value=<%=obj[0]%>></td>
 										<td><%=obj[1]%></td>
+										<td><%=obj[5]%></td>
 										<td><%=obj[3]%></td>
 										<td><%=obj[6]%> <%=obj[4] %></td>
 										<%-- <td><%=obj[7]%></td> --%>

@@ -113,6 +113,8 @@ if(RequirementList!=null && RequirementList.size()>0){
 String filePath=(String)request.getAttribute("filePath");
 String labcode =(String ) session.getAttribute("labcode");
 String isPdf = (String)request.getAttribute("isPdf");
+List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeList");
+
 %>
 
 	<%String ses=(String)request.getParameter("result"); 
@@ -1129,7 +1131,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
 									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'
@@ -1403,7 +1405,11 @@ function DownloadDocPDF(){
 		    	                                { text: 'Specification Value', style: 'tableData' },
 		    	                                { text: '<%=obj1[9]!=null?obj1[9]:"-" %>', style: 'tableData' },
 		    	                            ],
-		    	                            
+		    	                            [
+		    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+		    	                                { text: 'Linked Sub-Systems', style: 'tableData' },
+		    	                                { text: '<%if(obj1[10]!=null) { String [] a=obj1[10].toString().split(","); for(String s:a){ %> <%=productTreeList.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[2].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
+		    	                            ],
 		    	                        ],
 		    	                    },
 		    	                    layout: {

@@ -32,5 +32,6 @@ public class Specification  {
     private String CreatedDate;
     private String ModifiedBy;
     private String ModifiedDate;
+    private String LinkedSubSystem;
 	private int IsActive;
 }

@@ -385,6 +385,7 @@ if(RequirementList!=null && RequirementList.size()>0){
 }
 
 String reqInitiationId = (String) request.getAttribute("reqInitiationId");
+List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
 
 %>
 	<%String ses=(String)request.getParameter("result"); 
@@ -566,7 +567,31 @@ String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 								</div>
 								
 								</div>
+									<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
 								
+								<div class="row">
+									<div class="col-md-2">
+										<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+											Linked subsystem
+										</label>
+									</div>
+									<div class="col-md-7" style="margin-top: 1%;">
+										<div class="form-group">
+											<%if ((productTreeList != null) && (!productTreeList.isEmpty())) {%>
+												<select class="form-control selectdee" name="LinkedSub" id="LinkedSub" data-width="80%" data-live-search="true" multiple >
+													<option value="" disabled="disabled">---Choose----</option>
+													<%for (Object[] obj : productTreeList) {%>
+														<option value="<%=obj[0]%>"><%=obj[1]+" "+obj[2] %></option>
+													<%}%>
+												</select>
+											<%} else {%>
+												<input class="form-control" name="" id="LinkedSub"  readonly placeholder="No para specified for Project">
+											<%} %>
+										</div>
+									</div>
+								</div>
+							
+								<%} %>
 								
 							
 							
@@ -594,8 +619,8 @@ String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 								<div id="row2" style="display: none;">
 								
 								<div class="row">
-								<div class="col-md-3">
-								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Id :</label>
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Id :</label>
 								</div>
 								<div class="col-md-8">
 								
@@ -605,51 +630,66 @@ String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 								<button class="btn btn-sm bg-transparent" id="btnedit" onclick="edit(this)"><i class="fa fa-pencil-square-o fa-lg" style="color:orange" aria-hidden="true"></i></button>
 								</div>
 								</div>
-								
+									<hr>
 								<div class="row">
-								<div class="col-md-3">
-								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Linked Requirements :</label>
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Linked Requirements :</label>
 								</div>
 								<div class="col-md-8">
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="linkedreq"></p>
 								</div>
 								</div>
-								
+									<hr>
 								<div class="row">
-								<div class="col-md-3">
-								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Parameter :</label>
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Parameter :</label>
 								</div>
 								<div class="col-md-8">
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specparam"></p>
 								</div>
 								</div>
-									
+										<hr>
 								<div class="row">
-									<div class="col-md-3">
-								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Value :</label>
+									<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Value :</label>
 								</div>
 								<div class="col-md-8">
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specValues"></p>
 								</div>															
 								</div>
+									<hr>
 								<div class="row">
-									<div class="col-md-3">
-								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Specification Unit :</label>
+									<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Unit :</label>
 								</div>
 								<div class="col-md-8">
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specUnits"></p>
 								</div>								
 								</div>
+									<hr>
 								<div class="row">
-								<div class="col-md-3">
-								<label style="font-size: 17px;float: right; margin-top: 5%; color: #07689f">Description :</label>
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description :</label>
 								</div>
 								
 								<div class="col-md-8">
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="DescriptionDetails"></p>
 								</div>
 								</div>
-								
+									<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
+								<hr>
+								<div class="row">
+								<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Linked SubSystem:
+										</h5>
+									</div>
+
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="subsytemshow" style="font-size: 18px;"></p>
+									</div>
+								</div>
+								<%} %>
 								</div>
 							</div>
 				</div>
@@ -758,6 +798,15 @@ var editvalue="add";
 
 
 <%}%>
+
+var productreelist = [];
+
+<%if(productTreeList!= null &&  productTreeList.size()>0){ 
+	for(Object[]obj:productTreeList){
+	%>
+	productreelist.push(['<%= obj[0].toString() %>', '<%= obj[2].toString() %>']);
+
+<%}}%>
  function showDetails(value){
 	 $('#row1').hide();
 	 $('#row2').show();
@@ -814,7 +863,36 @@ var editvalue="add";
 		 }else{
 			 $('#specValues').html("-");
 		 }
-		
+	var Linkesubsystem = "";
+			
+			var LinkedSubArray = [];
+			
+			if(Data.LinkedSubSystem===undefined){
+				LinkedSubArray = [];
+			}else{
+				LinkedSubArray = Data.LinkedSubSystem.split(",");
+			}
+			
+			console.log(LinkedSubArray.length)
+			if(LinkedSubArray.length==0){
+				$('#subsytemshow').html("-");	
+			
+			}else{
+				
+				for(var i =0;i<LinkedSubArray.length;i++){
+					for(var j=0;j< productreelist.length;j++){
+						
+						if(LinkedSubArray[i]===productreelist[j][0]){
+							Linkesubsystem = Linkesubsystem+productreelist[j][1]+'<br>'
+						}
+						
+					}
+				}
+				
+				$('#subsytemshow').html(Linkesubsystem);	
+			}
+		 
+		 
 		 }
 	 })
  }
@@ -862,6 +940,9 @@ var editvalue="add";
 		     $('#linkedRequirements').val(LinkedRequirements).trigger('change');
 			 /* $('#descriptionadd').val(Data.Description); */
 			 $('#Editor').summernote('code', Data.Description);
+			 
+			 var LinkedSubSystem = Data.LinkedSubSystem.split(",");
+			 $('#LinkedSub').val(LinkedSubSystem).trigger('change');
 			 if(Data.SpecsParameter!==undefined){
 				 $('#specParameter').val(Data.SpecsParameter);
 			 }else{

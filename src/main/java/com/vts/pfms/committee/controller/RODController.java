@@ -103,12 +103,20 @@ public class RODController {
 			String projectType=req.getParameter("projectType")!=null?req.getParameter("projectType"):"P";
 			
 			List<Object[]> projectdetailslist=committeeservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-
-			if(projectdetailslist.size()==0) 
-			{				
-				redir.addAttribute("resultfail", "No Project is Assigned to you.");
-				return "redirect:/MainDashBoard.htm";
+ 
+			if(projectdetailslist.size()==0 && projectType.equalsIgnoreCase("P")) 
+			{	
+				projectType="N";
+				//return "redirect:/MainDashBoard.htm";
+				req.setAttribute("resultfail", "No project is Assigned to You!");
 			}
+			if(InitiatedProjectDetailsList.size()==0 && projectType.equalsIgnoreCase("I")) 
+			{	
+				//return "redirect:/MainDashBoard.htm";
+				projectType="N";
+				req.setAttribute("resultfail", "No project is Assigned to You!");
+			}
+			
 
 			if(rodNameId==null)
 			{

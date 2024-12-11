@@ -236,9 +236,6 @@ SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 
  <form class="form-inline"  method="POST" action="SystemProductTree.htm">
   <div class="row W-100" style="width: 100%;">
-
-  
-	
                                     <div class="col-md-2">
                             		<label class="control-label">System Name :</label>
                             		</div>
@@ -975,6 +972,7 @@ if(ses1!=null){	%>
 							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 					            <form action="SystemLevelNameAdd.htm" method="get">
 						            <input type="text" name="LevelName" required>
+						            <input type="text" name="LevelCode" required  maxlength="3" style="width:15%" placeholder="CODE">
 						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#1#0#<%=count %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 							   </form>    

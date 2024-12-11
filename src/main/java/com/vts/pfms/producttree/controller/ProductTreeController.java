@@ -585,7 +585,7 @@ public class ProductTreeController {
 				dto.setSubLevelId(SubLevelId);
 				dto.setLevelName(LevelName);
 				dto.setCreatedBy(UserId);
-				
+				dto.setLevelCode(req.getParameter("LevelCode"));
 				
 				long result=service.AddSystemLevelName(dto);
 				
@@ -611,7 +611,17 @@ public class ProductTreeController {
 		
 	}
 	
-	
+	@RequestMapping(value = "getSubsystem.htm")
+	public @ResponseBody String getSubsystem(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String sid = req.getParameter("sid");
+		List<Object[]>proList=service.getSystemProductTreeList(sid);
+		if(proList!=null && proList.size()>0) {
+			proList=proList.stream().filter(e->e[2].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+		}
+		Gson json = new Gson();
+		return json.toJson(proList);
+	}
 	
 	
 }

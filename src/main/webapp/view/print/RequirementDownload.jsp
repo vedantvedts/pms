@@ -2491,7 +2491,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString() + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") + "(" + LabList[0].toString() + ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
 									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'
@@ -2801,7 +2801,11 @@ This appendix contains acronyms and provides standard definitions for terminolog
     	                                		+ '<%} %>'
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
-
+    	                            [
+    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+    	                                { text: 'Test Stage', style: 'tableData' },
+    	                                { text: '<%if(obj1[24]!=null) {%> <%=obj1[24] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                            ],
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Design/Analysis', style: 'tableData' },
@@ -2841,11 +2845,11 @@ This appendix contains acronyms and provides standard definitions for terminolog
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
     	                            
-    	                            [
+    	                         <%--    [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Link Sub-Systems', style: 'tableData' },
     	                                { text: '<%if(obj1[23]!=null) { String [] a=obj1[23].toString().split(", "); for(String s:a){ %> <%=productTreeList.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[2].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
-    	                            ],
+    	                            ], --%>
     	                            
     	                            
 

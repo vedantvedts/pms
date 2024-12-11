@@ -23,6 +23,6 @@ public interface ProductTreeService {
 
 	public long AddSystemLevelName(ProductTreeDto dto)throws Exception;
 
-	public Object getSystemProductTreeList(String sid)throws Exception;
+	public List<Object[]> getSystemProductTreeList(String sid)throws Exception;
 
 }

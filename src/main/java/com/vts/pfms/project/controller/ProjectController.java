@@ -9631,7 +9631,6 @@ public class ProjectController
 				productTreeMainId = specsInitiation.getProductTreeMainId().toString();
 				projectType = projectId.equals("0")?"I":"M";
 				SpecsInitiationId = reqService.getFirstVersionSpecsInitiationId(initiationId,projectId,productTreeMainId)+"";
-				System.out.println("SpecsInitiationId2 --"+SpecsInitiationId);
 			}else {
 				projectType = req.getParameter("projectType");
 				projectId = req.getParameter("projectId");
@@ -9685,6 +9684,8 @@ public class ProjectController
 			req.setAttribute("RequirementList", RequirementList);
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
+			List<Object[]> productTreeList = reqService.productTreeListByProjectId(projectId);
+			req.setAttribute("productTreeList", productTreeList);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -9850,7 +9851,9 @@ public class ProjectController
 		
 			req.setAttribute("RequirementList", RequirementList);
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));			
-			req.setAttribute("SpecsId", req.getParameter("SpecsId")==null?"0":req.getParameter("SpecsId") );			
+			req.setAttribute("SpecsId", req.getParameter("SpecsId")==null?"0":req.getParameter("SpecsId") );
+			List<Object[]> productTreeList = reqService.productTreeListByProjectId(projectId);
+			req.setAttribute("productTreeList", productTreeList);
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -9910,10 +9913,22 @@ public class ProjectController
 				}
 			}
 		
+			String linkedsubsytem="";
+			if(req.getParameterValues("LinkedSub")!=null) {
+				String []linkedreq= req.getParameterValues("LinkedSub");
+
+				for(int i=0;i<linkedreq.length;i++) {
+					linkedsubsytem=linkedsubsytem+linkedreq[i];
+					if(i!=linkedreq.length-1) {
+						linkedsubsytem=linkedsubsytem+",";
+					}
+				}
+			}
 			
 			Specification specs= action!=null && action.equalsIgnoreCase("Add") ? new Specification() :service.getSpecificationData(SpecsId) ;
 			
 			specs.setLinkedRequirement(linkedRequirements);
+			specs.setLinkedSubSystem(linkedsubsytem);
 			specs.setSpecValue(req.getParameter("specValue"));
 			specs.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
 			specs.setDescription(req.getParameter("description"));

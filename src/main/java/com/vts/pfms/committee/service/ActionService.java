@@ -168,4 +168,5 @@ public interface ActionService {
 	public List<Object[]> getMeetingAction(long MeetingId, String loginType, String empId)throws Exception;
 	public int CommitteActionDelete(ActionAssignDto actionAssign)throws Exception;
 	public List<Object[]> getvendorList()throws Exception;
+	public Long rfaCloseForExternal(RfaActionDto rfa)throws Exception;
 }

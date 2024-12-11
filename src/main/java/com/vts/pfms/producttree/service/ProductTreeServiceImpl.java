@@ -117,11 +117,12 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		prod.setCreatedBy(dto.getCreatedBy());
 		prod.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		prod.setIsActive(1);
+		prod.setLevelCode(dto.getLevelCode());
 		return dao.AddSystemLevelName(prod);
 	}
 	
 	@Override
-	public Object getSystemProductTreeList(String sid) throws Exception {
+	public List<Object[]> getSystemProductTreeList(String sid) throws Exception {
 		return dao.getSystemProductTreeList(sid);
 	}
 }

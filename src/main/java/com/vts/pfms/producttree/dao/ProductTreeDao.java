@@ -28,7 +28,7 @@ public interface ProductTreeDao {
 
 	public long AddSystemLevelName(SystemProductTree prod)throws Exception;
 
-	public Object getSystemProductTreeList(String sid)throws Exception;
+	public List<Object[]> getSystemProductTreeList(String sid)throws Exception;
 
 	
 
