@@ -325,6 +325,7 @@ public interface CommitteeDao {
 	public List<Object[]> MomeNoteApprovalList(long empId, String fromDate, String toDate)throws Exception;
 	public List<Object[]> carsScheduleList(String carsInitiationId) throws Exception;
 	public BigInteger carsMeetingCount(String carsInitiationId) throws Exception;
+	public void InvitationRoleoUpdate(String role, String committeeinvitationid) throws Exception;
 	
 
 }

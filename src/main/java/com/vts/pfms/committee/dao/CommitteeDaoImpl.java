@@ -60,7 +60,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 {
 	private static final Logger logger=LogManager.getLogger(CommitteeDaoImpl.class);
 	
-	private static final String EMPLOYEELIST="select a.empid, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'Emp',b.designation,a.empno FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND labcode=:labcode ORDER BY a.srno=0,a.srno";
+	private static final String EMPLOYEELIST="SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.Designation,a.EmpNo  FROM employee a,employee_desig b WHERE a.IsActive='1' AND a.DesigId=b.DesigId AND LabCode=:LabCode ORDER BY a.SrNo=0,a.SrNo";
 	private static final String LASTCOMMITTEEID="SELECT committeemainid FROM committee_main WHERE isactive=1 and committeeid=:committeeid AND projectid=:projectid and divisionid=:divisionid AND InitiationId=:initiationid AND CARSInitiationId=:CARSInitiationId";
 	private static final String UPDATECOMMITTEEVALIDTO="UPDATE committee_main SET isactive=0,Status='E',validto=:validto ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE committeemainid=:lastcommitteeid";
 	private static final String COMMITTEENAME="SELECT committeeid,committeename,committeeshortname,projectapplicable,periodicduration,isglobal FROM committee WHERE  committeeid=:committeeid";
@@ -3443,6 +3443,17 @@ private static final String ENOTEAPPROVELIST="SELECT a.EnoteId,a.RefNo,a.RefDate
 				return BigInteger.valueOf(0);
 			}
 		
+		}
+		private static final String EMPROLEUPDATE = "UPDATE committee_schedules_invitation SET  EmpMeetingRole =:empMeetingRole WHERE committeeinvitationid=:committeeinvitationid";
+		@Override
+		public void InvitationRoleoUpdate(String empMeetingRole, String committeeinvitationid) throws Exception {
+
+			Query query = manager.createNativeQuery(EMPROLEUPDATE);
+			
+			query.setParameter("empMeetingRole", empMeetingRole);
+			query.setParameter("committeeinvitationid", committeeinvitationid);
+			
+			query.executeUpdate();
 		}
 }
 
