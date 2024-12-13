@@ -36,5 +36,8 @@ public class RfaActionDto
 	private int IsActive;
 	private String TypeOfRfa;
 	private String VendorCode;
+	private String rfastatus;
+	private String labcode;
+
 	
 }
