@@ -19,6 +19,7 @@ import com.vts.pfms.committee.model.RfaAttachment;
 import com.vts.pfms.committee.model.RfaCC;
 import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.model.RfaTransaction;
+import com.vts.pfms.committee.model.RfaAttachment;
 
 public interface ActionDao {
 
@@ -198,4 +199,5 @@ public interface ActionDao {
 	public List<Object[]> getMeetingAction(long meetingId, String loginType, String empId) throws Exception;
 	public int CommitteActionDelete(ActionAssignDto actionAssign) throws Exception;
 	public List<Object[]> getVendorList()throws Exception;
+	public RfaAttachment getAttachmentByRfaId(Long rfaId)throws Exception;
 }

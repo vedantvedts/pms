@@ -1761,7 +1761,7 @@ public class ActionServiceImpl implements ActionService {
 		for(int i=0;i<assignee.length;i++) {
 			RfaAssign assign = new RfaAssign();
 			assign.setAssigneeid(Long.parseLong(assignee[i]));
-			assign.setLabCode(LabCode);
+			assign.setLabCode(rfa.getVendorCode());
 			assign.setRfaId(rfaIdAttach);
 			assign.setCreatedBy(UserId);
 			assign.setCreatedDate(sdf.format(new Date()));
@@ -1875,7 +1875,7 @@ public class ActionServiceImpl implements ActionService {
 		{
 			RfaAssign assign = new RfaAssign();
 			assign.setAssigneeid(Long.parseLong(assignee[i]));
-			assign.setLabCode(LabCode);
+			assign.setLabCode(rfa.getVendorCode());
 			assign.setRfaId(rfa.getRfaId());
 			assign.setCreatedBy(rfa.getModifiedBy());
 			assign.setCreatedDate(sdf.format(new Date()));
@@ -1949,10 +1949,14 @@ public Long RfaModalSubmit(RfaInspection inspection,RfaActionDto rfa) throws Exc
 	
 	inspection.setCreatedDate(sdf1.format(new Date()));
 	
+	String rfaNo = inspection.getRfaNo();
+	
+	String projectCode = inspection.getRfaNo().replace("/", "_").split("_")[1];
+	
 	String LabCode = rfa.getLabCode();
 //	String Path = LabCode + "\\RFAFiles\\";
-	Path modalPath = Paths.get(uploadpath,LabCode, "RFAFiles");
-	Path modalPath1 = Paths.get(LabCode, "RFAFiles");
+	Path modalPath = Paths.get(uploadpath,LabCode, "RFAFiles",projectCode,inspection.getRfaNo().replace("/", "_"));
+	Path modalPath1 = Paths.get(LabCode, "RFAFiles",projectCode,inspection.getRfaNo().replace("/", "_"));
 	
 	RfaAttachment rfaAttach=new RfaAttachment();
 	
@@ -2007,10 +2011,14 @@ public Object[] RfaAssignAjax(String rfaId) throws Exception {
 public Long RfaModalUpdate(RfaInspection inspection,RfaActionDto rfa) throws Exception {
 	inspection.setModifiedDate(sdf1.format(new Date()));
 
+	String rfaNo = inspection.getRfaNo();
+	
+	String projectCode = inspection.getRfaNo().replace("/", "_").split("_")[1];
+	
 	String LabCode = rfa.getLabCode();
 //	String Path = LabCode + "\\RFAFiles\\";
-	Path modalPath = Paths.get(uploadpath,LabCode, "RFAFiles");
-	Path modalPath1 = Paths.get(LabCode, "RFAFiles");
+	Path modalPath = Paths.get(uploadpath,LabCode, "RFAFiles",projectCode,inspection.getRfaNo().replace("/", "_"));
+	Path modalPath1 = Paths.get(LabCode, "RFAFiles",projectCode,inspection.getRfaNo().replace("/", "_"));
 	
 	RfaAttachment rfaAttach=new RfaAttachment();
 	
@@ -2213,7 +2221,7 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
    List<String> Status1  = Arrays.asList("AF","AX","AC");
    List<String> Status2  = Arrays.asList("RFA","AY","AR");
    String Status3 ="AV";
-	
+	String TypeOfRfa = obj[6].toString();
 	
 	if(Status1.contains(rfaStatus)) {
 		Url="RfaActionForwardList.htm";
@@ -2244,7 +2252,7 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
 	List<RfaTransaction> trans = new ArrayList<RfaTransaction>();
 	
 	
-	if(rfaStatus.equalsIgnoreCase("AV")){
+	if(rfaStatus.equalsIgnoreCase("AV")&& TypeOfRfa!=null && TypeOfRfa.equalsIgnoreCase("I")){
 	  for(int i=0;i<assignId.size();i++) {
 		  
 	    RfaTransaction tr = new RfaTransaction();
@@ -2257,7 +2265,11 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
 		trans.add(tr);
 	  }
 	}else {
-		
+		if(rfaStatus.equalsIgnoreCase("AV")&& TypeOfRfa!=null && TypeOfRfa.equalsIgnoreCase("E")) {
+			rfaEmpId=obj[7].toString();
+			Url="RfaAction.htm";
+			System.out.println("rfaEmpId--"+rfaEmpId);
+		}
 		RfaTransaction tr = new RfaTransaction();
 		
 		tr.setRfaId(Long.parseLong(rfa));
@@ -2272,9 +2284,9 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
 	
 	List<String> employee= new ArrayList<String>();
 	
-	if(rfaEmpId==null) {
+	if(rfaEmpId==null && TypeOfRfa!=null && TypeOfRfa.equalsIgnoreCase("I")) {
 		employee.addAll(assignId);
-	}else {
+	}else{
 		 employee.add(rfaEmpId);
 	}
 	
@@ -2583,5 +2595,77 @@ public int CommitteActionDelete(ActionAssignDto actionAssign) throws Exception {
 @Override
 public List<Object[]> getvendorList() throws Exception {
 	return dao.getVendorList();
+}
+
+@Override
+public Long rfaCloseForExternal(RfaActionDto rfa) throws Exception {
+	List<String> assignId = new ArrayList<String>(); // For storing multiple assigneeid 
+
+	for(Object[]Assignee:AssigneeEmpList()) {  
+		if(Assignee[0].toString().equalsIgnoreCase(rfa.getRfaId()+"")) {  // comparing with rfaid
+			assignId.add(Assignee[3].toString());           // add all multiple assigneeid in assignId
+		}
+	}
+	List<RfaTransaction> trans = new ArrayList<RfaTransaction>();
+	if(rfa.getRfastatus().equalsIgnoreCase("ARC")) {
+	RfaTransaction tr = new RfaTransaction();
+	tr.setRfaId(rfa.getRfaId());
+	tr.setRfaStatus(rfa.getRfastatus());
+	tr.setEmpId(rfa.getActionBy());
+	tr.setActionBy(rfa.getActionBy()+"");
+	tr.setActionDate(sdf1.format(new Date()));
+	tr.setRemarks(rfa.getReference());
+	trans.add(tr);
+	}else {
+	
+
+		for(int i=0;i<assignId.size();i++) {
+			 RfaTransaction tr = new RfaTransaction();
+			 tr.setRfaId(rfa.getRfaId());
+			 tr.setRfaStatus(rfa.getRfastatus());
+			 tr.setEmpId(Long.parseLong(assignId.get(i))); // Here multiple assigneeid store in transaction
+			 tr.setActionBy(rfa.getActionBy()+"");
+			 tr.setActionDate(sdf1.format(new Date()));
+			 tr.setRemarks(rfa.getReference());
+			trans.add(tr);
+			  }
+	}
+	RfaAction rf = new RfaAction();
+	rf.setRfaStatus(rfa.getRfastatus());
+	List<PfmsNotification> x = new ArrayList<>();  
+	
+
+	if(!rfa.getRfastatus().equalsIgnoreCase("ARC")) {
+		for(int i=0;i<assignId.size();i++) {
+		PfmsNotification pf = new PfmsNotification();
+		pf.setEmpId(Long.parseLong(assignId.get(i)));	
+		pf.setStatus("MAR");
+		pf.setNotificationUrl("RfaInspection.htm");
+		pf.setNotificationMessage("RFA No.-"+rfa.getRfaNo() +"is came for rechecking ");
+		pf.setIsActive(1);
+		pf.setNotificationby(rfa.getActionBy());
+		pf.setNotificationDate(sdf1.format(new Date()));
+		pf.setCreatedBy(rfa.getModifiedBy());
+		pf.setCreatedDate(sdf1.format(new Date()));
+		x.add(pf);
+		}
+	}
+	long count=dao.RfaActionForward(x,rf,trans,rfa.getRfaId()+"");
+	if(!rfa.getMultipartfile().isEmpty()) {
+	Path rfaPath = Paths.get(uploadpath,rfa.getLabCode(), "RFAFiles",rfa.getProjectCode(),rfa.getRfaNo().replace("/", "_"));
+	 RfaAttachment attachment = dao.getAttachmentByRfaId(rfa.getRfaId())!=null?dao.getAttachmentByRfaId(rfa.getRfaId()):new RfaAttachment();
+	 attachment.setRfaId(rfa.getRfaId());
+	 attachment.setCloseAttachment(rfa.getMultipartfile().getOriginalFilename());
+	 saveFile1(rfaPath, rfa.getMultipartfile().getOriginalFilename(), rfa.getMultipartfile());
+	 attachment.setCreatedBy(rfa.getModifiedBy());
+	 attachment.setCreatedDate(sdf.format(new Date()));
+	 attachment.setIsActive(1);
+	 dao.RfaAttachment(attachment);
+	}
+	
+
+	
+
+	return count;
 }
 }

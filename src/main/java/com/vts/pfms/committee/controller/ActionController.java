@@ -3310,11 +3310,13 @@ public class ActionController {
 				
 		        List<Object[]> AssigneeList =service.AssigneeEmpList();
 		        List<String> AssignEmp=new ArrayList<>();
-		        
+		        String assigneeLab =LabCode;
 		        for(Object[] obj :AssigneeList) {
 		        	if(obj[0].toString().equalsIgnoreCase(rfaid)) {
 		        		AssignEmp.add(obj[3].toString());
+		        		assigneeLab=obj[4].toString();
 		        	}
+		        	
 		        }
 		        
 		        List<Object[]> RfaCCList =service.RfaCCList();
@@ -3325,11 +3327,13 @@ public class ActionController {
 		        		RfaCCEmp.add(obj[3].toString());
 		        	}
 		        }
-		        
+		        System.out.println("assigneeLab"+assigneeLab);
 		        Gson json = new Gson();
 		        req.setAttribute("AssignEmp", json.toJson(AssignEmp));
 		        req.setAttribute("RfaCCEmp", json.toJson(RfaCCEmp));
-		        
+		    	List<Object[]>vendorList = service.getvendorList();
+				req.setAttribute("vendorList", vendorList);
+				req.setAttribute("assigneeLab", assigneeLab);
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() +" Inside RfaActionEdit.htm "+UserId, e);
@@ -3420,7 +3424,7 @@ public class ActionController {
 				rfa.setMultipartfile(attachment);
 				rfa.setAssignorAttachment(attachment.getOriginalFilename());
 				rfa.setActionBy(Long.parseLong(EmpId));
-				
+				rfa.setVendorCode(req.getParameter("vendor")!=null?req.getParameter("vendor").split("/")[0]:LabCode);
 				
 				Long count=service.RfaEditSubmit(rfa,assignee,CCEmpName);
 				if (count > 0) {
@@ -3472,7 +3476,7 @@ public class ActionController {
 				rfa.setAssignorAttachment(attachment.getOriginalFilename());
 				rfa.setActionBy(Long.parseLong(EmpId));
 				rfa.setTypeOfRfa(req.getParameter("type"));
-				rfa.setVendorCode(req.getParameter("vendor")!=null?req.getParameter("vendor"):"-");
+				rfa.setVendorCode(req.getParameter("vendor")!=null?req.getParameter("vendor").split("/")[0]:"-");
 				
 				Long count=service.RfaActionSubmit(rfa,LabCode,UserId,assignee,CCEmpName);
 				
@@ -3567,7 +3571,42 @@ public class ActionController {
 	        
 	        if(attachmentData!=null) {
 	        	try {
-	        		
+	        		if(attachmentData[6]!=null) {
+		        		
+	        			if(FilenameUtils.getExtension(attachmentData[6].toString()).equalsIgnoreCase("pdf")) {
+	        				Path pdfPath1 = Paths.get(uploadpath, LabCode,"RFAFiles",projectCode,printname.replace('/', '_'),attachmentData[6].toString());
+	        			    PdfReader pdfReader1 = new PdfReader(pdfPath1.toString());
+	        		        PdfDocument pdfDocument2 = new PdfDocument(pdfReader1,new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        		        Document document5 = new Document(pdfDocument2,PageSize.A4);
+	        		        document5.setMargins(50, 50, 50, 50);
+	        		        Rectangle pageSize;
+	        		        PdfCanvas canvas;
+	        		        PdfPage page = pdfDocument2.getPage(1);
+	        		            pageSize = page.getPageSize();
+	        		            canvas = new PdfCanvas(page);
+	        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+	        		           // canvas.addImage(leftLogo, recta, false);
+	        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+	        		            //canvas.addImage(rightLogo, recta2, false);
+	        		            canvas.beginText().setFontAndSize(
+	        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 15)
+	        		                .moveText(pageSize.getWidth() / 3, pageSize.getHeight() - 45)
+	        		                 .showText("Closure Report (RFA)")
+	        		                  .endText();
+
+	        		   
+	        		        document5.close();
+	        		        pdfDocument2.close();
+	        	        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+	        	        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+	        		        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+	        		        
+	        		        pdfDocument3.close();
+	        		        pdf2.close();
+	        		        Path pathOfFile1= Paths.get( path+File.separator+filename+"temp.pdf");
+	        		        Files.delete(pathOfFile1);	
+	        			}
+					} 
 	        		if(attachmentData[3]!=null) {
 		        		
 	        			if(FilenameUtils.getExtension(attachmentData[3].toString()).equalsIgnoreCase("pdf")) {
@@ -3644,6 +3683,8 @@ public class ActionController {
 	        		        Files.delete(pathOfFile1);	
 	        			}
 					} 
+	        	
+
 	        	}
 	        	
 	        	catch (Exception e) {
@@ -3700,6 +3741,7 @@ public class ActionController {
 			    String rfa=req.getParameter("RFAID");
 			    String status=req.getParameter("rfaoptionby");
 			    String rfaEmpId=req.getParameter("rfaEmpModal");
+			    
 
 			  long count=service.RfaActionForward(status,projectid,UserId,rfa,EmpId,rfaEmpId);
 			  
@@ -5049,7 +5091,45 @@ public class ActionController {
         		return null;
         	}
             
-            
+        	@RequestMapping(value = "RfaActionClose.htm", method = {RequestMethod.GET, RequestMethod.POST})
+    	 	public String RfaActionClose( HttpServletRequest req ,HttpSession ses , RedirectAttributes redir,
+    	 			@RequestPart(name ="attachment", required = false) MultipartFile attachment)throws Exception
+    	 	{
+    	 		String UserId = (String) ses.getAttribute("Username");
+    			String LabCode = (String) ses.getAttribute("labcode");
+    			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+    	 		logger.info(new Date() +"Inside RfaActionClose.htm "+UserId);
+    			try {
+    				String rfaid=req.getParameter("RFAID");
+    				String status=req.getParameter("rfaoptionby");
+    				RfaActionDto rfa = new RfaActionDto();
+    				rfa.setMultipartfile(attachment);
+    				rfa.setRfaId(Long.parseLong(rfaid));
+    				rfa.setRfastatus(status);
+    				rfa.setModifiedBy(UserId);
+    				rfa.setActionBy(Long.parseLong(EmpId));
+    				rfa.setLabCode(LabCode);
+    				rfa.setRfaNo(req.getParameter("rfano"));
+    				rfa.setProjectCode(req.getParameter("projectCode"));
+    				
+    				rfa.setReference(req.getParameter("remarks"));
+    				Long count = service.rfaCloseForExternal(rfa);
+    				if (count> 0) {
+    					if(rfa.getRfastatus().equalsIgnoreCase("ARC")) {
+    					redir.addAttribute("result", "RFA closed Successfully");
+    					}else {
+        				redir.addAttribute("result", "RFA returned for Rechecking");
+    					}
+    				} else {
+    					redir.addAttribute("resultfail", "RFA close Unsuccessfull");
+    				}
+    			    }catch (Exception e) {
+    					e.printStackTrace();
+    					logger.error(new Date() +" Inside RfaActionSubmit.htm "+UserId, e);
+    				}
+    	 		return "redirect:/RfaAction.htm";
+    	 		
+    	 	}  
             
             
 }

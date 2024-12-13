@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
@@ -730,7 +731,7 @@ public class ActionDaoImpl implements ActionDao{
 		return actiondata;
 	}
 	
-	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,CONCAT(IFNULL(CONCAT(e.title,' '),''),e.expertname) as 'expertname' ,e.expertno,'Expert' AS designation FROM expert e WHERE e.isactive=1 ";
+	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,CONCAT(IFNULL(CONCAT(e.title,' '),''),e.expertname) as 'expertname' ,e.expertno,'Expert' AS designation,e.organization FROM expert e WHERE e.isactive=1 ";
 	@Override
 	public List<Object[]> ClusterExpertsList() throws Exception
 	{
@@ -968,7 +969,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String RFAACTIONLIST="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE a.projectid=:ProjectId END AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.assignorid=:EmpId AND a.rfastatus=g.rfastatus AND a.rfadate BETWEEN :fdate AND :tdate ORDER BY rfaid DESC";
+	private static final String RFAACTIONLIST="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails,a.TypeOfRfa FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE a.projectid=:ProjectId END AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.assignorid=:EmpId AND a.rfastatus=g.rfastatus AND a.rfadate BETWEEN :fdate AND :tdate ORDER BY rfaid DESC";
 	@Override
 	public List<Object[]> GetRfaActionList(String EmpId,String ProjectId,String fdate,String tdate) throws Exception 
 	{
@@ -1032,7 +1033,7 @@ public class ActionDaoImpl implements ActionDao{
 		return RfaCount;
 	}
 	
-	private static final String RFAEDITDATA="SELECT rfaid,labcode,projectid,rfano,rfadate,priorityid,statement,description,reference,rfastatus,createdby,createddate,modifiedby,modifieddate,isactive FROM pfms_rfa_action WHERE rfaid=:rfaid";
+	private static final String RFAEDITDATA="SELECT rfaid,labcode,projectid,rfano,rfadate,priorityid,statement,description,reference,rfastatus,createdby,createddate,modifiedby,modifieddate,isactive,TypeOfRfa FROM pfms_rfa_action WHERE rfaid=:rfaid";
 	@Override
 	public Object[] RfaActionEdit(String rfaid) throws Exception {
 		
@@ -1156,7 +1157,7 @@ public class ActionDaoImpl implements ActionDao{
 		return a;
 	}
 
-	private static final String RFALIST="SELECT a.rfaid,a.labcode,a.rfano,a.rfadate,a.rfastatus,(SELECT CONCAT(e.empname,',' ,c.designation) FROM employee e, employee_desig c WHERE empid=:EmpId AND e.desigid=c.desigid)AS emp FROM pfms_rfa_action a WHERE rfaid=:rfa";
+	private static final String RFALIST="SELECT a.rfaid,a.labcode,a.rfano,a.rfadate,a.rfastatus,(SELECT CONCAT(e.empname,',' ,c.designation) FROM employee e, employee_desig c WHERE empid=:EmpId AND e.desigid=c.desigid)AS emp,a.TypeOfRfa,a.AssignorId FROM pfms_rfa_action a WHERE rfaid=:rfa";
     @Override
 	public Object[] RfaList(String rfa,String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFALIST);
@@ -1341,12 +1342,11 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId AND CASE WHEN 'user'=:status THEN t.RfaStatus IN ('RC','RV','RE','RFC') WHEN 'assigner'=:status THEN t.RfaStatus IN ('RR','RP') END  AND t.actionby=e.EmpId AND e.desigid=c.desigid";
+	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId  AND t.actionby=e.EmpId AND e.desigid=c.desigid";
 	@Override
 	public List<Object[]> getrfaRemarks(String rfaId,String status) throws Exception {
 		Query query=manager.createNativeQuery(GETRFAREMARKS);
 		query.setParameter("rfaId", rfaId);
-		query.setParameter("status", status);
 		List<Object[]> remarksList=(List<Object[]>)query.getResultList();	
 		return remarksList;
 	}
@@ -1465,7 +1465,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 	}
 
-	public static final String RFAATTACHMENTDOWNLOAD="SELECT a.rfaattachmentid,a.rfaid,a.filespath,a.assignorattachment,a.assigneeattachment,b.rfano FROM pfms_rfa_attachment a,pfms_rfa_action b WHERE a.rfaid=:rfaid AND a.rfaid=b.rfaid AND a.isactive=1";
+	public static final String RFAATTACHMENTDOWNLOAD="SELECT a.rfaattachmentid,a.rfaid,a.filespath,a.assignorattachment,a.assigneeattachment,b.rfano,a.CloseAttachment FROM pfms_rfa_attachment a,pfms_rfa_action b WHERE a.rfaid=:rfaid AND a.rfaid=b.rfaid AND a.isactive=1";
 	@Override
 	public Object[] RfaAttachmentDownload(String rfaid) throws Exception {
 		try {
@@ -1516,7 +1516,15 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	}
 
-	public static final String ASSIGNEEEMPLIST="SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,a.assigneeid FROM  pfms_rfa_assign a,pfms_rfa_action b,employee e,employee_desig d WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.empid AND e.desigid=d.desigid AND a.isactive='1'";
+	//public static final String ASSIGNEEEMPLIST="SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,a.assigneeid FROM  pfms_rfa_assign a,pfms_rfa_action b,employee e,employee_desig d WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.empid AND e.desigid=d.desigid AND a.isactive='1'";
+	public static final String ASSIGNEEEMPLIST="SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,\r\n"
+			+ "a.assigneeid ,e.labcode FROM  pfms_rfa_assign a,pfms_rfa_action b,employee e,employee_desig d\r\n"
+			+ " WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.empid AND e.desigid=d.desigid AND a.isactive='1' AND a.labcode=e.labcode\r\n"
+			+ " UNION\r\n"
+			+ "SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.expertname) AS 'empname',''AS'designation',\r\n"
+			+ "a.assigneeid ,e.organization AS 'Labcode' FROM  pfms_rfa_assign a,pfms_rfa_action b,expert e,employee_desig d\r\n"
+			+ " WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.expertid AND e.desigid=d.desigid AND a.isactive='1' AND a.labcode=e.organization";
+	
 	@Override
 	public List<Object[]> AssigneeEmpList() throws Exception {
 		
@@ -1590,7 +1598,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	}
 	
-	private static final String RFAACTIONLIST1="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.rfastatus=g.rfastatus AND CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus NOT IN ('AA','AF','AC','RC','AX','REV','AP') ORDER BY rfaid DESC";
+	private static final String RFAACTIONLIST1="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails,a.TypeOfRfa FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.rfastatus=g.rfastatus AND CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus  IN ('AA','AF','AC','RC','AX','REV','AP') ORDER BY rfaid DESC"; 
 	@Override
 	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate) throws Exception {
 		
@@ -2036,11 +2044,22 @@ public class ActionDaoImpl implements ActionDao{
 		return 0;
 	}
 	
-	private static final String VENDORLIST="SELECT vendorcode,vendorname,address FROM vendor";
+	private static final String VENDORLIST="SELECT LabCode,LabName,LabAddress,LabCode as 'Vendor' FROM lab_master\r\n"
+			+ "UNION \r\n"
+			+ "SELECT Organization AS 'LabCode' ,Organization as 'LabName',Organization as 'LabAddress','@EXP' AS 'Vendor'  FROM expert where isactive='1'";
 	@Override
 	public List<Object[]> getVendorList() throws Exception {
 		Query query = manager.createNativeQuery(VENDORLIST);
 		return (List<Object[]>)query.getResultList();
 	}
-	
+	public RfaAttachment getAttachmentByRfaId(Long rfaId) {
+		 try {
+		        String jpql = "SELECT r FROM RfaAttachment r WHERE r.RfaId = :rfaId";
+		        TypedQuery<RfaAttachment> query = manager.createQuery(jpql, RfaAttachment.class);
+		        query.setParameter("rfaId", rfaId);
+		        return query.getSingleResult();
+		    } catch (Exception e) {
+		        return null; // Explicitly handle no result case
+		    }
+	}
 }

@@ -45,6 +45,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 	Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 	List<Object[]> ActionPlanSixMonths = (List<Object[]>)request.getAttribute("ActionPlanSixMonths");
 	String flagforView=(String)request.getAttribute("flagforView");
+	String labcode= (String) session.getAttribute("labcode");
 %>
 <style type="text/css">
 
@@ -141,7 +142,7 @@ p{
 <title><%=committeescheduleeditdata[8]%> Minutes View</title>
 </head>
 <body>
-	<%if(flagforView==null) {%>
+	<%if(flagforView==null) { %>
 		<div align="center" style="text-decoration: underline">Annexure - A</div>	
 	<table style="width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse; margin-left: 8px;">
 						<tr>
@@ -732,9 +733,9 @@ p{
 								<%} %>
 						</tbody>				
 					</table>
-					 <h1 class="break"></h1> 
-					<%if(actionlist.size()>=0){ %>
-							
+					  
+					<%if(actionlist.size()>=0 && !labcode.equalsIgnoreCase("ADE")){ %>
+						<h1 class="break"></h1>	
 					<div align="center">
 				 	<div style="text-align: center ; padding-right: 15px; " ><h3 style="text-decoration: underline;">Annexure - AI</h3></div> 
 						<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEM DETAILS</h2></div>
@@ -743,8 +744,10 @@ p{
 						<tbody>
 							<tr>
 								<th  class="sth" style=" max-width: 40px"> SN </th>
-								<th  class="sth" style=" max-width: 210px"> Action Id</th>	
-								<th  class="sth" style=" max-width: 600px"> Item</th>				
+<!-- 								<th  class="sth" style=" max-width: 210px"> Action Id</th>	
+ -->							
+ 								<th  class="sth" style=" max-width: 600px"> Item</th>
+ 								<th  class="sth" style=" max-width: 210px"> Action Type</th>				
 								<th  class="sth" style=" max-width: 200px"> Responsibility </th>					
 								<th  class="sth" style=" width: 100px"> PDC</th>
 							</tr>
@@ -758,7 +761,7 @@ p{
 								%>
 								<tr>
 									<td class="std" style="text-align: center;"> <%=count%></td>
-									<td  class="std">
+									<%-- <td  class="std">
 										
 										<%	int count1=0;
 											for(Object obj[]:values){
@@ -769,18 +772,24 @@ p{
 													<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
 												<%} %>
 										<%} %>
-									</td>
-									
-									<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
+									</td> --%>
+								
+									<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1] %></td>
+									<td  class="std" style="text-align: center;"> <%= values.get(0)[2]  %></td>
 									<td  class="std" >
-									<%	int count2=0;
-										for(Object obj[]:values){ %>
-										<%if(obj[13]!=null){ %> <%= obj[13]%>,&nbsp;<%=obj[14] %>
-											<%if(count2>=0 && count2<values.size()-1){ %>
-											,&nbsp;
-											<%} %>
-										<%}else{ %> - <%} %>
+								<%	int count2=0;
+									Set<String>labCodes= new HashSet<>();
+										for(Object obj[]:values){
+										if(obj[15]!=null ){
+											labCodes.add(obj[15].toString());	
+										}
+										if(obj[16]!=null ){
+											labCodes.add(obj[16].toString());	
+										}
+											%>
+										
 									<%count2++;} %>
+									<%if(labCodes.toString().replace("[", "").replace("]", "") .length()>0){ %><%=labCodes.toString().replace("[", "").replace("]", "")  %> <%}else{ %> - <%} %>
 									</td>                       						
 									<td  class="std"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
 								</tr>				
@@ -810,7 +819,9 @@ p{
 								<th  class="sth" style=" width: 100px"> PDC</th>
 							</tr>
 							
-							<% 	int count =1;
+							<% 	
+							
+							int count =1;
 							  	Iterator actIterator = actionlist.entrySet().iterator();
 								while(actIterator.hasNext()){	
 								Map.Entry mapElement = (Map.Entry)actIterator.next();
