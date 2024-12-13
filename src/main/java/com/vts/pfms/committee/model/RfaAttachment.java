@@ -20,6 +20,7 @@ public class RfaAttachment {
 	private String FilesPath;
 	private String AssignorAttachment;
 	private String AssigneeAttachment;
+	private String CloseAttachment;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
