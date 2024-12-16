@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +28,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import com.vts.pfms.login.CustomAuthenticationFailureHandler;
+import com.vts.pfms.login.CustomInvalidSessionStrategy;
 import com.vts.pfms.login.CustomLogoutHandler;
+import com.vts.pfms.login.CustomSessionExpiredStrategy;
 import com.vts.pfms.login.LoginSuccessHandler;
 
 @Configuration
@@ -39,6 +44,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	 @Autowired
      private LoginSuccessHandler successHandler;
+	 
+	 @Autowired
+	 private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 	 
 	 @Override
 	 @Bean
@@ -65,18 +73,42 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		  .antMatchers("/pfms-dg/*").permitAll()
 		  .antMatchers("/api/sync/**").permitAll()
 		  .antMatchers("/login").permitAll()
+		  .antMatchers("/wr").permitAll()
 		  .antMatchers("/ProjectRequirementAttachmentDownload.htm").permitAll()
 		  .antMatchers("/ProjectClosureChecklistFileDownload.htm").permitAll()
+		  .antMatchers("/TimeSheetWorkFlowPdf.htm").permitAll()
 		  .anyRequest().authenticated().accessDecisionManager(adm())
 		  
 		  .and()
-		    .formLogin().loginPage("/login").defaultSuccessUrl("/welcome", true).failureUrl("/login?error").permitAll()
+			  .formLogin()
+	          .loginPage("/login") // Your custom login page
+	          .defaultSuccessUrl("/welcome", true) // Success URL after successful login
+	          .failureUrl("/login?error") // Failure URL after unsuccessful login
+	          .failureHandler(customAuthenticationFailureHandler) // Custom failure handler
+	          .permitAll()
 		    .usernameParameter("username").passwordParameter("password").successHandler(successHandler)
 		  .and()
-		    .logout().logoutSuccessUrl("/login?logout").addLogoutHandler(logoutSuccessHandler())
+		  .logout()
+		  .logoutSuccessHandler((request, response, authentication) -> {
+		        HttpSession session = request.getSession(false);  // Get the current session without creating a new one
+		        if (session != null) {
+		            String loginPage = (String) session.getAttribute("loginPage");
+
+		            // Handle redirect based on session attributes
+		            if ("wr".equals(loginPage)) {
+		                response.sendRedirect(request.getContextPath() + "/wr?logout");
+		            } else {
+		                response.sendRedirect(request.getContextPath() + "/login?logout");
+		            }
+		        } else {
+		            response.sendRedirect(request.getContextPath() + "/login?logout");  // Fallback
+		        }
+		    })
+		    .invalidateHttpSession(false) 
+          .permitAll()
 
 		   .and()
-		   .exceptionHandling().accessDeniedPage("/login")
+		   .exceptionHandling().accessDeniedPage("/invalid-uri")
 		 
 		    
 		    .and()
@@ -85,10 +117,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		    .and().sessionManagement()
 		    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 		    .sessionFixation().migrateSession()
-			.invalidSessionUrl("/login")
+			.invalidSessionStrategy(new CustomInvalidSessionStrategy())
 			.maximumSessions(2)
 			.maxSessionsPreventsLogin(false)
-			.expiredUrl("/login")
+			.expiredUrl("/expired-session")
+			.expiredSessionStrategy(new CustomSessionExpiredStrategy())
 		    //.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/login")
 		    
 		    ;

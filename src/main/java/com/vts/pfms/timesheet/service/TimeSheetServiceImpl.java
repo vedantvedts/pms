@@ -28,6 +28,7 @@ import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
 import com.vts.pfms.timesheet.model.TimeSheetActivity;
 import com.vts.pfms.timesheet.model.TimeSheetTrans;
+import com.vts.pfms.timesheet.model.TimesheetKeywords;
 
 @Service
 public class TimeSheetServiceImpl implements TimeSheetService {
@@ -184,18 +185,16 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 				
 				activity.setActivityId(0L);
 				activity.setActivityType("N");
-				activity.setProjectId(0L);
+				activity.setProjectId(Long.parseLong(dto.getProjectId()[i]));
 				activity.setActivityTypeId(Long.parseLong(dto.getActivityTypeId()[i]));
 				
 				activity.setActivityDuration("00:00");
 				activity.setRemarks(null);
 				// New Columns for Sample Demo
-				activity.setActivityTypeDesc(null);
-				activity.setAssignerLabCode(dto.getAssignerLabCode()[i]);
 				activity.setAssignedBy(dto.getAssignedBy()[i]!=null?Long.parseLong(dto.getAssignedBy()[i]):0L);
-				activity.setActionPDC(dto.getActionPDC()[i]!=null?fc.rdfTosdf(dto.getActionPDC()[i]):null);
+				activity.setKeywordId(dto.getKeywordId()[i]!=null?Long.parseLong(dto.getKeywordId()[i]):0L);
 				activity.setWorkDone(dto.getWorkDone()[i]);
-				activity.setFnorAn(dto.getFnorAn()[i]);
+				activity.setWorkDoneon(dto.getWorkDoneon()[i]);
 				// New Columns for Sample Demo End
 				activity.setCreatedBy(dto.getUserId());
 				activity.setTimeSheet(timeSheet);
@@ -534,5 +533,11 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception {
 		
 		return dao.getEmployeeNewTimeSheetList(empId, fromDate, toDate);
+	}
+	
+	@Override
+	public List<TimesheetKeywords> getTimesheetKeywordsList() throws Exception {
+		
+		return dao.getTimesheetKeywordsList();
 	}
 }

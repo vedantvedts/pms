@@ -74,7 +74,7 @@ public interface MasterService {
 	public Object[] TDAddCheck(String tCode)throws Exception;
 	public int TDMasterUpdate(DivisionTd model)throws Exception;
 	public List<Object[]> TDListAdd()throws Exception;
-	public int UpdateActivityType(String ActivityType, String ActivityId, String isTimeSheet) throws Exception;
+	public int UpdateActivityType(String activityType, String activityTypeId, String isTimeSheet, String activityCode) throws Exception;
 	public int DeleteActivityType(String ActivityId) throws Exception;
 	public List<Object[]> industryPartnerList() throws Exception;
 	public Object[] industryPartnerDetailsByIndustryPartnerRepId(String industryPartnerRepId) throws Exception;

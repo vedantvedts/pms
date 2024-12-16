@@ -63,7 +63,7 @@ public class MasterDaoImpl implements MasterDao {
 	private final static String LISTOFSENIORITYNUMBER="SELECT SrNo, EmpId FROM employee WHERE SrNo !=0 ORDER BY SrNo ASC ";
 	private final static String UPDATESRNO="UPDATE employee SET SrNo=:srno WHERE EmpId=:empid";
 
-	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype, IsTimeSheet FROM milestone_activity_type WHERE isactive=1";
+	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype, IsTimeSheet, ActivityCode FROM milestone_activity_type WHERE isactive=1";
 	private static final String ACTIVITYNAMECHECK="SELECT COUNT(ActivityTypeId) AS 'count','ActivityType' FROM milestone_activity_type WHERE CASE WHEN ActivityTypeId<>0 THEN ActivityTypeId!=:ActivityTypeId END AND ActivityType=:ActivityType AND IsActive=1";
 	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,dg.labcode,dt.tdcode FROM division_group dg,employee e, employee_desig ed, division_td dt WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.tdid=dt.tdid  AND dg.isactive=1 AND dg.labcode=:labcode ORDER BY dg.groupid DESC";
 	private static final String GROUPHEADLIST ="SELECT e.empid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
@@ -702,13 +702,14 @@ public class MasterDaoImpl implements MasterDao {
 		return TDListAdd;
 	}
 
-	public static final String UpdateActivityTypeQuery="UPDATE milestone_activity_type SET activityType=:activityType, IsTimeSheet=:IsTimeSheet WHERE activitytypeid=:activitytypeid";
+	public static final String UpdateActivityTypeQuery="UPDATE milestone_activity_type SET activityType=:activityType, IsTimeSheet=:IsTimeSheet, ActivityCode=:ActivityCode WHERE ActivityTypeId=:ActivityTypeId";
 	@Override
-	public int UpdateActivityType(String ActivityType, String ActivityId, String isTimeSheet) throws Exception {
+	public int UpdateActivityType(String activityType, String activityTypeId, String isTimeSheet, String activityCode) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(UpdateActivityTypeQuery);
-			query.setParameter("activityType", ActivityType);
-			query.setParameter("activitytypeid", ActivityId);
+			query.setParameter("activityType", activityType);
+			query.setParameter("ActivityCode", activityCode);
+			query.setParameter("ActivityTypeId", activityTypeId);
 			query.setParameter("IsTimeSheet", isTimeSheet);
 			return query.executeUpdate();
 		}catch (Exception e) {

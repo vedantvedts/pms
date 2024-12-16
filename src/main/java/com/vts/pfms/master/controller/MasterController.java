@@ -644,10 +644,9 @@ public class MasterController {
 		logger.info(new Date() +" Inside ActivityAddSubmit.htm "+UserId);
 		try {		
 
-			String activitytype=req.getParameter("activitytype");
-
 			MilestoneActivityType model =new MilestoneActivityType();
-			model.setActivityType(activitytype);
+			model.setActivityType(req.getParameter("activitytype"));
+			model.setActivityCode(req.getParameter("activityCode"));
 			model.setIsTimeSheet(req.getParameter("isTimeSheet"));
 			model.setCreatedBy(UserId);
 			long count =service.ActivityAddSubmit(model);
@@ -1307,7 +1306,7 @@ public class MasterController {
 				result = service.DeleteActivityType(ActivityID); // only Deletes, flag is true
 			}else{	// else updates
 				String toActivity = req.getParameter("toActivity");
-				result = service.UpdateActivityType(toActivity, ActivityID, req.getParameter("isTimeSheet"));
+				result = service.UpdateActivityType(toActivity, ActivityID, req.getParameter("isTimeSheet"), req.getParameter("activityCode"));
 			}
 			
 			if (result > 0) {

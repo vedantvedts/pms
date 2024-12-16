@@ -134,6 +134,8 @@ public class TimeSheetController {
 	@RequestMapping(value="TimeSheetList.htm", method= {RequestMethod.GET,RequestMethod.POST})
 	public String timeSheetList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date()+" Inside TimeSheetList.htm "+UserId);
 		try {
@@ -147,8 +149,12 @@ public class TimeSheetController {
 			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(EmpId, activityDateSql));
 			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
 			req.setAttribute("allLabList", committeeservice.AllLabList());
+			req.setAttribute("labEmpList", committeeservice.EmployeeList(labcode));
 			req.setAttribute("allEmployeeList", employeerepo.findAll());
 			req.setAttribute("designationlist", adminservice.DesignationList());
+			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,"A",labcode));
+			req.setAttribute("keywordsList", service.getTimesheetKeywordsList());
+			req.setAttribute("employeeNewTimeSheet", service.getEmployeeNewTimeSheetList(EmpId, activityDateSql, activityDateSql));
 			LocalDate activityLD = LocalDate.parse(activityDateSql);
 			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList(EmpId, activityLD.withDayOfMonth(1).toString(), activityLD.with(TemporalAdjusters.lastDayOfMonth()).toString()));
 			return "timesheet/TimeSheetListSample";
@@ -168,6 +174,21 @@ public class TimeSheetController {
 			String activityDate = req.getParameter("activityDate");
 			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
 			
+			String[] assignedBys = req.getParameterValues("assignedBy");
+			
+			if(assignedBys==null || (assignedBys!=null && assignedBys.length==0)) {
+				redir.addAttribute("resultfail", "Empty Time Sheet Details Cannot be Submitted");
+				redir.addAttribute("activityDate", activityDate);
+				return "redirect:/TimeSheetList.htm";
+			}
+			String[] activityTypeIds = new String[assignedBys!=null?assignedBys.length:0]; 
+			String[] workDoneons = new String[assignedBys!=null?assignedBys.length:0]; 
+			
+			for(int i=1; i<=assignedBys.length;i++) {
+				activityTypeIds[i-1] = req.getParameter("activityName_"+i);
+				workDoneons[i-1] = req.getParameter("workDoneon_"+i);
+			}
+			
 			TimeSheetDTO dto = TimeSheetDTO.builder()
 							   .TimeSheetId(req.getParameter("timeSheetId"))
 							   .EmpId(EmpId)
@@ -178,16 +199,14 @@ public class TimeSheetController {
 							   .ActivityId(req.getParameterValues("activityId"))
 							   .ProjectId(req.getParameterValues("projectId"))
 							   .ProjectIdhidden(req.getParameterValues("projectIdhidden"))
-							   .ActivityTypeId(req.getParameterValues("activityName"))
+							   .ActivityTypeId(activityTypeIds)
 							   .ActivityDuration(req.getParameterValues("duration"))
 							   .Remarks(req.getParameterValues("remarks"))
 							   // New Columns for Sample Demo
-							   .ActivityTypeDesc(req.getParameterValues("activityTypeDesc"))
-							   .AssignerLabCode(req.getParameterValues("assignerLabCode"))
-							   .AssignedBy(req.getParameterValues("assignedBy"))
-							   .ActionPDC(req.getParameterValues("actionPDC"))
+							   .AssignedBy(assignedBys)
+							   .KeywordId(req.getParameterValues("keywordId"))
 							   .WorkDone(req.getParameterValues("workDone"))
-							   .FnorAn(req.getParameterValues("fnoran"))
+							   .WorkDoneon(workDoneons)
 							   // New Columns for Sample Demo End
 							   .Action(req.getParameter("Action"))
 							   .UserId(UserId)
@@ -1391,7 +1410,8 @@ public class TimeSheetController {
 			req.setAttribute("activityWeekDateSql", activityWeekDateSql);
 			req.setAttribute("allEmployeeList", employeerepo.findAll());
 			req.setAttribute("designationlist", adminservice.DesignationList());
-			
+			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,"A",labcode));
+			req.setAttribute("keywordsList", service.getTimesheetKeywordsList());
 			// Monthly View
 			String empId = req.getParameter("empId");
 			empId = empId==null?EmpId:empId;

@@ -1,6 +1,7 @@
 package com.vts.pfms.login;
 
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -147,6 +148,9 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestHeader(name = "User-Agent") String userAgent, Model model, String error, String logout,
 			HttpServletRequest req, HttpSession ses, HttpServletResponse response) {
+		
+		req.getSession().setAttribute("loginPage", "login");
+		
 		String browser = req.getHeader("user-agent");
 		String[] br = browser.split("\\)");
 		String version = "";
@@ -211,13 +215,85 @@ public class LoginController {
 		return "static/login";
 	}
     
+	@RequestMapping(value = "/wr", method = RequestMethod.GET)
+	public String loginWR(@RequestHeader(name = "User-Agent") String userAgent, Model model, String error, String logout,
+			HttpServletRequest req, HttpSession ses, HttpServletResponse response) {
+		
+		req.getSession().setAttribute("loginPage", "wr");
+		
+		String browser = req.getHeader("user-agent");
+		String[] br = browser.split("\\)");
+		String version = "";
+		userAgent=br[br.length-1];
+		if (userAgent.contains("Chrome")) {
+			browser = "Chrome";
+			version = userAgent.substring(userAgent.indexOf("Chrome/") + 7);
+		} else if (userAgent.contains("Firefox")) {
+			browser = "Firefox";
+			version = userAgent.substring(userAgent.indexOf("Firefox/") + 8);
+		} else if (userAgent.contains("MSIE")) {
+			browser = "Internet Explorer";
+			version = userAgent.substring(userAgent.indexOf("MSIE") + 5);
+		} else if (userAgent.contains("Trident")) {
+			browser = "Internet Explorer";
+			version = userAgent.substring(userAgent.indexOf("rv:") + 3);
+		} else if (userAgent.contains("Edge")) {
+			browser = "Edge";
+			version = userAgent.substring(userAgent.indexOf("Edge/") + 5);
+		} else if (userAgent.contains("Safari")) {
+			browser = "Safari";
+			version = userAgent.substring(userAgent.indexOf("Version/") + 8);
+		}
+		
+		if (Integer.parseInt(version.substring(0, version.indexOf('.'))) < 110) {
+			System.out.println(Integer.parseInt(version.substring(0, version.indexOf('.'))));
+			req.setAttribute("browser", browser);
+			req.setAttribute("version", "yes");
+			req.setAttribute("versionint", Integer.parseInt(version.substring(0, version.indexOf('.'))));
+		} else {
+			System.out.println(Integer.parseInt(version.substring(0, version.indexOf('.'))));
+			req.setAttribute("browser", browser);
+			req.setAttribute("version", "no");
+			req.setAttribute("versionint", Integer.parseInt(version.substring(0, version.indexOf('.'))));
+		}
+		
+		logger.info(new Date() + "Inside login ");
+		if (error != null)
+			model.addAttribute("error", "Your username and password is invalid.");
+		
+		if (logout != null)
+			model.addAttribute("message", "You have been logged out successfully.");
+		
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside login.htm " + e);
+		}
+		
+		// License Expiration Validation 
+		boolean expstatus;
+		try {
+			Jws<Claims> claims = Jwts.parser().setSigningKey("vts-123").parseClaimsJws(env.getProperty("license"));
+			expstatus = true;
+		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+			expstatus = false;
+		} catch (ExpiredJwtException ex) {
+			expstatus = false;
+		}
+		
+		req.setAttribute("expstatus", expstatus);
+		return "static/login-wr";
+	}
+	
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model,HttpServletRequest req,HttpSession ses) throws Exception {
     	
       logger.info(new Date() +" Login By "+req.getUserPrincipal().getName());
    
       try {
-    	
+    	  // other session setup code
+    	    String loginPage = (String) ses.getAttribute("loginPage");
 		    long LoginId=Repository.findByUsername(req.getUserPrincipal().getName()).getLoginId();
 		    Object[] empdetails = headerservice.EmployeeDetailes(String.valueOf(LoginId)).get(0);
 
@@ -255,12 +331,20 @@ public class LoginController {
 		
 		    String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
 		    ses.setAttribute("empNo", empNo);
+		    
+		    if(loginPage.equalsIgnoreCase("login")) {
+		    	return "redirect:/MainDashBoard.htm";
+		    }else {
+		    	return "redirect:/TimeSheetList.htm";
+		    }
+		    
+		    
       }catch (Exception e) {
     	e.printStackTrace();
     	 logger.error(new Date() +" Login Problem Occures When Login By "+req.getUserPrincipal().getName(), e);
+    	 return "static/Error";
      }
      
-      return "redirect:/MainDashBoard.htm";
     }
     
     
@@ -1453,5 +1537,14 @@ public class LoginController {
    		Gson convertedgson = new Gson();
    		return convertedgson.toJson(Project);
    	}
-    
+
+    @RequestMapping(value="/invalid-session", method = {RequestMethod.GET, RequestMethod.POST})
+    public String handleInvalidSession(HttpSession session) {
+        String loginPage = (String) session.getAttribute("loginPage");
+        System.out.println("loginPage Invalid Session");
+        if (loginPage == null) {
+            loginPage = "login"; // fallback to default if session is invalid
+        }
+        return "redirect:/" + loginPage + "?error=session";
+    }
 }

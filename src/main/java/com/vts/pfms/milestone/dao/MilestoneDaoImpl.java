@@ -1271,7 +1271,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			return query.executeUpdate();
 		}
 		
-		private static final String MSPROJECTPROCUREMENTSTATUSLIST= "SELECT a.MilestoneId, a.DemandNo, MAX(CASE WHEN a.TaskProgress = 100 THEN a.PftsStatusId ELSE NULL END) AS MaxPftsStatusId FROM pfms_milestone_msprojectdata a WHERE a.ProjectId =:ProjectId AND a.TaskIsMilestone=1 AND a.TaskIsProcurement=1 GROUP BY a.DemandNo ORDER BY a.DemandNo";
+		private static final String MSPROJECTPROCUREMENTSTATUSLIST= "SELECT a.MilestoneId, a.DemandNo, MAX(CASE WHEN a.TaskProgress = 100 THEN a.PftsStatusId ELSE NULL END) AS MaxPftsStatusId, (SELECT b.TaskName FROM pfms_milestone_msprojectdata b WHERE a.DemandNo=b.DemandNo AND b.TaskOutLineLevel = 3 LIMIT 1) AS MainTaskName FROM pfms_milestone_msprojectdata a  WHERE a.TaskIsMilestone=1 AND a.TaskIsProcurement=1 AND a.ProjectId =:ProjectId GROUP BY a.DemandNo ORDER BY a.DemandNo";
 		@Override
 		public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception {
 			try {

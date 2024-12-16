@@ -3080,10 +3080,9 @@ public class MilestoneController {
 		
 		try {
 			String projectId = req.getParameter("ProjectId");
-			List<Object[]> msProcurementStatusList = service.getMsprojectProcurementStatusList(projectId);
 			req.setAttribute("ProjectId", projectId);
 			req.setAttribute("projectDetails", service.ProjectDetails(projectId).get(0));
-			req.setAttribute("msProcurementStatusList", msProcurementStatusList);
+			req.setAttribute("msProcurementStatusList", service.getMsprojectProcurementStatusList(projectId));
 			
 		}catch (Exception e) {
 			e.printStackTrace(); 

@@ -1,3 +1,5 @@
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="com.vts.pfms.documents.model.IGIDocumentShortCodes"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -11,17 +13,22 @@
     
     <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
     <link href="${StyleCSS}" rel="stylesheet" /> 
-    <%-- <spring:url value="/resources/js/excel.js" var="excel" />
-    <script src="${excel}"></script> --%>
+    <spring:url value="/resources/js/excel.js" var="excel" />
+    <script src="${excel}"></script>
     
- <!-- Pdfmake  -->
-<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
-<script src="${pdfmake}"></script>
-<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
-<script src="${pdfmakefont}"></script>
-<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
-<script src="${htmltopdf}"></script> 
-
+	<!-- Pdfmake  -->
+	<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+	<script src="${pdfmake}"></script>
+	<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+	<script src="${pdfmakefont}"></script>
+	<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+	<script src="${htmltopdf}"></script> 
+	
+	<!-- Summer Note -->
+	<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
+	<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
+	<script src="${SummernoteJs}"></script>
+	<link href="${SummernoteCss}" rel="stylesheet" />
 <style type="text/css">
 
 .topicsSideBar {
@@ -60,6 +67,7 @@
  
  .topic-name {
  	font-weight: bold;
+ 	font-size: 14px;
  }
  
  #reqdiv {
@@ -71,22 +79,55 @@
  	width: 25px;
  }
  
+ /* Custom colspan */
+.col-custom-1-5 {
+    width: calc(17.5%); /* This gives 2.5 out of 12 columns */
+    flex: 0 0 calc(17.5%);
+    max-width: calc(17.5%);
+}
+
+@media (max-width: 768px) {
+    .col-custom-1-5 {
+        width: 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.col-custom-10-5 {
+    width: calc(81.5%); 
+    flex: 0 0 calc(81.5%);
+    max-width: calc(81.5%);
+    margin-left: 0.4rem;
+}
+
+@media (max-width: 768px) {
+    .col-custom-10-5 {
+        width: 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+ 
 </style>    
 
 </head>
 <body>
 
 	<%
-		List<Object[]> IgiDocumentSummaryList=(List<Object[]>)request.getAttribute("IgiDocumentSummaryList");
-		Object[]DocumentSummary=null;
-		if(IgiDocumentSummaryList!=null && IgiDocumentSummaryList.size()>0){
-			DocumentSummary=IgiDocumentSummaryList.get(0);
+		List<Object[]> igiDocumentSummaryList = (List<Object[]>)request.getAttribute("igiDocumentSummaryList");
+		Object[] DocumentSummary=null;
+		if(igiDocumentSummaryList!=null && igiDocumentSummaryList.size()>0){
+			DocumentSummary=igiDocumentSummaryList.get(0);
 		}
 		String igiDocId =(String)request.getAttribute("igiDocId");
-		List<Object[]>TotalEmployeeList=(List<Object[]>)request.getAttribute("TotalEmployeeList");
+		List<Object[]> totalEmployeeList = (List<Object[]>)request.getAttribute("totalEmployeeList");
 		
-		List<Object[]>MemberList = (List<Object[]>)request.getAttribute("MemberList");
-		List<Object[]>EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
+		List<Object[]> memberList = (List<Object[]>)request.getAttribute("memberList");
+		List<Object[]> employeeList = (List<Object[]>)request.getAttribute("employeeList");
+		List<IGIDocumentShortCodes> shortCodesList = (List<IGIDocumentShortCodes>)request.getAttribute("shortCodesList");
+		List<IGIDocumentShortCodes> abbreviationsList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase("A")).collect(Collectors.toList());
+		List<IGIDocumentShortCodes> acronymsList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase("B")).collect(Collectors.toList());
 		
 		Object[] labDetails = (Object[])request.getAttribute("labDetails");
 		Object[] docTempAtrr = (Object[])request.getAttribute("docTempAttributes");
@@ -143,15 +184,27 @@
 												</div>
 											</div>
 											
-											<div class="card module" onclick="showSummaryModal()">
+											<div class="card module" data-toggle="modal" data-target="#DistributionModal">
+												<div class="card-body">
+													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Document Distribution</span></div>
+												</div>
+											</div>
+											
+											<div class="card module" data-toggle="modal" data-target="#SummaryModal">
 												<div class="card-body">
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Document Summary</span></div>
 												</div>
 											</div>
 											
-											<div class="card module" onclick="showSentModal()">
+											<div class="card module" onclick="showShortCodesModal('A')">
 												<div class="card-body">
-													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Document Distribution</span></div>
+													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Abbreviations</span></div>
+												</div>
+											</div>
+											
+											<div class="card module" onclick="showShortCodesModal('B')">
+												<div class="card-body">
+													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Acronyms</span></div>
 												</div>
 											</div>
 											
@@ -160,11 +213,19 @@
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 1 : Introduction</span></div>
 												</div>
 											</div>
+											
 											<div class="card module" onclick="showChapter2()">
 												<div class="card-body">
-													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 2 : Interfaces</span></div>
+													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 2 : Applicable Docs</span></div>
 												</div>
 											</div>
+											
+											<div class="card module" onclick="showChapter3()">
+												<div class="card-body">
+													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 3 : Interfaces</span></div>
+												</div>
+											</div>
+											
 										</div>
   									</div>
    								</div>
@@ -296,7 +357,7 @@
                
                   		<div class="row">
    							<div class="col-md-4">
-   								<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Additional Information:</label>
+   								<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Additional Information <span class="mandatory">*</span></label>
    							</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="information" class="form-control" id="additionalReq" maxlength="4000"
@@ -306,7 +367,7 @@
    				 
    				 		<div class="row mt-2">
 				   			<div class="col-md-4">
-				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Abstract:</label>
+				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Abstract <span class="mandatory">*</span></label>
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
@@ -316,7 +377,7 @@
 			   	
 			   			<div class="row mt-2">
 				   			<div class="col-md-4">
-				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Keywords:</label>
+				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Keywords <span class="mandatory">*</span></label>
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="keywords" class="form-control" id="" maxlength="4000"
@@ -326,7 +387,7 @@
    			
    		    			<div class="row mt-2">
 				   			<div class="col-md-4">
-				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Distribution:</label>
+				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Distribution <span class="mandatory">*</span></label>
 				   			</div>
 				   			<div class="col-md-8">
 				   				<input required="required" name="distribution" class="form-control" id="" maxlength="255"
@@ -337,7 +398,7 @@
    						<div class="row mt-2">
    				
    				            <div class="col-md-2">
-			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Release Date:</label>
+			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Release Date <span class="mandatory">*</span>:</label>
 			   				</div>	
    				
    				 			<div class="col-md-4">
@@ -346,12 +407,12 @@
    							</div>
    				
    							<div class="col-md-2 right">
-			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By:</label>
+			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By <span class="mandatory">*</span></label>
 			   				</div>
 			   				<div class="col-md-4">
 	   							<select class="form-control selectdee"name="preparedBy" id=""data-width="100%" data-live-search="true"  required>
 	          						<option value="" selected disabled>--SELECT--</option>
-	        						<%for(Object[]obj:TotalEmployeeList){ %>
+	        						<%for(Object[] obj: totalEmployeeList){ %>
 	        							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[7]!=null && DocumentSummary[7].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
 	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
 	        							</option>
@@ -362,13 +423,13 @@
    				
 	   					<div class="row mt-2">
 				   			<div class="col-md-2">
-			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
+			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer <span class="mandatory">*</span></label>
 			   				</div>	
 	   				
 	   				 		<div class="col-md-4">
 	   							<select class="form-control selectdee"name="reviewer" id=""data-width="100%" data-live-search="true" required>
 	       		 					<option value="" selected disabled="disabled">--SELECT--</option>
-	       		 					<%for(Object[]obj:TotalEmployeeList){ %>
+	       		 					<%for(Object[] obj: totalEmployeeList){ %>
 	        							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[5]!=null &&  DocumentSummary[5].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
 	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
 	        							</option>
@@ -378,12 +439,12 @@
 	   						</div>
 	   				
 			   				<div class="col-md-2">
-						   		<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f;float:right;">Approver:</label>
+						   		<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f;float:right;">Approver <span class="mandatory">*</span></label>
 						   	</div>	
 		 					<div class="col-md-4">
 		   						<select class="form-control selectdee"name="approver" id=""data-width="100%" data-live-search="true"  required>
 		       						<option value="" selected disabled="disabled">--SELECT--</option>
-		       						<%for(Object[]obj:TotalEmployeeList){ %>
+		       						<%for(Object[] obj: totalEmployeeList){ %>
 		      	 							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[6]!=null && DocumentSummary[6].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
 		       								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
 		       							</option>
@@ -393,7 +454,7 @@
 	   					</div>
    						
 	   					<div class="mt-2" align="center">
-	  						<%if(IgiDocumentSummaryList!=null && IgiDocumentSummaryList.size()>0) {%>
+	  						<%if(igiDocumentSummaryList!=null && igiDocumentSummaryList.size()>0) {%>
 	  							<button class="btn btn-sm edit" name="action" value="Edit" onclick="return confirm ('Are you sure to submit?')">UPDATE</button>
 	  							<input type="hidden" name="summaryId" value="<%=DocumentSummary[0]%>"> 
 	  						<%}else{ %>
@@ -407,7 +468,16 @@
         	</div>
     	</div>
 	</div>
-
+	
+	<form action="#">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+		<input type="hidden" name="igiDocId" value="<%=igiDocId%>"> 
+	
+		<button type="submit" class="btn bg-transparent" id="interfacebtn" formaction="IGIInterfacesList.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;">
+			<i class="fa fa-download text-success" aria-hidden="true"></i>
+		</button>
+	</form>
+	
 	<!-- modal for Document Distribution -->
 	<div class="modal fade" id="DistributionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   		<div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
@@ -420,7 +490,7 @@
       			</div>
       			
       			<div class="modal-body">
-      				<%if(MemberList!=null && !MemberList.isEmpty()) {%>
+      				<%if(memberList!=null && !memberList.isEmpty()) {%>
       					<div class="row mb-2">
 							<div class="col-md-12">
 								<table class="table table-bordered" id="myTables">
@@ -434,7 +504,7 @@
 									</thead>
 									<tbody>
 									<%int rowCount=0;
-										for(Object[]obj:MemberList) {%>
+										for(Object[]obj:memberList) {%>
 											<tr>
 												<td style="text-align: center;width:10%;"><%=++rowCount %></td>
 												<td style="width:50%;margin-left: 10px;"><%=obj[1].toString() %></td>
@@ -462,7 +532,7 @@
       					<div class="row">
 							<div class="col-md-10">
 								<select class="form-control selectdee"name="Assignee" id="Assignee"data-width="100%" data-live-search="true" multiple required>
-							        <%for(Object[]obj:EmployeeList){ %>
+							        <%for(Object[] obj: employeeList){ %>
 							        	<option value="<%=obj[0].toString()%>"> <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
 							        <%} %>
 							       
@@ -482,27 +552,105 @@
   		</div>
 	</div>
 
-	<form action="#">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-		<input type="hidden" name="igiDocId" value="<%=igiDocId%>"> 
+	<!-- Modal for Abbreviations / Acronyms-->
+	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="shortCodesModal">
+ 		<div class="modal-dialog modal-lg">
+    		<div class="modal-content" style="width:135%;margin-left:-20%;">
+      			<div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
+        			<h5 class="modal-title shortCodesModal" ></h5>
+        			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          				<span aria-hidden="true" class="text-light">&times;</span>
+        			</button>
+      			</div>
+        		<div class="modal-body">
+        			<form action ="IGIDocShortCodesExcelUpload.htm" method="post" id="excelForm" enctype="multipart/form-data">
+      					<div class="row">
+							<div class="col-md-8">
+								<input class="form-control" type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">						
+							</div>
+							<div class="col-md-4">
+								<span class="text-primary">Download format</span>
+								<button class="btn btn-sm" type="submit" formaction="IGIDocShortCodesExcelDownload.htm" formmethod="post" formnovalidate="formnovalidate" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-md-12">
+								<div style="overflow-y:auto" id="myDiv">
+									<table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" style="overflow: scroll;"> </table>
+								</div>
+							</div>
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+						<input type="hidden" class="shortCodeType" name="shortCodeType" id="shortCodeType" >
+						<input type="hidden" class="shortCodeTypeFull" name="shortCodeTypeFull" id="shortCodeTypeFull" value="Abbreviation">
+						<input type="hidden" name="igiDocId" value="<%=igiDocId%>">					
+						<div align="center" class="mt-2" id="uploadDiv" style="display:none;">
+							<button type="submit" class="btn btn-sm btn-info btn-req"  onclick="return confirm('Are you sure to submit?')">Upload</button>
+						</div>
+					</form>
 	
-		<button type="submit" class="btn bg-transparent" id="interfacebtn" formaction="IGIInterfacesList.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;">
-			<i class="fa fa-download text-success" aria-hidden="true"></i>
-		</button>
-	</form>
-
+					<div id="ExistingAbb">
+						<table class="table table-bordered table-hover table-striped table-condensed " id="abbreviationsTable" style="width: 100%;display: none;">
+							<thead >
+								<tr>
+									<td>SN</td>
+									<td>Abbreviation</td>
+									<td>Full form</td>
+								</tr>
+							</thead>
+							<tbody>
+								<% if(abbreviationsList!=null && abbreviationsList.size()>0){
+									int slno=0;
+									for(IGIDocumentShortCodes abbrevation : abbreviationsList){
+								%>
+									<tr>
+										<td><%=++slno%></td>
+										<td><%=abbrevation.getShortCode()%></td>
+										<td><%=abbrevation.getFullName()%></td>
+									</tr>
+								<% }}else{%>
+									<tr><td colspan="3" class="center">No Data Available</td></tr>
+								<%} %>
+							</tbody>	
+						</table>
+						
+						<table class="table table-bordered table-hover table-striped table-condensed " id="acronymsTable" style="width: 100%;display: none;">
+							<thead >
+								<tr>
+									<td>SN</td>
+									<td>Acronym</td>
+									<td>Full form</td>
+								</tr>
+							</thead>
+							<tbody>
+								<% if(acronymsList!=null && acronymsList.size()>0){
+									int slno=0;
+									for(IGIDocumentShortCodes acronym : acronymsList){
+								%>
+									<tr>
+										<td><%=++slno%></td>
+										<td><%=acronym.getShortCode()%></td>
+										<td><%=acronym.getFullName()%></td>
+									</tr>
+								<% }}else{%>
+									<tr><td colspan="3" class="center">No Data Available</td></tr>
+								<%} %>
+							</tbody>	
+						</table>
+					</div>
+			
+				</div>
+			
+    		</div>
+  		</div>
+	</div>
+	
+	
+	<!--  -->
 
 <script type="text/javascript">
-        function showSummaryModal() {
-            $('#SummaryModal').modal('show');
-        }
-        function showSentModal(){
-    		$('#DistributionModal').modal('show');
-    	}
-        /* function DownloadDocPDF(){
-        	$("#DownLoadPdf").click();
-        } */
- 
+	
     function confirmDeletion(memberId) {
         if (confirm('Are you sure you want to delete this member?')) {
             var form = $('#deleteForm_' + memberId);
@@ -521,18 +669,176 @@
 		
 		<%if(DocumentSummary==null || DocumentSummary[10]==null) {%>
 		"startDate":new Date() ,
-	<%}%>
+		<%}%>
 	
 		locale: {
 	    	format: 'DD-MM-YYYY'
 			}
 	});
 	
-	function showChapter2(){
-		$('#interfacebtn').click();
+	function showChapter3(){
+    	$('#interfacebtn').click();
+	}
+        
+	function showShortCodesModal(shortCodeType) {
+		$('#shortCodesModal').modal('show');
+		if(shortCodeType=='A') {
+			$('.modal-title.shortCodesModal').html('Upload Abbreviations');
+			$('#abbreviationsTable').show();
+			$('#acronymsTable').hide();
+			$('#shortCodeType').val(shortCodeType);
+			$('#shortCodeTypeFull').val('Abbreviation');
+		}else {
+			$('.modal-title.shortCodesModal').html('Upload Acronyms');
+			$('#acronymsTable').show();
+			$('#abbreviationsTable').hide();
+			$('#shortCodeType').val(shortCodeType);
+			$('#shortCodeTypeFull').val('Acronym');
+		}
 	}
 	
-	</script>
+	const excel_file = document.getElementById('excel_file');
+	
+
+	excel_file.addEventListener('change', (event) => {
+	   
+		var shortCodeTypeExcel = $('#shortCodeType').val();
+		var shortCodeTypeFull = $('#shortCodeTypeFull').val();
+		
+		console.log('shortCodeTypeExcel: ', shortCodeTypeExcel);
+		console.log('shortCodeTypeFull: ', shortCodeTypeFull);
+		$('#ExistingAbb').hide();	
+		var reader = new FileReader();
+	    reader.readAsArrayBuffer(event.target.files[0]);
+
+	    reader.onload = function (event){
+	    
+	    	var data = new Uint8Array(reader.result);
+	    	
+	    	var work_book = XLSX.read(data, {type:'array'});
+	    	
+	    	 var sheet_name = work_book.SheetNames;
+	    	
+	    	var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]],{header:1});
+	    	
+	    	const code = [];
+	    	const gname = [];
+	    	const abbreviationname1 = [];
+	    	var checkExcel = 0;
+	    	
+	    	if(sheet_data.length > 0){
+	    		var table_output = '<table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" style="overflow: scroll;" > '
+	    		
+	    		table_output +='<thead><tr><th style=" text-align: center;width:10%;">SN</th><th style="text-align:center;width:30%;">'+shortCodeTypeFull+'</th><th style="text-align:center;">Full form</th></tr>'
+	    		
+		    		for(var row = 0; row < sheet_data.length ; row ++){
+	    			table_output += '<tbody><tr>'
+	    			
+	    			if(row>0){
+	    				table_output += '<td>'+row+'</td>';}
+	    				for(var cell = 0; cell <3;cell++)
+	    				{
+	    					
+	    					if(row==0){
+	    						if(cell==1 && shortCodeTypeFull != sheet_data[row][cell]){  checkExcel++;}
+	            				if(cell==2 && "Full form" != sheet_data[row][cell]){  checkExcel++;}
+	            				console.log(sheet_data[row][cell]+cell)
+	            				
+	            			}	
+	    				
+	    				if(row>0 && cell == 2){
+	    			
+	    					table_output+='<td>'+sheet_data[row][cell]+'</td>';
+	    					var abbreviationnames = ""+sheet_data[row][cell]+"";
+	    					
+	    					if(abbreviationnames.trim().length>250){
+	    						gname.push(row);
+	    					}
+	    					if(abbreviationnames.trim()=='' || abbreviationnames.trim()=='undefined'){abbreviationname1.push(row);}	
+	    					
+	    				}
+	    				if(row>0 && cell == 1){
+	    					table_output += '<td>'+sheet_data[row][cell]+'</td>' 
+	    					var x = ""+sheet_data[row][cell]+"";
+	    					
+	    					if(x=='' ){
+	    						code.push(row)
+	    					}
+	    				}
+	    				
+	    				}
+	    		
+	    			
+	    		}  
+	    		 table_output += '</tr> <tbody></table>';
+	    		 
+	    		 
+	    		 
+	    		if(checkExcel>0){
+	    			$('#uploadDiv').hide();
+	    			console.log(shortCodesList+"---")
+	    			alert("Please Upload  Abbreviation Excel ");
+	     			excel_file.value = '';
+	     			document.getElementById('myTable1').innerHTML = "";
+	    		}
+	    		else{
+	    			var shortCodesList = '';
+	    		if(shortCodeTypeExcel=='A') {
+	    			shortCodesList = [<%int i=0; for (IGIDocumentShortCodes abbreviations: abbreviationsList) {%> "<%=abbreviations.getShortCode() %>"<%= i+1 < abbreviationsList.size() ? ",":""%><%}%>];	
+	    		}else{
+	    			shortCodesList = [<%int j=0; for (IGIDocumentShortCodes acronyms: acronymsList) {%> "<%=acronyms.getShortCode() %>"<%= j+1 < acronymsList.size() ? ",":""%><%}%>];	
+	    		}	
+	    		
+    		
+    		
+    		var AbbreDetails = [];
+    		
+    		for(var i in sheet_data){
+    			AbbreDetails.push(sheet_data[i][1]+"");
+    		}
+    		const duplicates = AbbreDetails.filter((item,index) => index !== AbbreDetails.indexOf(item));
+    		const indexval = []             
+            for(var i in duplicates){
+             indexval.push(AbbreDetails.indexOf(duplicates[i]))
+             }
+    		 var dbDuplicate = [];
+    		 shortCodesList.forEach(function (item){ 
+    			 var isPresent = AbbreDetails.indexOf(item);
+            	  if(isPresent !== -1){
+            		  dbDuplicate.push(isPresent); 
+            	  }
+    		 });
+    			var msg=""
+    			 if(indexval.length>0){
+    	       	 msg+="Duplicate Abbreviation Existed in Excel file at Serial No :"+ indexval+"\n";
+    	 		$('#uploadDiv').hide();
+    			console.log(shortCodesList+"---")
+    			alert(msg);
+     			excel_file.value = '';
+     			document.getElementById('myTable1').innerHTML = "";
+    			 }
+    			 else if(dbDuplicate.length>0){
+    		       	 msg+=" Abbreviation already Existed in Excel file at Serial No :"+ dbDuplicate+"\n";
+ 	    	 		$('#uploadDiv').hide();
+ 	    			console.log(shortCodesList+"---")
+ 	    			alert(msg);
+ 	     			excel_file.value = '';
+ 	     			document.getElementById('myTable1').innerHTML = "";  
+    			 }
+    			 
+    			 else{
+    				 if(sheet_data.length>20){
+    		    		 var myDiv = document.getElementById("myDiv");
+    		    		  myDiv.style.height = "400px";
+    		    }
+				$('#uploadDiv').show();		    			
+	    		document.getElementById('myTable1').innerHTML = table_output;
+    	         }
+	    		}
+	    	}
+	    }
+	});
+</script>
     
 <script type="text/javascript">
 function DownloadDocPDF(){
@@ -610,8 +916,8 @@ function DownloadDocPDF(){
                                 { text: 'Division/Lab', style: 'tableHeader' }
                             ],
                             // Populate table rows
-                            <% if (MemberList != null && MemberList.size()>0) { %>
-	                            <% int slno = 0; for (Object[] obj : MemberList) { %>
+                            <% if (memberList != null && memberList.size()>0) { %>
+	                            <% int slno = 0; for (Object[] obj : memberList) { %>
 	                            [
 	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%= obj[1] %>', style: 'tableData' },

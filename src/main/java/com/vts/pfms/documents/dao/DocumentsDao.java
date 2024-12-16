@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
@@ -33,6 +34,10 @@ public interface DocumentsDao {
 	public PfmsIGIDocument getPfmsIGIDocumentById(String igiDocId)throws Exception;
 	public IGIInterface getIGIInterfaceById(String interfaceId) throws Exception;
 	public BigInteger getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception;
+	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception;
+	public int deleteIGIDocumentShortCodesByType(String shortCodeType) throws Exception;
+	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception;
 	/* ************************************************ IGI Document End ***************************************************** */
+	
 	
 }

@@ -9,9 +9,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%String loginPage= (String)session.getAttribute("loginPage"); %>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PMS</title>
+
+<title><%=loginPage.equalsIgnoreCase("login")?"PMS":"WR" %></title>
 
 <link rel="shortcut icon" type="image/png"
 	href="view/images/drdologo.png">
@@ -169,6 +171,7 @@ hr {
 
 <% String Logintype= (String)session.getAttribute("LoginType");
 String labcode= (String)session.getAttribute("labcode");
+
 //int ProjectInitSize = (Integer) session.getAttribute("ProjectInitiationList");
 
 %>
@@ -200,7 +203,7 @@ String labcode= (String)session.getAttribute("labcode");
 							style="font-family: Lato, sans-serif; font-size: 15px; padding: 0px 16px 0px 10px; text-transform: capitalize !important;"><%=LocalDate.now().getMonth() %>
 								&nbsp; <%=LocalDate.now().getYear() %> </span> <img style="width: 4%"
 							src="view/images/project.png" alt=""><b> &nbsp;
-								PMS&nbsp;<span style="font-size: 13px;">(<%=labcode %>) -
+								<%=loginPage.equalsIgnoreCase("login")?"PMS":"WR" %>&nbsp;<span style="font-size: 13px;">(<%=labcode %>) -
 									<%=EmpName %> (<%=FormRoleName %>)
 							</span>
 						</b>
@@ -247,7 +250,7 @@ String labcode= (String)session.getAttribute("labcode");
 
 						<div class="collapse navbar-collapse" id="navbarResponsive">
 							<ul class="navbar-nav ml-auto ">
-
+								<%if(loginPage.equalsIgnoreCase("login")) {%>
 								<li class="nav-item active" style="display: flex;">
 								<button type="button" class="btn btn-sm btn-light"
 									onclick="opensmartsearch()" style="height:40px;" >
@@ -258,6 +261,7 @@ String labcode= (String)session.getAttribute("labcode");
 									aria-expanded="false" style="background-color: transparent"><i
 										class="fa fa-home" aria-hidden="true"
 										style="font-size: 1.20rem"></i> Home</a></li>
+								<%} %>
 
 								<%-- <%if(!IsDG.equalsIgnoreCase("Yes") ){ %>
 
@@ -345,16 +349,18 @@ String labcode= (String)session.getAttribute("labcode");
 
 								<li class="nav-item dropdown"><input type="hidden"
 									value="<%=Logintype %>" name="logintype" id="logintype">
-
+									<%if(loginPage.equalsIgnoreCase("login")) {%>
 									<ul class="navbar-nav" id="uppermodule">
 
-									</ul></li>
+									</ul>
+									<%} %>
+								</li>
 
 
 
 								<li class="nav-item"><a class="nav-link" href="#">&nbsp;&nbsp;&nbsp;</a>
 								</li>
-
+								<%if(loginPage.equalsIgnoreCase("login")) {%>
 								<li class="nav-item">
 
 									<div class="btn-group  ">
@@ -389,7 +395,7 @@ String labcode= (String)session.getAttribute("labcode");
 
 								</li>
 
-
+								<%} %>
 								<li class="nav-item">
 
 
@@ -408,7 +414,9 @@ String labcode= (String)session.getAttribute("labcode");
 											aria-labelledby="userDropdown">
 											<a class="dropdown-item" href="PasswordChange.htm"> <img
 												src="view/images/key.png" /> &nbsp;&nbsp; Password Change
-											</a> <a class="dropdown-item" href="UserManualDoc.htm"
+											</a> 
+											<%if(loginPage.equalsIgnoreCase("login")) {%>
+											<a class="dropdown-item" href="UserManualDoc.htm"
 												target="_blank"> <img src="view/images/handbook.png" />
 												&nbsp;&nbsp; Manual
 											</a> <a class="dropdown-item" href="WorkFlow.htm" target="_blank">
@@ -437,9 +445,10 @@ String labcode= (String)session.getAttribute("labcode");
 												target="_blank"> <img src="view/images/milestone.png" />
 												&nbsp;&nbsp; PD Manual
 											</a>
+											<%} %>
                                             <a class="dropdown-item" href="TimeSheetWorkFlowPdf.htm"
 												target="_blank"> <img src="view/images/calendar.png" />
-												&nbsp;&nbsp; Time Sheet Work Flow
+												&nbsp;&nbsp; Work Register Work Flow
 											</a>
 
 											<div class="dropdown-divider"></div>
@@ -495,6 +504,7 @@ String labcode= (String)session.getAttribute("labcode");
 
 			<script type="text/javascript">
 	$(document).ready(function() {
+		var loginPage = '<%=loginPage%>';
 		
 		$('.selectdee').select2();
 		
@@ -514,13 +524,16 @@ String labcode= (String)session.getAttribute("labcode");
 				var uppermodule = "";
 				
 				for(i=0; i<values.length;i++){
-					
-					if(values[i][3]=='L'){
-			
-					var name=values[i][1].replace(/ /g,'');
 
-					module+="<li class='nav-item dropdown uppernav ' style='padding:0rem 0.35rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
-					
+					if(values[i][3]=='L'){
+						
+						var name=values[i][1].replace(/ /g,'');
+						if(loginPage=='wr' && values[i][0]=='17') {
+							module+="<li class='nav-item dropdown uppernav ' style='padding:0rem 0.35rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
+						}else if(loginPage=='login'){
+							module+="<li class='nav-item dropdown uppernav ' style='padding:0rem 0.35rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
+						}
+						
 					}
 					
 					if(values[i][3]=='U'){
@@ -535,7 +548,9 @@ String labcode= (String)session.getAttribute("labcode");
 					
 				}
 				$('#module').html(module); 
-				$('#uppermodule').html(uppermodule); 
+				if(loginPage=='login') {
+					$('#uppermodule').html(uppermodule);
+				}
 
 			}
 			

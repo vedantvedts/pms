@@ -5,6 +5,7 @@ import java.util.List;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.timesheet.dto.ActionAnalyticsDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
+import com.vts.pfms.timesheet.model.TimesheetKeywords;
 
 public interface TimeSheetDao {
 
@@ -29,5 +30,6 @@ public interface TimeSheetDao {
 	public List<Object[]> projectWiseEmpExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception;
 	public List<Object[]> getRoleWiseEmployeeList(String labCode, String loginType, String empId) throws Exception;
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception;
+	public List<TimesheetKeywords> getTimesheetKeywordsList() throws Exception;
 
 }

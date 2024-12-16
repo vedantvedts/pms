@@ -2,6 +2,7 @@ package com.vts.pfms.documents.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -9,13 +10,29 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -31,6 +48,7 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.service.DocumentsService;
@@ -308,11 +326,12 @@ public class DocumentsController {
 			String igiDocId = req.getParameter("igiDocId");
 			
 			req.setAttribute("igiDocId", igiDocId);
-			req.setAttribute("IgiDocumentSummaryList", service.igiDocumentSummaryList(igiDocId));
-			req.setAttribute("TotalEmployeeList", projectservice.EmployeeList(LabCode));
+			req.setAttribute("igiDocumentSummaryList", service.igiDocumentSummaryList(igiDocId));
+			req.setAttribute("totalEmployeeList", projectservice.EmployeeList(LabCode));
 
-			req.setAttribute("MemberList", service.igiDocumentMemberList(igiDocId));
-			req.setAttribute("EmployeeList", service.getDocmployeeListByIGIDocId(LabCode, igiDocId));
+			req.setAttribute("memberList", service.igiDocumentMemberList(igiDocId));
+			req.setAttribute("employeeList", service.getDocmployeeListByIGIDocId(LabCode, igiDocId));
+			req.setAttribute("shortCodesList", service.getIGIDocumentShortCodesList());
 			
 			PfmsIGIDocument igiDocument = service.getPfmsIGIDocumentById(igiDocId);
 			req.setAttribute("igiDocument", igiDocument);
@@ -537,6 +556,185 @@ public class DocumentsController {
 		}
 		  
 		 return json.toJson(duplicate);    
+	}
+	
+	@RequestMapping(value="IGIDocShortCodesExcelDownload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public void igiDocShortCodesExcelDownload(RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside IGIDocShortCodesExcelDownload.htm "+UserId);
+		try{
+			String shortCodeType = req.getParameter("shortCodeType"); 
+			
+			int rowNo=0;
+			// Creating a worksheet
+			Workbook workbook = new XSSFWorkbook();
+
+			Sheet sheet = workbook.createSheet(shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms");
+			sheet.setColumnWidth(0, 2000);
+			sheet.setColumnWidth(1, 7000);
+			sheet.setColumnWidth(2, 8000);
+
+			XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+			font.setFontName("Times New Roman");
+			font.setFontHeightInPoints((short) 14);
+			font.setBold(true);
+			
+			XSSFFont font2 = ((XSSFWorkbook) workbook).createFont();
+			font2.setFontName("Times New Roman");
+			font2.setFontHeightInPoints((short) 11);
+			font2.setBold(true);
+			
+			// style for table header
+			CellStyle t_header_style = workbook.createCellStyle();
+			t_header_style.setLocked(true);
+			t_header_style.setFont(font2);
+			t_header_style.setWrapText(true);
+			t_header_style.setAlignment(HorizontalAlignment.CENTER);
+			t_header_style.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// style for table cells with center align
+			CellStyle t_body_style2 = workbook.createCellStyle();
+			t_body_style2.setWrapText(true);
+			t_body_style2.setAlignment(HorizontalAlignment.CENTER);
+			t_body_style2.setVerticalAlignment(VerticalAlignment.TOP);
+			
+			// Table in file header Row
+			Row t_header_row = sheet.createRow(rowNo++);
+			Cell cell= t_header_row.createCell(0); 
+			cell.setCellValue("SN"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(1, CellType.STRING); 
+			cell.setCellValue(shortCodeType.equalsIgnoreCase("A")?"Abbreviation":"Acronym"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(2, CellType.STRING); 
+			cell.setCellValue("Full form"); 
+			cell.setCellStyle(t_header_style);
+			
+			
+			cell.setCellStyle(t_header_style);
+			
+			List<IGIDocumentShortCodes> shortCodesList = service.getIGIDocumentShortCodesList();
+			shortCodesList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase(shortCodeType)).collect(Collectors.toList());
+			
+			if(shortCodesList!=null && shortCodesList.size()>0) {
+				int slno=0;
+				for(IGIDocumentShortCodes shortcodes : shortCodesList) {
+					Row t_body_row = sheet.createRow(++slno);
+					cell= t_body_row.createCell(0); 
+					cell.setCellValue(slno); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(1); 
+					cell.setCellValue(shortcodes.getShortCode()); 
+					cell.setCellStyle(t_body_style2);
+					
+					cell= t_body_row.createCell(2); 
+					cell.setCellValue(shortcodes.getFullName()); 
+					cell.setCellStyle(t_body_style2);
+				}
+			}
+			
+			res.setContentType("application/vnd.ms-excel");
+			res.setHeader("Content-Disposition", "attachment; filename="+(shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+"Excel.xls");
+
+			// Write the workbook to the response output stream
+			workbook.write(res.getOutputStream());
+			workbook.close();
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside IGIDocShortCodesExcelDownload.htm "+UserId,e);
+		}
+	}
+	
+	@RequestMapping(value="IGIDocShortCodesExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String igiDocShortCodesExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside IGIDocShortCodesExcelUpload.htm "+UserId);
+		try {
+			String igiDocId = req.getParameter("igiDocId");
+			String shortCodeType = req.getParameter("shortCodeType");
+			
+			// Delete Previous Short Codes
+			service.deleteIGIDocumentShortCodesByType(shortCodeType);
+			
+			if(ServletFileUpload.isMultipartContent(req)) {
+				Part filePart = req.getPart("filename");
+				InputStream fileData = filePart.getInputStream();
+				Workbook workbook = new XSSFWorkbook(fileData);
+				Sheet sheet  = workbook.getSheetAt(0);
+				int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
+				
+				List<IGIDocumentShortCodes> shortCodesList = new ArrayList<IGIDocumentShortCodes>();
+				
+				for (int i=1;i<=rowCount;i++) {
+					int cellcount = sheet.getRow(i).getLastCellNum();
+					IGIDocumentShortCodes igiDocumentShortCode = new IGIDocumentShortCodes();
+					
+					for(int j=1;j<cellcount;j++) {
+
+						if(sheet.getRow(i).getCell(j)!=null) {
+							if(j==1) {
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:break;
+								case Cell.CELL_TYPE_NUMERIC:
+									igiDocumentShortCode.setShortCode(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+									break;
+								case Cell.CELL_TYPE_STRING:
+									igiDocumentShortCode.setShortCode(sheet.getRow(i).getCell(j).getStringCellValue());
+									break;	 
+								}
+							}
+
+							if(j==2) {
+								switch(sheet.getRow(i).getCell(j).getCellType()) {
+								case Cell.CELL_TYPE_BLANK:break;
+								case Cell.CELL_TYPE_NUMERIC:
+									igiDocumentShortCode.setFullName(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+									break;
+								case Cell.CELL_TYPE_STRING:
+									igiDocumentShortCode.setFullName(sheet.getRow(i).getCell(j).getStringCellValue());
+									break;	 
+								}
+
+
+							}	 
+						}
+					}
+					
+					if(igiDocumentShortCode.getShortCode()!=null && igiDocumentShortCode.getFullName()!=null) {
+						
+						igiDocumentShortCode.setShortCodeType(shortCodeType);
+						igiDocumentShortCode.setIGIDocId(Long.parseLong(igiDocId));
+						igiDocumentShortCode.setCreatedBy(UserId);
+						igiDocumentShortCode.setCreatedDate(sdtf.format(new Date()));
+						igiDocumentShortCode.setIsActive(1);
+						
+						shortCodesList.add(igiDocumentShortCode);
+					}
+					
+				}
+				
+				long result = service.addIGIDocumentShortCodes(shortCodesList);
+				
+				if (result > 0) {
+					redir.addAttribute("result", (shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+" Added Successfully");
+				} else {
+					redir.addAttribute("resultfail", (shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+" Add Unsuccessful");
+				}
+			}
+			redir.addAttribute("igiDocId", igiDocId);
+			return "redirect:/IGIDocumentDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIDocShortCodesExcelUpload.htm " + UserId, e);
+			return "static/Error";
+		}
+
 	}
 	/* ************************************************ IGI Document End ***************************************************** */
 }

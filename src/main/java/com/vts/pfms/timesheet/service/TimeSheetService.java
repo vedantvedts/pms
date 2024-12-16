@@ -8,6 +8,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.timesheet.dto.ActionAnalyticsDTO;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
+import com.vts.pfms.timesheet.model.TimesheetKeywords;
 
 public interface TimeSheetService {
 
@@ -34,5 +35,6 @@ public interface TimeSheetService {
 	public List<Object[]> getRoleWiseEmployeeList(String labCode, String loginType, String empId) throws Exception;
 	public Map<String, Map<LocalDate, TimeSheet>> getTimesheetDataForOfficer(String superiorOfficer, String labCode, String dateofWeek, String loginType) throws Exception;
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception;
+	public List<TimesheetKeywords> getTimesheetKeywordsList() throws Exception;
 	
 }

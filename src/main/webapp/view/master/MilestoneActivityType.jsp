@@ -170,7 +170,7 @@ th, td {
 				</div>
 
 				<div class="row" style="margin-top: 10px;">
-					<div class="col-md-8">
+					<div class="col-md-7">
 						<div style="margin-top: 0px;">
 							<div class="card ">
 
@@ -189,7 +189,8 @@ th, td {
 																	<thead>
 																		<tr>
 																			<th>Select</th>
-																			<th>ActivityType</th>
+																			<th>Activity Type</th>
+																			<th>Activity Code</th>
 																			<th>Is Time Sheet</th>
 																		</tr>
 																	</thead>
@@ -203,6 +204,10 @@ th, td {
 																			<td id="<%=obj[0]%>"> 
 																				<%=obj[1]!= null?obj[1]:"-"%>
 																				<input type="hidden" name="<%=obj[0]%>" value="<%=obj[1]%>" >
+																			</td>
+																			<td id="<%=obj[0]%>"> 
+																				<%=obj[3]!= null?obj[3]:"-"%>
+																				<input type="hidden" name="<%=obj[0]%>" value="<%=obj[3]!= null?obj[3]:"-"%>" >
 																			</td>
 																			<td id="<%=obj[0]%>">
 																				<%=obj[2]!= null && obj[2].toString().equalsIgnoreCase("Y")? "Yes":"No"%>
@@ -238,7 +243,7 @@ th, td {
 							</div>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<div style="margin-top: 0px;">
 
 							<div class="card ">
@@ -254,13 +259,17 @@ th, td {
 														<thead style="background-color: #055C9D; color: white;">
 															<tr>
 																<th>Activity Type</th>
+																<th>Activity Code</th>
 																<th>Is Time Sheet</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr>
 																<td>
-																	<input class="form-control" type="text" id="activitytype" name="activitytype" required>
+																	<input class="form-control" type="text" id="activitytype" name="activitytype" maxlength="255" required>
+																</td>
+																<td>
+																	<input class="form-control" type="text" id="activityCode" name="activityCode" maxlength="10" required>
 																</td>
 																<td>
 																	<select class="form-control" name="isTimeSheet" id="isTimeSheet" required>
@@ -274,13 +283,9 @@ th, td {
 													</table>
 												</div>
 												<div style="text-align: center;">
-													<button type="button" class="btn btn-success btn-sm add "
-														name="sub" value="edit"
-														onclick="return AddActivityCheck('addcheck');">ADD</button>
-
+													<button type="button" class="btn btn-success btn-sm add " name="sub" value="edit" onclick="return AddActivityCheck('addcheck');">ADD</button>
 												</div>
-												<input type="hidden" name="${_csrf.parameterName}"
-													value="${_csrf.token}" />
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</div>
 										</div>
 									</form>
@@ -307,9 +312,13 @@ th, td {
    function AddActivityCheck(myfrm){
 	   var count=0;
 		var atype=$('#activitytype').val().trim();
+		var acode=$('#activityCode').val().trim();
 		var isTimeSheet=$('#isTimeSheet').val();
 	    if(atype.length==0){
-	    	alert("Please fill the type !");
+	    	alert("Please fill the Activity Type !");
+	    	return false;
+	    }else if(acode.length==0){
+	    	alert("Please fill the Activity Code !");
 	    	return false;
 	    }else if(isTimeSheet=="0"){
 	    	alert("Please Select Is Time Sheet !");
@@ -375,13 +384,17 @@ th, td {
 								<thead style="background-color: #055C9D; color: white;">
 									<tr>
 										<th>Activity Type</th>
+										<th>Activity Code</th>
 										<th>Is Time Sheet</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td>
-											<input class="form-control" type="text" id="ToEditActivitytype" name="toActivity" required>
+											<input class="form-control" type="text" id="ToEditActivitytype" name="toActivity" maxlength="255" required>
+										</td>
+										<td>
+											<input class="form-control" type="text" id="ToEditActivityCode" name="activityCode" maxlength="10" required>
 										</td>
 										<td>
 											<select class="form-control" name="isTimeSheet" id="ToEditIsTimeSheet" required>
@@ -457,15 +470,17 @@ function EditActivityCheck(){
 	  
 	var selectedindex=$('input[name="Did"]:checked').val();
 	try{		
-		var innertext=document.getElementsByName(selectedindex)[0].value;
+		var innertext1=document.getElementsByName(selectedindex)[0].value;
 		var innertext2=document.getElementsByName(selectedindex)[1].value;
+		var innertext3=document.getElementsByName(selectedindex)[2].value;
 	}catch { 
 		alert("Please select an Activity to Edit");return 0;
 	}
 	
 	$('#ActivityTypeEditModal').modal('show');
-	$('#ToEditActivitytype').val(innertext);
-	$('#ToEditIsTimeSheet').val(innertext2).trigger('change');
+	$('#ToEditActivitytype').val(innertext1);
+	$('#ToEditActivityCode').val(innertext2);
+	$('#ToEditIsTimeSheet').val(innertext3).trigger('change');
 	$('#ActivityID').val(selectedindex);
 	  
   }

@@ -17,6 +17,7 @@ import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.timesheet.dto.ActionAnalyticsDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
+import com.vts.pfms.timesheet.model.TimesheetKeywords;
 
 @Repository
 @Transactional
@@ -363,11 +364,15 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
-	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeDesc, b.AssignerLabCode, b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName',d.Designation, b.ActionPDC, b.WorkDone, b.FnorAn, b.ActivityTypeId \r\n"
-			+ "FROM pfms_timesheet a \r\n"
+	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeId, e.ActivityType,e.ActivityCode, b.ProjectId, (CASE WHEN b.ProjectId=0 THEN 'General' ELSE CONCAT(g.ProjectCode, ' (', g.ProjectShortName, ')') END) AS 'Project', \r\n"
+			+ "b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation, b.KeywordId, f.Keyword, b.WorkDone, b.WorkDoneon\r\n"
+			+ "FROM pfms_timesheet a\r\n"
 			+ "JOIN pfms_timesheet_activity b ON a.TimeSheetId=b.TimeSheetId AND b.IsActive=1\r\n"
-			+ "LEFT JOIN employee c ON b.AssignedBy=c.EmpId AND b.AssignerLabCode=c.LabCode\r\n"
+			+ "LEFT JOIN employee c ON b.AssignedBy=c.EmpId\r\n"
 			+ "LEFT JOIN employee_desig d ON c.DesigId=d.DesigId\r\n"
+			+ "LEFT JOIN milestone_activity_type e ON b.ActivityTypeId=e.ActivityTypeId\r\n"
+			+ "LEFT JOIN pfms_timesheet_keywords f ON b.KeywordId=f.KeywordId\r\n"
+			+ "LEFT JOIN project_master g ON b.ProjectId = g.ProjectId\r\n"
 			+ "WHERE a.IsActive=1 AND a.EmpId=:EmpId AND a.ActivityFromDate BETWEEN :FromDate AND :ToDate ORDER BY a.ActivityFromDate";
 	@Override
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception {
@@ -382,5 +387,18 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			logger.error(new Date()+" Inside TimeSheetDaoImpl getEmployeeNewTimeSheetList() "+e);
 			return new ArrayList<>();
 		}
+	}
+	
+	@Override
+	public List<TimesheetKeywords> getTimesheetKeywordsList() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM TimesheetKeywords WHERE IsActive=1");
+			return (List<TimesheetKeywords>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl getTimesheetKeywordsList() "+e);
+			return new ArrayList<>();
+		}
+		
 	}
 }

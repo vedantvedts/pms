@@ -41,18 +41,14 @@ public class TimeSheetActivity implements Serializable {
 	private String ActivityDuration;
 	@Column(name = "Remarks", length = 1000)
 	private String Remarks;
-	@Column(name = "ActivityTypeDesc", length = 255)
-	private String ActivityTypeDesc;
-	@Column(name = "AssignerLabCode", length = 255)
-	private String AssignerLabCode;
 	@Column(name = "AssignedBy", length = 20)
 	private Long AssignedBy;
-	@Column(name = "ActionPDC")
-	private String ActionPDC;
+	@Column(name = "KeywordId", length = 20)
+	private Long KeywordId;
 	@Column(name = "WorkDone", length = 255)
 	private String WorkDone;
-	@Column(name = "FnorAn", length = 1)
-	private String FnorAn;
+	@Column(name = "WorkDoneon", length = 1)
+	private String WorkDoneon;
 	@Column(name = "CreatedBy", length = 50)
 	private String CreatedBy;
 	@Column(name = "CreatedDate")

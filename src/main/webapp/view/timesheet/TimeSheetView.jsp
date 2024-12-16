@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.timesheet.model.TimesheetKeywords"%>
 <%@page import="com.vts.pfms.master.model.Employee"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.LinkedHashMap"%>
@@ -106,7 +107,8 @@ List<MilestoneActivityType> milestoneActivityTypeList = (List<MilestoneActivityT
 
 List<Employee> allEmpList = (List<Employee>) request.getAttribute("allEmployeeList");
 List<Object[]> designationlist = (List<Object[]>) request.getAttribute("designationlist");
-
+List<Object[]> projectList = (List<Object[]>)request.getAttribute("projectList");
+List<TimesheetKeywords> keywordsList = (List<TimesheetKeywords>) request.getAttribute("keywordsList");
 
 String activityWeekDate = (String)request.getAttribute("activityWeekDate");
 String activityWeekDateSql = (String)request.getAttribute("activityWeekDateSql");
@@ -156,7 +158,7 @@ FormatConverter fc = new FormatConverter();
 					<div class="card-header">
 						<div class="row">
 							<div class="col-md-6">
-								<h4 class="">Time Sheet View</h4>
+								<h4 class="">Work Register View</h4>
 							</div>
 							<div class="col-md-6">
 								
@@ -292,11 +294,11 @@ FormatConverter fc = new FormatConverter();
 																<tr>
 																	<th width="5%">SN</th>
 																	<th width="15%">Activity Type</th>
-																	<th width="7%">Assigner Lab</th>
+																	<th width="10%">Project</th>
 																	<th width="20%">Assigner</th>
-																	<th width="7%">PDC</th>
-																	<th width="6%">FN / AN</th>
-																	<th width="40%">Work Done</th>
+																	<th width="10%">Keywords</th>
+																	<th width="30%">Work Done</th>
+																	<th width="10%">Work Done on </th>
 																</tr>
 															</thead>
 															<tbody>
@@ -332,19 +334,31 @@ FormatConverter fc = new FormatConverter();
 																				%>
 																			</td>
 																			<td class="center">
-																				<%if(act.getAssignerLabCode()!=null) {%><%=act.getAssignerLabCode() %><%} %>
+																				<%
+																					String project = projectList!=null?projectList.stream()
+																				            .filter(e -> Long.parseLong(e[0].toString()) == act.getProjectId())
+																				            .map(e ->  e[4]+" ("+e[17]+")")
+																				            .findFirst().orElse("General"): "-";
+																					out.println(project);
+																				%>
 																			</td>
 																			<td>
-																				<%=emp!=null?((emp.getTitle()!=null?emp.getTitle():(emp.getSalutation()!=null?emp.getSalutation():"")) + " " + (emp.getEmpName()) + ", " + (desig!=null && desig[2]!=null?desig[2]:"")):"-"%>
+																				<%=emp!=null?((emp.getTitle()!=null?emp.getTitle():(emp.getSalutation()!=null?emp.getSalutation():"")) + " " + (emp.getEmpName()) + ", " + (desig!=null && desig[2]!=null?desig[2]:"")):"Not Available"%>
 																			</td>
 																			<td class="center">
-																				<%=act.getActionPDC()!=null?fc.sdfTordf(act.getActionPDC()):"-" %>
-																			</td>
-																			<td class="center">
-																				<%=act.getFnorAn()!=null?(act.getFnorAn().equalsIgnoreCase("A")?"AN":"FN"):"-" %>
+																				<%
+																					String keyword = keywordsList!=null?keywordsList.stream()
+																				            .filter(e -> e.getKeywordId().equals(act.getKeywordId()))
+																				            .map(e ->  e.getKeyword())
+																				            .findFirst().orElse("-"): "-";
+																					out.println(keyword);
+																				%>
 																			</td>
 																			<td>
 																				<%if(act.getWorkDone()!=null && !act.getWorkDone().isEmpty()) {%><%=act.getWorkDone()%><%} else{%>-<%} %>
+																			</td>
+																			<td class="center">
+																				<%=act.getWorkDoneon()!=null?(act.getWorkDoneon().equalsIgnoreCase("A")?"AN":(act.getWorkDoneon().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>
 																			</td>
 																		</tr>
 																	<%} %>
@@ -420,38 +434,33 @@ FormatConverter fc = new FormatConverter();
 												<th width="5%">SN</th>
 												<th width="7%">Date</th>
 												<th width="10%">Activity Type</th>
-												<th width="7%">Assigner Lab</th>
+												<th width="10%">Project</th>
 												<th width="15%">Assigner</th>
-												<th width="7%">PDC</th>
-												<th width="6%">FN / AN</th>
-												<th width="38%">Work Done</th>
+												<th width="10%">Keywords</th>
+												<th width="28%">Work Done</th>
+												<th width="10%">Work Done on</th>
 											</tr>
 										</thead>
 										<tbody>	
 											<% if (timeSheetToListMap!=null && timeSheetToListMap.size() > 0) {
 												int slno = 0;String key="";
 												for (Map.Entry<String, List<Object[]>> map : timeSheetToListMap.entrySet()) {
-		                   							
-		                   							List<Object[]> values = map.getValue();
-		                   							int i=0;
-		                   							for (Object[] obj : values) {
+			                  							
+			                  							List<Object[]> values = map.getValue();
+			                  							int i=0;
+			                  							for (Object[] obj : values) {
 											%>
 												<tr>
 													<td class="center"><%=++slno%></td>
 													<%if(i==0) {%>
 											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
-	           										<%} %>
-	           										<td>
-	           											<%
-															String activityName = milestoneActivityTypeList.stream().filter(e -> Long.parseLong(obj[12].toString())==e.getActivityTypeId() ).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
-															out.println(activityName);
-														%>
-													</td>
-	           										<td class="center"><%=obj[5]!=null?obj[5]:"-" %></td>
-	           										<td><%=obj[7]!=null?obj[7]+", "+(obj[8]!=null?obj[8]:"-"):"-" %></td>
-	           										<td class="center"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></td>
-	           										<td class="center"><%=obj[11]!=null?(obj[11].toString().equalsIgnoreCase("A")?"AN":"FN"):"-" %></td>
-	           										<td><%=obj[10]!=null?obj[10]:"-" %></td>
+			         								<%} %>
+			    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
+			    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
+			    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
+			    									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
+			    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
+			    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>

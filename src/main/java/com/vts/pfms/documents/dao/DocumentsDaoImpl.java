@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
@@ -239,12 +240,13 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return 0;
 		}
 	}
+	
 	@Override
-	public long addIGIInterface(IGIInterface addIGIInterface) throws Exception {
+	public long addIGIInterface(IGIInterface igiInterface) throws Exception {
 		try {
-			manager.persist(addIGIInterface);
+			manager.persist(igiInterface);
 			manager.flush();
-			return addIGIInterface.getInterfaceId();
+			return igiInterface.getInterfaceId();
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -298,6 +300,43 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return null;
 		}
 	}
+
+	@Override
+	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM IGIDocumentShortCodes WHERE IsActive=1");
+			return (List<IGIDocumentShortCodes>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IGIDocumentShortCodes>();
+		}
+	}
+
+	private static final String DELETEIGIDOCUMENTSHORTCODESBYTYPE = "UPDATE pfms_igi_document_shortcodes SET IsActive=0 WHERE ShortCodeType=:ShortCodeType";
+	@Override
+	public int deleteIGIDocumentShortCodesByType(String shortCodeType) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEIGIDOCUMENTSHORTCODESBYTYPE);
+			query.setParameter("ShortCodeType", shortCodeType);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 	
-	
+	@Override
+	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception {
+		try {
+			for(IGIDocumentShortCodes documentShortCode : igiDocumentShortCodes) {
+				manager.persist(documentShortCode);
+				manager.flush();
+			}
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }

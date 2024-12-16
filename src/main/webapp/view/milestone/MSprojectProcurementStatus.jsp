@@ -77,10 +77,11 @@
 							<th colspan="28" ><span class="mainsubtitle">Procurement Status</span></th>
 					 	</tr> -->
 					 	<tr>
-							<th style="width: 5%;">SN</th>
-							<th style="width: 17%;">Demand No.</th>
+							<th style="width: 3%;">SN</th>
+							<th style="width: 7%;">Demand No.</th>
+							<th style="width: 25%;">Task Name</th>
 							<%for(int demandStage=0; demandStage<=25; demandStage++) {%>
-								<th style="width: 3%;"><%=demandStage %></th>
+								<th style="width: 2.5%;"><%=demandStage %></th>
 							<%} %>
 					 	</tr>
 					</thead>
@@ -92,6 +93,7 @@
 							<tr>
 								<td class="center"><%=++slno %></td>
 								<td class="center"><%=obj[1] %></td>
+								<td ><%=obj[3] %></td>
 								<%for(int demandStage=0; demandStage<=25; demandStage++) {%>
 									<td <%if(obj[2]!=null && demandStage<=(Integer.parseInt(obj[2].toString())) ) {%> 
 											style="background-color: green;color: white" class="center" 
@@ -106,7 +108,7 @@
 								<%} %>
 							</tr>
 						<%} }else{%>
-							<tr><td colspan="28" class="center" >No Data Available</td></tr>
+							<tr><td colspan="29" class="center" >No Data Available</td></tr>
 						<%} %>
 					</tbody>	
 				</table>

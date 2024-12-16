@@ -29,12 +29,10 @@ public class TimeSheetDTO {
 	private String[] ActivityDuration;
 	private String[] Remarks;
 	// New Columns for Sample Demo
-	private String[] ActivityTypeDesc;
-	private String[] AssignerLabCode;
+	private String[] KeywordId;
 	private String[] AssignedBy;
-	private String[] ActionPDC;
 	private String[] WorkDone;
-	private String[] FnorAn;
+	private String[] WorkDoneon;
 	
 	private String UserId;
 	private String Action;

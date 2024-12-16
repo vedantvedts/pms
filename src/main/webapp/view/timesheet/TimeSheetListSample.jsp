@@ -1,4 +1,5 @@
 
+<%@page import="com.vts.pfms.timesheet.model.TimesheetKeywords"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.master.model.Employee"%>
@@ -578,6 +579,8 @@ List<Object[]> empAllTimeSheetList = (List<Object[]>)request.getAttribute("empAl
 List<Object[]> employeeNewTimeSheetList = (List<Object[]>)request.getAttribute("employeeNewTimeSheetList");
 Map<String, List<Object[]>> timeSheetToListMap = employeeNewTimeSheetList!=null && employeeNewTimeSheetList.size()>0?employeeNewTimeSheetList.stream()
 		  .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+List<Object[]> employeeNewTimeSheet = (List<Object[]>)request.getAttribute("employeeNewTimeSheet");
+
 
 List<MilestoneActivityType> milestoneActivityTypeList = (List<MilestoneActivityType>) request.getAttribute("milestoneActivityTypeList");
 if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
@@ -585,7 +588,11 @@ if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
 }
 
 List<Object[]> allLabList = (List<Object[]>) request.getAttribute("allLabList");
+List<Object[]> projectList = (List<Object[]>) request.getAttribute("projectList");
+List<Object[]> labEmpList = (List<Object[]>) request.getAttribute("labEmpList");
 List<Employee> allEmpList = (List<Employee>) request.getAttribute("allEmployeeList");
+List<TimesheetKeywords> keywordsList = (List<TimesheetKeywords>) request.getAttribute("keywordsList");
+
 List<Object[]> designationlist = (List<Object[]>) request.getAttribute("designationlist");
 
 String labcode = (String)session.getAttribute("labcode");
@@ -598,11 +605,6 @@ FormatConverter fc = new FormatConverter();
 
 //String status = timeSheet.getTimeSheetStatus()!=null?timeSheet.getTimeSheetStatus():"INI";
 
-Map<String, String> statusMap = new HashMap<>();
-statusMap.put("INI", "#95c8f4");
-statusMap.put("FWD", "#0383F3");
-statusMap.put("ABS", "#2B7A0B");
-statusMap.put("RBS", "#fe4e4e");
 
 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
@@ -631,7 +633,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 			<div class="col-md-12">	
 				<div class="card shadow-nohover">
 					<div class="card-header">
-						<h4 class="">Time Sheet</h4>
+						<h4 class="">Work Register Entry</h4>
 					</div>
 					
 					<div class="card-body">
@@ -662,7 +664,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 
 						<div id="timesheet" class="div-container">
 							<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;background-color: #216583;height: 40px;">
-								Time Sheet Details - (<%=activityLD.getDayOfMonth()+"th "+activityLD.getMonth()+" "+activityLD.getYear() %>)
+								Work Register Details - (<%=activityLD.getDayOfMonth()+"th "+activityLD.getMonth()+" "+activityLD.getYear() %>)
 							</div>
 							
 							<!-- Time Sheet Details View -->
@@ -700,51 +702,32 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 												<tr>
 													<th width="5%">SN</th>
 													<th width="15%">Activity Type</th>
-													<th width="10%">Assigner Lab</th>
+													<th width="10%">Project</th>
 													<th width="20%">Assigner</th>
-													<th width="10%">PDC</th>
-													<th width="7%">FN / AN</th>
-													<th width="33%">Work Done</th>
+													<th width="10%">Keywords</th>
+													<th width="30%">Work Done</th>
+													<th width="10%">Work Done on </th>
 												</tr>
 											</thead>
 											<tbody>
-												<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
-													int count = 0;
-													for(TimeSheetActivity act : timeSheetActivityList) {
-														Employee emp = allEmpList!=null && allEmpList.size()>0?allEmpList.stream()
-																		.filter(e -> e.getEmpId().equals(act.getAssignedBy())).findFirst().orElse(null): null;
-														Object[] desig = designationlist!=null && designationlist.size()>0 ?designationlist.stream()
-																		 .filter(e -> (emp!=null? emp.getDesigId():0L) == Long.parseLong(e[0].toString()) ).findFirst().orElse(null):null;
+												<%if (employeeNewTimeSheet!=null && employeeNewTimeSheet.size() > 0) {
+													int slno = 0;
+                  									for (Object[] obj : employeeNewTimeSheet) {
 												%>
 													<tr>
-														<td class="center"><%=++count %></td>
-														<td>
-															<%
-																String activityName = milestoneActivityTypeList.stream().filter(e -> act.getActivityTypeId().equals(e.getActivityTypeId())).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
-																out.println(activityName);
-															%>
-														</td>
-														<td class="center">
-															<%if(act.getAssignerLabCode()!=null) {%><%=act.getAssignerLabCode() %><%} %>
-														</td>
-														<td>
-															<%=emp!=null?((emp.getTitle()!=null?emp.getTitle():(emp.getSalutation()!=null?emp.getSalutation():"")) + " " + (emp.getEmpName()) + ", " + (desig!=null && desig[2]!=null?desig[2]:"")):"-"%>
-														</td>
-														<td class="center">
-															<%=act.getActionPDC()!=null?fc.sdfTordf(act.getActionPDC()):"-" %>
-														</td>
-														<td class="center">
-															<%=act.getFnorAn()!=null?(act.getFnorAn().equalsIgnoreCase("A")?"AN":"FN"):"-" %>
-														</td>
-														<td>
-															<%if(act.getWorkDone()!=null && !act.getWorkDone().isEmpty()) {%><%=act.getWorkDone()%><%} else{%>-<%} %>
-														</td>
+														<td class="center"><%=++slno%></td>
+				    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
+				    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
+				    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
+				    									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
+				    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
+				    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
 													</tr>
-												<%} }else {%>
+												<% } } else{%>
 													<tr>
-														<td colspan="6" class="center">No Data Available</td>
+														<td colspan="7" style="text-align: center;">No Data Available</td>
 													</tr>
-												<%} %>	
+												<%} %>
 											</tbody>
 										</table>
 				                	</div>
@@ -807,102 +790,159 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 													<thead class="center">
 														<tr>
 															<th width="15%">Activity Type</th>
-															<th width="10%">Assigner Lab</th>
+															<th width="10%">Project</th>
 															<th width="20%">Assigner</th>
-															<th width="8%">PDC</th>
-															<th width="7%">FN / AN</th>
-															<th width="40%">Work Done</th>
+															<th width="10%">Keywords</th>
+															<th width="30%">Work Done</th>
+															<th width="15%">Work Done on</th>
 														</tr>
 													</thead>
 													<tbody id="activityTableBody">
-													<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
-															int count = 0;
+													<%
+													int clonecount = 1;
+													Long activityNamemil = 0L;
+													if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
+														clonecount = 0;
 														  	for(TimeSheetActivity act : timeSheetActivityList) {
-														  		++count;
+														  		++clonecount;
 														%>
 															<tr class="tr_clone_activity">
-																<td>
-																	<select class="form-control selectitem activityName" name="activityName" id="activityName_edit_<%=count %>">
-																		<option value="" disabled="disabled" selected="selected">--Select--</option>
+																	<td class="center">
+																		
 																		<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+																			int milflag = 0, milslno = 0;
 																			for(MilestoneActivityType mil : milestoneActivityTypeList) {
+																				++milflag; ++milslno;
+																				if(milslno==1) activityNamemil = mil.getActivityTypeId();
 																		%>
-																			<option value="<%=mil.getActivityTypeId()%>" <%if(act.getActivityTypeId().equals(mil.getActivityTypeId())) {%>selected<%} %> ><%=mil.getActivityType() %></option>
-																		<%} }%>
-																	</select>
-																</td>
-																<td>
-																	<select class="form-control selectitem assignerLabCode" name="assignerLabCode" id="assignerLabCode_edit_<%=count %>" data-live-search="true" data-container="body" onchange="labEmployeesList('edit_<%=count %>')">
-																		<option value="0">Lab Name</option>
-																		<% for (Object[] obj : allLabList) {%>
-																		    <option value="<%=obj[3]%>" <%if(act.getAssignerLabCode().equalsIgnoreCase(obj[3].toString())){ %>selected<%} %> ><%=obj[3]%></option>
-																	    <%} %>
-																		<option value="@EXP" <%if(act.getAssignerLabCode().equalsIgnoreCase("@EXP")){ %>selected<%} %>>Expert</option>
-																	</select>
-																</td>
-																<td>
-																	<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_edit_<%=count %>" data-live-search="true" data-container="body">
-																	</select>
-																</td>
-																<td>
-																	<input type="text" class="form-control actionPDC" name="actionPDC" id="actionPDC_edit_<%=count %>" <%if(act.getActionPDC()!=null) {%> value="<%=fc.sdfTordf(act.getActionPDC())%>" <%} %> >
-																</td>
-																<td class="center">
-																	<input type="hidden" class="fnoranval" name="fnoran" id="fnoranval_edit_<%=count %>" value="<%=act.getFnorAn()%>">
-																	<label class="toggle-switch">
-							                                            <input type="checkbox" class="fnoran" id="fnoran_edit_<%=count %>" <%if(act.getFnorAn()!=null && act.getFnorAn().equalsIgnoreCase("A")) {%>checked<%} %> >
-							                                            <span class="slider"></span>
-							                                            <!-- <span class="label" id="versionToggleLabel">FN</span> -->
-							                                        </label>
-																</td>
-																<td>
-																	<textarea class="form-control" name="workDone" rows="2"  placeholder="Enter Maximum of 500 Characters" maxlength="500"><%if(act.getWorkDone()!=null) {%><%=act.getWorkDone()%><%} %></textarea>
-																	<%-- <input type="text" class="form-control" name="workDone" <%if(act.getWorkDone()!=null) {%>value="<%=act.getWorkDone()%>"<%} %> placeholder="Enter maximum 200 characters" maxlength="200"> --%>
-																</td>
-															</tr>
+																			<%if(milflag==1) {%>
+																			<div class="d-flex flex-direction-column " style="gap: 15px;">
+																			<%} %>
+																				<div class="d-flex flex-direction-column ">
+																					<input type="radio" class=" activityName" name="activityName_<%=clonecount %>" id="activityName_<%=clonecount %>" value="<%=mil.getActivityTypeId() %>" <%if(mil.getActivityTypeId()==act.getActivityTypeId()) {%>checked<%} %> > 
+																					<span class="ml-1"><%=mil.getActivityCode() %></span>
+																				</div>
+																			<%if(milflag==3) {%>	
+																			</div>
+																			<%} %>
+																		<% if(milflag==3){milflag = 0;} } }%>
+																		
+																	</td>
+																	<td>
+																		<select class="form-control selectitem projectId" name="projectId" id="projectId_<%=clonecount %>" data-live-search="true" data-container="body">
+																			<option value="0" <%if(act.getProjectId()==0) {%>selected<%} %>>General</option>
+												               				<%for(Object[] pro: projectList ){
+												                				String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
+												                			 %>
+																				<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %> ><%=pro[4]+projectshortName %></option>
+																			<%} %>
+																		</select>
+																	</td>
+																	<td>
+																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_<%=clonecount %>" data-live-search="true" data-container="body">
+																			<option value="-1" disabled selected>Choose...</option>
+																			<option value="0" <%if(act.getAssignedBy()==0) {%>selected<%} %>>Not Available</option>
+																	        <% for(Object[] emp : labEmpList){ %>
+																	        	<option value="<%=emp[0] %>" <%if(act.getAssignedBy()==Long.parseLong(emp[0].toString())) {%>selected<%} %> ><%=emp[1] %>, <%=emp[2] %></option>
+																	        <%} %>
+																		</select>
+																	</td>
+																	<td>
+																		<select class="form-control selectitem keywordId" name="keywordId" id="keywordId_<%=clonecount %>" data-live-search="true" data-container="body">
+																			<option value="0" disabled selected>Choose...</option>
+																	        <% for(TimesheetKeywords keywords : keywordsList){ %>
+																	        	<option value="<%=keywords.getKeywordId() %>" <%if(act.getKeywordId().equals(keywords.getKeywordId())) {%>selected<%} %> ><%=keywords.getKeyword() %></option>
+																	        <%} %>
+																		</select>
+																	</td>
+																	<td>
+																		<textarea class="form-control workDone" rows="2" name="workDone" id="workDone_<%=clonecount %>" placeholder="Enter Maximum of 100 Characters" maxlength="100"><%if(act.getWorkDone()!=null) {%> <%=act.getWorkDone() %> <%} %></textarea>
+																	</td>
+																	<td>
+																		<div class="d-flex " style="gap: 15px;">
+																			<div class="d-flex flex-direction-column ">
+																				<input type="radio" class=" workDoneon" name="workDoneon_<%=clonecount %>" id="workDoneon_<%=clonecount %>" value="L" <%if(act.getWorkDoneon().equalsIgnoreCase("L")) {%>checked<%} %> > 
+																				<span class="ml-1">Full Day</span>
+																				<input type="radio" class="ml-3 workDoneon" name="workDoneon_<%=clonecount %>" id="workDoneon_<%=clonecount %>" value="F" <%if(act.getWorkDoneon().equalsIgnoreCase("F")) {%>checked<%} %> > 
+																				<span class="ml-1">FN</span>
+																				<input type="radio" class="ml-3 workDoneon" name="workDoneon_<%=clonecount %>" id="workDoneon_<%=clonecount %>" value="A" <%if(act.getWorkDoneon().equalsIgnoreCase("A")) {%>checked<%} %> > 
+																				<span class="ml-1">AN</span>
+																			</div>
+																		</div>
+																	</td>
+																</tr>
 														<%} }else {%>
 															<%-- <%for(int i=1;i<=5;i++) {%> --%>
 																<tr class="tr_clone_activity">
 																	<td class="center">
-																		<select class="form-control selectitem activityName" name="activityName" id="activityName_1">
-																			<option value="" disabled="disabled" selected="selected">--Select--</option>
-																			<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
-																				for(MilestoneActivityType mil : milestoneActivityTypeList) {
-																			%>
-																				<option value="<%=mil.getActivityTypeId()%>"><%=mil.getActivityType() %></option>
-																			<%} }%>
-																		</select>
+																		
+																		<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+																			int milflag = 0, milslno = 0;;
+																			for(MilestoneActivityType mil : milestoneActivityTypeList) {
+																				++milflag; ++milslno;
+																		%>
+																			<%if(milflag==1) {%>
+																			<div class="d-flex flex-direction-column " style="gap: 15px;">
+																			<%} %>
+																				<div class="d-flex flex-direction-column ">
+																					<input type="radio" class=" activityName" name="activityName_1" id="activityName_1" value="<%=mil.getActivityTypeId() %>" <%if(milslno==1) {  activityNamemil = mil.getActivityTypeId();%>checked<%} %>  > 
+																					<span class="ml-1"><%=mil.getActivityCode() %></span>
+																				</div>
+																			<%if(milflag==3) {%>	
+																			</div>
+																			<%} %>
+																		<% if(milflag==3){milflag = 0;} } }%>
+																		
 																	</td>
 																	<td>
-																		<select class="form-control selectitem assignerLabCode" name="assignerLabCode" id="assignerLabCode_1" data-live-search="true" data-container="body" onchange="labEmployeesList('1')">
-																			<option value="0">Lab Name</option>
-																			<% for (Object[] obj : allLabList) {%>
-																			    <option value="<%=obj[3]%>" <%if(obj[3].toString().equalsIgnoreCase(labcode)) {%>selected<%} %> ><%=obj[3]%></option>
-																		    <%} %>
-																			<option value="@EXP">Expert</option>
+																		<select class="form-control selectitem projectId" name="projectId" id="projectId_1" data-live-search="true" data-container="body">
+																			<option value="0" >General</option>
+												               				<%for(Object[] pro: projectList ){
+												                				String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
+												                			 %>
+																				<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
+																			<%} %>
 																		</select>
 																	</td>
 																	<td>
 																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_1" data-live-search="true" data-container="body">
-																			<option value="0">Choose...</option>
-																	        <%-- <% for(Object[] emp : labEmpList){ %>
-																	        	<option value="<%=emp[0] %>"><%=emp[1] %>, <%=emp[3] %></option>
-																	        <%} %> --%>	
+																			<option value="-1" disabled selected>Choose...</option>
+																			<option value="0">Not Available</option>
+																	        <% for(Object[] emp : labEmpList){ %>
+																	        	<option value="<%=emp[0] %>"><%=emp[1] %>, <%=emp[2] %></option>
+																	        <%} %>
 																		</select>
 																	</td>
 																	<td>
-																		<input type="text" class="form-control actionPDC" name="actionPDC" id="actionPDC_1" >
+																		<select class="form-control selectitem keywordId" name="keywordId" id="keywordId_1" data-live-search="true" data-container="body">
+																			<option value="0" disabled selected>Choose...</option>
+																	        <% for(TimesheetKeywords keywords : keywordsList){ %>
+																	        	<option value="<%=keywords.getKeywordId() %>"><%=keywords.getKeyword() %></option>
+																	        <%} %>
+																		</select>
 																	</td>
-																	<td class="center">
+																	<!-- <td class="center">
 																		<input type="hidden" class="fnoranval" name="fnoran" id="fnoranval_1">
 																		<label class="toggle-switch">
 								                                            <input type="checkbox" class="fnoran" id="fnoran_1">
 								                                            <span class="slider"></span>
-								                                            <!-- <span class="label" id="versionToggleLabel">FN</span> -->
+								                                            <span class="label" id="versionToggleLabel">FN</span>
 								                                        </label>
+																	</td> -->
+																	<td>
+																		<textarea class="form-control workDone" rows="2" name="workDone" id="workDone_1" placeholder="Enter Maximum of 100 Characters" maxlength="100"></textarea>
 																	</td>
 																	<td>
-																		<textarea class="form-control" name="workDone" rows="2" cols="" placeholder="Enter Maximum of 500 Characters" maxlength="500"></textarea>
+																		<div class="d-flex " style="gap: 15px;">
+																			<div class="d-flex flex-direction-column ">
+																				<input type="radio" class=" workDoneon" name="workDoneon_1" id="workDoneon_1" value="L" checked > 
+																				<span class="ml-1">Full Day</span>
+																				<input type="radio" class="ml-3 workDoneon" name="workDoneon_1" id="workDoneon_1" value="F" > 
+																				<span class="ml-1">FN</span>
+																				<input type="radio" class="ml-3 workDoneon" name="workDoneon_1" id="workDoneon_1" value="A" > 
+																				<span class="ml-1">AN</span>
+																			</div>
+																		</div>
 																	</td>
 																</tr>
 															<%-- <%} %>	 --%>
@@ -941,7 +981,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 											<div class="col-md-12">
 												<b>Note:</b> <br>
 												1. Unfilled rows will be ignored. <br>
-												2. E.g: Activity type - Technical, Managerial, Administrative, etc.
+												<!-- 2. E.g: Activity type - Technical, Managerial, Administrative, etc. -->
 											</div>
 										</div>
 									</div>		
@@ -970,11 +1010,11 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 									<th width="5%">SN</th>
 									<th width="7%">Date</th>
 									<th width="10%">Activity Type</th>
-									<th width="7%">Assigner Lab</th>
+									<th width="10%">Project</th>
 									<th width="15%">Assigner</th>
-									<th width="7%">PDC</th>
-									<th width="6%">FN / AN</th>
-									<th width="38%">Work Done</th>
+									<th width="10%">Keywords</th>
+									<th width="28%">Work Done</th>
+									<th width="10%">Work Done on</th>
 								</tr>
 							</thead>
 							<tbody>	
@@ -991,17 +1031,12 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 										<%if(i==0) {%>
 								    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
          								<%} %>
-    									<td>
-    										<%
-												String activityName = milestoneActivityTypeList.stream().filter(e -> Long.parseLong(obj[12].toString())==e.getActivityTypeId() ).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
-												out.println(activityName);
-											%>
-										</td>
-    									<td class="center"><%=obj[5]!=null?obj[5]:"-" %></td>
-    									<td><%=obj[7]!=null?obj[7]+", "+(obj[8]!=null?obj[8]:"-"):"-" %></td>
-    									<td class="center"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></td>
-    									<td class="center"><%=obj[11]!=null?(obj[11].toString().equalsIgnoreCase("A")?"AN":"FN"):"-" %></td>
-    									<td><%=obj[10]!=null?obj[10]:"-" %></td>
+    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
+    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
+    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
+    									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
+    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
+    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
 									</tr>
 								<% ++i; } } } else{%>
 									<tr>
@@ -1211,7 +1246,7 @@ function toggleDiv(divId) {
 
 <script type="text/javascript">
 
-	<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
+	<%-- <%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
 	int  count=1;
 	for(TimeSheetActivity act : timeSheetActivityList){  %>
 		EditlabEmployeesList('<%=count%>','<%=act.getAssignedBy()%>');
@@ -1220,53 +1255,93 @@ function toggleDiv(divId) {
 	<% count++;  } } else {%>
 		
 		// Initialize Date Picker
-		datePickerInitializer(1);
+		//datePickerInitializer(1);
 		
 		// Set FN / AN 
-		setFNorAn(1);
+		//setFNorAn(1);
 		
 		// Set Current Lab Emp List
-		labEmployeesList(1);
-	<%} %>
+		//labEmployeesList(1);
+	<%} %> --%>
 	
 	// Initialize Select Picker
 	$('.selectitem').select2();
 	
-	var cloneCount = 1; 
+	var cloneCount = '<%=clonecount%>'; 
+	var activityName = '<%=activityNamemil%>'; 
 	
+	console.log('activityNamemil: ', activityName);
 	$('#addnewaction').click(function(){
 		$('.selectitem').select2("destroy");
+		
 		var $tr = $('.tr_clone_activity').last();
+		
+		// Save the checked state of the radio buttons in the row being cloned
+	    var workDoneonradios = {};
+	    $tr.find(".workDoneon").each(function () {
+	        workDoneonradios[$(this).val()] = $(this).is(':checked');
+	    });
+	    
+	    var activityNamesradios = {};
+	    $tr.find(".activityName").each(function () {
+	    	activityNamesradios[$(this).val()] = $(this).is(':checked');
+	    });
+	    
 		var $clone = $tr.clone();
 		$tr.after($clone);
 		
 		++cloneCount;
 		
-		$clone.find(".selectitem.activityName").attr("id", 'activityName_' + cloneCount);
-		$clone.find(".selectitem.assignerLabCode").attr("id", 'assignerLabCode_' + cloneCount).attr("onchange", 'labEmployeesList(\'' + cloneCount + '\')');
-		$clone.find(".selectitem.assignedBy").attr("id", 'assignedBy_' + cloneCount);
-		$clone.find(".actionPDC").attr("id", 'actionPDC_' + cloneCount);
-		$clone.find(".fnoran").attr("id", 'fnoran_' + cloneCount);
-		$clone.find(".fnoranval").attr("id", 'fnoranval_' + cloneCount);
+		//$clone.find(".activityName").attr("id", 'activityName_' + cloneCount).attr("name", 'activityName_' + cloneCount);
+		$clone.find(".activityName").each(function (index) {
+	        $(this).attr("id", 'activityName_' + cloneCount + '_' + index);
+	        $(this).attr("name", 'activityName_' + cloneCount); // Unique group name for the cloned row
+	    });
+		$clone.find(".selectitem.projectId").attr("id", 'projectId_' + cloneCount).val("0").trigger("change");
+		//$clone.find(".selectitem.assignerLabCode").attr("id", 'assignerLabCode_' + cloneCount).attr("onchange", 'labEmployeesList(\'' + cloneCount + '\')');
+		$clone.find(".selectitem.assignedBy").attr("id", 'assignedBy_' + cloneCount).val("-1").trigger("change");
+		$clone.find(".selectitem.keywordId").attr("id", 'keywordId_' + cloneCount).val("0").trigger("change");
+		$clone.find(".workDone").attr("id", 'workDone_' + cloneCount);
+		//$clone.find(".workDoneon").attr("id", 'workDoneon_' + cloneCount).attr("name", 'workDoneon_' + cloneCount);
+	    $clone.find(".workDoneon").each(function (index) {
+	        $(this).attr("id", 'workDoneon_' + cloneCount + '_' + index);
+	        $(this).attr("name", 'workDoneon_' + cloneCount); // Unique group name for the cloned row
+	    });
+		
+	 	// Restore the radio button states in the original row
+	    $tr.find(".workDoneon").each(function () {
+	        $(this).prop("checked", workDoneonradios[$(this).val()]);
+	    });
+	 	
+	    $tr.find(".activityName").each(function () {
+	        $(this).prop("checked", activityNamesradios[$(this).val()]);
+	    });
+	 
+		//$clone.find(".actionPDC").attr("id", 'actionPDC_' + cloneCount);
+		//$clone.find(".fnoran").attr("id", 'fnoran_' + cloneCount);
+		//$clone.find(".fnoranval").attr("id", 'fnoranval_' + cloneCount);
 		
 		// Reset the checkbox state and slider content
-	    var $checkbox = $clone.find(".fnoran");
-	    $checkbox.prop('checked', false); // Uncheck the cloned checkbox
-	    $checkbox.siblings('.slider').attr('data-content', 'FN'); // Reset slider content to "FN"
+	    //var $checkbox = $clone.find(".fnoran");
+	    //$checkbox.prop('checked', false); // Uncheck the cloned checkbox
+	    //$checkbox.siblings('.slider').attr('data-content', 'FN'); // Reset slider content to "FN"
 	    
 		$('.selectitem').select2();
 	    $clone.find('.selectitem').select2('val', '');
-	    $clone.find("input").val("");
+	    $clone.find("input[type='text']").val("");
 	    $clone.find("textarea").val("");
 	    
-	    labEmployeesList(cloneCount);
-	    datePickerInitializer(cloneCount);
-	    setFNorAn(cloneCount);
+	    $clone.find("input.activityName[value='"+activityName+"']").prop("checked", true);
+	    $clone.find("input.workDoneon[value='L']").prop("checked", true);
+
+	    //labEmployeesList(cloneCount);
+	    //datePickerInitializer(cloneCount);
+	    //setFNorAn(cloneCount);
 	    
 	});
 	
 	// 
-	function labEmployeesList($AddrowId){
+	/* function labEmployeesList($AddrowId){
 		
 		var $assignerLabCode = $('#assignerLabCode_'+$AddrowId).val();
 		if($assignerLabCode !="" && $assignerLabCode !="null" && $assignerLabCode !=null){
@@ -1283,7 +1358,8 @@ function toggleDiv(divId) {
 					var values = Object.keys(result).map(function(e) {return result[e]});
 							
 					var s = '';
-					s += '<option value="0" >Choose...</option>';
+					s += '<option value="-1" disabled selected>Choose...</option>';
+					s += '<option value="0" >Not Available</option>';
 					for (i = 0; i < values.length; i++) {									
 						s += '<option value="'+values[i][0]+'">'+values[i][1] + ", " +values[i][3] + '</option>';
 					} 
@@ -1292,10 +1368,10 @@ function toggleDiv(divId) {
 				}
 			});
 		}
-	}
+	} */
 	
 	// 
-	function EditlabEmployeesList($AddrowId, empId){
+	/* function EditlabEmployeesList($AddrowId, empId){
 		
 		var $assignerLabCode = $('#assignerLabCode_edit_'+$AddrowId).val();
 		
@@ -1314,7 +1390,8 @@ function toggleDiv(divId) {
 				var values = Object.keys(result).map(function(e) {return result[e]});
 				
 				var s = '';
-				s += '<option value="0">Choose...</option>';
+				s += '<option value="-1" disabled selected>Choose...</option>';
+				s += '<option value="0">Not Available</option>';
 				for (i = 0; i < values.length; i++) {									
 					s += '<option value="'+values[i][0]+'">'+values[i][1] + ", " +values[i][3]+ '</option>';
 				} 
@@ -1325,10 +1402,10 @@ function toggleDiv(divId) {
 				}
 			});
 		}
-	}
+	} */
 	
 	// Datepicker initializer
-	function datePickerInitializer(rowId) {
+	/* function datePickerInitializer(rowId) {
 		$('#actionPDC_'+rowId).daterangepicker({
 			singleDatePicker: true,
 		    linkedCalendars: false,
@@ -1339,10 +1416,10 @@ function toggleDiv(divId) {
                 format: 'DD-MM-YYYY'
             }
         });
-	}
+	} */
 	
 	// Set FN / AN dynamically
-	function setFNorAn(rowId) {
+	/* function setFNorAn(rowId) {
 	    // Initialize with "FN" for the slider
 	    $('#fnoran_' + rowId).siblings('.slider').attr('data-content', 'FN');
 	    $('#fnoranval_' + rowId).val('F');
@@ -1375,7 +1452,7 @@ function toggleDiv(divId) {
 	            $(this).siblings('.slider').attr('data-content', 'FN'); // Set "FN" when unchecked
 	        }
 	    });
-	}
+	} */
 
 	$(document).ready(function() {
 		<%if(timeSheet!=null) {%>

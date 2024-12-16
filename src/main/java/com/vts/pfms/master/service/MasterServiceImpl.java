@@ -547,9 +547,9 @@ public class MasterServiceImpl implements MasterService {
 		return dao.TDListAdd();
 	}
 	@Override
-	public int UpdateActivityType(String ActivityType, String ActivityId, String isTimeSheet) throws Exception {
+	public int UpdateActivityType(String activityType, String activityTypeId, String isTimeSheet, String activityCode) throws Exception {
 		
-		return dao.UpdateActivityType(ActivityType, ActivityId, isTimeSheet);
+		return dao.UpdateActivityType(activityType, activityTypeId, isTimeSheet, activityCode);
 	}
 
 	@Override

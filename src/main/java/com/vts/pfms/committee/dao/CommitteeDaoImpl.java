@@ -60,7 +60,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 {
 	private static final Logger logger=LogManager.getLogger(CommitteeDaoImpl.class);
 	
-	private static final String EMPLOYEELIST="SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.Designation,a.EmpNo  FROM employee a,employee_desig b WHERE a.IsActive='1' AND a.DesigId=b.DesigId AND LabCode=:LabCode ORDER BY a.SrNo=0,a.SrNo";
+	private static final String EMPLOYEELIST="SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.Designation,a.EmpNo  FROM employee a,employee_desig b WHERE a.IsActive='1' AND a.DesigId=b.DesigId AND LabCode=:labcode ORDER BY a.SrNo=0,a.SrNo";
 	private static final String LASTCOMMITTEEID="SELECT committeemainid FROM committee_main WHERE isactive=1 and committeeid=:committeeid AND projectid=:projectid and divisionid=:divisionid AND InitiationId=:initiationid AND CARSInitiationId=:CARSInitiationId";
 	private static final String UPDATECOMMITTEEVALIDTO="UPDATE committee_main SET isactive=0,Status='E',validto=:validto ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE committeemainid=:lastcommitteeid";
 	private static final String COMMITTEENAME="SELECT committeeid,committeename,committeeshortname,projectapplicable,periodicduration,isglobal FROM committee WHERE  committeeid=:committeeid";

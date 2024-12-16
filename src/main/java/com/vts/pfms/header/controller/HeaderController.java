@@ -824,10 +824,10 @@ public class HeaderController {
 		logger.info(new Date() +"Inside TimeSheetWorkFlowPdf.htm "+UserId);		
 		try {
 			
-			String path = req.getServletContext().getRealPath("/UserManual/" + "Timesheet Workflow.pdf");
+			String path = req.getServletContext().getRealPath("/UserManual/" + "WorkRegister.pdf");
 			
 			res.setContentType("application/pdf");
-			res.setHeader("Content-Disposition", String.format("inline; filename=Timesheet Workflow.pdf"));
+			res.setHeader("Content-Disposition", String.format("inline; filename=WorkRegister.pdf"));
 			
 			File my_file = new File(path);
 			

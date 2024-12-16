@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.vts.pfms.documents.dao.DocumentsDao;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
+import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
@@ -223,6 +224,25 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 		return dao.getDuplicateInterfaceCodeCount(interfaceId, interfaceCode);
 	}
+	
+	@Override
+	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception {
+		
+		return dao.getIGIDocumentShortCodesList();
+	}
+	
+	@Override
+	public int deleteIGIDocumentShortCodesByType(String shortCodeType) throws Exception {
+		
+		return dao.deleteIGIDocumentShortCodesByType(shortCodeType);
+	}
+	
+	@Override
+	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception {
+		
+		return dao.addIGIDocumentShortCodes(igiDocumentShortCodes);
+	}
+	
 	/* ************************************************ IGI Document End ***************************************************** */
 
 }
