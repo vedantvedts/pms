@@ -726,10 +726,10 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																	<td>
 																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_<%=clonecount %>" data-live-search="true" data-container="body">
 																			<option value="-1" disabled selected>Choose...</option>
-																			<option value="0" <%if(act.getAssignedBy()==0) {%>selected<%} %>>Not Available</option>
 																	        <% for(Object[] emp : labEmpList){ %>
 																	        	<option value="<%=emp[0] %>" <%if(act.getAssignedBy()==Long.parseLong(emp[0].toString())) {%>selected<%} %> ><%=emp[1] %>, <%=emp[2] %></option>
 																	        <%} %>
+																	        <option value="0" <%if(act.getAssignedBy()==0) {%>selected<%} %>>Not Available</option>
 																		</select>
 																	</td>
 																	<td>
@@ -792,10 +792,10 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																	<td>
 																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_1" data-live-search="true" data-container="body">
 																			<option value="-1" disabled selected>Choose...</option>
-																			<option value="0">Not Available</option>
 																	        <% for(Object[] emp : labEmpList){ %>
 																	        	<option value="<%=emp[0] %>"><%=emp[1] %>, <%=emp[2] %></option>
 																	        <%} %>
+																	        <option value="0">Not Available</option>
 																		</select>
 																	</td>
 																	<td>

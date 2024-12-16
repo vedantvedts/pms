@@ -29,9 +29,7 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.vts.pfms.login.CustomAuthenticationFailureHandler;
-import com.vts.pfms.login.CustomInvalidSessionStrategy;
 import com.vts.pfms.login.CustomLogoutHandler;
-import com.vts.pfms.login.CustomSessionExpiredStrategy;
 import com.vts.pfms.login.LoginSuccessHandler;
 
 @Configuration
@@ -108,7 +106,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
           .permitAll()
 
 		   .and()
-		   .exceptionHandling().accessDeniedPage("/invalid-uri")
+		   .exceptionHandling().accessDeniedPage("/login")
 		 
 		    
 		    .and()
@@ -117,11 +115,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		    .and().sessionManagement()
 		    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 		    .sessionFixation().migrateSession()
-			.invalidSessionStrategy(new CustomInvalidSessionStrategy())
+			.invalidSessionUrl("/login")
 			.maximumSessions(2)
 			.maxSessionsPreventsLogin(false)
-			.expiredUrl("/expired-session")
-			.expiredSessionStrategy(new CustomSessionExpiredStrategy())
+			.expiredUrl("/login")
 		    //.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/login")
 		    
 		    ;
