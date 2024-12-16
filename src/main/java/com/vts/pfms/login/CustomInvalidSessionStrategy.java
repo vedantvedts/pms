@@ -21,7 +21,7 @@ public class CustomInvalidSessionStrategy implements InvalidSessionStrategy {
         }
 
         // Redirect dynamically based on loginPage
-        response.sendRedirect(request.getContextPath() + "/" + loginPage + "?error=session");
+        response.sendRedirect(request.getContextPath() + "/" + loginPage);
     }
 }
 

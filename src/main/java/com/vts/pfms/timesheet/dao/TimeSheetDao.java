@@ -14,7 +14,7 @@ public interface TimeSheetDao {
 	public TimeSheet getTimeSheetById(String timeSheetId) throws Exception;
 	public Long addTimeSheet(TimeSheet timeSheet) throws Exception;
 	public int removeTimeSheetActivities(String timeSheetId) throws Exception;
-	public List<Object[]> getEmpAllTimeSheetList(String empId, String activityDate) throws Exception;
+	public List<Object[]> getEmpAllTimeSheetList(String empId) throws Exception;
 	public List<Object[]> getEmployeesofSuperiorOfficer(String superiorOfficer, String labCode) throws Exception;
 	public List<TimeSheet> getTimeSheetListofEmployeeByPeriod(String empId, String fromDate, String toDate) throws Exception;
 	public List<MilestoneActivityType> getMilestoneActivityTypeList() throws Exception;

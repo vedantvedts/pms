@@ -81,62 +81,6 @@ font-weight: bold;
 	padding:2px 3px !important;
 }
 
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-
 .left {
 	text-align: left;
 }
@@ -309,65 +253,6 @@ input {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #0056b3;
-}
-
-.evo-calendar .calendar-events, #eventListToggler { 
-  display: none; /* Hides the events panel */
-}
-
-.evo-calendar .calendar-inner { 
-  width: 100%; /* Makes the calendar take the full width */
-}
-
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #edae6f;
-    transition: 0.4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: attr(data-content); /* Use a data attribute for dynamic content */
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: bold;
-    transition: 0.4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #ff7e6b;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
-   
-.toggle-switch {
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 34px;
-	top: 5px;
-}
-
-.toggle-switch input {
-	display: none;
 }
 
 /* .toggle-switch .label {
@@ -1597,7 +1482,7 @@ function toggleDiv(divId) {
 	            restoreLastActiveDay();
 	            return; // Stop further processing
 	        } else if (selectedDate < minDate) {
-	            alert("Please select a date on or after 01-12-2024.");
+	            alert("Please select a allowed date. Selected Date is too old.");
 	            restoreLastActiveDay();
 	            return; // Stop further processing
 	        } else if (selectedDate > today) {

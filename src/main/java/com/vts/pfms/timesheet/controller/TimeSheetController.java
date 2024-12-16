@@ -146,7 +146,7 @@ public class TimeSheetController {
 			req.setAttribute("activityDateSql", activityDateSql);
 			req.setAttribute("todayScheduleList", headerservice.TodaySchedulesList(EmpId, activityDateSql));
 			req.setAttribute("timeSheetData", service.getTimeSheetByDateAndEmpId(EmpId, activityDateSql));
-			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(EmpId, activityDateSql));
+			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(EmpId));
 			req.setAttribute("milestoneActivityTypeList", service.getMilestoneActivityTypeList());
 			req.setAttribute("allLabList", committeeservice.AllLabList());
 			req.setAttribute("labEmpList", committeeservice.EmployeeList(labcode));
@@ -1415,22 +1415,28 @@ public class TimeSheetController {
 			// Monthly View
 			String empId = req.getParameter("empId");
 			empId = empId==null?EmpId:empId;
-			String fromDate = req.getParameter("fromDate");
-			String toDate = req.getParameter("toDate");
+//			String fromDate = req.getParameter("fromDate");
+//			String toDate = req.getParameter("toDate");
+//			
+//			LocalDate now = LocalDate.now();
+//			if(fromDate==null || toDate==null) {
+//				fromDate = now.withDayOfMonth(1).toString();
+//				toDate = now.toString();
+//			}else {
+//				fromDate = fc.rdfTosdf(fromDate);
+//				toDate = fc.rdfTosdf(toDate);
+//			}
+			String activityDate = req.getParameter("activityDate");
+			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
+			String activityDateSql = fc.rdfTosdf(activityDate);
+			req.setAttribute("activityDate", activityDate);
+			req.setAttribute("activityDateSql", activityDateSql);
 			
-			LocalDate now = LocalDate.now();
-			if(fromDate==null || toDate==null) {
-				fromDate = now.withDayOfMonth(1).toString();
-				toDate = now.toString();
-			}else {
-				fromDate = fc.rdfTosdf(fromDate);
-				toDate = fc.rdfTosdf(toDate);
-			}
+			LocalDate activityLD = LocalDate.parse(activityDateSql);
 			
-			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList(empId, fromDate, toDate));
+			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(empId));
+			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList(empId, activityLD.withDayOfMonth(1).toString(), activityLD.with(TemporalAdjusters.lastDayOfMonth()).toString()));
 			req.setAttribute("empId", empId);
-			req.setAttribute("fromDate", fromDate);
-			req.setAttribute("toDate", toDate);
 			req.setAttribute("viewFlag", req.getParameter("viewFlag"));
 			
 			return "timesheet/TimeSheetView";

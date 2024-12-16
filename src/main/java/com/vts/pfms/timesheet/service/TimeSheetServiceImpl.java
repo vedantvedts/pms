@@ -318,9 +318,9 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 	}
 
 	@Override
-	public List<Object[]> getEmpAllTimeSheetList(String empId, String activityDate) throws Exception {
+	public List<Object[]> getEmpAllTimeSheetList(String empId) throws Exception {
 		
-		return dao.getEmpAllTimeSheetList(empId, activityDate);
+		return dao.getEmpAllTimeSheetList(empId);
 	}
 	
 	@Override

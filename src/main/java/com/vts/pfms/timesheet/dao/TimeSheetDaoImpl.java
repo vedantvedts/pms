@@ -99,11 +99,10 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	//private static final String EMPALLTIMESHEETLIST = "SELECT a.TimeSheetId,a.EmpId,a.InitiationDate,a.ActivityFromDate,a.ActivityToDate,a.PunchInTime,a.PunchOutTime,a.TotalDuration,a.EmpStatus,a.TDRemarks,a.TimeSheetStatus  FROM pfms_timesheet a WHERE a.IsActive=1 AND a.ActivityFromDate BETWEEN DATE_SUB(:ActivityDate, INTERVAL 30 DAY) AND DATE_ADD(:ActivityDate , INTERVAL 30 DAY ) AND a.EmpId=:EmpId";
 	private static final String EMPALLTIMESHEETLIST = "SELECT a.TimeSheetId,a.EmpId,a.InitiationDate,a.ActivityFromDate,a.ActivityToDate,a.PunchInTime,a.PunchOutTime,a.TotalDuration,a.EmpStatus,a.TDRemarks,a.TimeSheetStatus  FROM pfms_timesheet a WHERE a.IsActive=1 AND a.EmpId=:EmpId";
 	@Override
-	public List<Object[]> getEmpAllTimeSheetList(String empId, String activityDate) throws Exception {
+	public List<Object[]> getEmpAllTimeSheetList(String empId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(EMPALLTIMESHEETLIST);
 			query.setParameter("EmpId", Long.parseLong(empId));
-//			query.setParameter("ActivityDate", activityDate);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();

@@ -17,7 +17,7 @@ public interface TimeSheetService {
 	public TimeSheet getTimeSheetById(String timeSheetId) throws Exception;
 	public Long timeSheetSubmit(TimeSheetDTO dto) throws Exception;
 	public Long timeSheetDetailsForward(String[] timeSheetIds, String empId, String action, String userId, String remarks) throws Exception;
-	public List<Object[]> getEmpAllTimeSheetList(String empId, String activityDate) throws Exception;
+	public List<Object[]> getEmpAllTimeSheetList(String empId) throws Exception;
 	public List<Object[]> getEmployeesofSuperiorOfficer(String superiorOfficer, String labCode) throws Exception;
 	public Map<String, Map<LocalDate, TimeSheet>> getTimesheetDataForSuperior(String superiorOfficer, String labCode, String dateofWeek) throws Exception; 
 	public List<MilestoneActivityType> getMilestoneActivityTypeList() throws Exception;

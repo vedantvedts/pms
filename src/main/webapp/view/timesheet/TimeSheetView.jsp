@@ -1,3 +1,5 @@
+<%@page import="com.google.gson.GsonBuilder"%>
+<%@page import="com.google.gson.Gson"%>
 <%@page import="com.vts.pfms.timesheet.model.TimesheetKeywords"%>
 <%@page import="com.vts.pfms.master.model.Employee"%>
 <%@page import="java.util.HashMap"%>
@@ -97,6 +99,157 @@ font-weight: bold;
     width: 100% !important;
 }
 </style>
+
+<style type="text/css">
+
+/* General Calendar Styles */
+.calendar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-btn:hover {
+    color: #0056b3;
+    transform: scale(1.2);
+}
+
+.fa {
+    font-size: 20px;
+}
+
+/* Month Display */
+.month-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    padding: 3px 5px;
+    background-color: #7e7e7e;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 50px;
+    /* transform: rotate(270deg); */
+}
+
+/* Year Container */
+.year-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#current-year {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Days Container */
+.days-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 100%; /* Ensure it adjusts according to the width of the calendar */
+}
+
+.day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.day-name {
+    font-size: 10px;
+    color: #0f0f0f8a;
+    font-weight: 400;
+}
+
+.day-number {
+    font-size: 14px;
+    font-weight: bold; 
+}
+
+.day:hover {
+    background-color: #007bff;
+    transform: scale(1.1);
+}
+
+.day:hover .day-name,
+.day:hover .day-number {
+    color: #fff !important; /* Change to desired hover color */
+}
+
+.day.active {
+    background-color: #28a745;
+    font-weight: bold;
+}
+
+.day.active .day-name,
+.day.active .day-number {
+    color: #fff !important; /* Ensure active state color is applied */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .day {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .day {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 10px;
+    }
+}
+
+.highlighted-date {
+    background-color: #007bff; /* Yellow background for highlighting */
+    font-weight: bold;
+}
+
+.day.highlighted-date .day-name,
+.day.highlighted-date .day-number {
+    color: #fff !important; /* Ensure active state color is applied */
+}
+</style> 
 </head>
 <body>
 
@@ -122,12 +275,17 @@ LocalDate endOfWeek = localdate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATU
 
 
 String empId = (String)request.getAttribute("empId");
-String fromDate = (String)request.getAttribute("fromDate");
-String toDate = (String)request.getAttribute("toDate");
+
+String activityDate = (String)request.getAttribute("activityDate");
+String activityDateSql = (String)request.getAttribute("activityDateSql");
 
 List<Object[]> employeeNewTimeSheetList = (List<Object[]>)request.getAttribute("employeeNewTimeSheetList");
 Map<String, List<Object[]>> timeSheetToListMap = employeeNewTimeSheetList!=null && employeeNewTimeSheetList.size()>0?employeeNewTimeSheetList.stream()
 		  										  .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+List<Object[]> empAllTimeSheetList = (List<Object[]>)request.getAttribute("empAllTimeSheetList");
+Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
+
 String viewFlag = (String)request.getAttribute("viewFlag");
 viewFlag = viewFlag == null? "W":viewFlag;
 
@@ -385,48 +543,71 @@ FormatConverter fc = new FormatConverter();
 								</div>
 							</div>
 							<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="pills-tab-2">
-			  					<div class="row mb-3">
-									<div class="col-md-6">
-										<%Object[] emp = employeeList!=null && employeeList.size()>0?employeeList.stream()
-														.filter(e -> empId.equalsIgnoreCase(e[0]+"")).findFirst().orElse(null):null; %>
-										<b class="ml-2">Report</b> of <b><%=emp!=null?((emp[1]!=null?emp[1]:(emp[2]!=null?emp[2]:""))+""+emp[5]+", "+emp[6]):"-" %></b>
-										from <b><%=fc.sdfTordf(fromDate) %></b> to <b><%=fc.sdfTordf(toDate) %></b>
+								<div class="calendar-container">
+										    <div class="year-container">
+										        <button class="nav-btn" id="prev-year">
+										            <i class="fa fa-chevron-left"></i>
+										        </button>
+										        <span id="current-year"></span>
+										        <button class="nav-btn" id="next-year">
+										            <i class="fa fa-chevron-right"></i>
+										        </button>
+										    </div>
+										    <button class="nav-btn" id="prev-month">
+										        <i class="fa fa-chevron-left"></i>
+										    </button>
+										    <div id="current-month" class="month-display"></div>
+										    <div id="days-container" class="days-container"></div>
+										    <button class="nav-btn" id="next-month">
+										        <i class="fa fa-chevron-right"></i>
+										    </button>
+										</div>
+								
+								<div class="form-group">
+				  					<div class="row mb-3 mt-2">
+										<div class="col-md-6">
+											<%Object[] emp = employeeList!=null && employeeList.size()>0?employeeList.stream()
+															.filter(e -> empId.equalsIgnoreCase(e[0]+"")).findFirst().orElse(null):null; %>
+											<b class="ml-2">Report</b> of <b><%=emp!=null?((emp[1]!=null?emp[1]:(emp[2]!=null?emp[2]:""))+""+emp[5]+", "+emp[6]):"-" %></b>
+											<%-- from <b><%=fc.sdfTordf(fromDate) %></b> to <b><%=fc.sdfTordf(toDate) %></b> --%>
+										</div>
+										<div class="col-md-6">
+											<form action="TimeSheetView.htm" method="get">
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												<input type="hidden" name="viewFlag" value="M">
+												<div class="row right" style="margin-top: -0.5rem;">
+													<div class="col-md-5"></div>
+													<div class="col-md-2">
+														<label class="form-label mt-2">Employee: </label>
+													</div>
+													<div class="col-md-5">
+														<select class="form-control selectdee" name="empId" onchange="this.form.submit()" >
+															<option selected disabled>---Select---</option>
+															<%if(employeeList!=null && employeeList.size()>0) {
+																for(Object[] obj : employeeList) {%>
+																	<option value="<%=obj[0]%>" <%if(empId.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
+																		<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+""+obj[5]+", "+obj[6] %>
+																	</option>
+															<%} }%>
+														</select>
+													</div>
+													<%-- <div class="col-md-1">
+														<label class="form-label mt-2">From: </label>
+													</div>
+													<div class="col-md-2">
+														<input type="text" class="form-control " name="fromDate" id="fromDate" value="<%=fc.sdfTordf(fromDate) %>" onchange="this.form.submit()" >
+													</div>
+													<div class="col-md-1">
+														<label class="form-label mt-2">To: </label>
+													</div>
+													<div class="col-md-2">
+														<input type="text" class="form-control " name="toDate" id="toDate" value="<%=fc.sdfTordf(toDate)%>" onchange="this.form.submit()">
+													</div> --%>
+												</div>
+											</form>
+										</div>
 									</div>
-									<div class="col-md-6">
-										<form action="TimeSheetView.htm" method="get">
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-											<input type="hidden" name="viewFlag" value="M">
-											<div class="row right" style="margin-top: -0.5rem;">
-												<div class="col-md-1">
-													<label class="form-label mt-2">Employee: </label>
-												</div>
-												<div class="col-md-5">
-													<select class="form-control selectdee" name="empId" onchange="this.form.submit()" >
-														<option selected disabled>---Select---</option>
-														<%if(employeeList!=null && employeeList.size()>0) {
-															for(Object[] obj : employeeList) {%>
-																<option value="<%=obj[0]%>" <%if(empId.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-																	<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+""+obj[5]+", "+obj[6] %>
-																</option>
-														<%} }%>
-													</select>
-												</div>
-												<div class="col-md-1">
-													<label class="form-label mt-2">From: </label>
-												</div>
-												<div class="col-md-2">
-													<input type="text" class="form-control " name="fromDate" id="fromDate" value="<%=fc.sdfTordf(fromDate) %>" onchange="this.form.submit()" >
-												</div>
-												<div class="col-md-1">
-													<label class="form-label mt-2">To: </label>
-												</div>
-												<div class="col-md-2">
-													<input type="text" class="form-control " name="toDate" id="toDate" value="<%=fc.sdfTordf(toDate)%>" onchange="this.form.submit()">
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
+								</div>	
 								<div class="table-wrapper table-responsive">
 									<table class="table activitytable"> 
 			                        	<thead style="">
@@ -477,7 +658,11 @@ FormatConverter fc = new FormatConverter();
 			</div>
 		</div>
 	</div>	
-
+	<form action="TimeSheetView.htm" method="post" id="calenderdateform">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<input type="hidden" class="activityDate" name="activityDate" id="activityDate">
+		<input type="hidden" name="viewFlag" value="M">
+	</form>
 <script type="text/javascript">
 $("#myTable").DataTable({
 	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
@@ -565,7 +750,7 @@ $(document).on('mouseleave', '.daterangepicker td.available', function() {
 });
 
 // Initialize other datepickers without affecting the week highlighting
-$('#fromDate').daterangepicker({
+<%-- $('#fromDate').daterangepicker({
     "singleDatePicker": true,
     "linkedCalendars": false,
     "showCustomRangeLabel": true,
@@ -604,13 +789,181 @@ $('#toDate').daterangepicker({
     locale: {
         format: 'DD-MM-YYYY'
     }
-});
+}); --%>
 
 <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%>
 	$('#pills-tab-2').click();
 <%}%>
 </script>
 
+<script type="text/javascript">
+	
+	var empAllTimeSheetList = JSON.parse('<%= jsonempAllTimeSheetList %>');
+	
+	var activityDateSql = '<%=activityDateSql%>';
+	
+	document.addEventListener("DOMContentLoaded", function () {
+	    var yearEl = document.getElementById("current-year");
+	    var monthEl = document.getElementById("current-month");
+	    var daysContainer = document.getElementById("days-container");
 
+	    var currentYear = new Date().getFullYear();
+	    var currentMonth = new Date().getMonth();
+
+	    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+	                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	    var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+	    // Extract dates from empAllTimeSheetList
+	    var empDates = empAllTimeSheetList.map(function (entry) {
+	        return new Date(entry[3]); // Assuming the date is in SQL format at index 3
+	    });
+
+	    // Parse activityDateSql into a Date object
+	    var defaultSelectedDate = new Date(activityDateSql);
+
+	    function renderDays() {
+	        daysContainer.innerHTML = "";
+	        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+	        for (var i = 1; i <= daysInMonth; i++) {
+	            var date = new Date(currentYear, currentMonth, i);
+	            var dayEl = document.createElement("div");
+	            dayEl.className = "day";
+
+	            // Highlight the day if it's in empDates
+	            var isHighlighted = empDates.some(function (empDate) {
+	                return (
+	                    empDate.getFullYear() === date.getFullYear() &&
+	                    empDate.getMonth() === date.getMonth() &&
+	                    empDate.getDate() === date.getDate()
+	                );
+	            });
+	            if (isHighlighted) {
+	                dayEl.classList.add("active");
+	            }
+
+	            // Highlight the defaultSelectedDate
+	            if (
+	                date.getFullYear() === defaultSelectedDate.getFullYear() &&
+	                date.getMonth() === defaultSelectedDate.getMonth() &&
+	                date.getDate() === defaultSelectedDate.getDate()
+	            ) {
+	                dayEl.classList.add("highlighted-date");
+	                lastActiveDay = dayEl; // Set as the last active day
+	            }
+
+	            var dayName = document.createElement("span");
+	            dayName.className = "day-name";
+	            dayName.textContent = daysOfWeek[date.getDay()];
+	            var dayNumber = document.createElement("span");
+	            dayNumber.className = "day-number";
+	            dayNumber.textContent = i;
+	            dayEl.appendChild(dayName);
+	            dayEl.appendChild(dayNumber);
+	            dayEl.addEventListener("click", handleDayClick); // Assign the event listener
+	            daysContainer.appendChild(dayEl);
+	        }
+	    }
+
+	    var lastActiveDay = null; // Variable to keep track of the last active day
+
+	    function handleDayClick() {
+	        // Get the clicked day details
+	        var dayNumber = this.querySelector(".day-number").textContent;
+	        var currentMonth = document.getElementById("current-month").textContent;
+	        var currentYear = document.getElementById("current-year").textContent;
+
+	        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	        var monthIndex = months.indexOf(currentMonth) + 1;
+	        var formattedMonth = monthIndex < 10 ? "0" + monthIndex : monthIndex;
+	        var formattedDate = (dayNumber.length === 1 ? "0" + dayNumber : dayNumber) + "-" + formattedMonth + "-" + currentYear;
+	        $('.activityDate').val(formattedDate);
+	        
+	        // Create the selected date object
+	        var selectedDate = new Date(currentYear, monthIndex - 1, dayNumber);
+	        var today = new Date();
+	        var restrictionDate = new Date(2024, 11, 1); // Corrected: December 01, 2024 (monthIndex 11 for December)
+
+	        // Min date: 10 days before today
+	        var minDate = new Date(today);
+	        minDate.setDate(minDate.getDate() - 10);
+
+	        // Check if the date exists in empAllTimeSheetList
+	        var isDateExisting = empAllTimeSheetList.some(function (row) {
+	            return row[3] === formattedDate.split("-").reverse().join("-");
+	        });
+
+	     	// If the date is valid, update the active day
+	        // Remove the 'active' class from all days
+	       	/* var activeDays = document.querySelectorAll(".day.active");
+	        activeDays.forEach(function (activeDay) {
+	            activeDay.classList.remove("active");
+	        });
+	        
+	        // Add 'active' class to the clicked day
+	        this.classList.add("highlighted-date"); */
+
+	        // Update the last active day reference
+	        /* lastActiveDay = this;  */
+	        
+	        // Validation checks
+	        if (isDateExisting) {
+	            $('#calenderdateform').submit();
+	        } else if (selectedDate < restrictionDate) {
+	            alert("Please select a date on or after 01-12-2024.");
+	            restoreLastActiveDay();
+	            return; // Stop further processing
+	        }else if (selectedDate > today) {
+	            alert("Future date selection is not allowed.");
+	            restoreLastActiveDay();
+	            return; // Stop further processing
+	        }else{
+	        	$('#calenderdateform').submit();
+	        }
+
+	    }
+
+	    function restoreLastActiveDay() {
+	        if (lastActiveDay) {
+	            lastActiveDay.classList.add("highlighted-date");
+	        }
+	    }
+
+	    function updateCalendar() {
+	        yearEl.textContent = currentYear;
+	        monthEl.textContent = months[currentMonth];
+	        renderDays();
+	    }
+
+	    // Navigation buttons
+	    document.getElementById("prev-year").addEventListener("click", function () {
+	        currentYear--;
+	        updateCalendar();
+	    });
+
+	    document.getElementById("next-year").addEventListener("click", function () {
+	        currentYear++;
+	        updateCalendar();
+	    });
+
+	    document.getElementById("prev-month").addEventListener("click", function () {
+	        currentMonth = (currentMonth - 1 + 12) % 12;
+	        if (currentMonth === 11) currentYear--;
+	        updateCalendar();
+	    });
+
+	    document.getElementById("next-month").addEventListener("click", function () {
+	        currentMonth = (currentMonth + 1) % 12;
+	        if (currentMonth === 0) currentYear++;
+	        updateCalendar();
+	    });
+
+	    // Initialize the calendar
+	    currentYear = defaultSelectedDate.getFullYear();
+	    currentMonth = defaultSelectedDate.getMonth();
+	    updateCalendar();
+	});
+
+</script>
 </body>
 </html>

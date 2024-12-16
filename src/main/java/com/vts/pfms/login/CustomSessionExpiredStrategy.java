@@ -24,7 +24,7 @@ public class CustomSessionExpiredStrategy implements SessionInformationExpiredSt
         }
 
         // Redirect dynamically based on loginPage
-        response.sendRedirect(request.getContextPath() + "/" + loginPage + "?error=session-expired");
+        response.sendRedirect(request.getContextPath() + "/" + loginPage);
     }
 }
 
