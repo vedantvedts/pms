@@ -82,3 +82,4 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
         console.error("jQuery Word Export: missing dependency (FileSaver.js)");
     }
 }
+
