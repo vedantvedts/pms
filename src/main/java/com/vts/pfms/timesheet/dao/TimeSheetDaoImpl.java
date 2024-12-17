@@ -1,10 +1,12 @@
 package com.vts.pfms.timesheet.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
@@ -364,7 +366,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	}
 	
 	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeId, e.ActivityType,e.ActivityCode, b.ProjectId, (CASE WHEN b.ProjectId=0 THEN 'General' ELSE CONCAT(g.ProjectCode, ' (', g.ProjectShortName, ')') END) AS 'Project', \r\n"
-			+ "b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation, b.KeywordId, f.Keyword, b.WorkDone, b.WorkDoneon\r\n"
+			+ "b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation, b.KeywordId, f.Keyword, b.WorkDone, b.WorkDoneon, b.ActivitySeqNo\r\n"
 			+ "FROM pfms_timesheet a\r\n"
 			+ "JOIN pfms_timesheet_activity b ON a.TimeSheetId=b.TimeSheetId AND b.IsActive=1\r\n"
 			+ "LEFT JOIN employee c ON b.AssignedBy=c.EmpId\r\n"
@@ -399,5 +401,22 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			return new ArrayList<>();
 		}
 		
+	}
+	
+	private static final String GETEMPACTIVITYSUBMISSIONCOUNT = "SELECT COUNT(b.TimeSheetId) FROM pfms_timesheet_activity b, pfms_timesheet a  WHERE a.TimeSheetId=b.TimeSheetId AND b.IsActive=1 AND a.EmpId=:EmpId AND SUBSTR(ActivityFromDate,1,4)=:Year";
+	@Override
+	public long getEmployeeActivitySubmissionCount(String empId, String year) throws Exception {
+
+		try {
+			Query query =  manager.createNativeQuery(GETEMPACTIVITYSUBMISSIONCOUNT);
+			query.setParameter("EmpId", empId);
+			query.setParameter("Year", year);
+			BigInteger ccmScheduleId=(BigInteger)query.getSingleResult();
+			return ccmScheduleId.longValue();
+		}catch ( NoResultException e ) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside TimeSheetDaoImpl getEmployeeActivitySubmissionCount "+ e);
+			return 0;
+		}
 	}
 }

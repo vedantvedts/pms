@@ -585,8 +585,9 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 				                		<table id="activityviewtable" style="width:100%;" >
 											<thead class="center">
 												<tr>
-													<th width="5%">SN</th>
-													<th width="15%">Activity Type</th>
+													<th width="3%">SN</th>
+													<th width="8%">Activity No</th>
+													<th width="10%">Activity Type</th>
 													<th width="10%">Project</th>
 													<th width="20%">Assigner</th>
 													<th width="10%">Keywords</th>
@@ -601,6 +602,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 												%>
 													<tr>
 														<td class="center"><%=++slno%></td>
+				    									<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
 				    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
 				    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
 				    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
@@ -693,25 +695,21 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 														%>
 															<tr class="tr_clone_activity">
 																	<td class="center">
-																		
-																		<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
-																			int milflag = 0, milslno = 0;
-																			for(MilestoneActivityType mil : milestoneActivityTypeList) {
-																				++milflag; ++milslno;
-																				if(milslno==1) activityNamemil = mil.getActivityTypeId();
-																		%>
-																			<%if(milflag==1) {%>
-																			<div class="d-flex flex-direction-column " style="gap: 15px;">
-																			<%} %>
+																		<div class="d-flex flex-direction-column " style="gap: 15px;">
+																			<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+																				int milslno = 0;
+																				for(MilestoneActivityType mil : milestoneActivityTypeList) {
+																					++milslno;
+																					if(milslno==1) activityNamemil = mil.getActivityTypeId();
+																			%>
+																				
 																				<div class="d-flex flex-direction-column ">
 																					<input type="radio" class=" activityName" name="activityName_<%=clonecount %>" id="activityName_<%=clonecount %>" value="<%=mil.getActivityTypeId() %>" <%if(mil.getActivityTypeId()==act.getActivityTypeId()) {%>checked<%} %> > 
 																					<span class="ml-1"><%=mil.getActivityCode() %></span>
 																				</div>
-																			<%if(milflag==3) {%>	
-																			</div>
-																			<%} %>
-																		<% if(milflag==3){milflag = 0;} } }%>
-																		
+																				
+																			<% } }%>
+																		</div>
 																	</td>
 																	<td>
 																		<select class="form-control selectitem projectId" name="projectId" id="projectId_<%=clonecount %>" data-live-search="true" data-container="body">
@@ -760,24 +758,18 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 															<%-- <%for(int i=1;i<=5;i++) {%> --%>
 																<tr class="tr_clone_activity">
 																	<td class="center">
-																		
-																		<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
-																			int milflag = 0, milslno = 0;;
-																			for(MilestoneActivityType mil : milestoneActivityTypeList) {
-																				++milflag; ++milslno;
-																		%>
-																			<%if(milflag==1) {%>
-																			<div class="d-flex flex-direction-column " style="gap: 15px;">
-																			<%} %>
+																		<div class="d-flex flex-direction-column " style="gap: 15px;">
+																			<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
+																				int milslno = 0;;
+																				for(MilestoneActivityType mil : milestoneActivityTypeList) {
+																					++milslno;
+																			%>
 																				<div class="d-flex flex-direction-column ">
 																					<input type="radio" class=" activityName" name="activityName_1" id="activityName_1" value="<%=mil.getActivityTypeId() %>" <%if(milslno==1) {  activityNamemil = mil.getActivityTypeId();%>checked<%} %>  > 
 																					<span class="ml-1"><%=mil.getActivityCode() %></span>
 																				</div>
-																			<%if(milflag==3) {%>	
-																			</div>
-																			<%} %>
-																		<% if(milflag==3){milflag = 0;} } }%>
-																		
+																			<% } }%>
+																		</div>
 																	</td>
 																	<td>
 																		<select class="form-control selectitem projectId" name="projectId" id="projectId_1" data-live-search="true" data-container="body">
@@ -894,11 +886,12 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
                         		<tr>
 									<th width="5%">SN</th>
 									<th width="7%">Date</th>
+									<th width="7%">Activity No</th>
 									<th width="10%">Activity Type</th>
 									<th width="10%">Project</th>
 									<th width="15%">Assigner</th>
 									<th width="10%">Keywords</th>
-									<th width="28%">Work Done</th>
+									<th width="21%">Work Done</th>
 									<th width="10%">Work Done on</th>
 								</tr>
 							</thead>
@@ -916,6 +909,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 										<%if(i==0) {%>
 								    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
          								<%} %>
+         								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
     									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
     									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
     									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>

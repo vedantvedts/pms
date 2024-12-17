@@ -164,15 +164,16 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 	public Long timeSheetSubmit(TimeSheetDTO dto) throws Exception {
 		try {
 			TimeSheet timeSheet = dto.getAction()!=null && dto.getAction().equalsIgnoreCase("Add")?new TimeSheet(): dao.getTimeSheetById(dto.getTimeSheetId());
-			timeSheet.setEmpId(Long.parseLong(dto.getEmpId()));
-			timeSheet.setActivityFromDate(dto.getActivityFromDate()!=null?fc.RegularToSqlDate(dto.getActivityFromDate()):null);
-			timeSheet.setActivityToDate(timeSheet.getActivityFromDate());
-			//timeSheet.setPunchInTime(dto.getPunchInTime()!=null?fc.rdtfTosdtf(dto.getPunchInTime()):null);
-			timeSheet.setPunchInTime(dto.getPunchInTime()!=null?fc.rdfTosdf(dto.getPunchInTime()):null);
 			
 			// Remove Previously added Time Sheet Activities
 			if(dto.getAction()!=null && dto.getAction().equalsIgnoreCase("Edit"))
 				dao.removeTimeSheetActivities(dto.getTimeSheetId());
+			
+			// Get the Total Activity Submission of employee 
+			long activityCount = dao.getEmployeeActivitySubmissionCount(dto.getEmpId(), LocalDate.now().getYear()+"");
+			
+			String activitySeqNo = (dto.getEmpNo().length()>4?dto.getEmpNo().substring(dto.getEmpNo().length()-4, dto.getEmpNo().length()):dto.getEmpNo())
+									+"/"+ LocalDate.now().getYear()+"/";
 			
 			// Storing list of Time Sheet Activities
 			List<TimeSheetActivity> timeSheetActivityList = new ArrayList<TimeSheetActivity>();
@@ -191,6 +192,7 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 				activity.setActivityDuration("00:00");
 				activity.setRemarks(null);
 				// New Columns for Sample Demo
+				activity.setActivitySeqNo(activitySeqNo + (activityCount+(i+1)) );
 				activity.setAssignedBy(dto.getAssignedBy()[i]!=null?Long.parseLong(dto.getAssignedBy()[i]):0L);
 				activity.setKeywordId(dto.getKeywordId()[i]!=null?Long.parseLong(dto.getKeywordId()[i]):0L);
 				activity.setWorkDone(dto.getWorkDone()[i]);
@@ -210,6 +212,11 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 			timeSheet.setTotalDuration("00:00");
 			
 			if(dto.getAction()!=null && dto.getAction().equalsIgnoreCase("Add")) {
+				timeSheet.setEmpId(Long.parseLong(dto.getEmpId()));
+				timeSheet.setActivityFromDate(dto.getActivityFromDate()!=null?fc.RegularToSqlDate(dto.getActivityFromDate()):null);
+				timeSheet.setActivityToDate(timeSheet.getActivityFromDate());
+				//timeSheet.setPunchInTime(dto.getPunchInTime()!=null?fc.rdtfTosdtf(dto.getPunchInTime()):null);
+				timeSheet.setPunchInTime(dto.getPunchInTime()!=null?fc.rdfTosdf(dto.getPunchInTime()):null);
 				timeSheet.setTimeSheetStatus("ABS");
 				timeSheet.setCreatedBy(dto.getUserId());
 				timeSheet.setCreatedDate(sdtf.format(new Date()));

@@ -450,8 +450,9 @@ FormatConverter fc = new FormatConverter();
 														<table id="activityviewtable" style="width:100%;" >
 															<thead class="center">
 																<tr>
-																	<th width="5%">SN</th>
-																	<th width="15%">Activity Type</th>
+																	<th width="3%">SN</th>
+																	<th width="8%">Activity Type</th>
+																	<th width="10%">Activity Type</th>
 																	<th width="10%">Project</th>
 																	<th width="20%">Assigner</th>
 																	<th width="10%">Keywords</th>
@@ -485,6 +486,7 @@ FormatConverter fc = new FormatConverter();
 																%>
 																		<tr>
 																			<td class="center"><%=++slno %></td>
+																			<td class="center"><%=act.getActivitySeqNo() %></td>
 																			<td>
 																				<%
 																					String activityName = milestoneActivityTypeList.stream().filter(e -> act.getActivityTypeId().equals(e.getActivityTypeId())).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
@@ -614,11 +616,12 @@ FormatConverter fc = new FormatConverter();
 			                        		<tr>
 												<th width="5%">SN</th>
 												<th width="7%">Date</th>
+												<th width="7%">Activity No</th>
 												<th width="10%">Activity Type</th>
 												<th width="10%">Project</th>
 												<th width="15%">Assigner</th>
 												<th width="10%">Keywords</th>
-												<th width="28%">Work Done</th>
+												<th width="21%">Work Done</th>
 												<th width="10%">Work Done on</th>
 											</tr>
 										</thead>
@@ -636,6 +639,7 @@ FormatConverter fc = new FormatConverter();
 													<%if(i==0) {%>
 											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
 			         								<%} %>
+			         								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
 			    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
 			    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
 			    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>

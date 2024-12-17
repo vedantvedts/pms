@@ -168,6 +168,7 @@ public class TimeSheetController {
 	@RequestMapping(value="TimeSheetDetailsSubmit.htm", method= {RequestMethod.GET,RequestMethod.POST})
 	public String timeSheetDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
+		String EmpNo = (String)ses.getAttribute("EmpNo");
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date()+" Inside TimeSheetDetailsSubmit.htm "+UserId);
 		try {
@@ -210,6 +211,7 @@ public class TimeSheetController {
 							   // New Columns for Sample Demo End
 							   .Action(req.getParameter("Action"))
 							   .UserId(UserId)
+							   .EmpNo(EmpNo)
 							   .build();
 			
 			Long result = service.timeSheetSubmit(dto);

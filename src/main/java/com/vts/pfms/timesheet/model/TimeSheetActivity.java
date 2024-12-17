@@ -33,6 +33,8 @@ public class TimeSheetActivity implements Serializable {
 	private Long ProjectId;
 	@Column(name = "ActivityTypeId", length = 20)
 	private Long ActivityTypeId;
+	@Column(name = "ActivitySeqNo")
+	private String ActivitySeqNo;
 	@Column(name = "ActivityFromTime")
 	private String ActivityFromTime;
 	@Column(name = "ActivityToTime")

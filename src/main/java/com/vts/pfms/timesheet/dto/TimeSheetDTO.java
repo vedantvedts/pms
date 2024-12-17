@@ -36,4 +36,5 @@ public class TimeSheetDTO {
 	
 	private String UserId;
 	private String Action;
+	private String EmpNo;
 }
