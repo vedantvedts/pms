@@ -157,20 +157,22 @@ public long LabReportMilestone(PfmsLabReportMilestone pm) throws Exception {
 try {
 	if(pm.getIsChecked().equalsIgnoreCase("1")) {
 		
-		String sql ="DELETE FROM  pfms_labreport_milestone WHERE MilestoneActivityId=:MilestoneActivityId AND ProjectId=:ProjectId";
+		String sql ="DELETE FROM  pfms_labreport_milestone WHERE MilestoneActivityId=:MilestoneActivityId AND ProjectId=:ProjectId AND ActivityFor=:ActivityFor";
 		Query query = manager.createNativeQuery(sql);
 		query.setParameter("MilestoneActivityId", pm.getMilestoneActivityId());
 		query.setParameter("ProjectId", pm.getProjectId());
+		query.setParameter("ActivityFor", pm.getActivityFor());
 			query.executeUpdate();
 		
 		manager.persist(pm);
 		manager.flush();
 		return pm.getMilestoneActivityId();
 	}else {
-		String sql ="DELETE FROM  pfms_labreport_milestone WHERE MilestoneActivityId=:MilestoneActivityId AND ProjectId=:ProjectId";
+		String sql ="DELETE FROM  pfms_labreport_milestone WHERE MilestoneActivityId=:MilestoneActivityId AND ProjectId=:ProjectId AND ActivityFor=:ActivityFor";
 		Query query = manager.createNativeQuery(sql);
 		query.setParameter("MilestoneActivityId", pm.getMilestoneActivityId());
 		query.setParameter("ProjectId", pm.getProjectId());
+		query.setParameter("ActivityFor", pm.getActivityFor());
 		return query.executeUpdate();
 		
 	}

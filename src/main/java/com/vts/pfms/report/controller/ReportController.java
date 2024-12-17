@@ -131,14 +131,17 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 	req.setAttribute("editorData", editorData);
 	
 	int currentYear = LocalDate.now().getYear();
-    System.out.println("Current Year: " + currentYear);
+
     
     //milestone data
     List<Object[]>milestoneData=service.mileStoneData(currentYear,projectid);
     req.setAttribute("milestoneData", milestoneData);
     
     List<PfmsLabReportMilestone>LabReportMilestoneData= service.getPfmsLabReportMilestoneData(projectid);
-    if(milestoneData!=null && milestoneData.size()>0) {
+	 List<PfmsLabReportMilestone>presentYearData  = LabReportMilestoneData.stream().filter(e->e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("P")).collect(Collectors.toList());
+	 List<PfmsLabReportMilestone>nextYearData  = LabReportMilestoneData.stream().filter(e->e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("N")).collect(Collectors.toList());
+
+	 if(milestoneData!=null && milestoneData.size()>0) {
     	for(Object[]obj:milestoneData) {
     	PfmsLabReportMilestone pm = new PfmsLabReportMilestone();
 		pm.setMilestoneActivityId(Long.parseLong(obj[9].toString()));
@@ -148,12 +151,21 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 		pm.setProjectId(Long.parseLong(obj[0].toString()));
 		pm.setIsChecked("1");
 		
-		if(LabReportMilestoneData==null ||LabReportMilestoneData.size()==0) {
+		if(presentYearData==null ||presentYearData.size()==0) {
 		if(Integer.parseInt(obj[11].toString())>=60 &&
 				!LabReportMilestoneData.stream().anyMatch(e->(e.getMilestoneActivityId()+"").equalsIgnoreCase(obj[9].toString()))   ) {
+			pm.setActivityFor("P");
 			service.LabReportMilestone(pm);
 		}
 		}
+		
+		if(nextYearData==null || nextYearData.size()==0) {
+			if(obj[7].toString().equalsIgnoreCase((currentYear+1)+"")||obj[8].toString().equalsIgnoreCase((currentYear+1)+"") || (Integer.parseInt(obj[11].toString())>=40 && Integer.parseInt(obj[11].toString())<100)) {
+				pm.setActivityFor("N");
+				service.LabReportMilestone(pm);
+			}
+		}
+		
     	}
     }
     
@@ -161,7 +173,6 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
     LabReportMilestoneData= service.getPfmsLabReportMilestoneData(projectid);
  
     
-    System.out.println(LabReportMilestoneData.size());
     
     req.setAttribute("LabReportMilestoneData", LabReportMilestoneData);
     req.setAttribute("currentYear", currentYear);
@@ -485,18 +496,14 @@ XWPFParagraph reviewHeld = document.createParagraph();
        
      
         int count=0;
-        if(milestoneData!=null && milestoneData.size()>0) {
-        for (Object[] activity : milestoneData) {
-        	
-        	 
-        	if(activity[7].toString().equalsIgnoreCase((currentYear+1)+"")||activity[8].toString().equalsIgnoreCase((currentYear+1)+"") || (Integer.parseInt(activity[11].toString())>=40 && Integer.parseInt(activity[11].toString())<100)) {
-            XWPFParagraph mileParagraph1 = document.createParagraph();
-            XWPFRun mileParagraphs1 = mileParagraph1.createRun();
-            mileParagraphs1.setText((++count)+". "+activity[1].toString());
-            //mileParagraphs1.addBreak();
-        	}
-        }
-        }
+        if(milestoneData!=null && milestoneData.size()>0){
+        if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0) {
+        List<PfmsLabReportMilestone>NextYearData  = LabReportMilestoneData.stream().filter(e->e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("N")).collect(Collectors.toList());
+        for(PfmsLabReportMilestone pm: NextYearData) {
+        XWPFParagraph mileParagraph1 = document.createParagraph();
+        XWPFRun mileParagraphs1 = mileParagraph1.createRun();
+        mileParagraphs1.setText((++count)+". "+pm.getActivityName());
+        }}}
         
         XWPFParagraph mileParagraph2 = document.createParagraph();
         XWPFRun mileParagraphs2 = mileParagraph2.createRun();
@@ -509,7 +516,8 @@ XWPFParagraph reviewHeld = document.createParagraph();
         
         int count1=0;
         if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0) {
-        for(PfmsLabReportMilestone pm: LabReportMilestoneData) {
+       	 List<PfmsLabReportMilestone>presentYearData  = LabReportMilestoneData.stream().filter(e->e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("P")).collect(Collectors.toList());
+        for(PfmsLabReportMilestone pm: presentYearData) {
          XWPFParagraph mileParagraph1 = document.createParagraph();
          XWPFRun mileParagraphs1 = mileParagraph1.createRun();
          String activityName =(pm.getActivityName()!= null&&!pm.getActivityName().toString().trim().isEmpty())?pm.getActivityName().toString().replaceAll("<[^>]*>", "").trim() : "-";
@@ -719,6 +727,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
 			String ActivityName = req.getParameter("ActivityName");
 			String isChecked =req.getParameter("isChecked");
 			String ProjectId =req.getParameter("ProjectId");
+			String ActivityFor =req.getParameter("ActivityFor");
 			
 			PfmsLabReportMilestone pm = new PfmsLabReportMilestone();
 			pm.setMilestoneActivityId(Long.parseLong(MilestoneActivityId));
@@ -727,7 +736,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
 			pm.setCreatedDate(LocalDate.now().toString());
 			pm.setProjectId(Long.parseLong(ProjectId));
 			pm.setIsChecked(isChecked);
-			
+			pm.setActivityFor(ActivityFor);
 		
 //			 count = service.MilestoneActivityNameUpdate(MilestoneActivityId,UserId,ActivityName);
 			

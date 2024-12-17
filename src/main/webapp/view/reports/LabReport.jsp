@@ -418,6 +418,7 @@ int nextYear=(int)request.getAttribute("nextYear");
 List<PfmsLabReportMilestone>LabReportMilestoneData = (List<PfmsLabReportMilestone>)request.getAttribute("LabReportMilestoneData");
 
 List<String>activityids= new ArrayList<>();
+List<String>activityidsNextYear= new ArrayList<>();
 
 
 List<Object[]>MainProjectList = new ArrayList<>(); 
@@ -454,8 +455,8 @@ if(proList!=null && proList.size()>0){
 			   			<div class="col-sm-12 col-md-5">
 							<h3 style="margin-bottom:0px;">Lab Report</h3>
 						</div>	 
-						
-							       <div class="col-md-2">
+				<%if(session.getAttribute("LoginType").toString().equalsIgnoreCase("A")){ %>		
+					<div class="col-md-2">
 			       <form action="#"> 
 			       <button type="submit" class="btn bg-transparennt" formaction="LabReportChapter1.htm" formmethod="get" data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="CHAPTER 1">
 			       <i class="fa fa-download" aria-hidden="true" style="color:green;"></i> 
@@ -465,7 +466,7 @@ if(proList!=null && proList.size()>0){
 			       </button>
 			       </form>
 			       </div>
-						 
+					<%} %> 
 						<div class="col-sm-12 col-md-5" style="float: right;">
 						   <form method="get" action="LabReports.htm" id="projectchange">
 							
@@ -635,25 +636,46 @@ if(proList!=null && proList.size()>0){
         
         <!-- Content Below Heading -->
         <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
-            <h5><b>Planned Activities in the Project for Next Year</b></h5>
+            <h5>
+            <b>Planned Activities in the Project for Next Year</b>
+               <% 
+             if(milestoneData!=null && milestoneData.size()>0){%>
+             <button class="btn btn-info" onclick="showModal('N')" style="float:right;">VIEW ALL</button>
+             <%}else{ %>
+             <span> - No Milestones specified for this Project !</span>
+             <%} %>
+            </h5>
            
              <%
-             int count1=0;
-             if(milestoneData!=null && milestoneData.size()>0){
-            	 for (Object[] activity : milestoneData) {
-            		 if(activity[7].toString().equalsIgnoreCase((currentYear+1)+"")||activity[8].toString().equalsIgnoreCase((currentYear+1)+"") || (Integer.parseInt(activity[11].toString())>=40 && Integer.parseInt(activity[11].toString())<100)) {%>
-             <ul>
-             <li><%=(++count1) %>.<%= activity[1] %></li></ul> <%}}} %>
-           <%--    <tr>
-              <td><%= obj[1] %></td>
-              <td style="text-align: center"><%=sdf.format(obj[2])%></td>
-              <td style="text-align: center"><%=sdf.format(obj[3])%></td>
-              </tr> --%>
-           <%--  <% }}}else{%>
-        		 <td colspan="3" style="text-align: center;font-weight:800;color: red;"> No records found</td>
-        	<% }%>   
-            </table> --%>
+             if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0){  
+               
+             int count1=0;%>
+             <br>
+             <table class="table table-bordered">
+  			 <thead style="border:2px solid #dee2e6">
+  			 <tr>
+  				<th style="width:10%">SN</th>
+  				<th style="width:60%">Activity Name</th>
+  				</tr>
+  				</thead>
+  				<tbody>
+            <% if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0){
+            	 for (PfmsLabReportMilestone pm: LabReportMilestoneData) {
+            		 if(pm.getActivityFor()!=null && pm.getActivityFor().equalsIgnoreCase("N")) {
+            			 activityidsNextYear.add(pm.getMilestoneActivityId()+"");
+            		 %>
+            	<tr>
+             	<td style="text-align: center;"><%=(++count1) %>.</td>
+             	<td style="text-align: justify ;"><%= pm.getActivityName() %></td> 
+             	</tr>
+             	<%}}} %>
+      			 <%} %>
+      			 </tbody>
+      			 </table>
             <!--------------------------------------------------------------------------------------------------------------------------------------------------- -->
+            
+            <br>
+            
             <h5><b>Major Achievement/Activities completed during this Year</b>
               <% 
              if(milestoneData!=null && milestoneData.size()>0){%>
@@ -662,11 +684,13 @@ if(proList!=null && proList.size()>0){
              	<span> - No Milestones specified for this Project !</span>
              <%} %>
              </h5> 
-   
+
           <div class="modal-body">
             <%
           	 int sn=0;
-             if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0){ %>
+             if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0){  
+        	  List<PfmsLabReportMilestone>presentYearData  = LabReportMilestoneData.stream().filter(e->e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("P")).collect(Collectors.toList());
+             %>
   			 <table class="table table-bordered">
   			 <thead style="border:2px solid #dee2e6">
   			 <tr>
@@ -674,7 +698,7 @@ if(proList!=null && proList.size()>0){
   				<th style="width:60%">Activity Name</th>
   				</tr>
   				</thead>
-            	 <% for (PfmsLabReportMilestone pm : LabReportMilestoneData) {
+            	 <% for (PfmsLabReportMilestone pm : presentYearData) {
             		 activityids.add(pm.getMilestoneActivityId()+"");
             		%>
             <tbody>
@@ -684,13 +708,94 @@ if(proList!=null && proList.size()>0){
             </tr>
             </tbody>
              <%}} %>
-             	</table>
+             </table>
              	
              
             </div>
    
      
-   
+       <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="largeModal1" data-backdrop="static">
+  <div class="modal-dialog modal-lg" style="max-width: 1440px;">
+    <div class="modal-content">
+    
+    <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title" id="exampleModalLabel">Project All Major Milestones</h5>
+        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color:red;">×</span>
+        </button>
+      </div>
+           <div class="modal-body" style="overflow: auto;height:600px">
+           <span class="text-danger mb-2 t">
+           To chnage in Anything Activity Name please unchecked the checkbox 
+           then update the data and make it checked again.Only the selected Activities will come in Lab Report
+           </span>
+            <% int count1=0;
+             if(milestoneData!=null && milestoneData.size()>0){%>
+            	
+  				<table class="table table-bordered">
+  				<thead style="border:2px solid #dee2e6">
+  				<tr>
+  				<th></th>
+  				<th style="width:10%">SN</th>
+  				<th style="width:15%">Milestone No.</th>
+  				<th style="width:60%">Activity Name</th>
+  				<th>Progress</th>
+  				</tr>
+  				</thead>
+            	 <% for (Object[] activity : milestoneData) {
+            		 List<PfmsLabReportMilestone>NextYearMilestoneData  = LabReportMilestoneData.stream().filter(e->(e.getMilestoneActivityId()+"").equalsIgnoreCase(activity[9].toString()) && e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("N")).collect(Collectors.toList());
+            		%>
+            <tbody>
+            <tr>
+            <td style="text-align: center;">
+            <input type="checkbox" class="" style="transform:scale(2)" name="ActivityIdS"  <%if(activityidsNextYear.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9].toString()%>" >
+            </td>
+            <td style="text-align: center;"> <%=++count1 %></td>
+            <td style="text-align: center;">Milestone - <%=activity[10].toString()%></td>
+            <td> 
+        	  <%--   <textarea class="form-control" id="text<%=activity[9].toString()%>" > <%=activity[1].toString() %></textarea> --%>
+        
+            <div class="Editor" ></div>
+			<textarea  name="description" style="display: none;" class="form-control" id="textNext<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
+			
+			<%if(NextYearMilestoneData!=null && NextYearMilestoneData.size()>0){ %>
+			<%=NextYearMilestoneData.get(0).getActivityName() %>
+			<%}else{ %>
+			<%=activity[1].toString() %>
+			
+			<%} %>
+			</textarea>
+			    <script>
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                var editorId = 'textNext<%=activity[9].toString()%>';
+                CKEDITOR.replace(editorId, editor_config1);
+
+                // Ensure changes in CKEditor are reflected in the textarea for form submission
+                CKEDITOR.instances[editorId].on('change', function () {
+                    CKEDITOR.instances[editorId].updateElement();
+                });
+            });
+            </script>
+             </td>
+            <td style="text-align: center;">
+        		<%=activity[11].toString()%>
+            </td>
+            </tr>
+            </tbody>
+             <%}} %>
+             	</table>
+           </div>
+    		<div align="center" class="mt-2 mb-2"><button class="btn btn-warning" onclick="updateAll('N')">UPDATE</button></div>
+      
+    </div>
+  </div>
+</div>
+     
+     
+     
+     
+   <!-- For Present year  -->
   <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="largeModal" data-backdrop="static">
   <div class="modal-dialog modal-lg" style="max-width: 1440px;">
     <div class="modal-content">
@@ -720,7 +825,7 @@ if(proList!=null && proList.size()>0){
   				</tr>
   				</thead>
             	 <% for (Object[] activity : milestoneData) {
-            		 List<PfmsLabReportMilestone>SubLabReportMilestoneData  = LabReportMilestoneData.stream().filter(e->(e.getMilestoneActivityId()+"").equalsIgnoreCase(activity[9].toString())).collect(Collectors.toList());
+            		 List<PfmsLabReportMilestone>SubLabReportMilestoneData  = LabReportMilestoneData.stream().filter(e->(e.getMilestoneActivityId()+"").equalsIgnoreCase(activity[9].toString()) && e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("P")).collect(Collectors.toList());
             		%>
             <tbody>
             <tr>
@@ -763,7 +868,7 @@ if(proList!=null && proList.size()>0){
              <%}} %>
              	</table>
            </div>
-    		<div align="center" class="mt-2 mb-2"><button class="btn btn-warning" onclick="updateAll()">UPDATE</button></div>
+    		<div align="center" class="mt-2 mb-2"><button class="btn btn-warning" onclick="updateAll('P')">UPDATE</button></div>
       
     </div>
   </div>
@@ -1305,16 +1410,25 @@ var editor_config = {
 
 
 	 
-	 function showModal(){
+	 function showModal(a){
+		 if(a!=='N'){
 		 $('#largeModal').modal('show');
+		 }else{
+			 $('#largeModal1').modal('show');
+		 }
 	 }
 	 
 	 
 	 
-	 function updateAll(){
+	 function updateAll(ActivityFor){
 		 
-		  const checkboxes = document.getElementsByName('ActivityId');
-		    const checkedValues = [];
+		 if(ActivityFor==='P'){
+		  var checkboxes = document.getElementsByName('ActivityId');
+		 }else{
+			 var checkboxes = document.getElementsByName('ActivityIdS');
+		 }
+		  
+		  const checkedValues = [];
 			var count=0;
 		    // Loop through checkboxes to get their values if checked
 		    for (var checkbox of checkboxes) {
@@ -1322,13 +1436,20 @@ var editor_config = {
 		            checkedValues.push(checkbox.value+","+value);
 		        
 		    }
+		   
+		    console.log(ActivityFor+"-"+checkedValues)
 		    if(confirm('Are you sure to update ?')){
 		    for(var i=0;i<checkedValues.length;i++){
 		    	
 		    	var values = checkedValues[i].split(",");
 		    	var MilestoneActivityId = values[0];
 		    	var isChecked=values[1];
+		    	 if(ActivityFor==='P'){
 		    	var ActivityName = $('#text'+MilestoneActivityId).val().trim();
+		    	 }else{
+				    	var ActivityName = $('#textNext'+MilestoneActivityId).val().trim();
+
+		    	 }
 		    	$.ajax({
 				type:'GET',
 				url:'MilestoneActivityNameUpdate.htm',
@@ -1337,18 +1458,15 @@ var editor_config = {
 					MilestoneActivityId:MilestoneActivityId,
 					ActivityName:ActivityName,
 					isChecked:isChecked,
-					ProjectId:<%=Project%>
+					ProjectId:<%=Project%>,
+					ActivityFor:ActivityFor,
 				},
 				success :  function(result) {
 					
 					var ajaxresult = JSON.parse(result);
 					
 				
-				/* 	if(ajaxresult>0){
-						alert("Activitiy Updated successfully")
-					}else{
-						alert("Activitiy Update unsuccessful")
-					} */
+				
 					
 				}
 			})
