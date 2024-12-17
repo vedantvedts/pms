@@ -24,6 +24,7 @@ public class PfmsLabReportMilestone {
 		private long ProjectId;
 	    private long MilestoneActivityId;
 	    private String ActivityName;
+	    private String ActivityFor;
 		private String CreatedBy;
 		private String CreatedDate;
 		
