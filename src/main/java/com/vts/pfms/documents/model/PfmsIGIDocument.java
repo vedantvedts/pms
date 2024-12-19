@@ -30,6 +30,7 @@ public class PfmsIGIDocument {
 	private String IGIStatusCode;
 	private String IGIStatusCodeNext;
 	private String Remarks;
+	private String Introduction;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

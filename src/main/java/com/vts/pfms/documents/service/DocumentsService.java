@@ -8,6 +8,7 @@ import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 
 public interface DocumentsService {
@@ -36,5 +37,9 @@ public interface DocumentsService {
 	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception;
 	public int deleteIGIDocumentShortCodesByType(String shortCodeType) throws Exception;
 	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception;
+	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception;
+	public List<Object[]> getIGIApplicableDocs(String docFlag) throws Exception;
+	public long addIGIApplicableDocs(String igiDocId, String docFlag, String[] applicableDocIds, String userId) throws Exception;
+	public int deleteIGIApplicableDocument(String igiApplicableDocId) throws Exception;
 	/* ************************************************ IGI Document End***************************************************** */
 }

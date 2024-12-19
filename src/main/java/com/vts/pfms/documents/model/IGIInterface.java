@@ -17,6 +17,7 @@ public class IGIInterface {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long InterfaceId;
 	private String LabCode;
+	private String InterfaceSeqNo;
 	private String InterfaceCode;
 	private String InterfaceName;
 	private String InterfaceType;

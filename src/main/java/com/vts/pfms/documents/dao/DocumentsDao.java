@@ -3,10 +3,12 @@ package com.vts.pfms.documents.dao;
 import java.math.BigInteger;
 import java.util.List;
 
+import com.vts.pfms.documents.model.IGIApplicableDocs;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 
@@ -37,6 +39,11 @@ public interface DocumentsDao {
 	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception;
 	public int deleteIGIDocumentShortCodesByType(String shortCodeType) throws Exception;
 	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception;
+	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception;
+	public List<Object[]> getIGIApplicableDocs(String docFlag) throws Exception;
+	public long addIGIApplicableDocs(IGIApplicableDocs igiApplicableDocs) throws Exception;
+	public int deleteIGIApplicableDocument(String igiApplicableDocId) throws Exception;
+	public int getInterfaceCountByType(String interfaceType) throws Exception;
 	/* ************************************************ IGI Document End ***************************************************** */
 	
 	

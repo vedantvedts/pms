@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,12 +19,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dao.DocumentsDao;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.IGIApplicableDocs;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 
@@ -38,7 +42,10 @@ public class DocumentsServiceImpl implements DocumentsService{
 	
 	private static final Logger logger=LogManager.getLogger(DocumentsServiceImpl.class);
 	
-	
+	FormatConverter fc = new FormatConverter();
+	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
+	private SimpleDateFormat sdf = fc.getSqlDateFormat();
+	private SimpleDateFormat rdf = fc.getRegularDateFormat();
 	
 	@Override
 	public long InsertStandardDocuments(StandardDocumentsDto dto) throws Exception {
@@ -198,6 +205,11 @@ public class DocumentsServiceImpl implements DocumentsService{
 	@Override
 	public long addIGIInterface(IGIInterface igiInterface) throws Exception {
 		
+		if(igiInterface.getInterfaceId()==null) {
+			int interfaceCount = dao.getInterfaceCountByType(igiInterface.getInterfaceType());
+			String[] split = igiInterface.getInterfaceType().split(" ");
+			igiInterface.setInterfaceSeqNo((split[0].charAt(0)+""+split[1].charAt(0))+"_"+(interfaceCount+1));
+		}
 		return dao.addIGIInterface(igiInterface);
 	}
 	
@@ -241,6 +253,47 @@ public class DocumentsServiceImpl implements DocumentsService{
 	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception {
 		
 		return dao.addIGIDocumentShortCodes(igiDocumentShortCodes);
+	}
+	
+	@Override
+	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception {
+		
+		return dao.getPfmsApplicableDocs();
+	}
+	
+	@Override
+	public List<Object[]> getIGIApplicableDocs(String docFlag) throws Exception {
+		
+		return dao.getIGIApplicableDocs(docFlag);
+	}
+	
+	@Override
+	public long addIGIApplicableDocs(String igiDocId, String docFlag, String[] applicableDocIds, String userId) throws Exception {
+		try {
+			
+			for(int i=0; i<applicableDocIds.length; i++) {
+				IGIApplicableDocs applicableDoc = new IGIApplicableDocs();
+				applicableDoc.setApplicableDocId(applicableDocIds[i]!=null? Long.parseLong(applicableDocIds[i]):0);
+				applicableDoc.setDocFlag(docFlag);
+				applicableDoc.setIGIDocId(igiDocId!=null?Long.parseLong(igiDocId):0);
+				applicableDoc.setCreatedBy(userId);
+				applicableDoc.setCreatedDate(sdtf.format(new Date()));
+				applicableDoc.setIsActive(1);
+				
+				dao.addIGIApplicableDocs(applicableDoc);
+			}
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+	
+	@Override
+	public int deleteIGIApplicableDocument(String igiApplicableDocId) throws Exception {
+		
+		return dao.deleteIGIApplicableDocument(igiApplicableDocId);
 	}
 	
 	/* ************************************************ IGI Document End ***************************************************** */

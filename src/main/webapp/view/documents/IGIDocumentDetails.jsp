@@ -1,3 +1,6 @@
+<%@page import="com.vts.pfms.documents.model.PfmsApplicableDocs"%>
+<%@page import="com.vts.pfms.documents.model.IGIInterface"%>
+<%@page import="com.vts.pfms.documents.model.PfmsIGIDocument"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentShortCodes"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -108,7 +111,11 @@
         max-width: 100%;
     }
 }
- 
+
+/* Summer Note styles */
+.note-editor {
+	width: 100% !important;
+} 
 </style>    
 
 </head>
@@ -129,11 +136,25 @@
 		List<IGIDocumentShortCodes> abbreviationsList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase("A")).collect(Collectors.toList());
 		List<IGIDocumentShortCodes> acronymsList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase("B")).collect(Collectors.toList());
 		
+		List<PfmsApplicableDocs> applicableDocsList = (List<PfmsApplicableDocs>)request.getAttribute("applicableDocsList");
+		List<Object[]> igiApplicableDocsList = (List<Object[]>)request.getAttribute("igiApplicableDocsList");
+		List<Long> igiApplicableDocIds = igiApplicableDocsList.stream().map(e -> Long.parseLong(e[0].toString())).collect(Collectors.toList());
+		applicableDocsList = applicableDocsList.stream().filter(e -> !igiApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
+		
+		PfmsIGIDocument igiDocument = (PfmsIGIDocument)request.getAttribute("igiDocument");
+		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
+		
+		List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
+		List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
+		List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
+		List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
+				
 		Object[] labDetails = (Object[])request.getAttribute("labDetails");
 		Object[] docTempAtrr = (Object[])request.getAttribute("docTempAttributes");
 		String lablogo = (String)request.getAttribute("lablogo");
 		String drdologo = (String)request.getAttribute("drdologo");
 		String version =(String)request.getAttribute("version");
+		
 		LocalDate now = LocalDate.now();
 		FormatConverter fc = new FormatConverter();
 	%>
@@ -184,13 +205,13 @@
 												</div>
 											</div>
 											
-											<div class="card module" data-toggle="modal" data-target="#DistributionModal">
+											<div class="card module" data-toggle="modal" data-target="#distributionModal">
 												<div class="card-body">
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Document Distribution</span></div>
 												</div>
 											</div>
 											
-											<div class="card module" data-toggle="modal" data-target="#SummaryModal">
+											<div class="card module" data-toggle="modal" data-target="#summaryModal">
 												<div class="card-body">
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Document Summary</span></div>
 												</div>
@@ -208,13 +229,13 @@
 												</div>
 											</div>
 											
-											<div class="card module" onclick="showChapter1()">
+											<div class="card module" data-toggle="modal" data-target="#introductionModal">
 												<div class="card-body">
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 1 : Introduction</span></div>
 												</div>
 											</div>
 											
-											<div class="card module" onclick="showChapter2()">
+											<div class="card module" data-toggle="modal" data-target="#applicableDocsModal">
 												<div class="card-body">
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 2 : Applicable Docs</span></div>
 												</div>
@@ -242,10 +263,10 @@
 										<td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Title: <span class="text-dark">System Segment Specifications Document</span></td>
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Title: <span class="text-dark">Interface General Information (IGI)</span></td>
 									</tr>
 									<tr >
-										<td class="text-primary"><%=++docsumslno %>.&nbsp; Type of Document:<span class="text-dark">System Segment Specifications Document</span></td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Type of Document:<span class="text-dark">Interface General Information (IGI) Document</span></td>
 										<td class="text-primary"><%=++docsumslno %>.&nbsp; Classification: <span class="text-dark">Restricted</span></td>
 									</tr>
 								    <tr >
@@ -343,13 +364,13 @@
     </div> -->
 
 	<!-- Document Summary Modal Structure -->
-	<div class="modal fade" id="SummaryModal" tabindex="-1" aria-labelledby="SummaryModalLabel" aria-hidden="true">
+	<div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModal" aria-hidden="true">
     	<div class="modal-dialog">
         	<div class="modal-content" style="width:150%;margin-left: -20%">
-	            <div class="modal-header">
+	            <div class="modal-header" style="background: #055C9D;color:white;">
 	                <h5 class="modal-title" id="SummaryModalLabel">IGI Document Summary</h5>
 	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
+	                    <span class="text-light" aria-hidden="true">&times;</span>
 	                </button>
 	            </div>
             	<div class="modal-body">
@@ -479,10 +500,10 @@
 	</form>
 	
 	<!-- modal for Document Distribution -->
-	<div class="modal fade" id="DistributionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal fade" id="distributionModal" tabindex="-1" role="dialog" aria-labelledby="distributionModal" aria-hidden="true">
   		<div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
     		<div class="modal-content">
-      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color:white;">
+      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
 			        <h5 class="modal-title" >Document Sent to</h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true" class="text-light">&times;</span>
@@ -553,10 +574,10 @@
 	</div>
 
 	<!-- Modal for Abbreviations / Acronyms-->
-	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="shortCodesModal">
+	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="shortCodesModal" aria-hidden="true" id="shortCodesModal">
  		<div class="modal-dialog modal-lg">
     		<div class="modal-content" style="width:135%;margin-left:-20%;">
-      			<div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
+      			<div class="modal-header" id="ModalHeader" style="background: #055C9D;color: white;">
         			<h5 class="modal-title shortCodesModal" ></h5>
         			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           				<span aria-hidden="true" class="text-light">&times;</span>
@@ -592,11 +613,11 @@
 	
 					<div id="ExistingAbb">
 						<table class="table table-bordered table-hover table-striped table-condensed " id="abbreviationsTable" style="width: 100%;display: none;">
-							<thead >
+							<thead class="center">
 								<tr>
-									<td>SN</td>
-									<td>Abbreviation</td>
-									<td>Full form</td>
+									<th>SN</th>
+									<th>Abbreviation</th>
+									<th>Full form</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -605,7 +626,7 @@
 									for(IGIDocumentShortCodes abbrevation : abbreviationsList){
 								%>
 									<tr>
-										<td><%=++slno%></td>
+										<td class="center"><%=++slno%></td>
 										<td><%=abbrevation.getShortCode()%></td>
 										<td><%=abbrevation.getFullName()%></td>
 									</tr>
@@ -616,11 +637,11 @@
 						</table>
 						
 						<table class="table table-bordered table-hover table-striped table-condensed " id="acronymsTable" style="width: 100%;display: none;">
-							<thead >
+							<thead class="center">
 								<tr>
-									<td>SN</td>
-									<td>Acronym</td>
-									<td>Full form</td>
+									<th>SN</th>
+									<th>Acronym</th>
+									<th>Full form</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -629,7 +650,7 @@
 									for(IGIDocumentShortCodes acronym : acronymsList){
 								%>
 									<tr>
-										<td><%=++slno%></td>
+										<td class="center"><%=++slno%></td>
 										<td><%=acronym.getShortCode()%></td>
 										<td><%=acronym.getFullName()%></td>
 									</tr>
@@ -645,10 +666,120 @@
     		</div>
   		</div>
 	</div>
-	
-	
 	<!--  -->
 
+	<!-- ------------------------------------- Introduction Modal ----------------------------- -->
+	<div class="modal fade bd-example-modal-lg" id="introductionModal" tabindex="-1" role="dialog" aria-labelledby="introductionModal" aria-hidden="true" style="margin-top: 5%;">
+		<div class="modal-dialog modal-lg" role="document" style="max-width: 1100px;">
+			<div class="modal-content">
+				<div class="modal-header" style="background: #055C9D;color: white;">
+		        	<h5 class="modal-title ">Introduction</h5>
+			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+			          <span class="text-light" aria-hidden="true">&times;</span>
+			        </button>
+		      	</div>
+     			<div class="modal-body">
+     				<div class="container-fluid mt-3">
+     					<div class="row">
+							<div class="col-md-12 " align="left">
+								<form action="IGIIntroductionSubmit.htm" method="POST" id="myform">
+									<div id="introductionEditor" class="center"></div>
+									<textarea id="introduction" name="introduction" style="display: none;"></textarea>
+									<div class="mt-2" align="center" id="detailsSubmit">
+										<span id="EditorDetails"></span>
+										<input type="hidden" name="igiDocId" value="<%=igiDocId %>">
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										<span id="Editorspan">
+											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure to Update?')">UPDATE</button></span>
+										</span>
+									</div>
+								</form>
+							</div>
+						</div>
+     				</div>
+     			</div>
+     		</div>
+		</div>
+	</div>				
+	<!-- ------------------------------------- Introduction Modal End----------------------------- -->		
+	
+	<!-- -------------------------------------- Applicable Documents ------------------------------------- -->	
+	<div class="modal fade" id="applicableDocsModal" tabindex="-1" role="dialog" aria-labelledby="applicableDocsModal" aria-hidden="true">
+  		<div class="modal-dialog" role="document">
+    		<div class="modal-content">
+      			<div class="modal-header" style="background: #055C9D;color: white;">
+        			<h5 class="modal-title" >Applicable Document</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span class="text-light" aria-hidden="true">&times;</span>
+			        </button>
+      			</div>
+      			<div class="modal-body">
+      
+      				<table class="table table-bordered table-hover table-striped table-condensed" >
+						<thead class="center">
+				      		<tr>
+				     	 		<th>SN</th>
+				      			<th>Document Name</th>
+				      			<th>Action</th>
+				      		</tr>
+				      	</thead>
+      
+      					<tbody>
+      						<%if(igiApplicableDocsList!=null && igiApplicableDocsList.size()>0) {
+      							int slno=0;
+    							for(Object[] obj : igiApplicableDocsList){
+      						%>
+								<tr>
+						      		<td class="center"><%=++slno %></td>
+						      		<td><%=obj[2].toString() %></td>
+						      		<td class="center">
+						      			 <form action="IGIApplicableDocumentDelete.htm" method="POST" id="inlineapprform<%=slno%>">
+									        <button type="submit" class="editable-clicko" onclick="return confirm('Are you sure to delete?')">
+									            <img src="view/images/delete.png" alt="Delete">
+									        </button>
+									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+									        <input type="hidden" name="igiApplicableDocId" value="<%=obj[0] %>">
+									        <input type="hidden" name="igiDocId" value="<%= igiDocId %>">
+									    </form>
+						      		</td>
+						      	</tr>
+      						<%}}else{ %>
+      						<tr><td colspan="3" style="text-align: center">No Documents Added!</tr>
+      						<%} %>
+      					</tbody>
+      				</table>
+					<hr>
+					
+					<form action="IGIApplicableDocsSubmit.htm" method="post">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						<input type="hidden" name="igiDocId" value="<%=igiDocId %>">
+						<input type="hidden" name="docFlag" value="A">
+						<div>
+	      					<%if(applicableDocsList!=null && applicableDocsList.size()>0) {
+	      						for(PfmsApplicableDocs applicableDoc : applicableDocsList){
+	      					%>
+	      
+						      	<div>
+						      		<input class="form-control" name="applicableDocId" type="checkbox" value="<%=applicableDoc.getApplicableDocId()%>"style="width:50%;display:inline">
+						      	
+						      		<span><%=applicableDoc.getDocumentName() %></span>
+						      	</div>
+	      
+	      					<%}} %>
+	      				</div>
+	      				<%if(applicableDocsList!=null && applicableDocsList.size()>0) {%>
+							<div align="center" class="mt-2">
+					      		<button type="submit" class="btn btn-sm submit btn-req" onclick="return confirm('Are you Sure to Submit?')" >SUBMIT</button>
+					      	</div>
+	      				<%} %>
+					</form>
+      
+      			</div>
+    		</div>
+  		</div>
+	</div>	
+	<!-- -------------------------------------- Applicable Documents End ------------------------------------- -->
+		     
 <script type="text/javascript">
 	
     function confirmDeletion(memberId) {
@@ -839,7 +970,59 @@
 	    }
 	});
 </script>
-    
+
+<script type="text/javascript">
+//Define a common Summernote configuration
+var summernoteConfig = {
+    width: 900,
+    toolbar: [
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
+        ['insert', ['picture', 'table']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']]
+    ],
+    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],
+    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
+    buttons: {
+        superscript: function() {
+            return $.summernote.ui.button({
+                contents: '<sup>S</sup>',
+                tooltip: 'Superscript',
+                click: function() {
+                    document.execCommand('superscript');
+                }
+            }).render();
+        },
+        subscript: function() {
+            return $.summernote.ui.button({
+                contents: '<sub>S</sub>',
+                tooltip: 'Subscript',
+                click: function() {
+                    document.execCommand('subscript');
+                }
+            }).render();
+        }
+    },
+    height: 300
+};
+
+// This is for RSQR
+/* CKEDITOR.replace('Editor', editor_config); */
+$('#introductionEditor').summernote(summernoteConfig);
+
+//Update the values of Editors
+var html1 = '<%=igiDocument!=null && igiDocument.getIntroduction()!=null?igiDocument.getIntroduction().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
+$('#introductionEditor').summernote('code', html1);
+
+//Set the values to the form when submitting.
+$('#myform').submit(function() {
+
+	 var data1 = $('#introductionEditor').summernote('code');
+	 $('textarea[name=introduction]').val(data1);
+	 
+});
+</script>    
 <script type="text/javascript">
 function DownloadDocPDF(){
 	var chapterCount = 0;
@@ -960,7 +1143,7 @@ function DownloadDocPDF(){
                 },
                 {
                     table: {
-                        headerRows: 1,
+                        headerRows: 0,
                         widths: ['10%', '30%', '60%'],
                         body: [
                             <% int docsn = 0; %>
@@ -1092,7 +1275,625 @@ function DownloadDocPDF(){
                 },
 			
                 /* ************************************** Document Summary End *********************************** */
+                
+                /* ************************************** Abbreviations ****************************************** */ 
+                {
+                    text: 'Abbreviations',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before',
+                    alignment: 'center'
+                },
+                {
+                	text: 'Abbreviations used in the Manual to be listed and arranged in alphabetical order',	
+                	style: 'chapterNote',
+                    alignment: 'center'
+                },
+                
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['20%', '30%', '50%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Abbreviation', style: 'tableHeader' },
+                                { text: 'Full form', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                           <% if(abbreviationsList!=null && abbreviationsList.size()>0){
+								int slno=0;
+								for(IGIDocumentShortCodes abbrevation : abbreviationsList){
+							%>
+		                            [
+		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%=abbrevation.getShortCode() %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%=abbrevation.getFullName() %>', style: 'tableData' },
+		                            ],
+		                        <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 3 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                
+                /* ************************************** Abbreviations End*********************************** */ 
+                /* ************************************** Acronyms ************************************** */ 
+                {
+                    text: 'Acronyms',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before',
+                    alignment: 'center'
+                },
+                {
+                	text: 'Acronyms used in the Manual to be listed and arranged in alphabetical order',	
+                	style: 'chapterNote',
+                    alignment: 'center'
+                },
+                
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['20%', '30%', '50%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Acronym', style: 'tableHeader' },
+                                { text: 'Full form', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                           <% if(acronymsList!=null && acronymsList.size()>0){
+								int slno=0;
+								for(IGIDocumentShortCodes acronym : acronymsList){
+							%>
+		                            [
+		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%=acronym.getShortCode() %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%=acronym.getFullName() %>', style: 'tableData' },
+		                            ],
+		                        <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 3 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                
+                /* ************************************** Acronyms End*********************************** */ 
+                
+                /* ************************************** Introduction *********************************** */
+                {
+                    text: (++mainContentCount)+'. Introduction',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
 
+                <%if(igiDocument!=null) {%>
+                
+	                {
+	                	stack: [htmlToPdfmake(setImagesWidth('<%if(igiDocument.getIntroduction()!=null) {%><%=igiDocument.getIntroduction().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	                		  +'<%}else {%> No Details Added! <%} %>', 500))],
+	                    margin: [10, 0, 0, 0],
+	                },
+	                			
+	            <%}%>
+                /* ************************************** Introduction End *********************************** */
+                
+                /* ************************************** Applicable Documents *********************************** */
+                {
+                    text: (++mainContentCount)+'. Applicable Documents',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['20%', '80%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Document Name', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                           <% if(igiApplicableDocsList!=null && igiApplicableDocsList.size()>0){
+								int slno=0;
+								for(Object[] obj : igiApplicableDocsList){
+							%>
+		                            [
+		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%=obj[2] %>', style: 'tableData', },
+		                            ],
+		                        <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 2 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Applicable Documents End *********************************** */
+                
+                /* ************************************** General Description & Standards *********************************** */
+                {
+                    text: (++mainContentCount)+'. General Description & Standards',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+
+                
+                {
+                	text: mainContentCount+'.1. Hardware Description',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                
+                {
+                	text: mainContentCount+'.1.1. Physical Interface',	
+                	style: 'chapterSubSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.1',
+                    tocMargin: [20, 0, 0, 0],
+                },
+                <%if(physicalInterfaceList!=null && physicalInterfaceList.size()>0) {
+                	int slno = 0;
+                	for(IGIInterface physicalInterface : physicalInterfaceList) { %>
+                	
+                	{
+                    	text: mainContentCount+'.1.1.<%=++slno%>. <%=physicalInterface.getInterfaceName() %>',	
+                    	style: 'chapterSubSubSubHeader',
+                        tocItem: true,
+                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.1.<%=slno%>',
+                        tocMargin: [25, 0, 0, 0],
+                    },
+                	
+	                {
+	                	table: {
+	                        headerRows: 1,
+	                        widths: ['30%', '70%'],
+	                        body: [
+	                            // Table header
+	                            [
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            // Populate table rows
+	                            [
+	                                { text: 'Interface Id', style: 'tableData', bold: true},
+	                                { text: '<%=physicalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Code', style: 'tableData', bold: true},
+	                                { text: '<%=physicalInterface.getInterfaceCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Name', style: 'tableData', bold: true },
+	                                { text: '<%=physicalInterface.getInterfaceName() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Description', style: 'tableData', bold: true},
+	                                <%if(physicalInterface.getInterfaceDescription()!=null) {%>
+	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=physicalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
+	                                <%}else {%>
+	                                	{ text: 'No Details Added!', style: 'tableData'},
+	                                <%} %>
+	                            ],
+	                            [
+	                                { text: 'Type of Data', style: 'tableData', bold: true },
+	                                { text: '<%=physicalInterface.getDataType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Type of Signal', style: 'tableData', bold: true },
+	                                { text: '<%=physicalInterface.getSignalType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Speed', style: 'tableData', bold: true },
+	                                { text: '<%=physicalInterface.getInterfaceSpeed() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Connector', style: 'tableData', bold: true },
+	                                { text: '<%=(physicalInterface.getConnector()!=null && !physicalInterface.getConnector().isEmpty())? physicalInterface.getConnector():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Protection', style: 'tableData', bold: true },
+	                                { text: '<%=(physicalInterface.getProtection()!=null && !physicalInterface.getProtection().isEmpty())? physicalInterface.getProtection():"-" %>', style: 'tableData' },
+	                            ],
+	                            <%if(physicalInterface.getInterfaceDiagram()!=null && !physicalInterface.getInterfaceDiagram().isEmpty()) {%>
+	                            	[
+	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=physicalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 2,},
+	                            	],
+	                            <%} %>
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    },
+	                },
+	                { text: '\n',},
+                <%} }%>
+                
+                {
+                	text: mainContentCount+'.1.2. Electrical Interface',	
+                	style: 'chapterSubSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.2',
+                    tocMargin: [20, 0, 0, 0],
+                },
+                <%if(electricalInterfaceList!=null && electricalInterfaceList.size()>0) {
+                	int slno = 0;
+                	for(IGIInterface electricalInterface : electricalInterfaceList) { %>
+                	
+                	{
+                    	text: mainContentCount+'.1.2.<%=++slno%>. <%=electricalInterface.getInterfaceName() %>',	
+                    	style: 'chapterSubSubSubHeader',
+                        tocItem: true,
+                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.2.<%=slno%>',
+                        tocMargin: [25, 0, 0, 0],
+                    },
+                    
+	                {
+	                	table: {
+	                        headerRows: 1,
+	                        widths: ['30%', '70%'],
+	                        body: [
+	                            // Table header
+	                            [
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            // Populate table rows
+	                            [
+	                                { text: 'Interface Id', style: 'tableData', bold: true},
+	                                { text: '<%=electricalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Code', style: 'tableData', bold: true},
+	                                { text: '<%=electricalInterface.getInterfaceCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Name', style: 'tableData', bold: true },
+	                                { text: '<%=electricalInterface.getInterfaceName() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Description', style: 'tableData', bold: true},
+	                                <%if(electricalInterface.getInterfaceDescription()!=null) {%>
+	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=electricalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
+	                                <%}else {%>
+	                                	{ text: 'No Details Added!', style: 'tableData'},
+	                                <%} %>
+	                            ],
+	                            [
+	                                { text: 'Type of Data', style: 'tableData', bold: true },
+	                                { text: '<%=electricalInterface.getDataType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Type of Signal', style: 'tableData', bold: true },
+	                                { text: '<%=electricalInterface.getSignalType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Speed', style: 'tableData', bold: true },
+	                                { text: '<%=electricalInterface.getInterfaceSpeed() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Connector', style: 'tableData', bold: true },
+	                                { text: '<%=(electricalInterface.getConnector()!=null && !electricalInterface.getConnector().isEmpty())? electricalInterface.getConnector():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Protection', style: 'tableData', bold: true },
+	                                { text: '<%=(electricalInterface.getProtection()!=null && !electricalInterface.getProtection().isEmpty())? electricalInterface.getProtection():"-" %>', style: 'tableData' },
+	                            ],
+	                            <%if(electricalInterface.getInterfaceDiagram()!=null && !electricalInterface.getInterfaceDiagram().isEmpty()) {%>
+	                            	[
+	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=electricalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 2,},
+	                            	],
+	                            <%} %>
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    },
+	                },
+	                { text: '\n',},
+                <%} }%>
+                
+                {
+                	text: mainContentCount+'.1.3. Optical Interface',	
+                	style: 'chapterSubSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.3',
+                    tocMargin: [20, 0, 0, 0],
+                },
+                <%if(opticalInterfaceList!=null && opticalInterfaceList.size()>0) {
+                	int slno = 0;
+                	for(IGIInterface opticalInterface : opticalInterfaceList) { %>
+                	
+                	{
+                    	text: mainContentCount+'.1.3.<%=++slno%>. <%=opticalInterface.getInterfaceName() %>',	
+                    	style: 'chapterSubSubSubHeader',
+                        tocItem: true,
+                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.3.<%=slno%>',
+                        tocMargin: [25, 0, 0, 0],
+                    },
+                    
+	                {
+	                	table: {
+	                        headerRows: 1,
+	                        widths: ['30%', '70%'],
+	                        body: [
+	                            // Table header
+	                            [
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            // Populate table rows
+	                            [
+	                                { text: 'Interface Id', style: 'tableData', bold: true},
+	                                { text: '<%=opticalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Code', style: 'tableData', bold: true},
+	                                { text: '<%=opticalInterface.getInterfaceCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Name', style: 'tableData', bold: true },
+	                                { text: '<%=opticalInterface.getInterfaceName() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Description', style: 'tableData', bold: true},
+	                                <%if(opticalInterface.getInterfaceDescription()!=null) {%>
+	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=opticalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
+	                                <%}else {%>
+	                                	{ text: 'No Details Added!', style: 'tableData'},
+	                                <%} %>
+	                            ],
+	                            [
+	                                { text: 'Type of Data', style: 'tableData', bold: true },
+	                                { text: '<%=opticalInterface.getDataType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Type of Signal', style: 'tableData', bold: true },
+	                                { text: '<%=opticalInterface.getSignalType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Speed', style: 'tableData', bold: true },
+	                                { text: '<%=opticalInterface.getInterfaceSpeed() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Connector', style: 'tableData', bold: true },
+	                                { text: '<%=(opticalInterface.getConnector()!=null && !opticalInterface.getConnector().isEmpty())? opticalInterface.getConnector():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Protection', style: 'tableData', bold: true },
+	                                { text: '<%=(opticalInterface.getProtection()!=null && !opticalInterface.getProtection().isEmpty())? opticalInterface.getProtection():"-" %>', style: 'tableData' },
+	                            ],
+	                            <%if(opticalInterface.getInterfaceDiagram()!=null && !opticalInterface.getInterfaceDiagram().isEmpty()) {%>
+	                            	[
+	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=opticalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 2,},
+	                            	],
+	                            <%} %>
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    },
+	                },
+	                { text: '\n',},
+                <%} }%>
+
+                
+                {
+                	text: mainContentCount+'.2. Software Description',	
+                	style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.2',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                
+                {
+                	text: mainContentCount+'.2.1. Logical Interface',	
+                	style: 'chapterSubSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.2.1',
+                    tocMargin: [20, 0, 0, 0],
+                },
+                <%if(logicalInterfaceList!=null && logicalInterfaceList.size()>0) {
+                	int slno = 0;
+                	for(IGIInterface logicalInterface : logicalInterfaceList) { %>
+                	{
+                    	text: mainContentCount+'.2.1.<%=++slno%>. <%=logicalInterface.getInterfaceName() %>',	
+                    	style: 'chapterSubSubSubHeader',
+                        tocItem: true,
+                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.2.1.<%=slno%>',
+                        tocMargin: [25, 0, 0, 0],
+                    },
+                    
+	                {
+	                	table: {
+	                        headerRows: 1,
+	                        widths: ['30%', '70%'],
+	                        body: [
+	                            // Table header
+	                            [
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            // Populate table rows
+	                            [
+	                                { text: 'Interface Id', style: 'tableData', bold: true},
+	                                { text: '<%=logicalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Code', style: 'tableData', bold: true},
+	                                { text: '<%=logicalInterface.getInterfaceCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Name', style: 'tableData', bold: true },
+	                                { text: '<%=logicalInterface.getInterfaceName() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Description', style: 'tableData', bold: true},
+	                                <%if(logicalInterface.getInterfaceDescription()!=null) {%>
+	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=logicalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
+	                                <%}else {%>
+	                                	{ text: 'No Details Added!', style: 'tableData'},
+	                                <%} %>
+	                            ],
+	                            [
+	                                { text: 'Type of Data', style: 'tableData', bold: true },
+	                                { text: '<%=logicalInterface.getDataType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Type of Signal', style: 'tableData', bold: true },
+	                                { text: '<%=logicalInterface.getSignalType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Interface Speed', style: 'tableData', bold: true },
+	                                { text: '<%=logicalInterface.getInterfaceSpeed() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Connector', style: 'tableData', bold: true },
+	                                { text: '<%=(logicalInterface.getConnector()!=null && !logicalInterface.getConnector().isEmpty())? logicalInterface.getConnector():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                                { text: 'Protection', style: 'tableData', bold: true },
+	                                { text: '<%=(logicalInterface.getProtection()!=null && !logicalInterface.getProtection().isEmpty())? logicalInterface.getProtection():"-" %>', style: 'tableData' },
+	                            ],
+	                            <%if(logicalInterface.getInterfaceDiagram()!=null && !logicalInterface.getInterfaceDiagram().isEmpty()) {%>
+	                            	[
+	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=logicalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 2,},
+	                            	],
+	                            <%} %>
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    },
+	                },
+	                { text: '\n',},
+                <%} }%>
+                /* ************************************** General Description & Standards End *********************************** */
+                
 			],
 			styles: {
                 DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
@@ -1102,6 +1903,7 @@ function DownloadDocPDF(){
                 tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
                 tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
                 chapterSubSubHeader: { fontSize: 12, bold: true, margin: [15, 10, 10, 10] },
+                chapterSubSubSubHeader: { fontSize: 12, bold: true, margin: [20, 10, 10, 10] },
                 subChapterNote: { margin: [15, 15, 0, 10] },
                 header: { alignment: 'center', bold: true},
                 chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },

@@ -14,10 +14,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.documents.model.IGIApplicableDocs;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 
@@ -304,7 +306,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	@Override
 	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception {
 		try {
-			Query query = manager.createQuery("FROM IGIDocumentShortCodes WHERE IsActive=1");
+			Query query = manager.createQuery("FROM IGIDocumentShortCodes WHERE IsActive=1 ORDER BY ShortCode");
 			return (List<IGIDocumentShortCodes>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -335,6 +337,72 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			
 			return 1;
 		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	@Override
+	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM PfmsApplicableDocs WHERE IsActive=1");
+			return (List<PfmsApplicableDocs>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<PfmsApplicableDocs>();
+		}
+	}
+	
+	private static final String GETIGIGAPPLICABLEDOCS = "SELECT a.IGIApplicableDocId, a.ApplicableDocId, b.DocumentName FROM pfms_igi_document_applicabledocs a, pfms_applicable_docs b WHERE a.IsActive=1 AND a.ApplicableDocId=b.ApplicableDocId AND a.DocFlag = :DocFlag";
+	@Override
+	public List<Object[]> getIGIApplicableDocs(String docFlag) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(GETIGIGAPPLICABLEDOCS);
+			query.setParameter("DocFlag", docFlag);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	@Override
+	public long addIGIApplicableDocs(IGIApplicableDocs igiApplicableDocs) throws Exception {
+		try {
+			manager.persist(igiApplicableDocs);
+			manager.flush();
+			return igiApplicableDocs.getApplicableDocId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	private static final String DELETEIGIAPPLICABLEDOCUMENTBYID = "UPDATE pfms_igi_document_applicabledocs SET IsActive=0 WHERE IGIApplicableDocId=:IGIApplicableDocId";
+	@Override
+	public int deleteIGIApplicableDocument(String igiApplicableDocId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEIGIAPPLICABLEDOCUMENTBYID);
+			query.setParameter("IGIApplicableDocId", igiApplicableDocId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	public static final String GETINTERFACECOUNTBYTYPE = "SELECT COUNT(InterfaceId) AS InterfaceCount FROM pfms_igi_interfaces WHERE IsActive=1 AND InterfaceType=:InterfaceType";
+	@Override
+	public int getInterfaceCountByType(String interfaceType) throws Exception {
+
+		try {
+			Query query =manager.createNativeQuery(GETINTERFACECOUNTBYTYPE);
+			query.setParameter("InterfaceType", interfaceType);
+			BigInteger maxCount = (BigInteger)query.getSingleResult();
+			return maxCount.intValue();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DAO getInterfaceCountByType "+ e);
 			e.printStackTrace();
 			return 0;
 		}
