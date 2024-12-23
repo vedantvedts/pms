@@ -543,12 +543,18 @@ if(proList!=null && proList.size()>0){
             
             <!-- Brief -->
              <div class="attribute">
-                <h5 style="font-weight: bold;">Brief</h5>
-                <p style="color: black;"><%if(ProjectEditData[17]!=null){ %>
+                <h5 style="font-weight: bold;">Introduction</h5>
+               <%--  <p style="color: black;"><%if(ProjectEditData[17]!=null){ %>
                 <p style="color: black;">  <%=ProjectEditData[17] %></p>
                 <%}else{ %>
                   <p style="color: black;"> <div style="color: red;font-weight: 600">Enter the Brief in Project Slide</div> </p>
-                  <%} %>
+                  <%} %> --%>
+                  
+                  
+               <textarea class="form-control" maxlength="2000" rows="4"  id="introduction">
+               <%if(editorData!=null && editorData[5]!=null ){ %><%=editorData[5] %><%}else if( ProjectEditData[17]!=null){ %><%=  ProjectEditData[17] %>  <%} %>
+               </textarea>   
+               <div align="left" class="mt-2"><button class="btn btn-sm submit" onclick="submitIntroduction()">SUBMIT</button></div>
             </div>
 
             <!-- Total Cost -->
@@ -1486,6 +1492,36 @@ var editor_config = {
 		    
 		    
 		   
+	 }
+	 
+	 function submitIntroduction(){
+		 
+		var  introduction = $('#introduction').val();
+		
+		if(confirm("Are you sure to submit?")){
+		
+		$.ajax({
+			type:'GET',
+			url:'LabReportIntroductionSubmit.htm',
+			data:{
+				introduction:introduction,
+				Project:<%=Project%>,
+			},
+			datatype:'json',
+			success :  function(result) {
+				
+				var ajaxresult = JSON.parse(result);
+				
+				 if(ajaxresult>0){
+				    	alert("Introduction added successfully !")
+				    	location.reload();
+				    }
+			}
+		})
+		}else{
+			event.preventDefault();
+			return false;
+		}
 	 }
 </script>
 	

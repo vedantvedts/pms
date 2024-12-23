@@ -172,8 +172,6 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
     
     LabReportMilestoneData= service.getPfmsLabReportMilestoneData(projectid);
  
-    
-    
     req.setAttribute("LabReportMilestoneData", LabReportMilestoneData);
     req.setAttribute("currentYear", currentYear);
     req.setAttribute("nextYear", (currentYear+1));
@@ -257,6 +255,50 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 			return "" ;
 		}
 	}
+	@RequestMapping(value = "LabReportIntroductionSubmit.htm", method= {RequestMethod.GET,RequestMethod.POST} )
+	public @ResponseBody String  LabReportIntroductionSubmit(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{	
+	String userName = (String) ses.getAttribute("Username");
+	
+	String labcode = (String)ses.getAttribute("labcode");
+	String Logintype= (String)ses.getAttribute("LoginType");
+	String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+	logger.info(new Date() +"Inside LabReportIntroductionSubmit.htm "+userName);
+	try
+		{
+
+		String projectId=req.getParameter("Project");
+		
+		long result=0;
+		
+		//count the prj in the table
+		List<Object[]> count=service.countPrjEntries(Long.parseLong(projectId));
+		LabReport labReportDetails = new LabReport();
+		if(count!=null &&count.size()>0) {
+		      
+		   labReportDetails=service.getLabReportDetails(count.get(0)[0].toString());
+		    
+		   labReportDetails.setIntroduction(req.getParameter("introduction"));
+		   labReportDetails.setModifiedBy(userName);
+		   labReportDetails.setModifiedDate(sdtf.format(new Date()));
+		}else {
+			   labReportDetails.setIntroduction(req.getParameter("introduction"));
+			   labReportDetails.setCreatedBy(userName);
+			   labReportDetails.setCreatedDate(sdtf.format(new Date()));
+			   labReportDetails.setProjectId(Long.parseLong(projectId));
+		}
+		result=service.addData(labReportDetails);
+
+		Gson json = new Gson();
+		return json.toJson(result);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			return "" ;
+		}
+	}
+	
+	
 	@RequestMapping(value = "LabReportDownload.htm", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<byte[]> LabReportDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
 
@@ -351,7 +393,12 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         projectNameValueRun.addBreak();
         
        XWPFRun BriefValueRun = projectName.createRun();
-        String Brief = projectattribute[17] != null && !projectattribute[17].toString().trim().isEmpty() ? projectattribute[17].toString().replaceAll("<[^>]*>", "").trim() : "-";
+        String Brief ="";
+        if(editorData!=null && editorData[5]!=null) {
+        	Brief =	editorData!=null && editorData[5]!=null?editorData[5].toString().replaceAll("<[^>]*>", "").trim() : "-";
+        }else {
+        Brief = projectattribute[17] != null && !projectattribute[17].toString().trim().isEmpty() ? projectattribute[17].toString().replaceAll("<[^>]*>", "").trim() : "-";
+        }
         BriefValueRun.setText(Brief);  
         BriefValueRun.setBold(false);
         BriefValueRun.setFontSize(12);
