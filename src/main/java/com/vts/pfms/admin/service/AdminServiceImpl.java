@@ -829,9 +829,9 @@ public class AdminServiceImpl implements AdminService{
 			return dao.hasroleAccess(url,logintype);
 		}
 		@Override
-		public List<Object[]> getFormUrlList(String loginType)  {
-			// TODO Auto-generated method stub
-			return dao.getFormUrlList(loginType);
+		public List<Object[]> getFormUrlList(String loginType,String formdetaild)  {
+			
+			return dao.getFormUrlList(loginType,formdetaild);
 		}
 		@Override
 		public List<Object[]> getAllUrlList(String loginType)  {
@@ -860,4 +860,8 @@ public class AdminServiceImpl implements AdminService{
 	        return dao.getAuditPatchById(attachId);
 	    }
 
+		@Override
+		public List<Object[]> getFormId(String requestUrlSegment)  {
+			return dao.getFormId(requestUrlSegment);
+		}
 }

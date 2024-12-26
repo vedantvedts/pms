@@ -443,7 +443,14 @@ public class AdminController {
 		final String UserId = (String) ses.getAttribute("Username");
 		AdminController.logger.info(new Date() + "Inside UserManagerList.htm " + UserId);
 		String LabCode = (String) ses.getAttribute("labcode");
-
+		String Logintype = (String) ses.getAttribute("LoginType");
+		
+		List<Object[]>roleAcess=service.hasroleAccess("UserManagerList.htm", Logintype);
+		/*
+		 * if(roleAcess==null || roleAcess.size()==0) { return
+		 * "static/accessdeniederror"; }
+		 */
+		
 		try {
 			String onboard = req.getParameter("Onboarding");
 			if (onboard == null) {
@@ -916,9 +923,9 @@ public class AdminController {
 		List<Object[]>roleAcess=service.hasroleAccess("Role.htm", Logintype);
 		
 
-		if(roleAcess==null || roleAcess.size()==0) {
-			return "static/Error";
-		}
+//		if(roleAcess==null || roleAcess.size()==0) {
+//			return "static/accessdeniederror";
+//		}
 		
 		try {
 			String logintype = req.getParameter("logintype");

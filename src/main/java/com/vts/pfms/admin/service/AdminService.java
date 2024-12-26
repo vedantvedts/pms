@@ -11,9 +11,6 @@ import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.login.Login;
-
-
-
 public interface AdminService {
 
 	public List<Object[]> LoginTypeList() throws Exception;
@@ -93,10 +90,11 @@ public interface AdminService {
 
 	public List<Object[]> ProjectListIC(String empId) throws Exception;
 	public List<Object[]> hasroleAccess(String string, String logintype)throws Exception;
-	public List<Object[]> getFormUrlList(String loginType);
+	public List<Object[]> getFormUrlList(String loginType,String formdetaild);
 	public List<Object[]> getAllUrlList(String loginType);
 	public List<Object[]> AuditPatchesList() throws Exception;
 	public int AuditPatchAddSubmit(AuditPatches dto) throws Exception;
 	public AuditPatches getAuditPatchById(Long attachId);
+	public List<Object[]> getFormId(String requestUrlSegment);
 
 }

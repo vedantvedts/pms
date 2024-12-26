@@ -909,7 +909,7 @@ public class AdminDaoImpl implements AdminDao{
 			return null;
 		}
 	}
-	
+
 	private static final String COUNT="SELECT a.EmpName,c.Designation, b.* FROM employee a JOIN pfms_statistics b ON a.EmpId = b.EmpId JOIN employee_desig c ON a.DesigId = c.DesigId WHERE b.EmpId =:employeeId AND b.LogDate  BETWEEN :fromDate AND :toDate ORDER BY b.Logdate DESC";
 	@Override
 	public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate) throws Exception {
@@ -941,9 +941,9 @@ public class AdminDaoImpl implements AdminDao{
 			e.printStackTrace();
 			return null;
 		}
-		
+
 	}
-	
+
 	private static final String APPROVALAUTHREVOKE = "UPDATE pfms_initiation_approver SET IsActive='0' WHERE RtmddoId=:RtmddoId";
 	@Override
 	public int approvalAuthRevoke(String RtmddoId) throws Exception {
@@ -988,7 +988,7 @@ public class AdminDaoImpl implements AdminDao{
 			return 0;
 		}
 	}
-    private static final String MAILCONFIGURATIONEDITLIST ="SELECT a.MailConfigurationId,a.Username,a.Host,a.TypeOfHost,a.Port,a.Password,a.CreatedBy,a.CreatedDate FROM mail_configuration a  WHERE a.MailConfigurationId=:mailConfigurationId";
+	private static final String MAILCONFIGURATIONEDITLIST ="SELECT a.MailConfigurationId,a.Username,a.Host,a.TypeOfHost,a.Port,a.Password,a.CreatedBy,a.CreatedDate FROM mail_configuration a  WHERE a.MailConfigurationId=:mailConfigurationId";
 	@Override
 	public Object[] MailConfigurationEditList(long MailConfigurationId)throws Exception{
 		logger.info(new Date() + "Inside DaoImpl MailConfigurationEditList");
@@ -996,15 +996,15 @@ public class AdminDaoImpl implements AdminDao{
 			Query query = manager.createNativeQuery(MAILCONFIGURATIONEDITLIST);
 			query.setParameter("mailConfigurationId", MailConfigurationId);
 			return (Object[])query.getSingleResult();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() + "Inside DaoImpl MailConfigurationEditList", e);
 			return null;
 		}
 	}
-	
-    private static final String UPDATEMAILCONFIGURATION = "UPDATE mail_configuration a SET a.Username=:userName ,a.TypeOfHost=:hostType, a.ModifiedBy=:modifiedBy ,a.ModifiedDate=:modifiedDate,a.Host=:Host,a.Port=:Port,a.Password=:pass WHERE a.MailConfigurationId=:mailConfigurationId";
+
+	private static final String UPDATEMAILCONFIGURATION = "UPDATE mail_configuration a SET a.Username=:userName ,a.TypeOfHost=:hostType, a.ModifiedBy=:modifiedBy ,a.ModifiedDate=:modifiedDate,a.Host=:Host,a.Port=:Port,a.Password=:pass WHERE a.MailConfigurationId=:mailConfigurationId";
 
 	@Override
 	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy,String Host,String Port,String pass)throws Exception{
@@ -1026,9 +1026,9 @@ public class AdminDaoImpl implements AdminDao{
 			logger.error(new Date() + "Inside DaoImpl MailConfigurationEditList", e);
 			return 0;
 		}
-		
+
 	}
-	
+
 	private static final String LastUpdate = "SELECT pwu.UpdatedDate, pwu.projectId  FROM pfms_weekly_update AS pwu  JOIN project_master pm ON pwu.projectid=pm.projectid  WHERE DATEDIFF(NOW(),pwu.updateddate)<6 ORDER BY pwu.UpdatedDate DESC";
 
 	@Override
@@ -1036,14 +1036,14 @@ public class AdminDaoImpl implements AdminDao{
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery(LastUpdate);
 		try {
-		return query.getResultList();}
+			return query.getResultList();}
 		catch (Exception e) {
 			// TODO: handle exception
 			return null;
 		}
 	}
-	
-	
+
+
 	@Override
 	public Object weeklyupdate(int empid, String username, String dateofupdate, String procurement,
 			String actionpoints, String riskdetails, String meeting, String mile,int projectid) {
@@ -1053,7 +1053,7 @@ public class AdminDaoImpl implements AdminDao{
 		manager.flush();
 		return null;
 	}
-	
+
 	@Override
 	public List<Object[]> ProjectListPD(String empId) throws Exception {
 		// TODO Auto-generated method stub
@@ -1067,7 +1067,7 @@ public class AdminDaoImpl implements AdminDao{
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<Object[]> ProjectListIC(String empId) throws Exception {
 		// TODO Auto-generated method stub
@@ -1081,67 +1081,68 @@ public class AdminDaoImpl implements AdminDao{
 			return null;
 		}
 	}
-	
+
 	private static final String GETTYPEOFHOSTCOUNT="SELECT COUNT(*) FROM mail_configuration WHERE TypeOfHost=:hostType";
-	
+
 	@Override
 	public long getTypeOfHostCount(String hostType) throws Exception {
 		logger.info(new Date() + "Inside getTypeOfHostCount");
 		try {
-		Query query = manager.createNativeQuery(GETTYPEOFHOSTCOUNT);
-	    query.setParameter("hostType", hostType);
-	    BigInteger getTypeOfHostCount = (BigInteger) query.getSingleResult();
-        return getTypeOfHostCount.longValue();
-	  } catch (Exception e) {
-		 e.printStackTrace();
+			Query query = manager.createNativeQuery(GETTYPEOFHOSTCOUNT);
+			query.setParameter("hostType", hostType);
+			BigInteger getTypeOfHostCount = (BigInteger) query.getSingleResult();
+			return getTypeOfHostCount.longValue();
+		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(new Date() + "Inside DaoImpl getTypeOfHostCount", e);
 			return 0;
-	    }
+		}
 	}
 	private static final String ROLEACCESS="SELECT a.FormDetailId,a.FormName,a.isactive,b.FormRoleAccessId FROM pfms_form_detail a, pfms_form_role_access b WHERE a.FormDetailId=b.FormDetailId AND b.LoginType=:logintype AND a.FormUrl=:FormUrl AND b.isactive='1'";
 	@Override
 	public List<Object[]> hasroleAccess(String FormUrl, String logintype) throws Exception {
 
 		Query query = manager.createNativeQuery(ROLEACCESS);
-		
+
 		System.out.println("FormUrl "+FormUrl +" "+logintype);
 		query.setParameter("logintype", logintype);
 		query.setParameter("FormUrl", FormUrl);
-		
+
 		List<Object[]>hasroleAccess = (List<Object[]>)query.getResultList();
-		
+
 		return hasroleAccess;
 	}
-	
-	private static final String GETFORMURLLIST="SELECT a.FormDetailId,a.FormName,a.FormUrl,a.isactive,b.FormRoleAccessId FROM pfms_form_detail a, pfms_form_role_access b WHERE a.FormDetailId=b.FormDetailId AND b.LoginType=:loginType AND b.isactive='1'";
+
+	private static final String GETFORMURLLIST="SELECT a.FormDetailId,a.FormName,a.FormUrl,a.isactive,b.FormRoleAccessId FROM pfms_form_detail a, pfms_form_role_access b WHERE a.FormDetailId=b.FormDetailId AND b.LoginType=:loginType AND b.isactive='1' AND a.FormDetailId=:formdetaild ";
 	@Override
-	public List<Object[]> getFormUrlList(String loginType)  {
-       try {
-		
-    	   Query query = manager.createNativeQuery(GETFORMURLLIST);
-   		query.setParameter("loginType", loginType);
-   		List<Object[]>hasroleAccess = (List<Object[]>)query.getResultList();
-   		return hasroleAccess;
-	} catch (Exception e) {
-		e.printStackTrace();
+	public List<Object[]> getFormUrlList(String loginType,String formdetaild)  {
+		try {
+
+			Query query = manager.createNativeQuery(GETFORMURLLIST);
+			query.setParameter("loginType", loginType);
+			query.setParameter("formdetaild", formdetaild);
+			List<Object[]>hasroleAccess = (List<Object[]>)query.getResultList();
+			return hasroleAccess;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<>();
 	}
-       return null;
-	}
-	
-	public static final String GETALLURLLIST="SELECT * FROM pfms_form_url WHERE LoginType=:loginType";
+
+	public static final String GETALLURLLIST="SELECT * FROM pfms_form_url WHERE Url=:Url and isactive='1'";
 	@Override
-	public List<Object[]> getAllUrlList(String loginType)  {
-	  try {
-	    	Query query = manager.createNativeQuery(GETALLURLLIST);
-	   		query.setParameter("loginType", loginType);
-	   		List<Object[]>allurllist = (List<Object[]>)query.getResultList();
-	   		return allurllist;
+	public List<Object[]> getAllUrlList(String Url)  {
+		try {
+			Query query = manager.createNativeQuery(GETALLURLLIST);
+			query.setParameter("Url", Url);
+			List<Object[]>allurllist = (List<Object[]>)query.getResultList();
+			return allurllist;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	public static final String AUDITPATCHESLIST="SELECT VersionNo,Description,CreatedDate,Attachment,AuditPatchesId,PatchDate FROM  pfms_audit_patches order by CreatedDate desc";
 	@Override
 	public List<Object[]> getAuditPatchesList() throws Exception{
@@ -1165,8 +1166,24 @@ public class AdminDaoImpl implements AdminDao{
 		query.setParameter("auditPatchesId", model.getAuditPatchesId());
 		return query.executeUpdate();
 	}
-	 @Override
-	    public AuditPatches getAuditPatchById(Long attachId) {
-	        return manager.find(AuditPatches.class, attachId); // Fetches the entity by its ID
-	    }
+	@Override
+	public AuditPatches getAuditPatchById(Long attachId) {
+		return manager.find(AuditPatches.class, attachId); // Fetches the entity by its ID
+	}
+
+	private static final String FORMDETAILID="SELECT a.FormDetailId , a.FormUrl FROM pfms_form_detail a WHERE a.FormUrl =:url\r\n"
+			+ "  UNION "
+			+ "  SELECT a.FormDetailId , a.Url FROM pfms_form_url a WHERE a.Url =:url AND isactive='1'" ;
+	@Override
+	public List<Object[]> getFormId(String url)  {
+		try {
+			Query query = manager.createNativeQuery(FORMDETAILID);
+			query.setParameter("url", url);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+
+	}
 }
