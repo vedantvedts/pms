@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.print.dao.PrintDao;
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.producttree.dao.ProductTreeDao;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
 import com.vts.pfms.producttree.model.ProductTree;
@@ -22,7 +24,8 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 
 	@Autowired
 	ProductTreeDao dao;
-	
+	@Autowired
+	PrintDao printdao;
 	FormatConverter fc=new FormatConverter();
 	private  SimpleDateFormat rdf=fc.getRegularDateFormat();
 	private  SimpleDateFormat sdf=fc.getSqlDateFormat();
@@ -65,6 +68,15 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		pt.setModule(dto.getModule());
 		pt.setModifiedBy(dto.getModifiedBy());
 		pt.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		
+		if(dto.getSubSystem()!=null) {
+			
+			String []subSystem = dto.getSubSystem().split("#");
+			
+			pt.setSystemMainId(Long.parseLong(subSystem[0]));
+			pt.setLevelCode(subSystem[1]);
+		}
+		
 		
 		return dao.LevelNameEdit(pt);
 		
@@ -124,6 +136,16 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 	@Override
 	public List<Object[]> getSystemProductTreeList(String sid) throws Exception {
 		return dao.getSystemProductTreeList(sid);
+	}
+	
+	@Override
+	public ProjectSlides getProjectSlides(String projectId) throws Exception {
+		return dao.getProjectSlides(projectId);
+	}
+	
+	@Override
+	public long addProjectSlides(ProjectSlides ps) throws Exception {
+		return printdao.AddProjectSlideData(ps);
 	}
 }
 		

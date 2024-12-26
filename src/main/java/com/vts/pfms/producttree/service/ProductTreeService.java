@@ -2,6 +2,7 @@ package com.vts.pfms.producttree.service;
 
 import java.util.List;
 
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
 import com.vts.pfms.producttree.model.ProductTreeRev;
 
@@ -24,5 +25,9 @@ public interface ProductTreeService {
 	public long AddSystemLevelName(ProductTreeDto dto)throws Exception;
 
 	public List<Object[]> getSystemProductTreeList(String sid)throws Exception;
+
+	public ProjectSlides getProjectSlides(String projectId)throws Exception;
+
+	public long addProjectSlides(ProjectSlides ps)throws Exception;
 
 }

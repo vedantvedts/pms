@@ -36,6 +36,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.milestone.service.MilestoneService;
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
 import com.vts.pfms.producttree.model.ProductTreeRev;
 import com.vts.pfms.producttree.service.ProductTreeService;
@@ -82,6 +83,8 @@ public class ProductTreeController {
 			}	
 	        List<Object[] > projlist= milservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	        
+	        List<Object[] > systemList= service.getAllSystemName();
+	        
 	        if(projlist.size()==0) 
 	        {				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -104,8 +107,9 @@ public class ProductTreeController {
 	        req.setAttribute("ProjectList",projlist);
 			req.setAttribute("ProjectId", ProjectId);
 			req.setAttribute("RevisionCount", service.getRevisionCount(ProjectId));
-	        
-			
+			req.setAttribute("systemList", systemList);
+			ProjectSlides ps = service.getProjectSlides(ProjectId)!=null ?service.getProjectSlides(ProjectId): new ProjectSlides();
+			req.setAttribute("ps", ps);
 			if(ProjectId!=null) {
 			      req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId).get(0));
 			}
@@ -266,8 +270,8 @@ public class ProductTreeController {
 			 dto.setStage(req.getParameter("Stage"));
 			 dto.setModule(req.getParameter("Module"));
 			 dto.setModifiedBy(UserId);
-			
-			 
+			 dto.setSubSystem(req.getParameter("subSystem"));
+			 System.out.println("dto.setSubSystem --->"+dto.getSubSystem());
 			 long update = service.LevelNameEdit(dto,Action);
 			 if(update!=0) {
 			 
@@ -522,6 +526,7 @@ public class ProductTreeController {
 		}	
         List<Object[] > systemList= service.getAllSystemName();
         
+        
         if(systemList.size()==0) 
         {				
 			redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -615,6 +620,25 @@ public class ProductTreeController {
 	public @ResponseBody String getSubsystem(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String sid = req.getParameter("sid");
+		List<Object[]>proList=service.getSystemProductTreeList(sid);
+		if(proList!=null && proList.size()>0) {
+			proList=proList.stream().filter(e->e[2].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+		}
+		Gson json = new Gson();
+		return json.toJson(proList);
+	}
+	@RequestMapping(value = "setSystemIdForProject.htm")
+	public @ResponseBody String setSystemIdForProject(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String sid = req.getParameter("sid");
+		String projectId = req.getParameter("projectId");
+		ProjectSlides ps = service.getProjectSlides(projectId)!=null ?service.getProjectSlides(projectId): new ProjectSlides();
+		if(ps.getSystemId()==null || ps.getSystemId()==0) {
+		ps.setSystemId(Long.parseLong(sid));
+		ps.setProjectId(Long.parseLong(projectId));
+		ps.setIsActive(1);
+		service.addProjectSlides(ps);
+		}
 		List<Object[]>proList=service.getSystemProductTreeList(sid);
 		if(proList!=null && proList.size()>0) {
 			proList=proList.stream().filter(e->e[2].toString().equalsIgnoreCase("1")).collect(Collectors.toList());

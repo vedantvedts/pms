@@ -12,10 +12,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.producttree.model.ProductTree;
 import com.vts.pfms.producttree.model.ProductTreeRev;
 import com.vts.pfms.producttree.model.SystemProductTree;
+import com.vts.pfms.project.model.RequirementSummary;
 
 @Transactional
 @Repository
@@ -31,7 +32,7 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 	private static final Logger logger=LogManager.getLogger(ProductTreeDaoImpl.class);
 
 
-	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.SubLevelId FROM pfms_product_tree a,project_master b WHERE MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";
+	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode FROM pfms_product_tree a,project_master b WHERE MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";
 	private static final String LEVELNAMEDELETE="UPDATE pfms_product_tree AS t1\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t2 ON t1.mainid = t2.parentlevelid\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
@@ -177,5 +178,18 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 			List<Object[]> ProductTreeList=(List<Object[]>)query.getResultList();		
 
 			return ProductTreeList;
+	}
+	
+	@Override
+	public ProjectSlides getProjectSlides(String projectId) throws Exception {
+		try {
+			Query query = manager.createQuery("FROM ProjectSlides WHERE IsActive=1 AND projectId=:projectId");
+			query.setParameter("projectId", Long.parseLong(projectId));
+			return (ProjectSlides)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getProjectSlides "+e);
+			return null;
+		}
 	}
 }

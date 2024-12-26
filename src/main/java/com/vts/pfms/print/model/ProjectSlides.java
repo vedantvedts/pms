@@ -26,6 +26,7 @@ public class ProjectSlides {
 	private String AttachmentName;
 	private String VideoName;
 	private String WayForward;
+	private Long SystemId;
 	private int IsActive;
 	private String CreatedBy;
 	private String CreatedDate;

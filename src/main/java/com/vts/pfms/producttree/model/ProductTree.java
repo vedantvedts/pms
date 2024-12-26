@@ -21,6 +21,8 @@ public class ProductTree {
 	private long ProjectId;
 	private long ParentLevelId;
 	private String LevelId;
+	private long SystemMainId;
+	private String LevelCode;
 	private String SubLevelId;
 	private String LevelName;
 	private String Stage;

@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.print.model.ProjectSlides"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -234,15 +235,21 @@ height:18px;
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
   List<Object[]> RevisionCount =(List<Object[]>)request.getAttribute("RevisionCount");
-
- 
+  List<Object[]> systemList =(List<Object[]>)request.getAttribute("systemList");
+  ProjectSlides ps = (ProjectSlides)request.getAttribute("ps");
+ 	String systemId="0";
+  if(ps.getSystemId()!=null && ps.getSystemId()!=0){
+	  systemId=ps.getSystemId()+"";
+ 	}else{
+ 		systemId="1";
+ 	}
   
  %>
 
 <body>
 
  <form class="form-inline"  method="POST" action="ProductTree.htm">
-  <div class="row W-100" style="width: 100%;">
+  <div class="row" style="width: 100%;">
 
   
 	
@@ -259,7 +266,7 @@ height:18px;
 											<%} %>
   									</select>
   									</div>
-  									<div class="col-md-4" style="margin-left: 75px;margin-top:-7px;">
+  									<div class="col-md-4" style="margin-top:-7px;">
   										
   										
   										<% if(ProductTreeList!=null && ProductTreeList.size()>0){ %>
@@ -291,8 +298,26 @@ height:18px;
                                       
                                        
                                    </div>
-  									
-<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+
+			<div class="col-md-2">
+				<label class="control-label">Choose System Name :</label>
+			</div>
+			<div class="col-md-2" style="margin-top: -7px;">
+				<select class="form-control selectdee" id="sid" 
+					name="sid" onchange="showSystemValue()">
+					<option disabled selected value="">Choose...</option>
+					<%
+					for (Object[] obj : systemList) {
+					%>
+					<option value="<%=obj[0]%>"  <%if(systemId.equalsIgnoreCase(obj[0].toString())) {%>  selected <%} %>>
+					<%=obj[2]%>
+					</option>
+					<%
+					}
+					%>
+				</select>
+			</div>
+			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
  <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
  </div>
  
@@ -409,7 +434,7 @@ if(ses1!=null){	%>
 										</div> 
 									 
 												<div class="actions">
-												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')" ><img src="view/images/edit.png" ></button>
+												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>','1','<%=level1[9] %>','<%=level1[10] %>')" ><img src="view/images/edit.png" ></button>
 												    <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 												         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 													     <input type="hidden" name="Action" value="TD">
@@ -1097,10 +1122,16 @@ if(ses1!=null){	%>
         			
         			</td>
         		</tr>
-        		
-        		
-        		
-        		
+        		<tr id="subsystemTr">
+        		<th >Sub-Sytem Linked : &nbsp; </th>
+        		<td>
+        		<select class="form select selectdee" id="subSystem" name="subSystem"   style="width:100%;">
+        			
+        			     
+        			
+        			</select>
+        		</td>
+        		</tr>
         		<tr>
         			<td colspan="2" style="text-align: center;">
         				<br>
@@ -1144,6 +1175,8 @@ if(ses1!=null){	%>
 	     $('#submit').click();
 
 	   });
+	   
+	   showSystemValue();
 	});
   
   
@@ -1171,11 +1204,20 @@ if(ses1!=null){	%>
 	});
 
   
-  function EditModal(mainid,levelname,stage,module)
+  function EditModal(mainid,levelname,stage,module,level,sytemid,levelCode)
   {
   	$('#Mainid').val(mainid);			
   	$('#levelname').val(levelname);
-
+	if(level==='1'){
+		$('#subsystemTr').show();
+	
+		var code = sytemid+"#"+levelCode
+		console.log("codeInside"+code)
+	  	$('#subSystem').val(code).trigger('change');
+	}else{
+		$('#subsystemTr').hide();
+	}
+  
   	
   var selectedstage=stage	
   var selectedModule = module;
@@ -1301,6 +1343,37 @@ if(ses1!=null){	%>
 
   }
   
+  var subSyestem = [];
+  
+  
+  function showSystemValue(){
+	  
+	  var sid = $('#sid').val();
+	  
+	  
+	  $.ajax({
+		  type:'GET',
+		  url:'setSystemIdForProject.htm',
+		  data:{
+			  sid:sid,
+			  projectId:<%=ProjectId%>,
+		 	 },
+	  		datatype:'json',
+			success:function (result){
+		 	subSyestem =JSON.parse(result)
+				  console.log("Previous --->>>",subSyestem)
+		 	var html ='<option value="" disabled selected>SELECT</option>';
+		 	
+		 	for(var i=0;i<subSyestem.length;i++){
+		 		html= html+'<option value="'+subSyestem[i][0]+"#"+subSyestem[i][10]+ '">'+subSyestem[i][3]+'</option>'
+		 	}
+			
+		 	$('#subSystem').html(html);
+		}
+	  })
+	  
+	  
+  } 
   
   
 </script> 

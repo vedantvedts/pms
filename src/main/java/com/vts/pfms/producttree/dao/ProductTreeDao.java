@@ -2,6 +2,7 @@ package com.vts.pfms.producttree.dao;
 
 import java.util.List;
 
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.producttree.model.ProductTree;
 import com.vts.pfms.producttree.model.ProductTreeRev;
 import com.vts.pfms.producttree.model.SystemProductTree;
@@ -29,6 +30,8 @@ public interface ProductTreeDao {
 	public long AddSystemLevelName(SystemProductTree prod)throws Exception;
 
 	public List<Object[]> getSystemProductTreeList(String sid)throws Exception;
+
+	public ProjectSlides getProjectSlides(String projectId)throws Exception;
 
 	
 
