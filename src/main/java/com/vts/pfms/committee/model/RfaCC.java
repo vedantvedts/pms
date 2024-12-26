@@ -19,6 +19,7 @@ public class RfaCC {
 	private Long RfaId;
 	private Long CCEmpId;
 	private Long ActionBy;
+	private String LabCode;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

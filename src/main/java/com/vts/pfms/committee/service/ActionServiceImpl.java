@@ -1771,9 +1771,15 @@ public class ActionServiceImpl implements ActionService {
 		if(CCEmpName!=null ) {
 		for(int i=0;i<CCEmpName.length;i++) 
 		{
+			String []ccemp = CCEmpName[i].split("/");
+			
+			String empid = ccemp[0].toString();
+			String lab = ccemp[1].toString();
+			
 			RfaCC rfaCC = new RfaCC();
 			rfaCC.setRfaId(rfaIdAttach);
-			rfaCC.setCCEmpId(Long.parseLong(CCEmpName[i]));
+			rfaCC.setCCEmpId(Long.parseLong(empid));
+			rfaCC.setLabCode(lab);
 			rfaCC.setActionBy(rfa.getActionBy());
 			rfaCC.setCreatedBy(UserId);
 			rfaCC.setCreatedDate(sdf.format(new Date()));
@@ -1889,9 +1895,15 @@ public class ActionServiceImpl implements ActionService {
 		Long result1=dao.updateRfaCC(rfa.getRfaId()+"");  // here first existing data isactive will be "0"
 		for(int i=0;i<CCEmpName.length;i++) 
 		{
+		String []ccemp = CCEmpName[i].split("/");
+			
+			String empid = ccemp[0].toString();
+			String lab = ccemp[1].toString();
+			
 			RfaCC rfaCC = new RfaCC();
 			rfaCC.setRfaId(rfa.getRfaId());
-			rfaCC.setCCEmpId(Long.parseLong(CCEmpName[i]));
+			rfaCC.setCCEmpId(Long.parseLong(empid));
+			rfaCC.setLabCode(lab);
 			rfaCC.setActionBy(rfa.getActionBy());
 			rfaCC.setModifiedBy(rfa.getModifiedBy());
 			rfaCC.setModifiedDate(sdf.format(new Date()));

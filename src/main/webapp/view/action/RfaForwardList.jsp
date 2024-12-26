@@ -226,6 +226,7 @@ List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplL
 												
 												</button>
 													<input type="hidden" value="AV" name="rfaoptionby">
+													<input type="hidden" value="<%=obj[17] %>" name="TypeOfRfa">
 												  <%--  <input type="hidden" value="<%=obj[9]%>" name="rfaEmpModal"> --%>
 											  <%}else{ %>
 											  

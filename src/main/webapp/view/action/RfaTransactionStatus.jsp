@@ -195,6 +195,7 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 									.collect(Collectors.toList());
 	
 %>
+
 <div>
 	    <h3 align="center" style="color: #9C27B0;font-weight: 600">RFA Transaction of <%=rfaNo %></h3>
 	</div>
@@ -210,6 +211,9 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 				 if(status.equalsIgnoreCase("AV") && status.equalsIgnoreCase(object[9].toString())){
 					status="AV";
 					 continue;
+					 }else if (status.equalsIgnoreCase("RFR") && status.equalsIgnoreCase(object[9].toString())){
+						 status="RFR";
+						 continue; 
 					 }
 		%>
 	      <article>
@@ -239,7 +243,7 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 					  
 				   <% }else{%>
 				     <span class="remarks_title">Forwarded To : </span>
-					<%if(object[9].toString().equalsIgnoreCase("AV")){ %>
+					<%if(object[9].toString().equalsIgnoreCase("AV") || object[9].toString().equalsIgnoreCase("RFR") ){ %>
 					 <%=forwardList.toString().replace("[", "").replace("]", "") %>
 					<%}else{ %>
 					   <%=object[10] %>

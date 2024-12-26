@@ -3306,7 +3306,7 @@ public class ActionController {
 				req.setAttribute("ProjectTypeList",service.ProjectTypeList());
 				req.setAttribute("PriorityList", service.PriorityList());
 				req.setAttribute("RfaNoTypeList", service.getRfaNoTypeList());
-				req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
+				
 				
 		        List<Object[]> AssigneeList =service.AssigneeEmpList();
 		        List<String> AssignEmp=new ArrayList<>();
@@ -3319,12 +3319,19 @@ public class ActionController {
 		        	
 		        }
 		        
+		        
+		        List<Object[]> employeeList = service.EmployeeList(LabCode);
+		        if(!assigneeLab.equalsIgnoreCase(LabCode)) {
+		        List<Object[]> employeeList1 = service.EmployeeList(assigneeLab);
+		        employeeList.addAll(employeeList1);
+		        }
+				req.setAttribute("EmployeeList", employeeList);
 		        List<Object[]> RfaCCList =service.RfaCCList();
 		        List<String> RfaCCEmp=new ArrayList<>();
 		        
 		        for(Object[] obj :RfaCCList) {
 		        	if(obj[0].toString().equalsIgnoreCase(rfaid)) {
-		        		RfaCCEmp.add(obj[3].toString());
+		        		RfaCCEmp.add(obj[3].toString()+"/"+obj[4].toString());
 		        	}
 		        }
 		        System.out.println("assigneeLab"+assigneeLab);

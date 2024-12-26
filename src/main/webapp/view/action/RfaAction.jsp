@@ -227,7 +227,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 												for(Object[] obj1 : AssigneeList){
 													if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
 													%>
-											      <p style="margin-bottom:0px !important;"> <%=obj1[1].toString()+","+obj1[2].toString() %> </p>          
+											      <p style="margin-bottom:0px !important;"> <%=obj1[1].toString()+","+obj1[2].toString() %> (<%=obj1[4].toString() %>) </p>          
 											<% }}}%>
 											</td>
 											<td style="text-align: center;">
@@ -298,7 +298,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 													<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
 												    </button> 
 											 <%} %>
-											 <%if(obj[14].toString().equalsIgnoreCase("AA") && obj[15].toString().equalsIgnoreCase(EmpId)){ %>
+											 <%if(toUserStatus.contains(obj[14].toString().toString()) && obj[15].toString().equalsIgnoreCase(EmpId)){ %>
 											 	<button type="button" class="editable-click"  style="background-color: transparent;" 
 												name="RFAID" value="<%=obj[0]%>" formaction="#" formmethod="POST"
 												onclick="returnCancelRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>');"
@@ -312,14 +312,22 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											   <input type="hidden" name="rfaoptionby" value="RFC" >
 											<%} %>
 											
-											 <%if(obj[14].toString().equalsIgnoreCase("AP") && obj[15].toString().equalsIgnoreCase(EmpId)){ %>
-											 	<button type="submit" class="editable-click btn btn-sm btn-info"  style="" 
-												name="RFAID" value="<%=obj[0]%>" formaction="RfaActionForward.htm" formmethod="POST"
-												onclick="return confirm('Are you sure to close RFA?')"
+											 <%if((obj[14].toString().equalsIgnoreCase("AP") && obj[15].toString().equalsIgnoreCase(EmpId)) ){ %>
+											 	<button type="button" class="editable-click btn btn-sm btn-info"  style="" 
+												onclick="closeModal('<%=obj[0].toString() %>','<%=obj[3] %>','<%=obj[2].toString() %>','<%=obj[18] %>')"
 													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CLOSE RFA">
 											CLOSE
 											   </button>
 											   <input type="hidden" name="rfaoptionby" value="ARC" >
+											<%} %>
+											 <%if((obj[14].toString().equalsIgnoreCase("AV") && obj[18].toString().equalsIgnoreCase("E")) ){ %>
+											 	<button type="button" class="editable-click btn btn-sm btn-info"  style="" 
+												onclick="closeModal('<%=obj[0].toString() %>','<%=obj[3] %>','<%=obj[2].toString() %>','<%=obj[18] %>')"
+													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CLOSE RFA">
+											CLOSE
+											   </button>
+											   <input type="hidden" name="rfaoptionby" value="ARC" >
+											   											   <input type="hidden" name="rfaoptionby" value="ARC" >
 											<%} %>
 											</td>
 										</tr>
@@ -509,6 +517,56 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 	</form>
  <!-- Cancel Modal Remarks End -->	
 		
+		
+	
+<div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width:180%;margin-left:-30%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="RfaActionClose.htm" enctype="multipart/form-data" method="post">
+           <div class="row" id="AttachementRow">
+		                  <div class="col-md-3">
+		                      <label class="control-label" style="font-weight: 800;font-size: 16px;color:#07689f;">Attachment</label><span class="mandatory" style="color: #cd0a0a;">*</span>
+		                  </div>
+		                  <div class="col-md-9">
+		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/* "  required="required"
+		                      oninput="validateFile(this)">
+		                  </div>
+		                  <div id="filealert"></div>
+		            </div>
+		             <div class="row mt-2">
+		                  <div class="col-md-3">
+		                      <label class="control-label" style="font-weight: 800;font-size: 16px;color:#07689f;">Remarks</label>
+		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                  </div>
+		                  <div class="col-md-9">
+		                       <textarea class="form-control" rows="2" cols="30" placeholder="Max 250 Characters" name="remarks" id="reference" maxlength="250" required="required"></textarea>
+		                      
+		                  </div>
+		            </div>
+		            
+		            <div align="center" class="mt-2 mb-2">
+    <button class="btn btn-sm submit" name="rfaoptionby" value="ARC" type="submit"  onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+    <button id="retrunbtn" class="btn btn-sm btn-danger" name="rfaoptionby" value="RFR" type="submit"  onclick="return confirm('Are you sure to return?')">RETURN</button>
+    <input type="hidden" id="rfaidClose" name="RFAID">
+    <input type="hidden" id="rfanoClose" name="rfano">
+    <input type="hidden" id="rfaprojectCode" name="projectCode">
+    <!--  <input type="hidden" name="rfaoptionby" value="ARC" > -->
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    </div>
+		   </form>	         
+      </div>
+    
+    </div>
+  </div>
+</div>
+
 </body>
 
 <script type="text/javascript">
@@ -661,7 +719,10 @@ function rfaRemarks(rfaId,RfaStatus) {
         		
         		  var ReplyAttachTbody = '';
 		          for (var z = 0; z < result.length; z++) {
+		        	  
+		        	
 		            var row = result[z];
+		            if(row[1]!==null){
 		            ReplyAttachTbody += '<tr>';
 		            ReplyAttachTbody += '<td id="remarksTd1">'+row[0]+' &nbsp; <span id="remarksDate"> '+fDate(row[2])+'</span>';
 		            ReplyAttachTbody += '</td>';
@@ -670,7 +731,7 @@ function rfaRemarks(rfaId,RfaStatus) {
 		            ReplyAttachTbody += '<td id="remarksTd2">  '+row[1]+'';
 		            ReplyAttachTbody += '</td>';
 		            ReplyAttachTbody += '</tr>';
-
+		        	}
 		          }
 		          $('#remarksTb').append(ReplyAttachTbody);
         }
@@ -750,11 +811,43 @@ function rfaOptionFunc(){
 
 function returnCancelRfa(rfaId,RfaStatus,assignee) {
 	$('#rfaCancelmodal').modal('show');
+
 	$('#rfaIdHidden').val(rfaId);
 	$('#StatusHidden').val(RfaStatus);
 	$('#assignorHidden').val(assignee);
 	
 }
+
+function closeModal(a,b,c,rfatype){
+	$('#closeModal').modal('show');
+	$('#rfaidClose').val(a);
+	$('#rfanoClose').val(b);
+	$('#rfaprojectCode').val(c);
+	
+	if(rfatype==='E'){
+		$('#AttachementRow').show();
+		$('#retrunbtn').hide();
+		$('#attachment').prop("required",true)
+	}else{
+		$('#AttachementRow').hide();
+		$('#retrunbtn').show();
+		$('#attachment').prop("required",false)
+	}
+}
+function validateFile(input) {
+	  const file = input.files[0];
+	  const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+
+	  if (!file) return;
+
+	  if (!allowedTypes.includes(file.type)) {
+	    document.getElementById('filealert').innerText = 'Only image and PDF files are allowed!';
+	    // Clearing the file input to prevent submission
+	    input.value = '';
+	  } else {
+	    document.getElementById('filealert').innerText = '';
+	  }
+	}
 </script>
 
 </html>

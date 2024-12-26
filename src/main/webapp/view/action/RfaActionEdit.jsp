@@ -59,7 +59,9 @@ List<Object[]> ProjectTypeList=(List<Object[]>)request.getAttribute("ProjectType
 List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList");
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList"); 
+List<Object[]> vendorList=(List<Object[]>)request.getAttribute("vendorList");
 String Project="";
+String assigneeLab=(String)request.getAttribute("assigneeLab");
 %>
 
 
@@ -113,9 +115,25 @@ String Project="";
 		  								</select>
 		                        </div>
 		                    </div>
-		                   
-		                    
-		                  <div class="col-md-3">
+		                   </div>
+		                    <div class="row">
+		                    <%if(RfaAction[15].toString().equalsIgnoreCase("E")){ %>
+		                        <div class="col-md-3" id="vendorDiv" style="">
+		                     <div class="form-group">
+		                            <label class="control-label"> Vendor</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <select class="form-control selectdee" required="required" name="vendor" id="vendor"  onchange="chooseEmp()">                   
+		                            <option  value="" selected>SELECT</option>
+		                            <% if(vendorList!=null && vendorList.size()>0){
+		                            for(Object[] obj : vendorList) { %>
+		                            <option value="<%=obj[0]+"/"+obj[3]%>"   <%if((assigneeLab).equalsIgnoreCase(obj[0].toString())) {%> selected <%}else {%> disabled <%} %>><%=obj[1]%>( <%=obj[0] %> )</option>
+		                            <%}} %>
+		                           </select>
+		                           <!--  <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" > -->	
+		                      </div>
+		                   </div> 
+		                    <%} %>
+		                  <div class="col-md-4">
 		                     <div class="form-group">
 		                            <label class="control-label">Assigned To</label>
 		                     <select class="form-control selectdee" required="required" name="assignee" id="assignee" multiple="multiple" data-placeholder= "Select Employees">                   
@@ -134,12 +152,12 @@ String Project="";
 		                        </div>
 		                  </div> 
 		                  
-		                   <div class="col-md-3">
+		                   <div class="col-md-4">
 		                     <div class="form-group">
 		                         <label class="control-label">CC To</label>
 		                         <select class="form-control selectdee" name="CCEmpName" id="CCEmpName" multiple="multiple" data-placeholder= "Select Employees">                   
 		                         <% for(Object[] obj : EmployeeList) { %>
-		                         <option value="<%=obj[0]%>"><%=obj[1]%> , <%=obj[2]%></option>
+		                         <option value="<%=obj[0].toString()%>/<%=obj[3].toString()%>"><%=obj[1]%> , <%=obj[2]%></option>
 		                         <%} %>
 		                      </select>
 		                  </div>
@@ -301,8 +319,48 @@ String Project="";
 		        e.preventDefault();
 		});
 	  
-	
+	  function chooseEmp(){
+			var labCode=$('#vendor').val().split("/")[1];
+			var vendortype=$('#vendor').val().split("/")[0];
+			
+			$.ajax({
+					
+					type : "GET",
+					url : "ActionAssigneeEmployeeList.htm",
+					data : {
+						LabCode : labCode,	
+					},
+					datatype : 'json',
+					success : function(result) {
+						var result = JSON.parse(result);
+						var values = Object.keys(result).map(function(e) {
+							return result[e]
+						});
+						
+						var s = '';
+						s += '<option   value="">SELECT</option>';
+						if(labCode == '@EXP'){
+							values = values.filter(e => e[4] == vendortype)
+						} 
+						console.log(values)
+						for (i = 0; i < values.length; i++) 
+						{
+
+							s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3] + '</option>';
+						} 
+						$('#assignee').html('');
+						$('#assignee').html(s);
+					 /* $('#ApprovingOfficer').val(''+value).trigger('change'); */ 
+						var assignEmp = <%=request.getAttribute("AssignEmp") %>
+						$('#assignee').val(assignEmp).trigger('change');
+					}
+				});
+		}
 	  $( document ).ready(function() {
+		  
+		  <%if(RfaAction[15].toString().equalsIgnoreCase("E")){ %>
+		  chooseEmp()
+		  <%}%>
 		  var assignEmp = <%=request.getAttribute("AssignEmp") %>;
 		  var ccEmpName = <%=request.getAttribute("RfaCCEmp") %>;
 		  console.log(ccEmpName);

@@ -110,7 +110,11 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> EmployeeList(String LabCode) throws Exception {
 		Query query=manager.createNativeQuery(EMPLOYEELIST);
 		query.setParameter("LabCode", LabCode);
-		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
+		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();
+		if(EmployeeList==null|| EmployeeList.size()==0) {
+			return new ArrayList<>();
+		}
+		
 		return EmployeeList;
 	}
 
@@ -1342,7 +1346,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId  AND t.actionby=e.EmpId AND e.desigid=c.desigid";
+	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate,t.RfaStatus FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId  AND t.actionby=e.EmpId AND e.desigid=c.desigid GROUP BY RfaStatus";
 	@Override
 	public List<Object[]> getrfaRemarks(String rfaId,String status) throws Exception {
 		Query query=manager.createNativeQuery(GETRFAREMARKS);
@@ -1813,7 +1817,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (long) query.executeUpdate();
 	}
 	
-	private static final String GETRFACCLIST=" SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,a.ccempid FROM  pfms_rfa_cc a,pfms_rfa_action b,employee e,employee_desig d WHERE a.rfaid=b.rfaid AND a.ccempid=e.empid AND e.desigid=d.desigid AND a.isactive='1'";
+	private static final String GETRFACCLIST=" SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,a.ccempid,a.labcode  FROM  pfms_rfa_cc a,pfms_rfa_action b,employee e,employee_desig d WHERE a.rfaid=b.rfaid AND a.ccempid=e.empid AND e.desigid=d.desigid AND a.isactive='1'";
 	@Override
 	public List<Object[]> RfaCCList() throws Exception {
 		try {
@@ -2046,7 +2050,7 @@ public class ActionDaoImpl implements ActionDao{
 	
 	private static final String VENDORLIST="SELECT LabCode,LabName,LabAddress,LabCode as 'Vendor' FROM lab_master\r\n"
 			+ "UNION \r\n"
-			+ "SELECT Organization AS 'LabCode' ,Organization as 'LabName',Organization as 'LabAddress','@EXP' AS 'Vendor'  FROM expert where isactive='1'";
+			+ "SELECT Organization AS 'LabCode' ,Organization as 'LabName',Organization as 'LabAddress','@EXP' AS 'Vendor'  FROM expert where isactive='1' ORDER BY Labcode ASC";
 	@Override
 	public List<Object[]> getVendorList() throws Exception {
 		Query query = manager.createNativeQuery(VENDORLIST);

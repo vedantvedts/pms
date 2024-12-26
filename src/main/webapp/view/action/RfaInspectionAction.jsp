@@ -112,7 +112,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 String UserId=(String)request.getAttribute("UserId");
 String rfaCount=(String) request.getAttribute("rfaCount");
 List<String> toAssigneRevokeStatus  = Arrays.asList("RFA","AY");
-List<String> forwardAllow = Arrays.asList("RP","RR","RE","AAA","REK");
+List<String> forwardAllow = Arrays.asList("RP","RR","RE","AAA","REK","RFR");
 List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 %>
 
@@ -248,7 +248,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 														</div>
 													</div>
 												</button> <% }%>
-												 <%if(toAssigneRevokeStatus.contains(obj[10])){%> 
+												 <%if(toAssigneRevokeStatus.contains(obj[10])){ %> 
 												<button data-original-title="REVOKE" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
 													formaction="RfaActionReturnList.htm" formmethod="POST"
@@ -647,15 +647,17 @@ function rfaRemarks(rfaId,RfaStatus) {
         		
         		  var ReplyAttachTbody = '';
         		     for (var z = 0; z < result.length; z++) {
-     		            var row = result[z];
-     		            ReplyAttachTbody += '<tr>';
-     		            ReplyAttachTbody += '<td id="remarksTd1">'+row[0]+' &nbsp; <span id="remarksDate"> '+fDate(row[2])+'</span>';
-     		            ReplyAttachTbody += '</td>';
-     		            ReplyAttachTbody += '</tr>';
-     		            ReplyAttachTbody += '<tr>';
-     		            ReplyAttachTbody += '<td id="remarksTd2">  '+row[1]+'';
-     		            ReplyAttachTbody += '</td>';
-     		            ReplyAttachTbody += '</tr>';
+     		         var row = result[z];
+     		          if(row[1]!==null){
+     			            ReplyAttachTbody += '<tr>';
+     			            ReplyAttachTbody += '<td id="remarksTd1">'+row[0]+' &nbsp; <span id="remarksDate"> '+fDate(row[2])+'</span>';
+     			            ReplyAttachTbody += '</td>';
+     			            ReplyAttachTbody += '</tr>';
+     			            ReplyAttachTbody += '<tr>';
+     			            ReplyAttachTbody += '<td id="remarksTd2">  '+row[1]+'';
+     			            ReplyAttachTbody += '</td>';
+     			            ReplyAttachTbody += '</tr>';
+     			        	}
 
      		          }
 		          $('#remarksTb').append(ReplyAttachTbody);

@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -53,7 +54,12 @@ List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList")
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 List<Object[]> RfaNoTypeList=(List<Object[]>)request.getAttribute("RfaNoTypeList");
 List<Object[]> vendorList=(List<Object[]>)request.getAttribute("vendorList");
+String labcode=(String)session.getAttribute("labcode");
+
+
 String EmpId=(String)request.getAttribute("EmpId");
+
+
 
 %>
 
@@ -92,11 +98,11 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                     <div class="form-group">
 		                            <label class="control-label"> Vendor</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                            <select class="form-control selectdee" required="required" name="vendor" id="vendor" data-placeholder= "Select Type">                   
-		                            <option disabled="true"  selected value="">Select...</option>
+		                            <select class="form-control selectdee" required="required" name="vendor" id="vendor"  onchange="chooseEmp('E')">                   
+		                            <option  value="" selected>SELECT</option>
 		                            <% if(vendorList!=null && vendorList.size()>0){
 		                            for(Object[] obj : vendorList) { %>
-		                            <option value="<%=obj[0]%>"><%=obj[1]%></option>
+		                            <option value="<%=obj[0]+"/"+obj[3]%>"><%=obj[1]%>( <%=obj[0] %> )</option>
 		                            <%}} %>
 		                           </select>
 		                           <!--  <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" > -->	
@@ -154,9 +160,9 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                            <label class="control-label">Assigned To</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                         <select class="form-control selectdee" required="required" name="assignee" id="assignee" multiple="multiple" data-placeholder= "Select Employees">                   
-		                         <% for(Object[] obj : EmployeeList) { %>
+		                        <%--  <% for(Object[] obj : EmployeeList) { %>
 		                         <option value="<%=obj[0]%>"><%=obj[1]%> , <%=obj[2]%></option>
-		                         <%} %>
+		                         <%} %> --%>
 		                      </select>
 		                  </div>
 		                </div> 
@@ -175,7 +181,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                         <label class="control-label">CC To</label>
 		                         <select class="form-control selectdee" name="CCEmpName" id="CCEmpName" multiple="multiple" data-placeholder= "Select Employees">                   
 		                         <% for(Object[] obj : EmployeeList) { %>
-		                         <option value="<%=obj[0]%>"><%=obj[1]%> , <%=obj[2]%></option>
+		                         <option value="<%=obj[0]%>/<%=labcode%>"><%=obj[1]%> , <%=obj[2]%></option>
 		                         <%} %>
 		                      </select>
 		                  </div>
@@ -419,6 +425,8 @@ function validateFile(input) {
   }
 }
 
+var labcode = '<%=labcode+"/"+labcode%>'
+
 
 function showVendor(){
 	
@@ -426,20 +434,87 @@ function showVendor(){
 	if(seltype==='E'){
 	$('#vendorDiv').css('display', 'block');
 	$("#vendor").attr("required", true);
+ 	$('#vendor').val('')
+	$('#assignee').html('');
 		}else{
 			$('#vendorDiv').css('display', 'none');
 			$("#vendor").attr("required", false);
+			$('#vendor').val(labcode)
+			chooseEmp(seltype)
 	}
-	
-	
-	console.log(seltype)
 }
 
 
 $( document ).ready(function() {
 	showVendor()
+	
 });
-</script>
 
+
+function chooseEmp(seltype){
+	var labCode=$('#vendor').val().split("/")[1];
+	var vendortype=$('#vendor').val().split("/")[0];
+
+	$.ajax({
+			
+			type : "GET",
+			url : "ActionAssigneeEmployeeList.htm",
+			data : {
+				LabCode : labCode,	
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				var values = Object.keys(result).map(function(e) {
+					return result[e]
+				});
+				
+				var s = '';
+				s += '<option   value="">SELECT</option>';
+				if(labCode == '@EXP'){
+					values = values.filter(e => e[4] == vendortype)
+				} 
+				for (i = 0; i < values.length; i++) 
+				{
+					s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3] + '</option>';
+				} 
+				
+				var cc='';
+				if(seltype==='I'){
+					cc += '<option   value="">SELECT</option>';
+					for(var i=0;i<optionsArray.length;i++){
+						cc=cc+optionsArray[i];
+					}
+					
+					$('#CCEmpName').html('');
+					$('#CCEmpName').html(cc);
+				}else{
+					$('#CCEmpName').html('');
+					cc += '<option   value="">SELECT</option>';
+					for(var i=0;i<optionsArray.length;i++){
+						cc=cc+optionsArray[i];
+					}
+					if(labCode != '@EXP'){
+					for (i = 0; i < values.length; i++) 
+					{
+						cc += '<option value="'+values[i][0]+ "/"+labCode + '">'+values[i][1] + ', ' +values[i][3] + '</option>';
+					} 
+					}
+					$('#CCEmpName').html(cc);
+				}
+				
+				$('#assignee').html();
+				$('#assignee').html(s);
+			 /* $('#ApprovingOfficer').val(''+value).trigger('change'); */ 
+			
+			}
+		});
+}    
+let optionsArray = [];
+$('#CCEmpName option').each(function() {
+ optionsArray.push($(this).prop('outerHTML')); // Get the full <option> tag
+});
+
+</script>
 </body>
 </html>
