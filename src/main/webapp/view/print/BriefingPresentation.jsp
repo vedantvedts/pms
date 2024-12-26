@@ -87,19 +87,16 @@
 	List<List<Object[]>> ProjectRevList = (List<List<Object[]>>) request.getAttribute("ProjectRevList");
 	List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>) request.getAttribute("milestonedatalevel6");//a
 	List<List<TechImages>> TechImages = (List<List<TechImages>>) request.getAttribute("TechImages");
-
 	Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
 	Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 	List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
-	
+	List<Object[]> otherMeetingList = (List<Object[]>)request.getAttribute("otherMeetingList");
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 	String lablogo = (String)request.getAttribute("lablogo");
 	String Drdologo = (String)request.getAttribute("Drdologo");
-	
-	String pdc="";
+	String pdc="";String mainpdc="";
 	long ProjectCost = (long) request.getAttribute("ProjectCost");
 	String levelid = (String) request.getAttribute("levelid");
-
 	Committee committeeData = (Committee) request.getAttribute("committeeData");
 	String CommitteeCode = committeeData.getCommitteeShortName().trim();
 	
@@ -121,7 +118,6 @@
 	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
 		List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envisagedDemandlist");
 	%>
-
 	<div id="presentation-slides" class="carousel slide " data-ride="carousel">
 
 		<div class="carousel-inner" align="center">
@@ -151,7 +147,6 @@
 									
 								</tr>
 							</table>	
-						
 						<% if(nextMeetVenue!=null){ %>
 							<!-- <div style="border: 1px solid black;border-radius: 5px;max-width: 650px;"> -->
 							<table style="align: center;width: 650px;  "  >
@@ -177,7 +172,6 @@
 									 <th  style="text-align: center;;font-size: 18px ;border:0px !important; "> <% if(nextMeetVenue[5]!=null){ %><%=nextMeetVenue[5] %> <%}else{ %> - <%} %></th>				
 								 </tr>
 							</table>
-							<!-- </div> -->
 						<%}else{ %>
 							<br><br><br><br><br><br><br><br><br>
 						<%} %>
@@ -206,52 +200,24 @@
 				
 			</div>
 			<!-- ----------------------------------------  P-0  Div ----------------------------------------------------- -->
-			
-			
 			<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
+			<%char ch='a';for (int z = 0; z < projectidlist.size(); z++) {mainpdc="PDC:"+sdf.format(sdf1.parse(projectattributeslist.get(0)[6].toString()));
+			List<Object[]> revlist = ProjectRevList.get(z);Object[] projectattributes = projectattributeslist.get(z);pdc=pdc+"(PDC:"+sdf.format(sdf1.parse(projectattributes[6].toString()))+")<br>";%>
+			<%if (projectattributes != null) {%>
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
-					<div class="col-md-1" >
-						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					<div class="col-md-1" ><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></div>
+					<div class="col-md-1" align="left" style="padding-top:5px;" ><b style="margin-left: -35px;"><%=ProjectCode %></b>
+					<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
-						<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-						List<Object[]> revlist = ProjectRevList.get(z);
-						Object[] projectattributes = projectattributeslist.get(z);
-						pdc=pdc+"( PDC:"+sdf.format(sdf1.parse(projectattributes[6].toString()))+")";
-					}
-					%>
-					<div class="col-md-1" align="left" style="padding-top:5px;" >
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+					<div class="col-md-8"><h3>1<%if(projectidlist.size()>1) {%>(<%=(char)(ch++)%>)<%} %> . Project Attributes </h3></div>
+					<div class="col-md-1" align="right"  style="padding-top:19px;" ><b style="margin-right: -35px;"><%=MeetingNo %></b></div>
+					<div class="col-md-1"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-8">
-						<h3>1. Project Attributes</h3>
-					</div>
-					<div class="col-md-1" align="right"  style="padding-top:19px;" >
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
-					</div>
-					<div class="col-md-1">
-						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
-					</div>
-					
 				</div>
-
 				<div class="content" align="center">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-						List<Object[]> revlist = ProjectRevList.get(z);
-						Object[] projectattributes = projectattributeslist.get(z);
-						
-					
-					%>
-					<%
-					if (projectattributes != null) {
-					%>
-
-					<b style="font-size: 25px;">Project : <%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %></b>
+				
+					<b style="font-size: 25px;">Project : <%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB)<% } %></b>
 					<hr style="margin: 0.25rem 0rem;">
 					<table class="subtables " style="font-size:1.1rem;align: left; margin-top: 10px; width:96% !important; border-collapse: collapse;">
 						<tr>
@@ -288,12 +254,7 @@
 									and Participating Labs</b></td>
 							<td colspan="4" class="prjattr"
 								style="width: 370px; padding: 5px; padding-left: 10px">
-								<%
-								if (projectattributes[15] != null) {
-								%><%=projectattributes[15]%>
-								<%
-								}
-								%>
+								<%if (projectattributes[15] != null) {%><%=projectattributes[15]%><%}%>
 							</td>
 						</tr>
 						<tr>
@@ -315,17 +276,9 @@
 								style="width: 150px; padding: 5px; padding-left: 10px"><b>PDC</b></td>
 
 							<td colspan="2" style="text-align: center !important"><!-- Original -->&nbsp;</td>
-							<%
-							if (ProjectRevList.get(z).size() > 0) {
-							%>
+							<%if (ProjectRevList.get(z).size() > 0) {%>
 							<td colspan="2" style="text-align: center !important">Revised</td>
-							<%
-							} else {
-							%>
-							<td colspan="2"></td>
-							<%
-							}
-							%>
+							<%} else {%><td colspan="2"></td><%}%>
 						</tr>
 						<tr>
 							<%
@@ -336,8 +289,7 @@
 							<td colspan="2" style="text-align: center;" class="prjattr">
 								<% if (LocalDate.parse(projectattributes[6].toString()) .isEqual(LocalDate.parse(ProjectRevList.get(z).get(0)[12].toString()))) { %>
 									- 
-								<% } else { %> 
-									<%=sdf.format(sdf1.parse(projectattributes[6].toString()))%>
+								<% } else { %><%=sdf.format(sdf1.parse(projectattributes[6].toString()))%>
 								<% } %>
 							</td>
 							<%
@@ -348,9 +300,7 @@
 							<%
 							}
 							%>
-
 						</tr>
-
 						<tr>
 							<td rowspan="3"
 								style="width: 30px; padding: 5px; padding-left: 10px">(i)</td>
@@ -365,34 +315,28 @@
 							<td style="text-align: center;" class="prjattr"><%=ProjectRevList.get(z).get(0)[17]%></td>
 							<td colspan="2" style="text-align: center;"class="prjattr" ><%=projectattributes[8]%></td>
 						</tr>
-
 						<tr>
 							<td style="width: 10% !important;font-weight: bold">FE Cost</td>
 							<td style="text-align: center;" class="prjattr"><%=ProjectRevList.get(z).get(0)[16]%></td>
 							<td colspan="2" style="text-align: center;" class="prjattr"><%=projectattributes[9]%></td>
 						</tr>
-
 						<tr>
 							<td style="width: 10% !important;font-weight: bold" >Total Cost</td>
 							<td style="text-align: center;" class="prjattr"><%=ProjectRevList.get(z).get(0)[11]%></td>
 							<td colspan="2" style="text-align: center;" class="prjattr"><%=projectattributes[7]%></td>
 						</tr>
-
 						<%
 						} else {
 						%>
-
 						<td style="width: 10% !important;font-weight: bold" >RE Cost</td>
 						<td class="prjattr"><%=projectattributes[8]%></td>
 						<td colspan="2" class="prjattr"></td>
 						</tr>
-
 						<tr>
 							<td style="width: 10% !important;font-weight: bold">FE Cost</td>
 							<td class="prjattr"><%=projectattributes[9]%></td>
 							<td colspan="2"></td>
 						</tr>
-
 						<tr>
 							<td style="width: 10% !important;font-weight: bold">Total Cost</td>
 							<td class="prjattr"><%=projectattributes[7]%></td>
@@ -401,7 +345,6 @@
 						<%
 						}
 						%>
-
 						<tr>
 							<td style="width: 20px; padding: 5px; padding-left: 10px">(j)</td>
 							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>No.
@@ -416,69 +359,34 @@
 							<td colspan="4"
 								style=" width: 200px;color:white; padding: 5px; padding-left: 10px ; <%if (projectdatadetails.get(z) != null) {%> background-color: <%=projectdatadetails.get(z)[11]%> ;   <%}%>">
 								<span> <%
-								 if (projectdatadetails.get(z) != null) {
-								 %><b><%=projectdatadetails.get(z)[10]%>
-																</b> <%
-								 } else {
-								 %>Data Not Found<%
-								 }
-								 %></span>
+								 if (projectdatadetails.get(z) != null) { %><b><%=projectdatadetails.get(z)[10]%>
+							</b> <%} else {%>Data Not Found<%}%></span>
 							</td>
 						</tr>
 					</table>
-
-					<%
-					} else {
-					%>
-					<div align="center" style="margin: 25px;">Complete Project
-						Data Not Found</div>
-					<%
-					}
-					%>
-					<%
-					}
-					%>
-				</div>
-
-			</div>
+				</div></div>
+					<%} else {%>
+					<div align="center" style="margin: 25px;">Complete ProjectData Not Found</div>
+					<%}%><%}%>
 			<!-- ----------------------------------------  P-1  Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-2a Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:5px;" >
-						<b style="margin-left: -35px;"><%=ProjectCode%></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+					<div class="col-md-1" align="left" style="padding-top:5px;" ><b style="margin-left: -35px;"><%=ProjectCode%></b><h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
-					<div class="col-md-8">
-						<h3>2. Schematic Configuration - (a) System Configuration</h3>
-					</div>
-					<div class="col-md-1" align="right"  style="padding-top:19px;" >
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
-					</div>
-					<div class="col-md-1">
-						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
-					</div>
-					
-				</div>
-
+					<div class="col-md-8"><h3>2. Schematic Configuration - (a) System Configuration</h3></div>
+					<div class="col-md-1" align="right"  style="padding-top:19px;" ><b style="margin-right: -35px;"><%=MeetingNo %></b></div>
+					<div class="col-md-1"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></div>
+						</div>
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
+					<%for (int z = 0; z < 1; z++) { %>
 					<div align="left" style="margin-left: 15px;">
-
 						<div align="center">
 							<table style="width: 100%;">
-								<%
-								if (projectdatadetails.get(z) != null && projectdatadetails.get(z)[3] != null) {
-								%>
+								<%if (projectdatadetails.get(z) != null && projectdatadetails.get(z)[3] != null) {%>
 								<tr>
 									<td style="border: 0; text-align: left;">
 										<form action="#" method="post" target="_blank">
@@ -495,15 +403,12 @@
 								</tr>
 								<tr>
 									<td style="border: 0; text-align: center;">
-										<%
-										if (FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")) {
-										%>
+										<%if (FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")) {%>
 										<iframe
 											src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>#view=FitV" style="width:100%;height:70vh"
 											id="config<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 											 } else {
 											 %>
-								<!-- iframe with fit to page code== #view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11" -->
 										<img data-enlargable
 										style="width: 98%!important; height:78vh;"
 										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString())%>;base64,<%=pdffiles.get(z)[0]%>"
@@ -518,33 +423,23 @@
 								<tr>
 									<td style="border: 0; text-align: left;"><b><%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %> : </b><span class="mainsubtitle">System Configuration File Not Found</span></td>
 								</tr>
-								<%
-								}
-								%>
+								<%}%>
 							</table>
 						</div>
 					</div>
-					<%
-					}
-					%>
+					<%}%>
 				</div>
-
 			</div>
-
 			<!-- ----------------------------------------  P-2a Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-2b   Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>2. Schematic Configuration - (b) System Specifications</h3>
@@ -555,21 +450,13 @@
 					<div class="col-md-1">
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					
 				</div>
-				
-
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
+					<%for (int z = 0; z < 1; z++){ %>
 					<div align="left" style="margin-left: 15px;">
-
 						<div align="center">
 							<table style="width: 100%;">
-								<%
-								if (projectdatadetails.get(z) != null && projectdatadetails.get(z)[4] != null) {
-								%>
+								<%if (projectdatadetails.get(z) != null && projectdatadetails.get(z)[4] != null) {%>
 								<tr>
 									<td style="border: 0; text-align: left;">
 										<form action="#" method="post" target="_blank">
@@ -593,9 +480,7 @@
 								</tr>
 								<tr>
 									<td style="border: 0; text-align: center;">
-										<%
-										if (FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")) {
-										%>
+										<%if (FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")) {%>
 										<iframe 
 											src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>#view=FitV" style="width:100%;height:70vh"
 											id="sysspecs<%=ProjectDetail.get(z)[0]%>" > </iframe> <%
@@ -615,35 +500,23 @@
 								<tr>
 									<td style="border: 0; text-align: left;"><b><%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %> : </b><span class="mainsubtitle"> System Specifications File Not Found</span></td>
 								</tr>
-								<%
-								}
-								%>
-
-
+								<%}%>
 							</table>
 						</div>
 					</div>
-					<%
-					}
-					%>
+					<%}%>
 				</div>
-
 			</div>
-
 			<!-- ---------------------------------------- P-2b   Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-3  Overall Product tree/WBS Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>3. Overall Product Tree/WBS</h3>
@@ -658,8 +531,7 @@
 				</div>
 
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
-
+					<% for (int z = 0; z < 1; z++) { %>
 					<% if (ProjectDetail.size() > 1) { %>
 					<div style="margin-left: 1rem;">
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -712,29 +584,20 @@
 							</td>
 						</tr>
 						<% } %>
-
-
 					</table>
-
 					<% } %>
 				</div>
-
 			</div>
-
 			<!-- ----------------------------------------  Overall Product tree/WBS Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-4a  Particulars of Meeting Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>
@@ -748,12 +611,9 @@
 					<div class="col-md-1">
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					
 				</div>
-
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
-
+					<% for (int z = 0; z < 1; z++) { %>
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -778,7 +638,6 @@
 									</p>
 								</td>
 							</tr>
-
 							<tr>
 								<th style="width: 15px !important; text-align: center;">SN</th>
 								<th style="width: 20px !important;">ID</th>
@@ -787,7 +646,6 @@
 								<th style="width: 200px !important;">Responsibility</th>
 								<th style="width: 70px !important;">Status(DD)</th>
 								<th style="width: 250px !important;">Remarks</th>
-								
 							</tr>
 						</thead>
 						<tbody>
@@ -805,9 +663,7 @@
 								<td style="text-align: center;"><%=i%></td>
 															<td style="text-align: center;">
 								<%if(obj[21]!=null && Long.parseLong(obj[21].toString())>0){ %>
-								
 									<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[21] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" style="font-weight:bold;" >
-										<!-- <i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i> -->
 								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
 								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
 									Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
@@ -825,17 +681,10 @@
 									 }
 									 %>
 									 <%} %>
-								
 								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key2+"/"+obj[5].toString().split("/")[4] %>
-								
-								
 									</button>
-									
-									
 								<%}%>
 							</td>
-								
-								
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
 								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br><%} %>	
@@ -878,14 +727,9 @@
 												<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
 											<%} %>									
 									<%} %>
-									<%}else { %>
-										<span class="notassign">NA</span>
-									<%} %>
+									<%}else { %><span class="notassign">NA</span><%} %>
 							</td>
-							<td>
-								<% if (obj[19] != null) { %><%=obj[19]%> <% } %>
-							</td>
-
+							<td><% if (obj[19] != null) { %><%=obj[19]%> <% } %></td>
 						</tr>
 						<% i++; }
 						} %>
@@ -893,60 +737,34 @@
 							<tr>
 								<td colspan="7" style="text-align: center;">Nil</td>
 							</tr>
-							<% } %>
-							<% } %>
-						
-						
+							<% } %><% } %>
 					</tbody>
 				</table>
-
 				<% } %>
 				</div>
-
 			</div>
-
 			<!-- ----------------------------------------  P-4a Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-4b Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<%-- <div class="col-md-1" align="left" style="padding-top:19px;" >
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-					</div> --%>
 					<div class="col-md-10">
 						<h5 style="margin-top: 5px;">
 							4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting Action Points with Probable Date of Completion (PDC), Actual Date of Completion (ADC) and Status
 						</h5>
 					</div>
-				<%-- 	<div class="col-md-1" align="right"  style="padding-top:19px;" >
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
-					</div> --%>
 					<div class="col-md-1">
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					
 				</div>
-
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
-
+					<% for (int z = 0; z < 1; z++) { %>
 					<% if (ProjectDetail.size() > 1) { %>
-					<div>
-						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
-					</div>
+					<div><b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b></div>
 					<% } %>
-
-					<%
-					if ((Double.parseDouble(projectattributeslist.get(0)[7].toString()) * 100000) > 0) {
-					%>
-
-					
+					<%if ((Double.parseDouble(projectattributeslist.get(0)[7].toString()) * 100000) > 0) {%>
 					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -1094,15 +912,13 @@
 			<!-- ---------------------------------------- P-4c  Div ----------------------------------------------------- -->
 
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>4 (c) Details of Technical/ User Reviews</h3>
@@ -1113,20 +929,15 @@
 					<div class="col-md-1">
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					
 				</div>
-
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
-
+					<% for (int z = 0; z < 1; z++) { %>
 						<% if (ProjectDetail.size() > 1) { %>
 						<div>
 							<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 						</div>
 						<% } %>
-
 						<div align="center">
-							
 							<form action="CommitteeMinutesNewDownload.htm" method="get" target="_blank">
 									
 								<div align="center" style="width:990px">
@@ -1176,7 +987,6 @@
 												<%} else if(ReviewMeetingListPMRC.size()>0)
 												  { 
 													for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
-												
 												<%if(t<=20){ %>
 													<tr>
 														<td>
@@ -1219,39 +1029,30 @@
 														</td>												
 														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													</tr>			
-												<%t++;
-												}}else{ %>
-													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-											<%} %> 
+												<%t++;}}else{ %><tr><td colspan="4" style="text-align: center;" > Nil</td></tr><%} %> 
 										</tbody>
 									</table>
 									</div>
 									<%} %>
+									
+									<div  class="mt-2" style="float: right">
+									<button type="button" class="btn btn-sm " onclick="showMeetingModal()" data-toggle="tooltip" data-placement="right" title="Other Meetings"><i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i></button>
+									</div>
 								</div>
-								
 							</form>
-						
 						</div>
-
 					<% } %>
-				</div>
-
-			</div>
-
+				</div></div>
 			<!-- ----------------------------------------   P-4c Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-5  Milestones achieved prior Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3> 5. Milestones Achieved Prior to this <%=CommitteeCode%> Period</h3>
@@ -1267,7 +1068,7 @@
 				
 				<div class="content">
 
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < 1; z++) { %>
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -1477,42 +1278,26 @@
 							</td>
 						</tr>
 						<%
-						count1++;
-						serial++;
-						}
-						}
+						count1++;serial++;}}
 						%>
 						<% } else { %>
-						<tr>
-							<td colspan="10" style="text-align: center;">Nil</td>
-						</tr>
-
-
+						<tr><td colspan="10" style="text-align: center;">Nil</td></tr>
 						<% } %>
 					</table>
-
-
 					<div id="milestoneactivitychange"></div>
-
 					<% } %>
 				</div>
-
 			</div>
-
 			<!-- ----------------------------------------  Milestones achieved prior Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-6a Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>6 (a) Work Carried Out, Achievements, Test Result etc.</h3>
@@ -1528,7 +1313,7 @@
 
 				<div class="content">
 
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < 1; z++) { %>
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -1739,7 +1524,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h4>6 (b) TRL Table with TRL at Sanction stage and Current stage Indicating Overall PRI</h4>
@@ -1755,7 +1540,7 @@
 
 				<div class="content">
 
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < 1; z++) { %>
 						<% if (ProjectDetail.size() > 1) { %>
 							<div>
 								<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -1819,7 +1604,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>6 (c) Risk Matrix/Management Plan/Status</h3>
@@ -1836,7 +1621,7 @@
 
 				<div class="content">
 
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < 1; z++) { %>
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -2005,7 +1790,8 @@
 			<!-- ----------------------------------------   P-6c Div ----------------------------------------------------- -->
 
 			<!-- ---------------------------------------- P-7a  Details of Procurement Plan Div ----------------------------------------------------- -->
-
+<% int chapter=1;int chapter2=1;
+for (int z = 0; z < projectidlist.size(); z++){  %>
 			<div class="carousel-item ">
 
 				<div class="content-header row ">
@@ -2018,7 +1804,7 @@
 						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
-						<h3>7 (a) Details of Procurement Plan (Major Items)</h3>
+						<h3>7 (a<%if(projectidlist.size()>1) {%><%="."+chapter++%><%} %>) Details of Procurement Plan (Major Items) (<%=ProjectDetail.get(z)[1]%>)</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -2030,7 +1816,7 @@
 				</div>
 
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -2248,7 +2034,7 @@
 
 							<% if (totalprocurementdetails != null && totalprocurementdetails.size() > 0) {
 								for (TotalDemand obj : totalprocurementdetails) {
-									if (obj.getProjectId().equalsIgnoreCase(projectid)) { %>
+									if (obj.getProjectId().equalsIgnoreCase(projectidlist.get(z))) { %>
 							<tr>
 								<td style="text-align: center;"><%=obj.getDemandCount()%></td>
 								<td style="text-align: center;"><%=obj.getEstimatedCost()%></td>
@@ -2265,15 +2051,17 @@
 						</tbody>
 					</table>
 			
-				<% } %>
+				
 				</div>
 
 			</div>
+
 
 			<!-- ----------------------------------------  Details of Procurement Plan Div ----------------------------------------------------- -->
 			
 			<!-- ---------------------------------------- P-7b  Procurement status Report Div ----------------------------------------------------- -->
 
+ <%--for (int z = 0; z < projectidlist.size(); z++) { %> --%>
 			<div class="carousel-item ">
 
 				<div class="content-header row ">
@@ -2286,7 +2074,7 @@
 						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
-						<h3>7 (b) Procurement Status</h3>
+						<h3>7 (b<%if(projectidlist.size()>1) {%><%="."+(chapter2++)%><%} %>) Procurement Status <%if(projectidlist.size()>1) {%> (<%=ProjectDetail.get(z)[1]%> ) <%} %></h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -2298,9 +2086,7 @@
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
+					
 					<%
 					if (ProjectDetail.size() > 1) {
 					%>
@@ -2322,32 +2108,9 @@
 											<th style="width: 40x">SN</th>
 											<th style="width: 280px;">Item Name</th>
 											<th style="width: 155px;">Est/SO Cost <br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
-											<th style="width: 35px">0</th>
-											<th style="width: 35px">1</th>
-											<th style="width: 35px">2</th>
-											<th style="width: 35px">3</th>
-											<th style="width: 35px">4</th>
-											<th style="width: 35px">5</th>
-											<th style="width: 35px">6</th>
-											<th style="width: 35px">7</th>
-											<th style="width: 35px">8</th>
-											<th style="width: 35px">9</th>
-											<th style="width: 35px">10</th>
-											<th style="width: 35px">11</th>
-											<th style="width: 35px">12</th>
-											<th style="width: 35px">13</th>
-											<th style="width: 35px">14</th>
-											<th style="width: 35px">15</th>
-											<th style="width: 35px">16</th>
-											<th style="width: 35px">17</th>
-											<th style="width: 35px">18</th>
-											<th style="width: 35px">19</th>
-											<th style="width: 35px">20</th>
-											<th style="width: 35px">21</th>
-											<th style="width: 35px">22</th>
-											<th style="width: 35px">23</th>
-											<th style="width: 35px">24</th>
-											<th style="width: 35px">25</th>
+										<%for(int i=0;i<=25;i++) {%>
+										<th style="width: 35px"><%=i %></th>
+										<%} %>
 									 	</tr>
 									</thead>
 									<tbody>
@@ -2399,31 +2162,7 @@
 												<td><%=envi[3] %></td>
 												<td style="text-align: right;"><%=envi[2] %></td>
 												<td style="background-color: #F96E16;text-align: center; ">*</td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
+												<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
 												</tr>
 										<%}} %>
 
@@ -2508,15 +2247,11 @@
 										<td></td>
 									</tr>
 								</table>
-						<% } %>
-				</div>
-
-			</div>
-
+					</div></div><% } %>
 			<!-- ---------------------------------------- Procurement status Report Div ----------------------------------------------------- -->
 
 			<!-- ---------------------------------------- P-8  Overall Financial Status Div ----------------------------------------------------- -->
-
+	<% char fch='a'; for (int z = 0; z < projectidlist.size(); z++) {%>
 			<div class="carousel-item ">
 
 				<div class="content-header row ">
@@ -2529,7 +2264,7 @@
 						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
-						<h3>8. Overall Financial Status</h3>
+						<h3>8<%if(projectidlist.size()>1) {%> (<%=(fch++) %>) <%} %>.  Overall Financial Status</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -2541,7 +2276,7 @@
 				</div>
 
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) {
+					<%
 						double totSanctionCost=0,totReSanctionCost=0,totFESanctionCost=0;
 	                	double totExpenditure=0,totREExpenditure=0,totFEExpenditure=0;
 	                 	double totCommitment=0,totRECommitment=0,totFECommitment=0,totalDIPL=0,totalREDIPL=0,totalFEDIPL=0;
@@ -2586,7 +2321,7 @@
 								<th>FE</th>
 							</tr>
 						</thead>
-			          <%if(IsIbasConnected==null || IsIbasConnected.equalsIgnoreCase("Y")) {%>
+			          <%if(IsIbasConnected==null || IsIbasConnected.equalsIgnoreCase("Y")) { %>
 			                    <tbody>
 			                    <% 
 
@@ -2729,15 +2464,8 @@
 			     <% }%>
 			     </tbody>
 			     <% } %>
-					</table>
-
-
-					<% } %>
-
-				</div>
-
-			</div>
-
+					</table></div></div>
+			<% } %>
 			<!-- ----------------------------------------  Overall Financial Status Div ----------------------------------------------------- -->
 
 			<!-- ---------------------------------------- P-9  Action Plan for Div ----------------------------------------------------- -->
@@ -2751,7 +2479,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>
@@ -2772,7 +2500,7 @@
 				</div>
 
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < 1; z++) { %>
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -2970,7 +2698,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>10. GANTT Chart of Overall Project Schedule</h3>
@@ -2987,7 +2715,7 @@
 
 				<div class="content">
 					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
+					for (int z = 0; z < 1; z++) {
 					%>
 					<div>
 						<%
@@ -3050,7 +2778,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>11. Issues</h3>
@@ -3065,7 +2793,7 @@
 				</div>
 
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < 1; z++) { %>
 
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>
@@ -3201,7 +2929,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3> 12. Decision/Recommendations Sought from <%=CommitteeCode%> </h3>
@@ -3241,7 +2969,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>13 (a) Other Relevant Points</h3>
@@ -3254,7 +2982,7 @@
 					</div>
 				</div>
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < 1; z++) { %>
 					<div align="left">
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
@@ -3287,7 +3015,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>
@@ -3311,7 +3039,7 @@
 
 					<% ArrayList<String> FileExtList = new ArrayList<String>( Arrays.asList("jpg", "jpeg", "png", "pdf", "JPG", "JPEG", "PNG", "PDF"));
 					
-					for (int z = 0; z < projectidlist.size(); z++) {
+					for (int z = 0; z < 1; z++) {
 					%>
 					<div class="card-body" style="width: 100%">
 
@@ -3356,8 +3084,6 @@
 								File techattachfile = new File(path+File.separator+ TechWork[8]); %>
 
 								<% if (fileExt.equalsIgnoreCase("pdf")) {%>
-								<%=techattachfile.toPath() %>
-								<%=techPath.toString() %>
 								<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"></iframe>
 								<% } else { %>
 								<img data-enlargable style="width: 98%;height:70vh;" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
@@ -3385,7 +3111,7 @@
 					</div>
 					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
-						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=mainpdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>13 (c) Technical Images</h3>
@@ -3398,7 +3124,7 @@
 					</div>
 				</div>
 				<div class="content">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% for (int z = 0; z < 1; z++) { %>
 					<div align="left"> <b style="font-size: 20px;">Project : <%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %></b> </div>
 					<div align="center">
 						<span class="mainsubtitle">Technical Images</span>
@@ -3438,30 +3164,38 @@
 		</a> <a class="carousel-control-next" href="#presentation-slides" role="button" data-slide="next" style="width: 0%; padding-right: 20px;"> <span aria-hidden="true">
 			<i class="fa fa-chevron-right fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Next</span>
 		</a>
+		<%int slideCount=0;%>
 		<ol class="carousel-indicators">
-			<li data-target="#presentation-slides" data-slide-to="0"  class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
-			<li data-target="#presentation-slides" data-slide-to="1"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="1. Project Attributes"><b>1</b></li>
-			<li data-target="#presentation-slides" data-slide-to="2"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"><b>2 (a) </b></li>
-			<li data-target="#presentation-slides" data-slide-to="3"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (b) System Specifications"><b>2 (b) </b></li>
-			<li data-target="#presentation-slides" data-slide-to="4"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="3. Overall Product tree/WBS"><b>3</b></li>
-			<li data-target="#presentation-slides" data-slide-to="5"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title='4 (a) <%if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) {%> Approval <%} else {%> Ratification <%}%>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting'><b>4(a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="6"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"><b>4(b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="7"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) Details of Technical/ User Reviews"><b>4 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="8"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="5. Milestones achieved prior to this Meeting"><b>5</b></li>
-			<li data-target="#presentation-slides" data-slide-to="9"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc"><b>6(a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="10" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI"><b>6(b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="11" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (c) Risk Matrix/Management Plan/Status."><b>6 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7 (a) Details of Procurement Plan"><b>7(a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="13" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7 (b) Procurement Status"><b>7(b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="14" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="8. Overall Financial Status"><b>8</b></li>
-			<li data-target="#presentation-slides" data-slide-to="15" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="9. Action Plan"><b>9</b></li>
-			<li data-target="#presentation-slides" data-slide-to="16" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="10. GANTT chart of overall project schedule"><b>10</b></li>
-			<li data-target="#presentation-slides" data-slide-to="17" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="11. Issues"><b>11</b></li>
-			<li data-target="#presentation-slides" data-slide-to="18" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="12. Decision/Recommendations"><b>12</b></li>
-			<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (a) Other Relevant Points"><b>13 (a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="20" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out"><b>13 (b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="21" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images"><b>13 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="22" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>"  class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
+			<%char ch1='a';for (int z = 0; z < projectidlist.size(); z++) {%>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="1. Project Attributes (<%=ProjectDetail.get(z)[1]%>)"><b>1 <%if(projectidlist.size()>1) {%>(<%=(char)(ch1++)%>)<%} %></b></li>
+			<%} %>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"><b>2 (a) </b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (b) System Specifications"><b>2 (b) </b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="3. Overall Product tree/WBS"><b>3</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title='4 (a) <%if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) {%> Approval <%} else {%> Ratification <%}%>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting'><b>4(a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"><b>4(b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) Details of Technical/ User Reviews"><b>4 (c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="5. Milestones achieved prior to this Meeting"><b>5</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc"><b>6(a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI"><b>6(b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (c) Risk Matrix/Management Plan/Status."><b>6 (c)</b></li>
+			<%int chapter7a=1 ; int chapter7b=1;for (int z = 0; z < projectidlist.size(); z++) {%>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7 (a<%if(projectidlist.size()>1) {%><%="."+chapter7a%><%} %>) Details of Procurement Plan (<%=ProjectDetail.get(z)[1]%>)"><b>7(a<%if(projectidlist.size()>1) {%><%="."+chapter7a++%><%} %>)</b></li>
+			
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7 (b<%if(projectidlist.size()>1) {%><%="."+chapter7b%><%} %>) Procurement Status (<%=ProjectDetail.get(z)[1]%>)"><b>7(b<%if(projectidlist.size()>1) {%><%="."+chapter7b++%><%} %>)</b></li>
+			<%} %>
+				<%char ch6='a';for (int z = 0; z < projectidlist.size(); z++) {%>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="8. (<%=(char)(ch6) %>)  Overall Financial Status <%if(projectidlist.size()>1) {%>(<%=ProjectDetail.get(z)[1]%>) <%}%>"><b>8<%if(projectidlist.size()>1) {%>(<%=(char)(ch6++)%>)<%} %></b></li>
+			<%} %>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="9. Action Plan"><b>9</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="10. GANTT chart of overall project schedule"><b>10</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="11. Issues"><b>11</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="12. Decision/Recommendations"><b>12</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (a) Other Relevant Points"><b>13 (a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out"><b>13 (b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images"><b>13 (c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="<%=slideCount++ %>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
 			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
 			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>
 		</ol>
@@ -3952,58 +3686,15 @@
 													countE++;
 													}
 													}
-													%>
-													<%
-													countD++;
-													}
-													}
-													%>
-													<%
-													countC++;
-													}
-													}
-													%>
-													<%
-													countB++;
-													}
-													}
-													%>
-													<%
-													countA++;
-													}
-													} else {
-													%>
+													%><%countD++;}}%><%countC++;}}%><%countB++;}}	%><%countA++;}} else {%>
 													<tr class="collapse row<%=count%>">
 														<td colspan="9" style="text-align: center" class="center">No
 															Sub List Found</td>
 													</tr>
-													<%
-													}
-													%>
-													<%
-													count++;
-													}
-													} else {
-													%>
-													<tr>
-														<td colspan="9" style="text-align: center" class="center">No
-															List Found</td>
-													</tr>
-													<%
-													}
-													%>
+													<%}%><%count++;}} else {%>
+													<tr><td colspan="9" style="text-align: center" class="center">No List Found</td></tr><%}%>
 												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+											</table></div></div></div></div></div></div></div></div></div></div>
 
 
 	<div class="modal fade" id="LevelModal" tabindex="-1" role="dialog"
@@ -4214,6 +3905,45 @@
 		</div>
 		
 <!-- --------------------------------------------  Risk Types Modal   -------------------------------------------------------- -->
+	<div class="modal fade " id="meetingModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-jump">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card shadow-nohover" style="margin-top: -0px;">
+									<div class="row card-header">
+										<div class="col-md-10">
+											<h5>
+												<%
+												if (ProjectId != null) {
+													Object[] ProjectDetail123 = (Object[]) request.getAttribute("ProjectDetailsMil");
+												%>
+												<%=ProjectDetail123[2]%>
+												(
+												<%=ProjectDetail123[1]%>
+												)
+												<%
+												}
+												%>
+											</h5>
+										</div>
+									</div>
+									<div class="card-body">
+						<%if(otherMeetingList!=null && otherMeetingList.size()>0) {%>
+						<div align="left"><b><%="Other Meetings" %></b></div>
+						<div align="left"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
+						<thead><tr> <th style="width: 140px; ">Committee</th> <th  style="width: 140px; "> Date Held</th></tr></thead>
+						<%for(Object[]obj:otherMeetingList) {%>
+						<tbody><tr><td><button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"><%=obj[2]%> </button>
+								</td>												
+								<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
+								</tr>
+									</tbody><%}%></table></div> <%} %>
+									</div></div></div></div></div></div></div></div></div>
+
+
 <script type="text/javascript">
 
 $('.content_reg_screen').hide();
@@ -4372,7 +4102,7 @@ function setattchidvalue(attachid, attchName)
 }
 </script>
 	<%
-	for (int z = 0; z < projectidlist.size(); z++) {
+	for (int z = 0; z < 1; z++) {
 	%>
 	<script>
 									function chartprint_<%=projectidlist.get(z)%>(type,interval){ 
@@ -4742,7 +4472,9 @@ function ActionDetails(InAssignId)
 		var totalCompletedMilestones=[];
 		var totalProgressedMilestones=[];
 		}
-	
+	function showMeetingModal(){
+		$('#meetingModal').modal('show');
+	}
 </script>
 </body>
 </html>

@@ -434,7 +434,7 @@ SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 
-
+List<Object[]> otherMeetingList = (List<Object[]>)request.getAttribute("otherMeetingList");
 List<List<Object[]>> overallfinance = (List<List<Object[]>>)request.getAttribute("overallfinance");//b
 String thankYouImg = (String)request.getAttribute("thankYouImg");
 String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
@@ -702,7 +702,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 						<details>
 	   						<summary role="button" tabindex="0"><b>2. Schematic Configuration</b>   </summary>
 	   						<div class="content">
-	   						<%for(int z=0;z<projectidlist.size();z++){ %>
+	   						<%for(int z=0;z<1;z++){ %>
 	   						<div align="left" style="margin-left: 15px;">
 	   							
 								<%if(ProjectDetail.size()>1){ %>
@@ -796,7 +796,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 						<details>
 	   						<summary role="button" tabindex="0"><b>3. Overall Product tree/WBS</b> </summary>
 							
-							<%for(int z=0;z<projectidlist.size();z++){ %>
+							<%for(int z=0;z<1;z++){ %>
 							<div>
 								<%if(ProjectDetail.size()>1){ %>
 									<div style="margin-left:1rem; ">
@@ -847,7 +847,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
    						<summary role="button" tabindex="0"><b>4. Particulars of Meeting </b> </summary>
    						
    						<div class="content">
-   							<%for(int z=0;z<projectidlist.size();z++){ %>
+   							<%for(int z=0;z<1;z++){ %>
    								<h1 class="break"></h1>
    								
    								  	<%if(ProjectDetail.size()>1){ %>
@@ -1245,7 +1245,22 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 								
 							</form>
 						
-						
+									<%if(otherMeetingList!=null && otherMeetingList.size()>0) {
+					int count=0;
+				%>
+				<div align="left" class="mb-2 ml-4"><b><%="Other Meetings" %></b></div>
+						<div align="left" class="mb-2"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
+						<thead><tr> <th style="width: 140px; ">Committee</th> <th  style="width: 140px; "> Date Held</th></tr></thead>
+				<%for(Object[]obj:otherMeetingList) {%>
+				
+											<tbody>
+									<tr><td><button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"><%=obj[2]%> </button>
+														</td>												
+														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
+													</tr>
+									</tbody>
+				
+				<%}%></table></div> <%} %>
 						</div>
 															
 					<%} %>
@@ -1258,7 +1273,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
    						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
 							<div class="content">
 				
-								<%for(int z=0;z<projectidlist.size();z++){ %>
+								<%for(int z=0;z<1;z++){ %>
 									<%if(ProjectDetail.size()>1){ %>
 										<div>
 											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
@@ -1500,7 +1515,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
    						<summary role="button" tabindex="0" id="leveltab"><b>6. Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</b>  </summary>
 						<div class="content">
 							
-							<%for(int z=0;z<projectidlist.size();z++){ %>
+							<%for(int z=0;z<1;z++){ %>
 								<%if(ProjectDetail.size()>1){ %>
 									<div>
 										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
@@ -2549,7 +2564,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 						<%} %>
 						
 						<div class="content">
-						<%for(int z=0;z<projectidlist.size();z++){ %>
+						<%for(int z=0;z<1;z++){ %>
 							<%if(ProjectDetail.size()>1){ %>
 								<div>
 									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
@@ -2768,7 +2783,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
    						<summary role="button" tabindex="0"><b> 10. GANTT chart of overall project schedule [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>]</b>    </summary>
    						
 						    <div class="content">
-							    <%for(int z=0;z<projectidlist.size();z++){ %>
+							    <%for(int z=0;z<1;z++){ %>
 							    <div>
 							    	<%if(ProjectDetail.size()>1){ %>
 										<div>
@@ -2829,7 +2844,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
    						<summary role="button" tabindex="0"><b>11. Issues</b></summary>
    						
 						   <div class="content">
-						   			<%for(int z=0;z<projectidlist.size();z++){ %>		
+						   			<%for(int z=0;z<1;z++){ %>		
 						   			
 						   			<%if(ProjectDetail.size()>1){ %>
 										<div>
@@ -3080,7 +3095,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
    						</summary>
    						
 						  <div class="content">
-						  	<%for(int z=0;z<projectidlist.size();z++){ %>
+						  	<%for(int z=0;z<1;z++){ %>
 						  	<%if(z!=0){ break;} %>
 								<div>
 									<b>Project : <%=ProjectDetail.get(z)[1] %> 		</b>

@@ -1473,4 +1473,18 @@ public class PrintDaoImpl implements PrintDao {
 			return (List<Object[]>)query.getResultList();
 		}
 		
+		private static final String OTHERMEETINGLIST="SELECT a.ScheduleId,a.ScheduleDate,b.CommitteeShortName FROM committee_schedule a, committee b WHERE  a.CommitteeId= b.CommitteeId AND a.projectid=:projectid AND b.CommitteeId NOT IN (1,2)  AND a.ScheduleFlag IN ('MKV','MMR','MMF','MMS','MMA')   ORDER BY b.CommitteeShortName,a.ScheduleDate DESC";
+		@Override
+		public List<Object[]> otherMeetingList(String projectid) throws Exception {
+			
+			try {
+			Query query = manager.createNativeQuery(OTHERMEETINGLIST);
+			query.setParameter("projectid", projectid);
+			
+			return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+					e.printStackTrace();
+					return  new ArrayList<>();
+			}
+		}
 	}

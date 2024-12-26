@@ -134,4 +134,5 @@ public interface PrintService {
 	public ProjectSlides SlideVideoDownload(String achmentid) throws Exception;
 	public long addOverallFinace(List<ProjectOverallFinance> list, String projectid)throws Exception;
 	public List<Object[]> getrOverallFinance(String proid)throws Exception;
+	public List<Object[]> otherMeetingList(String projectid)throws Exception;
 }

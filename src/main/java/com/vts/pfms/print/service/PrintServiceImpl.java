@@ -1246,7 +1246,10 @@ public List<Object[]> getrOverallFinance(String proid) throws Exception {
 	// TODO Auto-generated method stub
 	return dao.getrOverallFinance(proid);
 }
-
+@Override
+public List<Object[]> otherMeetingList(String projectid) throws Exception {
+	return dao.otherMeetingList(projectid);
+}
 
 
 

@@ -639,6 +639,12 @@ public class PrintController {
 	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
 	    	String CommitteeCode = committee.getCommitteeShortName().trim();
 	    	
+	    
+	    	if(LabCode.equalsIgnoreCase("ADE")) {
+		    	List<Object[]>otherMeetingList = service.otherMeetingList(projectid);
+		    	req.setAttribute("otherMeetingList", otherMeetingList);
+		    	}
+	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
 	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
 	    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
@@ -786,6 +792,8 @@ public class PrintController {
 	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
 	    }
 /* ----------------------------------------------------------------------------------------------------------  */
+	    	
+	  
 	    	
 	    	req.setAttribute("TechImages",TechImages);
 	    	req.setAttribute("committeeData", committee);
@@ -2297,7 +2305,10 @@ public class PrintController {
 	    			}
 	    		}
 	    	}
-	    	
+	    	if(LabCode.equalsIgnoreCase(LabCode)) {
+	    	List<Object[]>otherMeetingList = service.otherMeetingList(projectid);
+	    	req.setAttribute("otherMeetingList", otherMeetingList);
+	    	}
 	    	
 	    	Committee committee = service.getCommitteeData(committeeid);
 	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
