@@ -12,6 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +25,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dao.DocumentsDao;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.IGIApplicableDocs;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
+import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
+import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 
@@ -125,69 +131,105 @@ public class DocumentsServiceImpl implements DocumentsService{
 	
 	/* ************************************************ IGI Document ***************************************************** */
 	@Override
-	public List<Object[]> IgiDocumentList() throws Exception
+	public List<Object[]> getIGIDocumentList() throws Exception
 	{
-		return dao.IgiDocumentList();
+		return dao.getIGIDocumentList();
 	}
 	
 	@Override
-	public long addPfmsIgiDocument(PfmsIGIDocument pfmsIgiDocument) throws Exception
+	public long addPfmsIGIDocument(PfmsIGIDocument pfmsIgiDocument) throws Exception
 	{
-		return dao.addPfmsIgiDocument(pfmsIgiDocument);
+		return dao.addPfmsIGIDocument(pfmsIgiDocument);
 	}
 	
 	@Override
-	public List<Object[]> igiDocumentSummaryList(String igiDocId) throws Exception
+	public List<Object[]> getDocumentSummaryList(String docId, String docType) throws Exception
 	{
-		return dao.igiDocumentSummaryList(igiDocId);
+		return dao.getDocumentSummaryList(docId, docType);
 		
 	}
 	
 	@Override
-	public IGIDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception
+	public IGIDocumentSummary getIGIDocumentSummaryById(String SummaryId) throws Exception
 	{
-		return dao.getIgiDocumentSummaryById(SummaryId);
+		return dao.getIGIDocumentSummaryById(SummaryId);
 	}
 	
 	
 	@Override
-	public long addIgiDocumentSummary(IGIDocumentSummary rs) throws Exception
+	public long addIGIDocumentSummary(HttpServletRequest req, HttpSession ses) throws Exception
 	{
-		return dao.addIgiDocumentSummary(rs);
-	}
-	
-	@Override
-	public List<Object[]> igiDocumentMemberList(String igiDocId) throws Exception
-	{
-		return dao.igiDocumentMemberList(igiDocId);
-	}
-	
-	@Override
-	public List<Object[]> getDocmployeeListByIGIDocId(String labCode, String igiDocId) throws Exception
-	{
-		return dao.getDocmployeeListByIGIDocId(labCode, igiDocId);
-	}
-
-	@Override
-	public long addIGIDocumentMembers(IGIDocumentMembers rm) throws Exception {
-		
-		int numberOfPersons= rm.getEmps().length; 
-		
-		String []assignee= rm.getEmps();
-		long count=0;
-		for(int i=0;i<numberOfPersons;i++) {
-			IGIDocumentMembers r = new IGIDocumentMembers();
-
-			r.setCreatedBy(rm.getCreatedBy());
-			r.setCreatedDate(rm.getCreatedDate());
-			r.setEmpId(Long.parseLong(assignee[i]));
-			r.setIsActive(1);
-			r.setIGIDocId(rm.getIGIDocId());
-
-			count=dao.addIGIDocumentMembers(r);
+		try {
+			String UserId = (String) ses.getAttribute("Username");
+			String action = req.getParameter("action");
 			
+			IGIDocumentSummary documentSummary = action != null && action.equalsIgnoreCase("Add") ? new IGIDocumentSummary()
+												: dao.getIGIDocumentSummaryById(req.getParameter("summaryId"));
+			documentSummary.setAbstract(req.getParameter("abstract"));
+			documentSummary.setAdditionalInformation(req.getParameter("information"));
+			documentSummary.setKeywords(req.getParameter("keywords"));
+			documentSummary.setDistribution(req.getParameter("distribution"));
+			documentSummary.setApprover(Long.parseLong(req.getParameter("approver")));
+			documentSummary.setReviewer(req.getParameter("reviewer"));
+			documentSummary.setPreparedBy(req.getParameter("preparedBy"));
+			documentSummary.setDocId(Long.parseLong(req.getParameter("docId")));
+			documentSummary.setDocType(req.getParameter("docType"));
+			documentSummary.setReleaseDate(fc.rdfTosdf(req.getParameter("pdc")));
+			if (action.equalsIgnoreCase("Add")) {
+				documentSummary.setCreatedBy(UserId);
+				documentSummary.setCreatedDate(sdtf.format(new Date()));
+				documentSummary.setIsActive(1);
+			} else if (action.equalsIgnoreCase("Edit")) {
+
+				documentSummary.setSummaryId(Long.parseLong(req.getParameter("summaryId")));
+				documentSummary.setModifiedBy(UserId);
+				documentSummary.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			return dao.addIGIDocumentSummary(documentSummary);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
-		return count;
+	}
+	
+	@Override
+	public List<Object[]> getDocumentMemberList(String docId, String docType) throws Exception
+	{
+		return dao.getDocumentMemberList(docId, docType);
+	}
+	
+	@Override
+	public List<Object[]> getDocmployeeListByDocId(String labCode, String docId, String docType) throws Exception
+	{
+		return dao.getDocmployeeListByDocId(labCode, docId, docType);
+	}
+
+	@Override
+	public long addIGIDocumentMembers(HttpServletRequest req, HttpSession ses) throws Exception {
+		
+		try {
+			String[] assignee = req.getParameterValues("Assignee");
+			String UserId = (String) ses.getAttribute("Username");
+			
+			if(assignee!=null && assignee.length>0) {
+				for(int i=0;i<assignee.length;i++) {
+					IGIDocumentMembers docMembers = new IGIDocumentMembers();
+					docMembers.setDocId(Long.parseLong(req.getParameter("docId")));
+					docMembers.setDocType(req.getParameter("docType"));
+					docMembers.setEmpId(Long.parseLong(assignee[i]));
+					docMembers.setCreatedBy(UserId);
+					docMembers.setCreatedDate(sdtf.format(new Date()));
+					docMembers.setIsActive(1);
+					
+					dao.addIGIDocumentMembers(docMembers);
+				}
+			}
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	@Override
@@ -206,9 +248,10 @@ public class DocumentsServiceImpl implements DocumentsService{
 	public long addIGIInterface(IGIInterface igiInterface) throws Exception {
 		
 		if(igiInterface.getInterfaceId()==null) {
-			int interfaceCount = dao.getInterfaceCountByType(igiInterface.getInterfaceType());
+			int count = dao.getInterfaceCountByType(igiInterface.getInterfaceType());
 			String[] split = igiInterface.getInterfaceType().split(" ");
-			igiInterface.setInterfaceSeqNo((split[0].charAt(0)+""+split[1].charAt(0))+"_"+(interfaceCount+1));
+			String seqCount = (count>=99)?("_"+(count+1)) : ((count>=9 && count<99)?("_0"+(count+1)) : ("_00"+(count+1)) );
+			igiInterface.setInterfaceSeqNo((split[0].charAt(0)+""+split[1].charAt(0))+seqCount);
 		}
 		return dao.addIGIInterface(igiInterface);
 	}
@@ -244,15 +287,26 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public int deleteIGIDocumentShortCodesByType(String shortCodeType) throws Exception {
+	public long addIGIDocumentShortCodes(IGIDocumentShortCodes igiDocumentShortCodes, String docId, String docType) throws Exception {
 		
-		return dao.deleteIGIDocumentShortCodesByType(shortCodeType);
-	}
-	
-	@Override
-	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception {
+		try {
+
+			long shortCodeId = dao.addIGIDocumentShortCodes(igiDocumentShortCodes);
+			
+			IGIDocumentShortCodesLinked shortCodesLinked = IGIDocumentShortCodesLinked.builder()
+															.ShortCodeId(shortCodeId)
+															.DocId(Long.parseLong(docId))
+															.DocType(docType)
+															.CreatedBy(igiDocumentShortCodes.getCreatedBy())
+															.CreatedDate(sdtf.format(new Date()))
+															.IsActive(1)
+															.build();
+			return dao.addIGIDocumentShortCodesLinked(shortCodesLinked);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 		
-		return dao.addIGIDocumentShortCodes(igiDocumentShortCodes);
 	}
 	
 	@Override
@@ -262,20 +316,20 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public List<Object[]> getIGIApplicableDocs(String docFlag) throws Exception {
+	public List<Object[]> getIGIApplicableDocs(String docId, String docType) throws Exception {
 		
-		return dao.getIGIApplicableDocs(docFlag);
+		return dao.getIGIApplicableDocs(docId, docType);
 	}
 	
 	@Override
-	public long addIGIApplicableDocs(String igiDocId, String docFlag, String[] applicableDocIds, String userId) throws Exception {
+	public long addIGIApplicableDocs(String docId, String docType, String[] applicableDocIds, String userId) throws Exception {
 		try {
 			
 			for(int i=0; i<applicableDocIds.length; i++) {
 				IGIApplicableDocs applicableDoc = new IGIApplicableDocs();
 				applicableDoc.setApplicableDocId(applicableDocIds[i]!=null? Long.parseLong(applicableDocIds[i]):0);
-				applicableDoc.setDocFlag(docFlag);
-				applicableDoc.setIGIDocId(igiDocId!=null?Long.parseLong(igiDocId):0);
+				applicableDoc.setDocType(docType);
+				applicableDoc.setDocId(docId!=null?Long.parseLong(docId):0);
 				applicableDoc.setCreatedBy(userId);
 				applicableDoc.setCreatedDate(sdtf.format(new Date()));
 				applicableDoc.setIsActive(1);
@@ -296,6 +350,103 @@ public class DocumentsServiceImpl implements DocumentsService{
 		return dao.deleteIGIApplicableDocument(igiApplicableDocId);
 	}
 	
-	/* ************************************************ IGI Document End ***************************************************** */
+	@Override
+	public Long getFirstVersionIGIDocId() throws Exception {
 
+		return dao.getFirstVersionIGIDocId();
+	}
+
+	@Override
+	public List<Object[]> getIGIShortCodesLinkedListByType(String docId, String docType) throws Exception {
+		
+		return dao.getIGIShortCodesLinkedListByType(docId, docType);
+	}
+
+	@Override
+	public long addIGIDocumentShortCodesLinked(IGIDocumentShortCodesLinked igiDocumentShortCodeLinked) throws Exception {
+
+		return dao.addIGIDocumentShortCodesLinked(igiDocumentShortCodeLinked);
+	}
+	
+	@Override
+	public int deleteIGIDocumentShortCodesLinked(String shortCodeLinkedId) throws Exception {
+		
+		return dao.deleteIGIDocumentShortCodesLinked(shortCodeLinkedId);
+	}
+	
+	@Override
+	public BigInteger getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception {
+		
+		return dao.getDuplicateIGIShortCodeCount(shortCode, shortCodeType);
+	}
+	
+	@Override
+	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs, String docId, String docType) throws Exception {
+		
+		try {
+
+			long applicableDocId = dao.addApplicableDocs(pfmsApplicableDocs);
+			
+			IGIApplicableDocs shortCodesLinked = IGIApplicableDocs.builder()
+															.ApplicableDocId(applicableDocId)
+															.DocId(Long.parseLong(docId))
+															.DocType(docType)
+															.CreatedBy(pfmsApplicableDocs.getCreatedBy())
+															.CreatedDate(sdtf.format(new Date()))
+															.IsActive(1)
+															.build();
+			return dao.addIGIApplicableDocs(shortCodesLinked);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+	
+	/* ************************************************ IGI Document End ***************************************************** */
+	
+	/* ************************************************ ICD Document ***************************************************** */
+
+	@Override
+	public List<Object[]> getICDDocumentList(String projectId, String initiationId) throws Exception {
+		
+		return dao.getICDDocumentList(projectId, initiationId);
+	}
+	
+	@Override
+	public long addPfmsICDDocument(PfmsICDDocument pfmsIGIDocument) throws Exception {
+		
+		return dao.addPfmsICDDocument(pfmsIGIDocument);
+	}
+	
+	@Override
+	public PfmsICDDocument getPfmsICDDocumentById(String icdDocId) throws Exception {
+
+		return dao.getPfmsICDDocumentById(icdDocId);
+	}
+	
+	@Override
+	public Long getFirstVersionICDDocId(String projectId, String initiationId) throws Exception {
+		
+		return dao.getFirstVersionICDDocId(projectId, initiationId);
+	}
+	
+	@Override
+	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception {
+		
+		return dao.addICDDocumentConnections(connection);
+	}
+	
+	@Override
+	public List<Object[]> getICDConnectionsList() throws Exception {
+		
+		return dao.getICDConnectionsList();
+	}
+	
+	@Override
+	public int deleteICDConnectionById(String icdConnectionId) throws Exception {
+
+		return dao.deleteICDConnectionById(icdConnectionId);
+	}
+	
 }

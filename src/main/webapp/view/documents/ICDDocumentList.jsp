@@ -221,16 +221,26 @@ background: none;border-style: none;
 .left {
 	text-align: left !important;
 }
+
+.select2-container {
+	width: 100% !important;
+}
 </style>   
 
 </head>
 <body>
 <%
-    List<Object[]> igiDocumentList = (List<Object[]>) request.getAttribute("igiDocumentList");
+    List<Object[]> icdDocumentList = (List<Object[]>) request.getAttribute("icdDocumentList");
+    List<Object[]> projectList = (List<Object[]>) request.getAttribute("projectList");
+    List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
+    String projectId = (String)request.getAttribute("projectId");
+    String initiationId = (String)request.getAttribute("initiationId");
+    String projectType = (String)request.getAttribute("projectType");
+    
     FormatConverter fc = new FormatConverter();
     
     String version = "1.0";
-    version = igiDocumentList != null && igiDocumentList.size() > 0 ? igiDocumentList.get(0)[1].toString() : "1.0";
+    version = icdDocumentList != null && icdDocumentList.size() > 0 ? icdDocumentList.get(0)[1].toString() : "1.0";
 %>
 <% 
     String ses = (String) request.getParameter("result");
@@ -258,16 +268,56 @@ background: none;border-style: none;
 <div class="container-fluid mainDiv">        
     <div class="col-md-12">
         <div class="card shadow-nohover">
-            <div class="card-header SubmitHeader">
-                <div class="row" style="display: flex; justify-content: space-between;">
-                    <div class="col-md-10">
-                        <h5 class="mb-0"><b>&nbsp; &nbsp;IGI Document List </b></h5> 
-                    </div>  
-                    <div class="col-md-2 text-md-end">
-                       
-                    </div>   
-                </div>
-            </div>
+        	<form action="ICDDocumentList.htm" method="POST">
+        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	            <div class="card-header">
+	            	<div class="row">
+	            		<div class="col-md-4">
+	            			<h5 >ICD Document List</h5>
+	            		</div>
+	            		
+	            		<div class="col-md-2">
+	            		</div>
+	            		<div class="col-md-1">
+	          				<label class="control-label right" style="font-weight: bolder;font-size: 15px;float:right;color:#07689f;">Project Type:</label>
+	  					</div>
+					    <div class="col-md-2" style="margin-top: -9px;">
+					    	<select class="form-control" name="projectType" onchange="this.form.submit()">
+					        	<option disabled="disabled" selected value="">Choose...</option>
+					        	<option value="M" <%if(projectType.equalsIgnoreCase("M")){ %> selected="selected" <% }%>>Main Project</option>
+					         	<option value="I" <%if(projectType.equalsIgnoreCase("I")){ %> selected="selected" <% }%>>Initiation Project</option>
+					    	</select>
+					    </div>
+	            		<div class="col-md-1 right">
+							<label class="control-label" style="font-size: 15px; color: #07689f;"><b>Project:</b></label>
+						</div>
+						<div class="col-md-2"  style="margin-top: -8px;">
+							<%if(projectType.equalsIgnoreCase("M")){ %>
+								<select class="form-control selectdee" name="projectId" onchange="this.form.submit()" style="margin-top: -10px;">
+			
+									<%if(projectList!=null && projectList.size()>0){
+										for (Object[] obj : projectList) {
+											String projectshortName1 = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : ""; %>
+											<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %> selected <%} %>>
+												<%=obj[4]+projectshortName1 %>
+											</option>
+									<%} }%>
+								</select>
+							<%} else{%>
+								<select class="form-control selectdee" name="initiationId" onchange="this.form.submit()" style="margin-top: -10px;">
+			
+									<%if(preProjectList!=null && preProjectList.size()>0){
+										for (Object[] obj : preProjectList) {%>
+											<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %> selected <%} %>>
+												<%=obj[3]+"( "+obj[2]+" )" %>
+											</option>
+									<%} }%>
+								</select>	
+							<%} %>
+						</div>
+	            	</div>
+	            </div>
+			</form>	
             <div class="card-body">
                 <div class="col-md-12">
                     <div class="table-responsive"> 
@@ -283,20 +333,19 @@ background: none;border-style: none;
                                 </tr>
                             </thead>
                             <tbody>    
-                                <% if (igiDocumentList != null && igiDocumentList.size() > 0) {
+                                <% if (icdDocumentList != null && icdDocumentList.size() > 0) {
                                     int count = 0;
-                                    for (Object[] obj : igiDocumentList) {
-                                        count++;
+                                    for (Object[] obj : icdDocumentList) {
                                 %>
                                 <tr>
-                                    <td class="center" ><%= count %></td>
+                                    <td class="center" ><%=++count %></td>
                                     <td ><%= obj[10]+", "+obj[11] %></td>
                                     <td class="center"><%= fc.sdfTordf(obj[4].toString()) %></td>
                                     <td class="center" >v<%= obj[1] %></td>
                                     <td class="center" ></td>
                                    <td class="center">
 									    <form action="#" method="POST" name="myfrm" style="display: inline">
-									        <button type="submit" class="editable-clicko" formaction="IGIDocumentDetails.htm">
+									        <button type="submit" class="editable-clicko" formaction="ICDDocumentDetails.htm">
 									            <div class="cc-rockmenu">
 									                <div class="rolling">
 									                    <figure class="rolling_icon">
@@ -307,7 +356,7 @@ background: none;border-style: none;
 									            </div>
 									        </button>
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-									        <input type="hidden" name="igiDocId" value="<%= obj[0] %>">
+									        <input type="hidden" name="icdDocId" value="<%= obj[0] %>">
 									    </form>
 									</td>
                                 </tr>
@@ -317,8 +366,10 @@ background: none;border-style: none;
                         </table>
                     </div>
                     <div style="margin-top: 20px; text-align: center;"> 
-					    <form id="documentForm" action="IGIDocumentAdd.htm">
+					    <form id="documentForm" action="ICDDocumentAdd.htm">
 					        <input type="hidden" name="version" id="versionField" value="<%= version %>">
+					        <input type="hidden" name="projectId" value="<%=projectId %>">
+					        <input type="hidden" name="initiationId" value="<%=initiationId %>">
 					        <button class="btn btn-sm " type="button" onclick="confirmAdd()" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create Doc</button>
 					    </form>
 					</div>
@@ -371,10 +422,10 @@ background: none;border-style: none;
 
 <!-- Confirm Add Functionality -->
 <script type="text/javascript">
-    var a = '<%= igiDocumentList!=null?igiDocumentList.size():0 %>';
+    var a = '<%= icdDocumentList!=null?icdDocumentList.size():0 %>';
     function confirmAdd() {
         if (a == 0) {
-            if (confirm('Do you want to Create IGI Document?')) {
+            if (confirm('Do you want to Create ICD Document?')) {
                 var form = document.getElementById('documentForm');
                 var formAction = form.getAttribute('action'); // Get the form action
 

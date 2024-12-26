@@ -29,7 +29,9 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.vts.pfms.login.CustomAuthenticationFailureHandler;
+import com.vts.pfms.login.CustomInvalidSessionStrategy;
 import com.vts.pfms.login.CustomLogoutHandler;
+import com.vts.pfms.login.CustomSessionExpiredStrategy;
 import com.vts.pfms.login.LoginSuccessHandler;
 
 @Configuration
@@ -46,6 +48,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	 @Autowired
 	 private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 	 
+	 @Autowired
+	 private CustomInvalidSessionStrategy customInvalidSessionStrategy;
+	 
+	 @Autowired
+	 private CustomSessionExpiredStrategy customSessionExpiredStrategy;
+	 
 	 @Override
 	 @Bean
 	 public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -61,20 +69,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
 		  http.authorizeRequests()
 		
 		  .antMatchers("/").hasAnyRole("USER","ADMIN")
-		  .antMatchers("/webjars/**").permitAll()
-		  .antMatchers("/resources/**").permitAll()
-		  .antMatchers("/view/**").permitAll()
-		  .antMatchers("/LoginPage/*").permitAll()
-		  .antMatchers("/pfms-dg/*").permitAll()
-		  .antMatchers("/api/sync/**").permitAll()
-		  .antMatchers("/login").permitAll()
-		  .antMatchers("/wr").permitAll()
-		  .antMatchers("/ProjectRequirementAttachmentDownload.htm").permitAll()
-		  .antMatchers("/ProjectClosureChecklistFileDownload.htm").permitAll()
-		  .antMatchers("/TimeSheetWorkFlowPdf.htm").permitAll()
+		  .antMatchers("/webjars/**", "/resources/**", "/view/**", "/LoginPage/*", "/pfms-dg/*", "/api/sync/**", 
+				  "/login", "/wr", "/login?sessionInvalid", "/login?sessionExpired", "/wr?sessionInvalid", "/wr?sessionExpired",
+				  "/ProjectRequirementAttachmentDownload.htm", "/ProjectClosureChecklistFileDownload.htm", "/TimeSheetWorkFlowPdf.htm").permitAll()
 		  .anyRequest().authenticated().accessDecisionManager(adm())
 		  
 		  .and()
@@ -106,7 +107,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
           .permitAll()
 
 		   .and()
-		   .exceptionHandling().accessDeniedPage("/login")
+		   .exceptionHandling().accessDeniedPage("/login?accessDenied")
 		 
 		    
 		    .and()
@@ -115,10 +116,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		    .and().sessionManagement()
 		    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 		    .sessionFixation().migrateSession()
-			.invalidSessionUrl("/login")
+			.invalidSessionUrl("/login?sessionInvalid")
+			//.invalidSessionStrategy(customInvalidSessionStrategy)
 			.maximumSessions(2)
 			.maxSessionsPreventsLogin(false)
-			.expiredUrl("/login")
+			.expiredUrl("/login?sessionExpired")
+			//.expiredSessionStrategy(customSessionExpiredStrategy)
 		    //.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/login")
 		    
 		    ;

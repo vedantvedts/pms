@@ -14,12 +14,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.IGIApplicableDocs;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
+import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
+import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 
@@ -104,9 +107,11 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		return 0;
 	}
 	
+	/* ************************************************ IGI Document ***************************************************** */
+	
 	private static final String IGIDOCUMENTLIST="SELECT a.IGIDocId, a.IGIVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.IGIStatusCode, a.IGIStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation FROM pfms_igi_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId WHERE a.IsActive=1  ORDER BY a.IGIDocId DESC";
 	@Override
-	public List<Object[]> IgiDocumentList() throws Exception {
+	public List<Object[]> getIGIDocumentList() throws Exception {
 		try {
 			Query query=manager.createNativeQuery(IGIDOCUMENTLIST);
 			return (List<Object[]>)query.getResultList();
@@ -118,7 +123,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	}
 	
 	@Override
-	public long addPfmsIgiDocument(PfmsIGIDocument  pfmsIgiDocument) throws Exception
+	public long addPfmsIGIDocument(PfmsIGIDocument  pfmsIgiDocument) throws Exception
 	{
 		try {
 		    manager.persist(pfmsIgiDocument);
@@ -126,7 +131,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return pfmsIgiDocument.getIGIDocId();
 		}
 		catch (Exception e) {
-			logger.error(new Date()  + " Inside DAO savePfmsIgiDocument " + e);
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addPfmsIgiDocument " + e);
 			e.printStackTrace();
 			return 0 ;
 		}
@@ -137,12 +142,13 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			+ " CONCAT(IFNULL(CONCAT(e2.Title,' '),(IFNULL(CONCAT(e2.Salutation, ' '), ''))), e2.EmpName, ', ', d2.Designation) AS 'Reviewer1', \r\n"
 			+ " CONCAT(IFNULL(CONCAT(e3.Title,' '),(IFNULL(CONCAT(e3.Salutation, ' '), ''))), e3.EmpName, ', ', d3.Designation) AS 'PreparedBy1', a.ReleaseDate \r\n"
 			+ "FROM pfms_igi_document_summary a LEFT JOIN employee e1 ON e1.EmpId = a.Approver LEFT JOIN employee_desig d1 ON d1.DesigId = e1.DesigId LEFT JOIN employee e2 ON e2.EmpId = a.Reviewer LEFT JOIN employee_desig d2 ON d2.DesigId = e2.DesigId LEFT JOIN employee e3 ON e3.EmpId = a.PreparedBy LEFT JOIN employee_desig d3 ON d3.DesigId = e3.DesigId \r\n"
-			+ "WHERE a.IsActive = 1 AND a.IGIDocId=:IGIDocId";
+			+ "WHERE a.IsActive = 1 AND a.DocId=:DocId AND a.DocType=:DocType";
 	@Override
-	public List<Object[]> igiDocumentSummaryList(String igiDocId) throws Exception {
+	public List<Object[]> getDocumentSummaryList(String docId, String docType) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(IGIDOCUMENTSUMMARYlIST);
-			query.setParameter("IGIDocId", igiDocId);
+			query.setParameter("DocId", docId);
+			query.setParameter("DocType", docType);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -152,19 +158,19 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	}
 	
    @Override
-	public IGIDocumentSummary getIgiDocumentSummaryById(String summaryId) throws Exception {
+	public IGIDocumentSummary getIGIDocumentSummaryById(String summaryId) throws Exception {
 		try {
 			
 			return manager.find(IGIDocumentSummary.class, Long.parseLong(summaryId)) ;
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date()+" Inside DAO getIgiDocumentSummaryById "+e);
+			logger.error(new Date()+" Inside DocumentsDAOImpl getIgiDocumentSummaryById "+e);
 			return null;
 		}
 	}
    
 	@Override
-	public long addIgiDocumentSummary(IGIDocumentSummary rs) throws Exception {
+	public long addIGIDocumentSummary(IGIDocumentSummary rs) throws Exception {
 		try {
 			manager.persist(rs);
 			manager.flush();
@@ -175,13 +181,13 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	
-	private static final String IGIDOCUMENTMEMBERLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid,c.IgiMemeberId FROM employee a,employee_desig b,pfms_igi_document_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.IGIDocId =:IGIDocId AND c.IsActive =1 ORDER BY b.desigid ASC";
+	private static final String IGIDOCUMENTMEMBERLIST = "SELECT a.empid, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.Designation,a.LabCode,b.DesigId,c.IGIMemeberId FROM employee a,employee_desig b,pfms_igi_document_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.EmpId = c.EmpId AND c.DocId =:DocId AND c.DocType=:DocType AND c.IsActive =1 ORDER BY b.DesigId";
 	@Override
-	public List<Object[]> igiDocumentMemberList(String igiDocId) throws Exception {
+	public List<Object[]> getDocumentMemberList(String docId, String docType) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(IGIDOCUMENTMEMBERLIST);
-			query.setParameter("IGIDocId", igiDocId);
+			query.setParameter("DocId", docId);
+			query.setParameter("DocType", docType);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -190,13 +196,14 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		
 	}
 	
-	private static final String DOCEMPLISTBYIGIDOCID="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_igi_document_members WHERE IGIDocId =:IGIDocId AND  isactive = 1)ORDER BY a.srno=0,a.srno";
+	private static final String DOCEMPLISTBYIGIDOCID="SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName', b.Designation FROM employee a,employee_desig b WHERE a.IsActive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND EmpId NOT IN (SELECT empid FROM pfms_igi_document_members WHERE DocId =:DocId AND DocType=:DocType AND IsActive = 1)ORDER BY a.SrNo=0,a.SrNo";
 	@Override
-	public List<Object[]> getDocmployeeListByIGIDocId(String labCode, String igiDocId) throws Exception {
+	public List<Object[]> getDocmployeeListByDocId(String labCode, String docId, String docType) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(DOCEMPLISTBYIGIDOCID);
 			query.setParameter("LabCode", labCode);
-			query.setParameter("IGIDocId", igiDocId);
+			query.setParameter("DocId", docId);
+			query.setParameter("DocType", docType);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -224,7 +231,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		try {
 			return manager.find(IGIDocumentMembers.class, igiMemeberId);
 		}catch (Exception e) {
-			logger.error(new Date() + "Inside DAO  getIGIDocumentMembersById "+e);
+			logger.error(new Date() + "Inside DocumentsDAOImpl getIGIDocumentMembersById "+e);
 			e.printStackTrace();
 			return null;
 		}
@@ -297,7 +304,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			query.setParameter("InterfaceCode", interfaceCode);
 			return (BigInteger)query.getSingleResult();
 		}catch (Exception e) {
-			logger.error(new Date() +" Inside DAO getDuplicateInterfaceCodeCount "+ e);
+			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateInterfaceCodeCount "+ e);
 			e.printStackTrace();
 			return null;
 		}
@@ -313,29 +320,14 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return new ArrayList<IGIDocumentShortCodes>();
 		}
 	}
-
-	private static final String DELETEIGIDOCUMENTSHORTCODESBYTYPE = "UPDATE pfms_igi_document_shortcodes SET IsActive=0 WHERE ShortCodeType=:ShortCodeType";
-	@Override
-	public int deleteIGIDocumentShortCodesByType(String shortCodeType) throws Exception {
-		try {
-			Query query=manager.createNativeQuery(DELETEIGIDOCUMENTSHORTCODESBYTYPE);
-			query.setParameter("ShortCodeType", shortCodeType);
-			return query.executeUpdate();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
 	
 	@Override
-	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception {
+	public long addIGIDocumentShortCodes(IGIDocumentShortCodes igiDocumentShortCode) throws Exception {
 		try {
-			for(IGIDocumentShortCodes documentShortCode : igiDocumentShortCodes) {
-				manager.persist(documentShortCode);
-				manager.flush();
-			}
-			
-			return 1;
+			manager.persist(igiDocumentShortCode);
+			manager.flush();
+
+			return igiDocumentShortCode.getShortCodeId();
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -353,12 +345,13 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String GETIGIGAPPLICABLEDOCS = "SELECT a.IGIApplicableDocId, a.ApplicableDocId, b.DocumentName FROM pfms_igi_document_applicabledocs a, pfms_applicable_docs b WHERE a.IsActive=1 AND a.ApplicableDocId=b.ApplicableDocId AND a.DocFlag = :DocFlag";
+	private static final String GETIGIGAPPLICABLEDOCS = "SELECT a.IGIApplicableDocId, a.ApplicableDocId, b.DocumentName FROM pfms_igi_document_applicabledocs a, pfms_applicable_docs b WHERE a.IsActive=1 AND a.ApplicableDocId=b.ApplicableDocId AND a.DocId=:DocId AND a.DocType = :DocType";
 	@Override
-	public List<Object[]> getIGIApplicableDocs(String docFlag) throws Exception {
+	public List<Object[]> getIGIApplicableDocs(String docId, String docType) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(GETIGIGAPPLICABLEDOCS);
-			query.setParameter("DocFlag", docFlag);
+			query.setParameter("DocId", docId);
+			query.setParameter("DocType", docType);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -402,7 +395,194 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			BigInteger maxCount = (BigInteger)query.getSingleResult();
 			return maxCount.intValue();
 		}catch (Exception e) {
-			logger.error(new Date() +" Inside DAO getInterfaceCountByType "+ e);
+			logger.error(new Date() +" Inside DocumentsDAOImpl getInterfaceCountByType "+ e);
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	private static final String GETFIRSTVERSIONIGIDOCID = "SELECT a.IGIDocId FROM pfms_igi_document a WHERE a.IGIVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	@Override
+	public Long getFirstVersionIGIDocId() throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETFIRSTVERSIONIGIDOCID);
+			BigInteger count = (BigInteger)query.getSingleResult();
+			return count.longValue();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionIGIDocId " + e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	@Override
+	public long addIGIDocumentShortCodesLinked(IGIDocumentShortCodesLinked igiDocumentShortCodeLinked) throws Exception {
+		try {
+			manager.persist(igiDocumentShortCodeLinked);
+			manager.flush();
+
+			return igiDocumentShortCodeLinked.getShortCodeLinkedId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	private static final String GETIGISHORTCODESLINKEDLISTBYTYPE = "SELECT a.ShortCodeId, a.ShortCode, a.FullName, a.ShortCodeType, a.IsActive, b.ShortCodeLinkedId FROM pfms_igi_document_shortcodes a, pfms_igi_document_shortcodes_linked b WHERE b.IsActive=1 AND a.ShortCodeId=b.ShortCodeId AND DocId=:DocId AND DocType=:DocType";
+	@Override
+	public List<Object[]> getIGIShortCodesLinkedListByType(String docId, String docType) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(GETIGISHORTCODESLINKEDLISTBYTYPE);
+			query.setParameter("DocId", docId);
+			query.setParameter("DocType", docType);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+
+	private static final String DELETEIGIDOCUMENTSHORTCODESLINKED = "UPDATE pfms_igi_document_shortcodes_linked SET IsActive=0 WHERE ShortCodeLinkedId=:ShortCodeLinkedId";
+	@Override
+	public int deleteIGIDocumentShortCodesLinked(String shortCodeLinkedId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEIGIDOCUMENTSHORTCODESLINKED);
+			query.setParameter("ShortCodeLinkedId", shortCodeLinkedId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	public static final String DUPLICATEIGISHORTCODECOUNT = "SELECT COUNT(ShortCodeId) AS 'Count' FROM pfms_igi_document_shortcodes WHERE ShortCode=:ShortCode AND ShortCodeType=:ShortCodeType AND IsActive=1";
+	@Override
+	public BigInteger getDuplicateIGIShortCodeCount(String shortCode,String shortCodeType) throws Exception {
+
+		try {
+			Query query = manager.createNativeQuery(DUPLICATEIGISHORTCODECOUNT);
+			query.setParameter("ShortCode", shortCode);
+			query.setParameter("ShortCodeType", shortCodeType);
+			return (BigInteger)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateIGIShortCodeCount "+ e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs) throws Exception {
+		try {
+			manager.persist(pfmsApplicableDocs);
+			manager.flush();
+
+			return pfmsApplicableDocs.getApplicableDocId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	/* ************************************************ IGI Document End***************************************************** */
+	
+	/* ************************************************ ICD Document ***************************************************** */
+	private static final String ICDDOCUMENTLIST = "SELECT a.ICDDocId, a.ICDVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.ICDStatusCode, a.ICDStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, a.ProjectId, a.InitiationId FROM pfms_icd_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId ORDER BY a.ICDDocId DESC";
+	@Override
+	public List<Object[]> getICDDocumentList(String projectId, String initiationId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(ICDDOCUMENTLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("InitiationId", initiationId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	@Override
+	public long addPfmsICDDocument(PfmsICDDocument  pfmsIGIDocument) throws Exception
+	{
+		try {
+		    manager.persist(pfmsIGIDocument);
+		    manager.flush();
+			return pfmsIGIDocument.getICDDocId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addPfmsICDDocument " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+	
+	@Override
+	public PfmsICDDocument getPfmsICDDocumentById(String icdDocId) throws Exception {
+		try {
+			return manager.find(PfmsICDDocument.class, Long.parseLong(icdDocId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+
+	private static final String GETFIRSTVERSIONREQINITIATIONID = "SELECT a.ICDDocId FROM pfms_icd_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ICDVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	@Override
+	public Long getFirstVersionICDDocId(String projectId, String initiationId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETFIRSTVERSIONREQINITIATIONID);
+			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", projectId);
+			BigInteger count = (BigInteger)query.getSingleResult();
+			return count.longValue();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionIGIDocId " + e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	@Override
+	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception {
+		try {
+			manager.persist(connection);
+			manager.flush();
+			
+			return connection.getICDConnectionId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	private static final String GETICDCONEECTIONSLIST = "SELECT a.ICDConnectionId, a.ICDDocId, a.SubSystemMainIdOne, a.SubSystemMainIdTwo, a.SubSystemOne,  a.SubSystemTwo,  a.InterfaceId,\r\n"
+			+ "	b.InterfaceSeqNo, b.InterfaceCode, b.InterfaceName, b.InterfaceType, b.DataType, b.SignalType, b.InterfaceSpeed\r\n"
+			+ "FROM pfms_icd_document_connections a LEFT JOIN pfms_igi_interfaces b ON a.InterfaceId=b.InterfaceId\r\n"
+			+ "WHERE a.IsActive=1 ORDER BY a.SubSystemMainIdOne, a.SubSystemMainIdTwo";
+	@Override
+	public List<Object[]> getICDConnectionsList() throws Exception {
+		try {
+			Query query=manager.createNativeQuery(GETICDCONEECTIONSLIST);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+
+	private static final String DELETEICDCONNECTIONBYID = "UPDATE pfms_icd_document_connections SET IsActive=0 WHERE ICDConnectionId=:ICDConnectionId";
+	@Override
+	public int deleteICDConnectionById(String icdConnectionId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEICDCONNECTIONBYID);
+			query.setParameter("ICDConnectionId", icdConnectionId);
+			return query.executeUpdate();
+		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
 		}

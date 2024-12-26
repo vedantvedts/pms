@@ -13,23 +13,33 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
-@Table(name="pfms_igi_document_applicabledocs")
-public class IGIApplicableDocs implements Serializable {
+@Table(name="pfms_icd_Document")
+public class PfmsICDDocument implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long IGIApplicableDocId;
-	private Long ApplicableDocId;
-	private Long DocId;
-	private String DocType;
+	private Long ICDDocId;
+	private Long ProjectId;
+	private Long InitiationId;
+	private String ICDVersion;
+	private String LabCode;
+	private String InitiatedBy;
+	private String InitiatedDate;
+	private String ICDStatusCode;
+	private String ICDStatusCodeNext;
+	private String Remarks;
+	private String Introduction;
 	private String CreatedBy;
 	private String CreatedDate;
+	private String ModifiedBy;
+	private String ModifiedDate;
 	private int IsActive;
+
 }

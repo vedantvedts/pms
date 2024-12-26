@@ -28,7 +28,6 @@ public class IGIInterface {
 	private String Connector;
 	private String Protection;
 	private String InterfaceDescription;
-	private Long ParentId;
 	private Long IGIDocId;
 	private String CreatedBy;
     private String CreatedDate;

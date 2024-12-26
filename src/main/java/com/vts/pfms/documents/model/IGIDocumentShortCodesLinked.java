@@ -1,33 +1,36 @@
 package com.vts.pfms.documents.model;
 
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
-@Table(name="pfms_igi_document_members")
-public class IGIDocumentMembers {
-	
+@Table(name="pfms_igi_document_shortcodes_linked")
+public class IGIDocumentShortCodesLinked implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long IGIMemeberId;
-	private Long EmpId;
+	private Long ShortCodeLinkedId;
+	private Long ShortCodeId;
 	private Long DocId;
 	private String DocType;
 	private String CreatedBy;
 	private String CreatedDate;
 	private int IsActive;
 	
-	@Transient
-	private String[] emps;
-
 }

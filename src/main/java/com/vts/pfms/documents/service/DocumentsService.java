@@ -3,12 +3,18 @@ package com.vts.pfms.documents.service;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
+import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
+import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 
 public interface DocumentsService {
@@ -19,14 +25,14 @@ public interface DocumentsService {
 	public long StandardDocumentDelete(long standardDocumentId) throws Exception;
 	
 	/* ************************************************ IGI Document ***************************************************** */
-	public List<Object[]> IgiDocumentList() throws Exception;
-	public long addPfmsIgiDocument(PfmsIGIDocument pfmsIgiDocument) throws Exception;
-	public List<Object[]> igiDocumentSummaryList(String igiDocId) throws Exception;
-	public IGIDocumentSummary getIgiDocumentSummaryById(String SummaryId) throws Exception;
-	public long addIgiDocumentSummary(IGIDocumentSummary rs) throws Exception;
-	public List<Object[]> igiDocumentMemberList(String igiDocId) throws Exception;
-	public List<Object[]> getDocmployeeListByIGIDocId(String labCode, String igiDocId) throws Exception;
-	public long addIGIDocumentMembers(IGIDocumentMembers rm) throws Exception;
+	public List<Object[]> getIGIDocumentList() throws Exception;
+	public long addPfmsIGIDocument(PfmsIGIDocument pfmsIgiDocument) throws Exception;
+	public List<Object[]> getDocumentSummaryList(String docId, String docType) throws Exception;
+	public IGIDocumentSummary getIGIDocumentSummaryById(String SummaryId) throws Exception;
+	public long addIGIDocumentSummary(HttpServletRequest req, HttpSession ses) throws Exception;
+	public List<Object[]> getDocumentMemberList(String docId, String docType) throws Exception;
+	public List<Object[]> getDocmployeeListByDocId(String labCode, String docId, String docType) throws Exception;
+	public long addIGIDocumentMembers(HttpServletRequest req, HttpSession ses) throws Exception;
 	public IGIDocumentMembers getIGIDocumentMembersById(Long IgiMemeberId) throws Exception;
 	public int deleteIGIDocumentMembers(String igiMemeberId) throws Exception;
 	public long addIGIInterface(IGIInterface iif)throws Exception;
@@ -35,11 +41,26 @@ public interface DocumentsService {
 	public IGIInterface getIGIInterfaceById(String interfaceId) throws Exception;
 	public BigInteger getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception;
 	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception;
-	public int deleteIGIDocumentShortCodesByType(String shortCodeType) throws Exception;
-	public long addIGIDocumentShortCodes(List<IGIDocumentShortCodes> igiDocumentShortCodes) throws Exception;
+	public long addIGIDocumentShortCodes(IGIDocumentShortCodes igiDocumentShortCodes, String docId, String docType) throws Exception;
 	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception;
-	public List<Object[]> getIGIApplicableDocs(String docFlag) throws Exception;
+	public List<Object[]> getIGIApplicableDocs(String docId, String docType) throws Exception;
 	public long addIGIApplicableDocs(String igiDocId, String docFlag, String[] applicableDocIds, String userId) throws Exception;
 	public int deleteIGIApplicableDocument(String igiApplicableDocId) throws Exception;
+	public Long getFirstVersionIGIDocId() throws Exception;
+	public List<Object[]> getIGIShortCodesLinkedListByType(String docId, String docType) throws Exception;
+	public long addIGIDocumentShortCodesLinked(IGIDocumentShortCodesLinked igiDocumentShortCodeLinked) throws Exception;
+	public int deleteIGIDocumentShortCodesLinked(String shortCodeLinkedId) throws Exception;
+	public BigInteger getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception;
+	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs, String docId, String docType) throws Exception;
 	/* ************************************************ IGI Document End***************************************************** */
+	
+	/* ************************************************ ICD Document ***************************************************** */
+	public List<Object[]> getICDDocumentList(String projectId, String initiationId) throws Exception;
+	public long addPfmsICDDocument(PfmsICDDocument pfmsIGIDocument) throws Exception;
+	public PfmsICDDocument getPfmsICDDocumentById(String icdDocId)throws Exception;
+	public Long getFirstVersionICDDocId(String projectId, String initiationId) throws Exception;
+	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception;
+	public List<Object[]> getICDConnectionsList() throws Exception;
+	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
+	
 }

@@ -43,12 +43,17 @@ import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.PfmsApplicableDocs;
+import com.vts.pfms.documents.model.PfmsICDDocument;
+import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
+import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.service.DocumentsService;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -62,6 +67,9 @@ public class DocumentsController {
 	
 	@Autowired
 	ProjectService projectservice;
+	
+	@Autowired
+	RequirementService reqservice;
 	
 	@Autowired
 	PMSLogoUtil logoUtil;
@@ -264,7 +272,7 @@ public class DocumentsController {
 		logger.info(new Date() + " Inside IGIDocumentList.htm " + UserId);
 
 		try {
-			req.setAttribute("IGIDocumentList", service.IgiDocumentList());
+			req.setAttribute("igiDocumentList", service.getIGIDocumentList());
 			return "documents/IGIDocumentList";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -281,21 +289,21 @@ public class DocumentsController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + " Inside IGIDocumentAdd.htm" + UserId);
 
-		String version = req.getParameter("version");
-
 		try {
 
-			PfmsIGIDocument pfmsIgiDocument = new PfmsIGIDocument();
-			pfmsIgiDocument.setIGIVersion(version);
-			pfmsIgiDocument.setLabCode(labcode);
-			pfmsIgiDocument.setInitiatedBy(EmpId);
-			pfmsIgiDocument.setInitiatedDate(sdf.format(new Date()));
-			pfmsIgiDocument.setIGIStatusCode("INI");
-			pfmsIgiDocument.setIGIStatusCodeNext("INI");
-			pfmsIgiDocument.setCreatedBy(UserId);
-			pfmsIgiDocument.setCreatedDate(sdtf.format(new Date()));
-			pfmsIgiDocument.setIsActive(1);
-			long result = service.addPfmsIgiDocument(pfmsIgiDocument);
+			PfmsIGIDocument pfmsIgiDocument = PfmsIGIDocument.builder()
+												.IGIVersion(req.getParameter("version"))
+												.LabCode(labcode)
+												.InitiatedBy(EmpId)
+												.InitiatedDate(sdf.format(new Date()))
+												.IGIStatusCode("INI")
+												.IGIStatusCodeNext("INI")
+												.CreatedBy(UserId)
+												.CreatedDate(sdtf.format(new Date()))
+												.IsActive(1)
+											.build();
+			
+			long result = service.addPfmsIGIDocument(pfmsIgiDocument);
 
 			if (result > 0) {
 				redir.addAttribute("result", "IGI Document Data Submitted Successfully");
@@ -321,25 +329,28 @@ public class DocumentsController {
 		try {
 			String igiDocId = req.getParameter("igiDocId");
 			
-			req.setAttribute("igiDocId", igiDocId);
-			req.setAttribute("igiDocumentSummaryList", service.igiDocumentSummaryList(igiDocId));
-			req.setAttribute("totalEmployeeList", projectservice.EmployeeList(labcode));
-
-			req.setAttribute("memberList", service.igiDocumentMemberList(igiDocId));
-			req.setAttribute("employeeList", service.getDocmployeeListByIGIDocId(labcode, igiDocId));
-			req.setAttribute("shortCodesList", service.getIGIDocumentShortCodesList());
-			
 			PfmsIGIDocument igiDocument = service.getPfmsIGIDocumentById(igiDocId);
 			req.setAttribute("igiDocument", igiDocument);
+			req.setAttribute("version", igiDocument!=null ?igiDocument.getIGIVersion():"1.0");
+			
+			igiDocId = service.getFirstVersionIGIDocId()+"";
+			req.setAttribute("igiDocId", igiDocId);
+			req.setAttribute("igiDocumentSummaryList", service.getDocumentSummaryList(igiDocId, "A"));
+			req.setAttribute("totalEmployeeList", projectservice.EmployeeList(labcode));
+
+			req.setAttribute("memberList", service.getDocumentMemberList(igiDocId, "A"));
+			req.setAttribute("employeeList", service.getDocmployeeListByDocId(labcode, igiDocId, "A"));
+			req.setAttribute("shortCodesList", service.getIGIDocumentShortCodesList());
+			req.setAttribute("shortCodesLinkedList", service.getIGIShortCodesLinkedListByType(igiDocId, "A"));
 			req.setAttribute("labDetails", projectservice.LabListDetails(labcode));
 			req.setAttribute("docTempAttributes", projectservice.DocTempAttributes());
-			req.setAttribute("version", igiDocument!=null ?igiDocument.getIGIVersion():"1.0");
+			
 			req.setAttribute("lablogo",  logoUtil.getLabLogoAsBase64String(labcode)); 
 			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
 			
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
-			req.setAttribute("igiApplicableDocsList", service.getIGIApplicableDocs("A"));
+			req.setAttribute("igiApplicableDocsList", service.getIGIApplicableDocs(igiDocId, "A"));
 			
 			return "documents/IGIDocumentDetails";
 		} catch (Exception e) {
@@ -356,41 +367,26 @@ public class DocumentsController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + " Inside IGIDocumentSummaryAdd.htm " + UserId);
 		try {
-			String igiDocId = req.getParameter("igiDocId");
+			String docType = req.getParameter("docType");
+			String docId = req.getParameter("docId");
 			String action = req.getParameter("action");
-			IGIDocumentSummary rs = action != null && action.equalsIgnoreCase("Add") ? new IGIDocumentSummary()
-					: service.getIgiDocumentSummaryById(req.getParameter("summaryId"));
-			rs.setAbstract(req.getParameter("abstract"));
-			rs.setAdditionalInformation(req.getParameter("information"));
-			rs.setKeywords(req.getParameter("keywords"));
-			rs.setDistribution(req.getParameter("distribution"));
-			rs.setApprover(Long.parseLong(req.getParameter("approver")));
-			;
-			rs.setReviewer(req.getParameter("reviewer"));
-			rs.setPreparedBy(req.getParameter("preparedBy"));
-			rs.setIGIDocId(Long.parseLong(igiDocId));
-			rs.setReleaseDate(fc.rdfTosdf(req.getParameter("pdc")));
-			if (action.equalsIgnoreCase("Add")) {
-				rs.setCreatedBy(UserId);
-				rs.setCreatedDate(sdtf.format(new Date()));
-				rs.setIsActive(1);
-			} else if (action.equalsIgnoreCase("Edit")) {
-
-				rs.setSummaryId(Long.parseLong(req.getParameter("summaryId")));
-				rs.setModifiedBy(UserId);
-				rs.setModifiedDate(sdtf.format(new Date()));
-			}
-
-			long result = service.addIgiDocumentSummary(rs);
+			
+			long result = service.addIGIDocumentSummary(req, ses);
 			if (result > 0) {
-				redir.addAttribute("result", "IGI Document Summary " + action + "ed successfully ");
+				redir.addAttribute("result", "Document Summary " + action + "ed successfully ");
 			} else {
-				redir.addAttribute("resultfail", "IGI Document Summary " + action + " unsuccessful ");
+				redir.addAttribute("resultfail", "Document Summary " + action + " unsuccessful ");
 			}
-
-			redir.addAttribute("igiDocId", igiDocId);
-
-			return "redirect:/IGIDocumentDetails.htm";
+			
+			if(docType.equalsIgnoreCase("A")) {
+				redir.addAttribute("igiDocId", docId);
+				return "redirect:/IGIDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("B")) {
+				redir.addAttribute("icdDocId", docId);
+				return "redirect:/ICDDocumentDetails.htm";
+			}else {
+				return "redirect:/IGIDocumentDetails.htm";
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -407,25 +403,25 @@ public class DocumentsController {
 		logger.info(new Date() + " Inside IGIDocumentMemberSubmit.htm " + UserId);
 		try {
 
-			String igiDocId = req.getParameter("igiDocId");
+			String docType = req.getParameter("docType");
+			String docId = req.getParameter("docId");
 
-			String[] Assignee = req.getParameterValues("Assignee");
-			IGIDocumentMembers rm = new IGIDocumentMembers();
-
-			rm.setCreatedBy(UserId);
-			rm.setCreatedDate(sdtf.format(new Date()));
-			rm.setEmps(Assignee);
-			rm.setIGIDocId(Long.parseLong(igiDocId));
-
-			long result = service.addIGIDocumentMembers(rm);
+			long result = service.addIGIDocumentMembers(req, ses);
 			if (result > 0) {
 				redir.addAttribute("result", "Members Added Successfully for Document Distribution");
 			} else {
-				redir.addAttribute("resultfail", "Members adding unsuccessful ");
+				redir.addAttribute("resultfail", "Members Add unsuccessful for Document Distribution");
 			}
 
-			redir.addAttribute("igiDocId", igiDocId);
-			return "redirect:/IGIDocumentDetails.htm";
+			if(docType.equalsIgnoreCase("A")) {
+				redir.addAttribute("igiDocId", docId);
+				return "redirect:/IGIDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("B")) {
+				redir.addAttribute("icdDocId", docId);
+				return "redirect:/ICDDocumentDetails.htm";
+			}else {
+				return "redirect:/IGIDocumentDetails.htm";
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -435,13 +431,16 @@ public class DocumentsController {
 	}
 
 	@RequestMapping(value = "IGIDocumentMembersDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String DeleteIgiDocument(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+	public String igiDocumentMembersDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + " Inside IGIDocumentMembersDelete.htm " + UserId);
 		try {
 
 			String IgiMemeberId = req.getParameter("IgiMemeberId");
+			String docType = req.getParameter("docType");
+			String docId = req.getParameter("docId");
+			
 			long result = service.deleteIGIDocumentMembers(IgiMemeberId);
 
 			if (result > 0) {
@@ -450,9 +449,15 @@ public class DocumentsController {
 				redir.addAttribute("resultfail", "Member deleting unsuccessful ");
 			}
 
-			redir.addAttribute("igiDocId", req.getParameter("igiDocId"));
-
-			return "redirect:/IGIDocumentDetails.htm";
+			if(docType.equalsIgnoreCase("A")) {
+				redir.addAttribute("igiDocId", docId);
+				return "redirect:/IGIDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("B")) {
+				redir.addAttribute("icdDocId", docId);
+				return "redirect:/ICDDocumentDetails.htm";
+			}else {
+				return "redirect:/IGIDocumentDetails.htm";
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -461,102 +466,76 @@ public class DocumentsController {
 		}
 	}
 
-	@RequestMapping(value = "IGIInterfacesList.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String IgiInterfaces(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+	@RequestMapping(value = "IGIShortCodesDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiShortCodesDetails(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		String labcode = (String) ses.getAttribute("labcode");
-		logger.info(new Date() + " Inside IGIInterfacesList.htm " + UserId);
+		logger.info(new Date() + " Inside IGIShortCodesDetails.htm " + UserId);
 		try {
-			List<IGIInterface> igiInterfaceList = service.getIGIInterfaceListByLabCode(labcode);
-			req.setAttribute("igiInterfaceList", igiInterfaceList);
-			req.setAttribute("igiDocId", req.getParameter("igiDocId"));
-			String interfaceId = req.getParameter("interfaceId");
-			interfaceId = interfaceId!=null?interfaceId:"0";
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+
+			req.setAttribute("shortCodesList", service.getIGIDocumentShortCodesList());
+			req.setAttribute("shortCodesLinkedList", service.getIGIShortCodesLinkedListByType(docId, docType));
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("shortCodeType", req.getParameter("shortCodeType"));
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
 			
-			if(!interfaceId.equalsIgnoreCase("0")) {
-				Long interfaceid = Long.parseLong(interfaceId);
-				req.setAttribute("igiInterfaceData", igiInterfaceList.stream().filter(e -> e.getInterfaceId().equals(interfaceid)).findFirst().orElse(null) );
-			}
-			req.setAttribute("interfaceId", interfaceId);
-			return "documents/IGIInterfacesList";
+			return "documents/IGIShortCodesDetails";
 		} catch (Exception e) {
-			logger.error(new Date() + "Inside IGIInterfacesList.htm " + UserId);
 			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIShortCodesDetails.htm " + UserId, e);
 			return "static/Error";
 		}
-
+		
 	}
-
-	@RequestMapping(value = "IGIInterfaceDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String igiInterfaceDetailsSubmit(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+	
+	@RequestMapping(value="IGIShortCodesDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiShortCodesDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String) ses.getAttribute("labcode");
-		logger.info(new Date() + " Inside IGIInterfaceDetailsSubmit.htm" + UserId);
-		
+		logger.info(new Date() + " Inside IGIShortCodesDetailsSubmit.htm " + UserId);
 		try {
-			String igiDocId = req.getParameter("igiDocId");
-			String interfaceId = req.getParameter("interfaceId");
-			String action = req.getParameter("action");
-		
-			IGIInterface igiInterface = interfaceId.equalsIgnoreCase("0")? new IGIInterface(): service.getIGIInterfaceById(interfaceId);
-			igiInterface.setLabCode(LabCode);
-			igiInterface.setInterfaceCode(req.getParameter("interfaceCode"));
-			igiInterface.setInterfaceName(req.getParameter("interfaceName"));
-			igiInterface.setDataType(req.getParameter("dataType"));
-			igiInterface.setSignalType(req.getParameter("signalType"));
-			igiInterface.setInterfaceType(req.getParameter("interfaceType"));
-			igiInterface.setInterfaceSpeed(req.getParameter("interfaceSpeed"));
-			igiInterface.setConnector(req.getParameter("connector"));
-			igiInterface.setProtection(req.getParameter("protection"));
-			igiInterface.setInterfaceDiagram(req.getParameter("interfaceDiagram"));
-			igiInterface.setInterfaceDescription(req.getParameter("interfaceDescription"));
-			igiInterface.setParentId(0L);
-			igiInterface.setIGIDocId(Long.parseLong(igiDocId));
-			if(interfaceId.equalsIgnoreCase("0")) {
-				igiInterface.setCreatedBy(UserId);
-				igiInterface.setCreatedDate(sdtf.format(new Date()));
-				igiInterface.setIsActive(1);
+			
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String shortCodeType = req.getParameter("shortCodeType");
+			String[] shortCodeIds = req.getParameterValues("shortCodeId");
+			
+			if(shortCodeIds!=null && shortCodeIds.length>0) {
+				long result = 0;
+				for(int i=0; i<shortCodeIds.length; i++) {
+					IGIDocumentShortCodesLinked shortCodesLinked = IGIDocumentShortCodesLinked.builder()
+																.ShortCodeId(shortCodeIds[i]!=null?Long.parseLong(shortCodeIds[i]):0)
+																.DocId(Long.parseLong(docId))
+																.DocType(docType)
+																.CreatedBy(UserId)
+																.CreatedDate(sdtf.format(new Date()))
+																.IsActive(1)
+																.build();
+					result = service.addIGIDocumentShortCodesLinked(shortCodesLinked);
+				}
+				
+				if (result > 0) {
+					redir.addAttribute("result", (shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+" Submitted Successfully");
+				} else {
+					redir.addAttribute("resultfail", (shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+" Submit Unsuccessful");
+				}
+				
 			}else {
-				igiInterface.setModifiedBy(UserId);
-				igiInterface.setModifiedDate(sdtf.format(new Date()));
+				redir.addAttribute("resultfail", "Please select atleast one "+(shortCodeType.equalsIgnoreCase("A")?"Abbreviation":"Acronym"));
 			}
 			
-
-			long result = service.addIGIInterface(igiInterface);
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("shortCodeType", shortCodeType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
 			
-			if (result > 0) {
-				redir.addAttribute("result", "Inteface Details "+action+"ed Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Intefaces "+action+" Unsuccessful");
-			}
-			redir.addAttribute("igiDocId", igiDocId);
-			redir.addAttribute("interfaceId", result);
-			return "redirect:/IGIInterfacesList.htm";
-		} catch (Exception e) {
-			logger.error(new Date() + " Inside IGIInterfaceDetailsSubmit.htm " + UserId);
+			return "redirect:/IGIShortCodesDetails.htm";
+		}catch (Exception e) {
 			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIShortCodesDetailsSubmit.htm " + UserId, e);
 			return "static/Error";
 		}
-
-	}
-
-	@RequestMapping(value="DuplicateInterfaceCodeCheck.htm", method=RequestMethod.GET)
-	public @ResponseBody String duplicateInterfaceCodeCheck(HttpSession ses, HttpServletRequest req) throws Exception {
-		
-		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside DuplicateInterfaceCodeCheck.htm "+UserId);
-		Gson json = new Gson();
-		BigInteger duplicate=null;
-		try
-		{	  
-	          duplicate = service.getDuplicateInterfaceCodeCount(req.getParameter("interfaceId"), req.getParameter("interfaceCode"));
-	          
-		}catch (Exception e) {
-			logger.error(new Date() +"Inside DuplicateInterfaceCodeCheck.htm "+UserId ,e);
-			e.printStackTrace(); 
-		}
-		  
-		 return json.toJson(duplicate);    
 	}
 	
 	@RequestMapping(value="IGIDocShortCodesExcelDownload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
@@ -615,28 +594,26 @@ public class DocumentsController {
 			cell.setCellStyle(t_header_style);
 			
 			
-			cell.setCellStyle(t_header_style);
-			
-			List<IGIDocumentShortCodes> shortCodesList = service.getIGIDocumentShortCodesList();
-			shortCodesList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase(shortCodeType)).collect(Collectors.toList());
-			
-			if(shortCodesList!=null && shortCodesList.size()>0) {
-				int slno=0;
-				for(IGIDocumentShortCodes shortcodes : shortCodesList) {
-					Row t_body_row = sheet.createRow(++slno);
-					cell= t_body_row.createCell(0); 
-					cell.setCellValue(slno); 
-					cell.setCellStyle(t_body_style2);
-					
-					cell= t_body_row.createCell(1); 
-					cell.setCellValue(shortcodes.getShortCode()); 
-					cell.setCellStyle(t_body_style2);
-					
-					cell= t_body_row.createCell(2); 
-					cell.setCellValue(shortcodes.getFullName()); 
-					cell.setCellStyle(t_body_style2);
-				}
-			}
+//			List<IGIDocumentShortCodes> shortCodesList = service.getIGIDocumentShortCodesList();
+//			shortCodesList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase(shortCodeType)).collect(Collectors.toList());
+//			
+//			if(shortCodesList!=null && shortCodesList.size()>0) {
+//				int slno=0;
+//				for(IGIDocumentShortCodes shortcodes : shortCodesList) {
+//					Row t_body_row = sheet.createRow(++slno);
+//					cell= t_body_row.createCell(0); 
+//					cell.setCellValue(slno); 
+//					cell.setCellStyle(t_body_style2);
+//					
+//					cell= t_body_row.createCell(1); 
+//					cell.setCellValue(shortcodes.getShortCode()); 
+//					cell.setCellStyle(t_body_style2);
+//					
+//					cell= t_body_row.createCell(2); 
+//					cell.setCellValue(shortcodes.getFullName()); 
+//					cell.setCellStyle(t_body_style2);
+//				}
+//			}
 			
 			res.setContentType("application/vnd.ms-excel");
 			res.setHeader("Content-Disposition", "attachment; filename="+(shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+"Excel.xls");
@@ -657,11 +634,11 @@ public class DocumentsController {
 		String UserId = (String)ses.getAttribute("Username");
 		logger.info(new Date() +" Inside IGIDocShortCodesExcelUpload.htm "+UserId);
 		try {
-			String igiDocId = req.getParameter("igiDocId");
 			String shortCodeType = req.getParameter("shortCodeType");
+			String docType = req.getParameter("docType");
+			String docId = req.getParameter("docId");
 			
-			// Delete Previous Short Codes
-			service.deleteIGIDocumentShortCodesByType(shortCodeType);
+			long result = 0;
 			
 			if(ServletFileUpload.isMultipartContent(req)) {
 				Part filePart = req.getPart("filename");
@@ -669,8 +646,6 @@ public class DocumentsController {
 				Workbook workbook = new XSSFWorkbook(fileData);
 				Sheet sheet  = workbook.getSheetAt(0);
 				int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
-				
-				List<IGIDocumentShortCodes> shortCodesList = new ArrayList<IGIDocumentShortCodes>();
 				
 				for (int i=1;i<=rowCount;i++) {
 					int cellcount = sheet.getRow(i).getLastCellNum();
@@ -710,17 +685,14 @@ public class DocumentsController {
 					if(igiDocumentShortCode.getShortCode()!=null && igiDocumentShortCode.getFullName()!=null) {
 						
 						igiDocumentShortCode.setShortCodeType(shortCodeType);
-						igiDocumentShortCode.setIGIDocId(Long.parseLong(igiDocId));
 						igiDocumentShortCode.setCreatedBy(UserId);
 						igiDocumentShortCode.setCreatedDate(sdtf.format(new Date()));
 						igiDocumentShortCode.setIsActive(1);
 						
-						shortCodesList.add(igiDocumentShortCode);
+						result = service.addIGIDocumentShortCodes(igiDocumentShortCode, docId, docType);
 					}
 					
 				}
-				
-				long result = service.addIGIDocumentShortCodes(shortCodesList);
 				
 				if (result > 0) {
 					redir.addAttribute("result", (shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+" Added Successfully");
@@ -728,8 +700,13 @@ public class DocumentsController {
 					redir.addAttribute("resultfail", (shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+" Add Unsuccessful");
 				}
 			}
-			redir.addAttribute("igiDocId", igiDocId);
-			return "redirect:/IGIDocumentDetails.htm";
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("shortCodeType", shortCodeType);
+			
+			return "redirect:/IGIShortCodesDetails.htm";
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() + " Inside IGIDocShortCodesExcelUpload.htm " + UserId, e);
@@ -737,7 +714,242 @@ public class DocumentsController {
 		}
 
 	}
+
+	@RequestMapping(value="IGINewShortCodesDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiNewShortCodesDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGINewShortCodesDetailsSubmit.htm " + UserId);
+		try {
+			
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String shortCodeType = req.getParameter("shortCodeType");
+			String[] shortCodes = req.getParameterValues("shortCode");
+			String[] fullNames = req.getParameterValues("fullName");
+			
+			if(shortCodes!=null && shortCodes.length>0) {
+				long result = 0;
+				for(int i=0; i<shortCodes.length; i++) {
+					IGIDocumentShortCodes igiDocumentShortCode = new IGIDocumentShortCodes();
+					igiDocumentShortCode.setShortCode(shortCodes[i]);
+					igiDocumentShortCode.setFullName(fullNames!=null?fullNames[i]:"");
+					igiDocumentShortCode.setShortCodeType(shortCodeType);
+					igiDocumentShortCode.setCreatedBy(UserId);
+					igiDocumentShortCode.setCreatedDate(sdtf.format(new Date()));
+					igiDocumentShortCode.setIsActive(1);
+					
+					result = service.addIGIDocumentShortCodes(igiDocumentShortCode, docId, docType);
+				}
+				
+				if (result > 0) {
+					redir.addAttribute("result", (shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+" Added Successfully");
+				} else {
+					redir.addAttribute("resultfail", (shortCodeType.equalsIgnoreCase("A")?"Abbreviations":"Acronyms")+" Add Unsuccessful");
+				}
+				
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("shortCodeType", shortCodeType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			
+			return "redirect:/IGIShortCodesDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGINewShortCodesDetailsSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
 	
+	@RequestMapping(value = "IGIShortCodesLinkedDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiShortCodesLinkedDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIDocumentMembersDelete.htm " + UserId);
+		try {
+
+			String shortCodeLinkedId = req.getParameter("shortCodeLinkedId");
+			String docType = req.getParameter("docType");
+			String docId = req.getParameter("docId");
+			String shortCodeType = req.getParameter("shortCodeType");
+			
+			long result = service.deleteIGIDocumentShortCodesLinked(shortCodeLinkedId);
+
+			if (result > 0) {
+				redir.addAttribute("result", (shortCodeType.equalsIgnoreCase("A")?"Abbreviation":"Acronym")+"Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", (shortCodeType.equalsIgnoreCase("A")?"Abbreviation":"Acronym")+"Delete unsuccessful");
+			}
+
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("shortCodeType", shortCodeType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			
+			return "redirect:/IGIShortCodesDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIDocumentMembersDelete.htm " + UserId);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="DuplicateShortCodeCheck.htm", method=RequestMethod.GET)
+	public @ResponseBody String duplicateShortCodeCheck(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside DuplicateShortCodeCheck.htm "+UserId);
+		Gson json = new Gson();
+		BigInteger duplicate=null;
+		try
+		{	  
+	          duplicate = service.getDuplicateIGIShortCodeCount(req.getParameter("shortCode"), req.getParameter("shortCodeType"));
+	          
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DuplicateShortCodeCheck.htm "+UserId ,e);
+			e.printStackTrace(); 
+		}
+		  
+		 return json.toJson(duplicate);    
+	}
+
+	@RequestMapping(value = "IGIApplicableDocumentsDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiApplicableDocumentsDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIApplicableDocumentsDetails.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+
+			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("applicableDocsLinkedList", service.getIGIApplicableDocs(docId, docType));
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+
+			return "documents/IGIApplicableDocumentsDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIApplicableDocumentsDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "IGIApplicableDocsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiApplicableDocsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIApplicableDocsSubmit.htm " + UserId);
+		
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String[] applicableDocIds = req.getParameterValues("applicableDocId");
+			
+			long result = 0;
+			if(applicableDocIds!=null && applicableDocIds.length>0) {
+				result = service.addIGIApplicableDocs(docId, docType, applicableDocIds, UserId);
+				
+				if (result > 0) {
+					redir.addAttribute("result", "Applicable Documents Submitted Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Applicable Documents Submit Unsuccessful");
+				}
+				
+			}else {
+				redir.addAttribute("resultfail", "Please select atleast one Applicable Document");
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			
+			return "redirect:/IGIApplicableDocumentsDetails.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIApplicableDocsSubmit.htm " + UserId, e);
+			return "static/Error";
+			
+		}
+		
+	}
+
+	@RequestMapping(value="IGIApplicableDocumentsDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiApplicableDocumentsDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIApplicableDocumentsDetailsSubmit.htm " + UserId);
+		try {
+			
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String[] documentName = req.getParameterValues("documentName");
+			
+			if(documentName!=null && documentName.length>0) {
+				long result = 0;
+				for(int i=0; i<documentName.length; i++) {
+					PfmsApplicableDocs igiDocumentShortCode = new PfmsApplicableDocs();
+					igiDocumentShortCode.setDocumentName(documentName[i]);
+					igiDocumentShortCode.setCreatedBy(UserId);
+					igiDocumentShortCode.setCreatedDate(sdtf.format(new Date()));
+					igiDocumentShortCode.setIsActive(1);
+					
+					result = service.addApplicableDocs(igiDocumentShortCode, docId, docType);
+				}
+				
+				if (result > 0) {
+					redir.addAttribute("result", "Applicable Documents Added Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Applicable Documents Add Unsuccessful");
+				}
+				
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			
+			return "redirect:/IGIApplicableDocumentsDetails.htm";
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIApplicableDocumentsDetailsSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "IGIApplicableDocumentDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiApplicableDocumentDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIApplicableDocumentDelete.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String igiApplicableDocId = req.getParameter("igiApplicableDocId");
+			
+			long result = service.deleteIGIApplicableDocument(igiApplicableDocId);
+
+			if (result > 0) {
+				redir.addAttribute("result", "Applicable Documents Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Applicable Documents Delete Unsuccessful");
+			}
+
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			
+			return "redirect:/IGIApplicableDocumentsDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIApplicableDocumentDelete.htm " + UserId);
+			return "static/Error";
+		}
+	}
+
 	@RequestMapping(value = "IGIIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String igiIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -747,7 +959,7 @@ public class DocumentsController {
 			String igiDocId = req.getParameter("igiDocId");
 			PfmsIGIDocument pfmsIgiDocument = service.getPfmsIGIDocumentById(igiDocId);
 			pfmsIgiDocument.setIntroduction(req.getParameter("introduction"));
-			long result = service.addPfmsIgiDocument(pfmsIgiDocument);
+			long result = service.addPfmsIGIDocument(pfmsIgiDocument);
 
 			if (result > 0) {
 				redir.addAttribute("result", "IGI Document Introduction Updated Successfully");
@@ -764,67 +976,372 @@ public class DocumentsController {
 		}
 
 	}
-	
-	@RequestMapping(value = "IGIApplicableDocsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String igiApplicableDocsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+
+	@RequestMapping(value = "IGIInterfacesList.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String IgiInterfaces(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() + " Inside IGIApplicableDocsSubmit.htm " + UserId);
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside IGIInterfacesList.htm " + UserId);
+		try {
+			List<IGIInterface> igiInterfaceList = service.getIGIInterfaceListByLabCode(labcode);
+			req.setAttribute("igiInterfaceList", igiInterfaceList);
+			req.setAttribute("igiDocId", req.getParameter("igiDocId"));
+			String interfaceId = req.getParameter("interfaceId");
+			interfaceId = interfaceId!=null?interfaceId:"0";
+			
+			if(!interfaceId.equalsIgnoreCase("0")) {
+				Long interfaceid = Long.parseLong(interfaceId);
+				req.setAttribute("igiInterfaceData", igiInterfaceList.stream().filter(e -> e.getInterfaceId().equals(interfaceid)).findFirst().orElse(null) );
+			}
+			req.setAttribute("interfaceId", interfaceId);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+
+			return "documents/IGIInterfacesList";
+		} catch (Exception e) {
+			logger.error(new Date() + "Inside IGIInterfacesList.htm " + UserId);
+			e.printStackTrace();
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "IGIInterfaceDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiInterfaceDetailsSubmit(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside IGIInterfaceDetailsSubmit.htm" + UserId);
 		
 		try {
 			String igiDocId = req.getParameter("igiDocId");
-			String docFlag = req.getParameter("docFlag");
-			String[] applicableDocIds = req.getParameterValues("applicableDocId");
-			
-			long result = 0;
-			if(applicableDocIds!=null && applicableDocIds.length>0) {
-				result = service.addIGIApplicableDocs(igiDocId, docFlag, applicableDocIds, UserId);
+			String interfaceId = req.getParameter("interfaceId");
+			String action = req.getParameter("action");
+		
+			IGIInterface igiInterface = interfaceId.equalsIgnoreCase("0")? new IGIInterface(): service.getIGIInterfaceById(interfaceId);
+			igiInterface.setLabCode(LabCode);
+			igiInterface.setInterfaceCode(req.getParameter("interfaceCode"));
+			igiInterface.setInterfaceName(req.getParameter("interfaceName"));
+			igiInterface.setDataType(req.getParameter("dataType"));
+			igiInterface.setSignalType(req.getParameter("signalType"));
+			igiInterface.setInterfaceType(req.getParameter("interfaceType"));
+			igiInterface.setInterfaceSpeed(req.getParameter("interfaceSpeed"));
+			igiInterface.setConnector(req.getParameter("connector"));
+			igiInterface.setProtection(req.getParameter("protection"));
+			igiInterface.setInterfaceDiagram(req.getParameter("interfaceDiagram"));
+			igiInterface.setInterfaceDescription(req.getParameter("interfaceDescription"));
+			igiInterface.setIGIDocId(Long.parseLong(igiDocId));
+			if(interfaceId.equalsIgnoreCase("0")) {
+				igiInterface.setCreatedBy(UserId);
+				igiInterface.setCreatedDate(sdtf.format(new Date()));
+				igiInterface.setIsActive(1);
 			}else {
-				redir.addAttribute("resultfail", "Please select atleast one Applicable Document");
-				redir.addAttribute("igiDocId", igiDocId);
-				return "redirect:/IGIDocumentDetails.htm";
+				igiInterface.setModifiedBy(UserId);
+				igiInterface.setModifiedDate(sdtf.format(new Date()));
 			}
+			
+
+			long result = service.addIGIInterface(igiInterface);
 			
 			if (result > 0) {
-				redir.addAttribute("result", "Applicable Documents Submitted Successfully");
+				redir.addAttribute("result", "Inteface Details "+action+"ed Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Applicable Documents Submit Unsuccessful");
+				redir.addAttribute("resultfail", "Intefaces "+action+" Unsuccessful");
 			}
 			redir.addAttribute("igiDocId", igiDocId);
-			return "redirect:/IGIDocumentDetails.htm";
+			redir.addAttribute("interfaceId", result);
+			return "redirect:/IGIInterfacesList.htm";
+		} catch (Exception e) {
+			logger.error(new Date() + " Inside IGIInterfaceDetailsSubmit.htm " + UserId);
+			e.printStackTrace();
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value="DuplicateInterfaceCodeCheck.htm", method=RequestMethod.GET)
+	public @ResponseBody String duplicateInterfaceCodeCheck(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside DuplicateInterfaceCodeCheck.htm "+UserId);
+		Gson json = new Gson();
+		BigInteger duplicate=null;
+		try
+		{	  
+	          duplicate = service.getDuplicateInterfaceCodeCount(req.getParameter("interfaceId"), req.getParameter("interfaceCode"));
+	          
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DuplicateInterfaceCodeCheck.htm "+UserId ,e);
+			e.printStackTrace(); 
+		}
+		  
+		 return json.toJson(duplicate);    
+	}
+	
+
+	/* ************************************************ IGI Document End ***************************************************** */
+	
+	/* ************************************************ ICD Document ***************************************************** */
+
+	@RequestMapping(value = "ICDDocumentList.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdDocumentList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String LoginType = (String) ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside ICDDocumentList.htm " + UserId);
+
+		try {
+			String projectType = req.getParameter("projectType");
+			projectType = projectType != null ? projectType : "M";
+			String initiationId = "0";
+			String projectId = "0";
+			
+			if (projectType.equalsIgnoreCase("M")) {
+
+				projectId = req.getParameter("projectId");
+				List<Object[]> projectList = projectservice.LoginProjectDetailsList(EmpId, LoginType, labcode);
+				projectId = projectId != null ? projectId
+						: (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
+
+				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
+				req.setAttribute("projectList", projectList);
+			}else {
+				initiationId = req.getParameter("initiationId");
+				List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, labcode, EmpId);
+				initiationId = initiationId != null ? initiationId
+						: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				req.setAttribute("preProjectList", preProjectList);
+			}
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("projectType", projectType);
+			req.setAttribute("icdDocumentList", service.getICDDocumentList(projectId, initiationId));
+			
+			return "documents/ICDDocumentList";
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() + " Inside IGIApplicableDocsSubmit.htm " + UserId, e);
+			logger.error(new Date() + " Inside ICDDocumentList.htm " + UserId, e);
 			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "ICDDocumentAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdDocumentAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside ICDDocumentAdd.htm" + UserId);
+
+		try {
+			PfmsICDDocument icdDocument = PfmsICDDocument.builder()
+											.ProjectId(Long.parseLong(req.getParameter("projectId")))
+											.InitiationId(Long.parseLong(req.getParameter("initiationId")))
+											.ICDVersion(req.getParameter("version"))
+											.LabCode(labcode)
+											.InitiatedBy(EmpId)
+											.InitiatedDate(sdf.format(new Date()))
+											.ICDStatusCode("INI")
+											.ICDStatusCodeNext("INI")
+											.CreatedBy(UserId)
+											.CreatedDate(sdtf.format(new Date()))
+											.IsActive(1)
+										.build();
 			
+			long result = service.addPfmsICDDocument(icdDocument);
+
+			if (result > 0) {
+				redir.addAttribute("result", "ICD Document Data Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "ICD Document Data Submit Unsuccessful");
+			}
+
+			return "redirect:/ICDDocumentList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDDocumentAdd.htm " + UserId, e);
+			return "static/Error";
+
+		}
+
+	}
+	
+	@RequestMapping(value = "ICDDocumentDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdDocumentDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside ICDDocumentDetails.htm " + UserId);
+		try {
+			String icdDocId = req.getParameter("icdDocId");
+			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(icdDocId);
+			req.setAttribute("icdDocument", icdDocument);
+			req.setAttribute("version", icdDocument!=null ?icdDocument.getICDVersion():"1.0");
+			
+			icdDocId = service.getFirstVersionICDDocId(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+"")+"";
+			
+			String projectType = icdDocument.getProjectId()!=0?"E":"M";
+			req.setAttribute("projectType", projectType);
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, (icdDocument.getProjectId()!=0?icdDocument.getProjectId()+"":icdDocument.getInitiationId()+"") , projectType));
+			
+			req.setAttribute("icdDocId", icdDocId);
+			req.setAttribute("icdDocumentSummaryList", service.getDocumentSummaryList(icdDocId, "B"));
+			req.setAttribute("totalEmployeeList", projectservice.EmployeeList(labcode));
+			req.setAttribute("memberList", service.getDocumentMemberList(icdDocId, "B"));
+			req.setAttribute("employeeList", service.getDocmployeeListByDocId(labcode, icdDocId, "B"));
+			req.setAttribute("shortCodesList", service.getIGIDocumentShortCodesList());
+			req.setAttribute("shortCodesLinkedList", service.getIGIShortCodesLinkedListByType(icdDocId, "B"));
+			req.setAttribute("docTempAttributes", projectservice.DocTempAttributes());
+			req.setAttribute("labDetails", projectservice.LabListDetails(labcode));
+			req.setAttribute("lablogo",  logoUtil.getLabLogoAsBase64String(labcode)); 
+			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
+			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
+			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("icdApplicableDocsList", service.getIGIApplicableDocs(icdDocId, "B"));
+			
+			return "documents/ICDDocumentDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDDocumentDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	}
+	
+	@RequestMapping(value = "ICDIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ICDIntroductionSubmit.htm" + UserId);
+
+		try {
+			String icdDocId = req.getParameter("icdDocId");
+			PfmsICDDocument pfmsICDDocument = service.getPfmsICDDocumentById(icdDocId);
+			pfmsICDDocument.setIntroduction(req.getParameter("introduction"));
+			long result = service.addPfmsICDDocument(pfmsICDDocument);
+
+			if (result > 0) {
+				redir.addAttribute("result", "ICD Document Introduction Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "ICD Document Introduction Update Unsuccessful");
+			}
+			redir.addAttribute("icdDocId", icdDocId);
+			return "redirect:/ICDDocumentDetails.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDIntroductionSubmit.htm " + UserId, e);
+			return "static/Error";
+
+		}
+
+	}
+	
+	@RequestMapping(value = "ICDConnectionMatrixDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionMatrixDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside ICDConnectionMatrixDetails.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String projectId = req.getParameter("projectId");
+
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
+			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
+			req.setAttribute("icdConnectionsList", service.getICDConnectionsList());
+			
+			return "documents/ICDConnectionMatrixDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDConnectionMatrixDetails.htm " + UserId, e);
+			return "static/Error";
 		}
 		
 	}
 	
-	@RequestMapping(value = "IGIApplicableDocumentDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String igiApplicableDocumentDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
-
+	@RequestMapping(value="ICDConnectionMatrixSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionMatrixSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() + " Inside IGIApplicableDocumentDelete.htm " + UserId);
+		logger.info(new Date() + " Inside ICDConnectionMatrixSubmit.htm " + UserId);
 		try {
-
-			String igiApplicableDocId = req.getParameter("igiApplicableDocId");
-			long result = service.deleteIGIApplicableDocument(igiApplicableDocId);
-
-			if (result > 0) {
-				redir.addAttribute("result", "Applicable Documents Deleted Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Applicable Documents Delete Unsuccessful");
+			
+			String docId = req.getParameter("docId");
+			String subSystemOne = req.getParameter("subSystemOne");
+			String subSystemTwo = req.getParameter("subSystemTwo");
+			String[] interfaceId = req.getParameterValues("interfaceId");
+			
+			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
+			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
+			
+			if(interfaceId!=null && interfaceId.length>0) {
+				long result = 0;
+				for(int i=0; i<interfaceId.length; i++) {
+					ICDDocumentConnections connections = new ICDDocumentConnections();
+					connections.setICDDocId(Long.parseLong(docId));
+					connections.setSubSystemMainIdOne(subSystemOnes!=null?Long.parseLong(subSystemOnes[0]):0);
+					connections.setSubSystemOne(subSystemOnes!=null?subSystemOnes[1]:"NA");
+					connections.setSubSystemMainIdTwo(subSystemTwos!=null?Long.parseLong(subSystemTwos[0]):0); 
+					connections.setSubSystemTwo(subSystemTwos!=null?subSystemTwos[1]:"NA"); 
+					connections.setInterfaceId(Long.parseLong(interfaceId[i]));
+					connections.setCreatedBy(UserId);
+					connections.setCreatedDate(sdtf.format(new Date()));
+					connections.setIsActive(1);
+					
+					result = service.addICDDocumentConnections(connections);
+				}
+				
+				if (result > 0) {
+					redir.addAttribute("result", "ICD Connections Submitted Successfully");
+				} else {
+					redir.addAttribute("resultfail", "ICD Connections Submit Unsuccessful");
+				}
+				
 			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			
+			return "redirect:/ICDConnectionMatrixDetails.htm";
 
-			redir.addAttribute("igiDocId", req.getParameter("igiDocId"));
-
-			return "redirect:/IGIDocumentDetails.htm";
-
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() + " Inside IGIApplicableDocumentDelete.htm " + UserId);
+			logger.error(new Date() + " Inside ICDConnectionMatrixSubmit.htm " + UserId, e);
 			return "static/Error";
 		}
 	}
-	/* ************************************************ IGI Document End ***************************************************** */
+	
+
+	@RequestMapping(value = "ICDConnectionDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ICDConnectionDelete.htm " + UserId);
+		try {
+			String icdConnectionId = req.getParameter("icdConnectionId");
+			
+			long result = service.deleteICDConnectionById(icdConnectionId);
+
+			if (result > 0) {
+				redir.addAttribute("result", "ICD Connection Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "ICD Connection Delete Unsuccessful");
+			}
+
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			
+			return "redirect:/ICDConnectionMatrixDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDConnectionDelete.htm " + UserId);
+			return "static/Error";
+		}
+	}
+	/* ************************************************ ICD Document End ***************************************************** */
 }

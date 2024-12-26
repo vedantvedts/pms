@@ -722,7 +722,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																		</select>
 																	</td>
 																	<td>
-																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_<%=clonecount %>" data-live-search="true" data-container="body">
+																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_<%=clonecount %>" onchange="validateFields('<%=clonecount %>')" data-live-search="true" data-container="body">
 																			<option value="-1" disabled selected>Choose...</option>
 																	        <% for(Object[] emp : labEmpList){ %>
 																	        	<option value="<%=emp[0] %>" <%if(act.getAssignedBy()==Long.parseLong(emp[0].toString())) {%>selected<%} %> ><%=emp[1] %>, <%=emp[2] %></option>
@@ -732,7 +732,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																	</td>
 																	<td>
 																		<select class="form-control selectitem keywordId" name="keywordId" id="keywordId_<%=clonecount %>" data-live-search="true" data-container="body">
-																			<option value="0" disabled selected>Choose...</option>
+																			<option value="" disabled selected>Choose...</option>
 																	        <% for(TimesheetKeywords keywords : keywordsList){ %>
 																	        	<option value="<%=keywords.getKeywordId() %>" <%if(act.getKeywordId().equals(keywords.getKeywordId())) {%>selected<%} %> ><%=keywords.getKeyword() %></option>
 																	        <%} %>
@@ -782,7 +782,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																		</select>
 																	</td>
 																	<td>
-																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_1" data-live-search="true" data-container="body">
+																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_1" onchange="validateFields(1)" data-live-search="true" data-container="body">
 																			<option value="-1" disabled selected>Choose...</option>
 																	        <% for(Object[] emp : labEmpList){ %>
 																	        	<option value="<%=emp[0] %>"><%=emp[1] %>, <%=emp[2] %></option>
@@ -792,7 +792,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																	</td>
 																	<td>
 																		<select class="form-control selectitem keywordId" name="keywordId" id="keywordId_1" data-live-search="true" data-container="body">
-																			<option value="0" disabled selected>Choose...</option>
+																			<option value="" disabled selected>Choose...</option>
 																	        <% for(TimesheetKeywords keywords : keywordsList){ %>
 																	        	<option value="<%=keywords.getKeywordId() %>"><%=keywords.getKeyword() %></option>
 																	        <%} %>
@@ -1149,7 +1149,6 @@ function toggleDiv(divId) {
 	var cloneCount = '<%=clonecount%>'; 
 	var activityName = '<%=activityNamemil%>'; 
 	
-	console.log('activityNamemil: ', activityName);
 	$('#addnewaction').click(function(){
 		$('.selectitem').select2("destroy");
 		
@@ -1178,8 +1177,8 @@ function toggleDiv(divId) {
 	    });
 		$clone.find(".selectitem.projectId").attr("id", 'projectId_' + cloneCount).val("0").trigger("change");
 		//$clone.find(".selectitem.assignerLabCode").attr("id", 'assignerLabCode_' + cloneCount).attr("onchange", 'labEmployeesList(\'' + cloneCount + '\')');
-		$clone.find(".selectitem.assignedBy").attr("id", 'assignedBy_' + cloneCount).val("-1").trigger("change");
-		$clone.find(".selectitem.keywordId").attr("id", 'keywordId_' + cloneCount).val("0").trigger("change");
+		$clone.find(".selectitem.assignedBy").attr("id", 'assignedBy_' + cloneCount).val("-1").trigger("change").attr("onchange", 'validateFields(\'' + cloneCount + '\')');
+		$clone.find(".selectitem.keywordId").attr("id", 'keywordId_' + cloneCount).val("").trigger("change");
 		$clone.find(".workDone").attr("id", 'workDone_' + cloneCount);
 		//$clone.find(".workDoneon").attr("id", 'workDoneon_' + cloneCount).attr("name", 'workDoneon_' + cloneCount);
 	    $clone.find(".workDoneon").each(function (index) {
@@ -1219,6 +1218,10 @@ function toggleDiv(divId) {
 	    
 	});
 	
+	function validateFields(countId) {
+		$('#keywordId_'+countId).attr("required", true);
+		$('#workDone_'+countId).attr("required", true);
+	}
 	// 
 	/* function labEmployeesList($AddrowId){
 		

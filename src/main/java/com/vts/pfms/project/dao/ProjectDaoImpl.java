@@ -3881,7 +3881,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	private static final String GETPROJECTDETAILS= "SELECT a.ProjectId,a.ProjectCode,a.ProjectShortName,a.ProjectName,a.DivisionId,a.SanctionDate,a.PDC,a.Objective,a.Scope,a.BoardReference,a.TotalSanctionCost,a.ProjectDescription,b.Category AS securityclassification FROM project_master a,pfms_category b WHERE a.IsActive=1 AND a.ProjectCategory=b.CategoryId AND a.LabCode=:LabCode AND a.ProjectId=:ProjectId";
-	private static final String GETPREPROJECTDETAILS= "SELECT a.InitiationId,a.ProjectProgramme,a.ProjectShortName,a.ProjectTitle,a.DivisionId,'Sanction Date','PDC','Objective','Scope','BoardReference',ProjectCost,'ProjectDescription',b.classification AS securityclassification FROM pfms_initiation a,pfms_security_classification b WHERE a.IsActive=1 AND a.ClassificationId=b.ClassificationId AND a.LabCode=:LabCode AND a.InitiationId=:ProjectId";
+	private static final String GETPREPROJECTDETAILS= "SELECT a.InitiationId,a.ProjectShortName AS 'ProjectCode',a.ProjectShortName,a.ProjectTitle,a.DivisionId,'Sanction Date','PDC','Objective','Scope','BoardReference',ProjectCost,'ProjectDescription',b.classification AS securityclassification FROM pfms_initiation a,pfms_security_classification b WHERE a.IsActive=1 AND a.ClassificationId=b.ClassificationId AND a.LabCode=:LabCode AND a.InitiationId=:ProjectId";
 	@Override
 	public Object[] getProjectDetails(String labcode,String projectId,String projectType) throws Exception {
 		try {

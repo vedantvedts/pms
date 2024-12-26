@@ -178,9 +178,9 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 			// Storing list of Time Sheet Activities
 			List<TimeSheetActivity> timeSheetActivityList = new ArrayList<TimeSheetActivity>();
 			
-			for(int i=0;i<dto.getActivityTypeId().length;i++) {
+			for(int i=0;i<dto.getAssignedBy().length;i++) {
 				
-				if(dto.getActivityTypeId()[i].isEmpty()) continue;
+				if(dto.getAssignedBy()[i].isEmpty()) continue;
 				
 				TimeSheetActivity activity =  new TimeSheetActivity();
 				
@@ -194,7 +194,7 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 				// New Columns for Sample Demo
 				activity.setActivitySeqNo(activitySeqNo + (activityCount+(i+1)) );
 				activity.setAssignedBy(dto.getAssignedBy()[i]!=null?Long.parseLong(dto.getAssignedBy()[i]):0L);
-				activity.setKeywordId(dto.getKeywordId()[i]!=null?Long.parseLong(dto.getKeywordId()[i]):0L);
+				activity.setKeywordId(dto.getKeywordId()!=null && dto.getKeywordId()[i]!=null?Long.parseLong(dto.getKeywordId()[i]):0L);
 				activity.setWorkDone(dto.getWorkDone()[i]);
 				activity.setWorkDoneon(dto.getWorkDoneon()[i]);
 				// New Columns for Sample Demo End
