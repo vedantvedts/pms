@@ -1029,6 +1029,10 @@ public class DocumentsController {
 			igiInterface.setInterfaceDiagram(req.getParameter("interfaceDiagram"));
 			igiInterface.setInterfaceDescription(req.getParameter("interfaceDescription"));
 			igiInterface.setIGIDocId(Long.parseLong(igiDocId));
+			igiInterface.setCableInfo(req.getParameter("cableInfo"));
+			igiInterface.setCableConstraint(req.getParameter("cableConstraint"));
+			igiInterface.setCableDiameter(req.getParameter("cableDiameter"));
+			igiInterface.setCableDetails(req.getParameter("cableDetails"));
 			if(interfaceId.equalsIgnoreCase("0")) {
 				igiInterface.setCreatedBy(UserId);
 				igiInterface.setCreatedDate(sdtf.format(new Date()));
@@ -1196,6 +1200,8 @@ public class DocumentsController {
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
 			req.setAttribute("icdApplicableDocsList", service.getIGIApplicableDocs(icdDocId, "B"));
+			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(icdDocument.getProjectId()!=0?icdDocument.getProjectId()+"":icdDocument.getInitiationId()+""));
+			req.setAttribute("icdConnectionsList", service.getICDConnectionsList());
 			
 			return "documents/ICDDocumentDetails";
 		} catch (Exception e) {

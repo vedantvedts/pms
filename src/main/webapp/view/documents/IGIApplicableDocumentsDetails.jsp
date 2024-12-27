@@ -241,7 +241,7 @@
 		</div>
 	</div>
 
-<!-- ----------------------------------------------- Add New Applicable Documents Modal --------------------------------------------------------------- -->
+	<!-- ----------------------------------------------- Add New Applicable Documents Modal --------------------------------------------------------------- -->
 	<div class="modal fade bd-example-modal-lg" id="addNewDocumentsModal" tabindex="-1" role="dialog" aria-labelledby="addNewShortCodesModal" aria-hidden="true" style="margin-top: 10%;">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
 			<div class="modal-content" style="width:80%;">

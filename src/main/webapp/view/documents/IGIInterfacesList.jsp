@@ -255,8 +255,8 @@ input,select,table,div,label,span {
     							
    								<%if(igiInterfaceList!=null && igiInterfaceList.size()>0) {
    									List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
-   									List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
-   									List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
+   									//List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
+   									//List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
    									List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
    								%>
    									
@@ -291,7 +291,7 @@ input,select,table,div,label,span {
 	   								</div>
 	   								
 	   								<!-- Electrical Interfaces List -->
-	   								<div class="row">
+	   								<%-- <div class="row">
 	   									<div class="col-md-12">
 	  										<button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn" id="electricalInterfaceBtn" value="1" style="padding: 0.2rem;" data-toggle="tooltip" data-placement="top" title="Electrical Interfaces">
 												<span style="font-weight: bold;">Electrical Interfaces</span>
@@ -318,10 +318,10 @@ input,select,table,div,label,span {
 		   										</div>
 		   									</div>
 		   								<%} %>
-		   							</div>		
+		   							</div> --%>		
 	   								
 	   								<!-- Optical Interfaces List -->
-	   								<div class="row">
+	   								<%-- <div class="row">
 	   									<div class="col-md-12">
 	  										<button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn" id="opticalInterfaceBtn" value="1" style="padding: 0.2rem;" data-toggle="tooltip" data-placement="top" title="Optical Interfaces">
 												<span style="font-weight: bold;">Optical Interfaces</span>
@@ -348,7 +348,7 @@ input,select,table,div,label,span {
 		   										</div>
 		   									</div>
 		   								<%} %>
-		   							</div>	
+		   							</div> --%>	
 	   								
 	   								<!-- Logical Interfaces List -->
 	   								<div class="row">
@@ -426,8 +426,8 @@ input,select,table,div,label,span {
 		       									<select class="form-control" name="interfaceType" required>
 		       										<option value="" selected disabled>----select----</option>
 		       										<option value="Physical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Physical Interface")) {%>selected<%} %>>Physical Interface</option>
-		       										<option value="Electrical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Electrical Interface")) {%>selected<%} %>>Electrical Interface</option>
-		       										<option value="Optical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Optical Interface")) {%>selected<%} %>>Optical Interface</option>
+		       										<%-- <option value="Electrical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Electrical Interface")) {%>selected<%} %>>Electrical Interface</option>
+		       										<option value="Optical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Optical Interface")) {%>selected<%} %>>Optical Interface</option> --%>
 		       										<option value="Logical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Logical Interface")) {%>selected<%} %>>Logical Interface</option>
 		       									</select>
 		       								</div>
@@ -453,6 +453,28 @@ input,select,table,div,label,span {
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Protection </label>
 		       									<input type="text" class="form-control" name="protection" <%if(igiInterface!=null && igiInterface.getProtection()!=null) {%> value="<%=igiInterface.getProtection() %>" <%} %> placeholder="Enter Protection Details" maxlength="255">
+		       								</div>
+		       							</div>
+		       						</div>
+		       						
+		       						<div class="form-group">
+		       							<div class="row">
+		       								
+		       								<div class="col-md-3">
+		       									<label class="form-lable">Cable Info</label>
+		       									<input type="text" class="form-control" name="cableInfo" <%if(igiInterface!=null && igiInterface.getCableInfo()!=null) {%> value="<%=igiInterface.getCableInfo() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
+		       								</div>
+		       								<div class="col-md-3">
+		       									<label class="form-lable">Cable Constraint</label>
+		       									<input type="text" class="form-control" name="cableConstraint" <%if(igiInterface!=null && igiInterface.getCableConstraint()!=null) {%> value="<%=igiInterface.getCableConstraint() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
+		       								</div>
+		       								<div class="col-md-3">
+		       									<label class="form-lable">Cable Diameter</label>
+		       									<input type="text" class="form-control" name="cableDiameter" <%if(igiInterface!=null && igiInterface.getCableDiameter()!=null) {%> value="<%=igiInterface.getCableDiameter() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
+		       								</div>
+		       								<div class="col-md-3">
+		       									<label class="form-lable">Cable Details </label>
+		       									<input type="text" class="form-control" name="cableDetails" <%if(igiInterface!=null && igiInterface.getCableDetails()!=null) {%> value="<%=igiInterface.getCableDetails() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       							</div>
 		       						</div>
@@ -512,7 +534,7 @@ input,select,table,div,label,span {
 		});
 	
 		// Electrical Interface Toggling
-		$('#electricalInterfaceBtn').on('click', function(){
+		/* $('#electricalInterfaceBtn').on('click', function(){
 			var electricalInterfaceVal = $(this).val();
 			var htmlContent = $(this).html();
 
@@ -528,10 +550,10 @@ input,select,table,div,label,span {
 		        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
 			}
 			
-		});
+		}); */
 	
 		// Optical Interface Toggling
-		$('#opticalInterfaceBtn').on('click', function(){
+		/* $('#opticalInterfaceBtn').on('click', function(){
 			var opticalInterfaceVal = $(this).val();
 			var htmlContent = $(this).html();
 
@@ -547,7 +569,7 @@ input,select,table,div,label,span {
 		        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
 			}
 			
-		});
+		}); */
 	
 		// Logical Interface Toggling
 		$('#logicalInterfaceBtn').on('click', function(){

@@ -28,6 +28,10 @@ public class IGIInterface {
 	private String Connector;
 	private String Protection;
 	private String InterfaceDescription;
+	private String CableInfo;
+	private String CableConstraint;
+	private String CableDiameter;
+	private String CableDetails;
 	private Long IGIDocId;
 	private String CreatedBy;
     private String CreatedDate;

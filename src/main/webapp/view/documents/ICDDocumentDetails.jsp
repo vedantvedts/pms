@@ -181,6 +181,9 @@
 		applicableDocsList = applicableDocsList.stream().filter(e -> !igiApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
 		List<String> icdApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
 
+		List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
+		List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
+		
 		PfmsICDDocument icdDocument = (PfmsICDDocument)request.getAttribute("icdDocument");
 		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
 		
@@ -1184,6 +1187,81 @@ function DownloadDocPDF(){
                             <% } else{%>
                             	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 2 },]
                             <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Applicable Documents End *********************************** */
+                
+                /* ************************************** Connections *********************************** */
+                {
+                    text: (++mainContentCount)+'. Connections',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['15%', '15%', '15%', '10%', '15%', '15%', '10%' ],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'Connection ID', style: 'tableHeader' },
+                                { text: 'Sub-System 1', style: 'tableHeader' },
+                                { text: 'Sub-System 2', style: 'tableHeader' },
+                                { text: 'Code', style: 'tableHeader' },
+                                { text: 'Interface Type', style: 'tableHeader' },
+                                { text: 'Transmission Speed', style: 'tableHeader' },
+                                { text: 'Data Format', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                            
+                            <%if(icdConnectionsList!=null && icdConnectionsList.size()>0) {
+                    			int count = 0;
+                    			String systemOne1 = "";
+                				String systemTwo1 = "";
+                    			for(Object[] obj : icdConnectionsList) {
+                    				
+                    				String systemOne2 = obj[4]+"";
+                    				String systemTwo2 = obj[5]+"";
+                    				
+                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2)) {
+                    					systemOne1 = systemOne2;
+                    					systemTwo1 = systemTwo2;
+                    					count = 0;
+                    				}
+                    				
+                    				++count;
+                    		%>
+	                    		[
+	                                { text: '<%=obj[4]+"_"+obj[5]+((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[4] %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[5] %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[8] %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[10] %>', style: 'tableData', },
+	                                { text: '<%=obj[13] %>', style: 'tableData', },
+	                                { text: '<%=obj[11] %>', style: 'tableData', },
+	                            ],
+                    		<%} }%>
                         ]
                     },
                     layout: {

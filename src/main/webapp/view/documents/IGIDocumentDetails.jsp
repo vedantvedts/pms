@@ -184,8 +184,8 @@
 		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
 		
 		List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
-		List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
-		List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
+		//List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
+		//List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
 		List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
 				
 		Object[] labDetails = (Object[])request.getAttribute("labDetails");
@@ -1231,7 +1231,7 @@ function DownloadDocPDF(){
                 },
                 <%if(physicalInterfaceList!=null && physicalInterfaceList.size()>0) {
                 	int slno = 0;
-                	for(IGIInterface physicalInterface : physicalInterfaceList) { %>
+                	for(IGIInterface physicalInterface : physicalInterfaceList) { int sn = 0;%>
                 	
                 	{
                     	text: mainContentCount+'.1.1.<%=++slno%>. <%=physicalInterface.getInterfaceName() %>',	
@@ -1244,27 +1244,37 @@ function DownloadDocPDF(){
 	                {
 	                	table: {
 	                        headerRows: 1,
-	                        widths: ['30%', '70%'],
+	                        widths: ['10%', '25%', '65%'],
 	                        body: [
 	                            // Table header
 	                            [
+	                                { text: 'SN', style: 'tableHeader' },
 	                                { text: 'Section', style: 'tableHeader' },
 	                                { text: 'Details', style: 'tableHeader' },
 	                            ],
 	                            // Populate table rows
 	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Unique Interface Id', style: 'tableData', bold: true},
+	                                { text: '<%=physicalInterface.getInterfaceSeqNo()+"_"+physicalInterface.getInterfaceCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Interface Id', style: 'tableData', bold: true},
 	                                { text: '<%=physicalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
 	                            ],
 	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Interface Code', style: 'tableData', bold: true},
 	                                { text: '<%=physicalInterface.getInterfaceCode() %>', style: 'tableData' },
 	                            ],
 	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Interface Name', style: 'tableData', bold: true },
 	                                { text: '<%=physicalInterface.getInterfaceName() %>', style: 'tableData' },
 	                            ],
 	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Description', style: 'tableData', bold: true},
 	                                <%if(physicalInterface.getInterfaceDescription()!=null && !physicalInterface.getInterfaceDescription().isEmpty()) {%>
 	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=physicalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
@@ -1273,28 +1283,58 @@ function DownloadDocPDF(){
 	                                <%} %>
 	                            ],
 	                            [
-	                                { text: 'Type of Data', style: 'tableData', bold: true },
-	                                { text: '<%=physicalInterface.getDataType() %>', style: 'tableData' },
-	                            ],
-	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Type of Signal', style: 'tableData', bold: true },
 	                                { text: '<%=physicalInterface.getSignalType() %>', style: 'tableData' },
 	                            ],
 	                            [
-	                                { text: 'Interface Speed', style: 'tableData', bold: true },
-	                                { text: '<%=physicalInterface.getInterfaceSpeed() %>', style: 'tableData' },
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Type of Data', style: 'tableData', bold: true },
+	                                { text: '<%=physicalInterface.getDataType() %>', style: 'tableData' },
 	                            ],
 	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Connector', style: 'tableData', bold: true },
 	                                { text: '<%=(physicalInterface.getConnector()!=null && !physicalInterface.getConnector().isEmpty())? physicalInterface.getConnector():"-" %>', style: 'tableData' },
 	                            ],
 	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Protection', style: 'tableData', bold: true },
 	                                { text: '<%=(physicalInterface.getProtection()!=null && !physicalInterface.getProtection().isEmpty())? physicalInterface.getProtection():"-" %>', style: 'tableData' },
 	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Interface Speed', style: 'tableData', bold: true },
+	                                { text: '<%=physicalInterface.getInterfaceSpeed() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Cable Information', style: 'tableData', bold: true },
+	                                { text: '<%=(physicalInterface.getCableInfo()!=null && !physicalInterface.getCableInfo().isEmpty())? physicalInterface.getCableInfo():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Cable Constraint', style: 'tableData', bold: true },
+	                                { text: '<%=(physicalInterface.getCableConstraint()!=null && !physicalInterface.getCableConstraint().isEmpty())? physicalInterface.getCableConstraint():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Cable Diameter', style: 'tableData', bold: true },
+	                                { text: '<%=(physicalInterface.getCableDiameter()!=null && !physicalInterface.getCableDiameter().isEmpty())? physicalInterface.getCableDiameter():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Cable Details', style: 'tableData', bold: true },
+	                                { text: '<%=(physicalInterface.getCableDetails()!=null && !physicalInterface.getCableDetails().isEmpty())? physicalInterface.getCableDetails():"-" %>', style: 'tableData' },
+	                            ],
+	                            
 	                            <%if(physicalInterface.getInterfaceDiagram()!=null && !physicalInterface.getInterfaceDiagram().isEmpty()) {%>
-	                            	[
-	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=physicalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 2,},
+		                            [
+		                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Diagram', style: 'tableData', bold: true, colSpan: 2 },
+		                            ],
+		                            [
+	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=physicalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 3,},
 	                            	],
 	                            <%} %>
 	                        ]
@@ -1320,7 +1360,7 @@ function DownloadDocPDF(){
 	                { text: '\n',},
                 <%} }%>
                 
-                {
+                <%-- {
                 	text: mainContentCount+'.1.2. Electrical Interface',	
                 	style: 'chapterSubSubHeader',
                     tocItem: true,
@@ -1416,9 +1456,9 @@ function DownloadDocPDF(){
 	                    },
 	                },
 	                { text: '\n',},
-                <%} }%>
+                <%} }%> --%>
                 
-                {
+                <%-- {
                 	text: mainContentCount+'.1.3. Optical Interface',	
                 	style: 'chapterSubSubHeader',
                     tocItem: true,
@@ -1514,7 +1554,7 @@ function DownloadDocPDF(){
 	                    },
 	                },
 	                { text: '\n',},
-                <%} }%>
+                <%} }%> --%>
 
                 
                 {
