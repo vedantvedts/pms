@@ -63,7 +63,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	
 	private static final String SPECIFICATIONMASTERLIST="SELECT a.SpecsMasterId, a.SpecificationName, \r\n"
 			+ "a.Description, a.SpecsParameter, a.SpecsUnit, a.SpecsInitiationId, a.SpecValue, CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',\r\n"
-			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1'";
+			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,a.maximumValue,a.minimumValue,a.specCount FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1' ORDER BY a.MainId,a.specCount";
 	@Override
     public List<Object[]> SpecificationMasterList() throws Exception 
     {
