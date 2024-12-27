@@ -29,9 +29,7 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.vts.pfms.login.CustomAuthenticationFailureHandler;
-import com.vts.pfms.login.CustomInvalidSessionStrategy;
 import com.vts.pfms.login.CustomLogoutHandler;
-import com.vts.pfms.login.CustomSessionExpiredStrategy;
 import com.vts.pfms.login.LoginSuccessHandler;
 
 @Configuration
@@ -47,12 +45,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	 
 	 @Autowired
 	 private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-	 
-	 @Autowired
-	 private CustomInvalidSessionStrategy customInvalidSessionStrategy;
-	 
-	 @Autowired
-	 private CustomSessionExpiredStrategy customSessionExpiredStrategy;
 	 
 	 @Override
 	 @Bean
