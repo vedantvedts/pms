@@ -24,12 +24,16 @@ public class SpecificationMaster {
 	private String SpecsUnit;
 	private String SpecsInitiationId;
 	private String SpecValue;
+	private String maximumValue;
+	private String minimumValue;
+	private int specCount;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
 	private Long MainId;
+	private Long ParentId;
 	private Long sid;
 
 

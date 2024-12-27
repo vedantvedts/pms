@@ -164,7 +164,7 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 
 			    // Conditionally add the lab details
 			    contentArray.push({
-			        text: <% if (LabList != null && LabList[1] != null) { %> '<%= LabList[1].toString() + "(" + LabList[0].toString() + ")" %>' <% } else { %> '-' <% } %>,
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
 			        alignment: 'center',
 			        fontSize: 16,
 			        bold: true,
@@ -464,11 +464,8 @@ header: function (currentPage) {
 				  lines.forEach((line, index) => {
 				    ctx.fillText(line, 0, index * lineHeight); // Position each line below the previous
 				  });
-
 				  return canvas.toDataURL();
 				}	 
-				
-				
 			   	$( document ).ready(function(){
 		    		generatePDF();
 		    		/* window.close(); */

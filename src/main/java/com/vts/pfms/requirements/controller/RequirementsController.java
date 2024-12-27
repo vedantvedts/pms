@@ -214,7 +214,30 @@ public class RequirementsController {
 			req.setAttribute("SpecificationMaster", sp);
 			List<Object[] > systemList= productreeservice.getAllSystemName();
 			req.setAttribute("systemList",systemList);
+			if(action.equalsIgnoreCase("add")) {
 			return "requirements/SpecificationMasterAdd";
+			}else {
+				List<Object[]>subSpecificationListLevel1 = new ArrayList<>();
+				List<Object[]>subSpecificationListLevel2 = new ArrayList<>();
+				List<Object[]> SpecificationMasterList=service.SpecificationMasterList();
+				
+				for(Object[]obj:SpecificationMasterList) {
+					if(obj[14].toString().equalsIgnoreCase(sp.getSpecsMasterId()+"")) {
+						subSpecificationListLevel1.add(obj);
+						subSpecificationListLevel2=SpecificationMasterList.stream()
+													.filter(e->e[14].toString().equalsIgnoreCase(obj[0].toString()))
+													.collect(Collectors.toList());
+						subSpecificationListLevel1.addAll(subSpecificationListLevel2);
+					}
+				}
+				for(Object[]obj:subSpecificationListLevel1) {
+					System.out.println("PrimaryKey -->"+obj[0].toString() );
+				}
+				
+				req.setAttribute("subSpecificationList", subSpecificationListLevel1);
+				return "requirements/SpecificationMasterAdd";
+			}
+			
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -292,9 +315,7 @@ public class RequirementsController {
 			if (!productTreeMainId.equalsIgnoreCase("0")) {
 				Long firstReqInitiationId = service.getFirstVersionReqInitiationId(initiationId, projectId, "0");
 				List<Object[]> RequirementMainList = service.RequirementList(firstReqInitiationId + "");
-
 				req.setAttribute("RequirementList", RequirementMainList);
-
 			}
 
 			req.setAttribute("DocTempAttributes", projectservice.DocTempAttributes());
@@ -365,7 +386,7 @@ public class RequirementsController {
 			req.setAttribute("reqInitiationId", reqInitiationId);
 			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("attributes",
-					req.getParameter("attributes") == null ? "Introduction" : req.getParameter("attributes"));
+			req.getParameter("attributes") == null ? "Introduction" : req.getParameter("attributes"));
 			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, projectId, "E"));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -390,8 +411,7 @@ public class RequirementsController {
 			req.setAttribute("reqInitiationId", reqInitiationId);
 			req.setAttribute("ParaDetails", projectservice.ReqParaDetailsMain(reqInitiationId));
 			req.setAttribute("SQRFile", projectservice.SqrFiles(reqInitiationId));
-			String value = projectservice.ReqParaDetailsMain(reqInitiationId) != null
-					&& projectservice.ReqParaDetailsMain(reqInitiationId).size() > 0
+			String value = projectservice.ReqParaDetailsMain(reqInitiationId) != null && projectservice.ReqParaDetailsMain(reqInitiationId).size() > 0
 							? projectservice.ReqParaDetailsMain(reqInitiationId).get(0)[0].toString()
 							: "1";
 			req.setAttribute("paracounts",
@@ -4135,20 +4155,51 @@ public class RequirementsController {
 	public String specificationMasterAdd(HttpServletRequest req, HttpSession ses, HttpServletResponse res,
 			RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() + "Inside RequirementVerifyDataEdit.htm" + UserId);
+		logger.info(new Date() + "Inside specificationMasterAddSubmit.htm" + UserId);
 		try {
 			String SpecsMasterId = req.getParameter("SpecsMasterId");
 			String action = req.getParameter("action");
 			SpecificationMaster sp =action.equalsIgnoreCase("update")? service.getSpecificationMasterById(Long.parseLong(SpecsMasterId)): new SpecificationMaster();
 			
-			sp.setSpecificationName(req.getParameter("SpecificationName"));
-			sp.setDescription(req.getParameter("description"));
-			sp.setSpecsParameter(req.getParameter("specParameter"));
-			sp.setSpecsUnit(req.getParameter("specUnit"));
-			sp.setSpecValue(req.getParameter("specValue"));
+			String numberOfChild = req.getParameter("numberOfChild");
+			
+			List<Object[]>subSpecificationListLevel1 = new ArrayList<>();
+			List<Object[]>subSpecificationListLevel2 = new ArrayList<>();
+			List<Object[]> SpecificationMasterList=service.SpecificationMasterList();
+			
+			if(action.equalsIgnoreCase("update")) {
+			for(Object[]obj:SpecificationMasterList) {
+				if(obj[14].toString().equalsIgnoreCase(SpecsMasterId)) {
+					subSpecificationListLevel1.add(obj);
+					subSpecificationListLevel2=SpecificationMasterList.stream()
+												.filter(e->e[14].toString().equalsIgnoreCase(obj[0].toString()))
+												.collect(Collectors.toList());
+					subSpecificationListLevel1.addAll(subSpecificationListLevel2);
+				}
+			}
+			for(Object[]obj:subSpecificationListLevel1) {
+				SpecificationMaster sp1 =service.getSpecificationMasterById(Long.parseLong(obj[0].toString()));
+				sp1.setIsActive(0);
+				service.specMasterAddSubmit(sp1);
+			}
+			}
 			
 			
+				
 			
+				String SpecsInitiationId = "";
+				//sp.setSpecificationName(req.getParameter("SpecificationName"));
+				sp.setDescription(req.getParameter("description"));
+				sp.setSpecsParameter(req.getParameter("specParameter"));
+				sp.setSpecsUnit(req.getParameter("specUnit"));
+				sp.setSpecValue(req.getParameter("specValue"));
+				sp.setMaximumValue(req.getParameter("maxValue"));
+				sp.setMinimumValue(req.getParameter("minValue"));
+				
+			
+			
+		    String[] subids = req.getParameter("subid").split("#");
+		    int subsytemspcCount=0;
 			if(SpecsMasterId!=null) {
 			sp.setModifiedBy(UserId);
 			sp.setModifiedDate(LocalDate.now().toString());
@@ -4157,22 +4208,101 @@ public class RequirementsController {
 			sp.setCreatedDate(LocalDate.now().toString());
 			sp.setSid(Long.parseLong(req.getParameter("sid")));
 			
-			String[] subids = req.getParameter("subid").split("#");
+			
 			
 			sp.setMainId(Long.parseLong(subids[0]));
-			List<Object[]> SpecificarionMasterList = service.SpecificationMasterList();
-			int subsytemspcCount=0;
-			if(SpecificarionMasterList!=null) {
-				SpecificarionMasterList=SpecificarionMasterList.stream().filter(e->e[13].toString().equalsIgnoreCase(subids[0])).collect(Collectors.toList());
-				if(SpecificarionMasterList!=null && SpecificarionMasterList.size()>0) {
-					subsytemspcCount=SpecificarionMasterList.size();
+			
+			
+			if(SpecificationMasterList!=null) {
+				SpecificationMasterList=SpecificationMasterList.stream().filter(e->e[13].toString().equalsIgnoreCase(subids[0]) && e[12].toString().equalsIgnoreCase(req.getParameter("sid")) && e[14].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+				if(SpecificationMasterList!=null && SpecificationMasterList.size()>0) {
+					subsytemspcCount=SpecificationMasterList.size();
 				}
 			}
-			sp.setSpecsInitiationId(subids[1]+"_"+(subsytemspcCount+1));
+			sp.setSpecCount(subsytemspcCount+1);
+			//SpecsInitiationId set it first
+			SpecsInitiationId=subids[1]+"_"+(subsytemspcCount+1);
+			sp.setSpecsInitiationId(SpecsInitiationId);
+			sp.setParentId(0L);
 			sp.setIsActive(1);
 			}
 			long count = service.specMasterAddSubmit(sp);
-			if (count > 0) {
+			SpecsInitiationId=sp.getSpecsInitiationId();
+			subsytemspcCount=sp.getSpecCount();
+			if(numberOfChild!=null && !numberOfChild.isEmpty()) {
+			int numberOfChilds = Integer.parseInt(numberOfChild);
+			for(int i=1;i<=numberOfChilds;i++) {
+					
+				SpecificationMaster sp1 = new SpecificationMaster();
+				
+				sp1.setDescription(req.getParameter("description_"+i));
+				sp1.setSpecValue(req.getParameter("specValue_"+i));
+				sp1.setSpecsParameter(req.getParameter("specParameter_"+i));
+				
+				if(!req.getParameter("specUnit_"+i).isEmpty()) {
+					sp1.setSpecsUnit(req.getParameter("specUnit_"+i));
+				}
+				
+				if(!req.getParameter("maxValue_"+i).isEmpty()) {
+					sp1.setMaximumValue(req.getParameter("maxValue_"+i));
+				}
+				if(!req.getParameter("minValue_"+i).isEmpty()) {
+					sp1.setMinimumValue(req.getParameter("minValue_"+i));
+				}
+				sp1.setSid(Long.parseLong(req.getParameter("sid")));
+				sp1.setMainId(Long.parseLong(subids[0]));
+				sp1.setParentId(count);
+				sp1.setSpecsInitiationId(SpecsInitiationId+"_"+i);
+				sp1.setCreatedBy(UserId);
+				sp1.setCreatedDate(LocalDate.now().toString());
+				sp1.setIsActive(1);
+				sp1.setSpecCount(subsytemspcCount);
+				long result = service.specMasterAddSubmit(sp1);
+				
+					String[] specParameters = req.getParameterValues(i+"_specParameter");
+					String[]specUnits = req.getParameterValues(i+"_specUnit");
+					String[]specValues = req.getParameterValues(i+"_specValue");
+					String[] maxValues = req.getParameterValues(i+"_maxValue");
+					String[]minValues = req.getParameterValues(i+"_minValue");
+					String[]descriptions= req.getParameterValues(i+"_description");
+				
+					if(specParameters!=null) {
+					for(int j=0;j<specParameters.length;j++) {
+						
+						SpecificationMaster sp2 = new SpecificationMaster();
+						sp2.setDescription(descriptions[j]);
+						sp2.setSpecsParameter(specParameters[j]);
+						sp2.setSpecValue(specValues[j]);
+						if(specUnits.length!=0) {
+							sp2.setSpecsUnit(specUnits[j]);
+						}
+						if(maxValues.length!=0) {
+							sp2.setMaximumValue(maxValues[j]);
+						}
+						if(minValues.length!=0) {
+							sp2.setMinimumValue(minValues[j]);
+						}
+						
+						sp2.setSid(Long.parseLong(req.getParameter("sid")));
+						sp2.setMainId(Long.parseLong(subids[0]));
+						sp2.setParentId(result);
+						sp2.setSpecsInitiationId(SpecsInitiationId+"_"+i+"_"+(j+1));
+						sp2.setCreatedBy(UserId);
+						sp2.setCreatedDate(LocalDate.now().toString());
+						sp2.setIsActive(1);
+						sp2.setSpecCount(subsytemspcCount);
+						long result2 = service.specMasterAddSubmit(sp2);
+					}
+					}
+					
+				}
+				}
+			
+			
+			
+			
+//			long count = service.specMasterAddSubmit(sp);
+			if (count> 0) {
 				if(action.equalsIgnoreCase("update")) {
 				redir.addAttribute("result", "Specification Data Edited Successfully");
 				}else {

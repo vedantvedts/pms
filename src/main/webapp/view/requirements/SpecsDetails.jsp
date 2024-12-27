@@ -940,9 +940,11 @@ var productreelist = [];
 		     $('#linkedRequirements').val(LinkedRequirements).trigger('change');
 			 /* $('#descriptionadd').val(Data.Description); */
 			 $('#Editor').summernote('code', Data.Description);
-			 
+			 console.log(Data.LinkedSubSystem)
+			 if(Data.LinkedSubSystem!==undefined){
 			 var LinkedSubSystem = Data.LinkedSubSystem.split(",");
 			 $('#LinkedSub').val(LinkedSubSystem).trigger('change');
+			 }
 			 if(Data.SpecsParameter!==undefined){
 				 $('#specParameter').val(Data.SpecsParameter);
 			 }else{

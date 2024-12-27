@@ -515,10 +515,40 @@ function openModal() {
 	                    alignment: 'center',
 	                    fontSize: 18,
 	                    margin: [0, 200, 0, 20],
-	                     pageBreak: 'after',
 	    		  	
 	                },
+	                <% if (lablogo != null) { %>
+	                {
+	                    image: 'data:image/png;base64,<%= lablogo %>',
+	                    width: 95,
+	                    height: 95,
+	                    alignment: 'center',
+	                    margin: [0, 20, 0, 30]
+	                },
+	                <% } %>
 	                
+	                {
+	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+	                    alignment: 'center',
+	                    fontSize: 16,
+	                    bold: true,
+	                    margin: [0, 20, 0, 20]
+	                },
+	                {
+	                    text: htmlToPdfmake('<h6>Government of India, Ministry of Defence<br>Defence Research & Development Organization </h6>'),
+	                    alignment: 'center',
+	                    fontSize: 14,
+	                    bold: true,
+	                    margin: [0, 10, 0, 10]
+	                },
+	                {
+	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+	                    alignment: 'center',
+	                    fontSize: 14,
+	                    bold: true,
+	                    margin: [0, 10, 0, 10],
+	                    pageBreak: 'after',
+	                },
 	                {
 	                    toc: {
 	                        title: { text: 'INDEX', style: 'header'}
@@ -819,10 +849,41 @@ function openModal() {
 	                    alignment: 'center',
 	                    fontSize: 18,
 	                    margin: [0, 200, 0, 20],
-	                     pageBreak: 'after',
+	                    
 	    		  	
 	                },
+	                <% if (lablogo != null) { %>
+	                {
+	                    image: 'data:image/png;base64,<%= lablogo %>',
+	                    width: 95,
+	                    height: 95,
+	                    alignment: 'center',
+	                    margin: [0, 20, 0, 30]
+	                },
+	                <% } %>
 	                
+	                {
+	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+	                    alignment: 'center',
+	                    fontSize: 16,
+	                    bold: true,
+	                    margin: [0, 20, 0, 20]
+	                },
+	                {
+	                    text: htmlToPdfmake('<h6>Government of India, Ministry of Defence<br>Defence Research & Development Organization </h6>'),
+	                    alignment: 'center',
+	                    fontSize: 14,
+	                    bold: true,
+	                    margin: [0, 10, 0, 10]
+	                },
+	                {
+	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+	                    alignment: 'center',
+	                    fontSize: 14,
+	                    bold: true,
+	                    margin: [0, 10, 0, 10],
+	                    pageBreak: 'after',
+	                },
 	                {
 	                    toc: {
 	                        title: { text: 'INDEX', style: 'header'}

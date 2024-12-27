@@ -183,23 +183,22 @@ label {
 								class="table table-bordered table-hover table-striped table-condensed"
 								id="myTable">
 								<thead style="text-align: center;">
-									<tr>
-										<th>Select</th>
-										<th>Specification Name</th>
-										<th>Specification Code</th>
-										<th>Specification Parameter</th>
-										<th>Specification Value</th>
-										<!-- <th>Created By</th> -->
-									</tr>
+								<tr>
+								<th style="width:5%;">SN</th>
+								<!--<th>Specification Name</th> -->
+								<th>Specification Code</th>
+								<th>Specification Parameter</th>
+								<th>Specification Value</th>
+								</tr>
 								</thead>
 								<tbody>
 									<%
 									for (Object[] obj : SpecificarionMasterList) {
 									%>
-									<tr>
-										<td align="center"><input type="radio" name="Did"
-											value=<%=obj[0]%>></td>
-										<td><%=obj[1]%></td>
+									<tr<%if(obj[14].toString().equalsIgnoreCase("0")){ %> style="background: #9ae59a;"	 <%} %>>
+								   <td align="center"><input type="radio" name="Did"
+										<%if(!obj[14].toString().equalsIgnoreCase("0")){ %>disabled="disabled" <%}%>value=<%=obj[0]%>> </td>
+										<%-- <td><%=obj[1]%></td> --%>
 										<td><%=obj[5]%></td>
 										<td><%=obj[3]%></td>
 										<td><%=obj[6]%> <%=obj[4] %></td>

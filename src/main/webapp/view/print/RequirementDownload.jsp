@@ -2299,7 +2299,8 @@ This appendix contains acronyms and provides standard definitions for terminolog
         //var scopeDiv = document.getElementById('scopeDiv').innerHTML;
         //var reqDiv = document.getElementById('reqDiv').innerHTML;
         //var verificationDiv = document.getElementById('verificationDiv').innerHTML;
-        
+        	try {
+	
         var chapterCount = 0;
         var mainContentCount = 0;
         var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
@@ -2631,7 +2632,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                 },
                 {
                 	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=ReqIntro[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
-                		  +'<%}else {%> Guidance: This paragraph should contain a full identification of the system to which this document applies. <%} %>', 500))],
+                		  +'<%}else {%> Guidance: This paragraph should contain a full identification of the system to which this document applies. <%} %>', 600))],
                     margin: [10, 0, 0, 0],
                 },
                 {
@@ -2643,7 +2644,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                 },
                 {
                 	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[3]!=null) {%> <%=ReqIntro[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
-                		  +'<%}else {%> Guidance: This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites. <%} %>', 500))],
+                		  +'<%}else {%> Guidance: This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites. <%} %>', 600))],
                     margin: [10, 0, 0, 0],
                 },
                 {
@@ -2655,7 +2656,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
                 },
                 {
                 	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[4]!=null) {%> <%=ReqIntro[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
-                		  +'<%}else {%> This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. <%} %>', 500))],
+                		  +'<%}else {%> This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. <%} %>', 600))],
                     margin: [10, 0, 0, 0],
                 },
 			
@@ -3446,7 +3447,11 @@ This appendix contains acronyms and provides standard definitions for terminolog
         };
 		
         pdfMake.createPdf(docDefinition).open();
-        
+        }
+        catch (error) {
+        		  // Handle the error in the catch block
+        		  console.log("An error occurred:", error);
+        		}
     }
     
     const setImagesWidth = (htmlString, width) => {
@@ -3561,6 +3566,9 @@ This appendix contains acronyms and provides standard definitions for terminolog
     	  return canvas.toDataURL();
     	}
 
+  
+    	
+    	
     	<%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
 	    	$( document ).ready(function(){
 	    		generatePDF();
