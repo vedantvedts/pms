@@ -193,6 +193,7 @@
 		String lablogo = (String)request.getAttribute("lablogo");
 		String drdologo = (String)request.getAttribute("drdologo");
 		String version =(String)request.getAttribute("version");
+		String isPdf = (String)request.getAttribute("isPdf");
 		
 		LocalDate now = LocalDate.now();
 		FormatConverter fc = new FormatConverter();
@@ -312,11 +313,11 @@
 										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Title: <span class="text-dark">Interface General Information (IGI)</span></td>
 									</tr>
 									<tr >
-										<td class="text-primary"><%=++docsumslno %>.&nbsp; Type of Document:<span class="text-dark">Interface General Information (IGI) Document</span></td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Type of Document: <span class="text-dark">Interface General Information (IGI) Document</span></td>
 										<td class="text-primary"><%=++docsumslno %>.&nbsp; Classification: <span class="text-dark">Restricted</span></td>
 									</tr>
 								    <tr >
-										<td class="text-primary"><%=++docsumslno %>.&nbsp; Document Number:</td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Document Number: <span class="text-dark"><%=documentNo %></span></td>
 										<td class="text-primary"><%=++docsumslno %>.&nbsp; Month Year: <span style="color:black;"><%=now.getMonth().toString().substring(0,3) %>&nbsp;&nbsp;<%=now.getYear() %></span></td>
 									</tr>
 									<!-- <tr>
@@ -893,11 +894,11 @@ function DownloadDocPDF(){
                                 { text: 'Restricted', style: 'tableData' },
                             ],
                             
-                            <%-- [
+                            [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Document Number', style: 'tableData' },
-                                { text: '<%=docnumber %>', style: 'tableData' },
-                            ], --%>
+                                { text: '<%=documentNo %>', style: 'tableData' },
+                            ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
@@ -1866,6 +1867,20 @@ function generateRotatedTextImage(text) {
 	
 	return canvas.toDataURL();
 }
+
+<%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
+$( document ).ready(function(){
+	DownloadDocPDF();
+	/* window.close(); */
+	
+	// Hide the current JSP page immediately after opening the PDF
+	document.body.style.display = "none";
+	
+	setTimeout(function () {
+        window.close();
+    }, 8000); // Adjust the delay time as needed
+});
+<%} %>
 </script> 
 
 </body>

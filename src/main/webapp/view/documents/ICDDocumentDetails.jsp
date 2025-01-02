@@ -1,3 +1,4 @@
+<%@page import="java.util.function.Function"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.vts.pfms.documents.model.PfmsICDDocument"%>
@@ -184,13 +185,41 @@
 		List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
 		List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
 		
+		List<String> subsystems = productTreeList.stream().map(obj -> obj[7].toString()).distinct().collect(Collectors.toList());
+		
+		HashSet<String> interfaceCodeList = new HashSet<String>();
+		
+		Map<String, String> connectionMap = new HashMap<>();
+		
+		Map<String, List<String>> codeValuesMap = new HashMap<>();
+		
+		for (Object[] connection : icdConnectionsList) {
+		    String key = connection[4] + "_" + connection[5];
+		    int count = connectionMap.containsKey(key) ? connectionMap.get(key).split("<br>").length + 1 : 1;
+
+		    String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
+		    
+		    String value = connection[4] + "_" + connection[5] + "_" + connection[8] + seqNumber;
+		    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + "<br>" + newValue);
+		    
+		 	// Unique Interface Codes
+		    String code = connection[8].toString();
+		    interfaceCodeList.add(code);
+		    
+		 	// Collecting values for each code
+		    codeValuesMap.computeIfAbsent(code, k -> new ArrayList<>()).add(value);
+		}
+		
 		PfmsICDDocument icdDocument = (PfmsICDDocument)request.getAttribute("icdDocument");
 		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
 		
-		List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
-		List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
-		List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
-		List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
+		Map<String, IGIInterface> interfaceListToMap = igiInterfaceList.stream()
+			    	.collect(Collectors.toMap(IGIInterface::getInterfaceCode, Function.identity(), (existing, replacement) -> existing ));
+
+		//List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
+		//List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
+		//List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
+		//List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
 				
 		Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 		Object[] labDetails = (Object[])request.getAttribute("labDetails");
@@ -199,6 +228,7 @@
 		String drdologo = (String)request.getAttribute("drdologo");
 		String version =(String)request.getAttribute("version");
 		String projectType =(String)request.getAttribute("projectType");
+		String isPdf = (String)request.getAttribute("isPdf");
 		String projectShortName = (projectDetails!=null && projectDetails[2]!=null)?projectDetails[2]+"":"";
 		
 		LocalDate now = LocalDate.now();
@@ -322,7 +352,7 @@
 										<td class="text-primary"><%=++docsumslno %>.&nbsp; Classification: <span class="text-dark">Restricted</span></td>
 									</tr>
 								    <tr >
-										<td class="text-primary"><%=++docsumslno %>.&nbsp; Document Number:</td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Document Number: <span class="text-dark"><%=documentNo %></span> </td>
 										<td class="text-primary"><%=++docsumslno %>.&nbsp; Month Year: <span style="color:black;"><%=now.getMonth().toString().substring(0,3) %>&nbsp;&nbsp;<%=now.getYear() %></span></td>
 									</tr>
 									<!-- <tr>
@@ -416,7 +446,7 @@
 			<i class="fa fa-download text-success" aria-hidden="true"></i>
 		</button>
 		
-		<button type="submit" class="btn bg-transparent" id="connectionsFormBtn" formaction="ICDConnectionMatrixDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;">
+		<button type="submit" class="btn bg-transparent" id="connectionsFormBtn" formaction="ICDConnectionsDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;">
 			<i class="fa fa-download text-success" aria-hidden="true"></i>
 		</button>
 	</form>
@@ -898,11 +928,11 @@ function DownloadDocPDF(){
                                 { text: 'Restricted', style: 'tableData' },
                             ],
                             
-                            <%-- [
+                            [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Document Number', style: 'tableData' },
-                                { text: '<%=docnumber %>', style: 'tableData' },
-                            ], --%>
+                                { text: '<%=documentNo %>', style: 'tableData' },
+                            ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
@@ -928,11 +958,11 @@ function DownloadDocPDF(){
                                 { text: htmlToPdfmake('<% if(documentSummary!=null){%><%=documentSummary[1]!=null?documentSummary[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %><%} %>'), style: 'tableData' },
                             ],
                             
-                            <%-- [
+                            [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Project Name', style: 'tableData' },
-                                { text: '', style: 'tableData' },
-                            ], --%>
+                                { text: '<%=projectShortName%>', style: 'tableData' },
+                            ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
@@ -1141,7 +1171,7 @@ function DownloadDocPDF(){
                     style: 'chapterHeader',
                     tocItem: true,
                     id: 'chapter'+(++chapterCount),
-                    pageBreak: 'before'
+                    pageBreak: 'before',
                 },
 
                 <%if(icdDocument!=null) {%>
@@ -1161,7 +1191,7 @@ function DownloadDocPDF(){
                     style: 'chapterHeader',
                     tocItem: true,
                     id: 'chapter'+(++chapterCount),
-                    pageBreak: 'before'
+                    pageBreak: 'before',
                 },
 
                 {
@@ -1215,9 +1245,73 @@ function DownloadDocPDF(){
                     style: 'chapterHeader',
                     tocItem: true,
                     id: 'chapter'+(++chapterCount),
-                    pageBreak: 'before'
+                    pageOrientation: 'landscape',
+                    pageBreak: 'before',
+                    pageSize: { width: 841.89, height: 595.28 },
+                },
+				
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: [
+                            <% for (int i = 0; i <= subsystems.size(); i++) { %>
+                                '*',
+                            <% } %>
+                        ],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'Sub-System', style: 'tableHeader' },
+                                <% for (String subsystem : subsystems) { %>
+                                    { text: '<%= subsystem != null ? subsystem : "" %>', style: 'tableHeader' },
+                                <% } %>
+                            ],
+
+                            // Populate table rows
+                            <% for (String rowSubsystem : subsystems) { %>
+                                [
+                                    { text: '<%= rowSubsystem != null ? rowSubsystem : "" %>', style: 'tableData', alignment: 'center' },
+                                    <% for (String colSubsystem : subsystems) { %>
+                                        { text: 
+                                            <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
+                                                'NA'
+                                            <% } else { 
+                                                String key = rowSubsystem + "_" + colSubsystem;
+                                                String connections = connectionMap.getOrDefault(key, "-");
+                                            %>
+                                                htmlToPdfmake('<%= connections != null ? connections : "-" %>')
+                                            <% } %>, 
+                                            style: 'tableData', alignment: 'center' },
+                                    <% } %>
+                                ],
+                            <% } %>
+                        ]
+                    },
+                    layout: {
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
                 },
 
+                {
+                	text: '',
+                    style: 'chapterHeader',
+                    tocItem: false,
+                    id: 'chapter'+(++chapterCount),
+                    pageOrientation: 'landscape',
+                    pageBreak: 'before',
+                    pageSize: { width: 841.89, height: 595.28 },
+                },
                 {
                     table: {
                         headerRows: 1,
@@ -1253,7 +1347,8 @@ function DownloadDocPDF(){
                     				++count;
                     		%>
 	                    		[
-	                                { text: '<%=obj[4]+"_"+obj[5]+((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[4]+"_"+obj[5]+"_"+obj[8]+((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>', style: 'tableData',alignment: 'center' }, 
+	                                <%-- { text: '<%=obj[4]+"_"+obj[5]+"_"+obj[8] %>', style: 'tableData',alignment: 'center' }, --%>
 	                                { text: '<%=obj[4] %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[5] %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[8] %>', style: 'tableData',alignment: 'center' },
@@ -1282,7 +1377,160 @@ function DownloadDocPDF(){
                         }
                     }
                 },
-                /* ************************************** Applicable Documents End *********************************** */
+                /* ************************************** Connections End *********************************** */
+                
+                /* ************************************** Interface Details *********************************** */
+                {
+                	text: (++mainContentCount)+'. Interface Details',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageOrientation: 'potrait',
+                    pageBreak: 'before',
+                },
+                
+                <%if(interfaceCodeList!=null && interfaceCodeList.size()>0) {
+                	int slno = 0 ;
+                	for(String interfaceCode : interfaceCodeList) {
+                		int sn = 0;
+                		IGIInterface igiInterface = interfaceListToMap.get(interfaceCode);
+                		List<String> connectionCodes = codeValuesMap.getOrDefault(igiInterface.getInterfaceCode(), Collections.emptyList());
+                %>
+	                {
+	                	text: mainContentCount+'.<%=++slno%>. <%=igiInterface.getInterfaceName() %>',	
+	                	style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=slno%>',
+	                    tocMargin: [10, 0, 0, 0],
+	                },
+	                
+	                {
+	                	text: 'Connections: <%=connectionCodes%>',
+	                	margin: [10, 5, 10, 10],
+	                	bold: true,
+	                	fontSize: 11.5,
+	                },
+	                
+	                {
+	                	table: {
+	                        headerRows: 1,
+	                        widths: ['10%', '25%', '65%'],
+	                        body: [
+	                            // Table header
+	                            [
+	                                { text: 'SN', style: 'tableHeader' },
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            // Populate table rows
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Unique Interface Id', style: 'tableData', bold: true},
+	                                { text: '<%=igiInterface.getInterfaceSeqNo()+"_"+igiInterface.getInterfaceCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Interface Id', style: 'tableData', bold: true},
+	                                { text: '<%=igiInterface.getInterfaceSeqNo() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Interface Code', style: 'tableData', bold: true},
+	                                { text: '<%=igiInterface.getInterfaceCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Interface Name', style: 'tableData', bold: true },
+	                                { text: '<%=igiInterface.getInterfaceName() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Description', style: 'tableData', bold: true},
+	                                <%if(igiInterface.getInterfaceDescription()!=null && !igiInterface.getInterfaceDescription().isEmpty()) {%>
+	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=igiInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
+	                                <%}else {%>
+	                                	{ text: 'No Details Added!', style: 'tableData'},
+	                                <%} %>
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Type of Signal', style: 'tableData', bold: true },
+	                                { text: '<%=igiInterface.getSignalType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Type of Data', style: 'tableData', bold: true },
+	                                { text: '<%=igiInterface.getDataType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Connector', style: 'tableData', bold: true },
+	                                { text: '<%=(igiInterface.getConnector()!=null && !igiInterface.getConnector().isEmpty())? igiInterface.getConnector():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Protection', style: 'tableData', bold: true },
+	                                { text: '<%=(igiInterface.getProtection()!=null && !igiInterface.getProtection().isEmpty())? igiInterface.getProtection():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Interface Speed', style: 'tableData', bold: true },
+	                                { text: '<%=igiInterface.getInterfaceSpeed() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Cable Information', style: 'tableData', bold: true },
+	                                { text: '<%=(igiInterface.getCableInfo()!=null && !igiInterface.getCableInfo().isEmpty())? igiInterface.getCableInfo():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Cable Constraint', style: 'tableData', bold: true },
+	                                { text: '<%=(igiInterface.getCableConstraint()!=null && !igiInterface.getCableConstraint().isEmpty())? igiInterface.getCableConstraint():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Cable Diameter', style: 'tableData', bold: true },
+	                                { text: '<%=(igiInterface.getCableDiameter()!=null && !igiInterface.getCableDiameter().isEmpty())? igiInterface.getCableDiameter():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Cable Details', style: 'tableData', bold: true },
+	                                { text: '<%=(igiInterface.getCableDetails()!=null && !igiInterface.getCableDetails().isEmpty())? igiInterface.getCableDetails():"-" %>', style: 'tableData' },
+	                            ],
+	                            
+	                            <%if(igiInterface.getInterfaceDiagram()!=null && !igiInterface.getInterfaceDiagram().isEmpty()) {%>
+		                            [
+		                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Diagram', style: 'tableData', bold: true, colSpan: 2 },
+		                            ],
+		                            [
+	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=igiInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 3,},
+	                            	],
+	                            <%} %>
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    },
+	                },
+	                { text: '\n',},
+                
+                <%} }%>
+                /* ************************************** Interface Details End *********************************** */
                 
 			],
 			styles: {
@@ -1298,20 +1546,40 @@ function DownloadDocPDF(){
                 header: { alignment: 'center', bold: true},
                 chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
             },
-            footer: function(currentPage, pageCount) {
+            footer: function (currentPage, pageCount, pageSize) {
+                const isLandscape = pageSize.width > pageSize.height;
+                const pageWidth = pageSize.width; // Adjust dynamically based on page size
+                const margin = 30;
+
                 if (currentPage > 2) {
                     return {
                         stack: [
-                        	{
-                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 565, y2: 0, lineWidth: 1 }]
+                            {
+                                canvas: [{ type: 'line', x1: margin, y1: 0, x2: pageWidth - margin, y2: 0, lineWidth: 1 }]
                             },
                             {
                                 columns: [
-                                    { text: '<%if(documentNo!=null) {%><%=documentNo %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
-                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+                                    {
+                                        text: '<%if(documentNo!=null) {%><%=documentNo %><%} %>',
+                                        alignment: 'left',
+                                        margin: [margin, 0, 0, 0],
+                                        fontSize: 8
+                                    },
+                                    {
+                                        text: 'Restricted',
+                                        alignment: 'center',
+                                        fontSize: 8,
+                                        margin: [0, 0, 0, 0],
+                                        bold: true
+                                    },
+                                    {
+                                    	text: currentPage.toString() + ' of ' + pageCount,
+                                        alignment: 'right',
+                                        margin: [0, 0, margin, 0],
+                                        fontSize: 8
+                                    }
                                 ]
-                            },
-                            { text: 'Restricted', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }
+                            }
                         ]
                     };
                 }
@@ -1486,6 +1754,20 @@ function generateRotatedTextImage(text) {
 	
 	return canvas.toDataURL();
 }
+
+<%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
+$( document ).ready(function(){
+	DownloadDocPDF();
+	/* window.close(); */
+	
+	// Hide the current JSP page immediately after opening the PDF
+	document.body.style.display = "none";
+	
+	setTimeout(function () {
+        window.close();
+    }, 8000); // Adjust the delay time as needed
+});
+<%} %>
 </script> 
 
 </body>

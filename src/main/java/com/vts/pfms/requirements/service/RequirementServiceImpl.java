@@ -1405,4 +1405,26 @@ public class RequirementServiceImpl implements RequirementService {
 		
 		return dao.testPlanMasterAdd(tp);
 	}
+	@Override
+	public List<Object[]> igiDocumentPendingList(String empId, String labcode) throws Exception {
+		
+		return dao.igiDocumentPendingList(empId, labcode);
+	}
+	@Override
+	public List<Object[]> igiDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		return dao.igiDocumentApprovedList(empId, FromDate, ToDate);
+	}
+	@Override
+	public List<Object[]> icdDocumentPendingList(String empId, String labcode) throws Exception {
+		
+		return dao.icdDocumentPendingList(empId, labcode);
+	}
+	@Override
+	public List<Object[]> icdDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		return dao.icdDocumentApprovedList(empId, FromDate, ToDate);
+	}
+	
+	
 }

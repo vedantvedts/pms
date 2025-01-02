@@ -2,14 +2,17 @@ package com.vts.pfms.documents.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,16 +43,19 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
-import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
-import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.service.DocumentsService;
 import com.vts.pfms.project.service.ProjectService;
@@ -272,7 +278,12 @@ public class DocumentsController {
 		logger.info(new Date() + " Inside IGIDocumentList.htm " + UserId);
 
 		try {
-			req.setAttribute("igiDocumentList", service.getIGIDocumentList());
+			List<Object[]> igiDocumentList = service.getIGIDocumentList();
+			req.setAttribute("igiDocumentList", igiDocumentList);
+			if(igiDocumentList!=null && igiDocumentList.size()>0) {
+				req.setAttribute("igiDocumentSummaryList", service.getDocumentSummaryList(igiDocumentList.get(0)[0].toString(), "A"));
+			}
+			
 			return "documents/IGIDocumentList";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -296,8 +307,8 @@ public class DocumentsController {
 												.LabCode(labcode)
 												.InitiatedBy(EmpId)
 												.InitiatedDate(sdf.format(new Date()))
-												.IGIStatusCode("INI")
-												.IGIStatusCodeNext("INI")
+												.IGIStatusCode("RIN")
+												.IGIStatusCodeNext("RIN")
 												.CreatedBy(UserId)
 												.CreatedDate(sdtf.format(new Date()))
 												.IsActive(1)
@@ -305,6 +316,9 @@ public class DocumentsController {
 			
 			long result = service.addPfmsIGIDocument(pfmsIgiDocument);
 
+			// Transaction 
+			service.addPfmsIGITransaction(result, "A", "RIN", null, Long.parseLong(EmpId));
+			
 			if (result > 0) {
 				redir.addAttribute("result", "IGI Document Data Submitted Successfully");
 			} else {
@@ -352,6 +366,7 @@ public class DocumentsController {
 			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
 			req.setAttribute("igiApplicableDocsList", service.getIGIApplicableDocs(igiDocId, "A"));
 			
+			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			return "documents/IGIDocumentDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1079,8 +1094,145 @@ public class DocumentsController {
 		  
 		 return json.toJson(duplicate);    
 	}
-	
 
+	@RequestMapping(value = "IGIDocTransStatus.htm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String igiDocTransStatus(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside IGIDocTransStatus.htm" + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			if (docId != null) {
+				req.setAttribute("transactionList", service.igiTransactionList(docId, docType));
+				req.setAttribute("docId", docId);
+				req.setAttribute("docType", docType);
+			}
+			return "documents/IGIDocTransStatus";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIDocTransStatus.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "IGIDocTransactionDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void igiDocTransactionDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside IGIDocTransactionDownload.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+
+			if (docId != null) {
+				req.setAttribute("docType", docType);
+				req.setAttribute("transactionList", service.igiTransactionList(docId, docType));
+			}
+
+			String filename = "Doc_Transaction";
+			String path = req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path", path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/IGIDocTransactionDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html, new FileOutputStream(path + File.separator + filename + ".pdf"));
+			PdfWriter pdfw = new PdfWriter(path + File.separator + "merged.pdf");
+			PdfReader pdf1 = new PdfReader(path + File.separator + filename + ".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+			pdfDocument.close();
+			pdf1.close();
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition", "inline;filename=" + filename + ".pdf");
+			File f = new File(path + "/" + filename + ".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2 = Paths.get(path + File.separator + filename + ".pdf");
+			Files.delete(pathOfFile2);
+
+		} catch (Exception e) {
+			logger.error(new Date() + " Inside IGIDocTransactionDownload.htm " + UserId, e);
+			e.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = "IGIDocumentApprovalSubmit.htm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String igiDocumentApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + "Inside IGIDocumentApprovalSubmit.htm" + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String action = req.getParameter("Action");
+			String remarks = req.getParameter("remarks");
+
+			PfmsIGIDocument igiDocument = service.getPfmsIGIDocumentById(docId);
+			String statusCode = igiDocument.getIGIStatusCode();
+
+
+			List<String> igiforwardstatus = Arrays.asList("RIN", "RRR", "RRA");
+
+			long result = service.igiDocumentApprovalForward(docId, docType, action, remarks, EmpId, labcode, UserId);
+
+//			if (result != 0 && reqInitiation.getReqStatusCode().equalsIgnoreCase("RFA") && reqInitiation.getReqStatusCodeNext().equalsIgnoreCase("RAM")) {
+//				// PDF Freeze
+//				service.igiDocPdfFreeze(req, resp, docId, labcode);
+//			}
+
+			if (action.equalsIgnoreCase("A")) {
+				if (igiforwardstatus.contains(statusCode)) {
+					if (result != 0) {
+						redir.addAttribute("result", "IGI Document Forwarded Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IGI Document Forward Unsuccessful");
+					}
+					return "redirect:/IGIDocumentList.htm";
+				} else if (statusCode.equalsIgnoreCase("RFW")) {
+					if (result != 0) {
+						redir.addAttribute("result", "IGI Document Recommende d Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IGI Document Recommend Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				} else if (statusCode.equalsIgnoreCase("RFR")) {
+					if (result != 0) {
+						redir.addAttribute("result", "IGI Document Approved Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IGI Document Approve Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				}
+			} else if (action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if (result != 0) {
+					redir.addAttribute("result", action.equalsIgnoreCase("R") ? "IGI Document Returned Successfully"
+							: "IGI Document Disapproved Successfully");
+				} else {
+					redir.addAttribute("resultfail", action.equalsIgnoreCase("R") ? "IGI Document Return Unsuccessful"
+							: "IGI Document Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/DocumentApprovals.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIDocumentApprovalSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
 	/* ************************************************ IGI Document End ***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -1118,7 +1270,13 @@ public class DocumentsController {
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("initiationId", initiationId);
 			req.setAttribute("projectType", projectType);
-			req.setAttribute("icdDocumentList", service.getICDDocumentList(projectId, initiationId));
+			
+			List<Object[]> icdDocumentList = service.getICDDocumentList(projectId, initiationId);
+			req.setAttribute("icdDocumentList", icdDocumentList);
+			
+			if(icdDocumentList!=null && icdDocumentList.size()>0) {
+				req.setAttribute("icdDocumentSummaryList", service.getDocumentSummaryList(icdDocumentList.get(0)[0].toString(), "B"));
+			}
 			
 			return "documents/ICDDocumentList";
 		} catch (Exception e) {
@@ -1144,8 +1302,8 @@ public class DocumentsController {
 											.LabCode(labcode)
 											.InitiatedBy(EmpId)
 											.InitiatedDate(sdf.format(new Date()))
-											.ICDStatusCode("INI")
-											.ICDStatusCodeNext("INI")
+											.ICDStatusCode("RIN")
+											.ICDStatusCodeNext("RIN")
 											.CreatedBy(UserId)
 											.CreatedDate(sdtf.format(new Date()))
 											.IsActive(1)
@@ -1153,6 +1311,9 @@ public class DocumentsController {
 			
 			long result = service.addPfmsICDDocument(icdDocument);
 
+			// Transaction 
+			service.addPfmsIGITransaction(result, "B", "RIN", null, Long.parseLong(EmpId));
+			
 			if (result > 0) {
 				redir.addAttribute("result", "ICD Document Data Submitted Successfully");
 			} else {
@@ -1203,6 +1364,8 @@ public class DocumentsController {
 			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(icdDocument.getProjectId()!=0?icdDocument.getProjectId()+"":icdDocument.getInitiationId()+""));
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList());
 			
+			req.setAttribute("isPdf", req.getParameter("isPdf"));
+			
 			return "documents/ICDDocumentDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1239,11 +1402,11 @@ public class DocumentsController {
 
 	}
 	
-	@RequestMapping(value = "ICDConnectionMatrixDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value = "ICDConnectionsDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String icdConnectionMatrixDetails(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
-		logger.info(new Date() + " Inside ICDConnectionMatrixDetails.htm " + UserId);
+		logger.info(new Date() + " Inside ICDConnectionsDetails.htm " + UserId);
 		try {
 			String docId = req.getParameter("docId");
 			String docType = req.getParameter("docType");
@@ -1257,10 +1420,10 @@ public class DocumentsController {
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList());
 			
-			return "documents/ICDConnectionMatrixDetails";
+			return "documents/ICDConnectionsDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() + " Inside ICDConnectionMatrixDetails.htm " + UserId, e);
+			logger.error(new Date() + " Inside ICDConnectionsDetails.htm " + UserId, e);
 			return "static/Error";
 		}
 		
@@ -1310,7 +1473,7 @@ public class DocumentsController {
 			redir.addAttribute("documentNo", req.getParameter("documentNo"));
 			redir.addAttribute("projectId", req.getParameter("projectId"));
 			
-			return "redirect:/ICDConnectionMatrixDetails.htm";
+			return "redirect:/ICDConnectionsDetails.htm";
 
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1341,7 +1504,7 @@ public class DocumentsController {
 			redir.addAttribute("documentNo", req.getParameter("documentNo"));
 			redir.addAttribute("projectId", req.getParameter("projectId"));
 			
-			return "redirect:/ICDConnectionMatrixDetails.htm";
+			return "redirect:/ICDConnectionsDetails.htm";
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1349,5 +1512,100 @@ public class DocumentsController {
 			return "static/Error";
 		}
 	}
+	
+	@RequestMapping(value="ICDConnectionMatrixDetails.htm", method = {RequestMethod.POST, RequestMethod.GET})
+	public String ICDConnectionMatrixDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside ICDConnectionMatrixDetails.htm "+UserId );
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String projectId = req.getParameter("projectId");
+
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
+			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
+			req.setAttribute("icdConnectionsList", service.getICDConnectionsList());
+			
+			return "documents/ICDConnectionMatrixDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "ICDDocumentApprovalSubmit.htm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String icdDocumentApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + "Inside ICDDocumentApprovalSubmit.htm" + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String action = req.getParameter("Action");
+			String remarks = req.getParameter("remarks");
+
+			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(docId);
+			String statusCode = icdDocument.getICDStatusCode();
+
+			List<String> icdforwardstatus = Arrays.asList("RIN", "RRR", "RRA");
+
+			long result = service.icdDocumentApprovalForward(docId, docType, action, remarks, EmpId, labcode, UserId);
+
+//			if (result != 0 && reqInitiation.getReqStatusCode().equalsIgnoreCase("RFA") && reqInitiation.getReqStatusCodeNext().equalsIgnoreCase("RAM")) {
+//				// PDF Freeze
+//				service.igiDocPdfFreeze(req, resp, docId, labcode);
+//			}
+
+			if (action.equalsIgnoreCase("A")) {
+				if (icdforwardstatus.contains(statusCode)) {
+					if (result != 0) {
+						redir.addAttribute("result", "ICD Document Forwarded Successfully");
+					} else {
+						redir.addAttribute("resultfail", "ICD Document Forward Unsuccessful");
+					}
+					redir.addAttribute("projectType", req.getParameter("projectType"));
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					redir.addAttribute("initiationId", req.getParameter("initiationId"));
+					
+					return "redirect:/ICDDocumentList.htm";
+				} else if (statusCode.equalsIgnoreCase("RFW")) {
+					if (result != 0) {
+						redir.addAttribute("result", "ICD Document Recommende d Successfully");
+					} else {
+						redir.addAttribute("resultfail", "ICD Document Recommend Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				} else if (statusCode.equalsIgnoreCase("RFR")) {
+					if (result != 0) {
+						redir.addAttribute("result", "ICD Document Approved Successfully");
+					} else {
+						redir.addAttribute("resultfail", "ICD Document Approve Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				}
+			} else if (action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if (result != 0) {
+					redir.addAttribute("result", action.equalsIgnoreCase("R") ? "ICD Document Returned Successfully"
+							: "ICD Document Disapproved Successfully");
+				} else {
+					redir.addAttribute("resultfail", action.equalsIgnoreCase("R") ? "ICD Document Return Unsuccessful"
+							: "ICD Document Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/DocumentApprovals.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDDocumentApprovalSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
 	/* ************************************************ ICD Document End ***************************************************** */
 }

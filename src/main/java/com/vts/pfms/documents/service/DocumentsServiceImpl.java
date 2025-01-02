@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.cars.dao.CARSDao;
+import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.documents.dao.DocumentsDao;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
@@ -35,7 +39,10 @@ import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
+import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.StandardDocuments;
+import com.vts.pfms.project.model.RequirementSummary;
+import com.vts.pfms.requirements.model.RequirementInitiation;
 
 @Service
 public class DocumentsServiceImpl implements DocumentsService{
@@ -45,6 +52,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	
 	@Autowired
 	DocumentsDao dao;
+	
+	@Autowired
+	CARSDao carsdao;
 	
 	private static final Logger logger=LogManager.getLogger(DocumentsServiceImpl.class);
 	
@@ -403,6 +413,107 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 	}
 	
+	@Override
+	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception {
+
+		return dao.igiTransactionList(docId, docType);
+	}
+	
+	@Override
+	public long igiDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception {
+		try {
+
+			PfmsIGIDocument igiDocument = dao.getPfmsIGIDocumentById(docId);
+			String statusCode = igiDocument.getIGIStatusCode();
+			String statusCodeNext = igiDocument.getIGIStatusCodeNext();
+			
+			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(reqforwardstatus.contains(statusCode)) {
+					igiDocument.setIGIStatusCode("RFW");
+					igiDocument.setIGIStatusCodeNext("RFR");
+				}else {
+					igiDocument.setIGIStatusCode(statusCode);
+					if(statusCodeNext.equalsIgnoreCase("RFR")) {
+						igiDocument.setIGIStatusCodeNext("RFA");
+					}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
+						igiDocument.setIGIStatusCodeNext("RAM");
+					}else if(statusCodeNext.equalsIgnoreCase("RAM")) {
+						igiDocument.setIGIStatusCodeNext("RAM");
+					}
+				}
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(statusCodeNext.equalsIgnoreCase("RFR")) {
+					igiDocument.setIGIStatusCode("RRR");	
+				}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
+					igiDocument.setIGIStatusCode("RRA");	
+				}
+				
+				// Setting StatusCode Next
+				igiDocument.setIGIStatusCodeNext("RFW");
+			}
+			
+			dao.addPfmsIGIDocument(igiDocument);
+			
+			// Handling Transaction
+			addPfmsIGITransaction(Long.parseLong(docId), docType, igiDocument.getIGIStatusCode(), remarks, Long.parseLong(empId));
+			
+			// Handling Notification
+			List<Object[]> documentSummaryList = dao.getDocumentSummaryList(docId, docType);
+			Object[] documentSummary = null;
+			if(documentSummaryList!=null && documentSummaryList.size()>0) {
+				documentSummary = documentSummaryList.get(0);
+			}
+			
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A")) {
+				String reqStatusCode2 = igiDocument.getIGIStatusCode();
+				if(reqStatusCode2.equalsIgnoreCase("RFW")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[5]!=null?Long.parseLong(documentSummary[5].toString()):0);
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("IGI Document Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFR")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[6]!=null?Long.parseLong(documentSummary[6].toString()):0);
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("IGI Document Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
+					notification.setNotificationUrl("IGIDocumentList.htm");
+					notification.setNotificationMessage("IGI Document Doc Approved");
+				}
+				
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				carsdao.addNotifications(notification);
+				
+			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
+				notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
+				notification.setNotificationUrl("IGIDocumentList.htm");
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"IGI Document Doc Request Returned":"IGI Document Doc Request Disapproved");
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+			
+				carsdao.addNotifications(notification);
+			}
+			
+			return 1L;
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 	/* ************************************************ IGI Document End ***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -449,4 +560,114 @@ public class DocumentsServiceImpl implements DocumentsService{
 		return dao.deleteICDConnectionById(icdConnectionId);
 	}
 	
+	@Override
+	public long addPfmsIGITransaction(Long docId, String docType, String statusCode, String remarks, Long actionBy) throws Exception {
+		
+		PfmsIGITransaction transaction = PfmsIGITransaction.builder()
+										 .DocId(docId)
+										 .DocType(docType)
+										 .StatusCode(statusCode)
+										 .Remarks(remarks)
+										 .ActionBy(actionBy)
+										 .ActionDate(sdtf.format(new Date()))
+										.build();
+		
+		return dao.addPfmsIGITransaction(transaction);
+	}
+	
+	@Override
+	public long icdDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception {
+		try {
+
+			PfmsICDDocument icdDocument = dao.getPfmsICDDocumentById(docId);
+			String statusCode = icdDocument.getICDStatusCode();
+			String statusCodeNext = icdDocument.getICDStatusCodeNext();
+			
+			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(reqforwardstatus.contains(statusCode)) {
+					icdDocument.setICDStatusCode("RFW");
+					icdDocument.setICDStatusCodeNext("RFR");
+				}else {
+					icdDocument.setICDStatusCode(statusCode);
+					if(statusCodeNext.equalsIgnoreCase("RFR")) {
+						icdDocument.setICDStatusCodeNext("RFA");
+					}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
+						icdDocument.setICDStatusCodeNext("RAM");
+					}else if(statusCodeNext.equalsIgnoreCase("RAM")) {
+						icdDocument.setICDStatusCodeNext("RAM");
+					}
+				}
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(statusCodeNext.equalsIgnoreCase("RFR")) {
+					icdDocument.setICDStatusCode("RRR");	
+				}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
+					icdDocument.setICDStatusCode("RRA");	
+				}
+				
+				// Setting StatusCode Next
+				icdDocument.setICDStatusCodeNext("RFW");
+			}
+			
+			dao.addPfmsICDDocument(icdDocument);
+			
+			// Handling Transaction
+			addPfmsIGITransaction(Long.parseLong(docId), docType, icdDocument.getICDStatusCode(), remarks, Long.parseLong(empId));
+			
+			// Handling Notification
+			List<Object[]> documentSummaryList = dao.getDocumentSummaryList(docId, docType);
+			Object[] documentSummary = null;
+			if(documentSummaryList!=null && documentSummaryList.size()>0) {
+				documentSummary = documentSummaryList.get(0);
+			}
+			
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A")) {
+				String reqStatusCode2 = icdDocument.getICDStatusCode();
+				if(reqStatusCode2.equalsIgnoreCase("RFW")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[5]!=null?Long.parseLong(documentSummary[5].toString()):0);
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("ICD Document Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFR")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[6]!=null?Long.parseLong(documentSummary[6].toString()):0);
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("ICD Document Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
+					notification.setNotificationUrl("ICDDocumentList.htm?projectId="+icdDocument.getProjectId()+"&initiationId="+icdDocument.getInitiationId()+"&projectType="+(icdDocument.getProjectId()!=0?"M":"I") );
+					notification.setNotificationMessage("ICD Document Doc Approved");
+				}
+				
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				carsdao.addNotifications(notification);
+				
+			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
+				notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
+				notification.setNotificationUrl("ICDDocumentList.htm?projectId="+icdDocument.getProjectId()+"&initiationId="+icdDocument.getInitiationId()+"&projectType="+(icdDocument.getProjectId()!=0?"M":"I") );
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"ICD Document Doc Request Returned":"ICD Document Doc Request Disapproved");
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+			
+				carsdao.addNotifications(notification);
+			}
+			
+			return 1L;
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }

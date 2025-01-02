@@ -24,6 +24,7 @@ import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
+import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.StandardDocuments;
 
 
@@ -109,7 +110,9 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	
 	/* ************************************************ IGI Document ***************************************************** */
 	
-	private static final String IGIDOCUMENTLIST="SELECT a.IGIDocId, a.IGIVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.IGIStatusCode, a.IGIStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation FROM pfms_igi_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId WHERE a.IsActive=1  ORDER BY a.IGIDocId DESC";
+	private static final String IGIDOCUMENTLIST="SELECT a.IGIDocId, a.IGIVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.IGIStatusCode, a.IGIStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, \r\n"
+			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, d.ReqStatus, d.ReqStatusColor \r\n"
+			+ "FROM pfms_igi_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.IGIStatusCode=d.ReqStatusCode WHERE a.IsActive=1  ORDER BY a.IGIDocId DESC";
 	@Override
 	public List<Object[]> getIGIDocumentList() throws Exception {
 		try {
@@ -486,10 +489,29 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
+
+	private static final String IGIDOCTRANSLIST = "SELECT a.IGITransactionId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_igi_trans a,pfms_req_approval_status b,employee c,employee_desig d WHERE a.StatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND a.DocId=:DocId AND a.DocType=:DocType ORDER BY a.IGITransactionId";
+	@Override
+	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception {
+
+		try {
+			Query query = manager.createNativeQuery(IGIDOCTRANSLIST);
+			query.setParameter("DocId", docId);
+			query.setParameter("DocType", docType);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.info(new Date()+"Inside DAO igiTransactionList "+e);
+			e.printStackTrace();
+			return null;
+		}
+
+	}
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
-	private static final String ICDDOCUMENTLIST = "SELECT a.ICDDocId, a.ICDVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.ICDStatusCode, a.ICDStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, a.ProjectId, a.InitiationId FROM pfms_icd_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId ORDER BY a.ICDDocId DESC";
+	private static final String ICDDOCUMENTLIST = "SELECT a.ICDDocId, a.ICDVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.ICDStatusCode, a.ICDStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, \r\n"
+			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, a.ProjectId, a.InitiationId, d.ReqStatus, d.ReqStatusColor \r\n"
+			+ "FROM pfms_icd_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.ICDStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId ORDER BY a.ICDDocId DESC";
 	@Override
 	public List<Object[]> getICDDocumentList(String projectId, String initiationId) throws Exception {
 		try {
@@ -585,6 +607,21 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	@Override
+	public long addPfmsIGITransaction(PfmsIGITransaction transaction) throws Exception
+	{
+		try {
+		    manager.persist(transaction);
+		    manager.flush();
+			return transaction.getIGITransactionId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addPfmsIGITransaction " + e);
+			e.printStackTrace();
+			return 0 ;
 		}
 	}
 }

@@ -625,7 +625,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			return null;
 		}
 	}
-
+	
 	private static final String PROJECTREQUIREMENTPENDINGLIST  ="CALL pfms_req_doc_pending(:EmpId,:LabCode);";
 	@Override
 	public List<Object[]> projectRequirementPendingList(String empId,String labcode) throws Exception {
@@ -1302,4 +1302,74 @@ public class RequirementDaoImpl implements RequirementDao {
 		manager.flush();
 		return tp.getTestMasterId();
 	}
+	
+	
+	/* *************************************** IGI DOCUMENT ********************************* */
+	
+	private static final String IGIDOCPENDINGLIST  ="CALL pfms_igi_doc_pending(:EmpId,:LabCode);";
+	@Override
+	public List<Object[]> igiDocumentPendingList(String empId,String labcode) throws Exception {
+		try {			
+			Query query= manager.createNativeQuery(IGIDOCPENDINGLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("LabCode", labcode);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO igiDocumentPendingList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
+
+	private static final String IGIDOCAPPROVEDLIST  ="CALL pfms_igi_doc_approved(:EmpId,:FromDate,:ToDate);";
+	@Override
+	public List<Object[]> igiDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+
+		try {			
+			Query query= manager.createNativeQuery(IGIDOCAPPROVEDLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("FromDate", FromDate);
+			query.setParameter("ToDate", ToDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO igiDocumentApprovedList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+	
+	private static final String ICDDOCPENDINGLIST  ="CALL pfms_icd_doc_pending(:EmpId,:LabCode);";
+	@Override
+	public List<Object[]> icdDocumentPendingList(String empId,String labcode) throws Exception {
+		try {			
+			Query query= manager.createNativeQuery(ICDDOCPENDINGLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("LabCode", labcode);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO icdDocumentPendingList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+		
+	}
+	
+	private static final String ICDDOCAPPROVEDLIST  ="CALL pfms_icd_doc_approved(:EmpId,:FromDate,:ToDate);";
+	@Override
+	public List<Object[]> icdDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(ICDDOCAPPROVEDLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("FromDate", FromDate);
+			query.setParameter("ToDate", ToDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO icdDocumentApprovedList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
 }

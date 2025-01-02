@@ -135,62 +135,38 @@ public interface RequirementDao {
 	public long addSpecsInitiation(SpecsInitiation specsInitiation) throws Exception;
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception;
 	public Long getFirstVersionSpecsInitiationId(String initiationId, String projectId, String productTreeMainId) throws Exception;
-
-
 	public List<Object[]> getSpecsPlanApprovalFlowData(String projectId, String initationId, String productTreeMainId)throws Exception;
-
-
 	public List<Object[]> projectSpecificationPendingList(String empId, String labcode) throws Exception;
-
-
 	public List<Object[]> getAllSqr(String reqInitiationId)throws Exception;
-
-
-	long AddReqType(PfmsReqTypes pr)throws Exception;
-
-
-	long deleteSqr(String paraId)throws Exception;
-
-
-	long updateSerialParaNo(String para, String sn)throws Exception;
+	public long AddReqType(PfmsReqTypes pr)throws Exception;
+	public long deleteSqr(String paraId)throws Exception;
+	public long updateSerialParaNo(String para, String sn)throws Exception;
 	public long deleteInitiationReq(String InitiationReqId) throws Exception;
 	public long deleteInitiationSpe(String SpecsId) throws Exception;
-
-
 	public long addSpecMaster(PfmsSpecTypes pst)throws Exception;
-
-
-	 public  List<Object[]> getSpecMasterList(String SpecsInitiationId)throws Exception;
-
-
+	public  List<Object[]> getSpecMasterList(String SpecsInitiationId)throws Exception;
 	public Object[] getSpecName(String mainId)throws Exception;
-
-
 	public long addTestMaster(PfmsTestTypes pt)throws Exception;
-
-
 	public List<Object[]> getTestPlanMainList(String testPlanInitiationId)throws Exception;
-
-
 	public Object[] getTestTypeName(String mainid)throws Exception;
-
-
-	long deleteTestPlan(String testId)throws Exception;
+	public long deleteTestPlan(String testId)throws Exception;
 	
 	/* Soumyakanta Swain */
-
 	public List<Object[]> getVerificationListMaster()throws Exception;
 	public long addVerificationData(List<VerificationData> verifyList)throws Exception;
 	public List<Object[]> getverificationDataList(String verificationId)throws Exception;
 	public long verificationDataEdit(VerificationData verifiData)throws Exception;
-
-
 	public List<Object[]> SpecificationMasterList() throws Exception;
 	public long specMasterAddSubmit(SpecificationMaster sp) throws Exception;
 	public SpecificationMaster SpecificationMaster(long specsMasterId)throws Exception;
 	public List<Object[]> TestPlanMaster()throws Exception;
 	public TestPlanMaster getTestPlanById(long testMasterId);
+	public long testPlanMasterAdd(TestPlanMaster tp)throws Exception;
 
-
-	long testPlanMasterAdd(TestPlanMaster tp)throws Exception;
+	/* ********************************* IGI DOCUMENT ******************************************* */
+	public List<Object[]> igiDocumentPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> igiDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	public List<Object[]> icdDocumentPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> icdDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	
 }

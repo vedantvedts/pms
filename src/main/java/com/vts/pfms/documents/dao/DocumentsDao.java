@@ -13,6 +13,7 @@ import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
+import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.StandardDocuments;
 
 public interface DocumentsDao {
@@ -52,6 +53,7 @@ public interface DocumentsDao {
 	public int deleteIGIDocumentShortCodesLinked(String shortCodeLinkedId) throws Exception;
 	public BigInteger getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception;
 	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs) throws Exception;
+	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception;
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -62,6 +64,7 @@ public interface DocumentsDao {
 	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception;
 	public List<Object[]> getICDConnectionsList() throws Exception;
 	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
+	public long addPfmsIGITransaction(PfmsIGITransaction transaction) throws Exception;
 	
 	
 }

@@ -2689,10 +2689,15 @@ public class RequirementsController {
 			req.setAttribute("reqApprovedList", service.projectRequirementApprovedList(EmpId, fromdate, todate));
 			req.setAttribute("testPlanPendingList", service.projectTestPlanPendingList(EmpId, labcode));
 			req.setAttribute("testPlanApprovedList", service.projectTestPlanApprovedList(EmpId, fromdate, todate));
-			req.setAttribute("SpecificationPendingList", service.projectSpecificationPendingList(EmpId, labcode));
-			req.setAttribute("SpecificationApprovedList",
-					service.projectSpecificationApprovedList(EmpId, fromdate, todate));
-
+			req.setAttribute("specificationPendingList", service.projectSpecificationPendingList(EmpId, labcode));
+			req.setAttribute("specificationApprovedList", service.projectSpecificationApprovedList(EmpId, fromdate, todate));
+			
+			// IGI Doc
+			req.setAttribute("igiDocPendingList", service.igiDocumentPendingList(EmpId, labcode));
+			req.setAttribute("igiDocApprovedList", service.igiDocumentApprovedList(EmpId, fromdate, todate));
+			req.setAttribute("icdDocPendingList", service.icdDocumentPendingList(EmpId, labcode));
+			req.setAttribute("icdDocApprovedList", service.icdDocumentApprovedList(EmpId, fromdate, todate));
+			
 			return "requirements/DocumentApprovals";
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -227,10 +227,18 @@ background: none;border-style: none;
 <body>
 <%
     List<Object[]> igiDocumentList = (List<Object[]>) request.getAttribute("igiDocumentList");
-    FormatConverter fc = new FormatConverter();
-    
-    String version = "1.0";
+    List<Object[]> igiDocumentSummaryList = (List<Object[]>)request.getAttribute("igiDocumentSummaryList");
+	Object[] igiApproval=null;
+	if(igiDocumentSummaryList!=null && igiDocumentSummaryList.size()>0){
+		igiApproval=igiDocumentSummaryList.get(0);
+	}
+	
+	String version = "1.0";
     version = igiDocumentList != null && igiDocumentList.size() > 0 ? igiDocumentList.get(0)[1].toString() : "1.0";
+    
+    List<String> igiforwardstatus = Arrays.asList("RIN","RRR","RRA");
+    
+    FormatConverter fc = new FormatConverter();
 %>
 <% 
     String ses = (String) request.getParameter("result");
@@ -261,7 +269,7 @@ background: none;border-style: none;
             <div class="card-header SubmitHeader">
                 <div class="row" style="display: flex; justify-content: space-between;">
                     <div class="col-md-10">
-                        <h5 class="mb-0"><b>&nbsp; &nbsp;IGI Document List </b></h5> 
+                        <h5 class="mb-0"><b>IGI Document List </b></h5> 
                     </div>  
                     <div class="col-md-2 text-md-end">
                        
@@ -293,21 +301,71 @@ background: none;border-style: none;
                                     <td ><%= obj[10]+", "+obj[11] %></td>
                                     <td class="center"><%= fc.sdfTordf(obj[4].toString()) %></td>
                                     <td class="center" >v<%= obj[1] %></td>
-                                    <td class="center" ></td>
-                                   <td class="center">
+                                    <td align="center" >
+                      					<form action="#">
+			                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			                            	<input type="hidden" name="docId" value="<%=obj[0] %>">
+			                            	<input type="hidden" name="docType" value="A">
+			                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
+										    	<%=obj[12] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+											</button>
+                                        </form>
+	                      			</td>
+                                   	<td class="center">
 									    <form action="#" method="POST" name="myfrm" style="display: inline">
-									        <button type="submit" class="editable-clicko" formaction="IGIDocumentDetails.htm">
-									            <div class="cc-rockmenu">
-									                <div class="rolling">
-									                    <figure class="rolling_icon">
-									                        <img src="view/images/preview3.png">
-									                    </figure>
-									                    <span>Preview</span>
-									                </div>
-									            </div>
-									        </button>
+									        
+									        <%if(obj[5]!=null && igiforwardstatus.contains(obj[5].toString()) ) {%>
+													
+													<button type="submit" class="editable-clicko" formaction="IGIDocumentDetails.htm">
+											            <div class="cc-rockmenu">
+											                <div class="rolling">
+											                    <figure class="rolling_icon">
+											                        <img src="view/images/preview3.png">
+											                    </figure>
+											                    <span>Preview</span>
+											                </div>
+											            </div>
+											        </button>
+													
+													<button type="submit" class="editable-clicko" formaction="IGIDocumentApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Document?');">
+														<div class="cc-rockmenu">
+															<div class="rolling">
+																<figure class="rolling_icon">
+																	<img src="view/images/forward1.png">
+																</figure>
+																<span>Forward</span>
+															</div>
+														</div>
+													</button>
+													<input type="hidden" name="Action" value="A">
+													
+												<%} %>
+												<%if(obj[5]!=null && "RFA".equalsIgnoreCase(obj[5].toString()) ) {%>
+													<button type="button" class="editable-clicko" data-placement="top" title="Amend" data-toggle="modal" data-target="#myModal" onclick="setversiondata('<%=obj[1]%>','<%=obj[0]%>')">
+														<div class="cc-rockmenu">
+															<div class="rolling">
+																<figure class="rolling_icon">
+																	<img src="view/images/correction.png" style="width: 28px;">
+																</figure>
+																<span>Amend</span>
+															</div>
+														</div>
+													</button>
+												<%} %>
+												<button class="editable-clicko" name="isPdf" value="Y" formaction="IGIDocumentDetails.htm" formtarget="blank" >
+													<div class="cc-rockmenu">
+														<div class="rolling">
+															<figure class="rolling_icon">
+																<img src="view/images/pdf.png" style="width: 25px;">
+															</figure>
+															<span>Document</span>
+														</div>
+													</div>
+												</button>
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-									        <input type="hidden" name="igiDocId" value="<%= obj[0] %>">
+									        <input type="hidden" name="igiDocId" value="<%=obj[0] %>">
+									        <input type="hidden" name="docId" value="<%=obj[0] %>">
+									        <input type="hidden" name="docType" value="A">
 									    </form>
 									</td>
                                 </tr>
@@ -323,6 +381,35 @@ background: none;border-style: none;
 					    </form>
 					</div>
                 </div>
+                
+                <div class="row mt-4">
+ 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For IGI Doc</b></div>
+ 	    		</div>
+    			<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+           			<table align="center"  >
+        				<tr>
+        					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+         						Prepared By - <%if(igiApproval!=null) {%><%=igiApproval[10] %> <%} else{%>Prepared By<%} %>
+         					</td>
+             		
+                    		<td rowspan="2">
+             					<i class="fa fa-long-arrow-right " aria-hidden="true" style="font-size: 20px;"></i>
+             				</td>
+             						
+        					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+        						Reviewer - <%if(igiApproval!=null) {%><%=igiApproval[9] %> <%} else{%>Reviewer<%} %>
+        	    			</td>
+             	    				
+                    		<td rowspan="2">
+             					<i class="fa fa-long-arrow-right " aria-hidden="true" style="font-size: 20px;"></i>
+             				</td>
+             						
+             				<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
+             					Approver - <%if(igiApproval!=null) {%><%=igiApproval[8] %> <%} else{%>Approver<%} %>
+             	    		</td>
+            			</tr> 	
+            	    </table>			             
+				</div>
             </div>
         </div>
     </div>

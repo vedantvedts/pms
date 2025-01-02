@@ -22,7 +22,7 @@
 }
 
 th{
- text-align : center;
+	text-align : center;
 }
 
 /* icon styles */
@@ -87,15 +87,42 @@ th{
   z-index: 5;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
+
+.left {
+	text-align: left;
+}
+.center{
+	text-align: center;
+}
+.right{
+	text-align: right;
+}
 </style>
 </head>
 <body>
 <%
-List<Object[]> reqPendingList =(List<Object[]>)request.getAttribute("reqPendingList");
-List<Object[]> reqApprovedList =(List<Object[]>)request.getAttribute("reqApprovedList");
-List<Object[]> testPlanPendingList =(List<Object[]>)request.getAttribute("testPlanPendingList");
-List<Object[]> testPlanApprovedList =(List<Object[]>)request.getAttribute("testPlanApprovedList");
-List<Object[]>SpecificationPendingList= (List<Object[]>)request.getAttribute("SpecificationPendingList");
+List<Object[]> reqPendingList = (List<Object[]>)request.getAttribute("reqPendingList");
+List<Object[]> reqApprovedList = (List<Object[]>)request.getAttribute("reqApprovedList");
+List<Object[]> testPlanPendingList = (List<Object[]>)request.getAttribute("testPlanPendingList");
+List<Object[]> testPlanApprovedList = (List<Object[]>)request.getAttribute("testPlanApprovedList");
+List<Object[]> specificationPendingList = (List<Object[]>)request.getAttribute("specificationPendingList");
+List<Object[]> specificationApprovedList = (List<Object[]>)request.getAttribute("specificationApprovedList");
+List<Object[]> igiDocPendingList = (List<Object[]>)request.getAttribute("igiDocPendingList");
+List<Object[]> igiDocApprovedList = (List<Object[]>)request.getAttribute("igiDocApprovedList");
+List<Object[]> icdDocPendingList = (List<Object[]>)request.getAttribute("icdDocPendingList");
+List<Object[]> icdDocApprovedList = (List<Object[]>)request.getAttribute("icdDocApprovedList");
+
+int pendingListSize = (reqPendingList!=null && reqPendingList.size()>0? reqPendingList.size(): 0)
+						+ (testPlanPendingList!=null && testPlanPendingList.size()>0? testPlanPendingList.size(): 0)
+						+ (specificationPendingList!=null && specificationPendingList.size()>0? specificationPendingList.size(): 0)
+						+ (igiDocPendingList!=null && igiDocPendingList.size()>0? igiDocPendingList.size(): 0)
+						+ (icdDocPendingList!=null && icdDocPendingList.size()>0? icdDocPendingList.size(): 0) ;
+
+int approvedListSize = (reqApprovedList!=null && reqApprovedList.size()>0? reqApprovedList.size(): 0)
+						+ (testPlanApprovedList!=null && testPlanApprovedList.size()>0? testPlanApprovedList.size(): 0)
+						+ (specificationApprovedList!=null && specificationApprovedList.size()>0? specificationApprovedList.size(): 0)
+						+ (igiDocApprovedList!=null && igiDocApprovedList.size()>0? igiDocApprovedList.size(): 0)
+						+ (icdDocApprovedList!=null && icdDocApprovedList.size()>0? icdDocApprovedList.size(): 0) ;
 
 String fromdate = (String)request.getAttribute("fromdate");
 String todate   = (String)request.getAttribute("todate");
@@ -143,10 +170,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		    						<div class="nav-link active" style="text-align: center;" id="pills-mov-property-tab" data-toggle="pill" data-target="#pills-mov-property" role="tab" aria-controls="pills-mov-property" aria-selected="true">
 			   							<span>Pending</span> 
 										<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 					<%if((reqPendingList.size() + testPlanPendingList.size() )>99 ){ %>
+				   		 					<%if(pendingListSize>99){ %>
 				   								99+
 				   							<%}else{ %>
-				   								<%=reqPendingList.size() + testPlanPendingList.size() %>
+				   								<%=pendingListSize %>
 											<%} %>			   			
 				  						</span> 
 		    						</div>
@@ -155,10 +182,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		    						<div class="nav-link" style="text-align: center;" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
 		    	 						<span>Approved</span> 
 		    	 						<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 					<%if((reqApprovedList.size() + testPlanApprovedList.size() )>99){ %>
+				   		 					<%if(approvedListSize>99){ %>
 				   								99+
 				   							<%}else{ %>
-				   								<%=reqApprovedList.size() + testPlanApprovedList.size()%>
+				   								<%=approvedListSize %>
 											<%} %>			   			
 				  						</span> 
 		    						</div>
@@ -181,34 +208,34 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
               									<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="myTable">
 													<thead>
 														<tr>
-					   										<th style="">SN</th>
-					   										<th style="">Initiated By</th>
-					   										<th>Project</th>
-					   										<th style="">Date</th>
-					   										<th style="">Approval for</th>
-                       										<th style="">Attachment</th>
-                       										<th style="">Action</th>
+					   										<th width="3%">SN</th>
+					   										<th width="18%">Initiated By</th>
+					   										<th width="15%">Project</th>
+					   										<th width="8%">Date</th>
+					   										<th width="10%">Approval for</th>
+                       										<th width="10%">Attachment</th>
+                       										<th width="36%">Action</th>
                   										</tr>
 													</thead>
                  									<tbody>
-                 										<!-- Requirement Doc Pending List -->
+                 										<!-- Requirement Document Pending List -->
                        									<% int SN=0;
 					   										if(reqPendingList!=null && reqPendingList.size()>0){
                          							 			for(Object[] form:reqPendingList ){
                       							 		%>
                         									<tr>
-                            									<td style="text-align: center;width: 3%;"><%=++SN%></td>
-                            									<td style="width: 18%;"><%=form[2]+", "+form[3]%></td>
-                            									<td style="text-align: center;width: 15%;">
+                            									<td class="center"><%=++SN%></td>
+                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td class="center">
                             										<%=form[11]!=null?form[11]:form[12] %>
                             										<%if(form[13]!=null) {%>
                             											(<%=form[13]%>)
                             										<%} %>
                             									</td>
-                            									<td style="text-align: center;width: 8%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[6]%></td>
-                            									<td style="text-align: center;width: 10%;"> 
-                            										<form action="#">
+                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"> 
+                            										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																		<input type="hidden" name="reqInitiationId" value="<%=form[4]%>"> 
 																		<span id="downloadform">
@@ -219,8 +246,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																		</span>
 																	</form>
                             									</td>
-                            									<td style="text-align: center;">
-                            										<form action="ProjectRequirementApprovalSubmit.htm">
+                            									<td class="center">
+                            										<form action="ProjectRequirementApprovalSubmit.htm" id="pendingform_action_<%=SN%>">
                             											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             											<input type="hidden" name="reqInitiationId" value="<%=form[4]%>"> 
                             											<div class="d-flex ">
@@ -268,25 +295,26 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						 										</td>
                         									</tr>
                        									<%} }%>
-                       								
-                 										<!-- Test Plan Doc Pending List -->
+                       									<!-- Requirement Document Pending List End -->
+                       									
+                 										<!-- Test Plan Document Pending List -->
                        									<% 
 					   										if(testPlanPendingList!=null && testPlanPendingList.size()>0){
                          							 			for(Object[] form:testPlanPendingList ){
                       							 		%>
                         									<tr>
-                            									<td style="text-align: center;width: 3%;"><%=++SN%></td>
-                            									<td style="width: 18%;"><%=form[2]+", "+form[3]%></td>
-                            									<td style="text-align: center;width: 15%;">
+                            									<td class="center"><%=++SN%></td>
+                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td class="center">
                             										<%=form[11]!=null?form[11]:form[12] %>
                             										<%if(form[13]!=null) {%>
                             											(<%=form[13]%>)
                             										<%} %>
                             									</td>
-                            									<td style="text-align: center;width: 8%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[6]%></td>
-                            									<td style="text-align: center;width: 10%;"> 
-                            										<form action="#">
+                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"> 
+                            										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																		<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
 																		<span id="downloadform">
@@ -297,8 +325,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																		</span>
 																	</form>
                             									</td>
-                            									<td style="text-align: center;">
-                            										<form action="ProjectTestPlanApprovalSubmit.htm">
+                            									<td class="center">
+                            										<form action="ProjectTestPlanApprovalSubmit.htm" id="pendingform_action_<%=SN%>">
                             											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             											<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
                             											<div class="d-flex ">
@@ -326,24 +354,26 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						 										</td>
                         									</tr>
                        									<%} }%>
-                       								<!-- Specification Plan  -->
+                       									<!-- Test Plan Document Pending List End -->
+                       									
+                       									<!-- Specification Document Pending List  -->
                        									<% 
-					   										if(SpecificationPendingList!=null && SpecificationPendingList.size()>0){
-                         							 			for(Object[] form:SpecificationPendingList ){
+					   										if(specificationPendingList!=null && specificationPendingList.size()>0){
+                         							 			for(Object[] form : specificationPendingList ){
                       							 		%>
                         									<tr>
-                            									<td style="text-align: center;width: 3%;"><%=++SN%></td>
-                            									<td style="width: 18%;"><%=form[2]+", "+form[3]%></td>
-                            									<td style="text-align: center;width: 15%;">
+                            									<td class="center"><%=++SN%></td>
+                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td class="center">
                             										<%=form[11]!=null?form[11]:form[12] %>
                             										<%if(form[13]!=null) {%>
                             											(<%=form[13]%>)
                             										<%} %>
                             									</td>
-                            									<td style="text-align: center;width: 8%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[6]%></td>
-                            									<td style="text-align: center;width: 10%;"> 
-                            										<form action="#">
+                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"> 
+                            										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																		<input type="hidden" name="SpecsInitiationId" value="<%=form[4]%>"> 
 																		<span id="downloadform">
@@ -354,8 +384,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																		</span>
 																	</form>
                             									</td>
-                            									<td style="text-align: center;">
-                            										<form action="SpecificationApproval.htm">
+                            									<td class="center">
+                            										<form action="SpecificationApproval.htm" id="pendingform_action_<%=SN%>">
                             											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             											<input type="hidden" name="SpecsInitiationId" value="<%=form[4]%>"> 
                             											<div class="d-flex ">
@@ -383,9 +413,122 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						 										</td>
                         									</tr>
                        									<%} }%>
-                       								
-                       								
-                       								
+                       									<!-- Specification Document Pending List End -->
+                       									
+                       									<!-- IGI Document Pending List -->
+                       									<% 
+					   										if(igiDocPendingList!=null && igiDocPendingList.size()>0){
+                         							 			for(Object[] form : igiDocPendingList ){
+                      							 		%>
+                        									<tr>
+                            									<td class="center"><%=++SN%></td>
+                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td class="center">
+                            										For Lab
+                            									</td>
+                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"> 
+                            										<form action="#" id="pendingform_status_<%=SN%>">
+																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																		<input type="hidden" name="igiDocId" value="<%=form[4]%>"> 
+																		<input type="hidden" name="isPdf" value="Y"> 
+																		<span id="downloadform">
+																			<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="IGIDocumentDetails.htm"
+																				data-toggle="tooltip" data-placement="top" title="" data-original-title="IGI Document">
+																				&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																			</button>
+																		</span>
+																	</form>
+                            									</td>
+                            									<td class="center">
+                            										<form action="IGIDocumentApprovalSubmit.htm" id="pendingform_action_<%=SN%>">
+                            											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            											<input type="hidden" name="docId" value="<%=form[4]%>"> 
+                            											<input type="hidden" name="docType" value="A"> 
+                            											<div class="d-flex ">
+                            												<div class="">
+                            													<textarea rows="2" cols="52" class="form-control" name="remarks" maxlength="1000" placeholder="Enter remarks here( max 1000 characters )" required></textarea>
+                            												</div>
+																			<div class="ml-2" align="right">
+																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formmethod="GET" formnovalidate="formnovalidate"
+																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this Project Document?');">
+																					<%if (form[8].toString().equalsIgnoreCase("RFW")) {%>
+																						Forward
+																					<%} else {%>
+																						Approve
+																					<%}%>
+																				</button>
+																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formmethod="GET" style="font-weight: 500"
+																					onclick="return confirm('Are You Sure To return this Project Document?');">
+																					Return
+																				</button>
+																			</div>
+																		</div>
+																	</form>
+																
+																	
+						 										</td>
+                        									</tr>
+                       									<%} }%>
+                       									<!-- IGI Document Pending List End-->
+                       									
+                       									<!-- ICD Document Pending List -->
+                       									<% 
+					   										if(icdDocPendingList!=null && icdDocPendingList.size()>0){
+                         							 			for(Object[] form : icdDocPendingList ){
+                      							 		%>
+                        									<tr>
+                            									<td class="center"><%=++SN%></td>
+                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td class="center">
+                            										<%=form[11]!=null?form[11]:form[10] %>
+                            									</td>
+                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"> 
+                            										<form action="#" id="pendingform_status_<%=SN%>">
+																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																		<input type="hidden" name="icdDocId" value="<%=form[4]%>"> 
+																		<input type="hidden" name="isPdf" value="Y"> 
+																		<span id="downloadform">
+																			<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="ICDDocumentDetails.htm"
+																				data-toggle="tooltip" data-placement="top" title="" data-original-title="ICD Document">
+																				&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																			</button>
+																		</span>
+																	</form>
+                            									</td>
+                            									<td class="center">
+                            										<form action="ICDDocumentApprovalSubmit.htm" id="pendingform_action_<%=SN%>">
+                            											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            											<input type="hidden" name="docId" value="<%=form[4]%>"> 
+                            											<input type="hidden" name="docType" value="B"> 
+                            											<div class="d-flex ">
+                            												<div class="">
+                            													<textarea rows="2" cols="52" class="form-control" name="remarks" maxlength="1000" placeholder="Enter remarks here( max 1000 characters )" required></textarea>
+                            												</div>
+																			<div class="ml-2" align="right">
+																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formmethod="GET" formnovalidate="formnovalidate"
+																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this Project Document?');">
+																					<%if (form[12].toString().equalsIgnoreCase("RFW")) {%>
+																						Forward
+																					<%} else {%>
+																						Approve
+																					<%}%>
+																				</button>
+																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formmethod="GET" style="font-weight: 500"
+																					onclick="return confirm('Are You Sure To return this Project Document?');">
+																					Return
+																				</button>
+																			</div>
+																		</div>
+																	</form>
+						 										</td>
+                        									</tr>
+                       									<%} }%>
+                       									<!-- ICD Document Pending List End -->
+                       									
                  									</tbody>  
             									</table>
           									</div>
@@ -427,33 +570,33 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
               												<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="myTable1">
 																<thead>
 																	<tr>
-					   													<th>SN</th>
-					  													<th>Initiated By</th>
-					   													<th>Project</th>
-					   													<th style="">Approval for</th>
-                       													<th style="width: ">Status</th>
-                       													<th style="width: ">Action</th>
+					   													<th width="5%">SN</th>
+					  													<th width="22%">Initiated By</th>
+					   													<th width="10%">Project</th>
+					   													<th width="8%">Approval for</th>
+                       													<th width="25%">Status</th>
+                       													<th width="20%">Action</th>
                   													</tr>
 																</thead>
                  												<tbody>
-                 													<!-- Requirement Doc Approved List -->
+                 													<!-- Requirement Document Approved List -->
                       												<%	int SNA=0;
                       													if(reqApprovedList!=null && reqApprovedList.size()>0) {
                           													for(Object[] form:reqApprovedList ) {
                        												%>
                         											<tr>
-                            											<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            											<td style="text-align: left;width: 22%;"><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td class="center"><%=++SNA%></td>
+                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
-                            											<td style="text-align: center;width: 10%;">
+                            											<td class="center">
                             												<%=form[15]!=null?form[15]:form[16] %>
 		                            										<%if(form[17]!=null) {%>
 		                            											(<%=form[17]%>)
 		                            										<%} %>
                             											</td>
-                            											<td style="text-align: center;width: 8%;"><%=form[6] %> </td>
-                            											<td style="text-align: center;width: 25%;">
-                            												<form action="#">
+                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center">
+                            												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="reqInitiationId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="R"> 
@@ -463,8 +606,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																			</form>
                             												
 						 												</td>
-						 												<td style="text-align: center;width: 20%;">
-						 													<form action="#">
+						 												<td class="center">
+						 													<form action="#" id="approvalform_doc_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="reqInitiationId" value="<%=form[4]%>"> 
 																				<span id="downloadform">
@@ -498,25 +641,26 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						 												</td>
                         											</tr>
                        												<%} }%>
+                       												<!-- Requirement Document Approved List End -->
                        												
-                 													<!-- Test Plan Doc Approved List -->
+                 													<!-- Test Plan Document Approved List -->
                       												<%	
                       													if(testPlanApprovedList!=null && testPlanApprovedList.size()>0) {
                           													for(Object[] form:testPlanApprovedList ) {
                        												%>
                         											<tr>
-                            											<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            											<td style="text-align: left;width: 22%;"><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td class="center"><%=++SNA%></td>
+                            											<td><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
-                            											<td style="text-align: center;width: 10%;">
+                            											<td class="center">
                             												<%=form[15]!=null?form[15]:form[16] %>
 		                            										<%if(form[17]!=null) {%>
 		                            											(<%=form[17]%>)
 		                            										<%} %>
                             											</td>
-                            											<td style="text-align: center;width: 8%;"><%=form[6] %> </td>
-                            											<td style="text-align: center;width: 25%;">
-                            												<form action="#">
+                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center">
+                            												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="T"> 
@@ -526,8 +670,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																			</form>
                             												
 						 												</td>
-						 												<td style="text-align: center;width: 20%;">
-						 													<form action="#">
+						 												<td class="center">
+						 													<form action="#" id="approvalform_doc_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
 																				<span id="downloadform">
@@ -561,6 +705,154 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						 												</td>
                         											</tr>
                        												<%} }%>
+                       												<!-- Test Plan Document Approved List End -->
+                       												
+                 													<!-- Specifications Document Approved List -->
+                      												<%	
+                      													if(specificationApprovedList!=null && specificationApprovedList.size()>0) {
+                          													for(Object[] form:specificationApprovedList ) {
+                       												%>
+                        											<tr>
+                            											<td class="center"><%=++SNA%></td>
+                            											<td><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
+                            											<td class="center">
+                            												<%=form[15]!=null?form[15]:form[16] %>
+		                            										<%if(form[17]!=null) {%>
+		                            											(<%=form[17]%>)
+		                            										<%} %>
+                            											</td>
+                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center">
+                            												<form action="#" id="approvalform_status_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="SpecsInitiationId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="docType" value="S"> 
+																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    											</button>
+																			</form>
+                            												
+						 												</td>
+						 												<td class="center">
+						 													<%-- <form action="#" id="approvalform_doc_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="SpecsInitiationId" value="<%=form[4]%>"> 
+																				<span id="downloadform">
+																					<button type="submit" class="btn btn-sm" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" <%if(form[10]!=null && ("RFA".equalsIgnoreCase(form[10].toString()) ||  "RAM".equalsIgnoreCase(form[10].toString()))) {%>formaction="SpecificationDownlodPdfFreeze.htm"<%}else {%>formaction="SpecificationDownlodPdf.htm"<%} %>
+																						data-toggle="tooltip" data-placement="top" title="" data-original-title="Specification Document">
+																						<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																					</button>
+																				</span>
+																			</form> --%>
+						 													<%-- <button type="submit" class="btn btn-sm view-icon" formaction="ProjectClosureSoCDetails.htm" name="closureSoCApprovals" value="<%=form[4]%>/N/2" data-toggle="tooltip" data-placement="top" title="Closure SoC" style="font-weight: 600;" >
+								   												<div class="cc-rockmenu">
+																					<div class="rolling">
+																						<figure class="rolling_icon">
+																							<img src="view/images/preview3.png">
+																						</figure>
+																						<span>Preview</span>
+																					</div>
+																				</div>
+																			</button>
+																					
+																			<button type="submit" class="btn btn-sm" formaction="ProjectClosureSoCDownload.htm" name="closureId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 											<div class="cc-rockmenu">
+																					<div class="rolling">
+																						<figure class="rolling_icon">
+																							<img src="view/images/document.png">
+																						</figure>
+																						<span>SoC</span>
+																					</div>
+																				</div>
+																			</button> --%>
+						 												</td>
+                        											</tr>
+                       												<%} }%>
+                       												<!-- Specifications Document Approved List End -->
+                       												
+                       												<!-- IGI Document Approved List -->
+                       												<%	
+                      													if(igiDocApprovedList!=null && igiDocApprovedList.size()>0) {
+                          													for(Object[] form : igiDocApprovedList ) {
+                       												%>
+                        											<tr>
+                            											<td class="center"><%=++SNA%></td>
+                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
+                            											<td class="center">
+                            												For Lab
+                            											</td>
+                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center">
+                            												<form action="#" id="approvalform_status_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="docId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="docType" value="A"> 
+																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    											</button>
+																			</form>
+                            												
+						 												</td>
+						 												<td class="center"> 
+		                            										<form action="#" id="approvalform_doc_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="igiDocId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="isPdf" value="Y"> 
+																				<span id="downloadform">
+																					<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="IGIDocumentDetails.htm"
+																						data-toggle="tooltip" data-placement="top" title="" data-original-title="IGI Document">
+																						&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																					</button>
+																				</span>
+																			</form>
+		                            									</td>
+                        											</tr>
+                       												<%} }%>
+                       												<!-- IGI Document Approved List End -->
+                       												
+                       												<!-- ICD Document Approved List -->
+                       												<%	
+                      													if(icdDocApprovedList!=null && icdDocApprovedList.size()>0) {
+                          													for(Object[] form : icdDocApprovedList ) {
+                       												%>
+                        											<tr>
+                            											<td class="center"><%=++SNA%></td>
+                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
+                            											<td class="center">
+                            												<%=form[15]!=null?form[15]:form[14] %>
+                            											</td>
+                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center">
+                            												<form action="#" id="approvalform_status_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="docId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="docType" value="B"> 
+																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    											</button>
+																			</form>
+                            												
+						 												</td>
+						 												<td class="center"> 
+		                            										<form action="#" id="approvalform_doc_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="icdDocId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="isPdf" value="Y"> 
+																				<span id="downloadform">
+																					<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="ICDDocumentDetails.htm"
+																						data-toggle="tooltip" data-placement="top" title="" data-original-title="ICD Document">
+																						&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																					</button>
+																				</span>
+																			</form>
+		                            									</td>
+                        											</tr>
+                       												<%} }%>
+                       												<!-- ICD Document Approved List End -->
+                       												
                        												
                    												</tbody>
                  											</table>

@@ -16,6 +16,7 @@ import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
+import com.vts.pfms.documents.model.PfmsIGITransaction;
 
 public interface DocumentsService {
 
@@ -52,6 +53,7 @@ public interface DocumentsService {
 	public int deleteIGIDocumentShortCodesLinked(String shortCodeLinkedId) throws Exception;
 	public BigInteger getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception;
 	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs, String docId, String docType) throws Exception;
+	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception;
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -62,5 +64,8 @@ public interface DocumentsService {
 	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception;
 	public List<Object[]> getICDConnectionsList() throws Exception;
 	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
+	public long addPfmsIGITransaction(Long docId, String docType, String statusCode, String remarks, Long actionBy) throws Exception;
+	public long igiDocumentApprovalForward(String docId, String docType, String action, String remarks, String EmpId, String labcode, String userId) throws Exception;
+	public long icdDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	
 }
