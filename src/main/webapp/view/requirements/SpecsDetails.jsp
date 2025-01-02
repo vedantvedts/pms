@@ -386,8 +386,10 @@ if(RequirementList!=null && RequirementList.size()>0){
 
 String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
+List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("systemSpecificationList");
 
 %>
+
 	<%String ses=(String)request.getParameter("result"); 
  	  String ses1=(String)request.getParameter("resultfail");
 	  if(ses1!=null){
@@ -432,7 +434,9 @@ List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTre
 										<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
 										<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId%>">
 										<input type="hidden" name="SpecsInitiationId" value="<%=SpecsInitiationId%>">	
-										
+									<%-- 	<%if(systemSpecificationList!=null && systemSpecificationList.size()>0) {%>
+										<button class="btn btn-success btn-sm submit" style="margin-top: -3%;" type="button" onclick="chooseFromMaster()">CHOOSE FROM SPECIFICATION MASTER</button>
+										<%} %> --%>
 										<button class="btn btn-success btn-sm submit" style="margin-top: -3%;" type="button" onclick="showMoadal()">ADD HEADINGS</button>
 		<!-- 								<button class="btn btn-success btn-sm submit" style="margin-top: -3%;"
 											type="button" onclick='addData()' data-toggle="tooltip"
@@ -520,7 +524,7 @@ List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTre
 										<div class="form-group">
 											<%if ((RequirementLists != null) && (!RequirementLists.isEmpty())) {%>
 												<select  class="form-control selectdee" name="linkedRequirements" id="linkedRequirements" data-width="80%" data-live-search="true" multiple onchange="getReqDetails()">
-													<option value="" disabled="disabled">---Choose----</option>
+													<option value="" disabled="disabled">SELECT</option>
 													<%for (Object[] obj : RequirementLists) {%>
 														<option value="<%=obj[0]%>"><%=obj[1]%></option>
 													<%}%>
@@ -531,8 +535,42 @@ List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTre
 										</div>
 									</div>
 								</div>
-								
-									<div class="row">
+
+
+
+							<%if ((systemSpecificationList != null) && (!systemSpecificationList.isEmpty())) {%>
+							<div class="row">
+								<div class="col-md-3">
+									<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+										Choose from Linked Subsytem </label>
+								</div>
+								<div class="col-md-6" style="margin-top: 1%;">
+									<div class="form-group">
+
+										<select class="form-control selectdee" data-width="80%" id="SpecsMasterId"
+											data-live-search="true" onchange="getSpecDetails()">
+											<option value="" disabled="disabled" selected="selected">SELECT</option>
+											<%
+											for (Object[] obj : systemSpecificationList) {
+											%>
+											<option value="<%=obj[0]%>"><%=obj[5]%></option>
+											<%
+											}
+											%>
+										</select>
+
+									</div>
+								</div>
+							</div>
+							<%
+							} else {
+							%>
+
+							<%
+							}
+							%>
+
+							<div class="row">
 								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
@@ -560,12 +598,29 @@ List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTre
 								</div>
 								
 								<div class="col-md-2">
-								<label style="font-size: 17px; margin-top: 5%;float:right; color: #07689f">Specification Value: <span class="mandatory" style="color: red;">*</span></label>
+								<label style="font-size: 17px; margin-top: 5%;float:right; color: #07689f">Typical Value: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-2">
 								<input type="text" class="form-control" name="specValue" id="specValue" required="required">
 								</div>
 								
+								</div>
+								
+								<div class="row mt-2">
+								 
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Maximum Value: </label>
+								</div>
+								<div class="col-md-2">
+								<input type="text" class="form-control" name="maximumValue" id="maximumValue" required="required">
+								</div>
+								
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%;float:right; color: #07689f">Minimum Value:</label>
+								</div>
+								<div class="col-md-2">
+								<input type="text" class="form-control" name="minimumValue" id="minimumValue" required="required">
+								</div>
 								</div>
 									<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
 								
@@ -651,7 +706,7 @@ List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTre
 										<hr>
 								<div class="row">
 									<div class="col-md-2">
-								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Value :</label>
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Typical Value :</label>
 								</div>
 								<div class="col-md-8">
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specValues"></p>
@@ -696,7 +751,7 @@ List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTre
 				
 				
 				<!-- Modal for Headings -->
-				<div class="modal fade" id="exampleModalHeading" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalHeading" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="width:150%;margin-left: -35%;">
       <div class="modal-header">
@@ -770,7 +825,56 @@ List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTre
     </div>
   </div>
 </div>
+
+		<!-- Div modal already Having for specification Master Data  -->
+<%-- 				
+<div class="modal" tabindex="-1" role="dialog" id="masterSelectionModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 150%;margin-left: -30%;">
+      <div class="modal-header">
+        <h5 class="modal-title">Link Sub-System Specifications</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <table class="table table-bordered table-striped">
+       	<thead class="bg-primary text-light">
+       	<tr>
+       	<td style="width: 10%;text-align: center;">SN</td>
+       	<td>ID</td>
+       	<td>Parameter</td>
+       	</tr>
+       </thead>
+       <tbody>
+       <%if(systemSpecificationList!=null && systemSpecificationList.size()>0) {
+    	   for(Object[]obj:systemSpecificationList){
+    	   %>
+       <tr>
+       <td style="text-align: center;">
+       <input  type="checkbox" name="specMasterId" value="<%=obj[0].toString()%>">
+       </td>
+       <td>
+       <p><%=obj[5] %></p>
+       </td>
+       <td>
+       <p><%=obj[3] %></p>
+       </td>
+       </tr>
+       <%}} %>
+       </tbody>
+       </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm submit">Save</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> --%>
 				
+		
+		<!-- End -->	
 				<button onclick="scrollToTop()" id="scrollButton"
 			data-toggle="tooltip" data-placement="top" data-original-data=""
 			title="Go to Top">
@@ -961,6 +1065,8 @@ var productreelist = [];
 			 }else{
 				 $('#specValue').val("");
 			 }
+			 $('#maximumValue').val(Data.maximumValue)
+			 $('#minimumValue').val(Data.minimumValue)
 			 $('#submitbtn').hide();
 			 $('#editbtn').show();
 			 $('#specsDiv').show();
@@ -1156,9 +1262,36 @@ document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
 		        	event.preventDefault();
 	        		return false;
 		        }
-		 
 		}
 		
+	function chooseFromMaster(){
+	$('#masterSelectionModal').modal('show');
+	}	
+	
+	function getSpecDetails(){
+		var SpecsMasterId = $('#SpecsMasterId').val();
+		 $.ajax({
+			 type:'GET',
+			 url:'getSpecificationMasterById.htm',
+			 data:{
+				 SpecsMasterId:SpecsMasterId
+			 },
+			 datatype:'json',
+			 success : function(result){
+				 console.log("Data"+result)
+				 var Data = JSON.parse(result);
+				 
+				 var html = $('#Editor').summernote('code')+"<br>";
+				 $('#specParameter').val(Data.SpecsParameter)
+				 $('#specUnit').val(Data.SpecsUnit)
+				 $('#specValue').val(Data.SpecValue)
+				 $('#maximumValue').val(Data.maximumValue)
+				 $('#minimumValue').val(Data.minimumValue)
+				 $('#Editor').summernote('code',html+ Data.Description);
+			 }
+		 });
+	}
+
 </script>				
 </body>
 </html>

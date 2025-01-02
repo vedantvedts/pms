@@ -402,5 +402,6 @@ public interface ProjectDao {
 	public DocMembers getDocMemberById(Long MemeberId) throws Exception;
 	public long editDocMember(DocMembers idm) throws Exception;
 	public long UpdateInitiationReqMembers(long reqMemberId) throws Exception;
+	public List<Object[]> getsystemSpecificationList(String productTreeMainId)throws Exception;
 	
 }

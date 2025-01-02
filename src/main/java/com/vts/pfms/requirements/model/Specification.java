@@ -28,6 +28,8 @@ public class Specification  {
 	private Long MainId;
 	private String LinkedRequirement;
 	private String SpecValue;
+	private String maximumValue;
+	private String minimumValue;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

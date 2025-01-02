@@ -550,6 +550,19 @@ XWPFParagraph reviewHeld = document.createParagraph();
         XWPFParagraph mileParagraph1 = document.createParagraph();
         XWPFRun mileParagraphs1 = mileParagraph1.createRun();
         mileParagraphs1.setText((++count)+". "+pm.getActivityName());
+        
+        String activityName =(pm.getActivityName()!= null&&!pm.getActivityName().toString().trim().isEmpty())?pm.getActivityName().toString().replaceAll("<[^>]*>", System.lineSeparator()).trim() : "-";
+        // Split the activityName into lines
+           String[] lines = activityName.split(System.lineSeparator());
+
+           // Add text line by line
+           mileParagraphs1.setText((++count) + ". " + lines[0]); // First line
+           for (int j = 1; j < lines.length; j++) {
+               mileParagraphs1.addBreak(); // Add a line break
+               mileParagraphs1.setText(lines[j]); // Add the next line
+           }
+          // mileParagraphs1.addBreak();
+          
         }}}
         
         XWPFParagraph mileParagraph2 = document.createParagraph();
@@ -567,8 +580,16 @@ XWPFParagraph reviewHeld = document.createParagraph();
         for(PfmsLabReportMilestone pm: presentYearData) {
          XWPFParagraph mileParagraph1 = document.createParagraph();
          XWPFRun mileParagraphs1 = mileParagraph1.createRun();
-         String activityName =(pm.getActivityName()!= null&&!pm.getActivityName().toString().trim().isEmpty())?pm.getActivityName().toString().replaceAll("<[^>]*>", "").trim() : "-";
-         mileParagraphs1.setText((++count1)+". "+activityName);
+         String activityName =(pm.getActivityName()!= null&&!pm.getActivityName().toString().trim().isEmpty())?pm.getActivityName().toString().replaceAll("<[^>]*>", System.lineSeparator()).trim() : "-";
+      // Split the activityName into lines
+         String[] lines = activityName.split(System.lineSeparator());
+
+         // Add text line by line
+         mileParagraphs1.setText((++count1) + ". " + lines[0]); // First line
+         for (int j = 1; j < lines.length; j++) {
+             mileParagraphs1.addBreak(); // Add a line break
+             mileParagraphs1.setText(lines[j]); // Add the next line
+         }
         // mileParagraphs1.addBreak();
         }
      }else {

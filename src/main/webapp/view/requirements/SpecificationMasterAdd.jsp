@@ -392,7 +392,7 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
 				for (i = 0; i < ajaxresult.length; i++) 
 				{
 					<%if(sp.getMainId()!=null) {%> 
-					s += '<option value="'+ajaxresult[i][0]+"#"+ajaxresult[i][10]+'" disabled>' +ajaxresult[i][3] + '</option>';
+					s += '<option value="'+ajaxresult[i][0]+"#"+ajaxresult[i][10]+'">' +ajaxresult[i][3] + '</option>';
 
 					<%}else{ %>
 					s += '<option value="'+ajaxresult[i][0]+"#"+ajaxresult[i][10]+'" >' +ajaxresult[i][3] + '</option>';
@@ -403,6 +403,15 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
 				var specid = '<%=specid%>';
 				$('#subid').html(s);
 				$('#subid').val(mainId+"#"+specid).trigger('change'); 
+				<% if(sp.getSpecsMasterId()!=null){%>
+				$('#subid option').each(function() {
+				    if ($(this).val() !== mainId + "#" + specid) {
+				        $(this).prop('disabled', true); // Disable other options
+				    } else {
+				        $(this).prop('disabled', false); // Ensure the selected one is enabled
+				    }
+				});
+				<%}%>
 			}
 		})
 	}

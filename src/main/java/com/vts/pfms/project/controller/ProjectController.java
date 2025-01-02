@@ -9854,6 +9854,16 @@ public class ProjectController
 			req.setAttribute("SpecsId", req.getParameter("SpecsId")==null?"0":req.getParameter("SpecsId") );
 			List<Object[]> productTreeList = reqService.productTreeListByProjectId(projectId);
 			req.setAttribute("productTreeList", productTreeList);
+			
+			if(!productTreeMainId.equalsIgnoreCase("0")) {
+			List<Object[]>systemSpecificationList = service.getsystemSpecificationList(productTreeMainId);
+			req.setAttribute("systemSpecificationList", systemSpecificationList);
+			}else {
+			List<Object[]>systemSpecificationList = reqService.SpecificationMasterList();
+			systemSpecificationList = systemSpecificationList.stream().filter(e->e[13].toString().equalsIgnoreCase("0")).collect(Collectors.toList());				
+			req.setAttribute("systemSpecificationList", systemSpecificationList);
+			}
+	
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -9935,6 +9945,8 @@ public class ProjectController
 			specs.setIsActive(1);
 			specs.setSpecsParameter(req.getParameter("specParameter"));
 			specs.setSpecsUnit(req.getParameter("specUnit"));
+			specs.setMaximumValue(req.getParameter("maximumValue"));
+			specs.setMinimumValue(req.getParameter("minimumValue"));;
 			if(action.equalsIgnoreCase("Add")) {
 				int id= 0;
 				if(subSpecList!=null) {

@@ -487,7 +487,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		return count;
 	}
 
-	private static final String PRODUCTTREELISTBYPROJECTID = "SELECT a.MainId, a.SubLevelId, a.LevelName, a.Stage, a.Module, a.RevisionNo, a.SystemMainId, a.LevelCode FROM pfms_product_tree a,project_master b WHERE a.MainId>0 AND a.ProjectId=b.ProjectId AND b.ProjectId=:ProjectId AND a.IsActive='1' ORDER BY a.SubLevelId";
+	private static final String PRODUCTTREELISTBYPROJECTID = "SELECT a.MainId, a.SubLevelId, a.LevelName, a.Stage, a.Module, a.RevisionNo, a.SystemMainId, a.LevelCode FROM pfms_product_tree a,project_master b WHERE a.MainId>0 AND a.ProjectId=b.ProjectId AND b.ProjectId=:ProjectId AND a.IsActive='1' AND a.LevelId='1' ORDER BY a.SubLevelId";
 	@Override
 	public List<Object[]> productTreeListByProjectId(String projectId)throws Exception
 	{

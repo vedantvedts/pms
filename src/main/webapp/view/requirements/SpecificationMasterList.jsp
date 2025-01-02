@@ -258,7 +258,6 @@ label {
 		});
 		
 		function Edit(myfrm){
-
 			 var fields = $("input[name='Did']").serializeArray();
 
 			  if (fields.length === 0){
@@ -267,7 +266,7 @@ label {
 			return false;
 			}
 				  return true;	
-			}
+		}
 	</script>
 </body>
 </html>

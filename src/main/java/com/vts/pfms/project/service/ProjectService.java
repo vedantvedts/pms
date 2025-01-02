@@ -381,4 +381,5 @@ public interface ProjectService {
 	public DocMembers getDocMemberById(Long MemeberId) throws Exception;
 	public long editDocMember(DocMembers idm) throws Exception;
 	public long UpdateInitiationReqMembers(long ReqMemberId) throws Exception;
+	public List<Object[]> getsystemSpecificationList(String productTreeMainId)throws Exception;
 }

@@ -260,7 +260,8 @@ public class ProductTreeController {
 			
 			String Action=req.getParameter("Action");
 			
-			
+			System.out.println("Mainid --->"+req.getParameter("Mainid"));
+			System.out.println("Action --->"+req.getParameter("Action"));
 			if(Action!=null && (Action.equalsIgnoreCase("E")|| Action.equalsIgnoreCase("TE"))) {
 
 			

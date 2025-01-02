@@ -4317,8 +4317,19 @@ public class RequirementsController {
 		}
 		
 		return "redirect:/SpecificationMasters.htm";
-		
 	}
+	
+	@RequestMapping(value="getSpecificationMasterById.htm",method=RequestMethod.GET)
+	public @ResponseBody String getSpecificationMasterById(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+
+		String SpecsMasterId = req.getParameter("SpecsMasterId");
+		SpecificationMaster sp =service.getSpecificationMasterById(Long.parseLong(SpecsMasterId));
+		
+		Gson json = new Gson();
+	
+		return json.toJson(sp);
+	}
+	
 	@RequestMapping(value = "TestPlanMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String TestPlanMaster(HttpServletRequest req, HttpServletResponse res, HttpSession ses,
 			RedirectAttributes redir) throws Exception {

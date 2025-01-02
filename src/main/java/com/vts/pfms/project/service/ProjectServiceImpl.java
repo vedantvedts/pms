@@ -3593,4 +3593,10 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		public long UpdateInitiationReqMembers(long ReqMemberId) throws Exception {
 			return dao.UpdateInitiationReqMembers(ReqMemberId);
 		}
+		
+		@Override
+		public List<Object[]> getsystemSpecificationList(String productTreeMainId) throws Exception {
+		
+			return dao.getsystemSpecificationList(productTreeMainId);
+		}
 }

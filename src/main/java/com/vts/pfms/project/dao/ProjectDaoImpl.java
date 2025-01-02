@@ -4154,5 +4154,17 @@ public class ProjectDaoImpl implements ProjectDao {
 		return result;
 	}
 	
+	
+	private static final String SYSSPECIFICLIST="SELECT a.SpecsMasterId , a.SpecificationName,a.Description,a.SpecsParameter,\r\n"
+			+ "a.SpecsUnit,a.SpecsInitiationId,a.SpecValue,a.maximumValue,a.minimumValue FROM pfms_specification_master a, pfms_product_tree b\r\n"
+			+ "WHERE a.mainid=b.SystemMainId AND b.MainId=:productTreeMainId  AND a.isactive='1' ORDER BY a.MainId,a.specCount";
+	@Override
+	public List<Object[]> getsystemSpecificationList(String productTreeMainId) throws Exception {
+
+		Query query = manager.createNativeQuery(SYSSPECIFICLIST);
+		query.setParameter("productTreeMainId", productTreeMainId);
+		return (List<Object[]>)query.getResultList();
+	}
+	
 }
 
