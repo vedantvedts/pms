@@ -67,7 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		  .antMatchers("/").hasAnyRole("USER","ADMIN")
 		  .antMatchers("/webjars/**", "/resources/**", "/view/**", "/LoginPage/*", "/pfms-dg/*", "/api/sync/**", 
 				  "/login", "/wr", "/login?sessionInvalid", "/login?sessionExpired", "/wr?sessionInvalid", "/wr?sessionExpired",
-				  "/ProjectRequirementAttachmentDownload.htm", "/ProjectClosureChecklistFileDownload.htm", "/TimeSheetWorkFlowPdf.htm").permitAll()
+				  "/ProjectRequirementAttachmentDownload.htm", "/ProjectClosureChecklistFileDownload.htm", "/TimeSheetWorkFlowPdf.htm", "/CommitteeMinutesViewAllDownloadPdf.htm/**").permitAll()
 		  .anyRequest().authenticated().accessDecisionManager(adm())
 		  
 		  .and()

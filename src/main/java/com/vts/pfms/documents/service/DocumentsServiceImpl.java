@@ -435,7 +435,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 					igiDocument.setIGIStatusCode("RFW");
 					igiDocument.setIGIStatusCodeNext("RFR");
 				}else {
-					igiDocument.setIGIStatusCode(statusCode);
+					igiDocument.setIGIStatusCode(statusCodeNext);
 					if(statusCodeNext.equalsIgnoreCase("RFR")) {
 						igiDocument.setIGIStatusCodeNext("RFA");
 					}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
@@ -549,9 +549,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public List<Object[]> getICDConnectionsList() throws Exception {
+	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception {
 		
-		return dao.getICDConnectionsList();
+		return dao.getICDConnectionsList(icdDocId);
 	}
 	
 	@Override
@@ -591,7 +591,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 					icdDocument.setICDStatusCode("RFW");
 					icdDocument.setICDStatusCodeNext("RFR");
 				}else {
-					icdDocument.setICDStatusCode(statusCode);
+					icdDocument.setICDStatusCode(statusCodeNext);
 					if(statusCodeNext.equalsIgnoreCase("RFR")) {
 						icdDocument.setICDStatusCodeNext("RFA");
 					}else if(statusCodeNext.equalsIgnoreCase("RFA")) {

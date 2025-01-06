@@ -376,7 +376,9 @@ FormatConverter fc = new FormatConverter();
 									</div>
 								</div>
 								<div class="table-wrapper table-responsive">
-									<table class="table activitytable"> 
+									<!-- <input type="text" id="searchBar" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+       								<br> -->
+									<table class="table activitytable" id="dataTable"> 
 			                        	<thead style="">
 			                            	<tr>
 			                            		<th>Expand</th>
@@ -611,7 +613,9 @@ FormatConverter fc = new FormatConverter();
 									</div>
 								</div>	
 								<div class="table-wrapper table-responsive">
-									<table class="table activitytable"> 
+									<!-- <input type="text" id="searchBar2" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+       								<br> -->
+									<table class="table activitytable" id="dataTable2"> 
 			                        	<thead style="">
 			                        		<tr>
 												<th width="5%">SN</th>
@@ -668,11 +672,21 @@ FormatConverter fc = new FormatConverter();
 		<input type="hidden" name="viewFlag" value="M">
 	</form>
 <script type="text/javascript">
-$("#myTable").DataTable({
-	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
-	 "pagingType": "simple"
-	
-});
+
+/* $(document).ready(function () {
+    $('#searchBar').on('keyup', function () {
+        const searchTerm = $(this).val().toLowerCase();
+        $('#dataTable tbody tr').filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1);
+        });
+    });
+    $('#searchBar2').on('keyup', function () {
+        const searchTerm = $(this).val().toLowerCase();
+        $('#dataTable2 tbody tr').filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1);
+        });
+    });
+}); */
 
 function ChangeButton(id) {
 	  
@@ -688,7 +702,7 @@ function ChangeButton(id) {
     }
 }
 
-function approvalcheck(action, formId){
+/* function approvalcheck(action, formId){
 
 	var fields = $("input[form='"+formId+"'][name='timeSheetId']").serializeArray();
 
@@ -714,7 +728,7 @@ function approvalcheck(action, formId){
 	return true;
 	
 	
-}
+} */
 </script>
 <script type="text/javascript">
 $('#activityWeekDate').daterangepicker({

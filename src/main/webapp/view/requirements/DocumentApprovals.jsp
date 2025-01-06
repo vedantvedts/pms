@@ -452,7 +452,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             												</div>
 																			<div class="ml-2" align="right">
 																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formmethod="GET" formnovalidate="formnovalidate"
-																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this Project Document?');">
+																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this IGI Document?');">
 																					<%if (form[8].toString().equalsIgnoreCase("RFW")) {%>
 																						Forward
 																					<%} else {%>
@@ -460,7 +460,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																					<%}%>
 																				</button>
 																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formmethod="GET" style="font-weight: 500"
-																					onclick="return confirm('Are You Sure To return this Project Document?');">
+																					onclick="return confirm('Are You Sure To return this IGI Document?');">
 																					Return
 																				</button>
 																			</div>
@@ -510,7 +510,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                             												</div>
 																			<div class="ml-2" align="right">
 																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formmethod="GET" formnovalidate="formnovalidate"
-																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this Project Document?');">
+																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this ICD Document?');">
 																					<%if (form[12].toString().equalsIgnoreCase("RFW")) {%>
 																						Forward
 																					<%} else {%>
@@ -518,7 +518,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																					<%}%>
 																				</button>
 																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formmethod="GET" style="font-weight: 500"
-																					onclick="return confirm('Are You Sure To return this Project Document?');">
+																					onclick="return confirm('Are You Sure To return this ICD Document?');">
 																					Return
 																				</button>
 																			</div>

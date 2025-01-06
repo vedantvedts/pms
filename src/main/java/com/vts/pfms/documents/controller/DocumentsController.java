@@ -301,7 +301,8 @@ public class DocumentsController {
 		logger.info(new Date() + " Inside IGIDocumentAdd.htm" + UserId);
 
 		try {
-
+			String isAmend = req.getParameter("isAmend");
+			String igiDocId = req.getParameter("igiDocId");
 			PfmsIGIDocument pfmsIgiDocument = PfmsIGIDocument.builder()
 												.IGIVersion(req.getParameter("version"))
 												.LabCode(labcode)
@@ -316,8 +317,12 @@ public class DocumentsController {
 			
 			long result = service.addPfmsIGIDocument(pfmsIgiDocument);
 
-			// Transaction 
-			service.addPfmsIGITransaction(result, "A", "RIN", null, Long.parseLong(EmpId));
+			if(isAmend!=null && isAmend.equalsIgnoreCase("Y")) {
+				service.igiDocumentApprovalForward(igiDocId, "A", "A", req.getParameter("remarks"), EmpId, labcode, UserId);
+			}else {
+				// Transaction 
+				service.addPfmsIGITransaction(result, "A", "RIN", null, Long.parseLong(EmpId));
+			}
 			
 			if (result > 0) {
 				redir.addAttribute("result", "IGI Document Data Submitted Successfully");
@@ -1295,9 +1300,15 @@ public class DocumentsController {
 		logger.info(new Date() + " Inside ICDDocumentAdd.htm" + UserId);
 
 		try {
+			String projectType = req.getParameter("projectType");
+			String projectId = req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			String isAmend = req.getParameter("isAmend");
+			String icdDocId = req.getParameter("icdDocId");
+			
 			PfmsICDDocument icdDocument = PfmsICDDocument.builder()
-											.ProjectId(Long.parseLong(req.getParameter("projectId")))
-											.InitiationId(Long.parseLong(req.getParameter("initiationId")))
+											.ProjectId(Long.parseLong(projectId!=null?projectId:"0"))
+											.InitiationId(Long.parseLong(initiationId!=null?initiationId:"0"))
 											.ICDVersion(req.getParameter("version"))
 											.LabCode(labcode)
 											.InitiatedBy(EmpId)
@@ -1310,16 +1321,23 @@ public class DocumentsController {
 										.build();
 			
 			long result = service.addPfmsICDDocument(icdDocument);
-
-			// Transaction 
-			service.addPfmsIGITransaction(result, "B", "RIN", null, Long.parseLong(EmpId));
+			
+			if(isAmend!=null && isAmend.equalsIgnoreCase("Y")) {
+				service.icdDocumentApprovalForward(icdDocId, "B", "A", req.getParameter("remarks"), EmpId, labcode, UserId);
+			}else {
+				// Transaction 
+				service.addPfmsIGITransaction(result, "B", "RIN", null , Long.parseLong(EmpId));
+			}
+			
 			
 			if (result > 0) {
 				redir.addAttribute("result", "ICD Document Data Submitted Successfully");
 			} else {
 				redir.addAttribute("resultfail", "ICD Document Data Submit Unsuccessful");
 			}
-
+			redir.addAttribute("projectType", projectType);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("initiationId", initiationId);
 			return "redirect:/ICDDocumentList.htm";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1362,7 +1380,7 @@ public class DocumentsController {
 			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
 			req.setAttribute("icdApplicableDocsList", service.getIGIApplicableDocs(icdDocId, "B"));
 			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(icdDocument.getProjectId()!=0?icdDocument.getProjectId()+"":icdDocument.getInitiationId()+""));
-			req.setAttribute("icdConnectionsList", service.getICDConnectionsList());
+			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(icdDocId));
 			
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			
@@ -1418,7 +1436,7 @@ public class DocumentsController {
 			req.setAttribute("projectId", req.getParameter("projectId"));
 			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
-			req.setAttribute("icdConnectionsList", service.getICDConnectionsList());
+			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
 			
 			return "documents/ICDConnectionsDetails";
 		} catch (Exception e) {
@@ -1529,7 +1547,7 @@ public class DocumentsController {
 			req.setAttribute("projectId", req.getParameter("projectId"));
 			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
-			req.setAttribute("icdConnectionsList", service.getICDConnectionsList());
+			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
 			
 			return "documents/ICDConnectionMatrixDetails";
 		}catch (Exception e) {

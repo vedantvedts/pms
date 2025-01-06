@@ -14,7 +14,6 @@
 <html>
 <head>
     <meta charset="ISO-8859-1">
-    <title>PMS</title>
     <jsp:include page="../static/header.jsp"></jsp:include>
     
     <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
@@ -185,7 +184,7 @@
 		List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
 		List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
 		
-		List<String> subsystems = productTreeList.stream().map(obj -> obj[7].toString()).distinct().collect(Collectors.toList());
+		List<String> subsystems = productTreeList.stream().map(obj -> obj[7]+"").distinct().collect(Collectors.toList());
 		
 		HashSet<String> interfaceCodeList = new HashSet<String>();
 		
@@ -268,7 +267,15 @@
 	                    </h5>
                 	</div>
                     <div class="col-md-2" align="right">
-                        <a class="btn btn-info btn-sm shadow-nohover back" style="position:relative;" href="ICDDocumentList.htm">Back</a>
+                        <form action="ICDDocumentList.htm" method="get">
+                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		        			<input type="hidden" name="projectId" value="<%=icdDocument.getProjectId() %>" />
+		        			<input type="hidden" name="initiationId" value="<%=icdDocument.getInitiationId() %>" />
+		        			<input type="hidden" name="projectType" value="<%=icdDocument.getProjectId()!=0?"M":"I" %>" />
+		        			<button class="btn btn-info btn-sm shadow-nohover back">
+		        				Back
+		        			</button>
+                		</form>
                     </div>
             	</div>
         	</div>

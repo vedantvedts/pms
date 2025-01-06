@@ -62,7 +62,7 @@ public interface DocumentsDao {
 	public PfmsICDDocument getPfmsICDDocumentById(String icdDocId)throws Exception;
 	public Long getFirstVersionICDDocId(String projectId, String initiationId) throws Exception;
 	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception;
-	public List<Object[]> getICDConnectionsList() throws Exception;
+	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception;
 	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
 	public long addPfmsIGITransaction(PfmsIGITransaction transaction) throws Exception;
 	

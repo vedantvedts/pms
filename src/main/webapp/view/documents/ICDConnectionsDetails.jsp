@@ -187,6 +187,7 @@
                 	<table class="table table-bordered table-hover table-striped table-condensed" id="myTable">
                     	<thead class="center">
                     		<tr>
+                    			<th>SN</th>
                     			<th>Connection ID</th>
                     			<th>Sub-System 1</th>
                     			<th>Sub-System 2</th>
@@ -200,6 +201,7 @@
                     	<tbody>
                     		<%if(icdConnectionsList!=null && icdConnectionsList.size()>0) {
                     			int count = 0;
+                    			int slno = 0;
                     			String systemOne1 = "";
                 				String systemTwo1 = "";
                     			for(Object[] obj : icdConnectionsList) {
@@ -216,6 +218,7 @@
                     				++count;
                     		%>
                     			<tr>
+                    				<td class="center"><%=++slno %></td>
                     				<td class="center">
                     					<%=obj[4] + "_" + obj[5] + "_" + obj[8] + ((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>
                     					<%-- <%=obj[4]+"_"+obj[5] %> --%>

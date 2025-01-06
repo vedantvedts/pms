@@ -3,11 +3,14 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>    
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="ISO-8859-1">
     <jsp:include page="../static/header.jsp"></jsp:include>
+    <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
+    <link href="${StyleCSS}" rel="stylesheet" /> 
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -227,6 +230,57 @@ background: none;border-style: none;
 }
 </style>   
 
+<style>
+   .toggle-switch {
+       position: relative;
+       display: inline-block;
+       width: 60px;
+       height: 34px;
+   }
+
+   .toggle-switch input {
+       display: none;
+   }
+
+   .slider {
+       position: absolute;
+       cursor: pointer;
+       top: 0;
+       left: 0;
+       right: 0;
+       bottom: 0;
+       background-color: #ccc;
+       transition: .4s;
+       border-radius: 34px;
+   }
+
+   .slider:before {
+       position: absolute;
+       content: "";
+       height: 26px;
+       width: 26px;
+       left: 4px;
+       bottom: 4px;
+       background-color: white;
+       transition: .4s;
+       border-radius: 50%;
+   }
+
+   input:checked + .slider {
+       background-color: green;
+   }
+
+   input:checked + .slider:before {
+       transform: translateX(26px);
+   }
+
+   .toggle-switch .label {
+       margin-left: 10px;
+       vertical-align: middle;
+       font-weight: bold;
+       font-size: 18px;
+   }
+</style>
 </head>
 <body>
 <%
@@ -351,7 +405,7 @@ background: none;border-style: none;
                                     <td class="center"><%= fc.sdfTordf(obj[4].toString()) %></td>
                                     <td class="center" >v<%= obj[1] %></td>
                                     <td class="center" >
-                                    	<form action="#">
+                                    	<form action="#" id="icdform_status_<%=count %>">
 			                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			                            	<input type="hidden" name="docId" value="<%=obj[0] %>">
 			                            	<input type="hidden" name="docType" value="B">
@@ -361,7 +415,7 @@ background: none;border-style: none;
                                         </form>
                                     </td>
                                    <td class="center">
-									    <form action="#" method="POST" name="myfrm" style="display: inline">
+									    <form action="#" method="POST" name="myfrm" id="icdform_action_<%=count %>" style="display: inline">
 									        
 									        <%if(obj[5]!=null && icdforwardstatus.contains(obj[5].toString()) ) {%>
 													
@@ -390,7 +444,7 @@ background: none;border-style: none;
 													
 												<%} %>
 												<%if(obj[5]!=null && "RFA".equalsIgnoreCase(obj[5].toString()) ) {%>
-													<button type="button" class="editable-clicko" data-placement="top" title="Amend" data-toggle="modal" data-target="#myModal" onclick="setversiondata('<%=obj[1]%>','<%=obj[0]%>')">
+													<button type="button" class="editable-clicko" data-placement="top" title="Amend" data-toggle="modal" data-target="#docAmendmentModal" onclick="setversiondata('<%=obj[1]%>','<%=obj[0]%>')">
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -427,18 +481,32 @@ background: none;border-style: none;
                             </tbody>
                         </table>
                     </div>
-                    <div style="margin-top: 20px; text-align: center;"> 
-					    <form id="documentForm" action="ICDDocumentAdd.htm">
-					        <input type="hidden" name="version" id="versionField" value="<%= version %>">
-					        <input type="hidden" name="projectId" value="<%=projectId %>">
-					        <input type="hidden" name="initiationId" value="<%=initiationId %>">
-					        <button class="btn btn-sm " type="button" onclick="confirmAdd()" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create Doc</button>
-					    </form>
-					</div>
+                    <%if(icdDocumentList!=null && icdDocumentList.size()==0) {%>
+	                    <%-- <div style="margin-top: 20px; text-align: center;"> 
+						    <form id="documentForm" action="ICDDocumentAdd.htm">
+						        <input type="hidden" name="version" id="versionField" value="<%= version %>">
+						        <input type="hidden" name="projectId" value="<%=projectId %>">
+						        <input type="hidden" name="initiationId" value="<%=initiationId %>">
+						        <button class="btn btn-sm " type="button" onclick="confirmAdd()" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create Doc</button>
+						    </form>
+						</div> --%>
+						<div style="text-align: center;">
+	                    	<form action="ICDDocumentAdd.htm" id="myform" method="post">
+	                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Create ICD Document?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create ICD Doc v1</button>
+	                        	<input type="hidden" name="version" value="<%=version %>">
+	                        	<input type="hidden" name="projectType" value="<%=projectType %>">
+	                        	<input type="hidden" name="projectId"value="<%=projectId %>">
+	                        	<input type="hidden" name="initiationId" value="<%=initiationId %>">
+	                        	<%-- <input type="hidden" name="productTreeMainId" id="productTreeMainId11" value="<%=productTreeMainId %>"> --%>
+	                        	<!-- <input type="hidden" name="reqInitiationId" value="0"> -->
+	                 		</form>
+	                    </div>
+					<%} %>	
                 </div>
                 
                 <div class="row mt-4">
- 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For IGI Doc</b></div>
+ 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For ICD Doc</b></div>
  	    		</div>
     			<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
            			<table align="center"  >
@@ -471,7 +539,7 @@ background: none;border-style: none;
     </div>
 </div>
 
-<div class="modal fade" id="SummaryModalSmall" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+<%-- <div class="modal fade" id="SummaryModalSmall" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document"> <!-- Use modal-lg class -->
         <div class="modal-content" style="max-height: 300px; overflow-y: auto;"> <!-- Set max-height and overflow -->
             <div class="modal-header">
@@ -498,9 +566,91 @@ background: none;border-style: none;
             </div>
         </div>
     </div>
-</div>
+</div> --%>
 
-
+	<!-- -------------------------------------------- Document Amendment Modal ------------------------------------------------------------- -->
+	<div class="modal fade" id="docAmendmentModal" tabindex="-1" role="dialog" aria-labelledby="docAmendmentModal" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+			<div class="modal-content" style="width:135%;margin-left:-20%;">
+				<div class="modal-header" style="background: #055C9D;color: white;">
+		        	<h5 class="modal-title ">Amend Document</h5>
+			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+			          <span class="text-light" aria-hidden="true">&times;</span>
+			        </button>
+		      	</div>
+     			<div class="modal-body">
+     				<div class="container-fluid mt-3">
+     					<form action="ICDDocumentAdd.htm" method="post">	
+     						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+     						<input type="hidden" name="projectType" value="<%=projectType %>">
+                        	<input type="hidden" name="projectId"value="<%=projectId %>">
+                        	<input type="hidden" name="initiationId" value="<%=initiationId %>">
+                        	<input type="hidden" name="icdDocId" id="icdDocId" value="0">
+                        	<input type="hidden" name="isAmend" value="Y">
+                        	<input type="hidden" name="version" id="amendversion" value="<%=version%>">
+	     					<div class="row">
+								<div class="col-md-12 " align="left">
+									<div class="form-inline">
+	                                    <div class="form-group w-30">
+	                                        <label class="form-label" style="font-size: 14px;">
+	                                            Current Version : &nbsp;<span id="currentversion" style="color: green;"></span>
+	                                        </label>
+	                                    </div>
+	                                    &emsp;
+	                                    
+	                                    <div class="form-group w-35">
+	                                        <label class="form-label" style="font-size: 14px;">Is New Release?</label>
+	                                        &nbsp;
+	                                        <label class="toggle-switch">
+	                                            <input type="checkbox" id="releaseToggleSwitch" name="isNewRelease" checked>
+	                                            <span class="slider"></span>
+	                                            <span class="label" id="releaseToggleLabel">ON</span>
+	                                        </label>
+	                                    </div>
+	                                    &emsp;
+	                                    <div class="form-group w-35">
+	                                        <label class="form-label" style="font-size: 14px;">Is New Version?</label>
+	                                        &nbsp;
+	                                        <label class="toggle-switch">
+	                                            <input type="checkbox" id="versionToggleSwitch" name="isNewVersion">
+	                                            <span class="slider"></span>
+	                                            <span class="label" id="versionToggleLabel">OFF</span>
+	                                        </label>
+	                                    </div>
+	                                    
+	                                </div>
+	
+	                                <div class="form-inline mt-2">
+	                                    <div class="form-group w-100">
+	                                        <label class="form-label" style="font-size: 14px;">
+	                                            Remarks&nbsp;<span class="text-danger">*</span>&nbsp;: 
+	                                        </label>
+	                                    </div>
+	                                </div>
+	                                <div class="form-inline">
+	                                    <div class="form-group w-100">
+	                                        <input type="text" class="w-100" name="remarks" maxlength="255" style="border-left: 0; border-top: 0; border-right: 0;" required>
+	                                    </div>
+	                                </div>
+	                                <div class="form-inline mt-4">
+	                                	<div class="form-group w-100 d-flex justify-content-center">
+		                                    <button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Amend?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">
+						                        Create ICD Doc <span id="amendversiondisplay"></span>
+						                    </button>
+						            	</div>        
+	                                </div>
+								</div>
+							</div>
+							
+						</form>	
+     				</div>
+     			</div>
+     			
+     		</div>
+		</div>
+	</div>				
+	<!-- -------------------------------------------- Document Amendment Modal End ------------------------------------------------------------- -->
+    					
 <!-- DataTables Initialization Script -->
 <script>
     $(document).ready(function() {
@@ -514,7 +664,7 @@ background: none;border-style: none;
 
 <!-- Confirm Add Functionality -->
 <script type="text/javascript">
-    var a = '<%= icdDocumentList!=null?icdDocumentList.size():0 %>';
+    <%-- var a = '<%= icdDocumentList!=null?icdDocumentList.size():0 %>';
     function confirmAdd() {
         if (a == 0) {
             if (confirm('Do you want to Create ICD Document?')) {
@@ -558,30 +708,52 @@ background: none;border-style: none;
     function submitForm() {
         var form = document.getElementById('documentForm');
         form.submit(); // Submit the form with the updated version
+    } --%>
+</script>
+<script>
+	function updateVersion() {
+        var version = parseFloat($('#currentversion').text());
+        if ($('#versionToggleSwitch').is(':checked')) {
+            $('#versionToggleLabel').text('ON');
+            $('#releaseToggleLabel').text('OFF');
+            $('#releaseToggleSwitch').prop('checked', false);
+            $('#amendversiondisplay').text('v' + (version + 1).toFixed(1)); // Increment by 1
+            $('#amendversion').val((version + 1).toFixed(1)); // Increment by 1
+        } else if ($('#releaseToggleSwitch').is(':checked')) {
+            $('#releaseToggleLabel').text('ON');
+            $('#versionToggleLabel').text('OFF');
+            $('#versionToggleSwitch').prop('checked', false);
+            $('#amendversiondisplay').text('v' + (version + 0.1).toFixed(1)); // Increment by 0.1
+            $('#amendversion').val((version + 0.1).toFixed(1)); // Increment by 0.1
+        }
     }
+
+    $('#versionToggleSwitch').change(function() {
+        if ($(this).is(':checked')) {
+            $('#releaseToggleSwitch').prop('checked', false);
+        } else if (!$('#releaseToggleSwitch').is(':checked')) {
+            $('#releaseToggleSwitch').prop('checked', true);
+        }
+        updateVersion();
+    });
+
+    $('#releaseToggleSwitch').change(function() {
+        if ($(this).is(':checked')) {
+            $('#versionToggleSwitch').prop('checked', false);
+        } else if (!$('#versionToggleSwitch').is(':checked')) {
+            $('#versionToggleSwitch').prop('checked', true);
+        }
+        updateVersion();
+    });
+
+    function setversiondata(version, docId) {
+        document.getElementById('currentversion').textContent = version;
+        $('#icdDocId').val(docId);
+        updateVersion(); // Set initial value of amendversiondisplay based on the toggle state
+    }
+    
 </script>
 </body>
 </html>
-
-
-<%-- <!-- Small Modal for Document Summary -->
-<div class="modal fade" id="SummaryModalSmall" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title" id="smallModalLabel">current Version: <%=version %></h6>
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> -->
-            </div>
-            <div class="modal-body">
-                <h6></h6>
-            </div>
-            <!-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div> -->
-        </div>
-    </div>
-</div> --%>
 
 

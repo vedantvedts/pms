@@ -585,11 +585,12 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	private static final String GETICDCONEECTIONSLIST = "SELECT a.ICDConnectionId, a.ICDDocId, a.SubSystemMainIdOne, a.SubSystemMainIdTwo, a.SubSystemOne,  a.SubSystemTwo,  a.InterfaceId,\r\n"
 			+ "	b.InterfaceSeqNo, b.InterfaceCode, b.InterfaceName, b.InterfaceType, b.DataType, b.SignalType, b.InterfaceSpeed\r\n"
 			+ "FROM pfms_icd_document_connections a LEFT JOIN pfms_igi_interfaces b ON a.InterfaceId=b.InterfaceId\r\n"
-			+ "WHERE a.IsActive=1 ORDER BY a.SubSystemMainIdOne, a.SubSystemMainIdTwo";
+			+ "WHERE a.IsActive=1 AND ICDDocId=:ICDDocId ORDER BY a.SubSystemMainIdOne, a.SubSystemMainIdTwo";
 	@Override
-	public List<Object[]> getICDConnectionsList() throws Exception {
+	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(GETICDCONEECTIONSLIST);
+			query.setParameter("ICDDocId", icdDocId);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();

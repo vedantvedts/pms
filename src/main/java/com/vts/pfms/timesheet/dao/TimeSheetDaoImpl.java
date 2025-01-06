@@ -365,8 +365,9 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 		}
 	}
 	
-	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeId, e.ActivityType,e.ActivityCode, b.ProjectId, (CASE WHEN b.ProjectId=0 THEN 'General' ELSE CONCAT(g.ProjectCode, ' (', g.ProjectShortName, ')') END) AS 'Project', \r\n"
-			+ "b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation, b.KeywordId, f.Keyword, b.WorkDone, b.WorkDoneon, b.ActivitySeqNo\r\n"
+	private static final String GETEMPLOYEENEWTIMESHEETLIST = "SELECT a.TimeSheetId, a.EmpId, a.ActivityFromDate, b.TimeSheetActivityId, b.ActivityTypeId, e.ActivityType,e.ActivityCode, b.ProjectId, (CASE WHEN b.ProjectId=0 THEN 'General' ELSE CONCAT(g.ProjectCode, ' (', g.ProjectShortName, ')') END) AS 'Project',\r\n"
+			+ "	b.AssignedBy, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'Assigner', d.Designation AS 'AssignerDesig', b.KeywordId, f.Keyword, b.WorkDone, b.WorkDoneon, b.ActivitySeqNo,\r\n"
+			+ "	CONCAT(IFNULL(CONCAT(h.Title,' '),(IFNULL(CONCAT(h.Salutation, ' '), ''))), h.EmpName) AS 'Employee', i.Designation\r\n"
 			+ "FROM pfms_timesheet a\r\n"
 			+ "JOIN pfms_timesheet_activity b ON a.TimeSheetId=b.TimeSheetId AND b.IsActive=1\r\n"
 			+ "LEFT JOIN employee c ON b.AssignedBy=c.EmpId\r\n"
@@ -374,7 +375,9 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			+ "LEFT JOIN milestone_activity_type e ON b.ActivityTypeId=e.ActivityTypeId\r\n"
 			+ "LEFT JOIN pfms_timesheet_keywords f ON b.KeywordId=f.KeywordId\r\n"
 			+ "LEFT JOIN project_master g ON b.ProjectId = g.ProjectId\r\n"
-			+ "WHERE a.IsActive=1 AND a.EmpId=:EmpId AND a.ActivityFromDate BETWEEN :FromDate AND :ToDate ORDER BY a.ActivityFromDate";
+			+ "LEFT JOIN employee h ON a.EmpId = h.EmpId\r\n"
+			+ "LEFT JOIN employee_desig i ON h.DesigId=i.DesigId\r\n"
+			+ "WHERE a.IsActive=1 AND (CASE WHEN 'A'=:EmpId THEN 1=1 ELSE a.EmpId=:EmpId END) AND a.ActivityFromDate BETWEEN :FromDate AND :ToDate ORDER BY a.ActivityFromDate";
 	@Override
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception {
 		try {

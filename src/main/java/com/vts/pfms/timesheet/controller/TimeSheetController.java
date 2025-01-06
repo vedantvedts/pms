@@ -1448,4 +1448,31 @@ public class TimeSheetController {
 			return "static/Error";
 		}
 	}
+	
+	@RequestMapping(value="TimeSheetReport.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String timeSheetReport(HttpServletRequest req, HttpSession ses) throws Exception{
+		String UserId = (String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date()+" Inside TimeSheetReport.htm "+UserId);
+		try {
+			
+			req.setAttribute("roleWiseEmployeeList", service.getRoleWiseEmployeeList(labcode, LoginType, EmpId));
+			String activityDate = req.getParameter("activityDate");
+			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
+			String activityDateSql = fc.rdfTosdf(activityDate);
+			req.setAttribute("activityDate", activityDate);
+			req.setAttribute("activityDateSql", activityDateSql);
+			
+			//req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList("A", activityLD.withDayOfMonth(1).toString(), activityLD.with(TemporalAdjusters.lastDayOfMonth()).toString()));
+			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList("A", activityDateSql, activityDateSql ));
+			
+			return "timesheet/TimeSheetReport";
+		}catch (Exception e) {
+			logger.error(new Date()+ "Inside TimeSheetReport.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
 }
