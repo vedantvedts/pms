@@ -286,7 +286,7 @@ FormatConverter fc = new FormatConverter();
 					<div class="card-header">
 						<div class="row">
 							<div class="col-md-6">
-								<h4 class="">Work Register View</h4>
+								<h4 class="">Work Register Report</h4>
 							</div>
 							<div class="col-md-6">
 								
