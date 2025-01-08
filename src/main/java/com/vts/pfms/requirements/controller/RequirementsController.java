@@ -32,6 +32,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -239,21 +240,22 @@ public class RequirementsController {
 				maincell1.setCellValue("SpecificationCode");
 				maincell1.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(1, 5000);
-
+				
+				
 				Cell maincell2 = row.createCell(2);
 				maincell2.setCellValue("Parameter");
 				maincell2.setCellStyle(unlockedCellStyle); // Apply the style
-				sheet.setColumnWidth(2, 5000);
+				sheet.setColumnWidth(2, 9000);
 
 				Cell maincell3 = row.createCell(3);
 				maincell3.setCellValue("Value");
 				maincell3.setCellStyle(unlockedCellStyle); // Apply the style
-				sheet.setColumnWidth(3, 5000);
+				sheet.setColumnWidth(3, 9000);
 
 				Cell maincell4 = row.createCell(4);
 				maincell4.setCellValue("Unit");
 				maincell4.setCellStyle(unlockedCellStyle); // Apply the style
-				sheet.setColumnWidth(4, 5000);
+				sheet.setColumnWidth(4, 9000);
 				int r=0;
 
 				List<Object[]> SpecificarionMasterList = service.SpecificationMasterList();
@@ -274,11 +276,27 @@ public class RequirementsController {
 					style.setBorderBottom(BorderStyle.THIN);
 					style.setBorderLeft(BorderStyle.THIN);
 					style.setBorderRight(BorderStyle.THIN);
+					
+					CellStyle centeredStyle = workbook.createCellStyle();
+					centeredStyle.setAlignment(HorizontalAlignment.CENTER); // Center horizontally
+					if (!obj[14].toString().equalsIgnoreCase("0")) { 
+						centeredStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex()); // Green for someCondition
+					} else {
+						centeredStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex()); // Orange otherwise
+					}
+					
+					centeredStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); // Set the fill pattern
+					centeredStyle.setBorderTop(BorderStyle.THIN);
+					centeredStyle.setBorderBottom(BorderStyle.THIN);
+					centeredStyle.setBorderLeft(BorderStyle.THIN);
+					centeredStyle.setBorderRight(BorderStyle.THIN);
 					// Apply the style to each cell in the row
 					Cell cell0 = row.createCell(0);
 					cell0.setCellValue(String.valueOf(r));
 					cell0.setCellStyle(style);
-
+					cell0.setCellStyle(centeredStyle);
+					
+					
 					Cell cell1 = row.createCell(1);
 					cell1.setCellValue(obj[5] != null ? obj[5].toString() : "-");
 					cell1.setCellStyle(style);
@@ -294,7 +312,7 @@ public class RequirementsController {
 					Cell cell4 = row.createCell(4);
 					cell4.setCellValue(obj[4] != null ? obj[4].toString() : "-");
 					cell4.setCellStyle(style);
-				
+					sheet.setColumnWidth(4, 9000);
 				}}
 				res.setContentType("application/vnd.ms-excel");
 				res.setHeader("Content-Disposition", "attachment; filename=SpecificationMaster.xls");	
