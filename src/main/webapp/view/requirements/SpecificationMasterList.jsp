@@ -168,10 +168,31 @@ label {
 			<div class="card shadow-nohover">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-3">
+						<div class="col-md-5">
 							<h4>
 								<b>Specification Master List</b>
 							</h4>
+						</div>
+						<div class="col-md-3">
+							<form action=SpecificationMasterExcel.htm method="post"
+								id="excelForm" enctype="multipart/form-data">
+								<div class="row">
+
+									<div class="col-md-12">
+										Download Excel
+										<button class="btn btn-sm" type="submit" name="Action"
+											value="GenerateExcel" formaction="SpecificationMasterExcel.htm"
+											formmethod="post" formnovalidate="formnovalidate">
+											<i class="fa fa-file-excel-o" aria-hidden="true"
+												style="color: green;"></i>
+										</button>
+									</div>
+								</div>
+
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+
+							</form>
 						</div>
 					</div>
 				</div>
@@ -188,7 +209,8 @@ label {
 								<!--<th>Specification Name</th> -->
 								<th>Specification Code</th>
 								<th>Specification Parameter</th>
-								<th>Specification Value</th>
+								<th> Value</th>
+									<th> Unit</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -201,8 +223,8 @@ label {
 										<%-- <td><%=obj[1]%></td> --%>
 										<td><%=obj[5]%></td>
 										<td><%=obj[3]%></td>
-										<td><%=obj[6]%> <%=obj[4] %></td>
-										<%-- <td><%=obj[7]%></td> --%>
+										<td><%=obj[6]%></td>
+										 <td><%=obj[4] %></td> 
 									</tr>
 									<%
 									}

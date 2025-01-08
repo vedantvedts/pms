@@ -27,9 +27,12 @@ import javax.servlet.http.Part;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -196,7 +199,113 @@ public class RequirementsController {
 		return "requirements/SpecificationMasterList";
 
 	}
+	@RequestMapping(value="SpecificationMasterExcel.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public void SpecificationMasterExcel( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside ExcelUpload.htm "+UserId);
+		String project= req.getParameter("project");
+		try(XSSFWorkbook workbook = new XSSFWorkbook()){
+			String action = req.getParameter("Action"); 
+			String initiationId=req.getParameter("initiationid");
+			String projectId=req.getParameter("projectId");//bharath
+			String productTreeMainId=req.getParameter("productTreeMainId");
+			String reqInitiationId=req.getParameter("reqInitiationId");
+			
+			if("GenerateExcel".equalsIgnoreCase(action)) {
+				XSSFSheet sheet =  workbook.createSheet("Specification Master");
+				XSSFRow row=sheet.createRow(0);
 
+				CellStyle unlockedCellStyle = workbook.createCellStyle();
+				unlockedCellStyle.setLocked(true); // Set the cell to be locked
+				unlockedCellStyle.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+				// Create the row
+				unlockedCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); // Set the fill pattern
+				unlockedCellStyle.setBorderTop(BorderStyle.THIN);
+				unlockedCellStyle.setBorderBottom(BorderStyle.THIN);
+				unlockedCellStyle.setBorderLeft(BorderStyle.THIN);
+				unlockedCellStyle.setBorderRight(BorderStyle.THIN);
+				row = sheet.createRow(0); // Assuming this is the header row
+
+				// Create and style cells
+				Cell maincell0 = row.createCell(0);
+				maincell0.setCellValue("SN");
+				maincell0.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(0, 5000);
+
+				Cell maincell1 = row.createCell(1);
+				maincell1.setCellValue("SpecificationCode");
+				maincell1.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(1, 5000);
+
+				Cell maincell2 = row.createCell(2);
+				maincell2.setCellValue("Parameter");
+				maincell2.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(2, 5000);
+
+				Cell maincell3 = row.createCell(3);
+				maincell3.setCellValue("Value");
+				maincell3.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(3, 5000);
+
+				Cell maincell4 = row.createCell(4);
+				maincell4.setCellValue("Unit");
+				maincell4.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(4, 5000);
+				int r=0;
+
+				List<Object[]> SpecificarionMasterList = service.SpecificationMasterList();
+				
+				if(SpecificarionMasterList!=null && SpecificarionMasterList.size()>0 ) {
+				for(Object[]obj:SpecificarionMasterList) {
+					row = sheet.createRow(++r);
+
+					// Determine the color based on a condition
+					CellStyle style = workbook.createCellStyle();
+					if (!obj[14].toString().equalsIgnoreCase("0")) { 
+					    style.setFillForegroundColor(IndexedColors.WHITE.getIndex()); // Green for someCondition
+					} else {
+					    style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex()); // Orange otherwise
+					}
+					style.setFillPattern(FillPatternType.SOLID_FOREGROUND); // Set the fill pattern
+					style.setBorderTop(BorderStyle.THIN);
+					style.setBorderBottom(BorderStyle.THIN);
+					style.setBorderLeft(BorderStyle.THIN);
+					style.setBorderRight(BorderStyle.THIN);
+					// Apply the style to each cell in the row
+					Cell cell0 = row.createCell(0);
+					cell0.setCellValue(String.valueOf(r));
+					cell0.setCellStyle(style);
+
+					Cell cell1 = row.createCell(1);
+					cell1.setCellValue(obj[5] != null ? obj[5].toString() : "-");
+					cell1.setCellStyle(style);
+
+					Cell cell2 = row.createCell(2);
+					cell2.setCellValue(obj[3] != null ? obj[3].toString() : "-");
+					cell2.setCellStyle(style);
+
+					Cell cell3 = row.createCell(3);
+					cell3.setCellValue(obj[6] != null ? obj[6].toString() : "-");
+					cell3.setCellStyle(style);
+
+					Cell cell4 = row.createCell(4);
+					cell4.setCellValue(obj[4] != null ? obj[4].toString() : "-");
+					cell4.setCellStyle(style);
+				
+				}}
+				res.setContentType("application/vnd.ms-excel");
+				res.setHeader("Content-Disposition", "attachment; filename=SpecificationMaster.xls");	
+				workbook.write(res.getOutputStream());
+			}}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+	
+		}
 	@RequestMapping(value = "SpecificationMasterAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String SpecificarionMasterAdd(HttpServletRequest req, HttpServletResponse res, HttpSession ses,
 			RedirectAttributes redir) throws Exception {

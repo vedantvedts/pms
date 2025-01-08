@@ -122,7 +122,7 @@ if(ProjectList!=null){
 		projectIds.add(obj[0].toString());
 	}
 }
-System.out.println(projectIds.toString());
+System.out.println(projectIds.toString()+"----");
 %>
 
 <!-- Modal -->

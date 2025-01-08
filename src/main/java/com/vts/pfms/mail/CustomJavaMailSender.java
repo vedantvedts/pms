@@ -405,9 +405,9 @@ public int sendMessage(String []Email, String subject, String msg)  {
 			Properties properties = System.getProperties();
 			// Setup mail server
 			properties.setProperty("mail.smtp.host", host);
-			//properties.put("mail.smtp.starttls.enable", "true");
+			properties.put("mail.smtp.starttls.enable", "true");
 			// SSL Port
-			properties.put("mail.smtp.port", port);
+			properties.put("mail.smtp.port", mailAuthentication.getPort());
 			// enable authentication
 			properties.put("mail.smtp.auth", "true");
 			// SSL Factory
@@ -419,7 +419,7 @@ public int sendMessage(String []Email, String subject, String msg)  {
 				// override the getPasswordAuthentication
 				// method
 				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(username, password);
+					return new PasswordAuthentication(from, password);
 				}
 			});
 			int mailSendresult = 0;

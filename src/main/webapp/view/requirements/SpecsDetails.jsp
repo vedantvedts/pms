@@ -372,6 +372,7 @@ String projectId = (String)request.getAttribute("projectId");
 String productTreeMainId = (String)request.getAttribute("productTreeMainId");
 String SpecsInitiationId = (String)request.getAttribute("SpecsInitiationId"); 
 String SpecsId = (String)request.getAttribute("SpecsId"); 
+String ParentId = (String)request.getAttribute("ParentId"); 
 String click = (String)request.getAttribute("click"); 
 List<Object[]>RequirementList = (List<Object[]>)request.getAttribute("RequirementList");
 List<Object[]>specsList = (List<Object[]>)request.getAttribute("specsList");
@@ -703,7 +704,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specparam"></p>
 								</div>
 								</div>
-										<hr>
+								<hr>
 								<div class="row">
 									<div class="col-md-2">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Typical Value :</label>
@@ -712,7 +713,25 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specValues"></p>
 								</div>															
 								</div>
-									<hr>
+								<hr>
+								<div class="row">
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Maximum Value :</label>
+								</div>
+								<div class="col-md-8">
+								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="maxval"></p>
+								</div>								
+								</div>
+								<hr>
+								<div class="row">
+								<div class="col-md-2">
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Minimum Value :</label>
+								</div>
+								<div class="col-md-8">
+								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="minval"></p>
+								</div>								
+								</div>
+								<hr>
 								<div class="row">
 									<div class="col-md-2">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Unit :</label>
@@ -956,16 +975,26 @@ var productreelist = [];
 		 }
 		 
 		 if(Data.SpecsUnit!==undefined){
-			 console.log(Data.SpecsUnit)
 			 $('#specUnits').html(Data.SpecsUnit);
 		 }else{
 			 $('#specUnits').html("-");
 		 }
 		 if(Data.SpecValue!==undefined){
-				
 			 $('#specValues').html(Data.SpecValue);
 		 }else{
 			 $('#specValues').html("-");
+		 }
+		 
+		 if(Data.maximumValue!==undefined){
+			 $('#maxval').html(Data.maximumValue);
+		 }else{
+			 $('#maxval').html("-");
+		 }
+		 
+		 if(Data.minimumValue!==undefined){
+			 $('#minval').html(Data.minimumValue);
+		 }else{
+			 $('#minval').html("-");
 		 }
 	var Linkesubsystem = "";
 			
@@ -1039,12 +1068,12 @@ var productreelist = [];
 		 datatype:'json',
 		 success : function(result){
 			 var Data = JSON.parse(result);
-			 
+			
 			 var LinkedRequirements = Data.LinkedRequirement.split(",");
 		     $('#linkedRequirements').val(LinkedRequirements).trigger('change');
 			 /* $('#descriptionadd').val(Data.Description); */
 			 $('#Editor').summernote('code', Data.Description);
-			 console.log(Data.LinkedSubSystem)
+			 console.log(Data.maximumValue)
 			 if(Data.LinkedSubSystem!==undefined){
 			 var LinkedSubSystem = Data.LinkedSubSystem.split(",");
 			 $('#LinkedSub').val(LinkedSubSystem).trigger('change');
@@ -1065,6 +1094,12 @@ var productreelist = [];
 			 }else{
 				 $('#specValue').val("");
 			 }
+			 if(Data.SpecValue!==undefined){
+				 $('#specValue').val(Data.SpecValue);
+			 }else{
+				 $('#specValue').val("");
+			 }
+			 
 			 $('#maximumValue').val(Data.maximumValue)
 			 $('#minimumValue').val(Data.minimumValue)
 			 $('#submitbtn').hide();
@@ -1079,11 +1114,14 @@ var productreelist = [];
 
 	$(document).ready(function() {
 		var value=<%=SpecsId.toString()%>;
+		var ParentId=<%=ParentId.toString()%>;
+		console.log("ParentId-->"+ParentId)
 		var value1='<%=specsList!=null && specsList.size()>0?specsList.get(0)[0]:"0" %>';
 		if(value!==0){
+			$('#btn'+ParentId).click();
 			showDetails(value)
 		}else{
-			$('#btn'+value1).click();
+		$('#btn'+value1).click();
 		console.log("value1--"+value1)
 		}
 	});

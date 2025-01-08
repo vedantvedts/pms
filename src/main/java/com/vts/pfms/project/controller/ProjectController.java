@@ -9852,6 +9852,7 @@ public class ProjectController
 			req.setAttribute("RequirementList", RequirementList);
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));			
 			req.setAttribute("SpecsId", req.getParameter("SpecsId")==null?"0":req.getParameter("SpecsId") );
+			req.setAttribute("ParentId", req.getParameter("ParentId")==null?"0":req.getParameter("ParentId") );
 			List<Object[]> productTreeList = reqService.productTreeListByProjectId(projectId);
 			req.setAttribute("productTreeList", productTreeList);
 			
@@ -9988,6 +9989,7 @@ public class ProjectController
 			redir.addAttribute("productTreeMainId", productTreeMainId);
 			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
 			redir.addAttribute("SpecsId", SpecsId);
+			redir.addAttribute("ParentId", req.getParameter("specParentId"));
 			return "redirect:/SpecificaionDetails.htm";
 			
 		}

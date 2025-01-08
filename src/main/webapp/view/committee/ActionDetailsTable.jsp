@@ -63,7 +63,7 @@ p{
               
  
 @page {             
-          size: 1120px 790px;
+        <% if(labcode.equalsIgnoreCase("ADE")){%> size:790px 1120px ;  <%}else{%>size: 1120px 790px;   <%}%>
           margin-top: 49px;
           margin-left: 39px;
           margin-right: 39px;
@@ -150,7 +150,7 @@ p{
 						</tr>
 					</table>	
 					<br>
-							<table style=" margin-left: 8px; width: 1020px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" margin-left: 8px; <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 						     <thead>
 									
 						     
@@ -263,7 +263,7 @@ p{
 							<th colspan="10" style="text-align: left; font-weight: 700;">Details of procurements items envisaged in the projects along with status</th>
 						</tr>
 					</table>	
-							<table style=" margin-left: 8px; width: 1020px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" margin-left: 8px; <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 										<thead>
 										<tr>
 											<th colspan="11" style="text-align: right;"> <span class="currency" >(In &#8377; Lakhs)</span></th>
@@ -458,7 +458,7 @@ p{
 												<tr><td colspan="8" style="border: 1px solid black;" class="std"  style="text-align: center;">Nil </td></tr>
 											<%} %>
 									</table> 
-							<table style=" margin-left: 8px; width: 1020px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" margin-left: 8px; <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 										<thead>
 											 <tr >
 												 <th class="std" colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
@@ -491,7 +491,7 @@ p{
 						<h1 class="break"></h1>
 						
 											<div align="center" style="text-decoration: underline">Annexure - C</div>		
-					<table style="  width: 1020px; margin-top:5px;font-size: 16px;margin-left:8px; border-collapse: collapse;" >
+					<table style="  <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px;margin-left:8px; border-collapse: collapse;" >
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br>Financial Status presented during the review</th>
 						</tr>
@@ -501,7 +501,7 @@ p{
 					</table>	
 					<%if(Long.parseLong(projectid) >0 && projectFinancialDetails!=null) { %>
 							
-							<table style=" width: 1020px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black;margin-left:8px" >
+							<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black;margin-left:8px" >
 								    <thead>
 								        <tr>
 								           	<td class="std" colspan="2" align="center" style="border:1px solid black;"><b>Head</b></td>
@@ -599,7 +599,7 @@ p{
 							
 					<% }else {  %>
 						
-						<table style=" width: 1020px;font-size: 16px; border-collapse: collapse;margin-left:8px;" >
+						<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ;font-size: 16px; border-collapse: collapse;margin-left:8px;" >
 						<tr >
 							<td colspan="8" style="border: 1px solid black;border-top:0px;font-weight: bold"  align="center">No Data Available</td>
 						</tr>
@@ -609,12 +609,12 @@ p{
 						
 						<h1 class="break"></h1>
 											<div align="center" style="text-decoration: underline">Annexure - D</div>		
-						<table style=" width: 1020px; margin-top:5px;font-size: 16px; border-collapse: collapse; margin-left:8px">
+						<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse; margin-left:8px">
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;">Major milestones to be completed in next 06 months along with the financial outlay.</th>
 						</tr>
 					</table>
-					<table style="margin-top: 5px; margin-bottom: 0px;  width: 1020px; font-size: 16px; border-collapse: collapse;border: 1px solid black;margin-left:8px" >
+					<table style="margin-top: 5px; margin-bottom: 0px;  <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; font-size: 16px; border-collapse: collapse;border: 1px solid black;margin-left:8px" >
 							 <thead>
 									
 								<tr style="font-size:14px; ">
@@ -734,25 +734,25 @@ p{
 						</tbody>				
 					</table>
 					  
-					<%if(actionlist.size()>=0 && !labcode.equalsIgnoreCase("ADE")){ %>
+					<%if(actionlist.size()>=0 && labcode.equalsIgnoreCase("ADE")){ %>
 						<h1 class="break"></h1>	
 					<div align="center">
 				 	<div style="text-align: center ; padding-right: 15px; " ><h3 style="text-decoration: underline;">Annexure - AI</h3></div> 
 						<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEM DETAILS</h2></div>
 					
-						<table style=" width:1020px; margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ;margin-right: 10px;margin-top:10px;">
+						<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ;margin-right: 10px;margin-top:10px;">
 						<tbody>
 							<tr>
 								<th  class="sth" style=" max-width: 40px"> SN </th>
-<!-- 								<th  class="sth" style=" max-width: 210px"> Action Id</th>	
- -->							
- 								<th  class="sth" style=" max-width: 600px"> Item</th>
- 								<th  class="sth" style=" max-width: 210px"> Action Type</th>				
+								<th  class="sth" style=" max-width: 210px"> Action Id</th>	
+								<th  class="sth" style=" max-width: 600px"> Item</th>				
 								<th  class="sth" style=" max-width: 200px"> Responsibility </th>					
 								<th  class="sth" style=" width: 100px"> PDC</th>
 							</tr>
 							
-							<% 	int count =1;
+							<% 	
+							
+							int count =1;
 							  	Iterator actIterator = actionlist.entrySet().iterator();
 								while(actIterator.hasNext()){	
 								Map.Entry mapElement = (Map.Entry)actIterator.next();
@@ -761,7 +761,7 @@ p{
 								%>
 								<tr>
 									<td class="std" style="text-align: center;"> <%=count%></td>
-									<%-- <td  class="std">
+									<td  class="std">
 										
 										<%	int count1=0;
 											for(Object obj[]:values){
@@ -772,24 +772,18 @@ p{
 													<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
 												<%} %>
 										<%} %>
-									</td> --%>
-								
-									<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1] %></td>
-									<td  class="std" style="text-align: center;"> <%= values.get(0)[2]  %></td>
+									</td>
+									
+									<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
 									<td  class="std" >
-								<%	int count2=0;
-									Set<String>labCodes= new HashSet<>();
-										for(Object obj[]:values){
-										if(obj[15]!=null ){
-											labCodes.add(obj[15].toString());	
-										}
-										if(obj[16]!=null ){
-											labCodes.add(obj[16].toString());	
-										}
-											%>
-										
+									<%	int count2=0;
+										for(Object obj[]:values){ %>
+										<%if(obj[13]!=null){ %> <%= obj[13]%>,&nbsp;<%=obj[14] %>
+											<%if(count2>=0 && count2<values.size()-1){ %>
+											,&nbsp;
+											<%} %>
+										<%}else{ %> - <%} %>
 									<%count2++;} %>
-									<%if(labCodes.toString().replace("[", "").replace("]", "") .length()>0){ %><%=labCodes.toString().replace("[", "").replace("]", "")  %> <%}else{ %> - <%} %>
 									</td>                       						
 									<td  class="std"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
 								</tr>				
@@ -801,6 +795,8 @@ p{
 				<%}%>
 					
 					
+					
+					
 					<%} else{%>	
 					
 				<%if(actionlist.size()>=0){ %>
@@ -809,7 +805,7 @@ p{
 				 	<div style="text-align: center ; padding-right: 15px; " ><h3 style="text-decoration: underline;">Annexure - AI</h3></div> 
 						<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEM DETAILS</h2></div>
 					
-						<table style=" width:1020px; margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ;margin-right: 10px;margin-top:10px;">
+						<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ;margin-right: 10px;margin-top:10px;">
 						<tbody>
 							<tr>
 								<th  class="sth" style=" max-width: 40px"> SN </th>

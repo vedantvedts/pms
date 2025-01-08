@@ -695,15 +695,15 @@ public class PFTSController {
 				 Long result=service.addDemandfile(pf);
 					
 					if(result>0) {
-						redir.addAttribute("result","Demand Added Successfully ");
+						redir.addFlashAttribute("result","Demand Added Successfully ");
 					}else {
-						redir.addAttribute("resultfail","Something went worng");
+						redir.addFlashAttribute("resultfail","Something went worng");
 					}
 					
-					redir.addAttribute("projectslist",projectlist);
-					redir.addAttribute("projectid",ProjectId);
-					redir.addAttribute("fileStatusList",service.getFileStatusList(ProjectId));
-					redir.addAttribute("pftsStageList", service.getpftsStageList());
+					redir.addFlashAttribute("projectslist",projectlist);
+					redir.addFlashAttribute("projectid",ProjectId);
+					redir.addFlashAttribute("fileStatusList",service.getFileStatusList(ProjectId));
+					redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
 					return  "redirect:/ProcurementStatus.htm";
 				
 			} catch (Exception e) {

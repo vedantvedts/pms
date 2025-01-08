@@ -63,7 +63,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	
 	private static final String SPECIFICATIONMASTERLIST="SELECT a.SpecsMasterId, a.SpecificationName, \r\n"
 			+ "a.Description, a.SpecsParameter, a.SpecsUnit, a.SpecsInitiationId, a.SpecValue, CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',\r\n"
-			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,a.maximumValue,a.minimumValue,a.specCount FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1' ORDER BY a.MainId,a.specCount";
+			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,a.maximumValue,a.minimumValue,a.specCount FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1' ORDER BY a.MainId,a.specCount,a.SpecsMasterId";
 	@Override
     public List<Object[]> SpecificationMasterList() throws Exception 
     {
@@ -1035,7 +1035,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		
 	}
 	
-	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId,SpecValue,LinkedSubSystem FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
+	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId,SpecValue,LinkedSubSystem,maximumValue,minimumValue FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
 	@Override
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
 		

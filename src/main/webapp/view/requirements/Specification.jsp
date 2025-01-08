@@ -1407,9 +1407,20 @@ function DownloadDocPDF(){
 		    	                            ],
 		    	                            [
 		    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+		    	                                { text: 'Maximum Value', style: 'tableData' },
+		    	                                { text: '<%=obj1[11]!=null?obj1[11]:"-" %>', style: 'tableData' },
+		    	                            ],
+		    	                            [
+		    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+		    	                                { text: 'Minimum Value', style: 'tableData' },
+		    	                                { text: '<%=obj1[12]!=null?obj1[12]:"-" %>', style: 'tableData' },
+		    	                            ],
+		    	                            [
+		    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 		    	                                { text: 'Linked Sub-Systems', style: 'tableData' },
 		    	                                { text: '<%if(obj1[10]!=null) { String [] a=obj1[10].toString().split(","); for(String s:a){ %> <%=productTreeList.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[2].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
 		    	                            ],
+		    	                           
 		    	                        ],
 		    	                    },
 		    	                    layout: {
