@@ -281,7 +281,7 @@ public class DocumentsController {
 			List<Object[]> igiDocumentList = service.getIGIDocumentList();
 			req.setAttribute("igiDocumentList", igiDocumentList);
 			if(igiDocumentList!=null && igiDocumentList.size()>0) {
-				req.setAttribute("igiDocumentSummaryList", service.getDocumentSummaryList(igiDocumentList.get(0)[0].toString(), "A"));
+				req.setAttribute("igiDocumentSummaryList", service.getDocumentSummaryList(igiDocumentList.get(igiDocumentList.size()-1)[0].toString(), "A"));
 			}
 			
 			return "documents/IGIDocumentList";
@@ -1280,7 +1280,7 @@ public class DocumentsController {
 			req.setAttribute("icdDocumentList", icdDocumentList);
 			
 			if(icdDocumentList!=null && icdDocumentList.size()>0) {
-				req.setAttribute("icdDocumentSummaryList", service.getDocumentSummaryList(icdDocumentList.get(0)[0].toString(), "B"));
+				req.setAttribute("icdDocumentSummaryList", service.getDocumentSummaryList(icdDocumentList.get(icdDocumentList.size()-1)[0].toString(), "B"));
 			}
 			
 			return "documents/ICDDocumentList";
