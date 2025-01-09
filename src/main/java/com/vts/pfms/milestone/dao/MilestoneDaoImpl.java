@@ -58,7 +58,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String MAINUPDATE="UPDATE milestone_activity SET activityname=:name,Weightage=:Weightage,activitytype=:type,oicempid=:empid,oicempid1=:empid1,startdate=:from,enddate=:to,orgstartdate=:orgfrom,orgenddate=:orgto,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
 	private static final String MILEACTIVITYLEVELEDIT="UPDATE milestone_activity_level SET activityname=:name,startdate=:from,enddate=:to,Weightage=:Weightage ,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE activityid=:id";
 	private static final String ACTIVITYLEVELFULLEDIT="UPDATE milestone_activity_level SET activityname=:name,Weightage=:Weightage,activitytype=:type,oicempid=:empid,oicempid1=:empid1,startdate=:from,enddate=:to,orgstartdate=:orgfrom,orgenddate=:orgto,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE activityid=:id";
-	private static final String MILEACTIVITYUPDATE="UPDATE milestone_activity SET startdate=:from,enddate=:to,Weightage=:Weightage,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
+	private static final String MILEACTIVITYUPDATE="UPDATE milestone_activity  SET activityname=:name, startdate=:from,enddate=:to,Weightage=:Weightage,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
 	private static final String MILEACTIVITYAUPDATE="UPDATE milestone_activity_a SET startdate=:from,enddate=:to,Weightage=:Weightage ,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE activityaid=:id";
 	private static final String MILEACTIVITYBUPDATE="UPDATE milestone_activity_b SET startdate=:from,enddate=:to,Weightage=:Weightage,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE activitybid=:id";
 	private static final String MILEACTIVITYCUPDATE="UPDATE milestone_activity_c SET startdate=:from,enddate=:to,Weightage=:Weightage,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE activitycid=:id";
@@ -352,6 +352,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		query.setParameter("Weightage",dto.getWeightage());
 		query.setParameter("modifiedby",dto.getCreatedBy());
 		query.setParameter("modifieddate",dto.getCreatedDate());
+		query.setParameter("name",dto.getActivityName());
 		int result=query.executeUpdate();
 		return result;
 	}

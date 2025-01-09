@@ -328,6 +328,10 @@ public class MilestoneServiceImpl implements MilestoneService {
 		Date tdate = fc.getRegularDateFormat().parse(dto.getEndDate());
 		dto.setEndDate(fc.getSqlDateFormat().format(tdate));
 		dto.setStartDate(fc.getSqlDateFormat().format(fdate));
+		
+		
+		System.out.println("dto.getRevisionNo()--"+dto.getRevisionNo());
+		System.out.println("dto.getActivityType()--"+dto.getActivityType());
 		if("0".equalsIgnoreCase(dto.getRevisionNo())&&"M".equalsIgnoreCase(dto.getActivityType())) {
 			result=dao.MilestoneActivityMainUpdate(dto);
 		}

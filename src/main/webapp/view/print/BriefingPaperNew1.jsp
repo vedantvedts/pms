@@ -46,6 +46,11 @@
 Committee committee=(Committee)request.getAttribute("committeeData");
 String isprint=(String)request.getAttribute("isprint"); 
 List<Object[]> projectattributes = (List<Object[]> )request.getAttribute("projectattributes");
+String ProjectCode="";
+for(int i=0;i<projectattributes.size();i++){
+	ProjectCode = ProjectCode +projectattributes.get(i)[0].toString()  ;
+	if(i!=projectattributes.size()-1)ProjectCode=ProjectCode+"/";
+}
 List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
 String lablogo=(String)request.getAttribute("lablogo");
 LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
@@ -151,7 +156,7 @@ th, td
           }   --%>     
           
             @top-left {
-	          content: "Project: <%= projectattributes.get(0)[0] %>"; 
+	          content: "Project: <%=ProjectCode%>"; 
 			  margin-top: 30px;
               margin-left: 50px;
              
@@ -435,7 +440,15 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 		
 			<div align="center" ><h2 <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="color: #4C9100 !important;"<%}else{ %> style="color: #145374 !important" <%} %>><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2></div>
 		
-			<div align="center" ><h2 <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="color: #4C9100 !important;"<%}else{ %> style="color: #145374 !important" <%} %>><%= projectattributes.get(0)[1] %> (<%= projectattributes.get(0)[0] %>)</h2></div>
+			<div align="center" ><h2 <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="color: #4C9100 !important;"<%}else{ %> style="color: #145374 !important" <%} %>><%= projectattributes.get(0)[1] %> (<%= projectattributes.get(0)[0] %>)
+			
+			<%if(projectattributes.size()>1) {
+						for(int item=1;item<projectattributes.size();item++){
+						%>
+						 <br>
+						<span style="font-size: 1rem;"><%= projectattributes.get(item)[1] %> (<%= projectattributes.get(item)[0] %>) (SUB)</span>
+						 <%}} %>
+			</h2></div>
 		
 		
 			<table class="executive" style="align: center;margin-left: auto;margin-right:auto;  font-size: 16px;"  >

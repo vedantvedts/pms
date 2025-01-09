@@ -18,7 +18,8 @@ overflow-x: hidden;
 </style>
 
 </head>
-<%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+<%
+SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 Object[] getMA=(Object[])request.getAttribute("MilestoneActivity");
 int RevisionCount=(Integer) request.getAttribute("RevisionCount");
 List<Object[]> ActivityTypeList=(List<Object[]>)request.getAttribute("ActivityTypeList");
@@ -135,7 +136,7 @@ var s = '';
                         	</div>
                     		<div class="col-md-5 " ><br>
                     		<label class="control-label"> Activity Name:</label> <br> 
-                    		 <textarea rows="1" cols="50" class="form-control "  <%if(RevisionCount>0){ %> readonly="readonly" <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=getMA[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control "  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=getMA[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -252,7 +253,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     		
                         	</div>
 						  <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %> readonly="readonly" <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityA[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityA[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -410,7 +411,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                     		
                         	</div>
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %> readonly="readonly" <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityB[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityB[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -568,7 +569,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	</div>
                         	
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %> readonly="readonly" <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityC[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityC[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -717,7 +718,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                     		
                         	</div>
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %> readonly="readonly" <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityD[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityD[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -871,7 +872,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         	</div>
                         	
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %> readonly="readonly" <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityE[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityE[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>

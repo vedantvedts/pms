@@ -104,7 +104,13 @@
 	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 
-	String ProjectCode=projectattributeslist.get(0)[0].toString();
+	
+	String ProjectCode="";
+		for(int i=0;i<projectattributeslist.size();i++){
+			ProjectCode = ProjectCode +projectattributeslist.get(i)[0].toString()  ;
+			if(i!=projectattributeslist.size()-1)ProjectCode=ProjectCode+"/";
+		}
+	
 	String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 	LocalDate before6months = LocalDate.now().minusMonths(6);
 	if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
@@ -136,7 +142,14 @@
 							<h3 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h3>
 				   		</div>
 						
-						<div align="center" ><h3 style="color: #4C9100 !important"><%= projectattributeslist.get(0)[1] %> (<%= projectattributeslist.get(0)[0] %>)</h3></div>
+						<div align="center" ><h3 style="color: #4C9100 !important"><%= projectattributeslist.get(0)[1] %> (<%= projectattributeslist.get(0)[0] %>)
+						<%if(projectattributeslist.size()>1) {
+						for(int item=1;item<projectattributeslist.size();item++){
+						%>
+						 <br>
+						<span style="font-size: 1rem;"><%= projectattributeslist.get(item)[1] %> (<%= projectattributeslist.get(item)[0] %>) (SUB)</span>
+						 <%}} %>
+						</h3></div>
 						
 							<table class="executive home-table" style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
 								<tr>			
