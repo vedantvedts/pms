@@ -540,7 +540,6 @@ if(proList!=null && proList.size()>0){
                   <p style="color: black;"><div style="color: red;font-weight: 600">To Upload it Please Enter in the Project Slide..</div> </p>
                   <%} %>
             </div>
-            
             <!-- Brief -->
              <div class="attribute">
                 <h5 style="font-weight: bold;">Introduction</h5>

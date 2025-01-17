@@ -226,17 +226,18 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
 							<input type="text" class="form-control" name="specUnit" id="specUnit" required="required" value="<%=sp.getSpecsUnit()!=null?sp.getSpecsUnit():"" %>">
 							</div>
 							<div class="">
-							<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Typical Value: <span class="mandatory" style="color: red;">*</span></label>
-							</div>
-							<div class="col-md-1">
-							<input type="text" class="form-control" name="specValue" id="specValue" required="required" value="<%=sp.getSpecValue()!=null?sp.getSpecValue():"" %>">
-							</div>
-							<div class="">
 							<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Min Value: </label>
 							</div>
 							<div class="col-md-1">
 							<input type="text" class="form-control" name="minValue" id="minValue"  value="<%=sp.getMinimumValue()!=null?sp.getMinimumValue():"" %>">
 							</div>
+							<div class="">
+							<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Typical Value: <span class="mandatory" style="color: red;">*</span></label>
+							</div>
+							<div class="col-md-1">
+							<input type="text" class="form-control" name="specValue" id="specValue" required="required" value="<%=sp.getSpecValue()!=null?sp.getSpecValue():"" %>">
+							</div>
+							
 							<div class="">
 							<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Max Value:</label>
 							</div>
@@ -253,9 +254,10 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
 							<th>SN</th>
 							<th style="text-align:center;width:20%;">Parameter</th>
 							<th style="text-align:center;">Unit</th>
+							<th style="text-align:center;">Min Value</th>
 							<th style="text-align:center;">Typical Value &nbsp;/&nbsp;Value</th>
 							<th style="text-align:center;">Max Value</th>
-							<th style="text-align:center;">Min Value</th>
+						
 							<th style="text-align:center;width:30%;">Description</th>
 							<th>Action</th>
 							</tr>
@@ -267,10 +269,11 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
 							<td><%=count%>.</td>
 							<td><input type="text" class="form-control specParameter" name="specParameter_<%=count %>" required="required" value="<%=obj[3]!=null?obj[3].toString():"" %>"></td>
 							<td><input type="text" class="form-control specUnit" name="specUnit_<%=count %>" required="required" value="<%=obj[4]!=null?obj[4].toString():"" %>"></td>
+														<td><input type="text" class="form-control minValue" name="minValue_<%=count %>" required="required" value="<%=obj[16]!=null?obj[16].toString():"" %>"></td>
 							<td><input type="text" class="form-control specValue" name="specValue_<%=count %>" required="required" value="<%=obj[6]!=null?obj[6].toString():"" %>">
 							</td>
 							<td><input type="text" class="form-control maxValue" name="maxValue_<%=count %>" required="required" value="<%=obj[15]!=null?obj[15].toString():"" %>"></td>
-							<td><input type="text" class="form-control minValue" name="minValue_<%=count %>" required="required" value="<%=obj[16]!=null?obj[16].toString():"" %>"></td>
+
 							<td>
 							<textarea class="form-control description" name="description_<%=count %>" required="required"><%=obj[2].toString() %></textarea></td>
 							<td>
@@ -285,9 +288,10 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
 							<td style="text-align:center;"><%=count %>.<%=subrowCount %></td>
 							<td><input type="text" class="form-control specParameter" name="<%=count %>_specParameter" required="required" value="<%=obj1[3]!=null?obj1[3].toString():"" %>"></td>
 							<td><input type="text" class="form-control specUnit" name="<%=count %>_specUnit" required="required" value="<%=obj1[4]!=null?obj1[4].toString():"" %>"></td>
+														<td><input type="text" class="form-control minValue" name="<%=count %>_minValue" required="required" value="<%=obj1[16]!=null? obj1[16].toString():"" %>"></td>
 							<td><input type="text" class="form-control specValue" name="<%=count %>_specValue" required="required" value="<%=obj1[6]!=null?obj1[6].toString():"" %>"></td>
 							<td><input type="text" class="form-control maxValue" name="<%=count %>_maxValue" required="required" value="<%=obj1[15]!=null?obj1[15].toString():"" %>"></td>
-							<td><input type="text" class="form-control minValue" name="<%=count %>_minValue" required="required" value="<%=obj1[16]!=null? obj1[16].toString():"" %>"></td>
+
 							<td><textarea type="text" class="form-control decription" name="<%=count %>_description" required="required"><%=obj1[2]!=null? obj1[2].toString():"" %></textarea></td>
 							<td>
 							<button type="button" class="btn btn-sm remove-sub-row" data-parent="<%=count %>"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button>
@@ -481,9 +485,10 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
                     '<td >' + rowNumber + '.</td>' +
                     '<td><input type="text" class="form-control specParameter" name="specParameter_'+rowNumber+'" required="required"></td>' +
                     '<td><input type="text" class="form-control specUnit" name="specUnit_'+rowNumber+'" required="required"></td>' +
+                    '<td><input type="text" class="form-control minValue" name="minValue_'+rowNumber+'" required="required"></td>' +
                     '<td><input type="text" class="form-control specValue" name="specValue_'+rowNumber+'" required="required"></td>' +
                     '<td><input type="text" class="form-control maxValue" name="maxValue_'+rowNumber+'" required="required"></td>' +
-                    '<td><input type="text" class="form-control minValue" name="minValue_'+rowNumber+'" required="required"></td>' +
+
                     '<td><textarea type="text" class="form-control description" name="description_'+rowNumber+'" required="required"></textarea></td>' +
                     '<td>' +
                     '<button type="button" class="btn btn-sm add-sub-row" data-row="' + rowNumber + '">' +
@@ -519,9 +524,10 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
 		            '<td style="text-align:center;">' + mainRow + '.' + subRowCount + '</td>' +
 		            '<td><input type="text" class="form-control specParameter" name="'+mainRow+'_specParameter" required="required"></td>' +
 		            '<td><input type="text" class="form-control specUnit" name="'+mainRow+'_specUnit" required="required"></td>' +
+		            '<td><input type="text" class="form-control minValue" name="'+mainRow+'_minValue" required="required"></td>' +
 		            '<td><input type="text" class="form-control specValue" name="'+mainRow+'_specValue" required="required"></td>' +
 		            '<td><input type="text" class="form-control maxValue" name="'+mainRow+'_maxValue" required="required"></td>' +
-		            '<td><input type="text" class="form-control minValue" name="'+mainRow+'_minValue" required="required"></td>' +
+
 		            '<td><textarea type="text" class="form-control decription" name="'+mainRow+'_description" required="required"></textarea></td>' +
 		            '<td>' +
 		            '<button type="button" class="btn btn-sm remove-sub-row" data-parent="' + mainRow + '">' +

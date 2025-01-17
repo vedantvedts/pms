@@ -353,11 +353,11 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         XWPFParagraph projectName = document.createParagraph();
 
         
-        XWPFRun projectNameHeadingRun = projectName.createRun();
-        projectNameHeadingRun.setText("Project Name:");
-        projectNameHeadingRun.setBold(true);
-        projectNameHeadingRun.setColor("0000FF");  
-        projectNameHeadingRun.setFontSize(12);
+//        XWPFRun projectNameHeadingRun = projectName.createRun();
+//        projectNameHeadingRun.setText("Project Name:");
+//        projectNameHeadingRun.setBold(true);
+//        projectNameHeadingRun.setColor("0000FF");  
+//        projectNameHeadingRun.setFontSize(12);
 
         
         XWPFRun projectNameValueRun = projectName.createRun();
@@ -366,9 +366,9 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
             : "-";
         projectNameValueRun.setText(" " + projectNames); 
         projectNameValueRun.setBold(false);
-        projectNameValueRun.setFontSize(14);
+        projectNameValueRun.setFontSize(12);
         projectNameValueRun.setBold(true);
-        projectNameValueRun.setColor("964B00");  
+        projectNameValueRun.setColor("000080");
         projectNameValueRun.addBreak();
    if(projectattribute[18]!=null) {
      Path imgfile = Paths.get(env.getProperty("ApplicationFilesDrive"),LabCode, "ProjectSlide", projectattribute[18].toString());
@@ -438,7 +438,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         String PrjCost = projectattribute[6] != null && !projectattribute[6].toString().trim().isEmpty() 
             ? projectattribute[6].toString() 
             : "-";
-        costValueRun.setText(" " + PrjCost+"(in Lakhs)"); 
+        costValueRun.setText( PrjCost+"(in Lakhs)"); 
         costValueRun.setBold(false);
         costValueRun.setFontSize(12);
         
@@ -470,7 +470,7 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 
         
         XWPFRun Prjscopes = scope.createRun();
-        Prjscopes.setText("Scope:");
+        Prjscopes.setText("Scope / Objective:");
         Prjscopes.setBold(true);
         Prjscopes.setColor("0000FF");  
         Prjscopes.setFontSize(12);
@@ -485,23 +485,23 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         ScopeValueRun.setFontSize(12);
         
         //objective
- XWPFParagraph objective = document.createParagraph();
-
-        
-        XWPFRun objectives = objective.createRun();
-        objectives.setText("Objective:");
-        objectives.setBold(true);
-        objectives.setColor("0000FF");  
-        objectives.setFontSize(12);
-
-        
-        XWPFRun objectivesValueRun = objective.createRun();
-        String prjobjective = projectattribute[9] != null && !projectattribute[9].toString().trim().isEmpty() 
-            ? projectattribute[9].toString() 
-            : "-";
-        objectivesValueRun.setText(" " + prjobjective); 
-        objectivesValueRun.setBold(false);
-        objectivesValueRun.setFontSize(12);
+// XWPFParagraph objective = document.createParagraph();
+//
+//        
+//        XWPFRun objectives = objective.createRun();
+//        objectives.setText("Objective:");
+//        objectives.setBold(true);
+//        objectives.setColor("0000FF");  
+//        objectives.setFontSize(12);
+//
+//        
+//        XWPFRun objectivesValueRun = objective.createRun();
+//        String prjobjective = projectattribute[9] != null && !projectattribute[9].toString().trim().isEmpty() 
+//            ? projectattribute[9].toString() 
+//            : "-";
+//        objectivesValueRun.setText(" " + prjobjective); 
+//        objectivesValueRun.setBold(false);
+//        objectivesValueRun.setFontSize(12);
         
         
         //details of review held
@@ -509,7 +509,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
 
         
         XWPFRun reviewHelds = reviewHeld.createRun();
-        reviewHelds.setText("Details of Review till "+(currentYear)+":");
+        reviewHelds.setText("Details of Review till "+(currentYear-1)+":");
         reviewHelds.setBold(true);
         reviewHelds.setColor("0000FF");  
         reviewHelds.setFontSize(12);
@@ -546,10 +546,11 @@ XWPFParagraph reviewHeld = document.createParagraph();
         if(milestoneData!=null && milestoneData.size()>0){
         if(LabReportMilestoneData!=null && LabReportMilestoneData.size()>0) {
         List<PfmsLabReportMilestone>NextYearData  = LabReportMilestoneData.stream().filter(e->e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("N")).collect(Collectors.toList());
+        System.out.println("NextYearData--->"+NextYearData.size());
         for(PfmsLabReportMilestone pm: NextYearData) {
         XWPFParagraph mileParagraph1 = document.createParagraph();
         XWPFRun mileParagraphs1 = mileParagraph1.createRun();
-        mileParagraphs1.setText((++count)+". "+pm.getActivityName());
+       // mileParagraphs1.setText((++count)+". "+pm.getActivityName());
         
         String activityName =(pm.getActivityName()!= null&&!pm.getActivityName().toString().trim().isEmpty())?pm.getActivityName().toString().replaceAll("<[^>]*>", System.lineSeparator()).trim() : "-";
         // Split the activityName into lines
@@ -560,10 +561,15 @@ XWPFParagraph reviewHeld = document.createParagraph();
            for (int j = 1; j < lines.length; j++) {
                mileParagraphs1.addBreak(); // Add a line break
                mileParagraphs1.setText(lines[j]); // Add the next line
+               mileParagraphs1.setFontSize(12);
            }
           // mileParagraphs1.addBreak();
           
-        }}}
+        }}}else {
+       	   XWPFParagraph mileParagraph1 = document.createParagraph();
+           XWPFRun mileParagraphs1 = mileParagraph1.createRun();
+           mileParagraphs1.setText("-");
+    }
         
         XWPFParagraph mileParagraph2 = document.createParagraph();
         XWPFRun mileParagraphs2 = mileParagraph2.createRun();
@@ -589,6 +595,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
          for (int j = 1; j < lines.length; j++) {
              mileParagraphs1.addBreak(); // Add a line break
              mileParagraphs1.setText(lines[j]); // Add the next line
+             mileParagraphs1.setFontSize(12);
          }
         // mileParagraphs1.addBreak();
         }
@@ -603,7 +610,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
         attributesRun2.setText("Likely Spin-Off including application for Civil use (if any)");
         attributesRun2.setBold(true); // Set the subheading text to bold
         attributesRun2.setColor("0000FF");// Set the text color to blue (hexadecimal color code)
-        attributesRun2.setFontSize(14);
+        attributesRun2.setFontSize(12);
         //attributesRun.setUnderline(UnderlinePatterns.SINGLE); // Set the underline style
         attributesRun2.addBreak(); // Add a line break after the subheading
         
@@ -613,6 +620,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
             ? editorData[2].toString().replaceAll("<[^>]*>", "").trim() // Inline regex to strip HTML tags
             : "-";
         spinoffDataRun.setText(spinoffData); 
+        spinoffDataRun.setFontSize(12); 
         spinoffDataRun.addBreak(); // Add a line break after the project name
 
         XWPFParagraph details = document.createParagraph();
@@ -620,7 +628,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
         attributesRun3.setText("Details of LSI/DCPP/PA (If Nominated)");
         attributesRun3.setBold(true); // Set the subheading text to bold
         attributesRun3.setColor("0000FF");// Set the text color to blue (hexadecimal color code)
-        attributesRun3.setFontSize(14);
+        attributesRun3.setFontSize(12);
         //attributesRun.setUnderline(UnderlinePatterns.SINGLE); // Set the underline style
         attributesRun3.addBreak(); // Add a line break after the subheading
         
@@ -673,6 +681,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
                    XWPFRun detailsDataRun = details.createRun();
                    String detailsData = htmlContent.replaceAll("<[^>]*>", "").trim(); // Strip unwanted characters
                    detailsDataRun.setText(detailsData);
+                   detailsDataRun.setFontSize(12);
                    detailsDataRun.addBreak();
                }
            } else {

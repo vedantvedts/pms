@@ -208,9 +208,11 @@ label {
 								<th style="width:5%;">SN</th>
 								<!--<th>Specification Name</th> -->
 								<th>Specification Code</th>
-								<th>Specification Parameter</th>
+								<th>Parameter</th>
+								<th>Minimum Value</th>
 								<th> Value</th>
-									<th> Unit</th>
+								<th>Maximum Value</th>
+								<th> Unit</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -223,7 +225,9 @@ label {
 										<%-- <td><%=obj[1]%></td> --%>
 										<td><%=obj[5]%></td>
 										<td><%=obj[3]%></td>
+										<td><%=obj[16]%></td>
 										<td><%=obj[6]%></td>
+										<td><%=obj[15]%></td>
 										 <td><%=obj[4] %></td> 
 									</tr>
 									<%
