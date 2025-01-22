@@ -1,8 +1,9 @@
+<%@page import="java.util.function.Function"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
+<%@page import="com.vts.pfms.documents.model.PfmsIRSDocument"%>
 <%@page import="com.vts.pfms.documents.model.PfmsApplicableDocs"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterface"%>
-<%@page import="com.vts.pfms.documents.model.PfmsIGIDocument"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentShortCodes"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -13,7 +14,6 @@
 <html>
 <head>
     <meta charset="ISO-8859-1">
-    <title>PMS</title>
     <jsp:include page="../static/header.jsp"></jsp:include>
     
     <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
@@ -150,60 +150,66 @@
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; /* Enable vertical scrolling */
 }
-
-
 </style>    
 
 </head>
 <body>
 
 	<%
-		List<Object[]> igiDocumentSummaryList = (List<Object[]>)request.getAttribute("igiDocumentSummaryList");
+		List<Object[]> irsDocumentSummaryList = (List<Object[]>)request.getAttribute("irsDocumentSummaryList");
 		Object[] documentSummary=null;
-		if(igiDocumentSummaryList!=null && igiDocumentSummaryList.size()>0){
-			documentSummary=igiDocumentSummaryList.get(0);
+		if(irsDocumentSummaryList!=null && irsDocumentSummaryList.size()>0){
+			documentSummary=irsDocumentSummaryList.get(0);
 		}
-		String igiDocId =(String)request.getAttribute("igiDocId");
+		String irsDocId =(String)request.getAttribute("irsDocId");
 		List<Object[]> totalEmployeeList = (List<Object[]>)request.getAttribute("totalEmployeeList");
 		
 		List<Object[]> memberList = (List<Object[]>)request.getAttribute("memberList");
 		List<Object[]> employeeList = (List<Object[]>)request.getAttribute("employeeList");
+		
+		List<IGIDocumentShortCodes> shortCodesList = (List<IGIDocumentShortCodes>)request.getAttribute("shortCodesList");
+		List<IGIDocumentShortCodes> abbreviationsList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase("A")).collect(Collectors.toList());
+		List<IGIDocumentShortCodes> acronymsList = shortCodesList.stream().filter(e -> e.getShortCodeType().equalsIgnoreCase("B")).collect(Collectors.toList());
 		
 		List<Object[]> shortCodesLinkedList = (List<Object[]>)request.getAttribute("shortCodesLinkedList");
 		List<Object[]> abbreviationsLinkedList = shortCodesLinkedList.stream().filter(e -> e[3].toString().equalsIgnoreCase("A")).collect(Collectors.toList());
 		List<Object[]> acronymsLinkedList = shortCodesLinkedList.stream().filter(e -> e[3].toString().equalsIgnoreCase("B")).collect(Collectors.toList());
 		
 		List<PfmsApplicableDocs> applicableDocsList = (List<PfmsApplicableDocs>)request.getAttribute("applicableDocsList");
-		List<Object[]> igiApplicableDocsList = (List<Object[]>)request.getAttribute("igiApplicableDocsList");
-		List<Long> igiApplicableDocIds = igiApplicableDocsList.stream().map(e -> Long.parseLong(e[1].toString())).collect(Collectors.toList());
-		List<String> igiApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
+		List<Object[]> irsApplicableDocsList = (List<Object[]>)request.getAttribute("irsApplicableDocsList");
+		List<Long> irsApplicableDocIds = irsApplicableDocsList.stream().map(e -> Long.parseLong(e[1].toString())).collect(Collectors.toList());
+		applicableDocsList = applicableDocsList.stream().filter(e -> !irsApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
+		List<String> irsApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
 
-		applicableDocsList = applicableDocsList.stream().filter(e -> !igiApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
-		
-		PfmsIGIDocument igiDocument = (PfmsIGIDocument)request.getAttribute("igiDocument");
+		PfmsIRSDocument irsDocument = (PfmsIRSDocument)request.getAttribute("irsDocument");
 		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
 		
-		List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
+		Map<String, IGIInterface> interfaceListToMap = igiInterfaceList.stream()
+			    	.collect(Collectors.toMap(IGIInterface::getInterfaceCode, Function.identity(), (existing, replacement) -> existing ));
+
+		//List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
 		//List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
 		//List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
-		List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
+		//List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
 				
+		Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 		Object[] labDetails = (Object[])request.getAttribute("labDetails");
 		Object[] docTempAtrr = (Object[])request.getAttribute("docTempAttributes");
 		String lablogo = (String)request.getAttribute("lablogo");
 		String drdologo = (String)request.getAttribute("drdologo");
 		String version =(String)request.getAttribute("version");
+		String projectType =(String)request.getAttribute("projectType");
 		String isPdf = (String)request.getAttribute("isPdf");
+		String projectShortName = (projectDetails!=null && projectDetails[2]!=null)?projectDetails[2]+"":"";
 		
 		LocalDate now = LocalDate.now();
 		FormatConverter fc = new FormatConverter();
 		
 		Gson gson = new GsonBuilder().create();
-		String jsonigiApplicableDocNames = gson.toJson(igiApplicableDocNames);
+		String jsonirsApplicableDocNames = gson.toJson(irsApplicableDocNames);
 		
-		String documentNo = "IGI-" + (documentSummary!=null && documentSummary[11]!=null?documentSummary[11].toString().replaceAll("-", ""):"-") 
-							+ "-" + ((String)session.getAttribute("labcode")) + "-V"+version;
-
+		String documentNo = "IRS-" + (documentSummary!=null && documentSummary[11]!=null?documentSummary[11].toString().replaceAll("-", ""):"-") 
+							+ "-" + ((String)session.getAttribute("labcode")) + "-" +((projectDetails!=null && projectDetails[1]!=null)?projectDetails[1]:"") + "-V"+version;
 	%>
 
     <% String ses = (String) request.getParameter("result"); 
@@ -229,11 +235,19 @@
             	<div class="row">
                		<div class="col-md-10" id="projecthead" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                        IGI Document Details - <%=documentNo %>
+	                        IRS Document Details - <%=documentNo %>
 	                    </h5>
                 	</div>
                     <div class="col-md-2" align="right">
-                        <a class="btn btn-info btn-sm shadow-nohover back" style="position:relative;" href="IGIDocumentList.htm">Back</a>
+                        <form action="IRSDocumentList.htm" method="get">
+                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		        			<input type="hidden" name="projectId" value="<%=irsDocument.getProjectId() %>" />
+		        			<input type="hidden" name="initiationId" value="<%=irsDocument.getInitiationId() %>" />
+		        			<input type="hidden" name="projectType" value="<%=irsDocument.getProjectId()!=0?"M":"I" %>" />
+		        			<button class="btn btn-info btn-sm shadow-nohover back">
+		        				Back
+		        			</button>
+                		</form>
                     </div>
             	</div>
         	</div>
@@ -248,7 +262,7 @@
 				
 											<div class="card module" onclick="DownloadDocPDF()">
 												<div class="card-body">
-													<div><img alt="" src="view/images/pdf.png" > <span class="topic-name">IGI Document</span></div>
+													<div><img alt="" src="view/images/pdf.png" > <span class="topic-name">IRS Document</span></div>
 												</div>
 											</div>
 											
@@ -282,7 +296,7 @@
 												</div>
 											</div>
 											
-											<div class="card module" onclick="showApplicableDocuments()">
+											<div class="card module" onclick="showApplicableDocuments()" >
 												<div class="card-body">
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 2 : Applicable Docs</span></div>
 												</div>
@@ -290,7 +304,7 @@
 											
 											<div class="card module" onclick="showChapter3()">
 												<div class="card-body">
-													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 3 : Interfaces</span></div>
+													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 3 : Specifications</span></div>
 												</div>
 											</div>
 											
@@ -310,14 +324,14 @@
 										<td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td>
 									</tr>
 									<tr>
-										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Title: <span class="text-dark">Interface General Information (IGI)</span></td>
+										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Title: <span class="text-dark">Interface Requirement Specification (IRS)</span></td>
 									</tr>
 									<tr >
-										<td class="text-primary"><%=++docsumslno %>.&nbsp; Type of Document: <span class="text-dark">Interface General Information (IGI) Document</span></td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Type of Document:<span class="text-dark">Interface Requirement Specification (IRS) Document</span></td>
 										<td class="text-primary"><%=++docsumslno %>.&nbsp; Classification: <span class="text-dark">Restricted</span></td>
 									</tr>
 								    <tr >
-										<td class="text-primary"><%=++docsumslno %>.&nbsp; Document Number: <span class="text-dark"><%=documentNo %></span></td>
+										<td class="text-primary"><%=++docsumslno %>.&nbsp; Document Number: <span class="text-dark"><%=documentNo %></span> </td>
 										<td class="text-primary"><%=++docsumslno %>.&nbsp; Month Year: <span style="color:black;"><%=now.getMonth().toString().substring(0,3) %>&nbsp;&nbsp;<%=now.getYear() %></span></td>
 									</tr>
 									<!-- <tr>
@@ -392,22 +406,23 @@
        		</div>		
 		</div>
     </div>
-	
+
 	<form action="#">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-		<input type="hidden" name="igiDocId" value="<%=igiDocId%>"> 
-		<input type="hidden" name="docId" value="<%=igiDocId%>"> 
+		<input type="hidden" name="irsDocId" value="<%=irsDocId%>"> 
+		<input type="hidden" name="docId" value="<%=irsDocId%>"> 
 		<input type="hidden" name="documentNo" value="<%=documentNo%>"> 
-		<input type="hidden" name="docType" value="A"> 
+		<input type="hidden" name="projectType" value="<%=projectType%>"> 
+		<input type="hidden" name="projectId" value="<%=(projectDetails!=null && projectDetails[0]!=null)?projectDetails[0]:"0"%>"> 
+		<input type="hidden" name="docType" value="C"> 
 		<input type="hidden" name="shortCodeType" id="shortCodeType"> 
 	
 		<button type="submit" id="shortCodesFormBtn" formaction="IGIShortCodesDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
 	
 		<button type="submit" id="applicableDocumentsFormBtn" formaction="IGIApplicableDocumentsDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
 		
-		<button type="submit" id="interfaceFormBtn" formaction="IGIInterfacesList.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
+		<button type="submit" id="specificationsFormBtn" formaction="IRSSpecificationsDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
 	</form>
-
 	<!-- -------------------------------------------- Document Distribution Modal -------------------------------------------- -->
 	<div class="modal fade" id="distributionModal" tabindex="-1" role="dialog" aria-labelledby="distributionModal" aria-hidden="true">
   		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
@@ -446,9 +461,9 @@
 												        </button>
 												        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 												        <input type="hidden" name="IgiMemeberId" value="<%= obj[5] %>">
-												        <input type="hidden" name="igiDocId" value="<%= igiDocId %>">
-												        <input type="hidden" name="docId" value="<%=igiDocId%>">	 
-														<input type="hidden" name="docType" value="A">	
+												        <input type="hidden" name="irsDocId" value="<%=irsDocId %>">
+												        <input type="hidden" name="docId" value="<%=irsDocId%>">	 
+														<input type="hidden" name="docType" value="C">	
 												    </form>
 												</td>
 
@@ -474,9 +489,9 @@
 					      		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								<input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
 		
-								<input type="hidden" name="igiDocId" value="<%=igiDocId%>">	 
-								<input type="hidden" name="docId" value="<%=igiDocId%>">	 
-								<input type="hidden" name="docType" value="A">	 
+								<input type="hidden" name="irsDocId" value="<%=irsDocId%>">	 
+								<input type="hidden" name="docId" value="<%=irsDocId%>">	 
+								<input type="hidden" name="docType" value="C">	 
 					    		<button type="submit" class="btn btn-sm submit" onclick="return confirm ('Are you sure to submit?')"> SUBMIT</button>
 					      	</div>
       					</div>
@@ -492,7 +507,7 @@
     	<div class="modal-dialog modal-lg modal-dialog-jump">
         	<div class="modal-content" style="width:150%;margin-left: -20%">
 	            <div class="modal-header" style="background: #055C9D;color:white;">
-	                <h5 class="modal-title" id="SummaryModalLabel">IGI Document Summary</h5>
+	                <h5 class="modal-title" id="SummaryModalLabel">IRS Document Summary</h5>
 	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                    <span class="text-light" aria-hidden="true">&times;</span>
 	                </button>
@@ -599,16 +614,16 @@
 	   					</div>
    						
 	   					<div class="mt-2" align="center">
-	  						<%if(igiDocumentSummaryList!=null && igiDocumentSummaryList.size()>0) {%>
+	  						<%if(irsDocumentSummaryList!=null && irsDocumentSummaryList.size()>0) {%>
 	  							<button class="btn btn-sm edit" name="action" value="Edit" onclick="return confirm ('Are you sure to submit?')">UPDATE</button>
 	  							<input type="hidden" name="summaryId" value="<%=documentSummary[0]%>"> 
 	  						<%}else{ %>
 	  							<button class="btn btn-sm submit" name="action" value="Add" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 	  						<%} %>
 	   						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-							<input type="hidden" name="igiDocId" value="<%=igiDocId%>"> 
-							<input type="hidden" name="docId" value="<%=igiDocId%>"> 
-							<input type="hidden" name="docType" value="A"> 
+							<input type="hidden" name="irsDocId" value="<%=irsDocId%>"> 
+							<input type="hidden" name="docId" value="<%=irsDocId%>"> 
+							<input type="hidden" name="docType" value="C"> 
 	   					</div>
 					</form>
         		</div>
@@ -631,12 +646,12 @@
      				<div class="container-fluid mt-3">
      					<div class="row">
 							<div class="col-md-12 " align="left">
-								<form action="IGIIntroductionSubmit.htm" method="POST" id="myform">
+								<form action="IRSIntroductionSubmit.htm" method="POST" id="myform">
 									<div id="introductionEditor" class="center"></div>
 									<textarea id="introduction" name="introduction" style="display: none;"></textarea>
 									<div class="mt-2" align="center" id="detailsSubmit">
 										<span id="EditorDetails"></span>
-										<input type="hidden" name="igiDocId" value="<%=igiDocId %>">
+										<input type="hidden" name="irsDocId" value="<%=irsDocId %>">
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										<span id="Editorspan">
 											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure to Update?')">UPDATE</button></span>
@@ -689,7 +704,7 @@
 	}
 	
 	function showChapter3(){
-    	$('#interfaceFormBtn').click();
+    	$('#specificationsFormBtn').click();
 	}
         
 //Define a common Summernote configuration
@@ -732,7 +747,7 @@ var summernoteConfig = {
 $('#introductionEditor').summernote(summernoteConfig);
 
 //Update the values of Editors
-var html1 = '<%=igiDocument!=null && igiDocument.getIntroduction()!=null?igiDocument.getIntroduction().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
+var html1 = '<%=irsDocument!=null && irsDocument.getIntroduction()!=null?irsDocument.getIntroduction().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
 $('#introductionEditor').summernote('code', html1);
 
 //Set the values to the form when submitting.
@@ -744,8 +759,6 @@ $('#myform').submit(function() {
 });
 
 </script>    
-
-
 <script type="text/javascript">
 function DownloadDocPDF(){
 	var chapterCount = 0;
@@ -756,7 +769,7 @@ function DownloadDocPDF(){
             content: [
                 // Cover Page with Project Name and Logo
                 {
-                    text: htmlToPdfmake('<h4 class="heading-color ">Interface General Information (IGI)</h4>'),
+                    text: htmlToPdfmake('<h4 class="heading-color ">Interface Requirement Specification (IRS) <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>'),
                     style: 'DocumentName',
                     alignment: 'center',
                     fontSize: 18,
@@ -873,13 +886,13 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Title', style: 'tableData' },
-                                { text: 'Interface General Information (IGI)', style: 'tableData' },
+                                { text: 'Interface Requirement Specification (IRS)', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Type of Document', style: 'tableData' },
-                                { text: 'Interface General Information (IGI) Document', style: 'tableData' },
+                                { text: 'Interface Requirement Specification (IRS) Document', style: 'tableData' },
                             ],
                             
                             [
@@ -918,11 +931,11 @@ function DownloadDocPDF(){
                                 { text: htmlToPdfmake('<% if(documentSummary!=null){%><%=documentSummary[1]!=null?documentSummary[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %><%} %>'), style: 'tableData' },
                             ],
                             
-                            <%-- [
+                            [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Project Name', style: 'tableData' },
-                                { text: '', style: 'tableData' },
-                            ], --%>
+                                { text: '<%=projectShortName%>', style: 'tableData' },
+                            ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
@@ -1131,13 +1144,13 @@ function DownloadDocPDF(){
                     style: 'chapterHeader',
                     tocItem: true,
                     id: 'chapter'+(++chapterCount),
-                    pageBreak: 'before'
+                    pageBreak: 'before',
                 },
 
-                <%if(igiDocument!=null) {%>
+                <%if(irsDocument!=null) {%>
                 
 	                {
-	                	stack: [htmlToPdfmake(setImagesWidth('<%if(igiDocument.getIntroduction()!=null) {%><%=igiDocument.getIntroduction().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	                	stack: [htmlToPdfmake(setImagesWidth('<%if(irsDocument.getIntroduction()!=null) {%><%=irsDocument.getIntroduction().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 	                		  +'<%}else {%> No Details Added! <%} %>', 500))],
 	                    margin: [10, 0, 0, 0],
 	                },
@@ -1151,7 +1164,7 @@ function DownloadDocPDF(){
                     style: 'chapterHeader',
                     tocItem: true,
                     id: 'chapter'+(++chapterCount),
-                    pageBreak: 'before'
+                    pageBreak: 'before',
                 },
 
                 {
@@ -1165,9 +1178,9 @@ function DownloadDocPDF(){
                                 { text: 'Document Name', style: 'tableHeader' },
                             ],
                             // Populate table rows
-                           <% if(igiApplicableDocsList!=null && igiApplicableDocsList.size()>0){
+                           <% if(irsApplicableDocsList!=null && irsApplicableDocsList.size()>0){
 								int slno=0;
-								for(Object[] obj : igiApplicableDocsList){
+								for(Object[] obj : irsApplicableDocsList){
 							%>
 		                            [
 		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
@@ -1199,504 +1212,6 @@ function DownloadDocPDF(){
                 },
                 /* ************************************** Applicable Documents End *********************************** */
                 
-                /* ************************************** General Description & Standards *********************************** */
-                {
-                    text: (++mainContentCount)+'. General Description & Standards',
-                    style: 'chapterHeader',
-                    tocItem: true,
-                    id: 'chapter'+(++chapterCount),
-                    pageBreak: 'before'
-                },
-
-                
-                {
-                	text: mainContentCount+'.1. Hardware Description',	
-                	style: 'chapterSubHeader',
-                    tocItem: true,
-                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1',
-                    tocMargin: [10, 0, 0, 0],
-                },
-                
-                {
-                	text: mainContentCount+'.1.1. Physical Interface',	
-                	style: 'chapterSubSubHeader',
-                    tocItem: true,
-                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.1',
-                    tocMargin: [20, 0, 0, 0],
-                },
-                <%if(physicalInterfaceList!=null && physicalInterfaceList.size()>0) {
-                	int slno = 0;
-                	for(IGIInterface physicalInterface : physicalInterfaceList) { int sn = 0;%>
-                	
-                	{
-                    	text: mainContentCount+'.1.1.<%=++slno%>. <%=physicalInterface.getInterfaceName() %>',	
-                    	style: 'chapterSubSubSubHeader',
-                        tocItem: true,
-                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.1.<%=slno%>',
-                        tocMargin: [25, 0, 0, 0],
-                    },
-                	
-	                {
-	                	table: {
-	                        headerRows: 1,
-	                        widths: ['10%', '25%', '65%'],
-	                        body: [
-	                            // Table header
-	                            [
-	                                { text: 'SN', style: 'tableHeader' },
-	                                { text: 'Section', style: 'tableHeader' },
-	                                { text: 'Details', style: 'tableHeader' },
-	                            ],
-	                            // Populate table rows
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Unique Interface Id', style: 'tableData', bold: true},
-	                                { text: '<%=physicalInterface.getInterfaceSeqNo()+"_"+physicalInterface.getInterfaceCode() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Id', style: 'tableData', bold: true},
-	                                { text: '<%=physicalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Code', style: 'tableData', bold: true},
-	                                { text: '<%=physicalInterface.getInterfaceCode() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Name', style: 'tableData', bold: true },
-	                                { text: '<%=physicalInterface.getInterfaceName() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Description', style: 'tableData', bold: true},
-	                                <%if(physicalInterface.getInterfaceDescription()!=null && !physicalInterface.getInterfaceDescription().isEmpty()) {%>
-	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=physicalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
-	                                <%}else {%>
-	                                	{ text: 'No Details Added!', style: 'tableData'},
-	                                <%} %>
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Type of Signal', style: 'tableData', bold: true },
-	                                { text: '<%=physicalInterface.getSignalType() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Type of Data', style: 'tableData', bold: true },
-	                                { text: '<%=physicalInterface.getDataType() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Connector', style: 'tableData', bold: true },
-	                                { text: '<%=(physicalInterface.getConnector()!=null && !physicalInterface.getConnector().isEmpty())? physicalInterface.getConnector():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Protection', style: 'tableData', bold: true },
-	                                { text: '<%=(physicalInterface.getProtection()!=null && !physicalInterface.getProtection().isEmpty())? physicalInterface.getProtection():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Speed', style: 'tableData', bold: true },
-	                                { text: '<%=physicalInterface.getInterfaceSpeed() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Cable Information', style: 'tableData', bold: true },
-	                                { text: '<%=(physicalInterface.getCableInfo()!=null && !physicalInterface.getCableInfo().isEmpty())? physicalInterface.getCableInfo():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Cable Constraint', style: 'tableData', bold: true },
-	                                { text: '<%=(physicalInterface.getCableConstraint()!=null && !physicalInterface.getCableConstraint().isEmpty())? physicalInterface.getCableConstraint():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Cable Diameter', style: 'tableData', bold: true },
-	                                { text: '<%=(physicalInterface.getCableDiameter()!=null && !physicalInterface.getCableDiameter().isEmpty())? physicalInterface.getCableDiameter():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Cable Details', style: 'tableData', bold: true },
-	                                { text: '<%=(physicalInterface.getCableDetails()!=null && !physicalInterface.getCableDetails().isEmpty())? physicalInterface.getCableDetails():"-" %>', style: 'tableData' },
-	                            ],
-	                            
-	                            <%if(physicalInterface.getInterfaceDiagram()!=null && !physicalInterface.getInterfaceDiagram().isEmpty()) {%>
-		                            [
-		                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-		                                { text: 'Diagram', style: 'tableData', bold: true, colSpan: 2 },
-		                            ],
-		                            [
-	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=physicalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 3,},
-	                            	],
-	                            <%} %>
-	                        ]
-	                    },
-	                    layout: {
-	                        /* fillColor: function(rowIndex) {
-	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
-	                        }, */
-	                        hLineWidth: function(i, node) {
-	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
-	                        },
-	                        vLineWidth: function(i) {
-	                            return 0.5;
-	                        },
-	                        hLineColor: function(i) {
-	                            return '#aaaaaa';
-	                        },
-	                        vLineColor: function(i) {
-	                            return '#aaaaaa';
-	                        }
-	                    },
-	                },
-	                { text: '\n',},
-                <%} }%>
-                
-                <%-- {
-                	text: mainContentCount+'.1.2. Electrical Interface',	
-                	style: 'chapterSubSubHeader',
-                    tocItem: true,
-                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.2',
-                    tocMargin: [20, 0, 0, 0],
-                },
-                <%if(electricalInterfaceList!=null && electricalInterfaceList.size()>0) {
-                	int slno = 0;
-                	for(IGIInterface electricalInterface : electricalInterfaceList) { %>
-                	
-                	{
-                    	text: mainContentCount+'.1.2.<%=++slno%>. <%=electricalInterface.getInterfaceName() %>',	
-                    	style: 'chapterSubSubSubHeader',
-                        tocItem: true,
-                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.2.<%=slno%>',
-                        tocMargin: [25, 0, 0, 0],
-                    },
-                    
-	                {
-	                	table: {
-	                        headerRows: 1,
-	                        widths: ['30%', '70%'],
-	                        body: [
-	                            // Table header
-	                            [
-	                                { text: 'Section', style: 'tableHeader' },
-	                                { text: 'Details', style: 'tableHeader' },
-	                            ],
-	                            // Populate table rows
-	                            [
-	                                { text: 'Interface Id', style: 'tableData', bold: true},
-	                                { text: '<%=electricalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Interface Code', style: 'tableData', bold: true},
-	                                { text: '<%=electricalInterface.getInterfaceCode() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Interface Name', style: 'tableData', bold: true },
-	                                { text: '<%=electricalInterface.getInterfaceName() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Description', style: 'tableData', bold: true},
-	                                <%if(electricalInterface.getInterfaceDescription()!=null) {%>
-	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=electricalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
-	                                <%}else {%>
-	                                	{ text: 'No Details Added!', style: 'tableData'},
-	                                <%} %>
-	                            ],
-	                            [
-	                                { text: 'Type of Data', style: 'tableData', bold: true },
-	                                { text: '<%=electricalInterface.getDataType() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Type of Signal', style: 'tableData', bold: true },
-	                                { text: '<%=electricalInterface.getSignalType() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Interface Speed', style: 'tableData', bold: true },
-	                                { text: '<%=electricalInterface.getInterfaceSpeed() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Connector', style: 'tableData', bold: true },
-	                                { text: '<%=(electricalInterface.getConnector()!=null && !electricalInterface.getConnector().isEmpty())? electricalInterface.getConnector():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Protection', style: 'tableData', bold: true },
-	                                { text: '<%=(electricalInterface.getProtection()!=null && !electricalInterface.getProtection().isEmpty())? electricalInterface.getProtection():"-" %>', style: 'tableData' },
-	                            ],
-	                            <%if(electricalInterface.getInterfaceDiagram()!=null && !electricalInterface.getInterfaceDiagram().isEmpty()) {%>
-	                            	[
-	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=electricalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 2,},
-	                            	],
-	                            <%} %>
-	                        ]
-	                    },
-	                    layout: {
-	                        /* fillColor: function(rowIndex) {
-	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
-	                        }, */
-	                        hLineWidth: function(i, node) {
-	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
-	                        },
-	                        vLineWidth: function(i) {
-	                            return 0.5;
-	                        },
-	                        hLineColor: function(i) {
-	                            return '#aaaaaa';
-	                        },
-	                        vLineColor: function(i) {
-	                            return '#aaaaaa';
-	                        }
-	                    },
-	                },
-	                { text: '\n',},
-                <%} }%> --%>
-                
-                <%-- {
-                	text: mainContentCount+'.1.3. Optical Interface',	
-                	style: 'chapterSubSubHeader',
-                    tocItem: true,
-                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.3',
-                    tocMargin: [20, 0, 0, 0],
-                },
-                <%if(opticalInterfaceList!=null && opticalInterfaceList.size()>0) {
-                	int slno = 0;
-                	for(IGIInterface opticalInterface : opticalInterfaceList) { %>
-                	
-                	{
-                    	text: mainContentCount+'.1.3.<%=++slno%>. <%=opticalInterface.getInterfaceName() %>',	
-                    	style: 'chapterSubSubSubHeader',
-                        tocItem: true,
-                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.1.3.<%=slno%>',
-                        tocMargin: [25, 0, 0, 0],
-                    },
-                    
-	                {
-	                	table: {
-	                        headerRows: 1,
-	                        widths: ['30%', '70%'],
-	                        body: [
-	                            // Table header
-	                            [
-	                                { text: 'Section', style: 'tableHeader' },
-	                                { text: 'Details', style: 'tableHeader' },
-	                            ],
-	                            // Populate table rows
-	                            [
-	                                { text: 'Interface Id', style: 'tableData', bold: true},
-	                                { text: '<%=opticalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Interface Code', style: 'tableData', bold: true},
-	                                { text: '<%=opticalInterface.getInterfaceCode() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Interface Name', style: 'tableData', bold: true },
-	                                { text: '<%=opticalInterface.getInterfaceName() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Description', style: 'tableData', bold: true},
-	                                <%if(opticalInterface.getInterfaceDescription()!=null) {%>
-	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=opticalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
-	                                <%}else {%>
-	                                	{ text: 'No Details Added!', style: 'tableData'},
-	                                <%} %>
-	                            ],
-	                            [
-	                                { text: 'Type of Data', style: 'tableData', bold: true },
-	                                { text: '<%=opticalInterface.getDataType() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Type of Signal', style: 'tableData', bold: true },
-	                                { text: '<%=opticalInterface.getSignalType() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Interface Speed', style: 'tableData', bold: true },
-	                                { text: '<%=opticalInterface.getInterfaceSpeed() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Connector', style: 'tableData', bold: true },
-	                                { text: '<%=(opticalInterface.getConnector()!=null && !opticalInterface.getConnector().isEmpty())? opticalInterface.getConnector():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                                { text: 'Protection', style: 'tableData', bold: true },
-	                                { text: '<%=(opticalInterface.getProtection()!=null && !opticalInterface.getProtection().isEmpty())? opticalInterface.getProtection():"-" %>', style: 'tableData' },
-	                            ],
-	                            <%if(opticalInterface.getInterfaceDiagram()!=null && !opticalInterface.getInterfaceDiagram().isEmpty()) {%>
-	                            	[
-	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=opticalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 2,},
-	                            	],
-	                            <%} %>
-	                        ]
-	                    },
-	                    layout: {
-	                        /* fillColor: function(rowIndex) {
-	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
-	                        }, */
-	                        hLineWidth: function(i, node) {
-	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
-	                        },
-	                        vLineWidth: function(i) {
-	                            return 0.5;
-	                        },
-	                        hLineColor: function(i) {
-	                            return '#aaaaaa';
-	                        },
-	                        vLineColor: function(i) {
-	                            return '#aaaaaa';
-	                        }
-	                    },
-	                },
-	                { text: '\n',},
-                <%} }%> --%>
-
-                
-                {
-                	text: mainContentCount+'.2. Software Description',	
-                	style: 'chapterSubHeader',
-                    tocItem: true,
-                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.2',
-                    tocMargin: [10, 0, 0, 0],
-                },
-                
-                {
-                	text: mainContentCount+'.2.1. Logical Interface',	
-                	style: 'chapterSubSubHeader',
-                    tocItem: true,
-                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.2.1',
-                    tocMargin: [20, 0, 0, 0],
-                },
-                <%if(logicalInterfaceList!=null && logicalInterfaceList.size()>0) {
-                	int slno = 0;
-                	for(IGIInterface logicalInterface : logicalInterfaceList) {  int sn = 0;%>
-                	{
-                    	text: mainContentCount+'.2.1.<%=++slno%>. <%=logicalInterface.getInterfaceName() %>',	
-                    	style: 'chapterSubSubSubHeader',
-                        tocItem: true,
-                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.2.1.<%=slno%>',
-                        tocMargin: [25, 0, 0, 0],
-                    },
-                    
-	                {
-	                	table: {
-	                        headerRows: 1,
-	                        widths: ['10%', '25%', '65%'],
-	                        body: [
-	                            // Table header
-	                        	[
-	                                { text: 'SN', style: 'tableHeader' },
-	                                { text: 'Section', style: 'tableHeader' },
-	                                { text: 'Details', style: 'tableHeader' },
-	                            ],
-	                            // Populate table rows
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Unique Interface Id', style: 'tableData', bold: true},
-	                                { text: '<%=logicalInterface.getInterfaceSeqNo()+"_"+logicalInterface.getInterfaceCode() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Id', style: 'tableData', bold: true},
-	                                { text: '<%=logicalInterface.getInterfaceSeqNo() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Code', style: 'tableData', bold: true},
-	                                { text: '<%=logicalInterface.getInterfaceCode() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Name', style: 'tableData', bold: true },
-	                                { text: '<%=logicalInterface.getInterfaceName() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Description', style: 'tableData', bold: true},
-	                                <%if(logicalInterface.getInterfaceDescription()!=null && !logicalInterface.getInterfaceDescription().isEmpty()) {%>
-	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=logicalInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
-	                                <%}else {%>
-	                                	{ text: 'No Details Added!', style: 'tableData'},
-	                                <%} %>
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Type of Signal', style: 'tableData', bold: true },
-	                                { text: '<%=logicalInterface.getSignalType() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Type of Data', style: 'tableData', bold: true },
-	                                { text: '<%=logicalInterface.getDataType() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Connector', style: 'tableData', bold: true },
-	                                { text: '<%=(logicalInterface.getConnector()!=null && !logicalInterface.getConnector().isEmpty())? logicalInterface.getConnector():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Protection', style: 'tableData', bold: true },
-	                                { text: '<%=(logicalInterface.getProtection()!=null && !logicalInterface.getProtection().isEmpty())? logicalInterface.getProtection():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Speed', style: 'tableData', bold: true },
-	                                { text: '<%=logicalInterface.getInterfaceSpeed() %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Cable Information', style: 'tableData', bold: true },
-	                                { text: '<%=(logicalInterface.getCableInfo()!=null && !logicalInterface.getCableInfo().isEmpty())? logicalInterface.getCableInfo():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Cable Constraint', style: 'tableData', bold: true },
-	                                { text: '<%=(logicalInterface.getCableConstraint()!=null && !logicalInterface.getCableConstraint().isEmpty())? logicalInterface.getCableConstraint():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Cable Diameter', style: 'tableData', bold: true },
-	                                { text: '<%=(logicalInterface.getCableDiameter()!=null && !logicalInterface.getCableDiameter().isEmpty())? logicalInterface.getCableDiameter():"-" %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Cable Details', style: 'tableData', bold: true },
-	                                { text: '<%=(logicalInterface.getCableDetails()!=null && !logicalInterface.getCableDetails().isEmpty())? logicalInterface.getCableDetails():"-" %>', style: 'tableData' },
-	                            ],
-	                            
-	                            <%if(logicalInterface.getInterfaceDiagram()!=null && !logicalInterface.getInterfaceDiagram().isEmpty()) {%>
-		                            [
-		                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-		                                { text: 'Diagram', style: 'tableData', bold: true, colSpan: 2 },
-		                            ],
-		                            [
-	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=logicalInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 3,},
-	                            	],
-	                            <%} %>
-	                        ]
-	                    },
-	                    layout: {
-	                        /* fillColor: function(rowIndex) {
-	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
-	                        }, */
-	                        hLineWidth: function(i, node) {
-	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
-	                        },
-	                        vLineWidth: function(i) {
-	                            return 0.5;
-	                        },
-	                        hLineColor: function(i) {
-	                            return '#aaaaaa';
-	                        },
-	                        vLineColor: function(i) {
-	                            return '#aaaaaa';
-	                        }
-	                    },
-	                },
-	                { text: '\n',},
-                <%} }%>
-                /* ************************************** General Description & Standards End *********************************** */
                 
 			],
 			styles: {
@@ -1712,20 +1227,40 @@ function DownloadDocPDF(){
                 header: { alignment: 'center', bold: true},
                 chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
             },
-            footer: function(currentPage, pageCount) {
+            footer: function (currentPage, pageCount, pageSize) {
+                const isLandscape = pageSize.width > pageSize.height;
+                const pageWidth = pageSize.width; // Adjust dynamically based on page size
+                const margin = 30;
+
                 if (currentPage > 2) {
                     return {
                         stack: [
-                        	{
-                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 565, y2: 0, lineWidth: 1 }]
+                            {
+                                canvas: [{ type: 'line', x1: margin, y1: 0, x2: pageWidth - margin, y2: 0, lineWidth: 1 }]
                             },
                             {
                                 columns: [
-                                    { text: '<%if(documentNo!=null) {%><%=documentNo %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
-                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+                                    {
+                                        text: '<%if(documentNo!=null) {%><%=documentNo %><%} %>',
+                                        alignment: 'left',
+                                        margin: [margin, 0, 0, 0],
+                                        fontSize: 8
+                                    },
+                                    {
+                                        text: 'Restricted',
+                                        alignment: 'center',
+                                        fontSize: 8,
+                                        margin: [0, 0, 0, 0],
+                                        bold: true
+                                    },
+                                    {
+                                    	text: currentPage.toString() + ' of ' + pageCount,
+                                        alignment: 'right',
+                                        margin: [0, 0, margin, 0],
+                                        fontSize: 8
+                                    }
                                 ]
-                            },
-                            { text: 'Restricted', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }
+                            }
                         ]
                     };
                 }
@@ -1755,7 +1290,7 @@ function DownloadDocPDF(){
                                 },
                                 {
                                     // Right: DRDO logo
-                                    image: '<%= drdologo != null ? "data:image/png;base64," + drdologo : "" %>',
+                                    image: '<%=drdologo != null ? "data:image/png;base64," + drdologo : "" %>',
                                     width: 30,
                                     height: 30,
                                     alignment: 'right',
@@ -1829,7 +1364,6 @@ const setImagesWidth = (htmlString, width) => {
             // Replace `var(...)` with a fallback or remove it
             element.style.backgroundColor = 'transparent'; // Set a default or fallback background color
         }
-        
       }
     });
   

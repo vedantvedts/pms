@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.mail.Message;
@@ -115,6 +117,7 @@ import com.vts.pfms.committee.service.RODService;
 import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.milestone.dto.MileEditDto;
+import com.vts.pfms.timesheet.service.TimeSheetService;
 import com.vts.pfms.utils.PMSFileUtils;
 import com.vts.pfms.utils.PMSLogoUtil;
 
@@ -150,6 +153,9 @@ public class ActionController {
 	
 	@Autowired
 	PMSLogoUtil LogoUtil;
+	
+	@Autowired
+	TimeSheetService timesheetservice;
 	
 	FormatConverter fc=new FormatConverter();
 	private SimpleDateFormat sdf2=fc.getRegularDateFormat();
@@ -455,6 +461,9 @@ public class ActionController {
 			req.setAttribute("meettingid", req.getParameter("meettingid"));
 			req.setAttribute("fromDate", req.getParameter("fromDate"));
 			req.setAttribute("toDate", req.getParameter("toDate"));
+			req.setAttribute("empId", req.getParameter("empId"));
+			req.setAttribute("type", req.getParameter("type"));
+			req.setAttribute("status", req.getParameter("status"));
 			
 			req.setAttribute("MeetingNumbr", req.getParameter("Meeting"));
 		}
@@ -768,6 +777,7 @@ public class ActionController {
 			req.setAttribute("AssigneeName", AssigneeName);
 			//req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
 			req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
+			req.setAttribute("flag", req.getParameter("flag"));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
@@ -5138,5 +5148,72 @@ public class ActionController {
     	 		
     	 	}  
             
-            
+	@RequestMapping(value="ActionReport.htm", method= {RequestMethod.POST, RequestMethod.GET})    
+	public String actionReport(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		String Logintype = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+ 		logger.info(new Date() +" Inside ActionReport.htm "+UserId);
+		try {
+			String empId = req.getParameter("empId");
+			empId = empId==null?"A":empId;
+			String projectId = req.getParameter("projectId");
+			projectId = projectId==null?"A":projectId;
+			String type = req.getParameter("type");
+			type = type==null?"A":type;
+			String status = req.getParameter("status");
+			status = status==null?"I":status;
+			
+			List<Object[]> projectList = service.LoginProjectDetailsList(EmpId, Logintype, LabCode);
+			List<Object[]> roleWiseEmployeeList = timesheetservice.getRoleWiseEmployeeList(LabCode, Logintype, EmpId);
+			List<Object[]> allActionsList = service.ActionReports((empId!=null && empId.equalsIgnoreCase("E")?"A":empId), status, projectId , type, LabCode);
+			
+			//List<Object[]> allActionsListFiltered = new ArrayList<Object[]>();
+					
+			Set<Object> empIds = roleWiseEmployeeList.stream().map(e -> e[0]).collect(Collectors.toSet());
+			
+			if(empId.equalsIgnoreCase("A") || empId.equalsIgnoreCase("E")) {
+				if(empId.equalsIgnoreCase("A")) {
+					allActionsList = allActionsList.stream().filter(e -> empIds.contains(e[16]) && !e[15].toString().equalsIgnoreCase("@EXP")).collect(Collectors.toList());
+				}else {
+					allActionsList = allActionsList.stream().filter(e -> e[15].toString().equalsIgnoreCase("@EXP")).collect(Collectors.toList());
+				}
+				
+			}
+			
+			req.setAttribute("empId", empId);
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("type", type);
+			req.setAttribute("status", status);
+			req.setAttribute("projectList", projectList);
+			req.setAttribute("roleWiseEmployeeList", roleWiseEmployeeList);
+			req.setAttribute("allActionsList", allActionsList);
+			
+			return "action/ActionReportNew";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionReport.htm "+UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="ActionProgressSubList.htm", method=RequestMethod.GET)
+	public @ResponseBody String duplicateShortCodeCheck(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside ActionProgressSubList.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> subList = new ArrayList<Object[]>();
+		try
+		{	  
+			subList = service.SubList(req.getParameter("actionAssignId"));
+	          
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ActionProgressSubList.htm "+UserId ,e);
+			e.printStackTrace(); 
+		}
+		  
+		 return json.toJson(subList);    
+	}
 }

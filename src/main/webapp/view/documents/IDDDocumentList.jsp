@@ -3,14 +3,11 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>    
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="ISO-8859-1">
     <jsp:include page="../static/header.jsp"></jsp:include>
-    <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
-    <link href="${StyleCSS}" rel="stylesheet" /> 
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -138,15 +135,6 @@ display: inline-block;
 	font-family: 'Muli', sans-serif;
 }
 
-.editable-click{
-float: left;
-z-index: 9;
-white-space: nowrap;
-height: 28px;
-margin: 0 5px 0 0;
-box-sizing: border-box;
-display: inline-block;
-}
 
 .editable-clicko{
 z-index: 9;
@@ -224,12 +212,7 @@ background: none;border-style: none;
 .left {
 	text-align: left !important;
 }
-
-.select2-container {
-	width: 100% !important;
-}
 </style>   
-
 <style>
    .toggle-switch {
        position: relative;
@@ -284,25 +267,25 @@ background: none;border-style: none;
 </head>
 <body>
 <%
-    List<Object[]> icdDocumentList = (List<Object[]>) request.getAttribute("icdDocumentList");
-    List<Object[]> projectList = (List<Object[]>) request.getAttribute("projectList");
-    List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
-    String projectId = (String)request.getAttribute("projectId");
-    String initiationId = (String)request.getAttribute("initiationId");
-    String projectType = (String)request.getAttribute("projectType");
-    
-    List<Object[]> icdDocumentSummaryList = (List<Object[]>)request.getAttribute("icdDocumentSummaryList");
-	Object[] icdApproval=null;
-	if(icdDocumentSummaryList!=null && icdDocumentSummaryList.size()>0){
-		icdApproval = icdDocumentSummaryList.get(0);
+	List<Object[]> projectList = (List<Object[]>) request.getAttribute("projectList");
+	List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
+	String projectId = (String)request.getAttribute("projectId");
+	String initiationId = (String)request.getAttribute("initiationId");
+	String projectType = (String)request.getAttribute("projectType");
+
+    List<Object[]> iddDocumentList = (List<Object[]>) request.getAttribute("iddDocumentList");
+    List<Object[]> iddDocumentSummaryList = (List<Object[]>)request.getAttribute("iddDocumentSummaryList");
+	Object[] iddApproval=null;
+	if(iddDocumentSummaryList!=null && iddDocumentSummaryList.size()>0){
+		iddApproval = iddDocumentSummaryList.get(0);
 	}
 	
+	String version = "1.0";
+    version = iddDocumentList != null && iddDocumentList.size() > 0 ? iddDocumentList.get(0)[1].toString() : "1.0";
+    
+    List<String> iddforwardstatus = Arrays.asList("RIN","RRR","RRA");
+    
     FormatConverter fc = new FormatConverter();
-    
-    String version = "1.0";
-    version = icdDocumentList != null && icdDocumentList.size() > 0 ? icdDocumentList.get(0)[1].toString() : "1.0";
-    
-    List<String> icdforwardstatus = Arrays.asList("RIN","RRR","RRA");
 %>
 	<% 
 	    String ses = (String) request.getParameter("result");
@@ -330,12 +313,12 @@ background: none;border-style: none;
 	<div class="container-fluid mainDiv">        
 	    <div class="col-md-12">
 	        <div class="card shadow-nohover">
-		    	<div class="card-header">
-		            <form action="ICDDocumentList.htm" method="POST">
-	        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	            <div class="card-header">
+	            	<form action="IDDDocumentList.htm" method="POST">
+        				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		            	<div class="row">
 		            		<div class="col-md-4">
-		            			<h5 >ICD Document List</h5>
+		            			<h5 >IDD Document List</h5>
 		            		</div>
 		            		
 		            		<div class="col-md-2">
@@ -378,9 +361,8 @@ background: none;border-style: none;
 								<%} %>
 							</div>
 		            	</div>
-		        	</form>	
-		        </div>
-				
+		            </form>	
+	            </div>
 	            <div class="card-body">
 	                <div class="col-md-12">
 	                    <div class="table-responsive"> 
@@ -396,31 +378,32 @@ background: none;border-style: none;
 	                                </tr>
 	                            </thead>
 	                            <tbody>    
-	                                <% if (icdDocumentList != null && icdDocumentList.size() > 0) {
+	                                <% if (iddDocumentList != null && iddDocumentList.size() > 0) {
 	                                    int count = 0;
-	                                    for (Object[] obj : icdDocumentList) {
+	                                    for (Object[] obj : iddDocumentList) {
+	                                        count++;
 	                                %>
 	                                <tr>
-	                                    <td class="center" ><%=++count %></td>
+	                                    <td class="center" ><%= count %></td>
 	                                    <td ><%= obj[10]+", "+obj[11] %></td>
 	                                    <td class="center"><%= fc.sdfTordf(obj[4].toString()) %></td>
 	                                    <td class="center" >v<%= obj[1] %></td>
-	                                    <td class="center" >
-	                                    	<form action="#" id="icdform_status_<%=count %>">
+	                                    <td align="center" >
+	                      					<form action="#">
 				                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				                            	<input type="hidden" name="docId" value="<%=obj[0] %>">
-				                            	<input type="hidden" name="docType" value="B">
-				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[15] %>; font-weight: 600;" formtarget="_blank">
-											    	<%=obj[14] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+				                            	<input type="hidden" name="docType" value="C">
+				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
+											    	<%=obj[12] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>
 	                                        </form>
-	                                    </td>
-	                                   <td class="center">
-										    <form action="#" method="POST" name="myfrm" id="icdform_action_<%=count %>" style="display: inline">
+		                      			</td>
+	                                   	<td class="center">
+										    <form action="#" method="POST" name="myfrm" style="display: inline">
 										        
-										        <%if(obj[5]!=null && icdforwardstatus.contains(obj[5].toString()) ) {%>
+										        <%if(obj[5]!=null && iddforwardstatus.contains(obj[5].toString()) ) {%>
 														
-														<button type="submit" class="editable-clicko" formaction="ICDDocumentDetails.htm">
+														<button type="submit" class="editable-clicko" formaction="IDDDocumentDetails.htm">
 												            <div class="cc-rockmenu">
 												                <div class="rolling">
 												                    <figure class="rolling_icon">
@@ -431,8 +414,9 @@ background: none;border-style: none;
 												            </div>
 												        </button>
 														
-														<%if(icdDocumentSummaryList!=null && icdDocumentSummaryList.size()>0) {%>
-															<button type="submit" class="editable-clicko" formaction=ICDDocumentApprovalSubmit.htm data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Document?');">
+														<%if(iddDocumentSummaryList!=null && iddDocumentSummaryList.size()>0) {%>
+														
+															<button type="submit" class="editable-clicko" formaction="IDDDocumentApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Document?');">
 																<div class="cc-rockmenu">
 																	<div class="rolling">
 																		<figure class="rolling_icon">
@@ -457,7 +441,7 @@ background: none;border-style: none;
 															</div>
 														</button>
 													<%} %>
-													<button class="editable-clicko" name="isPdf" value="Y" formaction="ICDDocumentDetails.htm" formtarget="blank" >
+													<button class="editable-clicko" name="isPdf" value="Y" formaction="IDDDocumentDetails.htm" formtarget="blank" >
 														<div class="cc-rockmenu">
 															<div class="rolling">
 																<figure class="rolling_icon">
@@ -468,13 +452,9 @@ background: none;border-style: none;
 														</div>
 													</button>
 										        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-										        <input type="hidden" name="projectId" value="<%=obj[12] %>">
-										        <input type="hidden" name="initiationId" value="<%=obj[13] %>">
-										        <%-- <input type="hidden" name="projectType" value="<%=obj[13]!=null && !obj[13].toString().equalsIgnoreCase("0")?"I":"M"  %>"> --%>
-										        <input type="hidden" name="projectType" value="<%=projectType %>">
-										        <input type="hidden" name="icdDocId" value="<%=obj[0] %>">
+										        <input type="hidden" name="iddDocId" value="<%=obj[0] %>">
 										        <input type="hidden" name="docId" value="<%=obj[0] %>">
-										        <input type="hidden" name="docType" value="B">
+										        <input type="hidden" name="docType" value="A">
 										    </form>
 										</td>
 	                                </tr>
@@ -483,38 +463,34 @@ background: none;border-style: none;
 	                            </tbody>
 	                        </table>
 	                    </div>
-	                    <%if(icdDocumentList!=null && icdDocumentList.size()==0) {%>
+	                    <%if(iddDocumentList!=null && iddDocumentList.size()==0) {%>
 		                    <%-- <div style="margin-top: 20px; text-align: center;"> 
-							    <form id="documentForm" action="ICDDocumentAdd.htm">
+							    <form id="documentForm" action="IDDDocumentAdd.htm">
 							        <input type="hidden" name="version" id="versionField" value="<%= version %>">
-							        <input type="hidden" name="projectId" value="<%=projectId %>">
-							        <input type="hidden" name="initiationId" value="<%=initiationId %>">
 							        <button class="btn btn-sm " type="button" onclick="confirmAdd()" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create Doc</button>
 							    </form>
 							</div> --%>
 							<div style="text-align: center;">
-		                    	<form action="ICDDocumentAdd.htm" id="myform" method="post">
+		                    	<form action="IDDDocumentAdd.htm" id="myform" method="post">
 		                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Create ICD Document?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create ICD Doc v1</button>
-		                        	<input type="hidden" name="version" value="<%=version %>">
-		                        	<input type="hidden" name="projectType" value="<%=projectType %>">
+		                    		<input type="hidden" name="version" value="<%= version %>">
+		                    		<input type="hidden" name="projectType" value="<%=projectType %>">
 		                        	<input type="hidden" name="projectId"value="<%=projectId %>">
 		                        	<input type="hidden" name="initiationId" value="<%=initiationId %>">
-		                        	<%-- <input type="hidden" name="productTreeMainId" id="productTreeMainId11" value="<%=productTreeMainId %>"> --%>
-		                        	<!-- <input type="hidden" name="reqInitiationId" value="0"> -->
+		                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Create IDD Document?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create IDD Doc v1</button>
 		                 		</form>
 		                    </div>
-						<%} %>	
+						<%} %>
 	                </div>
 	                
 	                <div class="row mt-4">
-	 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For ICD Doc</b></div>
+	 					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For IDD Doc</b></div>
 	 	    		</div>
 	    			<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
 	           			<table align="center"  >
 	        				<tr>
 	        					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-	         						Prepared By - <%if(icdApproval!=null) {%><%=icdApproval[10] %> <%} else{%>Prepared By<%} %>
+	         						Prepared By - <%if(iddApproval!=null) {%><%=iddApproval[10] %> <%} else{%>Prepared By<%} %>
 	         					</td>
 	             		
 	                    		<td rowspan="2">
@@ -522,7 +498,7 @@ background: none;border-style: none;
 	             				</td>
 	             						
 	        					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-	        						Reviewer - <%if(icdApproval!=null) {%><%=icdApproval[9] %> <%} else{%>Reviewer<%} %>
+	        						Reviewer - <%if(iddApproval!=null) {%><%=iddApproval[9] %> <%} else{%>Reviewer<%} %>
 	        	    			</td>
 	             	    				
 	                    		<td rowspan="2">
@@ -530,17 +506,16 @@ background: none;border-style: none;
 	             				</td>
 	             						
 	             				<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
-	             					Approver - <%if(icdApproval!=null) {%><%=icdApproval[8] %> <%} else{%>Approver<%} %>
+	             					Approver - <%if(iddApproval!=null) {%><%=iddApproval[8] %> <%} else{%>Approver<%} %>
 	             	    		</td>
 	            			</tr> 	
 	            	    </table>			             
 					</div>
-					
 	            </div>
 	        </div>
 	    </div>
 	</div>
-	
+
 	<!-- -------------------------------------------- Document Amendment Modal ------------------------------------------------------------- -->
 	<div class="modal fade" id="docAmendmentModal" tabindex="-1" role="dialog" aria-labelledby="docAmendmentModal" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
@@ -553,12 +528,12 @@ background: none;border-style: none;
 		      	</div>
      			<div class="modal-body">
      				<div class="container-fluid mt-3">
-     					<form action="ICDDocumentAdd.htm" method="post">	
+     					<form action="IDDDocumentAdd.htm" method="post">	
      						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
      						<input type="hidden" name="projectType" value="<%=projectType %>">
                         	<input type="hidden" name="projectId"value="<%=projectId %>">
                         	<input type="hidden" name="initiationId" value="<%=initiationId %>">
-                        	<input type="hidden" name="icdDocId" id="icdDocId" value="0">
+                        	<input type="hidden" name="iddDocId" id="iddDocId" value="0">
                         	<input type="hidden" name="isAmend" value="Y">
                         	<input type="hidden" name="version" id="amendversion" value="<%=version%>">
 	     					<div class="row">
@@ -608,7 +583,7 @@ background: none;border-style: none;
 	                                <div class="form-inline mt-4">
 	                                	<div class="form-group w-100 d-flex justify-content-center">
 		                                    <button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Amend?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">
-						                        Create ICD Doc <span id="amendversiondisplay"></span>
+						                        Create IDD Doc <span id="amendversiondisplay"></span>
 						                    </button>
 						            	</div>        
 	                                </div>
@@ -623,7 +598,7 @@ background: none;border-style: none;
 		</div>
 	</div>				
 	<!-- -------------------------------------------- Document Amendment Modal End ------------------------------------------------------------- -->
-    					
+    	
 <!-- DataTables Initialization Script -->
 <script>
     $(document).ready(function() {
@@ -635,54 +610,6 @@ background: none;border-style: none;
     });
 </script>
 
-<!-- Confirm Add Functionality -->
-<script type="text/javascript">
-    <%-- var a = '<%= icdDocumentList!=null?icdDocumentList.size():0 %>';
-    function confirmAdd() {
-        if (a == 0) {
-            if (confirm('Do you want to Create ICD Document?')) {
-                var form = document.getElementById('documentForm');
-                var formAction = form.getAttribute('action'); // Get the form action
-
-                if (formAction) {
-                    // Apply the formaction to the form if needed
-                    form.action = formAction; 
-                    form.submit(); // Submit the form
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            // Show the small modal instead
-            $('#SummaryModalSmall').modal('show');
-              updateVersion("yes") 
-        }
-    }
-
-    // Function to update the version based on user selection
-    function updateVersion(option) {
-        let currentVersion = parseFloat('<%= version %>');
-        let newVersion;
-
-        if (option === 'yes') {
-        	newVersion = Math.floor(currentVersion) + 1.0; // Increment to the next whole number and ensure it's in decimal format
-
-        } else {
-            newVersion = (currentVersion + 0.1).toFixed(1); // Increment by 0.1
-        }
-
-        document.getElementById('versionField').value = newVersion; // Update the hidden input
-    }
-
-    // Function to submit the form
-    function submitForm() {
-        var form = document.getElementById('documentForm');
-        form.submit(); // Submit the form with the updated version
-    } --%>
-</script>
 <script>
 	function updateVersion() {
         var version = parseFloat($('#currentversion').text());
@@ -721,7 +648,7 @@ background: none;border-style: none;
 
     function setversiondata(version, docId) {
         document.getElementById('currentversion').textContent = version;
-        $('#icdDocId').val(docId);
+        $('#iddDocId').val(docId);
         updateVersion(); // Set initial value of amendversiondisplay based on the toggle state
     }
     

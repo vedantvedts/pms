@@ -10,9 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,12 +53,15 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
+import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
+import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.service.DocumentsService;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.service.RequirementService;
@@ -404,6 +409,12 @@ public class DocumentsController {
 			}else if(docType.equalsIgnoreCase("B")) {
 				redir.addAttribute("icdDocId", docId);
 				return "redirect:/ICDDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("C")) {
+				redir.addAttribute("irsDocId", docId);
+				return "redirect:/IRSDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("D")) {
+				redir.addAttribute("iddDocId", docId);
+				return "redirect:/IDDDocumentDetails.htm";
 			}else {
 				return "redirect:/IGIDocumentDetails.htm";
 			}
@@ -439,6 +450,12 @@ public class DocumentsController {
 			}else if(docType.equalsIgnoreCase("B")) {
 				redir.addAttribute("icdDocId", docId);
 				return "redirect:/ICDDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("C")) {
+				redir.addAttribute("irsDocId", docId);
+				return "redirect:/IRSDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("D")) {
+				redir.addAttribute("iddDocId", docId);
+				return "redirect:/IDDDocumentDetails.htm";
 			}else {
 				return "redirect:/IGIDocumentDetails.htm";
 			}
@@ -475,6 +492,12 @@ public class DocumentsController {
 			}else if(docType.equalsIgnoreCase("B")) {
 				redir.addAttribute("icdDocId", docId);
 				return "redirect:/ICDDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("C")) {
+				redir.addAttribute("irsDocId", docId);
+				return "redirect:/IRSDocumentDetails.htm";
+			}else if(docType.equalsIgnoreCase("D")) {
+				redir.addAttribute("iddDocId", docId);
+				return "redirect:/IDDDocumentDetails.htm";
 			}else {
 				return "redirect:/IGIDocumentDetails.htm";
 			}
@@ -1456,10 +1479,14 @@ public class DocumentsController {
 			String docId = req.getParameter("docId");
 			String subSystemOne = req.getParameter("subSystemOne");
 			String subSystemTwo = req.getParameter("subSystemTwo");
+			String superSubSystemOne = req.getParameter("superSubSystemOne");
+			String superSubSystemTwo = req.getParameter("superSubSystemTwo");
 			String[] interfaceId = req.getParameterValues("interfaceId");
 			
 			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
 			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
+			String[] superSubSystemOnes  = superSubSystemOne!=null?superSubSystemOne.split("/"): null;
+			String[] superSubSystemTwos  = superSubSystemTwo!=null?superSubSystemTwo.split("/"): null;
 			
 			if(interfaceId!=null && interfaceId.length>0) {
 				long result = 0;
@@ -1469,7 +1496,11 @@ public class DocumentsController {
 					connections.setSubSystemMainIdOne(subSystemOnes!=null?Long.parseLong(subSystemOnes[0]):0);
 					connections.setSubSystemOne(subSystemOnes!=null?subSystemOnes[1]:"NA");
 					connections.setSubSystemMainIdTwo(subSystemTwos!=null?Long.parseLong(subSystemTwos[0]):0); 
-					connections.setSubSystemTwo(subSystemTwos!=null?subSystemTwos[1]:"NA"); 
+					connections.setSubSystemTwo(subSystemTwos!=null?subSystemTwos[1]:"NA");
+					connections.setSuperSubSysMainIdOne(superSubSystemOnes!=null?Long.parseLong(superSubSystemOnes[0]):0);
+					connections.setSuperSubSystemOne(superSubSystemOnes!=null?superSubSystemOnes[1]:"NA");
+					connections.setSuperSubSysMainIdTwo(superSubSystemTwos!=null?Long.parseLong(superSubSystemTwos[0]):0);
+					connections.setSuperSubSystemTwo(superSubSystemTwos!=null?superSubSystemTwos[1]:"NA");
 					connections.setInterfaceId(Long.parseLong(interfaceId[i]));
 					connections.setCreatedBy(UserId);
 					connections.setCreatedDate(sdtf.format(new Date()));
@@ -1499,7 +1530,6 @@ public class DocumentsController {
 			return "static/Error";
 		}
 	}
-	
 
 	@RequestMapping(value = "ICDConnectionDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String icdConnectionDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
@@ -1609,11 +1639,9 @@ public class DocumentsController {
 				}
 			} else if (action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
 				if (result != 0) {
-					redir.addAttribute("result", action.equalsIgnoreCase("R") ? "ICD Document Returned Successfully"
-							: "ICD Document Disapproved Successfully");
+					redir.addAttribute("result", action.equalsIgnoreCase("R") ? "ICD Document Returned Successfully" : "ICD Document Disapproved Successfully");
 				} else {
-					redir.addAttribute("resultfail", action.equalsIgnoreCase("R") ? "ICD Document Return Unsuccessful"
-							: "ICD Document Disapprove Unsuccessful");
+					redir.addAttribute("resultfail", action.equalsIgnoreCase("R") ? "ICD Document Return Unsuccessful" : "ICD Document Disapprove Unsuccessful");
 				}
 			}
 			return "redirect:/DocumentApprovals.htm";
@@ -1625,5 +1653,516 @@ public class DocumentsController {
 		}
 	}
 	
+	@RequestMapping(value="GetProductTreeListByLevel.htm", method=RequestMethod.GET)
+	public @ResponseBody String getProductTreeList(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside GetProductTreeListByLevel.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> productTreeAllList = new ArrayList<Object[]>();
+		
+		try
+		{	
+			String subSystemId = req.getParameter("subSystemId");
+			String levelId = req.getParameter("levelId");
+			
+			productTreeAllList = service.getProductTreeAllListByProjectId(req.getParameter("projectId"));
+			
+			productTreeAllList = productTreeAllList.stream().filter(e -> e[9].toString().equalsIgnoreCase(subSystemId!=null?subSystemId:"0") && e[10].toString().equalsIgnoreCase(levelId!=null?levelId:"0")).collect(Collectors.toList());
+	          
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside GetProductTreeListByLevel.htm "+UserId ,e);
+			e.printStackTrace(); 
+		}
+		  
+		 return json.toJson(productTreeAllList);    
+	}
+	
 	/* ************************************************ ICD Document End ***************************************************** */
+	
+	/* ************************************************ IRS Document ***************************************************** */
+	
+	@RequestMapping(value = "IRSDocumentList.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsDocumentList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String LoginType = (String) ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		
+		logger.info(new Date() + " Inside IRSDocumentList.htm " + UserId);
+
+		try {
+			String projectType = req.getParameter("projectType");
+			projectType = projectType != null ? projectType : "M";
+			String initiationId = "0";
+			String projectId = "0";
+			
+			if (projectType.equalsIgnoreCase("M")) {
+
+				projectId = req.getParameter("projectId");
+				List<Object[]> projectList = projectservice.LoginProjectDetailsList(EmpId, LoginType, labcode);
+				projectId = projectId != null ? projectId
+						: (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
+
+				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
+				req.setAttribute("projectList", projectList);
+			}else {
+				initiationId = req.getParameter("initiationId");
+				List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, labcode, EmpId);
+				initiationId = initiationId != null ? initiationId
+						: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				req.setAttribute("preProjectList", preProjectList);
+			}
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("projectType", projectType);
+			
+			List<Object[]> irsDocumentList = service.getIRSDocumentList(projectId, initiationId);
+			req.setAttribute("irsDocumentList", irsDocumentList);
+			if(irsDocumentList!=null && irsDocumentList.size()>0) {
+				req.setAttribute("irsDocumentSummaryList", service.getDocumentSummaryList(irsDocumentList.get(irsDocumentList.size()-1)[0].toString(), "C"));
+			}
+			
+			return "documents/IRSDocumentList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSDocumentList.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "IRSDocumentAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsDocumentAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		
+		logger.info(new Date() + " Inside IRSDocumentAdd.htm" + UserId);
+
+		try {
+			String projectType = req.getParameter("projectType");
+			String projectId = req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			String isAmend = req.getParameter("isAmend");
+			String irsDocId = req.getParameter("irsDocId");
+			
+			PfmsIRSDocument pfmsIRSDocument = PfmsIRSDocument.builder()
+												.ProjectId(Long.parseLong(projectId!=null?projectId:"0"))
+												.InitiationId(Long.parseLong(initiationId!=null?initiationId:"0"))
+												.IRSVersion(req.getParameter("version"))
+												.LabCode(labcode)
+												.InitiatedBy(EmpId)
+												.InitiatedDate(sdf.format(new Date()))
+												.IRSStatusCode("RIN")
+												.IRSStatusCodeNext("RIN")
+												.CreatedBy(UserId)
+												.CreatedDate(sdtf.format(new Date()))
+												.IsActive(1)
+											.build();
+			
+			long result = service.addPfmsIRSDocument(pfmsIRSDocument);
+
+			if(isAmend!=null && isAmend.equalsIgnoreCase("Y")) {
+				service.irsDocumentApprovalForward(irsDocId, "C", "A", req.getParameter("remarks"), EmpId, labcode, UserId);
+			}else {
+				// Transaction 
+				service.addPfmsIGITransaction(result, "C", "RIN", null, Long.parseLong(EmpId));
+			}
+			
+			if (result > 0) {
+				redir.addAttribute("result", "IRS Document Data Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "IRS Document Data Submit Unsuccessful");
+			}
+
+			redir.addAttribute("projectType", projectType);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("initiationId", initiationId);
+			return "redirect:/IRSDocumentList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSDocumentAdd.htm " + UserId, e);
+			return "static/Error";
+
+		}
+
+	}
+
+	@RequestMapping(value = "IRSDocumentDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsDocumentDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		
+		logger.info(new Date() + " Inside IRSDocumentDetails.htm " + UserId);
+		
+		try {
+			String irsDocId = req.getParameter("irsDocId");
+			PfmsIRSDocument irsDocument = service.getPfmsIRSDocumentById(irsDocId);
+			req.setAttribute("irsDocument", irsDocument);
+			req.setAttribute("version", irsDocument!=null ?irsDocument.getIRSVersion():"1.0");
+			
+			irsDocId = service.getFirstVersionIRSDocId(irsDocument.getProjectId()+"", irsDocument.getInitiationId()+"")+"";
+			
+			String projectType = irsDocument.getProjectId()!=0?"E":"M";
+			req.setAttribute("projectType", projectType);
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, (irsDocument.getProjectId()!=0?irsDocument.getProjectId()+"":irsDocument.getInitiationId()+"") , projectType));
+			
+			req.setAttribute("irsDocId", irsDocId);
+			req.setAttribute("irsDocumentSummaryList", service.getDocumentSummaryList(irsDocId, "C"));
+			req.setAttribute("totalEmployeeList", projectservice.EmployeeList(labcode));
+			req.setAttribute("memberList", service.getDocumentMemberList(irsDocId, "C"));
+			req.setAttribute("employeeList", service.getDocmployeeListByDocId(labcode, irsDocId, "C"));
+			req.setAttribute("shortCodesList", service.getIGIDocumentShortCodesList());
+			req.setAttribute("shortCodesLinkedList", service.getIGIShortCodesLinkedListByType(irsDocId, "C"));
+			req.setAttribute("docTempAttributes", projectservice.DocTempAttributes());
+			req.setAttribute("labDetails", projectservice.LabListDetails(labcode));
+			req.setAttribute("lablogo",  logoUtil.getLabLogoAsBase64String(labcode)); 
+			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
+			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
+			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("irsApplicableDocsList", service.getIGIApplicableDocs(irsDocId, "C"));
+			
+			req.setAttribute("isPdf", req.getParameter("isPdf"));
+			
+			return "documents/IRSDocumentDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSDocumentDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	} 
+
+	@RequestMapping(value = "IRSSpecificationsDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsSpecificationsDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside IRSSpecificationsDetails.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
+			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(docId));
+			
+			return "documents/IRSSpecificationsDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSSpecificationsDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+
+	@RequestMapping(value="IRSSpecificationsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsSpecificationsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSSpecificationsSubmit.htm " + UserId);
+		try {
+			
+			String docId = req.getParameter("docId");
+			String csciOne = req.getParameter("csciOne");
+			String csciTwo = req.getParameter("csciTwo");
+			String[] interfaceId = req.getParameterValues("interfaceId");
+			
+			if(interfaceId!=null && interfaceId.length>0) {
+				long result = 0;
+				for(int i=0; i<interfaceId.length; i++) {
+					IRSDocumentSpecifications specifications = IRSDocumentSpecifications.builder()
+																.IRSDocId(Long.parseLong(docId))
+																.CSCIOne(csciOne!=null?Long.parseLong(csciOne):0)
+																.CSCITwo(csciTwo!=null?Long.parseLong(csciTwo):0)
+																.InterfaceId(interfaceId[i]!=null?Long.parseLong(interfaceId[i]):0)
+																.MessageType(req.getParameter("messageType"))
+																.CreatedBy(UserId)
+																.CreatedDate(sdtf.format(new Date()))
+																.IsActive(1)
+															   .build();
+					result = service.addIRSDocumentSpecifications(specifications);
+				}
+				
+				if (result > 0) {
+					redir.addAttribute("result", "IRS Specification Details Submitted Successfully");
+				} else {
+					redir.addAttribute("resultfail", "IRS Specification Details Submit Unsuccessful");
+				}
+				
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			
+			return "redirect:/IRSSpecificationsDetails.htm";
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSSpecificationsSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "IRSSpecificationDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsSpecificationDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSSpecificationDelete.htm " + UserId);
+		try {
+			
+			long result = service.deleteIRSSpecifiactionById(req.getParameter("irsSpecificationId"));
+
+			if (result > 0) {
+				redir.addAttribute("result", "IRS Specification Details Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "IRS Specification Details Delete Unsuccessful");
+			}
+
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			
+			return "redirect:/IRSSpecificationsDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSSpecificationDelete.htm " + UserId);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "IRSDocumentApprovalSubmit.htm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String irsDocumentApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + "Inside IRSDocumentApprovalSubmit.htm" + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String action = req.getParameter("Action");
+			String remarks = req.getParameter("remarks");
+
+			PfmsIRSDocument irsDocument = service.getPfmsIRSDocumentById(docId);
+			String statusCode = irsDocument.getIRSStatusCode();
+
+			List<String> irsforwardstatus = Arrays.asList("RIN", "RRR", "RRA");
+
+			long result = service.irsDocumentApprovalForward(docId, docType, action, remarks, EmpId, labcode, UserId);
+
+//			if (result != 0 && reqInitiation.getReqStatusCode().equalsIgnoreCase("RFA") && reqInitiation.getReqStatusCodeNext().equalsIgnoreCase("RAM")) {
+//				// PDF Freeze
+//				service.igiDocPdfFreeze(req, resp, docId, labcode);
+//			}
+
+			if (action.equalsIgnoreCase("A")) {
+				if (irsforwardstatus.contains(statusCode)) {
+					if (result != 0) {
+						redir.addAttribute("result", "IRS Document Forwarded Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IRS Document Forward Unsuccessful");
+					}
+					redir.addAttribute("projectType", req.getParameter("projectType"));
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					redir.addAttribute("initiationId", req.getParameter("initiationId"));
+					
+					return "redirect:/IRSDocumentList.htm";
+				} else if (statusCode.equalsIgnoreCase("RFW")) {
+					if (result != 0) {
+						redir.addAttribute("result", "IRS Document Recommende d Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IRS Document Recommend Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				} else if (statusCode.equalsIgnoreCase("RFR")) {
+					if (result != 0) {
+						redir.addAttribute("result", "IRS Document Approved Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IRS Document Approve Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				}
+			} else if (action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if (result != 0) {
+					redir.addAttribute("result", action.equalsIgnoreCase("R") ? "IRS Document Returned Successfully" : "IRS Document Disapproved Successfully");
+				} else {
+					redir.addAttribute("resultfail", action.equalsIgnoreCase("R") ? "IRS Document Return Unsuccessful" : "IRS Document Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/DocumentApprovals.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSDocumentApprovalSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	/* ************************************************ IRS Document End ***************************************************** */
+	
+	/* ************************************************ IDD Document ***************************************************** */
+	
+	@RequestMapping(value = "IDDDocumentList.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String iddDocumentList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String LoginType = (String) ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		
+		logger.info(new Date() + " Inside IDDDocumentList.htm " + UserId);
+		
+		try {
+			String projectType = req.getParameter("projectType");
+			projectType = projectType != null ? projectType : "M";
+			String initiationId = "0";
+			String projectId = "0";
+			
+			if (projectType.equalsIgnoreCase("M")) {
+
+				projectId = req.getParameter("projectId");
+				List<Object[]> projectList = projectservice.LoginProjectDetailsList(EmpId, LoginType, labcode);
+				projectId = projectId != null ? projectId
+						: (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
+
+				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
+				req.setAttribute("projectList", projectList);
+			}else {
+				initiationId = req.getParameter("initiationId");
+				List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, labcode, EmpId);
+				initiationId = initiationId != null ? initiationId
+						: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				req.setAttribute("preProjectList", preProjectList);
+			}
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("projectType", projectType);
+			
+			List<Object[]> iddDocumentList = service.getIDDDocumentList(projectId, initiationId);
+			req.setAttribute("iddDocumentList", iddDocumentList);
+			
+			if(iddDocumentList!=null && iddDocumentList.size()>0) {
+				req.setAttribute("iddDocumentSummaryList", service.getDocumentSummaryList(iddDocumentList.get(iddDocumentList.size()-1)[0].toString(), "D"));
+			}
+			
+			return "documents/IDDDocumentList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IDDDocumentList.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "IDDDocumentAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String iddDocumentAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside IDDDocumentAdd.htm" + UserId);
+		
+		try {
+			String projectType = req.getParameter("projectType");
+			String projectId = req.getParameter("projectId");
+			String initiationId = req.getParameter("initiationId");
+			String isAmend = req.getParameter("isAmend");
+			String iddDocId = req.getParameter("iddDocId");
+			
+			PfmsIDDDocument pfmsIDDDocument = PfmsIDDDocument.builder()
+												.ProjectId(Long.parseLong(projectId!=null?projectId:"0"))
+												.InitiationId(Long.parseLong(initiationId!=null?initiationId:"0"))
+												.IDDVersion(req.getParameter("version"))
+												.LabCode(labcode)
+												.InitiatedBy(EmpId)
+												.InitiatedDate(sdf.format(new Date()))
+												.IDDStatusCode("RIN")
+												.IDDStatusCodeNext("RIN")
+												.CreatedBy(UserId)
+												.CreatedDate(sdtf.format(new Date()))
+												.IsActive(1)
+											.build();
+			
+			long result = service.addPfmsIDDDocument(pfmsIDDDocument);
+			
+			if(isAmend!=null && isAmend.equalsIgnoreCase("Y")) {
+				service.iddDocumentApprovalForward(iddDocId, "D", "A", req.getParameter("remarks"), EmpId, labcode, UserId);
+			}else {
+				// Transaction 
+				service.addPfmsIGITransaction(result, "D", "RIN", null, Long.parseLong(EmpId));
+			}
+			
+			if (result > 0) {
+				redir.addAttribute("result", "IDD Document Data Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "IDD Document Data Submit Unsuccessful");
+			}
+			
+			redir.addAttribute("projectType", projectType);
+			redir.addAttribute("projectId", projectId);
+			redir.addAttribute("initiationId", initiationId);
+			return "redirect:/IDDDocumentList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IDDDocumentAdd.htm " + UserId, e);
+			return "static/Error";
+			
+		}
+		
+	}
+
+	@RequestMapping(value = "IDDDocumentDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String iddDocumentDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		
+		logger.info(new Date() + " Inside IDDDocumentDetails.htm " + UserId);
+		
+		try {
+			String iddDocId = req.getParameter("iddDocId");
+			PfmsIDDDocument iddDocument = service.getPfmsIDDDocumentById(iddDocId);
+			req.setAttribute("iddDocument", iddDocument);
+			req.setAttribute("version", iddDocument!=null ?iddDocument.getIDDVersion():"1.0");
+			
+			iddDocId = service.getFirstVersionIDDDocId(iddDocument.getProjectId()+"", iddDocument.getInitiationId()+"")+"";
+			
+			String projectType = iddDocument.getProjectId()!=0?"E":"M";
+			req.setAttribute("projectType", projectType);
+			req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, (iddDocument.getProjectId()!=0?iddDocument.getProjectId()+"":iddDocument.getInitiationId()+"") , projectType));
+			
+			req.setAttribute("iddDocId", iddDocId);
+			req.setAttribute("iddDocumentSummaryList", service.getDocumentSummaryList(iddDocId, "D"));
+			req.setAttribute("totalEmployeeList", projectservice.EmployeeList(labcode));
+			req.setAttribute("memberList", service.getDocumentMemberList(iddDocId, "D"));
+			req.setAttribute("employeeList", service.getDocmployeeListByDocId(labcode, iddDocId, "D"));
+			req.setAttribute("shortCodesList", service.getIGIDocumentShortCodesList());
+			req.setAttribute("shortCodesLinkedList", service.getIGIShortCodesLinkedListByType(iddDocId, "D"));
+			req.setAttribute("docTempAttributes", projectservice.DocTempAttributes());
+			req.setAttribute("labDetails", projectservice.LabListDetails(labcode));
+			req.setAttribute("lablogo",  logoUtil.getLabLogoAsBase64String(labcode)); 
+			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
+			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
+			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("iddApplicableDocsList", service.getIGIApplicableDocs(iddDocId, "D"));
+			
+			req.setAttribute("isPdf", req.getParameter("isPdf"));
+			
+			return "documents/IDDDocumentDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IDDDocumentDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	}
+	/* ************************************************ IDD Document End ***************************************************** */
+	
 }

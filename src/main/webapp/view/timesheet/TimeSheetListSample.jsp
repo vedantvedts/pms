@@ -905,8 +905,8 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
                   							for (Object[] obj : values) {
 								%>
 									<tr>
-										<td class="center"><%=++slno%></td>
 										<%if(i==0) {%>
+											<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
 								    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
          								<%} %>
          								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>

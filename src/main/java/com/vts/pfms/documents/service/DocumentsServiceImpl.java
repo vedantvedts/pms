@@ -36,10 +36,13 @@ import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
+import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
+import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.requirements.model.RequirementInitiation;
@@ -665,6 +668,278 @@ public class DocumentsServiceImpl implements DocumentsService{
 			
 			return 1L;
 		
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	@Override
+	public List<Object[]> getProductTreeAllListByProjectId(String projectId) throws Exception {
+		
+		return dao.getProductTreeAllListByProjectId(projectId);
+	}
+	
+	/* ************************************************ ICD Document End***************************************************** */
+	
+	/* ************************************************ IRS Document ***************************************************** */
+	
+	@Override
+	public List<Object[]> getIRSDocumentList(String projectId, String initiationId) throws Exception {
+		
+		return dao.getIRSDocumentList(projectId, initiationId);
+	}
+
+	@Override
+	public long addPfmsIRSDocument(PfmsIRSDocument pfmsIRSDocument) throws Exception {
+		
+		return dao.addPfmsIRSDocument(pfmsIRSDocument);
+	}
+	
+	@Override
+	public PfmsIRSDocument getPfmsIRSDocumentById(String irsDocId) throws Exception {
+		
+		return dao.getPfmsIRSDocumentById(irsDocId);
+	}
+	
+	@Override
+	public Long getFirstVersionIRSDocId(String projectId, String initiationId) throws Exception {
+		
+		return dao.getFirstVersionIRSDocId(projectId, initiationId);
+	}
+	
+	@Override
+	public long addIRSDocumentSpecifications(IRSDocumentSpecifications irsDocumentSpecifications) throws Exception {
+		
+		return dao.addIRSDocumentSpecifications(irsDocumentSpecifications);
+	}
+	
+	@Override
+	public List<Object[]> getIRSDocumentSpecificationsList(String irsDocId) throws Exception {
+		
+		return dao.getIRSDocumentSpecificationsList(irsDocId);
+	}
+	
+	@Override
+	public int deleteIRSSpecifiactionById(String irsSpecificationId) throws Exception {
+		
+		return dao.deleteIRSSpecifiactionById(irsSpecificationId);
+	}
+	
+	@Override
+	public long irsDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception {
+		try {
+
+			PfmsIRSDocument irsDocument = dao.getPfmsIRSDocumentById(docId);
+			String statusCode = irsDocument.getIRSStatusCode();
+			String statusCodeNext = irsDocument.getIRSStatusCodeNext();
+			
+			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(reqforwardstatus.contains(statusCode)) {
+					irsDocument.setIRSStatusCode("RFW");
+					irsDocument.setIRSStatusCodeNext("RFR");
+				}else {
+					irsDocument.setIRSStatusCode(statusCodeNext);
+					if(statusCodeNext.equalsIgnoreCase("RFR")) {
+						irsDocument.setIRSStatusCodeNext("RFA");
+					}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
+						irsDocument.setIRSStatusCodeNext("RAM");
+					}else if(statusCodeNext.equalsIgnoreCase("RAM")) {
+						irsDocument.setIRSStatusCodeNext("RAM");
+					}
+				}
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(statusCodeNext.equalsIgnoreCase("RFR")) {
+					irsDocument.setIRSStatusCode("RRR");	
+				}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
+					irsDocument.setIRSStatusCode("RRA");	
+				}
+				
+				// Setting StatusCode Next
+				irsDocument.setIRSStatusCodeNext("RFW");
+			}
+			
+			dao.addPfmsIRSDocument(irsDocument);
+			
+			// Handling Transaction
+			addPfmsIGITransaction(Long.parseLong(docId), docType, irsDocument.getIRSStatusCode(), remarks, Long.parseLong(empId));
+			
+			// Handling Notification
+			List<Object[]> documentSummaryList = dao.getDocumentSummaryList(docId, docType);
+			Object[] documentSummary = null;
+			if(documentSummaryList!=null && documentSummaryList.size()>0) {
+				documentSummary = documentSummaryList.get(0);
+			}
+			
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A")) {
+				String reqStatusCode2 = irsDocument.getIRSStatusCode();
+				if(reqStatusCode2.equalsIgnoreCase("RFW")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[5]!=null?Long.parseLong(documentSummary[5].toString()):0);
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("IRS Document Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFR")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[6]!=null?Long.parseLong(documentSummary[6].toString()):0);
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("IRS Document Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
+					notification.setNotificationUrl("IRSDocumentList.htm");
+					notification.setNotificationMessage("IRS Document Doc Approved");
+				}
+				
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				carsdao.addNotifications(notification);
+				
+			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
+				notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
+				notification.setNotificationUrl("IRSDocumentList.htm");
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"IRS Document Doc Request Returned":"IRS Document Doc Request Disapproved");
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+			
+				carsdao.addNotifications(notification);
+			}
+			
+			return 1L;
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	/* ************************************************ IRS Document End***************************************************** */
+	
+	/* ************************************************ IDD Document ***************************************************** */
+	
+	@Override
+	public List<Object[]> getIDDDocumentList(String projectId, String initiationId) throws Exception {
+		
+		return dao.getIDDDocumentList(projectId, initiationId);
+	}
+	
+	@Override
+	public long addPfmsIDDDocument(PfmsIDDDocument pfmsIDDDocument) throws Exception {
+		
+		return dao.addPfmsIDDDocument(pfmsIDDDocument);
+	}
+	
+	@Override
+	public PfmsIDDDocument getPfmsIDDDocumentById(String irsDocId) throws Exception {
+		
+		return dao.getPfmsIDDDocumentById(irsDocId);
+	}
+	
+	@Override
+	public Long getFirstVersionIDDDocId(String projectId, String initiationId) throws Exception {
+		
+		return dao.getFirstVersionIDDDocId(projectId, initiationId);
+	}
+	
+	@Override
+	public long iddDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception {
+		try {
+			
+			PfmsIDDDocument iddDocument = dao.getPfmsIDDDocumentById(docId);
+			String statusCode = iddDocument.getIDDStatusCode();
+			String statusCodeNext = iddDocument.getIDDStatusCodeNext();
+			
+			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(reqforwardstatus.contains(statusCode)) {
+					iddDocument.setIDDStatusCode("RFW");
+					iddDocument.setIDDStatusCodeNext("RFR");
+				}else {
+					iddDocument.setIDDStatusCode(statusCodeNext);
+					if(statusCodeNext.equalsIgnoreCase("RFR")) {
+						iddDocument.setIDDStatusCodeNext("RFA");
+					}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
+						iddDocument.setIDDStatusCodeNext("RAM");
+					}else if(statusCodeNext.equalsIgnoreCase("RAM")) {
+						iddDocument.setIDDStatusCodeNext("RAM");
+					}
+				}
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(statusCodeNext.equalsIgnoreCase("RFR")) {
+					iddDocument.setIDDStatusCode("RRR");	
+				}else if(statusCodeNext.equalsIgnoreCase("RFA")) {
+					iddDocument.setIDDStatusCode("RRA");	
+				}
+				
+				// Setting StatusCode Next
+				iddDocument.setIDDStatusCodeNext("RFW");
+			}
+			
+			dao.addPfmsIDDDocument(iddDocument);
+			
+			// Handling Transaction
+			addPfmsIGITransaction(Long.parseLong(docId), docType, iddDocument.getIDDStatusCode(), remarks, Long.parseLong(empId));
+			
+			// Handling Notification
+			List<Object[]> documentSummaryList = dao.getDocumentSummaryList(docId, docType);
+			Object[] documentSummary = null;
+			if(documentSummaryList!=null && documentSummaryList.size()>0) {
+				documentSummary = documentSummaryList.get(0);
+			}
+			
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A")) {
+				String reqStatusCode2 = iddDocument.getIDDStatusCode();
+				if(reqStatusCode2.equalsIgnoreCase("RFW")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[5]!=null?Long.parseLong(documentSummary[5].toString()):0);
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("IDD Document Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFR")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[6]!=null?Long.parseLong(documentSummary[6].toString()):0);
+					notification.setNotificationUrl("DocumentApprovals.htm");
+					notification.setNotificationMessage("IDD Document Doc request Forwarded");
+				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
+					notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
+					notification.setNotificationUrl("IDDDocumentList.htm");
+					notification.setNotificationMessage("IDD Document Doc Approved");
+				}
+				
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+				
+				carsdao.addNotifications(notification);
+				
+			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
+				notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
+				notification.setNotificationUrl("IDDDocumentList.htm");
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"IDD Document Doc Request Returned":"IDD Document Doc Request Disapproved");
+				notification.setNotificationby(Long.parseLong(empId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(userId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+				
+				carsdao.addNotifications(notification);
+			}
+			
+			return 1L;
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;

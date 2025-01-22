@@ -227,6 +227,8 @@ h6{
 				<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&empId=<%=empId %>"  >BACK</a>
 				<%}else if(text!=null && text.equalsIgnoreCase("C")){ %>
 				<a type="button" class="btn  btn-sm back" href="CCMActionReport.htm?committeeId=<%=committeeid %>&scheduleId=<%=meettingid %>"  >BACK</a>
+				<%}else if(text!=null && text.equalsIgnoreCase("R")){ %>
+					<a type="button" class="btn  btn-sm back" href="ActionReport.htm"  >BACK</a>
 				<%} %>
 				</div>
 				</div>

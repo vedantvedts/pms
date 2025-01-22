@@ -177,8 +177,8 @@
 		
 		List<PfmsApplicableDocs> applicableDocsList = (List<PfmsApplicableDocs>)request.getAttribute("applicableDocsList");
 		List<Object[]> icdApplicableDocsList = (List<Object[]>)request.getAttribute("icdApplicableDocsList");
-		List<Long> igiApplicableDocIds = icdApplicableDocsList.stream().map(e -> Long.parseLong(e[1].toString())).collect(Collectors.toList());
-		applicableDocsList = applicableDocsList.stream().filter(e -> !igiApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
+		List<Long> icdApplicableDocIds = icdApplicableDocsList.stream().map(e -> Long.parseLong(e[1].toString())).collect(Collectors.toList());
+		applicableDocsList = applicableDocsList.stream().filter(e -> !icdApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
 		List<String> icdApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
 
 		List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
@@ -445,17 +445,11 @@
 		<input type="hidden" name="docType" value="B"> 
 		<input type="hidden" name="shortCodeType" id="shortCodeType"> 
 	
-		<button type="submit" class="btn bg-transparent" id="shortCodesFormBtn" formaction="IGIShortCodesDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;">
-			<i class="fa fa-download text-success" aria-hidden="true"></i>
-		</button>
+		<button type="submit" id="shortCodesFormBtn" formaction="IGIShortCodesDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
 	
-		<button type="submit" class="btn bg-transparent" id="applicableDocumentsFormBtn" formaction="IGIApplicableDocumentsDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;">
-			<i class="fa fa-download text-success" aria-hidden="true"></i>
-		</button>
+		<button type="submit" id="applicableDocumentsFormBtn" formaction="IGIApplicableDocumentsDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
 		
-		<button type="submit" class="btn bg-transparent" id="connectionsFormBtn" formaction="ICDConnectionsDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;">
-			<i class="fa fa-download text-success" aria-hidden="true"></i>
-		</button>
+		<button type="submit" id="connectionsFormBtn" formaction="ICDConnectionsDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
 	</form>
 	<!-- -------------------------------------------- Document Distribution Modal -------------------------------------------- -->
 	<div class="modal fade" id="distributionModal" tabindex="-1" role="dialog" aria-labelledby="distributionModal" aria-hidden="true">
@@ -797,7 +791,7 @@ $('#myform').submit(function() {
 function DownloadDocPDF(){
 	var chapterCount = 0;
     var mainContentCount = 0;
-	var leftSideNote = '<%if(docTempAtrr!=null && docTempAtrr[12]!=null) {%><%=docTempAtrr[12].toString() %> <%} else{%>-<%}%>';
+	var leftSideNote = '<%if(docTempAtrr!=null && docTempAtrr[12]!=null) {%><%=docTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 	
 	var docDefinition = {
             content: [

@@ -111,6 +111,10 @@
                         	href="IGIDocumentDetails.htm?igiDocId=<%=docId %>"
                         <%} else if(docType.equalsIgnoreCase("B")) {%>
                         	href="ICDDocumentDetails.htm?icdDocId=<%=docId %>"
+                        <%} else if(docType.equalsIgnoreCase("C")) {%>
+                        	href="IRSDocumentDetails.htm?irsDocId=<%=docId %>"
+                        <%} else if(docType.equalsIgnoreCase("D")) {%>
+                        	href="IDDDocumentDetails.htm?iddDocId=<%=docId %>"
                         <%} %>
                          >Back</a>
                     </div>

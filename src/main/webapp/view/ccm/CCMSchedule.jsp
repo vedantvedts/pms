@@ -279,6 +279,7 @@ String endDate = fc.sdfTordf(selectedMonthEndDate);
 LocalTime currentTime = LocalTime.now();
 
 List<CommitteeSchedule> ccmScheduleList = (List<CommitteeSchedule>) request.getAttribute("ccmScheduleList");
+
 if (ccmScheduleList != null && !ccmScheduleList.isEmpty()) {
     ccmScheduleList = ccmScheduleList.stream()
         .map(e -> {
@@ -403,6 +404,8 @@ if(ccmSchedule!=null) {
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 											<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>">
 											<input type="hidden" name="committeeId" value="<%=committeeId%>">
+											<input type="hidden"  name="monthyear" value="<%=monthyear %>">
+											<input type="hidden"  name="monthyeartext" value="<%=monthyeartext.toLowerCase() %>">
      										<button type="submit" class="btn btn-outline-primary fw-bold ccmSideBarButton" <%if(0L==Long.parseLong(ccmScheduleId)) {%> style="background-color: green;color: white;border-color: green;" <%} %> data-toggle="tooltip" data-placement="top" title="New CCM for Chosen Month">
      											Add New CCM
      										</button>
@@ -419,6 +422,8 @@ if(ccmSchedule!=null) {
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												<input type="hidden" name="committeeMainId" value="<%=schedule.getCommitteeMainId()%>">
 												<input type="hidden" name="committeeId" value="<%=schedule.getCommitteeId()%>">
+												<input type="hidden"  name="monthyear" value="<%=monthyear %>">
+												<input type="hidden"  name="monthyeartext" value="<%=monthyeartext.toLowerCase() %>">
 	     										<button class="btn btn-outline-primary viewbtn fw-bold ccmSideBarButton" type="submit" name="ccmScheduleId" value="<%=schedule.getScheduleId()%>"  
 	     										data-toggle="tooltip" data-placement="top" title="<%=schedule.getMeetingId() %>" <%if(schedule.getScheduleId()==Long.parseLong(ccmScheduleId)) {%> style="background-color: green;color: white;border-color: green;" <%} %> >
 	     											<%=schedule.getMeetingId() %>

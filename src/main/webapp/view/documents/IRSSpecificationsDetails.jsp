@@ -64,26 +64,10 @@
 	String docType = (String)request.getAttribute("docType");
 	String documentNo = (String)request.getAttribute("documentNo");
 	String projectId = (String)request.getAttribute("projectId");
-	List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
 	List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList"); 
-	igiInterfaceList = igiInterfaceList.stream().filter(e -> e.getIsActive()==1).collect(Collectors.toList());
-	List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
-	
-
-	//List<String> subsystems = productTreeList.stream().map(obj -> obj[7].toString()).distinct().collect(Collectors.toList());
-
-	//Map<String, String> connectionMap = new HashMap<>();
-
-	//for (Object[] connection : icdConnectionsList) {
-	//    String key = connection[4] + "_" + connection[5];
-	//    int count = connectionMap.containsKey(key) ? connectionMap.get(key).split("<br>").length + 1 : 1;
-
-	//    String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
-
-	//    String value = connection[4] + "_" + connection[5] + "_" + connection[8] + "_" + seqNumber;
-	//    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + "<br>" + newValue);
-	//}
-	
+	List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface") && e.getIsActive()==1).collect(Collectors.toList());
+	List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface") && e.getIsActive()==1).collect(Collectors.toList());
+	List<Object[]> irsSpecificationsList = (List<Object[]>)request.getAttribute("irsSpecificationsList"); 
 %>
 
 	<% String ses = (String) request.getParameter("result"); 
@@ -109,29 +93,18 @@
             	<div class="row">
                		<div class="col-md-9" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Connection Details - <%=documentNo %>
+	                      Specification Details - <%=documentNo %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
-                		<!-- <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#connectinoMatrixModal">Connection Matrix</button> -->
-						<form action="ICDConnectionMatrixDetails.htm" method="post">
-                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		        			<input type="hidden" name="docId" value="<%=docId %>" />
-		        			<input type="hidden" name="docType" value="<%=docType %>" />
-		        			<input type="hidden" name="documentNo" value="<%=documentNo %>" />
-		        			<input type="hidden" name="projectId" value="<%=projectId %>" />
-		        			<button class="btn btn-info btn-sm shadow-nohover back">
-		        				Connection Matrix
-		        			</button>
-                		</form>                	
                 	</div>
                     <div class="col-md-1" align="right">
-                        <a class="btn btn-info btn-sm shadow-nohover back" style="position: relative;" href="ICDDocumentDetails.htm?icdDocId=<%=docId %>">Back</a>
+                        <a class="btn btn-info btn-sm shadow-nohover back" style="position: relative;" href="IRSDocumentDetails.htm?irsDocId=<%=docId %>">Back</a>
                     </div>
             	</div>
         	</div>
         	<div class="card-body">
-        		<form action="ICDConnectionMatrixSubmit.htm" method="post" id="connectionForm">
+        		<form action="IRSSpecificationsSubmit.htm" method="post" id="connectionForm">
         			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         			<input type="hidden" name="docId" value="<%=docId %>" />
         			<input type="hidden" name="docType" value="<%=docType %>" />
@@ -140,49 +113,50 @@
 	        		<table class="customtable">
 	        			<thead>
 	        				<tr>
-	        					<th width="15%">Sub-System 1</th>
-	        					<th width="15%">Super Sub-System 1</th>
-	        					<th width="15%">Sub-System 2</th>
-	        					<th width="15%">Super Sub-System 2</th>
+	        					<th width="15%">CSCI 1</th>
+	        					<th width="15%">CSCI 2</th>
 	        					<th width="30%">Interface</th>
+	        					<th width="30%">Message Type</th>
 	        					<th width="10%">Action</th>
 	        				</tr>
 	        			</thead>	
 	        			<tbody>
 	        				<tr>
 	        					<td>
-	        						<select class="form-control selectdee subSystem1" name="subSystemOne" id="subSystem1" onchange="getSuperSubLevelList('1')" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+	        						<select class="form-control selectdee csciOne" name="csciOne" id="csciOne" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 								        <option value="" disabled selected>Choose...</option>
-								        <% for(Object[] obj : productTreeList){ %>
-								        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
-								        <%} %>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee superSubSystem1" name="superSubSystemOne" id="superSubSystem1" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee subSystem2" name="subSystemTwo" id="subSystem2" onchange="getSuperSubLevelList('2')" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-										<option value="" disabled selected>Choose...</option>
-								        <% for(Object[] obj : productTreeList){ %>
-								        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
-								        <%} %>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee superSubSystem2" name="superSubSystemTwo" id="superSubSystem2" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceId" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
-								        <% for(IGIInterface igiinterface : igiInterfaceList){ %>
+								        <% for(IGIInterface igiinterface : logicalInterfaceList){ %>
 								        	<option value="<%=igiinterface.getInterfaceId() %>"><%=igiinterface.getInterfaceName() %> (<%=igiinterface.getInterfaceCode() %>)</option>
 								        <%} %>
 									</select>
 	        					</td>
 	        					<td>
-	        						<button type="submit" class="btn btn-sm submit" onclick="return validateConnectionsForm()">
+	        						<select class="form-control selectdee csciTwo" name="csciTwo" id="csciTwo" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+										<option value="" disabled selected>Choose...</option>
+								        <% for(IGIInterface igiinterface : logicalInterfaceList){ %>
+								        	<option value="<%=igiinterface.getInterfaceId() %>"><%=igiinterface.getInterfaceName() %> (<%=igiinterface.getInterfaceCode() %>)</option>
+								        <%} %>
+									</select>
+	        					</td>
+	        					<td>
+	        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceId" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
+								        <% for(IGIInterface igiinterface : physicalInterfaceList){ %>
+								        	<option value="<%=igiinterface.getInterfaceId() %>"><%=igiinterface.getInterfaceName() %> (<%=igiinterface.getInterfaceCode() %>)</option>
+								        <%} %>
+									</select>
+	        					</td>
+	        					<td>
+	        						<select class="form-control" name="messageType" required>
+    									<option value="" selected disabled>----select----</option>
+    									<option value="Link Management">Link Management</option>
+    									<option value="Control Message">Control Message</option>
+    									<option value="Acknowledgement">Acknowledgement</option>
+    									<option value="Track Report">Track Report</option>
+    									<option value="Others">Others</option>
+    								</select>
+	        					</td>
+	        					<td>
+	        						<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure to Submit?')">
 	        							SUBMIT
 	        						</button>
 	        					</td>
@@ -198,54 +172,42 @@
                     	<thead class="center">
                     		<tr>
                     			<th>SN</th>
-                    			<th>Connection ID</th>
-                    			<th>Sub-System 1</th>
-                    			<th>Sub-System 2</th>
+                    			<!-- <th>Specification ID</th> -->
+                    			<th>CSCI 1</th>
+	        					<th>CSCI 2</th>
                     			<th>Interface Code</th>
-                    			<th>Interface Type</th>
+                    			<th>Message Type</th>
+                    			<!-- <th>Interface Type</th> -->
                     			<th>Transmission Speed</th>
                     			<th>Data Format</th>
                     			<th>Action</th>
 	                    	</tr>
                     	</thead>
                     	<tbody>
-                    		<%if(icdConnectionsList!=null && icdConnectionsList.size()>0) {
-                    			int count = 0;
+                    		<%if(irsSpecificationsList!=null && irsSpecificationsList.size()>0) {
                     			int slno = 0;
-                    			String systemOne1 = "";
-                				String systemTwo1 = "";
-                    			for(Object[] obj : icdConnectionsList) {
+                    			for(Object[] obj : irsSpecificationsList) {
                     				
-                    				String systemOne2 = obj[4]+"";
-                    				String systemTwo2 = obj[5]+"";
-                    				
-                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2)) {
-                    					systemOne1 = systemOne2;
-                    					systemTwo1 = systemTwo2;
-                    					count = 0;
-                    				}
-                    				
-                    				++count;
                     		%>
                     			<tr>
                     				<td class="center"><%=++slno %></td>
-                    				<td class="center">
-                    					<%=obj[4] + "_" + obj[5] + "_" + obj[8] + ((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>
-                    					<%-- <%=obj[4]+"_"+obj[5] %> --%>
-                    				</td>
-                    				<td class="center"><%=obj[4] %></td>
+                    				<!-- <td class="center">
+                    					
+                    				</td> -->
+                    				<td class="center"><%=obj[6]+"_"+obj[7] %></td>
+                    				<td class="center"><%=obj[13]+"_"+obj[14] %></td>
+                    				<td class="center"><%=obj[20] %></td>
                     				<td class="center"><%=obj[5] %></td>
-                    				<td class="center"><%=obj[8] %></td>
-                    				<td><%=obj[10] %></td>
-                    				<td><%=obj[13] %></td>
-                    				<td><%=obj[11] %></td>
+                    				<%-- <td><%=obj[23] %></td> --%>
+                    				<td><%=obj[26] %></td>
+                    				<td><%=obj[24] %></td>
                     				<td class="center">
-						      			 <form action="ICDConnectionDelete.htm" method="POST" id="inlineapprform<%=count%>">
+						      			 <form action="IRSSpecificationDelete.htm" method="POST" id="inlineapprform<%=slno%>">
 									        <button type="submit" class="editable-clicko" onclick="return confirm('Are you sure to delete?')">
 									            <img src="view/images/delete.png" alt="Delete">
 									        </button>
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-									        <input type="hidden" name="icdConnectionId" value="<%=obj[0] %>">
+									        <input type="hidden" name="irsSpecificationId" value="<%=obj[0] %>">
 									        <input type="hidden" name="docId" value="<%=docId%>"> 
 											<input type="hidden" name="docType" value="<%=docType%>"> 
 											<input type="hidden" name="documentNo" value="<%=documentNo%>">
@@ -320,7 +282,7 @@
 	<!-- ----------------------------------------------- Add New Short Codes Modal End-------------------------------------------------------- -->
 	
 <script type="text/javascript">
-	/* $(document).ready(function () {
+	$(document).ready(function () {
 	    // Function to synchronize options between dropdowns
 	    function syncDropdowns(sourceId, targetId) {
 	        // Get the selected value in the source dropdown
@@ -336,15 +298,15 @@
 	    }
 	
 	    // When the first dropdown changes
-	    $('#subSystemOne').on('change', function () {
-	        syncDropdowns('subSystemOne', 'subSystemTwo');
+	    $('#csciOne').on('change', function () {
+	        syncDropdowns('csciOne', 'csciTwo');
 	    });
 	
 	    // When the second dropdown changes
-	    $('#subSystemTwo').on('change', function () {
-	        syncDropdowns('subSystemTwo', 'subSystemOne');
+	    $('#csciTwo').on('change', function () {
+	        syncDropdowns('csciTwo', 'csciOne');
 	    });
-	}); */
+	});
 	
 	$(document).ready(function() {
         $('#myTable').DataTable({
@@ -354,60 +316,6 @@
         });
     });
 	
-	function getSuperSubLevelList(rowId){
-
-		var projectId = '<%=projectId%>';
-		var subSystemId = $('.subSystem'+rowId+' option:selected').attr('data-id');
-		
-		$.ajax({
-			type : "GET",
-			url : "GetProductTreeListByLevel.htm",	
-			datatype : 'json',
-			data : {
-				subSystemId : subSystemId,				
-				levelId : 2,				
-				projectId : projectId,				
-			},
-			success : function(result) {
-				var result = JSON.parse(result);
-				var values = Object.keys(result).map(function(e) {return result[e]});
-				
-				var s = '';
-				s += '<option value="0">Not Applicable</option>';
-				for (i = 0; i < values.length; i++) {									
-					s += '<option value="'+values[i][0]+"/"+values[i][7]+'">'+values[i][2] + " (" +values[i][7]+ ")" + '</option>';
-				} 
-							 
-				$('#superSubSystem'+rowId).html(s);
-				
-			}
-		});
-	}
-	
-	function validateConnectionsForm() {
-		
-		var subSystem1 = $('#subSystem1').val();
-		var subSystem2 = $('#subSystem2').val();
-		var superSubSystem1 = $('#superSubSystem1').val();
-		var superSubSystem2 = $('#superSubSystem2').val();
-		
-		console.log('subSystem1', subSystem1);
-		console.log('superSubSystem1', superSubSystem1);
-		console.log('subSystem2', subSystem2);
-		console.log('superSubSystem2', subSystem2);
-		if((subSystem1!=null && subSystem2!=null && subSystem1 === subSystem2) && (superSubSystem1!=null && superSubSystem2!=null && superSubSystem1 === superSubSystem2) ) {
-			alert('Same System Connection is not allowed');
-			event.preventDefault();
-			return false;
-		}else {
-			if(confirm('Are You Sure to Submit?')){
-				$('#superSubSystem1').submit();
-			}else {
-				event.preventDefault();
-				return false;
-			}
-		}
-	}
 </script> 	
 </body>
 </html>

@@ -21,10 +21,13 @@ import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
+import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
+import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 
 
@@ -552,18 +555,18 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		
 	}
 
-	private static final String GETFIRSTVERSIONREQINITIATIONID = "SELECT a.ICDDocId FROM pfms_icd_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ICDVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	private static final String GETFIRSTVERSIONICDDOCID = "SELECT a.ICDDocId FROM pfms_icd_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ICDVersion='1.0' AND a.IsActive=1 LIMIT 1";
 	@Override
 	public Long getFirstVersionICDDocId(String projectId, String initiationId) throws Exception {
 		try {
-			Query query = manager.createNativeQuery(GETFIRSTVERSIONREQINITIATIONID);
+			Query query = manager.createNativeQuery(GETFIRSTVERSIONICDDOCID);
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
 			BigInteger count = (BigInteger)query.getSingleResult();
 			return count.longValue();
 			
 		}catch (Exception e) {
-			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionIGIDocId " + e);
+			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionICDDocId " + e);
 			e.printStackTrace();
 			return 0L;
 		}
@@ -623,6 +626,197 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			logger.error(new Date()  + " Inside DocumentsDAOImpl addPfmsIGITransaction " + e);
 			e.printStackTrace();
 			return 0 ;
+		}
+	}
+	
+	private static final String PRODUCTTREEALLLISTBYPROJECTID = "SELECT a.MainId, a.SubLevelId, a.LevelName, a.Stage, a.Module, a.RevisionNo, a.SystemMainId, a.LevelCode, a.ProjectId, a.ParentLevelId, a.LevelId FROM pfms_product_tree a,project_master b WHERE a.MainId>0 AND a.ProjectId=b.ProjectId AND b.ProjectId=:ProjectId AND a.IsActive='1' ORDER BY a.SubLevelId";
+	@Override
+	public List<Object[]> getProductTreeAllListByProjectId(String projectId)throws Exception
+	{
+		try {
+			Query query=manager.createNativeQuery(PRODUCTTREEALLLISTBYPROJECTID);
+			query.setParameter("ProjectId", projectId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
+	
+	/* ************************************************ ICD Document End***************************************************** */
+	
+	/* ************************************************ IRS Document ***************************************************** */
+	
+	private static final String IRSDOCUMENTLIST = "SELECT a.IRSDocId, a.IRSVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.IRSStatusCode, a.IRSStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, \r\n"
+			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, d.ReqStatus, d.ReqStatusColor \r\n"
+			+ "FROM pfms_irs_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.IRSStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId ORDER BY a.IRSDocId DESC";
+	@Override
+	public List<Object[]> getIRSDocumentList(String projectId, String initiationId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(IRSDOCUMENTLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("InitiationId", initiationId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	@Override
+	public long addPfmsIRSDocument(PfmsIRSDocument  pfmsIRSDocument) throws Exception
+	{
+		try {
+		    manager.persist(pfmsIRSDocument);
+		    manager.flush();
+			return pfmsIRSDocument.getIRSDocId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addPfmsIRSDocument " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+
+	@Override
+	public PfmsIRSDocument getPfmsIRSDocumentById(String irsDocId) throws Exception {
+		try {
+			return manager.find(PfmsIRSDocument.class, Long.parseLong(irsDocId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String GETFIRSTVERSIONIRSDOCID = "SELECT a.IRSDocId FROM pfms_irs_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.IRSVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	@Override
+	public Long getFirstVersionIRSDocId(String projectId, String initiationId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETFIRSTVERSIONIRSDOCID);
+			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", projectId);
+			BigInteger count = (BigInteger)query.getSingleResult();
+			return count.longValue();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionIRSDocId " + e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	@Override
+	public long addIRSDocumentSpecifications(IRSDocumentSpecifications irsDocumentSpecifications) throws Exception
+	{
+		try {
+		    manager.persist(irsDocumentSpecifications);
+		    manager.flush();
+			return irsDocumentSpecifications.getIRSSpecificationId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addIRSDocumentSpecifications " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+	
+	private static final String IRSDOCUMENTSPECIFICATIONSLIST = "SELECT a.IRSSpecificationId, a.IRSDocId, a.CSCIOne, a.CSCITwo, a.InterfaceId, a.MessageType,   \r\n"
+			+ "b.InterfaceSeqNo AS 'InterfaceSeqNoC1', b.InterfaceCode AS 'InterfaceCodeC1', b.InterfaceName AS 'InterfaceNameC1', b.InterfaceType AS 'InterfaceTypeC1', b.DataType AS 'DataTypeC1', b.SignalType AS 'SignalTypeC1', b.InterfaceSpeed AS 'InterfaceSpeedC1',\r\n"
+			+ "c.InterfaceSeqNo AS 'InterfaceSeqNoC2', c.InterfaceCode AS 'InterfaceCodeC2', c.InterfaceName AS 'InterfaceNameC2', c.InterfaceType AS 'InterfaceTypeC2', c.DataType AS 'DataTypeC2', c.SignalType AS 'SignalTypeC2', c.InterfaceSpeed AS 'InterfaceSpeedC2',\r\n"
+			+ "d.InterfaceSeqNo, d.InterfaceCode, d.InterfaceName, d.InterfaceType, d.DataType, d.SignalType, d.InterfaceSpeed\r\n"
+			+ "FROM pfms_irs_document_specifications a \r\n"
+			+ "JOIN pfms_igi_interfaces b ON b.InterfaceId = a.CSCIOne \r\n"
+			+ "JOIN pfms_igi_interfaces c ON c.InterfaceId = a.CSCITwo\r\n"
+			+ "JOIN pfms_igi_interfaces d ON d.InterfaceId = a.InterfaceId\r\n"
+			+ "WHERE a.IsActive=1 AND a.IRSDocId = :IRSDocId";
+	@Override
+	public List<Object[]> getIRSDocumentSpecificationsList(String irsDocId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(IRSDOCUMENTSPECIFICATIONSLIST);
+			query.setParameter("IRSDocId", irsDocId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+
+	private static final String DELETEIRSSPECIFICATIONBYID = "UPDATE pfms_irs_document_specifications SET IsActive=0 WHERE IRSSpecificationId=:IRSSpecificationId";
+	@Override
+	public int deleteIRSSpecifiactionById(String irsSpecificationId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEIRSSPECIFICATIONBYID);
+			query.setParameter("IRSSpecificationId", irsSpecificationId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	/* ************************************************ IRS Document End***************************************************** */
+	
+	/* ************************************************ IDD Document ***************************************************** */
+	
+	private static final String IDDDOCUMENTLIST = "SELECT a.IDDDocId, a.IDDVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.IDDStatusCode, a.IDDStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, \r\n"
+			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, d.ReqStatus, d.ReqStatusColor \r\n"
+			+ "FROM pfms_idd_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.IDDStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId ORDER BY a.IDDDocId DESC";
+	@Override
+	public List<Object[]> getIDDDocumentList(String projectId, String initiationId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(IDDDOCUMENTLIST);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("InitiationId", initiationId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	@Override
+	public long addPfmsIDDDocument(PfmsIDDDocument  pfmsIDDDocument) throws Exception
+	{
+		try {
+			manager.persist(pfmsIDDDocument);
+			manager.flush();
+			return pfmsIDDDocument.getIDDDocId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addPfmsIDDDocument " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+	
+	
+	@Override
+	public PfmsIDDDocument getPfmsIDDDocumentById(String irsDocId) throws Exception {
+		try {
+			return manager.find(PfmsIDDDocument.class, Long.parseLong(irsDocId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String GETFIRSTVERSIONIDDDOCID = "SELECT a.IDDDocId FROM pfms_idd_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.IDDVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	@Override
+	public Long getFirstVersionIDDDocId(String projectId, String initiationId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETFIRSTVERSIONIDDDOCID);
+			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", projectId);
+			BigInteger count = (BigInteger)query.getSingleResult();
+			return count.longValue();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionIDDDocId " + e);
+			e.printStackTrace();
+			return 0L;
 		}
 	}
 }

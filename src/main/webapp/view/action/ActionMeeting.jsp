@@ -184,7 +184,7 @@ String MeetingNumbr =(String)request.getAttribute("MeetingNumbr");
 															<th>Action Id</th>	
 															<th class="width-110px" style="width: 7.1%;">PDC</th>
 															<th >Action Item</th>																											 	
-														 	<th >Assigner</th>
+														 	<th >Assignor</th>
 														 	<th >Progress</th>
 														  <th class="width-140px">Action</th> 
 														</tr>

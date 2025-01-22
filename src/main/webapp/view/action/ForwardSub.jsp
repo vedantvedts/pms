@@ -308,6 +308,7 @@ td
   String Assigner=(String) request.getAttribute("Assigner");
   List<Object[]> LinkList=(List<Object[]> ) request.getAttribute("LinkList");
   String actionno= (String) request.getAttribute("actionno");
+  String flag = (String) request.getAttribute("flag");
   
  %>
 
@@ -447,7 +448,9 @@ td
 					        		<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
 					        			<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionIssue.htm"/>
 					        			<input type="hidden" name="Action"  value="F">
-					        		<%}else{%>
+					        		<%}else if(flag!=null && flag.equalsIgnoreCase("R")){%>
+					        			<input type="submit" class="btn btn-primary btn-sm back" value="Back" formaction="ActionReport.htm"/>
+					        		<%}else {%>
 					        			<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionForwardList.htm"/>
 					        		<%}%>
 					        		<input type="hidden" name="ActionMainId" value="<%=Assignee[0]%>" />	

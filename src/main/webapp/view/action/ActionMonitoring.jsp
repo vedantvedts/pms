@@ -144,7 +144,7 @@ h6{
 															<th style="width : 14%;">PDC</th>
 															<%} %>																					
 														 	<th style="width : 18%;">Assignee</th>					 	
-														 	<th style="width : 18%;">Assigner</th>
+														 	<th style="width : 18%;">Assignor</th>
 														 	<th style="width : 10%;">Progress</th>
 														 	<th style="width : 5%;">Details</th>
 														</tr>

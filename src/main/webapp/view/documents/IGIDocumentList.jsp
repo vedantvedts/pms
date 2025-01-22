@@ -377,18 +377,19 @@ background: none;border-style: none;
 											            </div>
 											        </button>
 													
-													<button type="submit" class="editable-clicko" formaction="IGIDocumentApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Document?');">
-														<div class="cc-rockmenu">
-															<div class="rolling">
-																<figure class="rolling_icon">
-																	<img src="view/images/forward1.png">
-																</figure>
-																<span>Forward</span>
+													<%if(igiDocumentSummaryList!=null && igiDocumentSummaryList.size()>0) {%>
+														<button type="submit" class="editable-clicko" formaction="IGIDocumentApprovalSubmit.htm" data-toggle="tooltip" data-placement="top" title="Forward" onclick="return confirm('Are You Sure To Forward this Document?');">
+															<div class="cc-rockmenu">
+																<div class="rolling">
+																	<figure class="rolling_icon">
+																		<img src="view/images/forward1.png">
+																	</figure>
+																	<span>Forward</span>
+																</div>
 															</div>
-														</div>
-													</button>
-													<input type="hidden" name="Action" value="A">
-													
+														</button>
+														<input type="hidden" name="Action" value="A">
+													<%} %>
 												<%} %>
 												<%if(obj[5]!=null && "RFA".equalsIgnoreCase(obj[5].toString()) ) {%>
 													<button type="button" class="editable-clicko" data-placement="top" title="Amend" data-toggle="modal" data-target="#docAmendmentModal" onclick="setversiondata('<%=obj[1]%>','<%=obj[0]%>')">
@@ -435,7 +436,7 @@ background: none;border-style: none;
 	                    	<form action="IGIDocumentAdd.htm" id="myform" method="post">
 	                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                    		<input type="hidden" name="version" value="<%= version %>">
-	                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Create ICD Document?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create ICD Doc v1</button>
+	                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Create IGI Document?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create IGI Doc v1</button>
 	                 		</form>
 	                    </div>
 					<%} %>

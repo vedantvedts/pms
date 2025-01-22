@@ -10,10 +10,13 @@ import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
+import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
+import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
 
 public interface DocumentsDao {
@@ -65,6 +68,25 @@ public interface DocumentsDao {
 	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception;
 	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
 	public long addPfmsIGITransaction(PfmsIGITransaction transaction) throws Exception;
+	public List<Object[]> getProductTreeAllListByProjectId(String projectId) throws Exception;
+	/* ************************************************ ICD Document End***************************************************** */
+	
+	/* ************************************************ IRS Document ***************************************************** */
+	public List<Object[]> getIRSDocumentList(String projectId, String initiationId) throws Exception;
+	public long addPfmsIRSDocument(PfmsIRSDocument pfmsIRSDocument) throws Exception;
+	public PfmsIRSDocument getPfmsIRSDocumentById(String irsDocId) throws Exception;
+	public Long getFirstVersionIRSDocId(String projectId, String initiationId) throws Exception;
+	public long addIRSDocumentSpecifications(IRSDocumentSpecifications irsDocumentSpecifications) throws Exception;
+	public List<Object[]> getIRSDocumentSpecificationsList(String irsDocId) throws Exception;
+	public int deleteIRSSpecifiactionById(String irsSpecificationId) throws Exception;
+	/* ************************************************ IRS Document End***************************************************** */
+	
+	/* ************************************************ IDD Document ***************************************************** */
+	public List<Object[]> getIDDDocumentList(String projectId, String initiationId) throws Exception;
+	public long addPfmsIDDDocument(PfmsIDDDocument pfmsIDDDocument) throws Exception;
+	public PfmsIDDDocument getPfmsIDDDocumentById(String irsDocId) throws Exception;
+	public Long getFirstVersionIDDDocId(String projectId, String initiationId) throws Exception;
+	
 	
 	
 }
