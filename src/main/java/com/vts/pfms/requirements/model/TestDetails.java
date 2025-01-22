@@ -52,6 +52,7 @@ public class TestDetails {
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	private String Timetype;
 	private Long TestPlanInitiationId;
 	private Long parentId;
 	private Long MainId;
