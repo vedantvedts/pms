@@ -294,10 +294,10 @@ label {
 										<td><%=obj[5]%></td>
 								
 										<td><%=obj[3]%></td>
-										<td><%=obj[16]%></td>
-										<td><%=obj[6]%></td>
-										<td><%=obj[15]%></td>
-										 <td><%=obj[4] %></td> 
+										<td><%=obj[16]!=null?obj[16]:"-"%></td>
+										<td><%=obj[6]!=null?obj[6]:"-"%></td>
+										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+										 <td><%=obj[4]!=null?obj[4]:"" %></td> 
 									</tr>
 									<%
 									}
@@ -343,10 +343,10 @@ label {
 										<td><%=obj[5]%></td>
 									
 										<td><%=obj[3]%></td>
-										<td><%=obj[16]%></td>
-										<td><%=obj[6]%></td>
-										<td><%=obj[15]%></td>
-										 <td><%=obj[4] %></td> 
+										<td><%=obj[16]!=null?obj[16]:"-"%></td>
+										<td><%=obj[6]!=null?obj[6]:"-"%></td>
+										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
 									</tr>
 									<%
 									}
@@ -393,10 +393,10 @@ label {
 										<td><%=obj[5]%></td>
 
 										<td><%=obj[3]%></td>
-										<td><%=obj[16]%></td>
-										<td><%=obj[6]%></td>
-										<td><%=obj[15]%></td>
-										<td><%=obj[4]%></td>
+										<td><%=obj[16]!=null?obj[16]:"-"%></td>
+										<td><%=obj[6]!=null?obj[6]:"-"%></td>
+										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
 									</tr>
 									<%
 									}
@@ -443,10 +443,10 @@ label {
 										<td><%=obj[5]%></td>
 
 										<td><%=obj[3]%></td>
-										<td><%=obj[16]%></td>
-										<td><%=obj[6]%></td>
-										<td><%=obj[15]%></td>
-										<td><%=obj[4]%></td>
+										<td><%=obj[16]!=null?obj[16]:"-"%></td>
+										<td><%=obj[6]!=null?obj[6]:"-"%></td>
+										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
 									</tr>
 									<%
 									}
@@ -491,10 +491,10 @@ label {
 										<td><%=obj[5]%></td>
 
 										<td><%=obj[3]%></td>
-										<td><%=obj[16]%></td>
-										<td><%=obj[6]%></td>
-										<td><%=obj[15]%></td>
-										<td><%=obj[4]%></td>
+										<td><%=obj[16]!=null?obj[16]:"-"%></td>
+										<td><%=obj[6]!=null?obj[6]:"-"%></td>
+										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
 									</tr>
 									<%
 									}
@@ -541,10 +541,10 @@ label {
 										<td><%=obj[5]%></td>
 
 										<td><%=obj[3]%></td>
-										<td><%=obj[16]%></td>
-										<td><%=obj[6]%></td>
-										<td><%=obj[15]%></td>
-										<td><%=obj[4]%></td>
+										<td><%=obj[16]!=null?obj[16]:"-"%></td>
+										<td><%=obj[6]!=null?obj[6]:"-"%></td>
+										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
 									</tr>
 									<%
 									}
@@ -590,10 +590,10 @@ label {
 										<td><%=obj[5]%></td>
 
 										<td><%=obj[3]%></td>
-										<td><%=obj[16]%></td>
-										<td><%=obj[6]%></td>
-										<td><%=obj[15]%></td>
-										<td><%=obj[4]%></td>
+										<td><%=obj[16]!=null?obj[16]:"-"%></td>
+										<td><%=obj[6]!=null?obj[6]:"-"%></td>
+										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
 									</tr>
 									<%
 									}
@@ -640,10 +640,10 @@ label {
 										<td><%=obj[5]%></td>
 
 										<td><%=obj[3]%></td>
-										<td><%=obj[16]%></td>
-										<td><%=obj[6]%></td>
-										<td><%=obj[15]%></td>
-										<td><%=obj[4]%></td>
+										<td><%=obj[16]!=null?obj[16]:"-"%></td>
+										<td><%=obj[6]!=null?obj[6]:"-"%></td>
+										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
 									</tr>
 									<%
 									}
