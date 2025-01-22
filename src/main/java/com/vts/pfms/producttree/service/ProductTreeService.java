@@ -10,7 +10,7 @@ public interface ProductTreeService {
 
 	public long AddLevelName(ProductTreeDto dto) throws Exception;
 
-	public List<Object[]> getProductTreeList(String projectId) throws Exception;
+	public List<Object[]> getProductTreeList(String projectId ) throws Exception;
 
 	public long LevelNameEdit(ProductTreeDto dto,String Action) throws Exception;
 
@@ -29,5 +29,7 @@ public interface ProductTreeService {
 	public ProjectSlides getProjectSlides(String projectId)throws Exception;
 
 	public long addProjectSlides(ProjectSlides ps)throws Exception;
+
+	public List<Object[]> getProductTreeListInitiation(String initiationId);
 
 }

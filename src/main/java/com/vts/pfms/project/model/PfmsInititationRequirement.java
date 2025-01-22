@@ -54,4 +54,5 @@ public class PfmsInititationRequirement implements Serializable {
 	private String TestStage;
 	
 	private String LinkedSubSystem;
+	private String Derivedtype;
 }

@@ -321,7 +321,7 @@ FormatConverter fc = new FormatConverter();
 			<div class="col-md-12">
 				<div class="card shadow-nohover" style="margin-top: -0.6pc">
 					<div class="row card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-						<div <%if(projectType.equalsIgnoreCase("M")){ %> class="col-md-4" <%} else{%> class="col-md-6" <%} %> id="projecthead" align="left">
+						<div <%if(projectType.equalsIgnoreCase("M")){ %> class="col-md-3" <%} else{%> class="col-md-3" <%} %> id="projecthead" align="left">
 							<h5 id="text" style="margin-left: 1%; font-weight: 600">Project Test Plan </h5>
 						</div>
 						<div class="col-md-2">
@@ -374,7 +374,7 @@ FormatConverter fc = new FormatConverter();
 								</div>
 							</form>
 						</div>
-						<%if(projectType.equalsIgnoreCase("M")){ %>
+					
 						<div class="col-md-2">
 							<form class="form-inline" method="POST" action="ProjectTestPlan.htm">
 								<div class="row W-100" style="width: 100%; margin-top: -3.5%;">
@@ -398,12 +398,14 @@ FormatConverter fc = new FormatConverter();
 									</div>
 									<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 									<input type="hidden" name="projectId" id="projectId2" value="<%=projectId %>">
+									<input type="hidden" name="initiationId"  value="<%=initiationId %>">
+									 <input type="hidden" name="projectType"  value="<%=projectType %>"> 
 									<%-- <input type="hidden" name="projectType"  value="<%=projectType %>"> --%>
 									<!-- <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden"> -->
 								</div>
 							</form>
 						</div>
-						<%} %>
+					
 					</div>
 				</div>
 				<div class="card">

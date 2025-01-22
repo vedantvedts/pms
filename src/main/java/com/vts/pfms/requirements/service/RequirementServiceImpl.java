@@ -1426,5 +1426,14 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.icdDocumentApprovedList(empId, FromDate, ToDate);
 	}
 	
+	@Override
+	public List<Object[]> productTreeListByInitiationId(String initiationId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.productTreeListByInitiationId(initiationId);
+	}
 	
+	@Override
+	public List<TestPlanMaster> getAllTestPlans() throws Exception {
+		return dao.getAllTestPlans();
+	}
 }

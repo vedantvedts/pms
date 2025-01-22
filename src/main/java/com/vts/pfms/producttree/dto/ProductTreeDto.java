@@ -25,6 +25,6 @@ public class ProductTreeDto {
 		private String ModifiedDate;
 		private String LevelCode;
 		private int isActive;
-	
+		private Long InitiationId;
 
 }

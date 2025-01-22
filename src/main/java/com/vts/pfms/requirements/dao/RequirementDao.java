@@ -168,5 +168,8 @@ public interface RequirementDao {
 	public List<Object[]> igiDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> icdDocumentPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> icdDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+
+	public List<Object[]> productTreeListByInitiationId(String initiationId)throws Exception;
+	public List<TestPlanMaster> getAllTestPlans()throws Exception;
 	
 }

@@ -334,11 +334,11 @@ keyframes blinker { 50% {
 	<%} %>
 	</div>
 		<form action="#">
-			<button class="btn bg-transparent"
+		<!-- 	<button class="btn bg-transparent"
 				formaction="RequirementParaDownload.htm" formmethod="get"
 				formnovalidate="formnovalidate" formtarget="_blank">
 				<i class="fa fa-download text-success" aria-hidden="true"></i>
-			</button>
+			</button> -->
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 			<input type="hidden" name="project" value="<%=project%>"> 
 			<input type="hidden" name="initiationId" value="<%=initiationId%>">

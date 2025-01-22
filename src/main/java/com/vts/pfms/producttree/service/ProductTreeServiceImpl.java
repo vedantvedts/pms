@@ -45,6 +45,7 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		prod.setCreatedBy(dto.getCreatedBy());
 		prod.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		prod.setIsActive(1);
+		prod.setInitiationId(dto.getInitiationId());
 		
 		return dao.AddLevelName(prod);
 	}
@@ -146,6 +147,11 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 	@Override
 	public long addProjectSlides(ProjectSlides ps) throws Exception {
 		return printdao.AddProjectSlideData(ps);
+	}
+	
+	@Override
+	public List<Object[]> getProductTreeListInitiation(String initiationId) {
+		return dao.getProductTreeListInitiation(initiationId);
 	}
 }
 		

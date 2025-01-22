@@ -26,6 +26,7 @@ public class SpecificationMaster {
 	private String SpecValue;
 	private String maximumValue;
 	private String minimumValue;
+	private String SpecificationType;
 	private int specCount;
 	private String CreatedBy;
     private String CreatedDate;

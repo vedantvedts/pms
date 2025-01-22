@@ -40,6 +40,7 @@ import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
 import com.vts.pfms.producttree.model.ProductTreeRev;
 import com.vts.pfms.producttree.service.ProductTreeService;
+import com.vts.pfms.requirements.service.RequirementService;
 
 
 
@@ -52,6 +53,8 @@ public class ProductTreeController {
 	@Autowired
 	ProductTreeService service;
 	
+	@Autowired
+	RequirementService reqservice;
 	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
@@ -77,18 +80,29 @@ public class ProductTreeController {
 			
 			
 	        String ProjectId=req.getParameter("ProjectId");
+	        String initiationId = req.getParameter("initiationId");
+	        String ProjectType = req.getParameter("ProjectType");
+	        
+	        ProjectType=ProjectType==null?"M":ProjectType;
+	        List<Object[] > systemList= service.getAllSystemName();
+//	        if(initiationId==null) {
+//	        	initiationId="0";
+//	        }
+	        String viewmode=req.getParameter("view_mode");
+	        
+	        if(ProjectType.equalsIgnoreCase("M")) {
+	        
 	        if(ProjectId==null)  {
 				Map md=model.asMap();
 				ProjectId=(String)md.get("ProjectId");
 			}	
 	        List<Object[] > projlist= milservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	        
-	        List<Object[] > systemList= service.getAllSystemName();
-	        
 	        if(projlist.size()==0) 
 	        {				
-				redir.addAttribute("resultfail", "No Project is Assigned to you.");
-				return "redirect:/MainDashBoard.htm";
+//				redir.addAttribute("resultfail", "No Project is Assigned to you.");
+//				return "redirect:/MainDashBoard.htm";
+	        	ProjectType="I";
 			}
 	        
 	        if(ProjectId==null) {
@@ -100,17 +114,17 @@ public class ProductTreeController {
 				}
 	        }
 	        
-	        String viewmode=req.getParameter("view_mode");
+
 	        
-	       
-	       
 	        req.setAttribute("ProjectList",projlist);
 			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("initiationId", "0");
 			req.setAttribute("RevisionCount", service.getRevisionCount(ProjectId));
-			req.setAttribute("systemList", systemList);
+			
+		
 			ProjectSlides ps = service.getProjectSlides(ProjectId)!=null ?service.getProjectSlides(ProjectId): new ProjectSlides();
 			req.setAttribute("ps", ps);
-			if(ProjectId!=null) {
+			if(ProjectId!=null && !ProjectId.equalsIgnoreCase("0")) {
 			      req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId).get(0));
 			}
 			else {
@@ -119,9 +133,25 @@ public class ProductTreeController {
 			}
 			
 			req.setAttribute("ProductTreeList",service.getProductTreeList(ProjectId) );
-
+	        }
 			
+			req.setAttribute("ProjectType", ProjectType);
+			req.setAttribute("systemList", systemList);
+			if(ProjectType.equalsIgnoreCase("I")) {
 			
+	    	List<Object[]> preProjectList = reqservice.getPreProjectList(Logintype, LabCode, EmpId);
+	    	if(preProjectList.size()==0) {
+	    		redir.addAttribute("resultfail", "No Project is Assigned to you.");
+				return "redirect:/MainDashBoard.htm";
+	    	}
+	    	
+			initiationId = initiationId != null ? initiationId
+					: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+			req.setAttribute("preProjectList", preProjectList);
+			req.setAttribute("ProjectId", "0");
+			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("ProductTreeList",service.getProductTreeListInitiation(initiationId) );
+			}
 			 if(viewmode!=null && viewmode.toString().equalsIgnoreCase("Y")) {
 				 
 				 return "producttree/ProductTreeView";
@@ -166,10 +196,10 @@ public class ProductTreeController {
 	        String LevelId=arr[1];
 	        String ParentLevelId=arr[2];
 	        String SubLevelId=arr[3];
-	        
+	        String initiationId = arr[4];
 	        
 	        String LevelName=req.getParameter("LevelName");
-	        
+	        String ProjectType = req.getParameter("ProjectType");
 	       
 	        ProductTreeDto dto=new ProductTreeDto();
 	        dto.setProjectId(Long.parseLong(ProjectId));
@@ -178,7 +208,7 @@ public class ProductTreeController {
 	        dto.setSubLevelId(SubLevelId);
 	        dto.setLevelName(LevelName);
 	        dto.setCreatedBy(UserId);
-	        
+	        dto.setInitiationId(Long.parseLong(initiationId));
 	        
 	        long result=service.AddLevelName(dto);
 	        
@@ -190,6 +220,8 @@ public class ProductTreeController {
 				redir.addAttribute("resultfail", "Level Name Add Unsuccessful");
 			}
                redir.addAttribute("ProjectId", ProjectId);
+               redir.addAttribute("ProjectType", ProjectType);
+               redir.addAttribute("initiationId", initiationId);
                return "redirect:/ProductTree.htm";
                
               }    
@@ -218,6 +250,8 @@ public class ProductTreeController {
 		logger.info(new Date() +"Inside ProductTreeEditDelete.htm "+UserId);		
 		try {
 	        String ProjectId=req.getParameter("ProjectId");
+	        String initiationId=req.getParameter("initiationId");
+	        String ProjectType=req.getParameter("ProjectType");
 	       
 	        if(ProjectId==null)  {
 				Map md=model.asMap();
@@ -252,7 +286,7 @@ public class ProductTreeController {
 			}
 			
 			
-			if(ProjectId!=null) {
+			if(ProjectId!=null && !ProjectId.equalsIgnoreCase("0")) {
 				req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId).get(0));
 			}else {
 				req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
@@ -272,12 +306,14 @@ public class ProductTreeController {
 			 dto.setModule(req.getParameter("Module"));
 			 dto.setModifiedBy(UserId);
 			 dto.setSubSystem(req.getParameter("subSystem"));
-			 System.out.println("dto.setSubSystem --->"+dto.getSubSystem());
+	
 			 long update = service.LevelNameEdit(dto,Action);
 			 if(update!=0) {
 			 
 				 redir.addAttribute("result", "Level Name Updated Successfully");
 			     redir.addAttribute("ProjectId", ProjectId);
+				 redir.addAttribute("initiationId", initiationId);
+				 redir.addAttribute("ProjectType", ProjectType);
 			     redir.addAttribute("id",req.getParameter("buttonid"));
 				 if(Action.equalsIgnoreCase("E")) {
 				 
@@ -291,6 +327,8 @@ public class ProductTreeController {
 			 }else {
 				 redir.addAttribute("resultfail", "Level Name Update Unsuccessful");
 				 redir.addAttribute("ProjectId", ProjectId);
+				 redir.addAttribute("initiationId", initiationId);
+				 redir.addAttribute("ProjectType", ProjectType);
 				 redir.addAttribute("id",req.getParameter("buttonid"));
 				 if(Action.equalsIgnoreCase("E")) {
 				 return "redirect:/ProductTreeEditDelete.htm";
@@ -311,6 +349,8 @@ public class ProductTreeController {
 	    	  if(delete!=0) {
 					 redir.addAttribute("result", "Level Deleted Successfully");
 					 redir.addAttribute("ProjectId", ProjectId);
+					 redir.addAttribute("initiationId", initiationId);
+					 redir.addAttribute("ProjectType", ProjectType);
 					 redir.addAttribute("id",req.getParameter("buttonid"));
 					 
 					 if(Action.equalsIgnoreCase("D")) {

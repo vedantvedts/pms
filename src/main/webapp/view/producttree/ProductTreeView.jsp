@@ -286,12 +286,21 @@ table,td{
   <%
   
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+  List<Object[]> preProjectList=(List<Object[]>)request.getAttribute("preProjectList");
   List<Object[]> ProductTreeList=(List<Object[]>)request.getAttribute("ProductTreeList");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
-
-   
+  String initiationId=(String)request.getAttribute("initiationId");
+  Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
+  
+  String ProjectName="";
+  
+  if(ProjectDetail!=null && ProjectId!=null){	
+	   ProjectName=ProjectDetail[1].toString();
+  }else{
+	   ProjectName=preProjectList.stream().filter(e->e[0].toString().equalsIgnoreCase(initiationId)).collect(Collectors.toList()).get(0)[2].toString();
+  }
 
  %>
 
@@ -313,10 +322,7 @@ table,td{
 			                         	<div  class="action-box-header" >
 			                         	
 			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;color:#40A2E3;">
-	                          			        <%if(ProjectId!=null){	
-				                                       Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");%>  
-			                                              <%=ProjectDetail[1] %>
-	                          			               <%} %>
+	                          			      <%=ProjectName %>
 			                          		 </span>
 			                         			 
 										</div>

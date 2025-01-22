@@ -32,7 +32,7 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 	private static final Logger logger=LogManager.getLogger(ProductTreeDaoImpl.class);
 
 
-	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode FROM pfms_product_tree a,project_master b WHERE MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";
+	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId FROM pfms_product_tree a,project_master b WHERE MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";
 	private static final String LEVELNAMEDELETE="UPDATE pfms_product_tree AS t1\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t2 ON t1.mainid = t2.parentlevelid\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
@@ -191,5 +191,18 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 			logger.error(new Date()+" Inside DAO getProjectSlides "+e);
 			return null;
 		}
+	}
+	
+	
+	
+	private static final String PRODUCTTREELISTSUB="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectShortName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId FROM pfms_product_tree a,pfms_initiation b WHERE a.MainId>0 AND a.InitiationId=b.InitiationId AND b.InitiationId=:InitiationId and a.isActive='1' ORDER BY parentlevelid";
+
+	@Override
+	public List<Object[]> getProductTreeListInitiation(String InitiationId) {
+        Query query=manager.createNativeQuery(PRODUCTTREELISTSUB);
+		query.setParameter("InitiationId", InitiationId);
+		List<Object[]> ProductTreeList=(List<Object[]>)query.getResultList();		
+
+		return ProductTreeList;
 	}
 }

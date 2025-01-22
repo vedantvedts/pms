@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletOutputStream;
@@ -156,12 +157,18 @@ public class RequirementsController {
 				req.setAttribute("initiationReqList", service.initiationReqList(projectId, productTreeMainId, "0"));
 			} else {
 				initiationId = req.getParameter("initiationId");
+				productTreeMainId = req.getParameter("productTreeMainId");
+				productTreeMainId = productTreeMainId != null ? productTreeMainId : "0";
 				List<Object[]> preProjectList = service.getPreProjectList(LoginType, LabCode, EmpId);
 				initiationId = initiationId != null ? initiationId
 						: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
 				req.setAttribute("preProjectList", preProjectList);
 				req.setAttribute("initiationId", initiationId);
-				req.setAttribute("initiationReqList", service.initiationReqList("0", "0", initiationId));
+				List<Object[]> productTreeList = service.productTreeListByInitiationId(initiationId);
+				req.setAttribute("productTreeList", productTreeList);
+				req.setAttribute("productTreeMainId", productTreeMainId);
+				req.setAttribute("initiationReqList", service.initiationReqList("0", productTreeMainId, initiationId));
+				req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, initiationId, "P"));
 			}
 
 			req.setAttribute("projectType", projectType);
@@ -214,6 +221,7 @@ public class RequirementsController {
 			String projectId=req.getParameter("projectId");//bharath
 			String productTreeMainId=req.getParameter("productTreeMainId");
 			String reqInitiationId=req.getParameter("reqInitiationId");
+			String Type=req.getParameter("Type");
 			
 			if("GenerateExcel".equalsIgnoreCase(action)) {
 				XSSFSheet sheet =  workbook.createSheet("Specification Master");
@@ -247,23 +255,38 @@ public class RequirementsController {
 				maincell2.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(2, 9000);
 
-				Cell maincell3 = row.createCell(3);
-				maincell3.setCellValue("Value");
+				Cell maincellmin = row.createCell(3);
+				maincellmin.setCellValue("Minimum Value");
+				maincellmin.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(3, 9000);
+				
+				Cell maincell3 = row.createCell(4);
+				maincell3.setCellValue("Typecial Value/Value");
 				maincell3.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(3, 9000);
 
-				Cell maincell4 = row.createCell(4);
+				Cell maincellmax = row.createCell(5);
+				maincellmax.setCellValue("Maximum Value");
+				maincellmax.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(3, 9000);
+				
+				Cell maincell4 = row.createCell(6);
 				maincell4.setCellValue("Unit");
 				maincell4.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(4, 9000);
 				int r=0;
 
 				List<Object[]> SpecificarionMasterList = service.SpecificationMasterList();
+				if(!Type.equalsIgnoreCase("A") )
 				
 				if(SpecificarionMasterList!=null && SpecificarionMasterList.size()>0 ) {
+					
+					if(!Type.equalsIgnoreCase("A") ) {
+						SpecificarionMasterList=SpecificarionMasterList
+								.stream().filter(e -> e[18] != null && e[18].toString().equalsIgnoreCase(Type)).collect(Collectors.toList());
+					}
 				for(Object[]obj:SpecificarionMasterList) {
 					row = sheet.createRow(++r);
-
 					// Determine the color based on a condition
 					CellStyle style = workbook.createCellStyle();
 					if (!obj[14].toString().equalsIgnoreCase("0")) { 
@@ -295,24 +318,35 @@ public class RequirementsController {
 					cell0.setCellValue(String.valueOf(r));
 					cell0.setCellStyle(style);
 					cell0.setCellStyle(centeredStyle);
-					
+					sheet.setColumnWidth(0, 3000);
 					
 					Cell cell1 = row.createCell(1);
 					cell1.setCellValue(obj[5] != null ? obj[5].toString() : "-");
 					cell1.setCellStyle(style);
-
+					sheet.setColumnWidth(1, 7000);
+					
 					Cell cell2 = row.createCell(2);
 					cell2.setCellValue(obj[3] != null ? obj[3].toString() : "-");
 					cell2.setCellStyle(style);
 
 					Cell cell3 = row.createCell(3);
-					cell3.setCellValue(obj[6] != null ? obj[6].toString() : "-");
+					cell3.setCellValue(obj[16] != null ? obj[16].toString() : "-");
 					cell3.setCellStyle(style);
 
 					Cell cell4 = row.createCell(4);
-					cell4.setCellValue(obj[4] != null ? obj[4].toString() : "-");
+					cell4.setCellValue(obj[6] != null ? obj[6].toString() : "-");
 					cell4.setCellStyle(style);
-					sheet.setColumnWidth(4, 9000);
+					sheet.setColumnWidth(4, 10000);
+					
+					Cell cell5 = row.createCell(5);
+					cell5.setCellValue(obj[15] != null ? obj[15].toString() : "-");
+					cell5.setCellStyle(style);
+					sheet.setColumnWidth(5, 10000);
+					
+					Cell cell6 = row.createCell(6);
+					cell6.setCellValue(obj[4] != null ? obj[4].toString() : "-");
+					cell6.setCellStyle(style);
+					sheet.setColumnWidth(6, 10000);
 				}}
 				res.setContentType("application/vnd.ms-excel");
 				res.setHeader("Content-Disposition", "attachment; filename=SpecificationMaster.xls");	
@@ -418,6 +452,7 @@ public class RequirementsController {
 
 				redir.addAttribute("initiationId", initiationId);
 				redir.addAttribute("reqInitiationId", reqInitiationId);
+				redir.addAttribute("productTreeMainId", productTreeMainId);
 				return "redirect:/ProjectOverAllRequirement.htm";
 			}
 
@@ -843,12 +878,17 @@ public class RequirementsController {
 						service.initiationTestPlanList(projectId, productTreeMainId, "0"));
 			} else {
 				initiationId = req.getParameter("initiationId");
+				productTreeMainId=req.getParameter("productTreeMainId")==null?"0":req.getParameter("productTreeMainId");
+				req.setAttribute("productTreeMainId", productTreeMainId);
 				List<Object[]> preProjectList = service.getPreProjectList(LoginType, LabCode, EmpId);
 				initiationId = initiationId != null ? initiationId
 						: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
 				req.setAttribute("preProjectList", preProjectList);
 				req.setAttribute("initiationId", initiationId);
-				req.setAttribute("initiationTestPlanList", service.initiationTestPlanList("0", "0", initiationId));
+				List<Object[]> productTreeList = service.productTreeListByInitiationId(initiationId);
+				req.setAttribute("productTreeList", productTreeList);
+				req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode, initiationId, "P"));
+				req.setAttribute("initiationTestPlanList", service.initiationTestPlanList("0", productTreeMainId, initiationId));
 			}
 
 			req.setAttribute("projectType", projectType);
@@ -2185,7 +2225,8 @@ public class RequirementsController {
 			String description = req.getParameter("description");
 			String priority = req.getParameter("priority");
 			String needtype = req.getParameter("needtype");
-
+			String derivedtype = req.getParameter("derivedtype");
+			
 			String reqType = req.getParameter("reqType");
 			String[] reqTypes = reqType.split("/");
 
@@ -2296,7 +2337,8 @@ public class RequirementsController {
 			pir.setReqInitiationId(Long.parseLong(reqInitiationId));
 			pir.setTestStage(req.getParameter("TestStage"));
 			pir.setLinkedSubSystem(LinkedSubSystem);
-			long count = 0;
+			pir.setDerivedtype(derivedtype);
+					long count = 0;
 			count = service.addPfmsInititationRequirement(pir);
 
 			if (count > 0) {
@@ -2443,6 +2485,7 @@ public class RequirementsController {
 			pir.setReqInitiationId(Long.parseLong(reqInitiationId));
 			pir.setTestStage(req.getParameter("TestStage"));
 			pir.setLinkedSubSystem(LinkedSubSystem);
+			pir.setDerivedtype(req.getParameter("derivedtype"));
 			long count = 0;
 			count = service.addOrUpdatePfmsInititationRequirement(pir);
 
@@ -2867,7 +2910,12 @@ public class RequirementsController {
 			req.setAttribute("testPlanMainList", service.getTestPlanMainList(testPlanInitiationId));
 			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode,
 					!projectId.equals("0") ? projectId : initiationId, !projectId.equals("0") ? "E" : "P"));
-
+//			List<Object[]>TestPlanMasterList = service.TestPlanMaster();
+//			req.setAttribute("TestPlanMasterList", TestPlanMasterList);
+			
+			List<TestPlanMaster>tp= service.getAllTestPlans();
+			req.setAttribute("TestPlanMasterList", tp);
+			
 			return "requirements/TestDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4327,6 +4375,7 @@ public class RequirementsController {
 				sp.setSpecValue(req.getParameter("specValue"));
 				sp.setMaximumValue(req.getParameter("maxValue"));
 				sp.setMinimumValue(req.getParameter("minValue"));
+				sp.setSpecificationType(req.getParameter("SpecType"));
 				
 			
 			
@@ -4389,6 +4438,7 @@ public class RequirementsController {
 				sp1.setCreatedDate(LocalDate.now().toString());
 				sp1.setIsActive(1);
 				sp1.setSpecCount(subsytemspcCount);
+				sp1.setSpecificationType(req.getParameter("SpecType"));
 				long result = service.specMasterAddSubmit(sp1);
 				
 					String[] specParameters = req.getParameterValues(i+"_specParameter");
@@ -4423,6 +4473,7 @@ public class RequirementsController {
 						sp2.setCreatedDate(LocalDate.now().toString());
 						sp2.setIsActive(1);
 						sp2.setSpecCount(subsytemspcCount);
+						sp2.setSpecificationType(req.getParameter("SpecType"));
 						long result2 = service.specMasterAddSubmit(sp2);
 					}
 					}
@@ -4474,7 +4525,6 @@ public class RequirementsController {
 		List<Object[]> TestPlanMasterList = null;
 		try {
 			TestPlanMasterList = service.TestPlanMaster();
-		
 			req.setAttribute("TestPlanMasterList", TestPlanMasterList);
 		} catch (Exception e) {
 
@@ -4569,4 +4619,92 @@ public class RequirementsController {
 		return "redirect:/TestPlanMaster.htm";
 		
 	}
+	
+	@RequestMapping(value="AddTestDetailsFromMaster.htm",method=RequestMethod.GET)
+	public @ResponseBody String AddTestDetailsFromMaster(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside AddTestDetailsFromMaster.htm" + UserId);
+		long result=0;
+		try {
+			
+			String MasterIds= req.getParameter("MasterIds");
+			List<TestPlanMaster>tp= service.getAllTestPlans();
+			String [] MasterId= MasterIds.split(",");
+			
+			String projectId= req.getParameter("projectId");
+			String initiationId= req.getParameter("initiationId");
+			String productTreeMainId= req.getParameter("productTreeMainId");
+			String testPlanInitiationId= req.getParameter("testPlanInitiationId");
+			String nextCount= req.getParameter("nextCount");
+			int count= Integer.parseInt(nextCount);
+			if (initiationId == null)
+				initiationId = "0";
+			if (projectId == null)
+				projectId = "0";
+			if (productTreeMainId == null)
+				productTreeMainId = "0";
+
+			if (testPlanInitiationId==null ||testPlanInitiationId.equals("0")) {
+				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId, projectId,
+						productTreeMainId, EmpId, UserId, null, null));
+			}
+	
+			for(String id:MasterId) {
+				Optional<TestPlanMaster> optionalTestPlanMaster = tp.stream()
+				        .filter(e -> e.getTestMasterId().toString().equalsIgnoreCase(id))
+				        .findFirst();
+			TestPlanMaster testPlanMaster = optionalTestPlanMaster.orElse(null);
+			if(testPlanMaster!=null) {
+				
+				String Testtype = "TEST";
+				String TestDetailsId = "";
+				if (count < 90) {
+					count=count+10;
+					TestDetailsId = Testtype + ("000" + (count));
+				} else if (count < 990L) {
+					count=count+10;
+					TestDetailsId = Testtype + ("00" + (count));
+				} else {
+					count=count+10;
+					TestDetailsId = Testtype + ("0" + (count));
+				}
+				
+				TestDetails Td = new TestDetails();
+				Td.setTestDetailsId(TestDetailsId);
+				Td.setName(testPlanMaster.getName());
+				Td.setDescription(testPlanMaster.getDescription());
+				Td.setObjective(testPlanMaster.getObjective());
+				Td.setConstraints(testPlanMaster.getConstraints());
+				Td.setEstimatedTimeIteration(testPlanMaster.getEstimatedTimeIteration());
+				Td.setTimetype(testPlanMaster.getTimeType());
+				Td.setIterations(testPlanMaster.getIterations());
+				Td.setTestCount(count);
+				Td.setPass_Fail_Criteria(testPlanMaster.getPass_Fail_Criteria());
+				Td.setStageApplicable(testPlanMaster.getStageApplicable());
+				Td.setPreConditions(testPlanMaster.getPreConditions());
+				Td.setPostConditions(testPlanMaster.getPostConditions());
+				Td.setSafetyRequirements(testPlanMaster.getSafetyRequirements());
+				Td.setPersonnelResources(testPlanMaster.getPersonnelResources());
+				Td.setIsActive(1);
+				Td.setRemarks(testPlanMaster.getRemarks());
+				Td.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
+				Td.setSchedule(testPlanMaster.getSchedule());
+				Td.setCreatedBy(UserId);
+				Td.setCreatedDate(sdf1.format(new Date()));
+				result= service.TestDetailsAdd(Td);
+			}
+			
+			
+			
+			}
+		}catch (Exception e) {
+			logger.error(new Date() + " Inside AddTestDetailsFromMaster.htm " + UserId, e);
+		}
+	
+		Gson json = new Gson();
+	
+		return json.toJson(result);
+	}
+	
 }

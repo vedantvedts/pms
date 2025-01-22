@@ -100,7 +100,7 @@ public class PFTSController {
 			
 			if(projectlist.size()==0) 
 		    {				
-				redir.addAttribute("resultfail", "No Project is Assigned to you.");
+				redir.addFlashAttribute("resultfail", "No Project is Assigned to you.");
 				return "redirect:/MainDashBoard.htm";
 			}
 			
@@ -207,7 +207,7 @@ public class PFTSController {
 				redir.addAttribute("resultfail","Something went worng");
 			}
 			
-			redir.addAttribute("projectid",projectId);
+			redir.addFlashAttribute("projectid",projectId);
 			return  "redirect:/ProcurementStatus.htm";
 		}catch (Exception e) 
 		{			
@@ -252,7 +252,7 @@ public class PFTSController {
              String remarks=req.getParameter("remarks");
              String demandNo=req.getParameter("demandNo");
              
-             redir.addAttribute("projectid",projectId);
+             redir.addFlashAttribute("projectid",projectId);
              
              if(statusId.equals("10")) {
             	   	final String localUri=uri+"/pfms_serv/newDemandsOrderDetails?demandNo="+demandNo;
@@ -267,7 +267,7 @@ public class PFTSController {
     					jsonResult=response.getBody();
     			
     				}catch(HttpClientErrorException e) {
-    					redir.addAttribute("resultfail","Order not placed in IBAS");
+    					redir.addFlashAttribute("resultfail","Order not placed in IBAS");
 						return  "redirect:/ProcurementStatus.htm";
     				}
     				ObjectMapper mapper = new ObjectMapper();
@@ -321,7 +321,7 @@ public class PFTSController {
 			}else {
 				redir.addAttribute("resultfail","Something went worng");
 			}
-			redir.addAttribute("projectid",projectId);
+			redir.addFlashAttribute("projectid",projectId);
 			
 			return  "redirect:/ProcurementStatus.htm";
 		}catch (Exception e) 
@@ -386,7 +386,7 @@ public class PFTSController {
              String projectId=req.getParameter("projectId");
              String fileId=req.getParameter("fileId");
              String demandNo=req.getParameter("demandNo");
-             redir.addAttribute("projectid",projectId);
+             redir.addFlashAttribute("projectid",projectId);
             	   	final String localUri=uri+"/pfms_serv/newDemandsOrderDetails?demandNo="+demandNo;
     				List<DemandOrderDetails> demandOrderList=null;
     		 		HttpHeaders headers = new HttpHeaders();
@@ -471,7 +471,7 @@ public class PFTSController {
  			}else {
  				redir.addAttribute("resultfail","Something went worng");
  			}
-			redir.addAttribute("projectid",projectId);
+			redir.addFlashAttribute("projectid",projectId);
 			return "redirect:/ProcurementStatus.htm";
 			
 		}
@@ -557,7 +557,7 @@ public class PFTSController {
 		 				redir.addAttribute("resultfail","Demand Added unsuccessful");
 		 			}
 					}
-					redir.addAttribute("projectid",projectId);
+					redir.addFlashAttribute("projectid",projectId);
 				
 					return "redirect:/ProcurementStatus.htm";
 					
@@ -695,9 +695,9 @@ public class PFTSController {
 				 Long result=service.addDemandfile(pf);
 					
 					if(result>0) {
-						redir.addFlashAttribute("result","Demand Added Successfully ");
+						redir.addAttribute("result","Demand Added Successfully ");
 					}else {
-						redir.addFlashAttribute("resultfail","Something went worng");
+						redir.addAttribute("resultfail","Something went worng");
 					}
 					
 					redir.addFlashAttribute("projectslist",projectlist);
@@ -790,10 +790,10 @@ public class PFTSController {
 	     				redir.addAttribute("resultfail","Something went worng");
 	     			}
 	             
-	             redir.addAttribute("projectslist",projectlist);
-				 redir.addAttribute("projectid",projectId);
-				 redir.addAttribute("fileStatusList",service.getFileStatusList(projectId));
-				 redir.addAttribute("pftsStageList", service.getpftsStageList());
+	             redir.addFlashAttribute("projectslist",projectlist);
+				 redir.addFlashAttribute("projectid",projectId);
+				 redir.addFlashAttribute("fileStatusList",service.getFileStatusList(projectId));
+				 redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
 				 return  "redirect:/ProcurementStatus.htm";
 			}
 			catch (Exception e) {
@@ -865,10 +865,10 @@ public class PFTSController {
 	     				redir.addAttribute("resultfail","Order Update Unsuccessfull");
 	     			}
 	             
-	             redir.addAttribute("projectslist",projectlist);
-				 redir.addAttribute("projectid",projectId);
-				 redir.addAttribute("fileStatusList",service.getFileStatusList(projectId));
-				 redir.addAttribute("pftsStageList", service.getpftsStageList());
+	             redir.addFlashAttribute("projectslist",projectlist);
+				 redir.addFlashAttribute("projectid",projectId);
+				 redir.addFlashAttribute("fileStatusList",service.getFileStatusList(projectId));
+				 redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
 				 return  "redirect:/ProcurementStatus.htm";
 			}
 			catch (Exception e) {
@@ -916,10 +916,10 @@ public class PFTSController {
 						redir.addAttribute("resultfail","Demand Edit Unsuccessfull");
 					}
 					
-					redir.addAttribute("projectslist",projectlist);
-					redir.addAttribute("projectid",ProjectId);
-					redir.addAttribute("fileStatusList",service.getFileStatusList(ProjectId));
-					redir.addAttribute("pftsStageList", service.getpftsStageList());
+					redir.addFlashAttribute("projectslist",projectlist);
+					redir.addFlashAttribute("projectid",ProjectId);
+					redir.addFlashAttribute("fileStatusList",service.getFileStatusList(ProjectId));
+					redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
 					return  "redirect:/ProcurementStatus.htm";
 				
 			} catch (Exception e) {
@@ -1128,7 +1128,7 @@ public class PFTSController {
 				} catch (Exception e) {
 				e.printStackTrace();
 				}
-				redir.addAttribute("projectid", projectid);
+				redir.addFlashAttribute("projectid", projectid);
 				return "redirect:/ProcurementStatus.htm";
 				
 			}
@@ -1262,9 +1262,9 @@ public class PFTSController {
 							result=service.editProcurementMilestone(entity);
 							
 							if(result>0) {
-								redir.addAttribute("result","Milstone Edited Successfully For Demand No. "+demandnumber);
+								redir.addFlashAttribute("result","Milstone Edited Successfully For Demand No. "+demandnumber);
 							}else {
-								redir.addAttribute("resultfail","Something went worng");
+								redir.addFlashAttribute("resultfail","Something went worng");
 							}
 					}else if(action.equalsIgnoreCase("baseline")) {
 						PftsFileMilestone entity =service.getEditMilestoneData(Long.parseLong(pftsMilestoneId));
@@ -1408,7 +1408,7 @@ public class PFTSController {
 				e.printStackTrace();
 			} 
 			
-			redir.addAttribute("projectid", projectid);
+			redir.addFlashAttribute("projectid", projectid);
 			return "redirect:/ProcurementStatus.htm";
 		}
 		

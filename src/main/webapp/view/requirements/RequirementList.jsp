@@ -758,8 +758,17 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>
-						
-							
+						<div class="col-md-12">
+						<div class="row mt-2">
+						<div class="col-md-6 mt-2 mb-2">
+										<label style="font-size: 17px;  color: #07689f">
+											IS Derived?<span class="mandatory" style="color: red;">*</span>
+										</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;<input name="derivedtype"  type="radio" value="Y" >&nbsp;&nbsp; YES&nbsp;&nbsp;
+										&nbsp;&nbsp;<input name="derivedtype" type="radio" value="N" checked>&nbsp;&nbsp; NO&nbsp;&nbsp;
+									</div>
+							</div>
+							</div>
 							<div class="col-md-12">
 								<div class="row mt-2">
 									<div class=col-md-3>
@@ -1093,7 +1102,17 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									</div>
 								</div>
 							</div>
-						
+							<div class="col-md-12">
+						<div class="row mt-2">
+						<div class="col-md-6 mt-2 mb-2">
+										<label style="font-size: 17px;  color: #07689f">
+											IS Derived?<span class="mandatory" style="color: red;">*</span>
+										</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;<input name="derivedtype"  type="radio" value="Y" id="derivedY">&nbsp;&nbsp; YES&nbsp;&nbsp;
+										&nbsp;&nbsp;<input name="derivedtype" type="radio" value="N"  id="derivedN">&nbsp;&nbsp; NO&nbsp;&nbsp;
+									</div>
+							</div>
+							</div>
 									<div class="col-md-12">
 								<div class="row mt-2">
 									<div class=col-md-3>
@@ -1910,7 +1929,7 @@ function edit1(InitiationReqId){
 			},
 			success:function(result){
 				 var ajaxresult=JSON.parse(result);
-				
+					console.log("ajaxresult[22]-->"+ajaxresult[22])
 				 $('#descriptionedit').val(ajaxresult[3])
 				/*  CKEDITOR.instances['Editor1'].setData(ajaxresult[3]);
 				 CKEDITOR.instances['Editor1'].setData(ajaxresult[3]); */
@@ -1926,6 +1945,11 @@ function edit1(InitiationReqId){
 					 $('#essentialRadio').prop('checked', true);
 				 }else if(ajaxresult[8]==="D"){
 					  $('#desirableRadio').prop('checked', true);
+				 }
+				 if(ajaxresult[22]==="N"){
+					 $('#derivedN').prop('checked', true);
+				 }else if(ajaxresult[22]==="Y"){
+					  $('#derivedY').prop('checked', true);
 				 }
 				
 				 if(ajaxresult[13]!=null){
@@ -1960,10 +1984,14 @@ function edit1(InitiationReqId){
 					 $('#specialMethodsedit').val(methods).trigger('change');
 				 }
 				 templengthEdit=$('#LinkedParaEdit').val().length
-			 var reqtypeName =ajaxresult[4].split("_")[0];  
-		      
+			 var reqtypeName ="";  
+		      if(ajaxresult[4].split("_").length>=3){
+		    	  reqtypeName=ajaxresult[4].split("_")[0]+"_"+ajaxresult[4].split("_")[1];
+		      }else{
+		    	  reqtypeName=ajaxresult[4].split("_")[0]
+		      }
 		        var matchingKey = null;
-
+			
 		        map.forEach((value, key) => {
 		            if (value === reqtypeName) {
 		                matchingKey = key;
@@ -1972,8 +2000,8 @@ function edit1(InitiationReqId){
 		    	
 		        if(ajaxresult[20]!=null){
 					 $('#TestStageedit').val(ajaxresult[20]).trigger('change');
-					
-				 }
+				}
+		        
 				$('#reqTypeedit').val(matchingKey)
 		    
 				var LinkedSubArray = [];

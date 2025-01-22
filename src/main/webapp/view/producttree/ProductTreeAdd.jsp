@@ -230,25 +230,55 @@ height:18px;
   <%
   
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+  List<Object[]> preProjectList=(List<Object[]>)request.getAttribute("preProjectList");
   List<Object[]> ProductTreeList=(List<Object[]>)request.getAttribute("ProductTreeList");
+  ProductTreeList=ProductTreeList==null?new ArrayList<>():ProductTreeList;
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
+  String initiationId=(String)request.getAttribute("initiationId");
+  String ProjectType=(String)request.getAttribute("ProjectType");
   List<Object[]> RevisionCount =(List<Object[]>)request.getAttribute("RevisionCount");
   List<Object[]> systemList =(List<Object[]>)request.getAttribute("systemList");
   ProjectSlides ps = (ProjectSlides)request.getAttribute("ps");
- 	String systemId="0";
-  if(ps.getSystemId()!=null && ps.getSystemId()!=0){
+ 	String systemId="1";
+  if(ps!=null &&  ps.getSystemId()!=null && ps.getSystemId()!=0){
 	  systemId=ps.getSystemId()+"";
- 	}else{
- 		systemId="1";
  	}
-  
+	 Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails"); 
+	 
+     String ProjectName="";
+	   
+       if(ProjectDetail!=null && ProjectId!=null){	
+    	   ProjectName=ProjectDetail[1].toString();
+       }else{
+    	   ProjectName=preProjectList.stream().filter(e->e[0].toString().equalsIgnoreCase(initiationId)).collect(Collectors.toList()).get(0)[3].toString();
+       }
+    
  %>
-
 <body>
+ <form class="form-inline"  method="POST" action="ProductTree.htm" id="myfrm">
+  <div class="row" style="width: 100%;">
 
- <form class="form-inline"  method="POST" action="ProductTree.htm">
+  
+	
+                                    <div class="col-md-2">
+                            		<label class="control-label">Project Type :</label>
+                            		</div>
+                            		<div class="col-md-2" style="margin-top: -7px;">
+                              		<select class="form-control selectdee" id="ProjectType" required="required" name="ProjectType" onchange="submit(myfrm)">
+                              			<option disabled selected value="">Choose...</option>
+                              			<option value="M" <%if(ProjectType.equalsIgnoreCase("M")){ %>selected<%} %>>Main Project</option>
+                              			<option value="I" <%if(ProjectType.equalsIgnoreCase("I")){ %>selected<%} %>>Initiation Project</option>
+                              	
+                              		</select>
+                              		</div>
+                              		</div>
+                              					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+                              					
+                              		</form>
+                            <br>
+ <form class="form-inline"  method="POST" action="ProductTree.htm" id="myfrm1">
   <div class="row" style="width: 100%;">
 
   
@@ -256,6 +286,7 @@ height:18px;
                                     <div class="col-md-2">
                             		<label class="control-label">Project Name :</label>
                             		</div>
+                            		<%if(ProjectType.equalsIgnoreCase("M")) {%>
                             		<div class="col-md-2" style="margin-top: -7px;">
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     									<option disabled selected value="">Choose...</option>
@@ -266,29 +297,47 @@ height:18px;
 											<%} %>
   									</select>
   									</div>
+  									 <input type="hidden" name="initiationId" value="<%=initiationId%>">
+  									<%} %>
+  									
+  											<%if(ProjectType.equalsIgnoreCase("I")) {%>
+                            		<div class="col-md-2" style="margin-top: -7px;">
+                              		<select class="form-control selectdee" id="initiationId" required="required" name="initiationId" onchange="submit(myfrm1)">
+    									<option disabled selected value="">Choose...</option>
+    									<%for(Object[]obj:preProjectList){ %>
+    							<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %>selected="selected" <%} %>> <%=obj[2]%>  </option>
+    									<%} %>
+  									</select>
+  									</div>
+  									 <input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+  									<%} %>
+  									
   									<div class="col-md-4" style="margin-top:-7px;">
   										
   										
-  										<% if(ProductTreeList!=null && ProductTreeList.size()>0){ %>
+  										<% if(ProductTreeList!=null && ProductTreeList.size()>0 ){ %>
   										
 		  										<button type="submit" class="btn btn-sm btn-link" name="view_mode" value="Y" formtarget="blank" title="Product Tree View" data-toggle="tooltip" data-placement="top"  >
 												            <img src="view/images/tree.png">
 												</button> 
 												
-												<button type="submit" class="btn btn-sm btn-link" name="view_mode" value="V" formtarget="blank" title="Product Tree View V" data-toggle="tooltip" data-placement="top"  >
+												<!-- <button type="submit" class="btn btn-sm btn-link" name="view_mode" value="V" formtarget="blank" title="Product Tree View V" data-toggle="tooltip" data-placement="top"  >
 												            <img src="view/images/tree.png">
-												</button> 
-												
-												
+												</button>  -->
+														
+												                                        <button type="submit" name="ProjectId" value="<%=ProjectId %>" class="btn btn-sm add" formaction="ProductTreeEditDelete.htm" formmethod="get">LIST</button>
 		                                       
-		                                       <button name="action" class="btn btn-sm back" name ="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevise.htm" style="background-color: green;color: white; border: 0" type="submit" value="revise"  onclick="return confirm('Are You Sure To Submit')">SET BASE LINE  ( <%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1) %> )</button>
+		                                       <%} %>
+		                                      										<% if(ProductTreeList!=null && ProductTreeList.size()>0 && ProjectType.equalsIgnoreCase("M")){ %>   
+		                                       
+		                                       <button name="action" class="btn btn-sm back" name ="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevise.htm" style="background-color: green;color: white; border: 0" type="submit" value="revise"  onclick="return confirm('Are You Sure To Submit')">SET BASE LINE  ( <%=RevisionCount!=null &&  RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1) %> )</button>
                                                    <input type="hidden" name="REVCount" value="<%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1)%>" >
                                               
-                                           <button type="submit" name="ProjectId" value="<%=ProjectId %>" class="btn btn-sm add" formaction="ProductTreeEditDelete.htm" formmethod="get">LIST</button>
+   
                                            
                                            <% if(RevisionCount.size()!=0){ %>
                                          <button type="submit" class="btn btn-sm edit" name="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevisionData.htm" formmethod="get">Revision Data</button> 
-                                           <input type="hidden" name="revCount" value="<%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString()))%>" >
+                                           <input type="hidden" name="revCount" value="<%= RevisionCount!=null && RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString()))%>" >
                                           <%} %>  
                                           
                                           
@@ -319,6 +368,8 @@ height:18px;
 			</div>
 			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
  <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
+ <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
+
  </div>
  
 </form>
@@ -371,10 +422,7 @@ if(ses1!=null){	%>
 			                         	<div  class="action-box-header" >
 			                         	
 			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;">
-	                          			        <%if(ProjectId!=null){	
-				                                       Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");%>  
-			                                              <%=ProjectDetail[1] %>
-	                          			               <%} %>
+	                          			 <%=ProjectName %>
 			                          		 </span>
 			                         			 
 										</div>
@@ -438,6 +486,8 @@ if(ses1!=null){	%>
 												    <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 												         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 													     <input type="hidden" name="Action" value="TD">
+													      <input type="hidden" name="initiationId" value="<%=initiationId%>">
+													       <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 												            <button class="delet" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 												      </form> 
 												   </div>
@@ -497,6 +547,8 @@ if(ses1!=null){	%>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
+																			      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
+																			      <input type="hidden" name="initiationId" value="<%=initiationId%>">
 																		            <button class="delet" name="Mainid" value="<%=level2[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																	        </form> 
 												                     </div>
@@ -559,6 +611,8 @@ if(ses1!=null){	%>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
+																			      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
+																			      <input type="hidden" name="initiationId" value="<%=initiationId%>">
 																		            <button class="delet" name="Mainid" value="<%=level3[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																	        </form> 
 												                     </div>
@@ -627,6 +681,8 @@ if(ses1!=null){	%>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
+																			      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
+																			      <input type="hidden" name="initiationId" value="<%=initiationId%>">
 																		            <button class="delet" name="Mainid" value="<%=level4[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																	        </form> 
 												                     </div>
@@ -691,6 +747,8 @@ if(ses1!=null){	%>
 																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
+																						      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
+																						      <input type="hidden" name="initiationId" value="<%=initiationId%>">
 																					            <button class="delet" name="Mainid" value="<%=level5[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																				        </form> 
 															                     </div>
@@ -752,6 +810,8 @@ if(ses1!=null){	%>
 																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
+																						      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
+																						      <input type="hidden" name="initiationId" value="<%=initiationId%>">
 																					            <button class="delet" name="Mainid" value="<%=level6[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																				        </form> 
 															                     </div>
@@ -812,6 +872,8 @@ if(ses1!=null){	%>
 																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
+																						      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
+																						      <input type="hidden" name="initiationId" value="<%=initiationId%>">
 																					            <button class="delet" name="Mainid" value="<%=level7[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 																				        </form> 
 															                     </div>
@@ -831,8 +893,8 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#7#<%=level6[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#7#<%=level6[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
 													             
 													                
@@ -861,8 +923,8 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#6#<%=level5[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#6#<%=level5[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
 													             
 													                
@@ -890,8 +952,8 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
 													             
 													                
@@ -920,8 +982,8 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
 													                  
 													        </span> 	
@@ -951,8 +1013,8 @@ if(ses1!=null){	%>
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#3#<%=level2[0]%>#<%=count%>.<%=countA%>.<%=countB%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#3#<%=level2[0]%>#<%=count%>.<%=countA%>.<%=countB%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
 													          
 													                
@@ -980,8 +1042,8 @@ if(ses1!=null){	%>
 											
 											<form action="LevelNameAdd.htm" method="get">
 									            <input type="text" name="LevelName" required >
-									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#2#<%=level1[0]%>#<%=count%>.<%=countA%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-									             
+									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#2#<%=level1[0]%>#<%=count%>.<%=countA%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+									              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 									         </form>    
 									          
 									                
@@ -1007,8 +1069,8 @@ if(ses1!=null){	%>
 							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 					            <form action="LevelNameAdd.htm" method="get">
 						            <input type="text" name="LevelName" required>
-						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#<%=count %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-									             
+						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#<%=count %>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+									           <input type="hidden" name="ProjectType" value="<%=ProjectType%>">   
 							   </form>    
 					                 
 					        </span> 	
@@ -1035,35 +1097,7 @@ if(ses1!=null){	%>
         
        
 	    
-	<!--  <div class="bottom-div">  
-	    <div align="right">
-    
-     
-         <table style="">
 
-                  <tr>
-						<td style="font-weight:bold;">Stage (Upper corner)</td>
-						<td style="background-color:#D24545;color:#FFFFFF">Design</td>
-						<td style="background-color:#E9B824;color:black">Realisation</td>
-						<td style="background-color:#0B60B0;color:#FFFFFF">Testing & Evaluation</td>
-						<td style="background-color:green;color:#FFFFFF">Ready for Closure</td>
-                  </tr>
-
-
-
-                 <tr>
-						<td style="font-weight:bold;">Module (Lower corner)</td>
-						<td style="background-color:#FF8911;color:black">In-House Development</td>
-						<td style="background-color:#FDE767;color:black">BTP</td>
-						<td style="background-color:#B67352;color:black">BTS</td>
-						<td style="background-color:#492E87;color:#FFFFFF">COTS</td>
-                 </tr>
-
-       </table>     
-           
-      </div> 
-  
-	  </div>        -->
 	    
 	</div>   
 	 	        
@@ -1144,6 +1178,8 @@ if(ses1!=null){	%>
         	<input type="hidden" id="Mainid" name="Mainid" value="" >
         	 <input type="hidden" id="" name="Action" value="TE" > 
         	<input type="hidden" id="" name="ProjectId" value="<%=ProjectId%>" >
+            <input type="hidden" name="initiationId" value="<%=initiationId%>">
+			 <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
         	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
         </form>
       </div>
@@ -1172,6 +1208,10 @@ if(ses1!=null){	%>
   
   $(document).ready(function() {
 	   $('#ProjectId').on('change', function() {
+	     $('#submit').click();
+
+	   });
+	   $('#initiationId').on('change', function() {
 	     $('#submit').click();
 
 	   });
@@ -1377,7 +1417,13 @@ if(ses1!=null){	%>
   
   
 </script> 
+<script>
 
+function submit(myfrm){
+	$('#'+myfrm).submit();
+}
+
+</script>
 
 </body>
 </html>

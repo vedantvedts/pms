@@ -51,7 +51,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	EntityManager manager;
 
 
-	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,'0',a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality,SUBSTRING_INDEX(a.requirementid, '_', -1) AS 'requirement_number',a.LinkedSubSystem,TestStage FROM pfms_initiation_req a WHERE ReqInitiationId=:ReqInitiationId AND isActive='1' ORDER BY ParentId,requirement_number";
+	private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara,'0',a.ReqMainId,a.ParentId,a.Demonstration,a.Test,a.Analysis,a.Inspection,a.SpecialMethods,a.Criticality,SUBSTRING_INDEX(a.requirementid, '_', -1) AS 'requirement_number',a.LinkedSubSystem,TestStage,Derivedtype FROM pfms_initiation_req a WHERE ReqInitiationId=:ReqInitiationId AND isActive='1' ORDER BY ParentId,requirement_number";
 	@Override
 	public List<Object[]> RequirementList(String reqInitiationId) throws Exception {
 		// TODO Auto-generated method stub
@@ -63,7 +63,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	
 	private static final String SPECIFICATIONMASTERLIST="SELECT a.SpecsMasterId, a.SpecificationName, \r\n"
 			+ "a.Description, a.SpecsParameter, a.SpecsUnit, a.SpecsInitiationId, a.SpecValue, CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',\r\n"
-			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,a.maximumValue,a.minimumValue,a.specCount FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1' ORDER BY a.MainId,a.specCount,a.SpecsMasterId";
+			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,a.maximumValue,a.minimumValue,a.specCount,a.SpecificationType FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1' ORDER BY a.MainId,a.specCount,a.SpecsMasterId";
 	@Override
     public List<Object[]> SpecificationMasterList() throws Exception 
     {
@@ -1371,5 +1371,30 @@ public class RequirementDaoImpl implements RequirementDao {
 			return new ArrayList<Object[]>();
 		}
 	}
+	private static final String PRODUCTTREELISTBYINITID= "SELECT a.MainId, a.SubLevelId, a.LevelName, a.Stage, a.Module, a.RevisionNo, a.SystemMainId, a.LevelCode FROM pfms_product_tree a,pfms_initiation b WHERE a.MainId>0 AND a.InitiationId=b.InitiationId AND b.InitiationId=:InitiationId AND a.IsActive='1' AND a.LevelId='1' ORDER BY a.SubLevelId";
 
+		@Override
+		public List<Object[]> productTreeListByInitiationId(String initiationId) throws Exception {
+			try {
+				Query query=manager.createNativeQuery(PRODUCTTREELISTBYINITID);
+				query.setParameter("InitiationId", initiationId);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return new ArrayList<Object[]>();
+			}
+		}
+		
+		@Override
+		public List<TestPlanMaster> getAllTestPlans() throws Exception {
+			try {
+				
+				Query query = manager.createNativeQuery("SELECT * FROM pfms_testplan_master where isActive='1'", TestPlanMaster.class);
+				 return query.getResultList();
+				
+			}catch (Exception e) {
+			    logger.error(new Date() + " Inside DAO getAllTestPlans " + e);
+			        return null;
+			}
+		}
 }

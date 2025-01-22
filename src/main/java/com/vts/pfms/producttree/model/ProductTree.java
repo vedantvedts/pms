@@ -33,4 +33,5 @@ public class ProductTree {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int isActive;
+	private Long InitiationId;
 }

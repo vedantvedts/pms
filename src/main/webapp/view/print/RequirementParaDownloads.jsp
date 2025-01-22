@@ -31,6 +31,12 @@
 <spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
 <script src="${htmltopdf}"></script>
 </head>
+<style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
 <body>
 <%
 String lablogo=(String)request.getAttribute("lablogo");
@@ -47,10 +53,13 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 %>
 
 
+<div id="loadingOverlay" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
+    <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
+    Please wait while we are generating the PDF...
+</div>
 
 
-
-	  <button onclick="generatePDF()">Download PDF</button>
+	  <button onclick="generatePDF()"></button>
 	  <script>
 	  var arr=[];
 		  $.ajax({
@@ -68,7 +77,7 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 		   })
 		 
 	      function generatePDF() {
-			  
+			  document.getElementById('loadingOverlay').style.display = 'flex';;
 		        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 
 			  var slno =0;
@@ -365,7 +374,17 @@ header: function (currentPage) {
         };
 
      <%--    pdfMake.createPdf(docDefinition).download('QR_PARA_<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:"" %>.pdf'); --%>
-        pdfMake.createPdf(docDefinition).open();
+     pdfMake.createPdf(docDefinition).getBlob((blob) => {
+         // Create a URL for the blob
+         const url = URL.createObjectURL(blob);
+
+         // Open the PDF in a new tab
+         window.open(url, '_blank');
+
+         // Hide the loading spinner
+           document.getElementById('loadingOverlay').style.display='none';
+         window.close();
+     });
     }
 		  
 		  

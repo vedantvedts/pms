@@ -33,6 +33,8 @@ public interface ProductTreeDao {
 
 	public ProjectSlides getProjectSlides(String projectId)throws Exception;
 
+	public List<Object[]> getProductTreeListInitiation(String initiationId);
+
 	
 
 }

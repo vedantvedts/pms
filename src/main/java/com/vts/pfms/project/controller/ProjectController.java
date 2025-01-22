@@ -412,17 +412,20 @@ public class ProjectController
 		try {
 
 			String initiationId = "0";
+			String productTreeMainId = "0";
 			String reqInitiationId = req.getParameter("reqInitiationId");
 
 			RequirementInitiation reqInitiation = null;
 			if(!reqInitiationId.equals("0")) {
 				reqInitiation = reqService.getRequirementInitiationById(reqInitiationId);
 				initiationId = reqInitiation.getInitiationId().toString();
+				productTreeMainId=reqInitiation.getProductTreeMainId().toString();
 				String version =reqInitiation.getReqVersion().toString();
 				req.setAttribute("DocumentVersion", version);
-				reqInitiationId = reqService.getFirstVersionReqInitiationId(initiationId, "0", "0")+"";
+				reqInitiationId = reqService.getFirstVersionReqInitiationId(initiationId , "0",productTreeMainId)+"";
 			}else {
 				initiationId = req.getParameter("initiationId");
+				productTreeMainId=req.getParameter("productTreeMainId");
 			}
 			
 			Object[] projectDetails = service.getProjectDetails(LabCode, initiationId, "P");
@@ -435,6 +438,7 @@ public class ProjectController
 
 			req.setAttribute("reqInitiation", reqInitiation);
 			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("reqInitiationId", reqInitiationId);
 			req.setAttribute("projectshortName", projectDetails!=null?projectDetails[2].toString():"");
 			req.setAttribute("RequirementList", service.RequirementList(reqInitiationId) );
@@ -457,69 +461,7 @@ public class ProjectController
 			req.setAttribute("ProjectType", "I");
 			req.setAttribute("result", req.getParameter("result"));
 			req.setAttribute("resultfail", req.getParameter("resultfail"));
-			// Sankha Datta
-			//			List<Object[]>projectList=service.ProjectIntiationList(EmpId,LoginType,LabCode);
-			//			
-			//			if(projectList.size()==0) {
-			//				redir.addAttribute("resultfail","No Project is Assigned to you!");
-			//				return  "redirect:/MainDashBoard.htm";
-			//			}
-			//			
-			//			
-			//			String Project=req.getParameter("project");
-			//			if(Project!=null) {
-			//			String[]project=Project.split("/");
-			//			String initiationid=project[0];
-			//			String projectshortName=project[1];
-			//			String projectTitle=project[2];
-			//			String ProjectId="0";
-			//			req.setAttribute("initiationid", initiationid);
-			//			req.setAttribute("projectshortName",projectshortName );
-			//			req.setAttribute("RequirementList", service.RequirementList(initiationid) );
-			//			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-			//			req.setAttribute("ProjectDetailes", ProjectDetailes);
-			//			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
-			//			req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
-			//			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-			//			req.setAttribute("project", Project);
-			//			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid, ProjectId));
-			//			req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid, ProjectId));
-			//			req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
-			//			req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid,ProjectId ));
-			//		
-			//			req.setAttribute("ApplicableDocumentList", reqService.ApplicableDocumentList(initiationid,ProjectId));
-			//			req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(initiationid,ProjectId));
-			//			
-			//			}else {
-			//				if(projectList.size()>0) {
-			//					String projectshortName=projectList.get(0)[4].toString();
-			//					String initiationid=projectList.get(0)[0].toString();
-			//					req.setAttribute("initiationid", initiationid);
-			//					req.setAttribute("projectshortName",projectshortName);
-			//				    req.setAttribute("project", initiationid+"/"+projectshortName+"/"+"NA");
-			//					req.setAttribute("RequirementList", service.RequirementList(initiationid) );
-			//					Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-			//					req.setAttribute("ProjectDetailes", ProjectDetailes);
-			//					req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
-			//					req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
-			//					req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-			//					String ProjectId="0";
-			//					req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid, ProjectId));
-			//					req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid,ProjectId));
-			//					req.setAttribute("MemberList", service.reqMemberList(initiationid,ProjectId));
-			//					req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid, ProjectId));
-			//					
-			//					String ProjectType=req.getParameter("ismain");
-			//					req.setAttribute("ApplicableDocumentList", reqService.ApplicableDocumentList(initiationid,ProjectId));
-			//					req.setAttribute("ApplicableTotalDocumentList", reqService.ApplicableTotalDocumentList(initiationid,ProjectId));
-			//				
-			//				
-			//				}
-			//			}
-			//			req.setAttribute("TotalEmployeeList", service.EmployeeList(LabCode));
-			//			req.setAttribute("LabList", service.LabListDetails(LabCode));
-			//			req.setAttribute("ProjectIntiationList", projectList);
-			//			req.setAttribute("ProjectType", "I");
+			
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside ProjectOverAllRequirement.htm "+UserId, e);
@@ -1461,9 +1403,9 @@ public class ProjectController
 			psf.setSqrNo("SQR/PRJ-"+req.getParameter("reqInitiationId")+"/"+req.getParameter("version"));
 			psf.setPreviousSqrNo(req.getParameter("previousSQRNo"));
             psf.setMeetingReference(req.getParameter("MeetingReference"));
-			 psf.setPriorityDevelopment(req.getParameter("PriorityDevelopment"));
-				psf.setQRType(req.getParameter("QrType"));
-				psf.setTitle(req.getParameter("Qrtitle"));
+			psf.setPriorityDevelopment(req.getParameter("PriorityDevelopment"));
+			psf.setQRType(req.getParameter("QrType"));
+			psf.setTitle(req.getParameter("Qrtitle"));
 			long count=service.ProjectSqrSubmit(psf,FileAttach,UserId,LabCode);
 			if (count > 0) {
 				redir.addAttribute("result", "SQR document uploaded Successfully");
@@ -8364,7 +8306,7 @@ public class ProjectController
 		String project= req.getParameter("project");
 		try{
 			String action = req.getParameter("Action"); 
-			String initiationId=req.getParameter("initiationid");
+			String initiationId=req.getParameter("initiationId");
 			String projectId=req.getParameter("projectId");//bharath
 			String productTreeMainId=req.getParameter("productTreeMainId");
 			String reqInitiationId=req.getParameter("reqInitiationId");
@@ -8468,6 +8410,7 @@ public class ProjectController
 							redir.addAttribute("project",project);
 							redir.addAttribute("initiationId", initiationId);
 							redir.addAttribute("reqInitiationId", reqInitiationId);
+							redir.addAttribute("productTreeMainId", productTreeMainId);
 							redir.addAttribute("result","Abbreviations Added Successfully");
 							return "redirect:/ProjectOverAllRequirement.htm";
 						}else {
@@ -9345,7 +9288,7 @@ public class ProjectController
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside RequirementMemberSubmit.htm "+UserId);
 		try {
-			String initiationId  = req.getParameter("initiationid");
+			String initiationId  = req.getParameter("initiationId");
 			String project = req.getParameter("project");
 			String projectId =req.getParameter("projectId");
 			String productTreeMainId =req.getParameter("productTreeMainId");
@@ -9382,18 +9325,21 @@ public class ProjectController
 					redir.addAttribute("project",project);
 					redir.addAttribute("initiationid",initiationId);
 					redir.addAttribute("reqInitiationId",reqInitiationId);
+					redir.addAttribute("productTreeMainId",productTreeMainId);
 					redir.addAttribute("result","Members Added Successfully for Document Distribution");
 					return "redirect:/ProjectOverAllRequirement.htm";
 
 				}else{
 					redir.addAttribute("projectId",projectId);
 					redir.addAttribute("reqInitiationId",reqInitiationId);
+					redir.addAttribute("productTreeMainId",productTreeMainId);
 					redir.addAttribute("result","Members Added Successfully for Document Distribution");
 					return "redirect:/ProjectRequirementDetails.htm";
 				}
 			}else{
 				redir.addAttribute("project",project);
 				redir.addAttribute("reqInitiationId",reqInitiationId);
+				redir.addAttribute("productTreeMainId",productTreeMainId);
 				redir.addAttribute("resultfail","Document Summary adding unsuccessful ");
 				return "redirect:/ProjectOverAllRequirement.htm";
 			}
@@ -9567,9 +9513,10 @@ public class ProjectController
 
 			String projectType = req.getParameter("projectType");
 			projectType = projectType!=null?projectType:"M";
+			String productTreeMainId = req.getParameter("productTreeMainId");
 			if(projectType.equalsIgnoreCase("M")) {
 				String projectId=req.getParameter("projectId");
-				String productTreeMainId = req.getParameter("productTreeMainId");
+			
 				
 				System.out.println("productTreeMainId----"+productTreeMainId+"--"+projectId);
 				List<Object[]> projectList = service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
@@ -9589,14 +9536,23 @@ public class ProjectController
 				req.setAttribute("getSpecsPlanApprovalFlowData", reqService.getSpecsPlanApprovalFlowData(projectId,"0",productTreeMainId));
 			}else {
 				String initiationId = req.getParameter("initiationId");
+				productTreeMainId=productTreeMainId==null?"0":productTreeMainId;
 				List<Object[]> preProjectList = reqService.getPreProjectList(LoginType, LabCode, EmpId);
 				initiationId = initiationId!=null?initiationId: (preProjectList.size()>0?preProjectList.get(0)[0].toString():"0");
 				req.setAttribute("preProjectList", preProjectList);
 				req.setAttribute("initiationId", initiationId);
 				req.setAttribute("getSpecsPlanApprovalFlowData", service.initiationSpecList("0", initiationId,"0"));
-				req.setAttribute("initiationSpecList", service.initiationSpecList("0", "0", initiationId));
+				req.setAttribute("initiationSpecList", service.initiationSpecList("0", productTreeMainId, initiationId));
+				List<Object[]> productTreeList = reqService.productTreeListByInitiationId(initiationId);
+				req.setAttribute("productTreeList", productTreeList);
+				req.setAttribute("productTreeMainId", productTreeMainId);
+				req.setAttribute("projectDetails", service.getProjectDetails(LabCode, initiationId, "P"));
+			
 			}
 
+			
+		
+			
 			req.setAttribute("projectType", projectType);
 
 

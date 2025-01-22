@@ -135,7 +135,7 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
 							      <div class="col-md-2">
                             		<label style="font-size: 17px; margin-top: 2%; color: #07689f">System Name :<span class="mandatory" style="color: red;">*</span></label>
                             		</div>
-                            		<div class="col-md-2" >
+                            		<div class="col-md-1" >
                               		<select class="form-control selectdee" id="sid" required="required" name="sid" onchange="getSubSystem()" >
     									<option disabled selected value="">Choose...</option>
     										<% for (Object[] obj : systemList) {
@@ -148,9 +148,26 @@ if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMas
   									 <div class="col-md-2">
                             		<label style="font-size: 17px; margin-top: 2%; color: #07689f;float: right">Sub-System Name :<span class="mandatory" style="color: red;">*</span></label>
                             		</div>
-                            		<div class="col-md-4" >
+                            		<div class="col-md-3" >
                               		<select class="form-control selectdee" id="subid" required="required" name="subid" onchange="" >
     								
+  									</select>
+  									</div>
+  									
+  									 <div class="col-md-2">
+                            		<label style="font-size: 17px; margin-top: 2%; color: #07689f;float: right">Specification Type :<span class="mandatory" style="color: red;">*</span></label>
+                            		</div>
+  									
+  									<div class="col-md-2" >
+                              		<select class="form-control selectdee" id="specType" required="required" name="SpecType" onchange="" >
+    								<option disabled selected value="">Choose...</option>
+    								<option  value="FS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("FS")) {%> selected <%} %>>Functional</option>
+    								<option value="OS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("OS")) {%> selected <%} %>>Operational</option>
+    								<option  value="DS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("DS")) {%> selected <%} %>>Deployment</option>
+    								<option  value="PS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("PS")) {%> selected <%} %>>Performance</option>
+    								<option  value="MS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("MS")) {%> selected <%} %>>Mechanical</option>
+    								<option  value="ES" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("ES")) {%> selected <%} %>>Electrical</option>
+    								<option  value="IS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("IS")) {%> selected <%} %>>Interface</option>
   									</select>
   									</div>
 							</div>
