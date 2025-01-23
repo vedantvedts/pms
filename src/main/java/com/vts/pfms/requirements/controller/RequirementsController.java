@@ -2867,6 +2867,8 @@ public class RequirementsController {
 			req.setAttribute("igiDocApprovedList", service.igiDocumentApprovedList(EmpId, fromdate, todate));
 			req.setAttribute("icdDocPendingList", service.icdDocumentPendingList(EmpId, labcode));
 			req.setAttribute("icdDocApprovedList", service.icdDocumentApprovedList(EmpId, fromdate, todate));
+			req.setAttribute("irsDocPendingList", service.irsDocumentPendingList(EmpId, labcode));
+			req.setAttribute("irsDocApprovedList", service.irsDocumentApprovedList(EmpId, fromdate, todate));
 			
 			return "requirements/DocumentApprovals";
 		} catch (Exception e) {

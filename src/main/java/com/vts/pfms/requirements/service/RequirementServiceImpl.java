@@ -1405,21 +1405,25 @@ public class RequirementServiceImpl implements RequirementService {
 		
 		return dao.testPlanMasterAdd(tp);
 	}
+	
 	@Override
 	public List<Object[]> igiDocumentPendingList(String empId, String labcode) throws Exception {
 		
 		return dao.igiDocumentPendingList(empId, labcode);
 	}
+	
 	@Override
 	public List<Object[]> igiDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
 		
 		return dao.igiDocumentApprovedList(empId, FromDate, ToDate);
 	}
+	
 	@Override
 	public List<Object[]> icdDocumentPendingList(String empId, String labcode) throws Exception {
 		
 		return dao.icdDocumentPendingList(empId, labcode);
 	}
+	
 	@Override
 	public List<Object[]> icdDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
 		
@@ -1427,8 +1431,20 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	@Override
+	public List<Object[]> irsDocumentPendingList(String empId, String labcode) throws Exception {
+		
+		return dao.irsDocumentPendingList(empId, labcode);
+	}
+	
+	@Override
+	public List<Object[]> irsDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		return dao.irsDocumentApprovedList(empId, FromDate, ToDate);
+	}
+	
+	@Override
 	public List<Object[]> productTreeListByInitiationId(String initiationId) throws Exception {
-		// TODO Auto-generated method stub
+
 		return dao.productTreeListByInitiationId(initiationId);
 	}
 	

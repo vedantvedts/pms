@@ -175,6 +175,8 @@ public interface RequirementService {
 	public List<Object[]> igiDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> icdDocumentPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> icdDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	public List<Object[]> irsDocumentPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> irsDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 
 	public List<Object[]> productTreeListByInitiationId(String initiationId)throws Exception;
 
